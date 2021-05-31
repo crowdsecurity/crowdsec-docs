@@ -29,14 +29,6 @@ sudo apt-get update
 
 The following debian suites / architectures are available :
 
-## install crowdsec
-
-```bash
-sudo apt-get install crowdsec
-```
-
-## compatibility matrix
-
 <center>
 
 | Suite       | Architecture     |
@@ -50,6 +42,12 @@ sudo apt-get install crowdsec
 | xenial | amd64, arm64, i386 | 
 
 </center>
+
+## install crowdsec
+
+```bash
+sudo apt-get install crowdsec
+```
 
 # Manually install the debian package
 
