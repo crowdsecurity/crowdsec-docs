@@ -16,11 +16,17 @@ The metrics are split in 3 main sections :
 !!! hint
     These metrics should help you identify potential configuration errors.
 
-    For example, if you have a source that has mostly unparsed logs, you know you might be missing some parsers.
+    For example, if you have a source that has mostly unparsed logs, you might be missing some parsers.
     As well, if you have scenarios that are never instantiated, it might be a hint that they are not relevant to your configuration.
 
     Furthermore, you might see parsers called `child-<parser_name>` while calling `cscli metrics`. This correspond to all nodes belonging to a parser. Their metrics
     (HITS, PARSED, UNPARSED) are gather by default. If you want to identify metrics for a specific parser node, you just have to set a name for this node in your parser configuration.
+
+
+!!! warning
+
+    When viewing those metrics, keep in mind that crowdsec will *only* parse log lines that are relevant to scenarios.
+    For example, [sshd-logs parser](https://hub.crowdsec.net/author/crowdsecurity/configurations/sshd-logs) only parses fail authentication logs, and will let successful login lines (and other logs) unparsed.
 
 
 <details>
