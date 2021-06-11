@@ -16,6 +16,15 @@ You can install crowdsec in different ways :
 !!! info
     Packaging for FreeBSD and RedHat/CentOS are WIP at the time of writing. Documentation will be updated once those packages are published & functional.
 
+
+# Required resources
+
+Crowdsec agent itself is rather light, and in a small to medium setup should use less than 100Mb of memory.
+During intensive logs processing, CPU is going to be the most used resource, and memory usage shouldn't really grow.
+
+However, running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli dashboard setup`) [requires 1-2Gb of RAM](https://www.metabase.com/docs/latest/troubleshooting-guide/running.html).
+
+
 # Install using crowdsec repository
 
 Crowdsec distributes their own pragmatic debian packages that closely follow the development stream (packages are automatically published on release), and are suitable for those that want to keep up with the latest changes of crowdsec.
