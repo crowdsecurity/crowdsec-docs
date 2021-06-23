@@ -46,7 +46,7 @@ Crowdsec distributes their own pragmatic debian packages that closely follow the
 
 Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install).
 
-If you're not found of `curl ... | sudo bash`, follow instruction bellow :
+If you're not fond of `curl ... | sudo bash`, follow instruction bellow :
 
  1. Retrieve the signing key 
 
@@ -115,7 +115,7 @@ Crowdsec distributes their own pragmatic debian packages that closely follow the
 
 Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install).
 
-If you're not found of `curl ... | sudo bash`, follow instruction bellow :
+If you're not fond of `curl ... | sudo bash`, follow instruction bellow :
 
  1. For the simplest installation process on LTS (Long-Term Support) releases, use yum. First, you must install the pygpgme package, which enables yum to handle GPG signatures:
 
