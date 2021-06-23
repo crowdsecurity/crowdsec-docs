@@ -1,11 +1,21 @@
 
 # Installation methods
 
-You can install crowdsec in different ways :
 
- - Most users [set up crowdsec's repositories](/Crowdsec/v1/getting_started/installation/#install-using-crowdsec-repository) and install from them, for ease of installation and upgrade
+
+## On debian / ubuntu :
+
+ - [Set up crowdsec's repositories](/Crowdsec/v1/getting_started/installation/#install-on-debian-using-crowdsec-repository) and install from them, for ease of installation and upgrade
  - Some users [use debian's official crowdsec packages](/Crowdsec/v1/getting_started/installation/#install-using-debian-official-packages)
  - Some users download the DEB package directly and [install it manually](/Crowdsec/v1/getting_started/installation/#manually-install-the-debian-package)
+
+
+## On RHEL / CentOS :
+
+ -[Set up crowdsec's repositories](/Crowdsec/v1/getting_started/installation/#install-on-redhatcentos-using-crowdsec-repository) and install from them, for ease of installation and upgrade
+
+## Generic *nix & containers :
+
  - Some users download the tarball directly and [install it manually](/Crowdsec/v1/getting_started/installation/#install-from-the-release-tarball)
  - Some users use the [docker hub image](https://hub.docker.com/r/crowdsecurity/crowdsec)
  - And the most adventurous might want to [build & install from source](/Crowdsec/v1/getting_started/installation/#install-from-source)
@@ -25,16 +35,38 @@ During intensive logs processing, CPU is going to be the most used resource, and
 However, running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli dashboard setup`) [requires 1-2Gb of RAM](https://www.metabase.com/docs/latest/troubleshooting-guide/running.html).
 
 
-# Install using crowdsec repository
+# Install on debian using crowdsec repository
+
+On debian and ubuntu, packages are hosted on [packagecloud.io](https://packagecloud.io).
 
 Crowdsec distributes their own pragmatic debian packages that closely follow the development stream (packages are automatically published on release), and are suitable for those that want to keep up with the latest changes of crowdsec.
 
+
 ## setup the repository
 
+Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install).
+
+If you're not found of `curl ... | sudo bash`, follow instruction bellow :
+
+ 1. Retrieve the signing key 
+
 ```bash
-wget -qO - https://s3-eu-west-1.amazonaws.com/crowdsec.debian.pragmatic/crowdsec.asc |sudo apt-key add - && echo "deb https://s3-eu-west-1.amazonaws.com/crowdsec.debian.pragmatic/$(lsb_release -cs) $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/crowdsec.list > /dev/null
-sudo apt-get update
+curl https://packagecloud.io/gpg.key | sudo apt-key add -
 ```
+
+ 2.Install the apt-transport-https package in order to be able to fetch packages over HTTPS:
+
+```bash
+sudo apt-get install -y apt-transport-https
+```
+
+ 3. Add the appropriate repository to your source.list 
+
+```bash
+echo "deb https://packagecloud.io/crowdsec/crowdsec-testing/debian/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/crowdsec.list > /dev/null
+```
+
+## install crowdsec
 
 The following debian suites / architectures are available :
 
@@ -51,8 +83,6 @@ The following debian suites / architectures are available :
 | xenial | amd64, arm64, i386 | 
 
 </center>
-
-## install crowdsec
 
 ```bash
 sudo apt-get install crowdsec
@@ -73,6 +103,44 @@ Crowdsec is available for [bullseye & sid](https://packages.debian.org/search?se
 ```bash
 sudo apt-get install crowdsec
 ```
+
+
+# Install on redhat/centos using crowdsec repository
+
+On redhat and centos, packages are hosted on [packagecloud.io](https://packagecloud.io).
+
+Crowdsec distributes their own pragmatic debian packages that closely follow the development stream (packages are automatically published on release), and are suitable for those that want to keep up with the latest changes of crowdsec.
+
+## setup the repository
+
+Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install).
+
+If you're not found of `curl ... | sudo bash`, follow instruction bellow :
+
+ 1. For the simplest installation process on LTS (Long-Term Support) releases, use yum. First, you must install the pygpgme package, which enables yum to handle GPG signatures:
+
+```bash
+sudo yum install pygpgme
+```
+
+
+<<<<TBD>>>>
+
+## install crowdsec
+
+The following rhel/centos suites / architectures are available :
+
+<center>
+
+<<<<TBD>>>>
+
+
+</center>
+
+```bash
+<<<<TBD>>>>
+```
+
 
 # Install from the release tarball
 
