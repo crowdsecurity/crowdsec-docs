@@ -44,7 +44,7 @@ Crowdsec distributes their own pragmatic debian packages that closely follow the
 
 ## setup the repository
 
-Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install).
+Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install#bash-deb).
 
 If you're not fond of `curl ... | sudo bash`, follow instruction bellow :
 
@@ -63,7 +63,7 @@ sudo apt-get install -y apt-transport-https
  3. Add the appropriate repository to your source.list 
 
 ```bash
-echo "deb https://packagecloud.io/crowdsec/crowdsec-testing/debian/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/crowdsec.list > /dev/null
+echo "deb https://packagecloud.io/crowdsec/crowdsec/debian/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/crowdsec.list > /dev/null
 ```
 
 ## install crowdsec
@@ -74,13 +74,12 @@ The following debian suites / architectures are available :
 
 | Suite       | Architecture     |
 | :------------- | :----------: | 
-|  bionic | amd64, arm64, i386   |
-| bullseye   | amd64, i386 |
-| buster | amd64, arm64, i386 |
-| focal |  amd64, arm64, i386 | 
-| sid | amd64, i386 |
-| stretch | amd64, arm64, i386 | 
-| xenial | amd64, arm64, i386 | 
+|  bionic | amd64, arm64   |
+| bullseye   | amd64, arm64 |
+| buster | amd64, arm64 |
+| focal |  amd64, arm64 | 
+| stretch | amd64, arm64 | 
+| xenial | amd64, arm64 | 
 
 </center>
 
@@ -113,32 +112,31 @@ Crowdsec distributes their own pragmatic debian packages that closely follow the
 
 ## setup the repository
 
-Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install).
+Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install#bash-rpm).
 
-If you're not fond of `curl ... | sudo bash`, follow instruction bellow :
+If you're not fond of `curl ... | sudo bash`, you can look at the script to directly add the appropriate `.repo` to your configuration.
 
- 1. For the simplest installation process on LTS (Long-Term Support) releases, use yum. First, you must install the pygpgme package, which enables yum to handle GPG signatures:
-
-```bash
-sudo yum install pygpgme
-```
-
-
-<<<<TBD>>>>
 
 ## install crowdsec
 
 The following rhel/centos suites / architectures are available :
 
+!!TBD : arm + publier fedora/34 et linux/2
+
 <center>
 
-<<<<TBD>>>>
-
+| Suite       | Architecture     |
+| :------------- | :----------: | 
+|  el/7| amd64, arm64   |
+|  el/8 | amd64, arm64   |
+| fedora/33   | amd64, arm64 |
+| fedora/34   | amd64, arm64 |
+| amazon linux/2 | amd64, arm64 |
 
 </center>
 
 ```bash
-<<<<TBD>>>>
+yum install crowdsec
 ```
 
 
