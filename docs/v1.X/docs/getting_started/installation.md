@@ -12,7 +12,11 @@
 
 ## On RHEL / CentOS :
 
- -[Set up crowdsec's repositories](/Crowdsec/v1/getting_started/installation/#install-on-redhatcentos-using-crowdsec-repository) and install from them, for ease of installation and upgrade
+ - [Set up crowdsec's repositories](/Crowdsec/v1/getting_started/installation/#install-on-redhatcentos-using-crowdsec-repository) and install from them, for ease of installation and upgrade
+
+## On FreeBSD :
+
+ - [crowdsec and the firewall bouncer](/Crowdsec/v1/getting_started/installation/#freebsd) are available
 
 ## Generic *nix & containers :
 
@@ -21,11 +25,6 @@
  - And the most adventurous might want to [build & install from source](/Crowdsec/v1/getting_started/installation/#install-from-source)
  - And some might even want to [build their own docker image](/Crowdsec/v1/getting_started/installation/#build-docker-image)
  - Or use it with [docker-compose](https://github.com/crowdsecurity/example-docker-compose)
-
-
-!!! info
-    Packaging for FreeBSD and RedHat/CentOS are WIP at the time of writing. Documentation will be updated once those packages are published & functional.
-
 
 # Required resources
 
@@ -90,7 +89,7 @@ sudo apt-get install crowdsec
 
 # Manually install the debian package
 
-Fetch your package from the [public repository](https://s3-eu-west-1.amazonaws.com/crowdsec.debian.pragmatic/), and install it manually :
+Fetch your package from the [public repository](https://packagecloud.io/crowdsec/crowdsec), and install it manually :
 
 ```bash
 sudo dpkg -i ./crowdsec_1.0.7-4_amd64.deb
@@ -115,13 +114,12 @@ Crowdsec distributes their own pragmatic debian packages that closely follow the
 
 Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install#bash-rpm).
 
-If you're not fond of `curl ... | sudo bash`, you can look at the script to directly add the appropriate `.repo` to your configuration.
+If you're not fond of `curl ... | sudo bash`, you [can look at the manual method](https://packagecloud.io/crowdsec/crowdsec/install#manual-rpm) to directly add the appropriate `.repo` to your configuration.
 
 
 ## install crowdsec
 
 The following rhel/centos suites / architectures are available :
-
 
 <center>
 
@@ -135,10 +133,28 @@ The following rhel/centos suites / architectures are available :
 
 </center>
 
+__centos/8 and fedora/33 and fedora/34 :__
+```bash
+dnf install crowdsec
+```
+
+__older versions :__
 ```bash
 yum install crowdsec
 ```
 
+# Install on FreeBSD
+
+
+Crowdsec is available on FreeBSD :
+```bash
+pkg install crowdsec
+```
+
+The [crowdsec firewall bouncer](https://github.com/crowdsecurity/cs-firewall-bouncer) is available as well :
+```bash
+pkg install crowdsec-firewall-bouncer
+```
 
 # Install from the release tarball
 
