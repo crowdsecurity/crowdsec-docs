@@ -21,6 +21,13 @@ To load completions:
 
   $ cscli completion bash | sudo tee /usr/local/etc/bash_completion.d/cscli
 
+  # Troubleshoot:
+  If you have this error (bash: _get_comp_words_by_ref: command not found), it seems that you need "bash-completion" dependency :
+
+  * Install bash-completion package
+  $ source /etc/profile
+  $ source <(cscli completion bash)
+
 ### Zsh:
 
   # If shell completion is not already enabled in your environment,
