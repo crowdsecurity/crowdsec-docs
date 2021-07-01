@@ -84,6 +84,7 @@ The following debian suites / architectures are available :
 </center>
 
 ```bash
+sudo apt-get update
 sudo apt-get install crowdsec
 ```
 
@@ -121,17 +122,16 @@ If you're not fond of `curl ... | sudo bash`, you can look at the script to dire
 
 The following rhel/centos suites / architectures are available :
 
-!!TBD : arm + publier fedora/34 et linux/2
 
 <center>
 
 | Suite       | Architecture     |
 | :------------- | :----------: | 
-|  el/7| amd64, arm64   |
-|  el/8 | amd64, arm64   |
-| fedora/33   | amd64, arm64 |
-| fedora/34   | amd64, arm64 |
-| amazon linux/2 | amd64, arm64 |
+|  el/7| amd64   |
+|  el/8 | amd64   |
+| fedora/33   | amd64 |
+| fedora/34   | amd64 |
+| amazon linux/2 | amd64 |
 
 </center>
 
