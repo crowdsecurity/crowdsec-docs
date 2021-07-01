@@ -6,6 +6,12 @@
 
 The {{v1X.cli.name}} command `{{v1X.cli.bin}} dashboard setup` will use [docker](https://docs.docker.com/get-docker/) to install [metabase docker image](https://hub.docker.com/r/metabase/metabase/) and fetch our metabase template to have a configured and ready dashboard. 
 
+!!! tip "Protip"
+    If you use `podman` instead of `docker` and want to install the crowdsec dashboard, you need to run:
+
+    `sudo ln -s /var/run/podman/podman.sock /var/run/docker.sock` 
+
+    Then you can setup the dashboard with `sudo cscli dashboard setup`
 
 ## Setup
 > Setup and Start crowdsec metabase dashboard
