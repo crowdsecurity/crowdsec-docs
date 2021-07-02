@@ -28,6 +28,7 @@ It is meant to allow you to manage bans, parsers/scenarios/etc, api and generall
 * [cscli collections](cscli_collections.md)	 - Manage collections from hub
 * [cscli completion](cscli_completion.md)	 - Generate completion script
 * [cscli config](cscli_config.md)	 - Allows to view current config
+* [cscli console](cscli_console.md)	 - Manage interaction with Crowdsec console (https://app.crowdsec.net)
 * [cscli dashboard](cscli_dashboard.md)	 - Manage your metabase dashboard container [requires local API]
 * [cscli decisions](cscli_decisions.md)	 - Manage decisions
 * [cscli hub](cscli_hub.md)	 - Manage Hub
