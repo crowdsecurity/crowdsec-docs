@@ -50,7 +50,7 @@ If you're not fond of `curl ... | sudo bash`, follow instruction bellow :
  1. Retrieve the signing key 
 
 ```bash
-curl https://packagecloud.io/gpg.key | sudo apt-key add -
+curl -L https://packagecloud.io/crowdsec/crowdsec/gpgkey | sudo apt-key add -
 ```
 
  2.Install the apt-transport-https package in order to be able to fetch packages over HTTPS:
