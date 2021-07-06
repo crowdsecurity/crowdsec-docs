@@ -73,7 +73,7 @@ The following debian suites / architectures are available :
 
 | Suite       | Architecture     |
 | :------------- | :----------: | 
-|  bionic | amd64, arm64   |
+| bionic | amd64, arm64   |
 | bullseye   | amd64, arm64 |
 | buster | amd64, arm64 |
 | focal |  amd64, arm64 | 
@@ -126,10 +126,10 @@ The following rhel/centos suites / architectures are available :
 | Suite       | Architecture     |
 | :------------- | :----------: | 
 |  el/7| amd64   |
-|  el/8 | amd64   |
-| fedora/33   | amd64 |
-| fedora/34   | amd64 |
-| amazon linux/2 | amd64 |
+|  el/8 | amd64, arm64   |
+| fedora/33   | amd64, arm64 |
+| fedora/34   | amd64, arm64 |
+| amazon linux/2 | amd64, arm64 |
 
 </center>
 
