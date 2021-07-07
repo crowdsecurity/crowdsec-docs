@@ -1,28 +1,28 @@
 # FREQUENTLY ASKED QUESTIONS
 
-## What is {{v1X.crowdsec.name}} ?
+## What is {{v11X.crowdsec.name}} ?
 
-{{v1X.crowdsec.Name}} is a security open-source software. See the [overview](/#what-is-crowdsec).
+{{v11X.crowdsec.Name}} is a security open-source software. See the [overview](/#what-is-crowdsec).
 
 ## I've installed crowdsec, it detects attacks but doesn't block anything ?!
 
-Yes, {{v1X.crowdsec.Name}} is in charge of detecting attacks, and {{v1X.bouncers.htmlname}} are applying decisions.
+Yes, {{v11X.crowdsec.Name}} is in charge of detecting attacks, and {{v11X.bouncers.htmlname}} are applying decisions.
 If you want to block the detected IPs, you should deploy a bouncer, such as the ones found on the [hub](https://hub.crowdsec.net/browse/#bouncers) !
 
 
 ## What language is it written in ?
 
-{{v1X.crowdsec.Name}} is written in [Golang](https://golang.org/).
+{{v11X.crowdsec.Name}} is written in [Golang](https://golang.org/).
 
-## What licence is {{v1X.crowdsec.name}} released under ?
+## What licence is {{v11X.crowdsec.name}} released under ?
 
-{{v1X.crowdsec.Name}} is under [MIT license]({{v1X.crowdsec.url}}/blob/master/LICENSE).
+{{v11X.crowdsec.Name}} is under [MIT license]({{v11X.crowdsec.url}}/blob/master/LICENSE).
 
 ## Which information is sent to the APIs ?
 
 Our aim is to build a strong community that can share malevolent attackers IPs, for that we need to collect the bans triggered locally by each user.
 
-The signal sent by your {{v1X.crowdsec.name}} to the central API only contains only meta-data about the attack :
+The signal sent by your {{v11X.crowdsec.name}} to the central API only contains only meta-data about the attack :
 
  - Attacker IP
  - Scenario name
@@ -38,33 +38,33 @@ When pulling block-lists from the platform, the following information is shared 
 
 ## What is the performance impact ?
 
-As {{v1X.crowdsec.name}} only works on logs, it shouldn't impact your production.
-When it comes to {{v1X.bouncers.name}}, it should perform **one** request to the database when a **new** IP is discovered thus have minimal performance impact.
+As {{v11X.crowdsec.name}} only works on logs, it shouldn't impact your production.
+When it comes to {{v11X.bouncers.name}}, it should perform **one** request to the database when a **new** IP is discovered thus have minimal performance impact.
 
 ## How fast is it ?
 
-{{v1X.crowdsec.name}} can easily handle several thousands of events per second on a rich pipeline (multiple parsers, geoip enrichment, scenarios and so on). Logs are a good fit for sharding by default, so it is definitely the way to go if you need to handle higher throughput.
+{{v11X.crowdsec.name}} can easily handle several thousands of events per second on a rich pipeline (multiple parsers, geoip enrichment, scenarios and so on). Logs are a good fit for sharding by default, so it is definitely the way to go if you need to handle higher throughput.
 
-If you need help for large scale deployment, please get in touch with us on the {{v1X.doc.discourse}}, we love challenges ;)
+If you need help for large scale deployment, please get in touch with us on the {{v11X.doc.discourse}}, we love challenges ;)
 
-## What backend database does {{v1X.crowdsec.Name}} supports and how to switch ?
+## What backend database does {{v11X.crowdsec.Name}} supports and how to switch ?
 
-{{v1X.crowdsec.name}} versions (under v0.3.X) supports SQLite (default) and MySQL databases.
+{{v11X.crowdsec.name}} versions (under v0.3.X) supports SQLite (default) and MySQL databases.
 See [backend configuration](/Crowdsec/v0/references/output/#switching-backend-database) for relevant configuration. MySQL here is more suitable for distributed architectures where bouncers across the applicative stack need to access a centralized ban database.
 
-{{v1X.crowdsec.name}} versions (after v1) supports SQLite (default), MySQL and PostgreSQL databases.
-See [databases configuration](/Crowdsec/v1/user_guide/database/) for relevant configuration. Thanks to the {{v1X.lapi.Htmlname}}, distributed architectures are resolved even with sqlite database.
+{{v11X.crowdsec.name}} versions (after v1) supports SQLite (default), MySQL and PostgreSQL databases.
+See [databases configuration](/Crowdsec/v1/user_guide/database/) for relevant configuration. Thanks to the {{v11X.lapi.Htmlname}}, distributed architectures are resolved even with sqlite database.
 
 SQLite by default as it's suitable for standalone/single-machine setups.
 
 ## How to control granularity of actions ? (whitelists, simulation etc.)
 
-{{v1X.crowdsec.name}} support both [whitelists](/Crowdsec/v1/write_configurations/whitelist/) and [simulation](/Crowdsec/v1/references/simulation/) :
+{{v11X.crowdsec.name}} support both [whitelists](/Crowdsec/v1/write_configurations/whitelist/) and [simulation](/Crowdsec/v1/references/simulation/) :
 
  - Whitelists allows you to "discard" events or overflows
  - Simulation allows you to simply cancel the decision that is going to be taken, but keep track of it
 
- {{v1X.profiles.htmlname}} allows you to control which decision will be applied to which alert.
+ {{v11X.profiles.htmlname}} allows you to control which decision will be applied to which alert.
 
 ## How to know if my setup is working correctly ? Some of my logs are unparsed, is it normal ?
 
@@ -104,7 +104,7 @@ Then you can restart CrowdSec like this:
 `systemctl restart crowdsec`
 
 ### Sudo
-If you use `sudo` {{v1X.cli.name}}, just add this line in `visudo` after setting up the previous environment variables:
+If you use `sudo` {{v11X.cli.name}}, just add this line in `visudo` after setting up the previous environment variables:
 
 ```
 Defaults        env_keep += "HTTP_PROXY HTTPS_PROXY NO_PROXY"
@@ -112,7 +112,7 @@ Defaults        env_keep += "HTTP_PROXY HTTPS_PROXY NO_PROXY"
 
 ## How to report a bug ?
 
-To report a bug, please open an issue on the [repository]({{v1X.crowdsec.bugreport}}).
+To report a bug, please open an issue on the [repository]({{v11X.crowdsec.bugreport}}).
 
 ## What about false positives ?
 
@@ -125,7 +125,7 @@ Several initiatives have been taken to tackle the false positives approach as ea
 
 ## I need some help
 
-Feel free to ask for some help to the {{v1X.doc.discourse}} or directly in the {{v1X.doc.gitter}} chat.
+Feel free to ask for some help to the {{v11X.doc.discourse}} or directly in the {{v11X.doc.gitter}} chat.
 
 ## How to use crowdsec on raspberry pi OS (formerly known as rasbian) 
 

@@ -9,8 +9,8 @@ Help us improve the software and the user experience, to make the internet a saf
 
 If you spotted some mistakes in the documentation or have improvement suggestions, you can :
 
- - open a {{v1X.doc.new_issue}} if you are comfortable with github
- - let us know on {{v1X.doc.discourse}} if you want to discuss about it
+ - open a {{v11X.doc.new_issue}} if you are comfortable with github
+ - let us know on {{v11X.doc.discourse}} if you want to discuss about it
 
 Let us as well know if you have some improvement suggestions !
 
@@ -30,15 +30,15 @@ mkdocs serve
 
 ## Contributing to the code
 
- - If you want to report a bug, you can use [the github bugtracker]({{v1X.crowdsec.bugreport}})
- - If you want to suggest an improvement you can use either [the github bugtracker]({{v1X.crowdsec.bugreport}}) or the {{v1X.doc.discourse}} if you want to discuss 
+ - If you want to report a bug, you can use [the github bugtracker]({{v11X.crowdsec.bugreport}})
+ - If you want to suggest an improvement you can use either [the github bugtracker]({{v11X.crowdsec.bugreport}}) or the {{v11X.doc.discourse}} if you want to discuss 
 
 
 ## Contributing to the parsers/scenarios
 
-If you want to contribute your parser or scenario to the community and have them appear on the {{v1X.hub.htmlname}}, you should [open a merge request](https://github.com/crowdsecurity/hub/pulls) on the hub.
+If you want to contribute your parser or scenario to the community and have them appear on the {{v11X.hub.htmlname}}, you should [open a merge request](https://github.com/crowdsecurity/hub/pulls) on the hub.
 
-We are currently working on a proper [CI](https://en.wikipedia.org/wiki/Continuous_integration) for the {{v1X.hub.htmlname}}, so for now all contribution are subject to peer-review, please bear with us !
+We are currently working on a proper [CI](https://en.wikipedia.org/wiki/Continuous_integration) for the {{v11X.hub.htmlname}}, so for now all contribution are subject to peer-review, please bear with us !
 
 ## Contacting the team
 
