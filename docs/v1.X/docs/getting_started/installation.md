@@ -16,7 +16,7 @@
 
 ## On FreeBSD :
 
- - [crowdsec and the firewall bouncer](/Crowdsec/v1/getting_started/installation/#freebsd) are available
+ - [crowdsec and the firewall bouncer](/Crowdsec/v1/getting_started/installation/#install-on-freebsd) are available
 
 ## Generic *nix & containers :
 
