@@ -16,7 +16,7 @@
 
 ## On FreeBSD :
 
- - [crowdsec and the firewall bouncer](/Crowdsec/v11/getting_started/installation/#freebsd) are available
+ - [crowdsec and the firewall bouncer](/Crowdsec/v11/getting_started/installation/#install-on-freebsd) are available
 
 ## Generic *nix & containers :
 
@@ -145,15 +145,14 @@ yum install crowdsec
 
 # Install on FreeBSD
 
-
-Crowdsec is available on FreeBSD :
+Crowdsec is available on FreeBSD:
 ```bash
-pkg install crowdsec
+sudo pkg install crowdsec
 ```
 
-The [crowdsec firewall bouncer](https://github.com/crowdsecurity/cs-firewall-bouncer) is available as well :
+The [crowdsec firewall bouncer](https://github.com/crowdsecurity/cs-firewall-bouncer) is available as well:
 ```bash
-pkg install crowdsec-firewall-bouncer
+sudo pkg install crowdsec-firewall-bouncer
 ```
 
 # Install from the release tarball

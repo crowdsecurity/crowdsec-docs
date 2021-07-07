@@ -9,21 +9,21 @@ When doing so, {{v10X.crowdsec.name}} will read the logs, extract timestamps fro
 you can run :
 
 ```bash
-sudo crowdsec -c /etc/crowdsec/user.yaml -file /path/to/your/log/file.log -type log_file_type
+sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///path/to/your/log/file.log -type log_file_type
 ```
 
-Where `-file` points to the log file you want to process, and the `-type` is similar to what you would put in your acquisition's label field, for example :
+Where `-dsn` points to the log file you want to process, and the `-type` is similar to what you would put in your acquisition's label field, for example :
 
 ```bash
-sudo crowdsec -c /etc/crowdsec/user.yaml -file /var/log/nginx/2019.log -type nginx
-sudo crowdsec -c /etc/crowdsec/user.yaml -file /var/log/sshd-2019.log -type syslog
-sudo crowdsec -c /etc/crowdsec/user.yaml -jfilter "_SYSTEMD_UNIT=ssh.service --since yesterday" -type syslog
+sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/nginx/2019.log -type nginx
+sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/sshd-2019.log -type syslog
+sudo crowdsec -c /etc/crowdsec/user.yaml -dns "journalctl://filters=_SYSTEMD_UNIT=ssh.service --since yesterday" -type syslog
 ```
 
 When running crowdsec in forensic mode, the alerts will be displayed to stdout, and as well pushed to database :
 
 ```bash
-$ sudo crowdsec -c /etc/crowdsec/user.yaml -file /var/log/nginx/nginx-2019.log.1 -type nginx
+$ sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/nginx/nginx-2019.log.1 -type nginx
 ...
 INFO[13-11-2020 13:05:23] Ip 123.206.50.249 performed 'crowdsecurity/http-probing' (11 events over 6s) at 2019-01-01 01:37:32 +0100 CET 
 INFO[13-11-2020 13:05:23] Ip 123.206.50.249 performed 'crowdsecurity/http-backdoors-attempts' (2 events over 1s) at 2019-01-01 01:37:33 +0100 CET 
@@ -44,20 +44,20 @@ And as these alerts are as well pushed to database, it mean you can view them in
 If you already have a running crowdsec/Local API running and want to inject events into existing database, you can run crowdsec directly :
 
 ```bash
-sudo crowdsec -file ~/logs/nginx/access.log -type nginx --no-api
+sudo crowdsec -dsn file://logs/nginx/access.log -type nginx --no-api
 ```
 
-Crowdsec will process `~/logs/nginx/access.log` and push alerts to the Local API configured in your default configuration file (`/etc/crowdsec/config.yaml`, see `api.client.credentials_path`)
+Crowdsec will process `logs/nginx/access.log` and push alerts to the Local API configured in your default configuration file (`/etc/crowdsec/config.yaml`, see `api.client.credentials_path`)
 
 ## Injection alerts into new database - no local instance running
 
 If you don't have a service currently running, you can run crowdsec directly :
 
 ```bash
-sudo crowdsec -file ~/logs/nginx/access.log -type nginx
+sudo crowdsec -dsn file://logs/nginx/access.log -type nginx
 ```
 
-Crowdsec will start a Local API and process `~/logs/nginx/access.log`.
+Crowdsec will start a Local API and process `logs/nginx/access.log`.
 
 
 ## Injection alerts into new database - while local instance is running
@@ -120,7 +120,7 @@ password: ...
 Now we can start the new Local API and crowdsec :
 
 ```bash
-$ crowdsec -c ./forensic.yaml -file ~/github/crowdsec/OLDS/LOGS/nginx/10k_ACCESS_LOGS.log -type nginx
+$ crowdsec -c ./forensic.yaml -dsn file://github/crowdsec/OLDS/LOGS/nginx/10k_ACCESS_LOGS.log -type nginx
 ...
 INFO[15-11-2020 10:09:20] Ip x.x.x.x performed 'crowdsecurity/http-bad-user-agent' (2 events over 0s) at 2017-10-21 13:58:38 +0200 CEST 
 INFO[15-11-2020 10:09:20] Ip y.y.y.y performed 'crowdsecurity/http-probing' (11 events over 0s) at 2017-10-23 12:00:34 +0200 CEST 
@@ -164,7 +164,7 @@ $ ./cscli -c dev.yaml collections install crowdsecurity/nginx
 And we can process logs :
 
 ```bash
-$ ./crowdsec -c dev.yaml -file ~/github/crowdsec/OLDS/LOGS/nginx/10k_ACCESS_LOGS.log -type nginx
+$ ./crowdsec -c dev.yaml -dsn file://github/crowdsec/OLDS/LOGS/nginx/10k_ACCESS_LOGS.log -type nginx
 INFO[0000] single file mode : log_media=stdout daemonize=true 
 INFO[15-11-2020 11:18:27] Crowdsec v1.0.0-rc-0ecb142dfffc89b019b6d9044cb7cc5569d12c70 
 INFO[15-11-2020 11:18:38] Ip x.x.x.x performed 'crowdsecurity/http-sensitive-files' (5 events over 4s) at 2017-10-23 12:35:54 +0200 CEST 
