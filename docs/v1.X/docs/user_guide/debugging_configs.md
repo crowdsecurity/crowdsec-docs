@@ -10,7 +10,7 @@ When trying to debug a parser or a scenario :
 ## Using user-mode configuration
 
 ```bash
-crowdsec -c /etc/crowdsec/user.yaml -file mylogs.log.gz -type syslog
+crowdsec -c /etc/crowdsec/user.yaml -dsn file://mylogs.log.gz -type syslog
 INFO[05-08-2020 16:15:47] Crowdsec v0.3.0-rc3-7525f11975a0107746213862dc41c69e00122ac7 
 INFO[05-08-2020 16:15:47] Loading grok library                         
 ...
@@ -115,7 +115,7 @@ INFO[0000] PARSERS:
  crowdsecurity/dateparse-enrich  ✔️  enabled  0.1      config/parsers/s02-enrich/dateparse-enrich.yaml 
 -------------------------------------------------------------------------------------------------------
 ...
-$ ./crowdsec -c dev.yaml -file sshd.log -type syslog
+$ ./crowdsec -c dev.yaml -dsn file://sshd.log -type syslog
 INFO[05-08-2020 16:23:32] Crowdsec v0.3.0-rc3-7525f11975a0107746213862dc41c69e00122ac7 
 INFO[05-08-2020 16:23:32] Loading grok library                         
 ...

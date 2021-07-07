@@ -69,7 +69,7 @@ mkdir -p config/parsers/s01-parse
 
 ```
 cp myparser.yaml config/parsers/s01-parse/                  
-./crowdsec -c ./dev.yaml -file ./x.log -type foobar
+./crowdsec -c ./dev.yaml -dsn file://x.log -type foobar
 ```
 
 <details>
@@ -148,7 +148,7 @@ statics:
 
 
 ```bash
-./crowdsec -c ./dev.yaml -file ./x.log -type foobar
+./crowdsec -c ./dev.yaml -dsn file://x.log -type foobar
 ```
 
 
@@ -234,7 +234,7 @@ Look into dedicated {{v1X.statics.htmlname}} documentation to know more about it
 
 
 ```bash
-./crowdsec -c ./dev.yaml -file ./x.log -type kernel
+./crowdsec -c ./dev.yaml -dsn file://x.log -type kernel
 ```
 
 <details>
