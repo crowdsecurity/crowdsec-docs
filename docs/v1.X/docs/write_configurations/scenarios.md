@@ -63,7 +63,7 @@ May 12 09:40:16 sd-126005 kernel: [47678084.929208] IN=enp1s0 OUT= MAC=00:08:a2:
 
 
 ```bash
-./crowdsec -c ./dev.yaml -file ./x.log -type syslog
+./crowdsec -c ./dev.yaml -dsn file://x.log -type syslog
 ```
 
 
@@ -147,7 +147,7 @@ What did we change ?
 Let's try again !
 
 ```bash
-./crowdsec -c ./dev.yaml -file ./x.log -type syslog
+./crowdsec -c ./dev.yaml -dsn file://x.log -type syslog
 ```
 
 <details>
@@ -213,7 +213,7 @@ What did we changed :
 Let's see what it changes :
 
 ```bash
-./crowdsec -c ./dev.yaml -file ./x.log -type syslog
+./crowdsec -c ./dev.yaml -dsn file://x.log -type syslog
 ```
 
 <details>
@@ -253,7 +253,7 @@ May 12 12:09:00 sd-126005 kernel: ...
 We have around 80k lines averaging about 24h of logs, let's try !
 
 ```bash
-./crowdsec -c ./dev.yaml -file ./kern.log -type syslog 
+./crowdsec -c ./dev.yaml -dsn file://kern.log -type syslog 
 ```
 
 <details>
