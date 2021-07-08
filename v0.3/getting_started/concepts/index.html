@@ -1337,10 +1337,10 @@
                 
                   <h1>Concepts & Glossary</h1>
                 
-                <p>{{v0X.crowdsec.Name}}'s main goal is to crunch logs to detect things (duh).
+                <p>Crowdsec's main goal is to crunch logs to detect things (duh).
 You will find below an introduction to the concepts that are frequently used within the documentation.</p>
 <h2 id="acquisition">Acquisition<a class="headerlink" href="#acquisition" title="Permanent link">&para;</a></h2>
-<p><a href="/Crowdsec/v0/guide/crowdsec/acquisition/">Acquistion configuration</a> defines which streams of information {{v0X.crowdsec.name}} is going to process.</p>
+<p><a href="/Crowdsec/v0/guide/crowdsec/acquisition/">Acquistion configuration</a> defines which streams of information Crowdsec is going to process.</p>
 <p>At the time of writing, it's mostly files, but it should be more or less any kind of stream, such as a kafka topic or a cloudtrail.</p>
 <p>Acquisition configuration always contains a stream (ie. a file to tail) and a tag (ie. "these are in syslog format" "these are non-syslog nginx logs").</p>
 <p>File acquisition configuration is defined as :</p>
@@ -1361,9 +1361,9 @@ You will find below an introduction to the concepts that are frequently used wit
 <h2 id="parsers-reference">Parsers [<a href="/Crowdsec/v0/references/parsers/">reference</a>]<a class="headerlink" href="#parsers-reference" title="Permanent link">&para;</a></h2>
 <p>For logs to be able to be exploited and analyzed, they need to be parsed and normalized, and this is where parsers are used.</p>
 <p>A parser is a YAML configuration file that describes how a string is being parsed. Said string can be a log line, or a field extracted from a previous parser. While a lot of parsers rely on the <strong>GROK</strong> approach (a.k.a regular expression named capture groups), parsers can as well reference enrichment modules to allow specific data processing.</p>
-<p>A parser usually has a specific scope. For example, if you are using <a href="https://nginx.org">nginx</a>, you will probably want to use the <code>crowdsecurity/nginx-logs</code> which allows your {{v0X.crowdsec.name}} setup to parse nginx's access and error logs.</p>
+<p>A parser usually has a specific scope. For example, if you are using <a href="https://nginx.org">nginx</a>, you will probably want to use the <code>crowdsecurity/nginx-logs</code> which allows your Crowdsec setup to parse nginx's access and error logs.</p>
 <p>Parsers are organized into stages to allow pipelines and branching in parsing.</p>
-<p>See the <a href="{{v0X.hub.url}}">{{v0X.hub.name}}</a> to explore parsers, or see below some examples :</p>
+<p>See the <a href="https://hub.crowdsec.net/">Crowdsec Hub</a> to explore parsers, or see below some examples :</p>
 <ul>
 <li><a href="https://github.com/crowdsecurity/hub/blob/master/parsers/s01-parse/crowdsecurity/apache2-logs.yaml">apache2 access/error log parser</a></li>
 <li><a href="https://github.com/crowdsecurity/hub/blob/master/parsers/s01-parse/crowdsecurity/iptables-logs.yaml">iptables logs parser</a></li>
@@ -1385,11 +1385,11 @@ You will find below an introduction to the concepts that are frequently used wit
 <li><code>s02-enrich</code> : will be parsed by <code>crowdsecurity/geoip-enrich</code> and <code>crowdsecurity/dateparse-enrich</code></li>
 </ul>
 <h2 id="enrichers">Enrichers<a class="headerlink" href="#enrichers" title="Permanent link">&para;</a></h2>
-<p>Enrichment is the action of adding extra context to an event based on the information we already have, so that better decision can later be taken. In most cases, you should be able to find the relevant enrichers on our {{v0X.hub.htmlname}}.</p>
+<p>Enrichment is the action of adding extra context to an event based on the information we already have, so that better decision can later be taken. In most cases, you should be able to find the relevant enrichers on our <a href="https://hub.crowdsec.net/">Crowdsec Hub</a>.</p>
 <p>A common/simple type of enrichment would be <a href="https://github.com/crowdsecurity/hub/blob/master/parsers/s02-enrich/crowdsecurity/geoip-enrich.yaml">geoip-enrich</a> of an event (adding information such as : origin country, origin AS and origin IP range to an event).</p>
-<p>Once again, you should be able to find the ones you're looking for on the {{v0X.hub.htmlname}} !</p>
+<p>Once again, you should be able to find the ones you're looking for on the <a href="https://hub.crowdsec.net/">Crowdsec Hub</a> !</p>
 <h2 id="scenarios-reference">Scenarios [<a href="/Crowdsec/v0/references/scenarios/">reference</a>]<a class="headerlink" href="#scenarios-reference" title="Permanent link">&para;</a></h2>
-<p>Scenarios is the expression of a heuristic that allows you to qualify a specific event (usually an attack).It is a YAML file that describes a set of events characterizing a scenario. Scenarios in {{v0X.crowdsec.name}} gravitate around the <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a> principle.</p>
+<p>Scenarios is the expression of a heuristic that allows you to qualify a specific event (usually an attack).It is a YAML file that describes a set of events characterizing a scenario. Scenarios in Crowdsec gravitate around the <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a> principle.</p>
 <p>A scenario description includes at least :</p>
 <ul>
 <li>Event eligibility rules. (For example if we're writing a ssh bruteforce detection we only focus on logs of type <code>ssh_failed_auth</code>)</li>
@@ -1397,7 +1397,7 @@ You will find below an introduction to the concepts that are frequently used wit
 <li>Aggregation rules : per source ip or per other criterias (in our ssh bruteforce example, we will group per source ip)</li>
 </ul>
 <p>The description allows for many other rules to be specified (blackhole, distinct filters etc.), to allow rather complex scenarios.</p>
-<p>See the <a href="{{v0X.hub.url}}">{{v0X.hub.name}}</a> to explore scenarios and their capabilities, or see below some examples :</p>
+<p>See the <a href="https://hub.crowdsec.net/">Crowdsec Hub</a> to explore scenarios and their capabilities, or see below some examples :</p>
 <ul>
 <li><a href="https://github.com/crowdsecurity/hub/blob/master/scenarios/crowdsecurity/ssh-bf.yaml">ssh bruteforce detection</a></li>
 <li><a href="https://github.com/crowdsecurity/hub/blob/master/scenarios/crowdsecurity/http-scan-uniques_404.yaml">distinct http-404 scan</a></li>
@@ -1407,9 +1407,9 @@ You will find below an introduction to the concepts that are frequently used wit
 <h2 id="collections">Collections<a class="headerlink" href="#collections" title="Permanent link">&para;</a></h2>
 <p>To make user's life easier, "collections" are available, which are just a bundle of parsers and scenarios.
 In this way, if you want to cover basic use-cases of let's say "nginx", you can just install the <code>crowdsecurity/nginx</code> collection that is composed of <code>crowdsecurity/nginx-logs</code> parser, as well as generic http scenarios such as <code>crowdsecurity/base-http-scenarios</code>.</p>
-<p>As usual, those can be found on the {{v0X.hub.htmlname}} !</p>
+<p>As usual, those can be found on the <a href="https://hub.crowdsec.net/">Crowdsec Hub</a> !</p>
 <h2 id="event">Event<a class="headerlink" href="#event" title="Permanent link">&para;</a></h2>
-<p>The objects that are processed within {{v0X.crowdsec.name}} are named "Events".
+<p>The objects that are processed within Crowdsec are named "Events".
 An Event can be a log line, or an overflow result. This object layout evolves around a few important items :</p>
 <ul>
 <li><code>Parsed</code> is an associative array that will be used during parsing to store temporary variables or processing results.</li>

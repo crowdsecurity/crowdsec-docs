@@ -1150,8 +1150,8 @@
                 
                   <h1>Enrichers</h1>
                 
-                <p>Enrichers are basically {{v0X.parsers.htmlname}} that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the <code>s02-enrich</code> {{v0X.stage.htmlname}} (after most of the parsing happened).</p>
-<p>Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the <code>Enriched</code> map of the {{v0X.event.htmlname}}.</p>
+                <p>Enrichers are basically <a href="/Crowdsec/v0/getting_started/concepts/#parsers">parsers</a> that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the <code>s02-enrich</code> <a href="/Crowdsec/v0/getting_started/concepts/#stages">stage</a> (after most of the parsing happened).</p>
+<p>Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the <code>Enriched</code> map of the <a href="/Crowdsec/v0/getting_started/concepts/#event">event</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>At the time of writing, enrichers plugin mechanism implementation is still ongoing (read: the list of available enrichment methods is currently hardcoded).</p>
@@ -1160,10 +1160,10 @@
 <p>It relies on <a href="https://www.maxmind.com">the geolite2 data created by maxmind</a> and the <a href="https://github.com/oschwald/geoip2-golang">geoip2 golang module</a> to provide the actual data.</p>
 <p>It exposes three methods : <code>GeoIpCity</code> <code>GeoIpASN</code> and <code>IpToRange</code> that are used by the <code>crowdsecurity/geoip-enrich</code>.
 Enrichers can be installed as any other parsers with the following command:</p>
-<div class="codehilite"><pre><span></span><code>{{v0X.cli.bin}} install parser crowdsecurity/geoip-enrich
+<div class="codehilite"><pre><span></span><code> install parser crowdsecurity/geoip-enrich
 </code></pre></div>
 
-<p>Take a tour at the {{v0X.hub.htmlname}} to find them !</p>
+<p>Take a tour at the <a href="https://hub.crowdsec.net/">Crowdsec Hub</a> to find them !</p>
                 
               
               

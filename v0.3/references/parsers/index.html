@@ -1448,16 +1448,16 @@
                   <h1>Parsers format</h1>
                 
                 <h2 id="understanding-parsers">Understanding parsers<a class="headerlink" href="#understanding-parsers" title="Permanent link">&para;</a></h2>
-<p>A parser is a YAML configuration file that describes how a string is being parsed. Said string can be a log line, or a field extracted from a previous parser. While a lot of parsers rely on the <strong>GROK</strong> approach (a.k.a regular expression named capture groups), parsers can as well reference enrichment modules to allow specific data processing, or use specific {{v0X.expr.htmlname}} feature to perform parsing on specific data, such as JSON.</p>
+<p>A parser is a YAML configuration file that describes how a string is being parsed. Said string can be a log line, or a field extracted from a previous parser. While a lot of parsers rely on the <strong>GROK</strong> approach (a.k.a regular expression named capture groups), parsers can as well reference enrichment modules to allow specific data processing, or use specific <a href="/Crowdsec/v0/write_configurations/expressions/">expr</a> feature to perform parsing on specific data, such as JSON.</p>
 <p>Parsers are organized into stages to allow pipelines and branching in parsing.</p>
-<p>See the <a href="{{v0X.hub.url}}">{{v0X.hub.name}}</a> to explore parsers, or see below some examples :</p>
+<p>See the <a href="https://hub.crowdsec.net/">Crowdsec Hub</a> to explore parsers, or see below some examples :</p>
 <ul>
 <li><a href="https://github.com/crowdsecurity/hub/blob/master/parsers/s01-parse/crowdsecurity/apache2-logs.yaml">apache2 access/error log parser</a></li>
 <li><a href="https://github.com/crowdsecurity/hub/blob/master/parsers/s01-parse/crowdsecurity/iptables-logs.yaml">iptables logs parser</a></li>
 <li><a href="https://github.com/crowdsecurity/hub/blob/master/parsers/s02-enrich/crowdsecurity/http-logs.yaml">http logs post-processing</a></li>
 </ul>
 <h2 id="stages">Stages<a class="headerlink" href="#stages" title="Permanent link">&para;</a></h2>
-<p>Stages concept is central to data parsing in {{v0X.crowdsec.name}}, as it allows to have various "steps" of parsing. All parsers belong to a given stage. While users can add or modify the stages order, the following stages exist :</p>
+<p>Stages concept is central to data parsing in Crowdsec, as it allows to have various "steps" of parsing. All parsers belong to a given stage. While users can add or modify the stages order, the following stages exist :</p>
 <ul>
 <li><code>s00-raw</code> : low level parser, such as syslog</li>
 <li><code>s01-parse</code> :  most of the services parsers (ssh, nginx etc.)</li>
@@ -1503,8 +1503,8 @@
     <span class="nt">expression</span><span class="p">:</span> <span class="s">&quot;evt.Parsed.src_ip&quot;</span>
 </code></pre></div>
 
-<p>The parser nodes are processed sequentially based on the alphabetical order of {{v0X.stage.htmlname}} and subsequent files.
-If the node is considered successful (grok is present and returned data or no grok is present) and "onsuccess" equals to <code>next_stage</code>, then the {{v0X.event.name}} is moved to the next stage.</p>
+<p>The parser nodes are processed sequentially based on the alphabetical order of <a href="/Crowdsec/v0/getting_started/concepts/#stages">stage</a> and subsequent files.
+If the node is considered successful (grok is present and returned data or no grok is present) and "onsuccess" equals to <code>next_stage</code>, then the event is moved to the next stage.</p>
 <h2 id="parser-trees">Parser trees<a class="headerlink" href="#parser-trees" title="Permanent link">&para;</a></h2>
 <p>A parser node can contain sub-nodes, to provide proper branching (on top of stages).
 It can be useful when you want to apply different parsing based on different criterias, or when you have a set of candidates parsers that you want to apply to an event :</p>
@@ -1628,7 +1628,7 @@ DEBU[31-07-2020 16:36:28]        evt.Parsed.program = &#39;nginx&#39;           
 <div class="codehilite"><pre><span></span><code><span class="nt">filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">expression</span>
 </code></pre></div>
 
-<p><code>filter</code> must be a valid {{v0X.expr.htmlname}} expression that will be evaluated against the {{v0X.event.htmlname}}.</p>
+<p><code>filter</code> must be a valid <a href="/Crowdsec/v0/write_configurations/expressions/">expr</a> expression that will be evaluated against the <a href="/Crowdsec/v0/getting_started/concepts/#event">event</a>.</p>
 <p>If <code>filter</code> evaluation returns true or is absent, node will be processed.</p>
 <p>If <code>filter</code> returns <code>false</code> or a non-boolean, node won't be processed.</p>
 <p>Here is the <a href="https://github.com/antonmedv/expr/tree/master/docs">expr documentation</a>.</p>
@@ -1648,10 +1648,10 @@ DEBU[31-07-2020 16:36:28]        evt.Parsed.program = &#39;nginx&#39;           
   <span class="nt">apply_on</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">source_field</span>
 </code></pre></div>
 
-<p>The <code>grok</code> structure in a node represent a regular expression with capture group (grok pattern) that must be applied on a field of {{v0X.event.name}}.</p>
+<p>The <code>grok</code> structure in a node represent a regular expression with capture group (grok pattern) that must be applied on a field of event.</p>
 <p>The pattern can : </p>
 <ul>
-<li>be imported by name (if present within the core of {{v0X.crowdsec.name}})</li>
+<li>be imported by name (if present within the core of Crowdsec)</li>
 <li>defined in place</li>
 </ul>
 <p>In both case, the pattern must be a valid RE2 expression.
@@ -1675,7 +1675,7 @@ Each subnode must be valid, and if any of the subnodes succeed, the whole node i
 </code></pre></div>
 
 <p><em>default: continue</em></p>
-<p>if set to <code>next_stage</code> and the node is considered successful, the {{v0X.event.name}} will be moved directly to next stage without processing other nodes in the current stage.</p>
+<p>if set to <code>next_stage</code> and the node is considered successful, the event will be moved directly to next stage without processing other nodes in the current stage.</p>
 <h3 id="pattern_syntax">pattern_syntax<a class="headerlink" href="#pattern_syntax" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><code><span class="nt">pattern_syntax</span><span class="p">:</span>
   <span class="nt">CAPTURE_NAME</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">VALID_RE2_EXPRESSION</span>
@@ -1703,7 +1703,7 @@ Regexp must be a valid RE2 expression.</p>
 <p><code>statics</code> is a list of directives that will be executed when the node is considered successful.
 Each entry of the list is composed of a target (where to write) and a source (what data to write).</p>
 <p><strong>Target</strong></p>
-<p>The target aims at being any part of the {{v0X.event.htmlname}} object, and can be expressed in different ways :</p>
+<p>The target aims at being any part of the <a href="/Crowdsec/v0/getting_started/concepts/#event">event</a> object, and can be expressed in different ways :</p>
 <div class="codehilite"><pre><span></span><code>- `meta: &lt;target_field&gt;`
 - `parsed: &lt;target_field&gt;`
 - `enriched: &lt;target_field&gt;`
@@ -1714,7 +1714,7 @@ Each entry of the list is composed of a target (where to write) and a source (wh
 </code></pre></div>
 
 <p><strong>Source</strong></p>
-<p>The source itself can be either a static value, or an {{v0X.expr.htmlname}} result :</p>
+<p>The source itself can be either a static value, or an <a href="/Crowdsec/v0/write_configurations/expressions/">expr</a> result :</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">statics</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="nt">meta</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">target_field</span>
     <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">static_value</span>
@@ -1732,7 +1732,7 @@ Each entry of the list is composed of a target (where to write) and a source (wh
 </code></pre></div>
 
 <p><code>data</code> allows user to specify an external source of data.
-This section is only relevant when <code>cscli</code> is used to install parser from hub, as it will download the <code>source_url</code> and store it to <code>dest_file</code>. When the parser is not installed from the hub, {{v0X.crowdsec.name}} won't download the URL, but the file must exist for the parser to be loaded correctly.</p>
+This section is only relevant when <code>cscli</code> is used to install parser from hub, as it will download the <code>source_url</code> and store it to <code>dest_file</code>. When the parser is not installed from the hub, Crowdsec won't download the URL, but the file must exist for the parser to be loaded correctly.</p>
 <p>The <code>type</code> is mandatory if you want to evaluate the data in the file, and should be <code>regex</code> for valid (re2) regular expression per line or <code>string</code> for string per line.
 The regexps will be compiled, the strings will be loaded into a list and both will be kept in memory.
 Without specifying a <code>type</code>, the file will be downloaded and stored as file and not in memory.</p>

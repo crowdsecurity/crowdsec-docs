@@ -1257,10 +1257,10 @@
                 
                 <div class="admonition info">
 <p class="admonition-title">Info</p>
-<p>Please see your local <code>{{v0X.cli.bin}} help ban</code> for up-to-date documentation.</p>
+<p>Please see your local <code>help ban</code> for up-to-date documentation.</p>
 </div>
 <h2 id="list-bans">List bans<a class="headerlink" href="#list-bans" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban list
+<div class="codehilite"><pre><span></span><code> ban list
 </code></pre></div>
 
 <details>
@@ -1285,8 +1285,8 @@ And <span class="m">64</span> records from API, <span class="m">32</span> distin
 
 <ul>
 <li><code>SOURCE</code> is the source of the decision :<ul>
-<li>"local" : the decision has been taken by {{v0X.crowdsec.name}}</li>
-<li>"cli" : the decision has been made with {{v0X.cli.name}} (ie. <code>{{v0X.cli.name}} ban ip 1.2.3.4 24h "because"</code>)</li>
+<li>"local" : the decision has been taken by Crowdsec</li>
+<li>"cli" : the decision has been made with cscli (ie. <code>cscli ban ip 1.2.3.4 24h "because"</code>)</li>
 <li>"api" : the decision has been pushed to you by the API (because there is a consensus about this ip)</li>
 </ul>
 </li>
@@ -1301,33 +1301,33 @@ And <span class="m">64</span> records from API, <span class="m">32</span> distin
 <blockquote>
 <p>delete the ban on IP <code>1.2.3.4</code></p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban del ip <span class="m">1</span>.2.3.4
+<div class="codehilite"><pre><span></span><code> ban del ip <span class="m">1</span>.2.3.4
 </code></pre></div>
 
 <blockquote>
 <p>delete the ban on range 1.2.3.0/24</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban del range <span class="m">1</span>.2.3.0/24
+<div class="codehilite"><pre><span></span><code> ban del range <span class="m">1</span>.2.3.0/24
 </code></pre></div>
 
 <h2 id="add-a-ban-manually">Add a ban manually<a class="headerlink" href="#add-a-ban-manually" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>Add a ban on IP  <code>1.2.3.4</code> for 24 hours, with reason 'web bruteforce'</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban add ip <span class="m">1</span>.2.3.4 24h <span class="s2">&quot;web bruteforce&quot;</span>
+<div class="codehilite"><pre><span></span><code> ban add ip <span class="m">1</span>.2.3.4 24h <span class="s2">&quot;web bruteforce&quot;</span>
 </code></pre></div>
 
 <blockquote>
 <p>Add a ban on range  <code>1.2.3.0/24</code> for 24 hours, with reason 'web bruteforce'</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban add range <span class="m">1</span>.2.3.0/24 <span class="s2">&quot;web bruteforce&quot;</span>
+<div class="codehilite"><pre><span></span><code> ban add range <span class="m">1</span>.2.3.0/24 <span class="s2">&quot;web bruteforce&quot;</span>
 </code></pre></div>
 
 <h2 id="flush-all-existing-bans">Flush all existing bans<a class="headerlink" href="#flush-all-existing-bans" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>Flush all the existing bans</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban flush
+<div class="codehilite"><pre><span></span><code> ban flush
 </code></pre></div>
 
 <div class="admonition warning">

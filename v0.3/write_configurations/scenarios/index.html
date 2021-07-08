@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#writing-v0xcrowdsecname-scenarios" class="md-skip">
+        <a href="#writing-crowdsec-scenarios" class="md-skip">
           Skip to content
         </a>
       
@@ -1287,7 +1287,7 @@
                   </a>
                 
                 
-                <h1 id="writing-v0xcrowdsecname-scenarios">Writing {{v0X.crowdsec.Name}} scenarios<a class="headerlink" href="#writing-v0xcrowdsecname-scenarios" title="Permanent link">&para;</a></h1>
+                <h1 id="writing-crowdsec-scenarios">Writing Crowdsec scenarios<a class="headerlink" href="#writing-crowdsec-scenarios" title="Permanent link">&para;</a></h1>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
 <p>Please ensure that you have working env or setup test environment before writing your scenario.</p>
@@ -1314,7 +1314,7 @@
 </code></pre></div>
 
 <ul>
-<li>a {{v0X.filter.htmlname}} : if the expression is <code>true</code>, the event will enter the scenario, otherwise, it won't</li>
+<li>a <a href="/Crowdsec/v0/references/parsers/#filter">filter</a> : if the expression is <code>true</code>, the event will enter the scenario, otherwise, it won't</li>
 <li>a name &amp; a description</li>
 <li>a capacity for our <a href="https://en.wikipedia.org/wiki/Leaky_bucket">Leaky Bucket</a></li>
 <li>a leak speed for our  <a href="https://en.wikipedia.org/wiki/Leaky_bucket">Leaky Bucket</a></li>
@@ -1371,16 +1371,16 @@ DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10
 <li>
 <p>The first event (parsed line) is processed :</p>
 <ul>
-<li>The <code>filter</code> returned true (<code>evt.Meta.log_type == 'iptables_drop'</code>) so the {{v0X.event.htmlname}} will be processed by our bucket</li>
-<li>The bucket is instantiated in {{v0X.timeMachine.htmlname}} mode, and its creation date is set to the timestamp from the first log</li>
-<li>The {{v0X.event.htmlname}} is poured in the actual bucket</li>
+<li>The <code>filter</code> returned true (<code>evt.Meta.log_type == 'iptables_drop'</code>) so the <a href="/Crowdsec/v0/getting_started/concepts/#event">event</a> will be processed by our bucket</li>
+<li>The bucket is instantiated in <a href="/Crowdsec/v0/getting_started/concepts/#timemachine">timeMachine</a> mode, and its creation date is set to the timestamp from the first log</li>
+<li>The <a href="/Crowdsec/v0/getting_started/concepts/#event">event</a> is poured in the actual bucket</li>
 </ul>
 </li>
 <li>
 <p>The second event is processed</p>
 <ul>
 <li>The <code>filter</code> is still true, and the event is poured</li>
-<li>As our bucket's capacity is <code>1</code>, pouring this second overflow leads to an {{v0X.overflow.htmlname}}</li>
+<li>As our bucket's capacity is <code>1</code>, pouring this second overflow leads to an <a href="/Crowdsec/v0/getting_started/concepts/#overflow-or-signaloccurence">overflow</a></li>
 <li>Because we set a blackhole directive of <code>1 minute</code>, we remember to prevent this bucket to overflowing again for the next minute</li>
 </ul>
 </li>
@@ -1549,14 +1549,14 @@ WARN<span class="o">[</span><span class="m">12</span>-05-2020 <span class="m">11
   <span class="nt">scope</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ip</span>
 </code></pre></div>
 
-<p>Adding <code>remediation: true</code> into the labels tells {{v0X.crowdsec.name}} that we should write a ban for the IP when the scenario is triggered ! </p>
+<p>Adding <code>remediation: true</code> into the labels tells Crowdsec that we should write a ban for the IP when the scenario is triggered ! </p>
 <p>Let's try :</p>
 <ul>
 <li>I copied the yaml file to a production system (<code>/etc/crowdsec/crowdsec/scenarios/mytest.yaml</code>)</li>
-<li>I restart {{v0X.crowdsec.name}} (<code>systemctl reload crowdsec</code>)</li>
+<li>I restart Crowdsec (<code>systemctl reload crowdsec</code>)</li>
 </ul>
 <p>Let's check if it seems correctly enabled :</p>
-<div class="codehilite"><pre><span></span><code>$ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> list
+<div class="codehilite"><pre><span></span><code>$  list
 ...
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> SCENARIOS:                                   
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -1567,7 +1567,7 @@ INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> 
 ...
 </code></pre></div>
 
-<p>Let's launch (from an external machine, as {{v0X.crowdsec.name}} ignores events from private IPs by default) a real port-scan with a good old <code>nmap</code> :</p>
+<p>Let's launch (from an external machine, as Crowdsec ignores events from private IPs by default) a real port-scan with a good old <code>nmap</code> :</p>
 <div class="codehilite"><pre><span></span><code>sudo nmap -sS xx.xx.xx.xx
 </code></pre></div>
 
@@ -1577,7 +1577,7 @@ INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> 
 <span class="nv">time</span><span class="o">=</span><span class="s2">&quot;12-05-2020 12:31:43&quot;</span> <span class="nv">level</span><span class="o">=</span>warning <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;xx.xx.16.6 triggered a 4h0m0s ip ban remediation for [me/my-cool-scenario]&quot;</span> <span class="nv">bucket_id</span><span class="o">=</span>wispy-breeze <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-05-12 12:31:43.953498645 +0200 CEST m=+64.533521568&quot;</span> <span class="nv">scenario</span><span class="o">=</span>me/my-cool-scenario <span class="nv">source_ip</span><span class="o">=</span>xx.xx.16.6
 ...
 ^C
-$ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span>  ban list
+$   ban list
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> backend plugin <span class="s1">&#39;database&#39;</span> loaded               
 <span class="m">8</span> <span class="nb">local</span> decisions:
 +--------+-----------------+----------------------+------+--------+---------+--------------------------+--------+------------+

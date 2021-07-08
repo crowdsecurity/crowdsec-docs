@@ -1218,9 +1218,9 @@
                 
                 
                 <h1 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h1>
-<p>The output mechanism is composed of plugins. In order to store the bans for {{v0X.bouncers.htmlname}}, at least one backend plugin must be loaded. Else, bans will not be stored and decisions cannot be applied. </p>
+<p>The output mechanism is composed of plugins. In order to store the bans for <a href="/Crowdsec/v0/bouncers/">bouncers</a>, at least one backend plugin must be loaded. Else, bans will not be stored and decisions cannot be applied. </p>
 <p>Currently the supported backends are SQLite (default) and MySQL.</p>
-<p>In order to filter which signals will be sent to which plugin, {{v0X.crowdsec.name}} use a system of <code>profile</code> that can allow to granularly process your bans and signals.</p>
+<p>In order to filter which signals will be sent to which plugin, Crowdsec use a system of <code>profile</code> that can allow to granularly process your bans and signals.</p>
 <h2 id="profile">Profile<a class="headerlink" href="#profile" title="Permanent link">&para;</a></h2>
 <p>Here is a sample of a profile configuration:</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">profile</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;profile_name&gt;</span>
@@ -1232,7 +1232,7 @@
     <span class="p p-Indicator">-</span> <span class="nt">plugin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">plugin2</span>
 </code></pre></div>
 
-<p>The default configuration that is deployed with {{v0X.crowdsec.name}} is the following one:</p>
+<p>The default configuration that is deployed with Crowdsec is the following one:</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">profile</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default_remediation</span>
 <span class="nt">filter</span><span class="p">:</span> <span class="s">&quot;sig.Labels.remediation</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;true&#39;&quot;</span>
 <span class="nt">api</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span> <span class="c1"># If no api: specified, will use the default config in default.yaml</span>
@@ -1253,9 +1253,9 @@
     <span class="nt">store</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 
-<p>Here we can use {{v0X.filter.htmlname}} like in parsers and scenarios with the {{v0X.signal.htmlname}} object to choose which signal will be process by which plugin.</p>
+<p>Here we can use <a href="/Crowdsec/v0/references/parsers/#filter">filter</a> like in parsers and scenarios with the <a href="/Crowdsec/v0/getting_started/concepts/#overflow-or-signaloccurence">signal</a> object to choose which signal will be process by which plugin.</p>
 <h1 id="backend-database-configuration">Backend database configuration<a class="headerlink" href="#backend-database-configuration" title="Permanent link">&para;</a></h1>
-<p>The <code>/etc/crowdsec/plugins/backend/database.yaml</code> file allows you to configure to which backend database you'd like to write. {{v0X.crowdsec.Name}} support SQLite and MySQL via <a href="https://gorm.io/docs/">gorm</a>.</p>
+<p>The <code>/etc/crowdsec/plugins/backend/database.yaml</code> file allows you to configure to which backend database you'd like to write. Crowdsec support SQLite and MySQL via <a href="https://gorm.io/docs/">gorm</a>.</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">database</span>
 <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/local/lib/crowdsec/plugins/backend/database.so</span>
 <span class="nt">config</span><span class="p">:</span>
@@ -1314,12 +1314,12 @@ SET GLOBAL <span class="nv">sql_mode</span><span class="o">=(</span>SELECT REPLA
 </code></pre></div>
 
 <h1 id="plugins">Plugins<a class="headerlink" href="#plugins" title="Permanent link">&para;</a></h1>
-<p>Plugins configuration file are stored in <code>{{v0X.plugins.configpath}}</code>. {{v0X.crowdsec.Name}} will scan this folder to load all the plugins. Each configuration file should provide the path to the plugin binary. By default they are stored in <code>{{v0X.plugins.binpath}}</code>.</p>
+<p>Plugins configuration file are stored in <code>/etc/crowdsec/plugins/backend/</code>. Crowdsec will scan this folder to load all the plugins. Each configuration file should provide the path to the plugin binary. By default they are stored in <code>/usr/local/lib/crowdsec/plugins/</code>.</p>
 <div class="admonition info">
-<p class="admonition-title">Info<p>If you want crowdsec to not load a plugin, <code>mv</code> or <code>rm</code> its configuration file in <code>{{v0X.plugins.configpath}}</code></p>
+<p class="admonition-title">Info<p>If you want crowdsec to not load a plugin, <code>mv</code> or <code>rm</code> its configuration file in <code>/etc/crowdsec/plugins/backend/</code></p>
 </p>
 </div>
-<p>Here is a sample of a plugin configuration file stored in <code>{{v0X.plugins.configpath}}</code>:</p>
+<p>Here is a sample of a plugin configuration file stored in <code>/etc/crowdsec/plugins/backend/</code>:</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;plugin_name&gt;</span>
 <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_plugin_binary&gt;</span> <span class="c1"># </span>
 <span class="nt">config</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;plugin_config&gt;</span> <span class="c1"># in a form of key(string)/value(string)</span>

@@ -1280,9 +1280,9 @@ WARN<span class="o">[</span><span class="m">05</span>-08-2020 <span class="m">16
 <li><code>-type</code> must respect expected log type (ie. <code>nginx</code> <code>syslog</code> etc.)</li>
 <li><code>-file</code> must point to a flat file or a gzip file</li>
 </ul>
-<p>When processing logs like this, {{v0X.crowdsec.name}} runs in "time machine" mode, and relies on the timestamps <em>in</em> the logs to evaluate scenarios. You will most likely need the <code>crowdsecurity/dateparse-enrich</code> parser for this.</p>
+<p>When processing logs like this, Crowdsec runs in "time machine" mode, and relies on the timestamps <em>in</em> the logs to evaluate scenarios. You will most likely need the <code>crowdsecurity/dateparse-enrich</code> parser for this.</p>
 <h2 id="testing-configurations-on-live-system">Testing configurations on live system<a class="headerlink" href="#testing-configurations-on-live-system" title="Permanent link">&para;</a></h2>
-<p>If you're playing around with parser/scenarios on a live system, you can use the <code>-t</code> (lint) option of {{v0X.crowdsec.Name}} to check your configurations validity before restarting/reloading services :</p>
+<p>If you're playing around with parser/scenarios on a live system, you can use the <code>-t</code> (lint) option of Crowdsec to check your configurations validity before restarting/reloading services :</p>
 <div class="codehilite"><pre><span></span><code>$ emacs /etc/crowdsec/config/scenarios/ssh-bf.yaml
 ...
 $ crowdsec -c /etc/crowdsec/config/user.yaml -t        
@@ -1338,7 +1338,7 @@ DEBU<span class="o">[</span><span class="m">05</span>-08-2020 <span class="m">16
 </details>
 
 <h1 id="test-environments">Test environments<a class="headerlink" href="#test-environments" title="Permanent link">&para;</a></h1>
-<p>From a <a href="{{v0X.crowdsec.download_url}}">{{v0X.crowdsec.name}} release archive</a>, you can deploy a test (non-root) environment that is very suitable to write/debug/test parsers and scenarios. Environment is deployed using <code>./test_env.sh</code> script from tgz directory, and creates a test environment in <code>./tests</code> :</p>
+<p>From a <a href="https://github.com/crowdsecurity/crowdsec/releases">Crowdsec release archive</a>, you can deploy a test (non-root) environment that is very suitable to write/debug/test parsers and scenarios. Environment is deployed using <code>./test_env.sh</code> script from tgz directory, and creates a test environment in <code>./tests</code> :</p>
 <div class="codehilite"><pre><span></span><code>$ <span class="nb">cd</span> crowdsec-v0.3.0/
 $ ./test_env.sh 
 ...

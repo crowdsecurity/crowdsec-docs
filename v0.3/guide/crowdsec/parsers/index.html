@@ -1296,20 +1296,20 @@
                   <h1>Parsers</h1>
                 
                 <h2 id="listing-installed-parsers">Listing installed parsers<a class="headerlink" href="#listing-installed-parsers" title="Permanent link">&para;</a></h2>
-<p>{{v0X.parsers.Htmlname}} are yaml files in <code>{{v0X.config.crowdsec_dir}}parsers/&lt;STAGE&gt;/parser.yaml</code>.</p>
+<p><a href="/Crowdsec/v0/getting_started/concepts/#parsers">Parsers</a> are yaml files in <code>/etc/crowdsec/config/parsers/&lt;STAGE&gt;/parser.yaml</code>.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
-<p>Alphabetical file order dictates the order of {{v0X.stage.htmlname}} and the orders of parsers within stage.</p>
+<p>Alphabetical file order dictates the order of <a href="/Crowdsec/v0/getting_started/concepts/#stages">stage</a> and the orders of parsers within stage.</p>
 </div>
 <p>You can use the following command to view installed parsers:</p>
-<div class="codehilite"><pre><span></span><code>{{v0X.cli.bin}} list parsers
+<div class="codehilite"><pre><span></span><code> list parsers
 </code></pre></div>
 
 <details>
-  <summary>{{v0X.cli.name}} list example</summary>
+  <summary>cscli list example</summary>
 
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># {{v0X.cli.name}} list parsers</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># cscli list parsers</span>
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Loaded <span class="m">9</span> collecs, <span class="m">14</span> parsers, <span class="m">12</span> scenarios, <span class="m">1</span> post-overflow parsers 
 --------------------------------------------------------------------------------------------------------------------
  NAME                       📦 STATUS    VERSION  LOCAL PATH                                                        
@@ -1331,8 +1331,8 @@ INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> 
 
 <h2 id="installing-parsers">Installing parsers<a class="headerlink" href="#installing-parsers" title="Permanent link">&para;</a></h2>
 <h3 id="from-the-hub">From the hub<a class="headerlink" href="#from-the-hub" title="Permanent link">&para;</a></h3>
-<p>{{v0X.hub.htmlname}} allows you to find needed parsers.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># {{v0X.cli.name}} install parser crowdsec/nginx-logs</span>
+<p><a href="https://hub.crowdsec.net/">Crowdsec Hub</a> allows you to find needed parsers.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># cscli install parser crowdsec/nginx-logs</span>
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Loaded <span class="m">9</span> collecs, <span class="m">14</span> parsers, <span class="m">12</span> scenarios, <span class="m">1</span> post-overflow parsers 
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> crowdsec/nginx-logs : OK                     
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Enabled parsers : crowdsec/nginx-logs        
@@ -1341,19 +1341,19 @@ INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> 
 </code></pre></div>
 
 <h3 id="your-own-parsers">Your own parsers<a class="headerlink" href="#your-own-parsers" title="Permanent link">&para;</a></h3>
-<p><a href="/Crowdsec/v0/write_configurations/parsers/">Write your parser configuration</a> and deploy yaml file in <code>{{v0X.config.crowdsec_dir}}parsers/&lt;STAGE&gt;/</code>.</p>
+<p><a href="/Crowdsec/v0/write_configurations/parsers/">Write your parser configuration</a> and deploy yaml file in <code>/etc/crowdsec/config/parsers/&lt;STAGE&gt;/</code>.</p>
 <h2 id="monitoring-parsers-behavior">Monitoring parsers behavior<a class="headerlink" href="#monitoring-parsers-behavior" title="Permanent link">&para;</a></h2>
-<p>{{v0X.cli.name}} allows you to view {{v0X.crowdsec.name}} metrics info via the <code>metrics</code> command.
+<p>cscli allows you to view Crowdsec metrics info via the <code>metrics</code> command.
 This allows you to see how many logs were ingested and then parsed or unparsed by said parser.</p>
 <p>You can see those metrics with the following command:</p>
 <div class="codehilite"><pre><span></span><code>cscli metrics
 </code></pre></div>
 
 <details>
-  <summary>{{v0X.cli.name}} metrics example</summary>
+  <summary>cscli metrics example</summary>
 
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># {{v0X.cli.name}} metrics</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># cscli metrics</span>
 ...
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Parser Metrics:                              
 +---------------------------+--------+--------+----------+

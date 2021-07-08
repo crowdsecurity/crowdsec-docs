@@ -1285,18 +1285,18 @@
 Most of the scenarios currently rely on the <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a> concept.
 Scenarios lead to the instantiation, and sometime the overflow, of buckets.</p>
 <p>When a bucket "overflows", the scenario is considered as having been realized.
-This event leads to the creation of a new {{v0X.event.htmlname}} that describes the scenario that just happened (via a {{v0X.signal.htmlname}}).</p>
+This event leads to the creation of a new <a href="/Crowdsec/v0/getting_started/concepts/#event">event</a> that describes the scenario that just happened (via a <a href="/Crowdsec/v0/getting_started/concepts/#overflow-or-signaloccurence">signal</a>).</p>
 <h2 id="listing-installed-scenarios">Listing installed scenarios<a class="headerlink" href="#listing-installed-scenarios" title="Permanent link">&para;</a></h2>
-<p>scenarios are yaml files in <code>{{v0X.config.crowdsec_dir}}scenarios/&lt;scenario&gt;.yaml</code>.</p>
+<p>scenarios are yaml files in <code>/etc/crowdsec/config/scenarios/&lt;scenario&gt;.yaml</code>.</p>
 <p>You can view installed scenarios with the following command:</p>
-<div class="codehilite"><pre><span></span><code>{{v0X.cli.bin}} list scenarios
+<div class="codehilite"><pre><span></span><code> list scenarios
 </code></pre></div>
 
 <details>
-  <summary>{{v0X.cli.name}} list example</summary>
+  <summary>cscli list example</summary>
 
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># {{v0X.cli.name}}  list scenarios</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># cscli  list scenarios</span>
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Loaded <span class="m">9</span> collecs, <span class="m">14</span> parsers, <span class="m">12</span> scenarios, <span class="m">1</span> post-overflow parsers 
 -----------------------------------------------------------------------------------------------------------------------------
  NAME                                📦 STATUS    VERSION  LOCAL PATH                                                        
@@ -1314,8 +1314,8 @@ INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> 
 
 <h2 id="installing-scenarios">Installing scenarios<a class="headerlink" href="#installing-scenarios" title="Permanent link">&para;</a></h2>
 <h3 id="from-the-hub">From the hub<a class="headerlink" href="#from-the-hub" title="Permanent link">&para;</a></h3>
-<p>{{v0X.hub.htmlname}} allows you to find needed scenarios.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># {{v0X.cli.name}} install scenario crowdsec/ssh-bf</span>
+<p><a href="https://hub.crowdsec.net/">Crowdsec Hub</a> allows you to find needed scenarios.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># cscli install scenario crowdsec/ssh-bf</span>
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Loaded <span class="m">9</span> collecs, <span class="m">14</span> parsers, <span class="m">12</span> scenarios, <span class="m">1</span> post-overflow parsers 
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> crowdsec/ssh-bf : OK                     
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Enabled scenarios : crowdsec/ssh-bf        
@@ -1324,19 +1324,19 @@ INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> 
 </code></pre></div>
 
 <h3 id="your-own-scenarios">Your own scenarios<a class="headerlink" href="#your-own-scenarios" title="Permanent link">&para;</a></h3>
-<p><a href="/Crowdsec/v0/write_configurations/scenarios/">Write your scenario configuration</a> and deploy yaml file in <code>{{v0X.config.crowdsec_dir}}scenarios/&lt;scenario.yaml&gt;</code>.</p>
+<p><a href="/Crowdsec/v0/write_configurations/scenarios/">Write your scenario configuration</a> and deploy yaml file in <code>/etc/crowdsec/config/scenarios/&lt;scenario.yaml&gt;</code>.</p>
 <h2 id="monitoring-scenarios-behavior">Monitoring scenarios behavior<a class="headerlink" href="#monitoring-scenarios-behavior" title="Permanent link">&para;</a></h2>
-<p>{{v0X.cli.name}} allows you to view {{v0X.crowdsec.name}} metrics info via the <code>metrics</code> command.
+<p>cscli allows you to view Crowdsec metrics info via the <code>metrics</code> command.
 This allows you to see how many "buckets" associated to each scenario have been created (an event eligible from said scenario has arrived), poured (how many subsequent events have been pushed to said bucket), overflowed (the scenario happened) or underflow (there was not enough event to make the bucket overflow, and it thus expired after a while).</p>
 <p>You can see those metrics with the following command:</p>
-<div class="codehilite"><pre><span></span><code>{{v0X.cli.bin}} metrics
+<div class="codehilite"><pre><span></span><code> metrics
 </code></pre></div>
 
 <details>
-  <summary>{{v0X.cli.name}} metrics example</summary>
+  <summary>cscli metrics example</summary>
 
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># {{v0X.cli.name}} metrics</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># cscli metrics</span>
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Buckets Metrics:                             
 +------------------------------------+-----------+--------------+--------+---------+
 <span class="p">|</span>               BUCKET               <span class="p">|</span> OVERFLOWS <span class="p">|</span> INSTANTIATED <span class="p">|</span> POURED <span class="p">|</span> EXPIRED <span class="p">|</span>

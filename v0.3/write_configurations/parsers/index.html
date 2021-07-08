@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#writing-v0xcrowdsecname-parser" class="md-skip">
+        <a href="#writing-crowdsec-parser" class="md-skip">
           Skip to content
         </a>
       
@@ -1341,11 +1341,11 @@
                   </a>
                 
                 
-                <h1 id="writing-v0xcrowdsecname-parser">Writing {{v0X.crowdsec.Name}} parser<a class="headerlink" href="#writing-v0xcrowdsecname-parser" title="Permanent link">&para;</a></h1>
+                <h1 id="writing-crowdsec-parser">Writing Crowdsec parser<a class="headerlink" href="#writing-crowdsec-parser" title="Permanent link">&para;</a></h1>
 <div class="admonition warning">
 <p class="admonition-title">Parser dependency</p>
 <p>The crowdsecurity/syslog-logs parsers is needed by the core parsing
-engine. Deletion or modification of this could result of {{v0X.crowdsec.name}}
+engine. Deletion or modification of this could result of Crowdsec
 being unable to parse logs, so this should be done very carefully.</p>
 </div>
 <blockquote>
@@ -1370,10 +1370,10 @@ This document aims at detailing the process of writing and testing new parsers.<
 </code></pre></div>
 
 <ul>
-<li>a {{v0X.filter.htmlname}} : if the expression is <code>true</code>, the event will enter the parser, otherwise, it won't</li>
-<li>a {{v0X.onsuccess.htmlname}} : defines what happens when the {{v0X.event.htmlname}} was successfully parsed : shall we continue ? shall we move to next stage ? etc.</li>
+<li>a <a href="/Crowdsec/v0/references/parsers/#filter">filter</a> : if the expression is <code>true</code>, the event will enter the parser, otherwise, it won't</li>
+<li>a <a href="/Crowdsec/v0/references/parsers/#onsuccess">onsuccess</a> : defines what happens when the <a href="/Crowdsec/v0/getting_started/concepts/#event">event</a> was successfully parsed : shall we continue ? shall we move to next stage ? etc.</li>
 <li>a name &amp; a description</li>
-<li>some {{v0X.statics.htmlname}} that will modify the {{v0X.event.htmlname}}</li>
+<li>some <a href="/Crowdsec/v0/references/parsers/#statics">statics</a> that will modify the <a href="/Crowdsec/v0/getting_started/concepts/#event">event</a></li>
 <li>a <code>debug</code> flag that allows to enable local debugging information.</li>
 </ul>
 <p>We are going to use to following sample log as an example :</p>
@@ -1386,7 +1386,7 @@ May <span class="m">11</span> <span class="m">16</span>:23:50 sd-126005 kernel: 
 <p class="admonition-title">Warning</p>
 <p>Your yaml file must be in the <code>config/parsers/s01-parser/</code> directory.</p>
 <p>For example it can be <code>~/crowdsec-v0.0.19/tests/config/parsers/s01-parser/myparser.yaml</code>, or <code>/etc/crowdsec/config/parsers/s01-parser/myparser.yaml</code>.</p>
-<p>The {{v0X.stage.htmlname}} directory might not exist, don't forget to create it.</p>
+<p>The <a href="/Crowdsec/v0/getting_started/concepts/#stages">stage</a> directory might not exist, don't forget to create it.</p>
 </div>
 <p>(deployment is assuming <a href="/Crowdsec/v0/write_configurations/requirements/">you're using a test environment</a>)</p>
 <p>Setting up our new parser :</p>
@@ -1421,11 +1421,11 @@ DEBU<span class="o">[</span><span class="m">0000</span><span class="o">]</span> 
 <p>We can see our "mock" parser is working, let's see what happened :</p>
 <ul>
 <li>The event enter the node</li>
-<li>The <code>filter</code> returned true (<code>1 == 1</code>) so the {{v0X.event.htmlname}} will be processed</li>
+<li>The <code>filter</code> returned true (<code>1 == 1</code>) so the <a href="/Crowdsec/v0/getting_started/concepts/#event">event</a> will be processed</li>
 <li>Our grok pattern (just a <code>.*</code> capture) "worked" and captured data (the whole line actually)</li>
-<li>The grok captures (under the name "some_data") are merged into the <code>.Parsed</code> map of the {{v0X.event.htmlname}}</li>
-<li>The {{v0X.statics.htmlname}} section is processed, and <code>.Parsed[is_my_service]</code> is set to <code>yes</code></li>
-<li>The {{v0X.event.htmlname}} leaves the parser successfully, and because "next_stage" is set, we move the event to the next "stage"</li>
+<li>The grok captures (under the name "some_data") are merged into the <code>.Parsed</code> map of the <a href="/Crowdsec/v0/getting_started/concepts/#event">event</a></li>
+<li>The <a href="/Crowdsec/v0/references/parsers/#statics">statics</a> section is processed, and <code>.Parsed[is_my_service]</code> is set to <code>yes</code></li>
+<li>The <a href="/Crowdsec/v0/getting_started/concepts/#event">event</a> leaves the parser successfully, and because "next_stage" is set, we move the event to the next "stage"</li>
 </ul>
 <h2 id="writing-the-grok-pattern">Writing the GROK pattern<a class="headerlink" href="#writing-the-grok-pattern" title="Permanent link">&para;</a></h2>
 <p>We are going to write a parser for <code>iptables</code> logs, they look like this :</p>
@@ -1520,7 +1520,7 @@ We now have parsed data, only a few more changes and we will be done :)</p>
 </code></pre></div>
 
 <h3 id="filter">filter<a class="headerlink" href="#filter" title="Permanent link">&para;</a></h3>
-<p>We changed the {{v0X.filter.htmlname}} to correctly filter on the program name.
+<p>We changed the <a href="/Crowdsec/v0/references/parsers/#filter">filter</a> to correctly filter on the program name.
 In the current example, our logs are produced by the kernel (netfilter), and thus the program is <code>kernel</code> :</p>
 <div class="codehilite"><pre><span></span><code>tail -f /var/log/kern.log
 May <span class="m">11</span> <span class="m">16</span>:23:50 sd-126005 kernel: <span class="o">[</span><span class="m">47615902</span>.763137<span class="o">]</span> <span class="nv">IN</span><span class="o">=</span>enp1s0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span><span class="m">00</span>:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 <span class="nv">SRC</span><span class="o">=</span><span class="m">44</span>.44.44.44 <span class="nv">DST</span><span class="o">=</span><span class="m">127</span>.0.0.1 <span class="nv">LEN</span><span class="o">=</span><span class="m">60</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">49</span> <span class="nv">ID</span><span class="o">=</span><span class="m">17451</span> DF <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">53668</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">80</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">14600</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> 
@@ -1533,7 +1533,7 @@ May <span class="m">11</span> <span class="m">16</span>:23:50 sd-126005 kernel: 
 <li><code>.Meta.source_ip</code> is set the the source ip captured  <code>.Parsed.src_ip</code></li>
 <li><code>.Meta.service</code> is set the the result of an expression that relies on the GROK output (<code>proto</code> field)</li>
 </ul>
-<p>Look into dedicated {{v0X.statics.htmlname}} documentation to know more about its possibilities.</p>
+<p>Look into dedicated <a href="/Crowdsec/v0/references/parsers/#statics">statics</a> documentation to know more about its possibilities.</p>
 <h3 id="testing-our-finalized-parser">Testing our finalized parser<a class="headerlink" href="#testing-our-finalized-parser" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -file ./x.log -type kernel
 </code></pre></div>
@@ -1567,8 +1567,8 @@ DEBU<span class="o">[</span><span class="m">0000</span><span class="o">]</span> 
 </details>
 
 <h2 id="closing-word">Closing word<a class="headerlink" href="#closing-word" title="Permanent link">&para;</a></h2>
-<p>We have now a fully functional parser for {{v0X.crowdsec.name}} !
-We can either deploy it to our production systems to do stuff, or even better, contribute to the {{v0X.hub.htmlname}} !</p>
+<p>We have now a fully functional parser for Crowdsec !
+We can either deploy it to our production systems to do stuff, or even better, contribute to the <a href="https://hub.crowdsec.net/">Crowdsec Hub</a> !</p>
 <p>If you want to know more about directives and possibilities, take a look at <a href="/Crowdsec/v0/references/parsers/">the parser reference documentation</a> !</p>
                 
               

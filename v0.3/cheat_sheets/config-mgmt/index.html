@@ -1255,7 +1255,7 @@
                 
                   <h1>Configuration Management</h1>
                 
-                <p>{{v0X.cli.bin}} allows you install, list, upgrade and remove configurations : parsers, enrichment, scenarios.</p>
+                <p>allows you install, list, upgrade and remove configurations : parsers, enrichment, scenarios.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>If you're not running the latest CrowdSec version, configurations might not be the latest available. <code>cscli</code> will use the branch of the corresponding CrowdSec version to download and install configurations from the hub (it will use the <code>master</code> branch if you are on the latest CrowdSec version). </p>
@@ -1264,23 +1264,23 @@
 <p><em>Parsers, Scenarios and Enrichers are often bundled together in "collections" to facilitate configuration.</em></p>
 <p>Parsers, scenarios, enrichers and collections all follow the same principle :</p>
 <ul>
-<li><code>{{v0X.cli.bin}} install parser crowdsec/nginx-logs</code></li>
-<li><code>{{v0X.cli.bin}} update collection crowdsec/base-http-scenarios</code></li>
-<li><code>{{v0X.cli.bin}} remove scenario crowdsec/mysql-bf</code></li>
+<li><code>install parser crowdsec/nginx-logs</code></li>
+<li><code>update collection crowdsec/base-http-scenarios</code></li>
+<li><code>remove scenario crowdsec/mysql-bf</code></li>
 </ul>
 <blockquote>
-<p>Please see your local <code>{{v0X.cli.bin}} help</code> for up-to-date documentation</p>
+<p>Please see your local <code>help</code> for up-to-date documentation</p>
 </blockquote>
 <h2 id="list-configurations">List configurations<a class="headerlink" href="#list-configurations" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code>{{v0X.cli.bin}} list
+<div class="codehilite"><pre><span></span><code> list
 </code></pre></div>
 
 <p><strong>note</strong> <code>-a</code> allows for listing of uninstalled configurations as well</p>
 <details>
-  <summary>{{v0X.cli.name}} list example</summary>
+  <summary>cscli list example</summary>
 
 
-<div class="codehilite"><pre><span></span><code>$ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> list
+<div class="codehilite"><pre><span></span><code>$  list
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Loaded <span class="m">9</span> collecs, <span class="m">14</span> parsers, <span class="m">12</span> scenarios, <span class="m">1</span> post-overflow parsers 
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> PARSERS:                                     
 --------------------------------------------------------------------------------------------------------------------
@@ -1318,39 +1318,39 @@ INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> 
 
 </details>
 
-<p>For {{v0X.parsers.htmlname}}, {{v0X.scenarios.htmlname}}, {{v0X.collections.htmlname}} the outputs include, beside the version, the path and the name, a <code>STATUS</code> column :</p>
+<p>For <a href="/Crowdsec/v0/getting_started/concepts/#parsers">parsers</a>, <a href="/Crowdsec/v0/getting_started/concepts/#scenarios">scenarios</a>, <a href="/Crowdsec/v0/getting_started/concepts/#collections">collections</a> the outputs include, beside the version, the path and the name, a <code>STATUS</code> column :</p>
 <ul>
 <li><code>✔️  enabled</code> : configuration is up-to-date</li>
 <li><code>⚠️  enabled,outdated</code> : a newer version is available</li>
-<li><code>🚫  enabled,local</code> : configuration is not managed by {{v0X.cli.name}}</li>
+<li><code>🚫  enabled,local</code> : configuration is not managed by cscli</li>
 <li><code>⚠️  enabled,tainted</code> : configuration has been locally modified</li>
 </ul>
-<p>(see <code>{{v0X.cli.name}} upgrade</code> to upgrade/sync your configurations with {{v0X.hub.htmlname}})</p>
+<p>(see <code>cscli upgrade</code> to upgrade/sync your configurations with <a href="https://hub.crowdsec.net/">Crowdsec Hub</a>)</p>
 <h2 id="install-new-configurations">Install new configurations<a class="headerlink" href="#install-new-configurations" title="Permanent link">&para;</a></h2>
-<p><code>{{v0X.cli.bin}} install parser|scenario|postoverflow &lt;name&gt; [--force]</code></p>
+<p><code>install parser|scenario|postoverflow &lt;name&gt; [--force]</code></p>
 <ul>
-<li><code>{{v0X.cli.bin}} install parser crowdsec/nginx-logs</code></li>
-<li><code>{{v0X.cli.bin}} install scenario crowdsec/http-scan-uniques_404</code></li>
+<li><code>install parser crowdsec/nginx-logs</code></li>
+<li><code>install scenario crowdsec/http-scan-uniques_404</code></li>
 </ul>
 <h2 id="remove-configurations">Remove configurations<a class="headerlink" href="#remove-configurations" title="Permanent link">&para;</a></h2>
-<p><code>{{v0X.cli.bin}} remove parser|scenario|postoverflow &lt;name&gt; [--force]</code></p>
+<p><code>remove parser|scenario|postoverflow &lt;name&gt; [--force]</code></p>
 <h2 id="upgrade-configurations">Upgrade configurations<a class="headerlink" href="#upgrade-configurations" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>upgrade a specific scenario</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code>{{v0X.cli.bin}} upgrade scenario crowdsec/http-scan-uniques_404
+<div class="codehilite"><pre><span></span><code> upgrade scenario crowdsec/http-scan-uniques_404
 </code></pre></div>
 
 <blockquote>
 <p>upgrade <strong>all</strong> scenarios</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code>{{v0X.cli.bin}} upgrade scenario --all
+<div class="codehilite"><pre><span></span><code> upgrade scenario --all
 </code></pre></div>
 
 <blockquote>
 <p>upgrade <strong>all</strong> configurations (parsers, scenarios, collections, postoverflows)</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code>{{v0X.cli.bin}} upgrade --all
+<div class="codehilite"><pre><span></span><code> upgrade --all
 </code></pre></div>
                 
               

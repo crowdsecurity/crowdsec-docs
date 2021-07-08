@@ -1215,17 +1215,17 @@
                 
                 <div class="admonition warning">
 <p class="admonition-title">SQLite &amp; MySQL</p>
-<p>The default database of {{v0X.crowdsec.Name}} is SQLite. While MySQL is supported as well (&gt;= 0.3.0), it is not in the scope of this documentation.</p>
+<p>The default database of Crowdsec is SQLite. While MySQL is supported as well (&gt;= 0.3.0), it is not in the scope of this documentation.</p>
 </div>
-<p>The {{v0X.cli.name}} command <code>{{v0X.cli.bin}} dashboard setup</code> will use <a href="https://docs.docker.com/get-docker/">docker</a> to install <a href="https://hub.docker.com/r/metabase/metabase/">metabase docker image</a> and fetch our metabase template to have a configured and ready dashboard. </p>
+<p>The cscli command <code>dashboard setup</code> will use <a href="https://docs.docker.com/get-docker/">docker</a> to install <a href="https://hub.docker.com/r/metabase/metabase/">metabase docker image</a> and fetch our metabase template to have a configured and ready dashboard. </p>
 <h2 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Permanent link">&para;</a></h2>
 <p>The metabase dashboard can be setup with :</p>
-<div class="codehilite"><pre><span></span><code><span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> dashboard setup
+<div class="codehilite"><pre><span></span><code> dashboard setup
 </code></pre></div>
 
 <p><code>--listen</code> and <code>--port</code> options allow you to control on which address / port will the docker be binded.</p>
 <details>
-  <summary>{{v0X.cli.name}} dashboard setup output</summary>
+  <summary>cscli dashboard setup output</summary>
 
 
 <div class="codehilite"><pre><span></span><code>INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> /var/lib/crowdsec/data/metabase.db exists, skip.  
@@ -1254,11 +1254,11 @@ INFO<span class="o">[</span><span class="m">0034</span><span class="o">]</span> 
 <p>the <code>dashboard setup</code> command will output generated credentials for metabase.
 Don't forget to save those !</p>
 </div>
-<p>Now you can connect to your dashboard, sign-in with your saved credentials then click on {{v0X.crowdsec.Name}} Dashboard to get this:</p>
+<p>Now you can connect to your dashboard, sign-in with your saved credentials then click on Crowdsec Dashboard to get this:</p>
 <p><img alt="Dashboard_view" src="../../assets/images/dashboard_view.png" /></p>
 <p><img alt="Dashboard_view2" src="../../assets/images/dashboard_view2.png" /></p>
-<p>Dashboard docker image can be managed by {{v0X.cli.name}} and docker cli also. Look at the {{v0X.cli.name}} help command using</p>
-<div class="codehilite"><pre><span></span><code><span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> dashboard -h
+<p>Dashboard docker image can be managed by cscli and docker cli also. Look at the cscli help command using</p>
+<div class="codehilite"><pre><span></span><code> dashboard -h
 </code></pre></div>
                 
               

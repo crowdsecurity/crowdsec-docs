@@ -1297,15 +1297,15 @@
                 
                   <h1>Prometheus</h1>
                 
-                <p>{{v0X.crowdsec.name}} can expose a {{v0X.prometheus.htmlname}} endpoint for collection (on <code>http://127.0.0.1:6060/metrics</code> by default).</p>
-<p>The goal of this endpoint, besides the usual resources consumption monitoring, aims at offering a view of {{v0X.crowdsec.name}} "applicative" behavior :</p>
+                <p>Crowdsec can expose a <a href="https://github.com/prometheus/client_golang">prometheus</a> endpoint for collection (on <code>http://127.0.0.1:6060/metrics</code> by default).</p>
+<p>The goal of this endpoint, besides the usual resources consumption monitoring, aims at offering a view of Crowdsec "applicative" behavior :</p>
 <ul>
 <li>is it processing a lot of logs ? is it parsing them successfully ?</li>
 <li>are a lot of scenarios being triggered ?</li>
 <li>are a lot of IPs banned ?</li>
 <li>etc.</li>
 </ul>
-<p>All the counters are "since {{v0X.crowdsec.name}} start".</p>
+<p>All the counters are "since Crowdsec start".</p>
 <h3 id="metrics-details">Metrics details<a class="headerlink" href="#metrics-details" title="Permanent link">&para;</a></h3>
 <h4 id="scenarios">Scenarios<a class="headerlink" href="#scenarios" title="Permanent link">&para;</a></h4>
 <ul>
@@ -1377,7 +1377,7 @@ cs_node_hits_ko_total{name=&quot;crowdsecurity/http-logs&quot;,source=&quot;/var
 </ul>
 <h4 id="info">Info<a class="headerlink" href="#info" title="Permanent link">&para;</a></h4>
 <ul>
-<li><code>cs_info</code> : Information about {{v0X.crowdsec.name}} (software version)</li>
+<li><code>cs_info</code> : Information about Crowdsec (software version)</li>
 </ul>
 <h3 id="exploitation-with-prometheus-server-grafana">Exploitation with prometheus server &amp; grafana<a class="headerlink" href="#exploitation-with-prometheus-server-grafana" title="Permanent link">&para;</a></h3>
 <p>Those metrics can be scaped by <a href="https://prometheus.io/docs/introduction/overview/#architecture">prometheus server</a> and visualized with <a href="https://grafana.com/">grafana</a>. They <a href="https://github.com/crowdsecurity/grafana-dashboards">can be downloaded here</a> :</p>

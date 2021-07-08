@@ -1299,7 +1299,7 @@
                 
                 <h2 id="foreword">Foreword<a class="headerlink" href="#foreword" title="Permanent link">&para;</a></h2>
 <p>Output plugins handle Signal Occurences resulting from bucket overflows.
-This allows to either make a simple notification/alerting plugin or fully manage a backend (this is what {{v0X.crowdsec.name}} uses to manage SQLite and MySQL).</p>
+This allows to either make a simple notification/alerting plugin or fully manage a backend (this is what Crowdsec uses to manage SQLite and MySQL).</p>
 <p>You can create your own plugins to perform specific actions when a scenario is triggered.</p>
 <p>The plugin itself will be compiled into a <code>.so</code> and will have its dedicated configuration.</p>
 <h2 id="interface">Interface<a class="headerlink" href="#interface" title="Permanent link">&para;</a></h2>
@@ -1321,7 +1321,7 @@ This allows to either make a simple notification/alerting plugin or fully manage
 </blockquote>
 <ul>
 <li><code>Init</code> : called at startup time and receives the custom configuration as a string map. Errors aren't fatal, but plugin will be discarded.</li>
-<li><code>Shutdown</code> : called when {{v0X.crowdsec.Name}} is shutting down or restarting</li>
+<li><code>Shutdown</code> : called when Crowdsec is shutting down or restarting</li>
 </ul>
 <blockquote>
 <p>Writing/Deleting events</p>
@@ -1341,7 +1341,7 @@ This allows to either make a simple notification/alerting plugin or fully manage
 <p>Backend</p>
 </blockquote>
 <ul>
-<li><code>Flush</code> is called regulary by crowdsec for each plugin that received events. For example it will be called after each write in <code>cscli</code> (as it's one-shot) and every few hundreds of ms / few events in {{v0X.crowdsec.name}} itself. It might be a good place to deal with slower write operations.</li>
+<li><code>Flush</code> is called regulary by crowdsec for each plugin that received events. For example it will be called after each write in <code>cscli</code> (as it's one-shot) and every few hundreds of ms / few events in Crowdsec itself. It might be a good place to deal with slower write operations.</li>
 </ul>
 <h2 id="configurations">Configurations<a class="headerlink" href="#configurations" title="Permanent link">&para;</a></h2>
 <p>Each plugin has its own configuration file :</p>

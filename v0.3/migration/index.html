@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#migration-from-v0x-to-v1x" class="md-skip">
+        <a href="#macro-rendering-error" class="md-skip">
           Skip to content
         </a>
       
@@ -999,67 +999,9 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Upgrade V0.X to V1.X
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
         Upgrade V0.X to V1.X
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#backup-up-configuration" class="md-nav__link">
-    Backup up configuration
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall-old-version-install-new" class="md-nav__link">
-    Uninstall old version &amp; install new
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#restore-configuration" class="md-nav__link">
-    Restore configuration
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#start-health-check" class="md-nav__link">
-    Start &amp; health check
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#upgrade-v0xbouncersname" class="md-nav__link">
-    Upgrade {{v0X.bouncers.name}}
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1213,49 +1155,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#backup-up-configuration" class="md-nav__link">
-    Backup up configuration
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall-old-version-install-new" class="md-nav__link">
-    Uninstall old version &amp; install new
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#restore-configuration" class="md-nav__link">
-    Restore configuration
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#start-health-check" class="md-nav__link">
-    Start &amp; health check
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#upgrade-v0xbouncersname" class="md-nav__link">
-    Upgrade {{v0X.bouncers.name}}
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1271,73 +1170,20 @@
                   </a>
                 
                 
-                <h1 id="migration-from-v0x-to-v1x">Migration from v0.X to v1.X<a class="headerlink" href="#migration-from-v0x-to-v1x" title="Permanent link">&para;</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning<p>Migrating to V1.X will impact (any change you made will be lost and must be adapted to the new configuration) :</p>
-<ul>
-<li>
-<p>Database model : your existing database will be lost, a new one will be created in the V1.</p>
-</li>
-<li>
-<p>{{v1X.crowdsec.Name}} configuration :</p>
-<ul>
-<li><code>/etc/crowdsec/config/default.yaml</code> : check <a href="/Crowdsec/v1/references/crowdsec-config/#configuration-format">new format</a></li>
-<li><code>/etc/crowdsec/config/profiles.yaml</code> : check <a href="/Crowdsec/v1/references/profiles/#profiles-configurations">new format</a></li>
-</ul>
-</li>
-</ul>
-</p>
-</div>
-<p>To upgrade {{v0X.crowdsec.name}} from v0.X to v1, we'll follow those steps</p>
-<h4 id="backup-up-configuration">Backup up configuration<a class="headerlink" href="#backup-up-configuration" title="Permanent link">&para;</a></h4>
-<div class="codehilite"><pre><span></span><code>sudo cscli backup save /tmp/crowdsec_backup
-sudo cp -R  /etc/crowdsec/config/patterns /tmp/crowdsec_backup
+                <h1 id="macro-rendering-error"><em>Macro Rendering Error</em><a class="headerlink" href="#macro-rendering-error" title="Permanent link">&para;</a></h1>
+<p><strong>UndefinedError</strong>: 'v1X' is undefined</p>
+<div class="codehilite"><pre><span></span><code>Traceback (most recent call last):
+  File &quot;/home/kkado/crowdsec/tests/doc/venv/lib/python3.8/site-packages/mkdocs_macros/plugin.py&quot;, line 434, in render
+    return md_template.render(**page_variables)
+  File &quot;/home/kkado/crowdsec/tests/doc/venv/lib/python3.8/site-packages/jinja2/environment.py&quot;, line 1304, in render
+    self.environment.handle_exception()
+  File &quot;/home/kkado/crowdsec/tests/doc/venv/lib/python3.8/site-packages/jinja2/environment.py&quot;, line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File &quot;&lt;template&gt;&quot;, line 8, in top-level template code
+  File &quot;/home/kkado/crowdsec/tests/doc/venv/lib/python3.8/site-packages/jinja2/environment.py&quot;, line 474, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: &#39;v1X&#39; is undefined
 </code></pre></div>
-
-<h4 id="uninstall-old-version-install-new">Uninstall old version &amp; install new<a class="headerlink" href="#uninstall-old-version-install-new" title="Permanent link">&para;</a></h4>
-<p>Download latest V1 {{v0X.crowdsec.name}} version <a href="{{v0X.crowdsec.download_url}}">here</a></p>
-<div class="codehilite"><pre><span></span><code>tar xvzf crowdsec-release.tgz
-cd crowdsec-v1*/
-sudo ./wizard.sh --uninstall
-sudo ./wizard.sh --bininstall
-</code></pre></div>
-
-<div class="admonition warning">
-<p class="admonition-title">Warning<p>Don't forget to remove {{v0X.metabase.name}} dashboard if you installed it manually (without {{v0X.cli.name}}).</p>
-</p>
-</div>
-<h4 id="restore-configuration">Restore configuration<a class="headerlink" href="#restore-configuration" title="Permanent link">&para;</a></h4>
-<div class="admonition warning">
-<p class="admonition-title">Warning<p>Before restoring old backup, if you have <code>local</code> or <code>tainted</code> postoverflows, be aware that they are no longer compatible. You should update the syntax (the community and us are available to help you doing this part).</p>
-</p>
-</div>
-<div class="codehilite"><pre><span></span><code>sudo cscli hub update
-sudo cscli config restore --old-backup /tmp/crowdsec_backup/
-sudo cp -R /tmp/crowdsec_backup/patterns /etc/crowdsec/
-</code></pre></div>
-
-<h4 id="start-health-check">Start &amp; health check<a class="headerlink" href="#start-health-check" title="Permanent link">&para;</a></h4>
-<p>Finally, you will be able to start {{v0X.crowdsec.name}} service. Before that, just check if {{v1X.lapi.name}} and {{v0X.api.name}} are correctly configured.</p>
-<div class="codehilite"><pre><span></span><code>ubuntu@ip-:~$ sudo cscli lapi status 
-INFO[0000] Loaded credentials from /etc/crowdsec/local_api_credentials.yaml 
-INFO[0000] Trying to authenticate with username 941c3fxxxxxxxxxxxxxxxxxxxxxx on http://localhost:8080/ 
-INFO[0000] You can successfully interact with Local API (LAPI)
-
-ubuntu@ip-:~$ sudo cscli capi status 
-INFO[0000] Loaded credentials from /etc/crowdsec/online_api_credentials.yaml 
-INFO[0000] Trying to authenticate with username 941c3fxxxxxxxxxxxxxxxxxxxxxxx on https://api.crowdsec.net/ 
-INFO[0000] You can successfully interact with Central API (CAPI)
-
-ubuntu@ip-:~$ sudo systemctl start crowdsec.service
-ubuntu@ip-:~$ sudo systemctl status crowdsec.service
-</code></pre></div>
-
-<p>You can even check logs (located by default here: <code>/var/log/crowdsec.log</code> &amp; <code>/var/log/crowdsec_api.log</code>).</p>
-<p>You can now navigate documentation to learn new {{v0X.cli.name}} commands to interact with crowdsec.</p>
-<h4 id="upgrade-v0xbouncersname">Upgrade {{v0X.bouncers.name}}<a class="headerlink" href="#upgrade-v0xbouncersname" title="Permanent link">&para;</a></h4>
-<p>If you were using <strong>{{v0X.bouncers.name}}</strong> (formerly called <strong>blocker(s)</strong>), you need to replace them by the new compatibles {{v0X.bouncers.name}}, available on the <a href="https://hub.crowdsec.net/browse/#bouncers">hub</a> (selecting <code>agent version</code> to <code>v1</code>).</p>
-<p>Following your bouncer type (netfilter, nginx, wordpress etc...), you need to replace them by the new available {{v0X.bouncers.name}} on the hub, please follow the {{v0X.bouncers.name}} documentation that will help you to install easily.</p>
-<p>We're also available to help (on <a href="https://discourse.crowdsec.net/">discourse</a> or <a href="https://gitter.im/crowdsec-project/community">gitter</a>) upgrading your {{v0X.bouncers.name}}.</p>
                 
               
               

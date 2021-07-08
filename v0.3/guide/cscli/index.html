@@ -1241,36 +1241,36 @@
                 
                   <h1>Cscli</h1>
                 
-                <p><code>{{v0X.cli.bin}}</code> is the utility that will help you to manage {{v0X.crowdsec.name}}. This tools has the following functionalities:</p>
+                <p>`` is the utility that will help you to manage Crowdsec. This tools has the following functionalities:</p>
 <ul>
-<li><a href="{{v0X. cli.ban_doc }}">manage bans</a></li>
-<li><a href="{{v0X. cli.backup_doc }}">backup and restore configuration</a></li>
-<li><a href="{{v0X. cli.metrics_doc }}">display metrics</a></li>
-<li><a href="{{v0X. cli.install_doc }}">install configurations</a></li>
-<li><a href="{{v0X. cli.remove_doc }}">remove configurations</a></li>
-<li><a href="{{v0X. cli.update_doc }}">update configurations</a></li>
-<li><a href="{{v0X. cli.upgrade_doc }}">upgrade configurations</a></li>
-<li><a href="{{v0X. cli.list_doc }}">list configurations</a></li>
-<li><a href="{{v0X. cli.api_doc }}">interact with CrowdSec API</a></li>
-<li><a href="{{v0X.cli.simulation_doc}}">manage simulation</a></li>
+<li><a href="">manage bans</a></li>
+<li><a href="">backup and restore configuration</a></li>
+<li><a href="">display metrics</a></li>
+<li><a href="">install configurations</a></li>
+<li><a href="">remove configurations</a></li>
+<li><a href="">update configurations</a></li>
+<li><a href="">upgrade configurations</a></li>
+<li><a href="">list configurations</a></li>
+<li><a href="">interact with CrowdSec API</a></li>
+<li><a href="">manage simulation</a></li>
 </ul>
-<p>Take a look at the <a href="{{v0X.cli.main_doc}}">dedicated documentation</a></p>
+<p>Take a look at the <a href="/Crowdsec/v0/cscli/cscli/">dedicated documentation</a></p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>{{v0X.cli.name}} configuration location is <code>/etc/crowdsec/cscli/</code>. </p>
-<p>In this folder, we store the {{v0X.cli.name}} configuration and the hub cache files.</p>
+<p>cscli configuration location is <code>/etc/crowdsec/cscli/</code>. </p>
+<p>In this folder, we store the cscli configuration and the hub cache files.</p>
 <h2 id="config">Config<a class="headerlink" href="#config" title="Permanent link">&para;</a></h2>
-<p>The {{v0X.cli.name}} configuration is light for now, stored in <code>/etc/crowdsec/cscli/config</code>.</p>
-<div class="codehilite"><pre><span></span><code><span class="nt">installdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/crowdsec/config</span>   <span class="c1"># {{v0X.crowdsec.name}} configuration location</span>
+<p>The cscli configuration is light for now, stored in <code>/etc/crowdsec/cscli/config</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">installdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/crowdsec/config</span>   <span class="c1"># Crowdsec configuration location</span>
 <span class="nt">backend</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/crowdsec/plugins/backend</span> <span class="c1"># path to the backend plugin used</span>
 </code></pre></div>
 
-<p>For {{v0X.cli.name}} to be able to pull the {{v0X.api.topX.htmlname}}, you need a valid API configuration in <a href="/Crowdsec/v0/guide/crowdsec/overview/#apiyaml">api.yaml</a>.</p>
+<p>For cscli to be able to pull the <a href="TBD">topX</a>, you need a valid API configuration in <a href="/Crowdsec/v0/guide/crowdsec/overview/#apiyaml">api.yaml</a>.</p>
 <h2 id="hub-cache">Hub cache<a class="headerlink" href="#hub-cache" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>.index.json</code>: The file containing the metadata of all the existing {{v0X.collections.htmlname}}, {{v0X.parsers.htmlname}} and {{v0X.scenarios.htmlname}} stored in the {{v0X.hub.htmlname}}.</li>
-<li><code>hub/*</code>: Folder containing all the {{v0X.collections.htmlname}}, {{v0X.parsers.htmlname}} and {{v0X.scenarios.htmlname}} stored in the {{v0X.hub.htmlname}}.</li>
+<li><code>.index.json</code>: The file containing the metadata of all the existing <a href="/Crowdsec/v0/getting_started/concepts/#collections">collections</a>, <a href="/Crowdsec/v0/getting_started/concepts/#parsers">parsers</a> and <a href="/Crowdsec/v0/getting_started/concepts/#scenarios">scenarios</a> stored in the <a href="https://hub.crowdsec.net/">Crowdsec Hub</a>.</li>
+<li><code>hub/*</code>: Folder containing all the <a href="/Crowdsec/v0/getting_started/concepts/#collections">collections</a>, <a href="/Crowdsec/v0/getting_started/concepts/#parsers">parsers</a> and <a href="/Crowdsec/v0/getting_started/concepts/#scenarios">scenarios</a> stored in the <a href="https://hub.crowdsec.net/">Crowdsec Hub</a>.</li>
 </ul>
-<p>This is used to manage configurations from the {{v0X.cli.name}}</p>
+<p>This is used to manage configurations from the cscli</p>
                 
               
               

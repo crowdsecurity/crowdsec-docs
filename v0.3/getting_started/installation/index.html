@@ -1246,37 +1246,37 @@
                 
                 
                 <h1 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h1>
-<p>Fetch {{v0X.crowdsec.name}}'s latest version <a href="{{v0X.crowdsec.download_url}}">here</a>.</p>
+<p>Fetch Crowdsec's latest version <a href="https://github.com/crowdsecurity/crowdsec/releases">here</a>.</p>
 <div class="codehilite"><pre><span></span><code>tar xvzf crowdsec-release.tgz
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code><span class="nb">cd</span> crowdsec-v0.X.X
 </code></pre></div>
 
-<p>A {{v0X.wizard.name}} is provided to help you deploy {{v0X.crowdsec.name}} and {{v0X.cli.name}}.</p>
+<p>A wizard is provided to help you deploy Crowdsec and cscli.</p>
 <h2 id="using-the-interactive-wizard">Using the interactive wizard<a class="headerlink" href="#using-the-interactive-wizard" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code>sudo {{v0X.wizard.bin}} -i
+<div class="codehilite"><pre><span></span><code>sudo ./wizard.sh -i
 </code></pre></div>
 
 <p><img alt="crowdsec" src="../../assets/images/crowdsec_install.gif" /></p>
-<p>The {{v0X.wizard.name}} is going to guide you through the following steps :</p>
+<p>The wizard is going to guide you through the following steps :</p>
 <ul>
 <li>detect services that are present on your machine</li>
 <li>detect selected services logs</li>
 <li>suggest collections (parsers and scenarios) to deploy</li>
-<li>deploy &amp; configure {{v0X.crowdsec.name}} in order to watch selected logs for selected scenarios</li>
+<li>deploy &amp; configure Crowdsec in order to watch selected logs for selected scenarios</li>
 </ul>
-<p>The process should take less than a minute, <a href="{{v0X.wizard.bugreport}}">please report if there are any issues</a>.</p>
-<p>You are then ready to <a href="/Crowdsec/v0/getting_started/crowdsec-tour/">take a tour</a> of your freshly deployed {{v0X.crowdsec.name}} !</p>
+<p>The process should take less than a minute, <a href="https://github.com/crowdsecurity/crowdsec/issues">please report if there are any issues</a>.</p>
+<p>You are then ready to <a href="/Crowdsec/v0/getting_started/crowdsec-tour/">take a tour</a> of your freshly deployed Crowdsec !</p>
 <h2 id="binary-installation">Binary installation<a class="headerlink" href="#binary-installation" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>you of little faith</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code>sudo {{v0X.wizard.bin}} --bininstall
+<div class="codehilite"><pre><span></span><code>sudo ./wizard.sh --bininstall
 </code></pre></div>
 
-<p>This will deploy a valid/empty {{v0X.crowdsec.name}} configuration files and binaries.
-Beware, in this state, {{v0X.crowdsec.name}} won't monitor/detect anything unless configured.</p>
+<p>This will deploy a valid/empty Crowdsec configuration files and binaries.
+Beware, in this state, Crowdsec won't monitor/detect anything unless configured.</p>
 <div class="codehilite"><pre><span></span><code>cscli install collection crowdsecurity/linux
 </code></pre></div>
 
@@ -1286,24 +1286,24 @@ Beware, in this state, {{v0X.crowdsec.name}} won't monitor/detect anything unles
 <li>geoip enrichment</li>
 <li>date parsers</li>
 </ul>
-<p>You will need as well to configure your {{v0X.ref.acquis}} file to feed {{v0X.crowdsec.name}} some logs.</p>
+<p>You will need as well to configure your <a href="/Crowdsec/v0/guide/crowdsec/acquisition/">acquisition</a> file to feed Crowdsec some logs.</p>
 <h2 id="from-source">From source<a class="headerlink" href="#from-source" title="Permanent link">&para;</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Requirements</p>
 <ul>
 <li><a href="https://golang.org/doc/install">Go</a> v1.13+</li>
-<li><code>git clone {{v0X.crowdsec.url}}</code></li>
+<li><code>git clone https://github.com/crowdsecurity/crowdsec</code></li>
 <li><a href="https://stedolan.github.io/jq/download/">jq</a></li>
 </ul>
 </div>
-<p>Go in {{v0X.crowdsec.name}} folder and build the binaries :</p>
+<p>Go in Crowdsec folder and build the binaries :</p>
 <div class="codehilite"><pre><span></span><code><span class="nb">cd</span> crowdsec
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code>make build
 </code></pre></div>
 
-<p>{{v0X.crowdsec.name}} bin will be located in <code>./cmd/crowdsec/crowdsec</code> and {{v0X.cli.name}} bin in <code>cmd/crowdsec-cli/{{v0X.cli.bin}}</code> </p>
+<p>Crowdsec bin will be located in <code>./cmd/crowdsec/crowdsec</code> and cscli bin in <code>cmd/crowdsec-cli/</code> </p>
 <p>Now, you can install either with <a href="#using-the-interactive-wizard">interactive wizard</a> or the <a href="#using-unattended-mode">unattended mode</a>.</p>
                 
               

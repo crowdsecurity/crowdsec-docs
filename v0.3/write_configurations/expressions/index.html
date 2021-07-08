@@ -1176,21 +1176,21 @@
 <blockquote>
 <p><a href="https://github.com/antonmedv/expr">antonmedv/expr</a> - Expression evaluation engine for Go: fast, non-Turing complete, dynamic typing, static typing</p>
 </blockquote>
-<p>Several places of {{v0X.crowdsec.name}}'s configuration use <a href="https://github.com/antonmedv/expr">expr</a>, notably :</p>
+<p>Several places of Crowdsec's configuration use <a href="https://github.com/antonmedv/expr">expr</a>, notably :</p>
 <ul>
-<li>{{v0X.filter.Htmlname}} that are used to determine events eligibility in {{v0X.parsers.htmlname}} and {{v0X.scenarios.htmlname}} or <code>profiles</code></li>
-<li>{{v0X.statics.Htmlname}} use expr in the <code>expression</code> directive, to compute complex values</li>
-<li>{{v0X.whitelists.Htmlname}} rely on <code>expression</code> directive to allow more complex whitelists filters</li>
+<li><a href="/Crowdsec/v0/references/parsers/#filter">Filter</a> that are used to determine events eligibility in <a href="/Crowdsec/v0/getting_started/concepts/#parsers">parsers</a> and <a href="/Crowdsec/v0/getting_started/concepts/#scenarios">scenarios</a> or <code>profiles</code></li>
+<li><a href="/Crowdsec/v0/references/parsers/#statics">Statics</a> use expr in the <code>expression</code> directive, to compute complex values</li>
+<li><a href="/Crowdsec/v0/write_configurations/whitelist/">Whitelists</a> rely on <code>expression</code> directive to allow more complex whitelists filters</li>
 </ul>
 <p>To learn more about <a href="https://github.com/antonmedv/expr">expr</a>, <a href="https://github.com/antonmedv/expr/blob/master/docs/Language-Definition.md">check the github page of the project</a>.</p>
-<p>When {{v0X.crowdsec.name}} relies on <code>expr</code>, a context is provided to let the expression access relevant objects :</p>
+<p>When Crowdsec relies on <code>expr</code>, a context is provided to let the expression access relevant objects :</p>
 <ul>
-<li><code>evt.</code> is the representation of the current {{v0X.event.htmlname}} and is the most relevant object</li>
-<li>in <a href="/Crowdsec/v0/references/output/#profile">profiles</a>, {{v0X.signal.htmlname}} is accessible via the <code>sig.</code> object</li>
+<li><code>evt.</code> is the representation of the current <a href="/Crowdsec/v0/getting_started/concepts/#event">event</a> and is the most relevant object</li>
+<li>in <a href="/Crowdsec/v0/references/output/#profile">profiles</a>, <a href="/Crowdsec/v0/getting_started/concepts/#overflow-or-signaloccurence">signal</a> is accessible via the <code>sig.</code> object</li>
 </ul>
 <p>If the <code>debug</code> is enabled (in the scenario or parser where expr is used), additional debug will be displayed regarding evaluated expressions.</p>
 <h1 id="helpers">Helpers<a class="headerlink" href="#helpers" title="Permanent link">&para;</a></h1>
-<p>In order to makes its use in {{v0X.crowdsec.name}} more efficient, we added a few helpers that are documented bellow.</p>
+<p>In order to makes its use in Crowdsec more efficient, we added a few helpers that are documented bellow.</p>
 <h2 id="atofstring-float64">Atof(string) float64<a class="headerlink" href="#atofstring-float64" title="Permanent link">&para;</a></h2>
 <p>Parses a string representation of a float number to an actual float number (binding on <code>strconv.ParseFloat</code>)</p>
 <blockquote>

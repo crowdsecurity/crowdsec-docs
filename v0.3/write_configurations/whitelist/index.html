@@ -1187,7 +1187,7 @@ Source ip is usually in <code>evt.Meta.source_ip</code> when it's a log, but <co
 <ul>
 <li>specific ip address : if the event/overflow IP is the same, event is whitelisted</li>
 <li>ip ranges : if the event/overflow IP belongs to this range, event is whitelisted</li>
-<li>a list of {{v0X.expr.htmlname}} expressions : if any expression returns true, event is whitelisted</li>
+<li>a list of <a href="/Crowdsec/v0/write_configurations/expressions/">expr</a> expressions : if any expression returns true, event is whitelisted</li>
 </ul>
 <p>Here is an example showcasing configuration :</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">crowdsecurity/my-whitelists</span>
@@ -1224,7 +1224,7 @@ Source ip is usually in <code>evt.Meta.source_ip</code> when it's a log, but <co
 <span class="nv">time</span><span class="o">=</span><span class="s2">&quot;07-07-2020 16:13:17&quot;</span> <span class="nv">level</span><span class="o">=</span>warning <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;80.x.x.x triggered a 4h0m0s ip ban remediation for [crowdsecurity/http-crawl-non_statics]&quot;</span> <span class="nv">bucket_id</span><span class="o">=</span>purple-snowflake <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-07-07 16:13:17.353641625 +0200 CEST m=+358820.187621068&quot;</span> <span class="nv">scenario</span><span class="o">=</span>crowdsecurity/http-crawl-non_statics <span class="nv">source_ip</span><span class="o">=</span><span class="m">80</span>.x.x.x
 <span class="nv">time</span><span class="o">=</span><span class="s2">&quot;07-07-2020 16:13:18&quot;</span> <span class="nv">level</span><span class="o">=</span>warning <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;80.x.x.x triggered a 4h0m0s ip ban remediation for [crowdsecurity/http-sensitive-files]&quot;</span> <span class="nv">bucket_id</span><span class="o">=</span>small-hill <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-07-07 16:13:18.005919055 +0200 CEST m=+358820.839898498&quot;</span> <span class="nv">scenario</span><span class="o">=</span>crowdsecurity/http-sensitive-files <span class="nv">source_ip</span><span class="o">=</span><span class="m">80</span>.x.x.x
 ^C
-$ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban list
+$  ban list
 <span class="m">4</span> <span class="nb">local</span> decisions:
 +--------+---------------+-----------------------------------+------+--------+---------+---------------------------+--------+------------+
 <span class="p">|</span> SOURCE <span class="p">|</span>      IP       <span class="p">|</span>              REASON               <span class="p">|</span> BANS <span class="p">|</span> ACTION <span class="p">|</span> COUNTRY <span class="p">|</span>            AS             <span class="p">|</span> EVENTS <span class="p">|</span> EXPIRATION <span class="p">|</span>
@@ -1243,7 +1243,7 @@ $ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban list
         <span class="p p-Indicator">-</span> <span class="s">&quot;80.x.x.x&quot;</span>
 </code></pre></div>
 
-<p>and reload {{v0X.crowdsec.name}} : <code>sudo systemctl reload crowdsec</code></p>
+<p>and reload Crowdsec : <code>sudo systemctl reload crowdsec</code></p>
 <h3 id="test-the-whitelist">Test the whitelist<a class="headerlink" href="#test-the-whitelist" title="Permanent link">&para;</a></h3>
 <p>Thus, if we restart our attack :</p>
 <div class="codehilite"><pre><span></span><code>nikto -host myfqdn.com
@@ -1253,7 +1253,7 @@ $ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban list
 <div class="codehilite"><pre><span></span><code>$ tail -f /var/log/crowdsec.log  
 ...
 ^C
-$ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban list
+$  ban list
 No <span class="nb">local</span> decisions.
 And <span class="m">21</span> records from API, <span class="m">15</span> distinct AS, <span class="m">12</span> distinct countries
 </code></pre></div>
@@ -1270,7 +1270,7 @@ And <span class="m">21</span> records from API, <span class="m">15</span> distin
    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">evt.Parsed.http_user_agent == &#39;MySecretUserAgent&#39;</span>
 </code></pre></div>
 
-<p>again, let's restart {{v0X.crowdsec.name}} !</p>
+<p>again, let's restart Crowdsec !</p>
 <p>For the record, I edited nikto's configuration to use 'MySecretUserAgent' as user-agent, and thus :</p>
 <div class="codehilite"><pre><span></span><code>nikto -host myfqdn.com
 </code></pre></div>
@@ -1297,7 +1297,7 @@ First of all, install the <a href="https://hub.crowdsec.net/author/crowdsecurity
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">evt.Enriched.reverse_dns endsWith &#39;.asnieres.rev.numericable.fr.&#39;</span>
 </code></pre></div>
 
-<p>After reloading {{v0X.crowdsec.name}}, and launching (again!) nikto :</p>
+<p>After reloading Crowdsec, and launching (again!) nikto :</p>
 <div class="codehilite"><pre><span></span><code>nikto -host myfqdn.com
 </code></pre></div>
 

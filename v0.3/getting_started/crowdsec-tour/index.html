@@ -1273,16 +1273,16 @@
 <blockquote>
 <p>List installed parsers/scenarios/collections/enricher</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> list
+<div class="codehilite"><pre><span></span><code> list
 </code></pre></div>
 
-<p>On the machine where you deployed {{v0X.crowdsec.name}}, type <code>{{v0X.cli.bin}} list</code> to see deployed configurations.
-This list represents the parsers, scenarios and/or collections that you deployed. They represent what your {{v0X.crowdsec.name}} setup can read (logs) and detect (scenarios).</p>
-<p>Check <a href="/Crowdsec/v0/guide/cscli/">{{v0X.cli.name}} configuration</a> management for more !</p>
+<p>On the machine where you deployed Crowdsec, type <code>list</code> to see deployed configurations.
+This list represents the parsers, scenarios and/or collections that you deployed. They represent what your Crowdsec setup can read (logs) and detect (scenarios).</p>
+<p>Check <a href="/Crowdsec/v0/guide/cscli/">cscli configuration</a> management for more !</p>
 <details>
   <summary>output example</summary>
 
-<div class="codehilite"><pre><span></span><code>bui@sd:~$ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span>  list
+<div class="codehilite"><pre><span></span><code>bui@sd:~$   list
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Loaded <span class="m">9</span> collecs, <span class="m">14</span> parsers, <span class="m">12</span> scenarios, <span class="m">1</span> post-overflow parsers 
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> PARSERS:                                     
 --------------------------------------------------------------------------------------------------------------------
@@ -1328,26 +1328,26 @@ INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> 
 </details>
 
 <h2 id="finding-configurations">Finding configurations<a class="headerlink" href="#finding-configurations" title="Permanent link">&para;</a></h2>
-<p>{{v0X.crowdsec.Name}} efficiency is dictated by installed parsers and scenarios, so <a href="{{v0X.hub.url}}">take a look at the {{v0X.hub.name}}</a> to find the appropriated ones !</p>
-<p>If you didn't perform the setup with the wizard, or if you are reading logs from other machines, you will have to pick the right {{v0X.collections.htmlname}}. This will ensure that {{v0X.crowdsec.name}} can parse the logs and has the corresponding scenarios.</p>
+<p>Crowdsec efficiency is dictated by installed parsers and scenarios, so <a href="https://hub.crowdsec.net/">take a look at the Crowdsec Hub</a> to find the appropriated ones !</p>
+<p>If you didn't perform the setup with the wizard, or if you are reading logs from other machines, you will have to pick the right <a href="/Crowdsec/v0/getting_started/concepts/#collections">collections</a>. This will ensure that Crowdsec can parse the logs and has the corresponding scenarios.</p>
 <p>For example, if you're processing <a href="http://nginx.org">nginx</a> logs, you might want to install the <a href="https://hub.crowdsec.net/author/crowdsecurity/collections/nginx">nginx collection</a>.</p>
 <p>A collection can be installed by typing <code>cscli install collection crowdsecurity/nginx</code>, and provides all the necessary parsers and scenarios to handle said log source. <code>systemctl reload crowdsec</code> to ensure the new scenarios are loaded.</p>
 <p>In the same spirit, the <a href="https://hub.crowdsec.net/author/crowdsecurity/collections/sshd">crowdsecurity/sshd</a>'s collection will fit most sshd setups !</p>
-<p>While {{v0X.crowdsec.name}} is running, a quick look at <a href="/Crowdsec/v0/observability/command_line/"><code>cscli metrics</code></a> should help you ensure that your log sources are correctly parsed.</p>
+<p>While Crowdsec is running, a quick look at <a href="/Crowdsec/v0/observability/command_line/"><code>cscli metrics</code></a> should help you ensure that your log sources are correctly parsed.</p>
 <h2 id="list-existing-bans">List existing bans<a class="headerlink" href="#list-existing-bans" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>List current bans</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban list
+<div class="codehilite"><pre><span></span><code> ban list
 </code></pre></div>
 
-<p>On the machine where you deployed {{v0X.crowdsec.name}}, type <code>{{v0X.cli.bin}} ban list</code> to see existing bans.
-If you just deployed {{v0X.crowdsec.name}}, the list might be empty, but don't worry, it simply means you haven't yet been attacked, congrats!</p>
-<p>Check <a href="/Crowdsec/v0/cheat_sheets/ban-mgmt/">{{v0X.cli.name}} ban</a> management for more !</p>
+<p>On the machine where you deployed Crowdsec, type <code>ban list</code> to see existing bans.
+If you just deployed Crowdsec, the list might be empty, but don't worry, it simply means you haven't yet been attacked, congrats!</p>
+<p>Check <a href="/Crowdsec/v0/cheat_sheets/ban-mgmt/">cscli ban</a> management for more !</p>
 <details>
   <summary>output example</summary>
 
-<div class="codehilite"><pre><span></span><code>bui@sd:~$ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban list
+<div class="codehilite"><pre><span></span><code>bui@sd:~$  ban list
 <span class="m">7</span> <span class="nb">local</span> decisions:
 +--------+----------------+--------------------------------+------+--------+---------+--------------------------------+--------+------------+
 <span class="p">|</span> SOURCE <span class="p">|</span>       IP       <span class="p">|</span>             REASON             <span class="p">|</span> BANS <span class="p">|</span> ACTION <span class="p">|</span> COUNTRY <span class="p">|</span>               AS               <span class="p">|</span> EVENTS <span class="p">|</span> EXPIRATION <span class="p">|</span>
@@ -1372,16 +1372,16 @@ And <span class="m">64</span> records from API, <span class="m">32</span> distin
 <ul>
 <li>local : bans triggered locally </li>
 <li>api : bans fetched from the API as part of the global consensus</li>
-<li>cli : bans added via <code>{{v0X.cli.bin}} ban add</code></li>
+<li>cli : bans added via <code>ban add</code></li>
 </ul>
 <h2 id="monitor-on-going-activity-prometheus">Monitor on-going activity (prometheus)<a class="headerlink" href="#monitor-on-going-activity-prometheus" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>List metrics</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> metrics
+<div class="codehilite"><pre><span></span><code> metrics
 </code></pre></div>
 
-<p>The metrics displayed are extracted from {{v0X.crowdsec.name}} prometheus.
+<p>The metrics displayed are extracted from Crowdsec prometheus.
 The indicators are grouped by scope :</p>
 <ul>
 <li>Buckets : Know which buckets are created and/or overflew (scenario efficiency)</li>
@@ -1392,7 +1392,7 @@ The indicators are grouped by scope :</p>
   <summary>output example</summary>
 
 
-<div class="codehilite"><pre><span></span><code>bui@sd:~$ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span>  metrics
+<div class="codehilite"><pre><span></span><code>bui@sd:~$   metrics
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Buckets Metrics:                             
 +---------------------------------+-----------+--------------+--------+---------+
 <span class="p">|</span>             BUCKET              <span class="p">|</span> OVERFLOWS <span class="p">|</span> INSTANTIATED <span class="p">|</span> POURED <span class="p">|</span> EXPIRED <span class="p">|</span>
@@ -1433,8 +1433,8 @@ INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> 
 </details>
 
 <h2 id="monitor-on-going-activity-log-files">Monitor on-going activity (log files)<a class="headerlink" href="#monitor-on-going-activity-log-files" title="Permanent link">&para;</a></h2>
-<p>The {{v0X.crowdsec.main_log}} file will tell you what is going on and when an IP is blocked.</p>
-<p>Check <a href="/Crowdsec/v0/observability/overview/">{{v0X.crowdsec.name}} monitoring</a> for more !</p>
+<p>The /var/log/crowdsec.log file will tell you what is going on and when an IP is blocked.</p>
+<p>Check <a href="/Crowdsec/v0/observability/overview/">Crowdsec monitoring</a> for more !</p>
 <details>
   <summary>output example</summary>
 
