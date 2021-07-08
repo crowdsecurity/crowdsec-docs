@@ -1,0 +1,1387 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/crowdsec2.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Whitelists - Crowdsec</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,400i,700%7C&display=fallback">
+        <style>:root{--md-text-font-family:"Montserrat";--md-code-font-family:""}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="#3d85c6" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#what-are-whitelists" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Crowdsec" class="md-header__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Crowdsec
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Whitelists
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Crowdsec" class="md-nav__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    Crowdsec
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" data-md-state="indeterminate" type="checkbox" id="__nav_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2">
+        Getting Started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/concepts.html" class="md-nav__link">
+        Concepts & Glossary
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/installation.html" class="md-nav__link">
+        Install Crowdsec
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/crowdsec-tour.html" class="md-nav__link">
+        Crowdsec Tour
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" data-md-state="indeterminate" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        Guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/crowdsec/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/crowdsec/acquisition.html" class="md-nav__link">
+        Acquisition
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/crowdsec/parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/crowdsec/enrichers.html" class="md-nav__link">
+        Enrichers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/crowdsec/scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/cscli.html" class="md-nav__link">
+        Cscli
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/crowdsec/simulation.html" class="md-nav__link">
+        Simulation Mode
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" data-md-state="indeterminate" type="checkbox" id="__nav_4" checked>
+      
+      <label class="md-nav__link" for="__nav_4">
+        Cheat Sheets
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cheat Sheets" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Cheat Sheets
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cheat_sheets/ban-mgmt.html" class="md-nav__link">
+        Ban Management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cheat_sheets/config-mgmt.html" class="md-nav__link">
+        Configuration Management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cheat_sheets/debugging_configs.html" class="md-nav__link">
+        Debugging Parsers & Scenarios
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" data-md-state="indeterminate" type="checkbox" id="__nav_5" checked>
+      
+      <label class="md-nav__link" for="__nav_5">
+        Observability
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Observability" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Observability
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/logs.html" class="md-nav__link">
+        Logs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_3" data-md-state="indeterminate" type="checkbox" id="__nav_5_3" checked>
+      
+      <label class="md-nav__link" for="__nav_5_3">
+        Metrics
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Metrics" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Metrics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/prometheus.html" class="md-nav__link">
+        Prometheus
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/command_line.html" class="md-nav__link">
+        Command line
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/dashboard.html" class="md-nav__link">
+        Dashboard
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" data-md-state="indeterminate" type="checkbox" id="__nav_6" checked>
+      
+      <label class="md-nav__link" for="__nav_6">
+        References
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="References" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          References
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/parsers.html" class="md-nav__link">
+        Parsers format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/scenarios.html" class="md-nav__link">
+        Scenarios format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/output.html" class="md-nav__link">
+        Outputs format
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+      
+      <label class="md-nav__link" for="__nav_7">
+        Write Configurations
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Write Configurations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Write Configurations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="acquisition.html" class="md-nav__link">
+        Acquisition
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="whitelist.html" class="md-nav__link md-nav__link--active">
+        Whitelists
+      </a>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="expressions.html" class="md-nav__link">
+        Expressions
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bouncers/index.html" class="md-nav__link">
+        bouncers
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" data-md-state="indeterminate" type="checkbox" id="__nav_9" checked>
+      
+      <label class="md-nav__link" for="__nav_9">
+        Contributing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Contributing" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/plugins_api.html" class="md-nav__link">
+        Writing Output Plugins
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" data-md-state="indeterminate" type="checkbox" id="__nav_10" checked>
+      
+      <label class="md-nav__link" for="__nav_10">
+        Cscli commands
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cscli commands" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Cscli commands
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli.html" class="md-nav__link">
+        Cscli
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_api.html" class="md-nav__link">
+        API
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_backup.html" class="md-nav__link">
+        Backup
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_ban.html" class="md-nav__link">
+        Bans
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_metrics.html" class="md-nav__link">
+        Metrics
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_update.html" class="md-nav__link">
+        Update
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_install.html" class="md-nav__link">
+        Install configurations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_remove.html" class="md-nav__link">
+        Remove configurations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_upgrade.html" class="md-nav__link">
+        Upgrade configurations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_list.html" class="md-nav__link">
+        List configurations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_inspect.html" class="md-nav__link">
+        Inspect configurations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_simulation.html" class="md-nav__link">
+        Manage simulation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_dashboard.html" class="md-nav__link">
+        Dashboard
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migration.html" class="md-nav__link">
+        Upgrade V0.X to V1.X
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-nav__link">
+        API Swagger
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hub.crowdsec.net/" target="_blank" class="md-nav__link">
+        Hub
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/crowdsecurity/crowdsec/releases" target="_blank" class="md-nav__link">
+        Releases
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_15" data-md-state="indeterminate" type="checkbox" id="__nav_15" checked>
+      
+      <label class="md-nav__link" for="__nav_15">
+        Contributing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Contributing" data-md-level="1">
+        <label class="md-nav__title" for="__nav_15">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing.html" class="md-nav__link">
+        Guide
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_16" data-md-state="indeterminate" type="checkbox" id="__nav_16" checked>
+      
+      <label class="md-nav__link" for="__nav_16">
+        FAQ
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="FAQ" data-md-level="1">
+        <label class="md-nav__title" for="__nav_16">
+          <span class="md-nav__icon md-icon"></span>
+          FAQ
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq.html" class="md-nav__link">
+        Questions
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/crowdsecurity/crowdsec/edit/master/docs/write_configurations/whitelist.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="what-are-whitelists">What are whitelists<a class="headerlink" href="#what-are-whitelists" title="Permanent link">&para;</a></h1>
+<p>Whitelists are special parsers that allow you to "discard" events, and can exist at two different steps :</p>
+<ul>
+<li><em>Parser whitelists</em> : Allows you to discard an event at parse time, so that it never hits the buckets.</li>
+<li><em>PostOverflow whitelists</em> : Those are whitelists that are checked <em>after</em> the overflow happens. It is usually best for whitelisting process that can be expensive (such as performing reverse DNS on an IP, or performing a <code>whois</code> of an IP).</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>While the whitelists are the same for parser or postoverflows, beware that field names might change.
+Source ip is usually in <code>evt.Meta.source_ip</code> when it's a log, but <code>evt.Overflow.Source_ip</code> when it's an overflow</p>
+</div>
+<p>The whitelist can be based on several criteria :</p>
+<ul>
+<li>specific ip address : if the event/overflow IP is the same, event is whitelisted</li>
+<li>ip ranges : if the event/overflow IP belongs to this range, event is whitelisted</li>
+<li>a list of {{v0X.expr.htmlname}} expressions : if any expression returns true, event is whitelisted</li>
+</ul>
+<p>Here is an example showcasing configuration :</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">crowdsecurity/my-whitelists</span>
+<span class="nt">description</span><span class="p">:</span> <span class="s">&quot;Whitelist</span><span class="nv"> </span><span class="s">events</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">ipv4</span><span class="nv"> </span><span class="s">addresses&quot;</span>
+<span class="c1">#it&#39;s a normal parser, so we can restrict its scope with filter</span>
+<span class="nt">filter</span><span class="p">:</span> <span class="s">&quot;1</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">1&quot;</span>
+<span class="nt">whitelist</span><span class="p">:</span>
+  <span class="nt">reason</span><span class="p">:</span> <span class="s">&quot;my</span><span class="nv"> </span><span class="s">ipv4</span><span class="nv"> </span><span class="s">ranges&quot;</span>
+  <span class="nt">ip</span><span class="p">:</span> 
+    <span class="p p-Indicator">-</span> <span class="s">&quot;127.0.0.1&quot;</span>
+  <span class="nt">cidr</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&quot;192.168.0.0/16&quot;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&quot;10.0.0.0/8&quot;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&quot;172.16.0.0/12&quot;</span>
+  <span class="nt">expression</span><span class="p">:</span>
+  <span class="c1">#beware, this one will work *only* if you enabled the reverse dns (crowdsecurity/rdns) enrichment postoverflow parser</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">evt.Enriched.reverse_dns endsWith &quot;.mycoolorg.com.&quot;</span>
+  <span class="c1">#this one will work *only* if you enabled the geoip (crowdsecurity/geoip-enrich) enrichment parser</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">evt.Enriched.IsoCode == &#39;FR&#39;</span>
+</code></pre></div>
+
+<h1 id="whitelists-in-parsing">Whitelists in parsing<a class="headerlink" href="#whitelists-in-parsing" title="Permanent link">&para;</a></h1>
+<p>When a whitelist is present in parsing <code>/etc/crowdsec/config/parsers/...</code>, it will be checked/discarded before being poured to any bucket. These whitelists intentionally generate no logs and are useful to discard noisy false positive sources.</p>
+<h2 id="whitelist-by-ip">Whitelist by ip<a class="headerlink" href="#whitelist-by-ip" title="Permanent link">&para;</a></h2>
+<p>Let's assume we have a setup with a <code>crowdsecurity/nginx</code> collection enabled and no whitelists.</p>
+<p>Thus, if I "attack" myself :</p>
+<div class="codehilite"><pre><span></span><code>nikto -host myfqdn.com
+</code></pre></div>
+
+<p>my own IP will be flagged as being an attacker :</p>
+<div class="codehilite"><pre><span></span><code>$ tail -f /var/log/crowdsec.log 
+<span class="nv">ime</span><span class="o">=</span><span class="s2">&quot;07-07-2020 16:13:16&quot;</span> <span class="nv">level</span><span class="o">=</span>warning <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;80.x.x.x triggered a 4h0m0s ip ban remediation for [crowdsecurity/http-bad-user-agent]&quot;</span> <span class="nv">bucket_id</span><span class="o">=</span>cool-smoke <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-07-07 16:13:16.579581642 +0200 CEST m=+358819.413561109&quot;</span> <span class="nv">scenario</span><span class="o">=</span>crowdsecurity/http-bad-user-agent <span class="nv">source_ip</span><span class="o">=</span><span class="m">80</span>.x.x.x
+<span class="nv">time</span><span class="o">=</span><span class="s2">&quot;07-07-2020 16:13:16&quot;</span> <span class="nv">level</span><span class="o">=</span>warning <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;80.x.x.x triggered a 4h0m0s ip ban remediation for [crowdsecurity/http-probing]&quot;</span> <span class="nv">bucket_id</span><span class="o">=</span>green-silence <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-07-07 16:13:16.737579458 +0200 CEST m=+358819.571558901&quot;</span> <span class="nv">scenario</span><span class="o">=</span>crowdsecurity/http-probing <span class="nv">source_ip</span><span class="o">=</span><span class="m">80</span>.x.x.x
+<span class="nv">time</span><span class="o">=</span><span class="s2">&quot;07-07-2020 16:13:17&quot;</span> <span class="nv">level</span><span class="o">=</span>warning <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;80.x.x.x triggered a 4h0m0s ip ban remediation for [crowdsecurity/http-crawl-non_statics]&quot;</span> <span class="nv">bucket_id</span><span class="o">=</span>purple-snowflake <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-07-07 16:13:17.353641625 +0200 CEST m=+358820.187621068&quot;</span> <span class="nv">scenario</span><span class="o">=</span>crowdsecurity/http-crawl-non_statics <span class="nv">source_ip</span><span class="o">=</span><span class="m">80</span>.x.x.x
+<span class="nv">time</span><span class="o">=</span><span class="s2">&quot;07-07-2020 16:13:18&quot;</span> <span class="nv">level</span><span class="o">=</span>warning <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;80.x.x.x triggered a 4h0m0s ip ban remediation for [crowdsecurity/http-sensitive-files]&quot;</span> <span class="nv">bucket_id</span><span class="o">=</span>small-hill <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-07-07 16:13:18.005919055 +0200 CEST m=+358820.839898498&quot;</span> <span class="nv">scenario</span><span class="o">=</span>crowdsecurity/http-sensitive-files <span class="nv">source_ip</span><span class="o">=</span><span class="m">80</span>.x.x.x
+^C
+$ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban list
+<span class="m">4</span> <span class="nb">local</span> decisions:
++--------+---------------+-----------------------------------+------+--------+---------+---------------------------+--------+------------+
+<span class="p">|</span> SOURCE <span class="p">|</span>      IP       <span class="p">|</span>              REASON               <span class="p">|</span> BANS <span class="p">|</span> ACTION <span class="p">|</span> COUNTRY <span class="p">|</span>            AS             <span class="p">|</span> EVENTS <span class="p">|</span> EXPIRATION <span class="p">|</span>
++--------+---------------+-----------------------------------+------+--------+---------+---------------------------+--------+------------+
+<span class="p">|</span> <span class="nb">local</span>  <span class="p">|</span> <span class="m">80</span>.x.x.x   <span class="p">|</span> crowdsecurity/http-bad-user-agent <span class="p">|</span>    <span class="m">4</span> <span class="p">|</span> ban    <span class="p">|</span> FR      <span class="p">|</span> <span class="m">21502</span> SFR SA              <span class="p">|</span>     <span class="m">60</span> <span class="p">|</span> 3h59m3s    <span class="p">|</span>
+...
+</code></pre></div>
+
+<h3 id="create-the-whitelist-by-ip">Create the whitelist by IP<a class="headerlink" href="#create-the-whitelist-by-ip" title="Permanent link">&para;</a></h3>
+<p>Let's create a <code>/etc/crowdsec/crowdsec/parsers/s02-enrich/mywhitelists.yaml</code> file with the following content :</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">crowdsecurity/whitelists</span>
+<span class="nt">description</span><span class="p">:</span> <span class="s">&quot;Whitelist</span><span class="nv"> </span><span class="s">events</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">ip</span><span class="nv"> </span><span class="s">addresses&quot;</span>
+<span class="nt">whitelist</span><span class="p">:</span>
+  <span class="nt">reason</span><span class="p">:</span> <span class="s">&quot;my</span><span class="nv"> </span><span class="s">ip</span><span class="nv"> </span><span class="s">ranges&quot;</span>
+    <span class="nt">ip</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="s">&quot;80.x.x.x&quot;</span>
+</code></pre></div>
+
+<p>and reload {{v0X.crowdsec.name}} : <code>sudo systemctl reload crowdsec</code></p>
+<h3 id="test-the-whitelist">Test the whitelist<a class="headerlink" href="#test-the-whitelist" title="Permanent link">&para;</a></h3>
+<p>Thus, if we restart our attack :</p>
+<div class="codehilite"><pre><span></span><code>nikto -host myfqdn.com
+</code></pre></div>
+
+<p>And we don't get bans :</p>
+<div class="codehilite"><pre><span></span><code>$ tail -f /var/log/crowdsec.log  
+...
+^C
+$ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> ban list
+No <span class="nb">local</span> decisions.
+And <span class="m">21</span> records from API, <span class="m">15</span> distinct AS, <span class="m">12</span> distinct countries
+</code></pre></div>
+
+<p>Here, we don't get <em>any</em> logs, as the event have been discarded at parsing time.</p>
+<h2 id="create-whitelist-by-expression">Create whitelist by expression<a class="headerlink" href="#create-whitelist-by-expression" title="Permanent link">&para;</a></h2>
+<p>Now, let's make something more tricky : let's whitelist a <strong>specific</strong> user-agent (of course, it's just an example, don't do this at home !). The <a href="https://hub.crowdsec.net/fields">hub's taxonomy</a> will helps us to find which data is present in which field.</p>
+<p>Let's change our whitelist to :</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">crowdsecurity/whitelists</span>
+<span class="nt">description</span><span class="p">:</span> <span class="s">&quot;Whitelist</span><span class="nv"> </span><span class="s">events</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">private</span><span class="nv"> </span><span class="s">ipv4</span><span class="nv"> </span><span class="s">addresses&quot;</span>
+<span class="nt">whitelist</span><span class="p">:</span>
+  <span class="nt">reason</span><span class="p">:</span> <span class="s">&quot;private</span><span class="nv"> </span><span class="s">ipv4</span><span class="nv"> </span><span class="s">ranges&quot;</span>
+  <span class="nt">expression</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">evt.Parsed.http_user_agent == &#39;MySecretUserAgent&#39;</span>
+</code></pre></div>
+
+<p>again, let's restart {{v0X.crowdsec.name}} !</p>
+<p>For the record, I edited nikto's configuration to use 'MySecretUserAgent' as user-agent, and thus :</p>
+<div class="codehilite"><pre><span></span><code>nikto -host myfqdn.com
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>$ tail -f /var/log/crowdsec.log  
+...
+<span class="nv">time</span><span class="o">=</span><span class="s2">&quot;07-05-2020 09:39:09&quot;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;Event is whitelisted by Expr !&quot;</span> <span class="nv">filter</span><span class="o">=</span> <span class="nv">name</span><span class="o">=</span>solitary-leaf <span class="nv">stage</span><span class="o">=</span>s02-enrich
+...
+</code></pre></div>
+
+<h1 id="whitelist-in-postoverflows">Whitelist in PostOverflows<a class="headerlink" href="#whitelist-in-postoverflows" title="Permanent link">&para;</a></h1>
+<p>Whitelists in PostOverflows are applied <em>after</em> the bucket overflow happens.
+It has the advantage of being triggered only once we are about to take decision about an IP or Range, and thus happens a lot less often.</p>
+<p>A good example is the <a href="https://hub.crowdsec.net/author/crowdsecurity/collections/whitelist-good-actors">crowdsecurity/whitelist-good-actors</a> collection.</p>
+<p>But let's craft ours based on our previous example !
+First of all, install the <a href="https://hub.crowdsec.net/author/crowdsecurity/configurations/rdns">crowdsecurity/rdns postoverflow</a> : it will be in charge of enriching overflows with reverse dns information of the offending IP.</p>
+<p>Let's put the following file in <code>/etc/crowdsec/config/postoverflows/s01-whitelists/mywhitelists.yaml</code> :</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">me/my_cool_whitelist</span>
+<span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lets whitelist our own reverse dns</span>
+<span class="nt">whitelist</span><span class="p">:</span>
+  <span class="nt">reason</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dont ban my ISP</span>
+  <span class="nt">expression</span><span class="p">:</span>
+  <span class="c1">#this is the reverse of my ip, you can get it by performing a &quot;host&quot; command on your public IP for example</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">evt.Enriched.reverse_dns endsWith &#39;.asnieres.rev.numericable.fr.&#39;</span>
+</code></pre></div>
+
+<p>After reloading {{v0X.crowdsec.name}}, and launching (again!) nikto :</p>
+<div class="codehilite"><pre><span></span><code>nikto -host myfqdn.com
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>$ tail -f /var/log/crowdsec.log
+<span class="nv">ime</span><span class="o">=</span><span class="s2">&quot;07-07-2020 17:11:09&quot;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;Ban for 80.x.x.x whitelisted, reason [dont ban my ISP]&quot;</span> <span class="nv">id</span><span class="o">=</span>cold-sunset <span class="nv">name</span><span class="o">=</span>me/my_cool_whitelist <span class="nv">stage</span><span class="o">=</span>s01
+<span class="nv">time</span><span class="o">=</span><span class="s2">&quot;07-07-2020 17:11:09&quot;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;node warning : no remediation&quot;</span> <span class="nv">bucket_id</span><span class="o">=</span>blue-cloud <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-07-07 17:11:09.175068053 +0200 CEST m=+2308.040825320&quot;</span> <span class="nv">scenario</span><span class="o">=</span>crowdsecurity/http-probing <span class="nv">source_ip</span><span class="o">=</span><span class="m">80</span>.x.x.x
+<span class="nv">time</span><span class="o">=</span><span class="s2">&quot;07-07-2020 17:11:09&quot;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;Processing Overflow with no decisions 80.x.x.x performed &#39;crowdsecurity/http-probing&#39; (11 events over 313.983994ms) at 2020-07-07 17:11:09.175068053 +0200 CEST m=+2308.040825320&quot;</span> <span class="nv">bucket_id</span><span class="o">=</span>blue-cloud <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-07-07 17:11:09.175068053 +0200 CEST m=+2308.040825320&quot;</span> <span class="nv">scenario</span><span class="o">=</span>crowdsecurity/http-probing <span class="nv">source_ip</span><span class="o">=</span><span class="m">80</span>.x.x.x
+...
+</code></pre></div>
+
+<p>This time, we can see that logs are being produced when the event is discarded.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="scenarios.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Scenarios" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Scenarios
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="expressions.html" class="md-footer__link md-footer__link--next" aria-label="Next: Expressions" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Expressions
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.instant", "navigation.section"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>

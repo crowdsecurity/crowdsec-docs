@@ -1,0 +1,1666 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/crowdsec2.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Scenarios - Crowdsec</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,400i,700%7C&display=fallback">
+        <style>:root{--md-text-font-family:"Montserrat";--md-code-font-family:""}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="#3d85c6" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#writing-v0xcrowdsecname-scenarios" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Crowdsec" class="md-header__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Crowdsec
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Scenarios
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Crowdsec" class="md-nav__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    Crowdsec
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" data-md-state="indeterminate" type="checkbox" id="__nav_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2">
+        Getting Started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/concepts.html" class="md-nav__link">
+        Concepts & Glossary
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/installation.html" class="md-nav__link">
+        Install Crowdsec
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/crowdsec-tour.html" class="md-nav__link">
+        Crowdsec Tour
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" data-md-state="indeterminate" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        Guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/crowdsec/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/crowdsec/acquisition.html" class="md-nav__link">
+        Acquisition
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/crowdsec/parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/crowdsec/enrichers.html" class="md-nav__link">
+        Enrichers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/crowdsec/scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/cscli.html" class="md-nav__link">
+        Cscli
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/crowdsec/simulation.html" class="md-nav__link">
+        Simulation Mode
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" data-md-state="indeterminate" type="checkbox" id="__nav_4" checked>
+      
+      <label class="md-nav__link" for="__nav_4">
+        Cheat Sheets
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cheat Sheets" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Cheat Sheets
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cheat_sheets/ban-mgmt.html" class="md-nav__link">
+        Ban Management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cheat_sheets/config-mgmt.html" class="md-nav__link">
+        Configuration Management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cheat_sheets/debugging_configs.html" class="md-nav__link">
+        Debugging Parsers & Scenarios
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" data-md-state="indeterminate" type="checkbox" id="__nav_5" checked>
+      
+      <label class="md-nav__link" for="__nav_5">
+        Observability
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Observability" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Observability
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/logs.html" class="md-nav__link">
+        Logs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_3" data-md-state="indeterminate" type="checkbox" id="__nav_5_3" checked>
+      
+      <label class="md-nav__link" for="__nav_5_3">
+        Metrics
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Metrics" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Metrics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/prometheus.html" class="md-nav__link">
+        Prometheus
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/command_line.html" class="md-nav__link">
+        Command line
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/dashboard.html" class="md-nav__link">
+        Dashboard
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" data-md-state="indeterminate" type="checkbox" id="__nav_6" checked>
+      
+      <label class="md-nav__link" for="__nav_6">
+        References
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="References" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          References
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/parsers.html" class="md-nav__link">
+        Parsers format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/scenarios.html" class="md-nav__link">
+        Scenarios format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/output.html" class="md-nav__link">
+        Outputs format
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+      
+      <label class="md-nav__link" for="__nav_7">
+        Write Configurations
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Write Configurations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Write Configurations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="acquisition.html" class="md-nav__link">
+        Acquisition
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Scenarios
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="scenarios.html" class="md-nav__link md-nav__link--active">
+        Scenarios
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#base-scenario-file" class="md-nav__link">
+    Base scenario file
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lets-try-our-mock-scenario" class="md-nav__link">
+    Let's try our mock scenario
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-step-forward-peer-attribution" class="md-nav__link">
+    One step forward : peer attribution
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-step-forward-unique-ports" class="md-nav__link">
+    One step forward : unique ports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-it-really-working" class="md-nav__link">
+    Is it really working
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hold-my-beer-and-watch-this" class="md-nav__link">
+    Hold my beer and watch this
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="whitelist.html" class="md-nav__link">
+        Whitelists
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="expressions.html" class="md-nav__link">
+        Expressions
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bouncers/index.html" class="md-nav__link">
+        bouncers
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" data-md-state="indeterminate" type="checkbox" id="__nav_9" checked>
+      
+      <label class="md-nav__link" for="__nav_9">
+        Contributing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Contributing" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/plugins_api.html" class="md-nav__link">
+        Writing Output Plugins
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" data-md-state="indeterminate" type="checkbox" id="__nav_10" checked>
+      
+      <label class="md-nav__link" for="__nav_10">
+        Cscli commands
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cscli commands" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Cscli commands
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli.html" class="md-nav__link">
+        Cscli
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_api.html" class="md-nav__link">
+        API
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_backup.html" class="md-nav__link">
+        Backup
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_ban.html" class="md-nav__link">
+        Bans
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_metrics.html" class="md-nav__link">
+        Metrics
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_update.html" class="md-nav__link">
+        Update
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_install.html" class="md-nav__link">
+        Install configurations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_remove.html" class="md-nav__link">
+        Remove configurations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_upgrade.html" class="md-nav__link">
+        Upgrade configurations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_list.html" class="md-nav__link">
+        List configurations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_inspect.html" class="md-nav__link">
+        Inspect configurations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_simulation.html" class="md-nav__link">
+        Manage simulation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_dashboard.html" class="md-nav__link">
+        Dashboard
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migration.html" class="md-nav__link">
+        Upgrade V0.X to V1.X
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-nav__link">
+        API Swagger
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hub.crowdsec.net/" target="_blank" class="md-nav__link">
+        Hub
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/crowdsecurity/crowdsec/releases" target="_blank" class="md-nav__link">
+        Releases
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_15" data-md-state="indeterminate" type="checkbox" id="__nav_15" checked>
+      
+      <label class="md-nav__link" for="__nav_15">
+        Contributing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Contributing" data-md-level="1">
+        <label class="md-nav__title" for="__nav_15">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing.html" class="md-nav__link">
+        Guide
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_16" data-md-state="indeterminate" type="checkbox" id="__nav_16" checked>
+      
+      <label class="md-nav__link" for="__nav_16">
+        FAQ
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="FAQ" data-md-level="1">
+        <label class="md-nav__title" for="__nav_16">
+          <span class="md-nav__icon md-icon"></span>
+          FAQ
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq.html" class="md-nav__link">
+        Questions
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#base-scenario-file" class="md-nav__link">
+    Base scenario file
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lets-try-our-mock-scenario" class="md-nav__link">
+    Let's try our mock scenario
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-step-forward-peer-attribution" class="md-nav__link">
+    One step forward : peer attribution
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-step-forward-unique-ports" class="md-nav__link">
+    One step forward : unique ports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-it-really-working" class="md-nav__link">
+    Is it really working
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hold-my-beer-and-watch-this" class="md-nav__link">
+    Hold my beer and watch this
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/crowdsecurity/crowdsec/edit/master/docs/write_configurations/scenarios.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="writing-v0xcrowdsecname-scenarios">Writing {{v0X.crowdsec.Name}} scenarios<a class="headerlink" href="#writing-v0xcrowdsecname-scenarios" title="Permanent link">&para;</a></h1>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Please ensure that you have working env or setup test environment before writing your scenario.</p>
+<p>Ensure that <a href="/Crowdsec/v0/write_configurations/parsers/">your logs are properly parsed</a>.</p>
+<p>Have some sample logs at hand reach to test your scenario as you progress.</p>
+</div>
+<blockquote>
+<p>In the current example, we'll write a scenario to detect port scans relying on the logs produced by <code>iptables</code> (netfilter) with the <code>-j LOG</code> target.</p>
+<p>This document aims at detailing the process of writing and testing new scenarios.</p>
+<p>If you're writing scenario for existing logs, <a href="https://hub.crowdsec.net/fields">take a look at the taxonomy</a> to find your way !</p>
+</blockquote>
+<h2 id="base-scenario-file">Base scenario file<a class="headerlink" href="#base-scenario-file" title="Permanent link">&para;</a></h2>
+<p>A rudimentary scenario can be defined as :</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
+<span class="nt">debug</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">me/my-cool-scenario</span>
+<span class="nt">description</span><span class="p">:</span> <span class="s">&quot;detect</span><span class="nv"> </span><span class="s">cool</span><span class="nv"> </span><span class="s">stuff&quot;</span>
+<span class="nt">filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.log_type == &#39;iptables_drop&#39;</span>
+<span class="nt">capacity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">leakspeed</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1m</span>
+<span class="nt">blackhole</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1m</span>
+<span class="nt">labels</span><span class="p">:</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_test</span>
+</code></pre></div>
+
+<ul>
+<li>a {{v0X.filter.htmlname}} : if the expression is <code>true</code>, the event will enter the scenario, otherwise, it won't</li>
+<li>a name &amp; a description</li>
+<li>a capacity for our <a href="https://en.wikipedia.org/wiki/Leaky_bucket">Leaky Bucket</a></li>
+<li>a leak speed for our  <a href="https://en.wikipedia.org/wiki/Leaky_bucket">Leaky Bucket</a></li>
+<li>a blackhole duration (it will prevent the same bucket from overflowing too often to limit spam)</li>
+<li>some labels to qualify the events that just happen</li>
+<li>a <code>debug</code> flag that allows to enable local debugging information.</li>
+</ul>
+<p>We are going to use the following sample log in our example :</p>
+<div class="codehilite"><pre><span></span><code>May <span class="m">12</span> <span class="m">09</span>:40:15 sd-126005 kernel: <span class="o">[</span><span class="m">47678084</span>.929208<span class="o">]</span> <span class="nv">IN</span><span class="o">=</span>enp1s0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span><span class="m">00</span>:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 <span class="nv">SRC</span><span class="o">=</span><span class="m">66</span>.66.66.66 <span class="nv">DST</span><span class="o">=</span><span class="m">127</span>.0.0.1 <span class="nv">LEN</span><span class="o">=</span><span class="m">40</span> <span class="nv">TOS</span><span class="o">=</span>0x08 <span class="nv">PREC</span><span class="o">=</span>0x20 <span class="nv">TTL</span><span class="o">=</span><span class="m">244</span> <span class="nv">ID</span><span class="o">=</span><span class="m">54321</span> <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">42403</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7681</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> 
+May <span class="m">12</span> <span class="m">09</span>:40:15 sd-126005 kernel: <span class="o">[</span><span class="m">47678084</span>.929245<span class="o">]</span> <span class="nv">IN</span><span class="o">=</span>enp1s0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span><span class="m">00</span>:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 <span class="nv">SRC</span><span class="o">=</span><span class="m">99</span>.99.99.99 <span class="nv">DST</span><span class="o">=</span><span class="m">127</span>.0.0.1 <span class="nv">LEN</span><span class="o">=</span><span class="m">40</span> <span class="nv">TOS</span><span class="o">=</span>0x08 <span class="nv">PREC</span><span class="o">=</span>0x20 <span class="nv">TTL</span><span class="o">=</span><span class="m">244</span> <span class="nv">ID</span><span class="o">=</span><span class="m">54321</span> <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">42403</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7681</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> 
+May <span class="m">12</span> <span class="m">09</span>:40:16 sd-126005 kernel: <span class="o">[</span><span class="m">47678084</span>.929208<span class="o">]</span> <span class="nv">IN</span><span class="o">=</span>enp1s0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span><span class="m">00</span>:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 <span class="nv">SRC</span><span class="o">=</span><span class="m">99</span>.99.99.99 <span class="nv">DST</span><span class="o">=</span><span class="m">127</span>.0.0.1 <span class="nv">LEN</span><span class="o">=</span><span class="m">40</span> <span class="nv">TOS</span><span class="o">=</span>0x08 <span class="nv">PREC</span><span class="o">=</span>0x20 <span class="nv">TTL</span><span class="o">=</span><span class="m">244</span> <span class="nv">ID</span><span class="o">=</span><span class="m">54321</span> <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">42403</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7681</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span>
+May <span class="m">12</span> <span class="m">09</span>:40:16 sd-126005 kernel: <span class="o">[</span><span class="m">47678084</span>.929208<span class="o">]</span> <span class="nv">IN</span><span class="o">=</span>enp1s0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span><span class="m">00</span>:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 <span class="nv">SRC</span><span class="o">=</span><span class="m">44</span>.44.44.44 <span class="nv">DST</span><span class="o">=</span><span class="m">127</span>.0.0.1 <span class="nv">LEN</span><span class="o">=</span><span class="m">40</span> <span class="nv">TOS</span><span class="o">=</span>0x08 <span class="nv">PREC</span><span class="o">=</span>0x20 <span class="nv">TTL</span><span class="o">=</span><span class="m">244</span> <span class="nv">ID</span><span class="o">=</span><span class="m">54321</span> <span class="nv">PROTO</span><span class="o">=</span>TCP <span class="nv">SPT</span><span class="o">=</span><span class="m">42403</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">7681</span> <span class="nv">WINDOW</span><span class="o">=</span><span class="m">65535</span> <span class="nv">RES</span><span class="o">=</span>0x00 SYN <span class="nv">URGP</span><span class="o">=</span><span class="m">0</span> 
+</code></pre></div>
+
+<h2 id="lets-try-our-mock-scenario">Let's try our mock scenario<a class="headerlink" href="#lets-try-our-mock-scenario" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This assumes that you've followed the previous tutorial and that your iptables logs are properly parsed</p>
+</div>
+<div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -file ./x.log -type syslog
+</code></pre></div>
+
+<details>
+  <summary>Expected output</summary>
+
+<div class="codehilite"><pre><span></span><code>DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> eval<span class="o">(</span>evt.Meta.log_type <span class="o">==</span> <span class="s1">&#39;iptables_drop&#39;</span><span class="o">)</span> <span class="o">=</span> TRUE  <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> <span class="nb">eval</span> variables:                               <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span>        evt.Meta.log_type <span class="o">=</span> <span class="s1">&#39;iptables_drop&#39;</span>    <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+...
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> eval<span class="o">(</span>evt.Meta.log_type <span class="o">==</span> <span class="s1">&#39;iptables_drop&#39;</span><span class="o">)</span> <span class="o">=</span> TRUE  <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> <span class="nb">eval</span> variables:                               <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span>        evt.Meta.log_type <span class="o">=</span> <span class="s1">&#39;iptables_drop&#39;</span>    <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+...
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> Overflow <span class="o">(</span>start: <span class="m">2020</span>-05-12 <span class="m">09</span>:40:15 +0000 UTC, end: <span class="m">2020</span>-05-12 <span class="m">09</span>:40:15 +0000 UTC<span class="o">)</span>  <span class="nv">bucket_id</span><span class="o">=</span>sparkling-thunder <span class="nv">capacity</span><span class="o">=</span><span class="m">1</span> <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario <span class="nv">partition</span><span class="o">=</span>ea2fed6bf8bb70d462ef8acacc4c96f5f8754413
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> Adding overflow to blackhole <span class="o">(</span><span class="m">2020</span>-05-12 <span class="m">09</span>:40:15 +0000 UTC<span class="o">)</span>  <span class="nv">bucket_id</span><span class="o">=</span>sparkling-thunder <span class="nv">capacity</span><span class="o">=</span><span class="m">1</span> <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario <span class="nv">partition</span><span class="o">=</span>ea2fed6bf8bb70d462ef8acacc4c96f5f8754413
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> eval<span class="o">(</span>evt.Meta.log_type <span class="o">==</span> <span class="s1">&#39;iptables_drop&#39;</span><span class="o">)</span> <span class="o">=</span> TRUE  <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> <span class="nb">eval</span> variables:                               <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span>        evt.Meta.log_type <span class="o">=</span> <span class="s1">&#39;iptables_drop&#39;</span>    <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> Bucket ea2fed6bf8bb70d462ef8acacc4c96f5f8754413 found dead, cleanup the body  <span class="nv">bucket_id</span><span class="o">=</span>sparkling-thunder <span class="nv">capacity</span><span class="o">=</span><span class="m">1</span> <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario <span class="nv">partition</span><span class="o">=</span>ea2fed6bf8bb70d462ef8acacc4c96f5f8754413
+WARN<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> <span class="nb">read</span> <span class="m">4</span> lines                                  <span class="nv">file</span><span class="o">=</span>./x.log
+...
+INFO<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> Processing Overflow with no decisions <span class="m">2</span> IPs performed <span class="s1">&#39;me/my-cool-scenario&#39;</span> <span class="o">(</span><span class="m">2</span> events over 0s<span class="o">)</span> at <span class="m">2020</span>-05-12 <span class="m">09</span>:40:15 +0000 UTC  <span class="nv">bucket_id</span><span class="o">=</span>sparkling-thunder <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-05-12 09:40:15 +0000 UTC&quot;</span> <span class="nv">scenario</span><span class="o">=</span>me/my-cool-scenario <span class="nv">source_ip</span><span class="o">=</span><span class="m">66</span>.66.66.66
+...
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> Overflow discarded, still blackholed <span class="k">for</span> 59s  <span class="nv">bucket_id</span><span class="o">=</span>long-pine <span class="nv">capacity</span><span class="o">=</span><span class="m">1</span> <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario <span class="nv">partition</span><span class="o">=</span>ea2fed6bf8bb70d462ef8acacc4c96f5f8754413
+DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10</span>:44:26<span class="o">]</span> Overflow has been discard <span class="o">(</span>*leakybucket.Blackhole<span class="o">)</span>  <span class="nv">bucket_id</span><span class="o">=</span>long-pine <span class="nv">capacity</span><span class="o">=</span><span class="m">1</span> <span class="nv">cfg</span><span class="o">=</span>shy-dust <span class="nv">file</span><span class="o">=</span>config/scenarios/iptables-scan.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario <span class="nv">partition</span><span class="o">=</span>ea2fed6bf8bb70d462ef8acacc4c96f5f8754413
+...  
+</code></pre></div>
+
+
+</details>
+
+<p>We can see our "mock" scenario is working, let's see what happened :</p>
+<ul>
+<li>
+<p>The first event (parsed line) is processed :</p>
+<ul>
+<li>The <code>filter</code> returned true (<code>evt.Meta.log_type == 'iptables_drop'</code>) so the {{v0X.event.htmlname}} will be processed by our bucket</li>
+<li>The bucket is instantiated in {{v0X.timeMachine.htmlname}} mode, and its creation date is set to the timestamp from the first log</li>
+<li>The {{v0X.event.htmlname}} is poured in the actual bucket</li>
+</ul>
+</li>
+<li>
+<p>The second event is processed</p>
+<ul>
+<li>The <code>filter</code> is still true, and the event is poured</li>
+<li>As our bucket's capacity is <code>1</code>, pouring this second overflow leads to an {{v0X.overflow.htmlname}}</li>
+<li>Because we set a blackhole directive of <code>1 minute</code>, we remember to prevent this bucket to overflowing again for the next minute</li>
+</ul>
+</li>
+</ul>
+<p>The overflow itself is produced and we get this message :</p>
+<div class="codehilite"><pre><span></span><code>INFO[12-05-2020 11:22:17] Processing Overflow with no decisions 2 IPs performed &#39;me/my-cool-scenario&#39; (2 events over 0s) at 2020-05-12 09:40:15 +0000 UTC  bucket_id=withered-brook event_time=&quot;2020-05-12 09:40:15 +0000 UTC&quot; scenario=me/my-cool-scenario source_ip=66.66.66.66
+</code></pre></div>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>While it "worked" we can see the first issue : the offending IP is reported to be <code>66.66.66.66</code> but there are actually 3 IPs involved (<code>66.66.66.66</code>, <code>99.99.99.99</code> and <code>44.44.44.44</code>). To make sense our "detect port scans" should detect events coming from a single IP !</p>
+</div>
+<h2 id="one-step-forward-peer-attribution">One step forward : peer attribution<a class="headerlink" href="#one-step-forward-peer-attribution" title="Permanent link">&para;</a></h2>
+<p>Let's evolve our scenario to be closer to something meaningful :</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
+<span class="nt">debug</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">me/my-cool-scenario</span>
+<span class="nt">description</span><span class="p">:</span> <span class="s">&quot;detect</span><span class="nv"> </span><span class="s">cool</span><span class="nv"> </span><span class="s">stuff&quot;</span>
+<span class="nt">filter</span><span class="p">:</span> <span class="s">&quot;evt.Meta.log_type</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;iptables_drop&#39;</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">evt.Meta.service</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;tcp&#39;&quot;</span>
+<span class="nt">groupby</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.source_ip</span>
+<span class="nt">capacity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">leakspeed</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1m</span>
+<span class="nt">blackhole</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1m</span>
+<span class="nt">labels</span><span class="p">:</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_test</span>
+</code></pre></div>
+
+<p>What did we change ?</p>
+<ul>
+<li>we added a meaningful filter : we are only going to look into <code>iptables_drop</code> events, and only take care of <code>tcp</code> ones (see the parser we wrote in the <a href="/Crowdsec/v0/write_configurations/parsers/">previous step</a>)</li>
+<li>we added a <code>groupby</code> directive : it's going to ensure that each offending peer get its own bucket</li>
+</ul>
+<p>Let's try again !</p>
+<div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -file ./x.log -type syslog
+</code></pre></div>
+
+<details>
+  <summary>Expected output</summary>
+
+<div class="codehilite"><pre><span></span><code>...
+DEBU<span class="o">[</span><span class="m">2020</span>-05-12T11:25:20+02:00<span class="o">]</span> eval<span class="o">(</span>TRUE<span class="o">)</span> evt.Meta.log_type <span class="o">==</span> <span class="s1">&#39;iptables_drop&#39;</span> <span class="o">&amp;&amp;</span> evt.Meta.service <span class="o">==</span> <span class="s1">&#39;tcp&#39;</span>  <span class="nv">cfg</span><span class="o">=</span>holy-breeze <span class="nv">file</span><span class="o">=</span>config/scenarios/mytest.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+DEBU<span class="o">[</span><span class="m">2020</span>-05-12T11:25:20+02:00<span class="o">]</span> Leaky routine starting, lifetime : 2m0s       <span class="nv">bucket_id</span><span class="o">=</span>cold-lake <span class="nv">capacity</span><span class="o">=</span><span class="m">1</span> <span class="nv">cfg</span><span class="o">=</span>holy-breeze <span class="nv">file</span><span class="o">=</span>config/scenarios/mytest.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario <span class="nv">partition</span><span class="o">=</span>2308799e2cc5b57331df10eb93a495aff7725922
+...
+DEBU<span class="o">[</span><span class="m">2020</span>-05-12T11:25:20+02:00<span class="o">]</span> eval<span class="o">(</span>TRUE<span class="o">)</span> evt.Meta.log_type <span class="o">==</span> <span class="s1">&#39;iptables_drop&#39;</span> <span class="o">&amp;&amp;</span> evt.Meta.service <span class="o">==</span> <span class="s1">&#39;tcp&#39;</span>  <span class="nv">cfg</span><span class="o">=</span>holy-breeze <span class="nv">file</span><span class="o">=</span>config/scenarios/mytest.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+DEBU<span class="o">[</span><span class="m">2020</span>-05-12T11:25:20+02:00<span class="o">]</span> Instanciating TimeMachine bucket              <span class="nv">cfg</span><span class="o">=</span>holy-breeze <span class="nv">file</span><span class="o">=</span>config/scenarios/mytest.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+DEBU<span class="o">[</span><span class="m">2020</span>-05-12T11:25:20+02:00<span class="o">]</span> Leaky routine starting, lifetime : 2m0s       <span class="nv">bucket_id</span><span class="o">=</span>muddy-haze <span class="nv">capacity</span><span class="o">=</span><span class="m">1</span> <span class="nv">cfg</span><span class="o">=</span>holy-breeze <span class="nv">file</span><span class="o">=</span>config/scenarios/mytest.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario <span class="nv">partition</span><span class="o">=</span>6236f134d0f34d0061748c065bdcb64d8ac6dc54
+...
+INFO<span class="o">[</span><span class="m">12</span>-05-2020 <span class="m">11</span>:25:20<span class="o">]</span> node warning : no remediation                 <span class="nv">bucket_id</span><span class="o">=</span>muddy-haze <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-05-12 09:40:16 +0000 UTC&quot;</span> <span class="nv">scenario</span><span class="o">=</span>me/my-cool-scenario <span class="nv">source_ip</span><span class="o">=</span><span class="m">99</span>.99.99.99
+INFO<span class="o">[</span><span class="m">12</span>-05-2020 <span class="m">11</span>:25:20<span class="o">]</span> Processing Overflow with no decisions <span class="m">99</span>.99.99.99 performed <span class="s1">&#39;me/my-cool-scenario&#39;</span> <span class="o">(</span><span class="m">2</span> events over 1s<span class="o">)</span> at <span class="m">2020</span>-05-12 <span class="m">09</span>:40:16 +0000 UTC  <span class="nv">bucket_id</span><span class="o">=</span>muddy-haze <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-05-12 09:40:16 +0000 UTC&quot;</span> <span class="nv">scenario</span><span class="o">=</span>me/my-cool-scenario <span class="nv">source_ip</span><span class="o">=</span><span class="m">99</span>.99.99.99
+...
+</code></pre></div>
+
+
+</details>
+
+<p>Let's see what happened :</p>
+<ul>
+<li>
+<p>Thanks to our <code>groupby</code> key, we now see two different partition keys appearing (<code>partition=...</code>).
+    It means that each peer will get its own bucket, and a "unique key" is derived from the groupby field value (here : the source IP)</p>
+</li>
+<li>
+<p>We see that we only have one overflow, and it correctly concerns  <code>99.99.99.99</code> (it's the one that actually triggered two events). This is again thanks to the groupby key</p>
+</li>
+</ul>
+<h2 id="one-step-forward-unique-ports">One step forward : unique ports<a class="headerlink" href="#one-step-forward-unique-ports" title="Permanent link">&para;</a></h2>
+<p>Is it done ? not yet, but we're getting close !</p>
+<p>To really qualify a port-scan, we want to rely on the number of unique probed ports. Let's arbitrarily decide that a port-scan is : "One peer trying to probe AT LEAST 15 different ports within a few seconds"</p>
+<p>Our evolved scenario is now :</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
+<span class="nt">debug</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">me/my-cool-scenario</span>
+<span class="nt">description</span><span class="p">:</span> <span class="s">&quot;detect</span><span class="nv"> </span><span class="s">cool</span><span class="nv"> </span><span class="s">stuff&quot;</span>
+<span class="nt">filter</span><span class="p">:</span> <span class="s">&quot;evt.Meta.log_type</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;iptables_drop&#39;</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">evt.Meta.service</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;tcp&#39;&quot;</span>
+<span class="nt">groupby</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.source_ip</span>
+<span class="nt">distinct</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Parsed.dst_port</span>
+<span class="nt">capacity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+<span class="nt">leakspeed</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5s</span>
+<span class="nt">blackhole</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1m</span>
+<span class="nt">labels</span><span class="p">:</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">scan</span>
+  <span class="nt">service</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tcp</span>
+</code></pre></div>
+
+<p>What did we changed :</p>
+<ul>
+<li>We add a <code>distinct</code> directive on the <code>evt.Parsed.dst_port</code>. It allows the bucket to discard any event with an already seen <code>evt.Parsed.dst_port</code>. (yes, like in SQL)</li>
+<li>We changed <code>capacity</code> and <code>leakspeed</code> to be more relevant to our target</li>
+<li>We fixed the <code>labels</code> so that the event makes sense !</li>
+</ul>
+<p>Let's see what it changes :</p>
+<div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -file ./x.log -type syslog
+</code></pre></div>
+
+<details>
+  <summary>Expected output</summary>
+
+<div class="codehilite"><pre><span></span><code>...
+DEBU<span class="o">[</span><span class="m">2020</span>-05-12T11:49:01+02:00<span class="o">]</span> eval<span class="o">(</span>TRUE<span class="o">)</span> evt.Meta.log_type <span class="o">==</span> <span class="s1">&#39;iptables_drop&#39;</span> <span class="o">&amp;&amp;</span> evt.Meta.service <span class="o">==</span> <span class="s1">&#39;tcp&#39;</span>  <span class="nv">cfg</span><span class="o">=</span>dark-pond <span class="nv">file</span><span class="o">=</span>config/scenarios/mytest.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+DEBU<span class="o">[</span><span class="m">2020</span>-05-12T11:49:01+02:00<span class="o">]</span> Instantiating TimeMachine bucket              <span class="nv">cfg</span><span class="o">=</span>dark-pond <span class="nv">file</span><span class="o">=</span>config/scenarios/mytest.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario
+DEBU<span class="o">[</span><span class="m">2020</span>-05-12T11:49:01+02:00<span class="o">]</span> Leaky routine starting, lifetime : 1m20s      <span class="nv">bucket_id</span><span class="o">=</span>nameless-feather <span class="nv">capacity</span><span class="o">=</span><span class="m">15</span> <span class="nv">cfg</span><span class="o">=</span>dark-pond <span class="nv">file</span><span class="o">=</span>config/scenarios/mytest.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario <span class="nv">partition</span><span class="o">=</span>2308799e2cc5b57331df10eb93a495aff7725922
+DEBU<span class="o">[</span><span class="m">2020</span>-05-12T11:49:01+02:00<span class="o">]</span> Uniq <span class="s1">&#39;evt.Parsed.dst_port&#39;</span> -&gt; <span class="s1">&#39;7681&#39;</span>          <span class="nv">bucket_id</span><span class="o">=</span>nameless-feather <span class="nv">capacity</span><span class="o">=</span><span class="m">15</span> <span class="nv">cfg</span><span class="o">=</span>dark-pond <span class="nv">file</span><span class="o">=</span>config/scenarios/mytest.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario <span class="nv">partition</span><span class="o">=</span>2308799e2cc5b57331df10eb93a495aff7725922
+DEBU<span class="o">[</span><span class="m">2020</span>-05-12T11:49:01+02:00<span class="o">]</span> Uniq<span class="o">(</span><span class="m">7681</span><span class="o">)</span> : false, discard                   <span class="nv">bucket_id</span><span class="o">=</span>nameless-feather <span class="nv">capacity</span><span class="o">=</span><span class="m">15</span> <span class="nv">cfg</span><span class="o">=</span>dark-pond <span class="nv">file</span><span class="o">=</span>config/scenarios/mytest.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario <span class="nv">partition</span><span class="o">=</span>2308799e2cc5b57331df10eb93a495aff7725922
+DEBU<span class="o">[</span><span class="m">2020</span>-05-12T11:49:01+02:00<span class="o">]</span> Pouring event                                 <span class="nv">bucket_id</span><span class="o">=</span>nameless-feather <span class="nv">capacity</span><span class="o">=</span><span class="m">15</span> <span class="nv">cfg</span><span class="o">=</span>dark-pond <span class="nv">file</span><span class="o">=</span>config/scenarios/mytest.yaml <span class="nv">name</span><span class="o">=</span>me/my-cool-scenario <span class="nv">partition</span><span class="o">=</span>2308799e2cc5b57331df10eb93a495aff7725922
+...
+</code></pre></div>
+
+
+</details>
+
+<ul>
+<li>We can see that the second event was discarded, because it had a destination port similar to the first one</li>
+<li>No overflow were produced</li>
+</ul>
+<h2 id="is-it-really-working">Is it really working<a class="headerlink" href="#is-it-really-working" title="Permanent link">&para;</a></h2>
+<p>Ok, <strong>fingers crossed</strong> our thing should be working.</p>
+<p>Let's grab some real-life logs !</p>
+<div class="codehilite"><pre><span></span><code>$ wc -l kern.log 
+<span class="m">78215</span> kern.log
+$ head -n1 kern.log
+May <span class="m">11</span> <span class="m">06</span>:25:20 sd-126005 kernel: ... 
+$ tail -n1 kern.log
+May <span class="m">12</span> <span class="m">12</span>:09:00 sd-126005 kernel: ... 
+</code></pre></div>
+
+<p>We have around 80k lines averaging about 24h of logs, let's try !</p>
+<div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -file ./kern.log -type syslog 
+</code></pre></div>
+
+<details>
+  <summary>Expected output</summary>
+
+<div class="codehilite"><pre><span></span><code>INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> setting loglevel to info                     
+INFO<span class="o">[</span><span class="m">12</span>-05-2020 <span class="m">11</span>:50:38<span class="o">]</span> Crowdsec v0.0.18-f672dbb4aec29ca2b24080a33d4d92eb9d4441cc 
+...
+INFO<span class="o">[</span><span class="m">12</span>-05-2020 <span class="m">11</span>:50:42<span class="o">]</span> node warning : no remediation                 <span class="nv">bucket_id</span><span class="o">=</span>sparkling-violet <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-05-11 10:41:45 +0000 UTC&quot;</span> <span class="nv">scenario</span><span class="o">=</span>me/my-cool-scenario <span class="nv">source_ip</span><span class="o">=</span>xx.xx.xx.xx
+INFO<span class="o">[</span><span class="m">12</span>-05-2020 <span class="m">11</span>:50:42<span class="o">]</span> Processing Overflow with no decisions xx.xx.xx.xx performed <span class="s1">&#39;me/my-cool-scenario&#39;</span> <span class="o">(</span><span class="m">16</span> events over 0s<span class="o">)</span> at <span class="m">2020</span>-05-11 <span class="m">10</span>:41:45 +0000 UTC  <span class="nv">bucket_id</span><span class="o">=</span>sparkling-violet <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-05-11 10:41:45 +0000 UTC&quot;</span> <span class="nv">scenario</span><span class="o">=</span>me/my-cool-scenario <span class="nv">source_ip</span><span class="o">=</span>xx.xx.xx.xx
+...
+INFO<span class="o">[</span><span class="m">12</span>-05-2020 <span class="m">11</span>:50:43<span class="o">]</span> node warning : no remediation                 <span class="nv">bucket_id</span><span class="o">=</span>quiet-leaf <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-05-11 11:34:11 +0000 UTC&quot;</span> <span class="nv">scenario</span><span class="o">=</span>me/my-cool-scenario <span class="nv">source_ip</span><span class="o">=</span>yy.yy.yy.yy
+INFO<span class="o">[</span><span class="m">12</span>-05-2020 <span class="m">11</span>:50:43<span class="o">]</span> Processing Overflow with no decisions yy.yy.yy.yy performed <span class="s1">&#39;me/my-cool-scenario&#39;</span> <span class="o">(</span><span class="m">16</span> events over 2s<span class="o">)</span> at <span class="m">2020</span>-05-11 <span class="m">11</span>:34:11 +0000 UTC  <span class="nv">bucket_id</span><span class="o">=</span>quiet-leaf <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-05-11 11:34:11 +0000 UTC&quot;</span> <span class="nv">scenario</span><span class="o">=</span>me/my-cool-scenario <span class="nv">source_ip</span><span class="o">=</span>yy.yy.yy.yy
+...
+WARN<span class="o">[</span><span class="m">12</span>-05-2020 <span class="m">11</span>:51:05<span class="o">]</span> <span class="nb">read</span> <span class="m">78215</span> lines                              <span class="nv">file</span><span class="o">=</span>./kern.log
+...
+</code></pre></div>
+
+
+</details>
+
+<p>It seems to work correctly !</p>
+<h2 id="hold-my-beer-and-watch-this">Hold my beer and watch this<a class="headerlink" href="#hold-my-beer-and-watch-this" title="Permanent link">&para;</a></h2>
+<p>Once I have acquire confidence in my scenario and I want it to trigger some bans, we can simply add :</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
+<span class="nt">debug</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">me/my-cool-scenario</span>
+<span class="nt">description</span><span class="p">:</span> <span class="s">&quot;detect</span><span class="nv"> </span><span class="s">cool</span><span class="nv"> </span><span class="s">stuff&quot;</span>
+<span class="nt">filter</span><span class="p">:</span> <span class="s">&quot;evt.Meta.log_type</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;iptables_drop&#39;</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">evt.Meta.service</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;tcp&#39;&quot;</span>
+<span class="nt">groupby</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.source_ip</span>
+<span class="nt">distinct</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Parsed.dst_port</span>
+<span class="nt">capacity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+<span class="nt">leakspeed</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5s</span>
+<span class="nt">blackhole</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1m</span>
+<span class="nt">labels</span><span class="p">:</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">scan</span>
+  <span class="nt">service</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tcp</span>
+  <span class="nt">remediation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="nt">scope</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ip</span>
+</code></pre></div>
+
+<p>Adding <code>remediation: true</code> into the labels tells {{v0X.crowdsec.name}} that we should write a ban for the IP when the scenario is triggered ! </p>
+<p>Let's try :</p>
+<ul>
+<li>I copied the yaml file to a production system (<code>/etc/crowdsec/crowdsec/scenarios/mytest.yaml</code>)</li>
+<li>I restart {{v0X.crowdsec.name}} (<code>systemctl reload crowdsec</code>)</li>
+</ul>
+<p>Let's check if it seems correctly enabled :</p>
+<div class="codehilite"><pre><span></span><code>$ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span> list
+...
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> SCENARIOS:                                   
+----------------------------------------------------------------------------------------------------------------------------------
+ NAME                                  📦 STATUS          VERSION  LOCAL PATH                                                     
+----------------------------------------------------------------------------------------------------------------------------------
+...
+ mytest.yaml                           🚫  enabled,local           /etc/crowdsec/config/scenarios/mytest.yaml                 
+...
+</code></pre></div>
+
+<p>Let's launch (from an external machine, as {{v0X.crowdsec.name}} ignores events from private IPs by default) a real port-scan with a good old <code>nmap</code> :</p>
+<div class="codehilite"><pre><span></span><code>sudo nmap -sS xx.xx.xx.xx
+</code></pre></div>
+
+<p>and on our server :</p>
+<div class="codehilite"><pre><span></span><code>$ tail -f /var/log/crowdsec.log 
+...
+<span class="nv">time</span><span class="o">=</span><span class="s2">&quot;12-05-2020 12:31:43&quot;</span> <span class="nv">level</span><span class="o">=</span>warning <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;xx.xx.16.6 triggered a 4h0m0s ip ban remediation for [me/my-cool-scenario]&quot;</span> <span class="nv">bucket_id</span><span class="o">=</span>wispy-breeze <span class="nv">event_time</span><span class="o">=</span><span class="s2">&quot;2020-05-12 12:31:43.953498645 +0200 CEST m=+64.533521568&quot;</span> <span class="nv">scenario</span><span class="o">=</span>me/my-cool-scenario <span class="nv">source_ip</span><span class="o">=</span>xx.xx.16.6
+...
+^C
+$ <span class="o">{{</span>v0X.cli.bin<span class="o">}}</span>  ban list
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> backend plugin <span class="s1">&#39;database&#39;</span> loaded               
+<span class="m">8</span> <span class="nb">local</span> decisions:
++--------+-----------------+----------------------+------+--------+---------+--------------------------+--------+------------+
+<span class="p">|</span> SOURCE <span class="p">|</span>       IP        <span class="p">|</span>        REASON        <span class="p">|</span> BANS <span class="p">|</span> ACTION <span class="p">|</span> COUNTRY <span class="p">|</span>            AS            <span class="p">|</span> EVENTS <span class="p">|</span> EXPIRATION <span class="p">|</span>
++--------+-----------------+----------------------+------+--------+---------+--------------------------+--------+------------+
+<span class="p">|</span> <span class="nb">local</span>  <span class="p">|</span> xx.xx.xx.xx     <span class="p">|</span> me/my-cool-scenario  <span class="p">|</span>    <span class="m">4</span> <span class="p">|</span> ban    <span class="p">|</span> FR      <span class="p">|</span> <span class="m">21502</span> SFR SA             <span class="p">|</span>     <span class="m">79</span> <span class="p">|</span> 3h58m27s   <span class="p">|</span>
+...
+</code></pre></div>
+
+<p>It worked !!!</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="parsers.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Parsers" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Parsers
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="whitelist.html" class="md-footer__link md-footer__link--next" aria-label="Next: Whitelists" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Whitelists
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.instant", "navigation.section"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>
