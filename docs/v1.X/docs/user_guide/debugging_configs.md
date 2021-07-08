@@ -4,7 +4,7 @@
 
 When trying to debug a parser or a scenario :
 
- - Work on "cold logs" (with the `-file` and `-type` options) rather than live ones
+ - Work on "cold logs" (with the `-dsn` and `-type` options) rather than live ones
  - Use the `/etc/crowdsec/user.yaml` configuration files to have logs on stdout
 
 ## Using user-mode configuration
@@ -20,7 +20,7 @@ WARN[05-08-2020 16:16:12] 182.x.x.x triggered a 4h0m0s ip ban remediation for [c
 
  - `/etc/crowdsec/user.yaml` disables demonization and push logs to stdout/stderr
  - `-type` must respect expected log type (ie. `nginx` `syslog` etc.)
- - `-file` must point to a flat file or a gzip file
+ - `-dsn` must point to a valid log source (file, gz logs, cloudwatch or such)
 
 When processing logs like this, {{v1X.crowdsec.name}} runs in "time machine" mode, and relies on the timestamps *in* the logs to evaluate scenarios. You will most likely need the `crowdsecurity/dateparse-enrich` parser for this.
 

@@ -43,7 +43,11 @@ Crowdsec distributes their own pragmatic debian packages that closely follow the
 
 ## setup the repository
 
-Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install#bash-deb).
+Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install#bash-deb) :
+
+```bash
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
+```
 
 If you're not fond of `curl ... | sudo bash`, follow instruction bellow :
 
@@ -61,9 +65,16 @@ sudo apt-get install -y apt-transport-https
 
  3. Add the appropriate repository to your source.list 
 
+___debian:___
 ```bash
 echo "deb https://packagecloud.io/crowdsec/crowdsec/debian/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/crowdsec.list > /dev/null
 ```
+
+___ubuntu:___
+```bash
+echo "deb https://packagecloud.io/crowdsec/crowdsec/ubuntu/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/crowdsec.list > /dev/null
+```
+
 
 ## install crowdsec
 
@@ -112,7 +123,11 @@ Crowdsec distributes their own pragmatic debian packages that closely follow the
 
 ## setup the repository
 
-Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install#bash-rpm).
+Instructions for adding repositories to your machine can be found in [packagecloud's installation docs](https://packagecloud.io/crowdsec/crowdsec/install#bash-rpm) :
+
+```bash
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
+```
 
 If you're not fond of `curl ... | sudo bash`, you [can look at the manual method](https://packagecloud.io/crowdsec/crowdsec/install#manual-rpm) to directly add the appropriate `.repo` to your configuration.
 
