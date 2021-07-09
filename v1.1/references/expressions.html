@@ -1807,15 +1807,15 @@
 </blockquote>
 <p>Several places of crowdsec-agent's configuration use <a href="https://github.com/antonmedv/expr">expr</a>, notably :</p>
 <ul>
-<li><a href="references/parsers.md#filter">Filter</a> that are used to determine events eligibility in <a href="getting_started/concepts.md#parsers">parsers</a> and <a href="getting_started/concepts.md#scenarios">scenarios</a> or <code>profiles</code></li>
-<li><a href="references/parsers.md#statics">Statics</a> use expr in the <code>expression</code> directive, to compute complex values</li>
-<li><a href="write_configurations/whitelist.md">Whitelists</a> rely on <code>expression</code> directive to allow more complex whitelists filters</li>
+<li><a href="/references/parsers.md#filter">Filter</a> that are used to determine events eligibility in <a href="/getting_started/concepts.md#parsers">parsers</a> and <a href="/getting_started/concepts.md#scenarios">scenarios</a> or <code>profiles</code></li>
+<li><a href="/references/parsers.md#statics">Statics</a> use expr in the <code>expression</code> directive, to compute complex values</li>
+<li><a href="/write_configurations/whitelist.md">Whitelists</a> rely on <code>expression</code> directive to allow more complex whitelists filters</li>
 </ul>
 <p>To learn more about <a href="https://github.com/antonmedv/expr">expr</a>, <a href="https://github.com/antonmedv/expr/blob/master/docs/Language-Definition.md">check the github page of the project</a>.</p>
 <p>When crowdsec-agent relies on <code>expr</code>, a context is provided to let the expression access relevant objects :</p>
 <ul>
-<li><code>evt.</code> is the representation of the current <a href="getting_started/concepts.md#events">event</a> and is the most relevant object</li>
-<li>in <a href="/Crowdsec/v1/references/profiles/">profiles</a>, <a href="getting_started/concepts.md#alerts">alert</a> is accessible via the <code>sig.</code> object</li>
+<li><code>evt.</code> is the representation of the current <a href="/getting_started/concepts.md#events">event</a> and is the most relevant object</li>
+<li>in <a href="/Crowdsec/v1/references/profiles/">profiles</a>, <a href="/getting_started/concepts.md#alerts">alert</a> is accessible via the <code>sig.</code> object</li>
 </ul>
 <p>If the <code>debug</code> is enabled (in the scenario or parser where expr is used), additional debug will be displayed regarding evaluated expressions.</p>
 <h1 id="helpers">Helpers<a class="headerlink" href="#helpers" title="Permanent link">&para;</a></h1>
