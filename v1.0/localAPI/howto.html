@@ -1,0 +1,2179 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/crowdsec2.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>API Guide - Crowdsec</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,400i,700%7C&display=fallback">
+        <style>:root{--md-text-font-family:"Montserrat";--md-code-font-family:""}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="#3d85c6" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Crowdsec" class="md-header__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Crowdsec
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting_started/concepts.html" class="md-tabs__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../user_guide/cscli.html" class="md-tabs__link">
+        User guide
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../cscli/cscli.html" class="md-tabs__link">
+        CLI
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="index.html" class="md-tabs__link md-tabs__link--active">
+        Local API
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../observability/overview.html" class="md-tabs__link">
+        Observability
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../bouncers/index.html" class="md-tabs__link">
+      Bouncers
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../references/stages.html" class="md-tabs__link">
+        References
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../write_configurations/requirements.html" class="md-tabs__link">
+        Write Configurations
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../migration.html" class="md-tabs__link">
+      Upgrade V0.X to V1.X
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-tabs__link">
+      API Swagger
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://hub.crowdsec.net/" target="_blank" class="md-tabs__link">
+      Hub
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://github.com/crowdsecurity/crowdsec/releases" target="_blank" class="md-tabs__link">
+      Releases
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../contributing.html" class="md-tabs__link">
+        Contributing
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../faq.html" class="md-tabs__link">
+        FAQ
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Crowdsec" class="md-nav__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    Crowdsec
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" data-md-state="indeterminate" type="checkbox" id="__nav_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2">
+        Getting Started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/concepts.html" class="md-nav__link">
+        Concepts
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/installation.html" class="md-nav__link">
+        Install Crowdsec
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/upgrades.html" class="md-nav__link">
+        Upgrade Crowdsec
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/crowdsec-tour.html" class="md-nav__link">
+        Crowdsec Tour
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" data-md-state="indeterminate" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        User guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/cscli.html" class="md-nav__link">
+        CLI
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" data-md-state="indeterminate" type="checkbox" id="__nav_3_2" checked>
+      
+      <label class="md-nav__link" for="__nav_3_2">
+        Configurations management
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Configurations management" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Configurations management
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/acquisition.html" class="md-nav__link">
+        Acquisition
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/collections.html" class="md-nav__link">
+        Collections
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/enrichers.html" class="md-nav__link">
+        Enrichers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/decision_management.html" class="md-nav__link">
+        Decisions management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/bouncer_machine_management.html" class="md-nav__link">
+        Bouncers & machines management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/database.html" class="md-nav__link">
+        Databases
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/network.html" class="md-nav__link">
+        Network management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/simulation_mode.html" class="md-nav__link">
+        Simulation management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/forensic_mode.html" class="md-nav__link">
+        Crowdsec forensic mode
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/debugging_configs.html" class="md-nav__link">
+        Debugging
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" data-md-state="indeterminate" type="checkbox" id="__nav_4" checked>
+      
+      <label class="md-nav__link" for="__nav_4">
+        CLI
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="CLI" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          CLI
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli.html" class="md-nav__link">
+        Cscli
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_alerts.html" class="md-nav__link">
+        Alerts
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_bouncers.html" class="md-nav__link">
+        Bouncers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_collections.html" class="md-nav__link">
+        Collections
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_completion.html" class="md-nav__link">
+        Completion
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_config.html" class="md-nav__link">
+        Config
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_dashboard.html" class="md-nav__link">
+        Dashboard
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_decisions.html" class="md-nav__link">
+        Decisions
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_hub.html" class="md-nav__link">
+        Hub
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_machines.html" class="md-nav__link">
+        Machines
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_metrics.html" class="md-nav__link">
+        Metrics
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_postoverflows.html" class="md-nav__link">
+        Postoverflows
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_simulation.html" class="md-nav__link">
+        Simulation
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      <label class="md-nav__link" for="__nav_5">
+        Local API
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Local API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Local API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          API Guide
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="howto.html" class="md-nav__link md-nav__link--active">
+        API Guide
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    Authentication
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-usage" class="md-nav__link">
+    API Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-mode" class="md-nav__link">
+    Query Mode
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-mode-ip" class="md-nav__link">
+    Query mode : IP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-mode-range" class="md-nav__link">
+    Query mode : Range
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-mode-non-ip-centric-decisions" class="md-nav__link">
+    Query mode : non IP centric decisions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stream-mode" class="md-nav__link">
+    Stream mode
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-nav__link">
+        Swagger
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" data-md-state="indeterminate" type="checkbox" id="__nav_6" checked>
+      
+      <label class="md-nav__link" for="__nav_6">
+        Observability
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Observability" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Observability
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/logs.html" class="md-nav__link">
+        Logs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3" data-md-state="indeterminate" type="checkbox" id="__nav_6_3" checked>
+      
+      <label class="md-nav__link" for="__nav_6_3">
+        Metrics
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Metrics" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          Metrics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/prometheus.html" class="md-nav__link">
+        Prometheus
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/command_line.html" class="md-nav__link">
+        Command line
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/dashboard.html" class="md-nav__link">
+        Dashboard
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bouncers/index.html" class="md-nav__link">
+        Bouncers
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" data-md-state="indeterminate" type="checkbox" id="__nav_8" checked>
+      
+      <label class="md-nav__link" for="__nav_8">
+        References
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="References" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          References
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" data-md-state="indeterminate" type="checkbox" id="__nav_8_1" checked>
+      
+      <label class="md-nav__link" for="__nav_8_1">
+        Parsers, Scenarios etc.
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Parsers, Scenarios etc." data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_1">
+          <span class="md-nav__icon md-icon"></span>
+          Parsers, Scenarios etc.
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/stages.html" class="md-nav__link">
+        Stages format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/parsers.html" class="md-nav__link">
+        Parsers format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/scenarios.html" class="md-nav__link">
+        Scenarios format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/postoverflows.html" class="md-nav__link">
+        PostOverlows format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/enrichers.html" class="md-nav__link">
+        Enrichers format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/collections.html" class="md-nav__link">
+        Collections format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/expressions.html" class="md-nav__link">
+        Expressions helpers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/patterns-documentation.html" class="md-nav__link">
+        Patterns references
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" data-md-state="indeterminate" type="checkbox" id="__nav_8_2" checked>
+      
+      <label class="md-nav__link" for="__nav_8_2">
+        Configuration files
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Configuration files" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration files
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/crowdsec-config.html" class="md-nav__link">
+        Configuration format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/database.html" class="md-nav__link">
+        Database format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/acquisition.html" class="md-nav__link">
+        Acquisition format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/profiles.html" class="md-nav__link">
+        Profiles format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/simulation.html" class="md-nav__link">
+        Simulation configuration
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" data-md-state="indeterminate" type="checkbox" id="__nav_8_3" checked>
+      
+      <label class="md-nav__link" for="__nav_8_3">
+        Runtime objects
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Runtime objects" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          Runtime objects
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/events.html" class="md-nav__link">
+        Event object
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/alerts.html" class="md-nav__link">
+        Alert object
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/decisions.html" class="md-nav__link">
+        Decision object
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" data-md-state="indeterminate" type="checkbox" id="__nav_9" checked>
+      
+      <label class="md-nav__link" for="__nav_9">
+        Write Configurations
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Write Configurations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Write Configurations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/acquisition.html" class="md-nav__link">
+        Acquisition
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/whitelist.html" class="md-nav__link">
+        Whitelists
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migration.html" class="md-nav__link">
+        Upgrade V0.X to V1.X
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-nav__link">
+        API Swagger
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hub.crowdsec.net/" target="_blank" class="md-nav__link">
+        Hub
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/crowdsecurity/crowdsec/releases" target="_blank" class="md-nav__link">
+        Releases
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_14" data-md-state="indeterminate" type="checkbox" id="__nav_14" checked>
+      
+      <label class="md-nav__link" for="__nav_14">
+        Contributing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Contributing" data-md-level="1">
+        <label class="md-nav__title" for="__nav_14">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing.html" class="md-nav__link">
+        Guide
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_15" data-md-state="indeterminate" type="checkbox" id="__nav_15" checked>
+      
+      <label class="md-nav__link" for="__nav_15">
+        FAQ
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="FAQ" data-md-level="1">
+        <label class="md-nav__title" for="__nav_15">
+          <span class="md-nav__icon md-icon"></span>
+          FAQ
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq.html" class="md-nav__link">
+        Questions
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    Authentication
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-usage" class="md-nav__link">
+    API Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-mode" class="md-nav__link">
+    Query Mode
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-mode-ip" class="md-nav__link">
+    Query mode : IP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-mode-range" class="md-nav__link">
+    Query mode : Range
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-mode-non-ip-centric-decisions" class="md-nav__link">
+    Query mode : non IP centric decisions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stream-mode" class="md-nav__link">
+    Stream mode
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/crowdsecurity/crowdsec/edit/master/docs/localAPI/howto.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  <h1>API Guide</h1>
+                
+                <div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This page explains how to interact with the local API exposed by crowdsec.</p>
+<p>It's meant to be useful for system administrators, or users that want to create their own bouncers.</p>
+</div>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>This documentation only covers the API usage from the bouncer POV :</p>
+<ul>
+<li>Authentication via API token (rather than JWT as crowdsec/cscli)</li>
+<li>Reading decisions</li>
+</ul>
+<p>This guide will assume that you already have crowdsec running locally.</p>
+<h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
+<p>Existing tokens can be viewed with <code>cscli bouncers list</code> :</p>
+<div class="codehilite"><pre><span></span><code># cscli bouncers list
+-------------------------------------------------------------------------------------------
+ NAME                          IP ADDRESS  VALID  LAST API PULL              TYPE  VERSION 
+-------------------------------------------------------------------------------------------
+ cs-firewall-bouncer-hPrueCas              ✔️      2021-02-25T19:54:46+01:00                
+-------------------------------------------------------------------------------------------
+</code></pre></div>
+
+<p>Let's create a new token with <code>cscli bouncers add MyTestClient</code> :</p>
+<div class="codehilite"><pre><span></span><code># cscli bouncers add MyTestClient
+Api key for &#39;MyTestClient&#39;:
+
+   837be58e22a28738066de1be8f53636b
+
+Please keep this key since you will not be able to retrive it!
+</code></pre></div>
+
+<p>This is the token that we will use to authenticate with the API :</p>
+<div class="codehilite"><pre><span></span><code>▶ curl  -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span> -I localhost:8080/v1/decisions  
+HTTP/1.1 <span class="m">200</span> OK
+Content-Type: text/plain<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>utf-8
+Date: Fri, <span class="m">26</span> Feb <span class="m">2021</span> <span class="m">12</span>:35:37 GMT
+</code></pre></div>
+
+<p>Note: if the token is missing or incorrect, you will get a <strong>403</strong> answer.</p>
+<h2 id="api-usage">API Usage<a class="headerlink" href="#api-usage" title="Permanent link">&para;</a></h2>
+<p>As stated in the <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI">swagger documentation</a>, bouncer's method are restricted to the <code>/decisions</code> path. They allow to query the local decisions in two modes :</p>
+<ul>
+<li>stream mode : Intended for bouncers that will - on a regular basis - query the local api for new and expired/decisions</li>
+<li>query mode : Intended for bouncers that want to query the local api about a specific ip/range/username etc.</li>
+</ul>
+<h2 id="query-mode">Query Mode<a class="headerlink" href="#query-mode" title="Permanent link">&para;</a></h2>
+<p>To have some data to query for, let's add two decisions to our local API</p>
+<div class="codehilite"><pre><span></span><code>▶ sudo cscli decisions add -i <span class="m">1</span>.2.3.4
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Decision successfully added      
+▶ sudo cscli decisions add -r <span class="m">2</span>.2.3.0/24
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Decision successfully added                  
+▶ sudo cscli decisions list
++------+--------+------------------+----------------------------------------------------+--------+---------+----+--------+--------------------+----------+
+<span class="p">|</span>  ID  <span class="p">|</span> SOURCE <span class="p">|</span>   SCOPE:VALUE    <span class="p">|</span>                       REASON                       <span class="p">|</span> ACTION <span class="p">|</span> COUNTRY <span class="p">|</span> AS <span class="p">|</span> EVENTS <span class="p">|</span>     EXPIRATION     <span class="p">|</span> ALERT ID <span class="p">|</span>
++------+--------+------------------+----------------------------------------------------+--------+---------+----+--------+--------------------+----------+
+<span class="p">|</span> <span class="m">2337</span> <span class="p">|</span> cscli  <span class="p">|</span> Range:2.2.3.0/24 <span class="p">|</span> manual <span class="s1">&#39;ban&#39;</span> from                                  <span class="p">|</span> ban    <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>      <span class="m">1</span> <span class="p">|</span> 3h59m18.079301785s <span class="p">|</span>     <span class="m">1164</span> <span class="p">|</span>
+<span class="p">|</span>      <span class="p">|</span>        <span class="p">|</span>                  <span class="p">|</span> <span class="s1">&#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;</span> <span class="p">|</span>        <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>        <span class="p">|</span>                    <span class="p">|</span>          <span class="p">|</span>
+<span class="p">|</span> <span class="m">2336</span> <span class="p">|</span> cscli  <span class="p">|</span> Ip:1.2.3.4       <span class="p">|</span> manual <span class="s1">&#39;ban&#39;</span> from                                  <span class="p">|</span> ban    <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>      <span class="m">1</span> <span class="p">|</span> 3h59m11.079297437s <span class="p">|</span>     <span class="m">1163</span> <span class="p">|</span>
+<span class="p">|</span>      <span class="p">|</span>        <span class="p">|</span>                  <span class="p">|</span> <span class="s1">&#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;</span> <span class="p">|</span>        <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>        <span class="p">|</span>                    <span class="p">|</span>          <span class="p">|</span>
++------+--------+------------------+----------------------------------------------------+--------+---------+----+--------+--------------------+----------+
+</code></pre></div>
+
+<h4 id="query-mode-ip">Query mode : IP<a class="headerlink" href="#query-mode-ip" title="Permanent link">&para;</a></h4>
+<p>We can now try to query the API :</p>
+<blockquote>
+<p>Query a single banned IP</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>▶ curl  -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span>  http://localhost:8080/v1/decisions<span class="se">\?</span><span class="nv">ip</span><span class="o">=</span><span class="m">1</span>.2.3.4
+<span class="o">[{</span><span class="s2">&quot;duration&quot;</span>:<span class="s2">&quot;3h51m57.363171728s&quot;</span>,<span class="s2">&quot;id&quot;</span>:2336,<span class="s2">&quot;origin&quot;</span>:<span class="s2">&quot;cscli&quot;</span>,<span class="s2">&quot;scenario&quot;</span>:<span class="s2">&quot;manual &#39;ban&#39; from &#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;&quot;</span>,<span class="s2">&quot;scope&quot;</span>:<span class="s2">&quot;Ip&quot;</span>,<span class="s2">&quot;type&quot;</span>:<span class="s2">&quot;ban&quot;</span>,<span class="s2">&quot;value&quot;</span>:<span class="s2">&quot;1.2.3.4&quot;</span><span class="o">}]</span>
+</code></pre></div>
+
+<blockquote>
+<p>Query a single IP</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>▶ curl  -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span>  http://localhost:8080/v1/decisions<span class="se">\?</span><span class="nv">ip</span><span class="o">=</span><span class="m">1</span>.2.3.5
+null
+</code></pre></div>
+
+<blockquote>
+<p>Query an IP contained in an existing ban</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>▶ curl  -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span>  http://localhost:8080/v1/decisions<span class="se">\?</span>ip<span class="se">\=</span><span class="m">2</span>.2.3.42                    
+<span class="o">[{</span><span class="s2">&quot;duration&quot;</span>:<span class="s2">&quot;3h38m32.349736035s&quot;</span>,<span class="s2">&quot;id&quot;</span>:2337,<span class="s2">&quot;origin&quot;</span>:<span class="s2">&quot;cscli&quot;</span>,<span class="s2">&quot;scenario&quot;</span>:<span class="s2">&quot;manual &#39;ban&#39; from &#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;&quot;</span>,<span class="s2">&quot;scope&quot;</span>:<span class="s2">&quot;Range&quot;</span>,<span class="s2">&quot;type&quot;</span>:<span class="s2">&quot;ban&quot;</span>,<span class="s2">&quot;value&quot;</span>:<span class="s2">&quot;2.2.3.0/24&quot;</span><span class="o">}]</span>
+</code></pre></div>
+
+<p><em>note: notice that the decision returned is the range that we banned earlier and that contains query ip</em></p>
+<h4 id="query-mode-range">Query mode : Range<a class="headerlink" href="#query-mode-range" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Query a range in which one of the ban is contained</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>▶ curl  -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span>  http://localhost:8080/v1/decisions<span class="se">\?</span><span class="nv">range</span><span class="o">=</span><span class="m">1</span>.2.3.0/24<span class="se">\&amp;</span>contains<span class="se">\=</span><span class="nb">false</span>
+<span class="o">[{</span><span class="s2">&quot;duration&quot;</span>:<span class="s2">&quot;3h48m7.676653651s&quot;</span>,<span class="s2">&quot;id&quot;</span>:2336,<span class="s2">&quot;origin&quot;</span>:<span class="s2">&quot;cscli&quot;</span>,<span class="s2">&quot;scenario&quot;</span>:<span class="s2">&quot;manual &#39;ban&#39; from &#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;&quot;</span>,<span class="s2">&quot;scope&quot;</span>:<span class="s2">&quot;Ip&quot;</span>,<span class="s2">&quot;type&quot;</span>:<span class="s2">&quot;ban&quot;</span>,<span class="s2">&quot;value&quot;</span>:<span class="s2">&quot;1.2.3.4&quot;</span><span class="o">}]</span>
+</code></pre></div>
+
+<p><em>note: notice the <code>contains</code> flag that is set to false</em></p>
+<div class="codehilite"><pre><span></span><code>▶ curl  -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span>  http://localhost:8080/v1/decisions<span class="se">\?</span><span class="nv">range</span><span class="o">=</span><span class="m">1</span>.2.3.0/24<span class="se">\&amp;</span>contains<span class="se">\=</span><span class="nb">true</span>
+null
+</code></pre></div>
+
+<blockquote>
+<p>Query a range which is contained by an existing ban</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>▶ curl  -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span>  http://localhost:8080/v1/decisions<span class="se">\?</span>range<span class="se">\=</span><span class="m">2</span>.2.3.1/25
+<span class="o">[{</span><span class="s2">&quot;duration&quot;</span>:<span class="s2">&quot;3h30m24.773063133s&quot;</span>,<span class="s2">&quot;id&quot;</span>:2337,<span class="s2">&quot;origin&quot;</span>:<span class="s2">&quot;cscli&quot;</span>,<span class="s2">&quot;scenario&quot;</span>:<span class="s2">&quot;manual &#39;ban&#39; from &#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;&quot;</span>,<span class="s2">&quot;scope&quot;</span>:<span class="s2">&quot;Range&quot;</span>,<span class="s2">&quot;type&quot;</span>:<span class="s2">&quot;ban&quot;</span>,<span class="s2">&quot;value&quot;</span>:<span class="s2">&quot;2.2.3.0/24&quot;</span><span class="o">}]</span>
+</code></pre></div>
+
+<h3 id="query-mode-non-ip-centric-decisions">Query mode : non IP centric decisions<a class="headerlink" href="#query-mode-non-ip-centric-decisions" title="Permanent link">&para;</a></h3>
+<p>While most people will use crowdsec to ban IPs or ranges, decisions can target other scopes and other decisions :</p>
+<div class="codehilite"><pre><span></span><code>▶ sudo cscli decisions add --scope username --value myuser --type enforce_mfa
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Decision successfully added                  
+▶ sudo cscli decisions list                                                  
++------+--------+------------------+----------------------------------------------------+-------------+---------+----+--------+--------------------+----------+
+<span class="p">|</span>  ID  <span class="p">|</span> SOURCE <span class="p">|</span>   SCOPE:VALUE    <span class="p">|</span>                       REASON                       <span class="p">|</span>   ACTION    <span class="p">|</span> COUNTRY <span class="p">|</span> AS <span class="p">|</span> EVENTS <span class="p">|</span>     EXPIRATION     <span class="p">|</span> ALERT ID <span class="p">|</span>
++------+--------+------------------+----------------------------------------------------+-------------+---------+----+--------+--------------------+----------+
+<span class="p">|</span> <span class="m">2338</span> <span class="p">|</span> cscli  <span class="p">|</span> username:myuser  <span class="p">|</span> manual <span class="s1">&#39;enforce_mfa&#39;</span> from                          <span class="p">|</span> enforce_mfa <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>      <span class="m">1</span> <span class="p">|</span> 3h59m55.384975175s <span class="p">|</span>     <span class="m">1165</span> <span class="p">|</span>
+<span class="p">|</span>      <span class="p">|</span>        <span class="p">|</span>                  <span class="p">|</span> <span class="s1">&#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;</span> <span class="p">|</span>             <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>        <span class="p">|</span>                    <span class="p">|</span>          <span class="p">|</span>
+<span class="p">|</span> <span class="m">2337</span> <span class="p">|</span> cscli  <span class="p">|</span> Range:2.2.3.0/24 <span class="p">|</span> manual <span class="s1">&#39;ban&#39;</span> from                                  <span class="p">|</span> ban         <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>      <span class="m">1</span> <span class="p">|</span> 3h27m1.384972861s  <span class="p">|</span>     <span class="m">1164</span> <span class="p">|</span>
+<span class="p">|</span>      <span class="p">|</span>        <span class="p">|</span>                  <span class="p">|</span> <span class="s1">&#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;</span> <span class="p">|</span>             <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>        <span class="p">|</span>                    <span class="p">|</span>          <span class="p">|</span>
+<span class="p">|</span> <span class="m">2336</span> <span class="p">|</span> cscli  <span class="p">|</span> Ip:1.2.3.4       <span class="p">|</span> manual <span class="s1">&#39;ban&#39;</span> from                                  <span class="p">|</span> ban         <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>      <span class="m">1</span> <span class="p">|</span> 3h26m54.384971268s <span class="p">|</span>     <span class="m">1163</span> <span class="p">|</span>
+<span class="p">|</span>      <span class="p">|</span>        <span class="p">|</span>                  <span class="p">|</span> <span class="s1">&#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;</span> <span class="p">|</span>             <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>        <span class="p">|</span>                    <span class="p">|</span>          <span class="p">|</span>
++------+--------+------------------+----------------------------------------------------+-------------+---------+----+--------+--------------------+----------+
+</code></pre></div>
+
+<blockquote>
+<p>Query a decision on a given user</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>▶ curl  -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span>  http://localhost:8080/v1/decisions<span class="se">\?</span>scope<span class="se">\=</span>username<span class="se">\&amp;</span>value<span class="se">\=</span>myuser
+<span class="o">[{</span><span class="s2">&quot;duration&quot;</span>:<span class="s2">&quot;3h57m59.021170481s&quot;</span>,<span class="s2">&quot;id&quot;</span>:2338,<span class="s2">&quot;origin&quot;</span>:<span class="s2">&quot;cscli&quot;</span>,<span class="s2">&quot;scenario&quot;</span>:<span class="s2">&quot;manual &#39;enforce_mfa&#39; from &#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;&quot;</span>,<span class="s2">&quot;scope&quot;</span>:<span class="s2">&quot;username&quot;</span>,<span class="s2">&quot;type&quot;</span>:<span class="s2">&quot;enforce_mfa&quot;</span>,<span class="s2">&quot;value&quot;</span>:<span class="s2">&quot;myuser&quot;</span><span class="o">}]</span>
+</code></pre></div>
+
+<blockquote>
+<p>Query a decision on a given user</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>▶ curl  -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span>  http://localhost:8080/v1/decisions<span class="se">\?</span>scope<span class="se">\=</span>username<span class="se">\&amp;</span>value<span class="se">\=</span>myuser
+<span class="o">[{</span><span class="s2">&quot;duration&quot;</span>:<span class="s2">&quot;3h57m59.021170481s&quot;</span>,<span class="s2">&quot;id&quot;</span>:2338,<span class="s2">&quot;origin&quot;</span>:<span class="s2">&quot;cscli&quot;</span>,<span class="s2">&quot;scenario&quot;</span>:<span class="s2">&quot;manual &#39;enforce_mfa&#39; from &#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;&quot;</span>,<span class="s2">&quot;scope&quot;</span>:<span class="s2">&quot;username&quot;</span>,<span class="s2">&quot;type&quot;</span>:<span class="s2">&quot;enforce_mfa&quot;</span>,<span class="s2">&quot;value&quot;</span>:<span class="s2">&quot;myuser&quot;</span><span class="o">}]</span>
+</code></pre></div>
+
+<blockquote>
+<p>Query all decisions of a given type</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>▶ curl  -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span>  http://localhost:8080/v1/decisions<span class="se">\?</span>type<span class="se">\=</span>enforce_mfa                                
+<span class="o">[{</span><span class="s2">&quot;duration&quot;</span>:<span class="s2">&quot;3h57m21.050290118s&quot;</span>,<span class="s2">&quot;id&quot;</span>:2338,<span class="s2">&quot;origin&quot;</span>:<span class="s2">&quot;cscli&quot;</span>,<span class="s2">&quot;scenario&quot;</span>:<span class="s2">&quot;manual &#39;enforce_mfa&#39; from &#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;&quot;</span>,<span class="s2">&quot;scope&quot;</span>:<span class="s2">&quot;username&quot;</span>,<span class="s2">&quot;type&quot;</span>:<span class="s2">&quot;enforce_mfa&quot;</span>,<span class="s2">&quot;value&quot;</span>:<span class="s2">&quot;myuser&quot;</span><span class="o">}]</span>
+</code></pre></div>
+
+<h2 id="stream-mode">Stream mode<a class="headerlink" href="#stream-mode" title="Permanent link">&para;</a></h2>
+<p>The "streaming mode" of the API (which is actually more like polling) allows for bouncers that are going to fetch on a regular basis an update of the existing decisions. The endpoint is <code>/decisions/stream</code> with a single <code>startup</code> (boolean) argument. The argument allows to indicate if the bouncer wants the full state of decisions, or only an update since it last pulled.</p>
+<p>Given the our state looks like :</p>
+<div class="codehilite"><pre><span></span><code>▶ sudo cscli decisions list                                  
++------+--------+------------------+----------------------------------------------------+--------+---------+----+--------+--------------------+----------+
+<span class="p">|</span>  ID  <span class="p">|</span> SOURCE <span class="p">|</span>   SCOPE:VALUE    <span class="p">|</span>                       REASON                       <span class="p">|</span> ACTION <span class="p">|</span> COUNTRY <span class="p">|</span> AS <span class="p">|</span> EVENTS <span class="p">|</span>     EXPIRATION     <span class="p">|</span> ALERT ID <span class="p">|</span>
++------+--------+------------------+----------------------------------------------------+--------+---------+----+--------+--------------------+----------+
+<span class="p">|</span> <span class="m">2337</span> <span class="p">|</span> cscli  <span class="p">|</span> Range:2.2.3.0/24 <span class="p">|</span> manual <span class="s1">&#39;ban&#39;</span> from                                  <span class="p">|</span> ban    <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>      <span class="m">1</span> <span class="p">|</span> 2h55m26.05271136s  <span class="p">|</span>     <span class="m">1164</span> <span class="p">|</span>
+<span class="p">|</span>      <span class="p">|</span>        <span class="p">|</span>                  <span class="p">|</span> <span class="s1">&#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;</span> <span class="p">|</span>        <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>        <span class="p">|</span>                    <span class="p">|</span>          <span class="p">|</span>
+<span class="p">|</span> <span class="m">2336</span> <span class="p">|</span> cscli  <span class="p">|</span> Ip:1.2.3.4       <span class="p">|</span> manual <span class="s1">&#39;ban&#39;</span> from                                  <span class="p">|</span> ban    <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>      <span class="m">1</span> <span class="p">|</span> 2h55m19.052706441s <span class="p">|</span>     <span class="m">1163</span> <span class="p">|</span>
+<span class="p">|</span>      <span class="p">|</span>        <span class="p">|</span>                  <span class="p">|</span> <span class="s1">&#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;</span> <span class="p">|</span>        <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>        <span class="p">|</span>                    <span class="p">|</span>          <span class="p">|</span>
++------+--------+------------------+----------------------------------------------------+--------+---------+----+--------+--------------------+----------+
+</code></pre></div>
+
+<p>The first call to <code>/decisions/stream</code> will look like :</p>
+<div class="codehilite"><pre><span></span><code>▶ curl  -s -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span>  http://localhost:8080/v1/decisions/stream<span class="se">\?</span>startup<span class="se">\=</span><span class="nb">true</span> <span class="p">|</span> jq .            
+<span class="o">{</span>
+  <span class="s2">&quot;deleted&quot;</span>: <span class="o">[</span>
+    <span class="o">{</span>
+      <span class="s2">&quot;duration&quot;</span>: <span class="s2">&quot;-18897h25m52.809576151s&quot;</span>,
+      <span class="s2">&quot;id&quot;</span>: <span class="m">1</span>,
+      <span class="s2">&quot;origin&quot;</span>: <span class="s2">&quot;crowdsec&quot;</span>,
+      <span class="s2">&quot;scenario&quot;</span>: <span class="s2">&quot;crowdsecurity/http-probing&quot;</span>,
+      <span class="s2">&quot;scope&quot;</span>: <span class="s2">&quot;Ip&quot;</span>,
+      <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;ban&quot;</span>,
+      <span class="s2">&quot;value&quot;</span>: <span class="s2">&quot;123.206.50.249&quot;</span>
+    <span class="o">}</span>,
+    ...
+  <span class="o">]</span>,
+  <span class="s2">&quot;new&quot;</span>: <span class="o">[</span>
+    <span class="o">{</span>
+      <span class="s2">&quot;duration&quot;</span>: <span class="s2">&quot;22h20m11.909761348s&quot;</span>,
+      <span class="s2">&quot;id&quot;</span>: <span class="m">2266</span>,
+      <span class="s2">&quot;origin&quot;</span>: <span class="s2">&quot;CAPI&quot;</span>,
+      <span class="s2">&quot;scenario&quot;</span>: <span class="s2">&quot;crowdsecurity/http-sensitive-files&quot;</span>,
+      <span class="s2">&quot;scope&quot;</span>: <span class="s2">&quot;ip&quot;</span>,
+      <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;ban&quot;</span>,
+      <span class="s2">&quot;value&quot;</span>: <span class="s2">&quot;91.241.19.122/32&quot;</span>
+    <span class="o">}</span>,
+  ...
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p><em>note: the initial state will contained passed deleted events (to account for crashes/services restart for example), and the current decisions, both local and those fed from the central API</em></p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>You might notice that even you are requesting for the initial state, you receive a lot of "deleted" decisions. 
+This is intended to allow you to easily restart the local API without having a desynchronized state with the bouncers.</p>
+</div>
+<div class="codehilite"><pre><span></span><code>▶ curl  -s -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span>  http://localhost:8080/v1/decisions/stream<span class="se">\?</span>startup<span class="se">\=</span><span class="nb">false</span> <span class="p">|</span> jq .       
+<span class="o">{</span>
+  <span class="s2">&quot;deleted&quot;</span>: null,
+  <span class="s2">&quot;new&quot;</span>: null
+<span class="o">}</span>
+</code></pre></div>
+
+<p><em>note: Calling the decisions/stream just after will lead to empty results, as no decisions have been added or deleted</em></p>
+<p>Let's now add a new decision :</p>
+<div class="codehilite"><pre><span></span><code>▶ sudo cscli decisions add -i <span class="m">3</span>.3.3.4                                                   
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Decision successfully added
+</code></pre></div>
+
+<p>And call our endpoint again :</p>
+<div class="codehilite"><pre><span></span><code>▶ curl  -s -H <span class="s2">&quot;X-Api-Key: 837be58e22a28738066de1be8f53636b&quot;</span>  http://localhost:8080/v1/decisions/stream<span class="se">\?</span>startup<span class="se">\=</span><span class="nb">false</span> <span class="p">|</span> jq .
+<span class="o">{</span>
+  <span class="s2">&quot;deleted&quot;</span>: null,
+  <span class="s2">&quot;new&quot;</span>: <span class="o">[</span>
+    <span class="o">{</span>
+      <span class="s2">&quot;duration&quot;</span>: <span class="s2">&quot;3h59m57.641708614s&quot;</span>,
+      <span class="s2">&quot;id&quot;</span>: <span class="m">2410</span>,
+      <span class="s2">&quot;origin&quot;</span>: <span class="s2">&quot;cscli&quot;</span>,
+      <span class="s2">&quot;scenario&quot;</span>: <span class="s2">&quot;manual &#39;ban&#39; from &#39;939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA&#39;&quot;</span>,
+      <span class="s2">&quot;scope&quot;</span>: <span class="s2">&quot;Ip&quot;</span>,
+      <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;ban&quot;</span>,
+      <span class="s2">&quot;value&quot;</span>: <span class="s2">&quot;3.3.3.4&quot;</span>
+    <span class="o">}</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="index.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Introduction" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Introduction
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../observability/overview.html" class="md-footer__link md-footer__link--next" aria-label="Next: Overview" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Overview
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.expand", "navigation.instant", "navigation.section"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>
