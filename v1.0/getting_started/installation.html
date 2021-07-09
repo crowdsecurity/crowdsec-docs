@@ -1827,7 +1827,7 @@ sudo apt-get update
 <p>The process should take less than a minute, <a href="https://github.com/crowdsecurity/crowdsec/issues">please report if there are any issues</a>.</p>
 <p>You are then ready to <a href="/Crowdsec/v1/getting_started/crowdsec-tour/">take a tour</a> of your freshly deployed crowdsec-agent !</p>
 <div class="admonition info">
-<p class="admonition-title">Info<p>Keep in mind the crowdsec-agent is only in charge of the "detection", and won't block anything on its own. You need to deploy a <a href="/v1.0/bouncers/">bouncers</a> to "apply" decisions.</p>
+<p class="admonition-title">Info<p>Keep in mind the crowdsec-agent is only in charge of the "detection", and won't block anything on its own. You need to deploy a <a href="bouncers/">bouncers</a> to "apply" decisions.</p>
 </p>
 </div>
 <h2 id="binary-installation">Binary installation<a class="headerlink" href="#binary-installation" title="Permanent link">&para;</a></h2>
@@ -1843,7 +1843,7 @@ sudo apt-get update
 <li><code>sudo cscli machines add -a</code> : register crowdsec to the local API</li>
 <li><code>sudo cscli capi register</code> : register to the central API</li>
 <li><code>sudo cscli collections install crowdsecurity/linux</code> : install essential configs (syslog parser, geoip enrichment, date parsers)</li>
-<li>configure your sources in your <a href="/v1.0/user_guide/configurations_management/acquisition/">acquisition</a> : <code>/etc/crowdsec/acquis.yaml</code></li>
+<li>configure your sources in your <a href="user_guide/configurations_management/acquisition/">acquisition</a> : <code>/etc/crowdsec/acquis.yaml</code></li>
 </ul>
 <p>You can now start &amp; enable the crowdsec service :</p>
 <ul>

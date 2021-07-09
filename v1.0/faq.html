@@ -2105,7 +2105,7 @@
 <h2 id="what-is-crowdsec-agent">What is crowdsec-agent ?<a class="headerlink" href="#what-is-crowdsec-agent" title="Permanent link">&para;</a></h2>
 <p>Crowdsec-agent is a security open-source software. See the <a href="/#what-is-crowdsec">overview</a>.</p>
 <h2 id="ive-installed-crowdsec-it-detects-attacks-but-doesnt-block-anything">I've installed crowdsec, it detects attacks but doesn't block anything ?!<a class="headerlink" href="#ive-installed-crowdsec-it-detects-attacks-but-doesnt-block-anything" title="Permanent link">&para;</a></h2>
-<p>Yes, Crowdsec-agent is in charge of detecting attacks, and <a href="/v1.0/bouncers/">bouncers</a> are applying decisions.
+<p>Yes, Crowdsec-agent is in charge of detecting attacks, and <a href="bouncers/">bouncers</a> are applying decisions.
 If you want to block the detected IPs, you should deploy a bouncer, such as the ones found on the <a href="https://hub.crowdsec.net/browse/#bouncers">hub</a> !</p>
 <h2 id="what-language-is-it-written-in">What language is it written in ?<a class="headerlink" href="#what-language-is-it-written-in" title="Permanent link">&para;</a></h2>
 <p>Crowdsec-agent is written in <a href="https://golang.org/">Golang</a>.</p>
@@ -2135,7 +2135,7 @@ When it comes to bouncers, it should perform <strong>one</strong> request to the
 <p>crowdsec-agent versions (under v0.3.X) supports SQLite (default) and MySQL databases.
 See <a href="/Crowdsec/v0/references/output/#switching-backend-database">backend configuration</a> for relevant configuration. MySQL here is more suitable for distributed architectures where bouncers across the applicative stack need to access a centralized ban database.</p>
 <p>crowdsec-agent versions (after v1) supports SQLite (default), MySQL and PostgreSQL databases.
-See <a href="/Crowdsec/v1/user_guide/database/">databases configuration</a> for relevant configuration. Thanks to the <a href="/v1.0/localAPI/">Local API</a>, distributed architectures are resolved even with sqlite database.</p>
+See <a href="/Crowdsec/v1/user_guide/database/">databases configuration</a> for relevant configuration. Thanks to the <a href="localAPI/">Local API</a>, distributed architectures are resolved even with sqlite database.</p>
 <p>SQLite by default as it's suitable for standalone/single-machine setups.</p>
 <h2 id="how-to-control-granularity-of-actions-whitelists-simulation-etc">How to control granularity of actions ? (whitelists, simulation etc.)<a class="headerlink" href="#how-to-control-granularity-of-actions-whitelists-simulation-etc" title="Permanent link">&para;</a></h2>
 <p>crowdsec-agent support both <a href="/Crowdsec/v1/write_configurations/whitelist/">whitelists</a> and <a href="/Crowdsec/v1/references/simulation/">simulation</a> :</p>
@@ -2143,7 +2143,7 @@ See <a href="/Crowdsec/v1/user_guide/database/">databases configuration</a> for 
 <li>Whitelists allows you to "discard" events or overflows</li>
 <li>Simulation allows you to simply cancel the decision that is going to be taken, but keep track of it</li>
 </ul>
-<p><a href="/v1.0/references/profiles/">profiles</a> allows you to control which decision will be applied to which alert.</p>
+<p><a href="references/profiles/">profiles</a> allows you to control which decision will be applied to which alert.</p>
 <h2 id="how-to-know-if-my-setup-is-working-correctly-some-of-my-logs-are-unparsed-is-it-normal">How to know if my setup is working correctly ? Some of my logs are unparsed, is it normal ?<a class="headerlink" href="#how-to-know-if-my-setup-is-working-correctly-some-of-my-logs-are-unparsed-is-it-normal" title="Permanent link">&para;</a></h2>
 <p>Yes, crowdsec parsers only parse the logs that are relevant for scenarios :)</p>
 <p>Take a look at <code>cscli metrics</code> <a href="/Crowdsec/v1/getting_started/crowdsec-tour/#reading-metrics">and understand what do they mean</a> to know if your setup is correct.</p>

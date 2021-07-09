@@ -2087,13 +2087,13 @@
                 
                 <h2 id="understanding-scenarios">Understanding scenarios<a class="headerlink" href="#understanding-scenarios" title="Permanent link">&para;</a></h2>
 <p>Scenarios are YAML files that allow to detect and qualify a specific behavior, usually an attack.</p>
-<p>Scenarios receive <a href="/v1.0/getting_started/concepts/#events">event</a>(s) and can produce <a href="/v1.0/getting_started/concepts/#alerts">alert</a>(s) using the <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a> algorithm.</p>
-<p>As an <a href="/v1.0/getting_started/concepts/#events">event</a> can be the representation of a log line, or an overflow, it  allows scenarios to process both logs or overflows to allow inference.</p>
+<p>Scenarios receive <a href="getting_started/concepts/#events">event</a>(s) and can produce <a href="getting_started/concepts/#alerts">alert</a>(s) using the <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a> algorithm.</p>
+<p>As an <a href="getting_started/concepts/#events">event</a> can be the representation of a log line, or an overflow, it  allows scenarios to process both logs or overflows to allow inference.</p>
 <p>Scenarios can be of different types (leaky, trigger, counter), and are based on various factors, such as :</p>
 <ul>
 <li>the speed/frequency of the <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a></li>
 <li>the capacity of the <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a></li>
-<li>the characteristic(s) of eligible <a href="/v1.0/getting_started/concepts/#events">event</a>(s) : "log type XX with field YY set to ZZ"</li>
+<li>the characteristic(s) of eligible <a href="getting_started/concepts/#events">event</a>(s) : "log type XX with field YY set to ZZ"</li>
 <li>various filters/directives that can alter the bucket's behavior, such as <a href="/Crowdsec/v1/references/scenarios/#groupby">groupby</a>, <a href="/Crowdsec/v1/references/scenarios/#distinct">distinct</a> or <a href="/Crowdsec/v1/references/scenarios/#blackhole">blackhole</a></li>
 </ul>
 <p>Behind the scenes, crowdsec-agent is going to create one or more buckets when events with matching characteristics arrive to the scenario. When any of these buckets overflows, the scenario has been triggered.</p>
@@ -2134,9 +2134,9 @@
 
 <p>Defines the type of the bucket. Currently three types are supported :</p>
 <ul>
-<li><code>leaky</code> : a <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a> that must be configured with a <a href="/v1.0/references/scenarios/#capacity">capacity</a> and a <a href="/v1.0/references/scenarios/#leakspeed">leakspeed</a></li>
+<li><code>leaky</code> : a <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a> that must be configured with a <a href="references/scenarios/#capacity">capacity</a> and a <a href="references/scenarios/#leakspeed">leakspeed</a></li>
 <li><code>trigger</code> : a bucket that overflows as soon as an event is poured (it's like a leaky bucket is a capacity of 0)</li>
-<li><code>counter</code> : a bucket that only overflows every <a href="/v1.0/references/scenarios/#duration">duration</a>. It's especially useful to count things.</li>
+<li><code>counter</code> : a bucket that only overflows every <a href="references/scenarios/#duration">duration</a>. It's especially useful to count things.</li>
 </ul>
 <h3 id="name-description">name &amp; description<a class="headerlink" href="#name-description" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_author_name/my_scenario_name</span>
@@ -2149,7 +2149,7 @@ The name must be unique (and will define the scenario's name in the hub), and th
 <div class="codehilite"><pre><span></span><code><span class="nt">filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">expression</span>
 </code></pre></div>
 
-<p><code>filter</code> must be a valid <a href="/v1.0/references/expressions/">expr</a> expression that will be evaluated against the <a href="/v1.0/getting_started/concepts/#events">event</a>.</p>
+<p><code>filter</code> must be a valid <a href="references/expressions/">expr</a> expression that will be evaluated against the <a href="getting_started/concepts/#events">event</a>.</p>
 <p>If <code>filter</code> evaluation returns true or is absent, event will be pour in the bucket.</p>
 <p>If <code>filter</code> returns <code>false</code> or a non-boolean, the event will be skip for this bucket.</p>
 <p>Here is the <a href="https://github.com/antonmedv/expr/tree/master/docs">expr documentation</a>.</p>
@@ -2183,7 +2183,7 @@ The format must be compatible with <a href="https://golang.org/pkg/time/#ParseDu
 <div class="codehilite"><pre><span></span><code><span class="nt">groupby</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.source_ip</span>
 </code></pre></div>
 
-<p>an <a href="/v1.0/references/expressions/">expr</a> that must return a string. This string will be used as to partition the buckets.</p>
+<p>an <a href="references/expressions/">expr</a> that must return a string. This string will be used as to partition the buckets.</p>
 <p>Examples :</p>
 <p>Here, each <code>source_ip</code> will get its own bucket.</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
@@ -2203,7 +2203,7 @@ The format must be compatible with <a href="https://golang.org/pkg/time/#ParseDu
 <div class="codehilite"><pre><span></span><code><span class="nt">distinct</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.http_path</span>
 </code></pre></div>
 
-<p>an <a href="/v1.0/references/expressions/">expr</a> that must return a string. The event will be poured <strong>only</strong> if the string is not already present in the bucket.</p>
+<p>an <a href="references/expressions/">expr</a> that must return a string. The event will be poured <strong>only</strong> if the string is not already present in the bucket.</p>
 <p>Examples :</p>
 <p>This will ensure that events that keep triggering the same <code>.Meta.http_path</code> will be poured only once.</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
@@ -2326,14 +2326,14 @@ It is useful when you want to have further scenarios that will rely on past-over
 <div class="codehilite"><pre><span></span><code><span class="nt">cache_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
 </code></pre></div>
 
-<p>By default, a bucket holds <a href="/v1.0/references/scenarios/#capacity">capacity</a> events "in memory".
+<p>By default, a bucket holds <a href="references/scenarios/#capacity">capacity</a> events "in memory".
 However, for a number of cases, you don't want this, as it might lead to excessive memory consumption.</p>
 <p>By setting <code>cache_size</code> to a positive integer, we can control the maximum in-memory cache size of the bucket, without changing its capacity and such. This is especially useful when using <code>counter</code> buckets on long duration that might end up counting (and this storing in memory) an important number of events.</p>
 <h3 id="overflow_filter">overflow_filter<a class="headerlink" href="#overflow_filter" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><code><span class="nt">overflow_filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">any(queue.Queue, { .Enriched.IsInEU  == &quot;true&quot; })</span>
 </code></pre></div>
 
-<p><code>overflow_filter</code> is an <a href="/v1.0/references/expressions/">expr</a> that is run when the bucket overflows.
+<p><code>overflow_filter</code> is an <a href="references/expressions/">expr</a> that is run when the bucket overflows.
 If this expression is present and returns false, the overflow will be discarded.</p>
 <h3 id="data">data<a class="headerlink" href="#data" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><code><span class="nt">data</span><span class="p">:</span>
