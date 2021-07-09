@@ -2233,7 +2233,7 @@ It requires docker, <a href="https://docs.docker.com/engine/install/">installati
 <h2 id="scalability">Scalability<a class="headerlink" href="#scalability" title="Permanent link">&para;</a></h2>
 <p>Crowdsec uses go-routines for parsing and enriching logs, pouring events to buckets and manage outputs.</p>
 <p>By default, one routine of each exists (should be enough to handle ~1K EP/s), and can be changed in <code>crowdsec_service</code> of the main configuration file via the <a href="/Crowdsec/v1/references/crowdsec-config/#parser_routines">parser_routines</a>, <a href="/Crowdsec/v1/references/crowdsec-config/#buckets_routines">buckets_routines</a> and <a href="/Crowdsec/v1/references/crowdsec-config/#output_routines">output_routines</a> directives.</p>
-<p>Please keep in mind that thanks to the <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI">http API</a>, the workload of log parsing can be splitted amongst several agents pushing to a single <a href="/v1.1/localAPI/">Local API</a>.</p>
+<p>Please keep in mind that thanks to the <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI">http API</a>, the workload of log parsing can be splitted amongst several agents pushing to a single <a href="localAPI/">Local API</a>.</p>
                 
               
               
