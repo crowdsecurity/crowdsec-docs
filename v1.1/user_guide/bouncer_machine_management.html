@@ -1868,7 +1868,7 @@ To access this API, the various components (crowdsec agent, cscli and bouncers) 
 <p>There are two kind of access to the local api :</p>
 <ul>
 <li><code>machines</code> : it's a login/password authentication used by cscli and crowdsec-agent, this one allows to post, get and delete decisions and alerts.</li>
-<li><code>bouncers</code> : it's a token authentication used by <a href="/Crowdsec/v1/bouncers/">bouncers</a> to query the decisions, and only allows to perform get on decisions and alerts.</li>
+<li><code>bouncers</code> : it's a token authentication used by <a href="/v1.1/bouncers/">bouncers</a> to query the decisions, and only allows to perform get on decisions and alerts.</li>
 </ul>
 <h2 id="bouncers-authentication">Bouncers authentication<a class="headerlink" href="#bouncers-authentication" title="Permanent link">&para;</a></h2>
 <div class="admonition warning">
@@ -1888,7 +1888,7 @@ Please keep this key since will not be able to retrive it!
 $ sudo cscli bouncers delete mybouncersname
 </code></pre></div>
 
-<p>The API KEY must be kept and given to the <a href="/Crowdsec/v1/bouncers/">bouncers</a>.</p>
+<p>The API KEY must be kept and given to the <a href="/v1.1/bouncers/">bouncers</a>.</p>
 <details>
   <summary>cscli bouncers example</summary>
 

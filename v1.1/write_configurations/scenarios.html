@@ -1949,7 +1949,7 @@
 </code></pre></div>
 
 <ul>
-<li>a <a href="/Crowdsec/v1/references/parsers/#filter">filter</a> : if the expression is <code>true</code>, the event will enter the scenario, otherwise, it won't</li>
+<li>a <a href="/v1.1/references/parsers/#filter">filter</a> : if the expression is <code>true</code>, the event will enter the scenario, otherwise, it won't</li>
 <li>a name &amp; a description</li>
 <li>a capacity for our <a href="https://en.wikipedia.org/wiki/Leaky_bucket">Leaky Bucket</a></li>
 <li>a leak speed for our  <a href="https://en.wikipedia.org/wiki/Leaky_bucket">Leaky Bucket</a></li>
@@ -2006,16 +2006,16 @@ DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10
 <li>
 <p>The first event (parsed line) is processed :</p>
 <ul>
-<li>The <code>filter</code> returned true (<code>evt.Meta.log_type == 'iptables_drop'</code>) so the <a href="/Crowdsec/v1/getting_started/concepts/#events">event</a> will be processed by our bucket</li>
-<li>The bucket is instantiated in <a href="/Crowdsec/v1/getting_started/concepts/#timemachine">timeMachine</a> mode, and its creation date is set to the timestamp from the first log</li>
-<li>The <a href="/Crowdsec/v1/getting_started/concepts/#events">event</a> is poured in the actual bucket</li>
+<li>The <code>filter</code> returned true (<code>evt.Meta.log_type == 'iptables_drop'</code>) so the <a href="/v1.1/getting_started/concepts/#events">event</a> will be processed by our bucket</li>
+<li>The bucket is instantiated in <a href="/v1.1/getting_started/concepts/#timemachine">timeMachine</a> mode, and its creation date is set to the timestamp from the first log</li>
+<li>The <a href="/v1.1/getting_started/concepts/#events">event</a> is poured in the actual bucket</li>
 </ul>
 </li>
 <li>
 <p>The second event is processed</p>
 <ul>
 <li>The <code>filter</code> is still true, and the event is poured</li>
-<li>As our bucket's capacity is <code>1</code>, pouring this second overflow leads to an <a href="/Crowdsec/v1/getting_started/concepts/#alerts">alert</a></li>
+<li>As our bucket's capacity is <code>1</code>, pouring this second overflow leads to an <a href="/v1.1/getting_started/concepts/#alerts">alert</a></li>
 <li>Because we set a blackhole directive of <code>1 minute</code>, we remember to prevent this bucket to overflowing again for the next minute</li>
 </ul>
 </li>
