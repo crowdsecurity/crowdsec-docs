@@ -567,27 +567,15 @@
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" data-md-state="indeterminate" type="checkbox" id="__nav_3_2" checked>
       
       <label class="md-nav__link" for="__nav_3_2">
-        Configurations management
+        Config management
         <span class="md-nav__icon md-icon"></span>
       </label>
-      <nav class="md-nav" aria-label="Configurations management" data-md-level="2">
+      <nav class="md-nav" aria-label="Config management" data-md-level="2">
         <label class="md-nav__title" for="__nav_3_2">
           <span class="md-nav__icon md-icon"></span>
-          Configurations management
+          Config management
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../user_guide/configurations_management/acquisition.html" class="md-nav__link">
-        Acquisition
-      </a>
-    </li>
-  
-
           
             
   
@@ -663,6 +651,93 @@
       <a href="../user_guide/bouncer_machine_management.html" class="md-nav__link">
         Bouncers & machines management
       </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" data-md-state="indeterminate" type="checkbox" id="__nav_3_5" checked>
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Data sources config
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Data sources config" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Data sources config
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/acquisition.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/file.html" class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/journalctl.html" class="md-nav__link">
+        Journalctl
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/cloudwatch.html" class="md-nav__link">
+        Cloudwatch
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/syslog.html" class="md-nav__link">
+        Syslog
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1869,9 +1944,17 @@
 <p>$ source &lt;(cscli completion bash)</p>
 <p># To load completions for each session, execute once:</p>
 <p># Linux:</p>
-<p>$ cscli completion bash | sudo tee /etc/bash_completion.d/cscli</p>
+<p>$ cscli completion bash | sudo tee /etc/bash_completion.d/cscli
+  $ source ~/.bashrc</p>
 <p># macOS:</p>
 <p>$ cscli completion bash | sudo tee /usr/local/etc/bash_completion.d/cscli</p>
+<p># Troubleshoot:
+  If you have this error (bash: _get_comp_words_by_ref: command not found), it seems that you need "bash-completion" dependency :</p>
+<ul>
+<li>Install bash-completion package
+  $ source /etc/profile
+  $ source &lt;(cscli completion bash)</li>
+</ul>
 <h3 id="zsh">Zsh:<a class="headerlink" href="#zsh" title="Permanent link">&para;</a></h3>
 <p># If shell completion is not already enabled in your environment,
   # you will need to enable it.  You can execute the following once:</p>

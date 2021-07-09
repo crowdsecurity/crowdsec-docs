@@ -569,27 +569,15 @@
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" data-md-state="indeterminate" type="checkbox" id="__nav_3_2" checked>
       
       <label class="md-nav__link" for="__nav_3_2">
-        Configurations management
+        Config management
         <span class="md-nav__icon md-icon"></span>
       </label>
-      <nav class="md-nav" aria-label="Configurations management" data-md-level="2">
+      <nav class="md-nav" aria-label="Config management" data-md-level="2">
         <label class="md-nav__title" for="__nav_3_2">
           <span class="md-nav__icon md-icon"></span>
-          Configurations management
+          Config management
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="configurations_management/acquisition.html" class="md-nav__link">
-        Acquisition
-      </a>
-    </li>
-  
-
           
             
   
@@ -665,6 +653,93 @@
       <a href="bouncer_machine_management.html" class="md-nav__link">
         Bouncers & machines management
       </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" data-md-state="indeterminate" type="checkbox" id="__nav_3_5" checked>
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Data sources config
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Data sources config" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Data sources config
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/acquisition.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/file.html" class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/journalctl.html" class="md-nav__link">
+        Journalctl
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/cloudwatch.html" class="md-nav__link">
+        Cloudwatch
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/syslog.html" class="md-nav__link">
+        Syslog
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1826,17 +1901,17 @@
 It is a <em>great</em> way to test scenario, detect false positives &amp; false negatives or simply generate reporting on a past time period.</p>
 <p>When doing so, crowdsec-agent will read the logs, extract timestamps from those, so that the scenarios/buckets can be evaluated with the log's timestamps. The resulting overflows will be pushed to the API as any other alert, but the timestamp will be the timestamps of the logs, properly allowing you to view the alerts in their original time line.</p>
 <p>you can run :</p>
-<div class="codehilite"><pre><span></span><code>sudo crowdsec -c /etc/crowdsec/user.yaml -file /path/to/your/log/file.log -type log_file_type
+<div class="codehilite"><pre><span></span><code>sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///path/to/your/log/file.log -type log_file_type
 </code></pre></div>
 
-<p>Where <code>-file</code> points to the log file you want to process, and the <code>-type</code> is similar to what you would put in your acquisition's label field, for example :</p>
-<div class="codehilite"><pre><span></span><code>sudo crowdsec -c /etc/crowdsec/user.yaml -file /var/log/nginx/2019.log -type nginx
-sudo crowdsec -c /etc/crowdsec/user.yaml -file /var/log/sshd-2019.log -type syslog
-sudo crowdsec -c /etc/crowdsec/user.yaml -jfilter <span class="s2">&quot;_SYSTEMD_UNIT=ssh.service --since yesterday&quot;</span> -type syslog
+<p>Where <code>-dsn</code> points to the log file you want to process, and the <code>-type</code> is similar to what you would put in your acquisition's label field, for example :</p>
+<div class="codehilite"><pre><span></span><code>sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/nginx/2019.log -type nginx
+sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/sshd-2019.log -type syslog
+sudo crowdsec -c /etc/crowdsec/user.yaml -dns <span class="s2">&quot;journalctl://filters=_SYSTEMD_UNIT=ssh.service --since yesterday&quot;</span> -type syslog
 </code></pre></div>
 
 <p>When running crowdsec in forensic mode, the alerts will be displayed to stdout, and as well pushed to database :</p>
-<div class="codehilite"><pre><span></span><code>$ sudo crowdsec -c /etc/crowdsec/user.yaml -file /var/log/nginx/nginx-2019.log.1 -type nginx
+<div class="codehilite"><pre><span></span><code>$ sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/nginx/nginx-2019.log.1 -type nginx
 ...
 INFO<span class="o">[</span><span class="m">13</span>-11-2020 <span class="m">13</span>:05:23<span class="o">]</span> Ip <span class="m">123</span>.206.50.249 performed <span class="s1">&#39;crowdsecurity/http-probing&#39;</span> <span class="o">(</span><span class="m">11</span> events over 6s<span class="o">)</span> at <span class="m">2019</span>-01-01 <span class="m">01</span>:37:32 +0100 CET 
 INFO<span class="o">[</span><span class="m">13</span>-11-2020 <span class="m">13</span>:05:23<span class="o">]</span> Ip <span class="m">123</span>.206.50.249 performed <span class="s1">&#39;crowdsecurity/http-backdoors-attempts&#39;</span> <span class="o">(</span><span class="m">2</span> events over 1s<span class="o">)</span> at <span class="m">2019</span>-01-01 <span class="m">01</span>:37:33 +0100 CET 
@@ -1852,16 +1927,16 @@ INFO<span class="o">[</span><span class="m">13</span>-11-2020 <span class="m">13
 </div>
 <h2 id="injecting-alerts-into-existing-database">Injecting alerts into existing database<a class="headerlink" href="#injecting-alerts-into-existing-database" title="Permanent link">&para;</a></h2>
 <p>If you already have a running crowdsec/Local API running and want to inject events into existing database, you can run crowdsec directly :</p>
-<div class="codehilite"><pre><span></span><code>sudo crowdsec -file ~/logs/nginx/access.log -type nginx --no-api
+<div class="codehilite"><pre><span></span><code>sudo crowdsec -dsn file://logs/nginx/access.log -type nginx --no-api
 </code></pre></div>
 
-<p>Crowdsec will process <code>~/logs/nginx/access.log</code> and push alerts to the Local API configured in your default configuration file (<code>/etc/crowdsec/config.yaml</code>, see <code>api.client.credentials_path</code>)</p>
+<p>Crowdsec will process <code>logs/nginx/access.log</code> and push alerts to the Local API configured in your default configuration file (<code>/etc/crowdsec/config.yaml</code>, see <code>api.client.credentials_path</code>)</p>
 <h2 id="injection-alerts-into-new-database-no-local-instance-running">Injection alerts into new database - no local instance running<a class="headerlink" href="#injection-alerts-into-new-database-no-local-instance-running" title="Permanent link">&para;</a></h2>
 <p>If you don't have a service currently running, you can run crowdsec directly :</p>
-<div class="codehilite"><pre><span></span><code>sudo crowdsec -file ~/logs/nginx/access.log -type nginx
+<div class="codehilite"><pre><span></span><code>sudo crowdsec -dsn file://logs/nginx/access.log -type nginx
 </code></pre></div>
 
-<p>Crowdsec will start a Local API and process <code>~/logs/nginx/access.log</code>.</p>
+<p>Crowdsec will start a Local API and process <code>logs/nginx/access.log</code>.</p>
 <h2 id="injection-alerts-into-new-database-while-local-instance-is-running">Injection alerts into new database - while local instance is running<a class="headerlink" href="#injection-alerts-into-new-database-while-local-instance-is-running" title="Permanent link">&para;</a></h2>
 <p>If you have a local instance running and you don't want to pollute your existing database, we are going to configure a separate instance of Local API &amp; database.</p>
 <p>Let's copy the existing configuration to edit it :</p>
@@ -1910,7 +1985,7 @@ password: ...
 </code></pre></div>
 
 <p>Now we can start the new Local API and crowdsec :</p>
-<div class="codehilite"><pre><span></span><code>$ crowdsec -c ./forensic.yaml -file ~/github/crowdsec/OLDS/LOGS/nginx/10k_ACCESS_LOGS.log -type nginx
+<div class="codehilite"><pre><span></span><code>$ crowdsec -c ./forensic.yaml -dsn file://github/crowdsec/OLDS/LOGS/nginx/10k_ACCESS_LOGS.log -type nginx
 ...
 INFO<span class="o">[</span><span class="m">15</span>-11-2020 <span class="m">10</span>:09:20<span class="o">]</span> Ip x.x.x.x performed <span class="s1">&#39;crowdsecurity/http-bad-user-agent&#39;</span> <span class="o">(</span><span class="m">2</span> events over 0s<span class="o">)</span> at <span class="m">2017</span>-10-21 <span class="m">13</span>:58:38 +0200 CEST 
 INFO<span class="o">[</span><span class="m">15</span>-11-2020 <span class="m">10</span>:09:20<span class="o">]</span> Ip y.y.y.y performed <span class="s1">&#39;crowdsecurity/http-probing&#39;</span> <span class="o">(</span><span class="m">11</span> events over 0s<span class="o">)</span> at <span class="m">2017</span>-10-23 <span class="m">12</span>:00:34 +0200 CEST 
@@ -1945,7 +2020,7 @@ $ <span class="nb">cd</span> tests
 </code></pre></div>
 
 <p>And we can process logs :</p>
-<div class="codehilite"><pre><span></span><code>$ ./crowdsec -c dev.yaml -file ~/github/crowdsec/OLDS/LOGS/nginx/10k_ACCESS_LOGS.log -type nginx
+<div class="codehilite"><pre><span></span><code>$ ./crowdsec -c dev.yaml -dsn file://github/crowdsec/OLDS/LOGS/nginx/10k_ACCESS_LOGS.log -type nginx
 INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> single file mode : <span class="nv">log_media</span><span class="o">=</span>stdout <span class="nv">daemonize</span><span class="o">=</span><span class="nb">true</span> 
 INFO<span class="o">[</span><span class="m">15</span>-11-2020 <span class="m">11</span>:18:27<span class="o">]</span> Crowdsec v1.0.0-rc-0ecb142dfffc89b019b6d9044cb7cc5569d12c70 
 INFO<span class="o">[</span><span class="m">15</span>-11-2020 <span class="m">11</span>:18:38<span class="o">]</span> Ip x.x.x.x performed <span class="s1">&#39;crowdsecurity/http-sensitive-files&#39;</span> <span class="o">(</span><span class="m">5</span> events over 4s<span class="o">)</span> at <span class="m">2017</span>-10-23 <span class="m">12</span>:35:54 +0200 CEST 

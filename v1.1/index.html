@@ -475,27 +475,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    Architecture
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#components" class="md-nav__link">
-    Components
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#moving-forward" class="md-nav__link">
-    Moving forward
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#about-this-documentation" class="md-nav__link">
     About this documentation
   </a>
@@ -635,27 +614,15 @@
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" data-md-state="indeterminate" type="checkbox" id="__nav_3_2" checked>
       
       <label class="md-nav__link" for="__nav_3_2">
-        Configurations management
+        Config management
         <span class="md-nav__icon md-icon"></span>
       </label>
-      <nav class="md-nav" aria-label="Configurations management" data-md-level="2">
+      <nav class="md-nav" aria-label="Config management" data-md-level="2">
         <label class="md-nav__title" for="__nav_3_2">
           <span class="md-nav__icon md-icon"></span>
-          Configurations management
+          Config management
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="user_guide/configurations_management/acquisition.html" class="md-nav__link">
-        Acquisition
-      </a>
-    </li>
-  
-
           
             
   
@@ -731,6 +698,93 @@
       <a href="user_guide/bouncer_machine_management.html" class="md-nav__link">
         Bouncers & machines management
       </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" data-md-state="indeterminate" type="checkbox" id="__nav_3_5" checked>
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Data sources config
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Data sources config" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Data sources config
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user_guide/data_sources/acquisition.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user_guide/data_sources/file.html" class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user_guide/data_sources/journalctl.html" class="md-nav__link">
+        Journalctl
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user_guide/data_sources/cloudwatch.html" class="md-nav__link">
+        Cloudwatch
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user_guide/data_sources/syslog.html" class="md-nav__link">
+        Syslog
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1779,27 +1833,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    Architecture
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#components" class="md-nav__link">
-    Components
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#moving-forward" class="md-nav__link">
-    Moving forward
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#about-this-documentation" class="md-nav__link">
     About this documentation
   </a>
@@ -1824,6 +1857,11 @@
                 
                 
                 <p><center><a href="https://hub.crowdsec.net/">[Hub]</a> <a href="https://github.com/crowdsecurity/crowdsec/releases">[Releases]</a></center></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning<p>For crowdsec versions <code>&lt;= 1.0</code> please refer to <a href="/Crowdsec/v0/">v0.3.X</a></p>
+<p>For crowdsec versions <code>&gt;= 1.0</code> please refer to <a href="/Crowdsec/v1/">v1.X</a></p>
+</p>
+</div>
 <h1 id="what-is-crowdsec-agent">What is Crowdsec-agent ?<a class="headerlink" href="#what-is-crowdsec-agent" title="Permanent link">&para;</a></h1>
 <p><a href="https://github.com/crowdsecurity/crowdsec">Crowdsec-agent</a> is an open-source and lightweight software that allows you to detect peers with malevolent behaviors and block them from accessing your systems at various level (infrastructural, system, applicative).</p>
 <p>To achieve this, Crowdsec-agent reads logs from different sources (files, streams ...) to parse, normalize and enrich them before matching them to threats patterns called scenarios. </p>
@@ -1843,32 +1881,6 @@
 <li>Admins have <a href="/Crowdsec/v1/observability/command_line/">a friendly command-line interface tool</a></li>
 </ul>
 </li>
-</ul>
-<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
-<p><img alt="Architecture" src="assets/images/crowdsec_architecture.png" /></p>
-<h2 id="components">Components<a class="headerlink" href="#components" title="Permanent link">&para;</a></h2>
-<p>crowdsec-agent ecosystem is based on the following components :</p>
-<ul>
-<li><a href="https://github.com/crowdsecurity/crowdsec">Crowdsec-agent</a> is the lightweight service that processes logs and keeps track of attacks.</li>
-<li><a href="/Crowdsec/v1/localAPI/">Local API (LAPI)</a> is a core component of crowdsec-agent that exposes a local API to interact with crowdsec-agent.</li>
-<li><a href="">cscli</a> is the command line interface for humans, it allows you to view, add, or remove bans as well as to install, find, or update scenarios and parsers</li>
-<li><a href="https://hub.crowdsec.net/browse/#bouncers">bouncers</a> are the components that block malevolent traffic, and can be deployed anywhere in your stack</li>
-</ul>
-<h2 id="moving-forward">Moving forward<a class="headerlink" href="#moving-forward" title="Permanent link">&para;</a></h2>
-<p>To learn more about crowdsec-agent and give it a try, please see :</p>
-<ul>
-<li><a href="/Crowdsec/v1/getting_started/installation/">How to install crowdsec-agent</a></li>
-<li><a href="/Crowdsec/v1/getting_started/crowdsec-tour/">Take a quick tour of crowdsec-agent and cscli features</a></li>
-<li><a href="/Crowdsec/v1/observability/overview/">Observability of crowdsec-agent</a></li>
-<li><a href="/Crowdsec/v1/getting_started/concepts/">Understand crowdsec-agent configuration</a></li>
-<li><a href="/Crowdsec/v1/bouncers/">Deploy bouncers to stop malevolent peers</a></li>
-<li><a href="/faq/">FAQ</a></li>
-</ul>
-<p>Don't hesitate to reach out if you're facing issues :</p>
-<ul>
-<li><a href="https://github.com/crowdsecurity/crowdsec/issues/new?assignees=&amp;labels=bug&amp;template=bug_report.md&amp;title=Bug%2F">report a bug</a></li>
-<li><a href="https://github.com/crowdsecurity/crowdsec/issues/new?assignees=&amp;labels=enhancement&amp;template=feature_request.md&amp;title=Improvment%2F">suggest an improvement</a></li>
-<li><a href="https://discourse.crowdsec.net">ask for help on the forums</a></li>
 </ul>
 <h2 id="about-this-documentation">About this documentation<a class="headerlink" href="#about-this-documentation" title="Permanent link">&para;</a></h2>
 <p>This document is split according to major Crowdsec-agent versions :</p>

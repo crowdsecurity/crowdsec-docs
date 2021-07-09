@@ -567,27 +567,15 @@
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" data-md-state="indeterminate" type="checkbox" id="__nav_3_2" checked>
       
       <label class="md-nav__link" for="__nav_3_2">
-        Configurations management
+        Config management
         <span class="md-nav__icon md-icon"></span>
       </label>
-      <nav class="md-nav" aria-label="Configurations management" data-md-level="2">
+      <nav class="md-nav" aria-label="Config management" data-md-level="2">
         <label class="md-nav__title" for="__nav_3_2">
           <span class="md-nav__icon md-icon"></span>
-          Configurations management
+          Config management
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../user_guide/configurations_management/acquisition.html" class="md-nav__link">
-        Acquisition
-      </a>
-    </li>
-  
-
           
             
   
@@ -663,6 +651,93 @@
       <a href="../user_guide/bouncer_machine_management.html" class="md-nav__link">
         Bouncers & machines management
       </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" data-md-state="indeterminate" type="checkbox" id="__nav_3_5" checked>
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Data sources config
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Data sources config" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Data sources config
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/acquisition.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/file.html" class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/journalctl.html" class="md-nav__link">
+        Journalctl
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/cloudwatch.html" class="md-nav__link">
+        Cloudwatch
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/syslog.html" class="md-nav__link">
+        Syslog
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1813,6 +1888,12 @@
 <p>MySQL and PostgreSQL are currently not supported by <code>cscli dashboard</code>. It means that you can run cscli dashboard only if you use <code>SQLite</code> (default) as storage database with your local API.</p>
 </div>
 <p>The cscli command <code>cscli dashboard setup</code> will use <a href="https://docs.docker.com/get-docker/">docker</a> to install <a href="https://hub.docker.com/r/metabase/metabase/">metabase docker image</a> and fetch our metabase template to have a configured and ready dashboard. </p>
+<div class="admonition tip">
+<p class="admonition-title">Protip</p>
+<p>If you use <code>podman</code> instead of <code>docker</code> and want to install the crowdsec dashboard, you need to run:</p>
+<p><code>sudo ln -s /var/run/podman/podman.sock /var/run/docker.sock</code> </p>
+<p>Then you can setup the dashboard with <code>sudo cscli dashboard setup</code></p>
+</div>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>Setup and Start crowdsec metabase dashboard</p>

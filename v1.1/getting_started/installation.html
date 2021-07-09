@@ -494,9 +494,60 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Install Crowdsec
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="installation.html" class="md-nav__link md-nav__link--active">
         Install Crowdsec
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#on-debian-ubuntu" class="md-nav__link">
+    On debian / ubuntu :
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#on-rhel-centos" class="md-nav__link">
+    On RHEL / CentOS :
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#on-freebsd" class="md-nav__link">
+    On FreeBSD :
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generic-nix-containers" class="md-nav__link">
+    Generic *nix &amp; containers :
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -579,27 +630,15 @@
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" data-md-state="indeterminate" type="checkbox" id="__nav_3_2" checked>
       
       <label class="md-nav__link" for="__nav_3_2">
-        Configurations management
+        Config management
         <span class="md-nav__icon md-icon"></span>
       </label>
-      <nav class="md-nav" aria-label="Configurations management" data-md-level="2">
+      <nav class="md-nav" aria-label="Config management" data-md-level="2">
         <label class="md-nav__title" for="__nav_3_2">
           <span class="md-nav__icon md-icon"></span>
-          Configurations management
+          Config management
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../user_guide/configurations_management/acquisition.html" class="md-nav__link">
-        Acquisition
-      </a>
-    </li>
-  
-
           
             
   
@@ -675,6 +714,93 @@
       <a href="../user_guide/bouncer_machine_management.html" class="md-nav__link">
         Bouncers & machines management
       </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" data-md-state="indeterminate" type="checkbox" id="__nav_3_5" checked>
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Data sources config
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Data sources config" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Data sources config
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/acquisition.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/file.html" class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/journalctl.html" class="md-nav__link">
+        Journalctl
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/cloudwatch.html" class="md-nav__link">
+        Cloudwatch
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/syslog.html" class="md-nav__link">
+        Syslog
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1709,6 +1835,42 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#on-debian-ubuntu" class="md-nav__link">
+    On debian / ubuntu :
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#on-rhel-centos" class="md-nav__link">
+    On RHEL / CentOS :
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#on-freebsd" class="md-nav__link">
+    On FreeBSD :
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generic-nix-containers" class="md-nav__link">
+    Generic *nix &amp; containers :
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1725,34 +1887,64 @@
                 
                 
                 <h1 id="installation-methods">Installation methods<a class="headerlink" href="#installation-methods" title="Permanent link">&para;</a></h1>
-<p>You can install crowdsec in different ways :</p>
+<h2 id="on-debian-ubuntu">On debian / ubuntu :<a class="headerlink" href="#on-debian-ubuntu" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Most users <a href="/Crowdsec/v1/getting_started/installation/#install-using-crowdsec-repository">set up crowdsec's repositories</a> and install from them, for ease of installation and upgrade</li>
+<li><a href="/Crowdsec/v1/getting_started/installation/#install-on-debian-using-crowdsec-repository">Set up crowdsec's repositories</a> and install from them, for ease of installation and upgrade</li>
 <li>Some users <a href="/Crowdsec/v1/getting_started/installation/#install-using-debian-official-packages">use debian's official crowdsec packages</a></li>
 <li>Some users download the DEB package directly and <a href="/Crowdsec/v1/getting_started/installation/#manually-install-the-debian-package">install it manually</a></li>
+</ul>
+<h2 id="on-rhel-centos">On RHEL / CentOS :<a class="headerlink" href="#on-rhel-centos" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="/Crowdsec/v1/getting_started/installation/#install-on-redhatcentos-using-crowdsec-repository">Set up crowdsec's repositories</a> and install from them, for ease of installation and upgrade</li>
+</ul>
+<h2 id="on-freebsd">On FreeBSD :<a class="headerlink" href="#on-freebsd" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="/Crowdsec/v1/getting_started/installation/#install-on-freebsd">crowdsec and the firewall bouncer</a> are available</li>
+</ul>
+<h2 id="generic-nix-containers">Generic *nix &amp; containers :<a class="headerlink" href="#generic-nix-containers" title="Permanent link">&para;</a></h2>
+<ul>
 <li>Some users download the tarball directly and <a href="/Crowdsec/v1/getting_started/installation/#install-from-the-release-tarball">install it manually</a></li>
 <li>Some users use the <a href="https://hub.docker.com/r/crowdsecurity/crowdsec">docker hub image</a></li>
 <li>And the most adventurous might want to <a href="/Crowdsec/v1/getting_started/installation/#install-from-source">build &amp; install from source</a></li>
 <li>And some might even want to <a href="/Crowdsec/v1/getting_started/installation/#build-docker-image">build their own docker image</a></li>
 <li>Or use it with <a href="https://github.com/crowdsecurity/example-docker-compose">docker-compose</a></li>
 </ul>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
-<p>Packaging for FreeBSD and RedHat/CentOS are WIP at the time of writing. Documentation will be updated once those packages are published &amp; functional.</p>
-</div>
-<h1 id="install-using-crowdsec-repository">Install using crowdsec repository<a class="headerlink" href="#install-using-crowdsec-repository" title="Permanent link">&para;</a></h1>
+<h1 id="required-resources">Required resources<a class="headerlink" href="#required-resources" title="Permanent link">&para;</a></h1>
+<p>Crowdsec agent itself is rather light, and in a small to medium setup should use less than 100Mb of memory.
+During intensive logs processing, CPU is going to be the most used resource, and memory usage shouldn't really grow.</p>
+<p>However, running <a href="https://www.metabase.com/">metabase</a> (the dashboard deployed by <code>cscli dashboard setup</code>) <a href="https://www.metabase.com/docs/latest/troubleshooting-guide/running.html">requires 1-2Gb of RAM</a>.</p>
+<h1 id="install-on-debian-using-crowdsec-repository">Install on debian using crowdsec repository<a class="headerlink" href="#install-on-debian-using-crowdsec-repository" title="Permanent link">&para;</a></h1>
+<p>On debian and ubuntu, packages are hosted on <a href="https://packagecloud.io">packagecloud.io</a>.</p>
 <p>Crowdsec distributes their own pragmatic debian packages that closely follow the development stream (packages are automatically published on release), and are suitable for those that want to keep up with the latest changes of crowdsec.</p>
 <h2 id="setup-the-repository">setup the repository<a class="headerlink" href="#setup-the-repository" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code>wget -qO - https://s3-eu-west-1.amazonaws.com/crowdsec.debian.pragmatic/crowdsec.asc <span class="p">|</span>sudo apt-key add - <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;deb https://s3-eu-west-1.amazonaws.com/crowdsec.debian.pragmatic/</span><span class="k">$(</span>lsb_release -cs<span class="k">)</span><span class="s2"> </span><span class="k">$(</span>lsb_release -cs<span class="k">)</span><span class="s2"> main&quot;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/crowdsec.list &gt; /dev/null
-sudo apt-get update
+<p>Instructions for adding repositories to your machine can be found in <a href="https://packagecloud.io/crowdsec/crowdsec/install#bash-deb">packagecloud's installation docs</a> :</p>
+<div class="codehilite"><pre><span></span><code>curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh <span class="p">|</span> sudo bash
 </code></pre></div>
 
-<p>The following debian suites / architectures are available :</p>
+<p>If you're not fond of <code>curl ... | sudo bash</code>, follow instruction bellow :</p>
+<ol>
+<li>Retrieve the signing key </li>
+</ol>
+<div class="codehilite"><pre><span></span><code>curl -L https://packagecloud.io/crowdsec/crowdsec/gpgkey <span class="p">|</span> sudo apt-key add -
+</code></pre></div>
+
+<p>2.Install the apt-transport-https package in order to be able to fetch packages over HTTPS:</p>
+<div class="codehilite"><pre><span></span><code>sudo apt-get install -y apt-transport-https
+</code></pre></div>
+
+<ol>
+<li>Add the appropriate repository to your source.list </li>
+</ol>
+<p><strong><em>debian:</em></strong></p>
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span> <span class="s2">&quot;deb https://packagecloud.io/crowdsec/crowdsec/debian/ </span><span class="k">$(</span>lsb_release -cs<span class="k">)</span><span class="s2"> main&quot;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/crowdsec.list &gt; /dev/null
+</code></pre></div>
+
+<p><strong><em>ubuntu:</em></strong></p>
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span> <span class="s2">&quot;deb https://packagecloud.io/crowdsec/crowdsec/ubuntu/ </span><span class="k">$(</span>lsb_release -cs<span class="k">)</span><span class="s2"> main&quot;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/crowdsec.list &gt; /dev/null
+</code></pre></div>
+
 <h2 id="install-crowdsec">install crowdsec<a class="headerlink" href="#install-crowdsec" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code>sudo apt-get install crowdsec
-</code></pre></div>
-
-<h2 id="compatibility-matrix">compatibility matrix<a class="headerlink" href="#compatibility-matrix" title="Permanent link">&para;</a></h2>
+<p>The following debian suites / architectures are available :</p>
 <p><center></p>
 <table>
 <thead>
@@ -1764,43 +1956,103 @@ sudo apt-get update
 <tbody>
 <tr>
 <td align="left">bionic</td>
-<td align="center">amd64, arm64, i386</td>
+<td align="center">amd64, arm64</td>
 </tr>
 <tr>
 <td align="left">bullseye</td>
-<td align="center">amd64, i386</td>
+<td align="center">amd64, arm64</td>
 </tr>
 <tr>
 <td align="left">buster</td>
-<td align="center">amd64, arm64, i386</td>
+<td align="center">amd64, arm64</td>
 </tr>
 <tr>
 <td align="left">focal</td>
-<td align="center">amd64, arm64, i386</td>
-</tr>
-<tr>
-<td align="left">sid</td>
-<td align="center">amd64, i386</td>
+<td align="center">amd64, arm64</td>
 </tr>
 <tr>
 <td align="left">stretch</td>
-<td align="center">amd64, arm64, i386</td>
+<td align="center">amd64, arm64</td>
 </tr>
 <tr>
 <td align="left">xenial</td>
-<td align="center">amd64, arm64, i386</td>
+<td align="center">amd64, arm64</td>
 </tr>
 </tbody>
 </table>
 <p></center></p>
+<div class="codehilite"><pre><span></span><code>sudo apt-get update
+sudo apt-get install crowdsec
+</code></pre></div>
+
 <h1 id="manually-install-the-debian-package">Manually install the debian package<a class="headerlink" href="#manually-install-the-debian-package" title="Permanent link">&para;</a></h1>
-<p>Fetch your package from the <a href="https://s3-eu-west-1.amazonaws.com/crowdsec.debian.pragmatic/">public repository</a>, and install it manually :</p>
+<p>Fetch your package from the <a href="https://packagecloud.io/crowdsec/crowdsec">public repository</a>, and install it manually :</p>
 <div class="codehilite"><pre><span></span><code>sudo dpkg -i ./crowdsec_1.0.7-4_amd64.deb
 </code></pre></div>
 
 <h1 id="install-using-debian-official-packages">Install using debian official packages<a class="headerlink" href="#install-using-debian-official-packages" title="Permanent link">&para;</a></h1>
 <p>Crowdsec is available for <a href="https://packages.debian.org/search?searchon=names&amp;keywords=crowdsec">bullseye &amp; sid</a> and can be installed simply :</p>
 <div class="codehilite"><pre><span></span><code>sudo apt-get install crowdsec
+</code></pre></div>
+
+<h1 id="install-on-redhatcentos-using-crowdsec-repository">Install on redhat/centos using crowdsec repository<a class="headerlink" href="#install-on-redhatcentos-using-crowdsec-repository" title="Permanent link">&para;</a></h1>
+<p>On redhat and centos, packages are hosted on <a href="https://packagecloud.io">packagecloud.io</a>.</p>
+<p>Crowdsec distributes their own pragmatic debian packages that closely follow the development stream (packages are automatically published on release), and are suitable for those that want to keep up with the latest changes of crowdsec.</p>
+<h2 id="setup-the-repository_1">setup the repository<a class="headerlink" href="#setup-the-repository_1" title="Permanent link">&para;</a></h2>
+<p>Instructions for adding repositories to your machine can be found in <a href="https://packagecloud.io/crowdsec/crowdsec/install#bash-rpm">packagecloud's installation docs</a> :</p>
+<div class="codehilite"><pre><span></span><code>curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh <span class="p">|</span> sudo bash
+</code></pre></div>
+
+<p>If you're not fond of <code>curl ... | sudo bash</code>, you <a href="https://packagecloud.io/crowdsec/crowdsec/install#manual-rpm">can look at the manual method</a> to directly add the appropriate <code>.repo</code> to your configuration.</p>
+<h2 id="install-crowdsec_1">install crowdsec<a class="headerlink" href="#install-crowdsec_1" title="Permanent link">&para;</a></h2>
+<p>The following rhel/centos suites / architectures are available :</p>
+<p><center></p>
+<table>
+<thead>
+<tr>
+<th align="left">Suite</th>
+<th align="center">Architecture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">el/7</td>
+<td align="center">amd64</td>
+</tr>
+<tr>
+<td align="left">el/8</td>
+<td align="center">amd64, arm64</td>
+</tr>
+<tr>
+<td align="left">fedora/33</td>
+<td align="center">amd64, arm64</td>
+</tr>
+<tr>
+<td align="left">fedora/34</td>
+<td align="center">amd64, arm64</td>
+</tr>
+<tr>
+<td align="left">amazon linux/2</td>
+<td align="center">amd64, arm64</td>
+</tr>
+</tbody>
+</table>
+<p></center></p>
+<p><strong>centos/8 and fedora/33 and fedora/34 :</strong></p>
+<div class="codehilite"><pre><span></span><code>dnf install crowdsec
+</code></pre></div>
+
+<p><strong>older versions :</strong></p>
+<div class="codehilite"><pre><span></span><code>yum install crowdsec
+</code></pre></div>
+
+<h1 id="install-on-freebsd">Install on FreeBSD<a class="headerlink" href="#install-on-freebsd" title="Permanent link">&para;</a></h1>
+<p>Crowdsec is available on FreeBSD:</p>
+<div class="codehilite"><pre><span></span><code>sudo pkg install crowdsec
+</code></pre></div>
+
+<p>The <a href="https://github.com/crowdsecurity/cs-firewall-bouncer">crowdsec firewall bouncer</a> is available as well:</p>
+<div class="codehilite"><pre><span></span><code>sudo pkg install crowdsec-firewall-bouncer
 </code></pre></div>
 
 <h1 id="install-from-the-release-tarball">Install from the release tarball<a class="headerlink" href="#install-from-the-release-tarball" title="Permanent link">&para;</a></h1>

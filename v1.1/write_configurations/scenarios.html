@@ -567,27 +567,15 @@
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" data-md-state="indeterminate" type="checkbox" id="__nav_3_2" checked>
       
       <label class="md-nav__link" for="__nav_3_2">
-        Configurations management
+        Config management
         <span class="md-nav__icon md-icon"></span>
       </label>
-      <nav class="md-nav" aria-label="Configurations management" data-md-level="2">
+      <nav class="md-nav" aria-label="Config management" data-md-level="2">
         <label class="md-nav__title" for="__nav_3_2">
           <span class="md-nav__icon md-icon"></span>
-          Configurations management
+          Config management
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../user_guide/configurations_management/acquisition.html" class="md-nav__link">
-        Acquisition
-      </a>
-    </li>
-  
-
           
             
   
@@ -663,6 +651,93 @@
       <a href="../user_guide/bouncer_machine_management.html" class="md-nav__link">
         Bouncers & machines management
       </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" data-md-state="indeterminate" type="checkbox" id="__nav_3_5" checked>
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Data sources config
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Data sources config" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Data sources config
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/acquisition.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/file.html" class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/journalctl.html" class="md-nav__link">
+        Journalctl
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/cloudwatch.html" class="md-nav__link">
+        Cloudwatch
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/syslog.html" class="md-nav__link">
+        Syslog
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1894,7 +1969,7 @@ May <span class="m">12</span> <span class="m">09</span>:40:16 sd-126005 kernel: 
 <p class="admonition-title">Info</p>
 <p>This assumes that you've followed the previous tutorial and that your iptables logs are properly parsed</p>
 </div>
-<div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -file ./x.log -type syslog
+<div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -dsn file://x.log -type syslog
 </code></pre></div>
 
 <details>
@@ -1974,7 +2049,7 @@ DEBU<span class="o">[</span><span class="m">04</span>-08-2020 <span class="m">10
 <li>we added a <code>groupby</code> directive : it's going to ensure that each offending peer get its own bucket</li>
 </ul>
 <p>Let's try again !</p>
-<div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -file ./x.log -type syslog
+<div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -dsn file://x.log -type syslog
 </code></pre></div>
 
 <details>
@@ -2032,7 +2107,7 @@ INFO<span class="o">[</span><span class="m">12</span>-05-2020 <span class="m">11
 <li>We fixed the <code>labels</code> so that the event makes sense !</li>
 </ul>
 <p>Let's see what it changes :</p>
-<div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -file ./x.log -type syslog
+<div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -dsn file://x.log -type syslog
 </code></pre></div>
 
 <details>
@@ -2067,7 +2142,7 @@ May <span class="m">12</span> <span class="m">12</span>:09:00 sd-126005 kernel: 
 </code></pre></div>
 
 <p>We have around 80k lines averaging about 24h of logs, let's try !</p>
-<div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -file ./kern.log -type syslog 
+<div class="codehilite"><pre><span></span><code>./crowdsec -c ./dev.yaml -dsn file://kern.log -type syslog 
 </code></pre></div>
 
 <details>

@@ -569,27 +569,15 @@
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" data-md-state="indeterminate" type="checkbox" id="__nav_3_2" checked>
       
       <label class="md-nav__link" for="__nav_3_2">
-        Configurations management
+        Config management
         <span class="md-nav__icon md-icon"></span>
       </label>
-      <nav class="md-nav" aria-label="Configurations management" data-md-level="2">
+      <nav class="md-nav" aria-label="Config management" data-md-level="2">
         <label class="md-nav__title" for="__nav_3_2">
           <span class="md-nav__icon md-icon"></span>
-          Configurations management
+          Config management
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="configurations_management/acquisition.html" class="md-nav__link">
-        Acquisition
-      </a>
-    </li>
-  
-
           
             
   
@@ -665,6 +653,93 @@
       <a href="bouncer_machine_management.html" class="md-nav__link">
         Bouncers & machines management
       </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" data-md-state="indeterminate" type="checkbox" id="__nav_3_5" checked>
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Data sources config
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Data sources config" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Data sources config
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/acquisition.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/file.html" class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/journalctl.html" class="md-nav__link">
+        Journalctl
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/cloudwatch.html" class="md-nav__link">
+        Cloudwatch
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/syslog.html" class="md-nav__link">
+        Syslog
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1815,11 +1890,11 @@
 <h2 id="general-advice">General Advice<a class="headerlink" href="#general-advice" title="Permanent link">&para;</a></h2>
 <p>When trying to debug a parser or a scenario :</p>
 <ul>
-<li>Work on "cold logs" (with the <code>-file</code> and <code>-type</code> options) rather than live ones</li>
+<li>Work on "cold logs" (with the <code>-dsn</code> and <code>-type</code> options) rather than live ones</li>
 <li>Use the <code>/etc/crowdsec/user.yaml</code> configuration files to have logs on stdout</li>
 </ul>
 <h2 id="using-user-mode-configuration">Using user-mode configuration<a class="headerlink" href="#using-user-mode-configuration" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code>crowdsec -c /etc/crowdsec/user.yaml -file mylogs.log.gz -type syslog
+<div class="codehilite"><pre><span></span><code>crowdsec -c /etc/crowdsec/user.yaml -dsn file://mylogs.log.gz -type syslog
 INFO<span class="o">[</span><span class="m">05</span>-08-2020 <span class="m">16</span>:15:47<span class="o">]</span> Crowdsec v0.3.0-rc3-7525f11975a0107746213862dc41c69e00122ac7 
 INFO<span class="o">[</span><span class="m">05</span>-08-2020 <span class="m">16</span>:15:47<span class="o">]</span> Loading grok library                         
 ...
@@ -1830,7 +1905,7 @@ WARN<span class="o">[</span><span class="m">05</span>-08-2020 <span class="m">16
 <ul>
 <li><code>/etc/crowdsec/user.yaml</code> disables demonization and push logs to stdout/stderr</li>
 <li><code>-type</code> must respect expected log type (ie. <code>nginx</code> <code>syslog</code> etc.)</li>
-<li><code>-file</code> must point to a flat file or a gzip file</li>
+<li><code>-dsn</code> must point to a valid log source (file, gz logs, cloudwatch or such)</li>
 </ul>
 <p>When processing logs like this, crowdsec-agent runs in "time machine" mode, and relies on the timestamps <em>in</em> the logs to evaluate scenarios. You will most likely need the <code>crowdsecurity/dateparse-enrich</code> parser for this.</p>
 <h2 id="testing-configurations-on-live-system">Testing configurations on live system<a class="headerlink" href="#testing-configurations-on-live-system" title="Permanent link">&para;</a></h2>
@@ -1915,7 +1990,7 @@ INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> 
  crowdsecurity/dateparse-enrich  ✔️  enabled  <span class="m">0</span>.1      config/parsers/s02-enrich/dateparse-enrich.yaml 
 -------------------------------------------------------------------------------------------------------
 ...
-$ ./crowdsec -c dev.yaml -file sshd.log -type syslog
+$ ./crowdsec -c dev.yaml -dsn file://sshd.log -type syslog
 INFO<span class="o">[</span><span class="m">05</span>-08-2020 <span class="m">16</span>:23:32<span class="o">]</span> Crowdsec v0.3.0-rc3-7525f11975a0107746213862dc41c69e00122ac7 
 INFO<span class="o">[</span><span class="m">05</span>-08-2020 <span class="m">16</span>:23:32<span class="o">]</span> Loading grok library                         
 ...
