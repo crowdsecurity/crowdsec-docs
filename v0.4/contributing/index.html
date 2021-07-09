@@ -1,0 +1,875 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="canonical" href="https://toto.com/v0.4/contributing/">
+      
+      <link rel="icon" href="../assets/images/crowdsec2.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Guide - Crowdsec</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,400i,700%7C&display=fallback">
+        <style>:root{--md-text-font-family:"Montserrat";--md-code-font-family:""}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="#3d85c6" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#contributing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Crowdsec" class="md-header__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Crowdsec
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href=".." class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-tabs__link">
+      API Swagger
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://hub.crowdsec.net/" target="_blank" class="md-tabs__link">
+      Hub
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://github.com/crowdsecurity/crowdsec/releases" target="_blank" class="md-tabs__link">
+      Releases
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="./" class="md-tabs__link md-tabs__link--active">
+        Contributing
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../faq/" class="md-tabs__link">
+        FAQ
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Crowdsec" class="md-nav__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    Crowdsec
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-nav__link">
+        API Swagger
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hub.crowdsec.net/" target="_blank" class="md-nav__link">
+        Hub
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/crowdsecurity/crowdsec/releases" target="_blank" class="md-nav__link">
+        Releases
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      <label class="md-nav__link" for="__nav_5">
+        Contributing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Contributing" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Guide
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Guide
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contributing-to-the-documentation" class="md-nav__link">
+    Contributing to the documentation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing-to-the-code" class="md-nav__link">
+    Contributing to the code
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing-to-the-parsersscenarios" class="md-nav__link">
+    Contributing to the parsers/scenarios
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contacting-the-team" class="md-nav__link">
+    Contacting the team
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#publishing-bouncers" class="md-nav__link">
+    Publishing bouncers
+  </a>
+  
+    <nav class="md-nav" aria-label="Publishing bouncers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    Why ?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how" class="md-nav__link">
+    How ?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#publishing-parsers-scenarios-and-collections" class="md-nav__link">
+    Publishing parsers, scenarios and collections
+  </a>
+  
+    <nav class="md-nav" aria-label="Publishing parsers, scenarios and collections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why_1" class="md-nav__link">
+    Why ?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how_1" class="md-nav__link">
+    How ?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" data-md-state="indeterminate" type="checkbox" id="__nav_6" checked>
+      
+      <label class="md-nav__link" for="__nav_6">
+        FAQ
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="FAQ" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          FAQ
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        Questions
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contributing-to-the-documentation" class="md-nav__link">
+    Contributing to the documentation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing-to-the-code" class="md-nav__link">
+    Contributing to the code
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing-to-the-parsersscenarios" class="md-nav__link">
+    Contributing to the parsers/scenarios
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contacting-the-team" class="md-nav__link">
+    Contacting the team
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#publishing-bouncers" class="md-nav__link">
+    Publishing bouncers
+  </a>
+  
+    <nav class="md-nav" aria-label="Publishing bouncers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    Why ?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how" class="md-nav__link">
+    How ?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#publishing-parsers-scenarios-and-collections" class="md-nav__link">
+    Publishing parsers, scenarios and collections
+  </a>
+  
+    <nav class="md-nav" aria-label="Publishing parsers, scenarios and collections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why_1" class="md-nav__link">
+    Why ?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how_1" class="md-nav__link">
+    How ?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/crowdsecurity/crowdsec/edit/master/docs/contributing.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">&para;</a></h1>
+<p>You have an idea, a suggestion or you spotted a mistake ?
+Help us improve the software and the user experience, to make the internet a safer place together !</p>
+<h2 id="contributing-to-the-documentation">Contributing to the documentation<a class="headerlink" href="#contributing-to-the-documentation" title="Permanent link">&para;</a></h2>
+<p>If you spotted some mistakes in the documentation or have improvement suggestions, you can :</p>
+<ul>
+<li>open a <a href="https://github.com/crowdsecurity/crowdsec/issues/new">new documentation issue</a> if you are comfortable with github</li>
+<li>let us know on <a href="http://discourse.crowdsec.net">CrowdSecurity discourse</a> if you want to discuss about it</li>
+</ul>
+<p>Let us as well know if you have some improvement suggestions !</p>
+<details>
+  <summary>Preview your documentation changes locally</summary>
+
+
+<div class="codehilite"><pre><span></span><code>python3 -m venv cs-env
+<span class="nb">source</span> cs-env/bin/activate
+pip install -r docs/requirements.txt
+mkdocs serve
+</code></pre></div>
+
+
+
+</details>
+
+<h2 id="contributing-to-the-code">Contributing to the code<a class="headerlink" href="#contributing-to-the-code" title="Permanent link">&para;</a></h2>
+<ul>
+<li>If you want to report a bug, you can use <a href="https://github.com/crowdsecurity/crowdsec/issues">the github bugtracker</a></li>
+<li>If you want to suggest an improvement you can use either <a href="https://github.com/crowdsecurity/crowdsec/issues">the github bugtracker</a> or the <a href="http://discourse.crowdsec.net">CrowdSecurity discourse</a> if you want to discuss </li>
+</ul>
+<h2 id="contributing-to-the-parsersscenarios">Contributing to the parsers/scenarios<a class="headerlink" href="#contributing-to-the-parsersscenarios" title="Permanent link">&para;</a></h2>
+<p>If you want to contribute your parser or scenario to the community and have them appear on the <a href="https://hub.crowdsec.net/">Crowdsec Hub</a>, you should <a href="https://github.com/crowdsecurity/hub/pulls">open a merge request</a> on the hub.</p>
+<p>We are currently working on a proper <a href="https://en.wikipedia.org/wiki/Continuous_integration">CI</a> for the <a href="https://hub.crowdsec.net/">Crowdsec Hub</a>, so for now all contribution are subject to peer-review, please bear with us !</p>
+<h2 id="contacting-the-team">Contacting the team<a class="headerlink" href="#contacting-the-team" title="Permanent link">&para;</a></h2>
+<p>If you want to contact us using non-public media, you can contact us on <code>support</code> AT <code>crowdsec</code> DOT <code>net</code> with the following gpg-key :</p>
+<div class="codehilite"><pre><span></span><code>-----BEGIN PGP PUBLIC KEY BLOCK-----
+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
+=Edl+
+-----END PGP PUBLIC KEY BLOCK-----
+</code></pre></div>
+
+<h2 id="publishing-bouncers">Publishing bouncers<a class="headerlink" href="#publishing-bouncers" title="Permanent link">&para;</a></h2>
+<p>We do welcome bouncers from the community, and will gladly publish them on the hub.</p>
+<h3 id="why">Why ?<a class="headerlink" href="#why" title="Permanent link">&para;</a></h3>
+<p>Sharing your bouncer on the hub allows other users to find it and use it. While increasing your code's visibility, it ensures as well a benevolent look from the community and the team over it.</p>
+<h3 id="how">How ?<a class="headerlink" href="#how" title="Permanent link">&para;</a></h3>
+<p>To have your bouncer published on the hub, please simply <a href="https://github.com/crowdsecurity/hub/issues/new">open a new issue on the hub</a>, requesting "bouncer inclusion". The bouncer will then be reviewed by the team, and then will be published directly on the hub, for everyone to find &amp; use it !</p>
+<p>The information that should be stated in your issue are :</p>
+<ul>
+<li>The source repository of your bouncer (for example <code>https://github.com/crowdsecurity/cs-firewall-bouncer/</code>)</li>
+<li>The software licence used</li>
+<li>The current status of the bouncer (stage : dev/unstable/stable)</li>
+<li>Documentation (can be simply in the README.md) :<ul>
+<li>must contains : installing, uninstalling</li>
+<li>should contains : configuration documentation </li>
+</ul>
+</li>
+<li>Link to existing tests if applicable (functional tests or unit tests)</li>
+</ul>
+<p>Please take care of the following :</p>
+<ul>
+<li>Ensure your repository has a About/Short description meaningful enough : it will be displayed in the hub</li>
+<li>Ensure your repository has a decent README.md file : it will be displayed in the hub</li>
+<li>Ensure your repository has <em>at least</em> one release : this is what users will be looking for</li>
+<li>(ideally) Have a "social preview image" on your repository : this will be displayed in the hub when available</li>
+<li>(ideally) A Howto or link to guide that provides a hands-on experience with the bouncer</li>
+</ul>
+<p>Please find below a template :</p>
+<div class="codehilite"><pre><span></span><code>Hello,
+
+I would like to suggest the addition of the `XXXX` to the hub :
+
+ - Source repository: https://github.com/xxx/xxx/
+ - Licence : MIT
+ - Current status : stable (has been used in production for a while)
+ - README/doc : https://github.com/xxx/xxx/blob/main/README.md
+ - Existing tests :
+    - functional tests : https://github.com/xxx/xxx/blob/main/.github/workflows/tests.yml
+
+ - Short/Long description : OK
+ - Howto : in README
+ - At least one release : yes
+</code></pre></div>
+
+<h2 id="publishing-parsers-scenarios-and-collections">Publishing parsers, scenarios and collections<a class="headerlink" href="#publishing-parsers-scenarios-and-collections" title="Permanent link">&para;</a></h2>
+<h3 id="why_1">Why ?<a class="headerlink" href="#why_1" title="Permanent link">&para;</a></h3>
+<p>Sharing your parsers, scenarios and collections on the hub allows other users to find it and use it. While increasing your code's visibility, it ensures as well a benevolent look from the community and the team over it.</p>
+<h3 id="how_1">How ?<a class="headerlink" href="#how_1" title="Permanent link">&para;</a></h3>
+<p>To have your parser/scenario published on the hub, please simply <a href="https://github.com/crowdsecurity/hub/issues/new">open a new issue on the hub</a>, requesting "parser/scenario inclusion". The configurations will then be reviewed by the team, and then will be published directly on the hub, for everyone to find &amp; use it !</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Home
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../faq/" class="md-footer__link md-footer__link--next" aria-label="Next: Questions" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Questions
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.expand", "navigation.instant", "navigation.section"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>
