@@ -1,0 +1,2501 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/crowdsec2.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Scenarios format - Crowdsec</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,400i,700%7C&display=fallback">
+        <style>:root{--md-text-font-family:"Montserrat";--md-code-font-family:""}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="#3d85c6" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#understanding-scenarios" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Crowdsec" class="md-header__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Crowdsec
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Scenarios format
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting_started/concepts.html" class="md-tabs__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../user_guide/cscli.html" class="md-tabs__link">
+        User guide
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../cscli/cscli.html" class="md-tabs__link">
+        CLI
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../localAPI/index.html" class="md-tabs__link">
+        Local API
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../observability/overview.html" class="md-tabs__link">
+        Observability
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../bouncers/index.html" class="md-tabs__link">
+      Bouncers
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="stages.html" class="md-tabs__link md-tabs__link--active">
+        References
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../write_configurations/requirements.html" class="md-tabs__link">
+        Write Configurations
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../migration.html" class="md-tabs__link">
+      Upgrade V0.X to V1.X
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-tabs__link">
+      API Swagger
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://hub.crowdsec.net/" target="_blank" class="md-tabs__link">
+      Hub
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://github.com/crowdsecurity/crowdsec/releases" target="_blank" class="md-tabs__link">
+      Releases
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../contributing.html" class="md-tabs__link">
+        Contributing
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../faq.html" class="md-tabs__link">
+        FAQ
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Crowdsec" class="md-nav__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    Crowdsec
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" data-md-state="indeterminate" type="checkbox" id="__nav_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2">
+        Getting Started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/concepts.html" class="md-nav__link">
+        Concepts
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/installation.html" class="md-nav__link">
+        Install Crowdsec
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/upgrades.html" class="md-nav__link">
+        Upgrade Crowdsec
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/crowdsec-tour.html" class="md-nav__link">
+        Crowdsec Tour
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" data-md-state="indeterminate" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        User guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/cscli.html" class="md-nav__link">
+        CLI
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" data-md-state="indeterminate" type="checkbox" id="__nav_3_2" checked>
+      
+      <label class="md-nav__link" for="__nav_3_2">
+        Configurations management
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Configurations management" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Configurations management
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/acquisition.html" class="md-nav__link">
+        Acquisition
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/collections.html" class="md-nav__link">
+        Collections
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/enrichers.html" class="md-nav__link">
+        Enrichers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/decision_management.html" class="md-nav__link">
+        Decisions management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/bouncer_machine_management.html" class="md-nav__link">
+        Bouncers & machines management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/database.html" class="md-nav__link">
+        Databases
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/network.html" class="md-nav__link">
+        Network management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/simulation_mode.html" class="md-nav__link">
+        Simulation management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/forensic_mode.html" class="md-nav__link">
+        Crowdsec forensic mode
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/debugging_configs.html" class="md-nav__link">
+        Debugging
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" data-md-state="indeterminate" type="checkbox" id="__nav_4" checked>
+      
+      <label class="md-nav__link" for="__nav_4">
+        CLI
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="CLI" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          CLI
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli.html" class="md-nav__link">
+        Cscli
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_alerts.html" class="md-nav__link">
+        Alerts
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_bouncers.html" class="md-nav__link">
+        Bouncers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_collections.html" class="md-nav__link">
+        Collections
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_completion.html" class="md-nav__link">
+        Completion
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_config.html" class="md-nav__link">
+        Config
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_dashboard.html" class="md-nav__link">
+        Dashboard
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_decisions.html" class="md-nav__link">
+        Decisions
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_hub.html" class="md-nav__link">
+        Hub
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_machines.html" class="md-nav__link">
+        Machines
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_metrics.html" class="md-nav__link">
+        Metrics
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_postoverflows.html" class="md-nav__link">
+        Postoverflows
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_simulation.html" class="md-nav__link">
+        Simulation
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" data-md-state="indeterminate" type="checkbox" id="__nav_5" checked>
+      
+      <label class="md-nav__link" for="__nav_5">
+        Local API
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Local API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Local API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../localAPI/index.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../localAPI/howto.html" class="md-nav__link">
+        API Guide
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-nav__link">
+        Swagger
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" data-md-state="indeterminate" type="checkbox" id="__nav_6" checked>
+      
+      <label class="md-nav__link" for="__nav_6">
+        Observability
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Observability" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Observability
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/logs.html" class="md-nav__link">
+        Logs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3" data-md-state="indeterminate" type="checkbox" id="__nav_6_3" checked>
+      
+      <label class="md-nav__link" for="__nav_6_3">
+        Metrics
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Metrics" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          Metrics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/prometheus.html" class="md-nav__link">
+        Prometheus
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/command_line.html" class="md-nav__link">
+        Command line
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/dashboard.html" class="md-nav__link">
+        Dashboard
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bouncers/index.html" class="md-nav__link">
+        Bouncers
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+      
+      <label class="md-nav__link" for="__nav_8">
+        References
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="References" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          References
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" checked>
+      
+      <label class="md-nav__link" for="__nav_8_1">
+        Parsers, Scenarios etc.
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Parsers, Scenarios etc." data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_1">
+          <span class="md-nav__icon md-icon"></span>
+          Parsers, Scenarios etc.
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stages.html" class="md-nav__link">
+        Stages format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="parsers.html" class="md-nav__link">
+        Parsers format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Scenarios format
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="scenarios.html" class="md-nav__link md-nav__link--active">
+        Scenarios format
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-scenarios" class="md-nav__link">
+    Understanding scenarios
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-concepts" class="md-nav__link">
+    Scenario concepts
+  </a>
+  
+    <nav class="md-nav" aria-label="Scenario concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#timemachine" class="md-nav__link">
+    TimeMachine
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-directives" class="md-nav__link">
+    Scenario directives
+  </a>
+  
+    <nav class="md-nav" aria-label="Scenario directives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type" class="md-nav__link">
+    type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name-description" class="md-nav__link">
+    name &amp; description
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter" class="md-nav__link">
+    filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#duration" class="md-nav__link">
+    duration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#groupby" class="md-nav__link">
+    groupby
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distinct" class="md-nav__link">
+    distinct
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capacity" class="md-nav__link">
+    capacity
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache_size" class="md-nav__link">
+    cache_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leakspeed" class="md-nav__link">
+    leakspeed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#labels" class="md-nav__link">
+    labels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blackhole" class="md-nav__link">
+    blackhole
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug" class="md-nav__link">
+    debug
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reprocess" class="md-nav__link">
+    reprocess
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache_size_1" class="md-nav__link">
+    cache_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overflow_filter" class="md-nav__link">
+    overflow_filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#format" class="md-nav__link">
+    format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    Scope
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="postoverflows.html" class="md-nav__link">
+        PostOverlows format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="enrichers.html" class="md-nav__link">
+        Enrichers format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="collections.html" class="md-nav__link">
+        Collections format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="expressions.html" class="md-nav__link">
+        Expressions helpers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="patterns-documentation.html" class="md-nav__link">
+        Patterns references
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" data-md-state="indeterminate" type="checkbox" id="__nav_8_2" checked>
+      
+      <label class="md-nav__link" for="__nav_8_2">
+        Configuration files
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Configuration files" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration files
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="crowdsec-config.html" class="md-nav__link">
+        Configuration format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="database.html" class="md-nav__link">
+        Database format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="acquisition.html" class="md-nav__link">
+        Acquisition format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="profiles.html" class="md-nav__link">
+        Profiles format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simulation.html" class="md-nav__link">
+        Simulation configuration
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" data-md-state="indeterminate" type="checkbox" id="__nav_8_3" checked>
+      
+      <label class="md-nav__link" for="__nav_8_3">
+        Runtime objects
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Runtime objects" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          Runtime objects
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="events.html" class="md-nav__link">
+        Event object
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alerts.html" class="md-nav__link">
+        Alert object
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="decisions.html" class="md-nav__link">
+        Decision object
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" data-md-state="indeterminate" type="checkbox" id="__nav_9" checked>
+      
+      <label class="md-nav__link" for="__nav_9">
+        Write Configurations
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Write Configurations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Write Configurations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/acquisition.html" class="md-nav__link">
+        Acquisition
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/whitelist.html" class="md-nav__link">
+        Whitelists
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migration.html" class="md-nav__link">
+        Upgrade V0.X to V1.X
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-nav__link">
+        API Swagger
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hub.crowdsec.net/" target="_blank" class="md-nav__link">
+        Hub
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/crowdsecurity/crowdsec/releases" target="_blank" class="md-nav__link">
+        Releases
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_14" data-md-state="indeterminate" type="checkbox" id="__nav_14" checked>
+      
+      <label class="md-nav__link" for="__nav_14">
+        Contributing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Contributing" data-md-level="1">
+        <label class="md-nav__title" for="__nav_14">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing.html" class="md-nav__link">
+        Guide
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_15" data-md-state="indeterminate" type="checkbox" id="__nav_15" checked>
+      
+      <label class="md-nav__link" for="__nav_15">
+        FAQ
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="FAQ" data-md-level="1">
+        <label class="md-nav__title" for="__nav_15">
+          <span class="md-nav__icon md-icon"></span>
+          FAQ
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq.html" class="md-nav__link">
+        Questions
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-scenarios" class="md-nav__link">
+    Understanding scenarios
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-concepts" class="md-nav__link">
+    Scenario concepts
+  </a>
+  
+    <nav class="md-nav" aria-label="Scenario concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#timemachine" class="md-nav__link">
+    TimeMachine
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-directives" class="md-nav__link">
+    Scenario directives
+  </a>
+  
+    <nav class="md-nav" aria-label="Scenario directives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type" class="md-nav__link">
+    type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name-description" class="md-nav__link">
+    name &amp; description
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter" class="md-nav__link">
+    filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#duration" class="md-nav__link">
+    duration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#groupby" class="md-nav__link">
+    groupby
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distinct" class="md-nav__link">
+    distinct
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capacity" class="md-nav__link">
+    capacity
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache_size" class="md-nav__link">
+    cache_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leakspeed" class="md-nav__link">
+    leakspeed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#labels" class="md-nav__link">
+    labels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blackhole" class="md-nav__link">
+    blackhole
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug" class="md-nav__link">
+    debug
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reprocess" class="md-nav__link">
+    reprocess
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache_size_1" class="md-nav__link">
+    cache_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overflow_filter" class="md-nav__link">
+    overflow_filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#format" class="md-nav__link">
+    format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    Scope
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/crowdsecurity/crowdsec/edit/master/docs/references/scenarios.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  <h1>Scenarios format</h1>
+                
+                <h2 id="understanding-scenarios">Understanding scenarios<a class="headerlink" href="#understanding-scenarios" title="Permanent link">&para;</a></h2>
+<p>Scenarios are YAML files that allow to detect and qualify a specific behavior, usually an attack.</p>
+<p>Scenarios receive <a href="/Crowdsec/v1/getting_started/concepts/#events">event</a>(s) and can produce <a href="/Crowdsec/v1/getting_started/concepts/#alerts">alert</a>(s) using the <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a> algorithm.</p>
+<p>As an <a href="/Crowdsec/v1/getting_started/concepts/#events">event</a> can be the representation of a log line, or an overflow, it  allows scenarios to process both logs or overflows to allow inference.</p>
+<p>Scenarios can be of different types (leaky, trigger, counter), and are based on various factors, such as :</p>
+<ul>
+<li>the speed/frequency of the <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a></li>
+<li>the capacity of the <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a></li>
+<li>the characteristic(s) of eligible <a href="/Crowdsec/v1/getting_started/concepts/#events">event</a>(s) : "log type XX with field YY set to ZZ"</li>
+<li>various filters/directives that can alter the bucket's behavior, such as <a href="/Crowdsec/v1/references/scenarios/#groupby">groupby</a>, <a href="/Crowdsec/v1/references/scenarios/#distinct">distinct</a> or <a href="/Crowdsec/v1/references/scenarios/#blackhole">blackhole</a></li>
+</ul>
+<p>Behind the scenes, crowdsec-agent is going to create one or more buckets when events with matching characteristics arrive to the scenario. When any of these buckets overflows, the scenario has been triggered.</p>
+<p><em>Bucket partitioning</em> : One scenario usually leads to many buckets creation, as each bucket is only tracking a specific subset of events. For example, if we are tracking brute-force, each "offending peer" get its own bucket.</p>
+<p>A way to detect a http scanner might be to track the number of distinct non-existing pages it's requesting, and the scenario might look like this :</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">#the bucket type : leaky, trigger, counter</span>
+<span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
+<span class="c1">#name and description for humans</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">crowdsecurity/http-scan-uniques_404</span>
+<span class="nt">description</span><span class="p">:</span> <span class="s">&quot;Detect</span><span class="nv"> </span><span class="s">multiple</span><span class="nv"> </span><span class="s">unique</span><span class="nv"> </span><span class="s">404</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">single</span><span class="nv"> </span><span class="s">ip&quot;</span>
+<span class="c1">#a filter to know which events are eligible</span>
+<span class="nt">filter</span><span class="p">:</span> <span class="s">&quot;evt.Meta.service</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;http&#39;</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">evt.Meta.http_status</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">[&#39;404&#39;,</span><span class="nv"> </span><span class="s">&#39;403&#39;,</span><span class="nv"> </span><span class="s">&#39;400&#39;]&quot;</span>
+<span class="c1">#how we are going to partition buckets</span>
+<span class="nt">groupby</span><span class="p">:</span> <span class="s">&quot;evt.Meta.source_ip&quot;</span>
+<span class="c1">#we are only interested into counting UNIQUE/DISTINCT requested URLs</span>
+<span class="nt">distinct</span><span class="p">:</span> <span class="s">&quot;evt.Meta.http_path&quot;</span>
+<span class="c1">#we specify the bucket capacity and leak speed</span>
+<span class="nt">capacity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="nt">leakspeed</span><span class="p">:</span> <span class="s">&quot;10s&quot;</span>
+<span class="c1">#this will prevent the same bucket from overflowing more often than every 5 minutes</span>
+<span class="nt">blackhole</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5m</span>
+<span class="c1">#some labels to give context to the overflow</span>
+<span class="nt">labels</span><span class="p">:</span>
+ <span class="nt">service</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http</span>
+ <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">scan</span>
+ <span class="c1">#yes we want to ban people triggering this</span>
+ <span class="nt">remediation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+
+<h2 id="scenario-concepts">Scenario concepts<a class="headerlink" href="#scenario-concepts" title="Permanent link">&para;</a></h2>
+<h3 id="timemachine">TimeMachine<a class="headerlink" href="#timemachine" title="Permanent link">&para;</a></h3>
+<p>crowdsec-agent can be used not only to process live logs, but as well to process "cold" logs (think forensics).</p>
+<p>For this to be able to work, the date/time from the log must have been properly parsed for the scenario temporal aspect to be able to work properly. This relies on the <a href="https://github.com/crowdsecurity/hub/blob/master/parsers/s02-enrich/crowdsecurity/dateparse-enrich.yaml">date-parse enrichment</a>. For this to work the field <code>evt.StrTime</code> must have been filled with a string that represents the date &amp; time. the date-parse enrichment support a large variety of formats.</p>
+<h2 id="scenario-directives">Scenario directives<a class="headerlink" href="#scenario-directives" title="Permanent link">&para;</a></h2>
+<h3 id="type">type<a class="headerlink" href="#type" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky|trigger|counter</span>
+</code></pre></div>
+
+<p>Defines the type of the bucket. Currently three types are supported :</p>
+<ul>
+<li><code>leaky</code> : a <a href="https://en.wikipedia.org/wiki/Leaky_bucket">leaky bucket</a> that must be configured with a <a href="/Crowdsec/v1/references/scenarios/#capacity">capacity</a> and a <a href="/Crowdsec/v1/references/scenarios/#leakspeed">leakspeed</a></li>
+<li><code>trigger</code> : a bucket that overflows as soon as an event is poured (it's like a leaky bucket is a capacity of 0)</li>
+<li><code>counter</code> : a bucket that only overflows every <a href="/Crowdsec/v1/references/scenarios/#duration">duration</a>. It's especially useful to count things.</li>
+</ul>
+<h3 id="name-description">name &amp; description<a class="headerlink" href="#name-description" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_author_name/my_scenario_name</span>
+<span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">A scenario that detect XXXX behavior</span>
+</code></pre></div>
+
+<p>Mandatory <code>name</code> and <code>description</code> for said scenario. 
+The name must be unique (and will define the scenario's name in the hub), and the description must be a quick sentence describing what it detects.</p>
+<h3 id="filter">filter<a class="headerlink" href="#filter" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">expression</span>
+</code></pre></div>
+
+<p><code>filter</code> must be a valid <a href="/Crowdsec/v1/references/expressions/">expr</a> expression that will be evaluated against the <a href="/Crowdsec/v1/getting_started/concepts/#events">event</a>.</p>
+<p>If <code>filter</code> evaluation returns true or is absent, event will be pour in the bucket.</p>
+<p>If <code>filter</code> returns <code>false</code> or a non-boolean, the event will be skip for this bucket.</p>
+<p>Here is the <a href="https://github.com/antonmedv/expr/tree/master/docs">expr documentation</a>.</p>
+<p>Examples :</p>
+<ul>
+<li><code>evt.Meta.log_type == 'telnet_new_session'</code></li>
+<li><code>evt.Meta.log_type in ['http_access-log', 'http_error-log'] &amp;&amp; evt.Parsed.static_ressource == 'false'</code></li>
+<li><code>evt.Meta.log_type == 'ssh_failed-auth'</code></li>
+</ul>
+<h3 id="duration">duration<a class="headerlink" href="#duration" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">duration</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">45s</span>
+<span class="nt">duration</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10m</span>
+</code></pre></div>
+
+<p>(applicable to <code>counter</code> buckets only)</p>
+<p>A duration after which the bucket will overflow.
+The format must be compatible with <a href="https://golang.org/pkg/time/#ParseDuration">golang ParseDuration format</a></p>
+<p>Examples :</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">counter</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">crowdsecurity/ban-reports-ssh_bf_report</span>
+<span class="nt">description</span><span class="p">:</span> <span class="s">&quot;Count</span><span class="nv"> </span><span class="s">unique</span><span class="nv"> </span><span class="s">ips</span><span class="nv"> </span><span class="s">performing</span><span class="nv"> </span><span class="s">ssh</span><span class="nv"> </span><span class="s">bruteforce&quot;</span>
+<span class="nt">filter</span><span class="p">:</span> <span class="s">&quot;evt.Overflow.Scenario</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;ssh_bruteforce&#39;&quot;</span>
+<span class="nt">distinct</span><span class="p">:</span> <span class="s">&quot;evt.Overflow.Source_ip&quot;</span>
+<span class="nt">capacity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-1</span>
+<span class="nt">duration</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10m</span>
+<span class="nt">labels</span><span class="p">:</span>
+  <span class="nt">service</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+</code></pre></div>
+
+<h3 id="groupby">groupby<a class="headerlink" href="#groupby" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">groupby</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.source_ip</span>
+</code></pre></div>
+
+<p>an <a href="/Crowdsec/v1/references/expressions/">expr</a> that must return a string. This string will be used as to partition the buckets.</p>
+<p>Examples :</p>
+<p>Here, each <code>source_ip</code> will get its own bucket.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
+<span class="nn">...</span>
+<span class="nt">groupby</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.source_ip</span>
+<span class="nn">...</span>
+</code></pre></div>
+
+<p>Here, each unique combo of <code>source_ip</code> + <code>target_username</code> will get its own bucket.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
+<span class="nn">...</span>
+<span class="nt">groupby</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.source_ip + &#39;--&#39; + evt.Parsed.target_username</span>
+<span class="nn">...</span>
+</code></pre></div>
+
+<h3 id="distinct">distinct<a class="headerlink" href="#distinct" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">distinct</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.http_path</span>
+</code></pre></div>
+
+<p>an <a href="/Crowdsec/v1/references/expressions/">expr</a> that must return a string. The event will be poured <strong>only</strong> if the string is not already present in the bucket.</p>
+<p>Examples :</p>
+<p>This will ensure that events that keep triggering the same <code>.Meta.http_path</code> will be poured only once.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
+<span class="nn">...</span>
+<span class="nt">distinct</span><span class="p">:</span> <span class="s">&quot;evt.Meta.http_path&quot;</span>
+<span class="nn">...</span>
+</code></pre></div>
+
+<p>In the logs, you can see it like this (for example from the iptables-logs portscan detection) :</p>
+<div class="codehilite"><pre><span></span><code>DEBU<span class="o">[</span><span class="m">2020</span>-05-13T11:29:51+02:00<span class="o">]</span> Uniq<span class="o">(</span><span class="m">7681</span><span class="o">)</span> : ok                               buck..
+DEBU<span class="o">[</span><span class="m">2020</span>-05-13T11:29:51+02:00<span class="o">]</span> Uniq<span class="o">(</span><span class="m">7681</span><span class="o">)</span> : ko, discard event                buck..
+</code></pre></div>
+
+<p>The first event has been poured (value <code>7681</code>) was not yet present in the events, while the second time, the event got discarded because the value was already present in the bucket.</p>
+<h3 id="capacity">capacity<a class="headerlink" href="#capacity" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">capacity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</code></pre></div>
+
+<p>(Applies only to <code>leaky</code> buckets)</p>
+<p>A positive integer representing the bucket capacity.
+If there are more than <code>capacity</code> item in the bucket, it will overflow.</p>
+<h3 id="cache_size">cache_size<a class="headerlink" href="#cache_size" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">cache_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+</code></pre></div>
+
+<p>A positive integer representing the number of events we hold in the
+bucket. All events are still accounted for the bucket, it only
+prevents the bucket event history to grow larger than
+<code>cache_size</code>. When the bucket reachs <code>cache_size</code> events, then events
+are discarded on an first-in first-out basis.</p>
+<h3 id="leakspeed">leakspeed<a class="headerlink" href="#leakspeed" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">leakspeed</span><span class="p">:</span> <span class="s">&quot;10s&quot;</span>
+</code></pre></div>
+
+<p>(Applies only to <code>leaky</code> buckets)</p>
+<p>A duration that represent how often an event will be leaking from the bucket.</p>
+<p>Must be compatible with <a href="https://golang.org/pkg/time/#ParseDuration">golang ParseDuration format</a>.</p>
+<p>Example:</p>
+<p>Here the bucket will leak one item every 10 seconds, and can hold up to 5 items before overflowing.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
+<span class="nn">...</span>
+<span class="nt">leakspeed</span><span class="p">:</span> <span class="s">&quot;10s&quot;</span>
+<span class="nt">capacity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="nn">...</span>
+</code></pre></div>
+
+<h3 id="labels">labels<a class="headerlink" href="#labels" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">labels</span><span class="p">:</span>
+ <span class="nt">service</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+ <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bruteforce</span>
+ <span class="nt">remediation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+
+<p>Labels is a list of <code>label: values</code> that provide context to an overflow.
+The labels are (currently) not stored in the database, nor they are sent to the API.</p>
+<p>Special labels :</p>
+<ul>
+<li>The <strong>remediation</strong> label, if set to <code>true</code> indicate the the originating IP should be ban.</li>
+<li>The <strong>scope</strong> label, can be set to <code>ip</code> or <code>range</code> when <strong>remediation</strong> is set to true, and indicate to which scope should the decision apply. If you set a scenario with <strong>remediation</strong> to true and <strong>scope</strong> to <code>range</code> and the range of the IP could have been determined by the GeoIP library, the whole range to which the IP belongs will be banned.</li>
+</ul>
+<p>Example :</p>
+<p>The IP that triggered the overflow (<code>.Meta.source_ip</code>) will be banned.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
+<span class="nn">...</span>
+<span class="nt">labels</span><span class="p">:</span>
+ <span class="nt">service</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+ <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bruteforce</span>
+ <span class="nt">remediation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+
+<p>The range to which the offending IP belong (<code>.Meta.source_ip</code>) will be banned.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
+<span class="nn">...</span>
+<span class="nt">labels</span><span class="p">:</span>
+ <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">distributed_attack</span>
+ <span class="nt">remediation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+ <span class="nt">scope</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">range</span>
+</code></pre></div>
+
+<h3 id="blackhole">blackhole<a class="headerlink" href="#blackhole" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">blackhole</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10m</span>
+</code></pre></div>
+
+<p>A duration for which a bucket will be "silenced" after overflowing.
+This is intended to limit / avoid spam of buckets that might be very rapidly triggered.</p>
+<p>The blackhole only applies to the individual bucket rather than the whole scenario.</p>
+<p>Must be compatible with <a href="https://golang.org/pkg/time/#ParseDuration">golang ParseDuration format</a>.</p>
+<p>Example :</p>
+<p>The same <code>source_ip</code> won't be able to trigger this overflow more than once every 10 minutes.
+The potential overflows in the meanwhile will be discarded (but will still appear in logs as being blackholed).</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">trigger</span>
+<span class="nn">...</span>
+<span class="nt">blackhole</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10m</span>
+<span class="nt">groupby</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.source_ip</span>
+</code></pre></div>
+
+<h3 id="debug">debug<a class="headerlink" href="#debug" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">debug</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true|false</span>
+</code></pre></div>
+
+<p><em>default: false</em></p>
+<p>If set to to <code>true</code>, enabled scenario level debugging.
+It is meant to help understanding scenario  behavior by providing contextual logging :</p>
+<p><summary>debug of filters and expression results</summary></p>
+<div class="codehilite"><pre><span></span><code>DEBU[31-07-2020 16:34:58] eval(evt.Meta.log_type in [&quot;http_access-log&quot;, &quot;http_error-log&quot;] &amp;&amp; any(File(&quot;bad_user_agents.txt&quot;), {evt.Parsed.http_user_agent contains #})) = TRUE  cfg=still-feather file=config/scenarios/http-bad-user-agent.yaml name=crowdsecurity/http-bad-user-agent
+DEBU[31-07-2020 16:34:58] eval variables:                               cfg=still-feather file=config/scenarios/http-bad-user-agent.yaml name=crowdsecurity/http-bad-user-agent
+DEBU[31-07-2020 16:34:58]        evt.Meta.log_type = &#39;http_access-log&#39;  cfg=still-feather file=config/scenarios/http-bad-user-agent.yaml name=crowdsecurity/http-bad-user-agent
+DEBU[31-07-2020 16:34:58]        evt.Parsed.http_user_agent = &#39;Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:002810)&#39;  cfg=still-feather file=config/scenarios/http-bad-user-agent.yaml name=crowdsecurity/http-bad-user-agent
+</code></pre></div>
+
+</details>
+<h3 id="reprocess">reprocess<a class="headerlink" href="#reprocess" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">reprocess</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true|false</span>
+</code></pre></div>
+
+<p><em>default: false</em></p>
+<p>If set to <code>true</code>, the resulting overflow will be sent again in the scenario/parsing pipeline.
+It is useful when you want to have further scenarios that will rely on past-overflows to take decisions.</p>
+<h3 id="cache_size_1">cache_size<a class="headerlink" href="#cache_size_1" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">cache_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</code></pre></div>
+
+<p>By default, a bucket holds <a href="/Crowdsec/v1/references/scenarios/#capacity">capacity</a> events "in memory".
+However, for a number of cases, you don't want this, as it might lead to excessive memory consumption.</p>
+<p>By setting <code>cache_size</code> to a positive integer, we can control the maximum in-memory cache size of the bucket, without changing its capacity and such. This is especially useful when using <code>counter</code> buckets on long duration that might end up counting (and this storing in memory) an important number of events.</p>
+<h3 id="overflow_filter">overflow_filter<a class="headerlink" href="#overflow_filter" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">overflow_filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">any(queue.Queue, { .Enriched.IsInEU  == &quot;true&quot; })</span>
+</code></pre></div>
+
+<p><code>overflow_filter</code> is an <a href="/Crowdsec/v1/references/expressions/">expr</a> that is run when the bucket overflows.
+If this expression is present and returns false, the overflow will be discarded.</p>
+<h3 id="data">data<a class="headerlink" href="#data" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">data</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">source_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://URL/TO/FILE</span>
+    <span class="nt">dest_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">LOCAL_FILENAME</span>
+    <span class="p p-Indicator">[</span><span class="nv">type</span><span class="p p-Indicator">:</span> <span class="nv">(regexp|string)</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+
+<p><code>data</code> allows user to specify an external source of data.
+This section is only relevant when <code>cscli</code> is used to install scenario from hub, as ill download the <code>source_url</code> and store it to <code>dest_file</code>. When the scenario is not installed from the hub, crowdsec-agent won't download the URL, but the file must exist for the scenario to be loaded correctly.
+The <code>type</code> is mandatory if you want to evaluate the data in the file, and should be <code>regex</code> for valid (re2) regular expression per line or <code>string</code> for string per line.
+The regexps will be compiled, the strings will be loaded into a list and both will be kept in memory.
+Without specifying a <code>type</code>, the file will be downloaded and stored as file and not in memory.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">crowdsecurity/cdn-whitelist</span>
+<span class="nn">...</span>
+<span class="nt">data</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">source_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://www.cloudflare.com/ips-v4</span>
+    <span class="nt">dest_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cloudflare_ips.txt</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</code></pre></div>
+
+<h3 id="format">format<a class="headerlink" href="#format" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2.0</span>
+</code></pre></div>
+
+<p>crowdsec-agent has a notion of format support for parsers &amp; scenarios for compatibility management.
+Running <code>cscli version</code> will show you such compatibility matrix :</p>
+<div class="codehilite"><pre><span></span><code>$ sudo cscli version
+<span class="m">2020</span>/11/05 <span class="m">09</span>:35:05 version: v0.3.6-183e34c966c475e0d2cdb3c60d0b7426499aa573
+<span class="m">2020</span>/11/05 <span class="m">09</span>:35:05 Codename: beta
+<span class="m">2020</span>/11/05 <span class="m">09</span>:35:05 BuildDate: <span class="m">2020</span>-11-04_17:56:46
+<span class="m">2020</span>/11/05 <span class="m">09</span>:35:05 GoVersion: <span class="m">1</span>.13
+<span class="m">2020</span>/11/05 <span class="m">09</span>:35:05 Constraint_parser: &gt;<span class="o">=</span> <span class="m">1</span>.0, &lt; <span class="m">2</span>.0
+<span class="m">2020</span>/11/05 <span class="m">09</span>:35:05 Constraint_scenario: &gt;<span class="o">=</span> <span class="m">1</span>.0, &lt; <span class="m">3</span>.0
+<span class="m">2020</span>/11/05 <span class="m">09</span>:35:05 Constraint_api: v1
+<span class="m">2020</span>/11/05 <span class="m">09</span>:35:05 Constraint_acquis: &gt;<span class="o">=</span> <span class="m">1</span>.0, &lt; <span class="m">2</span>.0
+</code></pre></div>
+
+<h3 id="scope">Scope<a class="headerlink" href="#scope" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">scope</span><span class="p">:</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Range</span>
+  <span class="nt">expression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Parsed.mySourceRange</span>
+</code></pre></div>
+
+<p>While most scenarios might focus on Ips, crowdsec-agent and bouncers can work with any scope.
+The <code>scope</code> directive allows you to override the default scope :</p>
+<ul>
+<li><code>type</code> is a string representing the scope name</li>
+<li><code>expression</code> is an <code>expr</code> expression that will be evaluated to fetch the value</li>
+</ul>
+<p>let's imagine a scenario such as :</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># ssh bruteforce</span>
+<span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leaky</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">crowdsecurity/ssh-enforce-mfa</span>
+<span class="nt">description</span><span class="p">:</span> <span class="s">&quot;Enforce</span><span class="nv"> </span><span class="s">mfa</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">users</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">been</span><span class="nv"> </span><span class="s">bruteforced&quot;</span>
+<span class="nt">filter</span><span class="p">:</span> <span class="s">&quot;evt.Meta.log_type</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;ssh_failed-auth&#39;&quot;</span>
+<span class="nt">leakspeed</span><span class="p">:</span> <span class="s">&quot;10s&quot;</span>
+<span class="nt">capacity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="nt">groupby</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.source_ip</span>
+<span class="nt">blackhole</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1m</span>
+<span class="nt">labels</span><span class="p">:</span>
+ <span class="nt">service</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+ <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bruteforce</span>
+ <span class="nt">remediation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">scope</span><span class="p">:</span>
+ <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">username</span>
+ <span class="nt">expression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">evt.Meta.target_user</span>
+</code></pre></div>
+
+<p>and a profile such as :</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">enforce_mfa</span>
+<span class="nt">filters</span><span class="p">:</span>
+ <span class="p p-Indicator">-</span> <span class="s">&#39;Alert.Remediation</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">true</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">Alert.GetScope()</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&quot;username&quot;&#39;</span>
+<span class="nt">decisions</span><span class="p">:</span>
+ <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">enforce_mfa</span>
+   <span class="nt">scope</span><span class="p">:</span> <span class="s">&quot;username&quot;</span>
+   <span class="nt">duration</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1h</span>
+<span class="nt">on_success</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">continue</span>
+</code></pre></div>
+
+<p>the resulting overflow will be :</p>
+<div class="codehilite"><pre><span></span><code>$ ./cscli -c dev.yaml decisions list
++----+----------+---------------+-------------------------------+-------------+---------+----+--------+------------------+
+<span class="p">|</span> ID <span class="p">|</span>  SOURCE  <span class="p">|</span>  SCOPE:VALUE  <span class="p">|</span>            REASON             <span class="p">|</span>   ACTION    <span class="p">|</span> COUNTRY <span class="p">|</span> AS <span class="p">|</span> EVENTS <span class="p">|</span>    EXPIRATION    <span class="p">|</span>
++----+----------+---------------+-------------------------------+-------------+---------+----+--------+------------------+
+<span class="p">|</span>  <span class="m">2</span> <span class="p">|</span> crowdsec <span class="p">|</span> username:rura <span class="p">|</span> crowdsecurity/ssh-enforce-mfa <span class="p">|</span> enforce_mfa <span class="p">|</span>         <span class="p">|</span>    <span class="p">|</span>      <span class="m">6</span> <span class="p">|</span> 59m46.121840343s <span class="p">|</span>
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="parsers.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Parsers format" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Parsers format
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="postoverflows.html" class="md-footer__link md-footer__link--next" aria-label="Next: PostOverlows format" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              PostOverlows format
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.expand", "navigation.instant", "navigation.section"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>
