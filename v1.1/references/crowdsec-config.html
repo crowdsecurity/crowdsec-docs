@@ -1,0 +1,3091 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/crowdsec2.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Configuration format - Crowdsec</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,400i,700%7C&display=fallback">
+        <style>:root{--md-text-font-family:"Montserrat";--md-code-font-family:""}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="#3d85c6" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#crowdsec-configuration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Crowdsec" class="md-header__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Crowdsec
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Configuration format
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting_started/concepts.html" class="md-tabs__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../user_guide/cscli.html" class="md-tabs__link">
+        User guide
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../cscli/cscli.html" class="md-tabs__link">
+        CLI
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../localAPI/index.html" class="md-tabs__link">
+        Local API
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../observability/overview.html" class="md-tabs__link">
+        Observability
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../bouncers/index.html" class="md-tabs__link">
+      Bouncers
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="stages.html" class="md-tabs__link md-tabs__link--active">
+        References
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../write_configurations/requirements.html" class="md-tabs__link">
+        Write Configurations
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../migration.html" class="md-tabs__link">
+      Upgrade V0.X to V1.X
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-tabs__link">
+      API Swagger
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://hub.crowdsec.net/" target="_blank" class="md-tabs__link">
+      Hub
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://github.com/crowdsecurity/crowdsec/releases" target="_blank" class="md-tabs__link">
+      Releases
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../contributing.html" class="md-tabs__link">
+        Contributing
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../faq.html" class="md-tabs__link">
+        FAQ
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Crowdsec" class="md-nav__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    Crowdsec
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" data-md-state="indeterminate" type="checkbox" id="__nav_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2">
+        Getting Started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/concepts.html" class="md-nav__link">
+        Concepts
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/installation.html" class="md-nav__link">
+        Install Crowdsec
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/upgrades.html" class="md-nav__link">
+        Upgrade Crowdsec
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/crowdsec-tour.html" class="md-nav__link">
+        Crowdsec Tour
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" data-md-state="indeterminate" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        User guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/cscli.html" class="md-nav__link">
+        CLI
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" data-md-state="indeterminate" type="checkbox" id="__nav_3_2" checked>
+      
+      <label class="md-nav__link" for="__nav_3_2">
+        Config management
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Config management" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Config management
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/collections.html" class="md-nav__link">
+        Collections
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/enrichers.html" class="md-nav__link">
+        Enrichers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/configurations_management/scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/decision_management.html" class="md-nav__link">
+        Decisions management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/bouncer_machine_management.html" class="md-nav__link">
+        Bouncers & machines management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" data-md-state="indeterminate" type="checkbox" id="__nav_3_5" checked>
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Data sources config
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Data sources config" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Data sources config
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/acquisition.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/file.html" class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/journalctl.html" class="md-nav__link">
+        Journalctl
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/cloudwatch.html" class="md-nav__link">
+        Cloudwatch
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/data_sources/syslog.html" class="md-nav__link">
+        Syslog
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/database.html" class="md-nav__link">
+        Databases
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/network.html" class="md-nav__link">
+        Network management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/simulation_mode.html" class="md-nav__link">
+        Simulation management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/forensic_mode.html" class="md-nav__link">
+        Crowdsec forensic mode
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/debugging_configs.html" class="md-nav__link">
+        Debugging
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" data-md-state="indeterminate" type="checkbox" id="__nav_4" checked>
+      
+      <label class="md-nav__link" for="__nav_4">
+        CLI
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="CLI" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          CLI
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli.html" class="md-nav__link">
+        Cscli
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_alerts.html" class="md-nav__link">
+        Alerts
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_bouncers.html" class="md-nav__link">
+        Bouncers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_collections.html" class="md-nav__link">
+        Collections
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_completion.html" class="md-nav__link">
+        Completion
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_config.html" class="md-nav__link">
+        Config
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_dashboard.html" class="md-nav__link">
+        Dashboard
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_decisions.html" class="md-nav__link">
+        Decisions
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_hub.html" class="md-nav__link">
+        Hub
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_machines.html" class="md-nav__link">
+        Machines
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_metrics.html" class="md-nav__link">
+        Metrics
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_postoverflows.html" class="md-nav__link">
+        Postoverflows
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_simulation.html" class="md-nav__link">
+        Simulation
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" data-md-state="indeterminate" type="checkbox" id="__nav_5" checked>
+      
+      <label class="md-nav__link" for="__nav_5">
+        Local API
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Local API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Local API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../localAPI/index.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../localAPI/howto.html" class="md-nav__link">
+        API Guide
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-nav__link">
+        Swagger
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" data-md-state="indeterminate" type="checkbox" id="__nav_6" checked>
+      
+      <label class="md-nav__link" for="__nav_6">
+        Observability
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Observability" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Observability
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/logs.html" class="md-nav__link">
+        Logs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3" data-md-state="indeterminate" type="checkbox" id="__nav_6_3" checked>
+      
+      <label class="md-nav__link" for="__nav_6_3">
+        Metrics
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Metrics" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          Metrics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/prometheus.html" class="md-nav__link">
+        Prometheus
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/command_line.html" class="md-nav__link">
+        Command line
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/dashboard.html" class="md-nav__link">
+        Dashboard
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bouncers/index.html" class="md-nav__link">
+        Bouncers
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+      
+      <label class="md-nav__link" for="__nav_8">
+        References
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="References" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          References
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" data-md-state="indeterminate" type="checkbox" id="__nav_8_1" checked>
+      
+      <label class="md-nav__link" for="__nav_8_1">
+        Parsers, Scenarios etc.
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Parsers, Scenarios etc." data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_1">
+          <span class="md-nav__icon md-icon"></span>
+          Parsers, Scenarios etc.
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stages.html" class="md-nav__link">
+        Stages format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="parsers.html" class="md-nav__link">
+        Parsers format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="scenarios.html" class="md-nav__link">
+        Scenarios format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="postoverflows.html" class="md-nav__link">
+        PostOverlows format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="enrichers.html" class="md-nav__link">
+        Enrichers format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="collections.html" class="md-nav__link">
+        Collections format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="expressions.html" class="md-nav__link">
+        Expressions helpers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="patterns-documentation.html" class="md-nav__link">
+        Patterns references
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" checked>
+      
+      <label class="md-nav__link" for="__nav_8_2">
+        Configuration files
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Configuration files" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration files
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Configuration format
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="crowdsec-config.html" class="md-nav__link md-nav__link--active">
+        Configuration format
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-example" class="md-nav__link">
+    Configuration example
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-variable" class="md-nav__link">
+    Environment variable
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-format" class="md-nav__link">
+    Configuration format
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-directives" class="md-nav__link">
+    Configuration directives
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration directives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common" class="md-nav__link">
+    common
+  </a>
+  
+    <nav class="md-nav" aria-label="common">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#daemonize" class="md-nav__link">
+    daemonize
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pid_dir" class="md-nav__link">
+    pid_dir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log_media" class="md-nav__link">
+    log_media
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log_level" class="md-nav__link">
+    log_level
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log_folder" class="md-nav__link">
+    log_folder
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#working_dir" class="md-nav__link">
+    working_dir
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config_paths" class="md-nav__link">
+    config_paths
+  </a>
+  
+    <nav class="md-nav" aria-label="config_paths">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#config_dir" class="md-nav__link">
+    config_dir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data_dir" class="md-nav__link">
+    data_dir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulation_path" class="md-nav__link">
+    simulation_path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hub_dir" class="md-nav__link">
+    hub_dir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index_path" class="md-nav__link">
+    index_path
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#crowdsec_service" class="md-nav__link">
+    crowdsec_service
+  </a>
+  
+    <nav class="md-nav" aria-label="crowdsec_service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parser_routines" class="md-nav__link">
+    parser_routines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buckets_routines" class="md-nav__link">
+    buckets_routines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output_routines" class="md-nav__link">
+    output_routines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acquisition_path" class="md-nav__link">
+    acquisition_path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acquisition_dir" class="md-nav__link">
+    acquisition_dir
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cscli" class="md-nav__link">
+    cscli
+  </a>
+  
+    <nav class="md-nav" aria-label="cscli">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    output
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hub_branch" class="md-nav__link">
+    hub_branch
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prometheus_uri" class="md-nav__link">
+    prometheus_uri
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#db_config" class="md-nav__link">
+    db_config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    api
+  </a>
+  
+    <nav class="md-nav" aria-label="api">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client" class="md-nav__link">
+    client
+  </a>
+  
+    <nav class="md-nav" aria-label="client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#insecure_skip_verify" class="md-nav__link">
+    insecure_skip_verify
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credentials_path" class="md-nav__link">
+    credentials_path
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server" class="md-nav__link">
+    server
+  </a>
+  
+    <nav class="md-nav" aria-label="server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#listen_uri" class="md-nav__link">
+    listen_uri
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#profiles_path" class="md-nav__link">
+    profiles_path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use_forwarded_for_headers" class="md-nav__link">
+    use_forwarded_for_headers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#online_client" class="md-nav__link">
+    online_client
+  </a>
+  
+    <nav class="md-nav" aria-label="online_client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#credentials_path_1" class="md-nav__link">
+    credentials_path
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    tls
+  </a>
+  
+    <nav class="md-nav" aria-label="tls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cert_file" class="md-nav__link">
+    cert_file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key_file" class="md-nav__link">
+    key_file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prometheus" class="md-nav__link">
+    prometheus
+  </a>
+  
+    <nav class="md-nav" aria-label="prometheus">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabled" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level" class="md-nav__link">
+    level
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listen_addr" class="md-nav__link">
+    listen_addr
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listen_port" class="md-nav__link">
+    listen_port
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="database.html" class="md-nav__link">
+        Database format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="acquisition.html" class="md-nav__link">
+        Acquisition format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="profiles.html" class="md-nav__link">
+        Profiles format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simulation.html" class="md-nav__link">
+        Simulation configuration
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" data-md-state="indeterminate" type="checkbox" id="__nav_8_3" checked>
+      
+      <label class="md-nav__link" for="__nav_8_3">
+        Runtime objects
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Runtime objects" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          Runtime objects
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="events.html" class="md-nav__link">
+        Event object
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="alerts.html" class="md-nav__link">
+        Alert object
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="decisions.html" class="md-nav__link">
+        Decision object
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" data-md-state="indeterminate" type="checkbox" id="__nav_9" checked>
+      
+      <label class="md-nav__link" for="__nav_9">
+        Write Configurations
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Write Configurations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Write Configurations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/acquisition.html" class="md-nav__link">
+        Acquisition
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/whitelist.html" class="md-nav__link">
+        Whitelists
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migration.html" class="md-nav__link">
+        Upgrade V0.X to V1.X
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-nav__link">
+        API Swagger
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hub.crowdsec.net/" target="_blank" class="md-nav__link">
+        Hub
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/crowdsecurity/crowdsec/releases" target="_blank" class="md-nav__link">
+        Releases
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_14" data-md-state="indeterminate" type="checkbox" id="__nav_14" checked>
+      
+      <label class="md-nav__link" for="__nav_14">
+        Contributing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Contributing" data-md-level="1">
+        <label class="md-nav__title" for="__nav_14">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing.html" class="md-nav__link">
+        Guide
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_15" data-md-state="indeterminate" type="checkbox" id="__nav_15" checked>
+      
+      <label class="md-nav__link" for="__nav_15">
+        FAQ
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="FAQ" data-md-level="1">
+        <label class="md-nav__title" for="__nav_15">
+          <span class="md-nav__icon md-icon"></span>
+          FAQ
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq.html" class="md-nav__link">
+        Questions
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-example" class="md-nav__link">
+    Configuration example
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-variable" class="md-nav__link">
+    Environment variable
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-format" class="md-nav__link">
+    Configuration format
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-directives" class="md-nav__link">
+    Configuration directives
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration directives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common" class="md-nav__link">
+    common
+  </a>
+  
+    <nav class="md-nav" aria-label="common">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#daemonize" class="md-nav__link">
+    daemonize
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pid_dir" class="md-nav__link">
+    pid_dir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log_media" class="md-nav__link">
+    log_media
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log_level" class="md-nav__link">
+    log_level
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log_folder" class="md-nav__link">
+    log_folder
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#working_dir" class="md-nav__link">
+    working_dir
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config_paths" class="md-nav__link">
+    config_paths
+  </a>
+  
+    <nav class="md-nav" aria-label="config_paths">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#config_dir" class="md-nav__link">
+    config_dir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data_dir" class="md-nav__link">
+    data_dir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulation_path" class="md-nav__link">
+    simulation_path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hub_dir" class="md-nav__link">
+    hub_dir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index_path" class="md-nav__link">
+    index_path
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#crowdsec_service" class="md-nav__link">
+    crowdsec_service
+  </a>
+  
+    <nav class="md-nav" aria-label="crowdsec_service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parser_routines" class="md-nav__link">
+    parser_routines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buckets_routines" class="md-nav__link">
+    buckets_routines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output_routines" class="md-nav__link">
+    output_routines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acquisition_path" class="md-nav__link">
+    acquisition_path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acquisition_dir" class="md-nav__link">
+    acquisition_dir
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cscli" class="md-nav__link">
+    cscli
+  </a>
+  
+    <nav class="md-nav" aria-label="cscli">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    output
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hub_branch" class="md-nav__link">
+    hub_branch
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prometheus_uri" class="md-nav__link">
+    prometheus_uri
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#db_config" class="md-nav__link">
+    db_config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    api
+  </a>
+  
+    <nav class="md-nav" aria-label="api">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client" class="md-nav__link">
+    client
+  </a>
+  
+    <nav class="md-nav" aria-label="client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#insecure_skip_verify" class="md-nav__link">
+    insecure_skip_verify
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credentials_path" class="md-nav__link">
+    credentials_path
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server" class="md-nav__link">
+    server
+  </a>
+  
+    <nav class="md-nav" aria-label="server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#listen_uri" class="md-nav__link">
+    listen_uri
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#profiles_path" class="md-nav__link">
+    profiles_path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use_forwarded_for_headers" class="md-nav__link">
+    use_forwarded_for_headers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#online_client" class="md-nav__link">
+    online_client
+  </a>
+  
+    <nav class="md-nav" aria-label="online_client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#credentials_path_1" class="md-nav__link">
+    credentials_path
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    tls
+  </a>
+  
+    <nav class="md-nav" aria-label="tls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cert_file" class="md-nav__link">
+    cert_file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key_file" class="md-nav__link">
+    key_file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prometheus" class="md-nav__link">
+    prometheus
+  </a>
+  
+    <nav class="md-nav" aria-label="prometheus">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabled" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level" class="md-nav__link">
+    level
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listen_addr" class="md-nav__link">
+    listen_addr
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listen_port" class="md-nav__link">
+    listen_port
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/crowdsecurity/crowdsec/edit/master/docs/references/crowdsec-config.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="crowdsec-configuration">Crowdsec configuration<a class="headerlink" href="#crowdsec-configuration" title="Permanent link">&para;</a></h1>
+<p>Crowdsec-agent has a main <code>yaml</code> configuration file, usually located in <code>/etc/crowdsec/config.yaml</code>.</p>
+<h2 id="configuration-example">Configuration example<a class="headerlink" href="#configuration-example" title="Permanent link">&para;</a></h2>
+<details>
+  <summary>Default configuration</summary>
+
+
+<div class="codehilite"><pre><span></span><code><span class="nt">common</span><span class="p">:</span>
+  <span class="nt">daemonize</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="nt">pid_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/run/</span>
+  <span class="nt">log_media</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">file</span>
+  <span class="nt">log_level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">info</span>
+  <span class="nt">log_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/log/</span>
+  <span class="nt">working_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">.</span>
+<span class="nt">config_paths</span><span class="p">:</span>
+  <span class="nt">config_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/crowdsec/</span>
+  <span class="nt">data_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/lib/crowdsec/data/</span>
+  <span class="nt">simulation_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/crowdsec/simulation.yaml</span>
+  <span class="nt">hub_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/crowdsec/hub/</span>
+  <span class="nt">index_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/crowdsec/hub/.index.json</span>
+<span class="nt">crowdsec_service</span><span class="p">:</span>
+  <span class="nt">acquisition_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/crowdsec/acquis.yaml</span>
+  <span class="c1">#acquisition_dir: /etc/crowdsec/acquis/</span>
+  <span class="nt">parser_routines</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+  <span class="nt">buckets_routines</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+  <span class="nt">output_routines</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">cscli</span><span class="p">:</span>
+  <span class="nt">output</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">human</span>
+  <span class="nt">hub_branch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">wip_lapi</span>
+<span class="nt">db_config</span><span class="p">:</span>
+  <span class="nt">log_level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">info</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlite</span>
+  <span class="nt">db_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/lib/crowdsec/data/crowdsec.db</span>
+  <span class="c1">#user:</span>
+  <span class="c1">#password:</span>
+  <span class="c1">#db_name:</span>
+  <span class="c1">#host:</span>
+  <span class="c1">#port:</span>
+  <span class="nt">flush</span><span class="p">:</span>
+    <span class="nt">max_items</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5000</span>
+    <span class="nt">max_age</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">7d</span>
+<span class="nt">api</span><span class="p">:</span>
+  <span class="nt">client</span><span class="p">:</span>
+    <span class="nt">insecure_skip_verify</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class="nt">credentials_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/crowdsec/local_api_credentials.yaml</span>
+  <span class="nt">server</span><span class="p">:</span>
+    <span class="nt">log_level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">info</span>
+    <span class="nt">listen_uri</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">127.0.0.1:8080</span>
+    <span class="nt">profiles_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/crowdsec/profiles.yaml</span>
+    <span class="nt">use_forwarded_for_headers</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class="nt">online_client</span><span class="p">:</span> <span class="c1"># Crowdsec API</span>
+      <span class="nt">credentials_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/crowdsec/online_api_credentials.yaml</span>
+<span class="c1">#    tls:</span>
+<span class="c1">#      cert_file: /etc/crowdsec/ssl/cert.pem</span>
+<span class="c1">#      key_file: /etc/crowdsec/ssl/key.pem</span>
+<span class="nt">prometheus</span><span class="p">:</span>
+  <span class="nt">enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">full</span>
+  <span class="nt">listen_addr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">127.0.0.1</span>
+  <span class="nt">listen_port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6060</span>
+</code></pre></div>
+
+
+
+</details>
+
+<h2 id="environment-variable">Environment variable<a class="headerlink" href="#environment-variable" title="Permanent link">&para;</a></h2>
+<p>It is possible to set a configuration value based on an enrivonement variables.</p>
+<p>For example, if you don't want to store your database password in the configuration file, you can do this:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">db_config</span><span class="p">:</span>
+  <span class="nt">type</span><span class="p">:</span>     <span class="l l-Scalar l-Scalar-Plain">mysql</span>
+  <span class="nt">user</span><span class="p">:</span>     <span class="l l-Scalar l-Scalar-Plain">database_user</span>
+  <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${DB_PASSWORD}</span>
+  <span class="nt">db_name</span><span class="p">:</span>  <span class="l l-Scalar l-Scalar-Plain">db_name</span>
+  <span class="nt">host</span><span class="p">:</span>     <span class="l l-Scalar l-Scalar-Plain">192.168.0.2</span>
+  <span class="nt">port</span><span class="p">:</span>     <span class="l l-Scalar l-Scalar-Plain">3306</span>
+</code></pre></div>
+
+<p>And export the environment variable such as:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span> <span class="nv">DB_PASSWORD</span><span class="o">=</span><span class="s2">&quot;&lt;db_password&gt;&quot;</span>
+</code></pre></div>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Note</strong>: you need to be <code>root</code> or put the environment variable in <code>/etc/environement</code></p>
+</div>
+<h2 id="configuration-format">Configuration format<a class="headerlink" href="#configuration-format" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="nt">common</span><span class="p">:</span>
+  <span class="nt">daemonize</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(true|false)</span>
+  <span class="nt">pid_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_pid_folder&gt;</span>
+  <span class="nt">log_media</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(file|stdout)</span>
+  <span class="nt">log_level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(error|info|debug|trace)</span>
+  <span class="nt">log_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_log_folder&gt;</span>
+  <span class="nt">working_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_working_folder&gt;</span>
+<span class="nt">config_paths</span><span class="p">:</span>
+  <span class="nt">config_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_crowdsec_config_folder&gt;</span>
+  <span class="nt">data_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_crowdsec_data_folder&gt;</span>
+  <span class="nt">simulation_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_simulation_file&gt;</span>
+  <span class="nt">hub_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_crowdsec_hub_folder&gt;</span>
+  <span class="nt">index_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_hub_index_file&gt;</span>
+<span class="nt">crowdsec_service</span><span class="p">:</span>
+  <span class="nt">acquisition_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;acqusition_file_path&gt;</span>
+  <span class="nt">acquisition_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;acquisition_dir_path&gt;</span>
+  <span class="nt">parser_routines</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;number_of_parser_routines&gt;</span>
+  <span class="nt">buckets_routines</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;number_of_buckets_routines&gt;</span>
+  <span class="nt">output_routines</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;number_of_output_routines&gt;</span>
+<span class="nt">cscli</span><span class="p">:</span>
+  <span class="nt">output</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(human|json|raw)</span>
+  <span class="nt">hub_branch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;hub_branch&gt;</span>
+<span class="nt">db_config</span><span class="p">:</span>
+  <span class="nt">type</span><span class="p">:</span>     <span class="l l-Scalar l-Scalar-Plain">&lt;db_type&gt;</span>
+  <span class="nt">db_path</span><span class="p">:</span>  <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_database_file&gt;</span>
+  <span class="nt">user</span><span class="p">:</span>     <span class="l l-Scalar l-Scalar-Plain">&lt;db_user&gt;</span>      <span class="c1"># for mysql/pgsql</span>
+  <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;db_password&gt;</span>  <span class="c1"># for mysql/pgsql</span>
+  <span class="nt">db_name</span><span class="p">:</span>  <span class="l l-Scalar l-Scalar-Plain">&lt;db_name&gt;</span>      <span class="c1"># for mysql/pgsql</span>
+  <span class="nt">host</span><span class="p">:</span>     <span class="l l-Scalar l-Scalar-Plain">&lt;db_host_ip&gt;</span>   <span class="c1"># for mysql/pgsql</span>
+  <span class="nt">port</span><span class="p">:</span>     <span class="l l-Scalar l-Scalar-Plain">&lt;db_host_port&gt;</span> <span class="c1"># for mysql/pgsql</span>
+  <span class="nt">sslmode</span><span class="p">:</span>  <span class="l l-Scalar l-Scalar-Plain">&lt;required/disable&gt;</span> <span class="c1"># for pgsql</span>
+  <span class="nt">flush</span><span class="p">:</span>
+    <span class="nt">max_items</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;max_alerts_in_db&gt;</span>
+    <span class="nt">max_age</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;max_age_of_alerts_in_db&gt;</span>
+<span class="nt">api</span><span class="p">:</span>
+  <span class="nt">client</span><span class="p">:</span>
+    <span class="nt">insecure_skip_verify</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(true|false)</span>
+    <span class="nt">credentials_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_local_api_client_credential_file&gt;</span>
+  <span class="nt">server</span><span class="p">:</span>
+    <span class="nt">log_level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(error|info|debug|trace&gt;)</span>
+    <span class="nt">listen_uri</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;listen_uri&gt;</span> <span class="c1"># host:port</span>
+    <span class="nt">profiles_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_profile_file&gt;</span>
+    <span class="nt">use_forwarded_for_headers</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;true|false&gt;</span>
+    <span class="nt">online_client</span><span class="p">:</span>
+      <span class="nt">credentials_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_crowdsec_api_client_credential_file&gt;</span>
+    <span class="nt">tls</span><span class="p">:</span>
+      <span class="nt">cert_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_certificat_file&gt;</span>
+      <span class="nt">key_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_certificat_key_file&gt;</span>
+<span class="nt">prometheus</span><span class="p">:</span>
+  <span class="nt">enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(true|false)</span>
+  <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(full|aggregated)</span>
+  <span class="nt">listen_addr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;listen_address&gt;</span>
+  <span class="nt">listen_port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;listen_port&gt;</span>
+</code></pre></div>
+
+<h2 id="configuration-directives">Configuration directives<a class="headerlink" href="#configuration-directives" title="Permanent link">&para;</a></h2>
+<h3 id="common"><code>common</code><a class="headerlink" href="#common" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">common</span><span class="p">:</span>
+  <span class="nt">daemonize</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(true|false)</span>
+  <span class="nt">pid_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_pid_folder&gt;</span>
+  <span class="nt">log_media</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(file|stdout)</span>
+  <span class="nt">log_level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(error|info|debug|trace)</span>
+  <span class="nt">log_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_log_folder&gt;</span>
+  <span class="nt">working_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_working_folder&gt;</span>
+</code></pre></div>
+
+<h4 id="daemonize"><code>daemonize</code><a class="headerlink" href="#daemonize" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>bool</p>
+</blockquote>
+<p>Daemonize or not the crowdsec daemon.</p>
+<h4 id="pid_dir"><code>pid_dir</code><a class="headerlink" href="#pid_dir" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Folder to store PID file.</p>
+<h4 id="log_media"><code>log_media</code><a class="headerlink" href="#log_media" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Log media. Can be <code>stdout</code> or <code>file</code>.</p>
+<h4 id="log_level"><code>log_level</code><a class="headerlink" href="#log_level" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Log level. Can be <code>error</code>, <code>info</code>, <code>debug</code>, <code>trace</code>.</p>
+<h4 id="log_folder"><code>log_folder</code><a class="headerlink" href="#log_folder" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Folder to write log file.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Works only with <code>log_media = file</code>.</p>
+</div>
+<h4 id="working_dir"><code>working_dir</code><a class="headerlink" href="#working_dir" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Current working directory.</p>
+<h3 id="config_paths"><code>config_paths</code><a class="headerlink" href="#config_paths" title="Permanent link">&para;</a></h3>
+<p>This section contains most paths to various sub configuration items.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">config_paths</span><span class="p">:</span>
+  <span class="nt">config_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_crowdsec_config_folder&gt;</span>
+  <span class="nt">data_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_crowdsec_data_folder&gt;</span>
+  <span class="nt">simulation_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_simulation_file&gt;</span>
+  <span class="nt">hub_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_crowdsec_hub_folder&gt;</span>
+  <span class="nt">index_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_hub_index_file&gt;</span>
+</code></pre></div>
+
+<h4 id="config_dir"><code>config_dir</code><a class="headerlink" href="#config_dir" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>The main configuration directory of crowdsec.</p>
+<h4 id="data_dir"><code>data_dir</code><a class="headerlink" href="#data_dir" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>This is where crowdsec is going to store data, such as files downloaded by scenarios, geolocalisation database, metabase configuration database, or even SQLite database.</p>
+<h4 id="simulation_path"><code>simulation_path</code><a class="headerlink" href="#simulation_path" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>The path to the <a href="/Crowdsec/v1/references/simulation/">profiles</a> configuration.</p>
+<h4 id="hub_dir"><code>hub_dir</code><a class="headerlink" href="#hub_dir" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>The directory where <code>cscli</code> will store parsers, scenarios, collections and such.</p>
+<h4 id="index_path"><code>index_path</code><a class="headerlink" href="#index_path" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Tath to the <code>.index.json</code> file downloaded by <code>cscli</code> to know the list of available configurations.</p>
+<h3 id="crowdsec_service"><code>crowdsec_service</code><a class="headerlink" href="#crowdsec_service" title="Permanent link">&para;</a></h3>
+<p>This section is only used by crowdsec agent.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">crowdsec_service</span><span class="p">:</span>
+  <span class="nt">acquisition_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;acqusition_file_path&gt;</span>
+  <span class="nt">acquisition_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;acqusition_dir_path&gt;</span>
+  <span class="nt">parser_routines</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;number_of_parser_routines&gt;</span>
+  <span class="nt">buckets_routines</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;number_of_buckets_routines&gt;</span>
+  <span class="nt">output_routines</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;number_of_output_routines&gt;</span>
+</code></pre></div>
+
+<h4 id="parser_routines"><code>parser_routines</code><a class="headerlink" href="#parser_routines" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>int</p>
+</blockquote>
+<p>Number of dedicated goroutines for parsing files.</p>
+<h4 id="buckets_routines"><code>buckets_routines</code><a class="headerlink" href="#buckets_routines" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>int</p>
+</blockquote>
+<p>Number of dedicated goroutines for managing live buckets.</p>
+<h4 id="output_routines"><code>output_routines</code><a class="headerlink" href="#output_routines" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>int</p>
+</blockquote>
+<p>Number of dedicated goroutines for pushing data to local api.</p>
+<h4 id="acquisition_path"><code>acquisition_path</code><a class="headerlink" href="#acquisition_path" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Path to the yaml file containing logs that needs to be read.</p>
+<h4 id="acquisition_dir"><code>acquisition_dir</code><a class="headerlink" href="#acquisition_dir" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>(&gt;1.0.7) Path to a directory where each yaml is considered as a acquisition configuration file containing logs that needs to be read.</p>
+<h3 id="cscli"><code>cscli</code><a class="headerlink" href="#cscli" title="Permanent link">&para;</a></h3>
+<p>This section is only used by <code>cscli</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">cscli</span><span class="p">:</span>
+  <span class="nt">output</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(human|json|raw)</span>
+  <span class="nt">hub_branch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;hub_branch&gt;</span>
+  <span class="nt">prometheus_uri</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;uri&gt;</span>
+</code></pre></div>
+
+<h4 id="output"><code>output</code><a class="headerlink" href="#output" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>The default output format (human, json or raw).</p>
+<h4 id="hub_branch"><code>hub_branch</code><a class="headerlink" href="#hub_branch" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>The git branch on which <code>cscli</code> is going to fetch configurations.</p>
+<h4 id="prometheus_uri"><code>prometheus_uri</code><a class="headerlink" href="#prometheus_uri" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>uri</p>
+</blockquote>
+<p>(&gt;1.0.7) An uri (without the trailing <code>/metrics</code>) that will be used by <code>cscli metrics</code> command, ie. <code>http://127.0.0.1:6060/</code></p>
+<h2 id="db_config"><code>db_config</code><a class="headerlink" href="#db_config" title="Permanent link">&para;</a></h2>
+<p>Please refer to the <a href="/Crowdsec/v1/references/database">database configuration</a>.</p>
+<h2 id="api"><code>api</code><a class="headerlink" href="#api" title="Permanent link">&para;</a></h2>
+<p>The api section is used by both <code>cscli</code>, <code>crowdsec</code> and the local API.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">api</span><span class="p">:</span>
+  <span class="nt">client</span><span class="p">:</span>
+    <span class="nt">insecure_skip_verify</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(true|false)</span>
+    <span class="nt">credentials_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_local_api_client_credential_file&gt;</span>
+  <span class="nt">server</span><span class="p">:</span>
+    <span class="nt">log_level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(error|info|debug|trace&gt;)</span>
+    <span class="nt">listen_uri</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;listen_uri&gt;</span> <span class="c1"># host:port</span>
+    <span class="nt">profiles_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_profile_file&gt;</span>
+    <span class="nt">use_forwarded_for_headers</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(true|false)</span>
+    <span class="nt">online_client</span><span class="p">:</span>
+      <span class="nt">credentials_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_crowdsec_api_client_credential_file&gt;</span>
+    <span class="nt">tls</span><span class="p">:</span>
+      <span class="nt">cert_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_certificat_file&gt;</span>
+      <span class="nt">key_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_certificat_key_file&gt;</span>
+</code></pre></div>
+
+<h3 id="client"><code>client</code><a class="headerlink" href="#client" title="Permanent link">&para;</a></h3>
+<p>The client subsection is used by <code>crowdsec</code> and <code>cscli</code> to read and write decisions to the local API.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">client</span><span class="p">:</span>
+  <span class="nt">insecure_skip_verify</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(true|false)</span>
+  <span class="nt">credentials_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_local_api_client_credential_file&gt;</span>
+</code></pre></div>
+
+<h4 id="insecure_skip_verify"><code>insecure_skip_verify</code><a class="headerlink" href="#insecure_skip_verify" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>bool</p>
+</blockquote>
+<p>Allows the use of https with self-signed certificates.</p>
+<h4 id="credentials_path"><code>credentials_path</code><a class="headerlink" href="#credentials_path" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Path to the credential files (contains API url + login/password).</p>
+<h3 id="server"><code>server</code><a class="headerlink" href="#server" title="Permanent link">&para;</a></h3>
+<p>The <code>server</code> subsection is the local API configuration.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">server</span><span class="p">:</span>
+  <span class="nt">log_level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(error|info|debug|trace)</span>
+  <span class="nt">listen_uri</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;listen_uri&gt;</span> <span class="c1"># host:port</span>
+  <span class="nt">profiles_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_profile_file&gt;</span>
+  <span class="nt">use_forwarded_for_headers</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(true|false)</span>
+  <span class="nt">online_client</span><span class="p">:</span>
+    <span class="nt">credentials_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_crowdsec_api_client_credential_file&gt;</span>
+  <span class="nt">tls</span><span class="p">:</span>
+    <span class="nt">cert_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_certificat_file&gt;</span>
+    <span class="nt">key_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_certificat_key_file&gt;</span>
+</code></pre></div>
+
+<h4 id="listen_uri"><code>listen_uri</code><a class="headerlink" href="#listen_uri" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Address and port listen configuration, the form <code>host:port</code>.</p>
+<h4 id="profiles_path"><code>profiles_path</code><a class="headerlink" href="#profiles_path" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>The path to the <a href="/Crowdsec/v1/references/profiles/">profiles</a> configuration.</p>
+<h4 id="use_forwarded_for_headers"><code>use_forwarded_for_headers</code><a class="headerlink" href="#use_forwarded_for_headers" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Allow the usage of <code>X-Forwarded-For</code> or <code>X-Real-IP</code> to get the client IP address. Do not enable if you are not running the LAPI behind a trusted reverse-proxy or LB.</p>
+<h4 id="online_client"><code>online_client</code><a class="headerlink" href="#online_client" title="Permanent link">&para;</a></h4>
+<p>Configuration to push signals and receive bad IPs from Crowdsec API.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">online_client</span><span class="p">:</span>
+  <span class="nt">credentials_path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_crowdsec_api_client_credential_file&gt;</span>
+</code></pre></div>
+
+<h5 id="credentials_path_1"><code>credentials_path</code><a class="headerlink" href="#credentials_path_1" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Path to a file containing credentials for the Central API.</p>
+<h4 id="tls"><code>tls</code><a class="headerlink" href="#tls" title="Permanent link">&para;</a></h4>
+<p>if present, holds paths to certs and key files.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">tls</span><span class="p">:</span>
+  <span class="nt">cert_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_certificat_file&gt;</span>
+  <span class="nt">key_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path_to_certificat_key_file&gt;</span>
+</code></pre></div>
+
+<h5 id="cert_file"><code>cert_file</code><a class="headerlink" href="#cert_file" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Path to certificate file.</p>
+<h5 id="key_file"><code>key_file</code><a class="headerlink" href="#key_file" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Path to certficate key file.</p>
+<h3 id="prometheus"><code>prometheus</code><a class="headerlink" href="#prometheus" title="Permanent link">&para;</a></h3>
+<p>This section is used by local API and crowdsec.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">prometheus</span><span class="p">:</span>
+  <span class="nt">enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(true|false)</span>
+  <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(full|aggregated)</span>
+  <span class="nt">listen_addr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;listen_address&gt;</span>
+  <span class="nt">listen_port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;listen_port&gt;</span>
+</code></pre></div>
+
+<h4 id="enabled"><code>enabled</code><a class="headerlink" href="#enabled" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>bool</p>
+</blockquote>
+<p>Allows to enable/disable prometheus instrumentation.</p>
+<h4 id="level"><code>level</code><a class="headerlink" href="#level" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Can be <code>full</code> (all metrics) or <code>aggregated</code> (to allow minimal metrics that will keep cardinality low).</p>
+<h4 id="listen_addr"><code>listen_addr</code><a class="headerlink" href="#listen_addr" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>string</p>
+</blockquote>
+<p>Prometheus listen url.</p>
+<h4 id="listen_port"><code>listen_port</code><a class="headerlink" href="#listen_port" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>int</p>
+</blockquote>
+<p>Prometheus listen port.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="patterns-documentation.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Patterns references" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Patterns references
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="database.html" class="md-footer__link md-footer__link--next" aria-label="Next: Database format" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Database format
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.expand", "navigation.instant", "navigation.section"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>

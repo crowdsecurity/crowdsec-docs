@@ -1,0 +1,2124 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/crowdsec2.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Crowdsec forensic mode - Crowdsec</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,400i,700%7C&display=fallback">
+        <style>:root{--md-text-font-family:"Montserrat";--md-code-font-family:""}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="#3d85c6" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#forensic-mode" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Crowdsec" class="md-header__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Crowdsec
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Crowdsec forensic mode
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting_started/concepts.html" class="md-tabs__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="cscli.html" class="md-tabs__link md-tabs__link--active">
+        User guide
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../cscli/cscli.html" class="md-tabs__link">
+        CLI
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../localAPI/index.html" class="md-tabs__link">
+        Local API
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../observability/overview.html" class="md-tabs__link">
+        Observability
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../bouncers/index.html" class="md-tabs__link">
+      Bouncers
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../references/stages.html" class="md-tabs__link">
+        References
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../write_configurations/requirements.html" class="md-tabs__link">
+        Write Configurations
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../migration.html" class="md-tabs__link">
+      Upgrade V0.X to V1.X
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-tabs__link">
+      API Swagger
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://hub.crowdsec.net/" target="_blank" class="md-tabs__link">
+      Hub
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://github.com/crowdsecurity/crowdsec/releases" target="_blank" class="md-tabs__link">
+      Releases
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../contributing.html" class="md-tabs__link">
+        Contributing
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../faq.html" class="md-tabs__link">
+        FAQ
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Crowdsec" class="md-nav__button md-logo" aria-label="Crowdsec" data-md-component="logo">
+      
+  <img src="../assets/images/crowdsec2.png" alt="logo">
+
+    </a>
+    Crowdsec
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/crowdsecurity/crowdsec/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" data-md-state="indeterminate" type="checkbox" id="__nav_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2">
+        Getting Started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/concepts.html" class="md-nav__link">
+        Concepts
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/installation.html" class="md-nav__link">
+        Install Crowdsec
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/upgrades.html" class="md-nav__link">
+        Upgrade Crowdsec
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/crowdsec-tour.html" class="md-nav__link">
+        Crowdsec Tour
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        User guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cscli.html" class="md-nav__link">
+        CLI
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" data-md-state="indeterminate" type="checkbox" id="__nav_3_2" checked>
+      
+      <label class="md-nav__link" for="__nav_3_2">
+        Config management
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Config management" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Config management
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="configurations_management/collections.html" class="md-nav__link">
+        Collections
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="configurations_management/parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="configurations_management/enrichers.html" class="md-nav__link">
+        Enrichers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="configurations_management/scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="decision_management.html" class="md-nav__link">
+        Decisions management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bouncer_machine_management.html" class="md-nav__link">
+        Bouncers & machines management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" data-md-state="indeterminate" type="checkbox" id="__nav_3_5" checked>
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Data sources config
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Data sources config" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Data sources config
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/acquisition.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/file.html" class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/journalctl.html" class="md-nav__link">
+        Journalctl
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/cloudwatch.html" class="md-nav__link">
+        Cloudwatch
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_sources/syslog.html" class="md-nav__link">
+        Syslog
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="database.html" class="md-nav__link">
+        Databases
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="network.html" class="md-nav__link">
+        Network management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="simulation_mode.html" class="md-nav__link">
+        Simulation management
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Crowdsec forensic mode
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="forensic_mode.html" class="md-nav__link md-nav__link--active">
+        Crowdsec forensic mode
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#forensic-mode" class="md-nav__link">
+    Forensic mode
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#injecting-alerts-into-existing-database" class="md-nav__link">
+    Injecting alerts into existing database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#injection-alerts-into-new-database-no-local-instance-running" class="md-nav__link">
+    Injection alerts into new database - no local instance running
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#injection-alerts-into-new-database-while-local-instance-is-running" class="md-nav__link">
+    Injection alerts into new database - while local instance is running
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#injection-alerts-into-new-database-dev-env" class="md-nav__link">
+    Injection alerts into new database - dev env
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="debugging_configs.html" class="md-nav__link">
+        Debugging
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" data-md-state="indeterminate" type="checkbox" id="__nav_4" checked>
+      
+      <label class="md-nav__link" for="__nav_4">
+        CLI
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="CLI" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          CLI
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli.html" class="md-nav__link">
+        Cscli
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_alerts.html" class="md-nav__link">
+        Alerts
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_bouncers.html" class="md-nav__link">
+        Bouncers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_collections.html" class="md-nav__link">
+        Collections
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_completion.html" class="md-nav__link">
+        Completion
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_config.html" class="md-nav__link">
+        Config
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_dashboard.html" class="md-nav__link">
+        Dashboard
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_decisions.html" class="md-nav__link">
+        Decisions
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_hub.html" class="md-nav__link">
+        Hub
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_machines.html" class="md-nav__link">
+        Machines
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_metrics.html" class="md-nav__link">
+        Metrics
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_postoverflows.html" class="md-nav__link">
+        Postoverflows
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cscli/cscli_simulation.html" class="md-nav__link">
+        Simulation
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" data-md-state="indeterminate" type="checkbox" id="__nav_5" checked>
+      
+      <label class="md-nav__link" for="__nav_5">
+        Local API
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Local API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Local API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../localAPI/index.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../localAPI/howto.html" class="md-nav__link">
+        API Guide
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-nav__link">
+        Swagger
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" data-md-state="indeterminate" type="checkbox" id="__nav_6" checked>
+      
+      <label class="md-nav__link" for="__nav_6">
+        Observability
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Observability" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Observability
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/logs.html" class="md-nav__link">
+        Logs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3" data-md-state="indeterminate" type="checkbox" id="__nav_6_3" checked>
+      
+      <label class="md-nav__link" for="__nav_6_3">
+        Metrics
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Metrics" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          Metrics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/prometheus.html" class="md-nav__link">
+        Prometheus
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/command_line.html" class="md-nav__link">
+        Command line
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability/dashboard.html" class="md-nav__link">
+        Dashboard
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bouncers/index.html" class="md-nav__link">
+        Bouncers
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" data-md-state="indeterminate" type="checkbox" id="__nav_8" checked>
+      
+      <label class="md-nav__link" for="__nav_8">
+        References
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="References" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          References
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" data-md-state="indeterminate" type="checkbox" id="__nav_8_1" checked>
+      
+      <label class="md-nav__link" for="__nav_8_1">
+        Parsers, Scenarios etc.
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Parsers, Scenarios etc." data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_1">
+          <span class="md-nav__icon md-icon"></span>
+          Parsers, Scenarios etc.
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/stages.html" class="md-nav__link">
+        Stages format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/parsers.html" class="md-nav__link">
+        Parsers format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/scenarios.html" class="md-nav__link">
+        Scenarios format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/postoverflows.html" class="md-nav__link">
+        PostOverlows format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/enrichers.html" class="md-nav__link">
+        Enrichers format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/collections.html" class="md-nav__link">
+        Collections format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/expressions.html" class="md-nav__link">
+        Expressions helpers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/patterns-documentation.html" class="md-nav__link">
+        Patterns references
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" data-md-state="indeterminate" type="checkbox" id="__nav_8_2" checked>
+      
+      <label class="md-nav__link" for="__nav_8_2">
+        Configuration files
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Configuration files" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration files
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/crowdsec-config.html" class="md-nav__link">
+        Configuration format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/database.html" class="md-nav__link">
+        Database format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/acquisition.html" class="md-nav__link">
+        Acquisition format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/profiles.html" class="md-nav__link">
+        Profiles format
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/simulation.html" class="md-nav__link">
+        Simulation configuration
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" data-md-state="indeterminate" type="checkbox" id="__nav_8_3" checked>
+      
+      <label class="md-nav__link" for="__nav_8_3">
+        Runtime objects
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Runtime objects" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          Runtime objects
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/events.html" class="md-nav__link">
+        Event object
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/alerts.html" class="md-nav__link">
+        Alert object
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/decisions.html" class="md-nav__link">
+        Decision object
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" data-md-state="indeterminate" type="checkbox" id="__nav_9" checked>
+      
+      <label class="md-nav__link" for="__nav_9">
+        Write Configurations
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Write Configurations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Write Configurations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/acquisition.html" class="md-nav__link">
+        Acquisition
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/parsers.html" class="md-nav__link">
+        Parsers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/scenarios.html" class="md-nav__link">
+        Scenarios
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write_configurations/whitelist.html" class="md-nav__link">
+        Whitelists
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migration.html" class="md-nav__link">
+        Upgrade V0.X to V1.X
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI" target="_blank" class="md-nav__link">
+        API Swagger
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hub.crowdsec.net/" target="_blank" class="md-nav__link">
+        Hub
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/crowdsecurity/crowdsec/releases" target="_blank" class="md-nav__link">
+        Releases
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_14" data-md-state="indeterminate" type="checkbox" id="__nav_14" checked>
+      
+      <label class="md-nav__link" for="__nav_14">
+        Contributing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Contributing" data-md-level="1">
+        <label class="md-nav__title" for="__nav_14">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing.html" class="md-nav__link">
+        Guide
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_15" data-md-state="indeterminate" type="checkbox" id="__nav_15" checked>
+      
+      <label class="md-nav__link" for="__nav_15">
+        FAQ
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="FAQ" data-md-level="1">
+        <label class="md-nav__title" for="__nav_15">
+          <span class="md-nav__icon md-icon"></span>
+          FAQ
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq.html" class="md-nav__link">
+        Questions
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#forensic-mode" class="md-nav__link">
+    Forensic mode
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#injecting-alerts-into-existing-database" class="md-nav__link">
+    Injecting alerts into existing database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#injection-alerts-into-new-database-no-local-instance-running" class="md-nav__link">
+    Injection alerts into new database - no local instance running
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#injection-alerts-into-new-database-while-local-instance-is-running" class="md-nav__link">
+    Injection alerts into new database - while local instance is running
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#injection-alerts-into-new-database-dev-env" class="md-nav__link">
+    Injection alerts into new database - dev env
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/crowdsecurity/crowdsec/edit/master/docs/user_guide/forensic_mode.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  <h1>Crowdsec forensic mode</h1>
+                
+                <h2 id="forensic-mode">Forensic mode<a class="headerlink" href="#forensic-mode" title="Permanent link">&para;</a></h2>
+<p>While crowdsec-agent can be used to monitor "live" logs, it can as well be used on cold logs.
+It is a <em>great</em> way to test scenario, detect false positives &amp; false negatives or simply generate reporting on a past time period.</p>
+<p>When doing so, crowdsec-agent will read the logs, extract timestamps from those, so that the scenarios/buckets can be evaluated with the log's timestamps. The resulting overflows will be pushed to the API as any other alert, but the timestamp will be the timestamps of the logs, properly allowing you to view the alerts in their original time line.</p>
+<p>you can run :</p>
+<div class="codehilite"><pre><span></span><code>sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///path/to/your/log/file.log -type log_file_type
+</code></pre></div>
+
+<p>Where <code>-dsn</code> points to the log file you want to process, and the <code>-type</code> is similar to what you would put in your acquisition's label field, for example :</p>
+<div class="codehilite"><pre><span></span><code>sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/nginx/2019.log -type nginx
+sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/sshd-2019.log -type syslog
+sudo crowdsec -c /etc/crowdsec/user.yaml -dns <span class="s2">&quot;journalctl://filters=_SYSTEMD_UNIT=ssh.service --since yesterday&quot;</span> -type syslog
+</code></pre></div>
+
+<p>When running crowdsec in forensic mode, the alerts will be displayed to stdout, and as well pushed to database :</p>
+<div class="codehilite"><pre><span></span><code>$ sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/nginx/nginx-2019.log.1 -type nginx
+...
+INFO<span class="o">[</span><span class="m">13</span>-11-2020 <span class="m">13</span>:05:23<span class="o">]</span> Ip <span class="m">123</span>.206.50.249 performed <span class="s1">&#39;crowdsecurity/http-probing&#39;</span> <span class="o">(</span><span class="m">11</span> events over 6s<span class="o">)</span> at <span class="m">2019</span>-01-01 <span class="m">01</span>:37:32 +0100 CET 
+INFO<span class="o">[</span><span class="m">13</span>-11-2020 <span class="m">13</span>:05:23<span class="o">]</span> Ip <span class="m">123</span>.206.50.249 performed <span class="s1">&#39;crowdsecurity/http-backdoors-attempts&#39;</span> <span class="o">(</span><span class="m">2</span> events over 1s<span class="o">)</span> at <span class="m">2019</span>-01-01 <span class="m">01</span>:37:33 +0100 CET 
+INFO<span class="o">[</span><span class="m">13</span>-11-2020 <span class="m">13</span>:05:24<span class="o">]</span> <span class="o">(</span>14baeedafc1e44c08b806fc0c1cd92c4/crowdsec<span class="o">)</span> crowdsecurity/http-probing by ip <span class="m">123</span>.206.50.249 <span class="o">(</span>CN<span class="o">)</span> : 1h ban on Ip <span class="m">123</span>.206.50.249 
+INFO<span class="o">[</span><span class="m">13</span>-11-2020 <span class="m">13</span>:05:24<span class="o">]</span> <span class="o">(</span>14baeedafc1e44c08b806fc0c1cd92c4/crowdsec<span class="o">)</span> crowdsecurity/http-backdoors-attempts by ip <span class="m">123</span>.206.50.249 <span class="o">(</span>CN<span class="o">)</span> : 1h ban on Ip <span class="m">123</span>.206.50.249 
+...
+</code></pre></div>
+
+<p>And as these alerts are as well pushed to database, it mean you can view them in metabase, or using cscli !</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>To work in forensic mode, crowdsec-agent relies on <a href="https://hub.crowdsec.net/author/crowdsecurity/configurations/dateparse-enrich">crowdsecurity/dateparse-enrich</a> to parse date formats. See dedicated hub page for supported formats.</p>
+</div>
+<h2 id="injecting-alerts-into-existing-database">Injecting alerts into existing database<a class="headerlink" href="#injecting-alerts-into-existing-database" title="Permanent link">&para;</a></h2>
+<p>If you already have a running crowdsec/Local API running and want to inject events into existing database, you can run crowdsec directly :</p>
+<div class="codehilite"><pre><span></span><code>sudo crowdsec -dsn file://logs/nginx/access.log -type nginx --no-api
+</code></pre></div>
+
+<p>Crowdsec will process <code>logs/nginx/access.log</code> and push alerts to the Local API configured in your default configuration file (<code>/etc/crowdsec/config.yaml</code>, see <code>api.client.credentials_path</code>)</p>
+<h2 id="injection-alerts-into-new-database-no-local-instance-running">Injection alerts into new database - no local instance running<a class="headerlink" href="#injection-alerts-into-new-database-no-local-instance-running" title="Permanent link">&para;</a></h2>
+<p>If you don't have a service currently running, you can run crowdsec directly :</p>
+<div class="codehilite"><pre><span></span><code>sudo crowdsec -dsn file://logs/nginx/access.log -type nginx
+</code></pre></div>
+
+<p>Crowdsec will start a Local API and process <code>logs/nginx/access.log</code>.</p>
+<h2 id="injection-alerts-into-new-database-while-local-instance-is-running">Injection alerts into new database - while local instance is running<a class="headerlink" href="#injection-alerts-into-new-database-while-local-instance-is-running" title="Permanent link">&para;</a></h2>
+<p>If you have a local instance running and you don't want to pollute your existing database, we are going to configure a separate instance of Local API &amp; database.</p>
+<p>Let's copy the existing configuration to edit it :</p>
+<div class="codehilite"><pre><span></span><code>$ sudo cp /etc/crowdsec/config.yaml ./forensic.yaml
+$ emacs ./forensic.yaml
+</code></pre></div>
+
+<p>In our file, let's edit the local API &amp; database config to ensure we're not going to pollute existing data :</p>
+<div class="codehilite"><pre><span></span><code>$ emacs ./forensic.yaml
+...
+db_config:
+  type: sqlite
+  <span class="c1"># we edit the db_path to point to a different SQLite database</span>
+  db_path: /var/lib/crowdsec/data/crowdsec_alt.db
+  <span class="c1"># let&#39;s comment out the auto-flush (database garbage collection)</span>
+  <span class="c1">#flush:</span>
+  <span class="c1">#   max_items: 5000</span>
+  <span class="c1">#   max_age: 7d</span>
+
+...
+api:
+  client:
+    <span class="c1"># we edit credentials_path to point to a local file</span>
+    credentials_path: /tmp/local_api_credentials.yaml
+  server:
+    <span class="c1"># we edit the listen_uri so that it doesn&#39;t try to listen on the same port as the existing Local API</span>
+    listen_uri: <span class="m">127</span>.0.0.1:8081
+</code></pre></div>
+
+<p>With the following edits, we ensure that :</p>
+<ul>
+<li>The SQLite database path will be different : it avoids conflicts if you already had one running locally</li>
+<li>Edit the local api credentials path : we're going to register our machine to the ephemeral Local API </li>
+<li>Edit the listen uri of the local api : it avoids conflicts for listen port in case you already had one running locally</li>
+<li>Comment out the <code>flush</code> section : it ensure the database garbage collector won't run and delete your old events you're injecting ;)</li>
+</ul>
+<p>Let's create the new database and register a machine to it :</p>
+<div class="codehilite"><pre><span></span><code>$ touch /tmp/local_api_credentials.yaml
+$ cscli -c forensic.yaml machines add --auto
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Machine <span class="s1">&#39;...&#39;</span> created successfully 
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> API credentials dumped to <span class="s1">&#39;/tmp/local_api_credentials.yaml&#39;</span> 
+$ cat /tmp/local_api_credentials.yaml
+url: http://127.0.0.1:8081
+login: ...
+password: ...
+</code></pre></div>
+
+<p>Now we can start the new Local API and crowdsec :</p>
+<div class="codehilite"><pre><span></span><code>$ crowdsec -c ./forensic.yaml -dsn file://github/crowdsec/OLDS/LOGS/nginx/10k_ACCESS_LOGS.log -type nginx
+...
+INFO<span class="o">[</span><span class="m">15</span>-11-2020 <span class="m">10</span>:09:20<span class="o">]</span> Ip x.x.x.x performed <span class="s1">&#39;crowdsecurity/http-bad-user-agent&#39;</span> <span class="o">(</span><span class="m">2</span> events over 0s<span class="o">)</span> at <span class="m">2017</span>-10-21 <span class="m">13</span>:58:38 +0200 CEST 
+INFO<span class="o">[</span><span class="m">15</span>-11-2020 <span class="m">10</span>:09:20<span class="o">]</span> Ip y.y.y.y performed <span class="s1">&#39;crowdsecurity/http-probing&#39;</span> <span class="o">(</span><span class="m">11</span> events over 0s<span class="o">)</span> at <span class="m">2017</span>-10-23 <span class="m">12</span>:00:34 +0200 CEST 
+...
+</code></pre></div>
+
+<p>And we can even fire a dedicated dashboard to view the data :</p>
+<div class="codehilite"><pre><span></span><code>$ cscli -c forensic.yaml dashboard setup
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> /var/lib/crowdsec/data/metabase.db exists, skip. 
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> Pulling docker image metabase/metabase:v0.37.0.2 
+...
+INFO<span class="o">[</span><span class="m">0001</span><span class="o">]</span> creating container <span class="s1">&#39;/crowdsec-metabase&#39;</span>      
+INFO<span class="o">[</span><span class="m">0002</span><span class="o">]</span> waiting <span class="k">for</span> metabase to be up <span class="o">(</span>can take up to a minute<span class="o">)</span> 
+.........
+INFO<span class="o">[</span><span class="m">0040</span><span class="o">]</span> Metabase is ready                            
+
+    URL       : <span class="s1">&#39;http://127.0.0.1:3000&#39;</span>
+    username  : <span class="s1">&#39;crowdsec@crowdsec.net&#39;</span>
+    password  : ...
+</code></pre></div>
+
+<h2 id="injection-alerts-into-new-database-dev-env">Injection alerts into new database - dev env<a class="headerlink" href="#injection-alerts-into-new-database-dev-env" title="Permanent link">&para;</a></h2>
+<p>From a fresh release :</p>
+<div class="codehilite"><pre><span></span><code>$ tar xvzf crowdsec-release.tgz
+$ <span class="nb">cd</span> crowdsec-v1.0.0-rc
+$ ./test_env.sh
+$ <span class="nb">cd</span> tests
+</code></pre></div>
+
+<p>Install the needed collection(s) :</p>
+<div class="codehilite"><pre><span></span><code>$ ./cscli -c dev.yaml collections install crowdsecurity/nginx
+</code></pre></div>
+
+<p>And we can process logs :</p>
+<div class="codehilite"><pre><span></span><code>$ ./crowdsec -c dev.yaml -dsn file://github/crowdsec/OLDS/LOGS/nginx/10k_ACCESS_LOGS.log -type nginx
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span> single file mode : <span class="nv">log_media</span><span class="o">=</span>stdout <span class="nv">daemonize</span><span class="o">=</span><span class="nb">true</span> 
+INFO<span class="o">[</span><span class="m">15</span>-11-2020 <span class="m">11</span>:18:27<span class="o">]</span> Crowdsec v1.0.0-rc-0ecb142dfffc89b019b6d9044cb7cc5569d12c70 
+INFO<span class="o">[</span><span class="m">15</span>-11-2020 <span class="m">11</span>:18:38<span class="o">]</span> Ip x.x.x.x performed <span class="s1">&#39;crowdsecurity/http-sensitive-files&#39;</span> <span class="o">(</span><span class="m">5</span> events over 4s<span class="o">)</span> at <span class="m">2017</span>-10-23 <span class="m">12</span>:35:54 +0200 CEST 
+INFO<span class="o">[</span><span class="m">15</span>-11-2020 <span class="m">11</span>:18:39<span class="o">]</span> <span class="o">(</span>test/crowdsec<span class="o">)</span> crowdsecurity/http-probing by ip x.x.x.x <span class="o">(</span>DE<span class="o">)</span> : 1h ban on Ip x.x.x.x 
+</code></pre></div>
+
+<p>And we can then query the local api (while letting the crowdsec-agent running) :</p>
+<div class="codehilite"><pre><span></span><code>$ ./cscli -c dev.yaml alerts list
++----+--------------------+---------------------------------------+---------+--------------+-----------+--------------------------------+
+<span class="p">|</span> ID <span class="p">|</span>       VALUE        <span class="p">|</span>                REASON                 <span class="p">|</span> COUNTRY <span class="p">|</span>      AS      <span class="p">|</span> DECISIONS <span class="p">|</span>           CREATED AT           <span class="p">|</span>
++----+--------------------+---------------------------------------+---------+--------------+-----------+--------------------------------+
+<span class="p">|</span> <span class="m">28</span> <span class="p">|</span> Ip:x.x.x.x  <span class="p">|</span> crowdsecurity/http-crawl-non_statics  <span class="p">|</span> DE      <span class="p">|</span>  Linode, LLC <span class="p">|</span> ban:1     <span class="p">|</span> <span class="m">2017</span>-10-23 <span class="m">12</span>:36:48 +0200      <span class="p">|</span>
+<span class="p">|</span>    <span class="p">|</span>                    <span class="p">|</span>                                       <span class="p">|</span>         <span class="p">|</span>              <span class="p">|</span>           <span class="p">|</span> +0200                          <span class="p">|</span>
+<span class="p">|</span> <span class="m">27</span> <span class="p">|</span> Ip:x.x.x.x  <span class="p">|</span> crowdsecurity/http-sensitive-files    <span class="p">|</span> DE      <span class="p">|</span>  Linode, LLC <span class="p">|</span> ban:1     <span class="p">|</span> <span class="m">2017</span>-10-23 <span class="m">12</span>:35:50 +0200      <span class="p">|</span>
+<span class="p">|</span>    <span class="p">|</span>                    <span class="p">|</span>                                       <span class="p">|</span>         <span class="p">|</span>              <span class="p">|</span>           <span class="p">|</span> +0200                          <span class="p">|</span>
+</code></pre></div>
+
+<p>Or even start a dashboard to view data :</p>
+<div class="codehilite"><pre><span></span><code>$ sudo ./cscli dashboard setup
+...
+INFO<span class="o">[</span><span class="m">0002</span><span class="o">]</span> waiting <span class="k">for</span> metabase to be up <span class="o">(</span>can take up to a minute<span class="o">)</span> 
+........
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="simulation_mode.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Simulation management" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Simulation management
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="debugging_configs.html" class="md-footer__link md-footer__link--next" aria-label="Next: Debugging" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Debugging
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.expand", "navigation.instant", "navigation.section"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>
