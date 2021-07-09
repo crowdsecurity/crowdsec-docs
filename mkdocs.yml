@@ -150,15 +150,15 @@ extra:
       lapi:
           name: local API (LAPI)
           Name: Local API (LAPI)
-          Htmlname: "[Local API](/Crowdsec/v1/localAPI/)"
-          htmlname: "[local API](/Crowdsec/v1/localAPI/)"
-          url: /Crowdsec/v1/localAPI/
+          Htmlname: "[Local API](/v1.1/localAPI/)"
+          htmlname: "[local API](/v1.1/localAPI/)"
+          url: /v1.1/localAPI/
           swagger: https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI
       cli:
           name: cscli
           Name: Cscli
           bin: cscli
-          user_guide: "[cscli](/Crowdsec/v1/user_guide/cscli/)"
+          user_guide: "[cscli](/v1.1/user_guide/cscli/)"
       config:
           crowdsec_dir: "/etc/crowdsec/"
           acquis_path: "/etc/crowdsec/acquis.yaml"
@@ -167,105 +167,105 @@ extra:
           name: bouncers
           Name: Bouncers
           url: "https://hub.crowdsec.net/browse/#bouncers"
-          htmlname: "[bouncers](/Crowdsec/v1/bouncers/)"
-          Htmlname: "[bouncers](/Crowdsec/v1/bouncers/)"
+          htmlname: "[bouncers](/v1.1/bouncers/)"
+          Htmlname: "[bouncers](/v1.1/bouncers/)"
       metabase:
           name: metabase
-          htmlName: "[dashboard](/Crowdsec/v1/observability/dashboard)"
+          htmlName: "[dashboard](/v1.1/observability/dashboard)"
       wizard:
           name: wizard
           bin: "./wizard.sh"
           bugreport: "https://github.com/crowdsecurity/crowdsec/issues"
       ref:
-          acquis: "[acquisition](/Crowdsec/v1/user_guide/configurations_management/acquisition/)"
-          parsers: "[parsers](/Crowdsec/v1/references/parsers/)"
-          scenarios: "[scenarios](/Crowdsec/v1/references/scenarios/)"   
+          acquis: "[acquisition](/v1.1/user_guide/configurations_management/acquisition/)"
+          parsers: "[parsers](/v1.1/references/parsers/)"
+          scenarios: "[scenarios](/v1.1/references/scenarios/)"   
   # All the technical terms
       event:
           name: event
           Name: Event
-          htmlname: "[event](/Crowdsec/v1/getting_started/concepts/#events)"
-          Htmlname: "[Event](/Crowdsec/v1/getting_started/concepts/#events)" 
+          htmlname: "[event](/v1.1/getting_started/concepts/#events)"
+          Htmlname: "[Event](/v1.1/getting_started/concepts/#events)" 
       expr:
           name: expr
           Name: Expr
-          htmlname: "[expr](/Crowdsec/v1/references/expressions/)"
-          Htmlname: "[Expr](/Crowdsec/v1/references/expressions/)"
+          htmlname: "[expr](/v1.1/references/expressions/)"
+          Htmlname: "[Expr](/v1.1/references/expressions/)"
       filter:
           name: filter
           Name: Filter
-          htmlname: "[filter](/Crowdsec/v1/references/parsers/#filter)"
-          Htmlname: "[Filter](/Crowdsec/v1/references/parsers/#filter)"
+          htmlname: "[filter](/v1.1/references/parsers/#filter)"
+          Htmlname: "[Filter](/v1.1/references/parsers/#filter)"
       onsuccess:
           name: onsuccess
           Name: Onsuccess
-          htmlname: "[onsuccess](/Crowdsec/v1/references/parsers/#onsuccess)"  
-          Htmlname: "[Onsuccess](/Crowdsec/v1/references/parsers/#onsuccess)"  
+          htmlname: "[onsuccess](/v1.1/references/parsers/#onsuccess)"  
+          Htmlname: "[Onsuccess](/v1.1/references/parsers/#onsuccess)"  
       profiles:
-          htmlname: "[profiles](/Crowdsec/v1/references/profiles/)"
+          htmlname: "[profiles](/v1.1/references/profiles/)"
       simulation:
-          htmlname: "[profiles](/Crowdsec/v1/references/simulation/)"
+          htmlname: "[profiles](/v1.1/references/simulation/)"
       statics:
           name: statics
           Name: Statics
-          htmlname: "[statics](/Crowdsec/v1/references/parsers/#statics)"
-          Htmlname: "[Statics](/Crowdsec/v1/references/parsers/#statics)"
+          htmlname: "[statics](/v1.1/references/parsers/#statics)"
+          Htmlname: "[Statics](/v1.1/references/parsers/#statics)"
       parsers:
           name: parsers
           Name: Parsers
-          htmlname: "[parsers](/Crowdsec/v1/getting_started/concepts/#parsers)"
-          Htmlname: "[Parsers](/Crowdsec/v1/getting_started/concepts/#parsers)"
+          htmlname: "[parsers](/v1.1/getting_started/concepts/#parsers)"
+          Htmlname: "[Parsers](/v1.1/getting_started/concepts/#parsers)"
       scenarios:
           name: scenarios
           Name: Scenarios
-          htmlname: "[scenarios](/Crowdsec/v1/getting_started/concepts/#scenarios)"
-          Htmlname: "[Scenarios](/Crowdsec/v1/getting_started/concepts/#scenarios)"
+          htmlname: "[scenarios](/v1.1/getting_started/concepts/#scenarios)"
+          Htmlname: "[Scenarios](/v1.1/getting_started/concepts/#scenarios)"
       collections:
           name: collections
           Name: Collections
-          htmlname: "[collections](/Crowdsec/v1/getting_started/concepts/#collections)"
-          Htmlname: "[Collections](/Crowdsec/v1/getting_started/concepts/#collections)"
+          htmlname: "[collections](/v1.1/getting_started/concepts/#collections)"
+          Htmlname: "[Collections](/v1.1/getting_started/concepts/#collections)"
       timeMachine:
           name: timeMachine
           Name: TimeMachine
-          htmlname: "[timeMachine](/Crowdsec/v1/getting_started/concepts/#timemachine)"
-          Htmlname: "[TimeMachine](/Crowdsec/v1/getting_started/concepts/#timemachine)"
+          htmlname: "[timeMachine](/v1.1/getting_started/concepts/#timemachine)"
+          Htmlname: "[TimeMachine](/v1.1/getting_started/concepts/#timemachine)"
       alert:
           name: alert
           Name: Alert
-          htmlname: "[alert](/Crowdsec/v1/getting_started/concepts/#alerts)"
-          Htmlname: "[Alert](/Crowdsec/v1/getting_started/concepts/#alerts)"
+          htmlname: "[alert](/v1.1/getting_started/concepts/#alerts)"
+          Htmlname: "[Alert](/v1.1/getting_started/concepts/#alerts)"
       decision:
           name: decision
           Name: Decision
-          htmlname: "[decision](/Crowdsec/v1/getting_started/concepts/#decisions)"
-          Htmlname: "[Decision](/Crowdsec/v1/getting_started/concepts/#decisions)"
+          htmlname: "[decision](/v1.1/getting_started/concepts/#decisions)"
+          Htmlname: "[Decision](/v1.1/getting_started/concepts/#decisions)"
       whitelists:
           name: whitelists
           Name: Whitelists
-          htmlname: "[whitelists](/Crowdsec/v1/write_configurations/whitelist/)"
-          Htmlname: "[Whitelists](/Crowdsec/v1/write_configurations/whitelist/)"
+          htmlname: "[whitelists](/v1.1/write_configurations/whitelist/)"
+          Htmlname: "[Whitelists](/v1.1/write_configurations/whitelist/)"
      #scenario stuff
       stage:
           name: stage
           Name: Stage
-          htmlname: "[stage](/Crowdsec/v1/getting_started/concepts/#stages)"
-          Htmlname: "[Stage](/Crowdsec/v1/getting_started/concepts/#stages)"
+          htmlname: "[stage](/v1.1/getting_started/concepts/#stages)"
+          Htmlname: "[Stage](/v1.1/getting_started/concepts/#stages)"
       leakspeed:
           name: leakspeed
           Name: Leakspeed
-          htmlname: "[leakspeed](/Crowdsec/v1/references/scenarios/#leakspeed)"
-          Htmlname: "[Leakspeed](/Crowdsec/v1/references/scenarios/#leakspeed)"
+          htmlname: "[leakspeed](/v1.1/references/scenarios/#leakspeed)"
+          Htmlname: "[Leakspeed](/v1.1/references/scenarios/#leakspeed)"
       capacity:
           name: capacity
           Name: Capacity
-          htmlname: "[capacity](/Crowdsec/v1/references/scenarios/#capacity)"
-          Htmlname: "[Capacity](/Crowdsec/v1/references/scenarios/#capacity)"
+          htmlname: "[capacity](/v1.1/references/scenarios/#capacity)"
+          Htmlname: "[Capacity](/v1.1/references/scenarios/#capacity)"
       duration:
           name: duration
           Name: Duration
-          htmlname: "[duration](/Crowdsec/v1/references/scenarios/#duration)"
-          Htmlname: "[Duration](/Crowdsec/v1/references/scenarios/#duration)"
+          htmlname: "[duration](/v1.1/references/scenarios/#duration)"
+          Htmlname: "[Duration](/v1.1/references/scenarios/#duration)"
       prometheus:
           name: prometheus
           htmlname: "[prometheus](https://github.com/prometheus/client_golang)"
