@@ -2082,7 +2082,7 @@
                   <h1>Parsers format</h1>
                 
                 <h2 id="understanding-parsers">Understanding parsers<a class="headerlink" href="#understanding-parsers" title="Permanent link">&para;</a></h2>
-<p>A parser is a YAML configuration file that describes how a string is being parsed. Said string can be a log line, or a field extracted from a previous parser. While a lot of parsers rely on the <strong>GROK</strong> approach (a.k.a regular expression named capture groups), parsers can as well reference enrichment modules to allow specific data processing, or use specific <a href="/Crowdsec/v1/references/expressions/">expr</a> feature to perform parsing on specific data, such as JSON.</p>
+<p>A parser is a YAML configuration file that describes how a string is being parsed. Said string can be a log line, or a field extracted from a previous parser. While a lot of parsers rely on the <strong>GROK</strong> approach (a.k.a regular expression named capture groups), parsers can as well reference enrichment modules to allow specific data processing, or use specific <a href="/v1.0/references/expressions/">expr</a> feature to perform parsing on specific data, such as JSON.</p>
 <p>Parsers are organized into stages to allow pipelines and branching in parsing.</p>
 <p>See the <a href="https://hub.crowdsec.net/">Crowdsec Hub</a> to explore parsers, or see below some examples :</p>
 <ul>
@@ -2112,7 +2112,7 @@
     <span class="nt">expression</span><span class="p">:</span> <span class="s">&quot;evt.Parsed.src_ip&quot;</span>
 </code></pre></div>
 
-<p>The parser nodes are processed sequentially based on the alphabetical order of <a href="/Crowdsec/v1/getting_started/concepts/#stages">stage</a> and subsequent files.
+<p>The parser nodes are processed sequentially based on the alphabetical order of <a href="/v1.0/getting_started/concepts/#stages">stage</a> and subsequent files.
 If the node is considered successful (grok is present and returned data or no grok is present) and "onsuccess" equals to <code>next_stage</code>, then the event is moved to the next stage.</p>
 <h2 id="parser-trees">Parser trees<a class="headerlink" href="#parser-trees" title="Permanent link">&para;</a></h2>
 <p>A parser node can contain sub-nodes, to provide proper branching (on top of stages).
@@ -2244,7 +2244,7 @@ DEBU[31-07-2020 16:36:28]        evt.Parsed.program = &#39;nginx&#39;           
 <div class="codehilite"><pre><span></span><code><span class="nt">filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">expression</span>
 </code></pre></div>
 
-<p><code>filter</code> must be a valid <a href="/Crowdsec/v1/references/expressions/">expr</a> expression that will be evaluated against the <a href="/Crowdsec/v1/getting_started/concepts/#events">event</a>.</p>
+<p><code>filter</code> must be a valid <a href="/v1.0/references/expressions/">expr</a> expression that will be evaluated against the <a href="/v1.0/getting_started/concepts/#events">event</a>.</p>
 <p>If <code>filter</code> evaluation returns true or is absent, node will be processed.</p>
 <p>If <code>filter</code> returns <code>false</code> or a non-boolean, node won't be processed.</p>
 <p>Here is the <a href="https://github.com/antonmedv/expr/tree/master/docs">expr documentation</a>.</p>
@@ -2319,7 +2319,7 @@ Regexp must be a valid RE2 expression.</p>
 <p><code>statics</code> is a list of directives that will be executed when the node is considered successful.
 Each entry of the list is composed of a target (where to write) and a source (what data to write).</p>
 <h4 id="target"><code>target</code><a class="headerlink" href="#target" title="Permanent link">&para;</a></h4>
-<p>The target aims at being any part of the <a href="/Crowdsec/v1/getting_started/concepts/#events">event</a> object, and can be expressed in different ways :</p>
+<p>The target aims at being any part of the <a href="/v1.0/getting_started/concepts/#events">event</a> object, and can be expressed in different ways :</p>
 <ul>
 <li><code>meta: &lt;target_field&gt;</code></li>
 <li><code>parsed: &lt;target_field&gt;</code></li>
@@ -2332,7 +2332,7 @@ Each entry of the list is composed of a target (where to write) and a source (wh
 </li>
 </ul>
 <h4 id="value"><code>value</code><a class="headerlink" href="#value" title="Permanent link">&para;</a></h4>
-<p>The source itself can be either a static value, or an <a href="/Crowdsec/v1/references/expressions/">expr</a> result :</p>
+<p>The source itself can be either a static value, or an <a href="/v1.0/references/expressions/">expr</a> result :</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">statics</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="nt">meta</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">target_field</span>
     <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">static_value</span>
