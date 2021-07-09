@@ -23,12 +23,12 @@ Thanks to this, besides detecting and stopping attacks in real time based on you
 
 ## Main features
 
-{{v0X.crowdsec.Name}}, besides the core "detect and react" mechanism,  is committed to a few other key points :
+{{v1X.crowdsec.Name}}, besides the core "detect and react" mechanism,  is committed to a few other key points :
 
  - **Easy Installation** : The provided wizard allows a [trivial deployment](/Crowdsec/v1/getting_started/installation/#using-the-interactive-wizard) on most standard setups
- - **Easy daily operations** : Using [cscli](/Crowdsec/v1/cscli/cscli_upgrade/) and the {{v0X.hub.htmlname}}, keeping your detection mechanisms up-to-date is trivial
+ - **Easy daily operations** : Using [cscli](/Crowdsec/v1/cscli/cscli_upgrade/) and the {{v1X.hub.htmlname}}, keeping your detection mechanisms up-to-date is trivial
  - **Reproducibility** : Crowdsec can run not only against live logs, but as well against cold logs. It makes it a lot easier to detect potential false-positives, perform forensic ou generate reporting
- - **Observability** : Providing strongs insights on what is going on and what {{v0X.crowdsec.name}} is doing :
+ - **Observability** : Providing strongs insights on what is going on and what {{v1X.crowdsec.name}} is doing :
     - Humans have [access to a trivially deployable web interface](/Crowdsec/v1/observability/dashboard/)
     - OPs have [access to detailed prometheus metrics](/Crowdsec/v1/observability/prometheus/)
     - Admins have [a friendly command-line interface tool](/Crowdsec/v1/observability/command_line/)
