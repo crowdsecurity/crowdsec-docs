@@ -200,6 +200,12 @@ grok:
 ```yaml
 grok:
   pattern: ^a valid RE2 expression with %{CAPTURE:field}$
+  expression: JsonExtract(evt.Line.Raw, "field.example")
+```
+
+```yaml
+grok:
+  pattern: ^a valid RE2 expression with %{CAPTURE:field}$
   apply_on: source_field
 ```
 
