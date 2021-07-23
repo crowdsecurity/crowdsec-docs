@@ -27,6 +27,8 @@ nav:
     - Simulation management: user_guide/simulation_mode.md
     - Crowdsec forensic mode: user_guide/forensic_mode.md
     - Debugging: user_guide/debugging_configs.md
+  - User tutorial:
+    - Crowdsec Firewall on FreeBSD: user_tutorial/crowdsec_firewall_on_freebsd.md
   - CLI:
     - Cscli: cscli/cscli.md
     - Alerts: cscli/cscli_alerts.md
