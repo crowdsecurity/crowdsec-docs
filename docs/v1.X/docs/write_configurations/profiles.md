@@ -27,7 +27,7 @@ For example, let's say we want to apply a 24h ban if someone triggers the `ssh-b
 #If ssh-bf, apply a 24h ban
 name: ssh_bf_ban
 filters:
- - Alert.Remediation == true && Alert.GetScope() == "Ip" && Alert.GetScenario() == "crowdsecurity/ssh-bf"
+ - Alert.Remediation == true && Alert.GetScope() == "Ip" && Alert.GetScenario() in ["crowdsecurity/ssh-bf", "crowdsecurity/ssh-user-enum"]
 decisions:
  - type: ban
    duration: 24h
@@ -75,3 +75,20 @@ decisions:
    duration: 4h
 on_success: break
 ```
+
+The scope value is set by the scenario and is arbitrary.
+Imagine you have written a custom bouncer (or use the [cloudflare bouncer](https://github.com/crowdsecurity/cs-cloudflare-bouncer)) which applies decision at the country level, you can create a profile which only takes decisions at the country level:
+
+```
+#Ban whole countries
+name: ban_countries
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Country"
+decisions:
+ - type: ban
+   duration: 4h
+on_success: break
+```
+
+!!! warning
+    If you use custom scopes, the bouncer(s) you use must know about them and be able to request them when querying LAPI.
