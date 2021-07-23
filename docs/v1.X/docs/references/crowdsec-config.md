@@ -60,8 +60,7 @@ api:
 prometheus:
   enabled: true
   level: full
-  listen_addr: 127.0.0.1
-  listen_port: 6060
+  listen_uri: http://127.0.0.1:6060
 ```
 
 </details>
@@ -145,8 +144,7 @@ api:
 prometheus:
   enabled: (true|false)
   level: (full|aggregated)
-  listen_addr: <listen_address>
-  listen_port: <listen_port>
+  listen_uri: <listen_uri>
 ```
 
 ## Configuration directives
@@ -306,7 +304,7 @@ The git branch on which `cscli` is going to fetch configurations.
 
 ## `db_config`
 
-Please refer to the [database configuration](/Crowdsec/v1/references/database).
+Please refer to the [database configuration](/Crowdsec/v11/references/database).
 
 ## `api`
 
@@ -423,8 +421,7 @@ This section is used by local API and crowdsec.
 prometheus:
   enabled: (true|false)
   level: (full|aggregated)
-  listen_addr: <listen_address>
-  listen_port: <listen_port>
+  listen_uri: <listen_uri>
 ```
 
 
@@ -438,12 +435,7 @@ Allows to enable/disable prometheus instrumentation.
 
 Can be `full` (all metrics) or `aggregated` (to allow minimal metrics that will keep cardinality low).
 
-#### `listen_addr`
+#### `listen_uri`
 > string
 
-Prometheus listen url.
-
-#### `listen_port`
-> int
-
-Prometheus listen port.
+Prometheus listen uri.
