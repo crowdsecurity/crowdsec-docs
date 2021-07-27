@@ -68,6 +68,7 @@ nav:
       - Collections format: references/collections.md
       - Expressions helpers: references/expressions.md
       - Patterns references: references/patterns-documentation.md
+      - Plugins format: references/plugins.md
     - Configuration files:
       - Configuration format: references/crowdsec-config.md
       - Database format: references/database.md

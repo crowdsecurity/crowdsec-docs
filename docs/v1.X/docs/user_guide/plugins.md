@@ -2,7 +2,7 @@ CrowdSec supports plugins written in any language. The plugins are fed with new 
 
 ## Installing the plugin:
 
-```
+```bash
 git clone --depth 1 https://github.com/sbs2001/crowdsec-slack-plugin
 cd crowdsec-slack-plugin
 sudo ./install.sh
@@ -10,7 +10,7 @@ sudo ./install.sh
 
 **Note** that the content of `install.sh` are as following: 
 
-```
+```bash
 cat ./install.sh
 sudo systemctl stop crowdsec
 go build . -o notification-slack
@@ -35,7 +35,7 @@ This is interesting because:
 
 Let's paste the following config at a new file at `/etc/crowdsec/notifications/slackconfig.yaml` 
 {% raw %}
-```
+```yaml
 type: slack # required for all plugins. This is used to determine which binary/script  to feed this config.
 name: slackperiodicreport # required for all plugins. This allows different configs for same script/binary. 
 group_wait: 15s # optional, duration for which crowdsec "accumulates" the alerts before dispatching them to this plugin
@@ -65,7 +65,7 @@ See [slack guide](https://slack.com/intl/en-in/help/articles/115005265063-Incomi
 
 Plugins are registered at the profile level. Alerts which don't satisy some profile, won't be sent to the plugins owned by this profile.
 
-```
+```yaml
 name: default_ip_remediation
 #debug: true
 filters:
@@ -82,7 +82,7 @@ notifications:
 
 Let's restart crowdsec
 
-```
+```bash
 sudo systemctl restart crowdsec
 ```
 
