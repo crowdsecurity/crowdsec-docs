@@ -208,7 +208,7 @@ Environment="HTTP_PROXY=socks5://127.0.0.1:9050"
 $ sudo HTTP_PROXY=socks5://127.0.0.1:9050 HTTPS_PROXY=socks5://127.0.0.1:9050 cscli capi register
 ```
 
-### How to setup High Availability for Local API
+## How to setup High Availability for Local API
 
 When setting up High Availability for Local API, do not forget to share the same `CS_LAPI_SECRET` between your Local API instances : it is the secret used to signed JWT tokens. (By default it's generated from PRNG at startup)
 
