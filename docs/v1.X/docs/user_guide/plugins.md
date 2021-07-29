@@ -1,4 +1,4 @@
-CrowdSec supports plugins written in any language. The plugins are fed with new alerts when available. In this guide we'll see how to configure and install a slack plugin written in golang. The plugin will send a simple message to the configured slack webhook whenever crowdsec detects any attacks. 
+CrowdSec supports plugins written in any language. The plugins are fed with new alerts when available. In this guide, we'll see how to configure and install a slack plugin written in golang. The plugin will send a simple message to the configured slack webhook whenever crowdsec detects any attacks. 
 
 ## Installing the plugin:
 
@@ -25,20 +25,20 @@ sudo systemctl start crowdsec
 This is interesting because:
 
 1. Plugins don't work if they are not owned by the root user and root group.
-2. Plugins follow the naming <plugin_type>-<plugin_subtype> . In this example `plugin_type=notification` and  `plugin_type=slack`. Currently only `plugin_type=notification` is supported. 
+2. Plugins follow the naming <plugin_type>-<plugin_subtype> . In this example `plugin_type=notification` and  `plugin_subtype=slack`. Currently only `plugin_type=notification` is supported. 
 3. CrowdSec looks for plugin binaries/scripts in the `/etc/crowdsec/plugins/` directory by default. 
 4. CrowdSec looks for configuration files of plugins with  `plugin_type=notification` in the  `/etc/crowdsec/notifications/` diectory by default. 
 
 ## Configuring the plugin: 
 
-### Adding the plugin configration 
+### Adding the plugin configuration 
 
 Let's paste the following config at a new file at `/etc/crowdsec/notifications/slackconfig.yaml` 
 {% raw %}
 ```yaml
 type: slack # required for all plugins. This is used to determine which binary/script  to feed this config.
-name: slackperiodicreport # required for all plugins. This allows different configs for same script/binary. 
-group_wait: 15s # optional, duration for which crowdsec "accumulates" the alerts before dispatching them to this plugin
+name: slackperiodicreport # required for all plugins. This allows different configs for the same script/binary. 
+group_wait: 15s # optional, the duration for which crowdsec "accumulates" the alerts before dispatching them to this plugin
 format: |   # required, go template to specify how to format message sent to the plugin. 
      Received  {{len .}} alerts in last 15 seconds.
      Malicious Actors are: 
@@ -48,7 +48,7 @@ format: |   # required, go template to specify how to format message sent to the
       {{end}}
      {{end}}
 
-webhook: https://hooks.slack.com/services/xxxxxxxxxxxxxxxxxxxxxxxxxxx # Replace this with your actiual webhook url. This is slack plugin specific config.
+webhook: https://hooks.slack.com/services/xxxxxxxxxxxxxxxxxxxxxxxxxxx # Replace this with your actual webhook URL. This is a slack plugin-specific config.
 
 ```
 {% endraw %}
@@ -63,7 +63,7 @@ See [slack guide](https://slack.com/intl/en-in/help/articles/115005265063-Incomi
 
 ### Registering the plugin in a profile.
 
-Plugins are registered at the profile level. Alerts which don't satisy some profile, won't be sent to the plugins owned by this profile.
+Plugins are registered at the profile level. Alerts that don't satisfy some profile, won't be sent to the plugins owned by this profile.
 
 ```yaml
 name: default_ip_remediation
