@@ -105,20 +105,7 @@ INFO[28-07-2021 11:28:35 PM] crowdsecurity/geoip-enrich : OK
 All the necessary files will be downloaded inside the crowdsec-v1.1.1/tests directory.
 ```
 
-4) Once the script completed register the local machine using the command 
- 
-`./cscli -c ./dev.yaml machines add --auto`
-
-Following is the output:
-
-```
-WARN[28-07-2021 11:54:23 PM] can't load CAPI credentials from './config/online_api_credentials.yaml' (missing field) 
-INFO[28-07-2021 11:54:23 PM] push and pull to crowdsec API disabled       
-INFO[28-07-2021 11:54:23 PM] Machine 'c50e6dXXXXX' successfully added to the local API 
-INFO[28-07-2021 11:54:23 PM] API credentials dumped to './config/local_api_credentials.yaml' 
-```
-
-5) Now you are ready to run `crowdsec` on your local machine. Execute the following command
+4) Now you are ready to run `crowdsec` on your local machine. Execute the following command
  
 `./crowdsec -c ./dev.yaml -debug`
 
