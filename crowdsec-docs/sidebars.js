@@ -16,6 +16,10 @@ module.exports = {
   
   tutorialSidebar: [
     {
+      type: "doc",
+      id: "intro"
+    },
+    {
       type: 'doc',
       label: 'Concepts',
       id: "concepts"
