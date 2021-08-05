@@ -7,6 +7,16 @@
  The sidebars can be generated from the filesystem, or explicitly defined here.
 
  Create as many sidebars as you want.
+
+
+
+ - regrouper les choses oriente utilisateur (genre gestion des decisions etc.) dans la partie user guide
+ - avoir un item 'profil' de premier level (ou on parle des notifs/plugins)
+ - regrouper central et local api (? hes:bof)
+ - regrouper : dashboard et observability
+ - dupliquer des liens vers le format de config des parsers/scenarios/... entre la partie "parsers" et la partie "configuration files format"
+
+
  */
 
 module.exports = {
@@ -27,7 +37,88 @@ module.exports = {
     {
       type: 'category',
       label: 'Getting Started',
+      items: ["getting_started/install_crowdsec", "getting_started/crowdsec_tour"]
+    },
+    {
+      type: 'category',
+      label: 'User Guides',
+      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt"]
+    },
+    {
+      type: 'category',
+      label: 'Data Sources',
+      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/syslog", "data_sources/troubleshout" ]
+    },
+    {
+      type: 'category',
+      label: 'Parsers',
+      items: ["parsers/intro", "parsers/format", "parsers/debug","parsers/create" ]
+    },
+    {
+      type: 'category',
+      label: 'Scenarios',
       items: ["getting_started/install_crowdsec"]
+    },
+    {
+      type: 'category',
+      label: 'Collections',
+      items: ["getting_started/install_crowdsec"]
+    },
+    {
+      type: 'category',
+      label: 'Profiles',
+      items: ["profiles/intro", "profiles/format","profiles/notif"]
+    },
+    {
+      type: 'category',
+      label: 'Observability',
+      items: ["observability/intro", "observability/cscli", "observability/prometheus", "observability/dashboard", "observability/console"]
+    },
+    {
+      type: 'category',
+      label: 'Local API',
+      items: ["local_api/intro", {"type":"link", "label": "swagger", "href":"https://google.com"}]
+    },
+    {
+      type: 'category',
+      label: 'Central API',
+      items: ["local_api/intro", {"type":"link", "label": "swagger", "href":"https://google.com"}]
+    },
+    {
+      type: 'doc',
+      label: 'FAQ',
+      id: "about_docs/documentation_about"
+    },
+    {
+      type: 'category',
+      label: 'Expr',
+      items: ["getting_started/install_crowdsec"]
+    },
+    {
+      type: 'doc',
+      label: 'Contributing',
+      id: "about_docs/documentation_about"
+    },
+    {
+      type: 'doc',
+      label: 'Console',
+      id: "about_docs/documentation_about"
+    },
+
+    {
+      type: 'category',
+      label: 'Services Configuration',
+      items: ["getting_started/install_crowdsec"]
+    },
+    {
+      type: 'category',
+      label: 'CLI reference (cscli)',
+      items: ["getting_started/install_crowdsec"]
+    },
+    {
+      type: 'doc',
+      label: 'About this documentation',
+      id: "about_docs/documentation_about"
     },
   ],
 };
