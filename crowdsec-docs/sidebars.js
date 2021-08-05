@@ -37,7 +37,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Getting Started',
-      items: ["getting_started/install_crowdsec", "getting_started/crowdsec_tour"]
+      items: ["getting_started/install_crowdsec", "getting_started/crowdsec_tour",  "getting_started/building"]
     },
     {
       type: 'category',
@@ -57,12 +57,12 @@ module.exports = {
     {
       type: 'category',
       label: 'Scenarios',
-      items: ["getting_started/install_crowdsec"]
+      items: ["parsers/intro", "parsers/format", "parsers/debug","parsers/create" ]
     },
     {
       type: 'category',
       label: 'Collections',
-      items: ["getting_started/install_crowdsec"]
+      items: ["parsers/intro", "parsers/format", "parsers/debug","parsers/create" ]
     },
     {
       type: 'category',
@@ -90,9 +90,9 @@ module.exports = {
       id: "about_docs/documentation_about"
     },
     {
-      type: 'category',
+      type: 'doc',
       label: 'Expr',
-      items: ["getting_started/install_crowdsec"]
+      id: "about_docs/documentation_about"
     },
     {
       type: 'doc',
@@ -106,14 +106,14 @@ module.exports = {
     },
 
     {
-      type: 'category',
+      type: 'doc',
       label: 'Services Configuration',
-      items: ["getting_started/install_crowdsec"]
+      id: "about_docs/documentation_about"
     },
     {
-      type: 'category',
+      type: 'doc',
       label: 'CLI reference (cscli)',
-      items: ["getting_started/install_crowdsec"]
+      id: "about_docs/documentation_about"
     },
     {
       type: 'doc',
