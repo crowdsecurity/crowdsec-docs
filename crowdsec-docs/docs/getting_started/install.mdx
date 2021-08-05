@@ -18,6 +18,9 @@ import CodeBlock from '@theme/CodeBlock';
     {label: 'EL/Fedora/Centos8', value: 'centos7'},
     {label: 'EL/Fedora/Centos7', value: 'centos8'},
     {label: 'Amzn Linux 2', value: 'amz'},
+    {label: 'FreeBSD', value: 'freebsd'},
+    {label: 'OpenWRT', value: 'openwrt'},
+    {label: 'Docker', value: 'docker'},
   ]}>
   <TabItem value="debian">
     <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash</CodeBlock>
@@ -36,25 +39,20 @@ import CodeBlock from '@theme/CodeBlock';
   </TabItem>
 
   <TabItem value="freebsd">
-    <CodeBlock className="language-bash">pkg install crowdsec</CodeBlock>
+    FreeBSD packages are available in the official repositories
   </TabItem>
 
   <TabItem value="openwrt">
-    <CodeBlock className="language-bash">dnf install crowdsec</CodeBlock>
+    OpenWRT packages are available in the official repositories.
   </TabItem>
 
   <TabItem value="docker">
-    <CodeBlock className="language-bash">docker pull crowdsecurity/crowdsec</CodeBlock>
+    Docker image is available on docker hub.
   </TabItem>
 
 </Tabs>
 
-:::note
 
-For FreeBSD, OpenWRT and Docker, crowdsec is only availabe upstream, see [alternative methods](xxx) to build manually.
-If you want to manually add the repositories, see [packagecloud.io's doc](https://packagecloud.io/crowdsec/crowdsec/install)
-
-:::
 
 ## Install crowdsec
 
