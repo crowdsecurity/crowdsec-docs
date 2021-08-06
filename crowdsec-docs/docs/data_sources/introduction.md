@@ -1,5 +1,5 @@
 ---
 id: intro
-title: Data Source introduction
+title: Introduction
 sidebar_position: 1
 ---

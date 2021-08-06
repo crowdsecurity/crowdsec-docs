@@ -1,5 +1,5 @@
 ---
 id: intro
-title: Parsers introduction
+title: Introduction
 sidebar_position: 1
 ---

@@ -86,11 +86,6 @@ module.exports = {
     },
     {
       type: 'doc',
-      label: 'FAQ',
-      id: "about_docs/documentation_about"
-    },
-    {
-      type: 'doc',
       label: 'Expr',
       id: "about_docs/documentation_about"
     },

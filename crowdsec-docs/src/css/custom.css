@@ -7,7 +7,7 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary: #2f2bae;
   --ifm-color-primary-dark: rgb(33, 175, 144);
   --ifm-color-primary-darker: rgb(31, 165, 136);
   --ifm-color-primary-darkest: rgb(26, 136, 112);
@@ -28,6 +28,24 @@ html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
+/* custom CSS */
 div.markdown {
   text-align: justify;
+}
+
+.hero--primary {
+  --ifm-hero-text-color: white;
+}
+
+a {
+  color: #7c79e9;
+}
+
+blockquote {
+  --ifm-blockquote-border-color: #7c79e9;
+  --ifm-blockquote-background-color: transparent;
+}
+
+.navbar__link {
+  --ifm-navbar-link-hover-color: #7c79e9;
 }

@@ -1,8 +1,8 @@
 ---
 title: Introduction
+id: intro
 ---
 
-# What is CrowdSec 
 
 <div style={{display: 'flex'}}>
     <div style={{textAlign: 'center', flex: '1'}}>

@@ -1,5 +1,5 @@
 ---
 id: cscli
-title: cscli metrics
+title: Cscli metrics
 sidebar_position: 2
 ---

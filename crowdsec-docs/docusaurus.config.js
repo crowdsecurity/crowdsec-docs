@@ -28,6 +28,12 @@ module.exports = {
         },
         {to: '/blog', label: 'Tutorials', position: 'left'},
         {
+          type: 'doc',
+          docId: 'faq',
+          position: 'left',
+          label: 'FAQ',
+        },
+        {
           href: 'https://github.com/crowdsecurity/crowdsec',
           label: 'GitHub',
           position: 'right',

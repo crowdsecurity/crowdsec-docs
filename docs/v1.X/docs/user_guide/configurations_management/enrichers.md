@@ -1,4 +1,4 @@
-Enrichers are basically {{v1X.parsers.htmlname}} that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich` {{v1X.stage.htmlname}} (after most of the parsing happened).
+Enrichers are basically [parsers](../parsers/) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich` {{v1X.stage.htmlname}} (after most of the parsing happened).
 
 Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the {{v1X.event.htmlname}}.
 
@@ -15,12 +15,12 @@ It exposes three methods : `GeoIpCity` `GeoIpASN` and `IpToRange` that are used 
 Enrichers can be installed as any other parsers with the following command:
 
 ```
-sudo {{v1X.cli.bin}} parsers install crowdsecurity/geoip-enrich
+sudo cscli parsers install crowdsecurity/geoip-enrich
 ```
 
-Take a tour at the {{v1X.hub.htmlname}} to find them !
+Take a tour at the [Hub](https://hub.crowdsec.net/browse/#configurations) to find them !
 
 ## Reference documentation
 
-[Link to enrichers reference documentation](/Crowdsec/v1/references/enrichers/)
+See more about enrichers [here](../enrichers/).
 

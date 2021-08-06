@@ -1,5 +1,5 @@
 ---
 id: dashboard
-title: cscli dashboard
+title: Cscli dashboard
 sidebar_position: 3
 ---
