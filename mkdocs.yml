@@ -262,7 +262,7 @@ extra:
           bin: "./wizard.sh"
           bugreport: "https://github.com/crowdsecurity/crowdsec/issues"
       ref:
-          acquis: "[acquisition](/Crowdsec/v1/user_guide/configurations_management/acquisition/)"
+          acquis: "[acquisition](/Crowdsec/v1/user_guide/data_sources/acquisition/)"
           parsers: "[parsers](/Crowdsec/v1/references/parsers/)"
           scenarios: "[scenarios](/Crowdsec/v1/references/scenarios/)"   
   # All the technical terms
