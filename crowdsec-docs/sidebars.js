@@ -57,7 +57,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Scenarios',
-      items: ["parsers/intro", "parsers/format", "parsers/debug","parsers/create" ]
+      items: ["scenarios/intro", "scenarios/format", "scenarios/debug","scenarios/create" ]
     },
     {
       type: 'category',
