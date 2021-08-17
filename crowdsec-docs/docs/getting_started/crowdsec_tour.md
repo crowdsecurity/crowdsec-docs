@@ -10,8 +10,7 @@ sidebar_position: 1
 sudo cscli hub list
 ```
 
-On the machine where you deployed CrowdSec, type `sudo cscli hub list` to see install configurations.
-This list represents the parsers, scenarios and/or collections that you deployed. 
+This lists installed parsers, scenarios and/or collections. 
 
 They represent what your CrowdSec setup can read (logs) and detect (scenarios). 
 
@@ -67,44 +66,29 @@ INFO[0000] POSTOVERFLOWS:
 sudo cscli <configuration_type> install <item>
 ```
 
-`configuration_type` can be:
+`configuration_type` can be `collections`, `parsers`, `scenarios` or `postoverflows`.
 
- - [`parsers`](https://docs.crowdsec.net/Crowdsec/v1/references/parsers/)
+You are most likely to only install collections that contain the needed parsers and scenarios to cover a technical stack :
 
- - [`scenarios`](https://docs.crowdsec.net/Crowdsec/v1/references/scenarios/)
-
- - [`postoverflows`](https://docs.crowdsec.net/Crowdsec/v1/references/postoverflows/)
-
- - [`collections`](https://docs.crowdsec.net/Crowdsec/v1/references/collections/)
-
+```bash
+sudo cscli collections install crowdsecurity/nginx
+```
 
 They can be found and browsed on the [Hub](https://hub.crowdsec.net/browse/#configurations).
-
-See more [here](../user_guides/hub_management.md).
 
 
 ## Upgrading configurations
 
-:::caution
-
-Don't forget to run `sudo cscli hub update` if you want latest items and update
-
-:::
-
-
 ```bash
-sudo cscli <configuration_type> upgrade <item>
+sudo cscli hub update
+sudo cscli hub upgrade
 ```
 
-`configuration_type` can be:
+This will upgrade your existing parsers, scenarios and collections to the latest available version.
 
- - [`parsers`](https://docs.crowdsec.net/Crowdsec/v1/references/parsers/)
+You can as well use a more granular approach like `sudo cscli <configuration_type> upgrade <item>`.
 
- - [`scenarios`](https://docs.crowdsec.net/Crowdsec/v1/references/scenarios/)
-
- - [`postoverflows`](https://docs.crowdsec.net/Crowdsec/v1/references/postoverflows/)
-
- - [`collections`](https://docs.crowdsec.net/Crowdsec/v1/references/collections/)
+`configuration_type` can be `parsers`, `scenarios`, `collections`, `hub` or `postoverflows`.
 
 They can be found and browsed on the [Hub](https://hub.crowdsec.net/browse/#configurations).
 
@@ -118,10 +102,9 @@ See more [here](../user_guides/hub_management.md).
 sudo cscli decisions list
 ```
 
-If you just deployed CrowdSec, the list might be empty, but don't worry, it simply means you haven't yet been attacked, congrats!
+If you just deployed CrowdSec, the list might be empty, but don't worry, it simply means you haven't yet been attacked, congrats! Adding `-a` flag will as well list the decisions you received from the [community blocklist]({{TBD}}).
 
 Check [decisions](../user_guides/decisions_management.md) management for more !
-
 
 <details>
   <summary>Listing decisions example</summary>
@@ -145,7 +128,6 @@ There are different decisions `SOURCE`:
 
 
 ## List alerts
-
 
 ```bash
 sudo cscli alerts list
@@ -277,7 +259,7 @@ For more advanced metrics understanding, [take a look at the dedicated prometheu
 
 :::caution
 
-However, running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli dashboard setup`) [requires 1-2Gb of RAM](https://www.metabase.com/docs/latest/troubleshooting-guide/running.html).
+Running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli dashboard setup`) [requires 1-2Gb of RAM](https://www.metabase.com/docs/latest/troubleshooting-guide/running.html).
 
 :::
 
