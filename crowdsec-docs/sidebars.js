@@ -37,12 +37,12 @@ module.exports = {
     {
       type: 'category',
       label: 'Getting Started',
-      items: ["getting_started/install_crowdsec", "getting_started/crowdsec_tour",  "getting_started/building"]
+      items: ["getting_started/install_crowdsec", "getting_started/crowdsec_tour"]
     },
     {
       type: 'category',
       label: 'User Guides',
-      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt"]
+      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/building"]
     },
     {
       type: 'category',
