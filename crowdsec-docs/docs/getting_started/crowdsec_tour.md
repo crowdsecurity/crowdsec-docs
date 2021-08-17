@@ -15,12 +15,7 @@ This list represents the parsers, scenarios and/or collections that you deployed
 
 They represent what your CrowdSec setup can read (logs) and detect (scenarios). 
 
-
-:::tip
-
-`sudo cscli hub list -a` will list all the available configurations in the hub.
-
-:::
+Adding `-a` will list all the available configurations in the hub.
 
 See more [here](../user_guides/hub_management.md).
 
@@ -278,6 +273,14 @@ For more advanced metrics understanding, [take a look at the dedicated prometheu
 
 
 ## Deploy dashboard
+
+
+:::caution
+
+However, running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli dashboard setup`) [requires 1-2Gb of RAM](https://www.metabase.com/docs/latest/troubleshooting-guide/running.html).
+
+:::
+
 
 ```bash
 sudo cscli dashboard setup --listen 0.0.0.0

@@ -19,6 +19,12 @@ If you want to block the detected IPs, you should deploy a bouncer, such as the 
 
 CrowdSec is written in [Golang](https://golang.org/).
 
+## What resources are needed to run crowdsec ?
+
+Crowdsec agent itself is rather light, and in a small to medium setup should use less than 100Mb of memory.
+
+During intensive logs processing, CPU is going to be the most used resource, and memory usage shouldn't really grow.
+
 ## What licence is CrowdSec released under ?
 
 CrowdSec is under [MIT license](https://github.com/crowdsecurity/crowdsec/blob/master/LICENSE).

@@ -4,15 +4,6 @@ title: Install CrowdSec
 sidebar_position: 1
 ---
 
-:::caution
-
-Crowdsec agent itself is rather light, and in a small to medium setup should use less than 100Mb of memory.
-During intensive logs processing, CPU is going to be the most used resource, and memory usage shouldn't really grow.
-
-However, running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli dashboard setup`) [requires 1-2Gb of RAM](https://www.metabase.com/docs/latest/troubleshooting-guide/running.html).
-
-:::
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
@@ -112,13 +103,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 :::note
 
-You now have crowdsec running ! You can move forward and install a [bouncer](/docs/getting_started/crowdsec_tour), or take a [tour](/docs/getting_started/crowdsec_tour) of the software beforehand !
+You now have crowdsec running ! You can move forward and install a [bouncer]({{TBD}}), or take a [tour]({{TBD}}) of the software beforehand !
 
-:::
+Keep in mind that CrowdSec is only in charge of the "detection", and won't block anything on its own.
 
-:::info
-
-Keep in mind that CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a [bouncer](../bouncers/) to "apply" decisions.
+You need to deploy a [bouncer](../bouncers/) to "apply" decisions.
 
 :::
 
