@@ -9,22 +9,22 @@ sidebar_position: 1
 
 CrowdSec runtime revolves around a few simple concepts :
 
- - It read logs (defined via [datasources](data_sources/) configuration)
- - Those logs are parsed via [parsers](parsers/) and eventually enriched
- - Those normalized logs are then matched against the [scenarios](scenarios/) that the user deployed
- - When a scenario is "triggered", CrowdSec generates an [alert](references/alerts.md) and eventually one or more associated [decisions](references/decisions.md) :
+ - It read logs (defined via [datasources]({{TBD}}) configuration)
+ - Those logs are parsed via [parsers]({{TBD}}) and eventually [enriched]({{TBD}})
+ - Those normalized logs are matched against the [scenarios]({{TBD}}) that the user deployed
+ - When a scenario is "triggered", CrowdSec generates an [alert]({{TBD}}) and eventually one or more associated [decisions]({{TBD}}) :
     - The alert is here mostly for tracability, and will stay even after the decision expires
     - The decision on the other hand, is short lived, and tells *what* action should be taken against the offending ip/range/user...
- - Those information (the signal, the associated decisions) are then sent to crowdsec's [Local API](local_api/) and stored in the database
+ - Those information (the signal, the associated decisions) are then sent to crowdsec's [Local API]({{TBD}}) and stored in the database
 
 As you might have guessed by now, CrowdSec itself does the detection part and stores those decisions.
-Then, [bouncers](user_guides/bouncers_configuration.md) can "consume" those decisions (via the very same [Local API](local_api/)) and apply some actual remediation.
+Then, [bouncers](user_guides/bouncers_configuration.md) can "consume" those decisions (via the very same [Local API]({{TBD}}) and apply some actual remediation.
 
 ## Crowd sourced aspect
 
  [[References](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI)]
 
-Whenever the [Local API](local_api/) receives an alert with associated decisions, the meta information about the alert are shared with our central api :
+Whenever the [Local API]({{TBD}}) receives an alert with associated decisions, the meta information about the alert are shared with our central api :
 
  - The source ip that triggered the alert
  - The scenario that was triggered
@@ -34,24 +34,23 @@ These are the only information that are sent to our API. Those are then processe
 
 ## Bouncers
 
-[[References](/Crowdsec/v1/bouncers/)]
+[[References]({{TBD}})]
 
-Bouncers are standalone software pieces in charge of acting upon IPs that triggered alerts.
+Bouncers are standalone software pieces in charge of acting upon actors that triggered alerts.
 To do so, bouncers are going to query the local API to know if there is an existing decisions against a given IP, range, username etc. [You can find a list of existing bouncers on the hub](https://hub.crowdsec.net/browse/#bouncers)
-
 
 
 # Configuration items
 
 ## Acquisition
 
-[[References](/Crowdsec/v1/references/acquisition/)]
+[[References]({{TBD}})]
 
 Acquistion configuration defines which streams of information CrowdSec is going to process.
 
-At the time of writing, it's mostly files or journald, but it should be more or less any kind of stream, such as a kafka topic or a cloudtrail.
+A stream of information can be a file, a journald event log, a cloudwatch stream, and more or less any kind of stream, such as a kafka topic.
 
-Acquisition configuration always contains a stream (ie. a file to tail) and a tag (ie. "these are in syslog format" "these are non-syslog nginx logs").
+Acquisition configuration always contains a stream (ie. a file to tail) and a [tag]({{TBD}}) (ie. "these are in syslog format" "these are non-syslog nginx logs").
 
 File acquisition configuration is defined as :
 
@@ -66,7 +65,7 @@ The `labels` part is here to tag the incoming logs with a type. `labels.type` ar
 
 ## Stages
 
-[[References](/Crowdsec/v1/references/parsers/#stages)]
+[[References]({{TBD}})]
 
 Stages concept is central to data parsing in CrowdSec, as it allows to have various "steps" of parsing. All parsers belong to a given stage. While users can add or modify the stages order, the following stages exist :
 
@@ -89,7 +88,7 @@ For logs to be able to be exploited and analyzed, they need to be parsed and nor
 
 A parser is a YAML configuration file that describes how a string is being parsed. Said string can be a log line, or a field extracted from a previous parser. While a lot of parsers rely on the **GROK** approach (a.k.a regular expression named capture groups), parsers can as well reference enrichment modules to allow specific data processing.
 
-A parser usually has a specific scope. For example, if you are using [nginx](https://nginx.org), you will probably want to use the `crowdsecurity/nginx-logs` which allows your CrowdSec setup to parse nginx's access and error logs.
+A parser usually has a specific scope. For example, if you are using [nginx](https://nginx.org), you will probably want to use the `crowdsecurity/nginx-logs` parser which allows your CrowdSec setup to parse nginx's access and error logs.
 
 Parsers are organized into stages to allow pipelines and branching in parsing.
 
@@ -99,7 +98,7 @@ See the [Hub](https://hub.crowdsec.net/browse/#configurations) to explore parser
  - [iptables logs parser](https://github.com/crowdsecurity/hub/blob/master/parsers/s01-parse/crowdsecurity/iptables-logs.yaml)
  - [http logs post-processing](https://github.com/crowdsecurity/hub/blob/master/parsers/s02-enrich/crowdsecurity/http-logs.yaml)
 
-You can as well [write your own](/Crowdsec/v1/write_configurations/parsers/) !
+You can as well [write your own]({{TBD}}) !
 
 
 
@@ -107,9 +106,9 @@ You can as well [write your own](/Crowdsec/v1/write_configurations/parsers/) !
 
 ## Enrichers
 
-[[References](/Crowdsec/v1/references/enrichers/)]
+[[References]({{TBD}})]
 
-Enrichment is the action of adding extra context to an event based on the information we already have, so that better decision can later be taken. In most cases, you should be able to find the relevant enrichers on our [Hub](https://hub.crowdsec.net/browse/#configurations).
+Enrichment is a parser that adds extra context to an log event, so that better decision can later be taken. In most cases, you should be able to find the relevant enrichers on our [Hub](https://hub.crowdsec.net/browse/#configurations).
 
 A common/simple type of enrichment would be [geoip-enrich](https://github.com/crowdsecurity/hub/blob/master/parsers/s02-enrich/crowdsecurity/geoip-enrich.yaml) of an event (adding information such as : origin country, origin AS and origin IP range to an event).
 
@@ -135,12 +134,12 @@ See [Hub](https://hub.crowdsec.net/browse/#configurations) to explore scenarios 
  - [distinct http-404 scan](https://github.com/crowdsecurity/hub/blob/master/scenarios/crowdsecurity/http-scan-uniques_404.yaml)
  - [iptables port scan](https://github.com/crowdsecurity/hub/blob/master/scenarios/crowdsecurity/iptables-scan-multi_ports.yaml)
 
-You can as well [write your own](/Crowdsec/v1/write_configurations/scenarios/) !
+You can as well [write your own]({{TBD}}) !
 
 
 ## Collections
 
-[[References](/Crowdsec/v1/references/collections/)]
+[[References]({{TBD}})]
 
 To make user's life easier, "collections" are available, which are just a bundle of parsers and scenarios.
 In this way, if you want to cover basic use-cases of let's say "nginx", you can just install the `crowdsecurity/nginx` collection that is composed of `crowdsecurity/nginx-logs` parser, as well as generic http scenarios such as `crowdsecurity/base-http-scenarios`.
