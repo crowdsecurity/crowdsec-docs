@@ -7,7 +7,7 @@ module.exports = {
   tagline: 'CrowdSec, the open-source and collaborative EDR.',
   url: 'https://crowdsec.net',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'CrowdSec',
