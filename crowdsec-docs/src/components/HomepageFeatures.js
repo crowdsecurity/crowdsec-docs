@@ -4,35 +4,51 @@ import styles from './HomepageFeatures.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
+    //screenshot terminal / apt-get ?
+    title: 'Easy to Setup and Use',
     Svg: require('../../static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Crowdsec is easy to install and to use on a daily basis. No security knowledge required.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    //screenshot metabase ?
+    title: 'Reproducibility',
     Svg: require('../../static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Crowdsec can process live logs, as well as cold logs, making it easy to identify false positives or generate reporting.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    //screenshot de grafana
+    title: 'Observability',
     Svg: require('../../static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Out of the box dashboards with [metabase](https://www.metabase.com/) and [prometheus](https://prometheus.io/) instrumentation for maximum observability.
       </>
     ),
   },
+  {
+    //schema api ?
+    title: 'API Driven',
+    Svg: require('../../static/img/undraw_docusaurus_react.svg').default,
+    description: (
+      <>
+        All components comunicate via HTTP API, making it easy to cover complex setups.
+      </>
+    ),
+  },
+
+  //community driven ->
+  //open-source
+  //detect here apply there
+  //block anything, not just ips
+
 ];
 
 function Feature({Svg, title, description}) {
