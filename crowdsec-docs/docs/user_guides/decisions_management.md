@@ -22,13 +22,14 @@ sudo cscli decisions list
 
 ```bash
 $ sudo cscli decisions list
-+-----+-----------+-------------+------------------------------------+--------+---------+----+--------+--------------------+----------+
-| ID  | SOURCE    | SCOPE:VALUE |               REASON               | ACTION | COUNTRY | AS | EVENTS |     EXPIRATION     | ALERT ID |
-+-----+-----------+-------------+------------------------------------+--------+---------+----+--------+--------------------+----------+
-| 802 | cscli     | Ip:1.2.3.5  | manual 'ban' from                  | ban    |         |    |      1 | 3h50m58.10039043s  |     802  |
-|     |           |             | 'b76cc7b1bbdc489e93909d2043031de8' |        |         |    |        |                    |          |
-| 801 | crowdsec  | Ip:1.2.3.4  | crowdsecurity/ssh-bf               | ban    |         |    |      6 | 3h59m45.100387557s |     801  |
-+-----+-----------+-------------+------------------------------------+--------+---------+----+--------+--------------------+----------+
++--------+----------+------------------+------------------------------------+--------+---------+--------------------------------+--------+-----------------+----------+
+|   ID   |  SOURCE  |   SCOPE:VALUE    |               REASON               | ACTION | COUNTRY |               AS               | EVENTS |   EXPIRATION    | ALERT ID |
++--------+----------+------------------+------------------------------------+--------+---------+--------------------------------+--------+-----------------+----------+
+| 276009 | crowdsec | Ip:xx.93.x.xxx   | crowdsecurity/telnet-bf            | ban    | CN      |  xxxxxxxx xxxxxxx Advertising  |      7 | 2m53.949221341s |    33459 |
+|        |          |                  |                                    |        |         | Co.,Ltd.                       |        |                 |          |
+| 276008 | crowdsec | Ip:xxx.53.xx.xxx | crowdsecurity/smb-bf               | ban    | BR      |  xxxxxxxxxx xxxxxxxxxxxxxxxx   |      6 | 1m48.728998974s |    33458 |
+|        |          |                  |                                    |        |         | LTDA                           |        |                 |          |
++--------+----------+------------------+------------------------------------+--------+---------+--------------------------------+--------+-----------------+----------+
 ```
 
 </details>
@@ -36,10 +37,10 @@ $ sudo cscli decisions list
  - `SOURCE` : the source of the decisions:
     - `crowdsec` : decision from crowdsec agent
     - `cscli`    : decision from `cscli` (manual decision)
-    - `api`      : decision from crowdsec API
+    - `CAPI`     : decision from crowdsec API
  - `SCOPE:VALUE` is the target of the decisions :
     - "scope" : the scope of the decisions (`ip`, `range`, `user` ...)
-    - "value" : the value to apply on the decisions ([ip_addr], [ip_range], [username] ...)
+    - "value" : the value to apply on the decisions (ip_addr, ip_range, username ...)
  - `REASON` is the scenario that was triggered (or human-supplied reason)
  - `ACTION` is the type of the decision (`ban`, `captcha` ...)
  - `COUNTRY` and `AS` are provided by GeoIP enrichment if present
@@ -48,13 +49,23 @@ $ sudo cscli decisions list
  - `ALERT ID` is the ID of the corresponding alert
 
 
-Check [command usage](/Crowdsec/v1/cscli/cscli_decisions_list/) for additional filtering and output control flags.
+Check [command usage]({{TBD}}) for additional filtering and output control flags.
 
 
 ## Add a decision
+
+> Ban an IP
+
+```bash
+sudo cscli decisions add -i 1.2.3.4
+```
+
+:::info
+
  * default `duration`: `4h`
  * default `type` : `ban`
 
+:::
 
 > Add a decision (ban) on IP  `1.2.3.4` for 24 hours, with reason 'web bruteforce'
 
@@ -94,6 +105,11 @@ Please note that `cscli decisions list` will show you only the latest alert per 
 However, several decisions targeting the same IP can exist. If you want to be sure to clear all decisions for a given ip/scope, use `cscli decisions delete -i x.x.x.x`
 :::
 
+> delete a decision by ID
+
+```bash
+sudo cscli  decisions delete --id 74
+```
 
 
 

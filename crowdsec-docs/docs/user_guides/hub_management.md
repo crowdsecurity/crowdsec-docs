@@ -13,6 +13,8 @@ Hub management, via `cscli` allows you to install, upgrade, remove and view inst
 
 ### Install
 
+A collection contains parsers and scenarios to form a coherent ensemble. Most of the time, this is the only you will need to install. Have nginx running ? `cscli collections install crowdsecurity/nginx` Should do the trick ! Browser the [hub for more collections](https://hub.crowdsec.net/browse/#collections).
+
 ```bash
 sudo cscli collections install <collection_name>
 ```
@@ -65,6 +67,14 @@ $ sudo cscli collections list
 ```
 
 </details>
+
+:::tip
+
+This will list only installed parsers.
+
+Use `--all` to list available parsers.
+
+:::
 
 ### Upgrade
 
@@ -176,14 +186,6 @@ INFO[0000] Run 'systemctl reload crowdsec' for the new configuration to be effec
 ```bash
 sudo cscli parsers list
 ```
-
-:::tip
-
-This will list only installed parsers.
-
-Use `--all` to list available parsers.
-
-:::
 
 [Parsers](../parsers/) are yaml files in `/etc/crowdsec/parsers/<STAGE>/parser.yaml`.
 
