@@ -9,27 +9,18 @@ sidebar_position: 2
 A way to detect a http scanner might be to track the number of distinct non-existing pages it's requesting, and the scenario might look like this:
 
 ```yaml
-#the bucket type : leaky, trigger, counter
-type: leaky
-#name and description for humans
+[type](format#type): leaky
 name: crowdsecurity/http-scan-uniques_404
 description: "Detect multiple unique 404 from a single ip"
-#a filter to know which events are eligible
 filter: "evt.Meta.service == 'http' && evt.Meta.http_status in ['404', '403', '400']"
-#how we are going to partition buckets
 groupby: "evt.Meta.source_ip"
-#we are only interested into counting UNIQUE/DISTINCT requested URLs
 distinct: "evt.Meta.http_path"
-#we specify the bucket capacity and leak speed
 capacity: 5
 leakspeed: "10s"
-#this will prevent the same bucket from overflowing more often than every 5 minutes
 blackhole: 5m
-#some labels to give context to the overflow
 labels:
  service: http
  type: scan
- #yes we want to ban people triggering this
  remediation: true
 ```
 
