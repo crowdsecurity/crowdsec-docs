@@ -32,7 +32,7 @@ Whenever the [Local API]({{TBD}}) receives an alert with associated decisions, t
 
 These are the only information that are sent to our API. Those are then processed on our side to be able to redistribute relevant blocklists to all the participants. You can check the central API documentation in the references link to have an exhaustive view of what might be shared between your instance and our services.
 
-## Bouncers
+## Bouncers test
 
 [[References]({{TBD}})]
 
