@@ -82,7 +82,7 @@ module.exports = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/crowdsecurity/crowdsec',
             },
           ],
         },
@@ -102,13 +102,13 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
+            'https://github.com/crowdsecurity/crowdsec-docs/edit/doc_refactor/crowdsec-docs/',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+            'https://github.com/crowdsecurity/crowdsec-docs/edit/doc_refactor/crowdsec-docs/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
