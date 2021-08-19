@@ -4,9 +4,11 @@ id: intro
 ---
 
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 <div style={{display: 'flex'}}>
     <div style={{textAlign: 'center', flex: '1'}}>
-    <img src="../static/img/crowdsec_logo.png" width="300" height="200" ></img>
+    <img width="450" height="300" src={useBaseUrl('/img/crowdsec_logo.png')} />
     </div>
 </div>
 &nbsp;
@@ -40,9 +42,10 @@ CrowdSec, besides the core "detect and react" mechanism,  is committed to a few 
 
 ## Architecture
 
+
 <div style={{display: 'flex'}}>
     <div style={{textAlign: 'center', flex: '1'}}>
-    <img src="../static/img/crowdsec_architecture.png"></img>
+    <img src={useBaseUrl('/img/crowdsec_architecture.png')}></img>
     </div>
 </div>
 
