@@ -8,22 +8,22 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 A parser is a YAML configuration file that describes how a string is being parsed. Said string can be a log line, or a field extracted from a previous parser. 
 
-While a lot of parsers rely on the **GROK** approach (a.k.a regular expression named capture groups), parsers can as well reference enrichment modules to allow specific data processing, or use specific [expr](../expr) feature to perform parsing on specific data, such as JSON.
+While a lot of parsers rely on the **GROK** approach (a.k.a regular expression named capture groups), parsers can as well use [expressions](../expr) to perform parsing on specific data (ie. json), [refer to external methods for enrichment](https://hub.crowdsec.net/author/crowdsecurity/configurations/geoip-enrich) or even [perform whitelisting](https://hub.crowdsec.net/author/crowdsecurity/configurations/whitelists)
 
 The [event]({{TBD}}) enters the parser, and might exit successfully or not :
 
 
 <div style={{display: 'flex'}}>
-    <div style={{textAlign: 'left', flex: '1'}}>
+    <div style={{textAlign: 'center', flex: '1'}}>
     <img src={useBaseUrl('/img/parser-diagram.png')} />
     </div>
 </div>
 
 
-Parsers are organized into stages to allow pipelines and branching in parsing. An event can go to the next stage if at least one parser in the given stage parsed it successfully. Otherwise, the event is considered unparsed and will exit the pipeline (and be discarded) :
+Parsers are organized into stages to allow pipelines and branching in parsing. An event can go to the next stage if at least one parser in the given stage parsed it successfully while having `onsuccess` set to `next_stage`. Otherwise, the event is considered unparsed and will exit the pipeline (and be discarded) :
 
 <div style={{display: 'flex'}}>
-    <div style={{textAlign: 'left', flex: '1'}}>
+    <div style={{textAlign: 'center', flex: '1'}}>
     <img src={useBaseUrl('/img/global-parser-diagrams.png')} />
     </div>
 </div>

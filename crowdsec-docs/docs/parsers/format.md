@@ -29,7 +29,7 @@ statics:
 ```
 
 The parser nodes are processed sequentially based on the alphabetical order of [stages](../stages) and subsequent files.
-If the node is considered successful (grok is present and returned data or no grok is present) and "onsuccess" equals to `next_stage`, then the {{v1X.event.name}} is moved to the next stage.
+If the node is considered successful (grok is present and returned data or no grok is present) and "onsuccess" equals to `next_stage`, then the event is moved to the next stage.
 
 ## Parser trees
 
@@ -69,12 +69,10 @@ nodes:
         value: leaf2
 ```
 
-The logic is that the `tests/base-grok-root` node will be processed first and will alter the event (here mostly by extracting some text from the `Line.Raw` field into `Parsed` thanks to the `grok` pattern and the `statics` directive).
+The `tests/base-grok-root` node will be processed first and will alter the event (here mostly by extracting some text from the `Line.Raw` field into `Parsed` thanks to the `grok` pattern and the `statics` directive).
 
-The event will then continue its life and be parsed by the the following `tests/base-grok-leafs` node.
+The event will then be parsed by the the following `tests/base-grok-leafs` node.
 This node has `onsuccess` set to `next_stage` which means that if the node is successful, the event will be moved to the next stage.
-
-This node consists actually of two sub-nodes that have different conditions (branching) to allow differential treatment of said event.
 
 A real-life example can be seen when it comes to parsing HTTP logs.
 HTTP ACCESS and ERROR logs often have different formats, and thus our "nginx" parser needs to handle both formats
@@ -165,6 +163,7 @@ DEBU[31-07-2020 16:36:28]        evt.Parsed.program = 'nginx'           id=withe
 ```
 </details>
 
+-----
 
 ### `filter`
 
@@ -185,6 +184,7 @@ Examples :
  - `filter: "evt.Meta.foo == 'test'"`
  - `filter: "evt.Meta.bar == 'test' && evt.Meta.foo == 'test2'`
 
+-----
 
 ### `grok`
 
@@ -220,7 +220,7 @@ grok:
   apply_on: source_field
 ```
 
-The `grok` structure in a node represent a regular expression with capture group (grok pattern) that must be applied on a field of {{v1X.event.name}}.
+The `grok` structure in a node represent a regular expression with capture group (grok pattern) that must be applied on a field of event.
 
 The pattern can : 
 
@@ -231,7 +231,7 @@ In both case, the pattern must be a valid RE2 expression.
 The field(s) returned by the regular expression are going to be merged into the `Parsed` associative array of the `Event`.
 
 
-
+-----
 
 ### `name`
 
@@ -241,6 +241,8 @@ name: explicit_string
 
 The *mandatory* name of the node. If not present, node will be skipped at runtime.
 It is used for example in debug log to help you track things.
+
+-----
 
 ### `nodes`
 
@@ -252,6 +254,8 @@ nodes:
 
 `nodes` is a list of parser nodes, allowing you to build trees.
 Each subnode must be valid, and if any of the subnodes succeed, the whole node is considered successful. 
+
+-----
 
 ### `onsuccess`
 
@@ -268,6 +272,8 @@ if set to `next_stage` and the node is considered successful, the {{v1X.event.na
 if it's a parser tree, and a "leaf" node succeeds, it is the parent's "onsuccess" that is evaluated.
 
 :::
+
+-----
 
 ### `pattern_syntax`
 
@@ -287,44 +293,49 @@ grok:
   apply_on: Line.Raw
 ```
 
+-----
 
 ### `statics`
 
-
-
-`statics` is a list of directives that will be executed when the node is considered successful.
-Each entry of the list is composed of a target (where to write) and a source (what data to write).
+`statics` is a list of directives that will be evaluated when the node is considered successful.
+Each entry of the list is composed of a `target` (where to write) and a `source` (what data to write).
 
 #### `target`
+
+The target can be defined by pointing directly a key in a dictionary (`Parsed`, `Enriched` or `Meta`), or by providing direct a `target` expression :
+
 ```yaml
-target: <target_to_write_data>
+meta: target_field
 ```
 
-The target aims at being any part of the {{v1X.event.htmlname}} object, and can be expressed in different ways :
+> `meta: source_ip` will set the value in `evt.Meta.source_ip`
 
-- `meta: <target_field>`
+```yaml
+parsed: target_field
+```
 
->For example, `meta: source_ip` will set the value in `evt.Meta.source_ip`
+> `parsed: remote_addr` will set the value in `evt.Parsed.remote_addr`
 
-- `parsed: <target_field>`
+```yaml
+enriched: target_field
+```
 
->For example, `parsed: remote_addr` will set the value in `evt.Parsed.remote_addr`
+> `enriched: extra_info` will set the value in `evt.Enriched.extra_info`
 
-- `enriched: <target_field>`
-- a dynamic target (please note that the **current** event is accessible via the `evt.` variable) :
-      - `target: evt.Meta.foobar`
-      - `target: Meta.foobar`
-      - `target: evt.StrTime`
-    
+```yaml
+target: evt.Parsed.foobar
+```
 
-#### `value`
+> `target: evt.Meta.foobar` will set the value in the `Meta[foobar]` entry
+
+#### `source`
+
 ```yaml
 value: <string_value_to_assign>
 ```
 
 A static value.
 
-#### `expression`
 ```yaml
 expression: <expr>
 ```
@@ -354,6 +365,7 @@ statics:
     expression: evt.Meta.target_field + ' this_is' + ' a dynamic expression'
 ```
 
+-----
 
 ### `data`
 
