@@ -138,10 +138,13 @@ statics:
 
 <details>
   <summary>Expected output</summary>
+
+
+
  
 ```bash
 INFO[20-08-2021 17:47:46] reading x.log at once                         type="file://x.log"
-DEBU[20-08-2021 17:47:46] + Grok '\[%{D...' returned 8 entries to merge in Parsed  id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
+DEBU[20-08-2021 17:47:46] + Grok '[%{D...' returned 8 entries to merge in Parsed  id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
 DEBU[20-08-2021 17:47:46] 	.Parsed['proto'] = 'TCP'                     id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
 DEBU[20-08-2021 17:47:46] 	.Parsed['src_port'] = '45225'                id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
 DEBU[20-08-2021 17:47:46] 	.Parsed['dst_port'] = '8888'                 id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
@@ -170,6 +173,7 @@ DEBU[20-08-2021 17:47:46] Event leaving node : ok                       id=summe
 DEBU[20-08-2021 17:47:46] move Event from stage s01-parse to s02-enrich  id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
 ...
 ```
+
 
 </details>
 
@@ -279,8 +283,8 @@ DEBU[20-08-2021 17:49:02] move Event from stage s01-parse to s02-enrich  id=with
 
 ## Closing word
 
-We have now a fully functional parser for {{v1X.crowdsec.name}} !
-We can either deploy it to our production systems to do stuff, or even better, contribute to the {{v1X.hub.htmlname}} !
+We have now a fully functional parser for iptables logs !
+We can either deploy it to our production systems to do stuff, or even better, contribute to the hub !
 
-If you want to know more about directives and possibilities, take a look at [the parser reference documentation](/Crowdsec/v1/references/parsers/) !
+If you want to know more about directives and possibilities, take a look at [the parser reference documentation]({{TBD}}) !
 
