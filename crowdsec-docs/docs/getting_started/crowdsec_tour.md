@@ -12,7 +12,7 @@ sudo cscli hub list
 
 This lists installed parsers, scenarios and/or collections. 
 
-They represent what your CrowdSec setup can read (logs) and detect (scenarios). 
+They represent what your CrowdSec setup can parse (logs) and detect (scenarios). 
 
 Adding `-a` will list all the available configurations in the hub.
 
@@ -259,7 +259,7 @@ For more advanced metrics understanding, [take a look at the dedicated prometheu
 
 :::caution
 
-Running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli dashboard setup`) [requires 1-2Gb of RAM](https://www.metabase.com/docs/latest/troubleshooting-guide/running.html).
+Running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli dashboard setup`) [requires 1-2Gb of RAM](https://www.metabase.com/docs/latest/troubleshooting-guide/running.html). Metabase container is **only** available for amd64.
 
 :::
 

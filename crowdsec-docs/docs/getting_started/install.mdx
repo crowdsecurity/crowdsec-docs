@@ -8,7 +8,12 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
+For those that prefer hands-on approach, you can as well [manually install crowdsec](/docs/user_guides/building).
+
 ## Install our repositories
+
+Installing our repositories allows you to access the latest packages of crowdsec and bouncers.
+We are using [packagecloud.io service](https://packagecloud.io/crowdsec/crowdsec/), for those that prefer, manual repositories installation method is available [here](https://packagecloud.io/crowdsec/crowdsec/install#manual).
 
 <Tabs
   defaultValue="debian"
@@ -101,18 +106,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 <!-- TBD : fix links -->
 
-:::note
-
 You now have crowdsec running ! You can move forward and install a [bouncer]({{TBD}}), or take a [tour]({{TBD}}) of the software beforehand !
 
-Keep in mind that CrowdSec is only in charge of the "detection", and won't block anything on its own.
 
+:::caution
+
+Keep in mind that CrowdSec is only in charge of the "detection", and won't block anything on its own.
 You need to deploy a [bouncer](../bouncers/) to "apply" decisions.
 
 :::
-
-
-![crowdsec](/img/crowdsec_install.gif)
 
 
 ## Install a bouncer
@@ -151,7 +153,7 @@ You need to deploy a [bouncer](../bouncers/) to "apply" decisions.
 </Tabs>
 
 
-:::tip
+:::info
 
 While we're suggesting the most common firewall bouncer, check our [hub](hub.crowdsec.net) for more bouncers.
 Find a bouncer directly for your application ([nginx](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-nginx-bouncer), [php](https://github.com/crowdsecurity/php-cs-bouncer), [wordpress](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-wordpress-bouncer)) or your providers ([cloudflare](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-cloudflare-bouncer), [AWS/GCP/...](https://hub.crowdsec.net/author/fallard84/bouncers/cs-cloud-firewall-bouncer)) 
@@ -159,8 +161,5 @@ Find a bouncer directly for your application ([nginx](https://hub.crowdsec.net/a
 :::
 
 
-:::note
 
-For those that prefer hands-on approach, you can as well [manually install crowdsec](/docs/user_guides/building)
 
-:::
