@@ -42,7 +42,7 @@ module.exports = {
     {
       type: 'category',
       label: 'User Guides',
-      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/building"]
+      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building"]
     },
     {
       type: 'category',
@@ -77,12 +77,12 @@ module.exports = {
     {
       type: 'category',
       label: 'Local API',
-      items: ["local_api/intro", {"type":"link", "label": "swagger", "href":"https://google.com"}]
+      items: ["local_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"}]
     },
     {
       type: 'category',
       label: 'Central API',
-      items: ["local_api/intro", {"type":"link", "label": "swagger", "href":"https://google.com"}]
+      items: ["local_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI"}]
     },
     {
       type: 'doc',
