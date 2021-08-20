@@ -1,6 +1,6 @@
 ---
 id: debug
-title: Scenarios debugging
+title: Debugging
 sidebar_position: 3
 ---
 
