@@ -42,7 +42,7 @@ module.exports = {
     {
       type: 'category',
       label: 'User Guides',
-      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building"]
+      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building", "user_guides/test_env"]
     },
     {
       type: 'category',
@@ -103,7 +103,7 @@ module.exports = {
     {
       type: 'doc',
       label: 'Services Configuration',
-      id: "about_docs/documentation_about"
+      id: "service_configuration"
     },
     {
       type: 'doc',
