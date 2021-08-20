@@ -9,7 +9,7 @@ sidebar_position: 2
 A way to detect a http scanner might be to track the number of distinct non-existing pages it's requesting, and the scenario might look like this:
 
 ```yaml
-[type](format#type): leaky
+type: leaky
 name: crowdsecurity/http-scan-uniques_404
 description: "Detect multiple unique 404 from a single ip"
 filter: "evt.Meta.service == 'http' && evt.Meta.http_status in ['404', '403', '400']"
@@ -38,7 +38,7 @@ Defines the type of the bucket. Currently three types are supported :
 
  - `leaky` : a [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) that must be configured with a {{v1X.capacity.htmlname}} and a {{v1X.leakspeed.htmlname}}
  - `trigger` : a bucket that overflows as soon as an event is poured (it's like a leaky bucket is a capacity of 0)
- - `counter` : a bucket that only overflows every {{v1X.duration.htmlname}}. It's especially useful to count things.
+ - `counter` : a bucket that only overflows every [duration](#duration). It's especially useful to count things.
 
 
 ### `name`
@@ -67,11 +67,11 @@ It is a quick sentence describing what it detects.
 filter: expression
 ```
 
-`filter` must be a valid [expr](../expr) expression that will be evaluated against the {{v1X.event.htmlname}}.
+`filter` must be a valid [expr](../expr) expression that will be evaluated against the event.
 
 If `filter` evaluation returns true or is absent, event will be pour in the bucket.
 
-If `filter` returns `false` or a non-boolean, the event will be skip for this bucket.
+If `filter` returns `false` or a non-boolean, the event will be skipped for this bucket.
 
 Here is the [expr documentation](https://github.com/antonmedv/expr/tree/master/docs).
 
@@ -89,7 +89,7 @@ duration: 45s
 duration: 10m
 ```
 
-(applicable to `counter` buckets only)
+Only applies to `counter` buckets.
 
 A duration after which the bucket will overflow.
 The format must be compatible with [golang ParseDuration format](https://golang.org/pkg/time/#ParseDuration)
@@ -122,7 +122,6 @@ An [expression](../expr) that must return a string. This string will be used as 
 #### Examples
 
 Here, each `source_ip` will get its own bucket.
-
 ```yaml
 type: leaky
 ...
@@ -130,10 +129,7 @@ groupby: evt.Meta.source_ip
 ...
 ```
 
-
-
 Here, each unique combo of `source_ip` + `target_username` will get its own bucket.
-
 ```yaml
 type: leaky
 ...
@@ -164,14 +160,14 @@ distinct: "evt.Meta.http_path"
 ...
 ```
 
-In the logs, you can see it like this (for example from the iptables-logs portscan detection) :
+Assuming we received the 3 following events :
+ - `evt.Meta.http_path = /`
+ - `evt.Meta.http_path = /test`
+ - `evt.Meta.http_path = /`
 
-```bash
-DEBU[2020-05-13T11:29:51+02:00] Uniq(7681) : ok                               buck..
-DEBU[2020-05-13T11:29:51+02:00] Uniq(7681) : ko, discard event                buck..
-```
+Only the first 2 events will be poured to the bucket.
 
-The first event has been poured (value `7681`) was not yet present in the events, while the second time, the event got discarded because the value was already present in the bucket.
+The 3rd one will not be poured as the bucket already contains an event with `evt.Meta.http_path == /`
 
 
 ### `capacity`
@@ -180,8 +176,7 @@ The first event has been poured (value `7681`) was not yet present in the events
 capacity: 5
 ```
 
-
-(Applies only to `leaky` buckets)
+Only applies to `leaky` buckets.
 
 A positive integer representing the bucket capacity.
 If there are more than `capacity` item in the bucket, it will overflow.
@@ -193,12 +188,11 @@ If there are more than `capacity` item in the bucket, it will overflow.
 leakspeed: "10s"
 ```
 
-(Applies only to `leaky` buckets)
+Only applies to `leaky` buckets.
 
 A duration that represent how often an event will be leaking from the bucket.
 
 Must be compatible with [golang ParseDuration format](https://golang.org/pkg/time/#ParseDuration).
-
 
 #### Example
 
@@ -225,11 +219,9 @@ labels:
 Labels is a list of `label: values` that provide context to an overflow.
 The labels are (currently) not stored in the database, nor they are sent to the API.
 
-Special labels :
+##### Special labels :
 
- - The **remediation** label, if set to `true` indicate the the originating IP should be ban.
- - The **scope** label, can be set to `ip` or `range` when **remediation** is set to true, and indicate to which scope should the decision apply. If you set a scenario with **remediation** to true and **scope** to `range` and the range of the IP could have been determined by the GeoIP library, the whole range to which the IP belongs will be banned.
-
+ - The **remediation** label, if set to `true` indicate the the originating IP should be banned.
 
 #### Example
 
@@ -241,16 +233,6 @@ labels:
  service: ssh
  type: bruteforce
  remediation: true
-```
-
-The range to which the offending IP belong (`.Meta.source_ip`) will be banned.
-```yaml
-type: leaky
-...
-labels:
- type: distributed_attack
- remediation: true
- scope: range
 ```
 
 ### `blackhole`
@@ -290,15 +272,16 @@ _default: false_
 If set to to `true`, enabled scenario level debugging.
 It is meant to help understanding scenario  behavior by providing contextual logging :
 
-<summary>debug of filters and expression results</summary>
 <details>
-
+<summary>debug of filters and expression results</summary>
+<div>
 ```bash
-DEBU[31-07-2020 16:34:58] eval(evt.Meta.log_type in ["http_access-log", "http_error-log"] && any(File("bad_user_agents.txt"), {evt.Parsed.http_user_agent contains #})) = TRUE  cfg=still-feather file=config/scenarios/http-bad-user-agent.yaml name=crowdsecurity/http-bad-user-agent
+DEBU[31-07-2020 16:34:58] eval(evt.Meta.log_type in ["http_access-log", "http_error-log"] && any(File("bad_user_agents.txt"), evt.Parsed.http_user_agent contains #)) = TRUE  cfg=still-feather file=config/scenarios/http-bad-user-agent.yaml name=crowdsecurity/http-bad-user-agent
 DEBU[31-07-2020 16:34:58] eval variables:                               cfg=still-feather file=config/scenarios/http-bad-user-agent.yaml name=crowdsecurity/http-bad-user-agent
 DEBU[31-07-2020 16:34:58]        evt.Meta.log_type = 'http_access-log'  cfg=still-feather file=config/scenarios/http-bad-user-agent.yaml name=crowdsecurity/http-bad-user-agent
 DEBU[31-07-2020 16:34:58]        evt.Parsed.http_user_agent = 'Mozilla/5.00 (Nikto/2.1.5) (Evasions:None) (Test:002810)'  cfg=still-feather file=config/scenarios/http-bad-user-agent.yaml name=crowdsecurity/http-bad-user-agent
 ```
+</div>
 </details>
 
 ### `reprocess`
@@ -334,7 +317,6 @@ overflow_filter: any(queue.Queue, { .Enriched.IsInEU  == "true" })
 `overflow_filter` is an [expression](../expr) that is run when the bucket overflows.
 If this expression is present and returns false, the overflow will be discarded.
 
-
 ### `data`
 
 ```yaml
@@ -346,7 +328,7 @@ data:
 
 `data` allows user to specify an external source of data.
 
-This section is only relevant when `cscli` is used to install scenario from hub, as ill download the `source_url` and store it to `dest_file`. 
+This section is only relevant when `cscli` is used to install scenario from hub, as it will download the `source_url` and store it to `dest_file`. 
 
 When the scenario is not installed from the hub, CrowdSec won't download the URL, but the file must exist for the scenario to be loaded correctly.
 
@@ -355,6 +337,13 @@ The `type` is mandatory if you want to evaluate the data in the file, and should
 The regexps will be compiled, the strings will be loaded into a list and both will be kept in memory.
 Without specifying a `type`, the file will be downloaded and stored as file and not in memory.
 
+You can refer to the content of the downloaded file(s) by using either the `File()` or `RegexpInFile()` function in an expression:
+
+```yaml
+filter: 'evt.Meta.log_type in ["http_access-log", "http_error-log"] and any(File("backdoors.txt"), { evt.Parsed.request contains #})'
+```
+
+#### Example
 
 ```yaml
 name: crowdsecurity/cdn-whitelist

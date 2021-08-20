@@ -4,286 +4,140 @@ title: Creating scenarios
 sidebar_position: 4
 ---
 
-
-:::caution "Parser dependency"
-The crowdsecurity/syslog-logs parsers is needed by the core parsing
-engine. Deletion or modification of this could result of CrowdSec
-being unable to parse logs, so this should be done very carefully.
-
-:::
-
-:::info
-
-In the current example, we'll write a parser for the logs produced by `iptables` (netfilter) with the `-j LOG` target.
-
-This document aims at detailing the process of writing and testing new parsers.
-
-:::
-
-:::tip "Exported fields"
-
-You can view some of the extracted fields of existing parsers in the [Hub](https://hub.crowdsec.net/fields)
-
-:::
-
-## Base parser file
-
-The most simple parser can be defined as :
-
-
-```yaml
-filter: 1 == 1
-debug: true
-onsuccess: next_stage
-name: me/myparser
-description: a cool parser for my service
-grok:
-#our grok pattern : capture .*
-  pattern: ^%{DATA:some_data}$
-#the field to which we apply the grok pattern : the log message itself
-  apply_on: message
-statics:
-  - parsed: is_my_service
-    value: yes
-```
-
- - a [filter](format#filter) : if the expression is `true`, the event will enter the parser, otherwise, it won't
- - a [onsuccess](format#onsuccess) : defines what happens when the {{v1X.event.htmlname}} was successfully parsed : shall we continue ? shall we move to next stage ? etc.
- - a name & a description
- - some [statics](format#statics) that will modify the {{v1X.event.htmlname}}
- - a `debug` flag that allows to enable local debugging information.
-
-
-We are going to use to following sample log as an example :
-```bash
-May 11 16:23:43 sd-126005 kernel: [47615895.771900] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=99.99.99.99 DST=127.0.0.1 LEN=40 TOS=0x00 PREC=0x00 TTL=245 ID=51006 PROTO=TCP SPT=45225 DPT=8888 WINDOW=1024 RES=0x00 SYN URGP=0 
-May 11 16:23:50 sd-126005 kernel: [47615902.763137] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=44.44.44.44 DST=127.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=49 ID=17451 DF PROTO=TCP SPT=53668 DPT=80 WINDOW=14600 RES=0x00 SYN URGP=0 
-```
-
-## Trying our mock parser
-
 :::caution
-Your parser yaml file must be in the `config/parsers/s01-parse/` directory.
 
-For example it can be `~/crowdsec-v1.1.1/tests/config/parsers/s01-parse/myparser.yaml`, or `/etc/crowdsec/parsers/s01-parse/myparser.yaml`.
-
-The [stage](../concepts#stages) directory might not exist, don't forget to create it.
+All the examples assume that you have installed the [iptables parser](https://hub.crowdsec.net/author/crowdsecurity/configurations/iptables-logs), and that your iptables configuration logs dropped packets.
 
 :::
 
-(deployment is assuming [you're using a test environment](/Crowdsec/v1/write_configurations/requirements/))
+## Leaky bucket
 
-Setting up our new parser :
+In this example, we will write a simple scenario based on a leaky bucket that will trigger if an IP tries to port scan our machine.
 
-- if `config/parsers/s01-parse` doesn't exist, create it:
-
-```bash
-cd crowdsec-v0.X.Y/tests/
-mkdir -p config/parsers/s01-parse
+We'll start with the most basic scenario:
+```yaml
+type: leaky
+debug: true
+name: demo/leaky-example
+description: "detect cool stuff"
+filter: evt.Meta.log_type == 'iptables_drop'
+capacity: 1
+leakspeed: 1m
+blackhole: 1m
+labels:
+  type: scan
 ```
 
-- Then copy your parser in `config/parsers/s01-parse` and try it:
+We define:
+ - A filter: an expression that decides if the scenario will apply to current event or not
+ - A type: here, we have a `leaky` bucket
+ - A capacity: how many events can be poured in the bucket before it overflows
+ - A leakspeed: the speed at which events are removed from the bucket
+ - A blackhole: duration for which the bucket should be overflow again
+ - Some labels to qualify the event
 
-```bash
-cp myparser.yaml config/parsers/s01-parse/                  
-./crowdsec -c ./dev.yaml -dsn file://x.log -type foobar
+This scenario in its current state is not really useful:
+ - We do not define a `groupby`: the same bucket will be used for all source IP, which prevent us to ban the IP actually doing the port scan.
+ - Our filter is too generic: we also match dropped UDP packets, and it can be very dangerous to apply a decision on them.
+
+Let's fix that !
+
+ ```yaml
+type: leaky
+debug: true
+name: demo/leaky-example
+description: "detect cool stuff"
+filter: "evt.Meta.log_type == 'iptables_drop' and evt.Parsed.proto == 'TCP'"
+groupby: evt.Meta.source_ip
+capacity: 15
+leakspeed: 1m
+blackhole: 1m
+labels:
+  type: scan
 ```
 
-<details>
-  <summary>Expected output</summary>
+We added:
+ - A new filter, ` and evt.Parsed.proto == 'TCP'`: our scenario will now only apply if the protocol is TCP (based on what was extracted from the log line by our GROK pattern)
+ - A `groupby` parameter: we now create one bucket per source ip
+ - We also updated the capacity and leakspeed to be more useful for a real life scenario.
 
-```bash
-INFO[0000] setting loglevel to info                     
-INFO[11-05-2020 15:48:28] Crowdsec v0.0.18-6b1281ba76819fed4b89247a5a673c592a3a9f88
-...
-DEBU[0000] Event entering node                           id=dark-water name=me/myparser stage=s01-parse
-DEBU[0000] eval(TRUE) '1 == 1'                           id=dark-water name=me/myparser stage=s01-parse
-DEBU[0000] no ip in event, cidr/ip whitelists not checked  id=dark-water name=me/myparser stage=s01-parse
-DEBU[0000] + Grok '' returned 1 entries to merge in Parsed  id=dark-water name=me/myparser stage=s01-parse
-DEBU[0000] 	.Parsed['some_data'] = 'May 11 16:23:41 sd-126005 kernel: [47615893.721616] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=99.99.99.99 DST=127.0.0.1 LEN=40 TOS=0x00 PREC=0x00 TTL=245 ID=54555 PROTO=TCP SPT=45225 DPT=8080 WINDOW=1024 RES=0x00 SYN URGP=0 '  id=dark-water name=me/myparser stage=s01-parse
-DEBU[0000] + Processing 1 statics                        id=dark-water name=me/myparser stage=s01-parse
-DEBU[0000] .Parsed[is_my_service] = 'yes'                id=dark-water name=me/myparser stage=s01-parse
-DEBU[0000] Event leaving node : ok                       id=dark-water name=me/myparser stage=s01-parse
-DEBU[0000] move Event from stage s01-parse to s02-enrich  id=dark-water name=me/myparser stage=s01-parse
-...
-```
-</details>
+ But this is still not perfect ! We want to create a scenario to detect port scan, but our current configuration will also detect repeated connections to the same port.
 
-
-We can see our "mock" parser is working, let's see what happened :
-
- - The event enter the node
- - The `filter` returned true (`1 == 1`) so the {{v1X.event.htmlname}} will be processed
- - Our grok pattern (just a `.*` capture) "worked" and captured data (the whole line actually)
- - The grok captures (under the name "some_data") are merged into the `.Parsed` map of the {{v1X.event.htmlname}}
- - The [statics](format#statics) section is processed, and `.Parsed[is_my_service]` is set to `yes`
- - The {{v1X.event.htmlname}} leaves the parser successfully, and because "next_stage" is set, we move the event to the next "stage"
-
-## Writing the GROK pattern
-
-We are going to write a parser for `iptables` logs, they look like this :
-
-```
-May 11 16:23:43 sd-126005 kernel: [47615895.771900] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=99.99.99.99 DST=127.0.0.1 LEN=40 TOS=0x00 PREC=0x00 TTL=245 ID=51006 PROTO=TCP SPT=45225 DPT=8888 WINDOW=1024 RES=0x00 SYN URGP=0 
-May 11 16:23:50 sd-126005 kernel: [47615902.763137] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=44.44.44.44 DST=127.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=49 ID=17451 DF PROTO=TCP SPT=53668 DPT=80 WINDOW=14600 RES=0x00 SYN URGP=0 
-
+ We can fix this by adding a `distinct` parameter:
+```yaml
+type: leaky
+debug: true
+name: demo/leaky-example
+description: "detect cool stuff"
+filter: "evt.Meta.log_type == 'iptables_drop' and evt.Parsed.proto == 'TCP'"
+groupby: evt.Meta.source_ip
+distinct: evt.Parsed.dst_port
+capacity: 15
+leakspeed: 1m
+blackhole: 1m
+labels:
+  type: scan
 ```
 
-Using an [online grok debugger](https://grokdebug.herokuapp.com/) or an [online regex debugger](https://www.debuggex.com/), we come up with the following grok pattern :
+The distinct parameter will prevent an event to be poured into the bucket if there is already an event in it with the same value for `evt.Parsed.dst_port`.
 
-```
-\[%{DATA}\]+.*(%{WORD:action})? IN=%{WORD:int_eth} OUT= MAC=%{IP}:%{MAC} SRC=%{IP:src_ip} DST=%{IP:dst_ip} LEN=%{INT:length}.*PROTO=%{WORD:proto} SPT=%{INT:src_port} DPT=%{INT:dst_port}.*
-```
+In our case, this means that we will only have unique ports in our bucket. 
 
-!!! warning
-    Check if the pattern you are looking for is not already present in [patterns configuration](https://github.com/crowdsecurity/crowdsec/tree/master/config/patterns).
+And voila ! We now have a working scenario able to detect port scanning.
 
+## Trigger bucket
 
-## Test our new pattern
-
-Now, let's integrate our GROK pattern within our YAML :
+In this example, we will write a simple scenario that will trigger if anyone sends a packet to the port 3389.
 
 ```yaml
-#let's set onsuccess to "next_stage" : if the log is parsed, we can consider it has been dealt with
-onsuccess: next_stage
-#debug, for reasons (don't do this in production)
-debug: true
-#as seen in our sample log, those logs are processed by the system and have a progname set to 'kernel'
-filter: "1 == 1"
-#name and description:
-name: crowdsecurity/iptables-logs
-description: "Parse iptables drop logs"
-grok:
-#our grok pattern
-  pattern: \[%{DATA}\]+.*(%{WORD:action})? IN=%{WORD:int_eth} OUT= MAC=%{IP}:%{MAC} SRC=%{IP:src_ip} DST=%{IP:dst_ip} LEN=%{INT:length}.*PROTO=%{WORD:proto} SPT=%{INT:src_port} DPT=%{INT:dst_port}.*
-#the field to which we apply the grok pattern : the log message itself
-  apply_on: message
-statics:
-  - parsed: is_my_service
-    value: yes
+type: trigger
+name: demo/trigger-example
+description: "Detect connection to RDP port"
+filter: "evt.Meta.log_type == 'iptables_drop' and evt.Parsed.proto == 'TCP' and evt.Parsed.dst_port == '3389'"
+groupby: evt.Meta.source_ip
+blackhole: 2m
+labels:
+ service: rdp
+ type: scan
+ remediation: true
 ```
 
+What changed in comparaison to our leaky example ?
+ - We defined the type to be `trigger`: this means that the bucket will overflow if any event is poured into it
+ - Our filter checks if the value of `dst_port` is equal to `3389`: you can access all capture group defined in a GROK pattern with the object `evt.Parsed`
+ - We set the `remediation` label to `true`: if the bucket overflow, we will apply a remediation based on your profile configuration (by default, 4h ban)
 
-```bash
-./crowdsec -c ./dev.yaml -dsn file://x.log -type foobar
+Let's try it !
+
+Put the scenario in a file called `iptables-rdp.yaml`, in the `scenarios` folder of crowdsec.
+
+Use `cscli` to make sure the scenario is detected:
+```shell
+$ cscli scenarios list                    
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ NAME                                     📦 STATUS          VERSION  LOCAL PATH                                                                                                              
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ iptables-rdp.yaml                        🏠  enabled,local           /etc/crowdsec/scenarios/iptables-rdp.yaml                                 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+``` 
+
+Next, we will trigger the scenario by attempting to connect to the port 3389 on the machine where crowdsec is running:
+```shell
+$ nc -v 127.0.0.1 3389
+nc: connect to 127.0.0.1 port 3389 (tcp) failed: Connection refused 
 ```
 
-
-<details>
-  <summary>Expected output</summary>
-
-```bash
-INFO[0000] setting loglevel to info                     
-INFO[11-05-2020 16:18:58] Crowdsec v0.0.18-6b1281ba76819fed4b89247a5a673c592a3a9f88 
-...
-DEBU[0000] Event entering node                           id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] eval(TRUE) '1 == 1'                           id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] no ip in event, cidr/ip whitelists not checked  id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] + Grok '' returned 8 entries to merge in Parsed  id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['dst_port'] = '8080'                 id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['action'] = ''                       id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['int_eth'] = 'enp1s0'                id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['src_ip'] = '99.99.99.99'         id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['dst_ip'] = '127.0.0.1'           id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['length'] = '40'                     id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['proto'] = 'TCP'                     id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['src_port'] = '45225'                id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] + Processing 1 statics                        id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] .Parsed[is_my_service] = 'yes'                id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] Event leaving node : ok                       id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] move Event from stage s01-parse to s02-enrich  id=lingering-breeze name=crowdsecurity/iptables-logs stage=s01-parse
-...
+In our kernel logs, we can see:
+```
+Aug 20 16:20:09 mantis kernel: [887475.435839] DROP: IN=lo OUT= MAC=00:00:00:00:00:00:00:00:00:00:00:00:08:00 SRC=192.168.1.23 DST=192.168.1.23 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=29037 DF PROTO=TCP SPT=39158 DPT=3389 WINDOW=65495 RES=0x00 SYN URGP=0 
 ```
 
-</details>
-
-What changed ? We can now see that the fragment captured by the GROK pattern are merged in the `Parsed` array !
-We now have parsed data, only a few more changes and we will be done :)
-
-## Finalizing our parser
-
-```yaml
-#let's set onsuccess to "next_stage" : if the log is parsed, we can consider it has been dealt with
-onsuccess: next_stage
-#debug, for reasons (don't do this in production)
-debug: true
-#as seen in our sample log, those logs are processed by the system and have a progname set to 'kernel'
-filter: "evt.Parsed.program == 'kernel'"
-#name and description:
-name: crowdsecurity/iptables-logs
-description: "Parse iptables drop logs"
-grok:
-#our grok pattern
-  pattern: \[%{DATA}\]+.*(%{WORD:action})? IN=%{WORD:int_eth} OUT= MAC=%{IP}:%{MAC} SRC=%{IP:src_ip} DST=%{IP:dst_ip} LEN=%{INT:length}.*PROTO=%{WORD:proto} SPT=%{INT:src_port} DPT=%{INT:dst_port}.*
-#the field to which we apply the grok pattern : the log message itself
-  apply_on: message
-statics:
-    - meta: log_type
-      value: iptables_drop
-    - meta: service
-      expression: "evt.Parsed.proto == 'TCP' ? 'tcp' : 'unknown'"
-    - meta: source_ip
-      expression: "evt.Parsed.src_ip"
+We can then check that a decision has been applied:
 ```
-
-### filter
-
-We changed the {{v1X.filter.htmlname}} to correctly filter on the program name.
-In the current example, our logs are produced by the kernel (netfilter), and thus the program is `kernel` :
-
-```bash
-tail -f /var/log/kern.log
-May 11 16:23:50 sd-126005 kernel: [47615902.763137] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=44.44.44.44 DST=127.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=49 ID=17451 DF PROTO=TCP SPT=53668 DPT=80 WINDOW=14600 RES=0x00 SYN URGP=0 
+$ cscli decisions list
++-------+----------+-----------------+----------------------+--------+---------+----+--------+------------------+----------+
+|  ID   |  SOURCE  |   SCOPE:VALUE   |        REASON        | ACTION | COUNTRY | AS | EVENTS |    EXPIRATION    | ALERT ID |
++-------+----------+-----------------+----------------------+--------+---------+----+--------+------------------+----------+
+| 17563 | crowdsec | Ip:192.168.1.47 | demo/trigger-example | ban    |         |    |      1 | 3h59m5.00140614s |       82 |
++-------+----------+-----------------+----------------------+--------+---------+----+--------+------------------+----------+
 ```
-
-### statics
-
-We are setting various entries to static or dynamic values to give "context" to the log :
-
-  - `.Meta.log_type` is set to `iptables_drop` (so that we later can filter events coming from this)
-  - `.Meta.source_ip` is set the the source ip captured  `.Parsed.src_ip`
-  - `.Meta.service` is set the the result of an expression that relies on the GROK output (`proto` field)
-  
-Look into dedicated {{v1X.statics.htmlname}} documentation to know more about its possibilities.
-
-
-### Testing our finalized parser
-
-
-```bash
-./crowdsec -c ./dev.yaml -dsn file://x.log -type kernel
-```
-
-<details>
-  <summary>Expected output</summary>
-```bash
-...
-DEBU[0000] Event entering node                           id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] eval(TRUE) 'evt.Parsed.program == 'kernel''   id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] no ip in event, cidr/ip whitelists not checked  id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] + Grok '' returned 8 entries to merge in Parsed  id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['src_port'] = '45225'                id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['dst_port'] = '8118'                 id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['action'] = ''                       id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['int_eth'] = 'enp1s0'                id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['src_ip'] = '44.44.44.44'            id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['dst_ip'] = '127.0.0.1'              id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['length'] = '40'                     id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] 	.Parsed['proto'] = 'TCP'                     id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] + Processing 3 statics                        id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] .Meta[log_type] = 'iptables_drop'             id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] .Meta[service] = 'tcp'                        id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] .Meta[source_ip] = '44.44.44.44'              id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] Event leaving node : ok                       id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[0000] move Event from stage s01-parse to s02-enrich  id=shy-forest name=crowdsecurity/iptables-logs stage=s01-parse
-...
-```
-</details>
-
-## Closing word
-
-We have now a fully functional parser for {{v1X.crowdsec.name}} !
-We can either deploy it to our production systems to do stuff, or even better, contribute to the {{v1X.hub.htmlname}} !
-
-If you want to know more about directives and possibilities, take a look at [the parser reference documentation](/Crowdsec/v1/references/parsers/) !
-
