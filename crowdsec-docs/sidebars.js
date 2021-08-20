@@ -103,7 +103,7 @@ module.exports = {
     {
       type: 'doc',
       label: 'Services Configuration',
-      id: "about_docs/documentation_about"
+      id: "service_configuration"
     },
     {
       type: 'doc',
