@@ -82,22 +82,22 @@ module.exports = {
     {
       type: 'category',
       label: 'Central API',
-      items: ["local_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI"}]
+      items: ["central_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI"}]
     },
     {
       type: 'doc',
       label: 'Expr',
-      id: "about_docs/documentation_about"
+      id: "expr"
     },
     {
       type: 'doc',
       label: 'Contributing',
-      id: "about_docs/documentation_about"
+      id: "contributing"
     },
     {
       type: 'doc',
       label: 'Console',
-      id: "about_docs/documentation_about"
+      id: "console"
     },
 
     {
