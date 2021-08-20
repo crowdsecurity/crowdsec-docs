@@ -40,7 +40,7 @@ Defines the type of the bucket. Currently three types are supported :
  - `trigger` : a bucket that overflows as soon as an event is poured (it's like a leaky bucket is a capacity of 0)
  - `counter` : a bucket that only overflows every [duration](#duration). It's especially useful to count things.
 
-
+---
 ### `name`
 
 ```yaml
@@ -51,6 +51,7 @@ The `name` is mandatory.
 
 It must be unique (and will define the scenario's name in the hub). 
 
+---
 ### `description`
 
 ```yaml
@@ -61,6 +62,7 @@ The `description` is mandatory.
 
 It is a quick sentence describing what it detects.
 
+---
 ### `filter`
 
 ```yaml
@@ -82,6 +84,7 @@ Examples :
   - `evt.Meta.log_type == 'ssh_failed-auth'`
 
 
+---
 ### `duration`
 
 ```yaml
@@ -108,7 +111,7 @@ labels:
   service: ssh
 ```
 
-
+---
 ### `groupby`
 
 ```yaml
@@ -138,7 +141,7 @@ groupby: evt.Meta.source_ip + '--' + evt.Parsed.target_username
 ```
 
 
-
+---
 ### `distinct`
 
 
@@ -169,7 +172,7 @@ Only the first 2 events will be poured to the bucket.
 
 The 3rd one will not be poured as the bucket already contains an event with `evt.Meta.http_path == /`
 
-
+---
 ### `capacity`
 
 ```yaml
@@ -181,7 +184,7 @@ Only applies to `leaky` buckets.
 A positive integer representing the bucket capacity.
 If there are more than `capacity` item in the bucket, it will overflow.
 
-
+---
 ### `leakspeed`
 
 ```yaml
@@ -207,7 +210,7 @@ capacity: 5
 ...
 ```
 
-
+---
 ### `labels`
 
 ```yaml
@@ -236,6 +239,7 @@ labels:
  remediation: true
 ```
 
+---
 ### `blackhole`
 
 ```yaml
@@ -261,6 +265,7 @@ blackhole: 10m
 groupby: evt.Meta.source_ip
 ```
 
+---
 ### `debug`
 
 ```yaml
@@ -287,6 +292,7 @@ DEBU[31-07-2020 16:34:58]        evt.Parsed.http_user_agent = 'Mozilla/5.00 (Nik
 </div>
 </details>
 
+---
 ### `reprocess`
 
 ```yaml
@@ -298,7 +304,7 @@ _default: false_
 If set to `true`, the resulting overflow will be sent again in the scenario/parsing pipeline.
 It is useful when you want to have further scenarios that will rely on past-overflows to take decisions.
 
-
+---
 ### `cache_size`
 
 ```yaml
@@ -310,7 +316,7 @@ However, for a number of cases, you don't want this, as it might lead to excessi
 
 By setting `cache_size` to a positive integer, we can control the maximum in-memory cache size of the bucket, without changing its capacity and such. This is especially useful when using `counter` buckets on long duration that might end up counting (and this storing in memory) an important number of events.
 
-
+---
 ### `overflow_filter`
 
 ```yaml
@@ -320,6 +326,7 @@ overflow_filter: any(queue.Queue, { .Enriched.IsInEU  == "true" })
 `overflow_filter` is an [expression](../expr) that is run when the bucket overflows.
 If this expression is present and returns false, the overflow will be discarded.
 
+---
 ### `data`
 
 ```yaml
@@ -357,7 +364,7 @@ data:
     type: string
 ```
 
-
+---
 ### `format`
 
 ```yaml
@@ -379,6 +386,7 @@ $ sudo cscli version
 2020/11/05 09:35:05 Constraint_acquis: >= 1.0, < 2.0
 ```
 
+---
 ### `scope`
 
 ```yaml
