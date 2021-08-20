@@ -9,7 +9,7 @@ sidebar_position: 2
 A way to detect a http scanner might be to track the number of distinct non-existing pages it's requesting, and the scenario might look like this:
 
 ```yaml
-[type](format#type): leaky
+type: leaky
 name: crowdsecurity/http-scan-uniques_404
 description: "Detect multiple unique 404 from a single ip"
 filter: "evt.Meta.service == 'http' && evt.Meta.http_status in ['404', '403', '400']"
