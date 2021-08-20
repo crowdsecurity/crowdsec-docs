@@ -36,7 +36,7 @@ type: leaky|trigger|counter
 
 Defines the type of the bucket. Currently three types are supported :
 
- - `leaky` : a [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) that must be configured with a {{v1X.capacity.htmlname}} and a {{v1X.leakspeed.htmlname}}
+ - `leaky` : a [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) that must be configured with a [capacity](#capacity) and a [leakspeed](#leakspeed)
  - `trigger` : a bucket that overflows as soon as an event is poured (it's like a leaky bucket is a capacity of 0)
  - `counter` : a bucket that only overflows every [duration](#duration). It's especially useful to count things.
 
@@ -194,7 +194,8 @@ A duration that represent how often an event will be leaking from the bucket.
 
 Must be compatible with [golang ParseDuration format](https://golang.org/pkg/time/#ParseDuration).
 
-#### Example
+
+#### Example
 
 Here the bucket will leak one item every 10 seconds, and can hold up to 5 items before overflowing.
 
@@ -248,7 +249,7 @@ The blackhole only applies to the individual bucket rather than the whole scenar
 
 Must be compatible with [golang ParseDuration format](https://golang.org/pkg/time/#ParseDuration).
 
-#### Example
+#### Example
 
 The same `source_ip` won't be able to trigger this overflow more than once every 10 minutes.
 The potential overflows in the meanwhile will be discarded (but will still appear in logs as being blackholed).
