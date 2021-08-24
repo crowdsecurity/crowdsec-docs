@@ -4,13 +4,13 @@ This module allows `{{v1X.crowdsec.name}}` to acquire logs from journalctl files
 
 ## Configuration Parameters
 
- - journalctl_filters: A list of journalctl filters. This is mandatory.
+ - journalctl_filter: A list of journalctl filters. This is mandatory.
  - source: Must be `journalctl`
 
 Basic configuration example:
 ```yaml
 source: journalctl
-journalctl_filters:
+journalctl_filter:
  - _SYSTEMD_UNIT=ssh.service
 ```
 
