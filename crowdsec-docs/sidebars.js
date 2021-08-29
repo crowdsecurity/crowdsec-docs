@@ -66,7 +66,7 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Whitelist',
+      label: 'Whitelists',
       items: ["whitelist/intro", "whitelist/format", "whitelist/debug","whitelist/create" ]
     },
     {
@@ -98,6 +98,11 @@ module.exports = {
       type: 'category',
       label: 'Expr',
       items: ["expr/helpers", "expr/event", "expr/alert", "expr/decision"]
+    },
+    {
+      type: 'category',
+      label: 'Bouncers',
+      items: ["bouncers/intro", "bouncers/firewall", "bouncers/nginx"]
     },
     {
       type: 'category',
