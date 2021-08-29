@@ -14,12 +14,22 @@ module.exports = {
   projectName: 'crowdsec-docs',
   themeConfig: {
     navbar: {
+      items: [
+
+      ],
+    },
+    navbar: {
       title: 'Crowdsec',
       logo: {
         alt: 'My Site Logo',
         src: 'img/crowdsec_logo.png',
       },
       items: [
+        {
+          type: 'docsVersionDropdown',
+          position: 'left',
+          dropdownActiveClassDisabled: true,
+        },
         {
           type: 'doc',
           docId: 'intro',

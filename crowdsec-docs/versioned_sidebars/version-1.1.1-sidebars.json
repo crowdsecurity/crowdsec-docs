@@ -1,0 +1,386 @@
+{
+  "version-1.1.1/tutorialSidebar": [
+    {
+      "type": "doc",
+      "id": "version-1.1.1/intro"
+    },
+    {
+      "type": "doc",
+      "id": "version-1.1.1/concepts"
+    },
+    {
+      "type": "category",
+      "label": "Getting Started",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/getting_started/install_crowdsec"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/getting_started/crowdsec_tour"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "User Guides",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/user_guides/hub_mgmt"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/user_guides/decisions_mgmt"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/user_guides/bouncers_configuration"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/user_guides/machines_mgmt"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/user_guides/lapi_mgmt"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/user_guides/building"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/user_guides/replay_mode"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Data Sources",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/data_sources/intro"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/data_sources/file"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/data_sources/journald"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/data_sources/cloudwatch"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/data_sources/syslog"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/data_sources/troubleshout"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Parsers",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/parsers/intro"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/parsers/format"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/parsers/debug"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/parsers/create"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/parsers/enricher"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Scenarios",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/scenarios/intro"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/scenarios/format"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/scenarios/simulation"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/scenarios/create"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Collections",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/collections/intro"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/collections/format"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/collections/debug"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/collections/create"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Whitelists",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/whitelist/intro"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/whitelist/format"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/whitelist/debug"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/whitelist/create"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Profiles",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/profiles/intro"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/profiles/format"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/profiles/notif"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Observability",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/observability/intro"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/observability/cscli"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/observability/prometheus"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/observability/dashboard"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/observability/console"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Configuration",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/configuration/crowdsec_configuration"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/configuration/network_management"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Local API",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/local_api/intro"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/local_api/database"
+        },
+        {
+          "type": "link",
+          "label": "Swagger",
+          "href": "https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Central API",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/central_api/intro"
+        },
+        {
+          "type": "link",
+          "label": "Swagger",
+          "href": "https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Expr",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/expr/helpers"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/expr/event"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/expr/alert"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/expr/decision"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Bouncers",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/bouncers/intro"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/bouncers/firewall"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/bouncers/nginx"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "category",
+      "label": "Contributing",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.1.1/contributing/contributing_test_env"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/contributing/contributing_code"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/contributing/contributing_hub"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/contributing/contributing_bouncers"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.1.1/contributing/contributing_doc"
+        }
+      ],
+      "collapsible": true,
+      "collapsed": true
+    },
+    {
+      "type": "doc",
+      "id": "version-1.1.1/console"
+    },
+    {
+      "type": "doc",
+      "id": "version-1.1.1/contact_team"
+    },
+    {
+      "type": "doc",
+      "id": "version-1.1.1/about_docs/documentation_about"
+    },
+    {
+      "type": "doc",
+      "id": "version-1.1.1/about_docs/documentation_about"
+    }
+  ]
+}
