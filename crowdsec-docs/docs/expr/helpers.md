@@ -1,7 +1,7 @@
 ---
-id: expr
-title: Expr
-sidebar_position: 10
+id: helpers
+title: Helpers
+sidebar_position: 3
 ---
 
 > [antonmedv/expr](https://github.com/antonmedv/expr) - Expression evaluation engine for Go: fast, non-Turing complete, dynamic typing, static typing

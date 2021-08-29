@@ -1,6 +1,6 @@
 ---
-title: CrowdSec configuration
-id: service_configuration
+title: CrowdSec Configuration
+id: crowdsec_configuration
 ---
 
 # Crowdsec configuration

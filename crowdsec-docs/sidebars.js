@@ -42,7 +42,7 @@ module.exports = {
     {
       type: 'category',
       label: 'User Guides',
-      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building", "user_guides/test_env"]
+      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building", "user_guides/replay_mode"]
     },
     {
       type: 'category',
@@ -52,17 +52,22 @@ module.exports = {
     {
       type: 'category',
       label: 'Parsers',
-      items: ["parsers/intro", "parsers/format", "parsers/debug","parsers/create" ]
+      items: ["parsers/intro", "parsers/format", "parsers/debug","parsers/create", "parsers/enricher"]
     },
     {
       type: 'category',
       label: 'Scenarios',
-      items: ["scenarios/intro", "scenarios/format", "scenarios/debug","scenarios/create" ]
+      items: ["scenarios/intro", "scenarios/format", "scenarios/simulation","scenarios/create" ]
     },
     {
       type: 'category',
       label: 'Collections',
       items: ["collections/intro", "collections/format", "collections/debug","collections/create" ]
+    },
+    {
+      type: 'category',
+      label: 'Whitelist',
+      items: ["whitelist/intro", "whitelist/format", "whitelist/debug","whitelist/create" ]
     },
     {
       type: 'category',
@@ -76,8 +81,13 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Configuration',
+      items: ["configuration/crowdsec_configuration", "configuration/network_management"]
+    },
+    {
+      type: 'category',
       label: 'Local API',
-      items: ["local_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"}]
+      items: ["local_api/intro", "local_api/database" ,{"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"}]
     },
     {
       type: 'category',
@@ -85,25 +95,24 @@ module.exports = {
       items: ["central_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI"}]
     },
     {
-      type: 'doc',
+      type: 'category',
       label: 'Expr',
-      id: "expr"
+      items: ["expr/helpers", "expr/event", "expr/alert", "expr/decision"]
     },
     {
-      type: 'doc',
+      type: 'category',
       label: 'Contributing',
-      id: "contributing"
+      items: ["contributing/contributing_test_env", "contributing/contributing_code", "contributing/contributing_hub", "contributing/contributing_bouncers" , "contributing/contributing_doc"]
     },
     {
       type: 'doc',
       label: 'Console',
       id: "console"
     },
-
     {
       type: 'doc',
-      label: 'Services Configuration',
-      id: "service_configuration"
+      label: 'Contact the team',
+      id: "contact_team"
     },
     {
       type: 'doc',
