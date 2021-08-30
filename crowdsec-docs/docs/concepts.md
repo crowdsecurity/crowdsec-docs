@@ -9,22 +9,22 @@ sidebar_position: 1
 
 CrowdSec runtime revolves around a few simple concepts :
 
- - It read logs (defined via [datasources]({{TBD}}) configuration)
- - Those logs are parsed via [parsers]({{TBD}}) and eventually [enriched]({{TBD}})
- - Those normalized logs are matched against the [scenarios]({{TBD}}) that the user deployed
- - When a scenario is "triggered", CrowdSec generates an [alert]({{TBD}}) and eventually one or more associated [decisions]({{TBD}}) :
+ - It read logs (defined via [datasources](/docs/data_sources/intro) configuration)
+ - Those logs are parsed via [parsers](/docs/parsers/intro) and eventually [enriched](/docs/parsers/enrichers)
+ - Those normalized logs are matched against the [scenarios](/docs/scenarios/intro) that the user deployed
+ - When a scenario is "triggered", CrowdSec generates an [alert](/docs/concepts#alerts) and eventually one or more associated [decisions](/docs/concepts#decisions) :
     - The alert is here mostly for tracability, and will stay even after the decision expires
     - The decision on the other hand, is short lived, and tells *what* action should be taken against the offending ip/range/user...
- - Those information (the signal, the associated decisions) are then sent to crowdsec's [Local API]({{TBD}}) and stored in the database
+ - Those information (the signal, the associated decisions) are then sent to crowdsec's [Local API](/docs/local_api/intro) and stored in the database
 
 As you might have guessed by now, CrowdSec itself does the detection part and stores those decisions.
-Then, [bouncers](user_guides/bouncers_configuration.md) can "consume" those decisions (via the very same [Local API]({{TBD}}) and apply some actual remediation.
+Then, [bouncers](user_guides/bouncers_configuration.md) can "consume" those decisions (via the very same [Local API](/docs/local_api/intro) and apply some actual remediation.
 
 ## Crowd sourced aspect
 
  [[References](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI)]
 
-Whenever the [Local API]({{TBD}}) receives an alert with associated decisions, the meta information about the alert are shared with our central api :
+Whenever the [Local API](/docs/local_api/intro) receives an alert with associated decisions, the meta information about the alert are shared with our central api :
 
  - The source ip that triggered the alert
  - The scenario that was triggered
@@ -34,7 +34,7 @@ These are the only information that are sent to our API. Those are then processe
 
 ## Bouncers
 
-[[References]({{TBD}})]
+[[References](/docs/bouncers/intro)]
 
 Bouncers are standalone software pieces in charge of acting upon actors that triggered alerts.
 To do so, bouncers are going to query the local API to know if there is an existing decisions against a given IP, range, username etc. [You can find a list of existing bouncers on the hub](https://hub.crowdsec.net/browse/#bouncers)
@@ -44,13 +44,13 @@ To do so, bouncers are going to query the local API to know if there is an exist
 
 ## Acquisition
 
-[[References]({{TBD}})]
+[[References](/docs/data_sources/intro)]
 
 Acquistion configuration defines which streams of information CrowdSec is going to process.
 
 A stream of information can be a file, a journald event log, a cloudwatch stream, and more or less any kind of stream, such as a kafka topic.
 
-Acquisition configuration always contains a stream (ie. a file to tail) and a [tag]({{TBD}}) (ie. "these are in syslog format" "these are non-syslog nginx logs").
+Acquisition configuration always contains a stream (ie. a file to tail) and a [tag](/docs/data_sources/intro) (ie. "these are in syslog format" "these are non-syslog nginx logs").
 
 File acquisition configuration is defined as :
 
@@ -65,7 +65,7 @@ The `labels` part is here to tag the incoming logs with a type. `labels.type` ar
 
 ## Stages
 
-[[References]({{TBD}})]
+[[References](/docs/parsers/intro#stages)]
 
 Stages concept is central to data parsing in CrowdSec, as it allows to have various "steps" of parsing. All parsers belong to a given stage. While users can add or modify the stages order, the following stages exist :
 
@@ -82,7 +82,7 @@ Every event starts in the first stage, and will move to the next stage once it h
 
 ## Parsers
 
-[[References](/Crowdsec/v1/references/parsers/)]
+[[References](/docs/parsers/intro)]
 
 For logs to be able to be exploited and analyzed, they need to be parsed and normalized, and this is where parsers are used.
 
@@ -98,7 +98,7 @@ See the [Hub](https://hub.crowdsec.net/browse/#configurations) to explore parser
  - [iptables logs parser](https://github.com/crowdsecurity/hub/blob/master/parsers/s01-parse/crowdsecurity/iptables-logs.yaml)
  - [http logs post-processing](https://github.com/crowdsecurity/hub/blob/master/parsers/s02-enrich/crowdsecurity/http-logs.yaml)
 
-You can as well [write your own]({{TBD}}) !
+You can as well [write your own](/docs/parsers/create) !
 
 
 
@@ -106,7 +106,7 @@ You can as well [write your own]({{TBD}}) !
 
 ## Enrichers
 
-[[References]({{TBD}})]
+[[References](/docs/parsers/enricher)]
 
 Enrichment is a parser that adds extra context to an log event, so that better decision can later be taken. In most cases, you should be able to find the relevant enrichers on our [Hub](https://hub.crowdsec.net/browse/#configurations).
 
@@ -134,12 +134,12 @@ See [Hub](https://hub.crowdsec.net/browse/#configurations) to explore scenarios 
  - [distinct http-404 scan](https://github.com/crowdsecurity/hub/blob/master/scenarios/crowdsecurity/http-scan-uniques_404.yaml)
  - [iptables port scan](https://github.com/crowdsecurity/hub/blob/master/scenarios/crowdsecurity/iptables-scan-multi_ports.yaml)
 
-You can as well [write your own]({{TBD}}) !
+You can as well [write your own](/docs/scenarios/create) !
 
 
 ## Collections
 
-[[References]({{TBD}})]
+[[References](/docs/collections/intro)]
 
 To make user's life easier, "collections" are available, which are just a bundle of parsers and scenarios.
 In this way, if you want to cover basic use-cases of let's say "nginx", you can just install the `crowdsecurity/nginx` collection that is composed of `crowdsecurity/nginx-logs` parser, as well as generic http scenarios such as `crowdsecurity/base-http-scenarios`.
@@ -148,7 +148,7 @@ As usual, those can be found on the [Hub](https://hub.crowdsec.net) !
 
 ## PostOverflows
 
-[[References](/Crowdsec/v1/references/postoverflows)]
+[[References](/docs/parsers/intro)]
 
 A postoverflow is a parser that will be applied on overflows (scenario results) before the decision is written to local DB or pushed to API. Parsers in postoverflows are meant to be used for "expensive" enrichment/parsing process that you do not want to perform on all incoming events, but rather on decision that are about to be taken.
 
@@ -159,27 +159,27 @@ An example could be slack/mattermost enrichment plugin that requires human confi
 
 ## Events
 
-[[References](/Crowdsec/v1/references/events)]
+[[References](/docs/expr/event)]
 
 An `Event` is the runtime representation of an item being processed by crowdsec : It be a Log line being parsed, or an Overflow being reprocessed.
 
-The `Event` object is modified by parses, scenarios, and directly via user [statics expressions](/Crowdsec/v1/references/parsers/#statics) (for example).
+The `Event` object is modified by parses, scenarios, and directly via user [statics expressions](/docs/parsers/format#statics) (for example).
 
 
 <!--TBD: check ref-->
 
 ## Alerts
 
-[[References](/Crowdsec/v1/references/alerts)]
+[[References](/docs/expr/alert)]
 
 An `Alert` is the runtime representation of a bucket overflow being processed by crowdsec : It is embedded in an Event.
 
-The `Alert` object is modified by post-overflows and [profiles](profiles/).
+The `Alert` object is modified by post-overflows and [profiles](/docs/profiles/intro).
 
 ## Decisions
 
-[[References](/Crowdsec/v1/references/decisions)]
+[[References](/docs/expr/decision)]
 
 A `Decision` is the representation of the consequence of a bucket overflow : a decision against an IP, a range, an AS, a Country, a User, a Session etc.
 
-`Decisions` are generated by Local API (LAPI) when an `Alert` is received, according to the existing [profiles](profiles/)
+`Decisions` are generated by Local API (LAPI) when an `Alert` is received, according to the existing [profiles](/docs/profiles/intro)
