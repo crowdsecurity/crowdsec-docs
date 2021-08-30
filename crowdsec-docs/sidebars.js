@@ -52,7 +52,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Parsers',
-      items: ["parsers/intro", "parsers/format", "parsers/debug","parsers/create", "parsers/enricher"]
+      items: ["parsers/intro", "parsers/format", "parsers/debug","parsers/create", "parsers/enricher", "parsers/patterns"]
     },
     {
       type: 'category',

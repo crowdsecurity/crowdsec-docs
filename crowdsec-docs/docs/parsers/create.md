@@ -5,7 +5,7 @@ sidebar_position: 4
 ---
 
 :::note
-The guide assume you're writting the parser from the [test environment](/docs/user_guides/test_env)
+The guide assume you're writting the parser from the [test environment](/docs/contributing/contributing_test_env)
 :::
 
 ## Base parser file
@@ -103,7 +103,7 @@ Using an [online grok debugger](https://grokdebug.herokuapp.com/) or an [online 
 ```
 
 :::warning
-Check if the pattern you are looking for is not already present in [patterns configuration](https://github.com/crowdsecurity/crowdsec/tree/master/config/patterns).
+Check if the pattern you are looking for is not already present in [patterns configuration](/docs/parsers/patterns).
 :::
 
 ## Test our new pattern
@@ -286,5 +286,5 @@ DEBU[20-08-2021 17:49:02] move Event from stage s01-parse to s02-enrich  id=with
 We have now a fully functional parser for iptables logs !
 We can either deploy it to our production systems to do stuff, or even better, contribute to the hub !
 
-If you want to know more about directives and possibilities, take a look at [the parser reference documentation]({{TBD}}) !
+If you want to know more about directives and possibilities, take a look at [the parser reference documentation](/docs/parsers/format) !
 
