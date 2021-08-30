@@ -7,11 +7,11 @@ id: faq
 
 ## What is CrowdSec ?
 
-CrowdSec is a security open-source software. See the [overview](/#what-is-crowdsec).
+CrowdSec is a security open-source software. See the [overview](/docs/intro).
 
 ## I've installed crowdsec, it detects attacks but doesn't block anything ?!
 
-Yes, CrowdSec is in charge of detecting attacks, and [bouncers](bouncers/) are applying decisions.
+Yes, CrowdSec is in charge of detecting attacks, and [bouncers](/docs/bouncers/intro) are applying decisions.
 If you want to block the detected IPs, you should deploy a bouncer, such as the ones found on the [hub](https://hub.crowdsec.net/browse/#bouncers) !
 
 
@@ -50,7 +50,7 @@ When pulling block-lists from the platform, the following information is shared 
 ## What is the performance impact ?
 
 As CrowdSec only works on logs, it shouldn't impact your production.
-When it comes to [bouncers](bouncers/), it should perform **one** request to the database when a **new** IP is discovered thus have minimal performance impact.
+When it comes to [bouncers](/docs/bouncers/intro), it should perform **one** request to the database when a **new** IP is discovered thus have minimal performance impact.
 
 ## How fast is it ?
 
@@ -60,33 +60,30 @@ If you need help for large scale deployment, please get in touch with us on the 
 
 ## What backend database does CrowdSec supports and how to switch ?
 
-CrowdSec versions (under v0.3.X) supports SQLite (default) and MySQL databases.
-See [backend configuration](/Crowdsec/v0/references/output/#switching-backend-database) for relevant configuration. MySQL here is more suitable for distributed architectures where bouncers across the applicative stack need to access a centralized ban database.
-
 CrowdSec versions (after v1) supports SQLite (default), MySQL and PostgreSQL databases.
-See [databases configuration](/Crowdsec/v1/user_guide/database/) for relevant configuration. Thanks to the [Local API](local_api/), distributed architectures are resolved even with sqlite database.
+See [databases configuration](/docs/local_api/database) for relevant configuration. Thanks to the [Local API](/docs/local_api/intro), distributed architectures are resolved even with sqlite database.
 
 SQLite by default as it's suitable for standalone/single-machine setups.
 
 ## How to control granularity of actions ? (whitelists, simulation etc.)
 
-CrowdSec support both [whitelists](/Crowdsec/v1/write_configurations/whitelist/) and [simulation](/Crowdsec/v1/references/simulation/) :
+CrowdSec support both [whitelists](/docs/whitelist/intro) and [simulation](/docs/scenarios/simulation) :
 
  - Whitelists allows you to "discard" events or overflows
  - Simulation allows you to simply cancel the decision that is going to be taken, but keep track of it
 
-[Profiles](profiles/) allows you to control which decision will be applied to which alert.
+[Profiles](/docs/profiles/intro) allows you to control which decision will be applied to which alert.
 
 ## How to know if my setup is working correctly ? Some of my logs are unparsed, is it normal ?
 
 Yes, crowdsec parsers only parse the logs that are relevant for scenarios.
 
-Take a look at `cscli metrics` [and understand what do they mean](observability/cscli.md) to know if your setup is correct.
+Take a look at `cscli metrics` [and understand what do they mean](/docs/observability/cscli) to know if your setup is correct.
 
 
 ## How to add whitelists ?
 
-You can follow this [guide](/Crowdsec/v1/write_configurations/whitelist/)
+You can follow this [guide](/docs/whitelist/intro)
 
 ## How to set up proxy ?
 
@@ -131,7 +128,8 @@ Several initiatives have been taken to tackle the false positives approach as ea
 
  - The scenarios published on the hub are tailored to favor low false positive rates
  - You can find [generic whitelists](https://hub.crowdsec.net/author/crowdsecurity/collections/whitelist-good-actors) that should allow to cover most common cases (SEO whitelists, CDN whitelists etc.)
- - The [simulation configuration](/Crowdsec/v1/references/simulation/) allows you to keep a tight control over scenario and their false positives
+ - The [simulation configuration](/docs/scenarios/simulation) allows you to keep a tight control over scenario and their false positives
+ - Or add your own [whitelists](/docs/whitelist/create)
 
 
 ## I need some help
@@ -157,36 +155,7 @@ do:
 
 ## How to have a dashboard without docker
 
-`cscli dashboard` rely on [`docker`](https://docs.docker.com/) to launch the `metabase` image. If `docker` is not installed on your machine, here are the step to follow to get crowdsec dashboards without docker:
-
-- Download Metabase `jar` file. See [metabase documentation](https://www.metabase.com/docs/latest/operations-guide/running-the-metabase-jar-file.html).
-- Download the `metabase.db` folder from Crowdsec [here](https://crowdsec-statics-assets.s3-eu-west-1.amazonaws.com/metabase_sqlite.zip).
-- Unzip the `zip` file: 
-
-```bash
-unzip metabase_sqlite.zip
-```
-
-- Make crowdsec database reachable from metabase :
-
-```bash
-sudo mkdir /metabase-data/
-sudo ln -s /var/lib/crowdsec/data/crowdsec.db /metabase-data/crowdsec.db
-```
-
-- Launch Metabase: 
-
-```bash
-sudo MB_DB_TYPE=h2 MB_DB_FILE=<absolute-path>/metabase.db/metabase.db java -jar metabase.jar
-```
-
-:::caution
-
-The default username is `crowdsec@crowdsec.net` and the default password is `!!Cr0wdS3c_M3t4b4s3??`. Please update the password when you will connect to metabase for the first time
-
-:::
-
-You can as well check [liberodark's helper script for it](https://github.com/liberodark/crowdsec-dashboard).
+See [the tutorial](/blog/metabase_without_docker)
 
 ## How to configure crowdsec/cscli to use Tor
 
@@ -227,26 +196,3 @@ $ sudo HTTP_PROXY=socks5://127.0.0.1:9050 HTTPS_PROXY=socks5://127.0.0.1:9050 cs
 ## How to setup High Availability for Local API
 
 When setting up High Availability for Local API, do not forget to share the same `CS_LAPI_SECRET` between your Local API instances : it is the secret used to signed JWT tokens. (By default it's generated from PRNG at startup)
-
-
-
-
-<!-- 
-
-## What are common use-cases ?
-
-**TBD**
-
-## What about false positives ?
-
-**TBD**
-
-## How to test if it works ?
-
-**TBD**
-
-## Who are you ?
-
-**TBD**
-
--->
