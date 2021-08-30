@@ -69,7 +69,7 @@ It is a quick sentence describing what it detects.
 filter: expression
 ```
 
-`filter` must be a valid [expr](../expr) expression that will be evaluated against the event.
+`filter` must be a valid [expr](/docs/expr/helpers) expression that will be evaluated against the event.
 
 If `filter` evaluation returns true or is absent, event will be pour in the bucket.
 
@@ -119,7 +119,7 @@ groupby: evt.Meta.source_ip
 ```
 
 
-An [expression](../expr) that must return a string. This string will be used as a partition for the buckets.
+An [expression](/docs/expr/helpers) that must return a string. This string will be used as a partition for the buckets.
 
 
 #### Examples
@@ -150,7 +150,7 @@ distinct: evt.Meta.http_path
 ```
 
 
-An [expression](../expr) that must return a string. The event will be poured **only** if the string is not already present in the bucket.
+An [expression](/docs/expr/helpers) that must return a string. The event will be poured **only** if the string is not already present in the bucket.
 
 #### Examples
 
@@ -323,7 +323,7 @@ By setting `cache_size` to a positive integer, we can control the maximum in-mem
 overflow_filter: any(queue.Queue, { .Enriched.IsInEU  == "true" })
 ```
 
-`overflow_filter` is an [expression](../expr) that is run when the bucket overflows.
+`overflow_filter` is an [expression](/docs/expr/helpers) that is run when the bucket overflows.
 If this expression is present and returns false, the overflow will be discarded.
 
 ---
