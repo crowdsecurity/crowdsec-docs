@@ -8,10 +8,10 @@ Observability in security software is crucial, especially when this software mig
 
 We attempt to provide good observability of CrowdSec's behavior :
 
- - CrowdSec itself exposes a [prometheus instrumentation](/Crowdsec/v1/observability/prometheus/)
+ - CrowdSec itself exposes a [prometheus instrumentation](/docs/observability/prometheus)
  - `cscli` allows you to view part of prometheus metrics in [cli (`cscli metrics`)](cscli)
  - CrowdSec logging is contextualized for easy processing
- - for **humans**, `cscli` allows you to trivially start a service [exposing dashboards](/Crowdsec/v1/observability/dashboard/) (using [metabase](https://www.metabase.com/))
+ - for **humans**, `cscli` allows you to trivially start a service [exposing dashboards](/docs/observability/dashboard) (using [metabase](https://www.metabase.com/))
 
 Furthermore, most of CrowdSec configuration should allow you to enable partial debug (ie. per-scenario, per-parser etc.)
 

@@ -95,6 +95,6 @@ sudo cscli dashboard stop
 sudo cscli dashboard start
 ```
 
-**Note:** Please look [at this documentation](https://doc.crowdsec.net/faq/#how-to-have-a-dashboard-without-docker) for those of you that would like to deploy metabase without using docker.
+**Note:** Please look [at this documentation]({{TBD}}) for those of you that would like to deploy metabase without using docker.
 
 
