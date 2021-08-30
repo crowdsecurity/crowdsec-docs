@@ -62,7 +62,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Collections',
-      items: ["collections/intro", "collections/format", "collections/debug","collections/create" ]
+      items: ["collections/intro", "collections/format"]
     },
     {
       type: 'category',
