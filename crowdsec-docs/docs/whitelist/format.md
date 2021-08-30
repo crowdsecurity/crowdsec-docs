@@ -57,7 +57,7 @@ It is a quick sentence describing what it detects.
 filter: expression
 ```
 
-`filter` must be a valid [expr](https://github.com/antonmedv/expr) expression that will be evaluated against the [event](../expr/event).
+`filter` must be a valid [expr](https://github.com/antonmedv/expr) expression that will be evaluated against the [event](/docs/expr/event).
 
 If `filter` evaluation returns true or is absent, node will be processed.
 
@@ -107,7 +107,7 @@ whitelist:
     - "127.0.0.1"
 ```
 
-A valid [expr](../expr) expression that return a string to apply the pattern on.
+A valid [expr](/docs/expr/helpers) expression that return a string to apply the pattern on.
 
 
 #### `cidr`
@@ -120,7 +120,7 @@ whitelist:
     - "172.16.0.0/12"
 ```
 
-A valid [expr](../expr) expression that return a string to apply the pattern on.
+A valid [expr](/docs/expr/helpers) expression that return a string to apply the pattern on.
 
 
 #### `expression`
@@ -134,7 +134,7 @@ whitelist:
     - evt.Enriched.IsoCode == 'FR'
 ```
 
-A valid [expr](../expr) expression that return a string to apply the pattern on.
+A valid [expr](/docs/expr/helpers) expression that return a string to apply the pattern on.
 
 
 ### `data`

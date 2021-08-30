@@ -9,7 +9,7 @@ sidebar_position: 4
 
 Enrichers are [parsers](intro) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich`  [stage](intro#stages) (after most of the parsing happened).
 
-Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the [`Event`](../expr/event).
+Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the [`Event`](/docs/expr/event).
 
 :::warning
 
