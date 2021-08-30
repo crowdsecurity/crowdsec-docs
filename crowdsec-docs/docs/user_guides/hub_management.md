@@ -4,7 +4,7 @@ title: Hub management
 sidebar_position: 1
 ---
 
-Hub management, via `cscli` allows you to install, upgrade, remove and view installed [collections]({{TBD}}), [parsers]({{TBD}}), [scenarios]({{TBD}}) etc.
+Hub management, via `cscli` allows you to install, upgrade, remove and view installed collections, parsers, scenarios etc.
 
 
 
@@ -157,7 +157,7 @@ Current metrics :
 
 ### Reference
 
-See more about collection [here](/Crowdsec/v1/references/collections/).
+See more about collection [here](/docs/collections/intro).
 
 
 ## Parsers
@@ -187,7 +187,7 @@ INFO[0000] Run 'systemctl reload crowdsec' for the new configuration to be effec
 sudo cscli parsers list
 ```
 
-[Parsers](../parsers/) are yaml files in `/etc/crowdsec/parsers/<STAGE>/parser.yaml`.
+[Parsers](/docs/parsers/intro) are yaml files in `/etc/crowdsec/parsers/<STAGE>/parser.yaml`.
 
 
 <details>
@@ -289,13 +289,13 @@ Current metrics :
 
 ### Reference
 
-See more details about parsers [here](../parsers/).
+See more details about parsers [here](/docs/collections/intro).
 
 ## Enrichers
 
-Enrichers are basically [parsers](../parsers/) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich` {{v1X.stage.htmlname}} (after most of the parsing happened).
+Enrichers are basically [parsers](/docs/collections/intro) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich` stage (after most of the parsing happened).
 
-Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the {{v1X.event.htmlname}}.
+Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the [event](/docs/expr/event).
 
 :::caution
 
@@ -319,7 +319,7 @@ Take a tour at the [Hub](https://hub.crowdsec.net/browse/#configurations) to fin
 
 ### Reference
 
-See more about enrichers [here](../enrichers/).
+See more about enrichers [here](/docs/parsers/enricher).
 
 
 ## Scenarios
@@ -360,7 +360,7 @@ Use `--all` to list available parsers.
 
 :::
 
-[Scenario](../scenarios/) are yaml files in `/etc/crowdsec/scenarios/`.
+[Scenario](/docs/scenarios/intro) are yaml files in `/etc/crowdsec/scenarios/`.
 
 
 <details>
@@ -460,4 +460,4 @@ Current metrics :
 
 ### Reference
 
-See more about scenarios [here](/Crowdsec/v1/references/scenarios/).
+See more about scenarios [here](/docs/scenarios/intro).

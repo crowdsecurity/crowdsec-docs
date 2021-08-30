@@ -95,8 +95,8 @@ $ sudo cscli machines validate <machineName>
 #### Configure listen URL
 
 If you would like your local API to be used by a remote crowdsec you will need to modify the URL it listens on.
-Modify the [`listen_uri` option](/Crowdsec/v1/references/crowdsec-config/#listen_uri) in the main configuration file.
-Then see [how to configure your crowdsec to use a remote API](lapi_mgmt#register-to-a-remote-api-server).
+Modify the [`listen_uri` option](/docs/configuration/crowdsec_configuration#listen_uri) in the main configuration file.
+Then see [how to configure your crowdsec to use a remote API](/docs/user_guides/machines_mgmt#machine-register).
 
 
 #### Enable SSL
@@ -104,7 +104,7 @@ Then see [how to configure your crowdsec to use a remote API](lapi_mgmt#register
 The most common use case of the local API is to listen on 127.0.0.1. In that case there's no need for
 configuring any ssl layer. In some cases, the local API will listen for other crowdsec installations that
 will report their triggered scenarios. In that case the endpoint may be configured with ssl.
-You can see how to configure SSL on your local API [here](/Crowdsec/v1/references/crowdsec-config/#tls).
+You can see how to configure SSL on your local API [here](/docs/configuration/crowdsec_configuration#tls).
 
 
 See the [Local API public documentation](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI).
