@@ -107,7 +107,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Bouncers',
-      items: ["bouncers/intro", "bouncers/firewall", "bouncers/nginx"]
+      items: ["bouncers/intro", "bouncers/firewall", "bouncers/nginx", "bouncers/custom"]
     },
     {
       type: 'category',
