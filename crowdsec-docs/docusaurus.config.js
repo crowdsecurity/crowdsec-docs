@@ -26,11 +26,6 @@ module.exports = {
       },
       items: [
         {
-          type: 'docsVersionDropdown',
-          position: 'left',
-          dropdownActiveClassDisabled: true,
-        },
-        {
           type: 'doc',
           docId: 'intro',
           position: 'left',
