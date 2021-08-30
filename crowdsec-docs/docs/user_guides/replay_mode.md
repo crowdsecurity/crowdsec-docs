@@ -22,7 +22,7 @@ Where `-dsn` points to the log file you want to process, and the `-type` is simi
 ```bash
 sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/nginx/2019.log -type nginx
 sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/sshd-2019.log -type syslog
-sudo crowdsec -c /etc/crowdsec/user.yaml -dns "journalctl://filters=_SYSTEMD_UNIT=ssh.service --since yesterday" -type syslog
+sudo crowdsec -c /etc/crowdsec/user.yaml -dns "journalctl://filters=_SYSTEMD_UNIT=ssh.service" -type syslog
 ```
 
 When running crowdsec in forensic mode, the alerts will be displayed to stdout, and as well pushed to database :
@@ -38,6 +38,11 @@ INFO[13-11-2020 13:05:24] (14baeedafc1e44c08b806fc0c1cd92c4/crowdsec) crowdsecur
 ```
 
 And as these alerts are as well pushed to database, it mean you can view them in metabase, or using cscli !
+
+When using metabase, simply use the time selector to view the appropriate period in the main dashboard :
+
+![metabase-timeselector](/img/dashboard-timeselect.png)
+
 
 
 :::warning
