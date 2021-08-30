@@ -92,7 +92,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Local API',
-      items: ["local_api/intro", "local_api/database" ,{"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"}]
+      items: ["local_api/intro", "local_api/database" , "local_api/bouncers", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"}]
     },
     {
       type: 'category',

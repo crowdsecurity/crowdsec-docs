@@ -7,7 +7,7 @@ id: network_management
 # Ports inventory
 
  - `tcp/8080` exposes a [REST API](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI) for bouncers, `cscli` and comunication between crowdsec agent and local api
- - `tcp/6060` (endpoint `/metrics`) exposes [prometheus metrics](https://doc.crowdsec.net/Crowdsec/v1/observability/prometheus/)
+ - `tcp/6060` (endpoint `/metrics`) exposes [prometheus metrics](/docs/observability/prometheus)
  - `tcp/6060` (endpoint `/debug`) exposes pprof debugging metrics
 
 # Outgoing connections
