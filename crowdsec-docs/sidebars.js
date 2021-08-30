@@ -67,7 +67,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Whitelists',
-      items: ["whitelist/intro", "whitelist/format", "whitelist/debug","whitelist/create" ]
+      items: ["whitelist/intro", "whitelist/format", "whitelist/create" ]
     },
     {
       type: 'category',
