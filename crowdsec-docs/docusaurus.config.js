@@ -4,7 +4,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'CrowdSec',
-  tagline: 'CrowdSec, the open-source and collaborative EDR.',
+  tagline: 'CrowdSec, the open-source & participative IPS.',
   url: 'https://crowdsec.net',
   baseUrl: '/',
   onBrokenLinks: 'warn',

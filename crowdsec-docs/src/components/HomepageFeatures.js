@@ -9,27 +9,28 @@ const FeatureList = [
     Svg: require('../../static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Crowdsec is easy to install and to use on a daily basis. No security knowledge required.
+        CrowdSec is easy to install, deploy and use regardless of your knowledge.
+        You don't need to be a security master to enjoy its full capabilities.
       </>
     ),
   },
   {
     //screenshot metabase ?
-    title: 'Reproducibility',
+    title: 'Replayable',
     Svg: require('../../static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Crowdsec can process live logs, as well as cold logs, making it easy to identify false positives or generate reporting.
+        CrowdSec is able to process both live and old logs, which makes it false-positive resilient 
       </>
     ),
   },
   {
     //screenshot de grafana
-    title: 'Observability',
+    title: 'Observable',
     Svg: require('../../static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Out of the box dashboards with [metabase](https://www.metabase.com/) and [prometheus](https://prometheus.io/) instrumentation for maximum observability.
+        CrowdSec is instrumented with Metabase & Prometheus to help you generate out-of-the-box dashboards and monitor activity across your assets.
       </>
     ),
   },
@@ -43,7 +44,26 @@ const FeatureList = [
       </>
     ),
   },
-
+  {
+    //schema api ?
+    title: 'Participative',
+    Svg: require('../../static/img/undraw_docusaurus_react.svg').default,
+    description: (
+      <>
+        You can share malevolent IP data with your fellow users, have each other's backs and outnumber hackers.
+      </>
+    ),
+  },
+  {
+    //schema api ?
+    title: 'Open Source',
+    Svg: require('../../static/img/undraw_docusaurus_react.svg').default,
+    description: (
+      <>
+        CrowdSec is as open source and free as it can be through an MIT license. No back doors. No shenanigans.
+      </>
+    ),
+  },
   //community driven ->
   //open-source
   //detect here apply there
