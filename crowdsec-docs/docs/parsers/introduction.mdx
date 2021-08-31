@@ -42,6 +42,17 @@ Each parser can add, change or even delete data from the event. The current appr
 
 Once an event has successfully exited the parsing pipeline, it is ready to be matched against scenarios. As you might expect, each parser relies on the information that were parsed during previous stages.
 
+## Postoverflows
+
+Once a scenario overflows, the resulting event is going to be processed by a distinct set of parsers, called "postoverflows".
+
+Those parsers are located in `/etc/crowdsec/postoverflows/` and typically contain additional whitelists, a [common example is to whitelist decisions coming from some specific FQDN](https://hub.crowdsec.net/author/crowdsecurity/collections/whitelist-good-actors).
+
+Usually, those parsers should be kept for "expensive" parsers that might rely on external services.
+
+----
+
+
 
 See the [Hub](https://hub.crowdsec.net/browse/#configurations) to explore parsers, or see below some examples :
 
@@ -50,3 +61,4 @@ See the [Hub](https://hub.crowdsec.net/browse/#configurations) to explore parser
  - [http logs post-processing](https://github.com/crowdsecurity/hub/blob/master/parsers/s02-enrich/crowdsecurity/http-logs.yaml)
 
 The parsers usually reside in `/etc/crowdsec/parsers/<STAGE>/`.
+

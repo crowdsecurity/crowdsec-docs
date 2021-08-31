@@ -4,13 +4,13 @@ title: Cscli dashboard
 sidebar_position: 3
 ---
 
-<!--TBD: to fix when we dealt with the new cscli dashboard command -->
 :::warning "MySQL & PostgreSQL"
 MySQL and PostgreSQL are currently not supported by `cscli dashboard`. 
 
 It means that you can run cscli dashboard only if you use `SQLite` (default) as storage database with your local API.
 :::
 
+![Dashboard](/img/metabase.png)
 
 The cscli command `cscli dashboard setup` will use [docker](https://docs.docker.com/get-docker/) to install [metabase docker image](https://hub.docker.com/r/metabase/metabase/) and fetch our metabase template to have a configured and ready dashboard. 
 
@@ -95,6 +95,6 @@ sudo cscli dashboard stop
 sudo cscli dashboard start
 ```
 
-**Note:** Please look [at this documentation]({{TBD}}) for those of you that would like to deploy metabase without using docker.
+**Note:** Please look [at this documentation](/blog/metabase_without_docker) for those of you that would like to deploy metabase without using docker.
 
 
