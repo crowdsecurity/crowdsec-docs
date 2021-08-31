@@ -196,3 +196,8 @@ $ sudo HTTP_PROXY=socks5://127.0.0.1:9050 HTTPS_PROXY=socks5://127.0.0.1:9050 cs
 ## How to setup High Availability for Local API
 
 When setting up High Availability for Local API, do not forget to share the same `CS_LAPI_SECRET` between your Local API instances : it is the secret used to signed JWT tokens. (By default it's generated from PRNG at startup)
+
+## How to disable the central API
+
+To disable the central API, simply comment out the [`online_client` section of the configuration file](/docs/configuration/crowdsec_configuration#online_client).
+
