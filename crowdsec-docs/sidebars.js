@@ -137,10 +137,5 @@ module.exports = {
       label: 'Contact the team',
       id: "contact_team"
     },
-    {
-      type: 'doc',
-      label: 'About this documentation',
-      id: "about_docs/documentation_about"
-    },
   ],
 };
