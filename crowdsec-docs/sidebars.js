@@ -37,6 +37,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Getting Started',
+      collapsed: false,
       items: ["getting_started/install_crowdsec", "getting_started/crowdsec_tour"]
     },
     {
@@ -72,12 +73,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Profiles',
-      items: ["profiles/intro", "profiles/format","profiles/notif"]
-    },
-    {
-      type: 'category',
-      label: 'Observability',
-      items: ["observability/intro", "observability/cscli", "observability/prometheus", "observability/dashboard", "observability/console"]
+      items: ["profiles/intro", "profiles/format"]
     },
     {
       type: 'category',
@@ -88,6 +84,16 @@ module.exports = {
       type: 'category',
       label: 'Configuration',
       items: ["configuration/crowdsec_configuration", "configuration/network_management"]
+    },
+    {
+      type: 'category',
+      label: 'Observability',
+      items: ["observability/intro", "observability/cscli", "observability/prometheus", "observability/dashboard", "observability/console"]
+    },
+    {
+      type: 'category',
+      label: 'Bouncers',
+      items: ["bouncers/intro", "bouncers/firewall", "bouncers/nginx", "bouncers/custom"]
     },
     {
       type: 'category',
@@ -103,11 +109,6 @@ module.exports = {
       type: 'category',
       label: 'Expr',
       items: ["expr/helpers", "expr/event", "expr/alert", "expr/decision"]
-    },
-    {
-      type: 'category',
-      label: 'Bouncers',
-      items: ["bouncers/intro", "bouncers/firewall", "bouncers/nginx", "bouncers/custom"]
     },
     {
       type: 'category',
@@ -127,12 +128,7 @@ module.exports = {
     {
       type: 'doc',
       label: 'CLI reference (cscli)',
-      id: "about_docs/documentation_about"
-    },
-    {
-      type: 'doc',
-      label: 'About this documentation',
-      id: "about_docs/documentation_about"
+      id: "contact_team"
     },
   ],
 };
