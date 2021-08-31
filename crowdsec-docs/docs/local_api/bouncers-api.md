@@ -42,7 +42,7 @@ Api key for 'MyTestClient':
 
    837be58e22a28738066de1be8f53636b
 
-Please keep this key since you will not be able to retrive it!
+Please keep this key since you will not be able to retrieve it!
 
 ```
 

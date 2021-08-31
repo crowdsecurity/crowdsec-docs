@@ -27,7 +27,7 @@ Api key for 'testBouncer':
 
    6dcfe93f18675265e905aef390330a35
 
-Please keep this key since you will not be able to retrive it!
+Please keep this key since you will not be able to retrieve it!
 ```
 
 :::info

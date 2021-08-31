@@ -40,7 +40,7 @@ Api key for 'mybouncersname':
 
    23........b5a0c
 
-Please keep this key since will not be able to retrive it!
+Please keep this key since will not be able to retrieve it!
 $ sudo cscli bouncers delete mybouncersname
 ```
 
@@ -55,7 +55,7 @@ Api key for 'mybouncersname':
 
    23........b5a0c
 
-Please keep this key since will not be able to retrive it!
+Please keep this key since will not be able to retrieve it!
 $ sudo cscli bouncers list              
 -----------------------------------------------------------------------------
  NAME            IP ADDRESS  VALID  LAST API PULL              TYPE  VERSION 
@@ -67,7 +67,7 @@ Api key for 'jlkqweq':
 
    a7........efdc9c
 
-Please keep this key since will not be able to retrive it!
+Please keep this key since will not be able to retrieve it!
 $ sudo cscli bouncers delete mybouncersname
 $ sudo cscli bouncers list                 
 ----------------------------------------------------------------------
