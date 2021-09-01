@@ -93,7 +93,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Bouncers',
-      items: ["bouncers/intro", "bouncers/firewall", "bouncers/nginx", "bouncers/custom"]
+      items: ["bouncers/intro", "bouncers/firewall", "bouncers/nginx", "bouncers/custom", "bouncers/cloudflare"]
     },
     {
       type: 'category',
@@ -109,11 +109,6 @@ module.exports = {
       type: 'category',
       label: 'Expr',
       items: ["expr/helpers", "expr/event", "expr/alert", "expr/decision"]
-    },
-    {
-      type: 'category',
-      label: 'Bouncers',
-      items: ["bouncers/intro", "bouncers/firewall", "bouncers/nginx", "bouncers/custom"]
     },
     {
       type: 'category',
