@@ -26,6 +26,11 @@ module.exports = {
       },
       items: [
         {
+          type: 'docsVersionDropdown',
+          position: 'left',
+          dropdownActiveClassDisabled: true,
+        },
+        {
           type: 'doc',
           docId: 'intro',
           position: 'left',
@@ -47,7 +52,7 @@ module.exports = {
         {
           type: 'doc',
           docId: 'faq',
-          position: 'right',
+          position: 'left',
           label: 'FAQ',
         },
         {
@@ -114,7 +119,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} CrowdSec`,
     },
     prism: {
       theme: lightCodeTheme,
