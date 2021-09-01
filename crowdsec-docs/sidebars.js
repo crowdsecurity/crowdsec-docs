@@ -77,8 +77,8 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Notification',
-      items: ["notification/intro"]
+      label: 'Plugins',
+      items: ["plugins/intro", "plugins/http", "plugins/slack", "plugins/splunk", "plugins/writing_your_own_plugin"]
     },   
     {
       type: 'category',
