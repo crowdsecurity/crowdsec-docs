@@ -11,13 +11,13 @@ function HomepageHeader() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <h1 className="hero__title">{siteConfig.title}</h1>
+        <img src="/static/img/crowdsec_logo.png" width="35%" height="35%" />
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
             to="/docs/getting_started/install_crowdsec">
-            CrowdSec Tutorial - 5min ⏱️
+            Install CrowdSec - 2min ⏱️
           </Link>
         </div>
       </div>
