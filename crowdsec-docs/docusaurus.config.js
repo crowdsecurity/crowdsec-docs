@@ -56,6 +56,11 @@ module.exports = {
           label: 'FAQ',
         },
         {
+          href: 'https://hub.crowdsec.net/',
+          label: 'Hub',
+          position: 'right',
+        },
+        {
           href: 'https://github.com/crowdsecurity/crowdsec',
           label: 'GitHub',
           position: 'right',
