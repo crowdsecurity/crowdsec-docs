@@ -6,6 +6,9 @@ author_url: https://github.com/crowdsecurity
 tags: [dashboard, metabase]
 ---
 
+<!--truncate-->
+
+
 `cscli dashboard` rely on [`docker`](https://docs.docker.com/) to launch the `metabase` image. If `docker` is not installed on your machine, here are the step to follow to get crowdsec dashboards without docker:
 
 - Download Metabase `jar` file. See [metabase documentation](https://www.metabase.com/docs/latest/operations-guide/running-the-metabase-jar-file.html).
