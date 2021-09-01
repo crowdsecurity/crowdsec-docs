@@ -108,7 +108,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Contributing',
-      items: ["contributing/contributing_test_env", "contributing/contributing_code", "contributing/contributing_hub", "contributing/contributing_bouncers" , "contributing/contributing_doc"]
+      items: ["contributing/contributing_test_env", "contributing/contributing_code", "contributing/contributing_hub", "contributing/contributing_doc"]
     },
     {
       type: 'doc',
@@ -251,6 +251,11 @@ module.exports = {
       type:"link",
       label: "Hub",
       href:"https://hub.crowdsec.net/browse/#bouncers"
+    },
+    {
+      type: 'doc',
+      label: "Contributing",
+      id: "contributing/contributing_bouncers"
     },
   ],
 };
