@@ -106,10 +106,6 @@
         },
         {
           "type": "doc",
-          "id": "version-v1.1/parsers/debug"
-        },
-        {
-          "type": "doc",
           "id": "version-v1.1/parsers/create"
         },
         {
@@ -235,10 +231,6 @@
         {
           "type": "doc",
           "id": "version-v1.1/observability/dashboard"
-        },
-        {
-          "type": "doc",
-          "id": "version-v1.1/observability/console"
         }
       ],
       "collapsible": true,
