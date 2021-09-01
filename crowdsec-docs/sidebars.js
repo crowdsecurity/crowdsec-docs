@@ -117,13 +117,6 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'CLI reference (cscli)',
-      items: ["cscli/cscli_alerts", "cscli/cscli_bouncers", "cscli/cscli_capi", "cscli/cscli_collections",
-        "cscli/cscli_completion", "cscli/cscli_config", "cscli/cscli_console", "cscli/cscli_dashboard", "cscli/cscli_decisions", "cscli/cscli_hub", "cscli/cscli_lapi",
-        "cscli/cscli_machines", "cscli/cscli_metrics", "cscli/cscli_parsers", "cscli/cscli_postoverflows", "cscli/cscli_scenarios", "cscli/cscli_simulation", "cscli/cscli_version"]
-    },
-    {
-      type: 'category',
       label: 'Contributing',
       items: ["contributing/contributing_test_env", "contributing/contributing_code", "contributing/contributing_hub", "contributing/contributing_bouncers" , "contributing/contributing_doc"]
     },
@@ -136,6 +129,15 @@ module.exports = {
       type: 'doc',
       label: 'Contact the team',
       id: "contact_team"
+    },
+  ],
+  cscliSidebar: [
+    {
+      type: 'category',
+      label: 'CLI reference (cscli)',
+      items: ["cscli/cscli", "cscli/cscli_alerts", "cscli/cscli_bouncers", "cscli/cscli_capi", "cscli/cscli_collections",
+        "cscli/cscli_completion", "cscli/cscli_config", "cscli/cscli_console", "cscli/cscli_dashboard", "cscli/cscli_decisions", "cscli/cscli_hub", "cscli/cscli_lapi",
+        "cscli/cscli_machines", "cscli/cscli_metrics", "cscli/cscli_parsers", "cscli/cscli_postoverflows", "cscli/cscli_scenarios", "cscli/cscli_simulation", "cscli/cscli_version"]
     },
   ],
 };

@@ -31,6 +31,12 @@ module.exports = {
           position: 'left',
           label: 'Documentation',
         },
+        {
+          type: 'doc',
+          docId: 'cscli/cscli',
+          position: 'left',
+          label: 'Cscli',
+        },
         {to: '/blog', label: 'Tutorials', position: 'left'},
         {
           type: 'doc',
