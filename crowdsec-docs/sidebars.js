@@ -92,11 +92,6 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Bouncers',
-      items: ["bouncers/intro", "bouncers/firewall", "bouncers/nginx", "bouncers/custom", "bouncers/cloudflare"]
-    },
-    {
-      type: 'category',
       label: 'Local API',
       items: ["local_api/intro", "local_api/database" , "local_api/bouncers", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"}]
     },
@@ -109,11 +104,6 @@ module.exports = {
       type: 'category',
       label: 'Expr',
       items: ["expr/helpers", "expr/event", "expr/alert", "expr/decision"]
-    },
-    {
-      type: 'category',
-      label: 'Bouncers',
-      items: ["bouncers/intro", "bouncers/firewall", "bouncers/nginx", "bouncers/custom"]
     },
     {
       type: 'category',
@@ -146,5 +136,32 @@ module.exports = {
       "cscli/cscli_scenarios_inspect","cscli/cscli_scenarios_install","cscli/cscli_scenarios_list","cscli/cscli_scenarios_remove","cscli/cscli_scenarios_upgrade","cscli/cscli_simulation","cscli/cscli_simulation_disable",
       "cscli/cscli_simulation_enable","cscli/cscli_simulation_status","cscli/cscli_version"]
     },
+  ],
+  bouncersSidebar: [
+    {
+      type: 'doc',
+      label: 'Introduction',
+      id: "bouncers/intro"
+    },
+    {
+      type: 'doc',
+      label: 'Firewall',
+      id: "bouncers/firewall"
+    },
+    {
+      type: 'doc',
+      label: 'Nginx',
+      id: "bouncers/nginx"
+    },
+    {
+      type: 'doc',
+      label: 'Custom',
+      id: "bouncers/custom"
+    },
+    {
+      type: 'doc',
+      label: 'Cloudflare',
+      id: "bouncers/cloudflare"
+    }, 
   ],
 };

@@ -29,7 +29,7 @@ module.exports = {
           type: 'doc',
           docId: 'intro',
           position: 'left',
-          label: 'Documentation',
+          label: 'CrowdSec',
         },
         {
           type: 'doc',
@@ -37,16 +37,32 @@ module.exports = {
           position: 'left',
           label: 'Cscli',
         },
+        {
+          type: 'doc',
+          docId: 'bouncers/intro',
+          position: 'left',
+          label: 'Bouncers',
+        },
         {to: '/blog', label: 'Tutorials', position: 'left'},
         {
           type: 'doc',
           docId: 'faq',
-          position: 'left',
+          position: 'right',
           label: 'FAQ',
         },
         {
           href: 'https://github.com/crowdsecurity/crowdsec',
           label: 'GitHub',
+          position: 'right',
+        },
+        {
+          href: 'https://gitter.im/crowdsec-project/community',
+          label: 'Gitter',
+          position: 'right',
+        },
+        {
+          href: 'https://discourse.crowdsec.net',
+          label: 'Discourse',
           position: 'right',
         },
       ],

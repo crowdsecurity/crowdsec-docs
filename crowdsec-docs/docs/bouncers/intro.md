@@ -6,6 +6,7 @@ sidebar_position: 1
 
 # Bouncers
 
+## Introduction
 
 bouncers are standalone software pieces in charge of acting upon a decision taken by crowdsec : block an IP, present a captcha, enforce MFA on a given user, etc.
 
@@ -35,3 +36,9 @@ This command must be run on the server where the local API is installed (or at l
 :::
 
 If you were to create your own bouncers, look at [this section](/docs/local_api/bouncers) of the local API documentation.
+
+
+## All bouncers
+
+
+
