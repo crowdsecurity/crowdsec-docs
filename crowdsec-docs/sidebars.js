@@ -53,7 +53,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Parsers',
-      items: ["parsers/intro", "parsers/format", "parsers/debug","parsers/create", "parsers/enricher", "parsers/patterns"]
+      items: ["parsers/intro", "parsers/format","parsers/create", "parsers/enricher", "parsers/patterns"]
     },
     {
       type: 'category',
@@ -88,7 +88,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Observability',
-      items: ["observability/intro", "observability/cscli", "observability/prometheus", "observability/dashboard", "observability/console"]
+      items: ["observability/intro", "observability/cscli", "observability/prometheus", "observability/dashboard"]
     },
     {
       type: 'category',
