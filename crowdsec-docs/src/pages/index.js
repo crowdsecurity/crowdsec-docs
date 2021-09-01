@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="CrowdSec, the open-source & participative IPS.">
+      description="CrowdSec, the open-source & participative IPS">
       <HomepageHeader />
       <main>
         <HomepageFeatures />
