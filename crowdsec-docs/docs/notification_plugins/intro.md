@@ -3,48 +3,28 @@ id: intro
 title: Introduction
 ---
 
-# Plugins
+## Goal
 
-## Architecture
+Crowdsec supports notification plugins, meant to be able to push alerts to third party services, for alerting or integration purposes.
+At the time of writting, plugins exists for [slack](/docs/notification_plugins/slack), [splunk](/docs/notification_plugins/splunk), and a generic [http push](/docs/notification_plugins/http) plugin (allowing to push to services such as [elasticsearch]({{TBD}})).
 
-CrowdSec supports various plugins. Under the hood, the main CrowdSec process dispatches the plugins as GRPC services. This means that plugins can be written in any language.
+Events get dispatched to said plugins via [profile configuration](/docs/profiles/intro).
 
-Plugins are owned by a `profile`. 
+## Configuration
 
-Currently only `notification` plugins are supported. Whenever CrowdSec receives any alert, if this alert satisfies the owner profile then the same alert will be dispatched to such plugin.
+The default plugins are shipped with crowdsec uppon installation, and can trivially be enabled without further installation.
 
-[See](https://github.com/crowdsecurity/crowdsec/blob/plugins/pkg/protobufs/notifier.proto) the GRPC protocol for `notification` plugins.
-
-## Plugin Discovery
-
-Plugins are discovered from the directories specified in `/etc/crowdsec/config.yaml`. 
-
-```yaml
-#/etc/crowdsec/config.yaml
-.....
-config_paths:
-  plugin_dir: /etc/crowdsec/plugins/
-  notification_dir: /etc/crowdsec/notifications/
-.....
-```
+Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/docs/profiles/intro) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`).
 
 
-### `plugin_dir`: 
 
-Path to directory where the plugin binaries/scripts are located. 
-
-### `notification_dir`:
-
-Path to directory where configuration files for `notification` plugins are kept.
-
+Plugin binaries are present in `config_paths.plugin_dir` (defaults to `/var/lib/crowdsec/plugins/`), and their individual configuration are present in `config_paths.notification_dir` (defaults to `/etc/crowdsec/notifications/`)
 
 **Important:** CrowdSec rejects the plugins if one of the following is true :
 1. plugin is not owned by the root user and root group.
 2. plugin is world-writable. 
 
-**Important:** Plugin binaries/scripts must be named like `<plugin_type>-<plugin_subtype>` eg "notification-slack"
-
-## Registering plugin to profile: 
+## Registering plugin to profile
 
 After discovering the plugins, CrowdSec registers the plugins to the profiles. Here's a profile which sends alerts to plugin named `slackreport`. 
 
@@ -113,3 +93,28 @@ You can define other plugin specific fields too. eg `webhook` field for a slack 
 ## Dispatching configuration: 
 
 CrowdSec main process feeds the configuration files to the plugins via GRPC. It determines where to send the config via the value of `type`  field in config file.
+
+
+# Architecture and technical considerations
+
+## Architecture
+
+Under the hood, the main CrowdSec process dispatches the plugins as GRPC services. This means that plugins can be written in any language.
+
+Currently only `notification` plugins are supported. Whenever CrowdSec receives any alert, if this alert satisfies the owner profile then the same alert will be dispatched to such plugin.
+
+[See](https://github.com/crowdsecurity/crowdsec/blob/plugins/pkg/protobufs/notifier.proto) the GRPC protocol for `notification` plugins.
+
+## Plugin Discovery
+
+Plugins are discovered from the directories specified in `/etc/crowdsec/config.yaml`. 
+
+```yaml
+#/etc/crowdsec/config.yaml
+.....
+config_paths:
+  notification_dir: /etc/crowdsec/notifications/
+  plugin_dir: /var/lib/crowdsec/plugins/
+.....
+```
+

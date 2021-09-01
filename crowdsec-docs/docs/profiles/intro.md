@@ -9,7 +9,7 @@ The profiles configuration allows user to configure which kind of remediation sh
  - decide the type of remediation that should be applied (default: `ban`)
  - decide of the scope of the remediation (default: `ip`)
  - enable/disable debug for a specific profile
- - decide which notification plugin should be triggered (default: none)
+ - decide which [notification plugin](/docs/notification_plugins/intro) should be triggered (default: none)
 
 
 The profiles configuration is located in `/etc/crowdsec/profiles.yaml`.
