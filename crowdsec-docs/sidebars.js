@@ -135,9 +135,16 @@ module.exports = {
     {
       type: 'category',
       label: 'CLI reference (cscli)',
-      items: ["cscli/cscli", "cscli/cscli_alerts", "cscli/cscli_bouncers", "cscli/cscli_capi", "cscli/cscli_collections",
-        "cscli/cscli_completion", "cscli/cscli_config", "cscli/cscli_console", "cscli/cscli_dashboard", "cscli/cscli_decisions", "cscli/cscli_hub", "cscli/cscli_lapi",
-        "cscli/cscli_machines", "cscli/cscli_metrics", "cscli/cscli_parsers", "cscli/cscli_postoverflows", "cscli/cscli_scenarios", "cscli/cscli_simulation", "cscli/cscli_version"]
+      items: ["cscli/cscli","cscli/cscli_alerts","cscli/cscli_alerts_delete","cscli/cscli_alerts_inspect","cscli/cscli_alerts_list","cscli/cscli_bouncers","cscli/cscli_bouncers_add","cscli/cscli_bouncers_delete",
+      "cscli/cscli_bouncers_list","cscli/cscli_capi","cscli/cscli_capi_register","cscli/cscli_capi_status","cscli/cscli_collections","cscli/cscli_collections_inspect","cscli/cscli_collections_install",
+      "cscli/cscli_collections_list","cscli/cscli_collections_remove","cscli/cscli_collections_upgrade","cscli/cscli_completion","cscli/cscli_config","cscli/cscli_config_backup","cscli/cscli_config_restore",
+      "cscli/cscli_config_show","cscli/cscli_console","cscli/cscli_console_enroll","cscli/cscli_dashboard","cscli/cscli_dashboard_remove","cscli/cscli_dashboard_setup","cscli/cscli_dashboard_start","cscli/cscli_dashboard_stop",
+      "cscli/cscli_decisions","cscli/cscli_decisions_add","cscli/cscli_decisions_delete","cscli/cscli_decisions_list","cscli/cscli_hub","cscli/cscli_hub_list","cscli/cscli_hub_update","cscli/cscli_hub_upgrade","cscli/cscli_lapi",
+      "cscli/cscli_lapi_register","cscli/cscli_lapi_status","cscli/cscli_machines","cscli/cscli_machines_add","cscli/cscli_machines_delete","cscli/cscli_machines_list","cscli/cscli_machines_validate","cscli/cscli_metrics",
+      "cscli/cscli_parsers","cscli/cscli_parsers_inspect","cscli/cscli_parsers_install","cscli/cscli_parsers_list","cscli/cscli_parsers_remove","cscli/cscli_parsers_upgrade","cscli/cscli_postoverflows",
+      "cscli/cscli_postoverflows_inspect","cscli/cscli_postoverflows_install","cscli/cscli_postoverflows_list","cscli/cscli_postoverflows_remove","cscli/cscli_postoverflows_upgrade","cscli/cscli_scenarios",
+      "cscli/cscli_scenarios_inspect","cscli/cscli_scenarios_install","cscli/cscli_scenarios_list","cscli/cscli_scenarios_remove","cscli/cscli_scenarios_upgrade","cscli/cscli_simulation","cscli/cscli_simulation_disable",
+      "cscli/cscli_simulation_enable","cscli/cscli_simulation_status","cscli/cscli_version"]
     },
   ],
 };
