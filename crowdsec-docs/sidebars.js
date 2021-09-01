@@ -162,6 +162,11 @@ module.exports = {
       type: 'doc',
       label: 'Cloudflare',
       id: "bouncers/cloudflare"
-    }, 
+    },
+    {
+      type:"link",
+      label: "Hub",
+      href:"https://hub.crowdsec.net/browse/#bouncers"
+    },
   ],
 };
