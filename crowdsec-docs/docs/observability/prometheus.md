@@ -74,7 +74,25 @@ cs_node_hits_ko_total{name="crowdsecurity/http-logs",source="/var/log/nginx/erro
 
 #### Acquisition
 
- - `cs_reader_hits_total` : how many events were read from a specific source
+Acquisition metrics are split by datasource. The following metrics are available :
+
+##### Cloudwatch
+
+ - `cs_cloudwatch_openstreams_total` : number of opened stream within group (by group)
+ - `cs_cloudwatch_stream_hits_total` : number of event read from stream (by group and by stream)
+
+##### Files
+
+ - `cs_filesource_hits_total` : Total lines that were read (by source file)
+  
+##### Journald
+
+ - `cs_journalctlsource_hits_total` : Total lines that were read (by source filter)
+
+##### Syslog
+
+ - `cs_syslogsource_hits_total` : Total lines that were received (by the syslog server)
+ - `cs_syslogsource_parsed_total` : Total lines that were successfully parsed by the syslog server
 
 #### Local API
 
