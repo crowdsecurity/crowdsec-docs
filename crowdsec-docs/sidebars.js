@@ -77,8 +77,8 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Notification',
-      items: ["notification/intro"]
+      label: 'Plugins',
+      items: ["plugins/intro", "plugins/http", "plugins/slack", "plugins/splunk", "plugins/writing_your_own_plugin"]
     },   
     {
       type: 'category',
@@ -93,7 +93,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Bouncers',
-      items: ["bouncers/intro", "bouncers/firewall", "bouncers/nginx", "bouncers/custom"]
+      items: ["bouncers/intro", "bouncers/firewall", "bouncers/nginx", "bouncers/custom", "bouncers/cloudflare"]
     },
     {
       type: 'category',
