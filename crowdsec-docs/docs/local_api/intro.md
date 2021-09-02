@@ -6,13 +6,15 @@ sidebar_position: 1
 
 # Local API
 
-The Local API (LAPI) is a core component of crowdsec and has a few essential missions :
+The Local API (LAPI) is a core component of crowdsec to :
 
  - Allow crowdsec machines to push alerts & decisions to a database
  - Allow bouncers to consume said alerts & decisions from database
  - Allow `cscli` to view add or delete decisions
 
 You can find the swagger documentation [here](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI).
+
+This allows you to create [multi-machines architectures](https://crowdsec.net/multi-server-setup/) around crowdsec or leverage [orchestration technologies](https://crowdsec.net/secure-docker-compose-stacks-with-crowdsec/).
 
 ## Authentication
 
