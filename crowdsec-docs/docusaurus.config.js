@@ -56,19 +56,20 @@ module.exports = {
           label: 'FAQ',
         },
         {
+          href: 'https://github.com/crowdsecurity/crowdsec',
+          position: 'right',
+          className: 'header-github-link header-icon-link',
+          'aria-label': 'GitHub',
+        },
+        {
           href: 'https://hub.crowdsec.net/',
           label: 'Hub',
           position: 'right',
         },
         {
-          href: 'https://github.com/crowdsecurity/crowdsec',
-          label: 'GitHub',
-          position: 'right',
-        },
-        {
           href: 'https://gitter.im/crowdsec-project/community',
-          label: 'Gitter',
           position: 'right',
+          label: "Gitter",
         },
         {
           href: 'https://discourse.crowdsec.net',
