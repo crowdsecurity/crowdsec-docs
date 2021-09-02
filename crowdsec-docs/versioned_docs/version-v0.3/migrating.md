@@ -42,7 +42,7 @@ Don't forget to remove Metabase dashboard if you installed it manually (without 
 
 #### Install latest version
 
-Follow the steps to install latest version
+Follow the steps to [install the latest version](/docs/getting_started/install_crowdsec)
 
 
 #### Restore configuration
