@@ -22,7 +22,7 @@ const FeatureList = [
     link: "/docs/user_guides/replay_mode",
     description: (
       <>
-        CrowdSec is able to process both live and old logs, which makes it false-positive resilient 
+        CrowdSec is able to process both live and old logs, which makes it false-positive resilient. 
       </>
     ),
   },
@@ -39,7 +39,7 @@ const FeatureList = [
   },
   {
     //schema api ?
-    title: 'API Driven',
+    title: 'API-Driven',
     Svg: require('../../static/img/icon-api.svg').default,
     link: "/docs/local_api/intro",
     description: (
