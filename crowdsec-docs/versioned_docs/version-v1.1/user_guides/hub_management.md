@@ -13,7 +13,11 @@ Hub management, via `cscli` allows you to install, upgrade, remove and view inst
 
 ### Install
 
-A collection contains parsers and scenarios to form a coherent ensemble. Most of the time, this is the only you will need to install. Have nginx running ? `cscli collections install crowdsecurity/nginx` Should do the trick ! Browser the [hub for more collections](https://hub.crowdsec.net/browse/#collections).
+A collection contains parsers and scenarios to form a coherent ensemble. Most of the time, this is the only you will need to install. 
+
+Have nginx running ? `cscli collections install crowdsecurity/nginx` should do the trick ! 
+
+Browse the [hub for more collections](https://hub.crowdsec.net/browse/#collections).
 
 ```bash
 sudo cscli collections install <collection_name>
