@@ -96,4 +96,4 @@ notifications:
   - notification_plugin2
 ```
 
-The [list of notification plugins](/docs/notification_plugins/intro) to which the alert should be fed.
+The [list of notification plugins](/notification_plugins/intro.md) to which the alert should be fed.
