@@ -9,7 +9,7 @@ module.exports = {
   baseUrl: '/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/crowdsec_logo.png',
+  favicon: 'img/crowdsec_no_txt.png',
   organizationName: 'CrowdSec',
   projectName: 'crowdsec-docs',
   themeConfig: {
@@ -19,7 +19,7 @@ module.exports = {
       ],
     },
     navbar: {
-      title: 'Crowdsec',
+      title: 'CrowdSec',
       logo: {
         alt: 'My Site Logo',
         src: 'img/crowdsec_logo.png',
