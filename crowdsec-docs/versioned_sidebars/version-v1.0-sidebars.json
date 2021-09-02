@@ -304,10 +304,6 @@
         },
         {
           "type": "doc",
-          "id": "version-v1.0/contributing/contributing_bouncers"
-        },
-        {
-          "type": "doc",
           "id": "version-v1.0/contributing/contributing_doc"
         }
       ],

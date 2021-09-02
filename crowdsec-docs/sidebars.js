@@ -229,22 +229,22 @@ module.exports = {
     },
     {
       type: 'doc',
-      label: 'Firewall',
+      label: 'Firewall Bouncer',
       id: "bouncers/firewall"
     },
     {
       type: 'doc',
-      label: 'Nginx',
+      label: 'Nginx Bouncer',
       id: "bouncers/nginx"
     },
     {
       type: 'doc',
-      label: 'Custom',
+      label: 'Custom Bouncer',
       id: "bouncers/custom"
     },
     {
       type: 'doc',
-      label: 'Cloudflare',
+      label: 'Cloudflare Bouncer',
       id: "bouncers/cloudflare"
     },
     {

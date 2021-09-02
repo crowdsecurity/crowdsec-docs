@@ -10,7 +10,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 
 <p align="center">
-<img src="https://github.com/crowdsecurity/cs-custom-bouncer/raw/main/docs/assets/crowdsec_custom_logo.png" alt="CrowdSec" title="CrowdSec" width="280" height="300" />
+<img src={useBaseUrl('/img/crowdsec_custom.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
 </p>
 <p align="center">
 <img src="https://img.shields.io/badge/build-pass-green"></img>
@@ -23,7 +23,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-# crowdsec-custom-bouncer
 Crowdsec bouncer written in golang for custom scripts.
 
 crowdsec-custom-bouncer will periodically fetch new and expired/removed decisions from CrowdSec Local API and will pass them as arguments to a custom user script.
