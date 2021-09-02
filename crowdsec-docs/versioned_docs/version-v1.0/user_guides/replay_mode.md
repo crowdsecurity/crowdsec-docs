@@ -54,7 +54,7 @@ To work in forensic mode, crowdsec-agent relies on [crowdsecurity/dateparse-enri
 If you already have a running crowdsec/Local API running and want to inject events into existing database, you can run crowdsec directly :
 
 ```bash
-sudo crowdsec -dsn file://logs/nginx/access.log -type nginx --no-api
+sudo crowdsec -dsn file://logs/nginx/access.log -type nginx -no-api
 ```
 
 Crowdsec will process `logs/nginx/access.log` and push alerts to the Local API configured in your default configuration file (`/etc/crowdsec/config.yaml`, see `api.client.credentials_path`)
