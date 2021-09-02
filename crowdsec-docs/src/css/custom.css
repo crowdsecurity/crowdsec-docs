@@ -50,3 +50,7 @@ blockquote {
 .navbar__link {
   --ifm-navbar-link-hover-color: #7c79e9;
 }
+
+.footer {
+  background-color: #141546;
+}

@@ -33,7 +33,7 @@ const FeatureList = [
     Svg: require('../../static/img/icon-data.svg').default,
     description: (
       <>
-        CrowdSec is instrumented with Metabase & Prometheus to help you generate out-of-the-box dashboards and monitor activity across your assets.
+        CrowdSec is instrumented with Metabase & Prometheus to generate out-of-the-box dashboards and monitor activity across your assets.
       </>
     ),
   },
