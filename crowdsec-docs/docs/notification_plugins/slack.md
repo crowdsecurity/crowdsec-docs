@@ -29,7 +29,7 @@ type: slack
 name: slack_default # this must match with the registered plugin in the profile
 log_level: info # Options include: trace, debug, info, warn, error, off
 
-format: |  # This template receives list of models.Alert objects
+format: |  # This template receives list of models.Alert objects. The message would be composed from this
   {{range . -}}
   {{$alert := . -}}
   {{range .Decisions -}}

@@ -67,7 +67,7 @@ Required. Name of this config  eg "slackreport". This should match with register
 
 ### `format` :
 
-Required. go template, which is fed a slice of `Alert` objects. eg "Received {{.len}} alerts"
+Required. [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects. The go templates provide additional directives provide by [sprig](https://masterminds.github.io/sprig/) . eg "Received {{.len}} alerts"
 
 ### `group_wait` :
 
@@ -85,25 +85,22 @@ Optional. the number of tries to attempt to send message to plugins in case of e
 
 Optional. duration to wait for a response from the plugin before considering this attempt a failure. eg "10s"
 
-
-See  definition of alert [here](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert).
-
 You can define other plugin specific fields too. eg `webhook` field for a slack plugin. 
 
 ## Dispatching configuration: 
 
-CrowdSec main process feeds the configuration files to the plugins via GRPC. It determines where to send the config via the value of `type`  field in config file.
+CrowdSec main process feeds the configuration files to the plugins via gRPC. It determines where to send the config via the value of `type`  field in config file.
 
 
 # Architecture and technical considerations
 
 ## Architecture
 
-Under the hood, the main CrowdSec process dispatches the plugins as GRPC services. This means that plugins can be written in any language.
+Under the hood, the main CrowdSec process dispatches the plugins as gRPC services. This means that plugins can be written in any language.
 
 Currently only `notification` plugins are supported. Whenever CrowdSec receives any alert, if this alert satisfies the owner profile then the same alert will be dispatched to such plugin.
 
-[See](https://github.com/crowdsecurity/crowdsec/blob/plugins/pkg/protobufs/notifier.proto) the GRPC protocol for `notification` plugins.
+[See](https://github.com/crowdsecurity/crowdsec/blob/plugins/pkg/protobufs/notifier.proto) the gRPC protocol for `notification` plugins.
 
 ## Plugin Discovery
 
@@ -117,4 +114,5 @@ config_paths:
   plugin_dir: /var/lib/crowdsec/plugins/
 .....
 ```
+
 

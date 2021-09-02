@@ -5,7 +5,7 @@ title: Writing Plugin in Go
 
 In this guide we will implement a plugin in Go, which dispatches an email with specificied body on receiving alerts.
 
-Before we begin, make sure you read "intro"
+Before we begin, make sure you read [intro](/docs/plugins/intro)
 
 Let's start by creating a new go project in a fresh directory:
 
@@ -113,7 +113,7 @@ func (n *EmailPlugin) Configure(ctx context.Context, config *protobufs.Config) (
 It simply unmarshals the raw `config` into `PluginConfig` struct and stores it into the map for future use.
 
 
-Finally let's implement the  `Notify` method.
+Let's implement the  `Notify` method.
 ```go
 func (n *EmailPlugin) Notify(ctx context.Context, notification *protobufs.Notification) (*protobufs.Empty, error) {
 	if _, ok := n.ConfigByName[notification.Name]; !ok {
@@ -157,8 +157,38 @@ func (n *EmailPlugin) Notify(ctx context.Context, notification *protobufs.Notifi
 There are lot of things going on. Let's unpack:
 
 1. In the first block we verify whether the `notification`'s configuration is present.
-2. In the second block we initiate a SMTP client using the `notification`'s configuration.
-3. Finally we send the email with body equal to the `notification.Text`.
+2. Then we set the log level according to the configuration.
+3. In the second block we initiate a SMTP client using the `notification`'s configuration.
+4. In the third block we send the email with body equal to the `notification.Text`.
+
+Finally let's define the entrypoint `main` function which serves and hoists the plugin for CrowdSec main process.
+
+```go
+func main() {
+	var handshake = plugin.HandshakeConfig{
+			ProtocolVersion:  1,
+			MagicCookieKey:   "CROWDSEC_PLUGIN_KEY",
+			MagicCookieValue: os.Getenv("CROWDSEC_PLUGIN_KEY"),
+	}
+
+	plugin.Serve(&plugin.ServeConfig{
+			HandshakeConfig: handshake,
+			Plugins: map[string]plugin.Plugin{
+					"email": &protobufs.NotifierPlugin{
+							Impl: &EmailPlugin{ConfigByName: make(map[string]PluginConfig)},
+					},
+			},
+			GRPCServer: plugin.DefaultGRPCServer,
+			Logger:     logger,
+	})
+}
+```
+
+The `CROWDSEC_PLUGIN_KEY` environment variable is provided by the main process when calling the plugin. It
+is used to make sure that the right plugin is dispatched.
+
+The `plugin.Serve` is a method provided by `go-plugin` dependency we earlier defined. It creates a GRPC server which exposes the plugin interface.
+
 
 Now let's build the plugin and paste it `/var/lib/crowdsec/plugins/` so CrowdSec can discover it.
 
