@@ -9,7 +9,7 @@ module.exports = {
   baseUrl: '/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/crowdsec_logo.png',
   organizationName: 'CrowdSec',
   projectName: 'crowdsec-docs',
   themeConfig: {
