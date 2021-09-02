@@ -11,7 +11,7 @@ function HomepageHeader() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <img src="/img/crowdsec_logo.png" width="35%" height="35%" />
+        <img src="/img/crowdsec_logo.png" width="25%" height="25%" style={{marginTop: '25px', marginBottom: '25px'}}/>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
