@@ -44,5 +44,5 @@ cscli console enroll YOUR-ENROLL-KEY
 
 ### SEE ALSO
 
-* [cscli console](/docs/cscli/cscli_console)	 - Manage interaction with Crowdsec console (https://app.crowdsec.net)
+* [cscli console](/cscli/cscli_console)	 - Manage interaction with Crowdsec console (https://app.crowdsec.net.md)
 

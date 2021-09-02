@@ -27,6 +27,8 @@ config_paths:
   simulation_path: /etc/crowdsec/simulation.yaml
   hub_dir: /etc/crowdsec/hub/
   index_path: /etc/crowdsec/hub/.index.json
+  notification_dir: /etc/crowdsec/notifications/
+  plugin_dir: /var/lib/crowdsec/plugins/
 crowdsec_service:
   acquisition_path: /etc/crowdsec/acquis.yaml
   #acquisition_dir: /etc/crowdsec/acquis/
@@ -113,6 +115,8 @@ config_paths:
   simulation_path: "<path_to_simulation_file>"
   hub_dir: "<path_to_crowdsec_hub_folder>"
   index_path: "<path_to_hub_index_file>"
+  notification_dir: "<path_to_notification_config_folder>"
+  plugin_dir: "<path_to_notification_binaries_folder>"
 crowdsec_service:
   acquisition_path: "<acqusition_file_path>"
   acquisition_dir: "<acquisition_dir_path>"
@@ -216,6 +220,8 @@ config_paths:
   simulation_path: "<path_to_simulation_file>"
   hub_dir: "<path_to_crowdsec_hub_folder>"
   index_path: "<path_to_hub_index_file>"
+  notification_dir: "<path_to_notification_config_folder>"
+  plugin_dir: "<path_to_notification_binaries_folder>"
 ```
 
 #### `config_dir`
@@ -242,6 +248,18 @@ Directory where `cscli` will store parsers, scenarios, collections and such.
 > string
 
 Path to the `.index.json` file downloaded by `cscli` to know the list of available configurations.
+
+#### `plugin_dir`
+> string
+Path to directory where the plugin binaries/scripts are located. 
+
+**Note:** binaries must be root-owned and non-world writable, and binaries/scripts must be named like `<plugin_type>-<plugin_subtype>` eg "notification-slack"
+
+#### `notification_dir`
+> string
+Path to directory where configuration files for `notification` plugins are kept.
+
+Each notification plugin is expected to have its own configuration file.
 
 
 ### `crowdsec_service`

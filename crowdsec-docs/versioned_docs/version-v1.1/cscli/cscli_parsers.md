@@ -37,10 +37,10 @@ cscli parsers remove crowdsecurity/sshd-logs
 
 ### SEE ALSO
 
-* [cscli](/docs/cscli/cscli)	 - cscli allows you to manage crowdsec
-* [cscli parsers inspect](/docs/cscli/cscli_parsers_inspect)	 - Inspect given parser
-* [cscli parsers install](/docs/cscli/cscli_parsers_install)	 - Install given parser(s)
-* [cscli parsers list](/docs/cscli/cscli_parsers_list)	 - List all parsers or given one
-* [cscli parsers remove](/docs/cscli/cscli_parsers_remove)	 - Remove given parser(s)
-* [cscli parsers upgrade](/docs/cscli/cscli_parsers_upgrade)	 - Upgrade given parser(s)
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli parsers inspect](/cscli/cscli_parsers_inspect.md)	 - Inspect given parser
+* [cscli parsers install](/cscli/cscli_parsers_install)	 - Install given parser(s.md)
+* [cscli parsers list](/cscli/cscli_parsers_list.md)	 - List all parsers or given one
+* [cscli parsers remove](/cscli/cscli_parsers_remove)	 - Remove given parser(s.md)
+* [cscli parsers upgrade](/cscli/cscli_parsers_upgrade)	 - Upgrade given parser(s.md)
 

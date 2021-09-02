@@ -44,8 +44,8 @@ cscli hub update # Download list of available configurations from the hub
 
 ### SEE ALSO
 
-* [cscli](/docs/cscli/cscli)	 - cscli allows you to manage crowdsec
-* [cscli hub list](/docs/cscli/cscli_hub_list)	 - List installed configs
-* [cscli hub update](/docs/cscli/cscli_hub_update)	 - Fetch available configs from hub
-* [cscli hub upgrade](/docs/cscli/cscli_hub_upgrade)	 - Upgrade all configs installed from hub
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli hub list](/cscli/cscli_hub_list.md)	 - List installed configs
+* [cscli hub update](/cscli/cscli_hub_update.md)	 - Fetch available configs from hub
+* [cscli hub upgrade](/cscli/cscli_hub_upgrade.md)	 - Upgrade all configs installed from hub
 

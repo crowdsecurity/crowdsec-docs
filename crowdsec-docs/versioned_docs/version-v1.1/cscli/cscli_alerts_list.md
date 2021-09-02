@@ -51,5 +51,5 @@ cscli alerts list --type ban
 
 ### SEE ALSO
 
-* [cscli alerts](/docs/cscli/cscli_alerts)	 - Manage alerts
+* [cscli alerts](/cscli/cscli_alerts.md)	 - Manage alerts
 

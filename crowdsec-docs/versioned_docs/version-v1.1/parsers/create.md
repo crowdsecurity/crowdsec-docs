@@ -5,7 +5,7 @@ sidebar_position: 4
 ---
 
 :::note
-The guide assume you're writting the parser from the [test environment](/docs/contributing/contributing_test_env)
+The guide assume you're writting the parser from the [test environment](/contributing/test_environment.md)
 :::
 
 ## Base parser file
@@ -28,10 +28,10 @@ statics:
     value: yes
 ```
 
- - a [filter](format#filter) : if the expression is `true`, the event will enter the parser, otherwise, it won't
- - a [onsuccess](format#onsuccess) : defines what happens when the event was successfully parsed : shall we continue ? shall we move to next stage ? etc.
+ - a [filter](/parsers/format.md#filter) : if the expression is `true`, the event will enter the parser, otherwise, it won't
+ - a [onsuccess](/parsers/format.md#onsuccess) : defines what happens when the event was successfully parsed : shall we continue ? shall we move to next stage ? etc.
  - a `name` & a `description`
- - some [statics](format#statics) that will modify the event
+ - some [statics](/parsers/format.md#statics) that will modify the event
  - a `debug` flag that allows to enable local debugging information
  - a `grok` pattern to capture some data in logs
 
@@ -103,7 +103,7 @@ Using an [online grok debugger](https://grokdebug.herokuapp.com/) or an [online 
 ```
 
 :::warning
-Check if the pattern you are looking for is not already present in [patterns configuration](/docs/parsers/patterns).
+Check if the pattern you are looking for is not already present in [patterns configuration](/parsers/patterns-documentation.md).
 :::
 
 ## Test our new pattern
@@ -224,7 +224,7 @@ We are setting various entries to static or dynamic values to give "context" to 
   - `.Meta.source_ip` is set the the source ip captured  `.Parsed.src_ip`
   - `.Meta.service` is set the the result of an expression that relies on the GROK output (`proto` field)
   
-Look into dedicated statics documentation to know more about its possibilities.
+Look into dedicated [statics](/parsers/format.md#statics) documentation to know more about its possibilities.
 
 
 ### Testing our finalized parser
@@ -286,5 +286,5 @@ DEBU[20-08-2021 17:49:02] move Event from stage s01-parse to s02-enrich  id=with
 We have now a fully functional parser for iptables logs !
 We can either deploy it to our production systems to do stuff, or even better, contribute to the hub !
 
-If you want to know more about directives and possibilities, take a look at [the parser reference documentation](/docs/parsers/format) !
+If you want to know more about directives and possibilities, take a look at [the parser reference documentation](/parsers/format.md) !
 

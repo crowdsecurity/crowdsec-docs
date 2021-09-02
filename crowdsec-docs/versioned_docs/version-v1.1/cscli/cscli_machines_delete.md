@@ -37,5 +37,5 @@ cscli machines delete "machine_name"
 
 ### SEE ALSO
 
-* [cscli machines](/docs/cscli/cscli_machines)	 - Manage local API machines [requires local API]
+* [cscli machines](/cscli/cscli_machines.md)	 - Manage local API machines [requires local API]
 

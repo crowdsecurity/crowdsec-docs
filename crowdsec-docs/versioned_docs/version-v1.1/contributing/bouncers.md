@@ -1,6 +1,6 @@
 ---
 id: contributing_bouncers
-title: Contributing
+title: Bouncers
 sidebar_position: 3
 ---
 

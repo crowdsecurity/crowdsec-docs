@@ -42,5 +42,5 @@ cscli collections install crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli collections](/docs/cscli/cscli_collections)	 - Manage collections from hub
+* [cscli collections](/cscli/cscli_collections.md)	 - Manage collections from hub
 

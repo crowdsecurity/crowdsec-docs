@@ -4,7 +4,7 @@ title: Console
 sidebar_position: 10
 ---
 
-The [console](https://app.crowdsec.net) is a web interface hosted by CrowdSec that allows you to get even more from CrowdSec :
+The [console](https://app.crowdsec.net) is a web interface hosted by crowdsec that allows you to get even more from crowdsec :
  - aggregate, tag and classify your instances (without having them share a common local API)
  - view/filter/export alerts in real-time
  - get statistics and insights on your alerts compared
@@ -13,16 +13,14 @@ The [console](https://app.crowdsec.net) is a web interface hosted by CrowdSec th
 
 ![console-overview](/img/console-overview.png)
 
-Once your [registration done](https://app.crowdsec.net/signup), follow the tour!
+Once your [registration done](https://app.crowdsec.net/signup), follow the tour !
 
 
 You will be able to register any instance directly from `cscli` :
 
 ```bash
-sudo cscli console enroll <enroll-key>
+sudo cscli console enroll <id> 
 ```
-
-> You can find your own enroll key directly from the console (Overview > Add instance).
 
 And see what's going in the console :
 

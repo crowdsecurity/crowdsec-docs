@@ -32,5 +32,5 @@ cscli hub list [-a] [flags]
 
 ### SEE ALSO
 
-* [cscli hub](/docs/cscli/cscli_hub)	 - Manage Hub
+* [cscli hub](/cscli/cscli_hub.md)	 - Manage Hub
 

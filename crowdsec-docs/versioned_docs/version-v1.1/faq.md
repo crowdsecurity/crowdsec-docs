@@ -7,11 +7,11 @@ id: faq
 
 ## What is CrowdSec ?
 
-CrowdSec is a security open-source software. See the [overview](/docs/intro).
+CrowdSec is a security open-source software. See the [overview](/intro.mdx).
 
 ## I've installed crowdsec, it detects attacks but doesn't block anything ?!
 
-Yes, CrowdSec is in charge of detecting attacks, and [bouncers](/docs/bouncers/intro) are applying decisions.
+Yes, CrowdSec is in charge of detecting attacks, and [bouncers](/bouncers/intro.md) are applying decisions.
 If you want to block the detected IPs, you should deploy a bouncer, such as the ones found on the [hub](https://hub.crowdsec.net/browse/#bouncers) !
 
 
@@ -50,7 +50,7 @@ When pulling block-lists from the platform, the following information is shared 
 ## What is the performance impact ?
 
 As CrowdSec only works on logs, it shouldn't impact your production.
-When it comes to [bouncers](/docs/bouncers/intro), it should perform **one** request to the database when a **new** IP is discovered thus have minimal performance impact.
+When it comes to [bouncers](/bouncers/intro.md), it should perform **one** request to the database when a **new** IP is discovered thus have minimal performance impact.
 
 ## How fast is it ?
 
@@ -61,29 +61,29 @@ If you need help for large scale deployment, please get in touch with us on the 
 ## What backend database does CrowdSec supports and how to switch ?
 
 CrowdSec versions (after v1) supports SQLite (default), MySQL and PostgreSQL databases.
-See [databases configuration](/docs/local_api/database) for relevant configuration. Thanks to the [Local API](/docs/local_api/intro), distributed architectures are resolved even with sqlite database.
+See [databases configuration](/local_api/database.md) for relevant configuration. Thanks to the [Local API](/local_api/intro.md), distributed architectures are resolved even with sqlite database.
 
 SQLite by default as it's suitable for standalone/single-machine setups.
 
 ## How to control granularity of actions ? (whitelists, simulation etc.)
 
-CrowdSec support both [whitelists](/docs/whitelist/intro) and [simulation](/docs/scenarios/simulation) :
+CrowdSec support both [whitelists](/whitelist/introduction.md) and [simulation](/scenarios/simulation.md) :
 
  - Whitelists allows you to "discard" events or overflows
  - Simulation allows you to simply cancel the decision that is going to be taken, but keep track of it
 
-[Profiles](/docs/profiles/intro) allows you to control which decision will be applied to which alert.
+[Profiles](/profiles/intro.md) allows you to control which decision will be applied to which alert.
 
 ## How to know if my setup is working correctly ? Some of my logs are unparsed, is it normal ?
 
 Yes, crowdsec parsers only parse the logs that are relevant for scenarios.
 
-Take a look at `cscli metrics` [and understand what do they mean](/docs/observability/cscli) to know if your setup is correct.
+Take a look at `cscli metrics` [and understand what do they mean](/observability/cscli.md) to know if your setup is correct.
 
 
 ## How to add whitelists ?
 
-You can follow this [guide](/docs/whitelist/intro)
+You can follow this [guide](/whitelist/introduction.md)
 
 ## How to set up proxy ?
 
@@ -128,8 +128,8 @@ Several initiatives have been taken to tackle the false positives approach as ea
 
  - The scenarios published on the hub are tailored to favor low false positive rates
  - You can find [generic whitelists](https://hub.crowdsec.net/author/crowdsecurity/collections/whitelist-good-actors) that should allow to cover most common cases (SEO whitelists, CDN whitelists etc.)
- - The [simulation configuration](/docs/scenarios/simulation) allows you to keep a tight control over scenario and their false positives
- - Or add your own [whitelists](/docs/whitelist/create)
+ - The [simulation configuration](/scenarios/simulation.md) allows you to keep a tight control over scenario and their false positives
+ - Or add your own [whitelists](/whitelist/create.md)
 
 
 ## I need some help
@@ -199,5 +199,5 @@ When setting up High Availability for Local API, do not forget to share the same
 
 ## How to disable the central API
 
-To disable the central API, simply comment out the [`online_client` section of the configuration file](/docs/configuration/crowdsec_configuration#online_client).
+To disable the central API, simply comment out the [`online_client` section of the configuration file](/configuration/crowdsec_configuration.md#online_client).
 

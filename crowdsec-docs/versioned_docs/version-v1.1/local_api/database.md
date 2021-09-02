@@ -34,7 +34,7 @@ mysql> GRANT ALL PRIVILEGES ON crowdsec.* TO 'crowdsec'@'%';
 mysql> FLUSH PRIVILEGES;
 ```
 
-Then edit `/etc/crowdsec/config.yaml` to update the [`db_config`](/docs/configuration/crowdsec_configuration#db_config) part.
+Then edit `/etc/crowdsec/config.yaml` to update the [`db_config`](/configuration/crowdsec_configuration.md#db_config) part.
 
 You can now start/restart crowdsec.
 
@@ -48,6 +48,6 @@ postgres=# CREATE USER crowdsec WITH PASSWORD '<password>';
 postgres=# GRANT ALL PRIVILEGES ON DATABASE crowdsec TO crowdsec;
 ```
 
-Then edit `/etc/crowdsec/config.yaml` to update the [`db_config`](../configuration/crowdsec_configuration#db_config) part.
+Then edit `/etc/crowdsec/config.yaml` to update the [`db_config`](/configuration/crowdsec_configuration.md#db_config) part.
 
 You can now start/restart crowdsec.

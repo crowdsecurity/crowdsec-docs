@@ -35,5 +35,5 @@ cscli metrics [flags]
 
 ### SEE ALSO
 
-* [cscli](/docs/cscli/cscli)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
 
