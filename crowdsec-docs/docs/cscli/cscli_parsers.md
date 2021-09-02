@@ -1,0 +1,46 @@
+---
+id: cscli_parsers
+title: cscli parsers
+---
+## cscli parsers
+
+Install/Remove/Upgrade/Inspect parser(s) from hub
+
+### Examples
+
+```
+cscli parsers install crowdsecurity/sshd-logs
+cscli parsers inspect crowdsecurity/sshd-logs
+cscli parsers upgrade crowdsecurity/sshd-logs
+cscli parsers list
+cscli parsers remove crowdsecurity/sshd-logs
+
+```
+
+### Options
+
+```
+  -h, --help   help for parsers
+```
+
+### Options inherited from parent commands
+
+```
+  -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
+      --debug           Set logging to debug.
+      --error           Set logging to error.
+      --info            Set logging to info.
+  -o, --output string   Output format : human, json, raw.
+      --trace           Set logging to trace.
+      --warning         Set logging to warning.
+```
+
+### SEE ALSO
+
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli parsers inspect](/cscli/cscli_parsers_inspect.md)	 - Inspect given parser
+* [cscli parsers install](/cscli/cscli_parsers_install)	 - Install given parser(s.md)
+* [cscli parsers list](/cscli/cscli_parsers_list.md)	 - List all parsers or given one
+* [cscli parsers remove](/cscli/cscli_parsers_remove)	 - Remove given parser(s.md)
+* [cscli parsers upgrade](/cscli/cscli_parsers_upgrade)	 - Upgrade given parser(s.md)
+
