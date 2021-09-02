@@ -62,7 +62,7 @@ The `dashboard setup` command will output generated credentials for metabase.
 Those are stored in `/etc/crowdsec/metabase/metabase.yaml`
 :::
 
-Now you can connect to your dashboard, sign-in with your saved credentials then click on {{v1X.crowdsec.Name}} Dashboard to get this:
+Now you can connect to your dashboard, sign-in with your saved credentials then click on crowdsec Dashboard to get this:
 
 
 Dashboard docker image can be managed by cscli and docker cli also. Look at the cscli help command using

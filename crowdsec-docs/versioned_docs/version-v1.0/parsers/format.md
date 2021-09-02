@@ -265,7 +265,7 @@ onsuccess: next_stage|continue
 
 _default: continue_
 
-if set to `next_stage` and the node is considered successful, the {{v1X.event.name}} will be moved directly to the next stage without processing other nodes in the current stage. 
+if set to `next_stage` and the node is considered successful, the event will be moved directly to the next stage without processing other nodes in the current stage. 
 
 :::info
 

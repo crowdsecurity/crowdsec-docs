@@ -66,7 +66,7 @@ It is a list of `models.Decision` objects. The following fields, when present, a
 
  - `scope` : defines the scope of the resulting decision
  - `duration` : defines for how long will the decision be valid
- - `type` : defines the type of the remediation that will be applied by available {{v1X.bouncers.htmlname}}, for example `ban`, `captcha`
+ - `type` : defines the type of the remediation that will be applied by available bouncers, for example `ban`, `captcha`
  - `value` : define a hardcoded value for the decision (ie. `1.2.3.4`)
 
 ### `on_success`

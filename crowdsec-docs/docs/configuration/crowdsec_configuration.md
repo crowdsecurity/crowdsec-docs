@@ -231,7 +231,7 @@ This is where crowdsec is going to store data, such as files downloaded by scena
 #### `simulation_path`
 > string
 
-Path to the {{v1X.simulation.htmlname}} configuration.
+Path to the simulation configuration.
 
 #### `hub_dir`
 > string
@@ -509,7 +509,7 @@ Address and port listen configuration, the form `host:port`.
 ##### `profiles_path`
 > string
 
-The path to the {{v1X.profiles.htmlname}} configuration.
+The path to the profiles configuration.
 
 ##### `use_forwarded_for_headers`
 > string

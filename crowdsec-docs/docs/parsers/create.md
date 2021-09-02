@@ -224,7 +224,7 @@ We are setting various entries to static or dynamic values to give "context" to 
   - `.Meta.source_ip` is set the the source ip captured  `.Parsed.src_ip`
   - `.Meta.service` is set the the result of an expression that relies on the GROK output (`proto` field)
   
-Look into dedicated {{v1X.statics.htmlname}} documentation to know more about its possibilities.
+Look into dedicated [statics](/docs/parsers/format#statics) documentation to know more about its possibilities.
 
 
 ### Testing our finalized parser
