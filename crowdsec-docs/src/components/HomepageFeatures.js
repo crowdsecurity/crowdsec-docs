@@ -85,7 +85,7 @@ function Feature({Svg, title, description, link}) {
       </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>
-        <p>{description}</p>
+        <p style={{"text-align": "justify"}}>{description}</p>
       </div>
     </div>
   );
