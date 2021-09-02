@@ -62,18 +62,20 @@ module.exports = {
           'aria-label': 'GitHub',
         },
         {
-          href: 'https://hub.crowdsec.net/',
-          label: 'Hub',
-          position: 'right',
-        },
-        {
           href: 'https://gitter.im/crowdsec-project/community',
           position: 'right',
-          label: "Gitter",
+          className: "header-gitter-link",
+          'aria-label': 'Gitter',
         },
         {
           href: 'https://discourse.crowdsec.net',
-          label: 'Discourse',
+          position: 'right',
+          className: "header-discourse-link",
+          'aria-label': 'Discourse',
+        },
+        {
+          href: 'https://hub.crowdsec.net/',
+          label: 'Hub',
           position: 'right',
         },
       ],
