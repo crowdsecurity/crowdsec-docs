@@ -47,5 +47,5 @@ cscli config backup ./my-backup
 
 ### SEE ALSO
 
-* [cscli config](/docs/cscli/cscli_config)	 - Allows to view current config
+* [cscli config](/docs/v1.0/cscli/cscli_config)	 - Allows to view current config
 

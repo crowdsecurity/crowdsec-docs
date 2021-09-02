@@ -8,7 +8,7 @@ By default, the crowdsec Local API use `SQLite` as backend storage. But in case 
 
 For `SQLite`, there is nothing to do to make it work with crowdsec. But for `MySQL` and `PostgreSQL` , you have to create the database and the user.
 
-Please refer to [ent.](https://entgo.io/) [supported database](https://entgo.io/docs/dialects/). At the time of writting :
+Please refer to [ent.](https://entgo.io/) [supported database](https://entgo.io/docs/v1.0/dialects/). At the time of writting :
 
  - MySQL `5.6.35`, `5.7.26` and `8`
  - MariaDB `10.2` and latest

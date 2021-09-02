@@ -30,5 +30,5 @@ cscli bouncers delete MyBouncerName [flags]
 
 ### SEE ALSO
 
-* [cscli bouncers](/docs/cscli/cscli_bouncers)	 - Manage bouncers [requires local API]
+* [cscli bouncers](/docs/v1.0/cscli/cscli_bouncers)	 - Manage bouncers [requires local API]
 

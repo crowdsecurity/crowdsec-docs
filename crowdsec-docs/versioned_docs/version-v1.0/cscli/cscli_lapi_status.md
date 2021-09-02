@@ -30,5 +30,5 @@ cscli lapi status [flags]
 
 ### SEE ALSO
 
-* [cscli lapi](/docs/cscli/cscli_lapi)	 - Manage interaction with Local API (LAPI)
+* [cscli lapi](/docs/v1.0/cscli/cscli_lapi)	 - Manage interaction with Local API (LAPI)
 

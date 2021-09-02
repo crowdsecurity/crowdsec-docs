@@ -40,5 +40,5 @@ cscli machines list
 
 ### SEE ALSO
 
-* [cscli machines](/docs/cscli/cscli_machines)	 - Manage local API machines [requires local API]
+* [cscli machines](/docs/v1.0/cscli/cscli_machines)	 - Manage local API machines [requires local API]
 

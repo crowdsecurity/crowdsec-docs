@@ -16,7 +16,7 @@ They represent what your CrowdSec setup can parse (logs) and detect (scenarios).
 
 Adding `-a` will list all the available configurations in the hub.
 
-See more [here](/docs/user_guides/hub_mgmt).
+See more [here](/docs/v1.0/user_guides/hub_mgmt).
 
 <details>
   <summary>Listing Hub example</summary>
@@ -92,7 +92,7 @@ You can as well use a more granular approach like `sudo cscli <configuration_typ
 
 They can be found and browsed on the [Hub](https://hub.crowdsec.net/browse/#configurations).
 
-See more [here](/docs/user_guides/hub_mgmt).
+See more [here](/docs/v1.0/user_guides/hub_mgmt).
 
 
 ## List active decisions
@@ -102,9 +102,9 @@ See more [here](/docs/user_guides/hub_mgmt).
 sudo cscli decisions list
 ```
 
-If you just deployed CrowdSec, the list might be empty, but don't worry, it simply means you haven't yet been attacked, congrats! Adding `-a` flag will as well list the decisions you received from the [community blocklist](/docs/central_api/intro).
+If you just deployed CrowdSec, the list might be empty, but don't worry, it simply means you haven't yet been attacked, congrats! Adding `-a` flag will as well list the decisions you received from the [community blocklist](/docs/v1.0/central_api/intro).
 
-Check [decisions](/docs/user_guides/hub_mgmt) management for more !
+Check [decisions](/docs/v1.0/user_guides/hub_mgmt) management for more !
 
 <details>
   <summary>Listing decisions example</summary>
@@ -251,7 +251,7 @@ The `Parser Metrics` will let you troubleshoot eventual parser misconfigurations
 
 For example, if you have a custom log format in nginx that is not supported by the default parser, you will end up seeing a lot of **UNPARSED** for this specific parser, and 0 for **PARSED**.
 
-For more advanced metrics understanding, [take a look at the dedicated prometheus documentation](/docs/observability/prometheus).
+For more advanced metrics understanding, [take a look at the dedicated prometheus documentation](/docs/v1.0/observability/prometheus).
 
 
 ## Deploy dashboard
@@ -259,7 +259,7 @@ For more advanced metrics understanding, [take a look at the dedicated prometheu
 
 :::caution
 
-Running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli dashboard setup`) [requires 1-2Gb of RAM](https://www.metabase.com/docs/latest/troubleshooting-guide/running.html). Metabase container is **only** available for amd64.
+Running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli dashboard setup`) [requires 1-2Gb of RAM](https://www.metabase.com/docs/v1.0/latest/troubleshooting-guide/running.html). Metabase container is **only** available for amd64.
 
 :::
 
@@ -268,7 +268,7 @@ Running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli 
 sudo cscli dashboard setup --listen 0.0.0.0
 ```
 
-A metabase [docker container](/docs/observability/dashboard) can be deployed with `cscli dashboard`.
+A metabase [docker container](/docs/v1.0/observability/dashboard) can be deployed with `cscli dashboard`.
 It requires docker, [installation instructions are available here](https://docs.docker.com/engine/install/).
 
 ## Logs
@@ -285,6 +285,6 @@ sudo tail -f /var/log/crowdsec.log
 
 Crowdsec uses go-routines for parsing and enriching logs, pouring events to buckets and manage outputs.
 
-By default, one routine of each exists (should be enough to handle ~1K EP/s), and can be changed in `crowdsec_service` of the main configuration file via the [parser_routines](/docs/configuration/crowdsec_configuration#parser_routines), [buckets_routines](/docs/configuration/crowdsec_configuration#buckets_routines) and [output_routines](/docs/configuration/crowdsec_configuration#output_routines) directives.
+By default, one routine of each exists (should be enough to handle ~1K EP/s), and can be changed in `crowdsec_service` of the main configuration file via the [parser_routines](/docs/v1.0/configuration/crowdsec_configuration#parser_routines), [buckets_routines](/docs/v1.0/configuration/crowdsec_configuration#buckets_routines) and [output_routines](/docs/v1.0/configuration/crowdsec_configuration#output_routines) directives.
 
-Please keep in mind that thanks to the [http API](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI), the workload of log parsing can be splitted amongst several agents pushing to a single [LAPI](/docs/local_api/intro).
+Please keep in mind that thanks to the [http API](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI), the workload of log parsing can be splitted amongst several agents pushing to a single [LAPI](/docs/v1.0/local_api/intro).

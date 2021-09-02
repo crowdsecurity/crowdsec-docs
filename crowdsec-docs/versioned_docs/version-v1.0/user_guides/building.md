@@ -47,7 +47,7 @@ You are then ready to [take a tour](crowdsec_tour) of your freshly deployed Crow
 
 :::info
 
-Keep in mind that CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a [bouncer](/docs/bouncers/intro) to "apply" decisions.
+Keep in mind that CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a [bouncer](/docs/v1.0/bouncers/intro) to "apply" decisions.
 
 :::
 
@@ -66,7 +66,7 @@ This will only deploy the binaries, and some extra installation steps need to be
  - `sudo cscli machines add -a` : register crowdsec to the local API
  - `sudo cscli capi register` : register to the central API
  - `sudo cscli collections install crowdsecurity/linux` : install essential configs (syslog parser, geoip enrichment, date parsers)
- - configure your [datasources](/docs/data_sources/intro)
+ - configure your [datasources](/docs/v1.0/data_sources/intro)
 
 You can now start & enable the crowdsec service :
 

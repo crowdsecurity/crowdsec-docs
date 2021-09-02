@@ -26,7 +26,7 @@ Manage interaction with Local API (LAPI)
 
 ### SEE ALSO
 
-* [cscli](/docs/cscli/cscli)	 - cscli allows you to manage crowdsec
-* [cscli lapi register](/docs/cscli/cscli_lapi_register)	 - Register a machine to Local API (LAPI)
-* [cscli lapi status](/docs/cscli/cscli_lapi_status)	 - Check authentication to Local API (LAPI)
+* [cscli](/docs/v1.0/cscli/cscli)	 - cscli allows you to manage crowdsec
+* [cscli lapi register](/docs/v1.0/cscli/cscli_lapi_register)	 - Register a machine to Local API (LAPI)
+* [cscli lapi status](/docs/v1.0/cscli/cscli_lapi_status)	 - Check authentication to Local API (LAPI)
 

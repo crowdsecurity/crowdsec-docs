@@ -26,9 +26,9 @@ Manage alerts
 
 ### SEE ALSO
 
-* [cscli](/docs/cscli/cscli)	 - cscli allows you to manage crowdsec
-* [cscli alerts delete](/docs/cscli/cscli_alerts_delete)	 - Delete alerts
+* [cscli](/docs/v1.0/cscli/cscli)	 - cscli allows you to manage crowdsec
+* [cscli alerts delete](/docs/v1.0/cscli/cscli_alerts_delete)	 - Delete alerts
 /!\ This command can be use only on the same machine than the local API.
-* [cscli alerts inspect](/docs/cscli/cscli_alerts_inspect)	 - Show info about an alert
-* [cscli alerts list](/docs/cscli/cscli_alerts_list)	 - List alerts
+* [cscli alerts inspect](/docs/v1.0/cscli/cscli_alerts_inspect)	 - Show info about an alert
+* [cscli alerts list](/docs/v1.0/cscli/cscli_alerts_list)	 - List alerts
 

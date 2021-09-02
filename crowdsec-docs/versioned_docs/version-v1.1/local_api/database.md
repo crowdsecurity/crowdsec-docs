@@ -34,7 +34,7 @@ mysql> GRANT ALL PRIVILEGES ON crowdsec.* TO 'crowdsec'@'%';
 mysql> FLUSH PRIVILEGES;
 ```
 
-Then edit `/etc/crowdsec/config.yaml` to update the [`db_config`](/Crowdsec/v1/references/database/#db_config) part.
+Then edit `/etc/crowdsec/config.yaml` to update the [`db_config`](/docs/configuration/crowdsec_configuration#db_config) part.
 
 You can now start/restart crowdsec.
 

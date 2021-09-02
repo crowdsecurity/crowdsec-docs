@@ -37,5 +37,5 @@ cscli alerts inspect 123
 
 ### SEE ALSO
 
-* [cscli alerts](/docs/cscli/cscli_alerts)	 - Manage alerts
+* [cscli alerts](/docs/v1.0/cscli/cscli_alerts)	 - Manage alerts
 

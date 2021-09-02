@@ -46,5 +46,5 @@ cscli alerts delete -s crowdsecurity/ssh-bf"
 
 ### SEE ALSO
 
-* [cscli alerts](/docs/cscli/cscli_alerts)	 - Manage alerts
+* [cscli alerts](/docs/v1.0/cscli/cscli_alerts)	 - Manage alerts
 

@@ -37,5 +37,5 @@ cscli hub update [flags]
 
 ### SEE ALSO
 
-* [cscli hub](/docs/cscli/cscli_hub)	 - Manage Hub
+* [cscli hub](/docs/v1.0/cscli/cscli_hub)	 - Manage Hub
 

@@ -38,9 +38,9 @@ cscli machines [action]
 
 ### SEE ALSO
 
-* [cscli](/docs/cscli/cscli)	 - cscli allows you to manage crowdsec
-* [cscli machines add](/docs/cscli/cscli_machines_add)	 - add machine to the database.
-* [cscli machines delete](/docs/cscli/cscli_machines_delete)	 - delete machines
-* [cscli machines list](/docs/cscli/cscli_machines_list)	 - List machines
-* [cscli machines validate](/docs/cscli/cscli_machines_validate)	 - validate a machine to access the local API
+* [cscli](/docs/v1.0/cscli/cscli)	 - cscli allows you to manage crowdsec
+* [cscli machines add](/docs/v1.0/cscli/cscli_machines_add)	 - add machine to the database.
+* [cscli machines delete](/docs/v1.0/cscli/cscli_machines_delete)	 - delete machines
+* [cscli machines list](/docs/v1.0/cscli/cscli_machines_list)	 - List machines
+* [cscli machines validate](/docs/v1.0/cscli/cscli_machines_validate)	 - validate a machine to access the local API
 

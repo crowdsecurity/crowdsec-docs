@@ -15,7 +15,7 @@ The [central API](https://crowdsecurity.github.io/api_doc/index.html?urls.primar
 This information is *only* going to be pushed when a scenario is coming from the hub and is unmodified. Custom scenarios, tainted scenarios and manual decisions are *not* pushed
 :::
 
-When crowdsec blocks an attack, [unless you opt-out of it](/docs/faq#how-to-disable-the-central-api), crowdsec is going to push "signal meta-data". Those meta-data are :
+When crowdsec blocks an attack, [unless you opt-out of it](/docs/v1.0/faq#how-to-disable-the-central-api), crowdsec is going to push "signal meta-data". Those meta-data are :
  - The name of the scenario that was triggered
  - The hash & version of the scenario that was triggered
  - The timestamp of the decision

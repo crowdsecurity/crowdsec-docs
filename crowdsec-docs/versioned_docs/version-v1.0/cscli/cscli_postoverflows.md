@@ -36,10 +36,10 @@ cscli postoverflows install crowdsecurity/cdn-whitelist
 
 ### SEE ALSO
 
-* [cscli](/docs/cscli/cscli)	 - cscli allows you to manage crowdsec
-* [cscli postoverflows inspect](/docs/cscli/cscli_postoverflows_inspect)	 - Inspect given postoverflow
-* [cscli postoverflows install](/docs/cscli/cscli_postoverflows_install)	 - Install given postoverflow(s)
-* [cscli postoverflows list](/docs/cscli/cscli_postoverflows_list)	 - List all postoverflows or given one
-* [cscli postoverflows remove](/docs/cscli/cscli_postoverflows_remove)	 - Remove given postoverflow(s)
-* [cscli postoverflows upgrade](/docs/cscli/cscli_postoverflows_upgrade)	 - Upgrade given postoverflow(s)
+* [cscli](/docs/v1.0/cscli/cscli)	 - cscli allows you to manage crowdsec
+* [cscli postoverflows inspect](/docs/v1.0/cscli/cscli_postoverflows_inspect)	 - Inspect given postoverflow
+* [cscli postoverflows install](/docs/v1.0/cscli/cscli_postoverflows_install)	 - Install given postoverflow(s)
+* [cscli postoverflows list](/docs/v1.0/cscli/cscli_postoverflows_list)	 - List all postoverflows or given one
+* [cscli postoverflows remove](/docs/v1.0/cscli/cscli_postoverflows_remove)	 - Remove given postoverflow(s)
+* [cscli postoverflows upgrade](/docs/v1.0/cscli/cscli_postoverflows_upgrade)	 - Upgrade given postoverflow(s)
 

@@ -116,7 +116,7 @@ Once again, you should be able to find the ones you're looking for on the [Hub](
 
 ## Scenarios
 
-[[References](/Crowdsec/v1/references/scenarios/)]
+[[References](/docs/scenarios/format)]
 
 Scenarios is the expression of a heuristic that allows you to qualify a specific event (usually an attack).It is a YAML file that describes a set of events characterizing a scenario. Scenarios in CrowdSec gravitate around the [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) principle.
 

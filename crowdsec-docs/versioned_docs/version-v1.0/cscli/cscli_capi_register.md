@@ -31,5 +31,5 @@ cscli capi register [flags]
 
 ### SEE ALSO
 
-* [cscli capi](/docs/cscli/cscli_capi)	 - Manage interaction with Central API (CAPI)
+* [cscli capi](/docs/v1.0/cscli/cscli_capi)	 - Manage interaction with Central API (CAPI)
 

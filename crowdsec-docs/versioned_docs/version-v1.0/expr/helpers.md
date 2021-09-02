@@ -8,17 +8,17 @@ sidebar_position: 3
 
 Several places of CrowdSec's configuration use [expr](https://github.com/antonmedv/expr), notably :
 
- - [Filters](/docs/parsers/format#filter) that are used to determine events eligibility in parsers, scenarios and profiles
- - [Statics](/docs/parsers/format#statics) use expr in the `expression` directive, to compute complex values
- - [Whitelists](/docs/whitelists/intro) rely on `expression` directive to allow more complex whitelists filters
+ - [Filters](/docs/v1.0/parsers/format#filter) that are used to determine events eligibility in parsers, scenarios and profiles
+ - [Statics](/docs/v1.0/parsers/format#statics) use expr in the `expression` directive, to compute complex values
+ - [Whitelists](/docs/v1.0/whitelists/intro) rely on `expression` directive to allow more complex whitelists filters
 
-To learn more about [expr](https://github.com/antonmedv/expr), [check the github page of the project](https://github.com/antonmedv/expr/blob/master/docs/Language-Definition.md).
+To learn more about [expr](https://github.com/antonmedv/expr), [check the github page of the project](https://github.com/antonmedv/expr/blob/master/docs/v1.0/Language-Definition.md).
 
 
 When CrowdSec relies on `expr`, a context is provided to let the expression access relevant objects :
 
  - `evt.` is the representation of the current event and is the most relevant object
- - in [profiles](/docs/profiles/intro), alert is accessible via the `Alert` object
+ - in [profiles](/docs/v1.0/profiles/intro), alert is accessible via the `Alert` object
 
 If the `debug` is enabled (in the scenario or parser where expr is used), additional debug will be displayed regarding evaluated expressions.
 

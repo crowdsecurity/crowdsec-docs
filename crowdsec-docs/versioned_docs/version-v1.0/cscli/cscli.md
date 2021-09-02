@@ -26,22 +26,22 @@ It is meant to allow you to manage bans, parsers/scenarios/etc, api and generall
 
 ### SEE ALSO
 
-* [cscli alerts](/docs/cscli/cscli_alerts)	 - Manage alerts
-* [cscli bouncers](/docs/cscli/cscli_bouncers)	 - Manage bouncers [requires local API]
-* [cscli capi](/docs/cscli/cscli_capi)	 - Manage interaction with Central API (CAPI)
-* [cscli collections](/docs/cscli/cscli_collections)	 - Manage collections from hub
-* [cscli completion](/docs/cscli/cscli_completion)	 - Generate completion script
-* [cscli config](/docs/cscli/cscli_config)	 - Allows to view current config
-* [cscli console](/docs/cscli/cscli_console)	 - Manage interaction with Crowdsec console (https://app.crowdsec.net)
-* [cscli dashboard](/docs/cscli/cscli_dashboard)	 - Manage your metabase dashboard container [requires local API]
-* [cscli decisions](/docs/cscli/cscli_decisions)	 - Manage decisions
-* [cscli hub](/docs/cscli/cscli_hub)	 - Manage Hub
-* [cscli lapi](/docs/cscli/cscli_lapi)	 - Manage interaction with Local API (LAPI)
-* [cscli machines](/docs/cscli/cscli_machines)	 - Manage local API machines [requires local API]
-* [cscli metrics](/docs/cscli/cscli_metrics)	 - Display crowdsec prometheus metrics.
-* [cscli parsers](/docs/cscli/cscli_parsers)	 - Install/Remove/Upgrade/Inspect parser(s) from hub
-* [cscli postoverflows](/docs/cscli/cscli_postoverflows)	 - Install/Remove/Upgrade/Inspect postoverflow(s) from hub
-* [cscli scenarios](/docs/cscli/cscli_scenarios)	 - Install/Remove/Upgrade/Inspect scenario(s) from hub
-* [cscli simulation](/docs/cscli/cscli_simulation)	 - Manage simulation status of scenarios
-* [cscli version](/docs/cscli/cscli_version)	 - Display version and exit.
+* [cscli alerts](/docs/v1.0/cscli/cscli_alerts)	 - Manage alerts
+* [cscli bouncers](/docs/v1.0/cscli/cscli_bouncers)	 - Manage bouncers [requires local API]
+* [cscli capi](/docs/v1.0/cscli/cscli_capi)	 - Manage interaction with Central API (CAPI)
+* [cscli collections](/docs/v1.0/cscli/cscli_collections)	 - Manage collections from hub
+* [cscli completion](/docs/v1.0/cscli/cscli_completion)	 - Generate completion script
+* [cscli config](/docs/v1.0/cscli/cscli_config)	 - Allows to view current config
+* [cscli console](/docs/v1.0/cscli/cscli_console)	 - Manage interaction with Crowdsec console (https://app.crowdsec.net)
+* [cscli dashboard](/docs/v1.0/cscli/cscli_dashboard)	 - Manage your metabase dashboard container [requires local API]
+* [cscli decisions](/docs/v1.0/cscli/cscli_decisions)	 - Manage decisions
+* [cscli hub](/docs/v1.0/cscli/cscli_hub)	 - Manage Hub
+* [cscli lapi](/docs/v1.0/cscli/cscli_lapi)	 - Manage interaction with Local API (LAPI)
+* [cscli machines](/docs/v1.0/cscli/cscli_machines)	 - Manage local API machines [requires local API]
+* [cscli metrics](/docs/v1.0/cscli/cscli_metrics)	 - Display crowdsec prometheus metrics.
+* [cscli parsers](/docs/v1.0/cscli/cscli_parsers)	 - Install/Remove/Upgrade/Inspect parser(s) from hub
+* [cscli postoverflows](/docs/v1.0/cscli/cscli_postoverflows)	 - Install/Remove/Upgrade/Inspect postoverflow(s) from hub
+* [cscli scenarios](/docs/v1.0/cscli/cscli_scenarios)	 - Install/Remove/Upgrade/Inspect scenario(s) from hub
+* [cscli simulation](/docs/v1.0/cscli/cscli_simulation)	 - Manage simulation status of scenarios
+* [cscli version](/docs/v1.0/cscli/cscli_version)	 - Display version and exit.
 

@@ -28,7 +28,7 @@ statics:
     expression: "evt.Parsed.src_ip"
 ```
 
-The parser nodes are processed sequentially based on the alphabetical order of [stages](/docs/parsers/intro#stages) and subsequent files.
+The parser nodes are processed sequentially based on the alphabetical order of [stages](/docs/v1.0/parsers/intro#stages) and subsequent files.
 If the node is considered successful (grok is present and returned data or no grok is present) and "onsuccess" equals to `next_stage`, then the event is moved to the next stage.
 
 ## Parser trees
@@ -171,7 +171,7 @@ DEBU[31-07-2020 16:36:28]        evt.Parsed.program = 'nginx'           id=withe
 filter: expression
 ```
 
-`filter` must be a valid [expr](/docs/expr/helpers) expression that will be evaluated against the [event](/docs/expr/event).
+`filter` must be a valid [expr](/docs/v1.0/expr/helpers) expression that will be evaluated against the [event](/docs/v1.0/expr/event).
 
 If `filter` evaluation returns true or is absent, node will be processed.
 
@@ -194,7 +194,7 @@ A valid grok pattern
 
 #### `expression`
 
-A valid [expr](/docs/expr/helpers) expression that return a string to apply the pattern on.
+A valid [expr](/docs/v1.0/expr/helpers) expression that return a string to apply the pattern on.
 
 #### `apply_on`
 
@@ -404,4 +404,4 @@ A parser is considered "successful" if :
   
 ### Patterns documentation
 
-You can find [exhaustive patterns documentation here](/docs/parsers/patterns).
+You can find [exhaustive patterns documentation here](/docs/v1.0/parsers/patterns).

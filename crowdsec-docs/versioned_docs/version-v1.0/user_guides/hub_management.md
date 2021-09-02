@@ -161,7 +161,7 @@ Current metrics :
 
 ### Reference
 
-See more about collection [here](/docs/collections/intro).
+See more about collection [here](/docs/v1.0/collections/intro).
 
 
 ## Parsers
@@ -191,7 +191,7 @@ INFO[0000] Run 'systemctl reload crowdsec' for the new configuration to be effec
 sudo cscli parsers list
 ```
 
-[Parsers](/docs/parsers/intro) are yaml files in `/etc/crowdsec/parsers/<STAGE>/parser.yaml`.
+[Parsers](/docs/v1.0/parsers/intro) are yaml files in `/etc/crowdsec/parsers/<STAGE>/parser.yaml`.
 
 
 <details>
@@ -293,13 +293,13 @@ Current metrics :
 
 ### Reference
 
-See more details about parsers [here](/docs/collections/intro).
+See more details about parsers [here](/docs/v1.0/collections/intro).
 
 ## Enrichers
 
-Enrichers are basically [parsers](/docs/collections/intro) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich` stage (after most of the parsing happened).
+Enrichers are basically [parsers](/docs/v1.0/collections/intro) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich` stage (after most of the parsing happened).
 
-Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the [event](/docs/expr/event).
+Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the [event](/docs/v1.0/expr/event).
 
 :::caution
 
@@ -323,7 +323,7 @@ Take a tour at the [Hub](https://hub.crowdsec.net/browse/#configurations) to fin
 
 ### Reference
 
-See more about enrichers [here](/docs/parsers/enricher).
+See more about enrichers [here](/docs/v1.0/parsers/enricher).
 
 
 ## Scenarios
@@ -364,7 +364,7 @@ Use `--all` to list available parsers.
 
 :::
 
-[Scenario](/docs/scenarios/intro) are yaml files in `/etc/crowdsec/scenarios/`.
+[Scenario](/docs/v1.0/scenarios/intro) are yaml files in `/etc/crowdsec/scenarios/`.
 
 
 <details>
@@ -464,4 +464,4 @@ Current metrics :
 
 ### Reference
 
-See more about scenarios [here](/docs/scenarios/intro).
+See more about scenarios [here](/docs/v1.0/scenarios/intro).

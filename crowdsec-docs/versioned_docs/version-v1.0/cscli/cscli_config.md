@@ -26,8 +26,8 @@ Allows to view current config
 
 ### SEE ALSO
 
-* [cscli](/docs/cscli/cscli)	 - cscli allows you to manage crowdsec
-* [cscli config backup](/docs/cscli/cscli_config_backup)	 - Backup current config
-* [cscli config restore](/docs/cscli/cscli_config_restore)	 - Restore config in backup "directory"
-* [cscli config show](/docs/cscli/cscli_config_show)	 - Displays current config
+* [cscli](/docs/v1.0/cscli/cscli)	 - cscli allows you to manage crowdsec
+* [cscli config backup](/docs/v1.0/cscli/cscli_config_backup)	 - Backup current config
+* [cscli config restore](/docs/v1.0/cscli/cscli_config_restore)	 - Restore config in backup "directory"
+* [cscli config show](/docs/v1.0/cscli/cscli_config_show)	 - Displays current config
 

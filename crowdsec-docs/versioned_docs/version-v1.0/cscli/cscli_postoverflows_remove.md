@@ -43,5 +43,5 @@ cscli postoverflows remove crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli postoverflows](/docs/cscli/cscli_postoverflows)	 - Install/Remove/Upgrade/Inspect postoverflow(s) from hub
+* [cscli postoverflows](/docs/v1.0/cscli/cscli_postoverflows)	 - Install/Remove/Upgrade/Inspect postoverflow(s) from hub
 

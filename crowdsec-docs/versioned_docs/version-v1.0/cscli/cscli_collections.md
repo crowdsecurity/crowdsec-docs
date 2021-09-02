@@ -30,10 +30,10 @@ Install/Remove/Upgrade/Inspect collections from the CrowdSec Hub.
 
 ### SEE ALSO
 
-* [cscli](/docs/cscli/cscli)	 - cscli allows you to manage crowdsec
-* [cscli collections inspect](/docs/cscli/cscli_collections_inspect)	 - Inspect given collection
-* [cscli collections install](/docs/cscli/cscli_collections_install)	 - Install given collection(s)
-* [cscli collections list](/docs/cscli/cscli_collections_list)	 - List all collections or given one
-* [cscli collections remove](/docs/cscli/cscli_collections_remove)	 - Remove given collection(s)
-* [cscli collections upgrade](/docs/cscli/cscli_collections_upgrade)	 - Upgrade given collection(s)
+* [cscli](/docs/v1.0/cscli/cscli)	 - cscli allows you to manage crowdsec
+* [cscli collections inspect](/docs/v1.0/cscli/cscli_collections_inspect)	 - Inspect given collection
+* [cscli collections install](/docs/v1.0/cscli/cscli_collections_install)	 - Install given collection(s)
+* [cscli collections list](/docs/v1.0/cscli/cscli_collections_list)	 - List all collections or given one
+* [cscli collections remove](/docs/v1.0/cscli/cscli_collections_remove)	 - Remove given collection(s)
+* [cscli collections upgrade](/docs/v1.0/cscli/cscli_collections_upgrade)	 - Upgrade given collection(s)
 

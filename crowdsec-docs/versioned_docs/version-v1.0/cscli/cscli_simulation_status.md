@@ -36,5 +36,5 @@ cscli simulation status
 
 ### SEE ALSO
 
-* [cscli simulation](/docs/cscli/cscli_simulation)	 - Manage simulation status of scenarios
+* [cscli simulation](/docs/v1.0/cscli/cscli_simulation)	 - Manage simulation status of scenarios
 

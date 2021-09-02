@@ -90,7 +90,3 @@ INFO[0000] Acquisition Metrics:
 All these metrics are actually coming from CrowdSec's prometheus agent. See [prometheus](/Crowdsec/v1/observability/prometheus/) directly for more insights.
 
 :::
-
-## Reference documentation
-
-[Link to acquisition reference documentation](/Crowdsec/v1/references/acquisition/)

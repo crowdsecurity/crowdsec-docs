@@ -14,7 +14,7 @@ They can either be within the applicative stack, or work out of band :
 
 [nginx bouncer](https://github.com/crowdsecurity/cs-nginx-bouncer) will check every unknown IP against the local API before letting go through or serving a *403* to the user, while a [firewall bouncer](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-firewall-bouncer) or a [cloudflare bouncer](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-cloudflare-bouncer) will simply "add" malevolent IPs to nftables/ipset set of blacklisted IPs.
 
-Bouncers rely on [crowdsec's Local API](/docs/local_api/intro) to be able to get informations about a given IP or such.
+Bouncers rely on [crowdsec's Local API](/docs/v1.0/local_api/intro) to be able to get informations about a given IP or such.
 
 
 You can explore [available bouncers on the hub](http://hub.crowdsec.net).
@@ -35,7 +35,7 @@ Please keep this key since you will not be able to retrieve it!
 This command must be run on the server where the local API is installed (or at least with a cscli that has valid credentials to communicate with the database used by the API). This is only necessary if you "manually" install a bouncer, packages and install scripts usually take care of this.
 :::
 
-If you were to create your own bouncers, look at [this section](/docs/local_api/bouncers) of the local API documentation.
+If you were to create your own bouncers, look at [this section](/docs/v1.0/local_api/bouncers) of the local API documentation.
 
 
 
