@@ -5,7 +5,7 @@ title: Writing Plugin in Go
 
 In this guide we will implement a plugin in Go, which dispatches an email with specificied body on receiving alerts.
 
-Before we begin, make sure you read [intro](/docs/notification_plugins/intro)
+Before we begin, make sure you read [intro](/notification_plugins/intro.md)
 
 Let's start by creating a new go project in a fresh directory:
 

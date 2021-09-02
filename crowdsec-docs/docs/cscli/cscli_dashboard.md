@@ -43,9 +43,9 @@ cscli dashboard remove
 
 ### SEE ALSO
 
-* [cscli](/docs/cscli/cscli)	 - cscli allows you to manage crowdsec
-* [cscli dashboard remove](/docs/cscli/cscli_dashboard_remove)	 - removes the metabase container.
-* [cscli dashboard setup](/docs/cscli/cscli_dashboard_setup)	 - Setup a metabase container.
-* [cscli dashboard start](/docs/cscli/cscli_dashboard_start)	 - Start the metabase container.
-* [cscli dashboard stop](/docs/cscli/cscli_dashboard_stop)	 - Stops the metabase container.
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli dashboard remove](/cscli/cscli_dashboard_remove.md)	 - removes the metabase container.
+* [cscli dashboard setup](/cscli/cscli_dashboard_setup.md)	 - Setup a metabase container.
+* [cscli dashboard start](/cscli/cscli_dashboard_start.md)	 - Start the metabase container.
+* [cscli dashboard stop](/cscli/cscli_dashboard_stop.md)	 - Stops the metabase container.
 

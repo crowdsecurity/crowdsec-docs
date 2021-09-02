@@ -8,7 +8,7 @@ sidebar_position: 2
 sudo cscli metrics
 ```
 
-This command provides an overview of CrowdSec statistics provided by [prometheus client](prometheus). By default it assumes that the CrowdSec is installed on the same machine.
+This command provides an overview of CrowdSec statistics provided by [prometheus client](/observability/prometheus.md). By default it assumes that the CrowdSec is installed on the same machine.
 
 The metrics are split in 3 main sections :
 

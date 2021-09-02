@@ -45,5 +45,5 @@ cscli dashboard remove --force
 
 ### SEE ALSO
 
-* [cscli dashboard](/docs/cscli/cscli_dashboard)	 - Manage your metabase dashboard container [requires local API]
+* [cscli dashboard](/cscli/cscli_dashboard.md)	 - Manage your metabase dashboard container [requires local API]
 

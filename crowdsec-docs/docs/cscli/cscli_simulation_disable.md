@@ -37,5 +37,5 @@ cscli simulation disable
 
 ### SEE ALSO
 
-* [cscli simulation](/docs/cscli/cscli_simulation)	 - Manage simulation status of scenarios
+* [cscli simulation](/cscli/cscli_simulation.md)	 - Manage simulation status of scenarios
 

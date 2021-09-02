@@ -5,7 +5,7 @@ sidebar_position: 1
 ---
 
 To be able to detect things, crowdsec needs to access logs.
-DataSources are configured via the [acquisition](/docs/configuration/crowdsec_configuration#acquisition_path) configuration, or specified via the command-line when performing cold logs analysis.
+DataSources are configured via the [acquisition](/configuration/crowdsec_configuration.md#acquisition_path) configuration, or specified via the command-line when performing cold logs analysis.
 
 
 Name | Type | Stream | One-shot

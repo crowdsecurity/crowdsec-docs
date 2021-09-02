@@ -47,5 +47,5 @@ cscli decisions add --scope username --value foobar
 
 ### SEE ALSO
 
-* [cscli decisions](/docs/cscli/cscli_decisions)	 - Manage decisions
+* [cscli decisions](/cscli/cscli_decisions.md)	 - Manage decisions
 

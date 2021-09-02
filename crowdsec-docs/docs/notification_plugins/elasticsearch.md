@@ -3,7 +3,7 @@ id: elastic
 title: Elasticsearch
 ---
 
-Elasticsearch can be integrated with CrowdSec by using the HTTP plugin. Enable it by following these [instructions](/docs/notification_plugins/http) . 
+Elasticsearch can be integrated with CrowdSec by using the HTTP plugin. Enable it by following these [instructions](/notification_plugins/http.md) . 
 
 Then replace the `url` and the `format` of the plugin's config so that it posts the events to your Elasticsearch instance.
 

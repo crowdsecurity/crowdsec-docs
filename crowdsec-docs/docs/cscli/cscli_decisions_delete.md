@@ -48,5 +48,5 @@ cscli decisions delete --type captcha
 
 ### SEE ALSO
 
-* [cscli decisions](/docs/cscli/cscli_decisions)	 - Manage decisions
+* [cscli decisions](/cscli/cscli_decisions.md)	 - Manage decisions
 

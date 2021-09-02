@@ -4,7 +4,7 @@ title: Monitoring
 sidebar_position: 10
 ---
 
-The [prometheus](/docs/observability/cscli) instrumentation exposes metrics about acquisition and data sources.
+The [prometheus](/observability/cscli.md) instrumentation exposes metrics about acquisition and data sources.
 Those can as well be view via `cscli metrics` :
 
 ```bash

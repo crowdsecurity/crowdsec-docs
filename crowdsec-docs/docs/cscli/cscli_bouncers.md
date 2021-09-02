@@ -32,8 +32,8 @@ Note: This command requires database direct access, so is intended to be run on 
 
 ### SEE ALSO
 
-* [cscli](/docs/cscli/cscli)	 - cscli allows you to manage crowdsec
-* [cscli bouncers add](/docs/cscli/cscli_bouncers_add)	 - add bouncer
-* [cscli bouncers delete](/docs/cscli/cscli_bouncers_delete)	 - delete bouncer
-* [cscli bouncers list](/docs/cscli/cscli_bouncers_list)	 - List bouncers
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli bouncers add](/cscli/cscli_bouncers_add.md)	 - add bouncer
+* [cscli bouncers delete](/cscli/cscli_bouncers_delete.md)	 - delete bouncer
+* [cscli bouncers list](/cscli/cscli_bouncers_list.md)	 - List bouncers
 

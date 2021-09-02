@@ -30,5 +30,5 @@ cscli capi status [flags]
 
 ### SEE ALSO
 
-* [cscli capi](/docs/cscli/cscli_capi)	 - Manage interaction with Central API (CAPI)
+* [cscli capi](/cscli/cscli_capi)	 - Manage interaction with Central API (CAPI.md)
 
