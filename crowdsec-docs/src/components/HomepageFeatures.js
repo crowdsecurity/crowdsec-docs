@@ -81,7 +81,7 @@ function Feature({Svg, title, description, link}) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
-        <a href={link}> <Svg className={styles.featureSvg} alt={title} /></a>
+        <a href={link}> <Svg className={styles.featureSvg} alt={title} style={{width: '27.5%'}}/></a>
       </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>
