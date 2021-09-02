@@ -171,7 +171,7 @@ DEBU[31-07-2020 16:36:28]        evt.Parsed.program = 'nginx'           id=withe
 filter: expression
 ```
 
-`filter` must be a valid [expr](/docs/expr/helpers) expression that will be evaluated against the [event](/expr/event.md).
+`filter` must be a valid [expr](/expr/helpers.md) expression that will be evaluated against the [event](/expr/event.md).
 
 If `filter` evaluation returns true or is absent, node will be processed.
 

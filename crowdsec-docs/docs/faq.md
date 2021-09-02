@@ -61,7 +61,7 @@ If you need help for large scale deployment, please get in touch with us on the 
 ## What backend database does CrowdSec supports and how to switch ?
 
 CrowdSec versions (after v1) supports SQLite (default), MySQL and PostgreSQL databases.
-See [databases configuration](/docs/local_api/database) for relevant configuration. Thanks to the [Local API](/local_api/intro.md), distributed architectures are resolved even with sqlite database.
+See [databases configuration](/local_api/database.md) for relevant configuration. Thanks to the [Local API](/local_api/intro.md), distributed architectures are resolved even with sqlite database.
 
 SQLite by default as it's suitable for standalone/single-machine setups.
 
