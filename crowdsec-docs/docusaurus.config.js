@@ -90,11 +90,11 @@ module.exports = {
           items: [
             {
               label: 'Tutorial',
-              to: '/tutorials',
+              to: '/blog',
             },
             {
               label: 'Documentation',
-              to: '/docs',
+              to: '/docs/intro',
             },
           ],
         },
