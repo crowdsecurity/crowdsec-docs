@@ -48,7 +48,7 @@ module.exports = {
           position: 'left',
           label: 'Bouncers',
         },
-        {to: '/blog', label: 'Tutorials', position: 'left'},
+        {to: 'https://crowdsec.net/category/tutorial/', label: 'Tutorials', position: 'left'},
         {
           type: 'doc',
           docId: 'faq',
@@ -89,12 +89,12 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Tutorial',
-              to: '/tutorials',
+              label: 'Doc Mini-Tutorial Articles',
+              to: '/blog',
             },
             {
               label: 'Documentation',
-              to: '/docs',
+              to: '/docs/intro',
             },
           ],
         },
