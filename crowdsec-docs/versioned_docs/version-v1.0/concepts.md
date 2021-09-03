@@ -9,8 +9,8 @@ sidebar_position: 1
 
 CrowdSec runtime revolves around a few simple concepts :
 
- - It read logs (defined via [datasources](/docs/v1.0/data_sources/intro) configuration)
- - Those logs are parsed via [parsers](/docs/v1.0/parsers/intro) and eventually [enriched](/docs/v1.0/parsers/enrichers)
+ - It read logs (defined via [datasources](/docs/v1.0/acquisitions/intro) configuration)
+ - Those logs are parsed via [parsers](/docs/v1.0/parsers/intro) and eventually [enriched](/docs/v1.0/parsers/enricher)
  - Those normalized logs are matched against the [scenarios](/docs/v1.0/scenarios/intro) that the user deployed
  - When a scenario is "triggered", CrowdSec generates an [alert](/docs/v1.0/concepts#alerts) and eventually one or more associated [decisions](/docs/v1.0/concepts#decisions) :
     - The alert is here mostly for tracability, and will stay even after the decision expires
