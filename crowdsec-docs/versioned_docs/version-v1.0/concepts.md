@@ -44,13 +44,13 @@ To do so, bouncers are going to query the local API to know if there is an exist
 
 ## Acquisition
 
-[[References](/docs/v1.0/data_sources/intro)]
+[[References](/docs/v1.0/acquisitions/intro)]
 
 Acquistion configuration defines which streams of information CrowdSec is going to process.
 
 A stream of information can be a file, a journald event log, a cloudwatch stream, and more or less any kind of stream, such as a kafka topic.
 
-Acquisition configuration always contains a stream (ie. a file to tail) and a [tag](/docs/v1.0/data_sources/intro) (ie. "these are in syslog format" "these are non-syslog nginx logs").
+Acquisition configuration always contains a stream (ie. a file to tail) and a [tag](/docs/v1.0/acquisitions/intro) (ie. "these are in syslog format" "these are non-syslog nginx logs").
 
 File acquisition configuration is defined as :
 
@@ -106,7 +106,7 @@ You can as well [write your own](/docs/v1.0/parsers/create) !
 
 ## Enrichers
 
-[[References](/docs/v1.0/parsers/enricher)]
+[[References](/docs/v1.0/parsers/enrichers)]
 
 Enrichment is a parser that adds extra context to an log event, so that better decision can later be taken. In most cases, you should be able to find the relevant enrichers on our [Hub](https://hub.crowdsec.net/browse/#configurations).
 

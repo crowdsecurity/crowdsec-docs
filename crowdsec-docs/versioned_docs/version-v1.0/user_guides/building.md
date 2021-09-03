@@ -43,7 +43,7 @@ The wizard is going to guide you through the following steps :
  
 The process should take less than a minute, [please report if there are any issues](https://github.com/crowdsecurity/crowdsec/issues).
 
-You are then ready to [take a tour](crowdsec_tour) of your freshly deployed CrowdSec !
+You are then ready to [take a tour](/docs/v1.0/getting_started/crowdsec_tour) of your freshly deployed CrowdSec !
 
 :::info
 
@@ -66,7 +66,7 @@ This will only deploy the binaries, and some extra installation steps need to be
  - `sudo cscli machines add -a` : register crowdsec to the local API
  - `sudo cscli capi register` : register to the central API
  - `sudo cscli collections install crowdsecurity/linux` : install essential configs (syslog parser, geoip enrichment, date parsers)
- - configure your [datasources](/docs/v1.0/data_sources/intro)
+ - configure your [datasources](/docs/v1.0/acquisitions/intro)
 
 You can now start & enable the crowdsec service :
 
