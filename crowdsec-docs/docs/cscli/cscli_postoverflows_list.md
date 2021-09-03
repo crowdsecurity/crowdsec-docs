@@ -42,5 +42,5 @@ cscli postoverflows list crowdsecurity/xxx
 
 ### SEE ALSO
 
-* [cscli postoverflows](/cscli/cscli_postoverflows)	 - Install/Remove/Upgrade/Inspect postoverflow(s.md) from hub
+* [cscli postoverflows](/cscli/cscli_postoverflows.md)	 - Install/Remove/Upgrade/Inspect postoverflow(s) from hub
 

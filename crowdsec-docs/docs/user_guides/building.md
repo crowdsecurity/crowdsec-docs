@@ -24,7 +24,7 @@ cd crowdsec-v*
 sudo ./wizard.sh -i
 ```
 
-A [wizard](building#using-the-wizard) is provided to help you deploy CrowdSec and cscli.
+A [wizard](/user_guides/building.md##using-the-wizard) is provided to help you deploy CrowdSec and cscli.
 
 ## Using the Wizard
 
@@ -43,7 +43,7 @@ The wizard is going to guide you through the following steps :
  
 The process should take less than a minute, [please report if there are any issues](https://github.com/crowdsecurity/crowdsec/issues).
 
-You are then ready to [take a tour](crowdsec_tour) of your freshly deployed CrowdSec !
+You are then ready to [take a tour](/getting_started/crowdsec_tour.md) of your freshly deployed CrowdSec !
 
 :::info
 

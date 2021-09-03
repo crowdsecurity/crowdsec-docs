@@ -41,5 +41,5 @@ cscli parsers inspect crowdsec/xxx
 
 ### SEE ALSO
 
-* [cscli parsers](/cscli/cscli_parsers)	 - Install/Remove/Upgrade/Inspect parser(s.md) from hub
+* [cscli parsers](/cscli/cscli_parsers.md)	 - Install/Remove/Upgrade/Inspect parser(s) from hub
 

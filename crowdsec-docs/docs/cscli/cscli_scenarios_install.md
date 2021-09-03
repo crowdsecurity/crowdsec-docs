@@ -42,5 +42,5 @@ cscli scenarios install crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli scenarios](/cscli/cscli_scenarios)	 - Install/Remove/Upgrade/Inspect scenario(s.md) from hub
+* [cscli scenarios](/cscli/cscli_scenarios.md)	 - Install/Remove/Upgrade/Inspect scenario(s) from hub
 

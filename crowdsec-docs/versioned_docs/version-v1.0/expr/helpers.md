@@ -10,7 +10,7 @@ Several places of CrowdSec's configuration use [expr](https://github.com/antonme
 
  - [Filters](/docs/v1.0/parsers/format#filter) that are used to determine events eligibility in parsers, scenarios and profiles
  - [Statics](/docs/v1.0/parsers/format#statics) use expr in the `expression` directive, to compute complex values
- - [Whitelists](/docs/v1.0/whitelists/intro) rely on `expression` directive to allow more complex whitelists filters
+ - [Whitelists](/docs/v1.0/whitelist/intro) rely on `expression` directive to allow more complex whitelists filters
 
 To learn more about [expr](https://github.com/antonmedv/expr), [check the github page of the project](https://github.com/antonmedv/expr/blob/master/docs/v1.0/Language-Definition.md).
 
