@@ -106,7 +106,7 @@ You can as well [write your own](/docs/v1.0/parsers/create) !
 
 ## Enrichers
 
-[[References](/docs/v1.0/parsers/enrichers)]
+[[References](/docs/v1.0/parsers/enricher)]
 
 Enrichment is a parser that adds extra context to an log event, so that better decision can later be taken. In most cases, you should be able to find the relevant enrichers on our [Hub](https://hub.crowdsec.net/browse/#configurations).
 
