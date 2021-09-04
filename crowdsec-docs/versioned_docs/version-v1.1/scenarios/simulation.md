@@ -11,7 +11,7 @@ INFO[0000] Scenarios in simulation mode :
 INFO[0000]   - crowdsecurity/ssh-bf                     
 ```
 
-`cscli simulation` allows to manage a list of scenarios that have their remediation "simulated" : they won't be effective (but will still be showed by `cscli decisions list`). This configuration file is present in `/etc/crowdsec/simulation.yaml`.
+`cscli simulation` allows to manage a list of scenarios that have their remediation "simulated" : they won't be effective (but will still be showed by `cscli decisions list`). This configuration file is present in `/etc/crowdsec/simulation.yaml` and is handled by the agent.
 
 You can add and remove scenarios to the simulation list :
 
