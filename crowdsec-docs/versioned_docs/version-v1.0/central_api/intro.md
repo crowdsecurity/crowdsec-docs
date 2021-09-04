@@ -25,7 +25,7 @@ When crowdsec blocks an attack, [unless you opt-out of it](/docs/v1.0/faq#how-to
 
 ### Scenario list
 
-The community blocklist matches the scenarios deployed on the crowdsec instance. For this reason, crowdsec provides the list of enabled scenarios (from the hub only) during [the login process](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI#/watchers/post_watchers_login)
+The community blocklist matches the scenarios deployed on the crowdsec instance. For this reason, crowdsec provides the list of enabled scenarios (from the hub only) during [the login process](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI#/watchers/post_watchers_login).
 
 ### Console metrics
 

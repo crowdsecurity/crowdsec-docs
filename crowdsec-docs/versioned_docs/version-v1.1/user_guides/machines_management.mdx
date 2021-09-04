@@ -35,10 +35,10 @@ $ cscli machines list
 You can view the registered machines with `list`, as well as add or delete them :
 
 ```bash
-$ sudo cscli machines add mytestmachine -a
+sudo cscli machines add mytestmachine -a
 INFO[0004] Machine 'mytestmachine' created successfully       
 INFO[0004] API credentials dumped to '/etc/crowdsec/local_api_credentials.yaml' 
-$ sudo cscli machines delete 82929df7ee394b73b81252fe3b4e5020
+sudo cscli machines delete 82929df7ee394b73b81252fe3b4e5020
 ```
 
 
@@ -46,24 +46,24 @@ $ sudo cscli machines delete 82929df7ee394b73b81252fe3b4e5020
   <summary>cscli machines example</summary>
 
 ```bash
-$ sudo cscli machines list
+sudo cscli machines list
 ----------------------------------------------------------------------------------------------------------------------------------
  NAME                              IP ADDRESS  LAST UPDATE                STATUS  VERSION                                         
 ----------------------------------------------------------------------------------------------------------------------------------
  82929df7ee394b73b81252fe3b4e5020  127.0.0.1   2020-10-31T14:06:32+01:00  ✔️      v0.3.6-3d6ce33908409f2a830af6551a7f5e37f2a4728f 
 ----------------------------------------------------------------------------------------------------------------------------------
-$ sudo cscli machines add -m mytestmachine -a
+sudo cscli machines add -m mytestmachine -a
 INFO[0004] Machine 'mytestmachine' created successfully       
 INFO[0004] API credentials dumped to '/etc/crowdsec/local_api_credentials.yaml' 
-$ sudo cscli machines list      
+sudo cscli machines list      
 ----------------------------------------------------------------------------------------------------------------------------------
  NAME                              IP ADDRESS  LAST UPDATE                STATUS  VERSION                                         
 ----------------------------------------------------------------------------------------------------------------------------------
  82929df7ee394b73b81252fe3b4e5020  127.0.0.1   2020-10-31T14:06:32+01:00  ✔️      v0.3.6-3d6ce33908409f2a830af6551a7f5e37f2a4728f 
  mytestmachine                     127.0.0.1   2020-11-01T11:37:19+01:00  ✔️      v0.3.6-6a18458badf8ae5fed8d5f1bb96fc7a59c96163c 
 ----------------------------------------------------------------------------------------------------------------------------------
-$ sudo cscli machines delete -m 82929df7ee394b73b81252fe3b4e5020
-$ sudo cscli machines list                                      
+sudo cscli machines delete -m 82929df7ee394b73b81252fe3b4e5020
+sudo cscli machines list                                      
 ---------------------------------------------------------------------------------------------------------
  NAME     IP ADDRESS  LAST UPDATE                STATUS  VERSION                                         
 ---------------------------------------------------------------------------------------------------------

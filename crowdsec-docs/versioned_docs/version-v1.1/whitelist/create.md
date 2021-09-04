@@ -27,7 +27,7 @@ time="07-07-2020 16:13:16" level=warning msg="80.x.x.x triggered a 4h0m0s ip ban
 time="07-07-2020 16:13:17" level=warning msg="80.x.x.x triggered a 4h0m0s ip ban remediation for [crowdsecurity/http-crawl-non_statics]" bucket_id=purple-snowflake event_time="2020-07-07 16:13:17.353641625 +0200 CEST m=+358820.187621068" scenario=crowdsecurity/http-crawl-non_statics source_ip=80.x.x.x
 time="07-07-2020 16:13:18" level=warning msg="80.x.x.x triggered a 4h0m0s ip ban remediation for [crowdsecurity/http-sensitive-files]" bucket_id=small-hill event_time="2020-07-07 16:13:18.005919055 +0200 CEST m=+358820.839898498" scenario=crowdsecurity/http-sensitive-files source_ip=80.x.x.x
 ^C
-$ sudo cscli ban list
+sudo cscli ban list
 4 local decisions:
 +--------+---------------+-----------------------------------+------+--------+---------+---------------------------+--------+------------+
 | SOURCE |      IP       |              REASON               | BANS | ACTION | COUNTRY |            AS             | EVENTS | EXPIRATION |
@@ -69,7 +69,7 @@ And we don't get bans :
 $ tail -f /var/log/crowdsec.log  
 ...
 ^C
-$ sudo cscli ban list
+sudo cscli ban list
 No local decisions.
 And 21 records from API, 15 distinct AS, 12 distinct countries
 
