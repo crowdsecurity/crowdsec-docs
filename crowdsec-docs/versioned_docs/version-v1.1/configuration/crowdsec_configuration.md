@@ -426,7 +426,7 @@ flush:
 
 Number max of alerts in database.
 
-#### `max_age`
+#### `max_age`
 > string
 
 Alerts retention time.
