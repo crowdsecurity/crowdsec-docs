@@ -108,6 +108,7 @@ Check [decisions](/docs/v1.0/user_guides/hub_mgmt) management for more !
 
 <details>
   <summary>Listing decisions example</summary>
+
 ```bash
 sudo cscli decisions list
 +-----+-----------+-------------+------------------------------------+--------+---------+----+--------+--------------------+----------+
@@ -138,6 +139,7 @@ You will here see the alerts, even if the associated decisions expired.
 
 <details>
   <summary>Listing alerts example</summary>
+
 ```bash
 sudo cscli alerts list --since 1h
 +----+-------------+----------------------------+---------+----+-----------+---------------------------+
