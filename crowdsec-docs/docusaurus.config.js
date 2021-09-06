@@ -144,13 +144,13 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/crowdsecurity/crowdsec-docs/edit/doc_refactor/crowdsec-docs/',
+            'https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/crowdsecurity/crowdsec-docs/edit/doc_refactor/crowdsec-docs/',
+            'https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
