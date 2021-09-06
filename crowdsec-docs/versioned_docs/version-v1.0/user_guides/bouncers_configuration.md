@@ -28,20 +28,20 @@ The `cscli bouncers` command interacts directly with the database (bouncers add 
 :::
 
 ```bash
-$ sudo cscli bouncers list
+sudo cscli bouncers list
 ```
 
 
 You can view the registered bouncers with `list`, as well as add or delete them :
 
 ```bash
-$ sudo cscli bouncers add mybouncersname
+sudo cscli bouncers add mybouncersname
 Api key for 'mybouncersname':
 
    23........b5a0c
 
 Please keep this key since will not be able to retrieve it!
-$ sudo cscli bouncers delete mybouncersname
+sudo cscli bouncers delete mybouncersname
 ```
 
 The API KEY must be kept and given to the bouncer configuration.
@@ -50,26 +50,26 @@ The API KEY must be kept and given to the bouncer configuration.
   <summary>cscli bouncers example</summary>
 
 ```bash
-$ sudo cscli bouncers add mybouncersname
+sudo cscli bouncers add mybouncersname
 Api key for 'mybouncersname':
 
    23........b5a0c
 
 Please keep this key since will not be able to retrieve it!
-$ sudo cscli bouncers list              
+sudo cscli bouncers list              
 -----------------------------------------------------------------------------
  NAME            IP ADDRESS  VALID  LAST API PULL              TYPE  VERSION 
 -----------------------------------------------------------------------------
  mybouncersname              ✔️     2020-11-01T11:45:05+01:00                
 -----------------------------------------------------------------------------
-$ sudo cscli bouncers add  jlkqweq
+sudo cscli bouncers add  jlkqweq
 Api key for 'jlkqweq':
 
    a7........efdc9c
 
 Please keep this key since will not be able to retrieve it!
-$ sudo cscli bouncers delete mybouncersname
-$ sudo cscli bouncers list                 
+sudo cscli bouncers delete mybouncersname
+sudo cscli bouncers list                 
 ----------------------------------------------------------------------
  NAME     IP ADDRESS  VALID  LAST API PULL              TYPE  VERSION 
 ----------------------------------------------------------------------

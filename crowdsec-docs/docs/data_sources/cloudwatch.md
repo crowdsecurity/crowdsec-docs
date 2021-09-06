@@ -73,6 +73,10 @@ The aws profile to use to poll cloudwatch, relies on your `~/.aws/config/`.
 
 The path to your `~/.aws/`, defaults to `/root/.aws`.
 
+### `source`
+
+Must be `cloudwatch`
+
 ## DSN and command-line
 
 cloudwatch implements a very approximative DSN, as follows : `cloudwatch:///your/group/path:stream_name?[args]`

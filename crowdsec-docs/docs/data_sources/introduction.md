@@ -34,5 +34,5 @@ All the data sources supports :
  - and a section that is specific to the data source implemention, see dedicated sections bellow
 
 :::warning
- The `labels` and `type` subsection are crucial as this is what is going to indicate which parsers pickup the log line.
+The `labels` and `type` subsection are crucial as this is what is going to indicate which parsers pickup the log line.
 :::

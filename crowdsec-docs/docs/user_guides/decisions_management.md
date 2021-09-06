@@ -21,7 +21,7 @@ sudo cscli decisions list
   <summary>Example</summary>
 
 ```bash
-$ sudo cscli decisions list
+sudo cscli decisions list
 +--------+----------+------------------+------------------------------------+--------+---------+--------------------------------+--------+-----------------+----------+
 |   ID   |  SOURCE  |   SCOPE:VALUE    |               REASON               | ACTION | COUNTRY |               AS               | EVENTS |   EXPIRATION    | ALERT ID |
 +--------+----------+------------------+------------------------------------+--------+---------+--------------------------------+--------+-----------------+----------+
@@ -49,7 +49,7 @@ $ sudo cscli decisions list
  - `ALERT ID` is the ID of the corresponding alert
 
 
-Check [command usage](/cscli/cscli.md) for additional filtering and output control flags.
+Check [command usage](/cscli/cscli_decisions.md) for additional filtering and output control flags.
 
 
 ## Add a decision

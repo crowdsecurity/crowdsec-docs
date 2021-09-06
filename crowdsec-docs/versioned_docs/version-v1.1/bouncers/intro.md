@@ -17,13 +17,13 @@ They can either be within the applicative stack, or work out of band :
 Bouncers rely on [crowdsec's Local API](/local_api/intro.md) to be able to get informations about a given IP or such.
 
 
-You can explore [available bouncers on the hub](http://hub.crowdsec.net).
+You can explore [available bouncers on the hub](https://hub.crowdsec.net/browse/#bouncers).
 
 
 To be able for your bouncers to communicate with the local API, you have to generate an API token with `cscli` and put it in your bouncer configuration file:
 
 ```bash
-$ sudo cscli bouncers add testBouncer
+sudo cscli bouncers add testBouncer
 Api key for 'testBouncer':
 
    6dcfe93f18675265e905aef390330a35

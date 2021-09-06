@@ -68,7 +68,7 @@ sudo cscli metrics
   <summary>cscli metrics example</summary>
 
 ```bash
-$ sudo cscli metrics
+sudo cscli metrics
 ...
 ...
 INFO[0000] Acquisition Metrics:     

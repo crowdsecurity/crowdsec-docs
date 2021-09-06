@@ -22,7 +22,7 @@ See more [here](/docs/v1.0/user_guides/hub_mgmt).
   <summary>Listing Hub example</summary>
 
 ```bash
-$ sudo cscli hub list
+sudo cscli hub list
 INFO[0000] Loaded 13 collecs, 17 parsers, 21 scenarios, 3 post-overflow parsers 
 INFO[0000] unmanaged items : 23 local, 0 tainted        
 INFO[0000] PARSERS:                                     
@@ -108,8 +108,9 @@ Check [decisions](/docs/v1.0/user_guides/hub_mgmt) management for more !
 
 <details>
   <summary>Listing decisions example</summary>
+
 ```bash
-$ sudo cscli decisions list
+sudo cscli decisions list
 +-----+-----------+-------------+------------------------------------+--------+---------+----+--------+--------------------+----------+
 | ID  | SOURCE    | SCOPE:VALUE |               REASON               | ACTION | COUNTRY | AS | EVENTS |     EXPIRATION     | ALERT ID |
 +-----+-----------+-------------+------------------------------------+--------+---------+----+--------+--------------------+----------+
@@ -138,8 +139,9 @@ You will here see the alerts, even if the associated decisions expired.
 
 <details>
   <summary>Listing alerts example</summary>
+
 ```bash
-$ sudo cscli alerts list --since 1h
+sudo cscli alerts list --since 1h
 +----+-------------+----------------------------+---------+----+-----------+---------------------------+
 | ID | SCOPE:VALUE |           REASON           | COUNTRY | AS | DECISIONS |        CREATED AT         |
 +----+-------------+----------------------------+---------+----+-----------+---------------------------+
@@ -167,7 +169,7 @@ The indicators are grouped by scope :
   <summary>Listing metrics example</summary>
 
 ```bash
-$ sudo cscli metrics
+sudo cscli metrics
 INFO[0000] Buckets Metrics:
 +--------------------------------------+---------------+-----------+--------------+--------+---------+
 |                BUCKET                | CURRENT COUNT | OVERFLOWS | INSTANCIATED | POURED | EXPIRED |
@@ -268,7 +270,7 @@ Running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli 
 sudo cscli dashboard setup --listen 0.0.0.0
 ```
 
-A metabase [docker container](/docs/v1.0/observability/dashboard) can be deployed with `cscli dashboard`.
+A metabase [docker container](/docs/v1.0/observability/dashboard) can be deployed with [`cscli dashboard`](/cscli/cscli_dashboard.md).
 It requires docker, [installation instructions are available here](https://docs.docker.com/engine/install/).
 
 ## Logs

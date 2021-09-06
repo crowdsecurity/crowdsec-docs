@@ -81,7 +81,7 @@ If your setup is standard and you've walked through the default installation wit
 This mode will emulate the interactive mode of the wizard where you answer **yes** to everything and stick with the default options.
 
 
-## Build Docker image
+## Building docker image
 
 Crowdsec provides a docker image and can simply built like this :
 

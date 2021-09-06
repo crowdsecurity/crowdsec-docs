@@ -14,7 +14,7 @@ id: network_management
 
  - Local API connects to `tcp/443` on `api.crowdsec.net` (signal push and blocklists pull)
  - `cscli` connects to `tcp/443` on `raw.githubusercontent.com` to fetch scenarios, parsers etc.
- - `cscli dashboard` fetches metabase configuration from a s3 bucket (`https://crowdsec-statics-assets.s3-eu-west-1.amazonaws.com/`)
+ - [`cscli dashboard`](/cscli/cscli_dashboard.md) fetches metabase configuration from a s3 bucket (`https://crowdsec-statics-assets.s3-eu-west-1.amazonaws.com/`)
 
 
 
@@ -28,9 +28,10 @@ id: network_management
 
  - Agents connect to local API on port `tcp/8080` (only relevant )
 
-!!! warning
-    If there is an error in the agent configuration, it will also cause the Local API to fail if both of them are running in the same machine !
-    Both components need proper configuration to run (we decide to keep this behavior to detect agent or local API errors on start).
+:::warning
+If there is an error in the agent configuration, it will also cause the Local API to fail if both of them are running in the same machine !
+Both components need proper configuration to run (we decide to keep this behavior to detect agent or local API errors on start).
+:::
 
 ## Local API -> Central API
 

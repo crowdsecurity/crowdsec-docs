@@ -27,7 +27,7 @@ sudo cscli collections install <collection_name>
   <summary>Install <strong> crowdsecurity/whitelist-good-actors </strong> collection </summary>
 
 ```bash
-$ sudo cscli collections install crowdsecurity/whitelist-good-actors
+sudo cscli collections install crowdsecurity/whitelist-good-actors
 INFO[0000] crowdsecurity/seo-bots-whitelist : OK        
 INFO[0000] downloading data 'https://raw.githubusercontent.com/crowdsecurity/sec-lists/master/whitelists/benign_bots/search_engine_crawlers/rdns_seo_bots.txt' in '/var/lib/crowdsec/data/rdns_seo_bots.txt' 
 INFO[0001] downloading data 'https://raw.githubusercontent.com/crowdsecurity/sec-lists/master/whitelists/benign_bots/search_engine_crawlers/rnds_seo_bots.regex' in '/var/lib/crowdsec/data/rdns_seo_bots.regex' 
@@ -59,7 +59,7 @@ sudo cscli collections list
   <summary>cscli collections list example</summary>
 
 ```bash
-$ sudo cscli collections list   
+sudo cscli collections list   
 -------------------------------------------------------------------------------------------------------------
  NAME                               📦 STATUS    VERSION  LOCAL PATH                                         
 -------------------------------------------------------------------------------------------------------------
@@ -94,9 +94,9 @@ Collection upgrade allows you to upgrade an existing collection (and its items) 
   <summary>Upgrade <strong>crowdsecurity/sshd</strong> collection</summary>
 
 ```bash
-$ sudo cscli hub update
+sudo cscli hub update
 INFO[06-08-2021 04:18:33 PM] Wrote new 126099 bytes index to /etc/crowdsec/hub/.index.json 
-$ sudo cscli collections upgrade crowdsecurity/sshd  
+sudo cscli collections upgrade crowdsecurity/sshd  
 INFO[0000] crowdsecurity/sshd : up-to-date              
 WARN[0000] crowdsecurity/sshd-logs : overwrite          
 WARN[0000] crowdsecurity/ssh-bf : overwrite             
@@ -122,7 +122,7 @@ Collections inspect will give you detailed information about a given collection,
   <summary>cscli collections inspect example</summary>
 
 ```bash
-$ sudo cscli collections inspect crowdsecurity/sshd       
+sudo cscli collections inspect crowdsecurity/sshd       
 type: collections
 name: crowdsecurity/sshd
 filename: sshd.yaml
@@ -176,7 +176,7 @@ sudo cscli parsers install <parser_name>
   <summary>Install <strong>crowdsecurity/iptables-logs</strong> parser</summary>
 
 ```bash
-$ sudo cscli parsers install crowdsecurity/iptables-logs    
+sudo cscli parsers install crowdsecurity/iptables-logs    
 INFO[0000] crowdsecurity/iptables-logs : OK             
 INFO[0000] Enabled parsers : crowdsecurity/iptables-logs 
 INFO[0000] Enabled crowdsecurity/iptables-logs          
@@ -198,7 +198,7 @@ sudo cscli parsers list
   <summary>List installed parsers</summary>
 
 ```bash
-$ sudo cscli parsers list
+sudo cscli parsers list
 --------------------------------------------------------------------------------------------------------------
  NAME                            📦 STATUS    VERSION  LOCAL PATH                                             
 --------------------------------------------------------------------------------------------------------------
@@ -230,9 +230,9 @@ Parsers upgrade allows you to upgrade an existing parser to the latest version.
   <summary>Upgrade <strong>crowdsecurity/sshd-logs</strong> parser</summary>
 
 ```bash
-$ sudo cscli hub update
+sudo cscli hub update
 INFO[06-08-2021 04:18:33 PM] Wrote new 126099 bytes index to /etc/crowdsec/hub/.index.json 
-$ sudo cscli parsers upgrade crowdsecurity/sshd-logs  
+sudo cscli parsers upgrade crowdsecurity/sshd-logs  
 INFO[0000] crowdsecurity/sshd : up-to-date              
 WARN[0000] crowdsecurity/sshd-logs : overwrite          
 WARN[0000] crowdsecurity/ssh-bf : overwrite             
@@ -258,7 +258,7 @@ Parsers inspect will give you detailed information about a given parser, includi
   <summary>Inspect <strong>crowdsecurity/sshd-logs</strong> parser</summary>
 
 ```bash
-$ sudo cscli parsers inspect crowdsecurity/sshd-logs     
+sudo cscli parsers inspect crowdsecurity/sshd-logs     
 type: parsers
 stage: s01-parse
 name: crowdsecurity/sshd-logs
@@ -293,11 +293,11 @@ Current metrics :
 
 ### Reference
 
-See more details about parsers [here](/collections/introduction.md).
+See more details about parsers [here](/parsers/introduction.md).
 
 ## Enrichers
 
-Enrichers are basically [parsers](/collections/introduction.md) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich` stage (after most of the parsing happened.md).
+Enrichers are basically [parsers](/parsers/introduction.md) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich` stage (after most of the parsing happened.md).
 
 Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the [event](/expr/event.md).
 
@@ -339,7 +339,7 @@ sudo cscli scenarios install <scenario_name>
   <summary>Install <strong>crowdsecurity/http-bf-wordpress_bf</strong> scenario</summary>
 
 ```bash
-$ sudo cscli scenarios install crowdsecurity/http-bf-wordpress_bf
+sudo cscli scenarios install crowdsecurity/http-bf-wordpress_bf
 INFO[0000] crowdsecurity/http-bf-wordpress_bf : OK      
 INFO[0000] Enabled scenarios : crowdsecurity/http-bf-wordpress_bf 
 INFO[0000] Enabled crowdsecurity/http-bf-wordpress_bf   
@@ -371,7 +371,7 @@ Use `--all` to list available parsers.
   <summary>List installed scenarios</summary>
 
 ```bash
-$ sudo cscli scenarios list
+sudo cscli scenarios list
 ---------------------------------------------------------------------------------------------------------------------------
  NAME                                       📦 STATUS    VERSION  LOCAL PATH                                               
 ---------------------------------------------------------------------------------------------------------------------------
@@ -405,9 +405,9 @@ Scenarios upgrade allows you to upgrade an existing scenario to the latest versi
   <summary>Upgrade <strong>crowdsecurity/http-bf-wordpress_bf</strong> scenario</summary>
 
 ```bash
-$ sudo cscli hub update
+sudo cscli hub update
 INFO[06-08-2021 04:18:33 PM] Wrote new 126099 bytes index to /etc/crowdsec/hub/.index.json 
-$ sudo cscli scenarios upgrade crowdsecurity/ssh-bf
+sudo cscli scenarios upgrade crowdsecurity/ssh-bf
 INFO[0000] crowdsecurity/ssh-bf : up-to-date            
 WARN[0000] crowdsecurity/ssh-bf : overwrite             
 INFO[0000] 📦 crowdsecurity/ssh-bf : updated             
@@ -429,7 +429,7 @@ Scenarios inspect will give you detailed information about a given scenario, inc
   <summary>Inspect <strong>crowdsecurity/http-bf-wordpress_bf</strong> scenario</summary>
 
 ```bash
-$ sudo cscli scenarios inspect crowdsecurity/ssh-bf    
+sudo cscli scenarios inspect crowdsecurity/ssh-bf    
 type: scenarios
 name: crowdsecurity/ssh-bf
 filename: ssh-bf.yaml

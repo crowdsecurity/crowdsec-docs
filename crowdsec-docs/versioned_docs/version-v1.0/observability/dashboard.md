@@ -5,7 +5,7 @@ sidebar_position: 3
 ---
 
 :::warning "MySQL & PostgreSQL"
-MySQL and PostgreSQL are currently not supported by `cscli dashboard`. 
+MySQL and PostgreSQL are currently not supported by [`cscli dashboard`](/cscli/cscli_dashboard.md). 
 
 It means that you can run cscli dashboard only if you use `SQLite` (default) as storage database with your local API.
 :::

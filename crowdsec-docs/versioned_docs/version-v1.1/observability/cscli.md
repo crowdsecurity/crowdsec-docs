@@ -40,7 +40,7 @@ For example, [sshd-logs parser](https://hub.crowdsec.net/author/crowdsecurity/co
   <summary>cscli metrics example</summary>
 
 ```bash
-$ sudo cscli metrics
+sudo cscli metrics
 
 INFO[0000] Buckets Metrics:
 +--------------------------------------+---------------+-----------+--------------+--------+---------+
