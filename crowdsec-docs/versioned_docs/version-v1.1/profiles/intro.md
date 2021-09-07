@@ -12,3 +12,9 @@ The profiles configuration allows user to configure which kind of remediation sh
 
 
 The profiles configuration is located in `/etc/crowdsec/profiles.yaml`.
+
+:::info
+
+Be careful! The profiles are evaluated by the Local API and not by the CrowdSec Agent. If you have an independent Local API, write your profiles in its configuration folder. 
+
+:::
