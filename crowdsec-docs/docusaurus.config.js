@@ -13,6 +13,11 @@ module.exports = {
   organizationName: 'CrowdSec',
   projectName: 'crowdsec-docs',
   themeConfig: {
+    algolia: {
+      apiKey: '646b772ccfdead2a01eee453a47600a5',
+      indexName: 'crowdsec',
+      contextualSearch: true
+    },
     navbar: {
       items: [
 
