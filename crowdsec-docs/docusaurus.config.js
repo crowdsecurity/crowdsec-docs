@@ -5,7 +5,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 module.exports = {
   title: 'CrowdSec',
   tagline: 'CrowdSec, the open-source & participative IPS.',
-  url: 'https://crowdsec.net',
+  url: 'https://docs.crowdsec.net',
   baseUrl: '/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
