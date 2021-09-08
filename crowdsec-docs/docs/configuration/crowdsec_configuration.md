@@ -123,6 +123,9 @@ crowdsec_service:
   parser_routines: "<number_of_parser_routines>"
   buckets_routines: "<number_of_buckets_routines>"
   output_routines: "<number_of_output_routines>"
+plugin_config:
+  user: "<user_to_run_plugin_process_as>"
+  group: "<group_to_run_plugin_process_as>"
 cscli:
   output: "(human|json|raw)"
   hub_branch: "<hub_branch>"
@@ -328,6 +331,19 @@ The git branch on which `cscli` is going to fetch configurations.
 > uri
 
 (>1.0.7) An uri (without the trailing `/metrics`) that will be used by `cscli metrics` command, ie. `http://127.0.0.1:6060/`
+
+
+### `plugin_config`
+
+#### `user`
+> string
+
+The owner of the plugin process. 
+
+#### `group`
+> string
+
+The group of the plugin process. 
 
 ### `db_config`
 

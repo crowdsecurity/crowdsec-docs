@@ -92,9 +92,9 @@ You can define other plugin specific fields too. eg `webhook` field for a slack 
 CrowdSec main process feeds the configuration files to the plugins via gRPC. It determines where to send the config via the value of `type`  field in config file.
 
 
-# Architecture and technical considerations
+## Architecture and technical considerations
 
-## Architecture
+### Architecture
 
 Under the hood, the main CrowdSec process dispatches the plugins as gRPC services. This means that plugins can be written in any language.
 
@@ -102,7 +102,7 @@ Currently only `notification` plugins are supported. Whenever CrowdSec receives 
 
 [See](https://github.com/crowdsecurity/crowdsec/blob/plugins/pkg/protobufs/notifier.proto) the gRPC protocol for `notification` plugins.
 
-## Plugin Discovery
+### Plugin Discovery
 
 Plugins are discovered from the directories specified in `/etc/crowdsec/config.yaml`. 
 
@@ -115,4 +115,15 @@ config_paths:
 .....
 ```
 
+### Plugin Process Owner
 
+Due to security reasons, plugins are ideally ran with dropped priveleges. This is done by setting owner and group of the plugin process as some unprivileged user. This can be configured via setting the desired user and group in `/etc/crowdsec/config.yaml`. 
+
+```yaml
+#/etc/crowdsec/config.yaml
+.....
+plugin_config:
+  user: nobody
+  group: nogroup
+.....
+```
