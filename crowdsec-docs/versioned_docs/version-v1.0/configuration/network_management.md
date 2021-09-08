@@ -6,7 +6,7 @@ id: network_management
 
 # Ports inventory
 
- - `tcp/8080` exposes a [REST API](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI) for bouncers, `cscli` and comunication between crowdsec agent and local api
+ - `tcp/8080` exposes a [REST API](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI) for bouncers, `cscli` and communication between crowdsec agent and local api
  - `tcp/6060` (endpoint `/metrics`) exposes [prometheus metrics](/docs/v1.0/observability/prometheus)
  - `tcp/6060` (endpoint `/debug`) exposes pprof debugging metrics
 
@@ -18,7 +18,7 @@ id: network_management
 
 
 
-# Comunication between components
+# Communication between components
 
 ## Bouncers -> Local API
 
@@ -39,7 +39,7 @@ Both components need proper configuration to run (we decide to keep this behavio
 
 ## Local API -> Database
 
- - When using a networked database (PostgreSQL or MySQL), only the local API needs to access the database, agents don't have to be able to comunicate with it.
+ - When using a networked database (PostgreSQL or MySQL), only the local API needs to access the database, agents don't have to be able to communicate with it.
 
 ## Prometheus -> Agents
 

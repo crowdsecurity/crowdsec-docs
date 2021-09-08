@@ -44,7 +44,7 @@ const FeatureList = [
     link: "/docs/local_api/intro",
     description: (
       <>
-        All components comunicate via HTTP API, making it easy to cover complex setups.
+        All components communicate via HTTP API, making it easy to cover complex setups.
       </>
     ),
   },
