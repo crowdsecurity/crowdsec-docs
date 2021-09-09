@@ -1,0 +1,49 @@
+---
+id: wordpress
+title: Wordpress Bouncer
+---
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+<img src={useBaseUrl('/img/crowdsec_wp.png')} alt="CrowdSec" title="CrowdSec" />
+</p>
+
+
+# How does it work ?
+
+This wordpress plugin allows you to apply decisions from crowdsec directly within the wordpress application.
+
+It relies on the [associated php library](https://github.com/crowdsecurity/php-cs-bouncer) and provides the ability to not only block users, but challenge them with captchas.
+
+# Installation
+
+The bouncer itself can be installed from the marketplace in wordpress back-office :
+
+<p align="center">
+<img src={useBaseUrl('/img/Wordpress-Market-place.png')} alt="CrowdSec" title="CrowdSec" />
+</p>
+
+# Configuration
+
+You only need to configure your local API endpoint and API key so the bouncer can get its decisions from crowdsec :
+
+<p align="center">
+<img src={useBaseUrl('/img/wp_config1.jpg')} alt="CrowdSec" title="CrowdSec" />
+</p>
+
+A key point of the bouncer is to allow not only to block users, but as well to present them with captchas :
+
+<p align="center">
+<img src={useBaseUrl('/img/CrowdSec-flex-mode.png')} alt="CrowdSec" title="CrowdSec" />
+</p>
+
+
+# Next
+
+Feel free to look at the [associated article](https://crowdsec.net/wordpress-bouncer/) for more configuration options and tweaks.
+
+

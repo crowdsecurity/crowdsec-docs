@@ -783,6 +783,10 @@
       "id": "version-v1.1/bouncers/cloudflare"
     },
     {
+      "type": "doc",
+      "id": "version-v1.1/bouncers/wordpress"
+    },
+    {
       "type": "link",
       "label": "Hub",
       "href": "https://hub.crowdsec.net/browse/#bouncers"
