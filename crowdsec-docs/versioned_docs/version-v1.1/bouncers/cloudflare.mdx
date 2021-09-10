@@ -26,9 +26,61 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 A bouncer that syncs the decisions made by CrowdSec with CloudFlare's firewall. Manages multi user, multi account, multi zone setup. Supports IP, Country and AS scoped decisions.
 
-# Installation
+## Installation
 
-## Install script
+### Using packages
+
+Packages for crowdsec-cloudflare-bouncer [are available on our repositories](/getting_started/install.mdx##install-our-repositories). You need to pick the package accord to your firewall system :
+
+<Tabs
+  defaultValue="debian"
+  values={[
+    { label: 'Debian/Ubuntu', value: 'debian' ,},
+    { label: 'RHEL/Centos/Fedora', value: 'rhel', },
+  ]
+}>
+<TabItem value="debian">
+
+```bash
+sudo apt install crowdsec-cloudflare-bouncer
+```
+
+</TabItem>
+<TabItem value="rhel">
+
+```bash
+sudo yum install crowdsec-cloudflare-bouncer
+```
+
+</TabItem>
+</Tabs>
+
+
+Then run the following commands to setup your bouncer:
+
+```bash
+sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1> <CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens 
+sudo crowdsec-cloudflare-bouncer -s # this sets up IP lists and firewall rules at cloudflare for the provided config. 
+sudo systemctl start crowdsec-cloudflare-bouncer # the bouncer now syncs the crowdsec decisions with cloudflare components.
+```
+
+:::info
+
+If your bouncer is not installed on the same machine than LAPI, don't forget to set the `crowdsec_lapi_url` and `crowdsec_lapi_key` in the configuration file `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
+
+:::
+
+
+## Manual Installation
+
+### Assisted
+
+
+:::note
+
+You can run `sudo crowdsec-cloudflare-bouncer -d` to cleanup cloudflare components before editing the config files.
+
+:::
 
 Download the [latest release](https://github.com/crowdsecurity/cs-cloudflare-bouncer/releases).
 
@@ -36,11 +88,22 @@ Download the [latest release](https://github.com/crowdsecurity/cs-cloudflare-bou
 tar xzvf crowdsec-cloudflare-bouncer.tgz
 cd crowdsec-cloudflare-bouncer/
 sudo ./install.sh
-sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1> <CLOUDFLARE_TOKEN2> > cfg.yaml # auto-generate cloudflare config for provided space separated tokens 
-sudo cat cfg.yaml > /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml # Verify the generated config and paste it in bouncer's config.
+sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1> <CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens 
 sudo crowdsec-cloudflare-bouncer -s # this sets up IP lists and firewall rules at cloudflare for the provided config. 
 sudo systemctl start crowdsec-cloudflare-bouncer # the bouncer now syncs the crowdsec decisions with cloudflare components.
 ```
+
+### From source
+
+:warning: requires go >= 1.16
+
+```bash
+make release
+cd crowdsec-cloudflare-bouncer-vX.X.X
+sudo ./install.sh
+```
+Rest of the steps are same as of the above method.
+
 
 ## Using Docker 
 
@@ -63,7 +126,7 @@ sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for h
 
 The `crowdsec_lapi_url` must be accessible from the container.
 
-### Run the bouncer:
+### Run the bouncer
 
 ```bash
 docker run -v \
@@ -72,18 +135,8 @@ docker run -v \
            crowdflare
 ```
 
-## From source
 
-:warning: requires go >= 1.16
 
-```bash
-make release
-cd crowdsec-cloudflare-bouncer-vX.X.X
-sudo ./install.sh
-```
-Rest of the steps are same as of the above method.
-
-**Always run `/usr/bin/crowdsec-cloudflare-bouncer -d` to cleanup cloudflare components before editing the config files.**
 
 # Configuration
 
@@ -122,7 +175,7 @@ prometheus:
   listen_port: 2112
 ```
 
-## Cloudflare Configuration:
+## Cloudflare Configuration
 
 **Background:** In Cloudflare, each user can have access to multiple accounts. Each account can own/access multiple zones. In this context a zone can be considered as a domain. Each domain registered with cloudflare gets a distinct `zone_id`.
 
@@ -134,13 +187,17 @@ For obtaining the `token`:
 
 To automatically generate config for cloudflare check the  helper section below.
 
-**Note:** If the zone is subscribed to a paid Cloudflare plan then it can be configured to support multiple types of actions. For free plan zones only one action is supported. The first action is applied as default action.
 
-# Helpers
+:::note
+If the zone is subscribed to a paid Cloudflare plan then it can be configured to support multiple types of actions. For free plan zones only one action is supported. The first action is applied as default action.
+:::
+
+
+## Helpers
 
 The bouncer's binary has built in helper scripts to do various operations.
 
-### Auto config generator: 
+### Auto config generator
 
 Generates bouncer config by discovering all the accounts and the zones associated with provided list of tokens. 
 
@@ -151,14 +208,16 @@ Example Usage:
 cat cfg.yaml  > /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml
 ```
 
-**Note:** This script only generates cloudflare related config. By default it refers to the config at `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml` for crowdsec configuration. 
+:::note
+This script only generates cloudflare related config. By default it refers to the config at `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml` for crowdsec configuration. 
+:::
 
 Using custom config:
 ```bash
 /usr/local/bin/crowdsec-cloudflare-bouncer -c ./cfg.yaml -g <TOKEN_1>,<TOKEN_2>... 
 ```
 
-### Cloudflare Setup: 
+### Cloudflare Setup
 
 This only creates the required IP lists and firewall rules at cloudflare and exits.
 
@@ -167,7 +226,7 @@ Example Usage:
 /usr/local/bin/crowdsec-cloudflare-bouncer -s 
 ```
 
-### Cloudflare Cleanup: 
+### Cloudflare Cleanup
 
 This deletes all IP lists and firewall rules at cloudflare which were created by the bouncer. It also deletes the local cache. 
 
