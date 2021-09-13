@@ -248,6 +248,11 @@ module.exports = {
       id: "bouncers/cloudflare"
     },
     {
+      type: 'doc',
+      label: 'Wordpress Bouncer',
+      id: "bouncers/wordpress"
+    },
+    {
       type:"link",
       label: "Hub",
       href:"https://hub.crowdsec.net/browse/#bouncers"

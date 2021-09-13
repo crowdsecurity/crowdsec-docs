@@ -35,7 +35,33 @@ At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecuri
 
 # Installation
 
-## Install script
+## Using packages
+
+[Setup crowdsec repositories](/getting_started/install.mdx#install-our-repositories).
+
+<Tabs
+  defaultValue="debian"
+  values={[
+    { label: 'Debian/Ubuntu', value: 'debian' ,},
+  ]
+}>
+<TabItem value="debian">
+
+```bash
+sudo apt install crowdsec-nginx-bouncer
+```
+
+</TabItem>
+
+</Tabs>
+
+
+## Manual installation
+
+:::warning
+nginx bouncer depends on nginx, libnginx-mod-http-lua, lua-logging, lua, lua-sec.
+it has been tested only on debian/ubuntu based distributions.
+:::
 
 Download the latest release [here](https://github.com/crowdsecurity/cs-nginx-bouncer/releases)
 
