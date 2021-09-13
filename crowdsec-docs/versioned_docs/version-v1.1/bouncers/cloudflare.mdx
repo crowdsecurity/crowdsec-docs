@@ -58,11 +58,19 @@ sudo yum install crowdsec-cloudflare-bouncer
 
 Then run the following commands to setup your bouncer:
 
+
 ```bash
 sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1> <CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens 
 sudo crowdsec-cloudflare-bouncer -s # this sets up IP lists and firewall rules at cloudflare for the provided config. 
 sudo systemctl start crowdsec-cloudflare-bouncer # the bouncer now syncs the crowdsec decisions with cloudflare components.
 ```
+
+:::warning
+
+Don't redirect the generated configuration to `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml` with bash redirection (`>`) but use the `-o` flag instead, else you will loose your existing configuration (eg. `crowdsec_lapi_key`).
+
+:::
+
 
 :::info
 
