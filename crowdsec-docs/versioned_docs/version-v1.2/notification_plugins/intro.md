@@ -12,6 +12,10 @@ Events get dispatched to said plugins via [profile configuration](/profiles/intr
 
 ## Configuration
 
+:::warning
+The default profile will not forward manual decisions (`cscli decisions add -i x.x.x.x`) to the notification plugins. You may want to create [notification-only profiles](#creating-notification-only-profile).
+:::
+
 The default plugins are shipped with crowdsec uppon installation, and can trivially be enabled without further installation.
 
 Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`.md).
@@ -43,6 +47,24 @@ notifications:
 ```
 
 **Note:** In this case CrowdSec will map the plugin `slackreport` to the plugin config which has `name=slackreport`. See next section for more details.
+
+## Creating notification-only profile
+
+As manual decisions come up with their own decisions (user can specify duration etc.), they are not getting through the profile nor notifications. If you want to add notification for manual IP decisions for exemple, adding this to your profile would work :
+
+```yaml
+---
+name: notify_only
+#debug: true
+filters:
+ - Alert.GetScope() == "Ip"
+notifications:
+ - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
+on_success: break
+
+```
+
+
 
 ## Notification plugin configuration:
 
