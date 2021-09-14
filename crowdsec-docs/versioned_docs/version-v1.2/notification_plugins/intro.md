@@ -57,7 +57,7 @@ As manual decisions come up with their own decisions (user can specify duration 
 name: notify_only
 #debug: true
 filters:
- - Alert.GetScope() == "Ip"
+ - Alert.Remediation == false && Alert.GetScope() == "Ip"
 notifications:
  - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
 on_success: break
