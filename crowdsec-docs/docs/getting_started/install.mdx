@@ -194,7 +194,7 @@ We do not provide ARM64 images currently, but the x86 one works fine on ARM64 Ma
 
 You can also use our [docker image](https://hub.docker.com/r/crowdsecurity/crowdsec).
 
-In order to simplify the usage, you can create some  a shell alias:
+In order to simplify the usage, you can create a shell alias:
 ```shell
 alias cscli="docker run --rm --entrypoint /usr/local/bin/cscli  -v PATH_TO_CROWDSEC_CONFIG:/etc/crowdsec/config.yaml -v PATH_TO_LAPI_CREDENTIALS:/etc/crowdsec/local_api_credentials.yaml -e DISABLE_ONLINE_API=true -e DISABLE_AGENT=true crowdsecurity/crowdsec:latest"
 ```
