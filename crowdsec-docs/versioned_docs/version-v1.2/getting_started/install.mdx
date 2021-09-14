@@ -1,0 +1,225 @@
+---
+id: install_crowdsec
+title: Install CrowdSec
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+For those that prefer hands-on approach, you can as well [manually install crowdsec](/user_guides/building.md).
+
+## Install our repositories
+
+Installing our repositories allows you to access the latest packages of crowdsec and bouncers.
+
+:::info
+We are using [packagecloud.io service](https://packagecloud.io/crowdsec/crowdsec/).
+While `curl | sudo bash` can be convenient for some, [alternative installation methods are available](https://packagecloud.io/crowdsec/crowdsec/install#manual).
+:::
+
+
+<Tabs
+  defaultValue="debian"
+  groupId="operating-systems"
+  values={[
+    {label: 'Debian/Ubuntu', value: 'debian'},
+    {label: 'EL/Fedora/Centos7', value: 'centos7'},
+    {label: 'EL/Fedora/Centos8', value: 'centos8'},
+    {label: 'Amzn Linux 2', value: 'amz'},
+    {label: 'FreeBSD', value: 'freebsd'},
+    {label: 'Docker', value: 'docker'},
+  ]}>
+  <TabItem value="debian">
+    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash</CodeBlock>
+  </TabItem>
+  
+  <TabItem value="centos7">
+    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash</CodeBlock>
+  </TabItem>
+
+  <TabItem value="centos8">
+    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash</CodeBlock>
+  </TabItem>
+
+  <TabItem value="amz">
+    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash</CodeBlock>
+  </TabItem>
+
+  <TabItem value="freebsd">
+    FreeBSD packages are available in the official repositories
+  </TabItem>
+
+  <TabItem value="openwrt">
+    OpenWRT packages are available in the official repositories.
+  </TabItem>
+
+  <TabItem value="docker">
+    Docker image is available on docker hub.
+  </TabItem>
+
+</Tabs>
+
+
+
+## Install crowdsec
+
+<Tabs
+  defaultValue="debian"
+  groupId="operating-systems"
+  values={[
+    {label: 'Debian/Ubuntu', value: 'debian'},
+    {label: 'EL/Fedora/Centos8', value: 'centos7'},
+    {label: 'EL/Fedora/Centos7', value: 'centos8'},
+    {label: 'Amzn Linux 2', value: 'amz'},
+    {label: 'FreeBSD', value: 'freebsd'},
+    {label: 'Docker', value: 'docker'},
+  ]}>
+  <TabItem value="debian">
+    <CodeBlock className="language-bash">apt install crowdsec</CodeBlock>
+  </TabItem>
+  
+  <TabItem value="centos7">
+    <CodeBlock className="language-bash">yum install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="centos8">
+    <CodeBlock className="language-bash">dnf install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="amz">
+    <CodeBlock className="language-bash">yum install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="freebsd">
+    <CodeBlock className="language-bash">pkg install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="openwrt">
+    <CodeBlock className="language-bash">dnf install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="docker">
+    <CodeBlock className="language-bash">docker pull crowdsecurity/crowdsec</CodeBlock>
+  </TabItem>
+
+</Tabs>
+
+
+<!-- TBD : fix links -->
+
+You now have crowdsec running ! You can move forward and install a [bouncer](/bouncers/intro.md), or take a [tour](/getting_started/crowdsec_tour.md) of the software beforehand !
+
+
+:::caution
+
+Keep in mind that CrowdSec is only in charge of the "detection", and won't block anything on its own.
+You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
+
+:::
+
+
+## Install a bouncer
+
+
+<Tabs
+  defaultValue="debian"
+  groupId="operating-systems"
+  values={[
+    {label: 'Debian/Ubuntu', value: 'debian'},
+    {label: 'EL/Fedora/Centos8', value: 'centos7'},
+    {label: 'EL/Fedora/Centos7', value: 'centos8'},
+    {label: 'Amzn Linux 2', value: 'amz'},
+    {label: 'FreeBSD', value: 'freebsd'},
+  ]}>
+  <TabItem value="debian">
+    <CodeBlock className="language-bash">apt install crowdsec-firewall-bouncer-iptables</CodeBlock>
+  </TabItem>
+  
+  <TabItem value="centos7">
+      <CodeBlock className="language-bash">yum install crowdsec-firewall-bouncer-iptables</CodeBlock>
+  </TabItem>
+  <TabItem value="centos8">
+    <CodeBlock className="language-bash">dnf install crowdsec-firewall-bouncer-iptables</CodeBlock>
+  </TabItem>
+  <TabItem value="amz">
+    <CodeBlock className="language-bash">yum install crowdsec-firewall-bouncer-iptables</CodeBlock>
+  </TabItem>
+  <TabItem value="freebsd">
+    <CodeBlock className="language-bash">pkg install crowdsec-firewall-bouncer-iptables</CodeBlock>
+  </TabItem>
+  <TabItem value="openwrt">
+    <CodeBlock className="language-bash">pkg install crowdsec-firewall-bouncer-iptables</CodeBlock>
+  </TabItem>
+</Tabs>
+
+
+:::info
+
+While we're suggesting the most common firewall bouncer, check our [hub](https://hub.crowdsec.net) for more bouncers.
+Find a bouncer directly for your application ([nginx](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-nginx-bouncer), [php](https://github.com/crowdsecurity/php-cs-bouncer), [wordpress](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-wordpress-bouncer)) or your providers ([cloudflare](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-cloudflare-bouncer), [AWS/GCP/...](https://hub.crowdsec.net/author/fallard84/bouncers/cs-cloud-firewall-bouncer)) 
+
+:::
+
+## Running cscli on macos
+
+While it does not make much sense to run crowdsec itself on MacOS, being able to run cscli to interact with remote crowdsec instances is very useful.
+
+We do not currently provide prebuilt binary for MacOS, but you can:
+ - Build cscli yourself
+ - Use our docker image
+
+### Building cscli
+
+In order to build cscli from source, you will need to have at least golang 1.16 installed.
+
+You can build from the git master branch or download a source release [here](https://github.com/crowdsecurity/crowdsec/releases).
+
+:::warning
+  If you choose to install from a release, make sure to download the `Source code` asset, not the release itself !
+:::
+
+Once you have the code, you can run `make release` to build `crowdsec` and `cscli`.
+
+The `cscli` binary will be located in `crowdsec-$VERSION/cmd/crowdsec-cli/cscli`, you can copy it anywhere in your PATH.
+
+### Using the docker image
+
+:::info
+
+We do not provide ARM64 images currently, but the x86 one works fine on ARM64 Macs.
+
+:::
+
+You can also use our [docker image](https://hub.docker.com/r/crowdsecurity/crowdsec).
+
+In order to simplify the usage, you can create a shell alias:
+```shell
+alias cscli="docker run --rm --entrypoint /usr/local/bin/cscli  -v PATH_TO_CROWDSEC_CONFIG:/etc/crowdsec/config.yaml -v PATH_TO_LAPI_CREDENTIALS:/etc/crowdsec/local_api_credentials.yaml -e DISABLE_ONLINE_API=true -e DISABLE_AGENT=true crowdsecurity/crowdsec:latest"
+```
+
+
+### Configuration
+
+In order to use `cscli` with a remote `crowdsec` agent, you need to be able to access from the machine where `cscli` will run:
+  - Crowdsec Local API: for most basic operations
+  - Crowdsec database (this means that you *cannot* use sqlite): for administrative operations (adding new bouncers/machines, listing them, ...)
+
+Create a local `config.yaml` (you can use the default [configuration file](https://github.com/crowdsecurity/crowdsec/blob/master/config/config.yaml) as a base).
+
+Update the `db_config` section to put the correct `type`, `host`, `port`, `username` and `password`.
+
+You can refer [here](/local_api/database.md) for more information about the database configuration.
+
+Optionally, if you have built `cscli` from source, you can also update the various paths in the configuration to point them to files in your home directory for simplicity.  
+
+On the machine where LAPI is running, run `cscli machines add NAME_OF_LOCAL_MACHINE -f local_machines_creds.yaml -a` to generate new LAPI credentials to use for your local `cscli`.
+
+:::warning
+The URL in the generated file will likely be wrong, make sure to update it to the actual IP or FQDN on which your LAPI is available.
+:::
+
+Copy this file locally either to the credentials file you bind-mount in your docker container or to the file loaded by cscli (by default, `/etc/crowdsec/local_api_credentials.yaml`)
+
+You are now able to use `cscli` from your macOS machine.
