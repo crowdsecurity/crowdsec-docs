@@ -13,9 +13,12 @@ id: network_management
 # Outgoing connections
 
  - Local API connects to `tcp/443` on `api.crowdsec.net` (signal push and blocklists pull)
- - `cscli` connects to `tcp/443` on `hub-cdn.crowdsec.net` to fetch scenarios, parsers etc.
+ - `cscli` connects to `tcp/443` on `hub-cdn.crowdsec.net` to fetch scenarios, parsers etc. (1)
+ - `cscli` connects to `tcp/443` on `version.crowdsec.net` to check latest version available. (1)
  - [`cscli dashboard`](/cscli/cscli_dashboard.md) fetches metabase configuration from a s3 bucket (`https://crowdsec-statics-assets.s3-eu-west-1.amazonaws.com/`)
 
+
+__(1) - both FQDN are cloudfront entries to crowdsec's github repositories so people avoid hitting github's quotas__
 
 
 # Communication between components
