@@ -5,7 +5,7 @@ sidebar_position: 10
 ---
 
 
-If you want to contact us using non-public media, you can contact us on `support` AT `crowdsec` DOT `net` with the following gpg-key :
+If you want to contact us through an encrypted channel: `support` at `crowdsec` dot `net` with the following GPG key.
 
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
