@@ -12,26 +12,26 @@ The [central API](https://crowdsecurity.github.io/api_doc/index.html?urls.primar
 
 
 :::info
-This information is *only* going to be pushed when a scenario is coming from the hub and is unmodified. Custom scenarios, tainted scenarios and manual decisions are *not* pushed
+This information is *only* going to be pushed when a scenario is coming from the Hub and is unmodified. Custom scenarios, tainted scenarios and manual decisions are *not* pushed
 :::
 
-When crowdsec blocks an attack, [unless you opt-out of it](/faq.md#how-to-disable-the-central-api), crowdsec is going to push "signal meta-data". Those meta-data are :
+When CrowdSec blocks an attack, [unless you opt-out of it](/faq.md#how-to-disable-the-central-api), it is going to push "signal meta-data". Those meta-data are:
  - The name of the scenario that was triggered
  - The hash & version of the scenario that was triggered
  - The timestamp of the decision
  - Your machine_id
- - The offending IP (along with its geoloc info when available)
+ - The offending IP (along with its geolocalization information when available)
 
 
 ### Scenario list
 
-The community blocklist matches the scenarios deployed on the crowdsec instance. For this reason, crowdsec provides the list of enabled scenarios (from the hub only) during [the login process](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI#/watchers/post_watchers_login).
+The community blocklist matches scenarios deployed on the CrowdSec instance. For this reason, CrowdSec provides the list of enabled scenarios (from the Hub only) during [the login process](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI#/watchers/post_watchers_login).
 
 ### Console metrics
 
-With the upcoming release of the [console](https://app.crowdsec.net) and for genreal health monitoring of the project, crowdsec reports the following information to the central API :
- - name and versions of the deployed bouncers
- - name and versions of the crowdsec agents registered to the local API
+With the upcoming release of the [console](https://app.crowdsec.net) and for general health monitoring of the project, CrowdSec reports the following information to the central API:
+ - name and versions of deployed bouncers
+ - name and versions of registered CrowdSec agents to the local API
 
 
 
