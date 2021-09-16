@@ -62,7 +62,7 @@ sudo cscli machines validate <machineName>
 ```
 
 :::info
-You can use `cscli machines list` to list all  machines registered to the API and view the ones that are not validated yet.
+You can use `cscli machines list` to list all machines registered to the API and view the ones that are not validated yet.
 :::
 
 ## Configuration
