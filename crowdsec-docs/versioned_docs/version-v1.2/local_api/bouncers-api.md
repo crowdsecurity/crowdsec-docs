@@ -7,23 +7,23 @@ sidebar_position: 2
 
 
 :::info
-This page explains how to interact with the local API exposed by crowdsec.
+This page details how to interact with the local API exposed by CrowdSec.
 
-It's meant to be useful for system administrators, or users that want to create their own bouncers.
+It is meant to be useful for system administrators, or users that want to create their own bouncers.
 :::
 
 ## Introduction
 
-This documentation only covers the API usage from the bouncer POV :
+This documentation only covers the API usage from the bouncer POV:
 
  - Authentication via API token (rather than JWT as crowdsec/cscli)
  - Reading decisions
 
-This guide will assume that you already have crowdsec running locally.
+In this guide, we assume that you already have CrowdSec running locally.
 
 ## Authentication
 
-Existing tokens can be viewed with `cscli bouncers list` :
+Existing tokens can be viewed with `cscli bouncers list`:
 
 ```
 # cscli bouncers list
@@ -34,7 +34,7 @@ Existing tokens can be viewed with `cscli bouncers list` :
 -------------------------------------------------------------------------------------------
 ```
 
-Let's create a new token with `cscli bouncers add MyTestClient` :
+Let's create a new token with `cscli bouncers add MyTestClient`:
 
 ```
 # cscli bouncers add MyTestClient
@@ -46,7 +46,7 @@ Please keep this key since you will not be able to retrieve it!
 
 ```
 
-This is the token that we will use to authenticate with the API :
+This is the token that we will use to authenticate with the API:
 
 ```bash
 ▶ curl  -H "X-Api-Key: 837be58e22a28738066de1be8f53636b" -I localhost:8080/v1/decisions  
@@ -59,15 +59,15 @@ Note: if the token is missing or incorrect, you will get a **403** answer.
 
 ## API Usage
 
-As stated in the [swagger documentation](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI), bouncer's method are restricted to the `/decisions` path. They allow to query the local decisions in two modes :
+As stated in the [swagger documentation](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI), bouncers' methods are restricted to the `/decisions` path. They allow to query the local decisions in two modes:
 
- - stream mode : Intended for bouncers that will - on a regular basis - query the local api for new and expired/decisions
- - query mode : Intended for bouncers that want to query the local api about a specific ip/range/username etc.
+ - stream mode: Intended for bouncers that will - on a regular basis - query the local API for new and expired/decisions
+ - query mode: Intended for bouncers that want to query the local API for a specific IP/range/username etc.
 
 
 ## Query Mode
 
-To have some data to query for, let's add two decisions to our local API
+To have some data to query for, let's add two decisions to our local API:
 
 ```bash
 ▶ sudo cscli decisions add -i 1.2.3.4
@@ -86,7 +86,7 @@ INFO[0000] Decision successfully added
 
 ```
 
-### Query mode : IP
+### Query mode: IP
 
 
 ```bash title="Query a single banned IP"
@@ -105,7 +105,7 @@ null
 ```
 _note: notice that the decision returned is the range that we banned earlier and that contains query ip_
 
-### Query mode : Range
+### Query mode: Range
 
 
 ```bash title="Query a range in which one of the ban is contained"
@@ -124,9 +124,11 @@ null
 [{"duration":"3h30m24.773063133s","id":2337,"origin":"cscli","scenario":"manual 'ban' from '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA'","scope":"Range","type":"ban","value":"2.2.3.0/24"}]
 ```
 
-### Query mode : non IP centric decisions
+### Query mode: non-IP centric decisions
+
 
 While most people will use crowdsec to ban IPs or ranges, decisions can target other scopes and actions:
+
 
 ```bash
 ▶ sudo cscli decisions add --scope username --value myuser --type enforce_mfa
@@ -160,10 +162,10 @@ INFO[0000] Decision successfully added
 
 ## Stream mode
 
-The "streaming mode" of the API (which is actually more like polling) allows for bouncers that are going to fetch on a regular basis an update of the existing decisions. The endpoint is `/decisions/stream` with a single `startup` (boolean) argument. The argument allows to indicate if the bouncer wants the full state of decisions, or only an update since it last pulled.
+The "streaming mode" of the API (which is actually more like polling), allows for bouncers that are going to fetch, on a regular basis, an update of the existing decisions. The endpoint is `/decisions/stream` with a single `startup` (boolean) argument. The argument allows to indicate if the bouncer wants the full state of decisions, or only an update since it last pulled.
 
 
-Given the our state looks like :
+In thix example, our state looks like:
 
 ```bash
 ▶ sudo cscli decisions list                                  
@@ -178,7 +180,7 @@ Given the our state looks like :
 
 ```
 
-The first call to `/decisions/stream` will look like :
+The first call to `/decisions/stream` will look like:
 
 ```bash
 ▶ curl  -s -H "X-Api-Key: 837be58e22a28738066de1be8f53636b"  http://localhost:8080/v1/decisions/stream\?startup\=true | jq .            
@@ -209,11 +211,11 @@ The first call to `/decisions/stream` will look like :
   ]
 }
 ```
-_note: the initial state will contained passed deleted events (to account for crashes/services restart for example), and the current decisions, both local and those fed from the central API_
+_note: the initial state will contain passed deleted events (to account for crashes/services restart for example), and the current decisions, both local and those fed from the central API_
 
 
 :::info
-You might notice that even you are requesting for the initial state, you receive a lot of "deleted" decisions. 
+You might notice that even when you  request for the initial state, you receive a lot of "deleted" decisions. 
 This is intended to allow you to easily restart the local API without having a desynchronized state with the bouncers.
 :::
 
@@ -229,14 +231,14 @@ _note: Calling the decisions/stream just after will lead to empty results, as no
 
 
 
-Let's now add a new decision :
+Let's now add a new decision:
 
 ```bash
 ▶ sudo cscli decisions add -i 3.3.3.4                                                   
 INFO[0000] Decision successfully added
 ```
 
-And call our endpoint again :
+And call our endpoint again:
 
 ```bash
 ▶ curl  -s -H "X-Api-Key: 837be58e22a28738066de1be8f53636b"  http://localhost:8080/v1/decisions/stream\?startup\=false | jq .
