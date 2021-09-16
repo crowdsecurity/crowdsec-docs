@@ -126,7 +126,9 @@ null
 
 ### Query mode: non-IP centric decisions
 
-While most people will use CrowdSec to ban IPs or ranges, decisions can target other scopes and other decisions:
+
+While most people will use crowdsec to ban IPs or ranges, decisions can target other scopes and actions:
+
 
 ```bash
 ▶ sudo cscli decisions add --scope username --value myuser --type enforce_mfa
