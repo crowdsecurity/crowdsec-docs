@@ -6,13 +6,10 @@ sidebar_position: 4
 
 # Contribute to the documentation
 
-If you spotted some mistakes in the documentation or have improvement suggestions, you can :
+If you spotted mistakes/typos in the documentation or would like to suggest some improvements, you can:
 
- - open a [new documentation issue](https://github.com/crowdsecurity/crowdsec-docs/issues/new) if you are comfortable with github
- - let us know on [CrowdSecurity discourse](http://discourse.crowdsec.net) if you want to discuss about it
-
-Let us as well know if you have some improvement suggestions !
-
+ - open a [new documentation issue](https://github.com/crowdsecurity/crowdsec-docs/issues/new) if you are comfortable with GitHub
+ - give us a shout on [our Discourse](http://discourse.crowdsec.net)
 
 <details>
   <summary>Preview your documentation changes locally</summary>
