@@ -20,7 +20,7 @@ When CrowdSec blocks an attack, [unless you opt-out of it](/faq.md#how-to-disabl
  - The hash & version of the scenario that was triggered
  - The timestamp of the decision
  - Your machine_id
- - The offending IP (along with its geolocalization information when available)
+ - The offending IP (along with its geolocation information when available)
 
 
 ### Scenario list
