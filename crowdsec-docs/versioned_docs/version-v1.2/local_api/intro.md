@@ -22,7 +22,7 @@ There are two kinds of authentication to the local API:
 
  - Bouncers: they authenticate with a simple API key and can only read decisions
 
- - Machines: they authenticate with a login&password. They cab read decisions and create new ones too
+ - Machines: they authenticate with a login&password. They can read decisions and create new ones too
 
 
 ### Bouncers
