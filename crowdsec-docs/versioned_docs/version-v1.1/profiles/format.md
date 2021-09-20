@@ -62,28 +62,10 @@ filters:
 decisions:
  - type: ban
    duration: 8h
-notifications:
-  - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
 on_success: break
 ---
 ...
 ```
-
-This allows you as well to setup various notifications or profiles depending on the scope :
-
-```yaml
-name: notif_only
-#debug: true
-filters:
- - Alert.GetScope() == "Country"
-notifications:
-  - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
-on_success: break
----
-...
-```
-
-
 
 ### `decisions`
 
