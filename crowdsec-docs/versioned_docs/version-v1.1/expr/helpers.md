@@ -71,3 +71,27 @@ Returns true if the IP `IPStr` is contained in the IP range `RangeStr` (uses `ne
 Return RFC3339 formatted time 
 
 > `TimeNow()`
+
+# Alert specific helpers
+
+
+### `Alert.Remediation bool`
+
+Is `true` if the alert asks for a remediation. Will be true for alerts from scenarios with `remediation: true` flag. Will be false for alerts from manual `cscli decisions add` commands (as they come with their own decision).
+
+### `Alert.GetScenario() string`
+
+Returns the name of the scenario that triggered the alert.
+
+### `Alert.GetScope() string`
+
+Returns the scope of an alert. Most common value is `Ip`. `Country` and `As` are generally used for more distributed attacks detection/remediation.
+
+
+# Event specific helpers
+
+
+### `Event.GetType() string`
+
+Returns the type of an Event : `overflow` or `log`.
+

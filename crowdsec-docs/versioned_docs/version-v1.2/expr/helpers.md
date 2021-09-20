@@ -6,26 +6,26 @@ sidebar_position: 3
 
 > [antonmedv/expr](https://github.com/antonmedv/expr) - Expression evaluation engine for Go: fast, non-Turing complete, dynamic typing, static typing
 
-Several components of CrowdSec's configuration use [Expr](https://github.com/antonmedv/expr), primarily:
+Several places of CrowdSec's configuration use [expr](https://github.com/antonmedv/expr), notably :
 
- - [Filters](/parsers/format.md#filter) that are used to determine event eligibility in parsers, scenarios and profiles
- - [Statics](/parsers/format.md#statics) use Expr in the `expression` directive, to compute complex values
+ - [Filters](/parsers/format.md#filter) that are used to determine events eligibility in parsers, scenarios and profiles
+ - [Statics](/parsers/format.md#statics) use expr in the `expression` directive, to compute complex values
  - [Whitelists](/whitelist/introduction.md) rely on `expression` directive to allow more complex whitelists filters
 
-To learn more about [Expr](https://github.com/antonmedv/expr), [check the GitHub page of the project](https://github.com/antonmedv/expr/blob/master/docs/Language-Definition.md).
+To learn more about [expr](https://github.com/antonmedv/expr), [check the github page of the project](https://github.com/antonmedv/expr/blob/master/docs/Language-Definition.md).
 
 
-When CrowdSec relies on `expr`, a context is provided to let the expression access relevant objects:
+When CrowdSec relies on `expr`, a context is provided to let the expression access relevant objects :
 
  - `evt.` is the representation of the current event and is the most relevant object
- - in [profiles](/profiles/intro.md), alerts are accessible via the `Alert` object
+ - in [profiles](/profiles/intro.md), alert is accessible via the `Alert` object
 
-If the `debug` is enabled (in the scenario or parser where Expr is used), additional debug will be displayed regarding evaluated expressions.
+If the `debug` is enabled (in the scenario or parser where expr is used), additional debug will be displayed regarding evaluated expressions.
 
 
 # Helpers
 
-In order to makes its use in CrowdSec more efficient, we added a few helpers that are documented below.
+In order to makes its use in CrowdSec more efficient, we added a few helpers that are documented bellow.
 
 ### `Atof(string) float64`
 
@@ -71,3 +71,27 @@ Returns true if the IP `IPStr` is contained in the IP range `RangeStr` (uses `ne
 Return RFC3339 formatted time 
 
 > `TimeNow()`
+
+# Alert specific helpers
+
+
+### `Alert.Remediation bool`
+
+Is `true` if the alert asks for a remediation. Will be true for alerts from scenarios with `remediation: true` flag. Will be false for alerts from manual `cscli decisions add` commands (as they come with their own decision).
+
+### `Alert.GetScenario() string`
+
+Returns the name of the scenario that triggered the alert.
+
+### `Alert.GetScope() string`
+
+Returns the scope of an alert. Most common value is `Ip`. `Country` and `As` are generally used for more distributed attacks detection/remediation.
+
+
+# Event specific helpers
+
+
+### `Event.GetType() string`
+
+Returns the type of an Event : `overflow` or `log`.
+

@@ -50,7 +50,40 @@ filters:
  - Alert.Remediation == true && Alert.GetScope() == "Ip"
 ```
 
-If any `filter` of the list returns `true`, the profile is elligible and the `decisions` will be applied.
+If any `filter` of the list returns `true`, the profile is elligible and the `decisions` will be applied (note: `filter` can use [expr helpers](/expr/helpers.md)).
+
+The filter allows you to then create custom decisions for some specific scenarios for example :
+
+```yaml
+name: specific_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip" && Alert.GetScenario() in ["crowdsecurity/ssh-bf", "crowdsecurity/ssh-user-enum"]
+decisions:
+ - type: ban
+   duration: 8h
+notifications:
+  - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
+on_success: break
+---
+...
+```
+
+This allows you as well to setup various notifications or profiles depending on the scope :
+
+```yaml
+name: notif_only
+#debug: true
+filters:
+ - Alert.GetScope() == "Country"
+notifications:
+  - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
+on_success: break
+---
+...
+```
+
+
 
 ### `decisions`
 

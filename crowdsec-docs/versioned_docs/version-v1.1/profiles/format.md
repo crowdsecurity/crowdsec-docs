@@ -14,7 +14,10 @@ filters:
 decisions:
  - type: ban
    duration: 4h
+notifications:
+  - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
 on_success: break
+
 ---
 name: another_profile
 ...
@@ -47,7 +50,22 @@ filters:
  - Alert.Remediation == true && Alert.GetScope() == "Ip"
 ```
 
-If any `filter` of the list returns `true`, the profile is elligible and the `decisions` will be applied.
+If any `filter` of the list returns `true`, the profile is elligible and the `decisions` will be applied (note: `filter` can use [expr helpers](/expr/helpers.md)).
+
+The filter allows you to then create custom decisions for some specific scenarios for example :
+
+```yaml
+name: specific_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip" && Alert.GetScenario() in ["crowdsecurity/ssh-bf", "crowdsecurity/ssh-user-enum"]
+decisions:
+ - type: ban
+   duration: 8h
+on_success: break
+---
+...
+```
 
 ### `decisions`
 
@@ -85,3 +103,12 @@ on_failure: break
 
 If the profile didn't apply and `on_failure` is set to `break`, decisions processing will stop here and it won't evaluate against following profiles.
 
+### `notifications`
+
+```yaml
+notifications:
+  - notification_plugin1
+  - notification_plugin2
+```
+
+The [list of notification plugins](/notification_plugins/intro.md) to which the alert should be fed.
