@@ -35,5 +35,5 @@ cd tests
 ./cscli -c dev.yaml hub list
 ```
 
-In this test environement, configurations are under the `config/` dir.
+In this test environment, configurations are under the `config/` dir.
 
