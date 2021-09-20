@@ -14,7 +14,7 @@ The [console](https://app.crowdsec.net) is a web interface hosted by us that all
 
 ![console-overview](/img/console-overview.png)
 
-Once your [registration done](https://app.crowdsec.net/signup), follow the tour!
+Once your [registration is done](https://app.crowdsec.net/signup), follow the tour!
 
 
 You will be able to register any instance directly from `cscli`:
