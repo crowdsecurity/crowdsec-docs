@@ -20,4 +20,4 @@ Sharing your parsers, scenarios and collections on the Hub allows other users to
 
 ### How?
 
-To have your parser/scenario published on the Hub, simply [open a new issue on the Hub](https://github.com/crowdsecurity/hub/issues/new), requesting "parser/scenario inclusion". Configurations will then be reviewed by the team and published directly on the Hub, for everyone to enjoy your contribution!
+To have your parser/scenario published on the Hub, simply [open a new issue on the Hub](https://github.com/crowdsecurity/hub/issues/new), requesting "parser/scenario inclusion". Configurations will then be reviewed by the team and published directly on the Hub, for everyone to find and use them!
