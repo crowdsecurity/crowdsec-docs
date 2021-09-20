@@ -50,7 +50,8 @@ filters:
  - Alert.Remediation == true && Alert.GetScope() == "Ip"
 ```
 
-If any `filter` of the list returns `true`, the profile is elligible and the `decisions` will be applied.
+If any `filter` of the list returns `true`, the profile is elligible and the `decisions` will be applied (note: `filter` can use [expr helpers](../expr/helpers.md))
+
 
 ### `decisions`
 
