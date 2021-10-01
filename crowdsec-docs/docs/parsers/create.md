@@ -5,7 +5,7 @@ sidebar_position: 4
 ---
 
 
-# Foreword
+## Foreword
 
 This documentation assumes you're trying to create a parser for crowdsec with the intent of submitting to the hub, and thus create the associated functional testing.
 The creation of said functional testing will guide our process and will make it easier.
@@ -28,7 +28,7 @@ As we are going to parse those logs to further detect bruteforce and user-enumer
 1. Clone the hub
 
 ```bash
-git@github.com:crowdsecurity/hub.git
+git clone https://github.com/crowdsecurity/hub.git
 ```
 
 
@@ -55,7 +55,7 @@ Let's add our parser to the test configuration (`.tests/myservice-logs/config.ya
 ```yaml
 parsers:
 - crowdsecurity/syslog-logs
-- ./parsers/crowdsecurity/s01-parse/myservice-logs.yaml
+- ./parsers/s01-parse/crowdsecurity/myservice-logs.yaml
 scenarios:
 postoverflows:
 log_file: myservice-logs.log
@@ -100,7 +100,7 @@ We can then "test" our parser like this :
 ```bash
 ▶ cscli hubtest run myservice-logs
 INFO[01-10-2021 12:41:21 PM] Running test 'myservice-logs'                
-WARN[01-10-2021 12:41:24 PM] Assert file '/home/bui/github/hub/.tests/myservice-logs/parser.assert' is empty, generating assertion: 
+WARN[01-10-2021 12:41:24 PM] Assert file '/home/dev/github/hub/.tests/myservice-logs/parser.assert' is empty, generating assertion: 
 
 len(results) == 2
 len(results["s00-raw"]["crowdsecurity/syslog-logs"]) == 3
@@ -207,7 +207,7 @@ Let's run out tests again :
 ```bash {13-20}
 ▶ cscli hubtest run myservice-logs                    
 INFO[01-10-2021 12:49:56 PM] Running test 'myservice-logs'                
-WARN[01-10-2021 12:49:59 PM] Assert file '/home/bui/github/hub/.tests/myservice-logs/parser.assert' is empty, generating assertion: 
+WARN[01-10-2021 12:49:59 PM] Assert file '/home/dev/github/hub/.tests/myservice-logs/parser.assert' is empty, generating assertion: 
 
 len(results) == 2
 len(results["s00-raw"]["crowdsecurity/syslog-logs"]) == 3

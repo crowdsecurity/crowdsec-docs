@@ -6,138 +6,166 @@ sidebar_position: 4
 
 :::caution
 
-All the examples assume that you have installed the [iptables parser](https://hub.crowdsec.net/author/crowdsecurity/configurations/iptables-logs), and that your iptables configuration logs dropped packets.
+All the examples assume that you have read the [Creating parsers](../parsers/create) documentation.
 
 :::
 
-## Leaky bucket
 
-In this example, we will write a simple scenario based on a leaky bucket that will trigger if an IP tries to port scan our machine.
+## Foreword
 
-We'll start with the most basic scenario:
-```yaml
-type: leaky
-debug: true
-name: demo/leaky-example
-description: "detect cool stuff"
-filter: evt.Meta.log_type == 'iptables_drop'
-capacity: 1
-leakspeed: 1m
-blackhole: 1m
-labels:
-  type: scan
+This documentation assumes you're trying to create a scenario for crowdsec with the intent of submitting to the hub, and thus create the associated functional testing.
+The creation of said functional testing will guide our process and will make it easier.
+
+We're going to create a scenario for an imaginary service "myservice" from the following logs of failed authentication :
+
+```
+Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
 ```
 
-We define:
- - A filter: an expression that decides if the scenario will apply to current event or not
- - A type: here, we have a `leaky` bucket
- - A capacity: how many events can be poured in the bucket before it overflows
- - A leakspeed: the speed at which events are removed from the bucket
- - A blackhole: duration for which the bucket should be overflow again
- - Some labels to qualify the event
+## Pre-requisites
 
-This scenario in its current state is not really useful:
- - We do not define a `groupby`: the same bucket will be used for all source IP, which prevent us to ban the IP actually doing the port scan.
- - Our filter is too generic: we also match dropped UDP packets, and it can be very dangerous to apply a decision on them.
 
-Let's fix that !
+1. [Install crowdsec locally](https://doc.crowdsec.net/docs/getting_started/install_crowdsec)
 
- ```yaml
-type: leaky
-debug: true
-name: demo/leaky-example
-description: "detect cool stuff"
-filter: "evt.Meta.log_type == 'iptables_drop' and evt.Parsed.proto == 'TCP'"
-groupby: evt.Meta.source_ip
-capacity: 15
-leakspeed: 1m
-blackhole: 1m
-labels:
-  type: scan
+1. Clone the hub
+
+```bash
+git clone https://github.com/crowdsecurity/hub.git
 ```
 
-We added:
- - A new filter, ` and evt.Parsed.proto == 'TCP'`: our scenario will now only apply if the protocol is TCP (based on what was extracted from the log line by our GROK pattern)
- - A `groupby` parameter: we now create one bucket per source ip
- - We also updated the capacity and leakspeed to be more useful for a real life scenario.
 
- But this is still not perfect ! We want to create a scenario to detect port scan, but our current configuration will also detect repeated connections to the same port.
+## Create our test
 
- We can fix this by adding a `distinct` parameter:
-```yaml
-type: leaky
-debug: true
-name: demo/leaky-example
-description: "detect cool stuff"
-filter: "evt.Meta.log_type == 'iptables_drop' and evt.Parsed.proto == 'TCP'"
-groupby: evt.Meta.source_ip
-distinct: evt.Parsed.dst_port
-capacity: 15
-leakspeed: 1m
-blackhole: 1m
-labels:
-  type: scan
+From the root of the hub repository :
+
+```bash
+▶ cscli hubtest create myservice-bf --type syslog --ignore-parsers
+
+  Test name                   :  myservice-bf
+  Test path                   :  /home/dev/github/hub/.tests/myservice-bf
+  Log file                    :  /home/dev/github/hub/.tests/myservice-bf/myservice-bf.log (please fill it with logs)
+  Parser assertion file       :  /home/dev/github/hub/.tests/myservice-bf/parser.assert (please fill it with assertion)
+  Scenario assertion file     :  /home/dev/github/hub/.tests/myservice-bf/scenario.assert (please fill it with assertion)
+  Configuration File          :  /home/dev/github/hub/.tests/myservice-bf/config.yaml (please fill it with parsers, scenarios...)
 ```
 
-The distinct parameter will prevent an event to be poured into the bucket if there is already an event in it with the same value for `evt.Parsed.dst_port`.
+__note: we specify the `--ignore-parsers` flag because we don't want to test the parsers, only the scenarios.__
 
-In our case, this means that we will only have unique ports in our bucket. 
 
-And voila ! We now have a working scenario able to detect port scanning.
+## Configure our test
 
-## Trigger bucket
 
-In this example, we will write a simple scenario that will trigger if anyone sends a packet to the port 3389.
+Let's add our parser and scenario to the test configuration (`.tests/myservice-bf/config.yaml`) file.
 
 ```yaml
-type: trigger
-name: demo/trigger-example
-description: "Detect connection to RDP port"
-filter: "evt.Meta.log_type == 'iptables_drop' and evt.Parsed.proto == 'TCP' and evt.Parsed.dst_port == '3389'"
+parsers:
+- crowdsecurity/syslog-logs
+- ./parsers/s01-parse/crowdsecurity/myservice-bf.yaml
+scenarios:
+- ./scenarios/crowdsecurity/myservice-bf.yaml
+postoverflows:
+- ""
+log_file: myservice-bf.log
+log_type: syslog
+ignore_parsers: false
+
+```
+
+__note: as our custom parser and scenario are not yet part of the hub, we specify their path relative to the root of the hub directory.__
+
+
+## Scenario creation
+
+Let's create a simple scenario to detect bruteforce attemp on `myservice`:
+
+```yaml
+# myservice bruteforce
+type: leaky
+name: crowdsecurity/myservice-bf
+description: "Detect myservice bruteforce"
+filter: "evt.Meta.log_type == 'myservice_failed_auth'"
+leakspeed: "10s"
+capacity: 5
 groupby: evt.Meta.source_ip
-blackhole: 2m
+blackhole: 1m
+reprocess: true
 labels:
- service: rdp
- type: scan
+ service: myservice
+ type: bruteforce
  remediation: true
 ```
 
-What changed in comparaison to our leaky example ?
- - We defined the type to be `trigger`: this means that the bucket will overflow if any event is poured into it
- - Our filter checks if the value of `dst_port` is equal to `3389`: you can access all capture group defined in a GROK pattern with the object `evt.Parsed`
- - We set the `remediation` label to `true`: if the bucket overflow, we will apply a remediation based on your profile configuration (by default, 4h ban)
 
-Let's try it !
+:::note
 
-Put the scenario in a file called `iptables-rdp.yaml`, in the `scenarios` folder of crowdsec.
+We filter on `evt.Meta.log_type == 'myservice_failed_auth'` because in the parser `myservice-logs` (created in the [Creating parsers](../parsers/create) part) we set the `log_type` to `myservice_failed_auth` for bad password or bad user attempt.
 
-Use `cscli` to make sure the scenario is detected:
-```shell
-$ cscli scenarios list                    
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- NAME                                     📦 STATUS          VERSION  LOCAL PATH                                                                                                              
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- iptables-rdp.yaml                        🏠  enabled,local           /etc/crowdsec/scenarios/iptables-rdp.yaml                                 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-``` 
+:::
 
-Next, we will trigger the scenario by attempting to connect to the port 3389 on the machine where crowdsec is running:
-```shell
-$ nc -v 127.0.0.1 3389
-nc: connect to 127.0.0.1 port 3389 (tcp) failed: Connection refused 
+
+We have the following fields:
+
+ - a [type](/scenarios/format.md#type): the type of bucket to use (trigger or leaky).
+ - a [name](/scenarios/format.md#name)
+ - a [description](/scenarios/format.md#description)
+ - a [filter](/scenarios/format.md#type): the filter to apply on events to be filled in this bucket. 
+ - a [leakspeed](/scenarios/format.md#leakspeed)
+ - a [capacity](/scenarios/format.md#capacity): the number of events in the bucket before it overflows.
+ - a [groupby](/scenarios/format.md#groupby): a field from the event to partition the bucket. It is often the `source_ip` of the event.
+ - a [blackhole](/scenarios/format.md#blackhole): the number of minute to not retrigger this scenario for the same `groupby` field.
+ - a [reprocess](/scenarios/format.md#reprocess): ingest the alert in crowdsec for further processing.
+ - some [labels](/scenarios/format.md#reprocess): some labels to apply on the trigger event. Don't forget to set `remediation: true` if you want the IP to be blocked by bouncers.
+
+
+
+
+We can then "test" our scenario like this :
+
+```bash
+▶ cscli hubtest run myservice-bf
+INFO[01-10-2021 12:41:21 PM] Running test 'myservice-bf'                
+WARN[01-10-2021 12:41:24 PM] Assert file '/home/dev/github/hub/.tests/myservice-bf/scenario.assert' is empty, generating assertion: 
+
+len(results) == 1
+"1.2.3.4" in results[0].Overflow.GetSources()
+results[0].Overflow.Sources["1.2.3.4"].IP == "1.2.3.4"
+results[0].Overflow.Sources["1.2.3.4"].Range == ""
+results[0].Overflow.Sources["1.2.3.4"].GetScope() == "Ip"
+results[0].Overflow.Sources["1.2.3.4"].GetValue() == "1.2.3.4"
+results[0].Overflow.Alert.Events[0].GetMeta("datasource_path") == "myservice-bf.log"
+results[0].Overflow.Alert.Events[0].GetMeta("datasource_type") == "file"
+results[0].Overflow.Alert.Events[0].GetMeta("log_subtype") == "myservice_bad_user"
+results[0].Overflow.Alert.Events[0].GetMeta("log_type") == "myservice_failed_auth"
+results[0].Overflow.Alert.Events[0].GetMeta("service") == "myservice"
+results[0].Overflow.Alert.Events[0].GetMeta("source_ip") == "1.2.3.4"
+results[0].Overflow.Alert.Events[0].GetMeta("username") == "toto"
+....
+results[0].Overflow.Alert.GetScenario() == "crowdsecurity/myservice-bf"
+results[0].Overflow.Alert.Remediation == true
+results[0].Overflow.Alert.GetEventsCount() == 6
+
+...
+
+
+Please fill your assert file(s) for test 'myservice-bf', exiting
+
 ```
 
-In our kernel logs, we can see:
-```
-Aug 20 16:20:09 mantis kernel: [887475.435839] DROP: IN=lo OUT= MAC=00:00:00:00:00:00:00:00:00:00:00:00:08:00 SRC=192.168.1.23 DST=192.168.1.23 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=29037 DF PROTO=TCP SPT=39158 DPT=3389 WINDOW=65495 RES=0x00 SYN URGP=0 
-```
+What happened here ? 
 
-We can then check that a decision has been applied:
-```
-$ cscli decisions list
-+-------+----------+-----------------+----------------------+--------+---------+----+--------+------------------+----------+
-|  ID   |  SOURCE  |   SCOPE:VALUE   |        REASON        | ACTION | COUNTRY | AS | EVENTS |    EXPIRATION    | ALERT ID |
-+-------+----------+-----------------+----------------------+--------+---------+----+--------+------------------+----------+
-| 17563 | crowdsec | Ip:192.168.1.47 | demo/trigger-example | ban    |         |    |      1 | 3h59m5.00140614s |       82 |
-+-------+----------+-----------------+----------------------+--------+---------+----+--------+------------------+----------+
-```
+- The scenario has been triggered and is generating some assertion (for functional test) 
+- In production environment, an alert would have been send to the CrowdSec Local API.
+
+
+## Closing word
+
+We have now a fully functional scenario for myservice to detect brute forces!
+We can either deploy it to our production systems to do stuff, or even better, contribute to the hub !
+
+If you want to know more about directives and possibilities, take a look at [the scenario reference documentation](/scenarios/format.md) !
+
