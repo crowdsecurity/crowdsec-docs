@@ -4,20 +4,79 @@ title: Creating parsers
 sidebar_position: 4
 ---
 
-:::note
-The guide assume you're writting the parser from the [test environment](/contributing/test_environment.md)
-:::
 
-## Base parser file
+# Foreword
 
-A simple parser can be defined as :
+This documentation assumes you're trying to create a parser for crowdsec with the intent of submitting to the hub, and thus create the associated functional testing.
+The creation of said functional testing will guide our process and will make it easier.
+
+We're going to create a parser for the imaginary service "myservice" that produce three types of logs via syslog :
+
+```
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '1.2.3.4'
+Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
+Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '1.2.3.4'
+```
+
+As we are going to parse those logs to further detect bruteforce and user-enumeration attacks, we're simply going to "discard" the last type of logs.
+
+## Pre-requisites
+
+
+1. [Install crowdsec locally](https://doc.crowdsec.net/docs/getting_started/install_crowdsec)
+
+1. Clone the hub
+
+```bash
+git@github.com:crowdsecurity/hub.git
+```
+
+
+## Create our test
+
+From the root of the hub repository :
+
+```bash
+▶ cscli hubtest create myservice-logs --type syslog
+
+  Test name                   :  myservice-logs
+  Test path                   :  /home/dev/github/hub/.tests/myservice-logs
+  Log file                    :  /home/dev/github/hub/.tests/myservice-logs/myservice-logs.log (please fill it with logs)
+  Parser assertion file       :  /home/dev/github/hub/.tests/myservice-logs/parser.assert (please fill it with assertion)
+  Scenario assertion file     :  /home/dev/github/hub/.tests/myservice-logs/scenario.assert (please fill it with assertion)
+  Configuration File          :  /home/dev/github/hub/.tests/myservice-logs/config.yaml (please fill it with parsers, scenarios...)
+```
+
+## Configure our test
+
+
+Let's add our parser to the test configuration (`.tests/myservice-logs/config.yaml`). He specify that we need syslog-logs parser (because myservice logs are shipped via syslog), and then our custom parser.
+
+```yaml
+parsers:
+- crowdsecurity/syslog-logs
+- ./parsers/crowdsecurity/s01-parse/myservice-logs.yaml
+scenarios:
+postoverflows:
+log_file: myservice-logs.log
+log_type: syslog
+ignore_parsers: false
+
+```
+
+__note: as our custom parser isn't yet part of the hub, we specify its path relative to the root of the hub directory__
+
+
+## Parser creation : skeleton
+
+For the sake of the tutorial, let's create a very simple parser :
 
 ```yaml
 filter: 1 == 1
 debug: true
 onsuccess: next_stage
-name: me/myparser
-description: a cool parser for my service
+name: crowdsecurity/myservice-logs
+description: "Parse myservice logs"
 grok:
 #our grok pattern : capture .*
   pattern: ^%{DATA:some_data}$
@@ -35,255 +94,177 @@ statics:
  - a `debug` flag that allows to enable local debugging information
  - a `grok` pattern to capture some data in logs
 
-We are going to use to following sample log as an example (`x.out`) :
-```bash
-May 11 16:23:43 sd-126005 kernel: [47615895.771900] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=99.99.99.99 DST=127.0.0.1 LEN=40 TOS=0x00 PREC=0x00 TTL=245 ID=51006 PROTO=TCP SPT=45225 DPT=8888 WINDOW=1024 RES=0x00 SYN URGP=0 
-May 11 16:23:50 sd-126005 kernel: [47615902.763137] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=44.44.44.44 DST=127.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=49 ID=17451 DF PROTO=TCP SPT=53668 DPT=80 WINDOW=14600 RES=0x00 SYN URGP=0 
-```
 
-## Trying our mock parser
-
-:::caution
-Your parser yaml file must be in the `config/parsers/s01-parse/` directory. The stage directory might not exist, and then you must create it.
-
-:::
-
-Let's try it:
-
-```bash             
-./crowdsec -c ./dev.yaml -dsn file://x.log -type foobar
-```
-
-<details>
-  <summary>Expected output</summary>
+We can then "test" our parser like this :
 
 ```bash
-INFO[20-08-2021 17:18:20] Crowdsec v1.1.1-linux-73e0bbaf93070f4a640eb5a22212b5dcf26699de 
-INFO[20-08-2021 17:18:21] reading x.log at once                         type="file://x.log"
-DEBU[20-08-2021 17:18:21] + Grok '^%{DA...' returned 1 entries to merge in Parsed  id=billowing-flower name=me/myparser stage=s01-parse
-DEBU[20-08-2021 17:18:21] 	.Parsed['some_data'] = 'May 11 16:23:43 sd-126005 kernel: [47615895.771900] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=99.99.99.99 DST=127.0.0.1 LEN=40 TOS=0x00 PREC=0x00 TTL=245 ID=51006 PROTO=TCP SPT=45225 DPT=8888 WINDOW=1024 RES=0x00 SYN URGP=0 '  id=billowing-flower name=me/myparser stage=s01-parse
-DEBU[20-08-2021 17:18:21] + Processing 1 statics                        id=billowing-flower name=me/myparser stage=s01-parse
-DEBU[20-08-2021 17:18:21] .Parsed[is_my_service] = 'yes'                id=billowing-flower name=me/myparser stage=s01-parse
-DEBU[20-08-2021 17:18:21] Event leaving node : ok                       id=billowing-flower name=me/myparser stage=s01-parse
-DEBU[20-08-2021 17:18:21] move Event from stage s01-parse to s02-enrich  id=billowing-flower name=me/myparser stage=s01-parse
-DEBU[20-08-2021 17:18:21] + Grok '^%{DA...' returned 1 entries to merge in Parsed  id=billowing-flower name=me/myparser stage=s01-parse
-DEBU[20-08-2021 17:18:21] 	.Parsed['some_data'] = 'May 11 16:23:50 sd-126005 kernel: [47615902.763137] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=44.44.44.44 DST=127.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=49 ID=17451 DF PROTO=TCP SPT=53668 DPT=80 WINDOW=14600 RES=0x00 SYN URGP=0'  id=billowing-flower name=me/myparser stage=s01-parse
-DEBU[20-08-2021 17:18:21] + Processing 1 statics                        id=billowing-flower name=me/myparser stage=s01-parse
-DEBU[20-08-2021 17:18:21] .Parsed[is_my_service] = 'yes'                id=billowing-flower name=me/myparser stage=s01-parse
-DEBU[20-08-2021 17:18:21] Event leaving node : ok                       id=billowing-flower name=me/myparser stage=s01-parse
-DEBU[20-08-2021 17:18:21] move Event from stage s01-parse to s02-enrich  id=billowing-flower name=me/myparser stage=s01-parse
+▶ cscli hubtest run myservice-logs
+INFO[01-10-2021 12:41:21 PM] Running test 'myservice-logs'                
+WARN[01-10-2021 12:41:24 PM] Assert file '/home/bui/github/hub/.tests/myservice-logs/parser.assert' is empty, generating assertion: 
+
+len(results) == 2
+len(results["s00-raw"]["crowdsecurity/syslog-logs"]) == 3
+results["s00-raw"]["crowdsecurity/syslog-logs"][0].Success == true
 ...
-```
-</details>
+len(results["s01-parse"]["crowdsecurity/myservice-logs"]) == 3
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Success == true
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["program"] == "myservice"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["timestamp"] == "Dec  8 06:28:43"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["is_my_service"] == "yes"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["logsource"] == "syslog"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["message"] == "bad password for user 'toto' from '1.2.3.4'"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["some_data"] == "bad password for user 'toto' from '1.2.3.4'"
+...
 
 
-We can see our "mock" parser is working, let's see what happened :
-
- - The event enter the node
- - The `filter` returned true (`1 == 1`) so the event will be processed
- - Our grok pattern (just a `.*` capture) "worked" and captured data (the whole line actually)
- - The grok captures (under the name `some_data`) are merged into the `.Parsed` map of the event
- - The `statics` section is processed, and `.Parsed[is_my_service]` is set to `yes`
- - The event leaves the parser successfully, and because `onsuccess` is set to `next_stage`, the event moves to the next stage
-
-## Writing the GROK pattern
-
-We are going to write a parser for `iptables` logs, they look like this :
-
-```
-May 11 16:23:43 sd-126005 kernel: [47615895.771900] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=99.99.99.99 DST=127.0.0.1 LEN=40 TOS=0x00 PREC=0x00 TTL=245 ID=51006 PROTO=TCP SPT=45225 DPT=8888 WINDOW=1024 RES=0x00 SYN URGP=0 
-May 11 16:23:50 sd-126005 kernel: [47615902.763137] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=44.44.44.44 DST=127.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=49 ID=17451 DF PROTO=TCP SPT=53668 DPT=80 WINDOW=14600 RES=0x00 SYN URGP=0 
+Please fill your assert file(s) for test 'myservice-logs', exiting
 
 ```
 
-Using an [online grok debugger](https://grokdebug.herokuapp.com/) or an [online regex debugger](https://www.debuggex.com/), we come up with the following grok pattern :
+What happened here ? 
+ - Our logs have been processed by syslog-logs parser and our custom parser
+ - As we have no existing assertion(s), `cscli hubtest` kindly generated some for us
+
+This mostly allows us to ensure that our logs have been processed by our parser, even if it's useless in its current state.
+Further inspection can be seen with `cscli hubtest inspect` :
+
+```bash
+▶ cscli hubtest inspect myservice-logs
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '1.2.3.4'
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs
+	└ s01-parse
+		└ 🟢 crowdsecurity/myservice-logs
+
+line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs
+	└ s01-parse
+		└ 🟢 crowdsecurity/myservice-logs
+
+line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '1.2.3.4'
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs
+	└ s01-parse
+		└ 🟢 crowdsecurity/myservice-logs
 
 ```
-\[%{DATA}\]+.*(%{WORD:action})? IN=%{WORD:int_eth} OUT= MAC=%{IP}:%{MAC} SRC=%{IP:src_ip} DST=%{IP:dst_ip} LEN=%{INT:length}.*PROTO=%{WORD:proto} SPT=%{INT:src_port} DPT=%{INT:dst_port}.*
-```
 
-:::warning
-Check if the pattern you are looking for is not already present in [patterns configuration](/parsers/patterns-documentation.md).
-:::
+We can see that our log lines were successfully parsed by both syslog-logs and myservice-logs parsers.
 
-## Test our new pattern
 
-Now, let's integrate our GROK pattern within our YAML :
+## Parser creation : actual parser
+
+
+Let's modify our parser, `./parsers/crowdsecurity/s01-parse/myservice-logs.yaml` :
 
 ```yaml
-#let's set onsuccess to "next_stage" : if the log is parsed, we can consider it has been dealt with
 onsuccess: next_stage
-#debug, for reasons (don't do this in production)
-debug: true
-#as seen in our sample log, those logs are processed by the system and have a progname set to 'kernel'
-filter: "1 == 1"
-#name and description:
-name: crowdsecurity/iptables-logs
-description: "Parse iptables drop logs"
-grok:
-#our grok pattern
-  pattern: \[%{DATA}\]+.*(%{WORD:action})? IN=%{WORD:int_eth} OUT= MAC=%{IP}:%{MAC} SRC=%{IP:src_ip} DST=%{IP:dst_ip} LEN=%{INT:length}.*PROTO=%{WORD:proto} SPT=%{INT:src_port} DPT=%{INT:dst_port}.*
-#the field to which we apply the grok pattern : the log message itself
-  apply_on: message
+filter: "evt.Parsed.program == 'myservice'"
+name: crowdsecurity/myservice-logs
+description: "Parse myservice logs"
+#for clarity, we create our pattern syntax beforehand
+pattern_syntax:
+  MYSERVICE_BADPASSWORD: bad password for user '%{USERNAME:user}' from '%{IP:source_ip}' #[1]
+  MYSERVICE_BADUSER: unknown user '%{USERNAME:user}' from '%{IP:source_ip}' #[1]
+nodes:
+#and we use them to parse our two type of logs
+  - grok:
+      name: "MYSERVICE_BADPASSWORD" #[2]
+      apply_on: message
+      statics:
+        - meta: log_type #[3]
+          value: myservice_failed_auth
+        - meta: log_subtype
+          value: myservice_bad_password
+  - grok:
+      name: "MYSERVICE_BADUSER" #[2]
+      apply_on: message
+      statics:
+        - meta: log_type #[3]
+          value: myservice_failed_auth
+        - meta: log_subtype
+          value: myservice_bad_user
 statics:
-  - parsed: is_my_service
-    value: yes
+    - meta: service #[3]
+      value: myservice
+    - meta: username
+      expression: evt.Parsed.user
+    - meta: source_ip #[1]
+      expression: "evt.Parsed.source_ip"
 ```
 
-
-```bash
-./crowdsec -c ./dev.yaml -dsn file://x.log -type foobar
-```
-
-
-<details>
-  <summary>Expected output</summary>
+Various changes have been made here :
+ - We created to patterns to capture the two relevant type of log lines, Using an [online grok debugger](https://grokdebug.herokuapp.com/) or an [online regex debugger](https://www.debuggex.com/) [2]
+)
+ - We keep track of the username and the source_ip (Please note that setting the source_ip in `evt.Meta.source_ip` and `evt.Parsed.source_ip` is important [1])
+ - We setup various [statics](/parsers/format.md#statics) information to classify the log type [3]
 
 
 
- 
-```bash
-INFO[20-08-2021 17:47:46] reading x.log at once                         type="file://x.log"
-DEBU[20-08-2021 17:47:46] + Grok '[%{D...' returned 8 entries to merge in Parsed  id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['proto'] = 'TCP'                     id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['src_port'] = '45225'                id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['dst_port'] = '8888'                 id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['action'] = ''                       id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['int_eth'] = 'enp1s0'                id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['src_ip'] = '99.99.99.99'            id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['dst_ip'] = '127.0.0.1'              id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['length'] = '40'                     id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] + Processing 1 statics                        id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] .Parsed[is_my_service] = 'yes'                id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] Event leaving node : ok                       id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] move Event from stage s01-parse to s02-enrich  id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-WARN[20-08-2021 17:47:46] Acquisition is finished, shutting down       
-DEBU[20-08-2021 17:47:46] + Grok '\[%{D...' returned 8 entries to merge in Parsed  id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['length'] = '60'                     id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['proto'] = 'TCP'                     id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['src_port'] = '53668'                id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['dst_port'] = '80'                   id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['action'] = ''                       id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['int_eth'] = 'enp1s0'                id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['src_ip'] = '44.44.44.44'            id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] 	.Parsed['dst_ip'] = '127.0.0.1'              id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] + Processing 1 statics                        id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] .Parsed[is_my_service] = 'yes'                id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] Event leaving node : ok                       id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:47:46] move Event from stage s01-parse to s02-enrich  id=summer-snowflake name=crowdsecurity/iptables-logs stage=s01-parse
+Let's run out tests again :
+
+```bash {13-20}
+▶ cscli hubtest run myservice-logs                    
+INFO[01-10-2021 12:49:56 PM] Running test 'myservice-logs'                
+WARN[01-10-2021 12:49:59 PM] Assert file '/home/bui/github/hub/.tests/myservice-logs/parser.assert' is empty, generating assertion: 
+
+len(results) == 2
+len(results["s00-raw"]["crowdsecurity/syslog-logs"]) == 3
+results["s00-raw"]["crowdsecurity/syslog-logs"][0].Success == true
 ...
-```
-
-
-</details>
-
-What changed ? We can now see that the fragment captured by the GROK pattern are merged in the `Parsed` array !
-We now have parsed data, only a few more changes and we will be done :)
-
-## Finalizing our parser
-
-```yaml
-#let's set onsuccess to "next_stage" : if the log is parsed, we can consider it has been dealt with
-onsuccess: next_stage
-#debug, for reasons (don't do this in production)
-debug: true
-#as seen in our sample log, those logs are processed by the system and have a progname set to 'kernel'
-filter: "evt.Parsed.program == 'kernel'"
-#name and description:
-name: crowdsecurity/iptables-logs
-description: "Parse iptables drop logs"
-grok:
-#our grok pattern
-  pattern: \[%{DATA}\]+.*(%{WORD:action})? IN=%{WORD:int_eth} OUT= MAC=%{IP}:%{MAC} SRC=%{IP:src_ip} DST=%{IP:dst_ip} LEN=%{INT:length}.*PROTO=%{WORD:proto} SPT=%{INT:src_port} DPT=%{INT:dst_port}.*
-#the field to which we apply the grok pattern : the log message itself
-  apply_on: message
-statics:
-    - meta: log_type
-      value: iptables_drop
-    - meta: service
-      expression: "evt.Parsed.proto == 'TCP' ? 'tcp' : 'unknown'"
-    - meta: source_ip
-      expression: "evt.Parsed.src_ip"
-```
-
-### filter
-
-We changed the filter to correctly filter on the program name.
-In the current example, our logs are produced by the kernel (netfilter), and thus the program is `kernel` :
-
-```bash
-tail -f /var/log/kern.log
-May 11 16:23:50 sd-126005 kernel: [47615902.763137] IN=enp1s0 OUT= MAC=00:08:a2:0c:1f:12:00:c8:8b:e2:d6:87:08:00 SRC=44.44.44.44 DST=127.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=49 ID=17451 DF PROTO=TCP SPT=53668 DPT=80 WINDOW=14600 RES=0x00 SYN URGP=0 
-```
-
-### statics
-
-We are setting various entries to static or dynamic values to give "context" to the log :
-
-  - `.Meta.log_type` is set to `iptables_drop` (so that we later can filter events coming from this)
-  - `.Meta.source_ip` is set the the source ip captured  `.Parsed.src_ip`
-  - `.Meta.service` is set the the result of an expression that relies on the GROK output (`proto` field)
-  
-Look into dedicated [statics](/parsers/format.md#statics) documentation to know more about its possibilities.
-
-
-### Testing our finalized parser
-
-
-```bash
-./crowdsec -c ./dev.yaml -dsn file://x.log -type kernel
-```
-
-<details>
-  <summary>Expected output</summary>
-
-```bash
+len(results["s01-parse"]["crowdsecurity/myservice-logs"]) == 3
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Success == true
 ...
-INFO[20-08-2021 17:49:02] reading x.log at once                         type="file://x.log"
-DEBU[20-08-2021 17:49:02] eval(evt.Parsed.program == 'kernel') = TRUE   id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] eval variables:                               id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02]        evt.Parsed.program = 'kernel'          id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] + Grok '[%{D...' returned 8 entries to merge in Parsed  id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['proto'] = 'TCP'                     id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['src_port'] = '45225'                id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['dst_port'] = '8888'                 id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['action'] = ''                       id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['int_eth'] = 'enp1s0'                id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['src_ip'] = '99.99.99.99'            id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['dst_ip'] = '127.0.0.1'              id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['length'] = '40'                     id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] + Processing 3 statics                        id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] .Meta[log_type] = 'iptables_drop'             id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] .Meta[service] = 'tcp'                        id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] .Meta[source_ip] = '99.99.99.99'              id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] Event leaving node : ok                       id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] move Event from stage s01-parse to s02-enrich  id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-WARN[20-08-2021 17:49:02] Acquisition is finished, shutting down       
-DEBU[20-08-2021 17:49:02] eval(evt.Parsed.program == 'kernel') = TRUE   id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] eval variables:                               id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02]        evt.Parsed.program = 'kernel'          id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] + Grok '\[%{D...' returned 8 entries to merge in Parsed  id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['src_ip'] = '44.44.44.44'            id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['dst_ip'] = '127.0.0.1'              id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['length'] = '60'                     id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['proto'] = 'TCP'                     id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['src_port'] = '53668'                id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['dst_port'] = '80'                   id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['action'] = ''                       id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] 	.Parsed['int_eth'] = 'enp1s0'                id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] + Processing 3 statics                        id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] .Meta[log_type] = 'iptables_drop'             id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] .Meta[service] = 'tcp'                        id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] .Meta[source_ip] = '44.44.44.44'              id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] Event leaving node : ok                       id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
-DEBU[20-08-2021 17:49:02] move Event from stage s01-parse to s02-enrich  id=withered-sun name=crowdsecurity/iptables-logs stage=s01-parse
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["timestamp"] == "Dec  8 06:28:43"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["program"] == "myservice"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["source_ip"] == "1.2.3.4"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["user"] == "toto"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["log_subtype"] == "myservice_bad_password"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["log_type"] == "myservice_failed_auth"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["service"] == "myservice"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["source_ip"] == "1.2.3.4"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["username"] == "toto"
 ...
+results["s01-parse"]["crowdsecurity/myservice-logs"][1].Evt.Meta["log_subtype"] == "myservice_bad_user"
+results["s01-parse"]["crowdsecurity/myservice-logs"][2].Success == false
+
+
+Please fill your assert file(s) for test 'myservice-logs', exiting
+
 ```
-</details>
+
+We can see that our parser captured all the relevant information were properly captured, and those should be enough to create scenarios further down the line.
+
+Again, further inspection with `cscli hubtest inspect` will show us more about what happened :
+
+```bash
+▶ cscli hubtest inspect myservice-logs
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '1.2.3.4'
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs
+	└ s01-parse
+		└ 🟢 crowdsecurity/myservice-logs
+
+line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs
+	└ s01-parse
+		└ 🟢 crowdsecurity/myservice-logs
+
+line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '1.2.3.4'
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs
+	└ s01-parse
+		└ 🔴 crowdsecurity/myservice-logs
+```
+
+__note: we can see that our log line `accepted connection for user 'toto' from '1.2.3.4'` wasn't parsed by `crowdsecurity/myservice-logs` as we have no pattern for it__
+
 
 ## Closing word
 
-We have now a fully functional parser for iptables logs !
+We have now a fully functional parser for myservice logs !
 We can either deploy it to our production systems to do stuff, or even better, contribute to the hub !
 
 If you want to know more about directives and possibilities, take a look at [the parser reference documentation](/parsers/format.md) !
