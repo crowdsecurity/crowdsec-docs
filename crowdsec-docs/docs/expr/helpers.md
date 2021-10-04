@@ -74,7 +74,7 @@ Return RFC3339 formatted time
 
 ### `KeyExists(key string, map map[string]interface{}) bool`
 
-Return true if the `key` exist in the map
+Return true if the `key` exist in the map.
 
 
 ## Alert specific helpers
@@ -110,7 +110,7 @@ Returns the type of an Event : `overflow` or `log`.
 
 ### `Event.GetMeta(key string) string`
 
-Return the `value` of the `meta[key]` in the Event object (`Meta` are filled only for events of type `overflow`).
+Return the `value` of the `Meta[key]` in the Event object (`Meta` are filled only for events of type `overflow`).
 
 ## Source specific helpers
 

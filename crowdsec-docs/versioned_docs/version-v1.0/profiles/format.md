@@ -103,12 +103,3 @@ on_failure: break
 
 If the profile didn't apply and `on_failure` is set to `break`, decisions processing will stop here and it won't evaluate against following profiles.
 
-### `notifications`
-
-```yaml
-notifications:
-  - notification_plugin1
-  - notification_plugin2
-```
-
-The [list of notification plugins](/notification_plugins/intro.md) to which the alert should be fed.
