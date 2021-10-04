@@ -65,14 +65,15 @@ Let's add our parser and scenario to the test configuration (`.tests/myservice-b
 ```yaml
 parsers:
 - crowdsecurity/syslog-logs
-- ./parsers/s01-parse/crowdsecurity/myservice-bf.yaml
+- crowdsecurity/dateparse-enrich
+- ./parsers/s01-parse/crowdsecurity/myservice-logs.yaml
 scenarios:
 - ./scenarios/crowdsecurity/myservice-bf.yaml
 postoverflows:
 - ""
 log_file: myservice-bf.log
 log_type: syslog
-ignore_parsers: false
+ignore_parsers: true
 
 ```
 
@@ -161,6 +162,79 @@ What happened here ?
 - The scenario has been triggered and is generating some assertion (for functional test) 
 - In production environment, an alert would have been send to the CrowdSec Local API.
 
+
+We can again understand more of what is going on thanks to `cscli hubtest explain` :
+
+```bash
+▶ cscli hubtest explain myservice-bf
+line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs
+	├ s01-parse
+	|	└ 🟢 crowdsecurity/myservice-logs
+	├ s02-enrich
+	|	└ 🟢 crowdsecurity/dateparse-enrich
+	├-------- parser success 🟢
+	├ Scenarios
+		└ 🟢 crowdsecurity/myservice-bf
+
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs
+	├ s01-parse
+	|	└ 🟢 crowdsecurity/myservice-logs
+	├ s02-enrich
+	|	└ 🟢 crowdsecurity/dateparse-enrich
+	├-------- parser success 🟢
+	├ Scenarios
+		└ 🟢 crowdsecurity/myservice-bf
+
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs
+	├ s01-parse
+	|	└ 🟢 crowdsecurity/myservice-logs
+	├ s02-enrich
+	|	└ 🟢 crowdsecurity/dateparse-enrich
+	├-------- parser success 🟢
+	├ Scenarios
+		└ 🟢 crowdsecurity/myservice-bf
+
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs
+	├ s01-parse
+	|	└ 🟢 crowdsecurity/myservice-logs
+	├ s02-enrich
+	|	└ 🟢 crowdsecurity/dateparse-enrich
+	├-------- parser success 🟢
+	├ Scenarios
+		└ 🟢 crowdsecurity/myservice-bf
+
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs
+	├ s01-parse
+	|	└ 🟢 crowdsecurity/myservice-logs
+	├ s02-enrich
+	|	└ 🟢 crowdsecurity/dateparse-enrich
+	├-------- parser success 🟢
+	├ Scenarios
+		└ 🟢 crowdsecurity/myservice-bf
+
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs
+	├ s01-parse
+	|	└ 🟢 crowdsecurity/myservice-logs
+	├ s02-enrich
+	|	└ 🟢 crowdsecurity/dateparse-enrich
+	├-------- parser success 🟢
+	├ Scenarios
+		└ 🟢 crowdsecurity/myservice-bf
+
+
+```
 
 ## Closing word
 
