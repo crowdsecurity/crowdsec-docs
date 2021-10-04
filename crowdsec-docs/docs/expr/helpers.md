@@ -23,7 +23,7 @@ When CrowdSec relies on `expr`, a context is provided to let the expression acce
 If the `debug` is enabled (in the scenario or parser where expr is used), additional debug will be displayed regarding evaluated expressions.
 
 
-# Helpers
+## Helpers
 
 In order to makes its use in CrowdSec more efficient, we added a few helpers that are documented bellow.
 
@@ -72,7 +72,12 @@ Return RFC3339 formatted time
 
 > `TimeNow()`
 
-# Alert specific helpers
+### `KeyExists(key string, map map[string]interface{}) bool`
+
+Return true if the `key` exist in the map
+
+
+## Alert specific helpers
 
 
 ### `Alert.Remediation bool`
@@ -87,11 +92,32 @@ Returns the name of the scenario that triggered the alert.
 
 Returns the scope of an alert. Most common value is `Ip`. `Country` and `As` are generally used for more distributed attacks detection/remediation.
 
+### `Alert.GetSources() []string`
 
-# Event specific helpers
+Return the list of IP addresses in the alert sources.
+
+### `Alert.GetEventsCount() int32`
+
+Return the number of events in the bucket.
+
+
+## Event specific helpers
 
 
 ### `Event.GetType() string`
 
 Returns the type of an Event : `overflow` or `log`.
 
+### `Event.GetMeta(key string) string`
+
+Return the `value` of the `meta[key]` in the Event object (`Meta` are filled only for events of type `overflow`).
+
+## Source specific helpers
+
+### `Source.GetValue() string`
+
+Return the `Source.Value` field value of a `Source`.
+
+### `Source.GetScope() string`
+
+Return the `Source.Scope` field value of `Source` (`ip`, `range` ...)
