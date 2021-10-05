@@ -5,13 +5,13 @@ sidebar_position: 10
 ---
 
 
-It is possible to deploy a minimalist test environment, which is useful :
- - to create new parsers or scenarios
- - to test new features
- - to try to showcase a bug or a corner-case
+It is possible to deploy a minimalist test environment, which is useful to:
+ - create new parsers or scenarios
+ - test new features
+ - showcase a bug or a corner-case
 
 
-This can be done directly with the tarball of the release :
+This can be done directly with the tarball of the release:
 
 
 ```bash
@@ -21,7 +21,7 @@ cd crowdsec-v1.1.1
 ./test_env.sh
 ```
 
-The test env is then available in the `tests` directory and should provide a functional crowdsec environment :
+The test environment is then available in the `tests` directory and should provide a functional CrowdSec environment:
 
 ```bash
 cd tests
@@ -35,5 +35,5 @@ cd tests
 ./cscli -c dev.yaml hub list
 ```
 
-In this test env, configurations are under the `config/` dir.
+In this test environment, configurations are under the `config/` dir.
 
