@@ -4,12 +4,12 @@ title: cscli hubtest
 ---
 ## cscli hubtest
 
-Run functionals tests on hub configurations
+Run functional tests on hub configurations
 
 ### Synopsis
 
 
-		Run functionals tests on hub configurations (parsers, scenarios, collections...)
+		Run functional tests on hub configurations (parsers, scenarios, collections...)
 		
 
 ### Options
