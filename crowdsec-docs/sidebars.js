@@ -182,6 +182,11 @@ module.exports = {
         },
         {
           type: "category",
+          label: "cscli explain",
+          items: ["cscli/cscli_explain"]
+        },
+        {
+          type: "category",
           label: "cscli lapi",
           items: ["cscli/cscli_lapi","cscli/cscli_lapi_register","cscli/cscli_lapi_status"]
         },
@@ -209,6 +214,11 @@ module.exports = {
           type: "category",
           label: "cscli scenarios",
           items: ["cscli/cscli_scenarios","cscli/cscli_scenarios_inspect","cscli/cscli_scenarios_install","cscli/cscli_scenarios_list","cscli/cscli_scenarios_remove","cscli/cscli_scenarios_upgrade"]
+        },
+        {
+          type: "category",
+          label: "cscli hubtest",
+          items: ["cscli/cscli_hubtest","cscli/cscli_hubtest_create","cscli/cscli_hubtest_run","cscli/cscli_hubtest_eval","cscli/cscli_hubtest_explain","cscli/cscli_hubtest_coverage", "cscli/cscli_hubtest_info", "cscli/cscli_hubtest_list", "cscli/cscli_hubtest_clean"]
         },
         {
           type: "category",
