@@ -819,6 +819,10 @@
       "id": "version-v1.2/bouncers/wordpress"
     },
     {
+      "type": "doc",
+      "id": "version-v1.2/bouncers/php"
+    },
+    {
       "type": "link",
       "label": "Hub",
       "href": "https://hub.crowdsec.net/browse/#bouncers"
