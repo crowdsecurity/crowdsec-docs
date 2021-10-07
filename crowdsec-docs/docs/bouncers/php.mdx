@@ -34,7 +34,7 @@ At the back, this bouncer uses [crowdsec PHP lib](https://github.com/crowdsecuri
 
 ### Prerequisite
 
-Download the Github reposository of the bouncer.
+Download the Github bouncer repository.
 
 ```bash
 git clone https://github.com/crowdsecurity/cs-php-bouncer.git
@@ -68,7 +68,11 @@ And reload apache2 service
 
 ```
 
-Note: don't run the script as root but your password might be ask during the installation process.
+:::note
+
+Don't run the script as root but your password might be ask during the installation process.
+
+:::
 
 Then just changed the owner of the bouncer folder to your webserver user and reload your apache2 service.
 
@@ -109,14 +113,17 @@ And reload your webserver.
 
 ## Upgrade
 
-Clone the Github reposository and run the upgrade script:
+Clone the Github repository and run the upgrade script:
 
 ```bash
 ./upgrade.sh
 ```
 
-Note: don't run the script as root but your password might be ask during the installation process.
+:::note
 
+Don't run the script as root but your password might be ask during the installation process.
+
+:::
 
 ## Configuration
 
