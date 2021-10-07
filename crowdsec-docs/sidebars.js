@@ -263,6 +263,11 @@ module.exports = {
       id: "bouncers/wordpress"
     },
     {
+      type: 'doc',
+      label: 'PHP Bouncer',
+      id: "bouncers/php"
+    },
+    {
       type:"link",
       label: "Hub",
       href:"https://hub.crowdsec.net/browse/#bouncers"

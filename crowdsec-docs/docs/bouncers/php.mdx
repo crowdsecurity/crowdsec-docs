@@ -1,0 +1,179 @@
+---
+id: php
+title: PHP Bouncer
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+<img src={useBaseUrl('/img/crowdsec_bouncer_php.png')} alt="CrowdSec" title="CrowdSec" width="300" height="300" />
+</p>
+
+<p align="center">
+&#x1F4DA; <a href="#installation/">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+
+
+A lua bouncer for nginx.
+
+## How does it work ?
+
+This bouncer leverages the PHP `auto_preprend` mechanism.
+
+New/unknown IP are checked against crowdsec API, and if request should be blocked, a **403** or a captcha can be returned to the user, and put in cache.
+
+At the back, this bouncer uses [crowdsec PHP lib](https://github.com/crowdsecurity/php-cs-bouncer).
+
+## Installation
+
+### Prerequisite
+
+Download the Github reposository of the bouncer.
+
+```bash
+git clone https://github.com/crowdsecurity/cs-php-bouncer.git
+cd cs-php-bouncer/
+```
+
+
+### Apache
+
+For Apache, the install script can handle most of the work.
+
+```bash
+./install.sh --apache  
+
+Installing crowdsec-php-bouncer
+[sudo] Mot de passe de <user>: 
+
+crowdsec-php-bouncer installed successfully!
+
+Please set the owner of '/usr/local/php/crowdsec/' to www-data or to your webserver owner.
+
+You can do it with:
+
+    sudo chown www-data /usr/local/php/crowdsec/
+
+crowdsec_apache apache2 configuration enabled
+
+And reload apache2 service
+
+    sudo systemctl reload apache2
+
+```
+
+Note: don't run the script as root but your password might be ask during the installation process.
+
+Then just changed the owner of the bouncer folder to your webserver user and reload your apache2 service.
+
+### Other web servers
+
+For other web servers, use the install script.
+
+```bash
+./install.sh
+
+Installing crowdsec-php-bouncer
+[sudo] Mot de passe de kkado : 
+
+crowdsec-php-bouncer installed successfully!
+
+Please set the owner of '/usr/local/php/crowdsec/' to www-data or to your webserver owner.
+
+You can do it with:
+
+    sudo chown www-data /usr/local/php/crowdsec/
+
+
+Add the "php_value auto_prepend_file '/usr/local/php/crowdsec/crowdsec-php-bouncer.php'" to your .htacess file.
+
+And reload your webserver.
+
+```
+
+Then changed the owner of the bouncer folder to your webserver user.
+
+Now you need to add the `auto_preprend_file` to your htacess file like:
+
+```
+php_value auto_prepend_file '/usr/local/php/crowdsec/crowdsec-php-bouncer.php'
+```
+
+And reload your webserver.
+
+## Upgrade
+
+Clone the Github reposository and run the upgrade script:
+
+```bash
+./upgrade.sh
+```
+
+Note: don't run the script as root but your password might be ask during the installation process.
+
+
+## Configuration
+
+Here is the configuration used by the bouncer, located in `/usr/local/php/crowdsec/settings.php`.
+
+```php title=/usr/local/php/crowdsec/settings.php
+$crowdSecStandaloneBouncerConfig = [
+    'api_url' => 'http://127.0.0.1:8080', // Default local API is 127.0.0.1:8080. Example in the docker-compose dev context, use http://crowdsec:8080
+    'api_key' => '${API_KEY}', // [FILL ME] Set a bouncer key here
+    'debug_mode' => false, // [FILL ME] Set to true to stop the process and display errors if any
+    'log_directory_path' => __DIR__.'/.logs', // [FILL ME] Important note: be sur this path won't be publicly accessible!
+    'fs_cache_path' => __DIR__.'/.cache', // [FILL ME] Important note: be sur this path won't be publicly accessible!
+
+    'bouncing_level' => 'normal_boucing',
+
+    'stream_mode' => false,
+
+    'cache_system' => 'phpfs',
+    'redis_dsn' => '',
+    'memcached_dsn' => '',
+
+    'clean_ip_cache_duration' => 5,
+    'bad_ip_cache_duration' => 10,
+    'fallback_remediation' => 'captcha',
+
+    'hide_mentions' => false,
+    'trust_ip_forward' => '',
+    'trust_ip_forward_array' => [],
+
+    'theme_color_text_primary' => 'black',
+    'theme_color_text_secondary' => '#AAA',
+    'theme_color_text_button' => 'white',
+    'theme_color_text_error_message' => '#b90000',
+    'theme_color_background_page' => '#eee',
+    'theme_color_background_container' => 'white',
+    'theme_color_background_button' => '#626365',
+    'theme_color_background_button_hover' => '#333',
+
+    'theme_text_captcha_wall_tab_title' => 'Oops..',
+    'theme_text_captcha_wall_title' => 'Hmm, sorry but...',
+    'theme_text_captcha_wall_subtitle' => 'Please complete the security check.',
+    'theme_text_captcha_wall_refresh_image_link' => 'refresh image',
+    'theme_text_captcha_wall_captcha_placeholder' => 'Type here...',
+    'theme_text_captcha_wall_send_button' => 'CONTINUE',
+    'theme_text_captcha_wall_error_message' => 'Please try again.',
+    'theme_text_captcha_wall_footer' => '',
+
+    'theme_text_ban_wall_tab_title' => 'Oops..',
+    'theme_text_ban_wall_title' => '🤭 Oh!',
+    'theme_text_ban_wall_subtitle' => 'This page is protected against cyber attacks and your IP has been banned by our system.',
+    'theme_text_ban_wall_footer' => '',
+    'theme_custom_css' => '',
+];
+
+```
+
+
+## References
+
+- https://crowdsec.net/protect-php-websites/

@@ -24,7 +24,7 @@ module.exports = {
       ],
     },
     navbar: {
-      title: 'CrowdSec',
+      title: 'Documentation',
       logo: {
         alt: 'My Site Logo',
         src: 'img/crowdsec_logo.png',

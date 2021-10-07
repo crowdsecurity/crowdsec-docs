@@ -33,9 +33,9 @@ New/unknown IP are checked against crowdsec API, and if request should be blocke
 
 At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
-# Installation
+## Installation
 
-## Using packages
+### Using packages
 
 [Setup crowdsec repositories](/getting_started/install.mdx#install-our-repositories).
 
@@ -56,7 +56,7 @@ sudo apt install crowdsec-nginx-bouncer
 </Tabs>
 
 
-## Manual installation
+### Manual installation
 
 :::warning
 nginx bouncer depends on nginx, libnginx-mod-http-lua, lua-logging, lua, lua-sec.
@@ -73,37 +73,6 @@ sudo ./install.sh
 
 If you are on a mono-machine setup, the `crowdsec-nginx-bouncer` install script will register directly to the local crowdsec, so you're good to go !
 
-## Upgrade script
-
-## Upgrade
-
-If you already have `crowdsec-nginx-bouncer` installed, please download the [latest release](https://github.com/crowdsecurity/cs-nginx-bouncer/releases) and run the following commands:
-
-```bash
-tar xzvf crowdsec-nginx-bouncer.tgz
-cd crowdsec-nginx-bouncer-v*/
-sudo ./upgrade.sh
-sudo systemctl restart nginx
-```
-
-## Configuration
-
-If your nginx bouncer needs to communicate with a remote crowdsec API, you can configure API url and key in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`:
-
-```lua
-API_URL=http://127.0.0.1:8080
-API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
-LOG_FILE=/tmp/lua_mod.log
-CACHE_EXPIRATION=1
-CACHE_SIZE=1000
-```
-
-Then restart nginx:
-
-```bash title="Restart Nginx"
-sudo systemctl restart nginx
-```
-
 :warning: the installation script will take care of dependencies for Debian/Ubuntu
 
 <details>
@@ -115,9 +84,9 @@ sudo systemctl restart nginx
 </details>
 
 
-## From source
+### From source
 
-### Requirements
+#### Requirements
 
 The following packages are required :
 
@@ -125,7 +94,7 @@ The following packages are required :
 - lua-sec
 - libnginx-mod-http-lua
 
-#### Debian/Ubuntu
+##### Debian/Ubuntu
 
 ```bash
 sudo apt-get install lua5.3 libnginx-mod-http-lua lua-sec
@@ -143,16 +112,16 @@ git clone https://github.com/crowdsecurity/lua-cs-bouncer.git
 git clone https://github.com/crowdsecurity/cs-nginx-bouncer.git
 ```
 
-### Installation
+#### Installation
 
-#### lua-cs-bouncer
+##### lua-cs-bouncer
 
 ```bash
 cd ./lua-cs-bouncer/
 sudo make install
 ```
 
-#### crowdsec-nginx-bouncer
+##### crowdsec-nginx-bouncer
 
 - Copy the `crowdsec-nginx-bouncer/nginx/crowdsec_nginx.conf` into `/etc/nginx/conf.d/crowdsec_nginx.conf`:
 ```bash
@@ -178,24 +147,34 @@ You can now restart your nginx server:
 systemctl restart nginx
 ```
 
+## Upgrade
 
-# Configuration
-
-The configuration file loaded by nginx is `/etc/nginx/conf.d/crowdsec_nginx.conf`, but you shouldn't have to edit it, the relevant configuration file being `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf` :
+If you already have `crowdsec-nginx-bouncer` installed, please download the [latest release](https://github.com/crowdsecurity/cs-nginx-bouncer/releases) and run the following commands:
 
 ```bash
-API_URL=http://localhost:8080                 <-- the API url
-API_KEY=                                      <-- the API Key generated with `cscli bouncers add -n <bouncer_name>` 
-LOG_FILE=/tmp/lua_mod.log                     <-- path to log file
-CACHE_EXPIRATION=1                            <-- in seconds : how often is the yes/no decisions for an IP refreshed
-CACHE_SIZE=1000                               <-- cache size : how many simulatenous entries are kept in 
+tar xzvf crowdsec-nginx-bouncer.tgz
+cd crowdsec-nginx-bouncer-v*/
+sudo ./upgrade.sh
+sudo systemctl restart nginx
 ```
 
-# How it works
+## Configuration
+
+If your nginx bouncer needs to communicate with a remote crowdsec API, you can configure API url and key in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`:
+
+```lua
+API_URL=http://127.0.0.1:8080
+API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
+LOG_FILE=/tmp/lua_mod.log
+CACHE_EXPIRATION=1
+CACHE_SIZE=1000
+```
+
+## How it works
 
  - deploys `/etc/nginx/conf.d/crowdsec_nginx.conf` with `access_by_lua` directive
  - deploys `/usr/local/lua/crowdsec/access.lua` with the lua code checking incoming IPs against crowdsec API
 
-# Testing
+## Testing
 
 When your IP is blocked, any request should lead to a `403` http response.
