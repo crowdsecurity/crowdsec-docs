@@ -127,6 +127,16 @@ There are different decisions `SOURCE`:
   - `CAPI` : decisions fetched from the Crowdsec Central API
   - `csli` : decisions added via `sudo cscli decisions add`
 
+## Add/Remove decisions
+
+```bash
+cscli decisions add -i 1.2.3.4
+cscli decisions delete -i 1.2.3.4
+```
+
+Those commands will respectively add a manual decision for ip `1.2.3.4` (with default parameters such as duration and such), and remove all active decisions for ip `1.2.3.4`.
+
+
 
 ## List alerts
 
