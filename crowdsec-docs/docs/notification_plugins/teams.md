@@ -1,3 +1,5 @@
+This guide will show you how to enable Microsoft Teams notifications via the HTTP plugin.
+
 ## Enabling the plugin:
 
 In your profile file (by default `/etc/crowdsec/profiles.yaml`) , uncomment the section
