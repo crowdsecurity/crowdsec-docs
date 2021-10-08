@@ -1,3 +1,8 @@
+---
+id: teams
+title: Microsoft Teams
+---
+
 This guide will show you how to enable Microsoft Teams notifications via the HTTP plugin.
 
 ## Enabling the plugin:
