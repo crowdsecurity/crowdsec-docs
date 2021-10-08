@@ -72,6 +72,19 @@ Return RFC3339 formatted time
 
 > `TimeNow()`
 
+### `ParseUri(string) map[string][]string`
+
+Parses an URI into a map of string list.
+
+`ParseURI("/foo?a=1&b=2")` would return :
+
+```
+{
+  "a": []string{"1"}, 
+  "b": []string{"2"}
+}
+```
+
 # Alert specific helpers
 
 
