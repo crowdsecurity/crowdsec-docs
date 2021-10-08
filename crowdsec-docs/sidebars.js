@@ -78,8 +78,8 @@ module.exports = {
     {
       type: 'category',
       label: 'Notification plugins',
-      items: ["notification_plugins/intro", "notification_plugins/http", "notification_plugins/slack", "notification_plugins/splunk","notification_plugins/elastic", "notification_plugins/writing_your_own_plugin"]
-    },   
+      items: ["notification_plugins/intro", "notification_plugins/http", "notification_plugins/slack", "notification_plugins/splunk", "notification_plugins/teams", "notification_plugins/elastic", "notification_plugins/writing_your_own_plugin"]
+    },
     {
       type: 'category',
       label: 'Configuration',
