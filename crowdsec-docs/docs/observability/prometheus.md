@@ -1,7 +1,7 @@
 ---
 id: prometheus
 title: Prometheus
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 CrowdSec can expose a [prometheus](https://github.com/prometheus/client_golang) endpoint for collection (on `http://127.0.0.1:6060/metrics` by default).
@@ -38,7 +38,7 @@ cs_bucket_poured_total{name="crowdsecurity/http-scan-uniques_404",source="/var/l
 
 
 #### Parsers
- - `cs_node_hits_total` : how many time an event from a specific source was processed by a parser node :
+ - `cs_node_hits_total` : how many times an event from a specific source was processed by a parser node :
 
 
 <details>
@@ -106,9 +106,11 @@ Acquisition metrics are split by datasource. The following metrics are available
 
  - `cs_info` : Information about CrowdSec (software version)
 
+
+
 ### Exploitation with prometheus server & grafana
 
-Those metrics can be scaped by [prometheus server](https://prometheus.io/docs/introduction/overview/#architecture) and visualized with [grafana](https://grafana.com/). They [can be downloaded here](https://github.com/crowdsecurity/grafana-dashboards) :
+Those metrics can be scraped by [prometheus server](https://prometheus.io/docs/introduction/overview/#architecture) and visualized with [grafana](https://grafana.com/). They [can be downloaded here](https://github.com/crowdsecurity/grafana-dashboards) :
 
 ![Overview](/img/grafana_overview.png)
 

@@ -88,7 +88,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Observability',
-      items: ["observability/intro", "observability/cscli", "observability/prometheus", "observability/dashboard"]
+      items: ["observability/intro", "observability/cscli", "observability/prometheus", "observability/dashboard", "observability/pprof"]
     },
     {
       type: 'category',

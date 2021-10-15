@@ -231,6 +231,10 @@
         {
           "type": "doc",
           "id": "version-v1.1/observability/dashboard"
+        },
+        {
+          "type": "doc",
+          "id": "version-v1.1/observability/pprof"
         }
       ],
       "collapsible": true,
