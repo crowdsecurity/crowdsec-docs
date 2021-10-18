@@ -4,6 +4,10 @@ title: Understand logs processing
 sidebar_position: 7
 ---
 
+:::info
+`cscli explain` relies on your local setup, parsers, scenario to display its data. It requires a working local crowdsec setup.
+:::
+
 
 ## cscli explain: understand what is going on
 
@@ -67,7 +71,8 @@ Hopefully, this feature will help users understand behavior when debugging crowd
 
 ## How it works
 
-Behind the scenes, `cscli explain` relies on your local crowdsec setup to launch a crowdsec instance to process the given logs, and "simply" provides a more user-friendly representation of the debug information. You thus need to have a local working crowdsec setup to be able to use this feature.
+Behind the scenes, `cscli explain` relies on your local crowdsec setup to launch a crowdsec instance to process the given logs, and "simply" provides a more user-friendly representation of the debug information.
+
 
 
 
