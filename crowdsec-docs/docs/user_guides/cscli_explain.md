@@ -65,13 +65,14 @@ What happens :
  - [`crowdsecurity/http-crawl-non_statics`](https://hub.crowdsec.net/author/crowdsecurity/configurations/http-crawl-non_statics) matches this event : it's a http request targeting a non static resource
  - [`crowdsecurity/http-probing`](https://hub.crowdsec.net/author/crowdsecurity/configurations/http-probing) matches as well: it's a 4XX HTTP request that doesn't target a static resource
 
+ 6. Please note that this feature does not track overflows themselves, it only points out if the event was able to *enter* the scenario
 
 Hopefully, this feature will help users understand behavior when debugging crowdsec or creating parsers and/or scenarios!
 
 
 ## How it works
 
-Behind the scenes, `cscli explain` relies on your local crowdsec setup to launch a crowdsec instance to process the given logs, and "simply" provides a more user-friendly representation of the debug information.
+Behind the scene, `cscli explain` relies on your local crowdsec setup to launch a crowdsec instance to process the given logs, and "simply" provides a more user-friendly representation of the debug information.
 
 
 
