@@ -33,5 +33,5 @@ cscli hubtest explain [flags]
 
 ### SEE ALSO
 
-* [cscli hubtest](/cscli/cscli_hubtest.md)	 - Run fonctionnals tests on hub configurations
+* [cscli hubtest](/cscli/cscli_hubtest.md)	 - Run functional tests on hub configurations
 
