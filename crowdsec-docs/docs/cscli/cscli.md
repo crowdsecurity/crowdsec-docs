@@ -35,7 +35,9 @@ It is meant to allow you to manage bans, parsers/scenarios/etc, api and generall
 * [cscli console](/cscli/cscli_console.md)	 - Manage interaction with Crowdsec console (https://app.crowdsec.net)
 * [cscli dashboard](/cscli/cscli_dashboard.md)	 - Manage your metabase dashboard container [requires local API]
 * [cscli decisions](/cscli/cscli_decisions.md)	 - Manage decisions
+* [cscli explain](/cscli/cscli_explain.md)	 - Explain log pipeline
 * [cscli hub](/cscli/cscli_hub.md)	 - Manage Hub
+* [cscli hubtest](/cscli/cscli_hubtest.md)	 - Run functional tests on hub configurations
 * [cscli lapi](/cscli/cscli_lapi.md)	 - Manage interaction with Local API (LAPI)
 * [cscli machines](/cscli/cscli_machines.md)	 - Manage local API machines [requires local API]
 * [cscli metrics](/cscli/cscli_metrics.md)	 - Display crowdsec prometheus metrics.

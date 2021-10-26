@@ -130,7 +130,7 @@ module.exports = {
         {
           type: "category",
           label: "cscli alerts",
-          items: ["cscli/cscli_alerts","cscli/cscli_alerts_delete","cscli/cscli_alerts_inspect","cscli/cscli_alerts_list"]
+          items: ["cscli/cscli_alerts","cscli/cscli_alerts_delete","cscli/cscli_alerts_flush","cscli/cscli_alerts_inspect","cscli/cscli_alerts_list"]
         },
         {
           type: "category",
