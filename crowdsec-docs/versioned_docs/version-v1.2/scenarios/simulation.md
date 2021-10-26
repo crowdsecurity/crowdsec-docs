@@ -37,3 +37,4 @@ $  cscli decisions list
 
 You can also turn on "global simulation" : in this case, only scenarios in the exclusion list will have their decisions applied.
 
+Decisions coming from the CAPI (Central API) are not being simulated. These are blocked directly.
