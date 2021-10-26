@@ -22,12 +22,17 @@ cscli console enroll [enroll-key] [flags]
 
 ```
 cscli console enroll YOUR-ENROLL-KEY
+		cscli console enroll --name [instance_name] YOUR-ENROLL-KEY
+		cscli console enroll --name [instance_name] --tags [tag_1] --tags [tag_2] YOUR-ENROLL-KEY
+
 ```
 
 ### Options
 
 ```
-  -h, --help   help for enroll
+  -h, --help           help for enroll
+  -n, --name string    Name to display in the console
+  -t, --tags strings   Tags to display in the console
 ```
 
 ### Options inherited from parent commands
