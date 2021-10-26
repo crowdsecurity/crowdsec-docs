@@ -208,3 +208,14 @@ table <crowdsec6-blacklists> persist
  You can refer to step by step instructions of the [user tutorial on
  FreeBSD](/blog/crowdsec_firewall_freebsd)
  to setup crowdsec-firewall-bouncer with pf.
+ 
+ ### ipset
+ 
+ ipset lists have to exits before crowdsec-firewall-bouncer starts
+ you could create them and add them to your iptables like this:
+ ```
+ipset create crowdsec-blacklists hash:ip timeout 0 maxelem 150000
+ipset create crowdsec6-blacklists hash:ip timeout 0 family inet6 maxelem 150000
+iptables -I INPUT 1 -m set --match-set crowdsec-blacklists src -j DROP
+ip6tables -I INPUT 1 -m set --match-set crowdsec6-blacklists src -j DROP
+```
