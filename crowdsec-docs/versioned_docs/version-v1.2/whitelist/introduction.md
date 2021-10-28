@@ -14,7 +14,7 @@ Whitelists are special parsers that allow you to "discard" events, and can exist
 
 While the whitelists are the same for parser or postoverflows, beware that field names might change.
 
-Source ip is usually in `evt.Meta.source_ip` when it's a log, but `evt.Overflow.Source_ip` when it's an overflow
+Source ip is usually in `evt.Meta.source_ip` when it's a log, but `evt.Overflow.Alert.Source.IP` when it's an overflow
 
 :::
 
