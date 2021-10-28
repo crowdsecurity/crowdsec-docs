@@ -46,6 +46,11 @@ The representation of the object can be found here :
  - `Overflow` : 
     - `Whitelisted` : if true the OVFLW will be dropped
     - `Reprocess` : if true, the OVFLOW will be reprocessed (inference)
-    - `Sources` : a `map[string]models.Source` representing the distinct sources that triggered the overflow, with their types and values.
+    - `Sources` : a `map[string]models.Source` representing the distinct sources that triggered the overflow, with their types and values. The key of the map is the IP address.
     - `Alert` and `APIAlerts` : representation of the signals that will be sent to LAPI.
 
+[Here](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/types#RuntimeAlert) is full `evt.Overflow` object representation.
+
+## Source
+
+[Here](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/models#Source) is the representation of a `models.Source` object.

@@ -111,7 +111,18 @@ time="07-05-2020 09:39:09" level=info msg="Event is whitelisted by Expr !" filte
 
 ## Whitelist in PostOverflows 
 
+
 Whitelists in PostOverflows are applied *after* the bucket overflow happens.
+
+
+:::warning
+
+In PostOverflows, the `evt.Parsed` object will be empty at this stage.
+
+It means that you must work with the [`evt.Overflow`](/expr/event.md#overflow-relevant-fields) object for your expression.
+
+:::
+
 It has the advantage of being triggered only once we are about to take decision about an IP or Range, and thus happens a lot less often.
 
 A good example is the [crowdsecurity/whitelist-good-actors](https://hub.crowdsec.net/author/crowdsecurity/collections/whitelist-good-actors) collection.
