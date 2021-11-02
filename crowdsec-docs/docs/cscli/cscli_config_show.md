@@ -17,7 +17,8 @@ cscli config show [flags]
 ### Options
 
 ```
-  -h, --help   help for show
+  -h, --help         help for show
+      --key string   Display only this value (config.API.Server.ListenURI
 ```
 
 ### Options inherited from parent commands

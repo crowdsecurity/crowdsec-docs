@@ -34,6 +34,7 @@ cscli explain -dsn "file://myfile.log" --type nginx
   -h, --help          help for explain
   -l, --log string    Lgg line to test
   -t, --type string   Type of the acquisition to test
+  -v, --verbose       Display individual changes
 ```
 
 ### Options inherited from parent commands

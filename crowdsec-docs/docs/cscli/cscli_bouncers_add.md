@@ -19,12 +19,14 @@ cscli bouncers add MyBouncerName [--length 16] [flags]
 ```
 cscli bouncers add MyBouncerName
 cscli bouncers add MyBouncerName -l 24
+cscli bouncers add MyBouncerName -k 2DHbHzWxtnpCnL46e4Hrv4qFLnPldpMe
 ```
 
 ### Options
 
 ```
   -h, --help         help for add
+  -k, --key string   api key for the bouncer
   -l, --length int   length of the api key (default 16)
 ```
 
