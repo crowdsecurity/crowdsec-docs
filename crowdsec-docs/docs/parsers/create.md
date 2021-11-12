@@ -234,7 +234,7 @@ Please fill your assert file(s) for test 'myservice-logs', exiting
 
 ```
 
-We can see that our parser captured all the relevant information were properly captured, and those should be enough to create scenarios further down the line.
+We can see that our parser captured all the relevant information, and it should be enough to create scenarios further down the line.
 
 Again, further inspection with `cscli hubtest inspect` will show us more about what happened :
 

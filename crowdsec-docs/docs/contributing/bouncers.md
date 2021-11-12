@@ -17,7 +17,7 @@ Sharing your bouncer on the hub allows other users to find it and use it. While 
 To have your bouncer published on the hub, please simply [open a new issue on the hub](https://github.com/crowdsecurity/hub/issues/new), requesting "bouncer inclusion". The bouncer will then be reviewed by the team, and then will be published directly on the hub, for everyone to find & use it !
 
 
-The information that should be stated in your issue are :
+The information that should be stated in your issue is :
 
  - The source repository of your bouncer (for example `https://github.com/crowdsecurity/cs-firewall-bouncer/`)
  - The software licence used

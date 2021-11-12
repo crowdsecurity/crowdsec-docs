@@ -24,7 +24,7 @@ Then, [bouncers](user_guides/bouncers_configuration.md) can "consume" those deci
 
  [[References](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI)]
 
-Whenever the [Local API](/docs/v1.0/local_api/intro) receives an alert with associated decisions, the meta information about the alert are shared with our central api :
+Whenever the [Local API](/docs/v1.0/local_api/intro) receives an alert with associated decisions, the meta information about the alert is shared with our central api :
 
  - The source ip that triggered the alert
  - The scenario that was triggered

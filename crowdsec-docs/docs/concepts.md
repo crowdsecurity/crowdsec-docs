@@ -15,7 +15,7 @@ CrowdSec runtime revolves around a few simple concepts :
  - When a scenario is "triggered", CrowdSec generates an [alert](/concepts.md#alerts) and eventually one or more associated [decisions](/concepts.md#decisions) :
     - The alert is here mostly for tracability, and will stay even after the decision expires
     - The decision on the other hand, is short lived, and tells *what* action should be taken against the offending ip/range/user...
- - Those information (the signal, the associated decisions) are then sent to crowdsec's [Local API](/local_api/intro.md) and stored in the database
+ - This information (the signal, the associated decisions) is then sent to crowdsec's [Local API](/local_api/intro.md) and stored in the database
 
 As you might have guessed by now, CrowdSec itself does the detection part and stores those decisions.
 Then, [bouncers](/user_guides/bouncers_configuration.md) can "consume" those decisions (via the very same [Local API](/local_api/intro.md) and apply some actual remediation.
@@ -24,13 +24,13 @@ Then, [bouncers](/user_guides/bouncers_configuration.md) can "consume" those dec
 
  [[References](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI)]
 
-Whenever the [Local API](/local_api/intro.md) receives an alert with associated decisions, the meta information about the alert are shared with our central api :
+Whenever the [Local API](/local_api/intro.md) receives an alert with associated decisions, the meta information about the alert is shared with our central api :
 
  - The source ip that triggered the alert
  - The scenario that was triggered
  - The timestamp of the attack
 
-These are the only information that are sent to our API. Those are then processed on our side to be able to redistribute relevant blocklists to all the participants. You can check the central API documentation in the references link to have an exhaustive view of what might be shared between your instance and our services.
+This is the only data that is sent to our API, and it is processed on our side to be able to redistribute relevant blocklists to all the participants. You can check the central API documentation in the references link to have an exhaustive view of what might be shared between your instance and our services.
 
 ## Bouncers
 

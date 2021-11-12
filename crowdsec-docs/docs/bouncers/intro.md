@@ -14,7 +14,7 @@ They can either be within the applicative stack, or work out of band :
 
 [nginx bouncer](https://github.com/crowdsecurity/cs-nginx-bouncer) will check every unknown IP against the local API before letting go through or serving a *403* to the user, while a [firewall bouncer](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-firewall-bouncer) or a [cloudflare bouncer](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-cloudflare-bouncer) will simply "add" malevolent IPs to nftables/ipset set of blacklisted IPs.
 
-Bouncers rely on [crowdsec's Local API](/local_api/intro.md) to be able to get informations about a given IP or such.
+Bouncers rely on [crowdsec's Local API](/local_api/intro.md) to be able to get information about a given IP or such.
 
 
 You can explore [available bouncers on the hub](https://hub.crowdsec.net/browse/#bouncers).
