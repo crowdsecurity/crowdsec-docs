@@ -55,6 +55,10 @@
         {
           "type": "doc",
           "id": "version-v1.2/user_guides/replay_mode"
+        },
+        {
+          "type": "doc",
+          "id": "version-v1.2/user_guides/cscli_macos"
         }
       ],
       "collapsible": true,
