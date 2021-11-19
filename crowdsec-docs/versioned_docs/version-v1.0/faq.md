@@ -201,10 +201,10 @@ When setting up High Availability for Local API, do not forget to share the same
 
 To disable the central API, simply comment out the [`online_client` section of the configuration file](/docs/v1.0/configuration/crowdsec_configuration#online_client).
 
-## Crash related to geoip
+## How to fix the geoip related crash
 
-It's a known bug in the official debian repository: `interface conversion: interface {} is nil, not parser.GeoIpEnricherCtxBug/crowdsec/runParse`.
+It's a known bug in the crowdsec package in the official debian repository: `interface conversion: interface {} is nil, not parser.GeoIpEnricherCtxBug/crowdsec/runParse`.
 
 It's documented here https://github.com/crowdsecurity/crowdsec/issues/1049 and here https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=999512.
 
-What one has to do is `cscli hub upgrade --force` to force mmdb database download, it should resolve the issue
+One only has to `cscli hub upgrade --force` to force the mmdb database download, it will resolve the issue
