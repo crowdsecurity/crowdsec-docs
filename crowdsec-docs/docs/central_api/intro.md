@@ -29,7 +29,7 @@ The community blocklist matches the scenarios deployed on the crowdsec instance.
 
 ### Console metrics
 
-With the upcoming release of the [console](https://app.crowdsec.net) and for genreal health monitoring of the project, crowdsec reports the following information to the central API :
+With the upcoming release of the [console](https://app.crowdsec.net) and for genreal health monitoring of the project, crowdsec reports the following data to the central API :
  - name and versions of the deployed bouncers
  - name and versions of the crowdsec agents registered to the local API
 

@@ -116,7 +116,7 @@ $ systemctl reload crowdsec
 sudo cscli collections inspect <collection_name>
 ```
 
-Collections inspect will give you detailed information about a given collection, including versioning information *and* runtime metrics (fetched from prometheus).
+Collections inspect will give you detailed information about a given collection, including versioning data *and* runtime metrics (fetched from prometheus).
 
 <details>
   <summary>cscli collections inspect example</summary>
@@ -251,7 +251,7 @@ INFO[0000] Run 'systemctl reload crowdsec' for the new configuration to be effec
 sudo cscli parsers inspect <parser_name>
 ```
 
-Parsers inspect will give you detailed information about a given parser, including versioning information *and* runtime metrics (fetched from prometheus).
+Parsers inspect will give you detailed information about a given parser, including versioning data *and* runtime metrics (fetched from prometheus).
 
 <!--TBD: refaire l'output apres avoir fix le 'parsers inspect XXXX'-->
 <details>
@@ -423,7 +423,7 @@ INFO[0000] Run 'systemctl reload crowdsec' for the new configuration to be effec
 sudo cscli scenarios inspect <scenario_name>
 ```
 
-Scenarios inspect will give you detailed information about a given scenario, including versioning information *and* runtime metrics (fetched from prometheus).
+Scenarios inspect will give you detailed information about a given scenario, including versioning data *and* runtime metrics (fetched from prometheus).
 
 <details>
   <summary>Inspect <strong>crowdsecurity/http-bf-wordpress_bf</strong> scenario</summary>
