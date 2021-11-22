@@ -53,7 +53,7 @@ module.exports = {
           position: 'left',
           label: 'Bouncers',
         },
-        {to: 'https://crowdsec.net/category/tutorial/', label: 'Tutorials', position: 'left'},
+        {to: 'https://crowdsec.net/blog/category/tutorial/', label: 'Tutorials', position: 'left'},
         {
           type: 'doc',
           docId: 'faq',
