@@ -13,7 +13,7 @@ To monitor SSH logs from journald:
 ```yaml
 source: journalctl
 journalctl_filter:
- - _SYSTEMD_UNIT=ssh.service
+ - "_SYSTEMD_UNIT=ssh.service"
 labels:
   type: journald
 ```
