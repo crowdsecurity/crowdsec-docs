@@ -12,13 +12,15 @@ To monitor SSH logs from journald:
 
 ```yaml
 source: journalctl
-journalctl_filters:
- - _SYSTEMD_UNIT=ssh.service
+journalctl_filter:
+ - "_SYSTEMD_UNIT=ssh.service"
+labels:
+  type: journald
 ```
 
 ## Parameters
 
-### `journalctl_filters`
+### `journalctl_filter`
 
 A list of journalctl filters. This is mandatory.
 
