@@ -96,11 +96,11 @@ crowdsec -type nginx -dsn 'docker://my_nginx_container_name?log_level=debug'
 
 ### Containers watching
 
-This module will automatically read the logs of containers specified in the configuration, even if they are started after crowdsec start.
+This module will automatically read the logs of containers specified in the configuration, even if they have been started after crowdsec start.
 
 ### Reading podman containers
 
-If you want to read Podman containers logs, you can set the `docker_host` to `unix:///var/run/podman/podman.sock` or the path of your Podman socket.
+If you want to read Podman containers logs, you can set the `docker_host` to `unix:///var/run/podman/podman.sock` or to the path of your Podman socket.
 
 ```yaml title="Configuration file"
 source: docker
