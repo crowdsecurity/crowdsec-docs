@@ -83,7 +83,7 @@ cloudwatch implements a very approximative DSN, as follows : `cloudwatch:///your
 
 Supported args are :
 
-  - `log_level` : set log level of parser
+  - `log_level` : set log level of module
   - `profile` : set aws profile name
   - `start_date` / `end_date` : provide start and end date limits for events, see [supported formats](https://hub.crowdsec.net/author/crowdsecurity/configurations/dateparse-enrich)
   - `backlog` : provide a duration, events from now()-duration till now() will be read
