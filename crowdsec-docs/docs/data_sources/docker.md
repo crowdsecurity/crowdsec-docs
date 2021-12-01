@@ -100,7 +100,15 @@ This module will automatically read the logs of containers specified in the conf
 
 ### Reading podman containers
 
-If you want to read Podman containers logs, you can set the `docker_host` to `unix:///var/run/podman/podman.sock` or to the path of your Podman socket.
+
+:::info
+
+Don't forget to start podman service with `sudo systemctl start podman`
+
+:::
+
+
+If you want to read Podman containers logs, you can set the `docker_host` to `unix:///run/podman/podman.sock` or to the path of your Podman socket.
 
 ```yaml title="Configuration file"
 source: docker
@@ -114,5 +122,5 @@ docker_host: unix:///var/run/podman/podman.sock
 ```
 
 ```bash title="Command line"
-crowdsec -type nginx -dsn 'docker://my_nginx_container_name?docker_host=unix:///var/run/podman/podman.sock&log_level=debug'
+crowdsec -type nginx -dsn 'docker://my_nginx_container_name?docker_host=unix:///run/podman/podman.sock&log_level=debug'
 ```
