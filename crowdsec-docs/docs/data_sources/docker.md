@@ -56,7 +56,7 @@ List of regexp matching containers ID to monitor.
 
 Docker host.
 
-Default: `"unix:///var/run/docker.sock"`
+Default: `unix:///var/run/docker.sock`
 
 ### `until`
 
@@ -65,6 +65,21 @@ Read logs until timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 
 ### `since`
 
 Read logs since timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes).
+
+### `check_interval`
+
+Relative interval (e.g. 5s for 5 seconds) to check for new containers matching the configuration.
+Default: `1s`
+
+### `follow_stdout`
+
+Follow `stdout` containers logs.
+Default: `true`
+
+### `follow_stderr`
+
+Follow `stderr` container logs.
+Default: `true`
 
 
 ## DSN and command-line
@@ -76,7 +91,6 @@ Supported args are :
   - `log_level` : set log level of module
   - `until` : read logs until timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)
   - `since` : read logs since timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)
-
   - `docker_host` : provide a duration, events from now()-duration till now() will be read
 
 
