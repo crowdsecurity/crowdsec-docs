@@ -69,16 +69,19 @@ Read logs since timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 
 ### `check_interval`
 
 Relative interval (e.g. 5s for 5 seconds) to check for new containers matching the configuration.
+
 Default: `1s`
 
 ### `follow_stdout`
 
 Follow `stdout` containers logs.
+
 Default: `true`
 
 ### `follow_stderr`
 
 Follow `stderr` container logs.
+
 Default: `true`
 
 
