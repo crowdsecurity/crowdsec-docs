@@ -1,5 +1,5 @@
 ---
-id: troubleshout
+id: troubleshoot
 title: Monitoring
 sidebar_position: 10
 ---
