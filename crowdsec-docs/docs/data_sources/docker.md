@@ -119,9 +119,11 @@ This module will automatically read the logs of containers specified in the conf
 ### Reading podman containers
 
 
-:::info
+:::note
 
-Don't forget to start podman service with `sudo systemctl start podman`
+Don't forget to start podman service with `sudo systemctl start podman`.
+
+Run your podman containers as `root`, else `CrowdSec` will not be able to read the logs.
 
 :::
 
