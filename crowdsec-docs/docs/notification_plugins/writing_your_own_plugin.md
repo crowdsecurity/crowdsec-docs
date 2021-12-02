@@ -74,8 +74,8 @@ Next we need to implement the plugin interface `Notifier`.
 
 ```go
 type Notifier interface {
-	Configure(ctx context.Context, config *Config) (*Empty, error)
-	Notify(ctx context.Context, notification *Notification) (*Empty, error)
+    Configure(ctx context.Context, config *protobufs.Config) (*protobufs.Empty, error)
+    Notify(ctx context.Context, notification *protobufs.Notification) (*protobufs.Empty, error)
 }
 ```
 
