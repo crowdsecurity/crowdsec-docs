@@ -94,7 +94,7 @@ Supported args are :
   - `log_level` : set log level of module
   - `until` : read logs until timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)
   - `since` : read logs since timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)
-  - `docker_host` : provide a duration, events from now()-duration till now() will be read
+  - `docker_host` : docker host, can be a remote docker host or a path to another container socket
 
 
 A 'pseudo DSN' must be provided:
