@@ -95,7 +95,8 @@ Supported args are :
   - `until` : read logs until timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)
   - `since` : read logs since timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)
   - `docker_host` : docker host, can be a remote docker host or a path to another container socket
-
+  - `follow_stderr`: follow `stderr` container logs
+  - `follow_stdout` : follow `stdout` container logs
 
 A 'pseudo DSN' must be provided:
 
