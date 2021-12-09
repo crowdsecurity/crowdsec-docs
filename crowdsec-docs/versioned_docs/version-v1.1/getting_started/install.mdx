@@ -148,6 +148,11 @@ You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
   </TabItem>
   <TabItem value="freebsd">
     <CodeBlock className="language-bash">pkg install crowdsec-firewall-bouncer</CodeBlock>
+    :::info
+    On FreeBSD bouncer configuration isn't taken care of at installation time. So a bit of a
+    [bouncer](/bouncers/intro.md) configuration is needed. The bouncer configuration file is located at
+    `/usr/local/etc/crowdsec-firewall-bouncer/crowdsec-firewall-bouncer.yaml`.
+    :::
   </TabItem>
   <TabItem value="openwrt">
     <CodeBlock className="language-bash">pkg install crowdsec-firewall-bouncer-iptables</CodeBlock>
