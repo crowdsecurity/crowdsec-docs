@@ -22,6 +22,8 @@ cscli explain --log "Sep 19 18:33:22 scw-d95986 sshd[24347]: pam_unix(sshd:auth)
 cscli explain --dsn "file://myfile.log" --type nginx
 ```
 
+Hint: if your are creating/collecting data on the fly (over a network, for example) and want to avoid temporary files, you can use `cscli explain --file /dev/fd/0` or `cscli explain -dsn "file://dev/fd/0"` to refer to standard input.
+
 The typical output looks like this :
 
 ```bash
