@@ -135,17 +135,40 @@ sudo cscli decisions import -i foo.csv
 
 You can import a CSV or JSON file containing decisions directly with cscli.
 
-The `value` field is mandatory, and contains the target of the decision (ip, range, username, ...).
+The `value` field is mandatory and contains the target of the decision (ip, range, username, ...).
 
- The following fields are optionnal:
+ The following fields are optional:
   - `duration`: duration of the decisions, defaults to 4h
   - `reason`: reason for the decisions, defaults to `manual`
   - `origin`: source of the decisions, defaults to `cscli`
   - `type`: action to apply for the decision, defaults to `ban`
-  - `scope`: scope of the decision, default to `ip` 
+  - `scope`: scope of the decision, default to `ip`
 
-  All fields (except for `value`) can be overwritten by command-line arguments, you can see the list in the [cli documentation](/cscli/cscli_decisions_import.md).
+All fields (except for `value`) can be overwritten by command-line arguments, you can see the list in the [cli documentation](/cscli/cscli_decisions_import.md).
 
-  :::caution
+Example JSON file:
+
+```json
+[
+   {
+      "duration" : "4h", 
+      "scope" : "ip", 
+      "type" : "ban", 
+      "value" : "1.2.3.5"
+   }
+]
+```
+
+Example CSV file :
+
+```csv
+duration,scope,value
+24h,ip,1.2.3.4
+```
+
+
+
+:::caution
   If you use the sqlite database backend, performance can be negatively impacted if you import a lot of decisions (> 10000 decisions).
-  :::
+:::
+
