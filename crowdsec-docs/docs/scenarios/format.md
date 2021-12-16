@@ -314,7 +314,7 @@ cache_size: 5
 By default, a bucket holds [capacity](format#capacity) events "in memory".
 However, for a number of cases, you don't want this, as it might lead to excessive memory consumption.
 
-By setting `cache_size` to a positive integer, we can control the maximum in-memory cache size of the bucket, without changing its capacity and such. This is especially useful when using `counter` buckets on long duration that might end up counting (and this storing in memory) an important number of events.
+By setting `cache_size` to a positive integer, we can control the maximum in-memory cache size of the bucket, without changing its capacity and such. It is useful when buckets are likely to stay alive for a long time or ingest a lot of events to avoid storing a lot of events in memory.
 
 ---
 ### `overflow_filter`
@@ -327,6 +327,17 @@ overflow_filter: any(queue.Queue, { .Enriched.IsInEU  == "true" })
 If this expression is present and returns false, the overflow will be discarded.
 
 ---
+### `cancel_on`
+
+```yaml
+cancel_on: evt.Parsed.something == 'somevalue'
+```
+
+`cancel_on` is an [expression](/expr/helpers.md) that runs on the each event poured to the bucket.
+If the `cancel_on` expression returns true, the bucket is immediately destroyed (and doesn't overflow).
+
+
+---
 ### `data`
 
 ```yaml
@@ -336,7 +347,7 @@ data:
     [type: (regexp|string)]
 ```
 
-`data` allows user to specify an external source of data.
+`data` allows to specify an external source of data.
 
 This section is only relevant when `cscli` is used to install scenario from hub, as it will download the `source_url` and store it to `dest_file`. 
 
