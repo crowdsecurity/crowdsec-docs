@@ -48,7 +48,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Data Sources',
-      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/syslog", "data_sources/troubleshoot" ]
+      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/syslog", "data_sources/docker", "data_sources/troubleshout" ]
     },
     {
       type: 'category',
