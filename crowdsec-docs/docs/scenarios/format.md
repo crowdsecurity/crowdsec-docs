@@ -333,7 +333,7 @@ If this expression is present and returns false, the overflow will be discarded.
 cancel_on: evt.Parsed.something == 'somevalue'
 ```
 
-`cancel_on` is an [expression](/expr/helpers.md) that runs on the each event poured to the bucket.
+`cancel_on` is an [expression](/expr/helpers.md) that runs on each event poured to the bucket.
 If the `cancel_on` expression returns true, the bucket is immediately destroyed (and doesn't overflow).
 
 
