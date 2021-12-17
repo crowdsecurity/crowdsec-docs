@@ -36,6 +36,7 @@ Hint: if your are creating/collecting data on the fly (over a network, for examp
   -h, --help          help for explain
   -l, --log string    Lgg line to test
   -t, --type string   Type of the acquisition to test
+  -v, --verbose       Display individual changes
 ```
 
 ### Options inherited from parent commands
