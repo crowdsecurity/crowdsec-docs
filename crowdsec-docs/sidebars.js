@@ -43,12 +43,12 @@ module.exports = {
     {
       type: 'category',
       label: 'User Guides',
-      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building", "user_guides/replay_mode", "user_guides/cscli_explain", "user_guides/cscli_macos"]
+      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building", "user_guides/replay_mode", "user_guides/cscli_explain", "user_guides/cscli_macos", "user_guides/multiserver_setup"]
     },
     {
       type: 'category',
       label: 'Data Sources',
-      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/syslog", "data_sources/docker", "data_sources/troubleshout" ]
+      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/syslog", "data_sources/docker", "data_sources/troubleshoot" ]
     },
     {
       type: 'category',
