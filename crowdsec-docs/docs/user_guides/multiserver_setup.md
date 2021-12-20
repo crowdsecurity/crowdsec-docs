@@ -50,5 +50,7 @@ To avoid any confusion, disabling the LAPI service on the machine running the ag
 
  - Parsers and Scenarios must be present on the agents. It's not useful to deploy them on LAPI
  - Decisions are made by LAPI. This is where you want to setup eventual custom profiles, and this is where you bouncers should point
- - You can of course still use the [console](https://app.crowdsec.net), it supports multiserver setups !
+ - You can use the [console](https://app.crowdsec.net), it supports multiserver setup!
  - If you have an important setup, switching LAPI backend from SQLite to MySQL/PgSQL is strongly advised
+
+[This existing article](https://crowdsec.net/blog/multi-server-setup/) might as well be useful!
