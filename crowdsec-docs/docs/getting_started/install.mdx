@@ -1,6 +1,6 @@
 ---
 id: install_crowdsec
-title: Install CrowdSec
+title: Install CrowdSec (Linux)
 sidebar_position: 1
 ---
 
@@ -28,7 +28,6 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
     {label: 'EL/Fedora/Centos7', value: 'centos7'},
     {label: 'EL/Fedora/Centos8', value: 'centos8'},
     {label: 'Amzn Linux 2', value: 'amz'},
-    {label: 'FreeBSD', value: 'freebsd'},
     {label: 'Docker', value: 'docker'},
   ]}>
   <TabItem value="debian">
@@ -45,10 +44,6 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
 
   <TabItem value="amz">
     <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash</CodeBlock>
-  </TabItem>
-
-  <TabItem value="freebsd">
-    FreeBSD packages are available in the official repositories
   </TabItem>
 
   <TabItem value="openwrt">
@@ -73,7 +68,6 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
     {label: 'EL/Fedora/Centos8', value: 'centos7'},
     {label: 'EL/Fedora/Centos7', value: 'centos8'},
     {label: 'Amzn Linux 2', value: 'amz'},
-    {label: 'FreeBSD', value: 'freebsd'},
     {label: 'Docker', value: 'docker'},
   ]}>
   <TabItem value="debian">
@@ -92,10 +86,6 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
     <CodeBlock className="language-bash">yum install crowdsec</CodeBlock>
   </TabItem>
 
-  <TabItem value="freebsd">
-    <CodeBlock className="language-bash">pkg install crowdsec</CodeBlock>
-  </TabItem>
-
   <TabItem value="openwrt">
     <CodeBlock className="language-bash">dnf install crowdsec</CodeBlock>
   </TabItem>
@@ -106,7 +96,6 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
 
 </Tabs>
 
-
 <!-- TBD : fix links -->
 
 You now have crowdsec running ! You can move forward and install a [bouncer](/bouncers/intro.md), or take a [tour](/getting_started/crowdsec_tour.md) of the software beforehand !
@@ -114,7 +103,7 @@ You now have crowdsec running ! You can move forward and install a [bouncer](/bo
 
 :::caution
 
-Keep in mind that CrowdSec is only in charge of the "detection", and won't block anything on its own.
+Keep in mind that the crowdsec package is only in charge of the "detection", and won't block anything on its own.
 You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
 
 :::
@@ -131,7 +120,6 @@ You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
     {label: 'EL/Fedora/Centos8', value: 'centos7'},
     {label: 'EL/Fedora/Centos7', value: 'centos8'},
     {label: 'Amzn Linux 2', value: 'amz'},
-    {label: 'FreeBSD', value: 'freebsd'},
   ]}>
   <TabItem value="debian">
     <CodeBlock className="language-bash">apt install crowdsec-firewall-bouncer-iptables</CodeBlock>
@@ -146,9 +134,6 @@ You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
   <TabItem value="amz">
     <CodeBlock className="language-bash">yum install crowdsec-firewall-bouncer-iptables</CodeBlock>
   </TabItem>
-  <TabItem value="freebsd">
-    <CodeBlock className="language-bash">pkg install crowdsec-firewall-bouncer</CodeBlock>
-  </TabItem>
   <TabItem value="openwrt">
     <CodeBlock className="language-bash">pkg install crowdsec-firewall-bouncer-iptables</CodeBlock>
   </TabItem>
@@ -157,7 +142,7 @@ You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
 
 :::info
 
-While we're suggesting the most common firewall bouncer, check our [hub](https://hub.crowdsec.net) for more bouncers.
+While we're suggesting the most common firewall bouncer, check our [hub](https://hub.crowdsec.net) for more of them.
 Find a bouncer directly for your application ([nginx](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-nginx-bouncer), [php](https://github.com/crowdsecurity/php-cs-bouncer), [wordpress](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-wordpress-bouncer)) or your providers ([cloudflare](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-cloudflare-bouncer), [AWS/GCP/...](https://hub.crowdsec.net/author/fallard84/bouncers/cs-cloud-firewall-bouncer)) 
 
 :::

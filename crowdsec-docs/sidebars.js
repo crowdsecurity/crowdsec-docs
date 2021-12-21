@@ -38,7 +38,7 @@ module.exports = {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
-      items: ["getting_started/install_crowdsec", "getting_started/crowdsec_tour"]
+      items: ["getting_started/install_crowdsec", "getting_started/install_crowdsec_freebsd", "getting_started/crowdsec_tour"]
     },
     {
       type: 'category',
