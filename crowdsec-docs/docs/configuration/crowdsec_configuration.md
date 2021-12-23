@@ -305,6 +305,8 @@ Path to the yaml file containing logs that needs to be read.
 
 (>1.0.7) Path to a directory where each yaml is considered as a acquisition configuration file containing logs that needs to be read.
 
+If both `acquisition_dir` and `acquisition_path` are specified, the entries are merged alltogether.
+
 
 ### `cscli`
 
