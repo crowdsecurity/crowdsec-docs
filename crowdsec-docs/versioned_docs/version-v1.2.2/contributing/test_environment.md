@@ -15,9 +15,9 @@ This can be done directly with the tarball of the release :
 
 
 ```bash
-https://github.com/crowdsecurity/crowdsec/releases/download/v1.1.1/crowdsec-release.tgz
+https://github.com/crowdsecurity/crowdsec/releases/download/v1.2.2/crowdsec-release.tgz
 tar xvzf crowdsec-release.tgz
-cd crowdsec-v1.1.1
+cd crowdsec-v1.2.2
 ./test_env.sh
 ```
 
