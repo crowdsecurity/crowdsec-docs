@@ -20,6 +20,10 @@ common:
   log_media: file
   log_level: info
   log_dir: /var/log/
+  log_max_size: 500
+  log_max_age: 28
+  log_max_files: 3
+  compress_logs: true
   working_dir: .
 config_paths:
   config_dir: /etc/crowdsec/
@@ -109,6 +113,10 @@ common:
   log_level: "(error|info|debug|trace)"
   log_dir: "<path_to_log_folder>"
   working_dir: "<path_to_working_folder>"
+  log_max_size: <max_size_of_log_file>
+  log_max_age: <max_age_of_log_file>
+  log_max_files: <number_of_log_files_to_keep>
+  compress_logs: (true|false)
 config_paths:
   config_dir: "<path_to_crowdsec_config_folder>"
   data_dir: "<path_to_crowdsec_data_folder>"
@@ -174,6 +182,10 @@ common:
   log_level: "(error|info|debug|trace)"
   log_dir: "<path_to_log_folder>"
   working_dir: "<path_to_working_folder>"
+  log_max_size: <max_size_of_log_file>
+  log_max_age: <max_age_of_log_file>
+  log_max_files: <number_of_log_files_to_keep>
+  compress_logs: (true|false)
 ```
 
 #### `daemonize`
@@ -210,6 +222,25 @@ Works only with `log_media = file`.
 
 Current working directory.
 
+#### `log_max_size`
+> int
+
+Maximum size the log file in MB before rotating it.
+
+#### `log_max_age`
+> int
+
+Maximum age of previous log files before deleting them.
+
+#### `log_max_files`
+> int
+
+Number of previous log files to keep.
+
+#### `compress_logs`
+> bool
+
+Whether to compress the log file after rotation or not.
 
 ### `config_paths`
 
