@@ -254,6 +254,11 @@ module.exports = {
     },
     {
       type: 'doc',
+      label: 'Ingress Nginx Bouncer',
+      id: "bouncers/ingress-nginx"
+    },
+    {
+      type: 'doc',
       label: 'Custom Bouncer',
       id: "bouncers/custom"
     },

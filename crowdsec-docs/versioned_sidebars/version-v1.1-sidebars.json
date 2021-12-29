@@ -784,6 +784,10 @@
     },
     {
       "type": "doc",
+      "id": "version-v1.1/bouncers/ingress-nginx"
+    },
+    {
+      "type": "doc",
       "id": "version-v1.1/bouncers/custom"
     },
     {

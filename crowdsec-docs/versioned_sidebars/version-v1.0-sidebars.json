@@ -768,6 +768,10 @@
     },
     {
       "type": "doc",
+      "id": "version-v1.0/bouncers/ingress-nginx"
+    },
+    {
+      "type": "doc",
       "id": "version-v1.0/bouncers/custom"
     },
     {
