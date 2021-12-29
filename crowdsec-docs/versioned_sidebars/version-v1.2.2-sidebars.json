@@ -896,6 +896,10 @@
     },
     {
       "type": "doc",
+      "id": "version-v1.2.2/bouncers/openresty"
+    },
+    {
+      "type": "doc",
       "id": "version-v1.2.2/bouncers/custom"
     },
     {

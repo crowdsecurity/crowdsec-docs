@@ -249,6 +249,11 @@ module.exports = {
     },
     {
       type: 'doc',
+      label: 'OpenResty Bouncer',
+      id: "bouncers/openresty"
+    },
+    {
+      type: 'doc',
       label: 'Custom Bouncer',
       id: "bouncers/custom"
     },

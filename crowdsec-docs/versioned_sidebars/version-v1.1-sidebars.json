@@ -780,6 +780,10 @@
     },
     {
       "type": "doc",
+      "id": "version-v1.1/bouncers/openresty"
+    },
+    {
+      "type": "doc",
       "id": "version-v1.1/bouncers/custom"
     },
     {

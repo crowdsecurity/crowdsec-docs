@@ -31,6 +31,7 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
     {label: 'FreeBSD', value: 'freebsd'},
     {label: 'OpenWRT', value: 'openwrt'},
     {label: 'Docker', value: 'docker'},
+    {label: 'Kubernetes', value: 'k8s'},
   ]}>
   <TabItem value="debian">
     <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash</CodeBlock>
@@ -60,6 +61,10 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
     Docker image is available on docker hub.
   </TabItem>
 
+  <TabItem value="k8s">
+    <CodeBlock className="language-bash">helm repo add crowdsec https://crowdsecurity.github.io/helm-charts && helm repo update</CodeBlock>
+  </TabItem>
+
 </Tabs>
 
 
@@ -77,6 +82,7 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
     {label: 'FreeBSD', value: 'freebsd'},
     {label: 'OpenWRT', value: 'openwrt'},
     {label: 'Docker', value: 'docker'},
+    {label: 'Kubernetes', value: 'k8s'},
   ]}>
   <TabItem value="debian">
     <CodeBlock className="language-bash">apt install crowdsec</CodeBlock>
@@ -104,6 +110,10 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
 
   <TabItem value="docker">
     <CodeBlock className="language-bash">docker pull crowdsecurity/crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="k8s">
+    <CodeBlock className="language-bash">helm install crowdsec crowdsec/crowdsec -f crowdsec-values.yaml -n crowdsec --create-namespace</CodeBlock>
   </TabItem>
 
 </Tabs>
