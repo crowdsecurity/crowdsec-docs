@@ -120,7 +120,7 @@ Otherwise, configure your API url and key in `/etc/crowdsec/bouncers/crowdsec-op
 
 ```lua
 API_URL=http://127.0.0.1:8080
-API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
+API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>`
 LOG_FILE=/tmp/lua_mod.log
 CACHE_EXPIRATION=1
 CACHE_SIZE=1000
@@ -139,7 +139,7 @@ If your nginx bouncer needs to communicate with a remote crowdsec API, you can c
 
 ```lua
 API_URL=http://127.0.0.1:8080
-API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
+API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>`
 LOG_FILE=/tmp/lua_mod.log
 CACHE_EXPIRATION=1
 CACHE_SIZE=1000
