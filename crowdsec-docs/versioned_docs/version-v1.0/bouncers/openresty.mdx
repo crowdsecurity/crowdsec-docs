@@ -1,0 +1,157 @@
+---
+id: openresty
+title: OpenResty Bouncer
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+<img src={useBaseUrl('/img/crowdsec_nginx.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
+</p>
+<p align="center">
+<img src="https://img.shields.io/badge/build-pass-green" />
+<img src="https://img.shields.io/badge/tests-pass-green" />
+</p>
+<p align="center">
+&#x1F4DA; <a href="#installation/">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+
+
+A lua bouncer for OpenResty.
+
+## How does it work ?
+
+This bouncer leverages OpenResty lua's API, namely `access_by_lua_file`.
+
+New/unknown IP are checked against crowdsec API, and if request should be blocked, a **403** is returned to the user, and put in cache.
+
+## Installation
+
+:::caution Before installation
+openresty bouncer depends on openresty, openresty-opm, gettext-base. it has been tested only on debian/ubuntu based distributions.
+You can install openresty and openresty-opm from [openresty linux packages](https://openresty.org/en/linux-packages.html).
+:::
+
+### Using packages
+
+[Setup crowdsec repositories](/getting_started/install.mdx#install-our-repositories).
+
+<Tabs
+  defaultValue="debian"
+  values={[
+    { label: 'Debian/Ubuntu', value: 'debian' ,},
+  ]
+}>
+<TabItem value="debian">
+
+```bash
+sudo apt install crowdsec-openresty-bouncer
+```
+
+</TabItem>
+
+</Tabs>
+
+
+### Manual installation
+
+Download the latest release [here](https://github.com/crowdsecurity/cs-openresty-bouncer/releases)
+
+```bash
+tar xvzf crowdsec-openresty-bouncer.tgz
+cd crowdsec-openresty-bouncer-v*/
+sudo ./install.sh
+```
+
+If you are on a mono-machine setup, the `crowdsec-openresty-bouncer` install script will register directly to the local crowdsec, so you're good to go !
+
+:warning: the installation script will take care of dependencies for Debian/Ubuntu
+
+<details>
+  <summary>non-debian based dependencies</summary>
+
+  - openresty-opm : OpenResty Package Manager
+  - pintsized/lua-resty-http : lua lib managed by openresty-opm
+
+</details>
+
+
+### From source
+
+#### Requirements
+
+##### Debian/Ubuntu
+
+```bash
+sudo apt-get install gettext-base build-essential
+```
+
+Build the package :
+
+- [`crowdsec-openresty-bouncer`](https://github.com/crowdsecurity/cs-openresty-bouncer)
+```bash
+git clone https://github.com/crowdsecurity/cs-openresty-bouncer.git
+```
+
+#### Build package
+
+```bash
+cd crowdsec-openresty-bouncer/
+make release
+```
+
+#### Installation
+
+```bash
+tar xvzf crowdsec-openresty-bouncer.tgz
+cd crowdsec-openresty-bouncer-v*/
+sudo ./install.sh
+```
+
+If you are on a mono-machine setup, the `crowdsec-openresty-bouncer` install script will register directly to the local crowdsec, so you're good to go !
+
+Otherwise, configure your API url and key in `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`:
+
+```lua
+API_URL=http://127.0.0.1:8080
+API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
+LOG_FILE=/tmp/lua_mod.log
+CACHE_EXPIRATION=1
+CACHE_SIZE=1000
+BOUNCING_ON_TYPE=ban
+REQUEST_TIMEOUT=0.2
+```
+
+You can now restart your openresty server:
+```bash
+systemctl restart openresty
+```
+
+## Configuration
+
+If your nginx bouncer needs to communicate with a remote crowdsec API, you can configure API url and key in `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`:
+
+```lua
+API_URL=http://127.0.0.1:8080
+API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
+LOG_FILE=/tmp/lua_mod.log
+CACHE_EXPIRATION=1
+CACHE_SIZE=1000
+BOUNCING_ON_TYPE=ban
+REQUEST_TIMEOUT=0.2
+```
+
+## How it works
+
+ - deploys `/usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf` with `access_by_lua` directive
+ - deploys `/usr/local/openresty/lualib/plugins/crowdsec/access.lua` with the lua code checking incoming IPs against crowdsec API
+
+## Testing
+
+When your IP is blocked, any request should lead to a `403` http response.
