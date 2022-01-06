@@ -55,8 +55,6 @@ controller:
         value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080" # crowdsec lapi service-name
       - name: API_KEY
         value: "<API KEY>" # generated with `cscli bouncers add -n <bouncer_name>
-      - name: DISABLE_RUN
-        value: "true"
       - name: BOUNCER_CONFIG
         value: "/crowdsec/crowdsec-bouncer.conf"
     command: ['sh', '-c', "sh /docker_start.sh; mkdir -p /lua_plugins/crowdsec/; cp /crowdsec/* /lua_plugins/crowdsec/"]
@@ -69,6 +67,7 @@ controller:
     subPath: crowdsec
   config:
     plugins: "crowdsec"
+    lua-shared-dicts: "crowdsec_cache: 50m"
 ```
 
 This values upgrade your ingress deployment to add crowdsec lua lib as a plugin and run with the ingress controller.
@@ -89,6 +88,7 @@ kubectl -n ingress-nginx get pods
 ## Configuration
 
 As you are using [this docker image](https://hub.docker.com/r/crowdsecurity/lua-bouncer-plugin), you can configure it using environment variables listed in the docker image README.
+
 
 ## Testing
 

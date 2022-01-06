@@ -62,14 +62,20 @@ sudo systemctl restart nginx
 
 ## Configuration
 
-If your nginx bouncer needs to communicate with a remote crowdsec API, you can configure API url and key in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`:
+The bouncer uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict) to share cache between all workers.
+If you want to increase the cache size you need to change this value `lua_shared_dict crowdsec_cache 50m;` in the config file `/etc/nginx/conf.d/crowdsec_openresty.conf`.
+
+For others parameters (like API url and key), you can use environment variables below or mount your own config file at `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`:
 
 ```lua
 API_URL=http://127.0.0.1:8080
-API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
+API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>`
 LOG_FILE=/tmp/lua_mod.log
 CACHE_EXPIRATION=1
-CACHE_SIZE=1000
+BOUNCING_ON_TYPE=ban
+REQUEST_TIMEOUT=0.2
+UPDATE_FREQUENCY=10
+MODE=stream
 ```
 
 Then restart nginx:
@@ -141,10 +147,13 @@ Configure your API url and key in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer
 
 ```lua
 API_URL=http://127.0.0.1:8080
-API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
+API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>`
 LOG_FILE=/tmp/lua_mod.log
 CACHE_EXPIRATION=1
-CACHE_SIZE=1000
+BOUNCING_ON_TYPE=ban
+REQUEST_TIMEOUT=0.2
+UPDATE_FREQUENCY=10
+MODE=stream
 ```
 
 You can now restart your nginx server:
@@ -158,11 +167,22 @@ systemctl restart nginx
 The configuration file loaded by nginx is `/etc/nginx/conf.d/crowdsec_nginx.conf`, but you shouldn't have to edit it, the relevant configuration file being `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf` :
 
 ```bash
+API_URL=http://127.0.0.1:8080
+API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>`
+LOG_FILE=/tmp/lua_mod.log
+CACHE_EXPIRATION=1
+BOUNCING_ON_TYPE=ban
+REQUEST_TIMEOUT=0.2
+UPDATE_FREQUENCY=10
+MODE=stream
 API_URL=http://localhost:8080                 <-- the API url
 API_KEY=                                      <-- the API Key generated with `cscli bouncers add -n <bouncer_name>` 
 LOG_FILE=/tmp/lua_mod.log                     <-- path to log file
 CACHE_EXPIRATION=1                            <-- in seconds : how often is the yes/no decisions for an IP refreshed
-CACHE_SIZE=1000                               <-- cache size : how many simulatenous entries are kept in 
+BOUNCING_ON_TYPE=ban                          <-- The decisions type the bouncer should remediate on (ban|captcha|all)
+REQUEST_TIMEOUT=0.2                           <-- in seconds : Request timeout for LAPI
+UPDATE_FREQUENCY=10                           <-- [For 'stream' mode only] pull frequency (in seconds) from LAPI 
+MODE=stream                                   <-- Bouncer mode : streaming (`stream`) or rupture (`live`) mode
 ```
 
 # How it works

@@ -123,9 +123,10 @@ API_URL=http://127.0.0.1:8080
 API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>`
 LOG_FILE=/tmp/lua_mod.log
 CACHE_EXPIRATION=1
-CACHE_SIZE=1000
 BOUNCING_ON_TYPE=ban
 REQUEST_TIMEOUT=0.2
+UPDATE_FREQUENCY=10
+MODE=stream
 ```
 
 You can now restart your openresty server:
@@ -135,16 +136,20 @@ systemctl restart openresty
 
 ## Configuration
 
-If your nginx bouncer needs to communicate with a remote crowdsec API, you can configure API url and key in `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`:
+The bouncer uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict) to share cache between all workers.
+If you want to increase the cache size you need to change this value `lua_shared_dict crowdsec_cache 50m;` in the config file `/etc/nginx/conf.d/crowdsec_openresty.conf`.
+
+For others parameters (like API url and key), you can use environment variables below or mount your own config file at `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`:
 
 ```lua
 API_URL=http://127.0.0.1:8080
 API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>`
 LOG_FILE=/tmp/lua_mod.log
 CACHE_EXPIRATION=1
-CACHE_SIZE=1000
 BOUNCING_ON_TYPE=ban
 REQUEST_TIMEOUT=0.2
+UPDATE_FREQUENCY=10
+MODE=stream
 ```
 
 ## How it works
