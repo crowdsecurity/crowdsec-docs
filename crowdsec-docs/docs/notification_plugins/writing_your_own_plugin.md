@@ -5,6 +5,8 @@ title: Writing Plugin in Go
 
 In this guide we will implement a plugin in Go, which dispatches an email with specificied body on receiving alerts.
 
+Full code for this plugin can be found in [crowdsec repo](https://github.com/crowdsecurity/crowdsec/tree/master/plugins/notifications/email)
+
 Before we begin, make sure you read [intro](/notification_plugins/intro.md)
 
 Let's start by creating a new go project in a fresh directory:
@@ -190,7 +192,7 @@ is used to make sure that the right plugin is dispatched.
 The `plugin.Serve` is a method provided by `go-plugin` dependency we earlier defined. It creates a GRPC server which exposes the plugin interface.
 
 
-Now let's build the plugin and paste it `/var/lib/crowdsec/plugins/` so CrowdSec can discover it.
+Now let's build the plugin and paste it in `/usr/local/lib/crowdsec/plugins/` so CrowdSec can discover it.
 
 ```bash
 go build
