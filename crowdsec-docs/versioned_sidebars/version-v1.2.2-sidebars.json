@@ -603,6 +603,10 @@
         {
           "type": "doc",
           "id": "version-v1.2.2/cscli/cscli_decisions_list"
+        },
+        {
+          "type": "doc",
+          "id": "version-v1.2.2/cscli/cscli_decisions_import"
         }
       ],
       "collapsible": true,
