@@ -173,7 +173,7 @@ module.exports = {
         {
           type: "category",
           label: "cscli decisions",
-          items: ["cscli/cscli_decisions","cscli/cscli_decisions_add","cscli/cscli_decisions_delete","cscli/cscli_decisions_list"] 
+          items: ["cscli/cscli_decisions","cscli/cscli_decisions_add","cscli/cscli_decisions_delete","cscli/cscli_decisions_list", "cscli/cscli_decisions_import"] 
         },
         {
           type: "category",
