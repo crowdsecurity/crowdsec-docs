@@ -136,7 +136,7 @@ The `crowdsec_lapi_url` must be accessible from the container.
 
 ```bash
   docker run \
-  -v $PWD/cfg.yaml:/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml \ 
+  -v $PWD/cfg.yaml:/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml \
   -v $PWD/cloudflare-cache.json:/var/lib/crowdsec/crowdsec-cloudflare-bouncer/cache/cloudflare-cache.json \
   -p 2112:2112 \
   crowdsecurity/cloudflare-bouncer
