@@ -12,10 +12,10 @@ Name | Type | Stream | One-shot
 -----|------|--------|----------
 file | single files, glob expressions and .gz files | yes | yes
 journald | journald via filter | yes | yes
-aws cloudwatch | single stream or log group | yes | yes
+AWS cloudwatch | single stream or log group | yes | yes
 syslog service | read logs received via syslog protocol | yes | no
 docker | read logs from docker containers | yes | yes
-aws kinesis | read logs from a kinesis strean | yes | no
+AWS kinesis | read logs from a kinesis strean | yes | no
 
 
 While various data sources are supported, they all share the same common configuration structure :
