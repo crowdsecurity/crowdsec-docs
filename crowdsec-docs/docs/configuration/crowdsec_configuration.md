@@ -387,12 +387,12 @@ db_config:
 
   db_path:  "<path_to_database_file>"  # for sqlite
 
-  user:     "<db_user>"      # for mysql/pgsql
-  password: "<db_password>"  # for mysql/pgsql
-  db_name:  "<db_name>"      # for mysql/pgsql
-  host:     "<db_host_ip>"   # for mysql/pgsql
-  port:     "<db_host_port>" # for mysql/pgsql
-  sslmode:  "<required/disable>" # for pgsql
+  user:     "<db_user>"      # for mysql/postgresql/pgx
+  password: "<db_password>"  # for mysql/postgresql/pgx
+  db_name:  "<db_name>"      # for mysql/postgresql/pgx
+  host:     "<db_host_ip>"   # for mysql/postgresql/pgx
+  port:     "<db_host_port>" # for mysql/postgresql/pgx
+  sslmode:  "<required/disable>" # for postgresql/pgx
   flush:
     max_items: "<max_alerts_in_db>"
 	max_age: "<max_age_of_alerts_in_db>"
@@ -410,6 +410,7 @@ The `type` of database to use. It can be:
 - `sqlite`
 - `mysql`
 - `postgresql`
+- `pgx`
 
 #### `db_path`
 
@@ -425,7 +426,7 @@ The path to the database file (only if the type of database is `sqlite`)
 
 ```yaml
 db_config:
-  type: mysql|postgresql
+  type: mysql|postgresql|pgx
 
   user: foo
 ```
@@ -435,7 +436,7 @@ The username to connect to the database (only if the type of database is `mysql`
 
 ```yaml
 db_config:
-  type: mysql|postgresql
+  type: mysql|postgresql|pgx
 
   password: foobar
 ```
@@ -445,7 +446,7 @@ The password to connect to the database (only if the type of database is `mysql`
 
 ```yaml
 db_config:
-  type: mysql|postgresql
+  type: mysql|postgresql|pgx
 
   db_name: crowdsec
 ```
@@ -455,7 +456,7 @@ The database name to connect to (only if the type of database is `mysql` or `pos
 
 ```yaml
 db_config:
-  type: mysql|postgresql
+  type: mysql|postgresql|pgx
 
   user: foo
 ```
@@ -465,7 +466,7 @@ The host to connect to (only if the type of database is `mysql` or `postgresql`)
 
 ```yaml
 db_config:
-  type: mysql|postgresql
+  type: mysql|postgresql|pgx
 
   user: foo
 ```
