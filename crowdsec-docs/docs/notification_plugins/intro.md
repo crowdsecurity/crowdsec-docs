@@ -166,259 +166,386 @@ To use them in a go-template, you can check [here](https://pkg.go.dev/github.com
 
 ```
 [
-  {
-    "capacity": 5,
-    "decisions": [
-      {
-        "duration": "4h",
-        "origin": "crowdsec",
+    {
+        "capacity": 5,
+        "decisions": [
+            {
+                "duration": "4h",
+                "origin": "crowdsec",
+                "scenario": "crowdsecurity/ssh-bf",
+                "scope": "Ip",
+                "type": "ban",
+                "value": "35.188.49.176"
+            }
+        ],
+        "events": [
+            {
+                "meta": [
+                    {
+                        "key": "ASNNumber",
+                        "value": "15169"
+                    },
+                    {
+                        "key": "ASNOrg",
+                        "value": "Google LLC"
+                    },
+                    {
+                        "key": "IsInEU",
+                        "value": "false"
+                    },
+                    {
+                        "key": "IsoCode",
+                        "value": "US"
+                    },
+                    {
+                        "key": "SourceRange",
+                        "value": "35.184.0.0/13"
+                    },
+                    {
+                        "key": "datasource_path",
+                        "value": "ssh-bf.log"
+                    },
+                    {
+                        "key": "datasource_type",
+                        "value": "file"
+                    },
+                    {
+                        "key": "log_type",
+                        "value": "ssh_failed-auth"
+                    },
+                    {
+                        "key": "machine",
+                        "value": "sd-126005"
+                    },
+                    {
+                        "key": "service",
+                        "value": "ssh"
+                    },
+                    {
+                        "key": "source_ip",
+                        "value": "35.188.49.176"
+                    },
+                    {
+                        "key": "target_user",
+                        "value": "pascal"
+                    },
+                    {
+                        "key": "timestamp",
+                        "value": "2022-02-12T14:10:21Z"
+                    }
+                ],
+                "timestamp": "2022-02-12T14:10:23Z"
+            },
+            {
+                "meta": [
+                    {
+                        "key": "ASNNumber",
+                        "value": "15169"
+                    },
+                    {
+                        "key": "ASNOrg",
+                        "value": "Google LLC"
+                    },
+                    {
+                        "key": "IsInEU",
+                        "value": "false"
+                    },
+                    {
+                        "key": "IsoCode",
+                        "value": "US"
+                    },
+                    {
+                        "key": "SourceRange",
+                        "value": "35.184.0.0/13"
+                    },
+                    {
+                        "key": "datasource_path",
+                        "value": "ssh-bf.log"
+                    },
+                    {
+                        "key": "datasource_type",
+                        "value": "file"
+                    },
+                    {
+                        "key": "log_type",
+                        "value": "ssh_failed-auth"
+                    },
+                    {
+                        "key": "machine",
+                        "value": "sd-126005"
+                    },
+                    {
+                        "key": "service",
+                        "value": "ssh"
+                    },
+                    {
+                        "key": "source_ip",
+                        "value": "35.188.49.176"
+                    },
+                    {
+                        "key": "target_user",
+                        "value": "pascal1"
+                    },
+                    {
+                        "key": "timestamp",
+                        "value": "2022-02-12T14:10:21Z"
+                    }
+                ],
+                "timestamp": "2022-02-12T14:10:23Z"
+            },
+            {
+                "meta": [
+                    {
+                        "key": "ASNNumber",
+                        "value": "15169"
+                    },
+                    {
+                        "key": "ASNOrg",
+                        "value": "Google LLC"
+                    },
+                    {
+                        "key": "IsInEU",
+                        "value": "false"
+                    },
+                    {
+                        "key": "IsoCode",
+                        "value": "US"
+                    },
+                    {
+                        "key": "SourceRange",
+                        "value": "35.184.0.0/13"
+                    },
+                    {
+                        "key": "datasource_path",
+                        "value": "ssh-bf.log"
+                    },
+                    {
+                        "key": "datasource_type",
+                        "value": "file"
+                    },
+                    {
+                        "key": "log_type",
+                        "value": "ssh_failed-auth"
+                    },
+                    {
+                        "key": "machine",
+                        "value": "sd-126005"
+                    },
+                    {
+                        "key": "service",
+                        "value": "ssh"
+                    },
+                    {
+                        "key": "source_ip",
+                        "value": "35.188.49.176"
+                    },
+                    {
+                        "key": "target_user",
+                        "value": "pascal2"
+                    },
+                    {
+                        "key": "timestamp",
+                        "value": "2022-02-12T14:10:22Z"
+                    }
+                ],
+                "timestamp": "2022-02-12T14:10:23Z"
+            },
+            {
+                "meta": [
+                    {
+                        "key": "ASNNumber",
+                        "value": "15169"
+                    },
+                    {
+                        "key": "ASNOrg",
+                        "value": "Google LLC"
+                    },
+                    {
+                        "key": "IsInEU",
+                        "value": "false"
+                    },
+                    {
+                        "key": "IsoCode",
+                        "value": "US"
+                    },
+                    {
+                        "key": "SourceRange",
+                        "value": "35.184.0.0/13"
+                    },
+                    {
+                        "key": "datasource_path",
+                        "value": "ssh-bf.log"
+                    },
+                    {
+                        "key": "datasource_type",
+                        "value": "file"
+                    },
+                    {
+                        "key": "log_type",
+                        "value": "ssh_failed-auth"
+                    },
+                    {
+                        "key": "machine",
+                        "value": "sd-126005"
+                    },
+                    {
+                        "key": "service",
+                        "value": "ssh"
+                    },
+                    {
+                        "key": "source_ip",
+                        "value": "35.188.49.176"
+                    },
+                    {
+                        "key": "target_user",
+                        "value": "pascal3"
+                    },
+                    {
+                        "key": "timestamp",
+                        "value": "2022-02-12T14:10:22Z"
+                    }
+                ],
+                "timestamp": "2022-02-12T14:10:23Z"
+            },
+            {
+                "meta": [
+                    {
+                        "key": "ASNNumber",
+                        "value": "15169"
+                    },
+                    {
+                        "key": "ASNOrg",
+                        "value": "Google LLC"
+                    },
+                    {
+                        "key": "IsInEU",
+                        "value": "false"
+                    },
+                    {
+                        "key": "IsoCode",
+                        "value": "US"
+                    },
+                    {
+                        "key": "SourceRange",
+                        "value": "35.184.0.0/13"
+                    },
+                    {
+                        "key": "datasource_path",
+                        "value": "ssh-bf.log"
+                    },
+                    {
+                        "key": "datasource_type",
+                        "value": "file"
+                    },
+                    {
+                        "key": "log_type",
+                        "value": "ssh_failed-auth"
+                    },
+                    {
+                        "key": "machine",
+                        "value": "sd-126005"
+                    },
+                    {
+                        "key": "service",
+                        "value": "ssh"
+                    },
+                    {
+                        "key": "source_ip",
+                        "value": "35.188.49.176"
+                    },
+                    {
+                        "key": "target_user",
+                        "value": "pascal4"
+                    },
+                    {
+                        "key": "timestamp",
+                        "value": "2022-02-12T14:10:23Z"
+                    }
+                ],
+                "timestamp": "2022-02-12T14:10:23Z"
+            },
+            {
+                "meta": [
+                    {
+                        "key": "ASNNumber",
+                        "value": "15169"
+                    },
+                    {
+                        "key": "ASNOrg",
+                        "value": "Google LLC"
+                    },
+                    {
+                        "key": "IsInEU",
+                        "value": "false"
+                    },
+                    {
+                        "key": "IsoCode",
+                        "value": "US"
+                    },
+                    {
+                        "key": "SourceRange",
+                        "value": "35.184.0.0/13"
+                    },
+                    {
+                        "key": "datasource_path",
+                        "value": "ssh-bf.log"
+                    },
+                    {
+                        "key": "datasource_type",
+                        "value": "file"
+                    },
+                    {
+                        "key": "log_type",
+                        "value": "ssh_failed-auth"
+                    },
+                    {
+                        "key": "machine",
+                        "value": "sd-126005"
+                    },
+                    {
+                        "key": "service",
+                        "value": "ssh"
+                    },
+                    {
+                        "key": "source_ip",
+                        "value": "35.188.49.176"
+                    },
+                    {
+                        "key": "target_user",
+                        "value": "pascal5"
+                    },
+                    {
+                        "key": "timestamp",
+                        "value": "2022-02-12T14:10:23Z"
+                    }
+                ],
+                "timestamp": "2022-02-12T14:10:23Z"
+            }
+        ],
+        "events_count": 6,
+        "labels": null,
+        "leakspeed": "10s",
+        "machine_id": "4e1c7990a4af460a9c622d2c80a856334U2v5NbKX14uQKFa",
+        "message": "Ip 35.188.49.176 performed 'crowdsecurity/ssh-bf' (6 events over 2s) at 2022-02-12 14:10:23 +0000 UTC",
+        "remediation": true,
         "scenario": "crowdsecurity/ssh-bf",
-        "scope": "Ip",
-        "type": "ban",
-        "value": "127.0.0.1"
-      }
-    ],
-    "events": [
-      {
-        "meta": [
-          {
-            "key": "target_user",
-            "value": "test0"
-          },
-          {
-            "key": "service",
-            "value": "ssh"
-          },
-          {
-            "key": "source_ip",
-            "value": "127.0.0.1"
-          },
-          {
-            "key": "IsInEU",
-            "value": "false"
-          },
-          {
-            "key": "ASNNumber",
-            "value": "0"
-          },
-          {
-            "key": "datasource_path",
-            "value": "/var/log/auth.log"
-          },
-          {
-            "key": "datasource_type",
-            "value": "file"
-          },
-          {
-            "key": "log_type",
-            "value": "ssh_failed-auth"
-          }
-        ],
-        "timestamp": "2021-09-17T15:16:45Z"
-      },
-      {
-        "meta": [
-          {
-            "key": "source_ip",
-            "value": "127.0.0.1"
-          },
-          {
-            "key": "IsInEU",
-            "value": "false"
-          },
-          {
-            "key": "ASNNumber",
-            "value": "0"
-          },
-          {
-            "key": "datasource_path",
-            "value": "/var/log/auth.log"
-          },
-          {
-            "key": "datasource_type",
-            "value": "file"
-          },
-          {
-            "key": "log_type",
-            "value": "ssh_failed-auth"
-          },
-          {
-            "key": "target_user",
-            "value": "test1"
-          },
-          {
-            "key": "service",
-            "value": "ssh"
-          }
-        ],
-        "timestamp": "2021-09-17T15:16:45Z"
-      },
-      {
-        "meta": [
-          {
-            "key": "service",
-            "value": "ssh"
-          },
-          {
-            "key": "source_ip",
-            "value": "127.0.0.1"
-          },
-          {
-            "key": "IsInEU",
-            "value": "false"
-          },
-          {
-            "key": "ASNNumber",
-            "value": "0"
-          },
-          {
-            "key": "datasource_path",
-            "value": "/var/log/auth.log"
-          },
-          {
-            "key": "datasource_type",
-            "value": "file"
-          },
-          {
-            "key": "log_type",
-            "value": "ssh_failed-auth"
-          },
-          {
-            "key": "target_user",
-            "value": "test2"
-          }
-        ],
-        "timestamp": "2021-09-17T15:16:45Z"
-      },
-      {
-        "meta": [
-          {
-            "key": "IsInEU",
-            "value": "false"
-          },
-          {
-            "key": "ASNNumber",
-            "value": "0"
-          },
-          {
-            "key": "datasource_path",
-            "value": "/var/log/auth.log"
-          },
-          {
-            "key": "datasource_type",
-            "value": "file"
-          },
-          {
-            "key": "log_type",
-            "value": "ssh_failed-auth"
-          },
-          {
-            "key": "target_user",
-            "value": "test3"
-          },
-          {
-            "key": "service",
-            "value": "ssh"
-          },
-          {
-            "key": "source_ip",
-            "value": "127.0.0.1"
-          }
-        ],
-        "timestamp": "2021-09-17T15:16:45Z"
-      },
-      {
-        "meta": [
-          {
-            "key": "IsInEU",
-            "value": "false"
-          },
-          {
-            "key": "ASNNumber",
-            "value": "0"
-          },
-          {
-            "key": "datasource_path",
-            "value": "/var/log/auth.log"
-          },
-          {
-            "key": "datasource_type",
-            "value": "file"
-          },
-          {
-            "key": "log_type",
-            "value": "ssh_failed-auth"
-          },
-          {
-            "key": "target_user",
-            "value": "test4"
-          },
-          {
-            "key": "service",
-            "value": "ssh"
-          },
-          {
-            "key": "source_ip",
-            "value": "127.0.0.1"
-          }
-        ],
-        "timestamp": "2021-09-17T15:16:45Z"
-      },
-      {
-        "meta": [
-          {
-            "key": "service",
-            "value": "ssh"
-          },
-          {
-            "key": "source_ip",
-            "value": "127.0.0.1"
-          },
-          {
-            "key": "IsInEU",
-            "value": "false"
-          },
-          {
-            "key": "ASNNumber",
-            "value": "0"
-          },
-          {
-            "key": "datasource_path",
-            "value": "/var/log/auth.log"
-          },
-          {
-            "key": "datasource_type",
-            "value": "file"
-          },
-          {
-            "key": "log_type",
-            "value": "ssh_failed-auth"
-          },
-          {
-            "key": "target_user",
-            "value": "test5"
-          }
-        ],
-        "timestamp": "2021-09-17T15:16:45Z"
-      }
-    ],
-    "events_count": 6,
-    "labels": null,
-    "leakspeed": "10s",
-    "message": "Ip 127.0.0.1 performed crowdsecurity/ssh-bf (6 events over 1.724382ms) at 2021-09-17 15:16:45.546369168 +0200 CEST m=+6.938040226",
-    "remediation": true,
-    "scenario": "crowdsecurity/ssh-bf",
-    "scenario_hash": "4441dcff07020f6690d998b7101e642359ba405c2abb83565bbbdcee36de280f",
-    "scenario_version": "0.1",
-    "simulated": false,
-    "source": {
-      "ip": "127.0.0.1",
-      "scope": "Ip",
-      "value": "127.0.0.1"
-    },
-    "start_at": "2021-09-17T15:16:45.544645047+02:00",
-    "stop_at": "2021-09-17T15:16:45.546369459+02:00"
-  }
+        "scenario_hash": "4441dcff07020f6690d998b7101e642359ba405c2abb83565bbbdcee36de280f",
+        "scenario_version": "0.1",
+        "simulated": false,
+        "source": {
+            "as_name": "Google LLC",
+            "as_number": "15169",
+            "cn": "US",
+            "ip": "35.188.49.176",
+            "latitude": 37.4192,
+            "longitude": -122.0574,
+            "range": "35.184.0.0/13",
+            "scope": "Ip",
+            "value": "35.188.49.176"
+        },
+        "start_at": "2022-02-12T14:10:21Z",
+        "stop_at": "2022-02-12T14:10:23Z"
+    }
 ]
 ```
 
