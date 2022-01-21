@@ -162,8 +162,6 @@ prometheus:
   listen_port: "<listen_port>"
 ```
 
-## Configuration directives
-
 ### `common`
 
 ```yaml
