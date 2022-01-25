@@ -1,0 +1,30 @@
+---
+id: intro
+title: Introduction
+sidebar_position: 1
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+
+Scenarios are YAML files that allow to detect a specific behavior, usually an attack.
+
+Scenarios receive [events](/concepts.md#events) and can produce [alerts](/concepts.md#alerts) using the [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) algorithm.
+
+<div style={{display: 'flex'}}>
+    <div style={{textAlign: 'center', flex: '1'}}>
+    <img src={useBaseUrl('/img/bucket-diagram.png')} />
+    </div>
+</div>
+
+The event goes via various steps :
+ - the `filter` decides event elligibility : if the expression is true, the event "enters" the bucket
+ - the optional `groupby` expression allows to segment bucket, typically by `source_ip` : this ensure each source ip has its own bucket and is accounted for properly
+ - the optional `distinct` expression can avoid item with duplicated properties being poured. An example usage can be found in [http-sensitive-files](https://hub.crowdsec.net/author/crowdsecurity/configurations/http-sensitive-files), where it is used to ensure we're only counting distinct "bad" URIs being requested.
+ - then the event is finally poured to the [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) : `capacity` and `leakspeed` are the two parameters conditioning when/if an overflow happens.
+ - if the bucket overflows, it can be validated by an optional `overflow_filter`
+
+
+Once an overflow happens, it will go through [postoverflows](/parsers/introduction.mdx#postoverflows) to handle last chance whitelists, before being finally turned into a potential [decision](/concepts.md#decisions) by [profiles](/profiles/intro.md).
+
+
