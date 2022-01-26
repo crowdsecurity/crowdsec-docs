@@ -70,7 +70,6 @@ For others parameters (like API url and key), you can use environment variables 
 ```lua
 API_URL=http://127.0.0.1:8080
 API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>`
-LOG_FILE=/tmp/lua_mod.log
 CACHE_EXPIRATION=1
 BOUNCING_ON_TYPE=ban
 REQUEST_TIMEOUT=0.2
@@ -148,7 +147,6 @@ Configure your API url and key in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer
 ```lua
 API_URL=http://127.0.0.1:8080
 API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>`
-LOG_FILE=/tmp/lua_mod.log
 CACHE_EXPIRATION=1
 BOUNCING_ON_TYPE=ban
 REQUEST_TIMEOUT=0.2
@@ -168,8 +166,7 @@ The configuration file loaded by nginx is `/etc/nginx/conf.d/crowdsec_nginx.conf
 
 ```bash
 API_URL=http://localhost:8080                 <-- the API url
-API_KEY=                                      <-- the API Key generated with `cscli bouncers add -n <bouncer_name>` 
-LOG_FILE=/tmp/lua_mod.log                     <-- path to log file
+API_KEY=                                      <-- the API Key generated with `cscli bouncers add -n <bouncer_name>`
 CACHE_EXPIRATION=1                            <-- in seconds : how often is the yes/no decisions for an IP refreshed
 BOUNCING_ON_TYPE=ban                          <-- The decisions type the bouncer should remediate on (ban|captcha|all)
 REQUEST_TIMEOUT=0.2                           <-- in seconds : Request timeout for LAPI

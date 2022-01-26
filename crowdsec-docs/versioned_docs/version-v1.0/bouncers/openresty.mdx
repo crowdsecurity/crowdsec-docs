@@ -121,7 +121,6 @@ Otherwise, configure your API url and key in `/etc/crowdsec/bouncers/crowdsec-op
 ```lua
 API_URL=http://127.0.0.1:8080
 API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>`
-LOG_FILE=/tmp/lua_mod.log
 CACHE_EXPIRATION=1
 BOUNCING_ON_TYPE=ban
 REQUEST_TIMEOUT=0.2
@@ -144,7 +143,6 @@ For others parameters (like API url and key), you can use environment variables 
 ```lua
 API_URL=http://127.0.0.1:8080
 API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>`
-LOG_FILE=/tmp/lua_mod.log
 CACHE_EXPIRATION=1
 BOUNCING_ON_TYPE=ban
 REQUEST_TIMEOUT=0.2
