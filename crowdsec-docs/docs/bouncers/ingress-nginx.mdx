@@ -48,7 +48,7 @@ controller:
     emptyDir: {}
   extraInitContainers:
   - name: init-clone-crowdsec-bouncer
-    image: crowdsec-lua
+    image: crowdsecurity/lua-bouncer-plugin
     imagePullPolicy: IfNotPresent
     env:
       - name: API_URL
