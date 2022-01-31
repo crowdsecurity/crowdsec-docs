@@ -69,6 +69,7 @@ controller:
     subPath: crowdsec
   config:
     plugins: "crowdsec"
+    lua-shared-dicts: "crowdsec_cache: 50m"
 ```
 
 This values upgrade your ingress deployment to add crowdsec lua lib as a plugin and run with the ingress controller.
