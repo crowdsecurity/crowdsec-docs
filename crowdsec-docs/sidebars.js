@@ -38,17 +38,17 @@ module.exports = {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
-      items: ["getting_started/install_crowdsec", "getting_started/crowdsec_tour"]
+      items: ["getting_started/install_crowdsec", "getting_started/install_crowdsec_freebsd", "getting_started/crowdsec_tour"]
     },
     {
       type: 'category',
       label: 'User Guides',
-      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building", "user_guides/replay_mode", "user_guides/cscli_explain", "user_guides/cscli_macos"]
+      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building", "user_guides/replay_mode", "user_guides/cscli_explain", "user_guides/cscli_macos", "user_guides/multiserver_setup"]
     },
     {
       type: 'category',
       label: 'Data Sources',
-      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/syslog", "data_sources/troubleshout" ]
+      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/troubleshoot" ]
     },
     {
       type: 'category',
@@ -78,7 +78,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Notification plugins',
-      items: ["notification_plugins/intro", "notification_plugins/http", "notification_plugins/slack", "notification_plugins/splunk", "notification_plugins/teams", "notification_plugins/elastic", "notification_plugins/writing_your_own_plugin"]
+      items: ["notification_plugins/intro", "notification_plugins/http","notification_plugins/email", "notification_plugins/slack", "notification_plugins/splunk", "notification_plugins/teams", "notification_plugins/elastic", "notification_plugins/writing_your_own_plugin"]
     },
     {
       type: 'category',
@@ -173,7 +173,7 @@ module.exports = {
         {
           type: "category",
           label: "cscli decisions",
-          items: ["cscli/cscli_decisions","cscli/cscli_decisions_add","cscli/cscli_decisions_delete","cscli/cscli_decisions_list"] 
+          items: ["cscli/cscli_decisions","cscli/cscli_decisions_add","cscli/cscli_decisions_delete","cscli/cscli_decisions_list", "cscli/cscli_decisions_import"] 
         },
         {
           type: "category",
@@ -246,6 +246,16 @@ module.exports = {
       type: 'doc',
       label: 'Nginx Bouncer',
       id: "bouncers/nginx"
+    },
+    {
+      type: 'doc',
+      label: 'OpenResty Bouncer',
+      id: "bouncers/openresty"
+    },
+    {
+      type: 'doc',
+      label: 'Ingress Nginx Bouncer',
+      id: "bouncers/ingress-nginx"
     },
     {
       type: 'doc',

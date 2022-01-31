@@ -86,7 +86,7 @@
         },
         {
           "type": "doc",
-          "id": "version-v1.1/data_sources/troubleshout"
+          "id": "version-v1.1/data_sources/troubleshoot"
         }
       ],
       "collapsible": true,
@@ -777,6 +777,14 @@
     {
       "type": "doc",
       "id": "version-v1.1/bouncers/nginx"
+    },
+    {
+      "type": "doc",
+      "id": "version-v1.1/bouncers/openresty"
+    },
+    {
+      "type": "doc",
+      "id": "version-v1.1/bouncers/ingress-nginx"
     },
     {
       "type": "doc",

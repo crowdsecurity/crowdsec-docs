@@ -12,7 +12,7 @@ Manage Hub
 Hub management
 
 List/update parsers/scenarios/postoverflows/collections from [Crowdsec Hub](https://hub.crowdsec.net).
-Hub is manage by cscli, to get latest hub files from [Crowdsec Hub](https://hub.crowdsec.net), you need to update.
+Hub is managed by cscli, to get latest hub files from [Crowdsec Hub](https://hub.crowdsec.net), you need to update.
 		
 
 ### Examples

@@ -1,0 +1,96 @@
+---
+id: ingress-nginx
+title: Ingress Nginx Bouncer
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+<img src={useBaseUrl('/img/crowdsec_nginx.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
+</p>
+<p align="center">
+<img src="https://img.shields.io/badge/build-pass-green" />
+<img src="https://img.shields.io/badge/tests-pass-green" />
+</p>
+<p align="center">
+&#x1F4DA; <a href="#installation/">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+
+
+A lua plugin bouncer for Ingress Nginx Controller.
+
+## How does it work ?
+
+This bouncer leverages OpenResty lua's API, used the ingress nginx controller as a [plugin](https://github.com/kubernetes/ingress-nginx/blob/main/rootfs/etc/nginx/lua/plugins/README.md).
+
+New/unknown IP are checked against crowdsec API, and if request should be blocked, a **403** is returned to the user, and put in cache.
+
+## Installation
+
+:::caution Before installation
+The Ingress nginx controller should be installed using the [official helm chart](https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx)
+:::
+
+### Using Helm
+
+First you need to create new ingress-nginx chart values file (`crowdsec-ingress-bouncer.yaml`) to upgrade the ingress controller with the crowdsec plugin.
+
+```yaml
+controller:
+  extraVolumes:
+  - name: crowdsec-bouncer-plugin
+    emptyDir: {}
+  extraInitContainers:
+  - name: init-clone-crowdsec-bouncer
+    image: crowdsecurity/lua-bouncer-plugin
+    imagePullPolicy: IfNotPresent
+    env:
+      - name: API_URL
+        value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080" # crowdsec lapi service-name
+      - name: API_KEY
+        value: "<API KEY>" # generated with `cscli bouncers add -n <bouncer_name>
+      - name: DISABLE_RUN
+        value: "true"
+      - name: BOUNCER_CONFIG
+        value: "/crowdsec/crowdsec-bouncer.conf"
+    command: ['sh', '-c', "sh /docker_start.sh; mkdir -p /lua_plugins/crowdsec/; cp /crowdsec/* /lua_plugins/crowdsec/"]
+    volumeMounts:
+    - name: crowdsec-bouncer-plugin
+      mountPath: /lua_plugins
+  extraVolumeMounts:
+  - name: crowdsec-bouncer-plugin
+    mountPath: /etc/nginx/lua/plugins/crowdsec
+    subPath: crowdsec
+  config:
+    plugins: "crowdsec"
+    lua-shared-dicts: "crowdsec_cache: 50m"
+```
+
+This values upgrade your ingress deployment to add crowdsec lua lib as a plugin and run with the ingress controller.
+It used [this docker image](https://hub.docker.com/r/crowdsecurity/lua-bouncer-plugin) to copy the crowdsec lua library.
+
+Once you have this patch we can upgrade the ingress-nginx chart.
+
+```bash
+helm -n ingress-nginx upgrade -f ingress-nginx-values.yaml -f crowdsec-ingress-bouncer.yaml ingress-nginx ingress-nginx
+```
+
+And then check if the ingress controller is running well.
+
+```bash
+kubectl -n ingress-nginx get pods
+```
+
+## Configuration
+
+As you are using [this docker image](https://hub.docker.com/r/crowdsecurity/lua-bouncer-plugin), you can configure it using environment variables listed in the docker image README.
+
+## Testing
+
+When your IP is blocked, any request should lead to a `403` http response.
