@@ -22,18 +22,31 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-
 A lua bouncer for nginx.
 
 ## How does it work ?
 
-This bouncer leverages nginx lua's API, namely `access_by_lua_file`.
+This bouncer leverages nginx lua's API, namely `access_by_lua_file` to check e IP address against the local API.
 
-New/unknown IP are checked against crowdsec API, and if request should be blocked, a **403** is returned to the user, and put in cache.
+Supported features:
+
+ - Live mode (query the local API for each request)
+ - Stream mode (pull the local API in configured frequency)
+ - Ban remediation (can ban an IP address by redirecting him or returning a custom HTML page)
+ - reCaptcha v2 remediation (can return a captcha)
+ - Support IP ranges (can apply a remediation on an IP range)
 
 At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
 ## Installation
+
+### Dependencies
+
+Install the following packages:
+
+```bash
+sudo apt install nginx lua5.1 libnginx-mod-http-lua luarocks gettext-base
+```
 
 ### Using packages
 
@@ -59,7 +72,7 @@ sudo apt install crowdsec-nginx-bouncer
 ### Manual installation
 
 :::warning
-nginx bouncer depends on nginx, libnginx-mod-http-lua, lua-logging, lua, lua-sec.
+nginx bouncer depends on nginx, lua5.1, libnginx-mod-http-lua, luarocks and gettext-base
 it has been tested only on debian/ubuntu based distributions.
 :::
 
@@ -79,75 +92,16 @@ If you are on a mono-machine setup, the `crowdsec-nginx-bouncer` install script 
   <summary>non-debian based dependencies</summary>
 
   - libnginx-mod-http-lua : nginx lua support
-  - lua-sec : for https client request
+  - lua5.1: Lua
+  - luarocks : Lua package manager
+  - gettext-base: for the installation script
 
 </details>
 
 
-### From source
-
-#### Requirements
-
-The following packages are required :
-
-- lua
-- lua-sec
-- libnginx-mod-http-lua
-
-##### Debian/Ubuntu
-
-```bash
-sudo apt-get install lua5.3 libnginx-mod-http-lua lua-sec
-```
-
-Download the following 2 repositories:
-
-- [`lua-cs-bouncer`](https://github.com/crowdsecurity/lua-cs-bouncer):
-```bash
-git clone https://github.com/crowdsecurity/lua-cs-bouncer.git
-```
-
-- [`crowdsec-nginx-bouncer`](https://github.com/crowdsecurity/cs-nginx-bouncer)
-```bash
-git clone https://github.com/crowdsecurity/cs-nginx-bouncer.git
-```
-
-#### Installation
-
-##### lua-cs-bouncer
-
-```bash
-cd ./lua-cs-bouncer/
-sudo make install
-```
-
-##### crowdsec-nginx-bouncer
-
-- Copy the `crowdsec-nginx-bouncer/nginx/crowdsec_nginx.conf` into `/etc/nginx/conf.d/crowdsec_nginx.conf`:
-```bash
-cp ./crowdsec-nginx-bouncer/nginx/crowdsec_nginx.conf /etc/nginx/conf.d/crowdsec_nginx.conf
-```
-- Copy the `crowdsec-nginx-bouncer/nginx/access.lua` into `/usr/local/lua/crowdec/access.lua`:
-```bash
-cp ./crowdsec-nginx-bouncer/nginx/access.lua /usr/local/lua/crowdec/access.lua
-```
-
-Configure your API url and key in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`:
-
-```lua
-API_URL=http://127.0.0.1:8080
-API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
-LOG_FILE=/tmp/lua_mod.log
-CACHE_EXPIRATION=1
-CACHE_SIZE=1000
-```
-
-You can now restart your nginx server:
-```bash
-systemctl restart nginx
-```
-
 ## Upgrade
+
+### Manual Upgrade
 
 If you already have `crowdsec-nginx-bouncer` installed, please download the [latest release](https://github.com/crowdsecurity/cs-nginx-bouncer/releases) and run the following commands:
 
@@ -160,21 +114,72 @@ sudo systemctl restart nginx
 
 ## Configuration
 
-If your nginx bouncer needs to communicate with a remote crowdsec API, you can configure API url and key in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`:
+### Example
 
-```lua
-API_URL=http://127.0.0.1:8080
-API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
-LOG_FILE=/tmp/lua_mod.log
+```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
+API_URL=<CROWDSEC_LAPI_URL>
+API_KEY=<CROWDSEC_LAPI_KEY>
+# bounce for all type of remediation that the bouncer can receive from the local API
+BOUNCING_ON_TYPE=all
+# when the bouncer receive an unknown remediation, fallback to this remediation
+FALLBACK_REMEDIATION=ban
+MODE=stream
+REQUEST_TIMEOUT=1000
+# exclude the bouncing on those location
+EXCLUDE_LOCATION=
+# Cache expiration in live mode, in second
 CACHE_EXPIRATION=1
-CACHE_SIZE=1000
+# Update frequency in stream mode, in second
+UPDATE_FREQUENCY=10
+#those apply for "ban" action
+# /!\ REDIRECT_LOCATION and BAN_TEMPLATE_PATH/RET_CODE can't be used together. REDIRECT_LOCATION take priority over RET_CODE AND BAN_TEMPLATE_PATH
+BAN_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/ban.html
+REDIRECT_LOCATION=
+RET_CODE=
+#those apply for "captcha" action
+# ReCaptcha Secret Key
+SECRET_KEY=
+# Recaptcha Site key
+SITE_KEY=
+CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
+CAPTCHA_EXPIRATION=3600
 ```
 
-## How it works
+### Setup captcha
+> Currently, on reCaptcha v2 is supported.
 
- - deploys `/etc/nginx/conf.d/crowdsec_nginx.conf` with `access_by_lua` directive
- - deploys `/usr/local/lua/crowdsec/access.lua` with the lua code checking incoming IPs against crowdsec API
+If you want to use reCaptcha with your Nginx Bouncer, you must provide a reCaptcha Site key and Secret key in your bouncer configuration.
+Edit `etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf` and configure the following options:
 
-## Testing
+```bash
+SECRET_KEY=
+SITE_KEY=
+CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
+CAPTCHA_EXPIRATION=3600
+```
 
-When your IP is blocked, any request should lead to a `403` http response.
+Restart Nginx.
+
+You can add a decisions with type captcha to check if the it works correctly:
+
+```bash
+sudo cscli decisions add -i <IP_TO_TEST> -t captcha
+```
+
+## FAQ
+
+### Why remediation are not instantaneous
+
+In stream mode, the bouncer will lunch the internal timer to pull the local API after the first request. After installing the bouncer, just do a simple curl on your website to trigger the puller timer.
+
+### Resolver and certificates
+
+In order to query `google.com` for the reCaptcha verification, we need to set a resolver and a SSL certificate in our nginx configuration.
+Those are the default values, but you can change them:
+
+```bash title="etc/nginx/conf.d/crowdsec_nginx.conf"
+resolver 8.8.8.8 ipv6=off;
+lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+```
+
+And restart Nginx.
