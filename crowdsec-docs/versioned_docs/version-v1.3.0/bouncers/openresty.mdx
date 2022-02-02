@@ -40,6 +40,10 @@ Supported features:
 
 At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
+:::warning
+If you need to upgrade the bouncer from v0.X to v1.X, please follow [this migration process](#migrate-from-v0-to-v1) 
+:::
+
 ## Installation
 
 :::caution Before installation
@@ -166,6 +170,8 @@ The bouncer uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module
 If you want to increase the cache size you need to change this value `lua_shared_dict crowdsec_cache 50m;`.
 
 :warning: Do not rename the `crowdsec_cache` shared dict, else the bouncer will not work anymore.
+
+#### When using captcha remediation
 
 To make HTTP request in the bouncer, we need to set a `resolver` in the configuration. We choose `8.8.8.8` since we query `google.com` for the captcha verification, but you can replace it with a valid one.
 
