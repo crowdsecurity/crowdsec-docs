@@ -29,7 +29,16 @@ A lua plugin bouncer for Ingress Nginx Controller.
 
 This bouncer leverages OpenResty lua's API, used the ingress nginx controller as a [plugin](https://github.com/kubernetes/ingress-nginx/blob/main/rootfs/etc/nginx/lua/plugins/README.md).
 
-New/unknown IP are checked against crowdsec API, and if request should be blocked, a **403** is returned to the user, and put in cache.
+Supported features:
+
+ - Live mode (query the local API for each request)
+ - Stream mode (pull the local API for new/old decisions every X seconds)
+ - Ban remediation (can ban an IP address by redirecting him or returning a custom HTML page)
+ - reCAPTCHA v2 remediation (can return a captcha)
+ - Works with IPv4/IPv6
+ - Support IP ranges (can apply a remediation on an IP range)
+
+At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
 ## Installation
 
@@ -111,6 +120,8 @@ controller:
 ````
 
 :warning: Do not rename the `crowdsec_cache` shared dict, else the bouncer will not work anymore.
+
+#### When using captcha remediation
 
 To make HTTP request in the bouncer, we need to set a `resolver` in the configuration. We choose `local=on` directive since we query `google.com` for the captcha verification, but you can replace it with a valid one.
 
