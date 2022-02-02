@@ -157,7 +157,7 @@ If you choose `ban` only and receive a decision with `captcha` as remediation, t
 FALLBACK_REMEDIATION=ban
 ```
 
-The fallback remediation if the bouncer receive a decision with an unknown remediation.
+The fallback remediation is applied if the bouncer receives a decision with an unknown remediation.
 
 ### `MODE`
 ```bash
@@ -175,14 +175,14 @@ Note: The timer that pull the local API will be triggered after the first reques
 REQUEST_TIMEOUT=1000
 ```
 
-Timeout in second for the HTTP requests done by the bouncer to query CrowdSec local API or www.google.com (for the reCAPTCHA verification).
+Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or www.google.com (for the reCAPTCHA verification).
 
 ### `EXCLUDE_LOCATION`
 ```bash
 EXCLUDE_LOCATION=/<path1>,/<path2>
 ```
 
-The locations to exclude the boucing. It is a list of location, separated by commas.
+The locations to exclude while bouncing. It is a list of location, separated by commas.
 
 :warning: It is not recommended to put `EXCLUDE_LOCATION=/`.
 
