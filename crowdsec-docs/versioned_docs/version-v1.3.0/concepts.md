@@ -9,7 +9,7 @@ sidebar_position: 1
 
 CrowdSec runtime revolves around a few simple concepts :
 
- - It read logs (defined via [datasources](/data_sources/introduction.md) configuration)
+ - It reads logs (defined via [datasources](/data_sources/introduction.md) configuration)
  - Those logs are parsed via [parsers](/parsers/introduction.mdx) and eventually [enriched](/parsers/enricher.md)
  - Those normalized logs are matched against the [scenarios](/scenarios/introduction.mdx) that the user deployed
  - When a scenario is "triggered", CrowdSec generates an [alert](/concepts.md#alerts) and eventually one or more associated [decisions](/concepts.md#decisions) :
