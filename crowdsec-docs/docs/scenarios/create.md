@@ -30,9 +30,9 @@ Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1
 ## Pre-requisites
 
 
-1. [Install crowdsec locally](https://doc.crowdsec.net/docs/getting_started/install_crowdsec)
+1. [Create a local test environment](https://doc.crowdsec.net/docs/contributing/contributing_test_env)
 
-1. Clone the hub
+2. Clone the hub
 
 ```bash
 git clone https://github.com/crowdsecurity/hub.git
