@@ -107,6 +107,10 @@ And then check if the ingress controller is running well.
 kubectl -n ingress-nginx get pods
 ```
 
+:::info
+In stream mode, the bouncer will launch an internal timer to pull the local API at the first request made to the ingress controller.
+:::
+
 ### Ingress controller Configuration
 
 The bouncer uses [lua_shared_dict](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#lua-shared-dicts) to share cache between all workers.

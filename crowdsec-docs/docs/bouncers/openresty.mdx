@@ -78,6 +78,18 @@ sudo apt install crowdsec-openresty-bouncer
 </Tabs>
 
 
+:::info
+In stream mode, the bouncer will launch an internal timer to pull the local API at the first request made to the server.
+:::
+
+:::caution After installation
+
+[The openresty linux packages](https://openresty.org/en/linux-packages.html) doesn't include any `conf.d/` directory for custom configurations.
+:::
+
+You need to add `include /usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf;
+` in nginx config file `/usr/local/openresty/nginx/conf/nginx.conf` at the **server** section.
+
 ### Manual installation
 
 Download the latest release [here](https://github.com/crowdsecurity/cs-openresty-bouncer/releases)
@@ -134,12 +146,6 @@ CAPTCHA_EXPIRATION=3600
 ```
 
 ### OpenResty Configuration
-
-:::caution To do after install
-[The openresty linux packages](https://openresty.org/en/linux-packages.html) doesn't include any `conf.d/` directory for custom configurations.
-:::
-
-You need to add `include /usr/local/openresty/nginx/conf/conf.d/*.conf;` in nginx config file `/usr/local/openresty/nginx/conf/nginx.conf` at the **server** section.
 
 The bouncer OpenResty configuration is located in `/usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf` :
 
