@@ -74,6 +74,10 @@ sudo apt install crowdsec-nginx-bouncer
 </Tabs>
 
 
+:::info
+In stream mode, the bouncer will launch an internal timer to pull the local API at the first request made to the server.
+:::
+
 ### Manual installation
 
 :::warning
@@ -187,7 +191,7 @@ If you want to increase the cache size you need to change this value `lua_shared
 
 #### When using captcha remediation
 
-To make HTTP request in the bouncer, we need to set a `resolver` in the configuration. We choose `8.8.8.8` since we query `google.com` for the captcha verification, but you can replace it with a valid one.
+To make HTTP request in the bouncer, you need to configure a resolver and ssl certifcates. Here is a [our example](#resolver-and-certificates).
 
 To make secure HTTP request in the bouncer, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`). 
 You can also change this with a valid one :
@@ -231,7 +235,7 @@ In stream mode, the bouncer will launch an internal timer to pull the local API 
 
 ### Resolver and certificates
 
-In order to query `google.com` for the reCAPTCHA verification, we need to set a resolver and a SSL certificate in our nginx configuration.
+In order to query `google.com` for the reCAPTCHA verification, you need to set a resolver and a SSL certificate in your nginx configuration.
 Those are the default values, but you can change them:
 
 ```bash title="/etc/nginx/conf.d/crowdsec_nginx.conf"
