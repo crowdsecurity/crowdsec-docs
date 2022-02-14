@@ -18,7 +18,7 @@ You can download the MSI from here: https://crowdsec-windows-alpha.s3.eu-west-1.
 
 The MSI will perform some basic setup when run:
  - It will install crowdsec
- - It will download the windows collection (it includes the basic parser for the windows event log, a scenario to detect login bruteforce, and the MMDB files to perform geo-ip enrichment)
+ - It will download the [windows collection](https://hub.crowdsec.net/author/crowdsecurity/collections/windows) (it includes the basic parser for the windows event log, a scenario to detect login bruteforce, and the MMDB files to perform geo-ip enrichment)
  - It will register your crowdsec installation with our central API.
  - It will create a service that will run at boot and start crowdsec
 
@@ -45,7 +45,7 @@ As crowdsec is not able to auto-detect running services on Windows, you will nee
 
 #### SQL Server logs
 
-You will need to install the `crowdsecurity/mssql` collection.
+You will need to install the [`crowdsecurity/mssql`](https://hub.crowdsec.net/author/crowdsecurity/collections/mssql) collection.
 
 The collection contains a parser for the SQL server authentication logs, and a scenario to detect bruteforce.
 
@@ -73,7 +73,7 @@ This scenario requires SQL Server to log failed authentication, which is the cas
 
 #### IIS Logs
 
-You will need to install the `crowdsecurity/iis` collection.
+You will need to install the [`crowdsecurity/iis`](https://hub.crowdsec.net/author/crowdsecurity/collections/iis) collection.
 
 The collection contains a parser for IIS W3C log format (with the default fields), and another collection containing all the basic HTTP scenarios.
 
@@ -108,7 +108,7 @@ Lastly, restart the crowdsec service (using `net`, `sc` or the services app), an
 
 #### Windows Firewall
 
-You will need to install the `crowdsecurity/windows-firewall` collection.
+You will need to install the [`crowdsecurity/windows-firewall`](https://hub.crowdsec.net/author/crowdsecurity/collections/windows-firewall) collection.
 
 The collection contains a parser for the windows firewall logs, and a scenario to detect port scan.
 
