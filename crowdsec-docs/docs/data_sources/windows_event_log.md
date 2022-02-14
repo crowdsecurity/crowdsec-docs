@@ -58,6 +58,8 @@ A custom XPath query to read events.
 
 Must be set if `event_channel` is not set.
 
+You can refer to the Windows documentation for more informations: https://docs.microsoft.com/en-us/windows/win32/wes/consuming-events
+
 ### `pretty_name`
 
 Pretty name to use for the datasource in the metrics (`cscli metrics`).
