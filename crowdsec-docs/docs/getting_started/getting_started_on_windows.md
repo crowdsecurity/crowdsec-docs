@@ -6,13 +6,15 @@ title: Install CrowdSec (Windows)
 
 :::info
 
-Windows support is still in beta, you may encounter issues !
+Windows support is still in alpha, you may encounter issues !
+
+The installers are not yet available as part of a release, so you will need to download them from the S3 buckets linked in the documentation.
 
 :::
 
 ## Crowdsec Installation
 
-You can download the MSI from here: TODO_LINK
+You can download the MSI from here: https://crowdsec-windows-alpha.s3.eu-west-1.amazonaws.com/crowdsec_1.3.0.msi
 
 The MSI will perform some basic setup when run:
  - It will install crowdsec
@@ -143,7 +145,7 @@ Now that you've got crowdsec up and running, it's time to install a bouncer to a
 
 We will be using the Windows Firewall bouncer, which manage some windows firewall rules to drop traffic from IPs blocked by crowdsec.
 
-You can download the MSI here: TODO_LINK.
+You can download the MSI here: https://crowdsec-windows-alpha.s3.eu-west-1.amazonaws.com/cs_windows_firewall_bouncer_setup.msi
 
 :::warning
 
