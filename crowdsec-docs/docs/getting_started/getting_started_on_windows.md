@@ -151,6 +151,8 @@ You can download the MSI here: https://crowdsec-windows-alpha.s3.eu-west-1.amazo
 
 The Windows Firewall Bouncer requires the .NET 6 runtime, please install it before running the bouncer or it won't work.
 
+The runtime can be download from Microsoft: https://dotnet.microsoft.com/en-us/download
+
 :::
 
 When you run the MSI, the bouncer will automatically register itself in crowdsec, create a service that will run at boot, and start the bouncer.
