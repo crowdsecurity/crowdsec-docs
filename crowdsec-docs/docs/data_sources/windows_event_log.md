@@ -25,7 +25,7 @@ You can also write a custom XPath query:
 ```yaml
 source: wineventlog
 xpath_query: |
-    XXXXX
+    <QueryList><Query><Select Path=\"Security\">*[System[(EventID=42) and (Level=2)]]</Select></Query></QueryList>
 labels:
  type: eventlog
 ```
