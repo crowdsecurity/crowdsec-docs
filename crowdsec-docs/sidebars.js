@@ -43,6 +43,7 @@ module.exports = {
         "getting_started/install_crowdsec_freebsd", 
         {"type":"link", "label": "Install crowdsec (Helm/K8s)", "href":"https://artifacthub.io/packages/helm/crowdsec/crowdsec"},
         {"type":"link", "label": "Install crowdsec (docker)", "href":"https://hub.docker.com/r/crowdsecurity/crowdsec"},
+        "getting_started/install_windows",
         "getting_started/crowdsec_tour"]
     },
     {
@@ -53,7 +54,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Data Sources',
-      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/troubleshoot" ]
+      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/windows_evt_log", "data_sources/troubleshoot" ]
     },
     {
       type: 'category',
