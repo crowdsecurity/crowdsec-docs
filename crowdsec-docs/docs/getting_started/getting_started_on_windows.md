@@ -10,6 +10,8 @@ Windows support is still in alpha, you may encounter issues !
 
 The installers are not yet available as part of a release, so you will need to download them from the website linked in the documentation.
 
+If you encounter any issues, please report them on the #windows channel in our discord server.
+
 :::
 
 ## Crowdsec Installation
@@ -22,11 +24,11 @@ The MSI will perform some basic setup when run:
  - It will register your crowdsec installation with our central API.
  - It will create a service that will run at boot and start crowdsec
 
-Contrary to Linux, crowdsec does not (yet !) support auto configuration at install time, so you will need to customize your acquisition config if you want to be able to detect something other than RDP bruteforce.
+Contrary to Linux, crowdsec does not (yet !) support auto configuration at install time, so you will need to customize your acquisition config if you want to be able to detect something other than RDP or SMB bruteforce.
 
 The default configuration will catch bruteforce against RDP or SMB (or any kind of remote authentication that uses Windows auth).
 
-We currently support the following Windows service:
+We currently support the following Windows services:
  - RDP/SMB (bruteforce detection)
  - IIS (HTTP attacks)
  - SQL Server (bruteforce detection)
