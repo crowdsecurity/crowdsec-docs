@@ -66,6 +66,23 @@ Returns true if the IP `IPStr` is contained in the IP range `RangeStr` (uses `ne
 
 > `IpInRange("1.2.3.4", "1.2.3.0/24")`
 
+### `IpToRange(IPStr, MaskStr) IpStr`
+
+Returns the subnet of the IP with the request cidr size.
+It is intended for scenarios taking actions against the range of an IP, not the IP itself :
+
+```yaml
+type: leaky
+...
+scope:
+ type: Range
+ expression: IpToRange(evt.Meta.source_ip, "/16")
+```
+
+> `IpToRange("192.168.0.1", "24")` returns `192.168.0.0/24`
+
+> `IpToRange("192.168.42.1", "16")` returns `192.168.0.0/16`
+
 ### `TimeNow() string`
 
 Return RFC3339 formatted time 
