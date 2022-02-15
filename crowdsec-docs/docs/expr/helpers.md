@@ -107,6 +107,18 @@ Parses an URI into a map of string list.
 }
 ```
 
+### `XMLGetAttributeValue(xmlString string, path string, attributeName string) string`
+
+Returns the value of `attribute` in the XML node identified by the XPath query `path`.
+
+> `XMLGetAttributeValue(evt.Line.Raw, "/Event/System[1]/Provider", "Name")`
+
+### `XMLGetNodeValue(xmlString string, path string) string`
+
+Returns the content of the XML node identified by the XPath query `path`.
+
+> `XMLGetNodeValue(evt.Line.Raw, "/Event/System[1]/EventID")`
+
 
 ## Alert specific helpers
 
