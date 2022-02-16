@@ -66,9 +66,9 @@ module.exports = {
           className: 'header-github-link header-icon-link',
         },
         {
-          href: 'https://gitter.im/crowdsec-project/community',
+          href: 'https://discord.gg/wGN7ShmEE8',
           position: 'right',
-          className: "header-gitter-link",
+          className: "header-discord-link",
         },
         {
           href: 'https://discourse.crowdsec.net',
