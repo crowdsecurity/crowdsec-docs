@@ -11,7 +11,7 @@ Hub management, via `cscli` allows you to install, upgrade, remove and view inst
 ## Collections
 
 
-### Install
+### Installation
 
 A collection contains parsers and scenarios to form a coherent ensemble. Most of the time, this is the only you will need to install. 
 
@@ -166,7 +166,7 @@ See more about collection [here](/collections/introduction.md).
 
 ## Parsers
 
-### Install
+### Installation
 
 ```bash
 sudo cscli parsers install <parser_name>
@@ -329,7 +329,7 @@ See more about enrichers [here](/parsers/enricher.md).
 ## Scenarios
 
 
-### Install
+### Installation
 
 ```bash
 sudo cscli scenarios install <scenario_name>
