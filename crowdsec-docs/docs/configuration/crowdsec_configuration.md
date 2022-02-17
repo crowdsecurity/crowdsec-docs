@@ -46,6 +46,7 @@ db_config:
   log_level: info
   type: sqlite
   db_path: /var/lib/crowdsec/data/crowdsec.db
+  #max_open_conns: 100
   #user:
   #password:
   #db_name:
@@ -146,6 +147,7 @@ db_config:
   host:     "<db_host_ip>"   # for mysql/pgsql
   port:     "<db_host_port>" # for mysql/pgsql
   sslmode:  "<required/disable>" # for pgsql
+  max_open_conns: "<max_number_of_conns_to_db>"
   flush:
     max_items: "<max_alerts_in_db>"
     max_age: "<max_age_of_alerts_in_db>"
@@ -391,6 +393,7 @@ db_config:
   host:     "<db_host_ip>"   # for mysql/postgresql/pgx
   port:     "<db_host_port>" # for mysql/postgresql/pgx
   sslmode:  "<required/disable>" # for postgresql/pgx
+  max_open_conns: "<max_number_of_conns_to_db>"
   flush:
     max_items: "<max_alerts_in_db>"
 	max_age: "<max_age_of_alerts_in_db>"
@@ -477,6 +480,17 @@ db_config:
   sslmode: required
 ```
 Required or disable ssl connection to database (only if the type of database is `postgresql`)
+
+#### `max_open_conns`
+
+```yaml
+db_config:
+  type: mysql|postgresql|pgx|sqlite
+  max_open_conns: 100
+```
+Maximum number of open connections to the database.
+
+Defaults to 100. Set to 0 for unlimited connections.
 
 #### `flush`
 
