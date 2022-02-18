@@ -1,6 +1,6 @@
 ---
 id: crowdsec_tour
-title: Crowdsec Tour
+title: CrowdSec Tour
 sidebar_position: 1
 ---
 
@@ -295,7 +295,7 @@ sudo tail -f /var/log/crowdsec.log
 
 ## Scalability
 
-Crowdsec uses go-routines for parsing and enriching logs, pouring events to buckets and manage outputs.
+CrowdSec uses go-routines for parsing and enriching logs, pouring events to buckets and manage outputs.
 
 By default, one routine of each exists (should be enough to handle ~1K EP/s), and can be changed in `crowdsec_service` of the main configuration file via the [parser_routines](/configuration/crowdsec_configuration.md#parser_routines), [buckets_routines](/configuration/crowdsec_configuration.md#buckets_routines) and [output_routines](/configuration/crowdsec_configuration.md#output_routines) directives.
 
