@@ -35,9 +35,9 @@ sudo cscli decisions list
 </details>
 
  - `SOURCE` : the source of the decisions:
-    - `crowdsec` : decision from crowdsec agent
+    - `crowdsec` : decision from the CrowdSec agent
     - `cscli`    : decision from `cscli` (manual decision)
-    - `CAPI`     : decision from crowdsec API
+    - `CAPI`     : decision from CrowdSec API
  - `SCOPE:VALUE` is the target of the decisions :
     - "scope" : the scope of the decisions (`ip`, `range`, `user` ...)
     - "value" : the value to apply on the decisions (ip_addr, ip_range, username ...)
@@ -54,7 +54,7 @@ Check [command usage](/cscli/cscli_decisions.md) for additional filtering and ou
 
 ## Add a decision
 
-> Ban an IP
+> Ban an IP address
 
 ```bash
 sudo cscli decisions add -i 1.2.3.4
@@ -67,20 +67,20 @@ sudo cscli decisions add -i 1.2.3.4
 
 :::
 
-> Add a decision (ban) on IP  `1.2.3.4` for 24 hours, with reason 'web bruteforce'
+> Add a decision (ban) on IP address `1.2.3.4` for 24 hours, with reason 'web bruteforce'
 
 ```bash
 sudo cscli decisions add --ip 1.2.3.4 --duration 24h --reason "web bruteforce"
 ```
 
-> Add a decision (ban) on range  `1.2.3.0/24` for 4 hours, with reason 'web bruteforce'
+> Add a decision (ban) on IP range  `1.2.3.0/24` for 4 hours, with reason 'web bruteforce'
 
 ```bash
 sudo cscli decisions add --range 1.2.3.0/24 --reason "web bruteforce"
 ```
 
 
-> Add a decision (captcha) on ip `1.2.3.4` for 4hours (default duration), with reason 'web bruteforce'
+> Add a decision (captcha) on IP address `1.2.3.4` for 4 hours (default duration), with reason 'web bruteforce'
 
 ```bash
 sudo cscli decisions add --ip 1.2.3.4 --reason "web bruteforce" --type captcha
@@ -88,21 +88,21 @@ sudo cscli decisions add --ip 1.2.3.4 --reason "web bruteforce" --type captcha
 
 ## Delete a decision
 
-> delete the decision on IP `1.2.3.4`
+> delete the decision on IP address `1.2.3.4`
 
 ```bash
 sudo cscli decisions delete --ip 1.2.3.4
 ```
 
-> delete the decision on range 1.2.3.0/24
+> delete the decision on IP range 1.2.3.0/24
 
 ```bash
 sudo cscli decisions delete --range 1.2.3.0/24
 ```
 
 :::caution
-Please note that `cscli decisions list` will show you only the latest alert per given ip/scope.
-However, several decisions targeting the same IP can exist. If you want to be sure to clear all decisions for a given ip/scope, use `cscli decisions delete -i x.x.x.x`
+Please note that `cscli decisions list` will show you only the latest alert per given IP address or scope.
+However, several decisions targeting the same IP address can exist. If you want to be sure to clear all decisions for a given IP address or scope, use `cscli decisions delete -i x.x.x.x`
 :::
 
 > delete a decision by ID
@@ -144,7 +144,7 @@ The `value` field is mandatory and contains the target of the decision (ip, rang
   - `type`: action to apply for the decision, defaults to `ban`
   - `scope`: scope of the decision, default to `ip`
 
-All fields (except for `value`) can be overwritten by command-line arguments, you can see the list in the [cli documentation](/cscli/cscli_decisions_import.md).
+All fields (except for `value`) can be overwritten by command line arguments, you can see the list in the [cli documentation](/cscli/cscli_decisions_import.md).
 
 Example JSON file:
 
