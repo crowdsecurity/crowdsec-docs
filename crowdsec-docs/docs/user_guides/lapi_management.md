@@ -19,9 +19,9 @@ You can find the swagger documentation [here](https://crowdsecurity.github.io/ap
 
 There are two kinds of authentication to the Local API :
 
- - Bouncers : they authenticate with a simple API key and can only read decisions
+ - Bouncers: They authenticate with a simple API key and can only read decisions
 
- - Machines : they authenticate with a login&password and can not only read decisions, but create new ones too
+ - Machines: They authenticate with a login and password and can not only read decisions, but create new ones too
 
 
 ### Bouncers
@@ -38,7 +38,7 @@ and keep the generated API token to use it in your bouncers configuration file.
 
 To allow a machine to communicate with the Local API, the machine needs to be validated by an administrator of the Local API.
 
-There are two ways to register a crowdsec to a Local API.
+There are two ways to register a CrowdSec to a Local API.
 
 * You can create a machine directly on the API server that will be automatically validated by running the following command on the server where the API is installed:
 
@@ -68,7 +68,7 @@ You can use `cscli machines list` to list all the machines registered to the API
 
 ### Client
 
-By default, `crowdsec` and `cscli` use `127.0.0.1:8080` as the default Local API. However you might want to use a remote API and configure a different endpoint for your api client.
+By default, `crowdsec` and `cscli` use `127.0.0.1:8080` as the default Local API. However you might want to use a remote API and configure a different endpoint for your API client.
 
 #### Register to a remote API server
 
@@ -78,7 +78,7 @@ By default, `crowdsec` and `cscli` use `127.0.0.1:8080` as the default Local API
 sudo cscli lapi register -u http://<remote_api>:<port>
 ```
 
-* On the local API server, validate the machine by running the command:
+* On the Local API server, validate the machine by running the command:
 
 
 ```bash
@@ -102,8 +102,8 @@ Then see [how to configure your crowdsec to use a remote API](/user_guides/machi
 #### Enable SSL
 
 The most common use case of the Local API is to listen on 127.0.0.1. In that case there's no need for
-configuring any ssl layer. In some cases, the local API will listen for other CrowdSec installations that
-will report their triggered scenarios. In that case the endpoint may be configured with ssl.
+configuring any SSL layer. In some cases, the Local API will listen for other CrowdSec installations that
+will report their triggered scenarios. In that case the endpoint may be configured with SSL.
 You can see how to configure SSL on your Local API [here](/configuration/crowdsec_configuration.md#tls).
 
 
