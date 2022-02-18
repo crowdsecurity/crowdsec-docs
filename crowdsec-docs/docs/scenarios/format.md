@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Scenario configuration example
 
-A way to detect a http scanner might be to track the number of distinct non-existing pages it's requesting, and the scenario might look like this:
+A way to detect a http scanner might be to track the number of distinct non-existing pages it's requesting. The scenario might look like this:
 
 ```yaml
 type: leaky
@@ -37,11 +37,16 @@ type: leaky|trigger|counter
 Defines the type of the bucket. Currently three types are supported :
 
  - `leaky` : a [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) that must be configured with a [capacity](#capacity) and a [leakspeed](#leakspeed)
- - `trigger` : a bucket that overflows as soon as an event is poured (it's like a leaky bucket is a capacity of 0)
- - `counter` : a bucket that only overflows every [duration](#duration). It's especially useful to count things.
+ - `trigger` : a bucket that overflows as soon as an event is poured (it is like a leaky bucket is a capacity of 0)
+ - `counter` : a bucket that only overflows every [duration](#duration). It is especially useful to count things.
 
 ---
 ### `name`
+
+```yaml
+name: github_account_name/my_scenario_name
+```
+or
 
 ```yaml
 name: my_author_name/my_scenario_name
@@ -49,7 +54,7 @@ name: my_author_name/my_scenario_name
 
 The `name` is mandatory. 
 
-It must be unique (and will define the scenario's name in the hub). 
+It must be unique. This will define the scenario's name in the hub. 
 
 ---
 ### `description`
@@ -60,7 +65,7 @@ description: A scenario that detect XXXX behavior
 
 The `description` is mandatory.
 
-It is a quick sentence describing what it detects.
+It is a short description, probably one sentence, describing what it detects.
 
 ---
 ### `filter`
@@ -229,7 +234,7 @@ The labels are (currently) not stored in the database, nor they are sent to the 
 
 #### Example
 
-The IP that triggered the overflow (`.Meta.source_ip`) will be banned.
+The IP address that triggered the overflow (`.Meta.source_ip`) will be banned.
 ```yaml
 type: leaky
 ...
@@ -382,7 +387,7 @@ data:
 format: 2.0
 ```
 
-CrowdSec has a notion of format support for parsers & scenarios for compatibility management.
+CrowdSec has a notion of format support for parsers and scenarios for compatibility management.
 Running `cscli version` will show you such compatibility matrix :
 
 ```bash
@@ -406,7 +411,7 @@ scope:
   expression: evt.Parsed.mySourceRange
 ```
 
-While most scenarios might focus on Ips, CrowdSec and Bouncers can work with any scope.
+While most scenarios might focus on IP addresses, CrowdSec and Bouncers can work with any scope.
 The `scope` directive allows you to override the default scope :
 
  - `type` is a string representing the scope name
