@@ -5,14 +5,14 @@ title: Introduction
 
 ## Goal
 
-Crowdsec supports notification plugins, meant to be able to push alerts to third party services, for alerting or integration purposes.
-At the time of writting, plugins exists for [slack](/notification_plugins/slack.md), [splunk](/notification_plugins/splunk.md), and a generic [http push](/notification_plugins/http.md) plugin (allowing to push to services such as [elasticsearch](/notification_plugins/elasticsearch.md)).
+CrowdSec supports notification plugins, meant to be able to push alerts to third party services for alerting or integration purposes.
+At the time of writing, plugins exists for [slack](/notification_plugins/slack.md), [splunk](/notification_plugins/splunk.md), and a generic [http push](/notification_plugins/http.md) plugin (allowing to push to services such as [elasticsearch](/notification_plugins/elasticsearch.md)).
 
 Events get dispatched to said plugins via [profile configuration](/profiles/intro.md).
 
 ## Configuration
 
-The default plugins are shipped with crowdsec uppon installation, and can trivially be enabled without further installation.
+The default plugins are shipped with CrowdSec upon installation, and can trivially be enabled without further installation.
 
 Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`.md).
 
@@ -98,7 +98,7 @@ CrowdSec main process feeds the configuration files to the plugins via gRPC. It 
 
 Under the hood, the main CrowdSec process dispatches the plugins as gRPC services. This means that plugins can be written in any language.
 
-Currently only `notification` plugins are supported. Whenever CrowdSec receives any alert, if this alert satisfies the owner profile then the same alert will be dispatched to such plugin.
+Currently only `notification` plugins are supported. Whenever CrowdSec receives any alert and if this alert satisfies the owner profile, then the same alert will be dispatched to such plugin.
 
 [See](https://github.com/crowdsecurity/crowdsec/blob/plugins/pkg/protobufs/notifier.proto) the gRPC protocol for `notification` plugins.
 
