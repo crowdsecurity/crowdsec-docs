@@ -4,11 +4,11 @@ title: Databases
 sidebar_position: 2
 ---
 
-By default, the crowdsec Local API use `SQLite` as backend storage. But in case you expect a lot of traffic on your local API, you should use `MySQL` or `PostgreSQL`.
+By default, the CrowdSec Local API use `SQLite` as backend storage. In case you expect a lot of traffic on your Local API, you should use `MySQL`, `MariaDB` or `PostgreSQL`.
 
-For `SQLite`, there is nothing to do to make it work with crowdsec. But for `MySQL` and `PostgreSQL` , you have to create the database and the user.
+For `SQLite`, there is nothing to do to make it work with CrowdSec. For `MySQL`, `MariaDB` and `PostgreSQL` , you need to create a database and an user.
 
-Please refer to [ent.](https://entgo.io/) [supported database](https://entgo.io/docs/dialects/). At the time of writting :
+Please refer to [ent.](https://entgo.io/) [supported database](https://entgo.io/docs/dialects/). At the time of writing :
 
  - MySQL `5.6.35`, `5.7.26` and `8`
  - MariaDB `10.2` and latest
@@ -19,13 +19,13 @@ Please refer to [ent.](https://entgo.io/) [supported database](https://entgo.io/
 
 :::warning
 
-When switching an existing instance of crowdsec to a new database backend, you need to register your machine(s) (ie. `cscli machines add -a`) and bouncer(s) to the new database, as data is not migrated.
+When switching an existing instance of CrowdSec to a new database backend, you need to register your machine(s) (ie. `cscli machines add -a`) and bouncer(s) to the new database, as data is not migrated.
 
 :::
 
-## MySQL
+## MySQL and MariaDB
 
-Connect to your `MySQL` server and run the following commands:
+Connect to your `MySQL` or `MariaDB` server and run the following commands:
 
 ```
 mysql> CREATE DATABASE crowdsec;
@@ -36,7 +36,7 @@ mysql> FLUSH PRIVILEGES;
 
 Then edit `/etc/crowdsec/config.yaml` to update the [`db_config`](/configuration/crowdsec_configuration.md#db_config) part.
 
-You can now start/restart crowdsec.
+You can now start or restart CrowdSec.
 
 ## PostgreSQL
 
@@ -50,4 +50,4 @@ postgres=# GRANT ALL PRIVILEGES ON DATABASE crowdsec TO crowdsec;
 
 Then edit `/etc/crowdsec/config.yaml` to update the [`db_config`](/configuration/crowdsec_configuration.md#db_config) part.
 
-You can now start/restart crowdsec.
+You can now start or restart CrowdSec.
