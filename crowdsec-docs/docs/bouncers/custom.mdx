@@ -23,9 +23,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-Crowdsec bouncer written in golang for custom scripts.
+CrowdSec bouncers are written in golang for custom scripts.
 
-crowdsec-custom-bouncer will periodically fetch new and expired/removed decisions from CrowdSec Local API and will pass them as arguments to a custom user script.
+The crowdsec-custom-bouncer will periodically fetch new, expired and removed decisions from the CrowdSec Local API and will pass them as arguments to a custom user script.
 
 ## Installation from packages
 
@@ -58,7 +58,7 @@ sudo yum install crowdsec-custom-bouncer
 
 
 
-## Manual install (via script)
+## Manual installation via script
 
 First, download the latest [`crowdsec-custom-bouncer` release](https://github.com/crowdsecurity/cs-custom-bouncer/releases).
 
@@ -82,7 +82,7 @@ sudo ./install.sh
 
 # Configuration
 
-Before starting the `crowdsec-custom-bouncer` service, please edit the configuration to add your API url and key.
+Before starting the `crowdsec-custom-bouncer` service, please edit the configuration file to add your API URL and key.
 The default configuration file is located under : `/etc/crowdsec/bouncers/`
 
 ```sh
