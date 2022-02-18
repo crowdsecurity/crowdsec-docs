@@ -8,7 +8,7 @@ sidebar_position: 4
 
 When a whitelist is present in parsing `/etc/crowdsec/parsers/...`, it will be checked/discarded before being poured to any bucket. These whitelists intentionally generate no logs and are useful to discard noisy false positive sources.
 
-## Whitelist by ip
+## Whitelist by IP address
 
 Let's assume we have a setup with a `crowdsecurity/nginx` collection enabled and no whitelists.
 
@@ -18,7 +18,7 @@ Thus, if I "attack" myself :
 nikto -host myfqdn.com
 ```
 
-my own IP will be flagged as being an attacker :
+my own IP address will be flagged as being an attacker :
 
 ```bash
 $ tail -f /var/log/crowdsec.log 
@@ -38,7 +38,7 @@ sudo cscli ban list
 ```
 
 
-### Create the whitelist by IP
+### Create the whitelist by IP address
 
 Let's create a `/etc/crowdsec/parsers/s02-enrich/mywhitelists.yaml` file with the following content :
 
@@ -93,7 +93,7 @@ whitelist:
    - evt.Parsed.http_user_agent == 'MySecretUserAgent'
 ```
 
-again, let's restart CrowdSec !
+Again, let's restart CrowdSec !
 
 For the record, I edited nikto's configuration to use 'MySecretUserAgent' as user-agent, and thus :
 
@@ -128,7 +128,7 @@ It has the advantage of being triggered only once we are about to take decision 
 A good example is the [crowdsecurity/whitelist-good-actors](https://hub.crowdsec.net/author/crowdsecurity/collections/whitelist-good-actors) collection.
 
 But let's craft ours based on our previous example !
-First of all, install the [crowdsecurity/rdns postoverflow](https://hub.crowdsec.net/author/crowdsecurity/configurations/rdns) : it will be in charge of enriching overflows with reverse dns information of the offending IP.
+First of all, install the [crowdsecurity/rdns postoverflow](https://hub.crowdsec.net/author/crowdsecurity/configurations/rdns) : it will be in charge of enriching overflows with reverse dns information of the offending IP address.
 
 Let's put the following file in `/etc/crowdsec/postoverflows/s01-whitelists/mywhitelists.yaml` :
 
