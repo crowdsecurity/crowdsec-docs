@@ -4,8 +4,8 @@ title: Machines management
 sidebar_position: 1
 ---
 
-Crowdsec is composed of different components that communicate via a local API.
-To access this API, the various components (crowdsec agent, cscli and bouncers) need to be authenticated.
+CrowdSec is composed of different components that communicate via a Local API.
+To access this API, the various components (CrowdSec agent, cscli and bouncers) need to be authenticated.
 
 :::info
 
@@ -15,8 +15,8 @@ This documentation should be relevant mostly for administrators that would like 
 
 There are two kind of access to the local api :
 
- - `machines` : it's a login/password authentication used by cscli and CrowdSec, this one allows to post, get and delete decisions and alerts.
- - `bouncers` : it's a token authentication used by bouncers to query the decisions, and only allows to perform get on decisions.
+ - `machines` : it is a login/password authentication used by cscli and CrowdSec, this one allows to post, get and delete decisions and alerts.
+ - `bouncers` : it is a token authentication used by bouncers to query the decisions, and only allows to perform get on decisions.
 
 
 
@@ -76,7 +76,7 @@ sudo cscli machines list
 
 ## Machine register
 
-It is also possible to register to a local API from a remote machine with `cscli lapi` and then validate the machine on the local API machine.
+It is also possible to register to a Local API from a remote machine with `cscli lapi` and then validate the machine on the Local API machine.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
