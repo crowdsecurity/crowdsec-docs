@@ -1,11 +1,11 @@
 ---
 id: bouncers_configuration
-title: Bouncers Management
+title: Bouncers management
 sidebar_position: 1
 ---
 
-Crowdsec is composed of different components that communicate via a local API.
-To access this API, the various components (crowdsec agent, cscli and bouncers) need to be authenticated.
+CrowdSec is composed of different components that communicate via a Local API.
+To access this API, the various components (CrowdSec agent, cscli and bouncers) need to be authenticated.
 
 :::info
 
@@ -15,8 +15,8 @@ This documentation should be relevant mostly for administrators that would like 
 
 There are two kind of access to the local api :
 
- - `machines` : it's a login/password authentication used by cscli and CrowdSec, this one allows to post, get and delete decisions and alerts.
- - `bouncers` : it's a token authentication used by bouncers to query the decisions, and only allows to perform get on decisions and alerts.
+ - `machines` : it is a login/password authentication used by cscli and CrowdSec, this one allows to post, get and delete decisions and alerts.
+ - `bouncers` : it is a token authentication used by bouncers to query the decisions, and only allows to perform get on decisions and alerts.
 
 
 ## Bouncers authentication
@@ -44,7 +44,7 @@ Please keep this key since will not be able to retrieve it!
 sudo cscli bouncers delete mybouncersname
 ```
 
-The API KEY must be kept and given to the bouncer configuration.
+The API key must be kept and given to the bouncer configuration.
 
 <details>
   <summary>cscli bouncers example</summary>
