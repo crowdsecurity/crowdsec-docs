@@ -4,15 +4,12 @@ title: Creating a test environment
 sidebar_position: 10
 ---
 
-
-It is possible to deploy a minimalist test environment, which is useful :
- - to create new parsers or scenarios
- - to test new features
- - to try to showcase a bug or a corner-case
-
+Youn need a test environment for several reasons:
+ - Creatation of new parsers or scenarios
+ - Testing new features or in general
+ - Showcase a bug or a corner-case
 
 This can be done directly with the tarball of the release :
-
 
 ```bash
 wget https://github.com/crowdsecurity/crowdsec/releases/download/v1.3.0/crowdsec-release.tgz
@@ -21,7 +18,25 @@ cd crowdsec-v1.3.0
 ./test_env.sh
 ```
 
-The test env is then available in the `tests` directory and should provide a functional crowdsec environment :
+You receive a directory structure like this:
+
+```bash
+crowdsec-v1.3.0
+  |- cmd
+  |   |- crowdsec
+  |   |- crowdsec-cli
+  |- config
+  |   |- patterns
+  |- plugins
+  |   |- notifications
+  |- tests
+      |- config
+      |- data
+      |- logs
+      |- plugins
+```
+
+The test environment is available in the folder `tests` and provides a functional CrowdSec environment :
 
 ```bash
 cd tests
@@ -35,5 +50,5 @@ cd tests
 ./cscli -c dev.yaml hub list
 ```
 
-In this test env, configurations are under the `config/` dir.
+In the test environment the configurations are in the folder `config/`.
 
