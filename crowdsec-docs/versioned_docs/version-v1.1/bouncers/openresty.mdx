@@ -64,13 +64,21 @@ sudo apt install openresty openresty-opm gettext-base
 <Tabs
   defaultValue="debian"
   values={[
-    { label: 'Debian/Ubuntu', value: 'debian' ,},
+    { label: 'Debian/Ubuntu', value: 'openresty_debian' ,},
+    { label: 'RHEL/Centos/Fedora', value: 'openresty_rhel' ,},
   ]
 }>
-<TabItem value="debian">
+<TabItem value="openresty_debian">
 
 ```bash
 sudo apt install crowdsec-openresty-bouncer
+```
+
+</TabItem>
+<TabItem value="openresty_rhel">
+
+```bash
+sudo yum install crowdsec-openresty-bouncer
 ```
 
 </TabItem>
@@ -88,7 +96,7 @@ In stream mode, the bouncer will launch an internal timer to pull the local API 
 :::
 
 You need to add `include /usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf;
-` in nginx config file `/usr/local/openresty/nginx/conf/nginx.conf` in the **server** section.
+` in nginx config file `/usr/local/openresty/nginx/conf/nginx.conf` in the **http** section.
 
 ### Manual installation
 
