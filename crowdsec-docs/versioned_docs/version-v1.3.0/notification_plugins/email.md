@@ -42,6 +42,7 @@ smtp_host: smtp.gmail.com
 smtp_username: myemail@gmail.com
 smtp_password: mypassword 
 smtp_port: 587
+sender_name: CrowdSec
 sender_email: myemail@gmail.com
 receiver_emails:
  - receiver@gmail.com
