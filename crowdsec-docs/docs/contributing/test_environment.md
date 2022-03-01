@@ -5,7 +5,7 @@ sidebar_position: 10
 ---
 
 You need a test environment for several reasons:
- - Creatation of new parsers or scenarios
+ - Creation of new parsers or scenarios
  - Testing new features or in general
  - Showcase a bug or a corner-case
 
