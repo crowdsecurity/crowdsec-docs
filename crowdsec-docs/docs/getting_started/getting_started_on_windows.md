@@ -24,7 +24,7 @@ The MSI file will perform some basic setup:
  - Registering your CrowdSec installation with our Central API.
  - Installation of a Windows Service which will runs at boot and to start CrowdSec.
 
-Contrary to Linux, CrowdSec does not yet support the auto configuration at install time. If you want to be able to detect something other than RDP or SMB bruteforce, then you will need to customize your acquisition configuration.
+Contrary to Linux, CrowdSec does not yet support the auto configuration at install time. If you want to be able to detect something other than RDP or SMB brute force, then you will need to customize your acquisition configuration.
 
 The default configuration will catch brute force attacks against RDP and SMB (or any kind of remote authentication that uses Windows auth).
 
@@ -65,7 +65,7 @@ labels:
  type: eventlog
 ```
 
-Lastly, restart the CrowdSec service (using `net`, `sc` or the services app), and crowdsec will now parse the SQL server authentication logs.
+Restart the CrowdSec service (using `net`, `sc` or the services app). CrowdSec will now parse the SQL server authentication logs.
 
 :::info
 
@@ -77,11 +77,11 @@ This scenario requires SQL Server to log failed authentication, which is the cas
 
 You will need to install the [`crowdsecurity/iis`](https://hub.crowdsec.net/author/crowdsecurity/collections/iis) collection.
 
-The collection contains a parser for IIS W3C log format (with the default fields) and another collection containing all the basic HTTP scenarios.
+The collection contains a parser for IIS W3C log format (with the default fields) and an another collection containing all the basic HTTP scenarios.
 
-To install the collection from an admin powershell prompt run `cscli.exe collections install crowdsecurity/iis`.
+To install the collection from an administrator powershell prompt, run `cscli.exe collections install crowdsecurity/iis`.
 
-If your IIS setup logs to a file, add the following to your acquisition configuration (`C:\Program Files\CrowdSec\config\acquis.yaml`):
+If your IIS logs to a file, add the following to your acquisition configuration (`C:\Program Files\CrowdSec\config\acquis.yaml`):
 ```yaml
 use_time_machine: true
 filenames:
@@ -90,9 +90,9 @@ labels:
   type: iis
 ```
 
-Please note that `use_time_machine` is very important: by default IIS will flush the logs to a file every minute or if there is 64kB of logs to write.
+Please note that `use_time_machine` is very important: By default IIS will flush the logs to the file every minute or if there is 64kB of logs to write.
 
-This means CrowdSec will see a bunch of lines at the same time and can lead to false positive.
+This means CrowdSec will see a bunch of lines at the same time which can lead to false positive.
 
 The `use_time_machine` parameter makes CrowdSec use the timestamp present in the line instead of the date of acquisition as the date of the event.
 
@@ -106,7 +106,7 @@ event_level: information
 labels:
  type: iis
 ```
-Lastly, restart the CrowdSec service (using `net`, `sc` or the services app), and CrowdSec will now parse your IIS access logs.
+Restart the CrowdSec service (using `net`, `sc` or the services app). CrowdSec will now parse your IIS access logs.
 
 #### Windows Firewall
 
@@ -114,7 +114,7 @@ You will need to install the [`crowdsecurity/windows-firewall`](https://hub.crow
 
 The collection contains a parser for the windows firewall logs and a scenario to detect port scan.
 
-To install the collection from an admin powershell prompt run  `cscli.exe collections install crowdsecurity/windows-firewall`
+To install the collection from an administrator powershell prompt, run  `cscli.exe collections install crowdsecurity/windows-firewall`
 
 You will also need to enable the windows firewall logging. You can use the official Microsoft documentation available [here](https://docs.microsoft.com/en-us/windows/security/threat-protection/windows-firewall/configure-the-windows-firewall-log). 
 
@@ -126,11 +126,11 @@ labels:
   type: windows-firewall
 ```
 
-Lastly, restart the CrowdSec service (using `net`, `sc` or the services app) and CrowdSec will now parse the firewall logs.
+Restart the CrowdSec service (using `net`, `sc` or the services app). CrowdSec will now parse the firewall logs.
 
 :::info
 
-Because the Windows Firewall operates in `stealth mode` by default, not all dropped packets will be logged. Only the one intented for port on which a service listens, which means that CrowdSec won't catch all network scan.
+Because the Windows Firewall operates in `stealth mode` by default, not all dropped packets will be logged. Only the one intented for port on which a service listens, which means that CrowdSec won't catch all network scans.
 
 Please note that we *DO NOT* recommand disabling stealth mode.
 
@@ -143,9 +143,9 @@ Almost all service types supported on Linux should also be supported on Windows,
 
 ## Windows Firewall Bouncer Installation
 
-Now that you've got CrowdSec up and running, it's time to install a bouncer to actually block the IPs that attack you.
+Now that you've got CrowdSec up and running, it's time to install a bouncer to actually block the IP addresses which are attacking your server.
 
-We will be using the Windows Firewall bouncer, which manage some windows firewall rules to drop traffic from IPs blocked by CrowdSec.
+We will use the Windows Firewall bouncer, which manages some windows firewall rules to drop traffic from IP addresses blocked by CrowdSec.
 
 You can download the MSI file here: https://alpha-packages.crowdsec.net/
 
@@ -157,7 +157,7 @@ The runtime can be downloaded from Microsoft: https://dotnet.microsoft.com/en-us
 
 :::
 
-When you run the MSI fiel, the bouncer will automatically register itself in CrowdSec and creates the Windows service, that will run at boot and starts the bouncer.
+When you run the MSI file, the bouncer will automatically register itself in CrowdSec and creates the Windows service, that will run at boot and starts the bouncer.
 
 The bouncer works by adding a number of rules to the windows firewall (one rule per thousand blocked IPs).
 
@@ -171,7 +171,7 @@ If you install the bouncer before CrowdSec, you will need to perform some manual
 
 First, you will need to create an API key for the bouncer.
 
-To do so, open an admin powershell prompt, and run `cscli.exe bouncers add windows-firewall-bouncer`, this will display an API key.
+To do so, open an administrator powershell prompt, and run `cscli.exe bouncers add windows-firewall-bouncer`, this will display an API key.
 
 Add this key in the bouncer configuration file, located in `C:\Program Files\CrowdSec\bouncers\cs-windows-firewall-bouncer\cs-windows-firewall-bouncer.yaml`.
 
