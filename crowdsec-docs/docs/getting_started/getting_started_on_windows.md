@@ -77,11 +77,12 @@ This scenario requires SQL Server to log failed authentication, which is the cas
 
 You will need to install the [`crowdsecurity/iis`](https://hub.crowdsec.net/author/crowdsecurity/collections/iis) collection.
 
-The collection contains a parser for IIS W3C log format (with the default fields) and another collection containing all the basic HTTP scenarios.
+The collection contains a parser for IIS W3C log format (with the default fields) and an another collection containing all the basic HTTP scenarios.
 
-To install the collection from an admin powershell prompt run `cscli.exe collections install crowdsecurity/iis`.
+To install the collection from an administrator powershell prompt, run `cscli.exe collections install crowdsecurity/iis`.
 
 If your IIS setup logs to a file then add the following to your acquisition configuration (`C:\Program Files\CrowdSec\config\acquis.yaml`):
+
 ```yaml
 ---
 use_time_machine: true
@@ -93,7 +94,7 @@ labels:
 
 Please note that `use_time_machine` is very important: By default IIS will flush the logs to a file every minute or if there is 64kB of logs to write.
 
-This means CrowdSec will see a bunch of lines at the same time and can lead to false positive.
+This means CrowdSec will see a bunch of lines at the same time which can lead to false positive.
 
 The `use_time_machine` parameter makes CrowdSec use the timestamp present in the line instead of the date of acquisition as the date of the event.
 
@@ -108,7 +109,7 @@ event_level: information
 labels:
  type: iis
 ```
-Lastly, restart the CrowdSec service (using `net`, `sc` or the services app), and CrowdSec will now parse your IIS access logs.
+Restart the CrowdSec service (using `net`, `sc` or the services app). CrowdSec will now parse your IIS access logs.
 
 #### Windows Firewall
 
@@ -133,7 +134,7 @@ Restart the CrowdSec service and CrowdSec will now parse the firewall logs.
 
 :::info
 
-Because the Windows Firewall operates in `stealth mode` by default, not all dropped packets will be logged. Only the one intented for port on which a service listens, which means that CrowdSec won't catch all network scan.
+Because the Windows Firewall operates in `stealth mode` by default, not all dropped packets will be logged. Only the one intented for port on which a service listens, which means that CrowdSec won't catch all network scans.
 
 Please note that we *DO NOT* recommand disabling stealth mode.
 
@@ -146,9 +147,9 @@ Almost all service types supported on Linux should also be supported on Windows,
 
 ## Windows Firewall Bouncer Installation
 
-Now that you've got CrowdSec up and running, it's time to install a bouncer to actually block the IPs that attack you.
+Now that you've got CrowdSec up and running, it's time to install a bouncer to actually block the IP addresses which are attacking your server.
 
-We will be using the Windows Firewall bouncer, which manage some windows firewall rules to drop traffic from IPs blocked by CrowdSec.
+We will use the Windows Firewall bouncer, which manages some windows firewall rules to drop traffic from IP addresses blocked by CrowdSec.
 
 The MSI file is available at [our download area](https://alpha-packages.crowdsec.net)
 
@@ -161,7 +162,9 @@ Choose the "Hosting Bundle".
 
 :::
 
-The installation registers the bouncer in CrowdSec and creates the Windows service. The service will start at boot time.
+
+When you run the MSI file, the bouncer will automatically register itself in CrowdSec and creates the Windows service, that will run at boot and starts the bouncer.
+
 
 The bouncer works by adding a number of rules to the windows firewall (one rule per thousand blocked IPs).
 
@@ -176,6 +179,7 @@ If you install the bouncer before CrowdSec, you will need to perform some manual
 First, you will need to create an API key for the bouncer.
 
 To do so, open an administrator powershell or DOS prompt and run `cscli.exe bouncers add windows-firewall-bouncer`. This will display an API key.
+
 
 Add this key in the bouncer configuration file located in `C:\Program Files\CrowdSec\bouncers\cs-windows-firewall-bouncer\cs-windows-firewall-bouncer.yaml`.
 
