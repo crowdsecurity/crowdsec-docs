@@ -150,7 +150,7 @@ Now that you've got CrowdSec up and running, it's time to install a bouncer to a
 
 We will be using the Windows Firewall bouncer, which manage some windows firewall rules to drop traffic from IPs blocked by CrowdSec.
 
-The MSI file is available at [our download area](https://alpha-packages.crowdsec.net)[https://alpha-packages.crowdsec.net/)
+The MSI file is available at [our download area](https://alpha-packages.crowdsec.net)
 
 :::warning
 
