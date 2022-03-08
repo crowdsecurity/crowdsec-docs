@@ -223,7 +223,7 @@ In stream mode, the bouncer will launch an internal timer to pull the local API 
 ### Resolver and certificates
 
 In order to query `google.com` for the reCAPTCHA verification, we need to set a resolver and a SSL certificate in our OpenResty configuration.
-Those are the default values, but you can change them:
+Here is a config example, but you can change values::
 
 ```bash title="/usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf"
 resolver local=on ipv6=off;

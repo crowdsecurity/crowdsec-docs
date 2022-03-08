@@ -236,7 +236,7 @@ In stream mode, the bouncer will launch an internal timer to pull the local API 
 ### Resolver and certificates
 
 In order to query `google.com` for the reCAPTCHA verification, you need to set a resolver and a SSL certificate in your nginx configuration.
-Those are the default values, but you can change them:
+Here is a config example, but you can change values::
 
 ```bash title="/etc/nginx/conf.d/crowdsec_nginx.conf"
 resolver 8.8.8.8 ipv6=off;
