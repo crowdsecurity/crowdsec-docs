@@ -101,7 +101,7 @@ If the profile applies, decisions objects will be created for each of the source
 It is a list of `models.Decision` objects. The following fields, when present, allows to alter the resulting decision :
 
  - `scope` : defines the scope of the resulting decision
- - `duration` : defines for how long will the decision be valid
+ - `duration` : defines for how long will the decision be valid. The format must comply with [golang's ParseDuration](https://pkg.go.dev/time#ParseDuration)
  - `type` : defines the type of the remediation that will be applied by available bouncers, for example `ban`, `captcha`
  - `value` : define a hardcoded value for the decision (ie. `1.2.3.4`)
 
