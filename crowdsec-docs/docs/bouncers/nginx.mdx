@@ -307,10 +307,13 @@ The fallback remediation is applied if the bouncer receives a decision with an u
 MODE=stream|live
 ```
 
+The default mode is `live`.
+
 The bouncer mode:
  - stream: The bouncer will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
 
 Note: The timer that pull the local API will be triggered after the first request.
+
  - live: The bouncer will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
 
 ### `REQUEST_TIMEOUT`
