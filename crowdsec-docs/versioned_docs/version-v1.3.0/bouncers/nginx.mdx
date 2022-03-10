@@ -91,8 +91,9 @@ Download the latest release [here](https://github.com/crowdsecurity/cs-nginx-bou
 ```bash
 tar xvzf crowdsec-nginx-bouncer.tgz
 cd crowdsec-nginx-bouncer-v*/
-sudo ./install.sh
+./install.sh
 ```
+Note: Don't run the script with `sudo` (the script already use `sudo` to install dependencies).
 
 If you are on a mono-machine setup, the `crowdsec-nginx-bouncer` install script will register directly to the local crowdsec, so you're good to go !
 
