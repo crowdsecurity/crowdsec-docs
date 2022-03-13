@@ -289,6 +289,11 @@ module.exports = {
       id: "bouncers/fastly"
     },
     {
+      type: 'doc',
+      label: 'AWS WAF Bouncer',
+      id: "bouncers/aws_waf"
+    },
+    {
       type:"link",
       label: "Hub",
       href:"https://hub.crowdsec.net/browse/#bouncers"

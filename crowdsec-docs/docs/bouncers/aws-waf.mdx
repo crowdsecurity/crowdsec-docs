@@ -1,0 +1,203 @@
+---
+id: aws_waf
+title: AWS WAF Bouncer
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+<img src={useBaseUrl('/img/TODO_FIXME.png')} alt="CrowdSec" title="CrowdSec" width="300" height="300" />
+</p>
+
+<p align="center">
+&#x1F4DA; <a href="#installation/">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+## Overview
+
+The `crowdsec-awf-waf-bouncer` automatically adds rules to an existing AWS WAF ACL and manages IPSets content to apply decisions taken by crowdsec.
+
+This allows to protect the following AWS ressources with crowdsec:
+ - AWS REST API Gateway
+ - Cloudfront distribution
+ - AWS Application LoadBalancer
+ - AWS AppSync GraphQL API
+
+As the bouncer does not manage your WAF ACLs, you will need to have existing ACLs already associated with your AWS ressources for the bouncer to work properly.
+
+The bouncer will create all required resources and associate them with your existing ACLs based on the configuration you provided.
+
+As the resources will incur an AWS cost, the bouncer will remove everything it created when stopping.
+
+If you do not have an existing AWS WAF configuration, you can refer to the [official documentation](https://docs.aws.amazon.com/waf/latest/developerguide/waf-chapter.html) to get started.
+
+## Installation
+
+### Using packages
+
+Packages for crowdsec-aws-waf-bouncer [are available on our repositories](/getting_started/install.mdx##install-our-repositories). You need to pick the package accord to your firewall system :
+
+<Tabs
+  defaultValue="debian"
+  values={[
+    { label: 'Debian/Ubuntu', value: 'debian' ,},
+    { label: 'RHEL/Centos/Fedora', value: 'rhel', },
+  ]
+}>
+<TabItem value="debian">
+
+```bash
+sudo apt install crowdsec-aws-waf-bouncer
+```
+
+</TabItem>
+<TabItem value="rhel">
+
+```bash
+sudo yum install crowdsec-aws-waf-bouncer
+```
+
+</TabItem>
+</Tabs>
+
+### Docker
+
+```shell
+docker run -v $(PWD)/config.yaml:/cs-aws-waf-bouncer.yaml crowdsecurity/aws-waf-bouncer
+```
+
+## Configuration
+
+You will need to edit `/etc/crowdsec/bouncers/crowdsec-custom-bouncer.yaml` to configure the ACLs you want the bouncer to use.
+
+```yaml
+api_key: XXXX
+api_url: "http://127.0.0.1:8080/"
+update_frequency: 10s
+waf_config:
+  - web_acl_name: mywebacl
+    fallback_action: ban
+    rule_group_name: crowdsec-rule-group-eu-west-1
+    scope: REGIONAL
+    region: eu-west-1
+    ipset_prefix: crowdsec-ipset-a
+	aws_profile: myprofile
+  - web_acl_name: test-cloudfront
+    fallback_action: captcha
+    rule_group_name: crowdsec-rule-group-cloudfront
+    scope: CLOUDFRONT
+    ipset_prefix: crowdsec-ipset-cf
+```
+
+Optionnaly, the bouncer can also be configured using only environment variables.
+
+Environment variables will take priority over values defined in the configuration file.
+
+AWS authentication is handled with the standard environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_PROFILE).
+
+You can also use the `aws_profile` directive to specify a profile to use for a specific waf configuration. 
+
+---
+#### `api_key`
+##### Environment variable: `BOUNCER_API_KEY`
+
+API key to use for communication with LAPI.
+
+#### `api_url`
+##### Environment variable: `BOUNCER_API_URL`
+
+URL of LAPI.
+
+#### `update_frequency`
+##### Environment variable: `BOUNCER_UPDATE_FREQUENCY`
+
+How often the bouncer will contact LAPI to update its content.
+
+The format must be supported by [golang ParseDuration](https://pkg.go.dev/time#ParseDuration).
+
+---
+### `waf_config`
+##### Environment variable: `BOUNCER_WAF_CONFIG_`
+
+
+List of object with the following properties:
+
+```
+waf_config:
+  - web_acl_name: mywebacl
+    fallback_action: ban
+    rule_group_name: crowdsec-rule-group-XXX
+    scope: REGIONAL
+    region: eu-west-1
+    ipset_prefix: crowdsec-ipset-
+```
+
+When configuring through environment variables, you can pass multiple `BOUNCER_WAF_CONFIG_X_` variables, with `X` being a unique identifier (eg, `0`, `1`, `2`, ...).
+
+#### `web_acl_name`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_WEB_ACL_NAME`
+
+
+Name of the WAF ACL in which the rule group will be added
+
+#### `fallback_action`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_FALLBACK_ACTION`
+
+Action to use if the type of a decision is not `captcha` or `ban`.
+
+Must be one of `captcha` or `ban`.
+
+#### `rule_group_name`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_RULE_GROUP_NAME`
+
+
+Name of the rule group the bouncer will create and add to the WAF ACL.
+
+Must be unique accross all the configuration.
+
+4 rules will be created on startup:
+ - crowdsec-rule-ban-IPV4: Contains a statement that will match on the IPv4 ban ipset.
+ - crowdsec-rule-ban-IPV6: Contains a statement that will match on the IPv6 ban ipset.
+ - crowdsec-rule-captcha-IPV4: Contains a statement that will match on the IPv4 captcha ipset.
+ - crowdsec-rule-captcha-IPV6: Contains a statement that will match on the IPv6 captcha ipset.
+
+If a decision for a country is received, the following rules will be created:
+ - crowdsec-rule-ban-country: Contains a geomatch statement for banned countries
+ - crowdsec-rule-captcha-country: Contains a geomatch statement for captcha'ed countries
+
+#### `scope`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_SCOPE`
+
+
+Scope of the rule group and ipset. Can be `REGIONAL` or `CLOUDFRONT`.
+
+Must match the scope of the WAF ACL.
+
+#### `region`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_REGION`
+
+
+Region where all ressources will be created.
+
+No required when scope is `CLOUDFRONT`
+
+#### `ipset_prefix`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_IPSET_PREFIX`
+
+Prefix for all the ipsets the bouncer will create.
+
+By default, 4 ipsets will be created:
+ - one for banned IPv4
+ - one for banned IPv6
+ - one for captcha'ed IPv4
+ - one for captcha'ed IPv6
+
+#### `aws_profile`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_AWS_PROFILE`
+
+Name of the AWS profile (defined in ~/.aws/config) to use.
