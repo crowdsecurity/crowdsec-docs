@@ -39,9 +39,6 @@ Supported features:
 
 At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
-:::warning
-If you need to upgrade the bouncer from v0.X to v1.X, please follow [this migration process](#migrate-from-v0-to-v1) 
-:::
 
 ## Installation
 
@@ -111,6 +108,18 @@ If you are on a mono-machine setup, the `crowdsec-nginx-bouncer` install script 
 
 
 ## Upgrade
+
+### From package
+
+```bash
+sudo apt-get update
+sudo apt-get install crowdsec-nginx-bouncer
+```
+
+:::warning
+Upgrade from v0 to v1 introduce many changes. Pick up the maintainer configuration to avoid anything breaking. Configuration migration might not be trivial.
+:::
+
 
 ### Manual Upgrade
 
@@ -246,26 +255,6 @@ lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
 ```
 
 And restart Nginx.
-
-
-### Migrate from v0 to v1
-
-The best way to migrate from the crowdsec-nginx-bouncer v0.* to v1 is to reinstall the bouncer. Indeed, many new configurations options are now available and some has been removed.
-
-- Backup your CrowdSec Local API key from your configuration file (`/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`)
-- Remove the old bouncer:
-
-```bash
-sudo apt-get remove --purge crowdsec-nginx-bouncer
-```
-
-- Install the new bouncer:
-```bash
-sudo apt-get update
-sudo apt-get install crowdsec-nginx-bouncer
-```
-
-- Configure the bouncer in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`
 
 
 ## References
