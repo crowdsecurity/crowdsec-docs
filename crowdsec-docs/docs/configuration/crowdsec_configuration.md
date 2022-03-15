@@ -165,6 +165,10 @@ api:
     tls:
       cert_file: "<path_to_certificat_file>"
       key_file: "<path_to_certificat_key_file>"
+    trusted_ips: # IPs or IP ranges which should have admin API access
+      #- 127.0.0.1
+      #- ::1
+      #- 10.0.0.0/24
 prometheus:
   enabled: "(true|false)"
   level: "(full|aggregated)"
@@ -573,6 +577,11 @@ server:
   listen_uri: <listen_uri> # host:port
   profiles_path: <path_to_profile_file>
   use_forwarded_for_headers: (true|false)
+  trusted_ips: # IPs or IP ranges which should have admin API access
+    #- 127.0.0.1
+    #- ::1
+    #- 10.0.0.0/24
+
   online_client:
     credentials_path: <path_to_crowdsec_api_client_credential_file>
   tls:
@@ -628,6 +637,12 @@ Path to certificate file.
 > string
 
 Path to certficate key file.
+
+##### `trusted_ips`
+> list
+
+IPs or IP ranges which have admin access to API. The APIs would still need to have API keys.
+127.0.0.1 and ::1 are always given admin access whether specified or not.
 
 ### `prometheus`
 
