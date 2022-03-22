@@ -160,6 +160,8 @@ cloudflare_config:
     token: 
     ip_list_prefix: crowdsec
     default_action: challenge
+    total_ip_list_capacity: # only this many latest ip scoped decisions would be kept
+
     zones:
     - actions: 
       - challenge # valid choices are either of challenge, js_challenge, block
