@@ -71,14 +71,14 @@ Don't run the script as root but your password might be asked during the install
 The bouncer configuration is located in `/usr/local/php/crowdsec/settings.php`.
 
 The most relevant configuration options are the following :
- - `api_key` :
- - `api_url` : 
- - `debug_mode` : 
- - `geolocation->enabled` : 
+ - `api_key` : The api key for LAPI (see `cscli bouncers add`)
+ - `api_url` : The url of the LAPI
+ - `debug_mode` : This flag allows you to enable seprate logs for the bouncers
+ - `geolocation->enabled` : Enable the geolocation feature for this bouncer
  - `geolocation->maxmind->database_path` : path to the country mmdb file
- - `clean_ip_cache_duration`
- - `bad_ip_cache_duration`
- - `log_directory_path`
+ - `clean_ip_cache_duration` : How many seconds to keep "clean" ips in cache
+ - `bad_ip_cache_duration` : How many seconds to keep "bad" ips in cache
+ - `log_directory_path` : Directory for the bouncer's logs (would default to `/usr/local/php/crowdsec/.logs/`)
 
 :::note
 
