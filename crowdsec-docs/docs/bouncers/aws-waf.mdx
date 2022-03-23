@@ -29,6 +29,9 @@ This allows to protect the following AWS ressources with crowdsec:
  - AWS AppSync GraphQL API
 
 As the bouncer does not manage your WAF ACLs, you will need to have existing ACLs already associated with your AWS ressources for the bouncer to work properly.
+The bouncer supports the `ban` and `captcha` decisions type, and can be configured to fallback to one of those for decisions of unknown type.
+
+It can block at the IP (using `ip` scope in CrowdSec), range (using `range` scope in CrowdSec) or country level (using `country` scope in CrowdSec).
 
 The bouncer will create all required resources and associate them with your existing ACLs based on the configuration you provided.
 
