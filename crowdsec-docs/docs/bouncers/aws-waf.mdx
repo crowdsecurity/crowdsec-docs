@@ -76,7 +76,7 @@ docker run -v $(PWD)/config.yaml:/cs-aws-waf-bouncer.yaml crowdsecurity/aws-waf-
 
 ## Configuration
 
-You will need to edit `/etc/crowdsec/bouncers/crowdsec-custom-bouncer.yaml` to configure the ACLs you want the bouncer to use.
+You will need to edit `/etc/crowdsec/bouncers/crowdsec-aws-waf-bouncer.yaml` to configure the ACLs you want the bouncer to use.
 
 ```yaml
 api_key: XXXX
@@ -89,7 +89,9 @@ waf_config:
     scope: REGIONAL
     region: eu-west-1
     ipset_prefix: crowdsec-ipset-a
-	aws_profile: myprofile
+    ip_header: X-Forwarded-For
+    ip_header_position: LAST
+	  aws_profile: myprofile
   - web_acl_name: test-cloudfront
     fallback_action: captcha
     rule_group_name: crowdsec-rule-group-cloudfront
@@ -101,7 +103,7 @@ Optionnaly, the bouncer can also be configured using only environment variables.
 
 Environment variables will take priority over values defined in the configuration file.
 
-AWS authentication is handled with the standard environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_PROFILE).
+AWS authentication is handled with the standard environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_PROFILE) or instance role.
 
 You can also use the `aws_profile` directive to specify a profile to use for a specific waf configuration. 
 
@@ -163,15 +165,17 @@ Name of the rule group the bouncer will create and add to the WAF ACL.
 
 Must be unique accross all the configuration.
 
-4 rules will be created on startup:
- - crowdsec-rule-ban-IPV4: Contains a statement that will match on the IPv4 ban ipset.
- - crowdsec-rule-ban-IPV6: Contains a statement that will match on the IPv6 ban ipset.
- - crowdsec-rule-captcha-IPV4: Contains a statement that will match on the IPv4 captcha ipset.
- - crowdsec-rule-captcha-IPV6: Contains a statement that will match on the IPv6 captcha ipset.
+2 rules can be created:
+ - crowdsec-rule-ban
+ - crowdsec-rule-captcha
+
+Those rules are automatically deleted if no decisions of the associated type exists.
 
 If a decision for a country is received, the following rules will be created:
  - crowdsec-rule-ban-country: Contains a geomatch statement for banned countries
  - crowdsec-rule-captcha-country: Contains a geomatch statement for captcha'ed countries
+
+Those rules will be deleted on shutdown and will be recreated on startup if they already exists.
 
 #### `scope`
 ##### Environment variable: `BOUNCER_WAF_CONFIG_X_SCOPE`
@@ -194,13 +198,30 @@ No required when scope is `CLOUDFRONT`
 
 Prefix for all the ipsets the bouncer will create.
 
-By default, 4 ipsets will be created:
- - one for banned IPv4
- - one for banned IPv6
- - one for captcha'ed IPv4
- - one for captcha'ed IPv6
+One ipset will be created per 10k IPs, and will be automatically deleted if it becomes empty.
+
+Differents ipsets are used for ban and captcha.
+
+All ipsets are deleted on shutdown.
 
 #### `aws_profile`
 ##### Environment variable: `BOUNCER_WAF_CONFIG_X_AWS_PROFILE`
 
 Name of the AWS profile (defined in ~/.aws/config) to use.
+
+#### `ip_header`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_IP_HEADER`
+
+Name of the header to use to get the source IP.
+If not defined, the actual source IP will be used.
+
+If the header is not present or does not contain any valid IP, the request will be allowed.
+
+#### `ip_header_position`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_IP_HEADER_POSITION`
+
+If the header used to get the source IP is a comma separated list, this parameter can be used to specify which part of the list should be used.
+
+Must be one of `FIRST`, `LAST`, `ANY`.
+
+Required when `ip_header` is defined.
