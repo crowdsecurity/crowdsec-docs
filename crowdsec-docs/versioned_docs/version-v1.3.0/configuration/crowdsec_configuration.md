@@ -63,6 +63,7 @@ api:
     listen_uri: 127.0.0.1:8080
     profiles_path: /etc/crowdsec/profiles.yaml
     use_forwarded_for_headers: false
+    console_path: /etc/crowdsec/console.yaml
     online_client: # Crowdsec API
       credentials_path: /etc/crowdsec/online_api_credentials.yaml
 #    tls:
@@ -158,6 +159,7 @@ api:
     listen_uri: "<listen_uri>" # host:port
     profiles_path: "<path_to_profile_file>"
     use_forwarded_for_headers: "<true|false>"
+    console_path: <path_to_console_file>
     online_client:
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     tls:
@@ -522,6 +524,7 @@ api:
     listen_uri: "<listen_uri>" # host:port
     profiles_path: "<path_to_profile_file>"
     use_forwarded_for_headers: "(true|false)"
+    console_path: <path_to_console_file>
     online_client:
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     tls:
@@ -559,6 +562,7 @@ server:
   listen_uri: <listen_uri> # host:port
   profiles_path: <path_to_profile_file>
   use_forwarded_for_headers: (true|false)
+  console_path: <path_to_console_file>
   online_client:
     credentials_path: <path_to_crowdsec_api_client_credential_file>
   tls:
@@ -575,6 +579,11 @@ Address and port listen configuration, the form `host:port`.
 > string
 
 The path to the profiles configuration.
+
+##### `console_path`
+> string
+
+The path to the console configuration.
 
 ##### `use_forwarded_for_headers`
 > string
