@@ -254,6 +254,10 @@
         },
         {
           "type": "doc",
+          "id": "version-v1.3.0/notification_plugins/telegram"
+        },
+        {
+          "type": "doc",
           "id": "version-v1.3.0/notification_plugins/writing_your_own_plugin"
         }
       ],
