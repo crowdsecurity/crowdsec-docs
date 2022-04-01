@@ -39,8 +39,8 @@ module.exports = {
       label: 'Getting Started',
       collapsed: false,
       items: [
-        "getting_started/install_crowdsec", 
-        "getting_started/install_crowdsec_freebsd", 
+        "getting_started/install_crowdsec",
+        "getting_started/install_crowdsec_freebsd",
         {"type":"link", "label": "Install CrowdSec (Helm/K8s)", "href":"https://artifacthub.io/packages/helm/crowdsec/crowdsec"},
         {"type":"link", "label": "Install CrowdSec (docker)", "href":"https://hub.docker.com/r/crowdsecurity/crowdsec"},
         "getting_started/install_windows",
@@ -84,7 +84,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Notification plugins',
-      items: ["notification_plugins/intro", "notification_plugins/http","notification_plugins/email", "notification_plugins/slack", "notification_plugins/splunk", "notification_plugins/teams", "notification_plugins/elastic", "notification_plugins/writing_your_own_plugin"]
+      items: ["notification_plugins/intro", "notification_plugins/http","notification_plugins/email", "notification_plugins/slack", "notification_plugins/splunk", "notification_plugins/teams", "notification_plugins/elastic", "notification_plugins/telegram", "notification_plugins/writing_your_own_plugin"]
     },
     {
       type: 'category',
@@ -174,12 +174,12 @@ module.exports = {
         {
           type: "category",
           label: "cscli dashboard",
-          items: ["cscli/cscli_dashboard","cscli/cscli_dashboard_remove","cscli/cscli_dashboard_setup","cscli/cscli_dashboard_start","cscli/cscli_dashboard_stop"] 
+          items: ["cscli/cscli_dashboard","cscli/cscli_dashboard_remove","cscli/cscli_dashboard_setup","cscli/cscli_dashboard_start","cscli/cscli_dashboard_stop"]
         },
         {
           type: "category",
           label: "cscli decisions",
-          items: ["cscli/cscli_decisions","cscli/cscli_decisions_add","cscli/cscli_decisions_delete","cscli/cscli_decisions_list", "cscli/cscli_decisions_import"] 
+          items: ["cscli/cscli_decisions","cscli/cscli_decisions_add","cscli/cscli_decisions_delete","cscli/cscli_decisions_list", "cscli/cscli_decisions_import"]
         },
         {
           type: "category",
