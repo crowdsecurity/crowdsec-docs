@@ -47,7 +47,7 @@ At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecuri
 Install the following packages:
 
 ```bash
-sudo apt install nginx lua5.1 libnginx-mod-http-lua luarocks gettext-base
+sudo apt install nginx lua5.1 libnginx-mod-http-lua luarocks gettext-base lua-cjson
 ```
 
 ### Using packages
@@ -101,6 +101,7 @@ If you are on a mono-machine setup, the `crowdsec-nginx-bouncer` install script 
 
   - libnginx-mod-http-lua : nginx lua support
   - lua5.1: Lua
+  - lua-cjson: JSON parser/encoder for Lua
   - luarocks : Lua package manager
   - gettext-base: for the installation script
 
