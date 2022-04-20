@@ -33,12 +33,28 @@ whitelist:
     - "172.16.0.0/12"
 ```
 
-## Scenario XXX keeps triggering, it's a false positive
 
-To avoid a specific scenario that is bothering you, you have several options :
- - set it in [simulation mode](/docs/cscli/cscli_simulation_enable) : you will see the alerts, but no decisions will be applied
- - purely [remove](/docs/cscli/cscli_scenarios_remove/) the scenario : it will be completely disabled
+## Where are the CrowdSec local API related configuration are stored?
+> While you don't need to modify those file in a mono machine setup, you need to edit them when you want to install CrowdSec in a multi machine setup.
 
+- For the CrowdSec Local API Server listen URL:
+
+This information is stored in `/etc/crowdsec/config.yaml` in the `api.server.listen_uri` option.
+
+More information [here](/docs/configuration/crowdsec_configuration#listen_uri).
+
+- For the CrowdSec Agent client API:
+
+The URL of the local API that the CrowdSec agent should communicate with is stored in `/etc/crowdsec/local_api_credentials.yaml`.
+
+You can edit the `url` option according to your local API URL.
+
+
+- For the bouncers:
+
+Each bouncer has its own configuration file, which are located in the `/etc/crowdsec/bouncers/` folder.
+
+They have all an `api_url` option to set the local API URL.
 
 
 ## My bouncer doesn't start/work (common causes)
@@ -56,3 +72,57 @@ level=error msg="auth-api: auth with api key failed return nil response, error: 
 time="19-04-2022 15:43:07" level=error msg="API error: access forbidden"
 ```
   - **solution** regenerate an API key via [cscli bouncers](/docs/cscli/cscli_bouncers_add)
+
+
+
+## My scenario is triggered with less logs than the scenario capacity
+
+During the installation, the CrowdSec [Wizard](/docs/user_guides/building#using-the-wizard) is ran, which detects the basic logs files to add in the [acquisition](/docs/concepts#acquisition) configuration.
+If you re-run the `wizard.sh` script after the installation and that you have common logs file, they might be set multiple times in your acquisition configuration. This means that CrowdSec will read each logs line as many time as you have the logs file configured in your acquisition configuration.
+
+
+## Scenario XXX keeps triggering, it's a false positive
+
+To avoid a specific scenario that is bothering you, you have several options:
+
+ - set it in [simulation mode](/docs/cscli/cscli_simulation_enable): you will see the alerts, but no decisions will be applied
+ - purely [remove](/docs/cscli/cscli_scenarios_remove/) the scenario: it will be completely disabled
+
+
+## I need to whitelist a specific event pattern
+
+For example, I don't want to disable the simulation mode for a scenario nor removing it, but it trigger false positive when i access the admin panel of my website.
+
+I can then whitelist the admin panel URLs and so keep the scenario:
+
+```yaml title="/etc/crowdsec/parsers/s02-enrich/my_whitelist.yaml"
+name: crowdsecurity/my_whitelist
+description: "Whitelist URL starting with '/admin' "
+whitelist:
+  reason: "False positive on admin panel"
+  expression: 
+    - "evt.Parsed.request startsWith '/admin'"
+```
+
+
+## I receive few IPs in the community-blocklist
+
+The community-blocklist that you receive is based on your installed scenarios and if they are neither tainted nor custom.
+
+For example, if your `crowdsecurity/ssh-bf` scenario is tainted, you will not receive IPs concerning this scenario in the `community-blocklist`.
+
+
+
+## I want to set a custom/tainted scenario in simulation mode
+
+
+If you want to set a custom/tainted scenario in simulation mode, you need to provide the scenario's filename instead of its name.
+
+For example, i have a scenario called `crowdsecurity/my-custom-scenario` located in `/etc/crowdsec/scenarios/my_custom_scenario.yaml`.
+
+To enable the simulation mode for this scenario, i need to run:
+
+```bash
+sudo cscli simulation enable my_custom_scenario.yaml
+```
+
