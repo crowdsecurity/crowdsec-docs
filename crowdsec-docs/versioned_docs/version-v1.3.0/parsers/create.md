@@ -50,7 +50,7 @@ From the root of the hub repository :
 ## Configure our test
 
 
-Let's add our parser to the test configuration (`.tests/myservice-logs/config.yaml`). He specify that we need syslog-logs parser (because myservice logs are shipped via syslog), and then our custom parser.
+Let's add our parser to the test configuration (`.tests/myservice-logs/config.yaml`). We specify that we need syslog-logs parser (because myservice logs are shipped via syslog), and then our custom parser.
 
 ```yaml
 parsers:
