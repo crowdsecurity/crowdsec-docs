@@ -155,10 +155,16 @@ You can download either a MSI (containing only the bouncer) or a setup bundle (c
 
 :::warning
 
-The Windows Firewall Bouncer requires the .NET 6 runtime. Install it before running the bouncer or it won't work.
+The Windows Firewall Bouncer requires the .NET 6 runtime. Install it before running the bouncer or use our setup bundle to install it with the bouncer.
 
 The runtime can be downloaded from [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime).
 Choose the "Hosting Bundle".
+
+:::
+
+:::warning
+
+If you installed the previous alpha release that was distributed from https://alpha-packages.crowdsec.net/, you must uninstall the previous version first.
 
 :::
 
