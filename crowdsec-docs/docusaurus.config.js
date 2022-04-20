@@ -61,6 +61,12 @@ module.exports = {
           label: 'FAQ',
         },
         {
+          type: 'doc',
+          docId: 'troubleshooting',
+          position: 'left',
+          label: 'Troubleshooting',
+        },
+        {
           href: 'https://github.com/crowdsecurity/crowdsec',
           position: 'right',
           className: 'header-github-link header-icon-link',
