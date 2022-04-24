@@ -41,6 +41,10 @@ These directories are created:
  - `C:\ProgramData\Crowdsec\data`: Contains the CrowdSec database (if using sqlite) and the various data files used by the scenarios/parsers
  - `C:\ProgramData\Crowdsec\hub`: Contains the hub data
 
+Needed Diskspace:
+- `C:\Program Files\CrowdSec`: ~ 60 MBytes
+- `C:\ProgramData\CrowdSec`: ~ 134 MBytes
+
 ### Acquisition Configuration
 
 As CrowdSec is not able to auto-detect running services on Windows, you will need to configure the acquisition manually.
@@ -51,9 +55,11 @@ You will need to install the [`crowdsecurity/mssql`](https://hub.crowdsec.net/au
 
 The collection contains a parser for the SQL server authentication logs and a scenario to detect brute force.
 
-To install the collection from an admin powershell prompt run `cscli.exe collections install crowdsecurity/mssql`.
+To install the collection from an administrator prompt run `cscli.exe collections install crowdsecurity/mssql`.
 
-You will then need to update the acquisition file located in `C:\Program Files\CrowdSec\config\acquis.yaml` and add the following:
+Then you will need to update the acquisition file `acquis.yaml` located in the folder `C:\Program Files\CrowdSec\config\`.
+Add the following:
+
 ```yaml
 ---
 source: wineventlog
@@ -81,7 +87,8 @@ The collection contains a parser for IIS W3C log format (with the default fields
 
 To install the collection from an administrator powershell prompt, run `cscli.exe collections install crowdsecurity/iis`.
 
-If your IIS setup logs to a file then add the following to your acquisition configuration (`C:\Program Files\CrowdSec\config\acquis.yaml`):
+If your IIS setup logs to a file, you will need to update the acquisition file `acquis.yaml` located in the folder `C:\Program Files\CrowdSec\config\`.
+Add the following:
 
 ```yaml
 ---
@@ -99,6 +106,7 @@ This means CrowdSec will see a bunch of lines at the same time which can lead to
 The `use_time_machine` parameter makes CrowdSec use the timestamp present in the line instead of the date of acquisition as the date of the event.
 
 If your IIS logs to the event logs, add the following to your acquisition configuration:
+
 ```yaml
 ---
 source: wineventlog
@@ -117,11 +125,13 @@ You will need to install the [`crowdsecurity/windows-firewall`](https://hub.crow
 
 The collection contains a parser for the windows firewall logs and a scenario to detect port scans.
 
-To install the collection from an administrator powershell or DOS prompt run  `cscli.exe collections install crowdsecurity/windows-firewall`
+To install the collection from an administrator Powershell or DOS prompt run `cscli.exe collections install crowdsecurity/windows-firewall`
 
 You will also need to enable the windows firewall logging. The official Microsoft documentation is available [here](https://docs.microsoft.com/en-us/windows/security/threat-protection/windows-firewall/configure-the-windows-firewall-log). 
 
-Update the acquisition configuration in `C:\Program Files\CrowdSec\config\acquis.yaml` and add the following:
+Update the acquisition file `acquis.yaml` located in the folder `C:\Program Files\CrowdSec\config\`.
+Add the following:
+
 ```yaml
 ---
 filenames:
@@ -178,8 +188,7 @@ If you install the bouncer before CrowdSec, you will need to perform some manual
 
 First, you will need to create an API key for the bouncer.
 
-To do so, open an administrator powershell or DOS prompt and run `cscli.exe bouncers add windows-firewall-bouncer`. This will display an API key.
-
+To do so, open an administrator prompt and run `cscli.exe bouncers add windows-firewall-bouncer`. This will display an API key.
 
 Add this key in the bouncer configuration file located in `C:\Program Files\CrowdSec\bouncers\cs-windows-firewall-bouncer\cs-windows-firewall-bouncer.yaml`.
 
