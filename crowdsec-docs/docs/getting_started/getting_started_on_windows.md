@@ -35,8 +35,8 @@ We currently support the following Windows services:
  - Windows Firewall: Network scan detection
 
 These directories are created:
- - `C:\Program Files\CrowdSec`: Contains the `crowdsec.exe` and `cscli.exe` executables
- - `C:\Program Files\CrowdSec\config`: Contains all the configuration files
+ - `C:\Program Files\CrowdSec`: Contains the `crowdsec.exe` and `cscli.exe` executables plus the bouncers, collections, parsers and scenarios
+ - `C:\ProgramData\CrowdSec\config`: Contains the configuration files
  - `C:\ProgramData\CrowdSec\log`: Contains the various log files of CrowdSec or the bouncers
  - `C:\ProgramData\Crowdsec\data`: Contains the CrowdSec database (if using sqlite) and the various data files used by the scenarios/parsers
  - `C:\ProgramData\Crowdsec\hub`: Contains the hub data
@@ -51,9 +51,11 @@ You will need to install the [`crowdsecurity/mssql`](https://hub.crowdsec.net/au
 
 The collection contains a parser for the SQL server authentication logs and a scenario to detect brute force.
 
-To install the collection from an admin powershell prompt run `cscli.exe collections install crowdsecurity/mssql`.
+To install the collection from an administrator prompt run `cscli.exe collections install crowdsecurity/mssql`.
 
-You will then need to update the acquisition file located in `C:\Program Files\CrowdSec\config\acquis.yaml` and add the following:
+Afterwards you need to update the acquisition file `acquis.yaml` located in the folder `C:\ProgramData\CrowdSec\config`.
+Add the following:
+
 ```yaml
 ---
 source: wineventlog
@@ -81,7 +83,7 @@ The collection contains a parser for IIS W3C log format (with the default fields
 
 To install the collection from an administrator powershell prompt, run `cscli.exe collections install crowdsecurity/iis`.
 
-If your IIS setup logs to a file then add the following to your acquisition configuration (`C:\Program Files\CrowdSec\config\acquis.yaml`):
+If your IIS setup logs to a file, then add the following to the acquisition configuration file `acquis.yaml` in the folder `C:\Program Files\CrowdSec\config`:
 
 ```yaml
 ---
@@ -117,11 +119,12 @@ You will need to install the [`crowdsecurity/windows-firewall`](https://hub.crow
 
 The collection contains a parser for the windows firewall logs and a scenario to detect port scans.
 
-To install the collection from an administrator powershell or DOS prompt run  `cscli.exe collections install crowdsecurity/windows-firewall`
+To install the collection from an administrator prompt run  `cscli.exe collections install crowdsecurity/windows-firewall`
 
 You will also need to enable the windows firewall logging. The official Microsoft documentation is available [here](https://docs.microsoft.com/en-us/windows/security/threat-protection/windows-firewall/configure-the-windows-firewall-log). 
 
-Update the acquisition configuration in `C:\Program Files\CrowdSec\config\acquis.yaml` and add the following:
+Update the acquisition configuration file `acquis.yaml` in the folder `C:\Program Files\CrowdSec\config\acquis.yaml`.
+Add the following:
 ```yaml
 ---
 filenames:
