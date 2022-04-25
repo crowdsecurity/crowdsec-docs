@@ -36,7 +36,7 @@ We currently support the following Windows services:
 
 These directories are created:
  - `C:\Program Files\CrowdSec`: Contains the `crowdsec.exe` and `cscli.exe` executables
- - `C:\Program Files\CrowdSec\config`: Contains all the configuration files
+ - `C:\ProgramData\CrowdSec\config`: Contains all the configuration files
  - `C:\ProgramData\CrowdSec\log`: Contains the various log files of CrowdSec or the bouncers
  - `C:\ProgramData\Crowdsec\data`: Contains the CrowdSec database (if using sqlite) and the various data files used by the scenarios/parsers
  - `C:\ProgramData\Crowdsec\hub`: Contains the hub data
@@ -59,6 +59,9 @@ To install the collection from an administrator prompt run `cscli.exe collection
 
 Then you will need to update the acquisition file `acquis.yaml` located in the folder `C:\Program Files\CrowdSec\config\`.
 Add the following:
+
+
+You will then need to update the acquisition file located in `C:\ProgramData\CrowdSec\config\acquis.yaml` and add the following:
 
 ```yaml
 ---
@@ -89,6 +92,7 @@ To install the collection from an administrator powershell prompt, run `cscli.ex
 
 If your IIS setup logs to a file, you will need to update the acquisition file `acquis.yaml` located in the folder `C:\Program Files\CrowdSec\config\`.
 Add the following:
+
 
 ```yaml
 ---
@@ -132,6 +136,7 @@ You will also need to enable the windows firewall logging. The official Microsof
 Update the acquisition file `acquis.yaml` located in the folder `C:\Program Files\CrowdSec\config\`.
 Add the following:
 
+
 ```yaml
 ---
 filenames:
@@ -161,20 +166,25 @@ Now that you've got CrowdSec up and running, it's time to install a bouncer to a
 
 We will use the Windows Firewall bouncer, which manages some windows firewall rules to drop traffic from IP addresses blocked by CrowdSec.
 
-The MSI file is available at [our download area](https://alpha-packages.crowdsec.net)
+You can download either a MSI (containing only the bouncer) or a setup bundle (containing the bouncer and the .NET 6 runtime) from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
 
 :::warning
 
-The Windows Firewall Bouncer requires the .NET 6 runtime. Install it before running the bouncer or it won't work.
+The Windows Firewall Bouncer requires the .NET 6 runtime. Install it before running the bouncer or use our setup bundle to install it with the bouncer.
 
 The runtime can be downloaded from [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime).
-Choose the "Hosting Bundle".
+Choose the "Console App" download.
+
+:::
+
+:::warning
+
+If you installed the previous alpha release that was distributed from https://alpha-packages.crowdsec.net/, you must uninstall the previous version first.
 
 :::
 
 
 When you run the MSI file, the bouncer will automatically register itself in CrowdSec and creates the Windows service, that will run at boot and starts the bouncer.
-
 
 The bouncer works by adding a number of rules to the windows firewall (one rule per thousand blocked IPs).
 
