@@ -151,20 +151,25 @@ Now that you've got CrowdSec up and running, it's time to install a bouncer to a
 
 We will use the Windows Firewall bouncer, which manages some windows firewall rules to drop traffic from IP addresses blocked by CrowdSec.
 
-The MSI file is available at [our download area](https://alpha-packages.crowdsec.net)
+You can download either a MSI (containing only the bouncer) or a setup bundle (containing the bouncer and the .NET 6 runtime) from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
 
 :::warning
 
-The Windows Firewall Bouncer requires the .NET 6 runtime. Install it before running the bouncer or it won't work.
+The Windows Firewall Bouncer requires the .NET 6 runtime. Install it before running the bouncer or use our setup bundle to install it with the bouncer.
 
 The runtime can be downloaded from [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime).
-Choose the "Hosting Bundle".
+Choose the "Console App" download.
+
+:::
+
+:::warning
+
+If you installed the previous alpha release that was distributed from https://alpha-packages.crowdsec.net/, you must uninstall the previous version first.
 
 :::
 
 
 When you run the MSI file, the bouncer will automatically register itself in CrowdSec and creates the Windows service, that will run at boot and starts the bouncer.
-
 
 The bouncer works by adding a number of rules to the windows firewall (one rule per thousand blocked IPs).
 
