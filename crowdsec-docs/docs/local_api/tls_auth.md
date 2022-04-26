@@ -181,7 +181,7 @@ Our server side certificate is defined in `server.json`:
 Lastly, we will define our bouncer and agents certs:
 ```json
 {
-    "CN": "localhost",
+    "CN": "mybouncer",
     "key": {
       "algo": "rsa",
       "size": 2048
@@ -200,7 +200,7 @@ Lastly, we will define our bouncer and agents certs:
 
 ```json
 {
-    "CN": "localhost",
+    "CN": "myagent",
     "key": {
       "algo": "rsa",
       "size": 2048
@@ -232,7 +232,10 @@ cfssl gencert -ca "/tmp/inter.pem" -ca-key "/tmp/inter-key.pem" -config ./cfssl/
 cfssl gencert -ca "/tmp/inter.pem" -ca-key "/tmp/inter-key.pem" -config ./cfssl/profiles.json -profile=client ./cfssl/agent.json 2>/dev/null | cfssljson --bare "/tmp/agent"
 ```
 
-We now need to update LAPO configuration to use our newly generated certificates by editing `/etc/crowdsec/config.yaml`:
+### Configuration
+
+
+We now need to update LAPI configuration to use our newly generated certificates by editing `/etc/crowdsec/config.yaml`:
 ```yaml
 api:
  server:
@@ -248,34 +251,91 @@ api:
 We also need to update our agent configuration to use a certificate to login to LAPI in `/etc/crowdsec/local_api_credentials.yaml`:
 
 ```yaml
-
+url: https://localhost:8081
+ca_cert_path: /tmp/inter.pem #CA to trust the server certificate
+key_path: /tmp/agent.pem #Client key
+cert_path: /tmp/agent-key.pem #Client cert
 ```
 
-We will be simulating the bouncer using `curl`:
+### Using the certificates
+
+
+Now when we restart crowdsec, we will see in the logs that a new agent was creating automatically:
+```
+INFO[26-04-2022 13:42:36] TLSAuth: no OCSP Server present in client certificate, skipping OCSP verification  component=tls-auth type=agent
+WARN[26-04-2022 13:42:36] no crl_path, skipping CRL check               component=tls-auth type=agent
+INFO[26-04-2022 13:42:36] client OU [agent-ou] is allowed vs required OU [agent-ou]  component=tls-auth type=agent
+INFO[26-04-2022 13:42:36] machine myagent@127.0.0.1 not found, create it
+INFO[26-04-2022 13:42:36] 127.0.0.1 - [Tue, 26 Apr 2022 13:42:36 CEST] "POST /v1/watchers/login HTTP/2.0 200 117.853833ms "crowdsec/v1.3.3-rc2-55-g0988e03a-darwin-0988e03ab8b77ad08874266cf623e71396a68c6c" "
+INFO[26-04-2022 13:42:36] client OU [agent-ou] is allowed vs required OU [agent-ou]  component=tls-auth type=agent
+INFO[26-04-2022 13:42:36] 127.0.0.1 - [Tue, 26 Apr 2022 13:42:36 CEST] "POST /v1/watchers/login HTTP/2.0 200 1.267458ms "crowdsec/v1.3.3-rc2-55-g0988e03a-darwin-0988e03ab8b77ad08874266cf623e71396a68c6c" "
+```
+
+We can see the agent with `cscli`:
+```shell
+$ cscli machines list
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ NAME               IP ADDRESS  LAST UPDATE           STATUS  VERSION                                                                  AUTH TYPE
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ myagent@127.0.0.1  127.0.0.1   2022-04-26T11:42:36Z  ✔️       v1.3.3-rc2-55-g0988e03a-darwin-0988e03ab8b77ad08874266cf623e71396a68c6c  tls
+-------------------------------------------------------------------------------------------------------------------------------------------------
+```
+
+We see that the agent name was automatically derived from the certificate Common Name and agent IP address.
+
+We can simulate a bouncer request using `curl`:
 
 ```shell
-curl --cacert XXXX --cert XXXX --key XXXX https://localhost:8080/decisions/stream?startup=true
-....
+$ curl --cacert /tmp/inter.pem --cert /tmp/bouncer.pem --key /tmp/bouncer-key.pem https://localhost:8081/v1/decisions/stream?startup=true
+{"deleted":[{"duration":"-18h13m35.223932s","id":38,"origin":"crowdsec","scenario":"crowdsecurity/http-cve-2021-41773","scope":"Ip","type":"ban","value":"23.94.26.138"}],"new":null}
 ```
 
-Because this is the first time this "bouncer" makes a request to LAPI, a new bouncer will be automatically created in crowdsec database. The name of the bouncer is `CN@IP`:
+Because this is the first time this "bouncer" makes a request to LAPI, a new bouncer will be automatically created in crowdsec database. As with the agent, the name of the bouncer is `CN@IP`:
 
 ```shell
 $ cscli bouncers list
-....
+----------------------------------------------------------------------------------------
+ NAME                 IP ADDRESS  VALID  LAST API PULL         TYPE  VERSION  AUTH TYPE
+----------------------------------------------------------------------------------------
+ mybouncer@127.0.0.1  127.0.0.1   ✔️      2022-04-26T11:45:25Z  curl  7.79.1   tls
+----------------------------------------------------------------------------------------
 ```
 
+If we try to use the agent certificate with our fake bouncer, LAPI with return an error as the OU is not allowed for the bouncers:
+
+```shell
+$ curl --cacert /tmp/inter.pem --cert /tmp/agent.pem --key /tmp/agent-key.pem https://localhost:8081/v1/decisions/stream\?startup\=true
+{"message":"access forbidden"}
+```
+
+And in crowdsec logs:
+```
+ERRO[26-04-2022 13:47:58] invalid client certificate: client certificate OU ([agent-ou]) doesn't match expected OU ([bouncer-ou])  ip=127.0.0.1
+```
 
 Now, if we revoke the certificate used by the bouncer, crowdsec will reject any request made using this certificate:
 
 ```shell
+#serials.txt contain the serial of the bouncer certificate
+$ cfssl gencrl serials.txt /tmp/inter.pem /tmp/inter-key.pem | base64 -D | openssl crl -inform DER -out /tmp/crl.pem
+```
 
-$ cfssl revoke ....
+Let's update crowdsec config to make use of our newly generated CRL:
+```yaml
+api:
+ server:
+  tls:
+   crl_path: /tmp/crl.pem
+```
 
-$ curl --cacert XXXX --cert XXXX --key XXXX https://localhost:8080/decisions/stream?startup=true
-....
+Let's query the API again:
+```shell
+$ curl --cacert /tmp/inter.pem --cert /tmp/bouncer.pem --key /tmp/bouncer-key.pem https://localhost:8081/v1/decisions/stream\?startup\=true
+{"message":"access forbidden"}
 ```
 
 And we can see in crowdsec logs that the request was denied:
 ```
+ERRO[26-04-2022 14:01:00] TLSAuth: error checking if client certificate is revoked: could not check for client certification revokation status: client certificate is revoked by CRL  component=tls-auth type=bouncer
+ERRO[26-04-2022 14:01:00] invalid client certificate: could not check for client certification revokation status: could not check for client certification revokation status: client certificate is revoked by CRL  ip=127.0.0.1
 ```
