@@ -52,13 +52,13 @@ sudo cscli decisions list
 
 Check [command usage](/cscli/cscli_decisions.md) for additional filtering and output control flags.
 
-### List active decisions from the CrowdSec Central API
+#### List active decisions from the CrowdSec Central API
 
 ```bash
 sudo cscli decisions list --origin CAPI
 ```
 
-### List active decisions from an imported file
+#### List active decisions from an imported file
 
 ```bash
 sudo cscli decisions list --origin cscli-import
