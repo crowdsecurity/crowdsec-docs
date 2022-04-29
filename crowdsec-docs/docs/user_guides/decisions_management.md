@@ -38,6 +38,7 @@ sudo cscli decisions list
     - `crowdsec` : decision from the CrowdSec agent
     - `cscli`    : decision from `cscli` (manual decision)
     - `CAPI`     : decision from CrowdSec API
+    - `cscli-import`: decision from imported file
  - `SCOPE:VALUE` is the target of the decisions :
     - "scope" : the scope of the decisions (`ip`, `range`, `user` ...)
     - "value" : the value to apply on the decisions (ip_addr, ip_range, username ...)
@@ -50,6 +51,18 @@ sudo cscli decisions list
 
 
 Check [command usage](/cscli/cscli_decisions.md) for additional filtering and output control flags.
+
+### List active decisions from the CrowdSec Central API
+
+```bash
+sudo cscli decisions list --origin CAPI
+```
+
+### List active decisions from an imported file
+
+```bash
+sudo cscli decisions list --origin cscli-import
+```
 
 
 ## Add a decision
