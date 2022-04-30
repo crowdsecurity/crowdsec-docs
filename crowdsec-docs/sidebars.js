@@ -294,6 +294,11 @@ module.exports = {
       id: "bouncers/aws_waf"
     },
     {
+      type: 'doc',
+      label: 'Windows Firewall Bouncer',
+      id: "bouncers/windows_firewall"
+    },
+    {
       type:"link",
       label: "Hub",
       href:"https://hub.crowdsec.net/browse/#bouncers"
