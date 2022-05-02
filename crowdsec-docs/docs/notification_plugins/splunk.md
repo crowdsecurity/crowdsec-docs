@@ -29,7 +29,7 @@ type: splunk
 name: splunk_default # this must match with the registered plugin in the profile
 log_level: info # Options include: trace, debug, info, warn, error, off
 
-format: |  # This template receives list of models.Alert objects. Splunk event will be created with it's contents.
+format: |  # This template receives list of models.Alert objects. Splunk event will be created with its contents.
   {{.|toJson}}
 
 token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
