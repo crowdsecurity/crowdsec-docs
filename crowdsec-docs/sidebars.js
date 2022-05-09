@@ -299,6 +299,11 @@ module.exports = {
       id: "bouncers/windows_firewall"
     },
     {
+      type: 'doc',
+      label: 'BlockList Mirror',
+      id: "bouncers/blocklist-mirror"
+    },
+    {
       type:"link",
       label: "Hub",
       href:"https://hub.crowdsec.net/browse/#bouncers"
