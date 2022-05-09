@@ -376,12 +376,16 @@ The git branch on which `cscli` is going to fetch configurations.
 #### `user`
 > string
 
-The owner of the plugin process. 
+The owner of the plugin process. If set to an empty string, the plugin process
+will run as the same user as crowdsec. Both user and group must be either set
+or unset.
 
 #### `group`
 > string
 
-The group of the plugin process. 
+The group of the plugin process. If set to an empty string, the plugin process
+will run in the same group as crowdsec. Both user and group must be either set
+or unset.
 
 ### `db_config`
 
