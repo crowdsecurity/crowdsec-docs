@@ -136,10 +136,15 @@ api:
      - 192.168.100.0/24
 ```
 
-In the same way, you can use `local_api_credentials.yaml.local` and
-`simulation.yaml.local`. A `profiles.yaml.local` is supported as well, but in
-this case the files are read as a whole (as if they where attached) instead of
-merged. See [profiles - introduction](/profiles/intro).
+### Configuration files that support `.yaml.local`:
+
+- `config.yaml`
+- `local_api_credentials.yaml`
+- `simulation.yaml`
+- `profiles.yaml`
+
+In the case of `profiles.yaml`, the files are read as a whole (as if they where
+attached) instead of merged. See [profiles - introduction](/profiles/intro).
 
 
 ## Configuration directives
