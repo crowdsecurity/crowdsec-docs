@@ -1,5 +1,5 @@
 ---
-id: contributing_code
+id: contributing_crowdsec
 title: CrowdSec
 sidebar_position: 1
 ---
