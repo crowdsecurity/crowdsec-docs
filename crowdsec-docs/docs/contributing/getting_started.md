@@ -16,7 +16,7 @@ In order to achieve this, this guide will provide you with all the needed inform
 The main comunication channels of the project are :
  - [discord](https://discord.gg/crowdsec) : [Discord](https://discord.com/) is the most common communication medium of the project, and is especially suitable for live interactions (chatting).
  - [discourse](https://discourse.crowdsec.net/) : [Discourse](https://www.discourse.org/) is a forum and is very useful to expose ideas and suggestions, or simply to formulate a question to which you didn't find answer on discord.
- - [github](https://github.com/crowdsecurity/) : Issues and Pull Requests are used to expose bugs, suggestions and suggested changes in a more formal way.
+ - [github](https://github.com/crowdsecurity/) : Issues and Pull Requests are used to expose bugs and suggestions in a more formal way.
 
 Do not hesitate to join & ask your questions !
 
