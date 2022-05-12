@@ -136,6 +136,14 @@ api:
      - 192.168.100.0/24
 ```
 
+:::warning
+**Note:** you cannot remove configuration keys from a `.local` file, only
+change them (possibly with an empty or default value). So for example, removing
+`db_config.db_path` is not possible, even if you don't use it. And you cannot
+remove a whole mapping (like `api.server`). Sequences on the other hand, are
+always replaced.
+:::
+
 ### Configuration files that support `.yaml.local`:
 
 - `config.yaml`
