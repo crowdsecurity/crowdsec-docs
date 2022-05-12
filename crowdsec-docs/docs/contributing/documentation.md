@@ -1,7 +1,7 @@
 ---
 id: contributing_doc
 title: Documentation
-sidebar_position: 4
+sidebar_position: 2
 ---
 
 # Contribute to the documentation

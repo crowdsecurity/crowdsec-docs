@@ -1,10 +1,26 @@
 ---
 id: contributing_hub
 title: Hub
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# Contribute to the Hub
+Parsers, Scenarios, Collections allow Crowdsec to detect and block malevolent behavior, making the community stronger.
+
+Contributing to it improves Crowdsec, by supporting new services, or by improving its detection capabilities on existing software (a good example would be [contributing to detect trending vulnerabilities in web applications](https://hub.crowdsec.net/author/crowdsecurity/collections/http-cve)).
+
+
+Sharing your parsers, scenarios and collections on the hub allows other users to use it to protect themselves.
+
+# Contributing
+
+Anyone can open an issue about parsers/scenarios, or contribute a change with a pull request (PR) to the crowdsecuity/hub GitHub repository. You need to be comfortable with git and GitHub to work effectively.
+
+To get involved :
+ - Have a look at opened [issues](https://github.com/crowdsecurity/hub/issues) and [pull requests](https://github.com/crowdsecurity/hub/pulls) 
+ - Clone the hub repository
+ - Create/Modify parsers/scenarios/collections as seen [here]
+ - Create/Modify tests to ensure proper coverage
+ - Open a pull request
 
 ## Parsers and Scenarios Creation
 
@@ -29,9 +45,7 @@ Please include tests for your parsers and scenarios. If you have any trouble wit
 
 The [hub](https://hub.crowdsec.net) displays the documentation of given parsers and scenarios. It will check for a `.md` file with the same name as a parser, scenario or collection. Providing those ensures optimal user's experience !
 
-### Why ?
 
-Sharing your parsers, scenarios and collections on the hub allows other users to find it and use it. While increasing your code's visibility, it ensures a benevolent look from the community and the team over it.
 
 ## Publishing Parsers, Scenarios and Collections
 

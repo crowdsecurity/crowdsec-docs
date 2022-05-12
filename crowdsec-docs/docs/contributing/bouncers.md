@@ -1,7 +1,7 @@
 ---
 id: contributing_bouncers
 title: Bouncers
-sidebar_position: 3
+sidebar_position: 5
 ---
 
 # Publishing bouncers
