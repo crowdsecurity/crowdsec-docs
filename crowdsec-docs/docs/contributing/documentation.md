@@ -9,7 +9,7 @@ sidebar_position: 2
  - Write Crowdsec documentation in Markdown and build the Crowdsec documentation using [docusaurus](https://docusaurus.io/)
  - Docusaurus uses [markdown](https://docusaurus.io/docs/markdown-features) and [MDX](https://docusaurus.io/docs/markdown-features/react)
  - The source code is in [GitHub](https://github.com/crowdsecurity/crowdsec-docs)
- - The documentation is versioned and changes should be made accross the relevant versions
+ - The documentation is versioned and changes should be made across the relevant versions
 
 # Tools for contributors
 
@@ -37,7 +37,7 @@ Once you open a pull request on the documentation repository, it will be rendere
 Once you have made your local changes, open a pull request (PR).
 If your change is small or you're unfamiliar with git, you can [make your changes using Github web editor](https://docs.github.com/en/repositories/working-with-files/managing-files/editing-files).
 
-In both cases, please make sure to include a meaningfull description in your PR to facilitate review and triage.
+In both cases, please make sure to include a meaningful description in your PR to facilitate review and triage.
 
 Once your change is accepted or further requested changes are made, it will be merged.
 
