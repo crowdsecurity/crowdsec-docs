@@ -44,6 +44,22 @@ Before asking for a review of your PR, please ensure you have the following:
 
 - tests: Test creation is covered in [parsers creation](/docs/parsers/create/) and [scenarios creation](/docs/scenarios/create/). Ensure that each of your parser or scenario is properly tested.
 - documentation: Please provide a `.md` file with the same name as each of your parser, scenario or collection. The markdown is rendered in the [hub](https://hub.crowdsec.net).
+- documentation: If you're creating a collection targeting a specific log file, be sure to provide an acquis example as :
+
+
+```yaml
+
+    ## Acquisition template
+
+    Example acquisition for this collection :
+
+    ```yaml
+    filenames:
+    - /var/log/xxx/*.log
+    labels:
+    type: something
+    ```
+```
 
 # Open your PR
 

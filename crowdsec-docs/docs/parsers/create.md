@@ -269,3 +269,4 @@ We can either deploy it to our production systems to do stuff, or even better, c
 
 If you want to know more about directives and possibilities, take a look at [the parser reference documentation](/parsers/format.md) !
 
+See as well [this blog article](https://crowdsec.net/blog/how-to-write-crowdsec-parsers-and-scenarios) on the topic.
