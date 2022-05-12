@@ -6,22 +6,23 @@ sidebar_position: 2
 
 # Contributing basics
 
- - Write Crowdsec documentation in Markdown and build the Crowdsec documentation using [docusaurus](https://docusaurus.io/)
- - Docusaurus uses [markdown](https://docusaurus.io/docs/markdown-features) and [MDX](https://docusaurus.io/docs/markdown-features/react)
- - The source code is in [GitHub](https://github.com/crowdsecurity/crowdsec-docs)
- - The documentation is versioned and changes should be made across the relevant versions
+- Write Crowdsec documentation in Markdown and build the Crowdsec documentation using [docusaurus](https://docusaurus.io/)
+- Docusaurus uses [markdown](https://docusaurus.io/docs/markdown-features) and [MDX](https://docusaurus.io/docs/markdown-features/react)
+- The source code is in [GitHub](https://github.com/crowdsecurity/crowdsec-docs)
+- The documentation is versioned and changes should be made across the relevant versions
 
 # Tools for contributors
 
 Crowdsec documentation is rendered using [docusaurus](https://docusaurus.io/) :
- - Documentation can be rendered locally
- - PRs are rendered using amplify to staging env
+
+- Documentation can be rendered locally
+- PRs are rendered using amplify to staging env
 
 ## Rendering locally
 
- - Clone the github repository
+- Clone the github repository
 
- - Run docusaurus locally
+- Run docusaurus locally
 
 ```bash
 cd crowdsec-docs/
@@ -40,4 +41,3 @@ If your change is small or you're unfamiliar with git, you can [make your change
 In both cases, please make sure to include a meaningful description in your PR to facilitate review and triage.
 
 Once your change is accepted or further requested changes are made, it will be merged.
-

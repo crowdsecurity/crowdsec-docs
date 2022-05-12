@@ -4,7 +4,6 @@ title: Getting Started
 sidebar_position: 1
 ---
 
-
 ## Getting Started
 
 You want to contribute to Crowdsec? Fantastic!
@@ -14,9 +13,10 @@ In order to achieve this, this guide will provide you with all the needed inform
 ### Communication
 
 The main comunication channels of the project are:
- - [discord](https://discord.gg/crowdsec): [Discord](https://discord.com/) is the most common communication medium of the project, and is especially suitable for live interactions (chatting).
- - [discourse](https://discourse.crowdsec.net/): [Discourse](https://www.discourse.org/) is a forum and is very useful to expose ideas and suggestions, or simply to formulate a question to which you didn't find answer on discord.
- - [github](https://github.com/crowdsecurity/): Issues and Pull Requests are used to expose bugs and suggestions in a more formal way.
+
+- [discord](https://discord.gg/crowdsec): [Discord](https://discord.com/) is the most common communication medium of the project, and is especially suitable for live interactions (chatting).
+- [discourse](https://discourse.crowdsec.net/): [Discourse](https://www.discourse.org/) is a forum and is very useful to expose ideas and suggestions, or simply to formulate a question to which you didn't find answer on discord.
+- [github](https://github.com/crowdsecurity/): Issues and Pull Requests are used to expose bugs and suggestions in a more formal way.
 
 Do not hesitate to join & ask your questions!
 
@@ -28,10 +28,10 @@ The first step to getting starting is to find something to work on. Help is alwa
 
 Here are some things you can do today to start contributing:
 
- - Help improve the documentation
- - Clarify code, variables, or functions that can be renamed or commented on
- - Write test coverage
- - Help triage issues
+- Help improve the documentation
+- Clarify code, variables, or functions that can be renamed or commented on
+- Write test coverage
+- Help triage issues
 
 ### Find a good first topic
 
@@ -41,7 +41,6 @@ There are multiple repositories within the Crowdsecurity organization. [Each rep
 
 The main components of the project have their dedicated contribution pages :
 
- - [hub](/docs/contributing/contributing_hub)
- - [crowdsec](/docs/contributing/contributing_crowdsec)
- - [documentation](/docs/contributing/contributing_doc)
-
+- [hub](/docs/contributing/contributing_hub)
+- [crowdsec](/docs/contributing/contributing_crowdsec)
+- [documentation](/docs/contributing/contributing_doc)
