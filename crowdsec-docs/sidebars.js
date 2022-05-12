@@ -114,7 +114,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Contributing',
-      items: ["contributing/getting_started", "contributing/contributing_test_env", "contributing/contributing_crowdsec", "contributing/contributing_hub", "contributing/contributing_doc"]
+      items: ["contributing/getting_started", "contributing/contributing_doc", "contributing/contributing_hub", "contributing/contributing_test_env", "contributing/contributing_crowdsec"]
     },
     {
       type: 'doc',
