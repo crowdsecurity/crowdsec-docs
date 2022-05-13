@@ -33,9 +33,8 @@ whitelist:
     - "172.16.0.0/12"
 ```
 
-
-## Where are the CrowdSec local API related configuration are stored?
-> While you don't need to modify those file in a mono machine setup, you need to edit them when you want to install CrowdSec in a multi machine setup.
+## Where is the configuration related to the CrowdSec local API?
+> While you don't need to modify these file with a simple installation, you need to edit them when you want to use CrowdSec in a multi machine setup.
 
 - For the CrowdSec Local API Server listen URL:
 
@@ -52,9 +51,9 @@ You can edit the `url` option according to your local API URL.
 
 - For the bouncers:
 
-Each bouncer has its own configuration file, which are located in the `/etc/crowdsec/bouncers/` folder.
+Each bouncer has its own configuration file, which is located in the `/etc/crowdsec/bouncers/` folder.
 
-They have all an `api_url` option to set the local API URL.
+They all have an `api_url` option to set the local API URL.
 
 
 ## My bouncer doesn't start/work (common causes)
@@ -74,11 +73,10 @@ time="19-04-2022 15:43:07" level=error msg="API error: access forbidden"
   - **solution** regenerate an API key via [cscli bouncers](/docs/cscli/cscli_bouncers_add)
 
 
-
 ## My scenario is triggered with less logs than the scenario capacity
 
 During the installation, the CrowdSec [Wizard](/docs/user_guides/building#using-the-wizard) is ran, which detects the basic logs files to add in the [acquisition](/docs/concepts#acquisition) configuration.
-If you re-run the `wizard.sh` script after the installation and that you have common logs file, they might be set multiple times in your acquisition configuration. This means that CrowdSec will read each logs line as many time as you have the logs file configured in your acquisition configuration.
+If you re-run the `wizard.sh` script after the installation and you have common log files, they might be set up multiple times in your acquisition configuration. This means that CrowdSec will read each logs line as many time as you have the logs file configured in your acquisition configuration.
 
 
 ## Scenario XXX keeps triggering, it's a false positive
@@ -91,7 +89,7 @@ To avoid a specific scenario that is bothering you, you have several options:
 
 ## I need to whitelist a specific event pattern
 
-For example, I don't want to disable the simulation mode for a scenario nor removing it, but it trigger false positive when i access the admin panel of my website.
+For example, I don't want to disable the simulation mode for a scenario nor remove it, but it triggers false positives when i access the admin panel of my website.
 
 I can then whitelist the admin panel URLs and so keep the scenario:
 
@@ -104,17 +102,14 @@ whitelist:
     - "evt.Parsed.request startsWith '/admin'"
 ```
 
-
 ## I receive few IPs in the community-blocklist
 
-The community-blocklist that you receive is based on your installed scenarios and if they are neither tainted nor custom.
+The community-blocklist that you receive is based on your installed scenarios, if they are neither tainted nor custom.
 
 For example, if your `crowdsecurity/ssh-bf` scenario is tainted, you will not receive IPs concerning this scenario in the `community-blocklist`.
 
 
-
 ## I want to set a custom/tainted scenario in simulation mode
-
 
 If you want to set a custom/tainted scenario in simulation mode, you need to provide the scenario's filename instead of its name.
 
@@ -125,4 +120,3 @@ To enable the simulation mode for this scenario, i need to run:
 ```bash
 sudo cscli simulation enable my_custom_scenario.yaml
 ```
-
