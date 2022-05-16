@@ -120,3 +120,41 @@ To enable the simulation mode for this scenario, i need to run:
 ```bash
 sudo cscli simulation enable my_custom_scenario.yaml
 ```
+
+## Why are XXX logs not parsed in `cscli metrics` ?
+
+If you are facing logs that doesn't seem to be parsed correctly, please use [`cscli explain`](/docs/cscli/cscli_explain) :
+
+```
+# cscli explain --log "May 16 07:50:30 sd-126005 sshd[10041]: Invalid user git from 78.142.18.204 port 47738" --type syslog
+line: May 16 07:50:30 sd-126005 sshd[10041]: Invalid user git from 78.142.18.204 port 47738
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs (first_parser)
+	├ s01-parse
+	|	├ 🔴 crowdsecurity/iptables-logs
+	|	├ 🔴 crowdsecurity/mysql-logs
+	|	├ 🔴 crowdsecurity/nginx-logs
+	|	└ 🟢 crowdsecurity/sshd-logs (+6 ~1)
+	├ s02-enrich
+	|	├ 🟢 crowdsecurity/dateparse-enrich (+2 ~1)
+	|	├ 🟢 crowdsecurity/geoip-enrich (+13)
+	|	├ 🔴 crowdsecurity/http-logs
+	|	└ 🟢 crowdsecurity/whitelists (unchanged)
+	├-------- parser success 🟢
+	├ Scenarios
+		├ 🟢 crowdsecurity/ssh-bf
+		├ 🟢 crowdsecurity/ssh-bf_user-enum
+		├ 🟢 crowdsecurity/ssh-slow-bf
+		└ 🟢 crowdsecurity/ssh-slow-bf_user-enum
+```
+This command will allow you to see each parser behaviour.
+
+:::warning
+Do **not** use `cscli explain` on big log files, as this command will buffer a lot of information in memory to achieve this.
+If you want to check crowdsec's behaviour on big log files, please see [replay mode](/docs/user_guides/replay_mode/).
+:::
+
+## Is scenario XXX working on my logs ?
+
+You can replay old logs with [replay mode](/docs/user_guides/replay_mode/), which will allow you to see which scenarios would have been triggered. If no scenario seem to trigger, you can have a closer look at potential parsing errors with [`cscli explain`](/docs/cscli/cscli_explain).
+
