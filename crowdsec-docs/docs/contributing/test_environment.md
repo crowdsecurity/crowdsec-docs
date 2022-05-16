@@ -1,13 +1,14 @@
 ---
 id: contributing_test_env
-title: Creating a test environment 
+title: Creating a test environment
 sidebar_position: 10
 ---
 
 You need a test environment for several reasons:
- - Creation of new parsers or scenarios
- - Testing new features or in general
- - Showcase a bug or a corner-case
+
+- Creation of new parsers or scenarios
+- Testing new features or in general
+- Showcase a bug or a corner-case
 
 This can be done directly with the tarball of the release :
 
@@ -51,4 +52,3 @@ cd tests
 ```
 
 In the test environment the configurations are in the folder `config/`.
-

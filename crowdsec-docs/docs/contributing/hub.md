@@ -1,40 +1,66 @@
 ---
 id: contributing_hub
 title: Hub
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# Contribute to the Hub
+Parsers, Scenarios, Collections allow Crowdsec to detect and block malevolent behavior.
 
-## Parsers and Scenarios Creation
+Supporting new services or improving the detection capabilities on existing software is a great way to contribute.
 
-Refer to the dedicated documentation to create [parsers](/docs/parsers/create/) and [scenarios](/docs/scenarios/create/).
-Before submitting your contribution, a few things should be checked :
+Sharing your parsers, scenarios and collections on the hub allows other users to use them to protect themselves.
 
-1. Collection(s)
+# Contributing
 
-It often makes sense for a new parser or scenario to be added to an existing [collection](/docs/next/collections/format), or create a new one.
+Anyone can open an issue about parsers/scenarios, or contribute a change with a pull request (PR) to the crowdsecuity/hub GitHub repository. You need to be comfortable with git and GitHub to work effectively.
+
+To get involved :
+
+- Have a look at open [issues](https://github.com/crowdsecurity/hub/issues) and [pull requests](https://github.com/crowdsecurity/hub/pulls)
+- Clone the hub repository
+- Create/Modify parsers/scenarios/collections
+- Create/Modify tests to ensure proper coverage
+- Open a pull request
+
+# Guidelines
+
+## Technical Documentation
+
+The following explains how to create and test:
+
+- [parsers](/docs/parsers/create/)
+- [scenarios](/docs/scenarios/create/)
+
+## Collections
+
+It often makes sense for a new parser or scenario to be added to an existing [collection](/docs/collections/format), or create a new one.
 
 If your parsers and/or scenarios cover a new or specific service, having a dedicated collection for this service makes sense.
-In other cases, having a parser for `SpecificWebServer` access logs would justify a collection as it might as well include [all the default http related scenarios](https://hub.crowdsec.net/author/crowdsecurity/collections/base-http-scenarios).
+In other cases, having a parser for `SpecificWebServer` access logs would justify a collection as it might also include [all the default http related scenarios](https://hub.crowdsec.net/author/crowdsecurity/collections/base-http-scenarios).
+
+# Preparing your contribution
+
+Before asking for a review of your PR, please ensure you have the following:
+
+- tests: Test creation is covered in [parsers creation](/docs/parsers/create/) and [scenarios creation](/docs/scenarios/create/). Ensure that each of your parser or scenario is properly tested.
+- documentation: Please provide a `.md` file with the same name as each of your parser, scenario or collection. The markdown is rendered in the [hub](https://hub.crowdsec.net).
+- documentation: If you're creating a collection targeting a specific log file, be sure to provide an acquis example as :
 
 
-2. Tests
+```yaml
 
-Tests creation are covered in the [parsers creation](/docs/parsers/create/) and [scenarios creation](/docs/scenarios/create/).
+    ## Acquisition template
 
-Please include tests for your parsers and scenarios. If you have any trouble with their creation, feel free to ask for help :)
+    Example acquisition for this collection :
 
-3. Documentation
+    ```yaml
+    filenames:
+    - /var/log/xxx/*.log
+    labels:
+    type: something
+    ```
+```
 
-The [hub](https://hub.crowdsec.net) displays the documentation of given parsers and scenarios. It will check for a `.md` file with the same name as a parser, scenario or collection. Providing those ensures optimal user's experience !
+# Open your PR
 
-### Why ?
-
-Sharing your parsers, scenarios and collections on the hub allows other users to find it and use it. While increasing your code's visibility, it ensures a benevolent look from the community and the team over it.
-
-## Publishing Parsers, Scenarios and Collections
-
-If you want to contribute your parser or scenario to the community and have them appear on the [Crowdsec Hub](https://hub.crowdsec.net/), you should [open a merge request](https://github.com/crowdsecurity/hub/pulls) on the hub.
-
-All contributions are peer reviewed, so please bear with us!
+Everything is all set, you can now open a PR, that will be reviewed and merged!
