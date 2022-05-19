@@ -90,33 +90,33 @@ $ vim /etc/crowdsec/bouncers/crowdsec-blocklist-mirror.yaml
 ```yaml
 config_version: v1.0
 crowdsec_config:
-  lapi_key: $API_KEY
+  lapi_key: ${API_KEY}
   lapi_url: http://127.0.0.1:8080/
   update_frequency: 10s
   include_scenarios_containing: []
   exclude_scenarios_containing: []
-  only_include_decisions_from: ["crowdsec", "cscli", "CAPI", "lists"]
+  only_include_decisions_from: []
   insecure_skip_verify: false
 
-bouncer_config:
-  listen_uri: 127.0.0.1:41412
+blocklists:
+  - format: plain_text # Supported formats are either of "plain_text"
+    endpoint: /security/blocklist
+    authentication:
+      type: none # Supported types are either of "none", "ip_based", "basic"
+      user:
+      password:
+      trusted_ips: # IP ranges, or IPs which don't require auth to access this blocklist
+        - 127.0.0.1
+        - ::1
 
-  tls:
-    cert_file:
-    key_file:
+listen_uri: 127.0.0.1:41412
+tls:
+  cert_file:
+  key_file:
 
-  metrics:
-    enabled: true
-    endpoint: /metrics
-
-  blocklists:
-    - format: fortinet
-      endpoint: /security/blocklist
-      authentication:
-        type: none
-        user:
-        password:
-
+metrics:
+  enabled: true
+  endpoint: /metrics
 
 log_media: file
 log_dir: /var/log/
@@ -124,6 +124,7 @@ log_level: info
 log_max_size: 40
 log_max_age: 30
 log_max_backups: 3
+enable_access_logs: true
 compress_logs: true
 ```
 
@@ -195,7 +196,7 @@ List of blocklists to serve. Each blocklist has the following configuration.
 
 #### `format`:
 
-Format of the blocklist. Currently only `fortinet` is supported.
+Format of the blocklist. Currently only `plain_text` is supported.
 
 #### `endpoint`:
 
@@ -207,7 +208,11 @@ Authentication related config.
 
 #### `type`:
 
-Currently only "basic" authentication is supported. You can disable it authentication completely by setting this to 'none'.
+Currently "basic" and "ip_based" authentication is supported. You can disable authentication completely by setting this to 'none'.
+
+- `basic`: It's Basic HTTP  Authentication. Only requests with valid `user` and `password` as specified in below config would pass through
+
+- `ip_based`: Only requests originating from `trusted_ips` would be allowed. 
 
 #### `user`:
 
@@ -216,6 +221,10 @@ Valid username if using `basic` authentication.
 #### `password`:
 
 Password for the provided user and using `basic` authentication.
+
+#### `trusted_ips`:
+
+List of valid IPv4 and IPv6 IPs and ranges which have access to blocklist. It's only applicable when authentication `type` is `ip_based`.
 
 You can then start the service via:
 
@@ -227,7 +236,7 @@ sudo systemctl start crowdsec-blocklist-mirror
 
 The bouncer can expose the blocklist in the following formats. You can configure the format of the blocklist by setting it's `format` paramter to any of the supported formats described below.
 
-## fortinet
+## plain_text
 
 Example:
 
