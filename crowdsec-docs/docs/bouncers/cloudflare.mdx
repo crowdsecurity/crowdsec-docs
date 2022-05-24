@@ -122,7 +122,6 @@ Make sure you have docker or podman installed. In this guide we will use docker,
 docker run crowdsecurity/cloudflare-bouncer \
  -g <CLOUDFLARE_TOKEN1> <CLOUDFLARE_TOKEN2> > cfg.yaml # auto-generate cloudflare config for provided space separated tokens 
 vi cfg.yaml # review config and set `crowdsec_lapi_key`
-touch cloudflare-cache.json
 ```
 
 The `crowdsec_lapi_key` can be obtained by running the following:
@@ -137,7 +136,6 @@ The `crowdsec_lapi_url` must be accessible from the container.
 ```bash
   docker run \
   -v $PWD/cfg.yaml:/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml \
-  -v $PWD/cloudflare-cache.json:/var/lib/crowdsec/crowdsec-cloudflare-bouncer/cache/cloudflare-cache.json \
   -p 2112:2112 \
   crowdsecurity/cloudflare-bouncer
 ```
@@ -184,7 +182,6 @@ daemon: true
 log_mode: file
 log_dir: /var/log/ 
 log_level: info # valid choices are either debug, info, error 
-cache_path: /var/lib/crowdsec/crowdsec-cloudflare-bouncer/cache/cloudflare-cache.json
 
 prometheus:
   enabled: true
@@ -245,7 +242,7 @@ Example Usage:
 
 ### Cloudflare Cleanup
 
-This deletes all IP lists and firewall rules at cloudflare which were created by the bouncer. It also deletes the local cache. 
+This deletes all IP lists and firewall rules at cloudflare which were created by the bouncer.
 
 Example Usage:
 ```bash
@@ -261,6 +258,5 @@ to update IP lists and firewall rules depending upon the decision.
 # Troubleshooting
  - Metrics can be seen at http://localhost:2112/metrics
  - Logs are in `/var/log/crowdsec-cloudflare-bouncer.log`
- - The cache is at `/var/lib/crowdsec/crowdsec-cloudflare-bouncer/cache/cloudflare-cache.json`. It can be inspected to see the state of bouncer and cloudflare components locally.
  - You can view/interact directly in the ban list either with `cscli`
  - Service can be started/stopped with `systemctl start/stop crowdsec-cloudflare-bouncer`
