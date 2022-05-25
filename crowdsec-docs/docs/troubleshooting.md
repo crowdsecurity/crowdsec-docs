@@ -158,3 +158,9 @@ If you want to check crowdsec's behaviour on big log files, please see [replay m
 
 You can replay old logs with [replay mode](/docs/user_guides/replay_mode/), which will allow you to see which scenarios would have been triggered. If no scenario seem to trigger, you can have a closer look at potential parsing errors with [`cscli explain`](/docs/cscli/cscli_explain).
 
+
+## I want to add collection XXX : how to add log files, and how to test if it works ?
+
+When adding a collection to your setup, the [hub](https://hub.crowdsec.net) will usually specify log files to add.
+Those lines need to be added in your acquisition file (`/etc/crowdsec/acquis.yaml` or `/etc/crowdsec/acquis.d/myfile.yaml`).
+After restart, `cscli metrics` will allow you to see if lines are read and/or parsed.
