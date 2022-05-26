@@ -170,7 +170,7 @@ pattern_syntax:
 nodes:
 #and we use them to parse our two type of logs
   - grok:
-      name: "MYSERVICE_BADPASSWORD" #[2]
+      pattern: "MYSERVICE_BADPASSWORD" #[2]
       apply_on: message
       statics:
         - meta: log_type #[3]
@@ -178,7 +178,7 @@ nodes:
         - meta: log_subtype
           value: myservice_bad_password
   - grok:
-      name: "MYSERVICE_BADUSER" #[2]
+      pattern: "MYSERVICE_BADUSER" #[2]
       apply_on: message
       statics:
         - meta: log_type #[3]
