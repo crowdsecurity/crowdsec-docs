@@ -126,10 +126,10 @@ What happened here ?
  - As we have no existing assertion(s), `cscli hubtest` kindly generated some for us
 
 This mostly allows us to ensure that our logs have been processed by our parser, even if it's useless in its current state.
-Further inspection can be seen with `cscli hubtest inspect` :
+Further inspection can be seen with `cscli hubtest explain` :
 
 ```bash
-▶ cscli hubtest inspect myservice-logs
+▶ cscli hubtest explain myservice-logs
 line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '1.2.3.4'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
@@ -236,10 +236,10 @@ Please fill your assert file(s) for test 'myservice-logs', exiting
 
 We can see that our parser captured all the relevant information, and it should be enough to create scenarios further down the line.
 
-Again, further inspection with `cscli hubtest inspect` will show us more about what happened :
+Again, further inspection with `cscli hubtest explain` will show us more about what happened :
 
 ```bash
-▶ cscli hubtest inspect myservice-logs
+▶ cscli hubtest explain myservice-logs
 line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '1.2.3.4'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
