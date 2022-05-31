@@ -45,7 +45,7 @@ sudo cscli decisions list
  - `REASON` is the scenario that was triggered (or human-supplied reason)
  - `ACTION` is the type of the decision (`ban`, `captcha` ...)
  - `COUNTRY` and `AS` are provided by GeoIP enrichment if present
- - `EVENTS` number of event that triggered this decison
+ - `EVENTS` number of events that triggered this decison
  - `EXPIRATION` is the time left on remediation
  - `ALERT ID` is the ID of the corresponding alert
 
@@ -80,20 +80,20 @@ sudo cscli decisions add -i 1.2.3.4
 
 :::
 
-> Add a decision (ban) on IP address `1.2.3.4` for 24 hours, with reason 'web bruteforce'
+> Add a decision (ban) on the IP address `1.2.3.4` for 24 hours, with reason 'web bruteforce'
 
 ```bash
 sudo cscli decisions add --ip 1.2.3.4 --duration 24h --reason "web bruteforce"
 ```
 
-> Add a decision (ban) on IP range  `1.2.3.0/24` for 4 hours, with reason 'web bruteforce'
+> Add a decision (ban) on the IP range  `1.2.3.0/24` for 4 hours (the default duration), with reason 'web bruteforce'
 
 ```bash
 sudo cscli decisions add --range 1.2.3.0/24 --reason "web bruteforce"
 ```
 
 
-> Add a decision (captcha) on IP address `1.2.3.4` for 4 hours (default duration), with reason 'web bruteforce'
+> Add a decision (captcha) the on IP address `1.2.3.4` for 4 hours, with reason 'web bruteforce'
 
 ```bash
 sudo cscli decisions add --ip 1.2.3.4 --reason "web bruteforce" --type captcha
@@ -114,7 +114,7 @@ sudo cscli decisions delete --range 1.2.3.0/24
 ```
 
 :::caution
-Please note that `cscli decisions list` will show you only the latest alert per given IP address or scope.
+Please note that `cscli decisions list` shows you only the latest alert per any given IP address or scope.
 However, several decisions targeting the same IP address can exist. If you want to be sure to clear all decisions for a given IP address or scope, use `cscli decisions delete -i x.x.x.x`
 :::
 
@@ -151,13 +151,13 @@ You can import a CSV or JSON file containing decisions directly with cscli.
 The `value` field is mandatory and contains the target of the decision (ip, range, username, ...).
 
  The following fields are optional:
-  - `duration`: duration of the decisions, defaults to 4h
-  - `reason`: reason for the decisions, defaults to `manual`
-  - `origin`: source of the decisions, defaults to `cscli`
+  - `duration`: duration of the decision, defaults to 4h
+  - `reason`: reason for the decision, defaults to `manual`
+  - `origin`: source of the decision, defaults to `cscli`
   - `type`: action to apply for the decision, defaults to `ban`
-  - `scope`: scope of the decision, default to `ip`
+  - `scope`: scope of the decision, defaults to `ip`
 
-All fields (except for `value`) can be overwritten by command line arguments, you can see the list in the [cli documentation](/cscli/cscli_decisions_import.md).
+All the fields (except for `value`) can be overwritten by command line arguments, you can see the list in the [cscli documentation](/cscli/cscli_decisions_import.md).
 
 Example JSON file:
 
@@ -182,6 +182,6 @@ duration,scope,value
 
 
 :::caution
-  If you use the sqlite database backend, performance can be negatively impacted if you import a lot of decisions (> 10000 decisions).
+  If you use the sqlite database backend, the performance can be negatively impacted when importing a lot of decisions (> 10000 decisions).
 :::
 

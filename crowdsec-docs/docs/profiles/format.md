@@ -50,9 +50,9 @@ filters:
  - Alert.Remediation == true && Alert.GetScope() == "Ip"
 ```
 
-If any `filter` of the list returns `true`, the profile is elligible and the `decisions` will be applied (note: `filter` can use [expr helpers](/expr/helpers.md)).
+If any `filter` of the list returns `true`, the profile is eligible and the `decisions` will be applied (note: `filter` can use [expr helpers](/expr/helpers.md)).
 
-The filter allows you to then create custom decisions for some specific scenarios for example :
+The filter allows you to then create custom decisions for some specific scenarios for example:
 
 ```yaml
 name: specific_remediation
