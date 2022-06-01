@@ -225,3 +225,14 @@ If the header used to get the source IP is a comma separated list, this paramete
 Must be one of `FIRST`, `LAST`, `ANY`.
 
 Required when `ip_header` is defined.
+
+#### `capacity`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_CAPACITY`
+
+Capacity of the rule group created by the bouncer.
+
+If not set, default to 300 (this value is way higher than it needs to be, but this prevents any kind of issue regarding capacity of the rule group).
+
+For reference, a simple match on a IP with no custom header will cost 1 WCU per IPSet created by the bouncer, or 5 WCU if you are getting the source IP from a header. 
+
+See [AWS WAF documentation](https://docs.aws.amazon.com/waf/latest/developerguide/how-aws-waf-works.html#aws-waf-capacity-units) for more information.
