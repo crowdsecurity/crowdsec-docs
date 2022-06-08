@@ -40,6 +40,32 @@ Extract the `FieldName` from the `JsonBlob` and returns it as a string. (binding
 
 > `JsonExtract(evt.Parsed.some_json_blob, "foo.bar[0].one_item")`
 
+### `JsonExtractSlice(JsonBlob, FieldName) []interface{}`
+
+Extract the JSON array in `FieldName` from `JsonBlob` and returns it as a go slice.
+
+Returns nil if the field does not exist or is not an array.
+
+> `JsonExtractSlice(evt.Parsed.message, "params")[0]['value']['login']`
+
+> `any(JsonExtractSlice(evt.Parsed.message, "params"), {.key == 'user' && .value.login != ''})`
+
+### `JsonExtractObject(JsonBlob, FieldName) map[string]interface{}`
+
+Extract the JSON object in `FieldName` from `JsonBlob` and returns it as a go map.
+
+Returns `nil` if the field does not exist or does is not an object.
+
+> `JsonExtractObject(evt.Parsed.message, "params.user")["login"]`
+
+### `ToJsonString(Obj) string`
+
+Returns the JSON representation of `obj`
+
+Returns an empty string if `obj` cannot be serialized to JSON.
+
+> `ToJsonString(JsonExtractSlice(evt.Parsed.message, "params"))`
+
 ### `File(FileName) []string`
 
 Returns the content of `FileName` as an array of string, while providing cache mechanism.
