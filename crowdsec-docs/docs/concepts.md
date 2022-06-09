@@ -160,7 +160,7 @@ An example could be the slack/mattermost enrichment plugin that requires human c
 
 An `Event` is the runtime representation of an item being processed by CrowdSec: it can be a log line being parsed, or an Overflow being reprocessed.
 
-The `Event` object is modified by parses, scenarios, and directly via user [statics expressions](/parsers/format.md#statics) (for example).
+The `Event` object is modified by parsers, scenarios, and directly via user [statics expressions](/parsers/format.md#statics) (for example).
 
 
 <!--TBD: check ref-->
