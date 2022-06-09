@@ -5,18 +5,19 @@ sidebar_position: 1
 ---
 
 CrowdSec is composed of different components that communicate via a Local API.
-To access this API, the various components (CrowdSec agent, cscli and bouncers) need to be authenticated.
+To access it, the various components (CrowdSec agent, cscli and bouncers) need to be authenticated.
 
 :::info
 
-This documentation should be relevant mostly for administrators that would like to setup distributed architectures. Single machine setup users can likely skip this part.
+This documentation is be relevant mostly to administrators that need to setup distributed architectures. Single machine users (or with several machines
+with independent crowdsec installations) can likely skip this part.
 
 :::
 
 There are two kind of access to the local api :
 
- - `machines` : it is a login/password authentication used by cscli and CrowdSec, this one allows to post, get and delete decisions and alerts.
- - `bouncers` : it is a token authentication used by bouncers to query the decisions, and only allows to perform get on decisions.
+ - `machines`: a login/password authentication used by cscli and CrowdSec, it allows to post, get and delete decisions and alerts.
+ - `bouncers`: a token authentication used by bouncers to query the decisions, it only allows to get decisions.
 
 
 
@@ -24,7 +25,7 @@ There are two kind of access to the local api :
 
 :::caution
 
-The `cscli machines` command interacts directly with the database (machines add and delete are not implemented in the API), and thus it must have the correct database configuration.
+The `cscli machines` command interacts directly with the database (machines add and delete are not implemented in the API), therefore it must have the correct database configuration.
 
 :::
 
@@ -32,7 +33,7 @@ The `cscli machines` command interacts directly with the database (machines add 
 $ cscli machines list
 ```
 
-You can view the registered machines with `list`, as well as add or delete them :
+You can view the registered machines with `list`, and add or delete them:
 
 ```bash
 sudo cscli machines add mytestmachine -a
@@ -76,7 +77,7 @@ sudo cscli machines list
 
 ## Machine register
 
-It is also possible to register to a Local API from a remote machine with `cscli lapi` and then validate the machine on the Local API machine.
+It is also possible to register from an agent-only machine to the Local API with `cscli lapi` and then validate it on the Local API machine.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

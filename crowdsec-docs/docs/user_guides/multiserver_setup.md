@@ -6,13 +6,13 @@ sidebar_position: 10
 
 Crowdsec's [architecture](/docs/intro#architecture) allows distributed setups, as most components communicate via [HTTP API](/docs/local_api/intro).
 
-When doing such, a few considerations must be kept in mind to understand each component's role :
- - The agent is in charge of [processing the logs](/docs/parsers/intro), matching them against [scenarios](/docs/scenarios/intro), and sending resulting alerts to the [local API](/docs/local_api/intro)
- - The local API receives (noted LAPI from now on) the alerts and converts them into decisions based on your profile
- - The bouncer(s) query the LAPI to receive decisions to be applied
+When doing such, a few considerations must be kept in mind to understand the role of each component:
+ - The agent is in charge of [processing the logs](/docs/parsers/intro), matching them against [scenarios](/docs/scenarios/intro), and sending the resulting alerts to the [local API](/docs/local_api/intro)
+ - The local API (LAPI from now on) receives the alerts and converts them into decisions based on your profile
+ - The bouncer(s) query the LAPI to receive the decisions to be applied
 
 
-A typical multi server setup should thus have :
+A typical multi server setup should thus have:
 
 1. **Agents push alerts to LAPI** : 
   - The [local_api_credentials.yaml](/docs/configuration/crowdsec_configuration#client) should point to LAPI's Ip
@@ -40,7 +40,7 @@ To avoid any confusion, disabling the LAPI service on the machine running the ag
 
 2. **Bouncers speaking to LAPI**
   - :warning: Most of the bouncers installers are going to assume that LAPI is running on the same machine
-  - You need to modify the bouncer's config (in `/etc/crowdsec/bouncers/`) to be sure they speak to your LAPI :
+  - You need to modify the bouncer's configuration (in `/etc/crowdsec/bouncers/`) to be sure they speak to the LAPI:
     - Create an API key from LAPI with `cscli bouncers add MyBouncer`
     - Edit the bouncer's configuration file to be sure it points to the LAPI uri and uses the newly generated API key
 
@@ -50,7 +50,7 @@ To avoid any confusion, disabling the LAPI service on the machine running the ag
 
  - Parsers and Scenarios must be present on the agents. It's not useful to deploy them on LAPI
  - Decisions are made by LAPI. This is where you want to setup eventual custom profiles, and this is where you bouncers should point
- - You can use the [console](https://app.crowdsec.net), it supports multiserver setup!
+ - You can use the [console](https://app.crowdsec.net), it supports multiserver setups!
  - If you have an important setup, switching LAPI backend from SQLite to MySQL/PgSQL is strongly advised
 
 [This existing article](https://crowdsec.net/blog/multi-server-setup/) might as well be useful!

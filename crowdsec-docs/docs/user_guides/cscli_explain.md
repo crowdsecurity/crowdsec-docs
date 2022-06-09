@@ -55,7 +55,7 @@ What happens :
    - It goes through the `syslog-logs` and `non-syslog` parsers of [`crowdsecurity/syslog-logs`](https://hub.crowdsec.net/author/crowdsecurity/configurations/syslog-logs)
      - as `syslog-logs` is successful and has `onsuccess: next_stage`, line can move to next stage
  3. It enters the stage `s01-parse`
-   - It is not elligible for parsers [`crowdsecurity/apache2-logs`](https://hub.crowdsec.net/author/crowdsecurity/configurations/apache2-logs) nor [`crowdsecurity/mysql-logs`](https://hub.crowdsec.net/author/crowdsecurity/configurations/mysql-logs)
+   - It is not eligible for parsers [`crowdsecurity/apache2-logs`](https://hub.crowdsec.net/author/crowdsecurity/configurations/apache2-logs) nor [`crowdsecurity/mysql-logs`](https://hub.crowdsec.net/author/crowdsecurity/configurations/mysql-logs)
    - It is eligible and successfully parsed by [`crowdsecurity/nginx-logs`](https://hub.crowdsec.net/author/crowdsecurity/configurations/nginx-logs) and goes to the next stage thanks to `onsuccess: next_stage`.
  4. It enters the stage `s02-enrich`
    - [`crowdsecurity/dateparse-enrich`](https://hub.crowdsec.net/author/crowdsecurity/configurations/dateparse-enrich) is in charge of parsing the timestamp to make the "cold logs" processable by scenarios
@@ -69,12 +69,12 @@ What happens :
 
  6. Please note that this feature does not track overflows themselves, it only points out if the event was able to *enter* the scenario
 
-Hopefully, this feature will help users understand behavior when debugging crowdsec or creating parsers and/or scenarios!
+Hopefully, this feature will help users understand the behavior when debugging crowdsec or creating parsers and/or scenarios.
 
 
 ## Verbose mode
 
-When troubleshooting parsers, the `--verbose/-v` option offers extra information. Every changes made to the event will be displayed along below the associated parser.
+When troubleshooting parsers, the `--verbose/-v` option offers extra information. Every change made to the event is displayed along below the associated parser.
 
 ```bash
 ▶ ./cscli -c dev.yaml explain --file /tmp/xx --type nginx --verbose

@@ -19,9 +19,9 @@ You can find the swagger documentation [here](https://crowdsecurity.github.io/ap
 
 There are two kinds of authentication to the Local API :
 
- - Bouncers: They authenticate with a simple API key and can only read decisions
+ - Bouncers: they authenticate with an API key and can only read decisions
 
- - Machines: They authenticate with a login and password and can not only read decisions, but create new ones too
+ - Machines: they authenticate with a login and password and can not only read decisions, but create new ones too
 
 
 ### Bouncers
@@ -46,7 +46,7 @@ There are two ways to register a CrowdSec to a Local API.
 sudo cscli machines add testMachine
 ```
 
-If your CrowdSec agent runs on the same server as the Local API, then your credentials file (including the API URL) will be generated automatically, otherwise you will have to copy/paste them in your remote CrowdSec credentials file (`/etc/crowdsec/local_api_credentials.yaml`)
+If your CrowdSec agent runs on the same server as the Local API, then the credentials file (including the API URL) will be generated automatically, otherwise you will have to copy/paste them in `/etc/crowdsec/local_api_credentials.yaml` on the agent machine.
 
 * You can use `cscli` to register to the API server:
 

@@ -15,15 +15,15 @@ This documentation should be relevant mostly for administrators that would like 
 
 There are two kind of access to the local api :
 
- - `machines` : it is a login/password authentication used by cscli and CrowdSec, this one allows to post, get and delete decisions and alerts.
- - `bouncers` : it is a token authentication used by bouncers to query the decisions, and only allows to perform get on decisions and alerts.
+ - `machines`: a login/password authentication used by cscli and CrowdSec, it allows to post, get and delete decisions and alerts.
+ - `bouncers`: a token authentication used by bouncers to query the decisions, it only allows to get decisions.
 
 
 ## Bouncers authentication
 
 :::caution
 
-The `cscli bouncers` command interacts directly with the database (bouncers add and delete are not implemented in the API), and thus it must have the correct database configuration.
+The `cscli bouncers` command interacts directly with the database (bouncers add and delete are not implemented in the API), therefore it must have the correct database configuration.
 
 :::
 
@@ -32,7 +32,7 @@ sudo cscli bouncers list
 ```
 
 
-You can view the registered bouncers with `list`, as well as add or delete them :
+You can view the registered bouncers with `list`, and add or delete them :
 
 ```bash
 sudo cscli bouncers add mybouncersname

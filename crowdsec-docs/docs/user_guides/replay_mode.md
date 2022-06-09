@@ -5,19 +5,19 @@ sidebar_position: 6
 ---
 
 
-While CrowdSec can be used to monitor "live" logs, it can as well be used to replay old log files.
-It is a *great* way to test scenario, detect false positives & false negatives or simply generate reporting on a past time period.
+While CrowdSec can be used to monitor "live" logs, it can also be used to replay old log files (replay/forensic mode).
+It is a *great* way to test scenario, detect false positives & false negatives or simply generate reporting for a period in the past.
 
-When doing so, CrowdSec will read the logs, extract timestamps from those, so that the scenarios/buckets can be evaluated with the log's timestamps. The resulting overflows will be pushed to the API as any other alert, but the timestamp will be the timestamps of the logs, properly allowing you to view the alerts in their original time line.
+When doing so, CrowdSec will read the logs and extract timestamps from them, so that the scenarios/buckets can be evaluated with the log's timestamps. The resulting overflows will be pushed to the API like any other alert, but the timestamps will be taken from the logs, properly allowing you to view the alerts in their original time line.
 
 
-you can run :
+you can run:
 
 ```bash
 sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///path/to/your/log/file.log -type log_file_type
 ```
 
-Where `-dsn` points to the log file you want to process, and the `-type` is similar to what you would put in your acquisition's label field, for example :
+Where `-dsn` points to the log file you want to process, and the `-type` is similar to what you would put in your acquisition's label field, for example:
 
 ```bash
 sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/nginx/2019.log -type nginx
@@ -25,7 +25,7 @@ sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/sshd-2019.log -typ
 sudo crowdsec -c /etc/crowdsec/user.yaml -dns "journalctl://filters=_SYSTEMD_UNIT=ssh.service" -type syslog
 ```
 
-When running crowdsec in forensic mode, the alerts will be displayed to stdout, and as well pushed to database :
+When running crowdsec in forensic mode, the alerts will be displayed to stdout, and as well pushed to database:
 
 ```bash
 $ sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/nginx/nginx-2019.log.1 -type nginx
@@ -37,9 +37,9 @@ INFO[13-11-2020 13:05:24] (14baeedafc1e44c08b806fc0c1cd92c4/crowdsec) crowdsecur
 ...
 ```
 
-And as these alerts are as well pushed to database, it mean you can view them in metabase, or using cscli !
+And since these alerts are also pushed to the database, it mean you can view them in metabase, or from cscli!
 
-When using metabase, simply use the time selector to view the appropriate period in the main dashboard :
+When using metabase, simply use the time selector to view the appropriate period in the main dashboard:
 
 ![metabase-timeselector](/img/dashboard-timeselect.png)
 
@@ -49,9 +49,9 @@ When using metabase, simply use the time selector to view the appropriate period
 To work in forensic mode, crowdsec-agent relies on [crowdsecurity/dateparse-enrich](https://hub.crowdsec.net/author/crowdsecurity/configurations/dateparse-enrich) to parse date formats. See dedicated hub page for supported formats.
 :::    
 
-## Injecting alerts into existing database
+## Injecting alerts into an existing database
 
-If you already have a running crowdsec/Local API running and want to inject events into existing database, you can run crowdsec directly :
+If you already have a running crowdsec/Local API running and want to inject events into existing database, you can run crowdsec directly:
 
 ```bash
 sudo crowdsec -dsn file://logs/nginx/access.log -type nginx -no-api
@@ -59,9 +59,9 @@ sudo crowdsec -dsn file://logs/nginx/access.log -type nginx -no-api
 
 Crowdsec will process `logs/nginx/access.log` and push alerts to the Local API configured in your default configuration file (`/etc/crowdsec/config.yaml`, see `api.client.credentials_path`)
 
-## Injection alerts into new database - no local instance running
+## Injecting alerts into a new database - no local instance running
 
-If you don't have a service currently running, you can run crowdsec directly :
+If you don't have a service currently running, you can run crowdsec directly:
 
 ```bash
 sudo crowdsec -dsn file://logs/nginx/access.log -type nginx
@@ -70,18 +70,18 @@ sudo crowdsec -dsn file://logs/nginx/access.log -type nginx
 Crowdsec will start a Local API and process `logs/nginx/access.log`.
 
 
-## Injection alerts into new database - while local instance is running
+## Injecting alerts into a new database - while a local instance is running
 
-If you have a local instance running and you don't want to pollute your existing database, we are going to configure a separate instance of Local API & database.
+If you have a local instance running and you don't want to pollute your existing database, you can configure a separate instance of Local API & database.
 
-Let's copy the existing configuration to edit it :
+Let's copy the existing configuration to edit it:
 
 ```bash
 $ sudo cp /etc/crowdsec/config.yaml ./forensic.yaml
 $ emacs ./forensic.yaml
 ```
 
-In our file, let's edit the local API & database config to ensure we're not going to pollute existing data :
+In our file, let's edit the local API & database config to ensure we are not going to pollute the existing data:
 
 ```bash
 $ emacs ./forensic.yaml
@@ -105,16 +105,16 @@ api:
     listen_uri: 127.0.0.1:8081
 ```
 
-With the following edits, we ensure that :
+With the following edits, we ensure that:
 
- - The SQLite database path will be different : it avoids conflicts if you already had one running locally
- - Edit the local api credentials path : we're going to register our machine to the ephemeral Local API 
- - Edit the listen uri of the local api : it avoids conflicts for listen port in case you already had one running locally
- - Comment out the `flush` section : it ensure the database garbage collector won't run and delete your old events you're injecting ;)
+ - The SQLite database path will be different: it avoids conflicts if you already had one running locally
+ - Edit the local api credentials path: we're going to register our machine to the ephemeral Local API
+ - Edit the listen uri of the local api: it avoids conflicts for listen port in case you already had one running locally
+ - Comment out the `flush` section: it ensures the database garbage collector won't run and delete the old events you're injecting ;)
 
 
 
-Let's create the new database and register a machine to it :
+Let's create the new database and register a machine to it:
 
 ```bash
 $ touch /tmp/local_api_credentials.yaml
@@ -127,7 +127,7 @@ login: ...
 password: ...
 ```
 
-Now we can start the new Local API and crowdsec :
+Now we can start the new Local API and crowdsec:
 
 ```bash
 $ crowdsec -c ./forensic.yaml -dsn file://github/crowdsec/OLDS/LOGS/nginx/10k_ACCESS_LOGS.log -type nginx
@@ -137,7 +137,7 @@ INFO[15-11-2020 10:09:20] Ip y.y.y.y performed 'crowdsecurity/http-probing' (11 
 ...
 ```
 
-And we can even fire a dedicated dashboard to view the data :
+And we can even fire a dedicated dashboard to view the data:
 
 ```bash
 $ cscli -c forensic.yaml dashboard setup
@@ -156,7 +156,7 @@ INFO[0040] Metabase is ready
 
 ## Injection alerts into new database - dev env
 
-From a fresh release :
+From a fresh release:
 
 ```bash
 $ tar xvzf crowdsec-release.tgz
@@ -165,13 +165,13 @@ $ ./test_env.sh
 $ cd tests
 ```
 
-Install the needed collection(s) :
+Install the needed collection(s):
 
 ```bash
 $ ./cscli -c dev.yaml collections install crowdsecurity/nginx
 ```
 
-And we can process logs :
+And we can process logs:
 
 ```bash
 $ ./crowdsec -c dev.yaml -dsn file://github/crowdsec/OLDS/LOGS/nginx/10k_ACCESS_LOGS.log -type nginx
@@ -181,7 +181,7 @@ INFO[15-11-2020 11:18:38] Ip x.x.x.x performed 'crowdsecurity/http-sensitive-fil
 INFO[15-11-2020 11:18:39] (test/crowdsec) crowdsecurity/http-probing by ip x.x.x.x (DE) : 1h ban on Ip x.x.x.x 
 ```
 
-And we can then query the local api (while letting the CrowdSec running) :
+And we can then query the local api (while letting the CrowdSec running):
 ```bash
 $ ./cscli -c dev.yaml alerts list
 +----+--------------------+---------------------------------------+---------+--------------+-----------+--------------------------------+
@@ -194,7 +194,7 @@ $ ./cscli -c dev.yaml alerts list
 
 ```
 
-Or even start a dashboard to view data :
+Or even start a dashboard to view data:
 
 ```bash
 $ sudo ./cscli dashboard setup
