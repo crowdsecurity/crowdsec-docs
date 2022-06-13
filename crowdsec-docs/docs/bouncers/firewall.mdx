@@ -35,18 +35,15 @@ Supported firewalls:
 
 ## Installation
 
-### Using packages
-
 Packages for crowdsec-firewall-bouncer [are available on our repositories](/getting_started/install.mdx##install-our-repositories). You need to pick the package accord to your firewall system :
 
-#### IPTables
+### IPTables
 
 <Tabs
   defaultValue="iptables_debian"
   values={[
     { label: 'Debian/Ubuntu', value: 'iptables_debian' ,},
     { label: 'RHEL/Centos/Fedora', value: 'iptables_rhel', },
-    { label: 'FreeBSD', value: 'iptables_freebsd', },
   ]
 }>
 <TabItem value="iptables_debian">
@@ -73,14 +70,13 @@ sudo pkg install crowdsec-firewall-bouncer
 </Tabs>
 
 
-#### NFTables
+### NFTables
 
 <Tabs
   defaultValue="nftables_debian"
   values={[
     { label: 'Debian/Ubuntu', value: 'nftables_debian' ,},
     { label: 'RHEL/Centos/Fedora', value: 'nftables_rhel', },
-    { label: 'FreeBSD', value: 'nftables_freebsd', },
   ]
 }>
 <TabItem value="nftables_debian">
@@ -106,6 +102,131 @@ sudo pkg install crowdsec-firewall-bouncer
 </TabItem>
 </Tabs>
 
+### pf
+
+<Tabs
+  defaultValue="pf_bsd"
+  values={[
+    { label: 'FreeBSD', valie: 'pf_bsd', }
+  ]
+}>
+<TabItem value="pf_bsd">
+
+```bash
+sudo pkg install crowdsec-firewall-bouncer
+```
+
+</TabItem>
+</Tabs>
+
+
+See as well [Manual Installation documentation below](/docs/bouncers/firewall#manual-installation)
+
+
+
+## Configuration
+
+There are two main usage case around the firewall bouncer :
+ - **managed** (default) : cs-firewall-bouncer will create ispet/nft sets, insert the associated firewall rules and manage set's content
+ - **set only** : you already have a (complex) firewall setup, cs-firewall-bouncer will only manage the _content_ of existing specified sets
+
+
+### Managed mode : Iptables/ipset or Nftables
+
+__This is the default behaviour__
+
+In "managed" mode (mode `nftables` or `iptables`), bouncer creates all the needed elements (rules, sets) and insert the appropriate rules in nftables or iptables.
+
+### Set Only : Iptables/Ipset table
+
+In iptable set only mode (mode `ispet`), bouncer only manages the **contents** of sets designed by `blacklists_ipv4` and `blacklists_ipv6`.
+Those sets must exist prior to the bouncer startup, and it is the user's responsability to create the associate iptables rules.
+
+### Set Only : nftables
+
+In nftables set only mode (mode `nftables` with `nftables.{ipv4,ipv6}.set-only` set to `true`), bouncer only manages the **contents** of the sets.
+It's the user's responsability to create the associated chains and sets :
+
+```yaml title="/tmp/bouncer.nft"
+table ip crowdsec {
+	set crowdsec-blacklists {
+		type ipv4_addr
+		flags timeout
+	}
+
+	chain crowdsec-chain {
+		type filter hook input priority filter; policy accept;
+		ip saddr @crowdsec-blacklists drop
+	}
+}
+table ip6 crowdsec6 {
+	set crowdsec6-blacklists {
+		type ipv6_addr
+		flags timeout
+	}
+
+	chain crowdsec6-chain {
+		type filter hook input priority filter; policy accept;
+		ip6 saddr @crowdsec6-blacklists drop
+	}
+}
+```
+
+
+## Configuration directives
+
+
+ - `mode` : can be set to `iptables`, `nftables` , `ipset` or `pf`
+ - `pid_dir` : directory to drop pid file
+ - `update_frequency` controls how often the bouncer is going to query the local API
+ - `daemonize` : for systemd unit
+ - `log_mode` : can be `file` or `stdout` 
+ - `log_dir` : log directory
+ - `log_level` : can be `trace`, `debug`, `info`, or `error`
+ - `log_compression` : compress logs on rotation, `true` or `false`
+ - `log_max_size` : maximum file size before rotation
+ - `log_max_backups` : how many backup log files to keep
+ - `log_max_age` : oldest backup log file before deletion
+ - `api_url` and `api_key` control local API parameters.
+ - `insecure_skip_verify` : allow self-signed certificates for LAPI, `false` or `true`
+ - `disable_ipv6` : disable ipv6 support, defaults to `false`
+ - `deny_action` : firewall action to apply, defaults to `DROP`, but can be `REJECT`
+ - `deny_log` : if set to `true`, enables logging of dropped packets (ie. `-j LOG`)
+ - `deny_log_prefix` : if logging is true, this sets the log prefix, defaults to "crowdsec: "
+
+### Iptables/Ipset specific directives
+
+
+ - `iptables_chains` : specify a list of chains to insert rules (only relevant in `iptables` mode) :
+ - `blacklists_ipv4` and `blacklists_ipv6` : names of ipv4 and ipv6 sets
+
+```yaml
+iptables_chains:
+  - INPUT
+#  - FORWARD
+#  - DOCKER-USER
+```
+
+### Nftables specific directives
+
+Nftables mode has its own `nftables` section, with sub-section of ipv4 and ipv6 :
+
+```yaml
+## nftables
+nftables:
+  ipv4:
+    enabled: true
+    set-only: false
+    table: crowdsec
+    chain: crowdsec-chain
+  ipv6:
+    enabled: true
+    set-only: false
+    table: crowdsec6
+    chain: crowdsec6-chain
+```
+
+if `set-only` is set to true, the bouncer will only manage the set contents.
 
 ## Manual installation
 
@@ -131,7 +252,7 @@ cd crowdsec-firewall-bouncer-v*/
 sudo ./install.sh
 ```
 
-## Upgrade
+### Upgrade
 
 If you already have `crowdsec-firewall-bouncer` installed, please download the [latest release](https://github.com/crowdsecurity/cs-firewall-bouncer/releases) and run the following commands:
 
@@ -142,43 +263,14 @@ sudo ./upgrade.sh
 ```
 
 
-## Configuration
-
-**note : this is only relevant for "manual" or "from source" installation, as packages would take care of all the needed configuration**
+### Configuration for manual installation
 
 To be functional, the `crowdsec-firewall-bouncer` service must be able to authenticate with the local API.
 The `install.sh` script will take care of it (it will call `cscli bouncers add` on your behalf).
 If it was not the case, the default configuration file is located under : `/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml`
 
 
-```yaml title="/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml"
-mode: "iptables"
-pid_dir: "/var/run/"
-update_frequency: "10s"
-daemonize: true
-log_mode: "file"
-log_dir: "/var/log/"
-log_level: "info"
-api_url: "<API_URL>"  # when install, default is "localhost:8080"
-api_key: "<API_KEY>"  # Add your API key generated with `cscli bouncers add --name <bouncer_name>`
-disable_ipv6: "false"
-deny_mode: "DROP"
-deny_log: "false
-#deny_log_prefix: "crowdsec: "
-#if present, insert rule in those chains
-iptables_chains:
-  - "INPUT"
-  - "FORWARD"
-```
 
- - `mode` can be set to `iptables`, `nftables` , `ipset` or `pf`
- - `update_frequency` controls how often the bouncer is going to query the local API
- - `api_url` and `api_key` control local API parameters.
- - `iptables_chains` allows (in _iptables_ mode) to control in which chain rules are going to be inserted. (if empty, bouncer will only maintain ipset lists)
- - `disable_ipv6` - set to true to disable ipv6
- - `deny_mode` - what action to use to deny, one of DROP or REJECT
- - `deny_log` - set this to true to add a log statement to the firewall rule
- - `deny_log_prefix` - if logging is true, this sets the log prefix, defaults to "crowdsec: "
 
 You can then start the service:
 
