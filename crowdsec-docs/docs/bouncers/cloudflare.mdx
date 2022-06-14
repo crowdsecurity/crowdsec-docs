@@ -71,6 +71,12 @@ Don't redirect the generated configuration to `/etc/crowdsec/bouncers/crowdsec-c
 
 :::
 
+:::warning
+
+Please configure your server to emit real IPs rather than cloudflare IPs in logs, so crowdsec can function properly. See how to [here](https://support.cloudflare.com/hc/en-us/articles/200170786-Restoring-original-visitor-IPs)
+
+:::
+
 :::info
 
 If your bouncer is not installed on the same machine than LAPI, don't forget to set the `crowdsec_lapi_url` and `crowdsec_lapi_key` in the configuration file `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
@@ -141,7 +147,7 @@ The `crowdsec_lapi_url` must be accessible from the container.
 ```
 
 
-# Configuration
+## Configuration
 
 Configuration file can be found at `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
 
@@ -182,12 +188,122 @@ daemon: true
 log_mode: file
 log_dir: /var/log/ 
 log_level: info # valid choices are either debug, info, error 
+log_max_size: 40
+log_max_age: 30
+log_max_backups: 3
+compress_logs: true
 
 prometheus:
   enabled: true
   listen_addr: 127.0.0.1
   listen_port: 2112
 ```
+
+### Reference
+
+#### `crowdsec_lapi_url`:
+
+The URL of CrowdSec LAPI. It should be accessible from whichever network the bouncer has access.
+
+#### `crowdsec_lapi_key`:
+
+It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
+```bash
+
+sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for human friendly output.
+
+```
+
+#### `crowdsec_update_frequency`:
+
+The bouncer will poll the CrowdSec every `update_frequency` interval.
+
+#### `include_scenarios_containing`:
+
+Ignore IPs banned for triggering scenarios not containing either of provided word.
+
+#### `exclude_scenarios_containing`: 
+
+Ignore IPs banned for triggering scenarios containing either of provided word.
+
+
+#### `only_include_decisions_from`:
+
+Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+
+#### `cloudflare_config`:
+
+This block contains cloudflare specific config.
+
+##### `update_frequency`:
+
+The frequency at which to update the cloudflare resources.  eg values include `5s` or `1m` etc.
+
+##### `accounts`:
+
+List of account of configs
+
+###### `id`:
+
+id of cloudflare account
+
+###### `token`:
+
+cloudflare token to use to access the account.
+
+###### `ip_list_prefix`:
+
+The prefix to use for naming the IP lists created by the bouncer. The name of IP list will be of the form `ip_list_prefix`+`action`.
+
+###### `total_ip_list_capacity`:
+
+Limit the number of items in IP lists by this number. This is required for avoiding limit of 10k items for lists.
+
+###### `default_action`:
+
+The action to be applied for a decision, if the decision's action is not supported by a zone. 
+
+`default_action` must be supported by all zones.
+
+Valid choice includes either of either of 'block', 'js_challenge', 'challenge', 'managed_challenge' or 'none' to ignore unspupported decision.
+
+##### `zones`:
+
+This block contains config for each zone to be managed by the bouncer. The zone must be accessible from the parent account.
+
+###### `zone_id`:
+
+The id of the zone.
+
+###### `actions`:
+
+List of actions to be supported by this zone. If the zone is not subscribed to premium plan, then only a single action can be given.
+
+The supported action must include the `default_action` of the parent account.
+
+Valid choice includes either of either of 'block', 'js_challenge', 'challenge', 'managed_challenge'. 
+
+
+#### `daemon` : 
+
+Boolean (true|false). Set to true if the bouncer is being run as background daemon service.
+
+#### `log_mode` :
+
+Valid values are `stdout` or `file`
+
+#### `log_dir`:
+
+Relevant if `log_mode` is `file`. This determines where to create log file.
+
+#### `log_level`:
+
+Valid choices are either debug, info, error
+
+#### `log_max_size`, `log_max_age`, `log_max_backups`, `compress_logs`:
+
+Log rotation releated config.
+
 
 ## Cloudflare Configuration
 
@@ -206,7 +322,6 @@ To automatically generate config for cloudflare check the helper section below.
 If the zone is subscribed to a paid Cloudflare plan then it can be configured to support multiple types of actions. For free plan zones only one action is supported. The first action is applied as default action.
 :::
 
-
 ## Helpers
 
 The bouncer's binary has built in helper scripts to do various operations.
@@ -218,7 +333,7 @@ Generates bouncer config by discovering all the accounts and the zones associate
 Example Usage:
 
 ```bash
-/usr/local/bin/crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>... > cfg.yaml
+crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>... > cfg.yaml
 cat cfg.yaml  > /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml
 ```
 
@@ -237,7 +352,7 @@ This only creates the required IP lists and firewall rules at cloudflare and exi
 
 Example Usage:
 ```bash
-/usr/local/bin/crowdsec-cloudflare-bouncer -s 
+crowdsec-cloudflare-bouncer -s 
 ```
 
 ### Cloudflare Cleanup
@@ -246,16 +361,16 @@ This deletes all IP lists and firewall rules at cloudflare which were created by
 
 Example Usage:
 ```bash
-/usr/local/bin/crowdsec-cloudflare-bouncer -d 
+crowdsec-cloudflare-bouncer -d 
 ```
 
-# How it works
+## How it works
 
 The service polls the CrowdSec Local API for new decisions. It then makes API calls to Cloudflare
 to update IP lists and firewall rules depending upon the decision.
 
 
-# Troubleshooting
+## Troubleshooting
  - Metrics can be seen at http://localhost:2112/metrics
  - Logs are in `/var/log/crowdsec-cloudflare-bouncer.log`
  - You can view/interact directly in the ban list either with `cscli`
