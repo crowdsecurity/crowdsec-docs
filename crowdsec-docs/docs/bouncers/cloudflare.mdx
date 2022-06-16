@@ -321,7 +321,7 @@ The action to be applied for a decision, if the decision's action is not support
 
 `default_action` must be supported by all zones.
 
-Valid choice includes either of either of 'block', 'js_challenge', 'challenge', 'managed_challenge' or 'none' to ignore unspupported decision.
+Valid choice includes either of either of 'block', 'js_challenge', 'challenge', 'managed_challenge' or 'none' to ignore unsupported decision.
 
 #### `zones`:
 
@@ -338,10 +338,16 @@ List of actions to be supported by this zone. If the zone is not subscribed to p
 The supported action must include the `default_action` of the parent account.
 
 Valid choice includes either of either of 
-- `block` 
+- `block`
 - `js_challenge`
 - `challenge`
 - `managed_challenge`. 
+
+The bouncer creates an IP list for each action. IP list is at account level, so multiple zones with same parent account will share lists for particular action.
+
+Decisions with action `ban` would be inserted into list created for `block`.
+Decisions with action `js_challenge` would be inserted into list created for `js_challenge`.
+Decisions with action `captcha` would be inserted into list created for `challenge` or `managed_challenge`. 
 
 
 ### `daemon` : 
