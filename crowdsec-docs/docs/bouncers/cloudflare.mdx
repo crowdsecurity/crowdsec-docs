@@ -156,7 +156,7 @@ Configuration file can be found at `/etc/crowdsec/bouncers/crowdsec-cloudflare-b
 crowdsec_lapi_url: http://localhost:8080/
 crowdsec_lapi_key: ${LAPI_KEY}
 crowdsec_update_frequency: 10s
-include_scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word
+include_scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word, eg ["ssh", "http"]
 exclude_scenarios_containing: # ignore IPs banned for triggering scenarios containing either of provided word
     - ssh
     - ftp
@@ -199,112 +199,6 @@ prometheus:
   listen_port: 2112
 ```
 
-### Reference
-
-#### `crowdsec_lapi_url`:
-
-The URL of CrowdSec LAPI. It should be accessible from whichever network the bouncer has access.
-
-#### `crowdsec_lapi_key`:
-
-It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
-```bash
-
-sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for human friendly output.
-
-```
-
-#### `crowdsec_update_frequency`:
-
-The bouncer will poll the CrowdSec every `update_frequency` interval.
-
-#### `include_scenarios_containing`:
-
-Ignore IPs banned for triggering scenarios not containing either of provided word.
-
-#### `exclude_scenarios_containing`: 
-
-Ignore IPs banned for triggering scenarios containing either of provided word.
-
-
-#### `only_include_decisions_from`:
-
-Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
-
-#### `cloudflare_config`:
-
-This block contains cloudflare specific config.
-
-##### `update_frequency`:
-
-The frequency at which to update the cloudflare resources.  eg values include `5s` or `1m` etc.
-
-##### `accounts`:
-
-List of account of configs
-
-###### `id`:
-
-id of cloudflare account
-
-###### `token`:
-
-cloudflare token to use to access the account.
-
-###### `ip_list_prefix`:
-
-The prefix to use for naming the IP lists created by the bouncer. The name of IP list will be of the form `ip_list_prefix`+`action`.
-
-###### `total_ip_list_capacity`:
-
-Limit the number of items in IP lists by this number. This is required for avoiding limit of 10k items for lists.
-
-###### `default_action`:
-
-The action to be applied for a decision, if the decision's action is not supported by a zone. 
-
-`default_action` must be supported by all zones.
-
-Valid choice includes either of either of 'block', 'js_challenge', 'challenge', 'managed_challenge' or 'none' to ignore unspupported decision.
-
-##### `zones`:
-
-This block contains config for each zone to be managed by the bouncer. The zone must be accessible from the parent account.
-
-###### `zone_id`:
-
-The id of the zone.
-
-###### `actions`:
-
-List of actions to be supported by this zone. If the zone is not subscribed to premium plan, then only a single action can be given.
-
-The supported action must include the `default_action` of the parent account.
-
-Valid choice includes either of either of 'block', 'js_challenge', 'challenge', 'managed_challenge'. 
-
-
-#### `daemon` : 
-
-Boolean (true|false). Set to true if the bouncer is being run as background daemon service.
-
-#### `log_mode` :
-
-Valid values are `stdout` or `file`
-
-#### `log_dir`:
-
-Relevant if `log_mode` is `file`. This determines where to create log file.
-
-#### `log_level`:
-
-Valid choices are either debug, info, error
-
-#### `log_max_size`, `log_max_age`, `log_max_backups`, `compress_logs`:
-
-Log rotation releated config.
-
-
 ## Cloudflare Configuration
 
 **Background:** In Cloudflare, each user can have access to multiple accounts. Each account can own/access multiple zones. In this context a zone can be considered as a domain. Each domain registered with cloudflare gets a distinct `zone_id`.
@@ -333,7 +227,7 @@ Generates bouncer config by discovering all the accounts and the zones associate
 Example Usage:
 
 ```bash
-crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>... > cfg.yaml
+crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>...  cfg.yaml
 cat cfg.yaml  > /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml
 ```
 
@@ -368,6 +262,115 @@ crowdsec-cloudflare-bouncer -d
 
 The service polls the CrowdSec Local API for new decisions. It then makes API calls to Cloudflare
 to update IP lists and firewall rules depending upon the decision.
+
+## Configuration Reference
+
+### `crowdsec_lapi_url`:
+
+The URL of CrowdSec LAPI. It should be accessible from whichever network the bouncer has access.
+
+### `crowdsec_lapi_key`:
+
+It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
+```bash
+
+sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for human friendly output.
+
+```
+
+### `crowdsec_update_frequency`:
+
+The bouncer will poll the CrowdSec every `update_frequency` interval.
+
+### `include_scenarios_containing`:
+
+Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
+
+### `exclude_scenarios_containing`: 
+
+Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"]
+
+
+### `only_include_decisions_from`:
+
+Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+
+### `cloudflare_config`:
+
+This block contains cloudflare specific config.
+
+#### `update_frequency`:
+
+The frequency at which to update the cloudflare resources.  eg values include `5s` or `1m` etc.
+
+#### `accounts`:
+
+List of account of configs
+
+##### `id`:
+
+id of cloudflare account
+
+##### `token`:
+
+cloudflare token to use to access the account.
+
+##### `ip_list_prefix`:
+
+The prefix to use for naming the IP lists created by the bouncer. The name of IP list will be of the form `ip_list_prefix`+`action`.
+
+##### `total_ip_list_capacity`:
+
+Limit the number of items in IP lists by this number. This is required for avoiding limit of 10k items for lists.
+
+##### `default_action`:
+
+The action to be applied for a decision, if the decision's action is not supported by a zone. 
+
+`default_action` must be supported by all zones.
+
+Valid choice includes either of either of 'block', 'js_challenge', 'challenge', 'managed_challenge' or 'none' to ignore unspupported decision.
+
+#### `zones`:
+
+This block contains config for each zone to be managed by the bouncer. The zone must be accessible from the parent account.
+
+##### `zone_id`:
+
+The id of the zone.
+
+##### `actions`:
+
+List of actions to be supported by this zone. If the zone is not subscribed to premium plan, then only a single action can be given.
+
+The supported action must include the `default_action` of the parent account.
+
+Valid choice includes either of either of 
+- `block` 
+- `js_challenge`
+- `challenge`
+- `managed_challenge`. 
+
+
+### `daemon` : 
+
+Boolean (true|false). Set to true if the bouncer is being run as background daemon service.
+
+### `log_mode` :
+
+Valid values are `stdout` or `file`
+
+### `log_dir`:
+
+Relevant if `log_mode` is `file`. This determines where to create log file.
+
+### `log_level`:
+
+Valid choices are either debug, info, error
+
+### `log_max_size`, `log_max_age`, `log_max_backups`, `compress_logs`:
+
+Log rotation releated config.
 
 
 ## Troubleshooting
