@@ -60,16 +60,10 @@ Then run the following commands to setup your bouncer:
 
 
 ```bash
-sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1> <CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens 
+sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens 
 sudo crowdsec-cloudflare-bouncer -s # this sets up IP lists and firewall rules at cloudflare for the provided config. 
 sudo systemctl start crowdsec-cloudflare-bouncer # the bouncer now syncs the crowdsec decisions with cloudflare components.
 ```
-
-:::warning
-
-Don't redirect the generated configuration to `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml` with bash redirection (`>`) but use the `-o` flag instead, else you will loose your existing configuration (eg. `crowdsec_lapi_key`).
-
-:::
 
 :::warning
 
@@ -96,11 +90,11 @@ You need to run `sudo crowdsec-cloudflare-bouncer -d` to cleanup exisiting cloud
 
 Download the [latest release](https://github.com/crowdsecurity/cs-cloudflare-bouncer/releases).
 
-```bashWhere should it be 
+```bash
 tar xzvf crowdsec-cloudflare-bouncer.tgz
 cd crowdsec-cloudflare-bouncer/
 sudo ./install.sh
-sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1> <CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens 
+sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml # auto-generate cloudflare config for provided tokens 
 sudo crowdsec-cloudflare-bouncer -s # this sets up IP lists and firewall rules at cloudflare for the provided config. 
 sudo systemctl start crowdsec-cloudflare-bouncer # the bouncer now syncs the crowdsec decisions with cloudflare components.
 ```
@@ -125,7 +119,7 @@ Make sure you have docker or podman installed. In this guide we will use docker,
 
 ```bash
 docker run crowdsecurity/cloudflare-bouncer \
- -g <CLOUDFLARE_TOKEN1> <CLOUDFLARE_TOKEN2> > cfg.yaml # auto-generate cloudflare config for provided space separated tokens 
+ -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> > cfg.yaml # auto-generate cloudflare config for provided space separated tokens 
 vi cfg.yaml # review config and set `crowdsec_lapi_key`
 ```
 
@@ -198,7 +192,7 @@ The bouncer creates Cloudflare infra (IP lists, rules etc) according to your con
 Before changing the config, always run the following command to clear old infra:
 
 ```
-sudo crowdsec-cloudflare-bouncer -c <path_to_config_file> -d 
+sudo crowdsec-cloudflare-bouncer -d 
 ```
 
 ### Upgrading from v0.0.X to v0.1.Y:
@@ -210,16 +204,10 @@ This section assumes you used the default config (generated via `crowdsec-cloudf
 After upgrading the bouncer from v0.0.X to v0.1.Y , run the following commands to migrate to `managed_challenge`.
 
 ```bash
-sudo crowdsec-cloudflare-bouncer -c <path_to_config_file> -d
-sudo crowdsec-cloudflare-bouncer -c <path_to_config_file> -g <TOKEN_1>,<TOKEN_2> -o <path_to_config_file>
+sudo crowdsec-cloudflare-bouncer -d
+sudo crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2> -o <path_to_config_file>
 sudo systemctl restart crowdsec-cloudflare-bouncer
 ```
-
-:::note
-You can omit `-c <path_to_config_file>` if you're using default config file.
-It is located at `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
-:::
-
 
 
 ## Cloudflare Configuration
