@@ -96,7 +96,7 @@ You need to run `sudo crowdsec-cloudflare-bouncer -d` to cleanup exisiting cloud
 
 Download the [latest release](https://github.com/crowdsecurity/cs-cloudflare-bouncer/releases).
 
-```bash
+```bashWhere should it be 
 tar xzvf crowdsec-cloudflare-bouncer.tgz
 cd crowdsec-cloudflare-bouncer/
 sudo ./install.sh
@@ -165,12 +165,12 @@ cloudflare_config:
   - id: 
     token: 
     ip_list_prefix: crowdsec
-    default_action: challenge
+    default_action: managed_challenge
     total_ip_list_capacity: # only this many latest ip scoped decisions would be kept
 
     zones:
     - actions: 
-      - challenge # valid choices are either of challenge, js_challenge, block
+      - managed_challenge # valid choices are either of managed_challenge, js_challenge, block
       zone_id:
     
   update_frequency: 30s # the frequency to update the cloudflare IP list 
@@ -190,6 +190,37 @@ prometheus:
   listen_addr: 127.0.0.1
   listen_port: 2112
 ```
+
+## Making changes to configuration
+
+The bouncer creates Cloudflare infra (IP lists, rules etc) according to your config file. 
+
+Before changing the config, always run the following command to clear old infra:
+
+```
+sudo crowdsec-cloudflare-bouncer -c <path_to_config_file> -d 
+```
+
+### Upgrading from v0.0.X to v0.1.Y:
+
+During v0.0.X there was no `managed_challenge` action, instead `challenge` action was used by bouncer. This is deprecated since v0.1.0 .
+
+This section assumes you used the default config (generated via `crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>` )
+
+After upgrading the bouncer from v0.0.X to v0.1.Y , run the following commands to migrate to `managed_challenge`.
+
+```bash
+sudo crowdsec-cloudflare-bouncer -c <path_to_config_file> -d
+sudo crowdsec-cloudflare-bouncer -c <path_to_config_file> -g <TOKEN_1>,<TOKEN_2> -o <path_to_config_file>
+sudo systemctl restart crowdsec-cloudflare-bouncer
+```
+
+:::note
+You can omit `-c <path_to_config_file>` if you're using default config file.
+It is located at `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
+:::
+
+
 
 ## Cloudflare Configuration
 
@@ -345,9 +376,14 @@ Valid choice includes either of either of
 
 The bouncer creates an IP list for each action. IP list is at account level, so multiple zones with same parent account will share lists for particular action.
 
+:::warning 
+`challenge` action is deprecated in favour of `managed_challenge`
+:::
+
 Decisions with action `ban` would be inserted into list created for `block`.
 Decisions with action `js_challenge` would be inserted into list created for `js_challenge`.
-Decisions with action `captcha` would be inserted into list created for `challenge` or `managed_challenge`. 
+Decisions with action `captcha` would be inserted into list for `managed_challenge`. 
+
 
 
 ### `daemon` : 
