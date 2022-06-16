@@ -83,17 +83,16 @@ If your bouncer is not installed on the same machine than LAPI, don't forget to 
 
 :::
 
+:::note
+
+You need to run `sudo crowdsec-cloudflare-bouncer -d` to cleanup exisiting cloudflare components created by bouncer before editing the config files.
+
+:::
+
 
 ## Manual Installation
 
 ### Assisted
-
-
-:::note
-
-You can run `sudo crowdsec-cloudflare-bouncer -d` to cleanup cloudflare components before editing the config files.
-
-:::
 
 Download the [latest release](https://github.com/crowdsecurity/cs-cloudflare-bouncer/releases).
 
@@ -158,14 +157,7 @@ crowdsec_lapi_key: ${LAPI_KEY}
 crowdsec_update_frequency: 10s
 include_scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word, eg ["ssh", "http"]
 exclude_scenarios_containing: # ignore IPs banned for triggering scenarios containing either of provided word
-    - ssh
-    - ftp
-    - smb
 only_include_decisions_from: # only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
-    - CAPI # decisions from API community blocklist
-    - cscli # decisions created via cscli decisions add ...
-    - crowdsec # decisions created due to triggering of scenarios
-    - lists # decisions obtained from list subscriptions
 
 #Cloudflare Config. 
 cloudflare_config:
@@ -227,7 +219,7 @@ Generates bouncer config by discovering all the accounts and the zones associate
 Example Usage:
 
 ```bash
-crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>...  cfg.yaml
+sudo crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>...  -o cfg.yaml
 cat cfg.yaml  > /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml
 ```
 
@@ -237,7 +229,7 @@ This script only generates cloudflare related config. By default it refers to th
 
 Using custom config:
 ```bash
-/usr/local/bin/crowdsec-cloudflare-bouncer -c ./cfg.yaml -g <TOKEN_1>,<TOKEN_2>... 
+sudo crowdsec-cloudflare-bouncer -c ./cfg.yaml -g <TOKEN_1>,<TOKEN_2>... 
 ```
 
 ### Cloudflare Setup
@@ -246,7 +238,7 @@ This only creates the required IP lists and firewall rules at cloudflare and exi
 
 Example Usage:
 ```bash
-crowdsec-cloudflare-bouncer -s 
+sudo  crowdsec-cloudflare-bouncer -s 
 ```
 
 ### Cloudflare Cleanup
@@ -255,7 +247,7 @@ This deletes all IP lists and firewall rules at cloudflare which were created by
 
 Example Usage:
 ```bash
-crowdsec-cloudflare-bouncer -d 
+sudo crowdsec-cloudflare-bouncer -d 
 ```
 
 ## How it works
