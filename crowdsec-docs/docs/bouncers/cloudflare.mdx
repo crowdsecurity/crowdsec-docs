@@ -150,8 +150,8 @@ crowdsec_lapi_url: http://localhost:8080/
 crowdsec_lapi_key: ${LAPI_KEY}
 crowdsec_update_frequency: 10s
 include_scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word, eg ["ssh", "http"]
-exclude_scenarios_containing: # ignore IPs banned for triggering scenarios containing either of provided word
-only_include_decisions_from: # only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+exclude_scenarios_containing: [] # ignore IPs banned for triggering scenarios containing either of provided word
+only_include_decisions_from: [] # only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
 
 #Cloudflare Config. 
 cloudflare_config:
@@ -195,7 +195,7 @@ Before changing the config, always run the following command to clear old infra:
 sudo crowdsec-cloudflare-bouncer -d 
 ```
 
-### Upgrading from v0.0.X to v0.1.Y:
+### Upgrading from v0.0.X to v0.1.Y
 
 During v0.0.X there was no `managed_challenge` action, instead `challenge` action was used by bouncer. This is deprecated since v0.1.0 .
 
@@ -276,11 +276,11 @@ to update IP lists and firewall rules depending upon the decision.
 
 ## Configuration Reference
 
-### `crowdsec_lapi_url`:
+### `crowdsec_lapi_url`
 
 The URL of CrowdSec LAPI. It should be accessible from whichever network the bouncer has access.
 
-### `crowdsec_lapi_key`:
+### `crowdsec_lapi_key`
 
 It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
 ```bash
@@ -289,52 +289,52 @@ sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for h
 
 ```
 
-### `crowdsec_update_frequency`:
+### `crowdsec_update_frequency`
 
 The bouncer will poll the CrowdSec every `update_frequency` interval.
 
-### `include_scenarios_containing`:
+### `include_scenarios_containing`
 
 Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
 
-### `exclude_scenarios_containing`: 
+### `exclude_scenarios_containing`
 
 Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"]
 
 
-### `only_include_decisions_from`:
+### `only_include_decisions_from`
 
 Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
 
-### `cloudflare_config`:
+### `cloudflare_config`
 
 This block contains cloudflare specific config.
 
-#### `update_frequency`:
+#### `update_frequency`
 
 The frequency at which to update the cloudflare resources.  eg values include `5s` or `1m` etc.
 
-#### `accounts`:
+#### `accounts`
 
 List of account of configs
 
-##### `id`:
+##### `id`
 
 id of cloudflare account
 
-##### `token`:
+##### `token`
 
 cloudflare token to use to access the account.
 
-##### `ip_list_prefix`:
+##### `ip_list_prefix`
 
 The prefix to use for naming the IP lists created by the bouncer. The name of IP list will be of the form `ip_list_prefix`+`action`.
 
-##### `total_ip_list_capacity`:
+##### `total_ip_list_capacity`
 
 Limit the number of items in IP lists by this number. This is required for avoiding limit of 10k items for lists.
 
-##### `default_action`:
+##### `default_action`
 
 The action to be applied for a decision, if the decision's action is not supported by a zone. 
 
@@ -342,15 +342,15 @@ The action to be applied for a decision, if the decision's action is not support
 
 Valid choice includes either of either of 'block', 'js_challenge', 'challenge', 'managed_challenge' or 'none' to ignore unsupported decision.
 
-#### `zones`:
+#### `zones`
 
 This block contains config for each zone to be managed by the bouncer. The zone must be accessible from the parent account.
 
-##### `zone_id`:
+##### `zone_id`
 
 The id of the zone.
 
-##### `actions`:
+##### `actions`
 
 List of actions to be supported by this zone. If the zone is not subscribed to premium plan, then only a single action can be given.
 
@@ -374,23 +374,23 @@ Decisions with action `captcha` would be inserted into list for `managed_challen
 
 
 
-### `daemon` : 
+### `daemon` 
 
 Boolean (true|false). Set to true if the bouncer is being run as background daemon service.
 
-### `log_mode` :
+### `log_mode`
 
 Valid values are `stdout` or `file`
 
-### `log_dir`:
+### `log_dir`
 
 Relevant if `log_mode` is `file`. This determines where to create log file.
 
-### `log_level`:
+### `log_level`
 
 Valid choices are either debug, info, error
 
-### `log_max_size`, `log_max_age`, `log_max_backups`, `compress_logs`:
+### `log_max_size`, `log_max_age`, `log_max_backups`, `compress_logs`
 
 Log rotation releated config.
 
