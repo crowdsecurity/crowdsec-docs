@@ -278,7 +278,7 @@ to update IP lists and firewall rules depending upon the decision.
 
 ### `crowdsec_lapi_url`
 
-The URL of CrowdSec LAPI. It should be accessible from whichever network the bouncer has access.
+The URL of CrowdSec LAPI. It should be accessible from the bouncer.
 
 ### `crowdsec_lapi_key`
 
@@ -340,7 +340,11 @@ The action to be applied for a decision, if the decision's action is not support
 
 `default_action` must be supported by all zones.
 
-Valid choice includes either of either of 'block', 'js_challenge', 'challenge', 'managed_challenge' or 'none' to ignore unsupported decision.
+Valid choice includes either of either of  'managed_challenge', 'block', 'js_challenge', 'challenge' or 'none' to ignore unsupported decision.
+
+:::warning
+`challenge` action is deprecated in favour of `managed_challenge`.
+:::
 
 #### `zones`
 
