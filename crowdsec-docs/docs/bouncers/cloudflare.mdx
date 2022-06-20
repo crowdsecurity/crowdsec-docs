@@ -83,6 +83,12 @@ You need to run `sudo crowdsec-cloudflare-bouncer -d` to cleanup exisiting cloud
 
 :::
 
+:::note
+
+You can run `sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml` to generate the configuration by discovering all the accounts and the zones associated with the provided tokens.
+
+:::
+
 
 ## Manual Installation
 
@@ -147,7 +153,7 @@ Configuration file can be found at `/etc/crowdsec/bouncers/crowdsec-cloudflare-b
 ```yaml
 # CrowdSec Config
 crowdsec_lapi_url: http://localhost:8080/
-crowdsec_lapi_key: ${LAPI_KEY}
+crowdsec_lapi_key: ${API_KEY}
 crowdsec_update_frequency: 10s
 include_scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word, eg ["ssh", "http"]
 exclude_scenarios_containing: [] # ignore IPs banned for triggering scenarios containing either of provided word
