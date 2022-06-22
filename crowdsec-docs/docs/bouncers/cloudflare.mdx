@@ -346,7 +346,30 @@ The action to be applied for a decision, if the decision's action is not support
 
 `default_action` must be supported by all zones.
 
-Valid choice includes either of either of  'managed_challenge', 'block', 'js_challenge', 'challenge' or 'none' to ignore unsupported decision.
+Valid choice includes either of  'managed_challenge', 'block', 'js_challenge', 'challenge' or 'none' to ignore unsupported decision.
+
+**Example:**
+
+Consider your zone config supports the actions `managed_challenge` and `js_challenge`. Your `default_action` is `managed_action`. If you create the following decision:
+
+```
+sudo cscli decisions add --ip 1.2.3.4 --type ban
+```
+
+Since the zone doesn't support `ban` decision type, it'll be inserted into the IP list given by `default_action`. In this case it'll be the list for `managed_challenge`.
+
+You can completely ignore such decisions by setting `default_action` to `none`. It won't be inserted into any list then.
+
+**Note:**
+
+Following table is mapping of decision type to it's destination IP list.
+
+| Decision Type      | Default Action      |
+| -------------------| -----------         |
+| captcha            | managed_challenge   |
+| ban                | block               |
+| js_challenge       | js_challenge        |
+
 
 :::warning
 `challenge` action is deprecated in favour of `managed_challenge`.
@@ -366,7 +389,7 @@ List of actions to be supported by this zone. If the zone is not subscribed to p
 
 The supported action must include the `default_action` of the parent account.
 
-Valid choice includes either of either of 
+Valid choice includes either of 
 - `block`
 - `js_challenge`
 - `challenge`
@@ -378,9 +401,16 @@ The bouncer creates an IP list for each action. IP list is at account level, so 
 `challenge` action is deprecated in favour of `managed_challenge`
 :::
 
-Decisions with action `ban` would be inserted into list created for `block`.
-Decisions with action `js_challenge` would be inserted into list created for `js_challenge`.
-Decisions with action `captcha` would be inserted into list for `managed_challenge`. 
+**Note:**
+
+Following table is mapping of decision type to it's destination IP list, which are created according to zone actions
+
+
+| Decision Type      | Zone Action         |
+| -------------------| -----------         |
+| captcha            | managed_challenge   |
+| ban                | block               |
+| js_challenge       | js_challenge        |
 
 
 
