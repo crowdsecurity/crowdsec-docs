@@ -7,7 +7,7 @@ title: Install CrowdSec (Windows)
 
 You can download the MSI file from the [latest github release](https://github.com/crowdsecurity/crowdsec/releases/latest).
 
-::: warning
+:::warning
 
 If you previously installed an alpha release of CrowdSec on Windows, you will need to uninstall it before or you will likely end up with a non-functioning installation.
 
