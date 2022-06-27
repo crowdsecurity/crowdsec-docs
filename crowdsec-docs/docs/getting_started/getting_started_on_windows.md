@@ -3,20 +3,15 @@ id: install_windows
 title: Install CrowdSec (Windows)
 ---
 
-
-:::info
-
-Support for Windows is still in Alpha. You may encounter issues!
-
-The installers are not yet available as part of a release. You will need to download them from the website linked in the documentation.
-
-If you encounter any issues, please report them on the #windows channel in our discord server.
-
-:::
-
 ## CrowdSec Installation
 
-You can download the MSI file from [our download area](https://alpha-packages.crowdsec.net/)
+You can download the MSI file from the [latest github release](https://github.com/crowdsecurity/crowdsec/releases/latest).
+
+::: warning
+
+If you previously installed an alpha release of CrowdSec on Windows, you will need to uninstall it before or you will likely end up with a non-functioning installation.
+
+:::
 
 The MSI file will perform some basic setup:
  - Installation of CrowdSec
