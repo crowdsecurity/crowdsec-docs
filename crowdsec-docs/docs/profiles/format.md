@@ -14,6 +14,7 @@ filters:
 decisions:
  - type: ban
    duration: 4h
+#duration_expr: "Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)"
 notifications:
   - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
 on_success: break
@@ -83,8 +84,6 @@ on_success: break
 ...
 ```
 
-
-
 ### `decisions`
 
 ```yaml
@@ -104,6 +103,17 @@ It is a list of `models.Decision` objects. The following fields, when present, a
  - `duration` : defines for how long will the decision be valid. The format must comply with [golang's ParseDuration](https://pkg.go.dev/time#ParseDuration)
  - `type` : defines the type of the remediation that will be applied by available bouncers, for example `ban`, `captcha`
  - `value` : define a hardcoded value for the decision (ie. `1.2.3.4`)
+
+### `duration_expr`
+
+```yaml
+duration_expr: "Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)"
+```
+
+If the profile applies, and the `duration_expr` is valid and generate a valid [golang's duration](https://pkg.go.dev/time#ParseDuration) it will replace the decision duration.
+
+It can be use to have custom duration. For example, you can have an increase duration every time an attack come back.
+It can use [expr helpers](/expr/helpers.md).
 
 ### `on_success`
 
