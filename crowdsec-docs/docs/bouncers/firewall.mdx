@@ -137,10 +137,22 @@ __This is the default behaviour__
 
 In "managed" mode (mode `nftables` or `iptables`), bouncer creates all the needed elements (rules, sets) and insert the appropriate rules in nftables or iptables.
 
+:::warning
+
+IPSet (when using `iptables` mode) does not support a timeout greater than 2147483 seconds (about 596 hours). If crowdsec is configured to take decisions longer than that, the bouncer will cap the duration to 2147482 seconds.
+
+:::
+
 ### Set Only : Iptables/Ipset table
 
 In iptable set only mode (mode `ispet`), bouncer only manages the **contents** of sets designed by `blacklists_ipv4` and `blacklists_ipv6`.
 Those sets must exist prior to the bouncer startup, and it is the user's responsability to create the associate iptables rules.
+
+:::warning
+
+IPSet does not support a timeout greater than 2147483 seconds (about 596 hours). If crowdsec is configured to take decisions longer than that, the bouncer will cap the duration to 2147482 seconds.
+
+:::
 
 ### Set Only : nftables
 
