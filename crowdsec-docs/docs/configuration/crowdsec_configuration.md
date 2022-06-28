@@ -9,7 +9,6 @@ CrowdSec has a main `yaml` configuration file, usually located in `/etc/crowdsec
 
 ## Configuration example
 
-
 <details>
   <summary>Default configuration</summary>
 
@@ -79,9 +78,9 @@ prometheus:
 
 </details>
 
-## Environment variable
+## Environment variables
 
-It is possible to set a configuration value based on an enrivonement variables.
+It is possible to set configuration values based on environment variables.
 
 For example, if you don't want to store your database password in the configuration file, you can do this:
 
@@ -104,6 +103,57 @@ export DB_PASSWORD="<db_password>"
 :::warning
 **Note**: you need to be `root` or put the environment variable in `/etc/environment`
 :::
+
+
+## Overriding values
+
+If you change `config.yaml` and later upgrade crowdsec, the package system may
+ask if you want to replace the configuration with the version from the new
+package, or leave the file with your changes untouched. This is usually not a
+problem because new directives have default values, but they won't appear in
+your configuration file until you manually merge them in. On some OSes
+(like freebsd) the package system just writes a `config.yaml.sample` with the
+new values if there has been any change to `config.yaml`.
+
+It can also be easier, while automating deployments, to write local
+configuration changes to a separate file instead of parsing and rewriting
+`config.yaml`.
+
+For all these reasons, you can write your local settings in
+`config.yaml.local`, which follows the same format and has the same options as
+`config.yaml`. Values defined in `config.yaml.local` will take precedence.
+Mappings are merged, sequences are replaced. You can use the environment
+variable susbtitution, explained above, in both files.
+
+Example:
+
+```yaml title="/etc/crowdsec/config.yaml.local"
+common:
+  log_level: debug
+api:
+  server:
+    trusted_ips:
+     - 192.168.100.0/24
+```
+
+:::info
+**Note:** you cannot remove configuration keys from a `.local` file, only
+change them (possibly with an empty or default value). So for example, removing
+`db_config.db_path` is not possible, even if you don't use it. And you cannot
+remove a whole mapping (like `api.server`). Sequences on the other hand, are
+always replaced.
+:::
+
+### Configuration files that support `.yaml.local`:
+
+- `config.yaml`
+- `local_api_credentials.yaml`
+- `simulation.yaml`
+- `profiles.yaml`
+
+In the case of `profiles.yaml`, the files are read as a whole (as if they where
+attached) instead of merged. See [profiles - introduction](/profiles/intro).
+
 
 ## Configuration directives
 
