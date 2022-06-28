@@ -35,7 +35,7 @@ You can provide a path to a CRL file to crowdsec for revocation checking.
 
 The revocation check will be skipped if the CRL file is invalid or has expired.
 
-If not CRL file is provided, the check will also be skipped.
+If no CRL file is provided, the check will also be skipped.
 
 The result of the check is kept in cache according to the `api.server.tls.cache_expiration` configuration.
 

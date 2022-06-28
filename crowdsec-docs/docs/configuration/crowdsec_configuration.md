@@ -748,7 +748,7 @@ Supported values mirror the ones available in the [golang TLS library](https://p
 
 Default to `VerifyClientCertIfGiven` which will allow connection without certificate or require a valid client certificate if one is provided
 
-::: warning
+:::warning
 
 Crowdsec supports all `ClientAuthType` value from the go TLS library for sake of completness, but using any value other than `NoClientCert` (completly disable authentication with certificates), `VerifyClientCertIfGiven` (only use the certificate if provided) or `RequireAndVerifyClientCert` (only allows certificate authentication and disable password/API key auth) is insecure and must not be used.
 
