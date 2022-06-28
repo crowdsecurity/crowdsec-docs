@@ -125,6 +125,32 @@ How often the bouncer will contact LAPI to update its content.
 
 The format must be supported by [golang ParseDuration](https://pkg.go.dev/time#ParseDuration).
 
+#### `supported_actions`
+##### Environment variable: `BOUNCER_SUPPORTED_ACTIONS`
+
+Which actions (ie, remediation type) the bouncer supports.
+
+List with any of the following: `ban`, `captcha`, `count`.
+
+Default to `ban`, `captcha` and `count`.
+
+If set from the environment, provide a comma-separated list: `ban,captcha,count`.
+
+#### `cloudwatch_enabled`
+##### Environment variable: `BOUNCER_CLOUDWATCH_ENABLED`
+
+Whether or not AWS WAF will send metrics to CloudWatch for the rule group.
+
+#### `cloudwatch_metric_name`
+##### Environment variable: `BOUNCER_CLOUDWATCH_METRIC_NAME`
+
+Name of the cloudwatch metric. Default to the rule group name.
+
+#### `sample_requests`
+##### Environment variable: `BOUNCER_SAMPLE_REQUESTS`
+
+Whether or not to sample requests from the rule groups created by the bouncer.
+
 ---
 ### `waf_config`
 ##### Environment variable: `BOUNCER_WAF_CONFIG_`
@@ -153,9 +179,9 @@ Name of the WAF ACL in which the rule group will be added
 #### `fallback_action`
 ##### Environment variable: `BOUNCER_WAF_CONFIG_X_FALLBACK_ACTION`
 
-Action to use if the type of a decision is not `captcha` or `ban`.
+Action to use if the type of a decision is not in the list defined by `supported_actions`.
 
-Must be one of `captcha` or `ban`.
+Must be one of `captcha`, `ban` or `count`.
 
 #### `rule_group_name`
 ##### Environment variable: `BOUNCER_WAF_CONFIG_X_RULE_GROUP_NAME`
