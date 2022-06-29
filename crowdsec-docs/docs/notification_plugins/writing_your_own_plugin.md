@@ -96,7 +96,7 @@ type EmailPlugin struct {
 }
 ```
 
-We map the config by it's name because then it would be easy to adapt to configuration specified by the `notification`.
+We map the config by its name because then it will be easy to adapt to configuration specified by the `notification`.
 
 
 Finally let's implement the `Configure` method. 
