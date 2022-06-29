@@ -26,9 +26,11 @@ log_level: info
 
 # The following template receives a list of models.Alert objects
 # The output goes in the http request body
+
+# Replace with your Telegram chat ID
 format: |
   {
-   "chat_id": "-XXXXXXXXX", # Replace with your Telegram chat ID
+   "chat_id": "-XXXXXXXXX", 
    "text": "
      {{range . -}}  
      {{$alert := . -}}  
