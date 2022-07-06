@@ -41,6 +41,7 @@ module.exports = {
       items: [
         "getting_started/install_crowdsec",
         "getting_started/install_crowdsec_freebsd",
+        "getting_started/install_crowdsec_opnsense",
         {"type":"link", "label": "Install CrowdSec (Helm/K8s)", "href":"https://artifacthub.io/packages/helm/crowdsec/crowdsec"},
         {"type":"link", "label": "Install CrowdSec (docker)", "href":"https://hub.docker.com/r/crowdsecurity/crowdsec"},
         "getting_started/install_windows",
