@@ -22,7 +22,7 @@ Where `-dsn` points to the log file you want to process, and the `-type` is simi
 ```bash
 sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/nginx/2019.log -type nginx
 sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/sshd-2019.log -type syslog
-sudo crowdsec -c /etc/crowdsec/user.yaml -dns "journalctl://filters=_SYSTEMD_UNIT=ssh.service" -type syslog
+sudo crowdsec -c /etc/crowdsec/user.yaml -dsn "journalctl://filters=_SYSTEMD_UNIT=ssh.service" -type syslog
 ```
 
 When running crowdsec in forensic mode, the alerts will be displayed to stdout, and as well pushed to database:
