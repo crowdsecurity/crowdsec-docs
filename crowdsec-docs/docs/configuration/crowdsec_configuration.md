@@ -151,7 +151,7 @@ always replaced.
 - `simulation.yaml`
 - `profiles.yaml`
 
-In the case of `profiles.yaml`, the files are read as a whole (as if they where
+In the case of `profiles.yaml`, the files are read as a whole (as if they were
 attached) instead of merged. See [profiles - introduction](/profiles/intro).
 
 
