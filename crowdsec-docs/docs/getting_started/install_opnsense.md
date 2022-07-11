@@ -34,7 +34,7 @@ Download CrowdSec from the `System > Firmware > Plugins` menu. It will deploy th
  - `os-crowdsec`, the plugin itself
  - `crowdsec`
  - `crowdsec-firewall-bouncer`
- 
+
 On the Settings tab, select the first three checkboxes: IDS, LAPI and IPS. Click Apply.
 
 Do not enable/start the agent and bouncer services with `sysrc` or `/etc/rc.conf` like you would on a standard freebsd system, because the plugin takes care of that (in a different way).
@@ -57,14 +57,14 @@ This is a more secure way to test than attempting to brute-force yourself: the d
 ## Remote LAPI setup (optional)
 
 You may have a need to put the LAPI service on a different machine, possibly because you already have it, or opnsense is running on a slow machine or...
-well - your servers, your right to choose. But you'll have to manually tweak the configuration.
+well - your servers, your right to choose. But you'll have to manually tweak the configuration (thanks [Jarno Rankinen](https://github.com/0ranki)).
 
 Be aware: the list of machines and bouncers shown in the Overview tab will be incorrect. In the current version, the crowdsec instance on OPNsense has no way (and no permission) to retrieve the list of machines and bouncers from the LAPI if it resides on another server, so it displays the local (and outdated) information.
 
 The following steps assume you already have set up a central LAPI server that is reachable by the OPNSense instance. You will also need SSH access with root permissions to both OPNSense and LAPI server.
 
  - On the LAPI server, edit `config.yaml` (`/usr/local/etc/crowdsec/` on FreeBSD, `/etc/crowdsec/` on Linux).
-   
+
    If `api.server.listen_uri` is localhost, you need to change it to something reachable by OPNsense, for example `192.168.122.214:8080`. Update `local_api_credentials.yaml` too, but with the http:// this time: `http://192.168.122.214:8080`.
    Restart CrowdSec.
 
@@ -87,7 +87,7 @@ The following steps assume you already have set up a central LAPI server that is
    97f403614b44aa27d60c1ff8adb93d6fae8f9d9697e1a98c  192.168.122.246  2022-07-05T14:21:43Z  🚫       ...
    ---------------------------------------------------------------------------------------------------...
    [root@lapi-server ~]# cscli machines validate 97f403614b44aa27d60c1ff8adb93d6fae8f9d9697e1a98c
-   INFO[05-07-2022 04:34:54 PM] machine 'edb8a102b4d54bdba9d5c70e5b4e766dqJvFTxnYsk8gyMsG' validated successfully 
+   INFO[05-07-2022 04:34:54 PM] machine 'edb8a102b4d54bdba9d5c70e5b4e766dqJvFTxnYsk8gyMsG' validated successfully
    ```
 
  - Add the bouncer:
