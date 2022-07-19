@@ -430,7 +430,7 @@ db_config:
   max_open_conns: "<max_number_of_conns_to_db>"
   flush:
     max_items: "<max_alerts_in_db>"
-	  max_age: "<max_age_of_alerts_in_db>"
+    max_age: "<max_age_of_alerts_in_db>"
     bouncers_autodelete:
       cert: "<max_duration_since_last_pull>"
       api_key: "<max_duration_since_last_pull>"
