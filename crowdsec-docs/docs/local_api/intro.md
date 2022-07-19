@@ -18,7 +18,7 @@ This allows you to create [multi-machines architectures](https://crowdsec.net/mu
 
 ## Authentication
 
-There are tree kinds of authentication to the Local API :
+There are three kinds of authentication to the Local API :
 
  - Bouncers: they authenticate with a simple API key and can only read decisions
 

@@ -10,14 +10,7 @@ sidebar_position: 4
 
 In addition to the standard login/password (for agents) or API key (for bouncers), crowdsec also supports TLS client authentication for both.
 
-This allows to bypass the requirement of generating login/password or API keys before adding a new agent or bouncer to your setup (this is especially useful if you are using any kind of auto-scaling and agents or bouncers can appears at anytime). 
-
-### Agents
-
-
-### Bouncers
-
-
+This allows to bypass the requirement of generating login/password or API keys before adding a new agent or bouncer to your setup (this is especially useful if you are using any kind of auto-scaling and agents or bouncers can appears at anytime).
 
 ## Configuration
 
