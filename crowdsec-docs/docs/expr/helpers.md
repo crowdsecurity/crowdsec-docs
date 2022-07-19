@@ -145,6 +145,36 @@ Returns the content of the XML node identified by the XPath query `path`.
 
 > `XMLGetNodeValue(evt.Line.Raw, "/Event/System[1]/EventID")`
 
+### `IsIPV6(ip string) bool`
+
+Returns true if it's a valid IPv6.
+
+> `IsIPV6("2001:0db8:85a3:0000:0000:8a2e:0370:7334")`
+
+> `IsIPV6(Alert.GetValue())`
+
+### `GetDecisionsCount(value string) int`
+
+Returns the number of existing decisions in database with the same value.
+
+> `GetDecisionsCount("192.168.1.1")`
+
+> `GetDecisionsCount(Alert.GetValue())`
+
+### `GetDecisionsSinceCount(value string, since string) int`
+
+Returns the number of existing decisions in database with the same value since duration string (valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".).
+
+> `GetDecisionsCount("192.168.1.1", "7h")`
+
+> `GetDecisionsCount(Alert.GetValue(), "30min")`
+
+### `Sprintf(format string, a ...interface{}) string`
+
+[Official doc](https://pkg.go.dev/fmt#Sprintf) : Sprintf formats according to a format specifier and returns the resulting string.
+
+> `Sprintf('%dh', 1)` returns `1h`
+
 
 ## Alert specific helpers
 
@@ -160,6 +190,10 @@ Returns the name of the scenario that triggered the alert.
 ### `Alert.GetScope() string`
 
 Returns the scope of an alert. Most common value is `Ip`. `Country` and `As` are generally used for more distributed attacks detection/remediation.
+
+### `Alert.GetValue() string`
+
+Returns the value of an alert. field value of a `Source`, most common value can be a IPv4, IPv6 or other if the Scope is different than `Ip`.
 
 ### `Alert.GetSources() []string`
 
