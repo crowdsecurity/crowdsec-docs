@@ -54,6 +54,12 @@ db_config:
   flush:
     max_items: 5000
     max_age: 7d
+    #bouncers_autodelete:
+    #  cert: 7d
+    #  api_key: 7d
+    #agents_autodelete:
+    #  cert: 7d
+    #  login_password: 7d
 api:
   client:
     insecure_skip_verify: false
@@ -69,6 +75,14 @@ api:
 #    tls:
 #      cert_file: /etc/crowdsec/ssl/cert.pem
 #      key_file: /etc/crowdsec/ssl/key.pem
+#      client_verification: "VerifyClientCertIfGiven"
+#      ca_cert_path: /path/to/ca.crt
+#      agents_allowed_ou: # List of allowed Organisational Unit for the agents
+#       - agents_ou
+#      bouncers_allowed_ou: # List of allowed Organisational Unit for the bouncers
+#       - bouncers_ou
+#      crl_path: /path/to/file.crl
+#      cache_expiration: 1h
 prometheus:
   enabled: true
   level: full
@@ -202,6 +216,12 @@ db_config:
   flush:
     max_items: "<max_alerts_in_db>"
     max_age: "<max_age_of_alerts_in_db>"
+    bouncers_autodelete:
+      cert: "<max_duration_since_last_pull>"
+      api_key: "<max_duration_since_last_pull>"
+    agents_autodelete:
+      cert: "<max_duration_since_last_push>"
+      login_password: "<max_duration_since_last_push>"
 api:
   client:
     insecure_skip_verify: "(true|false)"
@@ -217,6 +237,14 @@ api:
     tls:
       cert_file: "<path_to_certificat_file>"
       key_file: "<path_to_certificat_key_file>"
+      client_verification: "NoClientCert|RequestClientCert|RequireAnyClientCert|VerifyClientCertIfGiven|RequireAndVerifyClientCert"
+      ca_cert_path: "<path_to_ca_cert_file>"
+      agents_allowed_ou: # List of allowed Organisational Unit for the agents
+       - agents_ou
+      bouncers_allowed_ou: # List of allowed Organisational Unit for the bouncers
+       - bouncers_ou
+      crl_path: "<path_to_crl_file>"
+      cache_expiration: "<cache_duration_for_revocation_check>"
     trusted_ips: # IPs or IP ranges which should have admin API access
       #- 127.0.0.1
       #- ::1
@@ -456,7 +484,13 @@ db_config:
   max_open_conns: "<max_number_of_conns_to_db>"
   flush:
     max_items: "<max_alerts_in_db>"
-	max_age: "<max_age_of_alerts_in_db>"
+    max_age: "<max_age_of_alerts_in_db>"
+    bouncers_autodelete:
+      cert: "<max_duration_since_last_pull>"
+      api_key: "<max_duration_since_last_pull>"
+    agents_autodelete:
+      cert: "<max_duration_since_last_push>"
+      login_password: "<max_duration_since_last_push>"
 ```
 
 #### `type`
@@ -558,6 +592,12 @@ Defaults to 100. Set to 0 for unlimited connections.
 flush:
   max_items: <nb_max_alerts_in_database>
   max_age: <max_alerts_age_in_database>
+  bouncers_autodelete:
+    cert: "<max_duration_since_last_pull>"
+    api_key: "<max_duration_since_last_pull>"
+  agents_autodelete:
+    cert: "<max_duration_since_last_push>"
+    login_password: "<max_duration_since_last_push>"
 ```
 
 #### `max_items`
@@ -580,6 +620,34 @@ Supported units:
 
  - `d`: days
 
+#### `bouncers_autodelete`
+
+##### `cert`
+
+Bouncers authenticated using TLS certificate will be deleted after `duration` without any requests.
+
+Supported units are the same as for `max_age`
+
+##### `api_key`
+
+Bouncers authenticated using API key auth will be deleted after `duration` without any requests.
+
+Supported units are the same as for `max_age`
+
+#### `agents_autodelete`
+
+##### `cert`
+
+Agents authenticated using TLS certificate will be deleted after `duration` without any requests and if there is no active alerts for them.
+
+Supported units are the same as for `max_age`
+
+
+##### `login_password`
+
+Agents authenticated using login/password will be deleted after `duration` without any requests and if there is no active alerts for them.
+
+Supported units are the same as for `max_age`
 
 
 ### `api`
@@ -602,6 +670,15 @@ api:
     tls:
       cert_file: "<path_to_certificat_file>"
       key_file: "<path_to_certificat_key_file>"
+      client_verification: "NoClientCert|RequestClientCert|RequireAnyClientCert|VerifyClientCertIfGiven|RequireAndVerifyClientCert"
+      ca_cert_path: "<path_to_ca_cert_file>"
+      agents_allowed_ou: # List of allowed Organisational Unit for the agents
+       - agents_ou
+      bouncers_allowed_ou: # List of allowed Organisational Unit for the bouncers
+       - bouncers_ou
+      crl_path: "<path_to_crl_file>"
+      cache_expiration: "<cache_duration_for_revocation_check>"
+      
 ```
 
 #### `client`
@@ -644,6 +721,14 @@ server:
   tls:
     cert_file: <path_to_certificat_file>
     key_file: <path_to_certificat_key_file>
+    client_verification: "NoClientCert|RequestClientCert|RequireAnyClientCert|VerifyClientCertIfGiven|RequestAndVerifyClientCert"
+      ca_cert_path: "<path_to_ca_cert_file>"
+      agents_allowed_ou: # List of allowed Organisational Unit for the agents
+       - agents_ou
+      bouncers_allowed_ou: # List of allowed Organisational Unit for the bouncers
+       - bouncers_ou
+      crl_path: "<path_to_crl_file>"
+      cache_expiration: "<cache_duration_for_revocation_check>"
 ```
 
 ##### `listen_uri`
@@ -688,6 +773,15 @@ if present, holds paths to certs and key files.
 tls:
   cert_file: "<path_to_certificat_file>"
   key_file: "<path_to_certificat_key_file>"
+  client_verification: "NoClientCert|RequestClientCert|RequireAnyClientCert|VerifyClientCertIfGiven|RequireAndVerifyClientCert"
+  ca_cert_path: "<path_to_ca_cert_file>"
+  agents_allowed_ou: # List of allowed Organisational Unit for the agents
+    - agents_ou
+  bouncers_allowed_ou: # List of allowed Organisational Unit for the bouncers
+    - bouncers_ou
+  crl_path: "<path_to_crl_file>"
+  cache_expiration: "<cache_duration_for_revocation_check>"
+
 ```
 
 ###### `cert_file`
@@ -699,6 +793,54 @@ Path to certificate file.
 > string
 
 Path to certficate key file.
+
+###### `client_verification`
+
+Whether LAPI should require or not a client certificate for authentication.
+
+Supported values mirror the ones available in the [golang TLS library](https://pkg.go.dev/crypto/tls#ClientAuthType).
+
+Default to `VerifyClientCertIfGiven` which will allow connection without certificate or require a valid client certificate if one is provided
+
+:::warning
+
+Crowdsec supports all `ClientAuthType` value from the go TLS library for sake of completness, but using any value other than `NoClientCert` (completly disable authentication with certificates), `VerifyClientCertIfGiven` (only use the certificate if provided) or `RequireAndVerifyClientCert` (only allows certificate authentication and disable password/API key auth) is insecure and must not be used.
+
+:::
+
+###### ca_cert_path
+
+Path to the CA certificates used to sign the client private keys.
+
+Only required if using TLS auth and if the system does not trust the CA.
+
+If not set and if the system does not trust the CA, all TLS authenticated requests will fail.
+
+###### agents_allowed_ou
+
+List of Organizational Unit allowed for the agents.
+
+If not set, no agents will be able to authenticate with TLS.
+
+###### bouncers_allowed_ou
+
+List of Organizational Unit allowed for the bouncers.
+
+If not set, no bouncers will be able to authenticate with TLS.
+
+###### crl_path
+
+Path to the certificate revocation list of the CA.
+
+Optional. If not set, only OCSP revocation check will be performed (only if the client certificate contains an OCSP URL).
+
+##### cache_expiration
+
+How log to cache the result of a revocation check.
+
+Defaults to 1h.
+
+The format must be compatible with golang [time.Duration](https://pkg.go.dev/time#ParseDuration)
 
 ##### `trusted_ips`
 > list

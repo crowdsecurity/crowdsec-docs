@@ -16,9 +16,15 @@ A typical multi server setup should thus have:
 
 1. **Agents push alerts to LAPI** : 
   - The [local_api_credentials.yaml](/docs/configuration/crowdsec_configuration#client) should point to LAPI's Ip
-  - The agent should be registered to the local api :
+  - The agent should be registered to the local api
+
+    **Using login/password authentication**
     - By running `cscli machines add MyMachine` on the LAPI (and c/c the generated credentials to the agent)
     - or by running `cscli lapi register --machine MyMachine --url http://<lapi>` on the agent and accepting the machine from LAPI with `cscli machines validate MyMachine`
+
+    **Using client cert authentication**
+    - By using setting the [client verification method](/docs/next/configuration/crowdsec_configuration#client_verification)
+    - And setting the appropriate [allowed agents ou](/docs/next/configuration/crowdsec_configuration#agents_allowed_ou)
 
 Once done, you can check that the agent can communicate with LAPI :
 
@@ -31,7 +37,6 @@ INFO[20-12-2021 01:31:33 PM] You can successfully interact with Local API (LAPI)
 ```
 
 
-
 :::info
 To avoid any confusion, disabling the LAPI service on the machine running the agent can be done by commenting out the api->server section in the `config.yaml` file
 :::
@@ -42,6 +47,7 @@ To avoid any confusion, disabling the LAPI service on the machine running the ag
   - :warning: Most of the bouncers installers are going to assume that LAPI is running on the same machine
   - You need to modify the bouncer's configuration (in `/etc/crowdsec/bouncers/`) to be sure they speak to the LAPI:
     - Create an API key from LAPI with `cscli bouncers add MyBouncer`
+    - Or again, rely on [client certificate authentication](/docs/next/configuration/crowdsec_configuration#bouncers_allowed_ou) for the bouncers that support it
     - Edit the bouncer's configuration file to be sure it points to the LAPI uri and uses the newly generated API key
 
 

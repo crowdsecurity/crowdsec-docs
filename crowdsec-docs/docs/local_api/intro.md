@@ -18,11 +18,13 @@ This allows you to create [multi-machines architectures](https://crowdsec.net/mu
 
 ## Authentication
 
-There are two kinds of authentication to the Local API :
+There are three kinds of authentication to the Local API :
 
  - Bouncers: they authenticate with a simple API key and can only read decisions
 
  - Machines: they authenticate with a login and password and can not only read decisions, but create new ones too
+
+ - TLS client certificates: it allows you to connect new bouncers or agents to the local API without registring them first 
 
 
 ### Bouncers
@@ -34,6 +36,8 @@ sudo cscli bouncers add testBouncer
 ```
 
 and keep the generated API token to use it in your bouncers configuration file.
+
+See [here](/local_api/tls_auth.md) for the documentation about TLS authentication.
 
 ### Machines
 
@@ -64,6 +68,8 @@ sudo cscli machines validate <machineName>
 :::info
 You can use `cscli machines list` to list all the machines registered to the API and view the ones that are not validated yet.
 :::
+
+See [here](/local_api/tls_auth.md) for the documentation about TLS authentication.
 
 ## Configuration
 
@@ -106,6 +112,8 @@ The most common use case of the Local API is to listen on 127.0.0.1. In that cas
 configuring any ssl layer. In some cases, the local API will listen for other CrowdSec installations that
 will report their triggered scenarios. In that case the endpoint may be configured with ssl.
 You can see how to configure SSL on your Local API [here](/configuration/crowdsec_configuration.md#tls).
+
+You can also refer [here](/local_api/tls_auth.md) for the documentation about TLS authentication.
 
 
 See the [Local API public documentation](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI).

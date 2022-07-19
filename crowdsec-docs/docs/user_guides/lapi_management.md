@@ -23,6 +23,8 @@ There are two kinds of authentication to the Local API :
 
  - Machines: they authenticate with a login and password and can not only read decisions, but create new ones too
 
+  - TLS client certificates: it allows you to connect new bouncers or agents to the local API without registring them first 
+
 
 ### Bouncers
 
@@ -33,6 +35,9 @@ sudo cscli bouncers add testBouncer
 ```
 
 and keep the generated API token to use it in your bouncers configuration file.
+
+See [here](/local_api/tls_auth.md) for the documentation about TLS authentication.
+
 
 ### Machines
 
@@ -63,6 +68,9 @@ sudo cscli machines validate <machineName>
 :::tip
 You can use `cscli machines list` to list all the machines registered to the API and view the ones that are not validated yet.
 :::
+
+See [here](/local_api/tls_auth.md) for the documentation about TLS authentication.
+
 
 ## Configuration
 
