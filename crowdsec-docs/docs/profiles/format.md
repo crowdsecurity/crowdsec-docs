@@ -110,10 +110,10 @@ It is a list of `models.Decision` objects. The following fields, when present, a
 duration_expr: "Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)"
 ```
 
-If the profile applies, and the `duration_expr` is valid and generate a valid [golang's duration](https://pkg.go.dev/time#ParseDuration) it will replace the decision duration.
+If the profile applies, and the `duration_expr` generates a valid [golang's duration](https://pkg.go.dev/time#ParseDuration), it will replace the decision duration.
 
-It can be use to have custom duration. For example, you can have an increase duration every time an attack come back.
-It can use [expr helpers](/expr/helpers.md).
+It can be used to have custom duration. For example, you can have an increased duration every time an attacker comes back.
+It relies on [expr helpers](/expr/helpers.md).
 
 ### `on_success`
 
