@@ -1,0 +1,145 @@
+---
+id: getting_started
+title: Getting Started
+sidebar_position: 2
+---
+
+## Getting an API Key
+
+When logged on the console, you can create an API Key from the "CTI API" section :
+
+![create api key](/img/crowdsec-console-api-key-creation.png)
+
+## Accessing the API
+
+You can query the API about a given IP from the command line:
+
+```shell
+curl -H "x-api-key: YOUR_API_KEY" https://cti.api.crowdsec.net/v1/smoke/185.7.214.104 | jq .
+
+```
+
+And the default output looks something like this:
+
+```json
+{
+  "ip_range_score": 5,
+  "ip": "185.7.214.104",
+  "ip_range": "185.7.214.0/24",
+  "as_name": "Chang Way Technologies Co. Limited",
+  "as_num": 57523,
+  "country": "RU",
+  "city": null,
+  "latitude": 55.7386,
+  "longitude": 37.6068,
+  "reverse_dns": null,
+  "attack_categories": [
+    {
+      "name": "http:exploit",
+      "label": "HTTP Exploit",
+      "description": "IP has been reported for attempting to exploit a vulnerability in a web application."
+    },
+    {
+      "name": "http:scan",
+      "label": "HTTP Scan",
+      "description": "IP has been reported for performing actions related to HTTP vulnerability scanning and discovery."
+    }
+  ],
+  "history": {
+    "first_seen": "2022-06-14T20:00:00+00:00",
+    "last_seen": "2022-07-13T14:45:00+00:00",
+    "full_age": 30,
+    "days_age": 29
+  },
+  "known_classifications": {
+    "known_false_positive": [],
+    "known_categories": [
+      {
+        "name": "community-blocklist",
+        "label": "CrowdSec Community Blocklist",
+        "description": "IP belong to the CrowdSec Community Blocklist"
+      }
+    ]
+  },
+  "attack_details": [
+    {
+      "name": "crowdsecurity/thinkphp-cve-2018-20062",
+      "label": "ThinkPHP CVE-2018-20062",
+      "description": "Detect ThinkPHP CVE-2018-20062 exploitation attemps",
+      "references": []
+    },
+    {
+      "name": "crowdsecurity/http-cve-2021-41773",
+      "label": "Apache CVE-2021-41773",
+      "description": "Detect Apache CVE-2021-41773 exploitation attemtps",
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2021-41773"
+      ]
+    },
+    {
+      "name": "crowdsecurity/modsecurity",
+      "label": "ModSecurity CRS",
+      "description": "Detect web exploitation via modsecurity",
+      "references": []
+    },
+    {
+      "name": "crowdsecurity/http-probing",
+      "label": "HTTP Scanner",
+      "description": "Detect site scanning/probing from a single ip",
+      "references": []
+    }
+  ],
+  "target_countries": {
+    "FR": 33,
+    "US": 22,
+    "DE": 19,
+    "NL": 6,
+    "CA": 5,
+    "GB": 4,
+    "RU": 2,
+    "AU": 2,
+    "SG": 1,
+    "IE": 1
+  },
+  "confidence": {
+    "level": 5
+  },
+  "ratings": {
+    "last_month_rating": 5,
+    "last_day_rating": 5,
+    "last_week_rating": 5,
+    "overall_rating": 5
+  },
+  "indicators": {
+    "overall": {
+      "aggressiveness": 5,
+      "threat": 5,
+      "trust": 5,
+      "anomaly": 1,
+      "total": 5
+    },
+    "last_day": {
+      "aggressiveness": 5,
+      "threat": 5,
+      "trust": 5,
+      "anomaly": 1,
+      "total": 5
+    },
+    "last_week": {
+      "aggressiveness": 5,
+      "threat": 5,
+      "trust": 5,
+      "anomaly": 1,
+      "total": 5
+    },
+    "last_month": {
+      "aggressiveness": 5,
+      "threat": 5,
+      "trust": 5,
+      "anomaly": 1,
+      "total": 5
+    }
+  }
+}
+
+```
