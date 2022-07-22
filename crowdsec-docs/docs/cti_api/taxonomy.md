@@ -79,27 +79,59 @@ sidebar_position: 3
   - `references` : A more open data field used to track 3rd parties referencing this IP as well. A common usage would be public / external lists in which this IP is present.
 
 
-## List of common behaviors
+## Behaviors
 
 | Name | Label | Description | 
 |------|-------|-------------|
-| http:exploit | HTTP Exploit | IP has been reported for attempting to exploit a vulnerability in a web application. |
-| sip:bruteforce | SIP Bruteforce | IP has been reported for performing a SIP (VOIP) brute force attack. |
-| http:bruteforce | HTTP Bruteforce | IP has been reported for performing a HTTP brute force attack (either generic http probing or applicative related brute force). |
-| pop3/imap:bruteforce | POP3/IMAP Bruteforce | IP has been reported for performing a POP3/IMAP brute force attack. |
-| http:scan | HTTP Scan | IP has been reported for performing actions related to HTTP vulnerability scanning and discovery. |
-| http:crawl | HTTP Crawl | IP has been reported for performing aggressive crawling of web applications. |
-| tcp:scan | TCP Scan | IP has been reported for performing TCP port scanning. |
 | database:bruteforce | Database Bruteforce | IP has been reported for performing brute force on databases. |
 | ftp:bruteforce | FTP Bruteforce | IP has been reported for performing brute force on FTP services. |
-| smb:bruteforce | SMB Bruteforce | IP has been reported for performing brute force on samba services. |
-| ssh:bruteforce | SSH Bruteforce | IP has been reported for performing brute force on ssh services. |
-| telnet:bruteforce | TELNET Bruteforce | IP has been reported for performing brute force on telnet services. |
-| ldap:bruteforce | LDAP Bruteforce | IP has been reported for performing brute force on ldap services. |
-| windows:bruteforce | SMB/RDP bruteforce | IP has been reported for performing brute force on Windows (samba, remote desktop) services. |
-| vm-management:bruteforce | VM Management Bruteforce | IP has been reported for performing brute force on virtual environement management applications. |
+| generic:exploit | Exploitation attempt | IP has been reported trying to exploit known vulnerability/CVE on unspecified protocol. |
+| http:bruteforce | HTTP Bruteforce | IP has been reported for performing a HTTP brute force attack (either generic http probing or applicative related brute force). |
+| http:crawl | HTTP Crawl | IP has been reported for performing aggressive crawling of web applications. |
+| http:exploit | HTTP Exploit | IP has been reported for attempting to exploit a vulnerability in a web application. |
+| http:scan | HTTP Scan | IP has been reported for performing actions related to HTTP vulnerability scanning and discovery. |
+| http:spam | Web form spam | IP has been reported trying to perform spam via web forms/forums. |
 | iot:bruteforce | IOT Bruteforce | IP has been reported for performing brute force on IOT management interfaces. |
+| ldap:bruteforce | LDAP Bruteforce | IP has been reported for performing brute force on ldap services. |
+| pop3/imap:bruteforce | POP3/IMAP Bruteforce | IP has been reported for performing a POP3/IMAP brute force attack. |
+| sip:bruteforce | SIP Bruteforce | IP has been reported for performing a SIP (VOIP) brute force attack. |
+| smb:bruteforce | SMB Bruteforce | IP has been reported for performing brute force on samba services. |
+| smtp:spam | SMTP spam | IP has been reported trying to perform spam SMTP service. |
+| ssh:bruteforce | SSH Bruteforce | IP has been reported for performing brute force on ssh services. |
+| tcp:scan | TCP Scan | IP has been reported for performing TCP port scanning. |
+| telnet:bruteforce | TELNET Bruteforce | IP has been reported for performing brute force on telnet services. |
+| vm-management:bruteforce | VM Management Bruteforce | IP has been reported for performing brute force on virtual environement management applications. |
+| windows:bruteforce | SMB/RDP bruteforce | IP has been reported for performing brute force on Windows (samba, remote desktop) services. |
 
+## False positives
 
-## List of common classifications
+| Name | Label | Description | 
+|------|-------|-------------|
+| cdn:cloudflare_exit_node | Cloudflare CDN | IP is a Cloudflare CDN exit IP and should not be flagged as a threat. |
+| cdn:exit_node | CDN exit node | IP is a CDN exit IP and should not be flagged as a threat. |
+| ip:private_range | Private IP address range | This IP address is in a private IP range |
+| msp:scanner | Legitimate Scanner | IP belongs to a known 'legitimate' scanner (MSP) and should not be flagged as a threat. |
+| seo:crawler | SEO crawler | IP belongs to a known SEO crawler and should not be flagged as a threat. |
+| seo:duckduckbot | Duckduckbot SEO crawler | IP belongs to Duckduckbot SEO crawler and should not be flagged as a threat. |
+| seo:pinterest | Pinterest crawler | IP belongs to Pinterest crawler and should not be flagged as a threat. |
+| seo:crawler | SEO crawler | IP belongs to a known SEO crawler and should not be flagged as a threat. |
 
+## Classifications
+
+| Name | Label | Description | 
+|------|-------|-------------|
+| profile:insecure_services | Dangerous Services Exposed | IP exposes dangerous services (vnc, telnet, rdp), possibly due to a misconfiguration or because it's a honeypot. |
+| profile:many_services | Many Services Exposed | IP exposes many open port, possibly due to a misconfiguration or because it's a honeypot. |
+| proxy:tor | TOR exit node | IP is being flagged as a TOR exit node. |
+| proxy:vpn | VPN | IP exposes a VPN service or is being flagged as one. |
+| range:data_center | Data Center | IP is known to be hosted in a data center. |
+| scanner:alphastrike | Known Security Company | IP belongs to a company that scans internet : AlphaSrike. |
+| scanner:binaryedge | Known Security Company | IP belongs to a company that scans internet : binaryedge. |
+| scanner:censys | Known Security Company | IP belongs to a company that scans internet : Censys. |
+| scanner:cert.ssi.gouv.fr | Known CERT | IP belongs to an entity that scans internet : cert.ssi.gouv.fr. |
+| scanner:cisa.dhs.gov | Known CERT | IP belongs to an entity that scans internet : cisa.dhs.gov. |
+| scanner:internet-census | Known Security Company | IP belongs to a company that scans internet : internet-census. |
+| scanner:leakix | Known Security Company | IP belongs to a company that scans internet : leakix. |
+| scanner:legit | Legit scanner | IP belongs to a company that scans internet |
+| scanner:shadowserver.org | Known Security Company | IP belongs to an entity that scans internet : www.shadowserver.org. |
+| scanner:shodan | Known Security Company | IP belongs to a company that scans internet : Shodan. |
