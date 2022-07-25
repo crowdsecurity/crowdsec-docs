@@ -1,10 +1,10 @@
 ---
 id: integration_chrome
-title: Chrome Plugin
+title: Chrome Extension
 sidebar_position: 1
 ---
 
-The Chrome Plugin allows you to quickly select an IP on some web page and query it in CTI API.
+A Chrome extension which allows you to quickly select an IP on some web page and query it in CTI API.
 
 ## Installation
 
@@ -32,4 +32,4 @@ Make sure you are logged in to your CrowdSec Console account. Click [here](https
 Simply select any IP address by dragging your mouse cursor.
 Then upon right clicking you would see an option to lookup the IP in  CrowdSec's CTI.
 
-![image info](/img/chrome_ext.png)
+![chrome extension dropdown](/img/chrome_ext.png)
