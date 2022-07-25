@@ -15,7 +15,7 @@ When logged on the console, you can create an API Key from the "CTI API" section
 You can query the API about a given IP from the command line:
 
 ```shell
-curl -H "x-api-key: YOUR_API_KEY" https://cti.api.crowdsec.net/v1/smoke/185.7.214.104 | jq .
+curl -H "x-api-key: YOUR_API_KEY" https://cti.api.crowdsec.net/v2/smoke/185.7.214.104 | jq .
 
 ```
 
@@ -28,12 +28,14 @@ And the default output looks something like this:
   "ip_range": "185.7.214.0/24",
   "as_name": "Chang Way Technologies Co. Limited",
   "as_num": 57523,
-  "country": "RU",
-  "city": null,
-  "latitude": 55.7386,
-  "longitude": 37.6068,
+  "location": {
+    "country": "RU",
+    "city": null,
+    "latitude": 55.7386,
+    "longitude": 37.6068
+  },
   "reverse_dns": null,
-  "attack_categories": [
+  "behaviors": [
     {
       "name": "http:exploit",
       "label": "HTTP Exploit",
@@ -46,14 +48,14 @@ And the default output looks something like this:
     }
   ],
   "history": {
-    "first_seen": "2022-06-14T20:00:00+00:00",
-    "last_seen": "2022-07-13T14:45:00+00:00",
-    "full_age": 30,
-    "days_age": 29
+    "first_seen": "2022-06-14T21:30:00+00:00",
+    "last_seen": "2022-07-22T11:45:00+00:00",
+    "full_age": 39,
+    "days_age": 38
   },
-  "known_classifications": {
-    "known_false_positive": [],
-    "known_categories": [
+  "classifications": {
+    "false_positives": [],
+    "classifications": [
       {
         "name": "community-blocklist",
         "label": "CrowdSec Community Blocklist",
@@ -63,18 +65,18 @@ And the default output looks something like this:
   },
   "attack_details": [
     {
-      "name": "crowdsecurity/thinkphp-cve-2018-20062",
-      "label": "ThinkPHP CVE-2018-20062",
-      "description": "Detect ThinkPHP CVE-2018-20062 exploitation attemps",
-      "references": []
-    },
-    {
       "name": "crowdsecurity/http-cve-2021-41773",
       "label": "Apache CVE-2021-41773",
       "description": "Detect Apache CVE-2021-41773 exploitation attemtps",
       "references": [
         "https://nvd.nist.gov/vuln/detail/CVE-2021-41773"
       ]
+    },
+    {
+      "name": "crowdsecurity/thinkphp-cve-2018-20062",
+      "label": "ThinkPHP CVE-2018-20062",
+      "description": "Detect ThinkPHP CVE-2018-20062 exploitation attemps",
+      "references": []
     },
     {
       "name": "crowdsecurity/modsecurity",
@@ -90,27 +92,18 @@ And the default output looks something like this:
     }
   ],
   "target_countries": {
-    "FR": 33,
-    "US": 22,
-    "DE": 19,
+    "FR": 35,
+    "US": 19,
+    "DE": 18,
     "NL": 6,
-    "CA": 5,
-    "GB": 4,
-    "RU": 2,
+    "GB": 5,
+    "CA": 4,
     "AU": 2,
-    "SG": 1,
-    "IE": 1
+    "RU": 2,
+    "SE": 2,
+    "CH": 1
   },
-  "confidence": {
-    "level": 5
-  },
-  "ratings": {
-    "last_month_rating": 5,
-    "last_day_rating": 5,
-    "last_week_rating": 5,
-    "overall_rating": 5
-  },
-  "indicators": {
+  "scores": {
     "overall": {
       "aggressiveness": 5,
       "threat": 5,
@@ -139,7 +132,8 @@ And the default output looks something like this:
       "anomaly": 1,
       "total": 5
     }
-  }
+  },
+  "references": []
 }
 
 ```
