@@ -315,4 +315,31 @@ module.exports = {
       id: "contributing/contributing_bouncers"
     },
   ],
+  ctiApiSidebar: [
+    {
+      type: 'doc',
+      label: 'Introduction',
+      id: 'cti_api/intro'
+    },
+    {
+      type: 'doc',
+      label: 'Getting Started',
+      id: 'cti_api/getting_started'
+    },
+    {
+      type: 'doc',
+      label: 'Taxonomy',
+      id: 'cti_api/taxonomy'
+    },
+    {
+      type:"link", 
+      label: "Swagger", 
+      href:"https://crowdsecurity.github.io/cti-api/",
+    },
+    {
+      type: "category",
+      label: "Integrations",
+      items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti"],
+    },
+  ],
 };
