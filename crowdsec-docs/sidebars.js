@@ -301,6 +301,11 @@ module.exports = {
     },
     {
       type: 'doc',
+      label: 'HAProxy Bouncer',
+      id: "bouncers/haproxy"
+    },
+    {
+      type: 'doc',
       label: 'BlockList Mirror',
       id: "bouncers/blocklist-mirror"
     },
