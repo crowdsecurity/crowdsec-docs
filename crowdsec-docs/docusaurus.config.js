@@ -14,7 +14,7 @@ module.exports = {
   projectName: 'crowdsec-docs',
   themeConfig: {
     algolia: {
-      apiKey: '646b772ccfdead2a01eee453a47600a5',
+      apiKey: '31673122672f1eb819e16c87468e53b4',
       indexName: 'crowdsec',
       contextualSearch: true
     },
