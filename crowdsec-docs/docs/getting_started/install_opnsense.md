@@ -47,7 +47,7 @@ The parsers, scenarios and all objects from the [CrowdSec Hub](https://hub.crowd
 A quick way to test that everything is working correctly is to execute the following command. Your ssh session should freeze and you should be kicked out from the firewall. You will not be able to connect to it (from the same IP address) for two minutes. It might be a good idea to have a secondary IP from which you can connect, should anything go wrong.
 
 ```console
-[root@OPNsense ~]# cscli decisions add -t ban -d 2m -i
+[root@OPNsense ~]# cscli decisions add -t ban -d 2m -i $(echo $SSH_CLIENT | cut -d' ' -f1)
 ```
 
 This is a more secure way to test than attempting to brute-force yourself: the default ban period is 4 hours, and crowdsec reads the logs from the beginning, so it could ban you even if you failed ssh login 10 times in 30 seconds two hours before installing it.
