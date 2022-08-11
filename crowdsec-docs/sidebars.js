@@ -281,6 +281,11 @@ module.exports = {
     },
     {
       type: 'doc',
+      label: 'PHP Bouncer Library',
+      id: "bouncers/php-lib"
+    },
+    {
+      type: 'doc',
       label: 'PHP Bouncer',
       id: "bouncers/php"
     },
