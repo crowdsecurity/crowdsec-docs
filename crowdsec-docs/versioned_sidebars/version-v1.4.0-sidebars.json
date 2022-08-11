@@ -970,6 +970,10 @@
     },
     {
       "type": "doc",
+      "id": "version-v1.4.0/bouncers/magento"
+    },
+    {
+      "type": "doc",
       "id": "version-v1.4.0/bouncers/fastly"
     },
     {

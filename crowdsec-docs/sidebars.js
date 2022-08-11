@@ -286,6 +286,11 @@ module.exports = {
     },
     {
       type: 'doc',
+      label: 'Magento 2 Bouncer',
+      id: "bouncers/magento"
+    },
+    {
+      type: 'doc',
       label: 'Fastly Bouncer',
       id: "bouncers/fastly"
     },
