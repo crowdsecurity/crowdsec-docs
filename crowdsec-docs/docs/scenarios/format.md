@@ -205,7 +205,7 @@ Must be compatible with [golang ParseDuration format](https://golang.org/pkg/tim
 
 #### Example
 
-Here the bucket will leak one item every 10 seconds, and can hold up to 5 items before overflowing.
+The bucket will leak one item every 10 seconds, and can hold up to 5 items before overflowing.
 
 ```yaml
 type: leaky
@@ -214,6 +214,19 @@ leakspeed: "10s"
 capacity: 5
 ...
 ```
+
+![timeline](/img/leakspeed-schema.png)
+
+ - The bucket is created at `t+0s`
+ - _E0_ is poured at `t+2s`, bucket is at 1/5 capacity
+ - _E1_ is poured at `t+4s`, bucket is at 2/5 capacity
+ - At `t+10s` the bucket leaks one item, is now at 1/5 capacity
+ - _E2_ is poured at `t+11s`, bucket is at 2/5 capacity
+ - _E3_ and _E4_ are poured around `t+16s`, bucket is at 4/5 capacity
+ - At `t+20s` the bucket leaks one item, is now at 3/5 capacity
+ - _E5_ and _E6_ are poured at `t+23s`, bucket is at 5/5 capacity
+ - when _E7_ is poured at `t+24s`, the bucket is at 6/5 capacity and overflows
+
 
 ---
 ### `labels`
