@@ -282,6 +282,10 @@ Daemonize or not the crowdsec daemon.
 
 Folder to store PID file.
 
+:::caution
+The directive is no longer supported.
+:::
+
 #### `log_media`
 > string
 
