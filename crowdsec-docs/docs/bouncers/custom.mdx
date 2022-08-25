@@ -91,18 +91,91 @@ $ vim /etc/crowdsec/bouncers/crowdsec-custom-bouncer.yaml
 
 ```yaml
 bin_path: <absolute_path_to_binary>
+total_retries: 0
+feed_via_stdin: false
+include_scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word, eg ["ssh", "http"]
+exclude_scenarios_containing: [] # ignore IPs banned for triggering scenarios containing either of provided word
+only_include_decisions_from: []
 piddir: /var/run/
 update_frequency: 10s
 daemonize: true
 log_mode: file
 log_dir: /var/log/
 log_level: info
+log_compression: true
+log_max_size: 100
+log_max_backups: 3
+log_max_age: 30
 api_url: <API_URL>  # when install, default is "localhost:8080"
 api_key: <API_KEY>  # Add your API key generated with `cscli bouncers add --name <bouncer_name>`
 cache_retention_duration: 10s 
+
+
+prometheus:
+  enabled: true
+  listen_addr: 127.0.0.1
+  listen_port: 60602  
+
 ```
 
-`cache_retention_duration` : The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. If a decision is identical to some decision already present in the cache, then the custom script is not invoked. The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `1.2.3.4`,  `CH` etc).
+### `feed_via_stdin`
+
+Invokes binary once and feeds incoming decisions to it's stdin.
+Each new/expired decision is given in one line.
+
+New decisions look like. Do note the `action` field.
+
+```javascript
+{
+  "action": "add",
+  "duration": "12m26.710049968s",
+  "id": 3633835,
+  "origin": "cscli-import",
+  "scenario": "manual import from csv",
+  "scope": "Ip",
+  "type": "captcha",
+  "value": "225.237.47.128",
+}
+```
+
+Expired decisions look like:
+
+```javascript
+{
+  "action": "del",
+  "duration": "-12m26.710049968s",
+  "id": 3633836,
+  "origin": "cscli-import",
+  "scenario": "manual import from csv",
+  "scope": "Ip",
+  "type": "captcha",
+  "value": "225.237.47.128",
+}
+```
+
+### `total_retries`
+
+Relevant if `feed_via_stdin` is true.
+
+It denotes the number times to restart the binary in case of failure.
+Set to -1 for infinite restarts.
+
+### `include_scenarios_containing`
+
+Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
+
+### `exclude_scenarios_containing`
+
+Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"]
+
+
+### `only_include_decisions_from`
+
+Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+
+### `cache_retention_duration` 
+
+The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. If a decision is identical to some decision already present in the cache, then the custom script is not invoked. The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `1.2.3.4`,  `CH` etc).
 
 You can then start the service:
 
@@ -144,3 +217,44 @@ custom_binary.sh add 1.2.3.4/32 3600 "test blacklist"
 custom_binary.sh del 1.2.3.4/32 3600 "test blacklist"
 ```
 
+## Observability
+
+The bouncer by default exposes the metrics at <listen_uri>/metrics . `listen_uri` is where the blocklist is served.
+
+The exposed metrics are:
+
+- `lapi_requests_total` : This is the count of total calls made to the CrowdSec LAPI by bouncer.
+- `lapi_requests_failures_total` : This is the total number of failed calls to CrowdSec LAPI.
+- `blocklist_requests_total`: This is counter vector for each route denoting total requests made.
+- `active_decision_count`: This is the current count of total number IPs served by the blocklist mirror.
+
+### Alerting when LAPI is unreachable
+
+The metrics can be used to receive alerts if the bouncer can't reach LAPI via prometheus. The following prometheus rule can be used.
+
+```yaml
+# rules.yml
+groups:
+- name: lapi
+  rules:
+  - alert: LAPIFailure
+    expr: delta(lapi_requests_failures_total[15s]) > 0
+    for: 5m
+```
+
+In prometheus alertmanager you can then handle as needed. A sample alertmanger config which posts a simple message on slack when LAPI request fails would look like:
+
+```yaml
+# alertmanager.yml
+global:
+  resolve_timeout: 1m
+  slack_api_url: '<your_slack_webhook_url>'
+route:
+  receiver: 'lapi'
+receivers:
+  - name: 'lapi'
+    slack_configs:
+    - channel: '#crowdsec-notifications' 
+      send_resolved: true
+      text: Bouncer can't reach LAPI
+```
