@@ -59,8 +59,9 @@ timeout: 20s # duration to wait for response from plugin before considering this
 
 ```
 
-**Note** that the `format` is a [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
+The configuration directive `format` is a [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
 
+The configuration directive ``encryption_type`` is either `none`, `starttls` and `ssltls` which are self-explanatory and the configuration directive ``auth_type`` is either `none`, `crammd5`, `login` or `plain`.
 
 ## Final Steps:
 
