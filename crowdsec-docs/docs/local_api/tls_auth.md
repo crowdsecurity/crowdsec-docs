@@ -232,13 +232,14 @@ We now need to update LAPI configuration to use our newly generated certificates
 ```yaml
 api:
  server:
-   cert_file: /tmp/server.pem #Server side cert
-   key_file: /tmp/server-key.pem #Server side key
-   ca_cert_path: /tmp/inter.pem #CA used to verify the client certs
-   bouncers_allowed_ou: #OU allowed for bouncers
-    - bouncer-ou
-   agents_allowed_ou: #OU allowed for agents
-    - agent-ou
+   tls:
+    cert_file: /tmp/server.pem #Server side cert
+    key_file: /tmp/server-key.pem #Server side key
+    ca_cert_path: /tmp/inter.pem #CA used to verify the client certs
+    bouncers_allowed_ou: #OU allowed for bouncers
+      - bouncer-ou
+    agents_allowed_ou: #OU allowed for agents
+      - agent-ou
 ```
 
 We also need to update our agent configuration to use a certificate to login to LAPI in `/etc/crowdsec/local_api_credentials.yaml`:
@@ -246,8 +247,8 @@ We also need to update our agent configuration to use a certificate to login to 
 ```yaml
 url: https://localhost:8081
 ca_cert_path: /tmp/inter.pem #CA to trust the server certificate
-key_path: /tmp/agent.pem #Client key
-cert_path: /tmp/agent-key.pem #Client cert
+key_path: /tmp/agent-key.pem #Client key
+cert_path: /tmp/agent.pem #Client cert
 ```
 
 ### Using the certificates
