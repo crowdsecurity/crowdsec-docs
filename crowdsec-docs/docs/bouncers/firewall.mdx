@@ -252,6 +252,9 @@ The exposed metrics are:
 
 - `lapi_requests_total` : This is the count of total calls made to the CrowdSec LAPI by bouncer.
 - `lapi_requests_failures_total` : This is the total number of failed calls to CrowdSec LAPI.
+- `dropped_packets_via_cs_rule_total` : This is the total number of packets which were dropped due to rule and IP sets created by the bouncer.
+- `dropped_bytes_via_cs_rule_total` : This is the total number of bytes which were dropped due to rule and IP sets created by the bouncer. 
+
 
 ### Alerting when LAPI is unreachable
 
