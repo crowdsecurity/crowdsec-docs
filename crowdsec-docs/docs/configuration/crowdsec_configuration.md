@@ -33,6 +33,7 @@ config_paths:
   notification_dir: /etc/crowdsec/notifications/
   plugin_dir: /var/lib/crowdsec/plugins/
 crowdsec_service:
+  enable: true
   acquisition_path: /etc/crowdsec/acquis.yaml
   #acquisition_dir: /etc/crowdsec/acquis/
   parser_routines: 1
@@ -65,6 +66,7 @@ api:
     insecure_skip_verify: false
     credentials_path: /etc/crowdsec/local_api_credentials.yaml
   server:
+    enable: true
     log_level: info
     listen_uri: 127.0.0.1:8080
     profiles_path: /etc/crowdsec/profiles.yaml
@@ -192,6 +194,7 @@ config_paths:
   notification_dir: "<path_to_notification_config_folder>"
   plugin_dir: "<path_to_notification_binaries_folder>"
 crowdsec_service:
+  enable: <true|false>  ## enable or disable crowdsec agent
   acquisition_path: "<acqusition_file_path>"
   acquisition_dir: "<acquisition_dir_path>"
   parser_routines: "<number_of_parser_routines>"
@@ -227,6 +230,7 @@ api:
     insecure_skip_verify: "(true|false)"
     credentials_path: "<path_to_local_api_client_credential_file>"
   server:
+    enable: <true|false> # enable or disable local API
     log_level: "(error|info|debug|trace>")"
     listen_uri: "<listen_uri>" # host:port
     profiles_path: "<path_to_profile_file>"
@@ -387,6 +391,7 @@ This section is only used by crowdsec agent.
 
 ```yaml
 crowdsec_service:
+  enable: <true|false>
   acquisition_path: "<acqusition_file_path>"
   acquisition_dir: "<acqusition_dir_path>"
   parser_routines: "<number_of_parser_routines>"
@@ -394,6 +399,10 @@ crowdsec_service:
   output_routines: "<number_of_output_routines>"
 ```
 
+#### `enable`
+> bool
+
+Enable or disable the CrowdSec Agent (`true` by default).
 
 #### `parser_routines`
 > int
@@ -660,6 +669,7 @@ api:
     insecure_skip_verify: "(true|false)"
     credentials_path: "<path_to_local_api_client_credential_file>"
   server:
+    enable: <true|false>
     log_level: "(error|info|debug|trace>"
     listen_uri: "<listen_uri>" # host:port
     profiles_path: "<path_to_profile_file>"
@@ -707,6 +717,7 @@ The `server` subsection is the local API configuration.
 
 ```yaml
 server:
+  enable: <true|false>
   log_level: (error|info|debug|trace)
   listen_uri: <listen_uri> # host:port
   profiles_path: <path_to_profile_file>
@@ -730,6 +741,11 @@ server:
       crl_path: "<path_to_crl_file>"
       cache_expiration: "<cache_duration_for_revocation_check>"
 ```
+
+#### `enable`
+> bool
+
+Enable or disable the CrowdSec Local API (`true` by default).
 
 ##### `listen_uri`
 > string
