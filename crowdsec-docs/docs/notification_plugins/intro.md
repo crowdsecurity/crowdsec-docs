@@ -20,9 +20,29 @@ Refer directly to each plugin's dedicated documentation and keep in mind that pl
 
 Plugin binaries are present in `config_paths.plugin_dir` (defaults to `/var/lib/crowdsec/plugins/`), and their individual configuration are present in `config_paths.notification_dir` (defaults to `/etc/crowdsec/notifications/`)
 
+
 **Important:** CrowdSec rejects the plugins if one of the following is true :
 1. plugin is not owned by the root user and root group.
 2. plugin is world-writable. 
+
+
+### Environment variables
+
+It is possible to set configuration values based on environment variables.
+
+For example, if you don't want to store your SMTP host password in the configuration file, you can do this:
+
+```yaml
+smtp_host: smtp.gmail.com           
+smtp_username: myemail@gmail.com
+smtp_password: ${SMTP_PASSWORD}
+smtp_port: 587
+auth_type: login    
+sender_name: "CrowdSec"
+sender_email: email@gmail.com
+email_subject: "CrowdSec Notification"
+```
+
 
 ### Registering plugin to profile
 
@@ -55,6 +75,8 @@ group_wait:
 group_threshold:
 max_retry:
 timeout:
+
+
 
 ```
 #### `type` : 
