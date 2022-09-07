@@ -19,7 +19,7 @@ module.exports = function (context) {
         {
             tagName: 'script',
             attributes: {
-                src: '/plugins/matomo/tarteaucitron/tarteaucitron.js',
+                src: 'https://cdnjs.cloudflare.com/ajax/libs/tarteaucitronjs/1.9.7/tarteaucitron.js',
             },
         },
         {
