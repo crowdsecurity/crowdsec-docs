@@ -1,6 +1,8 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
+const path = require('path')
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'CrowdSec',
@@ -12,12 +14,19 @@ module.exports = {
   favicon: 'img/crowdsec_no_txt.png',
   organizationName: 'CrowdSec',
   projectName: 'crowdsec-docs',
+  plugins: [path.resolve(__dirname, 'plugins', 'matomo')],
   themeConfig: {
     algolia: {
       appId: 'PWTZ94KULF',
       apiKey: '31673122672f1eb819e16c87468e53b4',
       indexName: 'crowdsec',
       contextualSearch: true
+    },
+    matomo: {
+      matomoUrl: 'https://crowdsec.matomo.cloud/',
+      siteId: '5',
+      phpLoader: 'matomo.php',
+      jsLoader: 'matomo.js',
     },
     navbar: {
       items: [
