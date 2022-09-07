@@ -4374,12 +4374,6 @@ tarteaucitron.services.matomocloud = {
 
         tarteaucitron.addScript('https://cdn.matomo.cloud/matomo.js', '', '', true, 'defer', true);
 
-        window.addEventListener('locationchange', function() {
-            window._paq.push(['setCustomUrl', location.pathname]);
-            window._paq.push(['setDocumentTitle', document.title]);
-            window._paq.push(['trackPageView']);
-        });
-    
         // waiting for Matomo to be ready to check first party cookies
         var interval = setInterval(function () {
             if (typeof Matomo === 'undefined') return
