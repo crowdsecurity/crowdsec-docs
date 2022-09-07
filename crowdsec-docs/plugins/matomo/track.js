@@ -6,9 +6,12 @@ export default (function () {
   }
   return {
     onRouteUpdate({location}) {
-      _paq.push(['setCustomUrl', location.pathname]);
-      _paq.push(['setDocumentTitle', document.title]);
-      _paq.push(['trackPageView']);
+        if (typeof window._paq != 'undefined') {
+            console.log(window._paq);
+            window._paq.push(['setCustomUrl', location.pathname]);
+            window._paq.push(['setDocumentTitle', document.title]);
+            window._paq.push(['trackPageView']);
+        }
     },
   };
 })();
