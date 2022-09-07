@@ -22,12 +22,6 @@ module.exports = {
       indexName: 'crowdsec',
       contextualSearch: true
     },
-    matomo: {
-      matomoUrl: 'https://crowdsec.matomo.cloud/',
-      siteId: '5',
-      phpLoader: 'matomo.php',
-      jsLoader: 'matomo.js',
-    },
     navbar: {
       items: [
 
