@@ -163,7 +163,7 @@ always replaced.
 - `config.yaml`
 - `local_api_credentials.yaml`
 - `simulation.yaml`
-- `profiles.yaml`
+- `bouncers/crowdsec-firewall-bouncer.yaml`
 
 In the case of `profiles.yaml`, the files are read as a whole (as if they were
 attached) instead of merged. See [profiles - introduction](/profiles/intro).
