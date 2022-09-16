@@ -41,6 +41,7 @@ module.exports = {
       items: [
         "getting_started/install_crowdsec",
         "getting_started/install_crowdsec_freebsd",
+        "getting_started/install_crowdsec_opnsense",
         {"type":"link", "label": "Install CrowdSec (Helm/K8s)", "href":"https://artifacthub.io/packages/helm/crowdsec/crowdsec"},
         {"type":"link", "label": "Install CrowdSec (docker)", "href":"https://hub.docker.com/r/crowdsecurity/crowdsec"},
         "getting_started/install_windows",
@@ -99,7 +100,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Local API',
-      items: ["local_api/intro", "local_api/database" , "local_api/bouncers", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"}]
+      items: ["local_api/intro", "local_api/database" , "local_api/bouncers", "local_api/tls_auth", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"}]
     },
     {
       type: 'category',
@@ -312,6 +313,33 @@ module.exports = {
       type: 'doc',
       label: "Contributing",
       id: "contributing/contributing_bouncers"
+    },
+  ],
+  ctiApiSidebar: [
+    {
+      type: 'doc',
+      label: 'Introduction',
+      id: 'cti_api/intro'
+    },
+    {
+      type: 'doc',
+      label: 'Getting Started',
+      id: 'cti_api/getting_started'
+    },
+    {
+      type: 'doc',
+      label: 'Taxonomy',
+      id: 'cti_api/taxonomy'
+    },
+    {
+      type:"link", 
+      label: "Swagger", 
+      href:"https://crowdsecurity.github.io/cti-api/",
+    },
+    {
+      type: "category",
+      label: "Integrations",
+      items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti"],
     },
   ],
 };

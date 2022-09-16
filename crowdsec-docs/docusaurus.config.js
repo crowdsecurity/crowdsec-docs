@@ -14,7 +14,8 @@ module.exports = {
   projectName: 'crowdsec-docs',
   themeConfig: {
     algolia: {
-      apiKey: '646b772ccfdead2a01eee453a47600a5',
+      appId: 'PWTZ94KULF',
+      apiKey: '31673122672f1eb819e16c87468e53b4',
       indexName: 'crowdsec',
       contextualSearch: true
     },
@@ -53,6 +54,12 @@ module.exports = {
           position: 'left',
           label: 'Bouncers',
         },
+        // {
+        //   type: 'doc',
+        //   docId: 'cti_api/intro',
+        //   position: 'left',
+        //   label: 'CTI Api',
+        // },
         {to: 'https://crowdsec.net/blog/category/tutorial/', label: 'Tutorials', position: 'left'},
         {
           type: 'doc',

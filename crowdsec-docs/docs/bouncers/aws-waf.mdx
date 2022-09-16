@@ -20,20 +20,20 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Overview
 
-The `crowdsec-awf-waf-bouncer` automatically adds rules to an existing AWS WAF ACL and manages IPSets content to apply decisions taken by crowdsec.
+The `crowdsec-awf-waf-bouncer` automatically adds rules to an AWS WAF ACL and manages IPSets content to apply decisions taken by crowdsec.
 
-This allows to protect the following AWS ressources with crowdsec:
+This allows to protect the following AWS resources with crowdsec:
  - AWS REST API Gateway
  - Cloudfront distribution
  - AWS Application LoadBalancer
  - AWS AppSync GraphQL API
 
-As the bouncer does not manage your WAF ACLs, you will need to have existing ACLs already associated with your AWS ressources for the bouncer to work properly.
-The bouncer supports the `ban` and `captcha` decisions type, and can be configured to fallback to one of those for decisions of unknown type.
+As the bouncer does not manage your WAF ACLs, you will need to have existing ACLs already associated with your AWS resources for the bouncer to work properly.
+The bouncer supports the `ban` and `captcha` decisions type and can be configured to fall back to one of those for decisions of unknown type.
 
 It can block at the IP (using `ip` scope in CrowdSec), range (using `range` scope in CrowdSec) or country level (using `country` scope in CrowdSec).
 
-The bouncer will create all required resources and associate them with your existing ACLs based on the configuration you provided.
+The bouncer will create all required resources and associate them with your existing ACLs based on your provided configuration.
 
 As the resources will incur an AWS cost, the bouncer will remove everything it created when stopping.
 
@@ -99,9 +99,14 @@ waf_config:
     ipset_prefix: crowdsec-ipset-cf
 ```
 
-Optionnaly, the bouncer can also be configured using only environment variables.
+Optionally, the bouncer can also be configured using only environment variables.
 
-Environment variables will take priority over values defined in the configuration file.
+Environment variables will take priority over values defined in the configuration file, in which case the suggested approach is via `systemctl edit crowdsec-aws-waf-bouncer`:
+
+```
+[Service]
+Environment="BOUNCER_API_KEY=XXXXX"
+```
 
 AWS authentication is handled with the standard environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_PROFILE) or instance role.
 
@@ -125,6 +130,32 @@ How often the bouncer will contact LAPI to update its content.
 
 The format must be supported by [golang ParseDuration](https://pkg.go.dev/time#ParseDuration).
 
+#### `supported_actions`
+##### Environment variable: `BOUNCER_SUPPORTED_ACTIONS`
+
+Which actions (ie, remediation type) the bouncer supports.
+
+List with any of the following: `ban`, `captcha`, `count`.
+
+Default to `ban`, `captcha` and `count`.
+
+If set from the environment, provide a comma-separated list: `ban,captcha,count`.
+
+#### `cloudwatch_enabled`
+##### Environment variable: `BOUNCER_CLOUDWATCH_ENABLED`
+
+Whether or not AWS WAF will send metrics to CloudWatch for the rule group.
+
+#### `cloudwatch_metric_name`
+##### Environment variable: `BOUNCER_CLOUDWATCH_METRIC_NAME`
+
+Name of the cloudwatch metric. Default to the rule group name.
+
+#### `sample_requests`
+##### Environment variable: `BOUNCER_SAMPLE_REQUESTS`
+
+Whether or not to sample requests from the rule groups created by the bouncer.
+
 ---
 ### `waf_config`
 ##### Environment variable: `BOUNCER_WAF_CONFIG_`
@@ -142,7 +173,7 @@ waf_config:
     ipset_prefix: crowdsec-ipset-
 ```
 
-When configuring through environment variables, you can pass multiple `BOUNCER_WAF_CONFIG_X_` variables, with `X` being a unique identifier (eg, `0`, `1`, `2`, ...).
+When configuring via environment variables, you can pass multiple `BOUNCER_WAF_CONFIG_X_` variables, with `X` being a unique identifier (eg, `0`, `1`, `2`, ...).
 
 #### `web_acl_name`
 ##### Environment variable: `BOUNCER_WAF_CONFIG_X_WEB_ACL_NAME`
@@ -153,9 +184,9 @@ Name of the WAF ACL in which the rule group will be added
 #### `fallback_action`
 ##### Environment variable: `BOUNCER_WAF_CONFIG_X_FALLBACK_ACTION`
 
-Action to use if the type of a decision is not `captcha` or `ban`.
+Action to use if the type of a decision is not in the list defined by `supported_actions`.
 
-Must be one of `captcha` or `ban`.
+Must be one of `captcha`, `ban` or `count`.
 
 #### `rule_group_name`
 ##### Environment variable: `BOUNCER_WAF_CONFIG_X_RULE_GROUP_NAME`
@@ -163,19 +194,19 @@ Must be one of `captcha` or `ban`.
 
 Name of the rule group the bouncer will create and add to the WAF ACL.
 
-Must be unique accross all the configuration.
+Must be unique across all the configuration.
 
 2 rules can be created:
  - crowdsec-rule-ban
  - crowdsec-rule-captcha
 
-Those rules are automatically deleted if no decisions of the associated type exists.
+Those rules are automatically deleted if no decisions of the associated type exist.
 
 If a decision for a country is received, the following rules will be created:
  - crowdsec-rule-ban-country: Contains a geomatch statement for banned countries
  - crowdsec-rule-captcha-country: Contains a geomatch statement for captcha'ed countries
 
-Those rules will be deleted on shutdown and will be recreated on startup if they already exists.
+Those rules will be deleted on shutdown and recreated on startup if they already exist.
 
 #### `scope`
 ##### Environment variable: `BOUNCER_WAF_CONFIG_X_SCOPE`
@@ -189,7 +220,7 @@ Must match the scope of the WAF ACL.
 ##### Environment variable: `BOUNCER_WAF_CONFIG_X_REGION`
 
 
-Region where all ressources will be created.
+Region where all resources will be created.
 
 No required when scope is `CLOUDFRONT`
 
@@ -215,12 +246,12 @@ Name of the AWS profile (defined in ~/.aws/config) to use.
 Name of the header to use to get the source IP.
 If not defined, the actual source IP will be used.
 
-If the header is not present or does not contain any valid IP, the request will be allowed.
+The request will be allowed if the header is not present or contains no valid IP.
 
 #### `ip_header_position`
 ##### Environment variable: `BOUNCER_WAF_CONFIG_X_IP_HEADER_POSITION`
 
-If the header used to get the source IP is a comma separated list, this parameter can be used to specify which part of the list should be used.
+If the header used to get the source IP is a comma-separated list, this parameter can be used to specify which part of the list should be used.
 
 Must be one of `FIRST`, `LAST`, `ANY`.
 
