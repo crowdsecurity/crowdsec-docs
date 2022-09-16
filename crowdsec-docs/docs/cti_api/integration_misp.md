@@ -10,11 +10,11 @@ A MISP hover plugin which allows you to get knowledge from CrowdSec's CTI API up
 
 ### Setting up plugin server
 
-The plugin is included in MISP's [official plugin repo](https://github.com/MISP/misp-modules).
+The plugin will be soon included in MISP's [official plugin repo](https://github.com/MISP/misp-modules).
 
 The development version can be found on [crowdsec's fork](https://github.com/crowdsecurity/misp-modules).
 
-Install either of the fork via by following instuctions given [here](https://github.com/MISP/misp-modules#how-to-install-and-start-misp-modules-in-a-python-virtualenv-recommended)
+Install the fork via by following instuctions given [here](https://github.com/MISP/misp-modules#how-to-install-and-start-misp-modules-in-a-python-virtualenv-recommended)
 . Make sure to subsitute repository address as required.
 
 ### Configure the plugin
