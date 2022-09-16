@@ -35,9 +35,9 @@ Please note that first and foremost a CrowdSec agent must be installed on a serv
 
 ### Features
 
-- CrowdSec LAPI Support
+- CrowdSec Local API Support
     - Handle IP, IP ranges and Country scoped decisions
-    - Clear, prune and refresh the LAPI cache
+    - Clear, prune and refresh the Local API cache
     - `Live mode` or `Stream mode`
     - `Api-Key` and `TLS` connection
 - Large PHP matrix compatibility: 7.2.x, 7.3.x, 7.4.x, 8.0.x and 8.1.x
@@ -110,7 +110,7 @@ You can pass an array of configurations in the `$bouncer->configure($configs)` m
 
 Here is the list of available settings:
 
-##### LAPI Connection
+##### Local API Connection
 
 - `auth_type`: Select from `api_key` and `tls`. Choose if you want to use an API-KEY or a TLS (pki) authentification.
   TLS authentication is only available if you use CrowdSec agent with a version superior to 1.4.0.
@@ -140,13 +140,13 @@ Here is the list of available settings:
   Only required if you choose `tls` as `auth_type` and `tls_verify_peer` is set to true.
 
 
-- `api_url`: Define the URL to your LAPI server, default to `http://localhost:8080`.
+- `api_url`: Define the URL to your Local API server, default to `http://localhost:8080`.
 
 
-- `api_timeout`: In seconds. The timeout when calling LAPI. Must be greater or equal than 1. Default to 1 sec.
+- `api_timeout`: In seconds. The timeout when calling Local API. Must be greater or equal than 1. Default to 1 sec.
 
 
-- `use_curl`: By default, this lib call the REST LAPI using `file_get_contents` method (`allow_url_fopen` is required).
+- `use_curl`: By default, this lib call the REST Local API using `file_get_contents` method (`allow_url_fopen` is required).
   You can set `use_curl` to `true` in order to use `cURL` request instead (`curl` is in then required)
 
 
