@@ -38,15 +38,15 @@ This bouncer exposes CrowdSec's active decisions via provided HTTP endpoints in 
 }>
 <TabItem value="debian">
 
-```bash
-sudo apt install crowdsec-blocklist-mirror
+```console
+$ sudo apt install crowdsec-blocklist-mirror
 ```
 
 </TabItem>
 <TabItem value="rhel">
 
-```bash
-sudo yum install crowdsec-blocklist-mirror
+```console
+$ sudo yum install crowdsec-blocklist-mirror
 ```
 
 </TabItem>
@@ -63,22 +63,21 @@ Refer to docker [hub docs](https://hub.docker.com/r/crowdsecurity/blocklist-mirr
 
 First, download the latest [`crowdsec-blocklist-mirror` release](https://github.com/crowdsecurity/cs-blocklist-mirror/releases).
 
-```bash
-tar xzvf crowdsec-blocklist-mirror.tgz
-sudo ./install.sh
+```console
+$ tar xzvf crowdsec-blocklist-mirror.tgz
+$ sudo ./install.sh
 ```
 
 ## From source
 
 Run the following commands:
 
-```bash
-git clone https://github.com/crowdsecurity/crowdsec-blocklist-mirror.git
-cd crowdsec-blocklist-mirror/
-make release
-tar xzvf crowdsec-blocklist-mirror.tgz
-cd crowdsec-blocklist-mirror-v*/
-sudo ./install.sh
+```console
+$ git clone https://github.com/crowdsecurity/cs-blocklist-mirror.git
+$ cd cs-blocklist-mirror/
+$ make release
+$ cd crowdsec-blocklist-mirror-v*/
+$ sudo ./install.sh
 ```
 
 # Configuration
@@ -86,7 +85,7 @@ sudo ./install.sh
 Before starting the `crowdsec-blocklist-mirror` service, please edit the configuration file to add your API URL and key.
 The default configuration file is located under : `/etc/crowdsec/bouncers/`
 
-```sh
+```console
 $ vim /etc/crowdsec/bouncers/crowdsec-blocklist-mirror.yaml
 ```
 
