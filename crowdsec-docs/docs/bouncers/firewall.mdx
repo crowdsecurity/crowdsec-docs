@@ -192,7 +192,7 @@ table ip6 crowdsec6 {
  - `pid_dir` : directory to drop pid file
  - `update_frequency` controls how often the bouncer is going to query the local API
  - `daemonize` : for systemd unit
- - `log_mode` : can be `file` or `stdout` 
+ - `log_mode` : can be `file` or `stdout`
  - `log_dir` : log directory
  - `log_level` : can be `trace`, `debug`, `info`, or `error`
  - `log_compression` : compress logs on rotation, `true` or `false`
@@ -279,9 +279,7 @@ sudo ./upgrade.sh
 
 To be functional, the `crowdsec-firewall-bouncer` service must be able to authenticate with the local API.
 The `install.sh` script will take care of it (it will call `cscli bouncers add` on your behalf).
-If it was not the case, the default configuration file is located under : `/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml`
-
-
+If it was not the case, the default configuration is in `/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml`.
 
 
 You can then start the service:
@@ -289,6 +287,12 @@ You can then start the service:
 ```bash title="Start CrowdSec service"
 sudo systemctl start crowdsec-firewall-bouncer
 ```
+
+If you need to make changes to the configuration file and be sure they will never be modified or reverted
+by package upgrades, you can write them in a `crowdsec-firewall-bouncer.yaml.local` file as described in
+[Overriding values](https://docs.crowdsec.net/docs/next/configuration/crowdsec_configuration#overriding-values).
+Package upgrades may have good reasons to modify the configuration, so be careful if you use a `.local` file.
+
 
 ### logs
 
@@ -312,12 +316,13 @@ table <crowdsec6-blacklists> persist
  You can refer to step by step instructions of the [user tutorial on
  FreeBSD](/blog/crowdsec_firewall_freebsd)
  to setup crowdsec-firewall-bouncer with pf.
- 
+
  ### ipset
- 
+
  ipset lists have to exist before crowdsec-firewall-bouncer starts
- you could create them and add them to your iptables like this:
- ```
+ you can create them and add them to your iptables like this:
+
+```console
 ipset create crowdsec-blacklists hash:ip timeout 0 maxelem 150000
 ipset create crowdsec6-blacklists hash:ip timeout 0 family inet6 maxelem 150000
 iptables -I INPUT 1 -m set --match-set crowdsec-blacklists src -j DROP
