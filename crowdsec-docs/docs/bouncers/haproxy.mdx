@@ -138,10 +138,13 @@ CAPTCHA_EXPIRATION=3600
 
 HAProxy must be amended with following configuration :
 
+/!\ Be careful to the actual lua scripts location after install (/usr/lib or /usr/lib64 or /usr/local ...)
+
 ```bash title="/etc/haproxy/haproxy.cfg"
 global
  ...
  # Crowdsec bouncer >>>
+ lua-prepend-path /usr/lib/crowdsec/lua/haproxy/?.lua
  lua-load /usr/lib/crowdsec/lua/crowdsec.lua # path to crowdsec.lua
  setenv CROWDSEC_CONFIG /etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf # path to crowdsec bouncer configuration file
  # Crowdsec bouncer <<<
