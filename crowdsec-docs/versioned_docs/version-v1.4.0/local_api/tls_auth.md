@@ -212,16 +212,16 @@ Lastly, we will define our bouncer and agents certs:
 
 We can now create our CA and the certs:
 ```shell
-#generate the CA
+# Generate the CA
 cfssl gencert --initca ./cfssl/ca.json 2>/dev/null | cfssljson --bare "/tmp/ca"
-#Generate an intermediate certificate that will be used to sign the client certificates
+# Generate an intermediate certificate that will be used to sign the client certificates
 cfssl gencert --initca ./cfssl/intermediate.json 2>/dev/null | cfssljson --bare "/tmp/inter"
 cfssl sign -ca "/tmp/ca.pem" -ca-key "/tmp/ca-key.pem" -config ./cfssl/profiles.json -profile intermediate_ca "/tmp/inter.csr" 2>/dev/null | cfssljson --bare "/tmp/inter"
-#Generate a server side certificate
+# Generate a server side certificate
 cfssl gencert -ca "/tmp/inter.pem" -ca-key "/tmp/inter-key.pem" -config ./cfssl/profiles.json -profile=server ./cfssl/server.json 2>/dev/null | cfssljson --bare "/tmp/server"
-#Generate a client certificate for the bouncer
+# Generate a client certificate for the bouncer
 cfssl gencert -ca "/tmp/inter.pem" -ca-key "/tmp/inter-key.pem" -config ./cfssl/profiles.json -profile=client ./cfssl/bouncer.json 2>/dev/null | cfssljson --bare "/tmp/bouncer"
-#Generate a client certificate for the agent
+# Generate a client certificate for the agent
 cfssl gencert -ca "/tmp/inter.pem" -ca-key "/tmp/inter-key.pem" -config ./cfssl/profiles.json -profile=client ./cfssl/agent.json 2>/dev/null | cfssljson --bare "/tmp/agent"
 ```
 
@@ -232,22 +232,23 @@ We now need to update LAPI configuration to use our newly generated certificates
 ```yaml
 api:
  server:
-   cert_file: /tmp/server.pem #Server side cert
-   key_file: /tmp/server-key.pem #Server side key
-   ca_cert_path: /tmp/inter.pem #CA used to verify the client certs
-   bouncers_allowed_ou: #OU allowed for bouncers
-    - bouncer-ou
-   agents_allowed_ou: #OU allowed for agents
-    - agent-ou
+   tls:
+    cert_file: /tmp/server.pem #Server side cert
+    key_file: /tmp/server-key.pem #Server side key
+    ca_cert_path: /tmp/inter.pem #CA used to verify the client certs
+    bouncers_allowed_ou: #OU allowed for bouncers
+     - bouncer-ou
+    agents_allowed_ou: #OU allowed for agents
+     - agent-ou
 ```
 
-We also need to update our agent configuration to use a certificate to login to LAPI in `/etc/crowdsec/local_api_credentials.yaml`:
+We also need to update our agent configuration to use a certificate to log in to LAPI in `/etc/crowdsec/local_api_credentials.yaml`:
 
 ```yaml
-url: https://localhost:8081
+url: https://localhost:8080
 ca_cert_path: /tmp/inter.pem #CA to trust the server certificate
-key_path: /tmp/agent.pem #Client key
-cert_path: /tmp/agent-key.pem #Client cert
+key_path: /tmp/agent-key.pem #Client key
+cert_path: /tmp/agent.pem #Client cert
 ```
 
 ### Using the certificates
@@ -279,7 +280,7 @@ We see that the agent name was automatically derived from the certificate Common
 We can simulate a bouncer request using `curl`:
 
 ```shell
-$ curl --cacert /tmp/inter.pem --cert /tmp/bouncer.pem --key /tmp/bouncer-key.pem https://localhost:8081/v1/decisions/stream?startup=true
+$ curl --cacert /tmp/inter.pem --cert /tmp/bouncer.pem --key /tmp/bouncer-key.pem https://localhost:8080/v1/decisions/stream?startup=true
 {"deleted":[{"duration":"-18h13m35.223932s","id":38,"origin":"crowdsec","scenario":"crowdsecurity/http-cve-2021-41773","scope":"Ip","type":"ban","value":"23.94.26.138"}],"new":null}
 ```
 
@@ -297,7 +298,7 @@ $ cscli bouncers list
 If we try to use the agent certificate with our fake bouncer, LAPI with return an error as the OU is not allowed for the bouncers:
 
 ```shell
-$ curl --cacert /tmp/inter.pem --cert /tmp/agent.pem --key /tmp/agent-key.pem https://localhost:8081/v1/decisions/stream\?startup\=true
+$ curl --cacert /tmp/inter.pem --cert /tmp/agent.pem --key /tmp/agent-key.pem https://localhost:8080/v1/decisions/stream\?startup\=true
 {"message":"access forbidden"}
 ```
 
@@ -323,7 +324,7 @@ api:
 
 Let's query the API again:
 ```shell
-$ curl --cacert /tmp/inter.pem --cert /tmp/bouncer.pem --key /tmp/bouncer-key.pem https://localhost:8081/v1/decisions/stream\?startup\=true
+$ curl --cacert /tmp/inter.pem --cert /tmp/bouncer.pem --key /tmp/bouncer-key.pem https://localhost:8080/v1/decisions/stream\?startup\=true
 {"message":"access forbidden"}
 ```
 
