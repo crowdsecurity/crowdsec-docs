@@ -1,6 +1,8 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
+const path = require('path')
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'CrowdSec',
@@ -12,6 +14,7 @@ module.exports = {
   favicon: 'img/crowdsec_no_txt.png',
   organizationName: 'CrowdSec',
   projectName: 'crowdsec-docs',
+  plugins: [path.resolve(__dirname, 'plugins', 'matomo')],
   themeConfig: {
     algolia: {
       appId: 'PWTZ94KULF',
