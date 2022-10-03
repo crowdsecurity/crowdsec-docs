@@ -15,10 +15,8 @@ This documentation should be relevant mostly for administrators that would like 
 
 There are two kind of access to the local api :
 
- - `machines` : it's a login/password authentication used by cscli and CrowdSec, this one allows to post, get and delete decisions and alerts.
- - `bouncers` : it's a token authentication used by bouncers to query the decisions, and only allows to perform get on decisions.
-
-
+- `machines` : it's a login/password authentication used by cscli and CrowdSec, this one allows to post, get and delete decisions and alerts.
+- `bouncers` : it's a token authentication used by bouncers to query the decisions, and only allows to perform get on decisions.
 
 ## Machines authentication
 
@@ -36,11 +34,10 @@ You can view the registered machines with `list`, as well as add or delete them 
 
 ```bash
 sudo cscli machines add mytestmachine -a
-INFO[0004] Machine 'mytestmachine' created successfully       
-INFO[0004] API credentials dumped to '/etc/crowdsec/local_api_credentials.yaml' 
+INFO[0004] Machine 'mytestmachine' created successfully
+INFO[0004] API credentials dumped to '/etc/crowdsec/local_api_credentials.yaml'
 sudo cscli machines delete 82929df7ee394b73b81252fe3b4e5020
 ```
-
 
 <details>
   <summary>cscli machines example</summary>
@@ -48,42 +45,41 @@ sudo cscli machines delete 82929df7ee394b73b81252fe3b4e5020
 ```bash
 sudo cscli machines list
 ----------------------------------------------------------------------------------------------------------------------------------
- NAME                              IP ADDRESS  LAST UPDATE                STATUS  VERSION                                         
+ NAME                              IP ADDRESS  LAST UPDATE                STATUS  VERSION
 ----------------------------------------------------------------------------------------------------------------------------------
- 82929df7ee394b73b81252fe3b4e5020  127.0.0.1   2020-10-31T14:06:32+01:00  ✔️      v0.3.6-3d6ce33908409f2a830af6551a7f5e37f2a4728f 
+ 82929df7ee394b73b81252fe3b4e5020  127.0.0.1   2020-10-31T14:06:32+01:00  ✔️      v0.3.6-3d6ce33908409f2a830af6551a7f5e37f2a4728f
 ----------------------------------------------------------------------------------------------------------------------------------
 sudo cscli machines add -m mytestmachine -a
-INFO[0004] Machine 'mytestmachine' created successfully       
-INFO[0004] API credentials dumped to '/etc/crowdsec/local_api_credentials.yaml' 
-sudo cscli machines list      
+INFO[0004] Machine 'mytestmachine' created successfully
+INFO[0004] API credentials dumped to '/etc/crowdsec/local_api_credentials.yaml'
+sudo cscli machines list
 ----------------------------------------------------------------------------------------------------------------------------------
- NAME                              IP ADDRESS  LAST UPDATE                STATUS  VERSION                                         
+ NAME                              IP ADDRESS  LAST UPDATE                STATUS  VERSION
 ----------------------------------------------------------------------------------------------------------------------------------
- 82929df7ee394b73b81252fe3b4e5020  127.0.0.1   2020-10-31T14:06:32+01:00  ✔️      v0.3.6-3d6ce33908409f2a830af6551a7f5e37f2a4728f 
- mytestmachine                     127.0.0.1   2020-11-01T11:37:19+01:00  ✔️      v0.3.6-6a18458badf8ae5fed8d5f1bb96fc7a59c96163c 
+ 82929df7ee394b73b81252fe3b4e5020  127.0.0.1   2020-10-31T14:06:32+01:00  ✔️      v0.3.6-3d6ce33908409f2a830af6551a7f5e37f2a4728f
+ mytestmachine                     127.0.0.1   2020-11-01T11:37:19+01:00  ✔️      v0.3.6-6a18458badf8ae5fed8d5f1bb96fc7a59c96163c
 ----------------------------------------------------------------------------------------------------------------------------------
 sudo cscli machines delete -m 82929df7ee394b73b81252fe3b4e5020
-sudo cscli machines list                                      
+sudo cscli machines list
 ---------------------------------------------------------------------------------------------------------
- NAME     IP ADDRESS  LAST UPDATE                STATUS  VERSION                                         
+ NAME     IP ADDRESS  LAST UPDATE                STATUS  VERSION
 ---------------------------------------------------------------------------------------------------------
- mytestmachine  127.0.0.1   2020-11-01T11:37:19+01:00  ✔️      v0.3.6-6a18458badf8ae5fed8d5f1bb96fc7a59c96163c 
+ mytestmachine  127.0.0.1   2020-11-01T11:37:19+01:00  ✔️      v0.3.6-6a18458badf8ae5fed8d5f1bb96fc7a59c96163c
 ---------------------------------------------------------------------------------------------------------
 ```
 
 </details>
 
-
 ## Machine register
 
 It is also possible to register to a local API from a remote machine with `cscli lapi` and then validate the machine on the local API machine.
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
 
 <Tabs
-  defaultValue="debian"
+  defaultValue="agent"
   groupId="operating-systems"
   values={[
     {label: 'CrowdSec Agent Machine', value: 'agent'},
