@@ -4,22 +4,19 @@ var path = require("path");
 module.exports = function (context) {
   const {siteConfig} = context;
   const {themeConfig} = siteConfig;
-  const {matomo} = themeConfig || {};
 
-  //const isProd = process.env.NODE_ENV === 'production';
-  isProd = true;
   return {
     name: 'docusaurus-plugin-matomo',
     getClientModules() {
-        return isProd ? [path.resolve(__dirname, './track')] : [];
-      },
+      return [path.resolve(__dirname, './track')]
+    },
     injectHtmlTags() {
       return {
         headTags: [
         {
             tagName: 'script',
             attributes: {
-                src: '/plugins/matomo/tarteaucitron.js-1.9.7/tarteaucitron.js',
+                src: 'https://cdnjs.cloudflare.com/ajax/libs/tarteaucitronjs/1.9.7/tarteaucitron.js',
             },
         },
         {
