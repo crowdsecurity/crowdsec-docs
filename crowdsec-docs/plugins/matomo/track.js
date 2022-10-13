@@ -11,6 +11,7 @@ export default (function () {
             window._paq.push(['setCustomUrl', location.pathname]);
             window._paq.push(['setDocumentTitle', document.title]);
             window._paq.push(['trackPageView']);
+            window._paq.push(['HeatmapSessionRecording::disable']);
         }
     },
   };
