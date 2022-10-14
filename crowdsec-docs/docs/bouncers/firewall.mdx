@@ -127,7 +127,7 @@ See as well [Manual Installation documentation below](/docs/bouncers/firewall#ma
 ## Configuration
 
 There are two main usage case around the firewall bouncer :
- - **managed** (default) : cs-firewall-bouncer will create ispet/nft sets, insert the associated firewall rules and manage set's content
+ - **managed** (default) : cs-firewall-bouncer will create ipset/nft sets, insert the associated firewall rules and manage set's content
  - **set only** : you already have a (complex) firewall setup, cs-firewall-bouncer will only manage the _content_ of existing specified sets
 
 
@@ -145,7 +145,7 @@ IPSet (when using `iptables` mode) does not support a timeout greater than 21474
 
 ### Set Only : Iptables/Ipset table
 
-In iptable set only mode (mode `ispet`), bouncer only manages the **contents** of sets designed by `blacklists_ipv4` and `blacklists_ipv6`.
+In iptable set only mode (mode `ipset`), bouncer only manages the **contents** of sets designed by `blacklists_ipv4` and `blacklists_ipv6`.
 Those sets must exist prior to the bouncer startup, and it is the user's responsability to create the associate iptables rules.
 
 :::warning
