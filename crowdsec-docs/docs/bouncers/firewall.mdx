@@ -289,7 +289,7 @@ sudo systemctl start crowdsec-firewall-bouncer
 ```
 
 If you need to make changes to the configuration file and be sure they will never be modified or reverted
-by package upgrades, you can write them in a `crowdsec-firewall-bouncer.yaml.local` file as described in
+by package upgrades, starting from v0.0.25 you can write them in a `crowdsec-firewall-bouncer.yaml.local` file as described in
 [Overriding values](https://docs.crowdsec.net/docs/next/configuration/crowdsec_configuration#overriding-values).
 Package upgrades may have good reasons to modify the configuration, so be careful if you use a `.local` file.
 
