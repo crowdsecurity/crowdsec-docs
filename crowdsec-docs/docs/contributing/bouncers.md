@@ -4,15 +4,16 @@ title: Bouncers
 sidebar_position: 5
 ---
 
-# Publishing bouncers
+## Publishing bouncers
 
 We do welcome bouncers from the community, and will gladly publish them on the hub.
 
-## Why ?
+### Why ?
 
 Sharing your bouncer on the hub allows other users to find and use it. While increasing your code's visibility, it also ensures a benevolent evaluation by the community and our team.
 
-## How ?
+### How ?
+
 
 To have your bouncer published on the hub, please simply [open a new issue on the hub](https://github.com/crowdsecurity/hub/issues/new), requesting "bouncer inclusion". The bouncer will then be reviewed by the team, and published directly on the hub, for everyone to find & use it!
 
@@ -52,4 +53,18 @@ I would like to suggest the addition of the `XXXX` to the hub :
 - Short/Long description: OK
 - Howto: in README
 - At least one release: yes
+```
+
+
+### Bonus
+
+You can also open a Pull Request to add the bouncer in the Hub.
+To do this, you must edit the [`blockers/list.json`](https://raw.githubusercontent.com/crowdsecurity/hub/master/blockers/list.json) file by adding the following object in the array:
+
+```json
+    {
+        "name": "<BOUNCER NAME>",
+        "author": "<GITHUB ACCOUNT OR ORG>",
+        "logo": "<THE BASE64 LOGO IMAGE>"
+    }
 ```

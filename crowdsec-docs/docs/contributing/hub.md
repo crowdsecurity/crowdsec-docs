@@ -22,23 +22,23 @@ To get involved :
 - Create/Modify tests to ensure proper coverage
 - Open a pull request
 
-# Guidelines
+## Guidelines
 
-## Technical Documentation
+### Technical Documentation
 
 The following explains how to create and test:
 
 - [parsers](/docs/parsers/create/)
 - [scenarios](/docs/scenarios/create/)
 
-## Collections
+### Collections
 
 It often makes sense for a new parser or scenario to be added to an existing [collection](/docs/collections/format), or create a new one.
 
 If your parsers and/or scenarios cover a new or specific service, having a dedicated collection for this service makes sense.
 In other cases, having a parser for `SpecificWebServer` access logs would justify a collection as it might also include [all the default http related scenarios](https://hub.crowdsec.net/author/crowdsecurity/collections/base-http-scenarios).
 
-# Preparing your contribution
+## Preparing your contribution
 
 Before asking for a review of your PR, please ensure you have the following:
 
@@ -61,6 +61,6 @@ Before asking for a review of your PR, please ensure you have the following:
     ```
 ```
 
-# Open your PR
+## Open your PR
 
 Everything is all set, you can now open a PR, that will be reviewed and merged!
