@@ -59,7 +59,7 @@ I would like to suggest the addition of the `XXXX` to the hub :
 ### Bonus
 
 You can also open a Pull Request to add the bouncer in the Hub.
-To do this, you must edit the [`blockers/list.json`](https://raw.githubusercontent.com/crowdsecurity/hub/master/blockers/list.json) file by adding the following object in the array:
+To do this, you must edit the [`blockers/list.json`](https://raw.githubusercontent.com/crowdsecurity/hub/master/blockers/list.json) file and add the following object in the array:
 
 ```json
     {
