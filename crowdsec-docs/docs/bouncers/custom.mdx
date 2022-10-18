@@ -93,9 +93,9 @@ $ vim /etc/crowdsec/bouncers/crowdsec-custom-bouncer.yaml
 bin_path: <absolute_path_to_binary>
 total_retries: 0
 feed_via_stdin: false
-include_scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word, eg ["ssh", "http"]
-exclude_scenarios_containing: [] # ignore IPs banned for triggering scenarios containing either of provided word
-only_include_decisions_from: []
+scenarios_containing: [] # ignore IPs banned for triggering scenarios containing either of provided word EG ["ssh", "smb"]
+scenarios_not_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word EG ["http"]
+origins: [] #  only include IPs banned due to decisions orginating from provided sources. EG ["cscli", "crowdsec"]
 piddir: /var/run/
 update_frequency: 10s
 daemonize: true
@@ -160,16 +160,15 @@ Relevant if `feed_via_stdin` is true.
 It denotes the number times to restart the binary in case of failure.
 Set to -1 for infinite restarts.
 
-### `include_scenarios_containing`
+### `scenarios_not_containing`
 
 Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
 
-### `exclude_scenarios_containing`
+### `scenarios_containing`
 
 Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"]
 
-
-### `only_include_decisions_from`
+### `origins`
 
 Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
 
