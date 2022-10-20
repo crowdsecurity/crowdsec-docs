@@ -51,6 +51,7 @@ sidebar_position: 3
    - `name`: name of the scenario (see [hub.crowdsec.net](hub.crowdsec.net))
    - `label`, `description`: Human-friendly descriptions of said scenarios
  - `target_countries`: The top 10 reports repartition by country about the IP, as a percentage
+ - `background_noise_score`: Evaluate the noisiness of an IP address, from a scale of 0 (not noisy) to 10 (extremely noisy)
  - `scores`: Indicators of Malevolence computed on different time periods
     - `overall`: Malevolence score over the total period (3 months)
       - `total`: The aggregated malevolence score
