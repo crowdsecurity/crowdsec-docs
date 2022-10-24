@@ -145,7 +145,7 @@ global
  ...
  # Crowdsec bouncer >>>
  lua-prepend-path /usr/lib/crowdsec/lua/haproxy/?.lua
- lua-load /usr/lib/crowdsec/lua/crowdsec.lua # path to crowdsec.lua
+ lua-load /usr/lib/crowdsec/lua/haproxy/crowdsec.lua # path to crowdsec.lua
  setenv CROWDSEC_CONFIG /etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf # path to crowdsec bouncer configuration file
  # Crowdsec bouncer <<<
  ...
