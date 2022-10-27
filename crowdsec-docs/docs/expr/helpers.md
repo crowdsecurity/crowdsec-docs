@@ -179,7 +179,7 @@ Returns the number of existing decisions in database with the same value since d
 :::warning
 * Only use this function within postoverflows as it is can be very slow
 * Note if you whitelist a domain behind a CDN provider, all domains using the same CDN provider will also be whitelisted
-* Do not use parser varibles within the function as this can be untrusted user input
+* Do not use varibles within the function as this can be untrusted user input
 :::
 Returns []string ip addresses that resolvable to the hostname EG: `LookupHost('mydomain.tld') => ['1.2.3.4', '5.6.7.8']`
 ```yaml
