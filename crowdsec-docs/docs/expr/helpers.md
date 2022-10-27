@@ -175,6 +175,22 @@ Returns the number of existing decisions in database with the same value since d
 
 > `Sprintf('%dh', 1)` returns `1h`
 
+### `LookupHost(host string) []string`
+:::warning
+* Only use this function within postoverflows as it is can be very slow
+* Note if you whitelist a domain behind a CDN provider, all domains using the same CDN provider will also be whitelisted
+* Do not use parser varibles within the function as this can be untrusted user input
+:::
+Returns []string ip addresses that resolvable to the hostname EG: `LookupHost('mydomain.tld') => ['1.2.3.4', '5.6.7.8']`
+```yaml
+name: me/my_cool_whitelist
+description: lets whitelist our own IP
+whitelist:
+  reason: dont ban my IP
+  expression:
+    - evt.Overflow.Alert.Source.IP in LookupHost('mydomain.tld')
+# This can be useful when you have a dynamic ip and use dynamic DNS providers
+```
 
 ## Alert specific helpers
 
