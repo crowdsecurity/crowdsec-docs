@@ -15,7 +15,7 @@ source: journalctl
 journalctl_filter:
  - "_SYSTEMD_UNIT=ssh.service"
 labels:
-  type: journald
+  type: syslog
 ```
 
 ## Parameters
