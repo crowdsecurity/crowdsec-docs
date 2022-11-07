@@ -599,7 +599,7 @@ db_config:
 ```
 [SQLite Write-Ahead Logging](https://www.sqlite.org/wal.html) is an option allowing more concurrency in SQLite that will improve performances in most scenarios.
 
-When WAL is disabled (or unspecified) you will see the following warning message at startup :
+When WAL is unspecified you will see the following warning message at startup :
 
 
 > You are using sqlite without WAL, this can have an impact of performance. If you do not store the database in a network share, set db_config.use_wal to true. Set explicitly to false to disable this warning.
