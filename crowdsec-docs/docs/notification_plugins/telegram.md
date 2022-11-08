@@ -5,7 +5,7 @@ title: Telegram
 
 Telegram can be integrated with CrowdSec by using the HTTP plugin. Enable it by following these [instructions](/notification_plugins/http.md) .
 
-Then replace the `chat_id` and the `TELEGRAM_APY_KEY` of the plugin's config so that it send the events to your Telegram chat.
+Then replace the `chat_id` and the `TELEGRAM_API_KEY` of the plugin's config so that it send the events to your Telegram chat.
 
 An example configuration:
 
@@ -35,13 +35,13 @@ format: |
      {{range . -}}  
      {{$alert := . -}}  
      {{range .Decisions -}}
-     {{.Value}} will get {{.Type}} for next {{.Duration}} for  triggering {{.Scenario}}.\r\n https://www.shodan.io/host/{{.Value}}
+     {{.Value}} will get {{.Type}} for next {{.Duration}} for triggering {{.Scenario}}.\r\n https://www.shodan.io/host/{{.Value}}
      {{end -}}
      {{end -}}
    "
   }
 
-url: https://api.telegram.org/bot<TELEGRAM_APY_KEY>/sendMessage # Replace <TELEGRAM_APY_KEY> with your APi key
+url: https://api.telegram.org/bot<TELEGRAM_API_KEY>/sendMessage # Replace <TELEGRAM_API_KEY> with your API key
 
 method: POST
 headers:
