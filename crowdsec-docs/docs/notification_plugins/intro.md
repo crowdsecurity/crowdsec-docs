@@ -625,10 +625,9 @@ information for each notification plugin using its given name by
 executing `cscli notifications inspect <name>`.
 
 The last other helpful subcommand is for testing notifications plugins
-directly. It takes an alert and reinject it to notifications subsystem
-through profiles like notifications usually do. So if the alert
-actually matches the profile configuration, it goes through the
-configured notifications plugins. This can be useful to test both the
-profile configuration and the normal operation of the notifications
-plugins.
+directly. It takes an id and reinject the alert through the matched
+profile notifications. If the alert matches a profile with no
+configured notifications then no notification will be generated. This
+can be useful to test both the profile configuration and the normal
+operation of the notifications plugins.
 
