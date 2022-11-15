@@ -612,3 +612,22 @@ Teams webhook
     ]
  } 
 ```
+
+### Debugging notifications plugins
+
+cscli cli tool provide some useful command to help write notification
+plugin configuration. Those are provided by the `cscli notifications`
+command and its subcommands.
+
+First `cscli notifications list` will list the active configured
+notifications plugins. Then it's possible to get configuration
+information for each notification plugin using its given name by
+executing `cscli notifications inspect <name>`.
+
+The last other helpful subcommand is for testing notifications plugins
+directly. It takes an id and reinject the alert through the matched
+profile notifications. If the alert matches a profile with no
+configured notifications then no notification will be generated. This
+can be useful to test both the profile configuration and the normal
+operation of the notifications plugins.
+
