@@ -617,7 +617,7 @@ Teams webhook
 
 cscli cli tool provide some useful command to help write notification
 plugin configuration. Those are provided by the `cscli notifications`
-command a,d its subcommands.
+command and its subcommands.
 
 First `cscli notifications list` will list the active configured
 notifications plugins. Then it's possible to get configuration
