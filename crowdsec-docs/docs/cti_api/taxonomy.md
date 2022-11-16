@@ -121,6 +121,7 @@ sidebar_position: 3
 
 | Name | Label | Description | 
 |------|-------|-------------|
+| community-blocklist | CrowdSec Community Blocklist | IP belong to the CrowdSec Community Blocklist |
 | profile:insecure_services | Dangerous Services Exposed | IP exposes dangerous services (vnc, telnet, rdp), possibly due to a misconfiguration or because it's a honeypot. |
 | profile:many_services | Many Services Exposed | IP exposes many open port, possibly due to a misconfiguration or because it's a honeypot. |
 | proxy:tor | TOR exit node | IP is being flagged as a TOR exit node. |
@@ -136,3 +137,5 @@ sidebar_position: 3
 | scanner:legit | Legit scanner | IP belongs to a company that scans internet |
 | scanner:shadowserver.org | Known Security Company | IP belongs to an entity that scans internet : www.shadowserver.org. |
 | scanner:shodan | Known Security Company | IP belongs to a company that scans internet : Shodan. |
+| scanner:stretchoid | Known Security Company | IP belongs to an entity that scans internet : stretchoid. |
+| profile:fake_rdns | Fake RDNS | IP is using a fake RDNS |
