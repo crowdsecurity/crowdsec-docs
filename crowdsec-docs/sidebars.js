@@ -55,7 +55,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Data Sources',
-      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/windows_evt_log", "data_sources/troubleshoot" ]
+      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/windows_evt_log", "data_sources/kafka", "data_sources/troubleshoot" ]
     },
     {
       type: 'category',
