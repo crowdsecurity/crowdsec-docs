@@ -14,11 +14,11 @@ Plugins are defined at LAPI level. Events get dispatched to said plugins via [pr
 
 The default plugins are shipped with CrowdSec upon installation, and can trivially be enabled without further installation.
 
-Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`.md).
+Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`).
 
 
 
-Plugin binaries are present in `config_paths.plugin_dir` (defaults to `/var/lib/crowdsec/plugins/`), and their individual configuration are present in `config_paths.notification_dir` (defaults to `/etc/crowdsec/notifications/`)
+Plugin binaries are present in `config_paths.plugin_dir` (defaults to `/var/lib/crowdsec/plugins/` or `/usr/lib64/crowdsec/plugins/` depending on your Linux distribution), and their individual configuration are present in `config_paths.notification_dir` (defaults to `/etc/crowdsec/notifications/`). Verify the paths in `/etc/crowdsec/config.yaml` before registering a plugin.
 
 **Important:** CrowdSec rejects the plugins if one of the following is true :
 1. plugin is not owned by the root user and root group.
