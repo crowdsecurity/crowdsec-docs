@@ -51,6 +51,7 @@ db_config:
   #db_name:
   #host:
   #port:
+  #use_wal: false
   flush:
     max_items: 5000
     max_age: 7d
@@ -212,6 +213,7 @@ db_config:
   host:     "<db_host_ip>"   # for mysql/pgsql
   port:     "<db_host_port>" # for mysql/pgsql
   sslmode:  "<required/disable>" # for pgsql
+  use_wal:  "true|false" # for sqlite
   max_open_conns: "<max_number_of_conns_to_db>"
   flush:
     max_items: "<max_alerts_in_db>"
@@ -474,6 +476,7 @@ db_config:
   type:     "<db_type>"
 
   db_path:  "<path_to_database_file>"  # for sqlite
+  use_wal:  "true|false" # for sqlite
 
   user:     "<db_user>"      # for mysql/postgresql/pgx
   password: "<db_password>"  # for mysql/postgresql/pgx
@@ -585,6 +588,21 @@ db_config:
 Maximum number of open connections to the database.
 
 Defaults to 100. Set to 0 for unlimited connections.
+
+
+#### `use_wal`
+
+```yaml
+db_config:
+  type: sqlite
+  use_wal: true
+```
+[SQLite Write-Ahead Logging](https://www.sqlite.org/wal.html) is an option allowing more concurrency in SQLite that will improve performances in most scenarios.
+
+When WAL is unspecified you will see the following warning message at startup :
+
+
+> You are using sqlite without WAL, this can have an impact of performance. If you do not store the database in a network share, set db_config.use_wal to true. Set explicitly to false to disable this warning.
 
 #### `flush`
 
