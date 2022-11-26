@@ -296,7 +296,7 @@ Log media. Can be `stdout` or `file`.
 
 Log level. Can be `error`, `info`, `debug`, `trace`.
 
-#### `log_folder`
+#### `log_dir`
 > string
 
 Folder to write log file.
