@@ -139,3 +139,13 @@ sidebar_position: 3
 | scanner:shodan | Known Security Company | IP belongs to a company that scans internet : Shodan. |
 | scanner:stretchoid | Known Security Company | IP belongs to an entity that scans internet : stretchoid. |
 | profile:fake_rdns | Fake RDNS | IP is using a fake RDNS |
+| profile:nxdomain | NXDOMAIN | RDNS doesn't exist |
+| profile:router | Router | IP belongs to a router exping services on the internet |
+| profile:proxy | Proxy | IP exposes services that are commonly used by proxies |
+| profile:jupiter-vpn | JupiterVPN | IP belongs to a jupiter vpn |
+| device:cyberoam | Cyberoam | IP belongs to a Cyberoam router |
+| device:microtik | Mikrotik | IP belongs to a Mikrotik router |
+| device:asuswrt | AsusWRT | IP belongs to a AsusWRT router |
+| device:hikvision | Hikvision | IP belongs to a Hikvision camera |
+| device:ipcam | IpCamera | IP belongs to a IP camera |
+| profile:likely_botnet | Likely Botnet | IP is likely to belong to a botnet (based on behaviour and/or characteristics) |
