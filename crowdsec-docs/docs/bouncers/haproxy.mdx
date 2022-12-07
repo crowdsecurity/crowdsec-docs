@@ -122,7 +122,7 @@ EXCLUDE_LOCATION=
 UPDATE_FREQUENCY=10
 #those apply for "ban" action
 # /!\ REDIRECT_LOCATION and BAN_TEMPLATE_PATH/RET_CODE can't be used together. REDIRECT_LOCATION take priority over RET_CODE AND BAN_TEMPLATE_PATH
-BAN_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/ban.html
+BAN_TEMPLATE_PATH=/var/lib/crowdsec/lua/haproxy/templates/ban.html
 REDIRECT_LOCATION=
 RET_CODE=
 #those apply for "captcha" action
@@ -130,7 +130,7 @@ RET_CODE=
 SECRET_KEY=
 # reCAPTCHA Site key
 SITE_KEY=
-CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
+CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/haproxy/templates/captcha.html
 CAPTCHA_EXPIRATION=3600
 ```
 
@@ -166,8 +166,9 @@ backend captcha_verifier
  server captcha_verifier www.google.com:443 check
 
 # define a backend for crowdsec to allow DNS resolution
+# replace 127.0.0.1:8080 by the listen URI of the crowdsec local API
 backend crowdsec
- server crowdsec crowdsec:8080 check
+ server crowdsec 127.0.0.1:8080 check
 # Crowdsec bouncer <<<
 ```
 
