@@ -166,6 +166,7 @@ backend captcha_verifier
  server captcha_verifier www.google.com:443 check
 
 # define a backend for crowdsec to allow DNS resolution
+# replace 127.0.0.1:8080 by the listen URI of the crowdsec local API
 backend crowdsec
  server crowdsec 127.0.0.1:8080 check
 # Crowdsec bouncer <<<
