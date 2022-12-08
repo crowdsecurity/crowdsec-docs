@@ -531,7 +531,7 @@ db_config:
   db_path: /var/run/mysqld/mysqld.sock
 ```
 
-The path to the database file (only if the type of database is `sqlite`)
+The path to the database file (only if the type of database is `sqlite`) or path to socket file (only if the type of database is `mysql`)
 
 #### `user`
 
@@ -563,23 +563,23 @@ db_config:
 ```
 The database name to connect to (only if the type of database is `mysql` or `postgresql`)
 
-#### `db_host`
+#### `host`
 
 ```yaml
 db_config:
   type: mysql|postgresql|pgx
 
-  db_host: foo
+  host: foo
 ```
 The host to connect to (only if the type of database is `mysql` or `postgresql`). Must be omitted if using socket file.
 
-#### `db_port`
+#### `port`
 
 ```yaml
 db_config:
   type: mysql|postgresql|pgx
 
-  db_port: 3306|5432|5432
+  port: 3306|5432|5432
 ```
 The port to connect to (only if the type of database is `mysql` or `postgresql`). Must be omitted if using socket file.
 
