@@ -57,12 +57,12 @@ module.exports = {
           position: 'left',
           label: 'Bouncers',
         },
-        // {
-        //   type: 'doc',
-        //   docId: 'cti_api/intro',
-        //   position: 'left',
-        //   label: 'CTI Api',
-        // },
+        {
+           type: 'doc',
+           docId: 'cti_api/getting_started',
+           position: 'left',
+           label: 'CTI Api',
+        },
         {to: 'https://crowdsec.net/blog/category/tutorial/', label: 'Tutorials', position: 'left'},
         {
           type: 'doc',
