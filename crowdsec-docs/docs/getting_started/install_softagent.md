@@ -67,3 +67,9 @@ Example of Whisper signals
 When sending signals the name of your scenario must follow this convention **^[a-z0-9_-]+\/[a-z0-9_-]+$** example **mysecmodule/login-bruteforce**
 
 For categories of behaviors, you can refer to our behaviors list in the [taxonomy ](https://doc.crowdsec.net/docs/next/cti_api/taxonomy/#behaviors)
+
+(!) Avoid spamming CAPI with signals:
+
+Ideally, save them to a buffer and send the buffer periodically
+* Frequency of emission: between 10 seconds and 10 minutes depending on how big the buffer gets in that period
+* However, don't send more than 250 signals in a single call
