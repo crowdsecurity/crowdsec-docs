@@ -11,6 +11,8 @@ You can send signals for your custom scenario, get the community blocklist and e
 
 Those libraries are doing the heavy lifting of the CAPI connectivity so you can simply, sendSignals, getDecisions and getRemediationForIp, as well as enrolling your soft-agent into the console
 
+![Possible integration](/img/php-libs-crowdsec-overview+cron.jpg)
+
 ## PHP CAPI client + Remediation Engine
 
 The [php-capi-client](https://github.com/crowdsecurity/php-capi-client) will deal automatically with connecting to CAPI and renewing the token when necessary.\
@@ -68,7 +70,7 @@ When sending signals the name of your scenario must follow this convention **^[a
 
 For categories of behaviors, you can refer to our behaviors list in the [taxonomy ](https://doc.crowdsec.net/docs/next/cti_api/taxonomy/#behaviors)
 
-(!) Avoid spamming CAPI with signals:
+(!) **Avoid spamming CAPI with signals:**
 
 Ideally, save them to a buffer and send the buffer periodically
 * Frequency of emission: between 10 seconds and 10 minutes depending on how big the buffer gets in that period
