@@ -11,7 +11,7 @@ You can send signals for your custom scenario, get the community blocklist and e
 
 Those libraries are doing the heavy lifting of the CAPI connectivity so you can simply, sendSignals, getDecisions and getRemediationForIp, as well as enrolling your soft-agent into the console
 
-![Possible integration](/img/php-libs-crowdsec-overview+cron.jpg)
+![Possible integration](/img/php-libs-crowdsec-overview.jpg)
 
 ## PHP CAPI client + Remediation Engine
 
