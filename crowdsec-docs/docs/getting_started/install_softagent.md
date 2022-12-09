@@ -52,19 +52,23 @@ You will call the decisions-list/blocklist refresh via cron or schedulers.
 
 ### Your signals
 
-There are 2 types of signals
+When you remediate locally a misbehavior, you would generate a signal for the corresponding scenario
+
+**There are 2 types of signals**:
 * decisions: when your security module triggers remediation on an IP (block or captcha) for some misbehaviors (brute force, spam, trying to access a file known for )
 * whispers: behaviors that can seem trivial and may occur only once on your site but might result in identifying a malicious actor if he does the same action on hundreds of sites
 
-Examples of decision signals:
+**Examples of decision signals:**
 * brute force on login-form
 * contact form spam (either by repetition or if you have a way to identify spam content of the sent message like commercial links, known scams ...)
 * trying to access a file known for a vulnerability (may it be on your type of system or another)
 * credit card stuffing
 ...
 
-Example of Whisper signals
+**Example of Whisper signals**
 * 404
+
+Please get in touch with us to validate 
 
 When sending signals the name of your scenario must follow this convention **^[a-z0-9_-]+\/[a-z0-9_-]+$** example **mysecmodule/login-bruteforce**
 
@@ -75,3 +79,11 @@ For categories of behaviors, you can refer to our behaviors list in the [taxonom
 Ideally, save them to a buffer and send the buffer periodically
 * Frequency of emission: between 10 seconds and 10 minutes depending on how big the buffer gets in that period
 * However, don't send more than 250 signals in a single call
+
+### User-agent
+
+Via the configuration or the php-capi-client you can set a user-agent.
+
+This user agent will be set for queries towards CAPI and allow us to do a finer analysis of the signals sent by your security solution.
+
+See the [User Guide](https://github.com/crowdsecurity/php-capi-client/blob/main/docs/USER_GUIDE.md#user-agent-suffix) for more info
