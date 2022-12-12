@@ -170,12 +170,12 @@ module.exports = {
         {
           type: "category",
           label: "cscli console",
-          items: ["cscli/cscli_console","cscli/cscli_console_enroll"]
+          items: ["cscli/cscli_console","cscli/cscli_console_enroll", "cscli/cscli_console_disable", "cscli/cscli_console_enable", "cscli/cscli_console_status"]
         },
         {
           type: "category",
           label: "cscli dashboard",
-          items: ["cscli/cscli_dashboard","cscli/cscli_dashboard_remove","cscli/cscli_dashboard_setup","cscli/cscli_dashboard_start","cscli/cscli_dashboard_stop"]
+          items: ["cscli/cscli_dashboard","cscli/cscli_dashboard_remove","cscli/cscli_dashboard_setup","cscli/cscli_dashboard_start","cscli/cscli_dashboard_stop", "cscli/cscli_dashboard_show-password"]
         },
         {
           type: "category",
@@ -195,7 +195,7 @@ module.exports = {
         {
           type: "category",
           label: "cscli lapi",
-          items: ["cscli/cscli_lapi","cscli/cscli_lapi_register","cscli/cscli_lapi_status"]
+          items: ["cscli/cscli_lapi","cscli/cscli_lapi_register","cscli/cscli_lapi_status", "cscli/cscli_lapi_context", "cscli/cscli_lapi_context_add", "cscli/cscli_lapi_context_delete", "cscli/cscli_lapi_context_detect", "cscli/cscli_lapi_context_status"]
         },
         {
           type: "category",
@@ -206,6 +206,11 @@ module.exports = {
           type: "category",
           label: "cscli metrics",
           items: ["cscli/cscli_metrics"]
+        },
+        {
+          type: "category",
+          label: "cscli notification",
+          items: ["cscli/cscli_notifications", "cscli/cscli_notifications_inspect", "cscli/cscli_notifications_list", "cscli/cscli_notifications_reinject"]
         },
         {
           type: "category",
@@ -231,6 +236,11 @@ module.exports = {
           type: "category",
           label: "cscli simulation",
           items: ["cscli/cscli_simulation","cscli/cscli_simulation_disable","cscli/cscli_simulation_enable","cscli/cscli_simulation_status"]
+        },
+        {
+          type: "category",
+          label: "cscli support",
+          items: ["cscli/cscli_support","cscli/cscli_support_dump"]
         },
         {
           type: "category",

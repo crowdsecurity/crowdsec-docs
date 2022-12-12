@@ -19,7 +19,7 @@ cscli bouncers add MyBouncerName [--length 16] [flags]
 ```
 cscli bouncers add MyBouncerName
 cscli bouncers add MyBouncerName -l 24
-cscli bouncers add MyBouncerName -k 2DHbHzWxtnpCnL46e4Hrv4qFLnPldpMe
+cscli bouncers add MyBouncerName -k bR96HTAfB5RGXSyv9YVNJ705KGkcesld
 ```
 
 ### Options
@@ -33,11 +33,12 @@ cscli bouncers add MyBouncerName -k 2DHbHzWxtnpCnL46e4Hrv4qFLnPldpMe
 ### Options inherited from parent commands
 
 ```
+      --color string    Output color: yes, no, auto. (default "auto")
   -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
       --debug           Set logging to debug.
       --error           Set logging to error.
       --info            Set logging to info.
-  -o, --output string   Output format : human, json, raw.
+  -o, --output string   Output format: human, json, raw.
       --trace           Set logging to trace.
       --warning         Set logging to warning.
 ```

@@ -28,7 +28,7 @@ cscli machines add MyTestMachine --password MyPassword
 
 ```
   -a, --auto              automatically generate password (and username if not provided)
-  -f, --file string       output file destination (defaults to /etc/crowdsec/local_api_credentials.yaml)
+  -f, --file string       output file destination (defaults to /etc/crowdsec/local_api_credentials.yaml
       --force             will force add the machine if it already exist
   -h, --help              help for add
   -i, --interactive       interfactive mode to enter the password
@@ -39,11 +39,12 @@ cscli machines add MyTestMachine --password MyPassword
 ### Options inherited from parent commands
 
 ```
+      --color string    Output color: yes, no, auto. (default "auto")
   -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
       --debug           Set logging to debug.
       --error           Set logging to error.
       --info            Set logging to info.
-  -o, --output string   Output format : human, json, raw.
+  -o, --output string   Output format: human, json, raw.
       --trace           Set logging to trace.
       --warning         Set logging to warning.
 ```

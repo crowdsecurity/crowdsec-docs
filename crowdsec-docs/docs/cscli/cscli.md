@@ -15,7 +15,8 @@ It is meant to allow you to manage bans, parsers/scenarios/etc, api and generall
 
 ```
   -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
-  -o, --output string   Output format : human, json, raw.
+  -o, --output string   Output format: human, json, raw.
+      --color string    Output color: yes, no, auto. (default "auto")
       --debug           Set logging to debug.
       --info            Set logging to info.
       --warning         Set logging to warning.
@@ -41,9 +42,11 @@ It is meant to allow you to manage bans, parsers/scenarios/etc, api and generall
 * [cscli lapi](/cscli/cscli_lapi.md)	 - Manage interaction with Local API (LAPI)
 * [cscli machines](/cscli/cscli_machines.md)	 - Manage local API machines [requires local API]
 * [cscli metrics](/cscli/cscli_metrics.md)	 - Display crowdsec prometheus metrics.
+* [cscli notifications](/cscli/cscli_notifications.md)	 - Helper for notification plugin configuration
 * [cscli parsers](/cscli/cscli_parsers.md)	 - Install/Remove/Upgrade/Inspect parser(s) from hub
 * [cscli postoverflows](/cscli/cscli_postoverflows.md)	 - Install/Remove/Upgrade/Inspect postoverflow(s) from hub
 * [cscli scenarios](/cscli/cscli_scenarios.md)	 - Install/Remove/Upgrade/Inspect scenario(s) from hub
 * [cscli simulation](/cscli/cscli_simulation.md)	 - Manage simulation status of scenarios
+* [cscli support](/cscli/cscli_support.md)	 - Provide commands to help during support
 * [cscli version](/cscli/cscli_version.md)	 - Display version and exit.
 
