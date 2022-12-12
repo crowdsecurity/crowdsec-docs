@@ -6,7 +6,7 @@ sidebar_position: 1
 
 # Custom Soft-Agent
 
-If you can't install CrowdSec but are developing a security software that detects misbehaviors and does remediation on IPs.\
+If you can't install CrowdSec but are developing a security software that detects misbehaviors and does remediation on IPs.  
 You can send signals for your custom scenario, get the community blocklist and enroll into the console easily with the help of our FOSS CAPI clients libs.
 
 Those libraries are doing the heavy lifting of the CAPI connectivity so you can simply, sendSignals, getDecisions and getRemediationForIp, as well as enrolling your soft-agent into the console
@@ -15,14 +15,14 @@ Those libraries are doing the heavy lifting of the CAPI connectivity so you can 
 
 ## PHP CAPI client + Remediation Engine
 
-The [php-capi-client](https://github.com/crowdsecurity/php-capi-client) will deal automatically with connecting to CAPI and renewing the token when necessary.\
+The [php-capi-client](https://github.com/crowdsecurity/php-capi-client) will deal automatically with connecting to CAPI and renewing the token when necessary.  
 Provides the following public functions:
 * pushSignals(array $signals)
 * getStreamDecisions()
 * enroll(...)
 
-The [php-remediation-engine](https://github.com/crowdsecurity/php-remediation-engine) is built on top of the php-capi-client and provides decisions caching and querying utility.\
-This way you can let it worry about the blocklist update and expiration of decisions.\
+The [php-remediation-engine](https://github.com/crowdsecurity/php-remediation-engine) is built on top of the php-capi-client and provides decisions caching and querying utility.  
+This way you can let it worry about the blocklist update and expiration of decisions.  
 It provides the following public functions:
 * getIpRemediation(string $ip)
   * Returns the recommended remediation for an IP
@@ -35,7 +35,7 @@ You can refer to the very detailed Developer and Installation guides linked in t
 ## Good practices
 
 ### php-capi-client
-Via the php-capi-client your soft-agent is identified by CAPI via a randomly generated **machineId** and **password**.\
+Via the php-capi-client your soft-agent is identified by CAPI via a randomly generated **machineId** and **password**.  
 The **machineId** is what links your endpoint to your console account when you enroll.
 
 The rules are : 
