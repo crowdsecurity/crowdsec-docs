@@ -87,7 +87,7 @@ INFO[12-12-2022 07:48:38 PM] /etc/crowdsec/console/context.yaml file saved
 ## Detect possible values for context
 
 
-It is possible to detect all the possible field that a given parser can output (or all the parser with `--all` flag):
+It is possible to detect all the possible fields that a given parser can output (or all the installed parsers with `--all` flag):
 
 ```bash
 $ sudo cscli lapi context detect crowdsecurity/nginx-logs
