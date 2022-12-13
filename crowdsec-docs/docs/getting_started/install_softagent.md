@@ -6,8 +6,8 @@ sidebar_position: 1
 
 # Custom Soft-Agent
 
-If you can't install CrowdSec but are developing a security software that detects misbehaviors and does remediation on IPs.  
-You can send signals for your custom scenario, get the community blocklist and enroll into the console easily with the help of our FOSS CAPI clients libs.
+If you are developing security software that detects misbehaviors and does remediation on IPs.   
+You can send signals for your detections, benefit from the community blocklist and enroll into the console with the help of our FOSS CAPI clients libraries.
 
 Those libraries are doing the heavy lifting of the CAPI connectivity so you can simply, sendSignals, getDecisions and getRemediationForIp, as well as enrolling your soft-agent into the console
 
