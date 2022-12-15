@@ -45,6 +45,7 @@ module.exports = {
         {"type":"link", "label": "Install CrowdSec (Helm/K8s)", "href":"https://artifacthub.io/packages/helm/crowdsec/crowdsec"},
         {"type":"link", "label": "Install CrowdSec (docker)", "href":"https://hub.docker.com/r/crowdsecurity/crowdsec"},
         "getting_started/install_windows",
+        "getting_started/install_softagent",
         "getting_started/crowdsec_tour"]
     },
     {
