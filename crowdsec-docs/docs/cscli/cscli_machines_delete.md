@@ -7,20 +7,19 @@ title: cscli machines delete
 delete machines
 
 ```
-cscli machines delete --machine MyTestMachine [flags]
+cscli machines delete [machine_name]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli machines delete "machine_name"
+cscli machines delete "machine1" "machine2"
 ```
 
 ### Options
 
 ```
   -h, --help             help for delete
-  -m, --machine string   machine to delete
 ```
 
 ### Options inherited from parent commands
