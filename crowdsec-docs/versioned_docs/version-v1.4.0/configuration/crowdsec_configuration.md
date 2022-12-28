@@ -880,6 +880,8 @@ Can be `full` (all metrics) or `aggregated` (to allow minimal metrics that will 
 
 Prometheus listen interface.
 
+Can be set to `0.0.0.0` to listen to all interfaces.
+
 #### `listen_port`
 > int
 
