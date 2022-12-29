@@ -484,7 +484,7 @@ The configuration of the database to use for the local API.
 db_config:
   type:     "<db_type>"
 
-  db_path:  "<path_to_database_file|path_to_socket_file>"  # database path for sqlite or socket file for mysql
+  db_path:  "<path_to_database_file|path_to_socket_file>"  # database path for sqlite or socket file for mysql/pgx
   use_wal:  "true|false" # for sqlite
 
   user:     "<db_user>"      # for mysql/postgresql/pgx
@@ -529,9 +529,13 @@ db_config:
 db_config:
   type: mysql
   db_path: /var/run/mysqld/mysqld.sock
+---
+db_config:
+  type: pgx
+  db_path: /var/run/postgresql/ #Folder that holds socket file. Socket MUST be the named `.s.PGSQL.5432`
 ```
 
-The path to the database file (only if the type of database is `sqlite`) or path to socket file (only if the type of database is `mysql`)
+The path to the database file (only if the type of database is `sqlite`) or path to socket file (only if the type of database is `mysql|pgx`)
 
 #### `user`
 
