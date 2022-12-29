@@ -192,6 +192,13 @@ whitelist:
 # This can be useful when you have a dynamic ip and use dynamic DNS providers
 ```
 
+### `ParseUnix(unix string) string`
+```
+ParseUnix("1672239773.3590894") -> "2022-12-28T15:02:53Z"
+ParseUnix("1672239773") -> "2022-12-28T15:02:53Z"
+ParseUnix("notatimestamp") -> ""
+```
+Parses unix timestamp string and returns RFC3339 formatted time
 ## Alert specific helpers
 
 
