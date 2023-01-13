@@ -46,7 +46,8 @@ module.exports = {
         {"type":"link", "label": "Install CrowdSec (docker)", "href":"https://hub.docker.com/r/crowdsecurity/crowdsec"},
         "getting_started/install_windows",
         "getting_started/install_softagent",
-        "getting_started/crowdsec_tour"]
+          "getting_started/crowdsec_tour",
+      "getting_started/versions_matrix"]
     },
     {
       type: 'category',
