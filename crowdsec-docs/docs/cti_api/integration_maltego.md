@@ -4,17 +4,21 @@ title: Maltego Transforms
 sidebar_position: 4
 ---
 
-Maltego transforms, which allow users to enrich IP entities in maltego with CrowdSec CTI intelligence.
+Maltego transforms, which allow users to enrich IP entities in maltego with CrowdSec CTI intelligence.In this documentation we'll answer the following questions:
 
-# Deployment Guide
+- How to create your private TDS (pTDS)
+- Where to install and configure the crowdsec transforms
+- What our 11 transforms do
 
-## Prerequisites
+## Deployment Guide
+
+### Prerequisites
 
 Make sure your instance has docker and docker compose installed. The instance should have a public IP.
 
-## Steps
+### Steps
 
-### Starting the transform server
+#### Starting the transform server
 
 Clone the repo and cd into it and start docker compose:
 
@@ -24,7 +28,7 @@ cd maltego-transforms
 docker compose up
 ```
 
-### Modify settings to point to your IP
+#### Modify settings to point to your IP
 
 With your current working directory being in the cloned repo. Run the following command to point the settings to your instance's IP
 
@@ -35,9 +39,9 @@ sed -i "s/my_ip/1.2.3.4/g" transforms.csv
 Replace **1.2.3.4** with your instance's IP
 
 
-### Registering at pTDS
+#### Registering at pTDS
 
-#### Importing Transforms
+##### Importing Transforms
 
 1. Navigate your browser to [pTDS website](https://public-tds.paterva.com/ptds/login)
 
@@ -51,7 +55,7 @@ Replace **1.2.3.4** with your instance's IP
 
 6. Finally click on **Import Transform** Button
 
-#### Creating a Seed
+##### Creating a Seed
 
 1. Navigate to [Seeds](https://public-tds.paterva.com/seeds)
 
@@ -67,15 +71,15 @@ Replace **1.2.3.4** with your instance's IP
 Done ! You can now share the Seed URL to maltego clients, and they'd be able to use the transforms. 
 
 
-# User Guide
+## User Guide
 
-## Installation
+### Installation
 
-### Registering the Seed URL
+#### Registering the Seed URL
 
 In your maltego client register the Seed URL we created in the above deployment guide  by following [this guide](https://docs.maltego.com/support/solutions/articles/15000011965-how-do-i-add-a-new-transform-seed-to-my-maltego-client-)
 
-### Adding CrowdSec API key to the transforms
+#### Adding CrowdSec API key to the transforms
 
 1. Obtain the CrowdSec CTI API key by following [this guide.](/docs/next/cti_api/getting_started)
 
@@ -85,57 +89,63 @@ In your maltego client register the Seed URL we created in the above deployment 
 
 Done !
 
-## Usage
+### Usage
 
-All the CrowdSec transforms take the builtin IP entity as an input. You'd have an option to run them whenever you right click an IP entity.
+All the CrowdSec transforms take the **builtin IP entity** as an input. You'd have an option to run them whenever you right click an IP entity. A caching system allows you to run multiple transforms on the same IP without consuming your quotas for each transform. The cache expiration can be found in the transform settings. 
 
 As per your requirements you can either run multiple transforms or just a single one.
 
 Below is a reference to what each transform does.
 
 
-# Transform reference
+## Transform reference
 
-#### CrowdSecAS
+##### CrowdSecAS
 
 Adds AS entity for an IP by leveraging CrowdSec CTI data
 
-#### CrowdSecActivity
+![AS entity](/img/maltego/as.png)
+
+##### CrowdSecActivity
 
 Adds activity details properties to an IP using CrowdSec data.
 
-#### CrowdSecAddAPIResp
+##### CrowdSecAddAPIResp
 
 Attaches CrowdSec CTI API response as a property to IP entity.
 
-#### CrowdSecBehaviours
+##### CrowdSecBehaviours
 
 Creates a behaviour entity for an IP by leveraging CrowdSec CTI data
 
-#### CrowdSecClassification
+![Behaviours](/img/maltego/behaviours.png)
+
+##### CrowdSecClassification
 
 Creates classification details entities for an IP using CrowdSec data.
 
-#### CrowdSecIPRange
+![Behaviours](/img/maltego/classifications.png)
+
+##### CrowdSecIPRange
 
 Creates an IP range entity for an IP by leveraging CrowdSec CTI data.
 
-#### CrowdSecLocation
+##### CrowdSecLocation
 
 Adds location entities by leveraging CrowdSec CTI data.
 
-#### CrowdSecReverseDNS
+##### CrowdSecReverseDNS
 
 Creates Reverse DNS entity for an IP by leveraging CrowdSec CTI data
 
-#### CrowdSecScenarios
+##### CrowdSecScenarios
 
 Creates entites for scenarios triggered by IP using CrowdSec CTI data.
 
-#### CrowdSecScores
+##### CrowdSecScores
 
 Adds score details for an IP by using CrowdSec CTI.
 
-#### CrowdSecTargetCountries
+##### CrowdSecTargetCountries
 
 Links IP entity with countries most attacked by it, using CrowdSec data.
