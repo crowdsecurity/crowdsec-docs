@@ -124,11 +124,13 @@ Creates a behaviour entity for an IP by leveraging CrowdSec CTI data
 
 Creates classification details entities for an IP using CrowdSec data.
 
-![Behaviours](/img/maltego/classifications.png)
+![Classifications](/img/maltego/classifications.png)
 
 ##### CrowdSecIPRange
 
 Creates an IP range entity for an IP by leveraging CrowdSec CTI data.
+
+![IP Range](/img/maltego/ip_range.png)
 
 ##### CrowdSecLocation
 
@@ -138,9 +140,13 @@ Adds location entities by leveraging CrowdSec CTI data.
 
 Creates Reverse DNS entity for an IP by leveraging CrowdSec CTI data
 
+![Reverse DNS](/img/maltego/reverse_dns.png)
+
 ##### CrowdSecScenarios
 
 Creates entites for scenarios triggered by IP using CrowdSec CTI data.
+
+![Scenarios](/img/maltego/scenarios.png)
 
 ##### CrowdSecScores
 
@@ -149,3 +155,5 @@ Adds score details for an IP by using CrowdSec CTI.
 ##### CrowdSecTargetCountries
 
 Links IP entity with countries most attacked by it, using CrowdSec data.
+
+![Country](/img/maltego/country.png)
