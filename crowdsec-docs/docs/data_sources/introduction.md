@@ -46,7 +46,7 @@ labels:
 ```
 
 :::warning
-The `labels` and `type` section is crucial as this informs crowdsec which parsers to use for this datasource.
+The `labels` and `type` fields are necessary to dispatch the log lines to the right parser.
 
-Also note between each datasource is `---` this is needed to inform yaml there is separation between entities
+Also note between each datasource is `---` this is needed to separate multiple YAML documents (each datasource) in a single file.
 :::
