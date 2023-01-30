@@ -102,12 +102,12 @@ module.exports = {
     {
       type: 'category',
       label: 'Local API',
-      items: ["local_api/intro", "local_api/database" , "local_api/bouncers", "local_api/tls_auth", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"}]
+      items: ["local_api/intro", "local_api/database" , "local_api/bouncers", "local_api/tls_auth", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/lapi/"}]
     },
     {
       type: 'category',
       label: 'Central API',
-      items: ["central_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI"}]
+      items: ["central_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/capi/"}]
     },
     {
       type: 'category',
