@@ -420,6 +420,11 @@ The time to leave of items. Default strategy is LRU.
 
 The maximum size of the cache.
 
+#### `strategy`
+
+The caching strategy to be used : LFU, LRU or ARC (see [gcache doc for details](https://pkg.go.dev/github.com/bluele/gcache)).
+Defaults to LRU.
+
 #### Examples
 
 ```yaml
