@@ -192,8 +192,14 @@ whitelist:
 # This can be useful when you have a dynamic ip and use dynamic DNS providers
 ```
 
-## Alert specific helpers
+### `GetFromStash(cache string, key string)`
 
+`GetFromStash` retrieves the value for `key` in the named `cache`.
+The cache are usually populated by [parser's stash section](/parsers/format.md#stash).
+An empty string if the key doesn't exist (or has been evicted), and error is raised if the `cache` doesn't exist.
+
+
+## Alert specific helpers
 
 ### `Alert.Remediation bool`
 
