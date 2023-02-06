@@ -34,6 +34,21 @@ Parses a string representation of a float number to an actual float number (bind
 > `Atof(evt.Parsed.tcp_port)`
 
 
+### `UnmarshalJSON`
+
+`UnmarshalJSON` allows to unmarshal a full json object and store the results in the `evt.Unmarshaled` field.
+The method is not meant to be used directly as it doesn't return data :
+
+```yaml
+statics:
+  - method: UnmarshalJSON
+    expression: evt.Line.Raw
+  - meta: user
+    #this has been just populated by the UnmarshalJSON call above
+    expression: evt.Unmarshaled.something.something
+```
+
+
 ### `JsonExtract(JsonBlob, FieldName) string`
 
 Extract the `FieldName` from the `JsonBlob` and returns it as a string. (binding on [jsonparser](https://github.com/buger/jsonparser/))
