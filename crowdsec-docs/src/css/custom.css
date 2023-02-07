@@ -81,8 +81,6 @@ html[data-theme="dark"] .header-discourse-link:before {
 
 .navbar {
   white-space: nowrap;
-  overflow-y: hidden;
-  overflow-x: auto;
 }
 
 .navbar__items--right .navbar__link:before {
