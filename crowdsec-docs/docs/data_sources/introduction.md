@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Datasources
 
-To be able to monitor applications, crowdsec needs to access the logs.
+To be able to monitor applications, crowdsec needs to access logs.
 DataSources are configured via the [acquisition](/configuration/crowdsec_configuration.md#acquisition_path) configuration, or specified via the command-line when performing cold logs analysis.
 
 
