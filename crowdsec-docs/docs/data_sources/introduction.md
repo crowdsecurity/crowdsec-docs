@@ -10,12 +10,14 @@ DataSources are configured via the [acquisition](/configuration/crowdsec_configu
 
 Name | Type | Stream | One-shot
 -----|------|--------|----------
-file | single files, glob expressions and .gz files | yes | yes
-journald | journald via filter | yes | yes
+File | single files, glob expressions and .gz files | yes | yes
+Journald | journald via filter | yes | yes
 AWS cloudwatch | single stream or log group | yes | yes
-syslog service | read logs received via syslog protocol | yes | no
-docker | read logs from docker containers | yes | yes
-AWS kinesis | read logs from a kinesis strean | yes | no
+Syslog service | read logs received via syslog protocol | yes | no
+Docker | read logs from docker containers | yes | yes
+AWS kinesis | read logs from a kinesis stream | yes | no
+Kafka | read logs from a kafka topic | yes | no
+Kubernetes Audit | expose a webhook to receive audit logs from a Kubernetes cluster  | yes | no
 
 
 While various data sources are supported, they all share the same common configuration structure :
