@@ -12,14 +12,14 @@ DataSources are configured via the [acquisition](/configuration/crowdsec_configu
 
 Name | Type | Stream | One-shot
 -----|------|--------|----------
-[file](file) | single files, glob expressions and .gz files | yes | yes
-[journald](journald) | journald via filter | yes | yes
-[AWS cloudwatch](cloudwatch) | single stream or log group | yes | yes
-[syslog service](syslog) | read logs received via syslog protocol | yes | no
-[docker](docker) | read logs from docker containers | yes | yes
-[AWS kinesis](kinesis)| read logs from a kinesis strean | yes | no
-[Kafka](kafka)| read logs from kafka topic | yes | no
-[Windows Event](windows_evt_log)| read logs from windows event log | yes | no
+[file](/data_sources/file.md) | single files, glob expressions and .gz files | yes | yes
+[journald](/data_sources/journald.md) | journald via filter | yes | yes
+[AWS cloudwatch](/data_sources/cloudwatch.md) | single stream or log group | yes | yes
+[syslog service](/data_sources/syslog.md) | read logs received via syslog protocol | yes | no
+[docker](/data_sources/docker.md) | read logs from docker containers | yes | yes
+[AWS kinesis](/data_sources/kinesis.md)| read logs from a kinesis strean | yes | no
+[Kafka](/data_sources/kafka.md)| read logs from kafka topic | yes | no
+[Windows Event](/data_sources/windows_evt_log.md)| read logs from windows event log | yes | no
 
 
 ## Acquisition configuration example
