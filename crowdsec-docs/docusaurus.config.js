@@ -28,9 +28,9 @@ module.exports = {
       ],
     },
     navbar: {
-      title: 'Documentation',
+      title: '',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'CrowdSec',
         src: 'img/crowdsec_logo.png',
       },
       items: [
@@ -123,6 +123,10 @@ module.exports = {
           title: 'Community',
           items: [
             {
+              label: 'GitHub',
+              href: 'https://github.com/crowdsecurity/crowdsec',
+            },
+            {
               label: 'Discourse',
               href: 'https://discourse.crowdsec.net/',
             },
@@ -133,20 +137,25 @@ module.exports = {
             {
               label: 'Twitter',
               href: 'https://twitter.com/crowd_security',
-            },
+            }           
           ],
         },
         {
           title: 'More',
           items: [
             {
+              label: "Console",
+              href: "https://app.crowdsec.net/"
+            },
+            {
+              label: 'Hub',
+              href: 'https://hub.crowdsec.net/',
+            },
+            {
               label: 'Blog',
               href: 'https://crowdsec.net/blog/',
             },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/crowdsecurity/crowdsec',
-            },
+            
           ],
         },
       ],
