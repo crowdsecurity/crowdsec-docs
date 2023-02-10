@@ -19,7 +19,7 @@ Name | Type | Stream | One-shot
 [docker](/data_sources/docker.md) | read logs from docker containers | yes | yes
 [AWS kinesis](/data_sources/kinesis.md)| read logs from a kinesis strean | yes | no
 [Kafka](/data_sources/kafka.md)| read logs from kafka topic | yes | no
-[Windows Event](/data_sources/windows_evt_log.md)| read logs from windows event log | yes | no
+[Windows Event](/data_sources/windows_event_log.md)| read logs from windows event log | yes | no
 
 
 ## Acquisition configuration example
