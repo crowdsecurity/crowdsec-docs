@@ -41,7 +41,7 @@ format: |  # This template receives list of models.Alert objects
 smtp_host: smtp.gmail.com
 smtp_username: myemail@gmail.com
 smtp_password: mypassword 
-smtp_port: 587
+smtp_port: 465
 sender_email: myemail@gmail.com
 receiver_emails:
  - receiver@gmail.com
