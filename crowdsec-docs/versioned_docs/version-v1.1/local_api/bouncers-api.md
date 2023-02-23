@@ -59,7 +59,7 @@ Note: if the token is missing or incorrect, you will get a **403** answer.
 
 ## API Usage
 
-As stated in the [swagger documentation](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI), bouncer's method are restricted to the `/decisions` path. They allow to query the local decisions in two modes :
+As stated in the [swagger documentation](https://crowdsecurity.github.io/api_doc/lapi/), bouncer's method are restricted to the `/decisions` path. They allow to query the local decisions in two modes :
 
  - stream mode : Intended for bouncers that will - on a regular basis - query the local api for new and expired/decisions
  - query mode : Intended for bouncers that want to query the local api about a specific ip/range/username etc.

@@ -13,7 +13,7 @@ The Local API (LAPI) is a core component of CrowdSec and has a few essential mis
  - Allow `cscli` to view add or delete decisions
 
 
-You can find the swagger documentation [here](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI).
+You can find the swagger documentation [here](https://crowdsecurity.github.io/api_doc/lapi/).
 
 ## Authentication
 
@@ -107,7 +107,7 @@ will report their triggered scenarios. In that case the endpoint may be configur
 You can see how to configure SSL on your local API [here](/docs/v1.0/configuration/crowdsec_configuration#tls).
 
 
-See the [Local API public documentation](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI).
+See the [Local API public documentation](https://crowdsecurity.github.io/api_doc/lapi/).
 
 
 
