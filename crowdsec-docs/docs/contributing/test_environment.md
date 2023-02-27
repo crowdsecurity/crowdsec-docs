@@ -13,16 +13,17 @@ You need a test environment for several reasons:
 This can be done directly with the tarball of the release :
 
 ```bash
-wget https://github.com/crowdsecurity/crowdsec/releases/download/v1.3.0/crowdsec-release.tgz
+VER=1.4.6 # Please check https://github.com/crowdsecurity/crowdsec/releases/latest for latest version
+wget https://github.com/crowdsecurity/crowdsec/releases/download/v$VER/crowdsec-release.tgz
 tar xvzf crowdsec-release.tgz
-cd crowdsec-v1.3.0
+cd crowdsec-v$VER
 ./test_env.sh
 ```
 
 You receive a directory structure like this:
 
 ```bash
-crowdsec-v1.3.0
+crowdsec-v
   |- cmd
   |   |- crowdsec
   |   |- crowdsec-cli
