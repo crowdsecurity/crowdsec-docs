@@ -68,6 +68,17 @@ The `description` is mandatory.
 It is a short description, probably one sentence, describing what it detects.
 
 ---
+### `reference`
+
+```yaml
+reference: A reference to third party documents. 
+```
+
+The `reference` is optional.
+
+A reference to third party documents. This can be a single string, or a list of string.
+
+---
 ### `filter`
 
 ```yaml

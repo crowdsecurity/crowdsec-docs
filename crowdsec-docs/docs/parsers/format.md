@@ -244,6 +244,20 @@ It is used for example in debug log to help you track things.
 
 -----
 
+### `format`
+
+```yaml
+name: explicit_string
+```
+
+Optional version which defines the parser version document used to
+write the parser. The default version is 1.0. Versions `2.0` and
+onward will end in a crowdsec minimum requirement version to use the
+parser definition.  For example, parsers that use the conditional
+feature will have to put `2.0` in order to get at least crowdsec 1.5.0
+
+-----
+
 ### `nodes`
 
 ```yaml
@@ -327,6 +341,12 @@ target: evt.Parsed.foobar
 ```
 
 > `target: evt.Meta.foobar` will set the value in the `Meta[foobar]` entry
+
+```yaml
+method: GeoCoords
+```
+
+> `method: GeoIPCity` will will use the GeoIPCity to populate some fields in the `Enriched` entry. See (Enrichers|parsers/enricher.md) for more information
 
 #### `source`
 
