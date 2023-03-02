@@ -27,27 +27,29 @@ tail -n 5 myfile.log | cscli explain --type nginx -f -
 		
 ```
 
-Hint: if your are creating/collecting data on the fly (over a network, for example) and want to avoid temporary files, you can use `cscli explain --file /dev/fd/0` or `cscli explain -dsn "file://dev/fd/0"` to refer to standard input.
-
 ### Options
 
 ```
-  -d, --dsn string    DSN to test
-  -f, --file string   Log file to test
-  -h, --help          help for explain
-  -l, --log string    Lgg line to test
-  -t, --type string   Type of the acquisition to test
-  -v, --verbose       Display individual changes
+      --crowdsec string           Path to crowdsec (default "crowdsec")
+  -d, --dsn string                DSN to test
+      --failures                  Only show failed lines
+  -f, --file string               Log file to test
+  -h, --help                      help for explain
+  -l, --log string                Log line to test
+      --only-successful-parsers   Only show successful parsers
+  -t, --type string               Type of the acquisition to test
+  -v, --verbose                   Display individual changes
 ```
 
 ### Options inherited from parent commands
 
 ```
+      --color string    Output color: yes, no, auto. (default "auto")
   -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
       --debug           Set logging to debug.
       --error           Set logging to error.
       --info            Set logging to info.
-  -o, --output string   Output format : human, json, raw.
+  -o, --output string   Output format: human, json, raw.
       --trace           Set logging to trace.
       --warning         Set logging to warning.
 ```

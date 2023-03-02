@@ -27,6 +27,7 @@ cscli alerts delete -s crowdsecurity/ssh-bf"
   -s, --scenario string   the scenario (ie. crowdsecurity/ssh-bf)
   -i, --ip string         Source ip (shorthand for --scope ip --value <IP>)
   -r, --range string      Range source ip (shorthand for --scope range --value <RANGE>)
+      --id string         alert ID
   -a, --all               delete all alerts
       --contained         query decisions contained by range
   -h, --help              help for delete
@@ -35,11 +36,12 @@ cscli alerts delete -s crowdsecurity/ssh-bf"
 ### Options inherited from parent commands
 
 ```
+      --color string    Output color: yes, no, auto. (default "auto")
   -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
       --debug           Set logging to debug.
       --error           Set logging to error.
       --info            Set logging to info.
-  -o, --output string   Output format : human, json, raw.
+  -o, --output string   Output format: human, json, raw.
       --trace           Set logging to trace.
       --warning         Set logging to warning.
 ```
