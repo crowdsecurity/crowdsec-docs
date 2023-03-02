@@ -8,9 +8,7 @@ Run functional tests on hub configurations
 
 ### Synopsis
 
-
-		Run functional tests on hub configurations (parsers, scenarios, collections...)
-		
+Run functional tests on hub configurations (parsers, scenarios, collections...)
 
 ### Options
 
@@ -24,11 +22,12 @@ Run functional tests on hub configurations
 ### Options inherited from parent commands
 
 ```
+      --color string    Output color: yes, no, auto. (default "auto")
   -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
       --debug           Set logging to debug.
       --error           Set logging to error.
       --info            Set logging to info.
-  -o, --output string   Output format : human, json, raw.
+  -o, --output string   Output format: human, json, raw.
       --trace           Set logging to trace.
       --warning         Set logging to warning.
 ```
