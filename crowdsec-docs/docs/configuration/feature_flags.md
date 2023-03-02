@@ -5,7 +5,7 @@ id: feature_flags
 
 # Feature Flags
 
-In order to make it easier for users to test and experiment with new features, CrowdSec introduces the concept of "feature flags".
+In order to make it easier for users to test and experiment with new features, CrowdSec uses the concept of "feature flags".
 New commands and behaviors can be improved by us, according to the user's feedback, before making them available in the default configuration.
 
 ## Enabling a Feature Flag
@@ -18,7 +18,7 @@ A feature flag can be enabled in two ways:
   - my_new_feature
 ```
 
- - By setting the `CROWDSEC_FEATURE_<feature-name>` environment variable to true. For example, to enable the `my_new_feature` feature flag, you would set the environment variable `CROWDSEC_FEATURE_MY_NEW_FEATURE=true`. This is recommended when running CrowdSec in containers. If you really want to do this outside of containers (we do for tests), keep in mind that the variable must be defined for both the `crowdsec` process and `cscsli`.
+ - By setting the `CROWDSEC_FEATURE_<feature-name>` environment variable to true. For example, to enable the `my_new_feature` feature flag, you would set the environment variable `CROWDSEC_FEATURE_MY_NEW_FEATURE=true`. This is recommended when running CrowdSec in containers. If you really want to do this outside of containers (as we do for tests), keep in mind that the variable must be defined for both the `crowdsec` process and `cscli`.
 
 
 You can see if CrowdSec is running with feature flags by calling `grep 'feature flags' /var/log/crowdsec.log | tail -1`
