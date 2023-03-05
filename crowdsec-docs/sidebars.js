@@ -92,7 +92,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Configuration',
-      items: ["configuration/crowdsec_configuration", "configuration/network_management"]
+      items: ["configuration/crowdsec_configuration", "configuration/feature_flags", "configuration/network_management"]
     },
     {
       type: 'category',
