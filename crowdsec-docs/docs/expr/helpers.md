@@ -22,10 +22,59 @@ When CrowdSec relies on `expr`, a context is provided to let the expression acce
 
 If the `debug` is enabled (in the scenario or parser where expr is used), additional debug will be displayed regarding evaluated expressions.
 
+## IP Helpers
 
-## Helpers
+### `IpInRange(IPStr, RangeStr) bool`
 
-In order to makes its use in CrowdSec more efficient, we added a few helpers that are documented bellow.
+Returns true if the IP `IPStr` is contained in the IP range `RangeStr` (uses `net.ParseCIDR`)
+
+> `IpInRange("1.2.3.4", "1.2.3.0/24")`
+
+### `IpToRange(IPStr, MaskStr) IpStr`
+
+Returns the subnet of the IP with the request cidr size.
+It is intended for scenarios taking actions against the range of an IP, not the IP itself :
+
+```yaml
+type: leaky
+...
+scope:
+ type: Range
+ expression: IpToRange(evt.Meta.source_ip, "/16")
+```
+
+> `IpToRange("192.168.0.1", "24")` returns `192.168.0.0/24`
+
+> `IpToRange("192.168.42.1", "16")` returns `192.168.0.0/16`
+
+
+### `IsIPV6(ip string) bool`
+
+Returns true if it's a valid IPv6.
+
+> `IsIPV6("2001:0db8:85a3:0000:0000:8a2e:0370:7334")`
+
+> `IsIPV6(Alert.GetValue())`
+
+### `LookupHost(host string) []string`
+:::warning
+* Only use this function within postoverflows as it is can be very slow
+* Note if you whitelist a domain behind a CDN provider, all domains using the same CDN provider will also be whitelisted
+* Do not use variables within the function as this can be untrusted user input
+:::
+Returns []string ip addresses that resolvable to the hostname EG: `LookupHost('mydomain.tld') => ['1.2.3.4', '5.6.7.8']`
+```yaml
+name: me/my_cool_whitelist
+description: lets whitelist our own IP
+whitelist:
+  reason: dont ban my IP
+  expression:
+    - evt.Overflow.Alert.Source.IP in LookupHost('mydomain.tld')
+# This can be useful when you have a dynamic ip and use dynamic DNS providers
+```
+
+
+## Strings
 
 ### `Atof(string) float64`
 
@@ -33,6 +82,79 @@ Parses a string representation of a float number to an actual float number (bind
 
 > `Atof(evt.Parsed.tcp_port)`
 
+### `File(FileName) []string`
+
+Returns the content of `FileName` as an array of string, while providing cache mechanism.
+
+> `evt.Parsed.some_field in File('some_patterns.txt')`
+
+> `any(File('rdns_seo_bots.txt'), { evt.Enriched.reverse_dns endsWith #})`
+
+### `RegexpInFile(StringToMatch, FileName) bool`
+
+Returns `true` if the `StringToMatch` is matched by one of the expressions contained in `FileName` (uses RE2 regexp engine).
+
+> `RegexpInFile( evt.Enriched.reverse_dns, 'my_legit_seo_whitelists.txt')`
+
+### `Upper(string) string`
+
+Returns the uppercase version of the string
+
+> `Upper("yop")`
+
+### `Lower(string) string`
+
+Returns the lowercase version of the string
+
+> `Lower("YOP")`
+
+
+### `ParseUri(string) map[string][]string`
+
+Parses an URI into a map of string list.
+
+`ParseURI("/foo?a=1&b=2")` would return :
+
+```
+{
+  "a": []string{"1"}, 
+  "b": []string{"2"}
+}
+```
+
+### `PathUnescape(string) string`
+
+`PathUnescape` does the inverse transformation of PathEscape, converting each 3-byte encoded substring of the form "%AB" into the hex-decoded byte 0xAB. It returns an error if any % is not followed by two hexadecimal digits.
+
+### `PathEscape(string) string`
+
+`PathEscape` escapes the string so it can be safely placed inside a URL path segment, replacing special characters (including /) with %XX sequences as needed.
+
+### `QueryUnescape(string) string`
+
+`QueryUnescape` does the inverse transformation of QueryEscape, converting each 3-byte encoded substring of the form "%AB" into the hex-decoded byte 0xAB. It returns an error if any % is not followed by two hexadecimal digits.
+
+### `QueryEscape(string) string`
+
+`QueryEscape` escapes the string so it can be safely placed inside a URL query.
+
+### `Sprintf(format string, a ...interface{}) string`
+
+[Official doc](https://pkg.go.dev/fmt#Sprintf) : Sprintf formats according to a format specifier and returns the resulting string.
+
+> `Sprintf('%dh', 1)` returns `1h`
+
+
+## Time Helpers
+
+### `TimeNow() string`
+
+Return RFC3339 formatted time 
+
+> `TimeNow()`
+
+
+## JSON Helpers
 
 ### `UnmarshalJSON`
 
@@ -81,72 +203,9 @@ Returns an empty string if `obj` cannot be serialized to JSON.
 
 > `ToJsonString(JsonExtractSlice(evt.Parsed.message, "params"))`
 
-### `File(FileName) []string`
 
-Returns the content of `FileName` as an array of string, while providing cache mechanism.
+## XML Helpers
 
-> `evt.Parsed.some_field in File('some_patterns.txt')`
-
-> `any(File('rdns_seo_bots.txt'), { evt.Enriched.reverse_dns endsWith #})`
-
-### `RegexpInFile(StringToMatch, FileName) bool`
-
-Returns `true` if the `StringToMatch` is matched by one of the expressions contained in `FileName` (uses RE2 regexp engine).
-
-> `RegexpInFile( evt.Enriched.reverse_dns, 'my_legit_seo_whitelists.txt')`
-
-### `Upper(string) string`
-
-Returns the uppercase version of the string
-
-> `Upper("yop")`
-
-### `IpInRange(IPStr, RangeStr) bool`
-
-Returns true if the IP `IPStr` is contained in the IP range `RangeStr` (uses `net.ParseCIDR`)
-
-> `IpInRange("1.2.3.4", "1.2.3.0/24")`
-
-### `IpToRange(IPStr, MaskStr) IpStr`
-
-Returns the subnet of the IP with the request cidr size.
-It is intended for scenarios taking actions against the range of an IP, not the IP itself :
-
-```yaml
-type: leaky
-...
-scope:
- type: Range
- expression: IpToRange(evt.Meta.source_ip, "/16")
-```
-
-> `IpToRange("192.168.0.1", "24")` returns `192.168.0.0/24`
-
-> `IpToRange("192.168.42.1", "16")` returns `192.168.0.0/16`
-
-### `TimeNow() string`
-
-Return RFC3339 formatted time 
-
-> `TimeNow()`
-
-### `KeyExists(key string, map map[string]interface{}) bool`
-
-Return true if the `key` exist in the map.
-
-
-### `ParseUri(string) map[string][]string`
-
-Parses an URI into a map of string list.
-
-`ParseURI("/foo?a=1&b=2")` would return :
-
-```
-{
-  "a": []string{"1"}, 
-  "b": []string{"2"}
-}
-```
 
 ### `XMLGetAttributeValue(xmlString string, path string, attributeName string) string`
 
@@ -160,13 +219,24 @@ Returns the content of the XML node identified by the XPath query `path`.
 
 > `XMLGetNodeValue(evt.Line.Raw, "/Event/System[1]/EventID")`
 
-### `IsIPV6(ip string) bool`
 
-Returns true if it's a valid IPv6.
+## Stash Helpers
 
-> `IsIPV6("2001:0db8:85a3:0000:0000:8a2e:0370:7334")`
+### `GetFromStash(cache string, key string)`
 
-> `IsIPV6(Alert.GetValue())`
+`GetFromStash` retrieves the value for `key` in the named `cache`.
+The cache are usually populated by [parser's stash section](/parsers/format.md#stash).
+An empty string if the key doesn't exist (or has been evicted), and error is raised if the `cache` doesn't exist.
+
+
+
+
+
+
+
+
+
+## Others
 
 ### `IsIPV4(ip string) bool`
 
@@ -202,34 +272,9 @@ Returns the number of existing decisions in database with the same value since d
 
 > `GetDecisionsCount(Alert.GetValue(), "30min")`
 
-### `Sprintf(format string, a ...interface{}) string`
+### `KeyExists(key string, map map[string]interface{}) bool`
 
-[Official doc](https://pkg.go.dev/fmt#Sprintf) : Sprintf formats according to a format specifier and returns the resulting string.
-
-> `Sprintf('%dh', 1)` returns `1h`
-
-### `LookupHost(host string) []string`
-:::warning
-* Only use this function within postoverflows as it is can be very slow
-* Note if you whitelist a domain behind a CDN provider, all domains using the same CDN provider will also be whitelisted
-* Do not use variables within the function as this can be untrusted user input
-:::
-Returns []string ip addresses that resolvable to the hostname EG: `LookupHost('mydomain.tld') => ['1.2.3.4', '5.6.7.8']`
-```yaml
-name: me/my_cool_whitelist
-description: lets whitelist our own IP
-whitelist:
-  reason: dont ban my IP
-  expression:
-    - evt.Overflow.Alert.Source.IP in LookupHost('mydomain.tld')
-# This can be useful when you have a dynamic ip and use dynamic DNS providers
-```
-
-### `GetFromStash(cache string, key string)`
-
-`GetFromStash` retrieves the value for `key` in the named `cache`.
-The cache are usually populated by [parser's stash section](/parsers/format.md#stash).
-An empty string if the key doesn't exist (or has been evicted), and error is raised if the `cache` doesn't exist.
+Return true if the `key` exist in the map.
 
 
 ## Alert specific helpers
