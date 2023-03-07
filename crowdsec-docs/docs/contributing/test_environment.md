@@ -75,7 +75,7 @@ That command will now run all tests within the hub repository. Please take note 
 A helpful tip to save you typing the whole command everytime is to set an shell alias example:
 
 ```bash
-alias csdev="$(dirname $PWD)/cscli -c $(diranme $PWD)/dev.yaml"
+alias csdev="$(dirname $PWD)/cscli -c $(dirname $PWD)/dev.yaml"
 ```
 Then you can run command as
 
