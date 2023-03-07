@@ -6,6 +6,9 @@ sidebar_position: 1
 
 <iframe width="100%" height="500" src="https://www.youtube-nocookie.com/embed/yxbimVtd2nw?controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
+
+<iframe width="100%" height="500" src="https://killercoda.com/iiamloz/scenario/crowdsec-setup" frameborder="0"></iframe>
+
 ## List installed configurations
 
 ```bash
