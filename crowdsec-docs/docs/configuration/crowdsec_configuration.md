@@ -321,17 +321,17 @@ Current working directory.
 #### `log_max_size`
 > int
 
-Maximum size the log file in MB before rotating it.
+Maximum size in megabytes of the log file before it gets rotated. Defaults to 500 megabytes.
 
 #### `log_max_age`
 > int
 
-Maximum age of previous log files before deleting them.
+Maximum number of days to retain old log files based on the timestamp encoded in their filename.  Note that a day is defined as 24 hours and may not exactly correspond to calendar days due to daylight savings, leap seconds, etc. The default is to remove old log files after 28 days.
 
 #### `log_max_files`
 > int
 
-Number of previous log files to keep.
+Maximum number of old log files to retain.  The default is to retain 3 old log files (though MaxAge may still cause them to get deleted.)
 
 #### `compress_logs`
 > bool
