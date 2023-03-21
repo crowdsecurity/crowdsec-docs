@@ -144,6 +144,13 @@ Parses an URI into a map of string list.
 
 > `Sprintf('%dh', 1)` returns `1h`
 
+### `Match(pattern string, object string) bool`
+
+`Match` returns true if the object string matches the pattern. Pattern only supports wildcard :
+ - `*` multi-character wildcard (including zero-length)
+ - `?` single character wildcard
+
+> `Match('to?o*', 'totoooooo')` returns `true`
 
 ## Time Helpers
 
