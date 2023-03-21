@@ -766,7 +766,7 @@ server:
       cache_expiration: "<cache_duration_for_revocation_check>"
 ```
 
-#### `enable`
+##### `enable`
 > bool
 
 Enable or disable the CrowdSec Local API (`true` by default).
@@ -785,6 +785,22 @@ The path to the profiles configuration.
 > string
 
 The path to the console configuration.
+
+##### `capi_whitelists_path`
+> string
+
+The path to whitelists file for community and 3rd party blocklists.
+Those IPs/CIDR whitelists apply on all the IPs received from community blocklist or 3rd party lists subscriptions.
+
+expected file format:
+
+```yaml
+ips:
+ - 1.2.3.4
+ - 2.3.4.5
+cidrs:
+ - 1.2.3.0/24
+```
 
 ##### `use_forwarded_for_headers`
 > string
