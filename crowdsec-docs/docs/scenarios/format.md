@@ -31,7 +31,7 @@ labels:
 
 
 ```yaml
-type: leaky|trigger|counter
+type: leaky|trigger|counter|conditional
 ```
 
 Defines the type of the bucket. Currently three types are supported :
@@ -39,6 +39,7 @@ Defines the type of the bucket. Currently three types are supported :
  - `leaky` : a [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) that must be configured with a [capacity](#capacity) and a [leakspeed](#leakspeed)
  - `trigger` : a bucket that overflows as soon as an event is poured (it is like a leaky bucket is a capacity of 0)
  - `counter` : a bucket that only overflows every [duration](#duration). It is especially useful to count things.
+ - `conditional`: a bucket that overflows when the expression given in `condition` returns true. Useful if you want to look back at previous events that were poured to the bucket (to detect impossible travel or more behavioral patterns for example). If the capacity is not set to `-1`, it can overflow like a standard `leaky` bucket.
 
 ---
 ### `name`
@@ -188,6 +189,7 @@ Only applies to `leaky` buckets.
 
 A positive integer representing the bucket capacity.
 If there are more than `capacity` item in the bucket, it will overflow.
+Should be set to `-1` in most situations for `conditional` buckets.
 
 ---
 ### `leakspeed`
@@ -201,6 +203,19 @@ Only applies to `leaky` buckets.
 A duration that represent how often an event will be leaking from the bucket.
 
 Must be compatible with [golang ParseDuration format](https://golang.org/pkg/time/#ParseDuration).
+
+### `condition`
+```yaml
+condition: |
+  len(queue.Queue) >= 2 
+  and Distance(queue.Queue[-1].Enriched.Latitude, queue.Queue[-1].Enriched.Longitude,
+  queue.Queue[-2].Enriched.Latitude, queue.Queue[-2].Enriched.Longitude) > 100
+```
+
+Only applies to `conditional` buckets.
+
+Make the bucket overflow when it returns true.
+The expression is evaluated each time an event is poured to the bucket.
 
 
 #### Example
