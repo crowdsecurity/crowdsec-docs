@@ -6,7 +6,7 @@ sidebar_position: 4
 
 :::caution
 
-All the examples assume that you have read the [Creating parsers](/parsers/create) documentation.
+All the examples assume that you have read the [Creating parsers](/docs/next/parsers/create) documentation.
 
 :::
 
@@ -104,7 +104,7 @@ labels:
 
 :::note
 
-We filter on `evt.Meta.log_type == 'myservice_failed_auth'` because in the parser `myservice-logs` (created in the [Creating parsers](/parsers/create) part) we set the `log_type` to `myservice_failed_auth` for bad password or bad user attempt.
+We filter on `evt.Meta.log_type == 'myservice_failed_auth'` because in the parser `myservice-logs` (created in the [Creating parsers](/docs/next/parsers/create) part) we set the `log_type` to `myservice_failed_auth` for bad password or bad user attempt.
 
 :::
 
