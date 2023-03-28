@@ -7,7 +7,7 @@ title: Windows
 
 You can download the MSI file from the [latest github pre-release](https://github.com/crowdsecurity/crowdsec/releases).
 
-:::info
+:::warning
 Before upgrading an installation, ensure you make a backup of your configuration files you can follow our guide [here](backup_guide)
 :::
 

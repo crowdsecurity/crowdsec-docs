@@ -15,13 +15,13 @@ import CodeBlock from '@theme/CodeBlock';
   ]}>
   <TabItem value="linux">
     <CodeBlock className="language-bash">
-      curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-testing/script.deb.sh | sudo bash
+    cd /etc/crowdsec/ && cscli config backup ./backup && tar -czvf backup.tar.gz backup/ && rm -rf backup
     </CodeBlock>
   </TabItem>
   
   <TabItem value="windows">
     <CodeBlock className="language-bash">
-      curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-testing/script.rpm.sh | sudo bash
+    cd c:/programdata/crowdsec/; cscli config backup ./backup/; Compress-Archive -Path ./backup/ -DestinationPath ./backup; Remove-Item ./backup/ -Recurse;
     </CodeBlock>
   </TabItem>
 </Tabs>
