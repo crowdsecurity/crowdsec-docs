@@ -145,9 +145,12 @@ BAN_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/ban.html
 REDIRECT_LOCATION=
 RET_CODE=
 #those apply for "captcha" action
-# reCAPTCHA Secret Key
+#valid providers are recaptcha, hcaptcha, turnstile
+CAPTCHA_PROVIDER=
+# default is recaptcha to ensure backwards compatibility
+# Captcha Secret Key
 SECRET_KEY=
-# reCAPTCHA Site key
+# Captcha Site key
 SITE_KEY=
 CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
 CAPTCHA_EXPIRATION=3600
@@ -379,12 +382,18 @@ RET_CODE=403
 The HTTP code to return for IPs that trigger a `ban` remediation.
 If nothing specified, it will return a 403.
 
+### `CAPTCHA_PROVIDER`
+> This option is only for the `captcha` remediation.
+
+```bash
+CAPTCHA_PROVIDER=<recaptcha | hcaptcha | turnstile>
+```
 
 ### `SECRET_KEY`
 > This option is only for the `captcha` remediation.
 
 ```bash
-SECRET_KEY=<recaptcha_secret_key>
+SECRET_KEY=<captcha_secret_key>
 ```
 
 The reCAPTCHA v2 secret key.
@@ -394,7 +403,7 @@ The reCAPTCHA v2 secret key.
 > This option is only for the `captcha` remediation.
 
 ```bash
-SITE_KEY=<recaptcha_site_key>
+SITE_KEY=<captcha_site_key>
 ```
 
 The reCAPTCHA v2 site key.
@@ -409,7 +418,7 @@ CAPTCHA_TEMPLATE_PATH=<path_to_html_template>
 
 The path to a captcha HTML template.
 
-The bouncer will try to replace `{{recaptcha_site_key}}` in the template with `SITE_KEY` parameter.
+The bouncer will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
 
 By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/captcha.html`.
 
