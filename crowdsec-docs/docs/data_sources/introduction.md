@@ -22,6 +22,40 @@ Name | Type | Stream | One-shot
 [Windows Event](/data_sources/windows_event_log.md)| read logs from windows event log | yes | no
 
 
+## Common configuration parameters
+
+Those parameters are available in all datasources.
+
+### `log_level`
+
+Log level to use in the datasource. Defaults to `info`.
+
+### `source`
+
+Which type of datasource to use. It is mandatory except for file acquisition.
+
+### `transform`
+
+An expression that will run after the acquisition has read one line, and before the line is sent to the parsers.
+
+It allows to modify an event (or generate multiple events from one line) before parsing.
+
+For example, if you acquire logs from a file containing a JSON object on each line, and each object has a `Records` array with multiple events, you can use the following to generate one event per entry in the array:
+```
+map(JsonExtractSlice(evt.Line.Raw, "Records"), ToJsonString(#))
+```
+
+The expression must return:
+ - A string: it will replace `evt.Line.Raw` in the event
+ - A list of strings: One new event will be generated based on the source event per element in the list. Each element will replace the `evt.Line.Raw` from the source event.
+
+If the expression returns an error or an invalid type, the event will not be modified before sending it to the parsers.
+
+### `labels`
+
+A map of labels to add to the event.
+The `type` label is mandatory, and used by crowdsec to choose which parser to use.
+
 ## Acquisition configuration example
 
 ```yaml title="/etc/crowdsec/acquis.yaml"
