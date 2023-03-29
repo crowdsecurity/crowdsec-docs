@@ -34,7 +34,7 @@ Supported features:
  - Live mode (query the local API for each request)
  - Stream mode (pull the local API for new/old decisions every X seconds)
  - Ban remediation (can ban an IP address by redirecting him or returning a custom HTML page)
- - reCAPTCHA v2 remediation (can return a captcha)
+ - CAPTCHA remediation (can return a captcha)
  - Works with IPv4/IPv6
  - Support IP ranges (can apply a remediation on an IP range)
 
@@ -190,7 +190,7 @@ Note: The timer that pull the local API will be triggered after the first reques
 REQUEST_TIMEOUT=1000
 ```
 
-Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or www.google.com (for the reCAPTCHA verification).
+Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
 ```bash
@@ -268,7 +268,7 @@ CAPTCHA_PROVIDER=<recaptcha | hcaptcha | turnstile>
 SECRET_KEY=<captcha_secret_key>
 ```
 
-The reCAPTCHA v2 secret key.
+The captcha secret key.
 
 
 ### `SITE_KEY`
@@ -278,7 +278,7 @@ The reCAPTCHA v2 secret key.
 SITE_KEY=<captcha_site_key>
 ```
 
-The reCAPTCHA v2 site key.
+The captcha site key.
 
 
 ### `CAPTCHA_TEMPLATE_PATH`
