@@ -229,9 +229,14 @@ List of valid IPv4 and IPv6 IPs and ranges which have access to blocklist. It's 
 
 You can then start the service via:
 
-```sh
+```bash
 sudo systemctl start crowdsec-blocklist-mirror
 ```
+
+If you need to make changes to the configuration file and be sure they will never be modified or reverted
+by package upgrades, starting from v0.0.2 you can write them in a `crowdsec-blocklist-mirror.yaml.local` file as described in
+[Overriding values](https://docs.crowdsec.net/docs/next/configuration/crowdsec_configuration#overriding-values).
+Package upgrades may have good reasons to modify the configuration, so be careful if you use a `.local` file.
 
 ## Formats
 
