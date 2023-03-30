@@ -366,7 +366,7 @@ module.exports = {
     {
       type: "category",
       label: "Integrations",
-      items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti", "cti_api/integration_thehive", "cti_api/integration_paloalto_xsoar", "cti_api/integration_maltego", "cti_api/integration_splunk_siem", "cti_api/integration_maltego", "cti_api/integration_splunk_soar"],
+      items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti", "cti_api/integration_thehive", "cti_api/integration_paloalto_xsoar", "cti_api/integration_splunk_siem", "cti_api/integration_maltego", "cti_api/integration_splunk_soar"],
     },
   ],
 };
