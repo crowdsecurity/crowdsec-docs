@@ -26,6 +26,7 @@ There is two ways to enable this feature flag:
 ```
  - Add this environement variable to the crowdsec service file with `sudo systemctl edit crowdsec.service`:
 ```
+[Service]
 Environment=CROWDSEC_FEATURE_PAPI_CLIENT=true
 ```
 
