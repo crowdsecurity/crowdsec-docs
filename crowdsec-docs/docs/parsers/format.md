@@ -403,6 +403,14 @@ The `type` is mandatory if you want to evaluate the data in the file, and should
 The regexps will be compiled, the strings will be loaded into a list and both will be kept in memory.
 Without specifying a `type`, the file will be downloaded and stored as file and not in memory.
 
+You can refer to the content of the downloaded file(s) by using either the `File()` or `RegexpInFile()` function in an expression:
+
+```yaml
+filter: 'evt.Meta.log_type in ["http_access-log", "http_error-log"] and any(File("backdoors.txt"), { evt.Parsed.request contains #})'
+```
+
+
+#### Example
 
 ```yaml
 name: crowdsecurity/cdn-whitelist
@@ -411,6 +419,35 @@ data:
   - source_url: https://www.cloudflare.com/ips-v4
     dest_file: cloudflare_ips.txt
     type: string
+```
+
+#### Caching feature
+
+Since 1.5, it is possible to configure additional cache for `RegexpInFile()` :
+
+ - input data (hashed with [xxhash](https://github.com/cespare/xxhash))
+ - associated result (true or false)
+
+[Cache behavior](https://pkg.go.dev/github.com/bluele/gcache) can be configured:
+ - strategy: LRU, LFU or ARC
+ - size: maximum size of cache
+ - ttl: expiration of elements
+ - cache: boolean (true by default if one of the fields is set)
+
+This is typically useful for scenarios that needs to check on a lot of regexps.
+
+Example configuration:
+
+```yaml
+type: leaky
+#...
+data:
+  - source_url: https://raw.githubusercontent.com/crowdsecurity/sec-lists/master/web/bad_user_agents.regex.txt
+    dest_file: bad_user_agents.regex.txt
+    type: regexp
+    strategy: LRU
+    size: 40
+    ttl: 5s
 ```
 
 -----

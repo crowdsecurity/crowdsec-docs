@@ -388,7 +388,7 @@ If the `cancel_on` expression returns true, the bucket is immediately destroyed 
 data:
   - source_url: https://URL/TO/FILE
     dest_file: LOCAL_FILENAME
-    [type: (regexp|string)]
+    [type: (regexp|string)]    
 ```
 
 `data` allows to specify an external source of data.
@@ -417,6 +417,35 @@ data:
   - source_url: https://www.cloudflare.com/ips-v4
     dest_file: cloudflare_ips.txt
     type: string
+```
+
+#### Caching feature
+
+Since 1.5, it is possible to configure additional cache for `RegexpInFile()` :
+
+ - input data (hashed with [xxhash](https://github.com/cespare/xxhash))
+ - associated result (true or false)
+
+[Cache behavior](https://pkg.go.dev/github.com/bluele/gcache) can be configured:
+ - strategy: LRU, LFU or ARC
+ - size: maximum size of cache
+ - ttl: expiration of elements
+ - cache: boolean (true by default if one of the fields is set)
+
+This is typically useful for scenarios that needs to check on a lot of regexps.
+
+Example configuration:
+
+```yaml
+type: leaky
+#...
+data:
+  - source_url: https://raw.githubusercontent.com/crowdsecurity/sec-lists/master/web/bad_user_agents.regex.txt
+    dest_file: bad_user_agents.regex.txt
+    type: regexp
+    strategy: LRU
+    size: 40
+    ttl: 5s
 ```
 
 ---
