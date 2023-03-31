@@ -413,6 +413,56 @@ data:
     type: string
 ```
 
+-----
+
+### `stash`
+
+The **stash** section allows a parser to capture data, that can be later accessed/populated via `GetFromStash` and `SetInStash` expr helpers.
+Each list item defines a capture directive that is stored in a separate cache (string:string), with its own maximum size, eviction rules etc.
+
+#### `name`
+
+The name of the stash. Distinct parsers can manipulate the same cache.
+
+#### `key`
+
+The [expression](/expr/helpers.md) that defines the string that will be used as a key.
+
+#### `value`
+
+The [expression](/expr/helpers.md) that defines the string that will be used as a value.
+
+#### `ttl`
+
+The time to leave of items. Default strategy is LRU.
+
+#### `size`
+
+The maximum size of the cache.
+
+#### `strategy`
+
+The caching strategy to be used : LFU, LRU or ARC (see [gcache doc for details](https://pkg.go.dev/github.com/bluele/gcache)).
+Defaults to LRU.
+
+#### Examples
+
+```yaml
+stash:
+  - name: test_program_pid_assoc
+    key: evt.Parsed.pid
+    value: evt.Parsed.program
+    ttl: 30s
+    size: 10
+```
+
+This will build and maintain a cache of at most 10 concurrent items that will capture the association `evt.Parsed.pid` -> `evt.Parsed.program`. The cache can then be used to enrich other items:
+
+```yaml
+statics:
+  - meta: associated_prog_name
+    expression: GetFromStash("test_program_pid_assoc", evt.Parsed.pid)
+```
 
 ## Notes
 
