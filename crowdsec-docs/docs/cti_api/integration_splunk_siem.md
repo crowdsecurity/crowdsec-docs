@@ -1,7 +1,7 @@
 ---
 id: integration_splunk_siem
 title: Splunk SIEM App
-sidebar_position: 3
+sidebar_position: 6
 ---
 
 The **Splunk SIEM App** enables IP lookup from CrowdSec CTI API via custom command called `cssmoke`. It provides information about the IP, such as what kind of attacks it has been participant of as seen by CrowdSec's network. It also includes enrichment by CrowdSec like background noise score, aggressivity over time etc.

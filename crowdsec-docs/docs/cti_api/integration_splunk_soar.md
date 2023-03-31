@@ -1,7 +1,7 @@
 ---
 id: integration_splunk_soar
 title: Splunk SOAR
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 Splunk SOAR App for CrowdSec. This App allows enrichment of IP addresses in an event investigation and playbooks with CrowdSec's CTI API.
