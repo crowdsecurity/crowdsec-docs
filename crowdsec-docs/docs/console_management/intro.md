@@ -18,7 +18,7 @@ Currently, only 4 orders are available:
 ## Enable console management
 
 The console management is still under feature flag on the CrowdSec Security Engine side. 
-There is two ways to enable this feature flag:
+There are two ways to enable this feature flag:
  - Create or edit `/etc/crowdsec/feature.yaml` with the following flag
 
 ```yaml
