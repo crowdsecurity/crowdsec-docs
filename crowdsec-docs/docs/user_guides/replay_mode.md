@@ -49,6 +49,18 @@ When using metabase, simply use the time selector to view the appropriate period
 To work in forensic mode, crowdsec-agent relies on [crowdsecurity/dateparse-enrich](https://hub.crowdsec.net/author/crowdsecurity/configurations/dateparse-enrich) to parse date formats. See dedicated hub page for supported formats.
 :::    
 
+
+
+Optionally, you can also specify an expression with `--transform` that will be run before sending a line to the parsers.
+For example, to read cloudtrail logs from a S3 bucket, you will need to use this option to generate one event per cloudtrail record:
+```bash
+sudo crowdsec -c /etc/crowdsec/user.yaml --dsn s3://my_cloudtrail_bucket/AWSLogs/ACCOUNT_ID/CloudTrail/REGION/YEAR/MONTH/DAY/CLOUDTRAIL_FILE.json.gz\?max_buffer_size=1048576 --type aws-cloudtrail --transform 'map(JsonExtractSlice(evt.Line.Raw, "Records"), ToJsonString(#))'
+```
+
+It will parse the JSON array `Records` and generate one event per entry in the array, returning each of them as a string.
+
+`max_buffer_size` is used to control the maximum length of a line that can be read. 
+
 ## Injecting alerts into an existing database
 
 If you already have a running crowdsec/Local API running and want to inject events into existing database, you can run crowdsec directly:

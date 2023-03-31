@@ -244,6 +244,20 @@ It is used for example in debug log to help you track things.
 
 -----
 
+### `format`
+
+```yaml
+name: explicit_string
+```
+
+Optional version which defines the parser version document used to
+write the parser. The default version is 1.0. Versions `2.0` and
+onward will end in a crowdsec minimum requirement version to use the
+parser definition.  For example, parsers that use the conditional
+feature will have to put `2.0` in order to get at least crowdsec 1.5.0
+
+-----
+
 ### `nodes`
 
 ```yaml
@@ -327,6 +341,12 @@ target: evt.Parsed.foobar
 ```
 
 > `target: evt.Meta.foobar` will set the value in the `Meta[foobar]` entry
+
+```yaml
+method: GeoCoords
+```
+
+> `method: GeoIPCity` will will use the GeoIPCity to populate some fields in the `Enriched` entry. See (Enrichers|parsers/enricher.md) for more information
 
 #### `source`
 
@@ -430,6 +450,56 @@ data:
     ttl: 5s
 ```
 
+-----
+
+### `stash`
+
+The **stash** section allows a parser to capture data, that can be later accessed/populated via `GetFromStash` and `SetInStash` expr helpers.
+Each list item defines a capture directive that is stored in a separate cache (string:string), with its own maximum size, eviction rules etc.
+
+#### `name`
+
+The name of the stash. Distinct parsers can manipulate the same cache.
+
+#### `key`
+
+The [expression](/expr/helpers.md) that defines the string that will be used as a key.
+
+#### `value`
+
+The [expression](/expr/helpers.md) that defines the string that will be used as a value.
+
+#### `ttl`
+
+The time to leave of items. Default strategy is LRU.
+
+#### `size`
+
+The maximum size of the cache.
+
+#### `strategy`
+
+The caching strategy to be used : LFU, LRU or ARC (see [gcache doc for details](https://pkg.go.dev/github.com/bluele/gcache)).
+Defaults to LRU.
+
+#### Examples
+
+```yaml
+stash:
+  - name: test_program_pid_assoc
+    key: evt.Parsed.pid
+    value: evt.Parsed.program
+    ttl: 30s
+    size: 10
+```
+
+This will build and maintain a cache of at most 10 concurrent items that will capture the association `evt.Parsed.pid` -> `evt.Parsed.program`. The cache can then be used to enrich other items:
+
+```yaml
+statics:
+  - meta: associated_prog_name
+    expression: GetFromStash("test_program_pid_assoc", evt.Parsed.pid)
+```
 
 ## Notes
 

@@ -33,7 +33,7 @@ Supported features:
  - Live mode (query the local API for each request)
  - Stream mode (pull the local API for new/old decisions every X seconds)
  - Ban remediation (can ban an IP address by redirecting him or returning a custom HTML page)
- - reCAPTCHA v2 remediation (can return a captcha)
+ - Captcha remediation (can return a captcha)
  - Works with IPv4/IPv6
  - Support IP ranges (can apply a remediation on an IP range)
 
@@ -158,9 +158,12 @@ BAN_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/ban.html
 REDIRECT_LOCATION=
 RET_CODE=
 #those apply for "captcha" action
-# reCAPTCHA Secret Key
+#valid providers are recaptcha, hcaptcha, turnstile
+CAPTCHA_PROVIDER=
+# default is recaptcha to ensure backwards compatibility
+# Captcha Secret Key
 SECRET_KEY=
-# reCAPTCHA Site key
+# Captcha Site key
 SITE_KEY=
 CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
 CAPTCHA_EXPIRATION=3600
@@ -217,13 +220,20 @@ You can also change this with a valid one :
 
 
 ### Setup captcha
-> Currently, only reCAPTCHA v2 is supported.
+> Currently, we have support for 3 providers: recaptcha, hcaptcha or turnstile
 
-If you want to use reCAPTCHA with your Nginx Bouncer, you must provide a reCAPTCHA Site key and Secret key in your bouncer configuration ([recaptcha documentation](https://developers.google.com/recaptcha/intro)).
+If you want to use captcha with your Nginx Bouncer, you must provide a Site key and Secret key in your bouncer configuration. If you wish to use any other provider than recaptcha you must also provide a Captcha provider.
+
+([recaptcha documentation](https://developers.google.com/recaptcha/intro)).
+
+([tunstile documentation](https://developers.cloudflare.com/turnstile/)).
+
+([hcaptcha documentation](https://docs.hcaptcha.com/))
 
 Edit `etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf` and configure the following options:
 
 ```bash
+CAPTCHA_PROVDER=
 SECRET_KEY=
 SITE_KEY=
 CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
@@ -246,7 +256,7 @@ In stream mode, the bouncer will launch an internal timer to pull the local API 
 
 ### Resolver and certificates
 
-In order to query `google.com` for the reCAPTCHA verification, you need to set a resolver and a SSL certificate in your nginx configuration.
+In order to resolve the captcha provider you need to set a resolver and a SSL certificate in your nginx configuration.
 If you already have a resolver set in nginx configuration, you don't need to add another one.
 Here is a config example, but you can change values:
 
@@ -311,7 +321,7 @@ Note: The timer that pull the local API will be triggered after the first reques
 REQUEST_TIMEOUT=1000
 ```
 
-Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or www.google.com (for the reCAPTCHA verification).
+Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
 ```bash
@@ -375,25 +385,31 @@ RET_CODE=403
 The HTTP code to return for IPs that trigger a `ban` remediation.
 If nothing specified, it will return a 403.
 
+### `CAPTCHA_PROVIDER`
+> This option is only for the `captcha` remediation.
+
+```bash
+CAPTCHA_PROVIDER=<recaptcha | hcaptcha | turnstile>
+```
 
 ### `SECRET_KEY`
 > This option is only for the `captcha` remediation.
 
 ```bash
-SECRET_KEY=<recaptcha_secret_key>
+SECRET_KEY=<captcha_secret_key>
 ```
 
-The reCAPTCHA v2 secret key.
+The captcha secret key.
 
 
 ### `SITE_KEY`
 > This option is only for the `captcha` remediation.
 
 ```bash
-SITE_KEY=<recaptcha_site_key>
+SITE_KEY=<captcha_site_key>
 ```
 
-The reCAPTCHA v2 site key.
+The captcha site key.
 
 
 ### `CAPTCHA_TEMPLATE_PATH`
@@ -405,7 +421,7 @@ CAPTCHA_TEMPLATE_PATH=<path_to_html_template>
 
 The path to a captcha HTML template.
 
-The bouncer will try to replace `{{recaptcha_site_key}}` in the template with `SITE_KEY` parameter.
+The bouncer will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
 
 By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/captcha.html`.
 
