@@ -6,13 +6,14 @@ id: network_management
 
 # Ports inventory
 
- - `tcp/8080` exposes a [REST API](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI) for bouncers, `cscli` and communication between crowdsec agent and local api
+ - `tcp/8080` exposes a [REST API](https://crowdsecurity.github.io/api_doc/lapi/) for bouncers, `cscli` and communication between crowdsec agent and local api
  - `tcp/6060` (endpoint `/metrics`) exposes [prometheus metrics](/observability/prometheus.md)
  - `tcp/6060` (endpoint `/debug`) exposes pprof debugging metrics
 
 # Outgoing connections
 
  - Local API connects to `tcp/443` on `api.crowdsec.net` (signal push and blocklists pull)
+ - Local API connects to `tcp/443` on `blocklists.api.crowdsec.net` (blocklists pull)
  - `cscli` connects to `tcp/443` on `hub-cdn.crowdsec.net` to fetch scenarios, parsers etc. (1)
  - `cscli` connects to `tcp/443` on `version.crowdsec.net` to check latest version available. (1)
  - [`cscli dashboard`](/cscli/cscli_dashboard.md) fetches metabase configuration from a s3 bucket (`https://crowdsec-statics-assets.s3-eu-west-1.amazonaws.com/`)

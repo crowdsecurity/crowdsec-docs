@@ -4,7 +4,7 @@ title: Introduction
 sidebar_position: 1
 ---
 
-The [Central API](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI) is the service where the Local API pushes [signal meta-data](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI#/watchers/post_signals) and from where it receives the [community blocklists](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI#/bouncers/get_decisions_stream).
+The [Central API](https://crowdsecurity.github.io/api_doc/capi/) is the service where the Local API pushes [signal meta-data](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_signals) and from where it receives the [community blocklists](https://crowdsecurity.github.io/api_doc/capi/#/bouncers/get_decisions_stream).
 
 ## Data exchanged with the Central API
 
@@ -25,7 +25,7 @@ When CrowdSec blocks an attack, [unless you opt-out of it](/faq.md#how-to-disabl
 
 ### Scenario list
 
-The community blocklist matches the scenarios deployed on the CrowdSec instance. For this reason, CrowdSec provides the list of enabled scenarios (from the hub only) during [the login process](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI#/watchers/post_watchers_login).
+The community blocklist matches the scenarios deployed on the CrowdSec instance. For this reason, CrowdSec provides the list of enabled scenarios (from the hub only) during [the login process](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_watchers_login).
 
 ### Console metrics
 

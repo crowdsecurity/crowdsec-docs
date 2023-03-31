@@ -122,6 +122,12 @@ export DB_PASSWORD="<db_password>"
 :::
 
 
+If the variable is not defined, crowdsec >= 1.5.0 will leave the original
+string. This is to allow for literal `$` characters, especially in passwords:
+versions before 1.5.0 replaced a non-existent reference with an empty string
+which corrupted the password and made it harder to find configuration mistakeh.
+
+
 ## Overriding values
 
 If you change `config.yaml` and later upgrade crowdsec, the package system may
@@ -167,6 +173,8 @@ always replaced.
 - `local_api_credentials.yaml`
 - `simulation.yaml`
 - `bouncers/crowdsec-firewall-bouncer.yaml`
+- `bouncers/crowdsec-custom-bouncer.yaml`
+- `bouncers/crowdsec-blocklist-mirror.yaml`
 
 In the case of `profiles.yaml`, the files are read as a whole (as if they were
 attached) instead of merged. See [profiles - introduction](/profiles/intro).
@@ -209,7 +217,7 @@ cscli:
   hub_branch: "<hub_branch>"
 db_config:
   type:     "<db_type>"
-  db_path:  "<path_to_database_file>"
+  db_path:  "<path_to_database_file|path_to_socket_file>" #Socket file mysql or mariadb
   user:     "<db_user>"      # for mysql/pgsql
   password: "<db_password>"  # for mysql/pgsql
   db_name:  "<db_name>"      # for mysql/pgsql
@@ -315,17 +323,17 @@ Current working directory.
 #### `log_max_size`
 > int
 
-Maximum size the log file in MB before rotating it.
+Maximum size in megabytes of the log file before it gets rotated. Defaults to 500 megabytes.
 
 #### `log_max_age`
 > int
 
-Maximum age of previous log files before deleting them.
+Maximum number of days to retain old log files based on the timestamp encoded in their filename.  Note that a day is defined as 24 hours and may not exactly correspond to calendar days due to daylight savings, leap seconds, etc. The default is to remove old log files after 28 days.
 
 #### `log_max_files`
 > int
 
-Number of previous log files to keep.
+Maximum number of old log files to retain.  The default is to retain 3 old log files (though MaxAge may still cause them to get deleted.)
 
 #### `compress_logs`
 > bool
@@ -484,14 +492,14 @@ The configuration of the database to use for the local API.
 db_config:
   type:     "<db_type>"
 
-  db_path:  "<path_to_database_file>"  # for sqlite
+  db_path:  "<path_to_database_file|path_to_socket_file>"  # database path for sqlite or socket file for mysql/pgx
   use_wal:  "true|false" # for sqlite
 
   user:     "<db_user>"      # for mysql/postgresql/pgx
   password: "<db_password>"  # for mysql/postgresql/pgx
   db_name:  "<db_name>"      # for mysql/postgresql/pgx
-  host:     "<db_host_ip>"   # for mysql/postgresql/pgx
-  port:     "<db_host_port>" # for mysql/postgresql/pgx
+  host:     "<db_host_ip>"   # for mysql/postgresql/pgx # must be omitted if using socket file
+  port:     "<db_host_port>" # for mysql/postgresql/pgx # must be omitted if using socket file
   sslmode:  "<required/disable>" # for postgresql/pgx
   max_open_conns: "<max_number_of_conns_to_db>"
   flush:
@@ -524,10 +532,18 @@ The `type` of database to use. It can be:
 ```yaml
 db_config:
   type: sqlite
-  db_path: "/var/lib/crowdsec/data/crowdsec.db
+  db_path: /var/lib/crowdsec/data/crowdsec.db
+---
+db_config:
+  type: mysql
+  db_path: /var/run/mysqld/mysqld.sock
+---
+db_config:
+  type: pgx
+  db_path: /var/run/postgresql/ #Folder that holds socket file. Socket MUST be the named `.s.PGSQL.5432`
 ```
 
-The path to the database file (only if the type of database is `sqlite`)
+The path to the database file (only if the type of database is `sqlite`) or path to socket file (only if the type of database is `mysql|pgx`)
 
 #### `user`
 
@@ -559,25 +575,25 @@ db_config:
 ```
 The database name to connect to (only if the type of database is `mysql` or `postgresql`)
 
-#### `db_host`
+#### `host`
 
 ```yaml
 db_config:
   type: mysql|postgresql|pgx
 
-  user: foo
+  host: foo
 ```
-The host to connect to (only if the type of database is `mysql` or `postgresql`)
+The host to connect to (only if the type of database is `mysql` or `postgresql`). Must be omitted if using socket file.
 
-#### `db_port`
+#### `port`
 
 ```yaml
 db_config:
   type: mysql|postgresql|pgx
 
-  user: foo
+  port: 3306|5432|5432
 ```
-The port to connect to (only if the type of database is `mysql` or `postgresql`)
+The port to connect to (only if the type of database is `mysql` or `postgresql`). Must be omitted if using socket file.
 
 ```yaml
 db_config:
@@ -760,7 +776,7 @@ server:
       cache_expiration: "<cache_duration_for_revocation_check>"
 ```
 
-#### `enable`
+##### `enable`
 > bool
 
 Enable or disable the CrowdSec Local API (`true` by default).
@@ -779,6 +795,22 @@ The path to the profiles configuration.
 > string
 
 The path to the console configuration.
+
+##### `capi_whitelists_path`
+> string
+
+The path to whitelists file for community and 3rd party blocklists.
+Those IPs/CIDR whitelists apply on all the IPs received from community blocklist or 3rd party lists subscriptions.
+
+expected file format:
+
+```yaml
+ips:
+ - 1.2.3.4
+ - 2.3.4.5
+cidrs:
+ - 1.2.3.0/24
+```
 
 ##### `use_forwarded_for_headers`
 > string

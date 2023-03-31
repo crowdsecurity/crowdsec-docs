@@ -46,7 +46,8 @@ module.exports = {
         {"type":"link", "label": "Install CrowdSec (docker)", "href":"https://hub.docker.com/r/crowdsecurity/crowdsec"},
         "getting_started/install_windows",
         "getting_started/install_softagent",
-        "getting_started/crowdsec_tour"]
+          "getting_started/crowdsec_tour",
+      "getting_started/versions_matrix"]
     },
     {
       type: 'category',
@@ -56,7 +57,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Data Sources',
-      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/windows_evt_log", "data_sources/kafka", "data_sources/troubleshoot" ]
+      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/windows_evt_log", "data_sources/kafka", "data_sources/s3", "data_sources/troubleshoot" ]
     },
     {
       type: 'category',
@@ -91,7 +92,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Configuration',
-      items: ["configuration/crowdsec_configuration", "configuration/network_management"]
+      items: ["configuration/crowdsec_configuration", "configuration/feature_flags", "configuration/network_management"]
     },
     {
       type: 'category',
@@ -101,12 +102,12 @@ module.exports = {
     {
       type: 'category',
       label: 'Local API',
-      items: ["local_api/intro", "local_api/database" , "local_api/bouncers", "local_api/tls_auth", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"}]
+      items: ["local_api/intro", "local_api/database" , "local_api/bouncers", "local_api/tls_auth", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/lapi/"}]
     },
     {
       type: 'category',
       label: 'Central API',
-      items: ["central_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI"}]
+      items: ["central_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/capi/"}]
     },
     {
       type: 'category',
@@ -165,18 +166,18 @@ module.exports = {
         {
           type: "category",
           label: "cscli config",
-          items: ["cscli/cscli_config","cscli/cscli_config_backup","cscli/cscli_config_restore",
+          items: ["cscli/cscli_config","cscli/cscli_config_backup","cscli/cscli_config_feature-flags","cscli/cscli_config_restore",
           "cscli/cscli_config_show"]
         },
         {
           type: "category",
           label: "cscli console",
-          items: ["cscli/cscli_console","cscli/cscli_console_enroll"]
+          items: ["cscli/cscli_console","cscli/cscli_console_disable","cscli/cscli_console_enable","cscli/cscli_console_enroll","cscli/cscli_console_status"]
         },
         {
           type: "category",
           label: "cscli dashboard",
-          items: ["cscli/cscli_dashboard","cscli/cscli_dashboard_remove","cscli/cscli_dashboard_setup","cscli/cscli_dashboard_start","cscli/cscli_dashboard_stop"]
+          items: ["cscli/cscli_dashboard","cscli/cscli_dashboard_remove","cscli/cscli_dashboard_setup","cscli/cscli_dashboard_start","cscli/cscli_dashboard_stop","cscli/cscli_dashboard_show-password"]
         },
         {
           type: "category",
@@ -196,7 +197,7 @@ module.exports = {
         {
           type: "category",
           label: "cscli lapi",
-          items: ["cscli/cscli_lapi","cscli/cscli_lapi_register","cscli/cscli_lapi_status"]
+          items: ["cscli/cscli_lapi","cscli/cscli_lapi_context","cscli/cscli_lapi_context_add","cscli/cscli_lapi_context_delete","cscli/cscli_lapi_context_detect","cscli/cscli_lapi_context_status","cscli/cscli_lapi_register","cscli/cscli_lapi_status"]
         },
         {
           type: "category",
@@ -207,6 +208,11 @@ module.exports = {
           type: "category",
           label: "cscli metrics",
           items: ["cscli/cscli_metrics"]
+        },
+        {
+          type: "category",
+          label: "cscli notifications",
+          items: ["cscli/cscli_notifications","cscli/cscli_notifications_inspect","cscli/cscli_notifications_list","cscli/cscli_notifications_reinject"]
         },
         {
           type: "category",
@@ -222,6 +228,11 @@ module.exports = {
           type: "category",
           label: "cscli scenarios",
           items: ["cscli/cscli_scenarios","cscli/cscli_scenarios_inspect","cscli/cscli_scenarios_install","cscli/cscli_scenarios_list","cscli/cscli_scenarios_remove","cscli/cscli_scenarios_upgrade"]
+        },
+        {
+          type: "category",
+          label: "cscli support",
+          items: ["cscli/cscli_support","cscli/cscli_support_dump"]
         },
         {
           type: "category",
@@ -355,7 +366,7 @@ module.exports = {
     {
       type: "category",
       label: "Integrations",
-      items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti", "cti_api/integration_thehive", "cti_api/integration_paloalto_xsoar"],
+      items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti", "cti_api/integration_thehive", "cti_api/integration_paloalto_xsoar", "cti_api/integration_maltego", "cti_api/integration_splunk_siem"],
     },
   ],
 };

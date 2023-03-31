@@ -9,13 +9,13 @@ OpenCTI connector which enriches your knowledge by using CrowdSec's CTI API. It 
 
 ## Installation
 
-<!-- ### Via Docker Compose using official repo
+### Via Docker Compose using official repo
 
 Add a `connector-crowdsec` in your `docker-compose.yml` file containing your OpenCTI deployment. Replace environment value `changeme`  with appropriate values.
 
 ```yaml
 connector-crowdsec:
-    image: opencti/connector-crowdsec:5.3.7
+    image: opencti/connector-crowdsec:5.5.2
     environment:
       - OPENCTI_URL=http://changeme
       - OPENCTI_TOKEN=changeme
@@ -30,7 +30,7 @@ connector-crowdsec:
       - CONNECTOR_CONFIDENCE_LEVEL=100 # From 0 (Unknown) to 100 (Fully trusted)
       - CONNECTOR_LOG_LEVEL=info
     restart: always
-``` -->
+```
 
 ### Manual activation
 

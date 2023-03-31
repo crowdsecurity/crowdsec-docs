@@ -171,7 +171,8 @@ Our server side certificate is defined in `server.json`:
   }
 ```
 
-Lastly, we will define our bouncer and agents certs:
+Lastly, we will define our bouncer certificate, `bouncer.json`:
+
 ```json
 {
     "CN": "mybouncer",
@@ -190,6 +191,8 @@ Lastly, we will define our bouncer and agents certs:
     ]
   }
 ```
+
+and `agent.json`:
 
 ```json
 {

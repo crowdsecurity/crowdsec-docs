@@ -22,7 +22,7 @@ Then, [bouncers](/user_guides/bouncers_configuration.md) can "consume" those dec
 
 ## Crowd sourced aspect
 
- [[References](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI)]
+ [[References](https://crowdsecurity.github.io/api_doc/capi/)]
 
 Whenever the [Local API](/local_api/intro.md) receives an alert with associated decisions, the meta information about the alert is shared with our central api :
 

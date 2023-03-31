@@ -299,4 +299,4 @@ Crowdsec uses go-routines for parsing and enriching logs, pouring events to buck
 
 By default, one routine of each exists (should be enough to handle ~1K EP/s), and can be changed in `crowdsec_service` of the main configuration file via the [parser_routines](/configuration/crowdsec_configuration.md#parser_routines), [buckets_routines](/configuration/crowdsec_configuration.md#buckets_routines) and [output_routines](/configuration/crowdsec_configuration.md#output_routines) directives.
 
-Please keep in mind that thanks to the [http API](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI), the workload of log parsing can be splitted amongst several agents pushing to a single [LAPI](/local_api/intro.md).
+Please keep in mind that thanks to the [http API](https://crowdsecurity.github.io/api_doc/lapi/), the workload of log parsing can be splitted amongst several agents pushing to a single [LAPI](/local_api/intro.md).

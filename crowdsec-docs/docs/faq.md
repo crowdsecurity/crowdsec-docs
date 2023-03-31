@@ -44,8 +44,8 @@ Your logs are not sent to our central API, only meta-data about blocked attacks 
 
 When pulling block-lists from the platform, the following information is shared as well :
 
- - list of [upstream installed scenarios](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI#/watchers/post_metrics)
- - list of [bouncers & number of machines](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI#/watchers/post_metrics)
+ - list of [upstream installed scenarios](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_metrics)
+ - list of [bouncers & number of machines](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_metrics)
 
 ## What is the performance impact ?
 
@@ -134,7 +134,7 @@ Several initiatives have been taken to tackle the false positives approach as ea
 
 ## I need some help
 
-Feel free to ask for some help to the [Discourse](https://discourse.crowdsec.net/) or directly in the [Gitter](https://gitter.im/crowdsec-project/community) chat.
+Feel free to ask for some help to the [Discourse](https://discourse.crowdsec.net/) or directly in the [Discord](https://discord.gg/crowdsec) chat.
 
 ## How to have a dashboard without docker
 
@@ -184,3 +184,17 @@ When setting up High Availability for Local API, do not forget to share the same
 
 To disable the central API, simply comment out the [`online_client` section of the configuration file](/configuration/crowdsec_configuration.md#online_client).
 
+## Why are some scenarios/parsers "tainted" or "custom" ? 
+
+When using `cscli` to list your parsers, scenarios and collections, some might appear as "tainted" or "custom".
+
+"tainted" items:
+ - Originate from the hub
+ - Were locally modified
+ - Will not be automatically updated/upgraded by `cscli` operations (unless `--force` or similar is specified)
+ - Won't be sent to Central API and won't appear in the Console (unless `cscli console enable tainted` has been specified)
+
+"custom" items:
+ - Have been locally created by the user
+ - Are not managed by `cscli` operations
+ - Won't be sent to Central API and won't appear in the Console (unless `cscli console enable custom` has been specified)

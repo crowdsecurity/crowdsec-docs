@@ -44,8 +44,8 @@ Your logs are not sent to our central API, only meta-data about blocked attacks 
 
 When pulling block-lists from the platform, the following information is shared as well :
 
- - list of [upstream installed scenarios](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI#/watchers/post_metrics)
- - list of [bouncers & number of machines](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI#/watchers/post_metrics)
+ - list of [upstream installed scenarios](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_metrics)
+ - list of [bouncers & number of machines](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_metrics)
 
 ## What is the performance impact ?
 
