@@ -24,10 +24,12 @@ There is two ways to enable this feature flag:
 ```yaml
 - papi_client
 ```
- - Add this environement variable in `/lib/systemd/system/crowdsec.service`:
+ - Add this environement variable to the crowdsec service file with `sudo systemctl edit crowdsec.service`:
 ```
 Environment=CROWDSEC_FEATURE_PAPI_CLIENT=true
 ```
+
+And then reload the systemctl daemon with `sudo systemctl daemon-reload`
 
 Now that the feature flag is enabled, we need to enable the option on the LAPI side:
 ```bash
