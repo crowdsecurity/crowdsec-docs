@@ -13,7 +13,7 @@ Here are a few details about some of the features we are including in 1.5:
 
 - Third Party Blocklists, allowing you to subscribe to at least 2 (new) additional blocklists created by the CrowdSec team in addition to our community fuelled blocklist to better protect your instances. 
 
-- Kubernetes Cluster Monitoring, giving you the ability to monitor and protect your whole K8s cluster and not just the services running on it.
+- New datasources and collections : Kubernetes Cluster Monitoring (giving you the ability to monitor and protect your whole K8s cluster and not just the services running on it), AWS Cloudtrail (to protect your AWS environement, deal with compliance and post-exploitation behaviors), auditd and much more!
 
 You can find a full list of the changes located [here](https://github.com/crowdsecurity/crowdsec/releases/tag/v1.5.0-rc4)
 
