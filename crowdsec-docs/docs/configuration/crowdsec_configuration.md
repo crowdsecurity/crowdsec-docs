@@ -35,6 +35,7 @@ config_paths:
 crowdsec_service:
   enable: true
   acquisition_path: /etc/crowdsec/acquis.yaml
+  console_context_path: /etc/crowdsec/console/context.yaml
   #acquisition_dir: /etc/crowdsec/acquis/
   parser_routines: 1
   buckets_routines: 1
@@ -206,6 +207,7 @@ crowdsec_service:
   enable: <true|false>  ## enable or disable crowdsec agent
   acquisition_path: "<acqusition_file_path>"
   acquisition_dir: "<acquisition_dir_path>"
+  console_context_path: <path_to_context_file>
   parser_routines: "<number_of_parser_routines>"
   buckets_routines: "<number_of_buckets_routines>"
   output_routines: "<number_of_output_routines>"
@@ -404,6 +406,7 @@ crowdsec_service:
   enable: <true|false>
   acquisition_path: "<acqusition_file_path>"
   acquisition_dir: "<acqusition_dir_path>"
+  console_context_path: <path_to_context_file>
   parser_routines: "<number_of_parser_routines>"
   buckets_routines: "<number_of_buckets_routines>"
   output_routines: "<number_of_output_routines>"
@@ -428,6 +431,11 @@ Number of dedicated goroutines for managing live buckets.
 > int
 
 Number of dedicated goroutines for pushing data to local api.
+
+#### `console_context_path`
+> string
+
+Path to the yaml file containing the context to send to the local API.
 
 #### `acquisition_path`
 > string
