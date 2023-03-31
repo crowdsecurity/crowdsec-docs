@@ -217,7 +217,7 @@ cscli:
   hub_branch: "<hub_branch>"
 db_config:
   type:     "<db_type>"
-  db_path:  "<path_to_database_file>"
+  db_path:  "<path_to_database_file|path_to_socket_file>" #Socket file mysql or mariadb
   user:     "<db_user>"      # for mysql/pgsql
   password: "<db_password>"  # for mysql/pgsql
   db_name:  "<db_name>"      # for mysql/pgsql
@@ -492,14 +492,14 @@ The configuration of the database to use for the local API.
 db_config:
   type:     "<db_type>"
 
-  db_path:  "<path_to_database_file>"  # for sqlite
+  db_path:  "<path_to_database_file|path_to_socket_file>"  # database path for sqlite or socket file for mysql/pgx
   use_wal:  "true|false" # for sqlite
 
   user:     "<db_user>"      # for mysql/postgresql/pgx
   password: "<db_password>"  # for mysql/postgresql/pgx
   db_name:  "<db_name>"      # for mysql/postgresql/pgx
-  host:     "<db_host_ip>"   # for mysql/postgresql/pgx
-  port:     "<db_host_port>" # for mysql/postgresql/pgx
+  host:     "<db_host_ip>"   # for mysql/postgresql/pgx # must be omitted if using socket file
+  port:     "<db_host_port>" # for mysql/postgresql/pgx # must be omitted if using socket file
   sslmode:  "<required/disable>" # for postgresql/pgx
   max_open_conns: "<max_number_of_conns_to_db>"
   flush:
@@ -532,10 +532,18 @@ The `type` of database to use. It can be:
 ```yaml
 db_config:
   type: sqlite
-  db_path: "/var/lib/crowdsec/data/crowdsec.db
+  db_path: /var/lib/crowdsec/data/crowdsec.db
+---
+db_config:
+  type: mysql
+  db_path: /var/run/mysqld/mysqld.sock
+---
+db_config:
+  type: pgx
+  db_path: /var/run/postgresql/ #Folder that holds socket file. Socket MUST be the named `.s.PGSQL.5432`
 ```
 
-The path to the database file (only if the type of database is `sqlite`)
+The path to the database file (only if the type of database is `sqlite`) or path to socket file (only if the type of database is `mysql|pgx`)
 
 #### `user`
 
@@ -567,25 +575,25 @@ db_config:
 ```
 The database name to connect to (only if the type of database is `mysql` or `postgresql`)
 
-#### `db_host`
+#### `host`
 
 ```yaml
 db_config:
   type: mysql|postgresql|pgx
 
-  user: foo
+  host: foo
 ```
-The host to connect to (only if the type of database is `mysql` or `postgresql`)
+The host to connect to (only if the type of database is `mysql` or `postgresql`). Must be omitted if using socket file.
 
-#### `db_port`
+#### `port`
 
 ```yaml
 db_config:
   type: mysql|postgresql|pgx
 
-  user: foo
+  port: 3306|5432|5432
 ```
-The port to connect to (only if the type of database is `mysql` or `postgresql`)
+The port to connect to (only if the type of database is `mysql` or `postgresql`). Must be omitted if using socket file.
 
 ```yaml
 db_config:
