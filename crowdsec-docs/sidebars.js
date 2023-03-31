@@ -369,4 +369,36 @@ module.exports = {
       items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti", "cti_api/integration_thehive", "cti_api/integration_paloalto_xsoar", "cti_api/integration_maltego", "cti_api/integration_splunk_siem"],
     },
   ],
+  betaSidebar: [
+    {
+      type: 'category',
+      label: 'Preview Programs',
+      collapsed: true,
+      items: [
+        "preview/1-5/intro",
+      ]
+    },
+    {
+      type: 'doc',
+      label: 'Backup Guide',
+      id: 'preview/backup_guide'
+    },
+    {
+      type: 'category',
+      label: 'Security Engine (Preview)',
+      collapsed: true,
+      items: [
+        "preview/crowdsec_linux",
+        //"preview/crowdsec_freebsd",
+        "preview/crowdsec_windows",
+        {"type":"link", "label": "Helm/K8s", "href":"https://artifacthub.io/packages/helm/crowdsec/crowdsec"},
+        {"type":"link", "label": "Docker/Podman", "href":"https://hub.docker.com/r/crowdsecurity/crowdsec"},
+      ]
+    },
+    {
+      type: 'doc',
+      label: 'Rollback to previous version',
+      id: 'preview/rollback'
+    }
+  ],
 };
