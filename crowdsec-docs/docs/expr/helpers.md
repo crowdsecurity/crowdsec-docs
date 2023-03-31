@@ -160,6 +160,13 @@ Return RFC3339 formatted time
 
 > `TimeNow()`
 
+### `ParseUnix(unix string) string`
+```
+ParseUnix("1672239773.3590894") -> "2022-12-28T15:02:53Z"
+ParseUnix("1672239773") -> "2022-12-28T15:02:53Z"
+ParseUnix("notatimestamp") -> ""
+```
+Parses unix timestamp string and returns RFC3339 formatted time
 
 ## JSON Helpers
 
@@ -236,13 +243,6 @@ The cache are usually populated by [parser's stash section](/parsers/format.md#s
 An empty string if the key doesn't exist (or has been evicted), and error is raised if the `cache` doesn't exist.
 
 
-
-
-
-
-
-
-
 ## Others
 
 ### `IsIPV4(ip string) bool`
@@ -304,7 +304,6 @@ leakspeed: 3h
 labels:
   type: fraud
 ```
-
 Notes:
  - Will return `0` if either set of coordinates is nil (ie. IP couldn't be geoloc)
  - Assumes that the earth is spherical and uses the haversine formula.
@@ -335,7 +334,7 @@ Return the list of IP addresses in the alert sources.
 
 Return the number of events in the bucket.
 
-
+ 
 ## Event specific helpers
 
 
