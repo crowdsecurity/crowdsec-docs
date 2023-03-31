@@ -860,7 +860,7 @@ This section is used by local API and crowdsec.
 prometheus:
   enabled: "(true|false)"
   level: "(full|aggregated)"
-  listen_addr: "<listen_address>"
+  listen_addr: "<listen_interface>"
   listen_port: "<listen_port>"
 ```
 
@@ -878,7 +878,9 @@ Can be `full` (all metrics) or `aggregated` (to allow minimal metrics that will 
 #### `listen_addr`
 > string
 
-Prometheus listen url.
+Prometheus listen interface.
+
+Can be set to `0.0.0.0` to listen to all interfaces.
 
 #### `listen_port`
 > int

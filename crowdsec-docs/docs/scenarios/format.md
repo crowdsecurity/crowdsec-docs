@@ -31,7 +31,7 @@ labels:
 
 
 ```yaml
-type: leaky|trigger|counter
+type: leaky|trigger|counter|conditional
 ```
 
 Defines the type of the bucket. Currently three types are supported :
@@ -39,6 +39,7 @@ Defines the type of the bucket. Currently three types are supported :
  - `leaky` : a [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) that must be configured with a [capacity](#capacity) and a [leakspeed](#leakspeed)
  - `trigger` : a bucket that overflows as soon as an event is poured (it is like a leaky bucket is a capacity of 0)
  - `counter` : a bucket that only overflows every [duration](#duration). It is especially useful to count things.
+ - `conditional`: a bucket that overflows when the expression given in `condition` returns true. Useful if you want to look back at previous events that were poured to the bucket (to detect impossible travel or more behavioral patterns for example). If the capacity is not set to `-1`, it can overflow like a standard `leaky` bucket.
 
 ---
 ### `name`
@@ -66,6 +67,17 @@ description: A scenario that detect XXXX behavior
 The `description` is mandatory.
 
 It is a short description, probably one sentence, describing what it detects.
+
+---
+### `reference`
+
+```yaml
+reference: A reference to third party documents. 
+```
+
+The `reference` is optional.
+
+A reference to third party documents. This can be a single string, or a list of string.
 
 ---
 ### `filter`
@@ -188,6 +200,7 @@ Only applies to `leaky` buckets.
 
 A positive integer representing the bucket capacity.
 If there are more than `capacity` item in the bucket, it will overflow.
+Should be set to `-1` in most situations for `conditional` buckets.
 
 ---
 ### `leakspeed`
@@ -201,6 +214,19 @@ Only applies to `leaky` buckets.
 A duration that represent how often an event will be leaking from the bucket.
 
 Must be compatible with [golang ParseDuration format](https://golang.org/pkg/time/#ParseDuration).
+
+### `condition`
+```yaml
+condition: |
+  len(queue.Queue) >= 2 
+  and Distance(queue.Queue[-1].Enriched.Latitude, queue.Queue[-1].Enriched.Longitude,
+  queue.Queue[-2].Enriched.Latitude, queue.Queue[-2].Enriched.Longitude) > 100
+```
+
+Only applies to `conditional` buckets.
+
+Make the bucket overflow when it returns true.
+The expression is evaluated each time an event is poured to the bucket.
 
 
 #### Example
@@ -362,7 +388,7 @@ If the `cancel_on` expression returns true, the bucket is immediately destroyed 
 data:
   - source_url: https://URL/TO/FILE
     dest_file: LOCAL_FILENAME
-    [type: (regexp|string)]
+    [type: (regexp|string)]    
 ```
 
 `data` allows to specify an external source of data.
@@ -391,6 +417,35 @@ data:
   - source_url: https://www.cloudflare.com/ips-v4
     dest_file: cloudflare_ips.txt
     type: string
+```
+
+#### Caching feature
+
+Since 1.5, it is possible to configure additional cache for `RegexpInFile()` :
+
+ - input data (hashed with [xxhash](https://github.com/cespare/xxhash))
+ - associated result (true or false)
+
+[Cache behavior](https://pkg.go.dev/github.com/bluele/gcache) can be configured:
+ - strategy: LRU, LFU or ARC
+ - size: maximum size of cache
+ - ttl: expiration of elements
+ - cache: boolean (true by default if one of the fields is set)
+
+This is typically useful for scenarios that needs to check on a lot of regexps.
+
+Example configuration:
+
+```yaml
+type: leaky
+#...
+data:
+  - source_url: https://raw.githubusercontent.com/crowdsecurity/sec-lists/master/web/bad_user_agents.regex.txt
+    dest_file: bad_user_agents.regex.txt
+    type: regexp
+    strategy: LRU
+    size: 40
+    ttl: 5s
 ```
 
 ---

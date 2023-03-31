@@ -39,8 +39,6 @@ If set to `true`, force an inotify watch on the log files folder, even if there 
 
 Must be `file`.
 
-
-
 ## DSN and command-line
 
 This module supports acquisition directly from the command line, to read files in one shot.
@@ -51,10 +49,24 @@ A single file URI is accepted with the `-dsn` parameter, but globbing is support
 crowdsec -type syslog -dsn file:///var/log/*.log
 ```
 
-You can specify the `log_level` parameter to change the log level for the acquisition:
+### Supported parameters
+
+#### `log_level`
+
+Change the log level for the acquisition:
 
 ```bash
 crowdsec -type syslog -dsn file:///var/log/*.log?log_level=info
+```
+
+#### `max_buffer_size`
+
+Maximum length of a single line.
+
+Defaults to 65536.
+
+```bash
+crowdsec -type syslog -dsn file:///var/log/*.log?max_buffer_size=42000
 ```
 
 ## Notes

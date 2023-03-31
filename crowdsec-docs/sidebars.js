@@ -57,7 +57,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Data Sources',
-      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/windows_evt_log", "data_sources/kafka", "data_sources/troubleshoot" ]
+      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/windows_evt_log", "data_sources/kafka", "data_sources/s3", "data_sources/troubleshoot" ]
     },
     {
       type: 'category',
@@ -366,7 +366,39 @@ module.exports = {
     {
       type: "category",
       label: "Integrations",
-      items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti", "cti_api/integration_thehive", "cti_api/integration_paloalto_xsoar", "cti_api/integration_maltego"],
+      items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti", "cti_api/integration_thehive", "cti_api/integration_paloalto_xsoar", "cti_api/integration_maltego", "cti_api/integration_splunk_siem"],
     },
+  ],
+  betaSidebar: [
+    {
+      type: 'category',
+      label: 'Preview Programs',
+      collapsed: true,
+      items: [
+        "preview/1-5/intro",
+      ]
+    },
+    {
+      type: 'doc',
+      label: 'Backup Guide',
+      id: 'preview/backup_guide'
+    },
+    {
+      type: 'category',
+      label: 'Security Engine (Preview)',
+      collapsed: true,
+      items: [
+        "preview/crowdsec_linux",
+        //"preview/crowdsec_freebsd",
+        "preview/crowdsec_windows",
+        {"type":"link", "label": "Helm/K8s", "href":"https://artifacthub.io/packages/helm/crowdsec/crowdsec"},
+        {"type":"link", "label": "Docker/Podman", "href":"https://hub.docker.com/r/crowdsecurity/crowdsec"},
+      ]
+    },
+    {
+      type: 'doc',
+      label: 'Rollback to previous version',
+      id: 'preview/rollback'
+    }
   ],
 };
