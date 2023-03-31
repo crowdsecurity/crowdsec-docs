@@ -404,7 +404,7 @@ Since 1.5, it is possible to configure additional cache for `RegexpInFile()` :
  - strategy: LRU, LFU or ARC
  - size: maximum size of cache
  - ttl: expiration of elements
- - cache: boolean
+ - cache: boolean (true by default if one of the fields is set)
 
 This is typically useful for scenarios that needs to check on a lot of regexps.
 
