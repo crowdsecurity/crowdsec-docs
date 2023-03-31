@@ -284,6 +284,31 @@ Returns the number of existing decisions in database with the same value since d
 Return true if the `key` exist in the map.
 
 
+### `Distance(lat1 string, long1 string, lat2 string, long2 string) float64`
+
+Computes the distance in kilometers between the set of coordinates represented by lat1/long1 and lat2/long2.
+Designed to implement impossible travel and similar scenarios:
+
+```yaml
+type: conditional
+name: demo/impossible-travel
+description: "test"
+filter: "evt.Meta.log_type == 'fake_ok'"
+groupby: evt.Meta.user
+capacity: -1
+condition: |
+  len(queue.Queue) >= 2 
+  and Distance(queue.Queue[-1].Enriched.Latitude, queue.Queue[-1].Enriched.Longitude,
+  queue.Queue[-2].Enriched.Latitude, queue.Queue[-2].Enriched.Longitude) > 100
+leakspeed: 3h
+labels:
+  type: fraud
+```
+
+Notes:
+ - Will return `0` if either set of coordinates is nil (ie. IP couldn't be geoloc)
+ - Assumes that the earth is spherical and uses the haversine formula.
+
 ## Alert specific helpers
 
 ### `Alert.Remediation bool`
@@ -351,3 +376,4 @@ Return the `Source.Value` field value of a `Source`.
 ### `Source.GetScope() string`
 
 Return the `Source.Scope` field value of `Source` (`ip`, `range` ...)
+
