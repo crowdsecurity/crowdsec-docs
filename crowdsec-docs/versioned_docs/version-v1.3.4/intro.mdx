@@ -1,4 +1,67 @@
----
+---import TrackCard from "../containers/track-card";npm install @apollo/server graphql graphql-tagnpm install && npm startstartApolloServer();async function startApolloServer() {
+  const server = new ApolloServer({ typeDefs });
+  const { url } = await startStandaloneServer(server);
+  console.log(`
+    🚀  Server is running!
+    📭  Query at ${url}
+  `);
+}const { addMocksToSchema } = require("@graphql-tools/mock");
+const { makeExecutableSchema } = require("@graphql-tools/schema");async function startApolloServer() {
+  const server = new ApolloServer({ typeDefs });
+}ReactDOM.render(
+  <ApolloProvider client={client}>
+    <GlobalStyles />
+    <Pages />
+  </ApolloProvider>,
+  document.getElementById("root")
+);async function startApolloServer() {
+  const server = new ApolloServer({ typeDefs });
+  startStandaloneServer(server);
+}import { gql } from "@apollo/client";npm install graphql @apollo/clientconst client = new ApolloClient({
+  // options go here
+});async function startApolloServer() {
+  const server = new ApolloServer({ typeDefs });
+  const { url } = await startStandaloneServer(server);
+}const client = new ApolloClient({
+  uri: "http://localhost:4000",
+  cache: new InMemoryCache(),
+});"Author of a complete Track or a Module"
+type Author {
+  id: ID!
+  name: String!
+  photo: String
+}import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";git clone https://github.com/apollographql/odyssey-lift-off-part1/** TRACKS query to retrieve all tracks */
+const TRACKS = gql`
+  query GetTracks {
+    tracksForHome {
+      id
+      title
+      thumbnail
+      length
+      modulesCount
+      author {
+        name
+        photo
+      }
+    }
+  }
+`;"A track is a group of Modules that teaches about a specific topic"
+type Track {
+  id: ID!
+  title: String!
+  author: Author!
+  thumbnail: String
+  length: Int
+  modulesCount: Int
+}const TRACKS = gql`
+  # Query goes here
+`;import { useQuery, gql } from "@apollo/client";if (error) return `Error! ${error.message}`;const { loading, error, data } = useQuery(TRACKS);"Author of a complete Track or a Module"
+type Author {
+  # Fields go here
+}<Layout grid>{JSON.stringify(data)}</Layout>if (loading) return "Loading...";"""
+I'm a block description
+with a line break
+"""
 title: Introduction
 id: intro
 ---
