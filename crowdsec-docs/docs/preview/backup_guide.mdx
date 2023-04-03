@@ -1,0 +1,27 @@
+---
+id: backup_guide
+title: Backup Guide
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Tabs
+  defaultValue="linux"
+  groupId="operating-systems"
+  values={[
+    {label: 'Linux', value: 'linux'},
+    {label: 'Windows', value: 'windows'},
+  ]}>
+  <TabItem value="linux">
+    <CodeBlock className="language-bash">
+    cd /etc/crowdsec/ && cscli config backup ./backup && tar -czvf backup.tar.gz backup/ && rm -rf backup
+    </CodeBlock>
+  </TabItem>
+  
+  <TabItem value="windows">
+    <CodeBlock className="language-bash">
+    cd c:/programdata/crowdsec/; cscli config backup ./backup/; Compress-Archive -Path ./backup/ -DestinationPath ./backup; Remove-Item ./backup/ -Recurse;
+    </CodeBlock>
+  </TabItem>
+</Tabs>

@@ -19,6 +19,7 @@ cscli hubtest explain [flags]
 ### Options inherited from parent commands
 
 ```
+      --color string      Output color: yes, no, auto. (default "auto")
   -c, --config string     path to crowdsec config file (default "/etc/crowdsec/config.yaml")
       --crowdsec string   Path to crowdsec (default "crowdsec")
       --cscli string      Path to cscli (default "cscli")
@@ -26,7 +27,7 @@ cscli hubtest explain [flags]
       --error             Set logging to error.
       --hub string        Path to hub folder (default ".")
       --info              Set logging to info.
-  -o, --output string     Output format : human, json, raw.
+  -o, --output string     Output format: human, json, raw.
       --trace             Set logging to trace.
       --warning           Set logging to warning.
 ```

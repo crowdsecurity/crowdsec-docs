@@ -244,6 +244,20 @@ It is used for example in debug log to help you track things.
 
 -----
 
+### `format`
+
+```yaml
+name: explicit_string
+```
+
+Optional version which defines the parser version document used to
+write the parser. The default version is 1.0. Versions `2.0` and
+onward will end in a crowdsec minimum requirement version to use the
+parser definition.  For example, parsers that use the conditional
+feature will have to put `2.0` in order to get at least crowdsec 1.5.0
+
+-----
+
 ### `nodes`
 
 ```yaml
@@ -328,6 +342,12 @@ target: evt.Parsed.foobar
 
 > `target: evt.Meta.foobar` will set the value in the `Meta[foobar]` entry
 
+```yaml
+method: GeoCoords
+```
+
+> `method: GeoIPCity` will will use the GeoIPCity to populate some fields in the `Enriched` entry. See (Enrichers|parsers/enricher.md) for more information
+
 #### `source`
 
 ```yaml
@@ -383,6 +403,14 @@ The `type` is mandatory if you want to evaluate the data in the file, and should
 The regexps will be compiled, the strings will be loaded into a list and both will be kept in memory.
 Without specifying a `type`, the file will be downloaded and stored as file and not in memory.
 
+You can refer to the content of the downloaded file(s) by using either the `File()` or `RegexpInFile()` function in an expression:
+
+```yaml
+filter: 'evt.Meta.log_type in ["http_access-log", "http_error-log"] and any(File("backdoors.txt"), { evt.Parsed.request contains #})'
+```
+
+
+#### Example
 
 ```yaml
 name: crowdsecurity/cdn-whitelist
@@ -393,6 +421,85 @@ data:
     type: string
 ```
 
+#### Caching feature
+
+Since 1.5, it is possible to configure additional cache for `RegexpInFile()` :
+
+ - input data (hashed with [xxhash](https://github.com/cespare/xxhash))
+ - associated result (true or false)
+
+[Cache behavior](https://pkg.go.dev/github.com/bluele/gcache) can be configured:
+ - strategy: LRU, LFU or ARC
+ - size: maximum size of cache
+ - ttl: expiration of elements
+ - cache: boolean (true by default if one of the fields is set)
+
+This is typically useful for scenarios that needs to check on a lot of regexps.
+
+Example configuration:
+
+```yaml
+type: leaky
+#...
+data:
+  - source_url: https://raw.githubusercontent.com/crowdsecurity/sec-lists/master/web/bad_user_agents.regex.txt
+    dest_file: bad_user_agents.regex.txt
+    type: regexp
+    strategy: LRU
+    size: 40
+    ttl: 5s
+```
+
+-----
+
+### `stash`
+
+The **stash** section allows a parser to capture data, that can be later accessed/populated via `GetFromStash` and `SetInStash` expr helpers.
+Each list item defines a capture directive that is stored in a separate cache (string:string), with its own maximum size, eviction rules etc.
+
+#### `name`
+
+The name of the stash. Distinct parsers can manipulate the same cache.
+
+#### `key`
+
+The [expression](/expr/helpers.md) that defines the string that will be used as a key.
+
+#### `value`
+
+The [expression](/expr/helpers.md) that defines the string that will be used as a value.
+
+#### `ttl`
+
+The time to leave of items. Default strategy is LRU.
+
+#### `size`
+
+The maximum size of the cache.
+
+#### `strategy`
+
+The caching strategy to be used : LFU, LRU or ARC (see [gcache doc for details](https://pkg.go.dev/github.com/bluele/gcache)).
+Defaults to LRU.
+
+#### Examples
+
+```yaml
+stash:
+  - name: test_program_pid_assoc
+    key: evt.Parsed.pid
+    value: evt.Parsed.program
+    ttl: 30s
+    size: 10
+```
+
+This will build and maintain a cache of at most 10 concurrent items that will capture the association `evt.Parsed.pid` -> `evt.Parsed.program`. The cache can then be used to enrich other items:
+
+```yaml
+statics:
+  - meta: associated_prog_name
+    expression: GetFromStash("test_program_pid_assoc", evt.Parsed.pid)
+```
 
 ## Notes
 

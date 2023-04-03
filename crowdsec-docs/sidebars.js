@@ -52,12 +52,12 @@ module.exports = {
     {
       type: 'category',
       label: 'User Guides',
-      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building", "user_guides/replay_mode", "user_guides/cscli_explain", "user_guides/cscli_macos", "user_guides/multiserver_setup", "user_guides/consuming_fastly_logs"]
+      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building", "user_guides/replay_mode", "user_guides/cscli_explain", "user_guides/cscli_macos", "user_guides/multiserver_setup", "user_guides/consuming_fastly_logs", "user_guides/alert_context"]
     },
     {
       type: 'category',
       label: 'Data Sources',
-      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/windows_evt_log", "data_sources/kafka", "data_sources/kubernetes_audit", "data_sources/troubleshoot" ]
+      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/windows_evt_log", "data_sources/kafka", "data_sources/kubernetes_audit", "data_sources/s3", "data_sources/troubleshoot" ]
     },
     {
       type: 'category',
@@ -92,7 +92,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Configuration',
-      items: ["configuration/crowdsec_configuration", "configuration/network_management"]
+      items: ["configuration/crowdsec_configuration", "configuration/feature_flags", "configuration/network_management"]
     },
     {
       type: 'category',
@@ -102,12 +102,17 @@ module.exports = {
     {
       type: 'category',
       label: 'Local API',
-      items: ["local_api/intro", "local_api/database" , "local_api/bouncers", "local_api/tls_auth", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"}]
+      items: ["local_api/intro", "local_api/database" , "local_api/bouncers", "local_api/tls_auth", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/lapi/"}]
     },
     {
       type: 'category',
       label: 'Central API',
-      items: ["central_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI"}]
+      items: ["central_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/capi/"}]
+    },
+    {
+      type: 'category',
+      label: 'Console Management',
+      items: ["console_management/intro", "console_management/decisions"]
     },
     {
       type: 'category',
@@ -166,18 +171,18 @@ module.exports = {
         {
           type: "category",
           label: "cscli config",
-          items: ["cscli/cscli_config","cscli/cscli_config_backup","cscli/cscli_config_restore",
+          items: ["cscli/cscli_config","cscli/cscli_config_backup","cscli/cscli_config_feature-flags","cscli/cscli_config_restore",
           "cscli/cscli_config_show"]
         },
         {
           type: "category",
           label: "cscli console",
-          items: ["cscli/cscli_console","cscli/cscli_console_enroll"]
+          items: ["cscli/cscli_console","cscli/cscli_console_disable","cscli/cscli_console_enable","cscli/cscli_console_enroll","cscli/cscli_console_status"]
         },
         {
           type: "category",
           label: "cscli dashboard",
-          items: ["cscli/cscli_dashboard","cscli/cscli_dashboard_remove","cscli/cscli_dashboard_setup","cscli/cscli_dashboard_start","cscli/cscli_dashboard_stop"]
+          items: ["cscli/cscli_dashboard","cscli/cscli_dashboard_remove","cscli/cscli_dashboard_setup","cscli/cscli_dashboard_start","cscli/cscli_dashboard_stop","cscli/cscli_dashboard_show-password"]
         },
         {
           type: "category",
@@ -197,7 +202,7 @@ module.exports = {
         {
           type: "category",
           label: "cscli lapi",
-          items: ["cscli/cscli_lapi","cscli/cscli_lapi_register","cscli/cscli_lapi_status"]
+          items: ["cscli/cscli_lapi","cscli/cscli_lapi_context","cscli/cscli_lapi_context_add","cscli/cscli_lapi_context_delete","cscli/cscli_lapi_context_detect","cscli/cscli_lapi_context_status","cscli/cscli_lapi_register","cscli/cscli_lapi_status"]
         },
         {
           type: "category",
@@ -208,6 +213,11 @@ module.exports = {
           type: "category",
           label: "cscli metrics",
           items: ["cscli/cscli_metrics"]
+        },
+        {
+          type: "category",
+          label: "cscli notifications",
+          items: ["cscli/cscli_notifications","cscli/cscli_notifications_inspect","cscli/cscli_notifications_list","cscli/cscli_notifications_reinject"]
         },
         {
           type: "category",
@@ -223,6 +233,11 @@ module.exports = {
           type: "category",
           label: "cscli scenarios",
           items: ["cscli/cscli_scenarios","cscli/cscli_scenarios_inspect","cscli/cscli_scenarios_install","cscli/cscli_scenarios_list","cscli/cscli_scenarios_remove","cscli/cscli_scenarios_upgrade"]
+        },
+        {
+          type: "category",
+          label: "cscli support",
+          items: ["cscli/cscli_support","cscli/cscli_support_dump"]
         },
         {
           type: "category",
@@ -356,7 +371,39 @@ module.exports = {
     {
       type: "category",
       label: "Integrations",
-      items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti", "cti_api/integration_thehive", "cti_api/integration_paloalto_xsoar", "cti_api/integration_maltego"],
+      items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti", "cti_api/integration_thehive", "cti_api/integration_paloalto_xsoar", "cti_api/integration_maltego", "cti_api/integration_splunk_siem"],
     },
+  ],
+  betaSidebar: [
+    {
+      type: 'category',
+      label: 'Preview Programs',
+      collapsed: true,
+      items: [
+        "preview/1-5/intro",
+      ]
+    },
+    {
+      type: 'doc',
+      label: 'Backup Guide',
+      id: 'preview/backup_guide'
+    },
+    {
+      type: 'category',
+      label: 'Security Engine (Preview)',
+      collapsed: true,
+      items: [
+        "preview/crowdsec_linux",
+        //"preview/crowdsec_freebsd",
+        "preview/crowdsec_windows",
+        {"type":"link", "label": "Helm/K8s", "href":"https://artifacthub.io/packages/helm/crowdsec/crowdsec"},
+        {"type":"link", "label": "Docker/Podman", "href":"https://hub.docker.com/r/crowdsecurity/crowdsec"},
+      ]
+    },
+    {
+      type: 'doc',
+      label: 'Rollback to previous version',
+      id: 'preview/rollback'
+    }
   ],
 };

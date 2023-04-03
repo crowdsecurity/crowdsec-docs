@@ -25,7 +25,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 CrowdSec bouncer written in golang for firewalls.
 
-crowdsec-firewall-bouncer will fetch new and old decisions from a CrowdSec API to add them in a blocklist used by supported firewalls.
+crowdsec-firewall-bouncer will fetch new and old decisions from a CrowdSec API and add them to a blocklist used by supported firewalls.
 
 Supported firewalls:
  - iptables (IPv4 :heavy_check_mark: / IPv6 :heavy_check_mark: )
@@ -35,7 +35,7 @@ Supported firewalls:
 
 ## Installation
 
-Packages for crowdsec-firewall-bouncer [are available on our repositories](/getting_started/install.mdx##install-our-repositories). You need to pick the package accord to your firewall system :
+Packages for crowdsec-firewall-bouncer [are available on our repositories](/getting_started/install.mdx##install-our-repositories). You need to pick the package according to your firewall system :
 
 ### IPTables
 
@@ -126,9 +126,9 @@ See as well [Manual Installation documentation below](/docs/bouncers/firewall#ma
 
 ## Configuration
 
-There are two main usage case around the firewall bouncer :
- - **managed** (default) : cs-firewall-bouncer will create ipset/nft sets, insert the associated firewall rules and manage set's content
- - **set only** : you already have a (complex) firewall setup, cs-firewall-bouncer will only manage the _content_ of existing specified sets
+There are two primary ways to use the firewall bouncer:
+ - **managed** (default): cs-firewall-bouncer will create ipset/nft sets, insert the associated firewall rules and manage the set contents
+ - **set only**: you already have a (complex) firewall setup, cs-firewall-bouncer will only manage the _content_ of existing specified sets
 
 
 ### Managed mode : Iptables/ipset or Nftables
@@ -145,8 +145,8 @@ IPSet (when using `iptables` mode) does not support a timeout greater than 21474
 
 ### Set Only : Iptables/Ipset table
 
-In iptable set only mode (mode `ipset`), bouncer only manages the **contents** of sets designed by `blacklists_ipv4` and `blacklists_ipv6`.
-Those sets must exist prior to the bouncer startup, and it is the user's responsability to create the associate iptables rules.
+In iptable set-only mode (mode `ipset`), the bouncer only handles the **contents** of sets that are specified by `blacklists_ipv4` and `blacklists_ipv6`.
+These sets must be created before starting the bouncer, and it is the user's responsibility to create the associated iptables rules.
 
 :::warning
 
@@ -156,8 +156,8 @@ IPSet does not support a timeout greater than 2147483 seconds (about 596 hours).
 
 ### Set Only : nftables
 
-In nftables set only mode (mode `nftables` with `nftables.{ipv4,ipv6}.set-only` set to `true`), bouncer only manages the **contents** of the sets.
-It's the user's responsability to create the associated chains and sets :
+In nftables set only mode (mode `nftables` with `nftables.{ipv4,ipv6}.set-only` set to `true`), the bouncer only manages the **contents** of the sets.
+It's the user's responsibility to create the associated chains and sets :
 
 ```yaml title="/tmp/bouncer.nft"
 table ip crowdsec {
@@ -211,6 +211,8 @@ table ip6 crowdsec6 {
 
  - `iptables_chains` : specify a list of chains to insert rules (only relevant in `iptables` mode) :
  - `blacklists_ipv4` and `blacklists_ipv6` : names of ipv4 and ipv6 sets
+ - `ipset_size`: maximum number of entries in the ipset (default: 65536)
+ - `ipset_type`: type to use for the set  (default: `nethash`)
 
 ```yaml
 iptables_chains:
@@ -284,7 +286,7 @@ If it was not the case, the default configuration is in `/etc/crowdsec/bouncers/
 
 You can then start the service:
 
-```bash title="Start CrowdSec service"
+```bash
 sudo systemctl start crowdsec-firewall-bouncer
 ```
 
@@ -313,7 +315,7 @@ table <crowdsec-blacklists> persist
 table <crowdsec6-blacklists> persist
 ```
 
- You can refer to step by step instructions of the [user tutorial on
+ You can refer to the step-by-step instructions of the [user tutorial on
  FreeBSD](/blog/crowdsec_firewall_freebsd)
  to setup crowdsec-firewall-bouncer with pf.
 

@@ -357,7 +357,7 @@
         {
           "type": "link",
           "label": "Swagger",
-          "href": "https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI"
+          "href": "https://crowdsecurity.github.io/api_doc/lapi/"
         }
       ],
       "collapsible": true,
@@ -374,7 +374,7 @@
         {
           "type": "link",
           "label": "Swagger",
-          "href": "https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=CAPI"
+          "href": "https://crowdsecurity.github.io/api_doc/capi/"
         }
       ],
       "collapsible": true,
