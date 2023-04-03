@@ -20,3 +20,5 @@ The MSI file will perform some basic setup:
 Contrary to Linux, CrowdSec does not yet support the automatic configuration at installation time. If you want to be able to detect something other than RDP or SMB bruteforce, then you will need to customize your acquisition configuration.
 
 Please head over to the stable documentation to learn how to do so [here](../getting_started/install_windows#acquisition-configuration).
+
+Once you've installed crowdsec, follow the [setup instruction for the preview](/preview/1-5/setup.mdx).
