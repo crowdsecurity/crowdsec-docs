@@ -380,7 +380,17 @@ module.exports = {
       label: 'Preview Programs',
       collapsed: true,
       items: [
-        "preview/1-5/intro",
+        {
+          type: "category",
+          label: "Crowdsec v1.5",
+          link: {
+            type: 'doc',
+            id: 'preview/1-5/intro'
+          },
+          items: [
+              "preview/1-5/crowdsec_preview_setup",
+          ]
+        },
       ]
     },
     {
