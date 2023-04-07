@@ -87,7 +87,28 @@ module.exports = {
     {
       type: 'category',
       label: 'Notification plugins',
-      items: ["notification_plugins/intro", "notification_plugins/http","notification_plugins/email", "notification_plugins/slack", "notification_plugins/splunk", "notification_plugins/teams", "notification_plugins/elastic", "notification_plugins/telegram", "notification_plugins/writing_your_own_plugin"]
+      items: [
+        "notification_plugins/intro",
+        {
+          type: 'category',
+          label: 'HTTP Plugin',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'notification_plugins/http'
+          },
+          items: [
+            "notification_plugins/teams",
+            "notification_plugins/elastic",
+            "notification_plugins/telegram",
+            "notification_plugins/gotify",
+          ]
+        },
+        "notification_plugins/email",
+        "notification_plugins/slack",
+        "notification_plugins/splunk",
+        "notification_plugins/writing_your_own_plugin"
+      ]
     },
     {
       type: 'category',
