@@ -91,7 +91,7 @@ module.exports = {
         "notification_plugins/intro",
         {
           type: 'category',
-          label: 'Http plugin',
+          label: 'HTTP Plugin',
           collapsed: true,
           link: {
             type: 'doc',
