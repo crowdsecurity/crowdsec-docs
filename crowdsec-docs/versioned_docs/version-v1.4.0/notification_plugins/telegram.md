@@ -41,17 +41,21 @@ format: |
    ",
    "reply_markup": {
       "inline_keyboard": [
+          {{ $arrLength := len . -}}
+          {{ range $i, $value := . -}}
+          {{ $V := $value.Source.Value -}}
           [
               {
-                  "text": "See on shodan.io",
-                  "url": "https://www.shodan.io/host/{{range . -}}{{$alert := . -}}{{range .Decisions -}}{{.Value}}{{end -}}{{end -}}"
+                  "text": "See {{ $V }} on shodan.io",
+                  "url": "https://www.shodan.io/host/{{ $V -}}"
               },
               {
-                  "text": "See on crowdsec.net",
-                  "url": "https://app.crowdsec.net/cti/{{range . -}}{{$alert := . -}}{{range .Decisions -}}{{.Value}}{{end -}}{{end -}}"
+                  "text": "See {{ $V }} on crowdsec.net",
+                  "url": "https://app.crowdsec.net/cti/{{ $V -}}"
               }
-          ]
-      ] 
+          ]{{if lt $i ( sub $arrLength 1) }},{{end }}
+      {{end -}}
+      ]
   }
 
 url: https://api.telegram.org/bot<TELEGRAM_APY_KEY>/sendMessage # Replace <TELEGRAM_APY_KEY> with your APi key
