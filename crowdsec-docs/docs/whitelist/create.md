@@ -159,3 +159,20 @@ time="07-07-2020 17:11:09" level=info msg="Processing Overflow with no decisions
 ```
 
 This time, we can see that logs are being produced when the event is discarded.
+
+### Create the whitelist with fully qualified domaine name
+
+You might want to whitelist a fully qualified domain name (FQDN eg foo.com), in that case you need to follow this below
+
+Let's put the following file in `/etc/crowdsec/postoverflows/s01-whitelists/FQDN-whitelists.yaml` (create the folders if not exist):
+```yaml
+name: me/FQDN-whitlists
+description: "Whitelist postoverflows from FQDN"
+whitelist:
+  reason: "do whitelistings by FQDN"
+  expression:
+    - evt.Overflow.Alert.Source.IP in LookupHost("foo.com")
+    - evt.Overflow.Alert.Source.IP in LookupHost("foo.foo.org")
+    - evt.Overflow.Alert.Source.IP in LookupHost("12123564.org")
+```
+Save and reload CrowdSec before to test
