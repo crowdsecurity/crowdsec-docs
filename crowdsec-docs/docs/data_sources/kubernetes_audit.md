@@ -12,6 +12,8 @@ source: k8s-audit
 listen_addr: 127.0.0.1
 listen_port: 9876
 webhook_path: /webhook
+labels:
+ type: k8s-audit
 ```
 
 Look at the `configuration parameters` to view all supported options.
