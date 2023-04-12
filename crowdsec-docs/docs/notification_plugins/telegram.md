@@ -27,7 +27,7 @@ log_level: info
 # The following template receives a list of models.Alert objects
 # The output goes in the http request body
 
-# Replace with your Telegram chat ID
+# Replace XXXXXXXXX with your Telegram chat ID
 format: |
   {
    "chat_id": "-XXXXXXXXX", 
@@ -35,10 +35,27 @@ format: |
      {{range . -}}  
      {{$alert := . -}}  
      {{range .Decisions -}}
-     {{.Value}} will get {{.Type}} for next {{.Duration}} for triggering {{.Scenario}}.\r\n https://www.shodan.io/host/{{.Value}}
+     {{.Value}} will get {{.Type}} for next {{.Duration}} for triggering {{.Scenario}}.
      {{end -}}
      {{end -}}
-   "
+   ",
+   "reply_markup": {
+      "inline_keyboard": [
+          {{ $arrLength := len . -}}
+          {{ range $i, $value := . -}}
+          {{ $V := $value.Source.Value -}}
+          [
+              {
+                  "text": "See {{ $V }} on shodan.io",
+                  "url": "https://www.shodan.io/host/{{ $V -}}"
+              },
+              {
+                  "text": "See {{ $V }} on crowdsec.net",
+                  "url": "https://app.crowdsec.net/cti/{{ $V -}}"
+              }
+          ]{{if lt $i ( sub $arrLength 1) }},{{end }}
+      {{end -}}
+      ]
   }
 
 url: https://api.telegram.org/bot<TELEGRAM_API_KEY>/sendMessage # Replace <TELEGRAM_API_KEY> with your API key
