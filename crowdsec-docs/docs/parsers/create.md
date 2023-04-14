@@ -21,9 +21,9 @@ Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' f
 As we are going to parse those logs to further detect bruteforce and user-enumeration attacks, we're simply going to "discard" the last type of logs.
 
 There's a
-[https://github.com/crowdsecurity/crowdsec-yaml-schemas/blob/main/parser_schema.yaml](yaml
-schema available) for the parser and linked at
-[https://github.com/SchemaStore/schemastore/blob/master/src/api/json/catalog.json](SchemaStore)
+[yaml
+schema available](https://github.com/crowdsecurity/crowdsec-yaml-schemas/blob/main/parser_schema.yaml) for the parser and linked at
+[SchemaStore](https://github.com/SchemaStore/schemastore/blob/master/src/api/json/catalog.json)
 for general public availability inside most common editors. You will
 be able see if the parser comply to the schema directly in your
 editor, and you will have some kind of syntax highlighting and

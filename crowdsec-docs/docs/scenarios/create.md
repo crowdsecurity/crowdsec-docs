@@ -28,9 +28,9 @@ Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1
 ```
 
 There's a
-[https://github.com/crowdsecurity/crowdsec-yaml-schemas/blob/main/scenario_schema.yaml](yaml
-schema available) for the scenario and linked at
-[https://github.com/SchemaStore/schemastore/blob/master/src/api/json/catalog.json](SchemaStore)
+[yaml
+schema available](https://github.com/crowdsecurity/crowdsec-yaml-schemas/blob/main/scenario_schema.yaml) for the scenario and linked at
+[SchemaStore](https://github.com/SchemaStore/schemastore/blob/master/src/api/json/catalog.json)
 for general public availability inside most common editors. You will
 be able see if the scenario comply to the schema directly in your
 editor, and you will have some kind of syntax highlighting and
