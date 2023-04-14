@@ -15,6 +15,8 @@ You can check `/etc/pkg/FreeBSD.conf` and [change **quarterly** to **latest**](h
 
 ## Installing CrowdSec
 
+Before installing the package, you might want to check [the ports that crowdsec will use](/docs/next/configuration/network_management).
+
 The CrowdSec package itself can be installed with:
 
 ```shell
