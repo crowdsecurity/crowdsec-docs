@@ -42,11 +42,11 @@ There're also mouseover description available
 
 ![Possible integration](/img/parser_creation/mouseover.png)
 
-Error detection when a field is not allowed
+Error detection when the file is not schema compliant
 
 ![Possible integration](/img/parser_creation/typo.png)
 
-The error message can be useful when one doesn't understand why the file isn't compliant
+The error message can be useful when one wants to understand why the parser file isn't schema compliant
 
 ![Possible integration](/img/parser_creation/error_message.png)
 
