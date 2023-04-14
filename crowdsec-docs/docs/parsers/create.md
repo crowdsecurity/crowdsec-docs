@@ -38,7 +38,7 @@ an example `parsers/s01-parse/crowdsecurity/sshd-logs.yaml` matches
 this directory structure. Note that extension of the parser has to
 `.yaml`.
 
-There're mouseover description available
+There're also mouseover description available
 
 ![Possible integration](/img/parser_creation/mouseover.png)
 
@@ -46,7 +46,7 @@ Error detection when a field is not allowed
 
 ![Possible integration](/img/parser_creation/typo.png)
 
-The error message can be useful
+The error message can be useful when one doesn't understand why the file isn't compliant
 
 ![Possible integration](/img/parser_creation/error_message.png)
 
