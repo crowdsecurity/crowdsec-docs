@@ -39,12 +39,15 @@ this directory structure. Note that extension of the parser has to
 `.yaml`.
 
 There're mouseover description available
+
 ![Possible integration](/img/parser_creation/mouseover.png)
 
 Error detection when a field is not allowed
+
 ![Possible integration](/img/parser_creation/typo.png)
 
 The error message can be useful
+
 ![Possible integration](/img/parser_creation/error_message.png)
 
 
