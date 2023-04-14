@@ -20,6 +20,20 @@ Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' f
 
 As we are going to parse those logs to further detect bruteforce and user-enumeration attacks, we're simply going to "discard" the last type of logs.
 
+There's a
+[https://github.com/crowdsecurity/crowdsec-yaml-schemas/blob/main/parser_schema.yaml](yaml
+schema available) for the parser and linked at
+[https://github.com/SchemaStore/schemastore/blob/master/src/api/json/catalog.json](SchemaStore)
+for general public availability inside most common editors. You will
+be able see if the parser comply to the schema directly in your
+editor, and you will have some kind of syntax highlighting and
+suggestions. The only requirement for this is to write your parser
+using the directory structure of the hub to make the editor detects
+that the file has to comply to the yaml schema. This means that you
+will have to write the parser in one subdirectory of the
+`parsers/s00-raw`, `parsers/s01-parse`, `parsers/s02-enrich`, `postoverflows/s00-enrich/`, `postoverflows/s01-whitelist`
+directories. Note that extension of the parser have to `.yaml`.
+
 ## Pre-requisites
 
 
