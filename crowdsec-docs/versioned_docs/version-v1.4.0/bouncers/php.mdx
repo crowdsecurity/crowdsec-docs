@@ -97,12 +97,13 @@ Note that we have to keep the vcs data as we will use it to update the bouncer w
 
 #### Files permission
 
-The owner of the `/var/www/crowdsec-standalone-bouncer` folder should be your web-server owner (e.g. `www-data`).
+The owner of the `/var/www/crowdsec-standalone-bouncer` folder should be your web-server owner (e.g. `www-data`) and the group should have the write permission on this folder.
 
-You can achieve it by running command like:
+You can achieve it by running commands like:
 
 ```bash
 sudo chown -R www-data /var/www/crowdsec-standalone-bouncer
+sudo chmod g+w /var/www/crowdsec-standalone-bouncer
 ```
 
 #### Settings file
@@ -221,6 +222,12 @@ As we kept the vcs data during installation (with the `--keep-vcs` flag), we can
 ```bash
 cd /var/www/crowdsec-standalone-bouncer
 git fetch
+```
+
+If you get an error message about "detected dubious ownership", you can run
+
+```bash
+git config --global --add safe.directory /var/www/crowdsec-standalone-bouncer
 ```
 
 You should see a list of tags (`vX.Y.Z` format )that have been published after your initial installation.
