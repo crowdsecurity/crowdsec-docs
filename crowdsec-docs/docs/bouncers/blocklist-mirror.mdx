@@ -80,7 +80,7 @@ $ cd crowdsec-blocklist-mirror-v*/
 $ sudo ./install.sh
 ```
 
-# Configuration
+## Configuration
 
 Before starting the `crowdsec-blocklist-mirror` service, please edit the configuration file to add your API URL and key.
 The default configuration file is located under : `/etc/crowdsec/bouncers/`
@@ -249,4 +249,49 @@ Example:
 ```
 1.2.3.4
 4.3.2.1
+```
+
+## Observability
+
+The bouncer by default exposes the metrics at <listen_uri>/metrics . `listen_uri` is where the blocklist is served.
+
+The exposed metrics are:
+
+- `lapi_requests_total` : This is the count of total calls made to the CrowdSec LAPI by bouncer.
+- `lapi_requests_failures_total` : This is the total number of failed calls to CrowdSec LAPI.
+- `blocklist_requests_total`: This is counter vector for each route denoting total requests made.
+- `active_decision_count`: This is the current count of total number IPs served by the blocklist mirror.
+
+### Alerting when LAPI is unreachable
+
+The metrics can be used to receive alerts if the bouncer can't reach LAPI via prometheus. The following prometheus rule can be used.
+
+```yaml
+# rules.yml
+groups:
+- name: lapi
+  rules:
+  - alert: LAPIFailure
+    expr: delta(lapi_requests_failures_total[15s]) > 0
+    for: 5m
+```
+
+In prometheus alertmanager you can then handle as needed. A sample alertmanger config which posts a simple message on slack when LAPI request fails would look like:
+
+```yaml
+# alertmanager.yml
+global:
+  resolve_timeout: 1m
+  slack_api_url: '<your_slack_webhook_url>'
+
+route:
+  receiver: 'lapi'
+
+receivers:
+  - name: 'lapi'
+
+    slack_configs:
+    - channel: '#crowdsec-notifications' 
+      send_resolved: true
+      text: Bouncer can't reach LAPI
 ```
