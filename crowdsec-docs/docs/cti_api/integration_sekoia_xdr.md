@@ -14,10 +14,17 @@ In your playbook you can now create a Node which calls CrowdSec's CTI API.
 
 ### Configuring CrowdSec Node
 
-![Config Sekoia XDR Node](/img/sekoia_xdr/config_node.jpg)
+![Config Sekoia XDR Node](/img/sekoia_xdr/config_node.png)
 
-Make sure you feed the IP address in the URL. Don't forget to set the API key in the header.
-It's also a good practice to set the `user-agent: sekoia-playbook/v1.0.0` header.
+Following config is needed: 
+
+```javascript
+{"x-api-key":"", "User-Agent":"sekoia-playbook/v1.0.0"}
+```
+
+Don't forget to set the API key in the header `x-api-key`.
+Make sure you feed the IP address in the URL. 
+
 
 
 ### Example Full Playbook
