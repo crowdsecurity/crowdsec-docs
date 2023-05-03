@@ -175,6 +175,22 @@ backend crowdsec
 # Crowdsec bouncer <<<
 ```
 
+#### Common haproxy issues
+
+If you are facing errors where haproxy 503's when trying to reach out for captcha verification backend, you can try:
+
+```bash title="/etc/haproxy/haproxy.cfg"
+global
+  #Beware that this is disabling http client ssl verification and is only a temp workaround
+  httpclient.ssl.verify none
+  httpclient.resolvers.id my_resolver
+
+#8.8.8.8 is just an example
+resolvers my_resolver
+  nameserver ns1 8.8.8.8:53
+
+```
+
 #### Crowdsec backend
 
 You must declare a backend for Crowdsec so we're able to resolve it's address during the refresh task. the backend and the server both must be named `crowdsec`.
@@ -192,13 +208,40 @@ Validated ips are cached in a [Stick table](https://www.haproxy.com/blog/introdu
 
 If you want to use captcha with your HAProxy Bouncer, you must provide a Site key and Secret key in your bouncer configuration.
 
-If you wish to use any other provider than recaptcha you **MUST** provide a valid server name see above.
+If you wish to use any other provider than recaptcha you **MUST** adapt the server name in the backend:
+
+ - recaptcha
 
 ([captcha_verifier documentation](https://developers.google.com/recaptcha/intro)).
 
-([turnstile_verifier documentation](https://developers.cloudflare.com/turnstile/)).
+```yaml
+backend captcha_verifier
+   mode http
+   server captcha_verifier www.google.com:443 check
+```
+
+ - hcaptcha
 
 ([hcaptcha_verifier documentation](https://docs.hcaptcha.com/))
+
+```yaml
+backend captcha_verifier
+   mode http
+   server hcaptcha_verifier hcaptcha.com:443
+```
+
+ - turnstile
+
+([turnstile_verifier documentation](https://developers.cloudflare.com/turnstile/)).
+
+```yaml
+backend captcha_verifier
+   mode http
+   server turnstile_verifier challenges.cloudflare.com:443
+```
+
+
+
 
 Edit `etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf` and configure the following options:
 
