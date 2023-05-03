@@ -14,6 +14,16 @@ CrowdSec is a security open-source software. See the [overview](/intro.mdx).
 Yes, CrowdSec is in charge of detecting attacks, and [bouncers](/bouncers/intro.md) are applying decisions.
 If you want to block the detected IPs, you should deploy a bouncer, such as the ones found on the [hub](https://hub.crowdsec.net/browse/#bouncers) !
 
+## How to know if my setup is working correctly ? Some of my logs are unparsed, is it normal ?
+
+Yes, crowdsec parsers only parse the logs that are relevant for scenarios.
+Take a look at `cscli metrics` [and understand what do they mean](/observability/cscli.md) to know if your setup is correct.
+
+You can take an extra step and use [`cscli explain` to understand what log lines are parsed, and how.](/docs/next/cscli/cscli_explain) :
+
+![cscli-explain](/img/cscli_explain.png)
+
+
 
 ## What language is it written in ?
 
@@ -73,13 +83,6 @@ CrowdSec support both [whitelists](/whitelist/introduction.md) and [simulation](
  - Simulation allows you to simply cancel the decision that is going to be taken, but keep track of it
 
 [Profiles](/profiles/intro.md) allows you to control which decision will be applied to which alert.
-
-## How to know if my setup is working correctly ? Some of my logs are unparsed, is it normal ?
-
-Yes, crowdsec parsers only parse the logs that are relevant for scenarios.
-
-Take a look at `cscli metrics` [and understand what do they mean](/observability/cscli.md) to know if your setup is correct.
-
 
 ## How to add whitelists ?
 
