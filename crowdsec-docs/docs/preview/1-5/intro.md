@@ -17,4 +17,4 @@ Here are a few details about some of the features we are including in 1.5:
 
 You can find a full list of the changes located [here](https://github.com/crowdsecurity/crowdsec/releases/tag/v1.5.0-rc4)
 
-Next we can follow the preview instructions [here](../crowdsec_linux)
+Next we can follow the preview instructions [here](../preview_crowdsec_linux.mdx)

@@ -20,6 +20,37 @@ Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' f
 
 As we are going to parse those logs to further detect bruteforce and user-enumeration attacks, we're simply going to "discard" the last type of logs.
 
+There's a [yaml schema
+available](https://github.com/crowdsecurity/crowdsec-yaml-schemas/blob/main/parser_schema.yaml)
+for the parser and linked at
+[SchemaStore](https://github.com/SchemaStore/schemastore/blob/master/src/api/json/catalog.json)
+for general public availability inside most common editors. You will
+be able see if the parser comply to the schema directly in your
+editor, and you will have some kind of syntax highlighting and
+suggestions. The only requirement for this is to write your parser
+using the directory structure of the hub to make the editor detects
+that the file has to comply to the yaml schema. This means that you
+will have to write the parser in one subdirectory of the
+`parsers/s00-raw`, `parsers/s01-parse`, `parsers/s02-enrich`,
+`postoverflows/s00-enrich`, `postoverflows/s01-whitelist`. This
+subdirectory is named after your name, or your organization name. As
+an example `parsers/s01-parse/crowdsecurity/sshd-logs.yaml` matches
+this directory structure. Note that extension of the parser has to
+`.yaml`.
+
+There're also mouseover description available
+
+![Possible integration](/img/parser_creation/mouseover.png)
+
+Error detection when the file is not schema compliant
+
+![Possible integration](/img/parser_creation/typo.png)
+
+The error message can be useful when one wants to understand why the parser file isn't schema compliant
+
+![Possible integration](/img/parser_creation/error_message.png)
+
+
 ## Pre-requisites
 
 

@@ -52,12 +52,12 @@ module.exports = {
     {
       type: 'category',
       label: 'User Guides',
-      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building", "user_guides/replay_mode", "user_guides/cscli_explain", "user_guides/cscli_macos", "user_guides/multiserver_setup", "user_guides/consuming_fastly_logs"]
+      items: ["user_guides/hub_mgmt", "user_guides/decisions_mgmt", "user_guides/bouncers_configuration", "user_guides/machines_mgmt", "user_guides/lapi_mgmt","user_guides/building", "user_guides/replay_mode", "user_guides/cscli_explain", "user_guides/cscli_macos", "user_guides/multiserver_setup", "user_guides/consuming_fastly_logs", "user_guides/alert_context"]
     },
     {
       type: 'category',
       label: 'Data Sources',
-      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/windows_evt_log", "data_sources/kafka", "data_sources/s3", "data_sources/troubleshoot" ]
+      items: ["data_sources/intro", "data_sources/file", "data_sources/journald", "data_sources/cloudwatch", "data_sources/kinesis", "data_sources/syslog", "data_sources/docker", "data_sources/windows_evt_log", "data_sources/kafka", "data_sources/kubernetes_audit", "data_sources/s3", "data_sources/troubleshoot" ]
     },
     {
       type: 'category',
@@ -87,7 +87,28 @@ module.exports = {
     {
       type: 'category',
       label: 'Notification plugins',
-      items: ["notification_plugins/intro", "notification_plugins/http","notification_plugins/email", "notification_plugins/slack", "notification_plugins/splunk", "notification_plugins/teams", "notification_plugins/elastic", "notification_plugins/telegram", "notification_plugins/writing_your_own_plugin"]
+      items: [
+        "notification_plugins/intro",
+        {
+          type: 'category',
+          label: 'HTTP Plugin',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'notification_plugins/http'
+          },
+          items: [
+            "notification_plugins/teams",
+            "notification_plugins/elastic",
+            "notification_plugins/telegram",
+            "notification_plugins/gotify",
+          ]
+        },
+        "notification_plugins/email",
+        "notification_plugins/slack",
+        "notification_plugins/splunk",
+        "notification_plugins/writing_your_own_plugin"
+      ]
     },
     {
       type: 'category',
@@ -108,6 +129,11 @@ module.exports = {
       type: 'category',
       label: 'Central API',
       items: ["central_api/intro", {"type":"link", "label": "Swagger", "href":"https://crowdsecurity.github.io/api_doc/capi/"}]
+    },
+    {
+      type: 'category',
+      label: 'Console Management',
+      items: ["console_management/intro", "console_management/decisions"]
     },
     {
       type: 'category',
@@ -366,7 +392,7 @@ module.exports = {
     {
       type: "category",
       label: "Integrations",
-      items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti", "cti_api/integration_thehive", "cti_api/integration_paloalto_xsoar", "cti_api/integration_maltego", "cti_api/integration_splunk_siem"],
+      items: ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti", "cti_api/integration_thehive", "cti_api/integration_paloalto_xsoar","cti_api/integration_maltego", "cti_api/integration_splunk_siem", "cti_api/integration_splunk_soar", "cti_api/integration_sekoia_xdr"],
     },
   ],
   betaSidebar: [
@@ -375,7 +401,17 @@ module.exports = {
       label: 'Preview Programs',
       collapsed: true,
       items: [
-        "preview/1-5/intro",
+        {
+          type: "category",
+          label: "Crowdsec v1.5",
+          link: {
+            type: 'doc',
+            id: 'preview/1-5/intro'
+          },
+          items: [
+              "preview/1-5/crowdsec_preview_setup",
+          ]
+        },
       ]
     },
     {
