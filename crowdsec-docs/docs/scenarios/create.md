@@ -27,6 +27,22 @@ Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1
 Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
 ```
 
+There's a [yaml schema
+available](https://github.com/crowdsecurity/crowdsec-yaml-schemas/blob/main/scenario_schema.yaml)
+for the scenario and linked at
+[SchemaStore](https://github.com/SchemaStore/schemastore/blob/master/src/api/json/catalog.json)
+for general public availability inside most common editors. You will
+be able see if the scenario comply to the schema directly in your
+editor, and you will have some kind of syntax highlighting and
+suggestions. The only requirement for this is to write your scenario
+using the directory structure of the hub to make the editor detects
+that the file has to comply to the yaml schema. This means that you
+will have to write the scenario in one subdirectory of the `scenarios`
+directory. This subdirectory is named after your name, or your
+organization name. As an example `scenarios/crowdsecurity/ssh-bf.yaml`
+matches this directory structure. Note that extension of the scenario
+has to be `.yaml`.
+
 ## Pre-requisites
 
 
