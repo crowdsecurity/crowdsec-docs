@@ -141,7 +141,7 @@ The URL of CrowdSec LAPI. It should be accessible from whichever network the bou
 It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
 ```bash
 
-sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for human friendly output.
+sudo cscli -oraw bouncers add blocklistMirror # -oraw flag can discarded for human friendly output.
 
 ```
 
@@ -157,7 +157,6 @@ Ignore IPs banned for triggering scenarios not containing either of provided wor
 
 Ignore IPs banned for triggering scenarios containing either of provided word.
 
-
 #### `only_include_decisions_from`:
 
 Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
@@ -165,7 +164,6 @@ Only include IPs banned due to decisions orginating from provided sources. eg va
 #### `insecure_skip_verify`:
 
 Set to true to skip verifying certificate.
-
 
 #### `listen_uri`: 
 
@@ -197,7 +195,7 @@ List of blocklists to serve. Each blocklist has the following configuration.
 
 #### `format`:
 
-Format of the blocklist. Currently only `plain_text` is supported.
+Format of the blocklist. Currently only `plain_text` and `mikrotik` are supported.
 
 #### `endpoint`:
 
@@ -227,6 +225,37 @@ Password for the provided user and using `basic` authentication.
 
 List of valid IPv4 and IPv6 IPs and ranges which have access to blocklist. It's only applicable when authentication `type` is `ip_based`.
 
+## Global RunTime Query Parameters
+
+`?ipv4only` - Only return IPv4 addresses
+
+Example usage
+```
+http://localhost:41412/security/blocklist?ipv4only
+```
+
+`?ipv6only` - Only return IPv6 addresses
+
+Example usage
+```
+http://localhost:41412/security/blocklist?ipv6only
+```
+`?nosort` - Do not sort IP's
+
+> Only use if you do not care about the sorting of the list, can result in average 1ms improvement 
+
+Example usage
+```
+http://localhost:41412/security/blocklist?nosort
+```
+
+`?origin=` - Only return IP's by origin
+
+Example usage
+```
+http://localhost:41412/security/blocklist?origin=cscli
+```
+
 You can then start the service via:
 
 ```bash
@@ -240,13 +269,38 @@ Package upgrades may have good reasons to modify the configuration, so be carefu
 
 ## Formats
 
-The bouncer can expose the blocklist in the following formats. You can configure the format of the blocklist by setting it's `format` paramter to any of the supported formats described below.
+The bouncer can expose the blocklist in the following formats. You can configure the format of the blocklist by setting it's `format` parameter to any of the supported formats described below.
 
 ### plain_text
 
 Example:
 
-```
+```text
 1.2.3.4
 4.3.2.1
+```
+
+### mikrotik
+
+If your mikrotik router does not support ipv6, then you can use the global query parameters to only return ipv4 addresses.
+
+Example:
+
+```text
+/ip firewall address-list remove [find list=CrowdSec]
+/ipv6 firewall address-list remove [find list=CrowdSec]
+/ip firewall address-list add list=CrowdSec address=1.2.3.4 comment="crowdsecurity/ssh-bf for 152h40m24.308868973s"
+/ip firewall address-list add list=CrowdSec address=4.3.2.1 comment="crowdsecurity/postfix-spam for 166h40m25.280338424s"/ipv6 firewall address-list add list=CrowdSec address=2001:470:1:c84::17 comment="crowdsecurity/ssh-bf for 165h13m42.405449876s"
+```
+
+#### mikrotik query parameters
+
+`?listname=foo` - Set the list name to `foo`, by default `listname` is set to `CrowdSec`
+
+example output:
+```text
+/ip firewall address-list remove [find list=foo]
+/ipv6 firewall address-list remove [find list=foo]
+/ip firewall address-list add list=foo address=1.2.3.4 comment="crowdsecurity/ssh-bf for 152h40m24.308868973s"
+/ip firewall address-list add list=foo address=4.3.2.1 comment="crowdsecurity/postfix-spam for 166h40m25.280338424s"/ipv6 firewall address-list add list=foo address=2001:470:1:c84::17 comment="crowdsecurity/ssh-bf for 165h13m42.405449876s"
 ```
