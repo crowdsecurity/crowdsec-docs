@@ -1,10 +1,10 @@
 ---
-id: integration_opencti
+id: integration_intelowl
 title: IntelOwn Plugin
 sidebar_position: 2
 ---
 
-Since the recent release of IntelOwl 4.2.2 , a CrowdSec analyzer has been included.
+Since the recent release of IntelOwl 4.2.2, a CrowdSec analyzer has been included.
 Now IntelOwl users can leverage our CTI API to enrich their IP type observables.
 A big thanks to Matteo Lodi for writing this analyzer.
 Intel Owl is an Open Source Intelligence, or OSINT solution to get threat intelligence data about a specific file, an IP or a domain from a single API at scale. It integrates a number of analyzers available online and a lot of cutting-edge malware analysis tools. It is for everyone who needs a single point to query for info about a specific file or observable.
@@ -38,7 +38,7 @@ In the scan section you can scan an IP type observable:
 - Select CrowdSec as one of the analyzer
 - Click **Start Scan**
 
-This will start a job retrieving information we maight have about this IP malicious activities
+This will start a job retrieving information we might have about this IP malicious activities
 
 ![Scan form](/img/intelowl_scan.png)
 
