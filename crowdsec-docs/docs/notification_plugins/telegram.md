@@ -5,9 +5,9 @@ title: Telegram
 
 Telegram can be integrated with CrowdSec by using the HTTP plugin. Enable it by following these [instructions](/notification_plugins/http.md) .
 
-Replace the `chat_id` within the format section so that it send the events to your Telegram chat. If you need to get your chat ID, follow the instructions [here](https://stackoverflow.com/questions/32423837/telegram-bot-how-to-get-a-group-chat-id).
+Replace `chat_id` within the format section so that it send the events to your Telegram chat. If you need to get your chat ID, follow the instructions [here](https://stackoverflow.com/questions/32423837/telegram-bot-how-to-get-a-group-chat-id).
 
-Replace the `XXX:YYY` within the URL section with your Telegram BOT API key. If you need to generate a BOT API key, follow the instructions [here](https://core.telegram.org/bots#how-do-i-create-a-bot).
+Replace `XXX:YYY` within the URL section with your Telegram BOT API key. If you need to generate a BOT API key, follow the instructions [here](https://core.telegram.org/bots#how-do-i-create-a-bot).
 
 An example configuration:
 
