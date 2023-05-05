@@ -40,4 +40,6 @@ In the scan section you can scan an IP type observable:
 
 This will start a job retrieving information we maight have about this IP malicious activities
 
-![Plugin config](/img/intelowl_scan.png)
+![Scan form](/img/intelowl_scan.png)
+
+![Scan Result](/img/intelowl_scan_result.png)
