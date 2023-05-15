@@ -3,6 +3,8 @@ id: intro
 title: Introduction
 ---
 
+import CodeBlock from '@theme/CodeBlock';
+
 ### Goal
 
 CrowdSec supports notification plugins, meant to be able to push alerts to third party services for alerting or integration purposes.
@@ -186,8 +188,10 @@ Note that this was generated using the `toJson` sprig function, so field names a
 
 To use them in a go-template, you can check [here](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) to get the actual field names.
 
-```
-[
+<details>
+<summary>Show the full alert object</summary>
+<CodeBlock className="language-json">
+{`[
     {
         "capacity": 5,
         "decisions": [
@@ -568,8 +572,9 @@ To use them in a go-template, you can check [here](https://pkg.go.dev/github.com
         "start_at": "2022-02-12T14:10:21Z",
         "stop_at": "2022-02-12T14:10:23Z"
     }
-]
-```
+]`}
+</CodeBlock>
+</details>
 
 #### Usage examples
 

@@ -283,18 +283,20 @@ Parses unix timestamp string and returns RFC3339 formatted time
 
 ## JSON Helpers
 
-### `UnmarshalJSON`
+### `UnmarshalJSON(jsonBlob string, out map[string]interface{}, targetKey string)`
 
-`UnmarshalJSON` allows to unmarshal a full json object and store the results in the `evt.Unmarshaled` field.
-The method is not meant to be used directly as it doesn't return data :
+`UnmarshalJSON` allows to unmarshal a full json object into the `out` map, under the `targetKey` key.
+
+In most situation, the `evt.Unmarshaled` field will be used to store the unmarshaled json object.
 
 ```yaml
+filter: |
+  evt.Parsed.program == "my-program"
 statics:
-  - method: UnmarshalJSON
-    expression: evt.Line.Raw
+  - parsed: json_parsed
+    expression: UnmarshalJSON(evt.Line.Raw, evt.Unmarshaled, "message")
   - meta: user
-    #this has been just populated by the UnmarshalJSON call above
-    expression: evt.Unmarshaled.something.something
+    expression: evt.Unmarshaled.message.user
 ```
 
 
@@ -346,6 +348,24 @@ Returns the content of the XML node identified by the XPath query `path`.
 
 > `XMLGetNodeValue(evt.Line.Raw, "/Event/System[1]/EventID")`
 
+
+## Key-Value Helpers
+
+### `ParseKV(kvString string, out map[string]interface{}, targetKey string)`
+
+Parse a key-value string (such as `key=value foo=bar fu="a string"` ) into the `out` map, under the `targetKey` key.
+
+In most situation, the `evt.Unmarshaled` field will be used to store the object.
+
+```yaml
+filter: |
+  evt.Parsed.program == "my-program"
+statics:
+  - parsed: kv_parsed
+    expression: ParseKV(evt.Line.Raw, evt.Unmarshaled, "message")
+  - meta: user
+    expression: evt.Unmarshaled.message.user
+```
 
 ## Stash Helpers
 
@@ -424,6 +444,10 @@ labels:
 Notes:
  - Will return `0` if either set of coordinates is nil (ie. IP couldn't be geoloc)
  - Assumes that the earth is spherical and uses the haversine formula.
+
+### `Hostname() string`
+
+Returns the hostname of the machine.
 
 ## Alert specific helpers
 
