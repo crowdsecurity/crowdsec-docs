@@ -1,0 +1,402 @@
+---
+id: haproxy
+title: HAProxy Bouncer
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+<img src={useBaseUrl('/img/crowdsec_haproxy.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
+</p>
+<p align="center">
+<img src="https://img.shields.io/badge/build-pass-green" />
+<img src="https://img.shields.io/badge/tests-pass-green" />
+</p>
+<p align="center">
+&#x1F4DA; <a href="#installation/">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+
+A lua bouncer for haproxy.
+
+:::warning
+This bouncer is compatible with HAProxy version 2.5 and higher.
+:::
+
+## How does it work ?
+
+This bouncer leverages haproxy lua's API to check e IP address against the local API.
+
+Supported features:
+
+ - Stream mode (pull the local API for new/old decisions every X seconds)
+ - Ban remediation (can ban an IP address by redirecting him or returning a custom HTML page)
+ - Captcha remediation (can return a captcha)
+ - Works with IPv4/IPv6
+ - Support IP ranges (can apply a remediation on an IP range)
+
+
+## Installation
+
+### Using packages
+
+First, [setup crowdsec repositories](/getting_started/install.mdx#install-our-repositories).
+
+<Tabs
+  defaultValue="haproxy_debian"
+  values={[
+    { label: 'Debian/Ubuntu', value: 'haproxy_debian' ,},
+  ]
+}>
+<TabItem value="haproxy_debian">
+
+```bash
+sudo apt install crowdsec-haproxy-bouncer
+```
+
+</TabItem>
+
+</Tabs>
+
+
+:::info
+In stream mode, the bouncer will launch an internal timer to pull the local API at the first request made to the server.
+:::
+
+### Manual installation
+
+:::warning
+It has been tested only on Debian/Ubuntu based distributions.
+:::
+
+Download the latest release [here](https://github.com/crowdsecurity/cs-haproxy-bouncer/releases)
+
+```bash
+tar xvzf crowdsec-haproxy-bouncer.tgz
+cd crowdsec-haproxy-bouncer-v*/
+./install.sh
+```
+If you are on a mono-machine setup, the `crowdsec-haproxy-bouncer` install script will register directly to the local crowdsec, so you're good to go !
+
+
+## Upgrade
+
+### From package
+
+```bash
+sudo apt-get update
+sudo apt-get install crowdsec-haproxy-bouncer
+```
+
+### Manual Upgrade
+
+If you already have `crowdsec-haproxy-bouncer` installed, please download the [latest release](https://github.com/crowdsecurity/cs-haproxy-bouncer/releases) and run the following commands:
+
+```bash
+tar xzvf crowdsec-haproxy-bouncer.tgz
+cd crowdsec-haproxy-bouncer-v*/
+sudo ./upgrade.sh
+sudo systemctl restart haproxy
+```
+
+## Configuration
+
+### Bouncer configuration
+
+```bash title="/etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf"
+API_KEY=<CROWDSEC_LAPI_KEY>
+MAP_PATH= # path to community_blocklist.map
+# bounce for all type of remediation that the bouncer can receive from the local API
+BOUNCING_ON_TYPE=all
+# when the bouncer receive an unknown remediation, fallback to this remediation
+FALLBACK_REMEDIATION=ban
+MODE=stream
+REQUEST_TIMEOUT=1000
+# exclude the bouncing on those location
+EXCLUDE_LOCATION=
+# Update frequency in stream mode, in second
+UPDATE_FREQUENCY=10
+#those apply for "ban" action
+# /!\ REDIRECT_LOCATION and BAN_TEMPLATE_PATH/RET_CODE can't be used together. REDIRECT_LOCATION take priority over RET_CODE AND BAN_TEMPLATE_PATH
+BAN_TEMPLATE_PATH=/var/lib/crowdsec/lua/haproxy/templates/ban.html
+REDIRECT_LOCATION=
+RET_CODE=
+#those apply for "captcha" action
+# Captcha Secret Key
+SECRET_KEY=
+# Captcha Site key
+SITE_KEY=
+CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/haproxy/templates/captcha.html
+CAPTCHA_EXPIRATION=3600
+```
+
+### HAProxy Configuration
+
+HAProxy must be amended with following configuration :
+
+/!\ Be careful to the actual lua scripts location after install (/usr/lib or /usr/lib64 or /usr/local ...)
+
+```bash title="/etc/haproxy/haproxy.cfg"
+global
+ ...
+ # Crowdsec bouncer >>>
+ lua-prepend-path /usr/lib/crowdsec/lua/haproxy/?.lua
+ lua-load /usr/lib/crowdsec/lua/haproxy/crowdsec.lua # path to crowdsec.lua
+ setenv CROWDSEC_CONFIG /etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf # path to crowdsec bouncer configuration file
+ # Crowdsec bouncer <<<
+ ...
+frontend myApp
+ ...
+ # Crowdsec bouncer >>>
+ stick-table type ip size 10k expire 30m # declare a stick table to cache captcha verifications
+ http-request lua.crowdsec_allow # action to identify crowdsec remediation
+ http-request track-sc0 src if { var(req.remediation) -m str "captcha-allow" } # cache captcha allow decision 
+ http-request redirect location %[var(req.redirect_uri)] if { var(req.remediation) -m str "captcha-allow" } # redirect to initial url
+ http-request use-service lua.reply_captcha if { var(req.remediation) -m str "captcha" } # serve captcha template if remediation is captcha
+ http-request use-service lua.reply_ban if { var(req.remediation) -m str "ban" } # serve ban template if remediation is ban
+ # Crowdsec bouncer <<<
+ ...
+# Crowdsec bouncer >>>
+# define a backend for the captcha provider to allow DNS resolution
+backend captcha_verifier
+ server captcha_verifier www.recaptcha.net:443 check
+ #server hcaptcha_verifier hcaptcha.com:443 check
+ #server turnstile_verifier challenges.cloudflare.com:443 check
+# this is a little bit magic the server name is used to inform which captcha service you are using
+
+# define a backend for crowdsec to allow DNS resolution
+# replace 127.0.0.1:8080 by the listen URI of the crowdsec local API
+backend crowdsec
+ server crowdsec 127.0.0.1:8080 check
+# Crowdsec bouncer <<<
+```
+
+#### Common haproxy issues
+
+If you are facing errors where haproxy 503's when trying to reach out for captcha verification backend, you can try:
+
+```bash title="/etc/haproxy/haproxy.cfg"
+global
+  #Beware that this is disabling http client ssl verification and is only a temp workaround
+  httpclient.ssl.verify none
+  httpclient.resolvers.id my_resolver
+
+#8.8.8.8 is just an example
+resolvers my_resolver
+  nameserver ns1 8.8.8.8:53
+
+```
+
+#### Crowdsec backend
+
+You must declare a backend for Crowdsec so we're able to resolve it's address during the refresh task. the backend and the server both must be named `crowdsec`.
+
+The decisions are stored in a [Map file](https://www.haproxy.com/blog/introduction-to-haproxy-maps/), the location of the map file is configured with `MAP_PATH` parameter.
+
+#### When using captcha remediation
+
+Using captcha, You must declare a backend for the captcha provider so we're able to resolve it's address during captcha verification.
+
+Validated ips are cached in a [Stick table](https://www.haproxy.com/blog/introduction-to-haproxy-stick-tables/) to avoid too many requests to captcha verification endpoint.
+
+### Setup captcha
+> Currently, we have support for 3 providers: recaptcha, hcaptcha or turnstile
+
+If you want to use captcha with your HAProxy Bouncer, you must provide a Site key and Secret key in your bouncer configuration.
+
+If you wish to use any other provider than recaptcha you **MUST** adapt the server name in the backend:
+
+ - recaptcha
+
+([captcha_verifier documentation](https://developers.google.com/recaptcha/intro)).
+
+```yaml
+backend captcha_verifier
+   mode http
+   server captcha_verifier www.google.com:443 check
+```
+
+ - hcaptcha
+
+([hcaptcha_verifier documentation](https://docs.hcaptcha.com/))
+
+```yaml
+backend captcha_verifier
+   mode http
+   server hcaptcha_verifier hcaptcha.com:443
+```
+
+ - turnstile
+
+([turnstile_verifier documentation](https://developers.cloudflare.com/turnstile/)).
+
+```yaml
+backend captcha_verifier
+   mode http
+   server turnstile_verifier challenges.cloudflare.com:443
+```
+
+
+
+
+Edit `etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf` and configure the following options:
+
+```bash
+SECRET_KEY=
+SITE_KEY=
+CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
+CAPTCHA_EXPIRATION=3600
+```
+
+Restart HAProxy.
+
+You can add a decisions with a type `captcha` to check if it works correctly:
+
+```bash
+sudo cscli decisions add -i <IP_TO_TEST> -t captcha
+```
+
+## FAQ
+
+### Why aren't decisions applied instantly
+
+In stream mode, the bouncer will launch an internal timer to pull the local API at the first request. So the cache won't be refreshed until the first request hits the service.
+
+### SSL and certificates
+
+In order to query captcha provider for verification, you need SSL certificates. Make sure you have root certificates installed on your system. You can also install `ca-certificates`.
+
+## References
+
+### `API_KEY`
+```bash
+API_KEY=<API_KEY>
+```
+
+CrowdSec Local API key.
+
+Generated with [`sudo cscli bouncers add`](../cscli/cscli_bouncers_add) command.
+
+### `BOUNCING_ON_TYPE`
+```bash
+BOUNCING_ON_TYPE=all|ban|captcha
+```
+
+Type of remediation we want to bounce. 
+If you choose `ban` only and receive a decision with `captcha` as remediation, the bouncer will skip the decision.
+
+### `FALLBACK_REMEDIATION`
+```bash
+FALLBACK_REMEDIATION=ban
+```
+
+The fallback remediation is applied if the bouncer receives a decision with an unknown remediation.
+
+### `REQUEST_TIMEOUT`
+```bash
+REQUEST_TIMEOUT=1000
+```
+
+Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or captcha provider (for the captcha verification).
+
+### `EXCLUDE_LOCATION`
+```bash
+EXCLUDE_LOCATION=/<path1>,/<path2>
+```
+
+The locations to exclude while bouncing. It is a list of location, separated by commas.
+
+:warning: It is not recommended to put `EXCLUDE_LOCATION=/`.
+
+
+### `UPDATE_FREQUENCY`
+> This option is only for the `stream` mode.
+
+```bash
+UPDATE_FREQUENCY=10
+```
+
+The frequency of update, in second, to pull new/old IPs from the CrowdSec local API.
+
+
+### `REDIRECT_LOCATION`
+> This option is only for the `ban` remediation.
+
+```bash
+REDIRECT_LOCATION=/<path>
+```
+
+The location to redirect the user when there is a ban.
+
+If it is not set, the bouncer will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
+
+### `BAN_TEMPLATE_PATH`
+> This option is only for the `ban` remediation.
+
+```bash
+BAN_TEMPLATE_PATH=<path_to_html_template>
+```
+
+The path to a HTML page to return to IPs that trigger `ban` remediation.
+
+By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/ban.html`.
+
+
+### `RET_CODE`
+> This option is only for the `ban` remediation.
+
+```bash
+RET_CODE=403
+```
+
+The HTTP code to return for IPs that trigger a `ban` remediation.
+If nothing specified, it will return a 403.
+
+
+### `SECRET_KEY`
+> This option is only for the `captcha` remediation.
+
+```bash
+SECRET_KEY=<captcha_secret_key>
+```
+
+The captcha secret key.
+
+
+### `SITE_KEY`
+> This option is only for the `captcha` remediation.
+
+```bash
+SITE_KEY=<captcha_site_key>
+```
+
+The captcha site key.
+
+
+### `CAPTCHA_TEMPLATE_PATH`
+> This option is only for the `captcha` remediation.
+
+```bash
+CAPTCHA_TEMPLATE_PATH=<path_to_html_template>
+```
+
+The path to a captcha HTML template.
+
+The bouncer will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
+
+By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/captcha.html`.
+
+
+### `CAPTCHA_EXPIRATION`
+> This option is only for the `captcha` remediation.
+
+```bash
+CAPTCHA_EXPIRATION=3600
+```
+
+
+The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IPs address will get a captcha again.
