@@ -47,12 +47,21 @@ The parsers, scenarios and all objects from the [CrowdSec Hub](https://hub.crowd
 A quick way to test that everything is working correctly is to execute the following command. Your ssh session should freeze and you should be kicked out from the firewall. You will not be able to connect to it (from the same IP address) for two minutes. It might be a good idea to have a secondary IP from which you can connect, should anything go wrong.
 
 ```console
-[root@OPNsense ~]# cscli decisions add -t ban -d 2m -i $(echo $SSH_CLIENT | cut -d' ' -f1)
+[root@OPNsense ~]# cscli decisions add -t ban -d 2m -i <your_ip_address> # replace with your connecting IP address
 ```
 
 This is a more secure way to test than attempting to brute-force yourself: the default ban period is 4 hours, and crowdsec reads the logs from the beginning, so it could ban you even if you failed ssh login 10 times in 30 seconds two hours before installing it.
 
+You can find a list of all available flags with `cscli decisions add --help`.
 
+#### How do I find my connecting IP address to test?
+
+We have provided some examples below to help you find your connecting IP address. Depending on your shell / environment, you may need to use a different command. 
+
+```console
+[root@OPNsense ~]# echo $SSH_CLIENT | awk '{print $1}'
+[root@OPNsense ~]# w -h | awk '{print $3}' | sort -u
+```
 
 ## Remote LAPI setup (optional)
 
