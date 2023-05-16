@@ -1,33 +1,19 @@
 ---
-id: cscli_bouncers_add
-title: cscli bouncers add
+id: cscli_config_show-yaml
+title: cscli config show-yaml
 ---
-## cscli bouncers add
+## cscli config show-yaml
 
-add bouncer
-
-### Synopsis
-
-add bouncer
+Displays merged config.yaml + config.yaml.local
 
 ```
-cscli bouncers add MyBouncerName [--length 16] [flags]
-```
-
-### Examples
-
-```
-cscli bouncers add MyBouncerName
-cscli bouncers add MyBouncerName -l 24
-cscli bouncers add MyBouncerName -k <random-key>
+cscli config show-yaml [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help         help for add
-  -k, --key string   api key for the bouncer
-  -l, --length int   length of the api key (default 16)
+  -h, --help   help for show-yaml
 ```
 
 ### Options inherited from parent commands
@@ -45,5 +31,5 @@ cscli bouncers add MyBouncerName -k <random-key>
 
 ### SEE ALSO
 
-* [cscli bouncers](/cscli/cscli_bouncers.md)	 - Manage bouncers [requires local API]
+* [cscli config](/cscli/cscli_config.md)	 - Allows to view current config
 

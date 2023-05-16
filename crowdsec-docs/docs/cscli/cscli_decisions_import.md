@@ -38,6 +38,7 @@ decisions.json :
       --scope string      Decision scope (ie. ip,range,username) (default "Ip")
   -R, --reason string     Decision reason (ie. scenario-name)
   -t, --type string       Decision type (ie. ban,captcha,throttle)
+      --batch int         Split import in batches of N decisions
   -h, --help              help for import
 ```
 
