@@ -27,7 +27,8 @@ cscli hub update # Download list of available configurations from the hub
 ### Options
 
 ```
-  -h, --help   help for hub
+  -b, --branch string   Use given branch from hub
+  -h, --help            help for hub
 ```
 
 ### Options inherited from parent commands

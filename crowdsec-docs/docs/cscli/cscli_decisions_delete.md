@@ -28,6 +28,7 @@ cscli decisions delete --type captcha
   -t, --type string       the decision type (ie. ban,captcha)
   -v, --value string      the value to match for in the specified scope
   -s, --scenario string   the scenario name (ie. crowdsecurity/ssh-bf)
+      --origin string     the value to match for the specified origin (cscli,crowdsec,console,cscli-import,lists,CAPI ...)
       --id string         decision id
       --all               delete all decisions
       --contained         query decisions contained by range

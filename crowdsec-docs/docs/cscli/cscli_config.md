@@ -32,4 +32,5 @@ Allows to view current config
 * [cscli config feature-flags](/cscli/cscli_config_feature-flags.md)	 - Displays feature flag status
 * [cscli config restore](/cscli/cscli_config_restore.md)	 - Restore config in backup "directory"
 * [cscli config show](/cscli/cscli_config_show.md)	 - Displays current config
+* [cscli config show-yaml](/cscli/cscli_config_show-yaml.md)	 - Displays merged config.yaml + config.yaml.local
 
