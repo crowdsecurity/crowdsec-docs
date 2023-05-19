@@ -55,6 +55,74 @@ Each bouncer has its own configuration file, which is located in the `/etc/crowd
 
 They all have an `api_url` option to set the local API URL.
 
+## CrowdSec doesn't start (common causes)
+
+By default you will find the CrowdSec logs in `/var/log/` folder (e.g. `/var/log/crowdsec.log`). Within this file you will find the error message that prevents CrowdSec from starting.
+
+Here are some common causes and solutions:
+
+1. CrowdSec cannot bind to the configured port
+  - **error** message might look like:
+```
+level=fatal msg="while serving local API: listen tcp 127.0.0.1:8080: bind: address already in use"
+```
+  - **solution** verify another service is not already using the port. If it is, you can edit the `listen_uri` port in the configuration file `/etc/crowdsec/config.yaml` and update `/etc/crowdsec/local_api_credentials.yaml` to the same port. Then you can restart CrowdSec with `sudo systemctl restart crowdsec`.
+
+2. CrowdSec cannot authenticate to the local API
+  - **error** message might look like:
+```
+level=fatal msg="starting outputs error : authenticate watcher (fcb7303c4df44c03ada289dd7ec3dbe7cU3GaseSWdqUaVg6): API error: ent: machine not found"
+```
+  - **solution** regenerate the credentials via [cscli machines](/docs/cscli/cscli_machines_add) command. If the local API is on the same machine you can run `sudo cscli machines add -a` (`-a` will automatically generate a random machine name and password). Then you can restart CrowdSec with `sudo systemctl restart crowdsec`.
+
+3. CrowdSec cannot connect to the local API
+  - **error** message might look like:
+```
+level=error msg="error while performing request: dial tcp 127.0.0.1:8080: connect: connection refused; 4 retries left"
+## There may be other variations of this error message just note if the message contains `connection refused` or `connection reset by peer` or `no such host` its likely a connection issue or configuration.
+```
+  - **solution** verify that the local API runs on the logged IP and port. If the logged IP and port is incorrect, you can update `/etc/crowdsec/local_api_credentials.yaml` to the correct IP and port (If local API is running on the same machine you can run `grep listen_uri /etc/crowdsec/config.yaml` to find it). Then you can restart CrowdSec with `sudo systemctl restart crowdsec`. If the logged IP and port is correct, verify that the local API is running via `sudo systemctl status crowdsec`.
+
+4. CrowdSec cannot start because of an invalid configuration file
+
+```info
+Depending on which configuration file is invalid, the error message may log in a different location. For example, if a parser/scenario file is invalid, the error message will be logged in `/var/log/crowdsec.log` but if `config.yaml` is invalid, the error message will be logged in syslog instead.
+```
+
+  - **error** message might look like:
+```
+level=fatal msg="/etc/crowdsec/config.yaml: yaml: unmarshal errors:\n  line 1: field test not found in type csconfig.Config"
+```
+  - **solution** CrowdSec will inform you which field or line is invalid. You can edit the configuration file and fix the error. Then you can restart CrowdSec with `sudo systemctl restart crowdsec`. If you are unsure what the configuration file should look like you can find the default configuration files [here](https://github.com/crowdsecurity/crowdsec/tree/master/config) or examples via the [documentation](/docs/configuration/crowdsec_configuration).
+
+## How can I check to see if a service is already using a port?
+
+You can use the `netstat` command to check if a service is already using a port.
+
+For example, to check if a service is using port 8080: (Our default port for the local API)
+
+```bash
+sudo netstat -tulpn | grep :8080
+```
+
+## How can I check to see if the local API is running?
+
+You can use the `cscli lapi` command to check if the local API is running and is contactable.
+
+```bash
+sudo cscli lapi status
+```
+
+## Where does CrowdSec store its data?
+
+CrowdSec stores its data in `/var/lib/crowdsec/data/` folder for UNIX and `C:\Program Files\CrowdSec\data\` for Windows.
+
+## Where does CrowdSec store its configuration files?
+
+CrowdSec stores configuration files in diffent folder dependins on platform:
+- **Linux** `/etc/crowdsec/`
+- **Freebsd** `/usr/local/etc/crowdsec/`
+- **Windows** `C:\Program Files\CrowdSec\`
 
 ## My bouncer doesn't start/work (common causes)
 
