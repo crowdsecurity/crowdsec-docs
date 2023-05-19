@@ -39,6 +39,10 @@ If set to `true`, force an inotify watch on the log files folder, even if there 
 
 Must be `file`.
 
+### `exclude_regexps`
+
+A list of regular expressions to exclude from the acquisition. Can be used to exclude files from a glob pattern (ie, `*` but not `*.log.gz`).
+
 ## DSN and command-line
 
 This module supports acquisition directly from the command line, to read files in one shot.
