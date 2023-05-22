@@ -65,7 +65,7 @@ If it's a configuration file issue, the error message may log in a different loc
 
 Here are some common causes and solutions:
 
-1. CrowdSec cannot bind to the configured port
+1. CrowdSec cannot bind to the configured port or IP
   - **error** message might look like:
 ```
 level=fatal msg="while serving local API: listen tcp 127.0.0.1:8080: bind: address already in use"
