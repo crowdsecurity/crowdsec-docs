@@ -59,6 +59,10 @@ They all have an `api_url` option to set the local API URL.
 
 By default you will find the CrowdSec logs in `/var/log/` folder (e.g. `/var/log/crowdsec.log`). Within this file you will find the error message that prevents CrowdSec from starting.
 
+:::info
+If it's a configuration file issue, the error message may log in a different location. For example, if a parser/scenario file is invalid, the error message will be logged in `/var/log/crowdsec.log` but if `config.yaml` is invalid, the error message will be logged in syslog instead.
+:::
+
 Here are some common causes and solutions:
 
 1. CrowdSec cannot bind to the configured port
@@ -84,10 +88,6 @@ level=error msg="error while performing request: dial tcp 127.0.0.1:8080: connec
   - **solution** verify that the local API runs on the logged IP and port. If the logged IP and port is incorrect, you can update `/etc/crowdsec/local_api_credentials.yaml` to the correct IP and port (If local API is running on the same machine you can run `grep listen_uri /etc/crowdsec/config.yaml` to find it). Then you can restart CrowdSec with `sudo systemctl restart crowdsec`. If the logged IP and port is correct, verify that the local API is running via `sudo systemctl status crowdsec`.
 
 4. CrowdSec cannot start because of an invalid configuration file
-
-```info
-Depending on which configuration file is invalid, the error message may log in a different location. For example, if a parser/scenario file is invalid, the error message will be logged in `/var/log/crowdsec.log` but if `config.yaml` is invalid, the error message will be logged in syslog instead.
-```
 
   - **error** message might look like:
 ```
