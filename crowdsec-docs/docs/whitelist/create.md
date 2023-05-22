@@ -176,3 +176,22 @@ whitelist:
     - evt.Overflow.Alert.Source.IP in LookupHost("12123564.org")
 ```
 Save and reload CrowdSec before to test
+
+## Whitelists from CAPI (Central API) community blocklist or third party blocklist
+
+From version 1.5.0 a user can specify a list of IP's or IP ranges to be whitelisted from a community blocklist or third party blocklist. You will have to specify a path to the file within `config.yaml` as by default there is no file specified.
+
+```yaml
+server:
+  capi_whitelists_path: <path_to_capi_whitelists_file>
+```
+
+We recommend to use a file like `/etc/crowdsec/capi_whitelists.yaml` and the contents should be in the following format:
+
+```yaml
+ips:
+ - 1.2.3.4
+ - 2.3.4.5
+cidrs:
+ - 1.2.3.0/24
+```

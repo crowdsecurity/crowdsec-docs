@@ -76,6 +76,7 @@ api:
     console_path: /etc/crowdsec/console.yaml
     online_client: # Crowdsec API
       credentials_path: /etc/crowdsec/online_api_credentials.yaml
+#    capi_whitelists_path: /etc/crowdsec/capi_whitelists.yaml
 #    tls:
 #      cert_file: /etc/crowdsec/ssl/cert.pem
 #      key_file: /etc/crowdsec/ssl/key.pem
@@ -771,6 +772,7 @@ server:
   console_path: <path_to_console_file>
   online_client:
     credentials_path: <path_to_crowdsec_api_client_credential_file>
+  capi_whitelists_path: <path_to_capi_whitelists_file>
   tls:
     cert_file: <path_to_certificat_file>
     key_file: <path_to_certificat_key_file>
