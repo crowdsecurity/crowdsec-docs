@@ -252,6 +252,8 @@ api:
     console_path: <path_to_console_file>
     online_client:
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
+    disable_remote_lapi_registration: (true|false)
+    capi_whitelists_path: <path_to_capi_whitelists_file>
     tls:
       cert_file: "<path_to_certificat_file>"
       key_file: "<path_to_certificat_key_file>"
@@ -721,6 +723,8 @@ api:
     console_path: <path_to_console_file>
     online_client:
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
+    disable_remote_lapi_registration: (true|false)
+    capi_whitelists_path: <path_to_capi_whitelists_file>
     tls:
       cert_file: "<path_to_certificat_file>"
       key_file: "<path_to_certificat_key_file>"
