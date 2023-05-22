@@ -76,6 +76,7 @@ api:
     console_path: /etc/crowdsec/console.yaml
     online_client: # Crowdsec API
       credentials_path: /etc/crowdsec/online_api_credentials.yaml
+#    disable_remote_lapi_registration: false
 #    capi_whitelists_path: /etc/crowdsec/capi_whitelists.yaml
 #    tls:
 #      cert_file: /etc/crowdsec/ssl/cert.pem
@@ -772,6 +773,7 @@ server:
   console_path: <path_to_console_file>
   online_client:
     credentials_path: <path_to_crowdsec_api_client_credential_file>
+  disable_remote_lapi_registration: (true|false)
   capi_whitelists_path: <path_to_capi_whitelists_file>
   tls:
     cert_file: <path_to_certificat_file>
@@ -805,6 +807,11 @@ The path to the profiles configuration.
 > string
 
 The path to the console configuration.
+
+#### `disable_remote_lapi_registration`
+> bool
+
+This option will disable the registration of remote agents using `cscli lapi register` command. As by default the local API registration will create a machine in the database (not validated), this option will prevent the creation of a machine in the database.
 
 ##### `capi_whitelists_path`
 > string
