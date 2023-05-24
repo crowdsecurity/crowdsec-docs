@@ -148,7 +148,7 @@ For all these reasons, you can write your local settings in
 `config.yaml.local`, which follows the same format and has the same options as
 `config.yaml`. Values defined in `config.yaml.local` will take precedence.
 Mappings are merged, sequences are replaced. You can use the environment
-variable susbtitution, explained above, in both files.
+variable substitution, explained above, in both files.
 
 Example:
 
