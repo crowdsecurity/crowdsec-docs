@@ -43,6 +43,17 @@ Must be `file`.
 
 A list of regular expressions to exclude from the acquisition. Can be used to exclude files from a glob pattern (ie, `*` but not `*.log.gz`).
 
+### `poll_without_inotify`
+
+:::info
+This was not the default for version 1.4.6 and below. So users upgrading to 1.5 may encounter some issues with certain file systems. See [this issue](https://github.com/crowdsecurity/crowdsec/issues/2223)
+:::
+
+> default: `false`
+
+If set to `true`, will poll the files using `os.Stat` instead of using inotify. This is useful if you want to watch files on a network share, for example. However, this will increase CPU usage significantly per file that is open.
+
+
 ## DSN and command-line
 
 This module supports acquisition directly from the command line, to read files in one shot.
