@@ -6,7 +6,7 @@ sidebar_position: 2
 
 CrowdSec's CTI API can be used in Gigasheet's No-Code API-data-enrichment feature. 
 
-As always you'll need a CTI API-key : [Follow this guide to get yours](https://docs.crowdsec.net/docs/next/cti_api/getting_started/).
+As always you'll need a CTI API-key: [Follow this guide to get yours](https://docs.crowdsec.net/docs/next/cti_api/getting_started/).
 
 ## Preview
 
@@ -26,6 +26,6 @@ Along with the list of [API examples](https://gigasheet.com/features/run-data-en
 
 ![Enrichement configuration](/img/gigasheet_enrichement_preview.png)
 
-*It will then apply te enrichment on all the targeted lines*
+*It will then apply the enrichment on all the targeted lines*
 
 ![Enrichement configuration](/img/gigasheet_enrichement_result.png)
