@@ -198,7 +198,7 @@ A valid [expr](/expr/helpers.md) expression that return a string to apply the pa
 
 #### `apply_on`
 
-The field to apply the pattern on.
+The field from `evt.Parsed` to apply the pattern on. For example if you want to apply the event to `evt.Parsed.message` you would set `apply_on: message`.
 
 #### Examples
 
