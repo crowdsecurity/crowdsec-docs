@@ -6,7 +6,11 @@ sidebar_position: 3
 
 
 
- - `scores`: Indicators of malevolence associated with an IP address, computed over several periods of time : 1 day, 1 week, 1 month and overall. For a given period, the indicator of malevolence is summarized under the `total` key with a value ranging from **0** (no reports) to **5** (high malevolence). This value is a summary based on 4 components (see below) also ranging from **0** (Not Applicable/ Missing) to **5** (High), comparing to all the the signals reported by the community.
+The scores are indicators of malevolence associated with an IP address, computed over several periods of time : 1 day, 1 week, 1 month and overall. 
+ 
+For a given period, the indicator of malevolence is summarized under the `total` key with a value ranging from **0** (no reports) to **5** (high malevolence). 
+ 
+This value is a summary based on 4 components (see below) also ranging from **0** (Not Applicable/ Missing) to **5** (High), comparing to all the the signals reported by the community.
 
 | indicator | explaination |
 |-----------|--------------|
@@ -17,6 +21,4 @@ sidebar_position: 3
 | Total | Aggregation of 4 component calculated on threats reported by the community and described below. |
 
 
- - `ip_range_score`: Score of malevolence associated with an IP range, ranging from *0* (No IP reported) to *5* (massively reported). It is calculated based on the number of IPs belonging to this range that were reported by the community as malicious
-
- - `behaviors`: One or more attack categories and behaviors associated with the IP. The category names and the associated labels should be self-explanatory. For example, `sip:bruteforce` would refer to an IP performing brute force attacks on the SIP protocol, while `http:exploit` would refer to an IP attempting to exploit known vulnerabilities on HTTP services. [An exhaustive list](#list-of-common-behaviors) is availabe bellow.
+The `ip_range_score` is the score of malevolence associated with an IP range, ranging from *0* (No IP reported) to *5* (massively reported). It is calculated based on the number of IPs belonging to this range that were reported by the community as malicious

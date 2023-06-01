@@ -5,7 +5,69 @@ sidebar_position: 2
 ---
 
 
-## Fields Documentation
+### `ip`
+
+```
+ip: 1.2.3.4
+```
+
+The requested IP
+
+### `ip_range`
+```
+ip_range: 1.2.3.0/24
+```
+
+The range to which the IP belongs
+
+### `ip_range_score`
+```
+ip_range_score: 
+```
+
+The malevolence score of the IP range the IP belongs to. 0 is unknown, 1 is a couple of IP reported, 5 is the highest level for the most aggressive range. See "scoring" above
+
+
+### `as_name`
+```
+as_name: AS-NAME
+```
+
+The autonomous system name to which the IP belongs
+
+### `as_num`
+```
+as_num: 123
+```
+
+The autonomous system to which the IP belongs
+
+
+
+
+
+
+
+### `state`
+
+```
+state: validated|refused
+```
+
+Only present for the `fire` route.
+
+- `validated` means IP is currently part of community blocklist
+- `refused` means it was part of the community blocklist, but was manually purged (ie. false positive)
+
+### `expiration`
+```
+expiration: 2023-01-01T01:01:01.000000
+```
+
+Only present for the `fire` route.
+
+Date at which the IP address expire from the community blocklist.
+
 
  - `state` : Only present for the "fire" route: `validated` means IP is currently part of community blocklist. `refused` means it was part of the community blocklist, but was manually purged (ie. false positive)
  - `expiration`: Only present for the "fire" route: Date at which the IP address expire from the community blocklist.

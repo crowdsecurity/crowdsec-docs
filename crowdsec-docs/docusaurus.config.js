@@ -14,7 +14,7 @@ module.exports = {
   favicon: 'img/crowdsec_no_txt.png',
   organizationName: 'CrowdSec',
   projectName: 'crowdsec-docs',
-  plugins: [path.resolve(__dirname, 'plugins', 'matomo')],
+  //plugins: [path.resolve(__dirname, 'plugins', 'matomo')],
   themeConfig: {
     algolia: {
       appId: 'PWTZ94KULF',
