@@ -15,6 +15,11 @@ module.exports = {
   organizationName: 'CrowdSec',
   projectName: 'crowdsec-docs',
   //plugins: [path.resolve(__dirname, 'plugins', 'matomo')],
+  stylesheets: [
+      {
+        href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
+      }
+  ],
   themeConfig: {
     algolia: {
       appId: 'PWTZ94KULF',
