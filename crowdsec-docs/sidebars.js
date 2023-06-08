@@ -310,11 +310,15 @@ module.exports = {
             type: 'doc',
             id: 'cscli/cscli_dashboard'
           },
-          items: ["cscli/cscli_dashboard","cscli/cscli_dashboard_remove","cscli/cscli_dashboard_setup","cscli/cscli_dashboard_start","cscli/cscli_dashboard_stop","cscli/cscli_dashboard_show-password"]
+          items: ["cscli/cscli_dashboard_remove","cscli/cscli_dashboard_setup","cscli/cscli_dashboard_start","cscli/cscli_dashboard_stop","cscli/cscli_dashboard_show-password"]
         },
         {
           type: "category",
           label: "cscli decisions",
+          link: {
+            type: 'doc',
+            id: 'cscli/cscli_decisions'
+          },
           items: ["cscli/cscli_decisions_add","cscli/cscli_decisions_delete","cscli/cscli_decisions_list", "cscli/cscli_decisions_import"]
         },
         {
