@@ -55,7 +55,7 @@ module.exports = {
           type: 'doc',
           docId: 'bouncers/intro',
           position: 'left',
-          label: 'Bouncers',
+          label: 'Remediation Components',
         },
         {
            type: 'doc',

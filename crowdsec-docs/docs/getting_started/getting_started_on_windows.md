@@ -1,6 +1,6 @@
 ---
 id: install_windows
-title: Install CrowdSec (Windows)
+title: Windows
 ---
 
 ## CrowdSec Installation

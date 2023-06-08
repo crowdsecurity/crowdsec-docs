@@ -1,6 +1,6 @@
 ---
 id: install_crowdsec_opnsense
-title: Install CrowdSec (OPNsense)
+title: OPNsense
 sidebar_position: 1
 ---
 

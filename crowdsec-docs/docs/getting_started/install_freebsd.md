@@ -1,6 +1,6 @@
 ---
 id: install_crowdsec_freebsd
-title: Install CrowdSec (FreeBSD)
+title: FreeBSD
 sidebar_position: 1
 ---
 

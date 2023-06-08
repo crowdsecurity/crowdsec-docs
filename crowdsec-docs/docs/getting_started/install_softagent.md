@@ -4,12 +4,11 @@ title: Soft Agent
 sidebar_position: 1
 ---
 
-# Custom Soft-Agent
+# Using our SDK
 
-If you are developing security software that detects misbehaviors and does remediation on IPs.   
-You can send signals for your detections, benefit from the community blocklist and enroll into the console with the help of our FOSS CAPI clients libraries.
+With the help of our SDK, If you are developing security software that detects misbehaviors and does remediation on IPs, you can send signals about your detections and benefit from the community blocklist.
 
-Those libraries are doing the heavy lifting of the CAPI connectivity so you can simply, sendSignals, getDecisions and getRemediationForIp, as well as enrolling your soft-agent into the console
+Our SDK do the heavy lifting of the CAPI connectivity so you can simply, sendSignals, getDecisions and getRemediationForIp, as well as enrolling your soft-agent into the console
 
 ![Possible integration](/img/php-libs-crowdsec-overview.jpg)
 
