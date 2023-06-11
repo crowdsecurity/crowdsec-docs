@@ -49,13 +49,12 @@ Refer to docker [hub docs](https://hub.docker.com/r/crowdsecurity/misp-feed-gene
 Run the following command to generate the base configuration file:
 
 ```bash
-crowdsec-misp-feed-generator -g
+crowdsec-misp-feed-generator -g > crowdsec-misp-feed-generator.yaml
 ```
 
 This will generate a configuration file named `crowdsec-misp-feed-generator.yaml` in the current directory.
 
 ```yaml
-
 # CrowdSec Config
 crowdsec_lapi_url: http://localhost:8080/
 crowdsec_lapi_key: <your-lapi-key>
