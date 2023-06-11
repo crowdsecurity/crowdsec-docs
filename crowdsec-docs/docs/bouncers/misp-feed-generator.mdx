@@ -54,6 +54,43 @@ crowdsec-misp-feed-generator -g > crowdsec-misp-feed-generator.yaml
 
 This will generate a configuration file named `crowdsec-misp-feed-generator.yaml` in the current directory.
 
+You need to edit this file to configure the feed generator. Make sure you give the correct LAPI key and URL.
+You can generate a LAPI key using the following command on the machine with CrowdSec installed.
+
+```bash
+cscli bouncers add crowdsec-misp-feed-generator
+```
+
+Please refer to [configuration reference section](#configuration-reference) for more details on the configuration options.
+
+### Running the feed generator
+
+After configuring the feed generator, you can run it using the following command:
+
+```bash
+crowdsec-misp-feed-generator -c crowdsec-misp-feed-generator.yaml
+```
+
+This will start the feed generator and expose the feed over HTTP/S, on the configured port and address.
+
+### Setting MISP to use the feed
+
+You can now configure MISP to use this feed. To do this:
+
+1. Navigate to the "Feeds" tab in MISP. 
+
+![MISP Feeds](/img/bouncer/misp_feed_generator/misp_feed_opt.png)
+
+2. Click on the "Add Feed" button.
+
+![MISP Add Feed](/img/bouncer/misp_feed_generator/misp_feed_add_menu.png)
+
+Fill the form with appropriate details. Don't forget to set the authentication if you've enabled it in the feed generator configuration.
+
+3. That's it! You can now use the feed in MISP. You can test it by clicking on the "Fetch now" button in the actions column. Few events should be added to MISP.
+
+## Configuration Reference
+
 ```yaml
 # CrowdSec Config
 crowdsec_lapi_url: http://localhost:8080/
@@ -95,43 +132,6 @@ basic_auth:
 log_level: info # debug, info, warning, error
 log_mode: stdout # stdout, stderr, file
 ```
-
-You need to edit this file to configure the feed generator. Make sure you give the correct LAPI key and URL.
-You can generate a LAPI key using the following command on the machine with CrowdSec installed.
-
-```bash
-cscli bouncers add crowdsec-misp-feed-generator
-```
-
-Please refer to [configuration reference section](#configuration-reference) for more details on the configuration options.
-
-### Running the feed generator
-
-After configuring the feed generator, you can run it using the following command:
-
-```bash
-crowdsec-misp-feed-generator -c crowdsec-misp-feed-generator.yaml
-```
-
-This will start the feed generator and expose the feed over HTTP/S, on the configured port and address.
-
-### Setting MISP to use the feed
-
-You can now configure MISP to use this feed. To do this:
-
-1. Navigate to the "Feeds" tab in MISP. 
-
-![MISP Feeds](/img/bouncer/misp_feed_generator/misp_feed_opt.png)
-
-2. Click on the "Add Feed" button.
-
-![MISP Add Feed](/img/bouncer/misp_feed_generator/misp_feed_add_menu.png)
-
-Fill the form with appropriate details. Don't forget to set the authentication if you've enabled it in the feed generator configuration.
-
-3. That's it! You can now use the feed in MISP. You can test it by clicking on the "Fetch now" button in the actions column. Few events should be added to MISP.
-
-## Configuration Reference
 
 ### `crowdsec_lapi_url`
 
