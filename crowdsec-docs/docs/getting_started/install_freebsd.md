@@ -13,9 +13,9 @@ By default, the command `pkg install` should use the quarterly releases (January
 You can check `/etc/pkg/FreeBSD.conf` and [change **quarterly** to **latest**](https://wiki.freebsd.org/Ports/QuarterlyBranch) if you feel comfortable upgrading your system.
 
 
-## Installing CrowdSec
+## Installing Security Engine
 
-Before installing the package, you might want to check [the ports that crowdsec will use](/docs/next/configuration/network_management).
+Before installing the package, you might want to check [the ports that security engine will use](/docs/next/configuration/network_management).
 
 The CrowdSec package itself can be installed with:
 
@@ -50,7 +50,7 @@ You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
 
 If all this sounds confusing, it might be a good moment to take a [tour](/getting_started/crowdsec_tour.md) of the software before continuing.
 
-## Installing the firewall bouncer
+## Installing the firewall remediation component
 
 This is a package that receives decisions to ban IP addresses and whole address ranges, if they are the source of verified attacks.
 
@@ -66,7 +66,7 @@ Registered: cs-firewall-bouncer-ZjpcXlUx
 ```
 
 
-The firewall bouncer is now running. It applies rules via the [Packet Filter](https://docs.freebsd.org/en/books/handbook/firewalls/#firewalls-pf).
+The firewall remediation component is now running. It applies rules via the [Packet Filter](https://docs.freebsd.org/en/books/handbook/firewalls/#firewalls-pf).
 
 Create the required tables by creating or appending this to `/etc/pf.conf`:
 

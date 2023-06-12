@@ -12,13 +12,12 @@ For those that prefer hands-on approach, you can as well [manually install crowd
 
 ## Install our repositories
 
-Installing our repositories allows you to access the latest packages of CrowdSec and bouncers.
+Installing our repositories allows you to access the latest packages of the Security Engine and Remediation Components.
 
 :::info
 We are using [packagecloud.io service](https://packagecloud.io/crowdsec/crowdsec/).
 While `curl | sudo bash` can be convenient for some, [alternative installation methods are available](https://packagecloud.io/crowdsec/crowdsec/install#manual).
 :::
-
 
 <Tabs
   defaultValue="debian"
@@ -58,9 +57,9 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
 
 
 
-## Install CrowdSec
+## Install Security Engine
 
-Before installing the package, you might want to check [the ports that crowdsec will use](/docs/next/configuration/network_management).
+Before installing the package, you might want to check [the ports that will be used](/docs/next/configuration/network_management).
 
 <Tabs
   defaultValue="debian"
@@ -100,7 +99,7 @@ Before installing the package, you might want to check [the ports that crowdsec 
 
 <!-- TBD : fix links -->
 
-You now have CrowdSec running ! You can move forward and install a [bouncer](/bouncers/intro.md), or take a [tour](/getting_started/crowdsec_tour.md) of the software beforehand !
+You now have the Security Engine running ! You can move forward and install a [remediation component](/bouncers/intro.md), or take a [tour](/getting_started/crowdsec_tour.md) of the software beforehand !
 
 Directories:
 
@@ -110,13 +109,18 @@ Directories:
 :::caution
 
 Keep in mind that a CrowdSec package is only in charge of the "detection", and won't block anything on its own.
-You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
+You need to deploy a [Remediation Component](/bouncers/intro.md) to enforce decisions.
 
 :::
 
 
-## Install a bouncer
+## Install a Remediation Component
 
+:::info
+While we're suggesting to install the firewall remediation component it may not be best suited for your setup.
+
+Please reffer to [remediation components](/bouncers/intro.md) section about different components we have.
+:::
 
 <Tabs
   defaultValue="debian"
@@ -151,13 +155,6 @@ You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
 </Tabs>
 
 
-:::info
-
-While we're suggesting the most common firewall bouncer, check our [hub](https://hub.crowdsec.net) for more of them.
-Find a bouncer directly for your application ([nginx](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-nginx-bouncer), [php](https://github.com/crowdsecurity/php-cs-bouncer), [wordpress](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-wordpress-bouncer)) or your providers ([cloudflare](https://hub.crowdsec.net/author/crowdsecurity/bouncers/cs-cloudflare-bouncer), [AWS/GCP/...](https://hub.crowdsec.net/author/fallard84/bouncers/cs-cloud-firewall-bouncer)) 
-
-:::
-
 ## Running CrowdSec on Raspberry Pi OS/Raspbian 
 
 Please keep in mind that Raspberry Pi OS is designed to work on all
@@ -167,7 +164,7 @@ not exactly the same target as the debian named armhf port.
 The best way to have a CrowdSec version for such an architecture is to
 do:
 
-1. install golang (all versions from 1.16 will do)
+1. install golang (all versions from 1.20 will do)
 2. `export GOARCH=arm`
 3. `export CGO=1`
 4. Update the GOARCH variable in the Makefile to `arm`

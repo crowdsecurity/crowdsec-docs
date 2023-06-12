@@ -46,6 +46,10 @@ module.exports = {
                     type: "category",
                     label: "Security Engine",
                     collapsed: true,
+                    link: {
+                        type: "doc",
+                        id: "getting_started/security_engine_intro",
+                    },
                     items: [
                         "getting_started/install_crowdsec",
                         "getting_started/install_crowdsec_freebsd",

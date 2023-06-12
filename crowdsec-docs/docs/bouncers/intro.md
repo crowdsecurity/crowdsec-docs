@@ -11,18 +11,18 @@ You may see Remediation Components reffered too as "bouncers" in the documentati
 :::
 ## Introduction
 
-Remediation Components are software packages in charge of acting upon decision's provided by CrowdSec security engine.
+Remediation Components are software packages in charge of acting upon decision's provided by the Security Engine.
 
-- [nginx bouncer](/bouncers/nginx.mdx) will check every unknown IP against the local API before letting go through or serving a *403* to the user
-- [firewall bouncer](/bouncers/firewall.mdx) will simply "add" malevolent IPs to nftables/ipset set of blacklisted IPs.
-- [cloudflare bouncer](/bouncers/cloudflare.mdx) will add malevolent IPs to a Cloudflare firewall
+- [nginx bouncer](/bouncers/nginx.mdx) will check requester IP against the local API before granting or denying access.
+- [firewall bouncer](/bouncers/firewall.mdx) will add IPs to nftables/ipset set.
+- [cloudflare bouncer](/bouncers/cloudflare.mdx) will add IPs to the Cloudflare firewall.
 - [blocklist mirror](/bouncers/blocklist-mirror.mdx) will serve the blocklist to a appliance such as pfsense, fortinet, untangle via a http server.
 
 Remediation Components interact with [crowdsec's Local API](/local_api/intro.md) to retrieve active decisions and remediate appropriately.
 
 You can explore [available remediation components on the hub](https://hub.crowdsec.net/browse/#bouncers).
 
-To be able for your remediation components to communicate with the local API, you have to generate an API token with `cscli` and put it in the associated configuration file:
+For your remediation components to communicate with the local API, you have to generate an API token with `cscli` and put it in the associated configuration file:
 
 ```bash
 sudo cscli bouncers add testBouncer

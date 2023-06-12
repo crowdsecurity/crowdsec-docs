@@ -25,7 +25,7 @@ or follow the steps below.
 
 The Security Engine by default uses the following ports:
   - 8080/tcp for the API
-  - 6060/tcp for the Prometheus metrics
+  - 6060/tcp for the Prometheus metrics / Debugging
 
 If these ports are not available on your system, you can change them in the configuration file post installation. See [Configuration](/docs/configuration.md) for more information.
 
@@ -36,7 +36,7 @@ Please note that the API is mandatory for your security engine, do not remove it
 The easiest way to install  the Security Engine is to use the official repository. This will ensure that you always have the latest version of the Security Engine.
 
 Please see the relevant documentation for your OS:
-- [Linux](/getting_started/install_crowdsec.md)
+- [Linux](/getting_started/install.mdx)
 - [FreeBSD](/getting_started/install_freebsd.md)
 - [Windows](/getting_started/getting_started_on_windows.md)
 

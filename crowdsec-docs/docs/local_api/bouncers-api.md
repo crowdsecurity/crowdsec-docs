@@ -1,27 +1,29 @@
 ---
 id: bouncers
-title: For bouncers
+title: For Remediation Components
 sidebar_position: 2
 ---
 
-
-
 :::info
-This page explains how to interact with the local API exposed by crowdsec.
+This page explains how to interact with the local API exposed by Security Engine.
 
-It's meant to be useful for system administrators, or users that want to create their own bouncers.
+It's meant to be useful for system administrators, or users that want to create their own remediation components.
 :::
 
 ## Introduction
 
-This documentation only covers the API usage from the bouncer POV :
+This documentation only covers the API usage from the remediation component POV :
 
- - Authentication via API token (rather than JWT as crowdsec/cscli)
+ - Authentication via API token (rather than JWT as Security Engine/cscli)
  - Reading decisions
 
-This guide will assume that you already have crowdsec running locally.
+This guide will assume that you already have Security Engine running locally.
 
 ## Authentication
+
+:::info
+Remediation Components may be reffered to as "bouncers" within cscli commands.
+:::
 
 Existing tokens can be viewed with `cscli bouncers list` :
 
@@ -59,7 +61,7 @@ Note: if the token is missing or incorrect, you will get a **403** answer.
 
 ## API Usage
 
-As stated in the [swagger documentation](https://crowdsecurity.github.io/api_doc/lapi/), bouncer's method are restricted to the `/decisions` path. They allow to query the local decisions in two modes :
+As stated in the [swagger documentation](https://crowdsecurity.github.io/api_doc/lapi/), Remediation Components methods are restricted to the `/decisions` path. They allow to query the local decisions in two modes :
 
  - stream mode : Intended for bouncers that will - on a regular basis - query the local api for new and expired/decisions
  - query mode : Intended for bouncers that want to query the local api about a specific ip/range/username etc.
