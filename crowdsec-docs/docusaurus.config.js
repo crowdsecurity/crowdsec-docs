@@ -52,12 +52,6 @@ module.exports = {
           label: 'Cscli',
         },
         {
-          type: 'doc',
-          docId: 'bouncers/intro',
-          position: 'left',
-          label: 'Remediation Components',
-        },
-        {
            type: 'doc',
            docId: 'cti_api/getting_started',
            position: 'left',
