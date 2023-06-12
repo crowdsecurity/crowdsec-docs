@@ -125,8 +125,8 @@ module.exports = {
               href: 'https://discourse.crowdsec.net/',
             },
             {
-              label: 'Gitter',
-              href: 'https://gitter.im/crowdsec-project/community',
+              label: 'Discord',
+              href: 'https://discord.gg/crowdsec',
             },
             {
               label: 'Twitter',
