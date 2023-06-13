@@ -3,19 +3,23 @@ title: Troubleshooting Guide
 id: troubleshooting
 ---
 
-## How to list banned IPs
+:::info
+You may see CrowdSec referred to as "Security Engine" within new documentation and Bouncers referred to as "Remediation Components". This is to better reflect the role of each component within the CrowdSec ecosystem.
+:::
+
+## How to list current decisions
 
 ```bash
 cscli decisions list
 ```
 
-## How to unban an IP
+## How to remove a decision on an IP
 
 ```bash
 cscli decisions delete -i x.x.x.x
 ```
 
-## I want to prevent Crowdsec from banning a given IP
+## I want to prevent the Security Engine from banning a given IP
 
 Inspired from the existing [default whitelist for private IP addresses](https://hub.crowdsec.net/author/crowdsecurity/configurations/whitelists), you can craft your own (and drop it in `/etc/crowdsec/parsers/s01-parse/mywhitelist.yaml`) :
 
@@ -33,25 +37,25 @@ whitelist:
     - "172.16.0.0/12"
 ```
 
-## Where is the configuration related to the CrowdSec local API?
-> While you don't need to modify these file with a simple installation, you need to edit them when you want to use CrowdSec in a multi machine setup.
+## Where is the configuration related to the Security Engine local API?
+> While you don't need to modify these file with a simple installation, you need to edit them when you want to use Security Engine in a multi machine setup.
 
-- For the CrowdSec Local API Server listen URL:
+- For the Security Engine Local API Server listen URL:
 
 This information is stored in `/etc/crowdsec/config.yaml` in the `api.server.listen_uri` option.
 
 More information [here](/docs/configuration/crowdsec_configuration#listen_uri).
 
-- For the CrowdSec Agent client API:
+- For the CrowdSec Security Engine client API:
 
-The URL of the local API that the CrowdSec agent should communicate with is stored in `/etc/crowdsec/local_api_credentials.yaml`.
+The URL of the local API that the engine should communicate with is stored in `/etc/crowdsec/local_api_credentials.yaml`.
 
 You can edit the `url` option according to your local API URL.
 
 
-- For the bouncers:
+- For Remediation Components:
 
-Each bouncer has its own configuration file, which is located in the `/etc/crowdsec/bouncers/` folder.
+Each Remediation Component has its own configuration file, which is located in the `/etc/crowdsec/bouncers/` folder.
 
 They all have an `api_url` option to set the local API URL.
 
