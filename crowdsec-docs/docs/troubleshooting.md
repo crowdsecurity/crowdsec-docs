@@ -4,7 +4,7 @@ id: troubleshooting
 ---
 
 :::info
-You may see CrowdSec referred to as "Security Engine" within new documentation and Bouncers referred to as "Remediation Components". This is to better reflect the role of each component within the CrowdSec ecosystem.
+You may see CrowdSec referred to as "Security Engine" and Bouncers referred to as "Remediation Components" within new documentation. This is to better reflect the role of each component within the CrowdSec ecosystem.
 :::
 
 ## How to list current decisions

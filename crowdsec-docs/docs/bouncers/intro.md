@@ -7,7 +7,7 @@ sidebar_position: 1
 # Remediation Components
 
 :::info
-You may see Remediation Components reffered to as "bouncers" in the documentation and/or within cscli commands.
+You may see Remediation Components referred to as "bouncers" in the documentation and/or within cscli commands.
 :::
 ## Introduction
 

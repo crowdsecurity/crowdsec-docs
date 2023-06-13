@@ -8,7 +8,7 @@ Welcome to CrowdSec!
 This section will guide you through the installation of the Security Engine, and deployment of your first Remediation Component.
 
 :::info
-In some documentation / videos you may see the Security Engine referred to as the "CrowdSec Agent" and Remediation Components referred to as "Bouncers".
+You may see CrowdSec referred to as "Security Engine" and Bouncers referred to as "Remediation Components" within new documentation. This is to better reflect the role of each component within the CrowdSec ecosystem.
 :::
 
 ## Walkthrough

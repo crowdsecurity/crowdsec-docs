@@ -3,19 +3,19 @@ id: install_windows
 title: Windows
 ---
 
-## CrowdSec Installation
+## Security Engine Installation
 
 You can download the MSI file from the [latest github release](https://github.com/crowdsecurity/crowdsec/releases/latest).
 
 Before installing the package, you might want to check [the ports that security engine will use](/docs/next/configuration/network_management).
 
 The MSI file will perform some basic setup:
- - Installation of CrowdSec
+ - Installation of Security Engine
  - Download of the [windows collection](https://hub.crowdsec.net/author/crowdsecurity/collections/windows). This includes the basic parser for the windows event log, a scenario to detect login brute force and the MMDB files to perform geo-ip enrichment.
- - Registering your CrowdSec installation with our Central API.
- - Installation of the Windows Service for CrowdSec. The service will start at boot time.
+ - Registering your Security Engine installation with our Central API.
+ - Installation of the Windows Service for Security Engine. The service will start at boot time.
 
-Contrary to Linux, CrowdSec does not yet support the automatic configuration at installation time. If you want to be able to detect something other than RDP or SMB bruteforce, then you will need to customize your acquisition configuration.
+Contrary to Linux, Security Engine does not yet support the automatic configuration at installation time. If you want to be able to detect something other than RDP or SMB bruteforce, then you will need to customize your acquisition configuration.
 
 The default configuration will catch brute force attacks against RDP and SMB or any kind of remote authentication that uses Windows authentification.
 
@@ -136,17 +136,21 @@ Please note that we *DO NOT* recommand disabling stealth mode.
 Almost all service types supported on Linux should also be supported on Windows, as long as CrowdSec does not expect logs in the syslog format (this means that MySQL or Apache will work, but not SSH).
 
 
-## Windows Firewall Bouncer Installation
+## Windows Firewall Remediation Component Installation
 
-Now that you've got CrowdSec up and running, it's time to install a bouncer to actually block the IP addresses which are attacking your server.
+:::info
+You may see Remediation Components referred to as "bouncers" in the documentation and/or within cscli commands.
+:::
 
-We will use the Windows Firewall bouncer, which manages some windows firewall rules to drop traffic from IP addresses blocked by CrowdSec.
+Now that you've got Security Engine up and running, it's time to install a Remediation Component to actually block the IP addresses which are attacking your server.
 
-You can download either a MSI (containing only the bouncer) or a setup bundle (containing the bouncer and the .NET 6 runtime) from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
+We will use the Windows Firewall Component, which manages some windows firewall rules to drop traffic from IP addresses blocked by the engine.
+
+You can download either a MSI (containing only the bouncer) or a setup bundle (containing the component and the .NET 6 runtime) from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
 
 :::warning
 
-The Windows Firewall Bouncer requires the .NET 6 runtime. Install it before running the bouncer or use our setup bundle to install it with the bouncer.
+The Windows Firewall Remediation Component requires the .NET 6 runtime. Install it before running the Component or use our setup bundle to install it with the Component.
 
 The runtime can be downloaded from [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime).
 Choose the "Console App" download.
@@ -160,23 +164,23 @@ If you installed the previous alpha release that was distributed from https://al
 :::
 
 
-When you run the MSI file, the bouncer will automatically register itself in CrowdSec and creates the Windows service, that will run at boot and starts the bouncer.
+When you run the MSI file, the Remediation Component will automatically register itself in the Security Engine and creates the Windows service, that will start the component on boot.
 
-The bouncer works by adding a number of rules to the windows firewall (one rule per thousand blocked IPs).
+The component works by adding a number of rules to the windows firewall (one rule per thousand blocked IPs).
 
 Those rules begins with `crowdsec-blocklist` and you should not manually update or delete them.
 
-They will be automatically deleted when the bouncer stops, and created at startup.
+They will be automatically deleted when the component stops, and created at startup.
 
 ### Manual configuration
 
-If you install the bouncer before CrowdSec, you will need to perform some manual steps.
+If you install the Remediation Component before the Security Engine, you will need to perform some manual steps.
 
-First, you will need to create an API key for the bouncer.
+First, you will need to create an API key for the Remediation Component.
 
 To do so, open an administrator powershell or DOS prompt and run `cscli.exe bouncers add windows-firewall-bouncer`. This will display an API key.
 
 
-Add this key in the bouncer configuration file located in `C:\Program Files\CrowdSec\bouncers\cs-windows-firewall-bouncer\cs-windows-firewall-bouncer.yaml`.
+Add this key in the Remediation Component configuration file located in `C:\Program Files\CrowdSec\bouncers\cs-windows-firewall-bouncer\cs-windows-firewall-bouncer.yaml`.
 
 When done, you will need to enable the `cs-windows-firewall-bouncer` service and start it.

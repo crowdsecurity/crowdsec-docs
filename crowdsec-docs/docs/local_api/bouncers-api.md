@@ -22,7 +22,7 @@ This guide will assume that you already have Security Engine running locally.
 ## Authentication
 
 :::info
-Remediation Components may be reffered to as "bouncers" within cscli commands.
+Remediation Components will be referred to as "bouncers" within cscli commands.
 :::
 
 Existing tokens can be viewed with `cscli bouncers list` :
