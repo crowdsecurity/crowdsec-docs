@@ -3,7 +3,7 @@ id: docker
 title: Docker
 ---
 
-This module allows `CrowdSec` to acquire logs from running containers, in one-shot and streaming mode.
+This module allows the `Security Engine` to acquire logs from running containers, in one-shot and streaming mode.
 
 ## Configuration example
 

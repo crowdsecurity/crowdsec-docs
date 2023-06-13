@@ -3,7 +3,7 @@ id: kubernetes_audit
 title: Kubernetes Audit
 ---
 
-This module allows `CrowdSec` to expose an HTTP server that can be used by a Kubernetes cluster to send its [audit logs](https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/).
+This module allows the `Security Engine` to expose an HTTP server that can be used by a Kubernetes cluster to send its [audit logs](https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/).
 
 ## Configuration example
 
