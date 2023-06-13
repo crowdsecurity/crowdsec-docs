@@ -4,9 +4,9 @@ title: Remediation Components
 sidebar_position: 5
 ---
 
-## Publishing remediation compontent
+## Publishing remediation component
 
-We do welcome remediation compontents from the community, and will gladly publish them on the hub.
+We do welcome remediation components from the community, and will gladly publish them on the hub.
 
 ### Why ?
 
@@ -15,7 +15,7 @@ Sharing yours on the hub allows other users to find and use it. While increasing
 ### How ?
 
 
-To have it published on the hub, please simply [open a new issue on the hub](https://github.com/crowdsecurity/hub/issues/new), requesting "remediation compontent inclusion". The remediation compontent will then be reviewed by the team, and published directly on the hub, for everyone to find & use it!
+To have it published on the hub, please simply [open a new issue on the hub](https://github.com/crowdsecurity/hub/issues/new), requesting "remediation component inclusion". The remediation component will then be reviewed by the team, and published directly on the hub, for everyone to find & use it!
 
 :::info
 currently the hub only allows links to code bases hosted on github.com, we will support others in the future
@@ -23,9 +23,9 @@ currently the hub only allows links to code bases hosted on github.com, we will 
 
 The information that should be stated in your issue is:
 
-- Source repository of your remediation compontent (for example `https://github.com/crowdsecurity/cs-firewall-bouncer/`)
+- Source repository of your remediation component (for example `https://github.com/crowdsecurity/cs-firewall-bouncer/`)
 - Software licence used
-- Current status of the remediation compontent (stage: dev/unstable/stable)
+- Current status of the remediation component (stage: dev/unstable/stable)
 - Documentation (can be simply in the README.md):
   - must contain: installing, uninstalling
   - should contain: configuration documentation
@@ -37,7 +37,7 @@ Please take care of the following :
 - Ensure your repository has a decent README.md file: it will be displayed in the hub
 - Ensure your repository has _at least_ one release: this is what users will be looking for
 - (ideally) Have a "social preview image" on your repository: this will be displayed in the hub when available
-- (ideally) A Howto or link to a guide that provides a hands-on experience with the remediation compontent
+- (ideally) A Howto or link to a guide that provides a hands-on experience with the remediation component
 
 You can follow this template:
 
@@ -62,7 +62,7 @@ I would like to suggest the addition of the `XXXX` to the hub :
 
 ### Bonus
 
-You can also open a Pull Request to add the remediation compontent in the Hub.
+You can also open a Pull Request to add the remediation component in the Hub.
 To do this, you must edit the [`blockers/list.json`](https://raw.githubusercontent.com/crowdsecurity/hub/master/blockers/list.json) file and add the following object in the array:
 
 ```json
