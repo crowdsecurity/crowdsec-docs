@@ -10,7 +10,7 @@ We do welcome remediation components from the community, and will gladly publish
 
 ### Why ?
 
-Sharing yours on the hub allows other users to find and use it. While increasing your code's visibility, it also ensures a benevolent evaluation by the community and our team.
+Sharing on the hub allows other users to find and use it. While increasing your code's visibility, it also ensures a benevolent evaluation by the community and our team.
 
 ### How ?
 

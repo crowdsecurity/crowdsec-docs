@@ -15,7 +15,7 @@ The [Central API](https://crowdsecurity.github.io/api_doc/capi/) is the service 
 This information is *only* going to be pushed when a scenario is coming from the hub and is unmodified. Custom scenarios, tainted scenarios and manual decisions are *not* pushed unless enrolled into the console.
 :::
 
-When the Security Engine generates an alert, [unless you opt-out of it](/faq.md#how-to-disable-the-central-api), is going to push "signal meta-data". Those meta-data are :
+When the Security Engine generates an alert, [unless you opt-out of it](/faq.md#how-to-disable-the-central-api), it will push "signal meta-data". The meta-data are :
  - The name of the scenario that was triggered
  - The hash & version of the scenario that was triggered
  - The timestamp of the decision

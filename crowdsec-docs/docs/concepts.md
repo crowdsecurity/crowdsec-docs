@@ -18,7 +18,7 @@ The Security Engine runtime revolves around a few simple concepts:
  - This information (the signal, the associated decisions) is then sent to [Local API](/local_api/intro.md) and stored in the database
 
 As you might have guessed by now, the Security Engine itself does the detection part and stores those decisions.
-Then, [remediation components](/user_guides/bouncers_configuration.md) can "consume" those decisions (via the very same [Local API](/local_api/intro.md) and apply some actual remediation.
+Then, [remediation components](/user_guides/bouncers_configuration.md) can "consume" those decisions (via the very same [Local API](/local_api/intro.md) and apply the remediation.
 
 ## Crowd sourced aspect
 

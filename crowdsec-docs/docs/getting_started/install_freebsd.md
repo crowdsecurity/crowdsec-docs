@@ -13,7 +13,7 @@ By default, the command `pkg install` should use the quarterly releases (January
 You can check `/etc/pkg/FreeBSD.conf` and [change **quarterly** to **latest**](https://wiki.freebsd.org/Ports/QuarterlyBranch) if you feel comfortable upgrading your system.
 
 
-## Installing Security Engine
+## Install the Security Engine
 
 Before installing the package, you might want to check [the ports that security engine will use](/docs/next/configuration/network_management).
 

@@ -37,7 +37,7 @@ Please keep this key since you will not be able to retrieve it!
 This command must be run on the server where the local API is installed (or at least with a cscli that has valid credentials to communicate with the database used by the API). This is only necessary if you "manually" install a bouncer, packages and install scripts usually take care of this.
 :::
 
-If you were to create your own remediation components, look at [this section](/local_api/bouncers-api.md) of the local API documentation.
+If you wish to create your own remediation component, look at [this section](/local_api/bouncers-api.md) of the local API documentation.
 
 
 

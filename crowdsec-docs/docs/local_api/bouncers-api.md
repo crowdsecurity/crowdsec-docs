@@ -5,7 +5,7 @@ sidebar_position: 2
 ---
 
 :::info
-This page explains how to interact with the local API exposed by Security Engine.
+This page explains how to interact with the local API exposed by the `Security Engine`.
 
 It's meant to be useful for system administrators, or users that want to create their own remediation components.
 :::
@@ -17,7 +17,7 @@ This documentation only covers the API usage from the remediation component POV 
  - Authentication via API token (rather than JWT as Security Engine/cscli)
  - Reading decisions
 
-This guide will assume that you already have Security Engine running locally.
+This guide will assume that you already have a `Security Engine` running locally.
 
 ## Authentication
 

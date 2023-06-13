@@ -13,7 +13,7 @@ You may see CrowdSec referred to as "Security Engine" and Bouncers referred to a
 cscli decisions list
 ```
 
-## How to remove a decision on an IP
+## How to remove a decision on a IP
 
 ```bash
 cscli decisions delete -i x.x.x.x

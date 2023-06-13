@@ -7,15 +7,15 @@ title: Windows
 
 You can download the MSI file from the [latest github release](https://github.com/crowdsecurity/crowdsec/releases/latest).
 
-Before installing the package, you might want to check [the ports that security engine will use](/docs/next/configuration/network_management).
+Before installing the package, you might want to check [the ports that the security engine will use](/docs/next/configuration/network_management).
 
 The MSI file will perform some basic setup:
- - Installation of Security Engine
+ - Installation of the Security Engine
  - Download of the [windows collection](https://hub.crowdsec.net/author/crowdsecurity/collections/windows). This includes the basic parser for the windows event log, a scenario to detect login brute force and the MMDB files to perform geo-ip enrichment.
- - Registering your Security Engine installation with our Central API.
+ - Registering your Security Engine with our Central API.
  - Installation of the Windows Service for Security Engine. The service will start at boot time.
 
-Contrary to Linux, Security Engine does not yet support the automatic configuration at installation time. If you want to be able to detect something other than RDP or SMB bruteforce, then you will need to customize your acquisition configuration.
+Contrary to Linux, the Security Engine does not yet support the automatic configuration at installation time. If you want to be able to detect something other than RDP or SMB bruteforce, then you will need to customize your acquisition configuration.
 
 The default configuration will catch brute force attacks against RDP and SMB or any kind of remote authentication that uses Windows authentification.
 
@@ -33,8 +33,6 @@ These directories are created:
  - `C:\ProgramData\Crowdsec\hub`: Contains the hub data
 
 ### Acquisition Configuration
-
-As CrowdSec is not able to auto-detect running services on Windows, you will need to configure the acquisition manually.
 
 #### SQL Server logs
 
@@ -56,7 +54,7 @@ labels:
  type: eventlog
 ```
 
-Restart the CrowdSec service (using `net`, `sc` or the services app), and CrowdSec will now parse the SQL server authentification logs.
+Restart the CrowdSec service (using `net`, `sc` or the services app), and the `Security Engine` will now parse the SQL server authentification logs.
 
 :::info
 
@@ -85,9 +83,9 @@ labels:
 
 Please note that `use_time_machine` is very important: By default IIS will flush the logs to a file every minute or if there is 64kB of logs to write.
 
-This means CrowdSec will see a bunch of lines at the same time which can lead to false positive.
+This means the `Security Engine` will see a influx of lines at the same time which can lead to false positive.
 
-The `use_time_machine` parameter makes CrowdSec use the timestamp present in the line instead of the date of acquisition as the date of the event.
+The `use_time_machine` option enforces the use of the timestamp present in the line instead of the date of acquisition as the date of the event.
 
 If your IIS logs to the event logs, add the following to your acquisition configuration:
 ```yaml
@@ -100,7 +98,7 @@ event_level: information
 labels:
  type: iis
 ```
-Restart the CrowdSec service (using `net`, `sc` or the services app). CrowdSec will now parse your IIS access logs.
+Restart the CrowdSec service (using `net`, `sc` or the services app) and the `Security Engine` will now parse your IIS access logs.
 
 #### Windows Firewall
 
@@ -121,7 +119,7 @@ labels:
   type: windows-firewall
 ```
 
-Restart the CrowdSec service and CrowdSec will now parse the firewall logs.
+Restart the CrowdSec service and the `Security Engine` will now parse the firewall logs.
 
 :::info
 
@@ -133,7 +131,7 @@ Please note that we *DO NOT* recommand disabling stealth mode.
 
 #### Other services
 
-Almost all service types supported on Linux should also be supported on Windows, as long as CrowdSec does not expect logs in the syslog format (this means that MySQL or Apache will work, but not SSH).
+Almost all service types supported on Linux should also be supported on Windows, as long as the `Security Engine` does not expect logs in the syslog format.
 
 
 ## Windows Firewall Remediation Component Installation
@@ -142,7 +140,7 @@ Almost all service types supported on Linux should also be supported on Windows,
 You may see Remediation Components referred to as "bouncers" in the documentation and/or within cscli commands.
 :::
 
-Now that you've got Security Engine up and running, it's time to install a Remediation Component to actually block the IP addresses which are attacking your server.
+Now that you've got the `Security Engine` up and running, it's time to install a Remediation Component to actually block the IP addresses which are attacking your server.
 
 We will use the Windows Firewall Component, which manages some windows firewall rules to drop traffic from IP addresses blocked by the engine.
 

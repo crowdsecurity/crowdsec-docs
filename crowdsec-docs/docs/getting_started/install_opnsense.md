@@ -8,7 +8,7 @@ sidebar_position: 1
 
 OPNSense, the widely known firewall and routing software, is based on FreeBSD. The standard packages that we provide for FreeBSD (agent+lapi and bouncer) can also run on OPNsense, but need more integration with the rest of the system (for example, to feed the firewall tables).
 
-By installing the CrowdSec plugin, available through the OPNsense repositories, you can:
+By installing the `CrowdSec` plugin, available through the OPNsense repositories, you can:
 
  - use the OPNsense server as LAPI for other agents and bouncers
  - deploy an agent on OPNsense and scan its logs for attacks
@@ -18,7 +18,7 @@ By installing the CrowdSec plugin, available through the OPNsense repositories, 
 ### Plugin installation
 
 :::caution
-With OPNsense 22.1, if you are using a RAM filesystem for `/var` (you can verify `Settings > Miscellaneous > Disk/Memory Settings`) you need to disable it before proceeding, because Crowdsec keeps a small persistent database in `/var/db`. When the `/var` directory is in RAM, the database is re-created from scratch at each reboot. The ram disk was changed to `/var/log` for 22.7, which does not interfere with the database.
+With OPNsense 22.1, if you are using a RAM filesystem for `/var` (you can verify `Settings > Miscellaneous > Disk/Memory Settings`) you need to disable it before proceeding, because the `Security Engine` keeps a small persistent database in `/var/db`. When the `/var` directory is in RAM, the database is re-created from scratch at each reboot. The ram disk was changed to `/var/log` for 22.7, which does not interfere with the database.
 :::
 
 With OPNsense 22.1:

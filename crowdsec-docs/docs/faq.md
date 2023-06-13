@@ -13,7 +13,7 @@ You may see CrowdSec referred to as "Security Engine" and Bouncers referred to a
 
 CrowdSec Security Engine is a open-source security software. See the [overview](/intro.mdx).
 
-## I've installed Security Engine, it detects attacks but doesn't block anything ?!
+## I've installed the Security Engine, it detects attacks but doesn't block anything ?!
 
 Yes, the Security Engine is in charge of detecting attacks, and [Remediation Component](/bouncers/intro.md) are applying decisions.
 If you want to block the detected IPs, you should deploy a Remediation Component, such as the ones found on the [hub](https://hub.crowdsec.net/browse/#bouncers) !
@@ -47,24 +47,24 @@ The Security Engine and Remediation Components are provided under [MIT license](
 
 Our aim is to build a strong community that can share malevolent attackers IPs, for this we need to collect the decisions triggered locally by each engine.
 
-The signal sent by your Security Engine to the central API only contains only meta-data about the decision :
+The signal sent by your Security Engine to the central API and contains only meta-data about the decision :
 
  - Attacker IP
  - Scenario name
  - Time of start/end of attack
 
-Your logs are not sent to our central API, only meta-data about the decision will be.
+Your logs are **NOT** sent to our central API.
 
 
 When pulling block-lists from the platform, the following information is shared as well :
 
- - list of [upstream installed scenarios](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_metrics)
+ - list of [installed scenarios](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_metrics)
  - list of [remediation components & number of engines](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_metrics)
 
 ## What is the performance impact ?
 
 As the Security Engine only works on logs, it shouldn't impact your production.
-When it comes to [remediation components](/bouncers/intro.md), it should perform **one** request to the database when a **new** IP is discovered thus have minimal performance impact.
+When it comes to [remediation components](/bouncers/intro.md), please refer to their [documentation](/bouncers/intro.md).
 
 ## How fast is it ?
 
