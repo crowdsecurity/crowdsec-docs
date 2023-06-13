@@ -60,20 +60,20 @@ Each Remediation Component has its own configuration file, which is located in t
 They all have an `api_url` option to set the local API URL.
 
 
-## My bouncer doesn't start/work (common causes)
+## My Remediaton Component doesn't start/work (common causes)
 
 By default you will find a relevant log file for each bouncer in `/var/log/` folder (e.g. `/var/log/crowdsec-firewall-bouncer.log` for the firewall bouncer). Within this file you will find the error message that prevents the bouncer from starting.
 
 Here are some common causes and solutions:
 
-1. Bouncer cannot connect to the local API
+1. Cannot connect to the local API
   - **error** message might look like:
 ```
 level=error msg="auth-api: auth with api key failed return nil response, error: dial tcp 127.0.0.1:8080: connect: connection refused"
 ```
   - **solution** verify that the local API runs on the logged IP and port. If the logged IP and port is incorrect, you can edit the bouncer configuration file. If the logged IP and port is correct, verify that the local API is running.
 
-2. Bouncer cannot authenticate to the local API
+2. Cannot authenticate to the local API
   - **error** message might look like:
 ```
 time="19-04-2022 15:43:07" level=error msg="API error: access forbidden"
@@ -81,7 +81,7 @@ time="19-04-2022 15:43:07" level=error msg="API error: access forbidden"
   - **solution** regenerate the API key via [cscli bouncers](/docs/cscli/cscli_bouncers_add) and replace the old one in the bouncer configuration file. Do not attempt to use the same name for the API key as it will not work.
 
 
-## My bouncer is not showing any error messages within its log file but its failing to start/work
+## My Remediaton Component is not showing any error messages within its log file but its failing to start/work
 
 Most likely means the bouncer is failing to decode the configuration file provided. To find which line is causing the issue, you can use systemd/journalctl to get the error message:
 
@@ -93,11 +93,11 @@ sudo systemctl status <bouncer-service-name> -l
 sudo journalctl -u <bouncer-service-name> -l
 ```
 
-## I can't find the logs of my bouncer?
+## I can't find the logs of my Remediaton Component?
 
 By default you will find a relevant log file for each bouncer in `/var/log/` folder (e.g. `/var/log/crowdsec-firewall-bouncer.log` for the firewall bouncer). However, since this is a configurable option you can check the bouncer configuration file to find the exact location of the log file. 
 
-## I can't find the configuration file of my bouncer?
+## I can't find the configuration file of my Remediaton Component?
 
 Bouncers configuration files by default are located in:
 
