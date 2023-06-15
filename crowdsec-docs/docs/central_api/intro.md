@@ -29,7 +29,7 @@ The community blocklist matches the scenarios deployed on the Security Engine in
 
 ### Console metrics
 
-With the upcoming release of the [console](https://app.crowdsec.net) and for genreal health monitoring of the project, crowdsec reports the following data to the Central API :
+To give you more information in the [console](https://app.crowdsec.net) and for general health monitoring of the project, crowdsec reports the following data to the Central API :
  - name and versions of the deployed Remediation Components
  - name and versions of the Security Engines registered to the Local API
 
