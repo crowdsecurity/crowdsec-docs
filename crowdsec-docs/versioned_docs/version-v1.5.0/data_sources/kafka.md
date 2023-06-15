@@ -3,7 +3,7 @@ id: kafka
 title: Kafka
 ---
 
-This module allows `CrowdSec` to acquire logs from a kafka topic.
+This module allows the `Security Engine` to acquire logs from a kafka topic.
 
 ## Configuration example
 

@@ -3,19 +3,23 @@ title: Troubleshooting Guide
 id: troubleshooting
 ---
 
-## How to list banned IPs
+:::info
+You may see CrowdSec referred to as "Security Engine" and Bouncers referred to as "Remediation Components" within new documentation. This is to better reflect the role of each component within the CrowdSec ecosystem.
+:::
+
+## How to list current decisions
 
 ```bash
 cscli decisions list
 ```
 
-## How to unban an IP
+## How to remove a decision on a IP
 
 ```bash
 cscli decisions delete -i x.x.x.x
 ```
 
-## I want to prevent Crowdsec from banning a given IP
+## I want to prevent the Security Engine from banning a given IP
 
 Inspired from the existing [default whitelist for private IP addresses](https://hub.crowdsec.net/author/crowdsecurity/configurations/whitelists), you can craft your own (and drop it in `/etc/crowdsec/parsers/s01-parse/mywhitelist.yaml`) :
 
@@ -33,43 +37,43 @@ whitelist:
     - "172.16.0.0/12"
 ```
 
-## Where is the configuration related to the CrowdSec local API?
-> While you don't need to modify these file with a simple installation, you need to edit them when you want to use CrowdSec in a multi machine setup.
+## Where is the configuration related to the Security Engine local API?
+> While you don't need to modify these file with a simple installation, you need to edit them when you want to use Security Engine in a multi machine setup.
 
-- For the CrowdSec Local API Server listen URL:
+- For the Security Engine Local API Server listen URL:
 
 This information is stored in `/etc/crowdsec/config.yaml` in the `api.server.listen_uri` option.
 
 More information [here](/docs/configuration/crowdsec_configuration#listen_uri).
 
-- For the CrowdSec Agent client API:
+- For the CrowdSec Security Engine client API:
 
-The URL of the local API that the CrowdSec agent should communicate with is stored in `/etc/crowdsec/local_api_credentials.yaml`.
+The URL of the local API that the engine should communicate with is stored in `/etc/crowdsec/local_api_credentials.yaml`.
 
 You can edit the `url` option according to your local API URL.
 
 
-- For the bouncers:
+- For Remediation Components:
 
-Each bouncer has its own configuration file, which is located in the `/etc/crowdsec/bouncers/` folder.
+Each Remediation Component has its own configuration file, which is located in the `/etc/crowdsec/bouncers/` folder.
 
 They all have an `api_url` option to set the local API URL.
 
 
-## My bouncer doesn't start/work (common causes)
+## My Remediaton Component doesn't start/work (common causes)
 
 By default you will find a relevant log file for each bouncer in `/var/log/` folder (e.g. `/var/log/crowdsec-firewall-bouncer.log` for the firewall bouncer). Within this file you will find the error message that prevents the bouncer from starting.
 
 Here are some common causes and solutions:
 
-1. Bouncer cannot connect to the local API
+1. Cannot connect to the local API
   - **error** message might look like:
 ```
 level=error msg="auth-api: auth with api key failed return nil response, error: dial tcp 127.0.0.1:8080: connect: connection refused"
 ```
   - **solution** verify that the local API runs on the logged IP and port. If the logged IP and port is incorrect, you can edit the bouncer configuration file. If the logged IP and port is correct, verify that the local API is running.
 
-2. Bouncer cannot authenticate to the local API
+2. Cannot authenticate to the local API
   - **error** message might look like:
 ```
 time="19-04-2022 15:43:07" level=error msg="API error: access forbidden"
@@ -77,7 +81,7 @@ time="19-04-2022 15:43:07" level=error msg="API error: access forbidden"
   - **solution** regenerate the API key via [cscli bouncers](/docs/cscli/cscli_bouncers_add) and replace the old one in the bouncer configuration file. Do not attempt to use the same name for the API key as it will not work.
 
 
-## My bouncer is not showing any error messages within its log file but its failing to start/work
+## My Remediaton Component is not showing any error messages within its log file but its failing to start/work
 
 Most likely means the bouncer is failing to decode the configuration file provided. To find which line is causing the issue, you can use systemd/journalctl to get the error message:
 
@@ -89,11 +93,11 @@ sudo systemctl status <bouncer-service-name> -l
 sudo journalctl -u <bouncer-service-name> -l
 ```
 
-## I can't find the logs of my bouncer?
+## I can't find the logs of my Remediaton Component?
 
 By default you will find a relevant log file for each bouncer in `/var/log/` folder (e.g. `/var/log/crowdsec-firewall-bouncer.log` for the firewall bouncer). However, since this is a configurable option you can check the bouncer configuration file to find the exact location of the log file. 
 
-## I can't find the configuration file of my bouncer?
+## I can't find the configuration file of my Remediaton Component?
 
 Bouncers configuration files by default are located in:
 
