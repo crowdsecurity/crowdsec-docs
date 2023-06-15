@@ -7,7 +7,7 @@ sidebar_position: 1
 
 # Global overview
 
-The CrowdSec runtime revolves around a few simple concepts:
+The Security Engine runtime revolves around a few simple concepts:
 
  - It reads logs (defined via [datasources](/data_sources/introduction.md) configuration)
  - Those logs are parsed via [parsers](/parsers/introduction.mdx) and eventually [enriched](/parsers/enricher.md)
@@ -15,10 +15,10 @@ The CrowdSec runtime revolves around a few simple concepts:
  - When a scenario is "triggered", CrowdSec generates an [alert](/concepts.md#alerts) and eventually one or more associated [decisions](/concepts.md#decisions):
     - The alert is here mostly for traceability and will stay even after the decision expires
     - The decision, on the other hand, is short-lived and tells *what* action should be taken against the offending IP/range/user...
- - This information (the signal, the associated decisions) is then sent to crowdsec's [Local API](/local_api/intro.md) and stored in the database
+ - This information (the signal, the associated decisions) is then sent to [Local API](/local_api/intro.md) and stored in the database
 
-As you might have guessed by now, CrowdSec itself does the detection part and stores those decisions.
-Then, [bouncers](/user_guides/bouncers_configuration.md) can "consume" those decisions (via the very same [Local API](/local_api/intro.md) and apply some actual remediation.
+As you might have guessed by now, the Security Engine itself does the detection part and stores those decisions.
+Then, [remediation components](/user_guides/bouncers_configuration.md) can "consume" those decisions (via the very same [Local API](/local_api/intro.md) and apply the remediation.
 
 ## Crowd sourced aspect
 
@@ -32,12 +32,12 @@ Whenever the [Local API](/local_api/intro.md) receives an alert with associated 
 
 This is the only data that is sent to our API, and it is processed on our side to be able to redistribute the relevant blocklists to all the participants. You can check the [central API documentation](central_api/intro) in the references link to have a comprehensive view of what might be shared between your instance and our services.
 
-## Bouncers
+## Remediation Components
 
 [[References](/bouncers/intro.md)]
 
-Bouncers are standalone software pieces in charge of acting upon actors that triggered alerts.
-To do so, the bouncers query the Local API to know if there is an existing decision against a given IP, range, username, etc. [You can find a list of existing bouncers on the hub](https://hub.crowdsec.net/browse/#bouncers)
+Remediation Components are software packages in charge of acting upon decision's provided by the Security Engine.
+To do so, the component queries the Local API to know if there is an existing decision against a given IP, range, username, etc. [You can find a list of existing Remediation Components on the hub](https://hub.crowdsec.net/browse/#bouncers)
 
 
 # Configuration items

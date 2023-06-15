@@ -3,7 +3,7 @@ id: cloudwatch
 title: AWS Cloudwatch
 ---
 
-This module allows `CrowdSec` to acquire logs from AWS's cloudwatch service, in one-shot and streaming mode.
+This module allows the `Security Engine` to acquire logs from AWS's cloudwatch service, in one-shot and streaming mode.
 
 :::info
 

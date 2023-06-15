@@ -3,7 +3,7 @@ id: kinesis
 title: AWS Kinesis Stream
 ---
 
-This module allows `CrowdSec` to acquire logs from a Kinesis stream.
+This module allows the `Security Engine` to acquire logs from a Kinesis stream.
 
 ## Configuration example
 
@@ -27,7 +27,7 @@ labels:
 ```
 
 :::info
-If your stream is written to by a [Cloudwatch subscription filter](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html), you will need to pass the `from_subscription` parameter, or crowdsec won't be able to parse the content of the message.
+If your stream is written to by a [Cloudwatch subscription filter](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html), you will need to pass the `from_subscription` parameter, or the Security Engine won't be able to parse the content of the message.
 :::
 
 Look at the `configuration parameters` to view all supported options.

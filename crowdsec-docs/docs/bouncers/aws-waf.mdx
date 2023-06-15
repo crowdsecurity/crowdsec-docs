@@ -141,21 +141,6 @@ Default to `ban`, `captcha` and `count`.
 
 If set from the environment, provide a comma-separated list: `ban,captcha,count`.
 
-#### `cloudwatch_enabled`
-##### Environment variable: `BOUNCER_CLOUDWATCH_ENABLED`
-
-Whether or not AWS WAF will send metrics to CloudWatch for the rule group.
-
-#### `cloudwatch_metric_name`
-##### Environment variable: `BOUNCER_CLOUDWATCH_METRIC_NAME`
-
-Name of the cloudwatch metric. Default to the rule group name.
-
-#### `sample_requests`
-##### Environment variable: `BOUNCER_SAMPLE_REQUESTS`
-
-Whether or not to sample requests from the rule groups created by the bouncer.
-
 ---
 ### `waf_config`
 ##### Environment variable: `BOUNCER_WAF_CONFIG_`
@@ -267,3 +252,18 @@ If not set, default to 300 (this value is way higher than it needs to be, but th
 For reference, a simple match on a IP with no custom header will cost 1 WCU per IPSet created by the bouncer, or 5 WCU if you are getting the source IP from a header. 
 
 See [AWS WAF documentation](https://docs.aws.amazon.com/waf/latest/developerguide/how-aws-waf-works.html#aws-waf-capacity-units) for more information.
+
+#### `cloudwatch_enabled`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_CLOUDWATCH_ENABLED`
+
+Whether or not AWS WAF will send metrics to CloudWatch for the rule group.
+
+#### `cloudwatch_metric_name`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_CLOUDWATCH_METRIC_NAME`
+
+Name of the cloudwatch metric. Default to the rule group name.
+
+#### `sample_requests`
+##### Environment variable: `BOUNCER_WAF_CONFIG_X_SAMPLE_REQUESTS`
+
+Whether or not to sample requests from the rule groups created by the bouncer.

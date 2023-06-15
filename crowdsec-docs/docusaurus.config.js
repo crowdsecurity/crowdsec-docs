@@ -6,7 +6,7 @@ const path = require('path')
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'CrowdSec',
-  tagline: 'CrowdSec, the open-source & participative IPS.',
+  tagline: 'CrowdSec - Real-time & crowdsourced protection against aggressive IPs',
   url: 'https://docs.crowdsec.net',
   baseUrl: '/',
   onBrokenLinks: 'warn',
@@ -50,12 +50,6 @@ module.exports = {
           docId: 'cscli/cscli',
           position: 'left',
           label: 'Cscli',
-        },
-        {
-          type: 'doc',
-          docId: 'bouncers/intro',
-          position: 'left',
-          label: 'Bouncers',
         },
         {
            type: 'doc',
@@ -131,8 +125,8 @@ module.exports = {
               href: 'https://discourse.crowdsec.net/',
             },
             {
-              label: 'Gitter',
-              href: 'https://gitter.im/crowdsec-project/community',
+              label: 'Discord',
+              href: 'https://discord.gg/crowdsec',
             },
             {
               label: 'Twitter',

@@ -4,7 +4,7 @@ title: Hub
 sidebar_position: 3
 ---
 
-Parsers, Scenarios, Collections allow Crowdsec to detect and block malevolent behavior.
+Parsers, Scenarios, Collections allow the `Security Engine` to detect and block malevolent behavior.
 
 Supporting new services or improving the detection capabilities on existing software is a great way to contribute.
 

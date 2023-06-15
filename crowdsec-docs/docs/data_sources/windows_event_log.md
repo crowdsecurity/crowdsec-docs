@@ -3,7 +3,7 @@ id: windows_evt_log
 title: Windows Event Log
 ---
 
-This module allows `CrowdSec` to acquire logs from the Windows Event Log.
+This module allows the `Security Engine` to acquire logs from the Windows Event Log.
 
 
 ## Configuration example

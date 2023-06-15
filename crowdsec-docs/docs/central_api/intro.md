@@ -12,10 +12,10 @@ The [Central API](https://crowdsecurity.github.io/api_doc/capi/) is the service 
 
 
 :::info
-This information is *only* going to be pushed when a scenario is coming from the hub and is unmodified. Custom scenarios, tainted scenarios and manual decisions are *not* pushed
+This information is *only* going to be pushed when a scenario is coming from the hub and is unmodified. Custom scenarios, tainted scenarios and manual decisions are *not* pushed unless enrolled into the console.
 :::
 
-When CrowdSec blocks an attack, [unless you opt-out of it](/faq.md#how-to-disable-the-central-api), CrowdSec is going to push "signal meta-data". Those meta-data are :
+When the Security Engine generates an alert, [unless you opt-out of it](/faq.md#how-to-disable-the-central-api), it will push "signal meta-data". The meta-data are :
  - The name of the scenario that was triggered
  - The hash & version of the scenario that was triggered
  - The timestamp of the decision
@@ -25,13 +25,13 @@ When CrowdSec blocks an attack, [unless you opt-out of it](/faq.md#how-to-disabl
 
 ### Scenario list
 
-The community blocklist matches the scenarios deployed on the CrowdSec instance. For this reason, CrowdSec provides the list of enabled scenarios (from the hub only) during [the login process](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_watchers_login).
+The community blocklist matches the scenarios deployed on the Security Engine instance. For this reason, the Security Engine provides the list of enabled scenarios during [the login process](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_watchers_login).
 
 ### Console metrics
 
-With the upcoming release of the [console](https://app.crowdsec.net) and for genreal health monitoring of the project, crowdsec reports the following data to the Central API :
- - name and versions of the deployed bouncers
- - name and versions of the CrowdSec agents registered to the Local API
+To give you more information in the [console](https://app.crowdsec.net) and for general health monitoring of the project, crowdsec reports the following data to the Central API :
+ - name and versions of the deployed Remediation Components
+ - name and versions of the Security Engines registered to the Local API
 
 
 

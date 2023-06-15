@@ -5,18 +5,22 @@ id: faq
 
 # FREQUENTLY ASKED QUESTIONS
 
-## What is CrowdSec ?
+:::info
+You may see CrowdSec referred to as "Security Engine" and Bouncers referred to as "Remediation Components" within new documentation. This is to better reflect the role of each component within the CrowdSec ecosystem.
+:::
 
-CrowdSec is a security open-source software. See the [overview](/intro.mdx).
+## What is CrowdSec Security Engine ?
 
-## I've installed crowdsec, it detects attacks but doesn't block anything ?!
+CrowdSec Security Engine is a open-source security software. See the [overview](/intro.mdx).
 
-Yes, CrowdSec is in charge of detecting attacks, and [bouncers](/bouncers/intro.md) are applying decisions.
-If you want to block the detected IPs, you should deploy a bouncer, such as the ones found on the [hub](https://hub.crowdsec.net/browse/#bouncers) !
+## I've installed the Security Engine, it detects attacks but doesn't block anything ?!
+
+Yes, the Security Engine is in charge of detecting attacks, and [Remediation Component](/bouncers/intro.md) are applying decisions.
+If you want to block the detected IPs, you should deploy a Remediation Component, such as the ones found on the [hub](https://hub.crowdsec.net/browse/#bouncers) !
 
 ## How to know if my setup is working correctly ? Some of my logs are unparsed, is it normal ?
 
-Yes, crowdsec parsers only parse the logs that are relevant for scenarios.
+Yes, security engine parsers only parse the logs that are relevant for scenarios.
 Take a look at `cscli metrics` [and understand what do they mean](/observability/cscli.md) to know if your setup is correct.
 
 You can take an extra step and use [`cscli explain` to understand what log lines are parsed, and how.](/docs/next/cscli/cscli_explain) :
@@ -27,57 +31,57 @@ You can take an extra step and use [`cscli explain` to understand what log lines
 
 ## What language is it written in ?
 
-CrowdSec is written in [Golang](https://golang.org/).
+CrowdSec Security Engine is written in [Golang](https://golang.org/).
 
-## What resources are needed to run crowdsec ?
+## What resources are needed to run Security Engine ?
 
-Crowdsec agent itself is rather light, and in a small to medium setup should use less than 100Mb of memory.
+Security Engine itself is rather light, and in a small to medium setup should use less than 100Mb of memory.
 
-During intensive logs processing, CPU is going to be the most used resource, and memory usage shouldn't really grow.
+During intensive logs processing, CPU is going to be the most used resource, and memory should grow slightly.
 
-## What licence is CrowdSec released under ?
+## What licence is provided ?
 
-CrowdSec is under [MIT license](https://github.com/crowdsecurity/crowdsec/blob/master/LICENSE).
+The Security Engine and Remediation Components are provided under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
 
 ## Which information is sent to the APIs ?
 
-Our aim is to build a strong community that can share malevolent attackers IPs, for that we need to collect the bans triggered locally by each user.
+Our aim is to build a strong community that can share malevolent attackers IPs, for this we need to collect the decisions triggered locally by each engine.
 
-The signal sent by your CrowdSec to the central API only contains only meta-data about the attack :
+The signal sent by your Security Engine to the central API and contains only meta-data about the decision :
 
  - Attacker IP
  - Scenario name
  - Time of start/end of attack
 
-Your logs are not sent to our central API, only meta-data about blocked attacks will be.
+Your logs are **NOT** sent to our central API.
 
 
 When pulling block-lists from the platform, the following information is shared as well :
 
- - list of [upstream installed scenarios](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_metrics)
- - list of [bouncers & number of machines](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_metrics)
+ - list of [installed scenarios](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_metrics)
+ - list of [remediation components & number of engines](https://crowdsecurity.github.io/api_doc/capi/#/watchers/post_metrics)
 
 ## What is the performance impact ?
 
-As CrowdSec only works on logs, it shouldn't impact your production.
-When it comes to [bouncers](/bouncers/intro.md), it should perform **one** request to the database when a **new** IP is discovered thus have minimal performance impact.
+As the Security Engine only works on logs, it shouldn't impact your production.
+When it comes to [remediation components](/bouncers/intro.md), please refer to their [documentation](/bouncers/intro.md).
 
 ## How fast is it ?
 
-CrowdSec can easily handle several thousands of events per second on a rich pipeline (multiple parsers, geoip enrichment, scenarios and so on). Logs are a good fit for sharding by default, so it is definitely the way to go if you need to handle higher throughput.
+The Security Engine can easily handle several thousands of events per second on a rich pipeline (multiple parsers, geoip enrichment, scenarios and so on). Logs are a good fit for sharding by default, so it is definitely the way to go if you need to handle higher throughput.
 
-If you need help for large scale deployment, please get in touch with us on the [Discourse](https://discourse.crowdsec.net/), we love challenges ;)
+If you need help for large scale deployment, please get in touch with us on the [Form](https://contact.crowdsec.net/business-request), we love challenges ;)
 
-## What backend database does CrowdSec supports and how to switch ?
+## What backend database does the Security Engine support and how to switch ?
 
-CrowdSec versions (after v1) supports SQLite (default), MySQL and PostgreSQL databases.
+Security Engine versions (after v1) supports SQLite (default), MySQL and PostgreSQL databases.
 See [databases configuration](/local_api/database.md) for relevant configuration. Thanks to the [Local API](/local_api/intro.md), distributed architectures are resolved even with sqlite database.
 
-SQLite by default as it's suitable for standalone/single-machine setups.
+SQLite by default as it's suitable for standalone/single-engine setups.
 
 ## How to control granularity of actions ? (whitelists, simulation etc.)
 
-CrowdSec support both [whitelists](/whitelist/introduction.md) and [simulation](/scenarios/simulation.md) :
+The Security Engine supports both [whitelists](/whitelist/introduction.md) and [simulation](/scenarios/simulation.md) :
 
  - Whitelists allows you to "discard" events or overflows
  - Simulation allows you to simply cancel the decision that is going to be taken, but keep track of it
