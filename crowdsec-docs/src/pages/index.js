@@ -18,7 +18,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/getting_started/install_crowdsec">
+            to="/docs/next/getting_started/install_crowdsec">
             Install CrowdSec - 2min ⏱️
           </Link>
         </div>

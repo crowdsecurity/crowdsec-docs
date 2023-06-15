@@ -52,12 +52,6 @@ module.exports = {
           label: 'Cscli',
         },
         {
-          type: 'doc',
-          docId: 'bouncers/intro',
-          position: 'left',
-          label: 'Bouncers',
-        },
-        {
            type: 'doc',
            docId: 'cti_api/getting_started',
            position: 'left',
@@ -131,8 +125,8 @@ module.exports = {
               href: 'https://discourse.crowdsec.net/',
             },
             {
-              label: 'Gitter',
-              href: 'https://gitter.im/crowdsec-project/community',
+              label: 'Discord',
+              href: 'https://discord.gg/crowdsec',
             },
             {
               label: 'Twitter',

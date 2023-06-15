@@ -4,7 +4,7 @@ title: Journald
 ---
 
 
-This module allows `CrowdSec` to acquire logs from journalctl files in one-shot and streaming mode.
+This module allows the `Security Engine` to acquire logs from journalctl files in one-shot and streaming mode.
 
 ## Configuration example
 

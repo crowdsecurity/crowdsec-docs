@@ -4,7 +4,7 @@ title: File(s)
 ---
 
 
-This module allows `CrowdSec` to acquire logs from text files (in one-shot and streaming mode), and GZ files in one-shot mode.
+This module allows the `Security Engine` to acquire logs from text files (in one-shot and streaming mode), and GZ files in one-shot mode.
 
 ## Configuration example
 

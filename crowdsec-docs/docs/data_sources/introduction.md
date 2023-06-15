@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Datasources
 
-To be able to monitor applications, crowdsec needs to access logs.
+To be able to monitor applications, the Security Engine needs to access logs.
 DataSources are configured via the [acquisition](/configuration/crowdsec_configuration.md#acquisition_path) configuration, or specified via the command-line when performing cold logs analysis.
 
 
@@ -56,7 +56,7 @@ If the expression returns an error or an invalid type, the event will not be mod
 ### `labels`
 
 A map of labels to add to the event.
-The `type` label is mandatory, and used by crowdsec to choose which parser to use.
+The `type` label is mandatory, and used by the Security Engine to choose which parser to use.
 
 ## Acquisition configuration example
 
