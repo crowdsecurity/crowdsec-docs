@@ -10,7 +10,7 @@ const FeatureList = [
     link: "/docs/getting_started/install_crowdsec",
     description: (
       <>
-        CrowdSec is easy to install, deploy and use regardless of your knowledge.
+        Easy to install, deploy and use regardless of your knowledge.
         You don't need to be a security master to enjoy its full capabilities.
       </>
     ),
@@ -22,7 +22,7 @@ const FeatureList = [
     link: "/docs/user_guides/replay_mode",
     description: (
       <>
-        CrowdSec is able to process both live and old logs, which makes it false-positive resilient. 
+        Able to process both live and old logs, which makes it false-positive resilient. 
       </>
     ),
   },
@@ -33,7 +33,7 @@ const FeatureList = [
     Svg: require('../../static/img/icon-data.svg').default,
     description: (
       <>
-        CrowdSec is instrumented with Metabase & Prometheus to generate out-of-the-box dashboards and monitor activity across your assets.
+        Instrumented with Metabase & Prometheus to generate out-of-the-box dashboards and monitor activity across your assets.
       </>
     ),
   },
@@ -66,7 +66,7 @@ const FeatureList = [
     link: "/docs/faq#what-licence-is-crowdsec-released-under-",
     description: (
       <>
-        CrowdSec is as open source and free as it can be through an MIT license. No back doors. No shenanigans.
+        Open source and free as it can be through an MIT license. No back doors. No shenanigans.
       </>
     ),
   },

@@ -6,7 +6,7 @@ const path = require('path')
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'CrowdSec',
-  tagline: 'CrowdSec - Real-time & crowdsourced protection against aggressive IPs',
+  tagline: 'Real-time & crowdsourced protection against threats',
   url: 'https://docs.crowdsec.net',
   baseUrl: '/',
   onBrokenLinks: 'warn',
