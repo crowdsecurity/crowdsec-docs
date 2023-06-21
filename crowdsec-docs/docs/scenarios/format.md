@@ -31,15 +31,98 @@ labels:
 
 
 ```yaml
-type: leaky|trigger|counter|conditional
+type: leaky|trigger|counter|conditional|bayesian
 ```
 
-Defines the type of the bucket. Currently three types are supported :
+Defines the type of the bucket. Currently five types are supported :
 
  - `leaky` : a [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) that must be configured with a [capacity](#capacity) and a [leakspeed](#leakspeed)
  - `trigger` : a bucket that overflows as soon as an event is poured (it is like a leaky bucket is a capacity of 0)
  - `counter` : a bucket that only overflows every [duration](#duration). It is especially useful to count things.
  - `conditional`: a bucket that overflows when the expression given in `condition` returns true. Useful if you want to look back at previous events that were poured to the bucket (to detect impossible travel or more behavioral patterns for example). If the capacity is not set to `-1`, it can overflow like a standard `leaky` bucket.
+ - `bayesian` : a bucket that runs bayesian inference internally. The overflow will trigger when the posterior probability reaches the threshold. This is useful for instance if the behaivor is a combination of events which alone wouldn't be worthy of suspicious.
+
+
+#### Examples:
+
+---
+##### Leaky
+The bucket will leak one item every 10 seconds, and can hold up to 5 items before overflowing.
+
+```yaml
+type: leaky
+...
+leakspeed: "10s"
+capacity: 5
+...
+```
+
+![timeline](/img/drawio/leakspeed-schema.drawio.png)
+
+ - The bucket is created at `t+0s`
+ - _E0_ is poured at `t+2s`, bucket is at 1/5 capacity
+ - _E1_ is poured at `t+4s`, bucket is at 2/5 capacity
+ - At `t+10s` the bucket leaks one item, is now at 1/5 capacity
+ - _E2_ is poured at `t+11s`, bucket is at 2/5 capacity
+ - _E3_ and _E4_ are poured around `t+16s`, bucket is at 4/5 capacity
+ - At `t+20s` the bucket leaks one item, is now at 3/5 capacity
+ - _E5_ and _E6_ are poured at `t+23s`, bucket is at 5/5 capacity
+ - when _E7_ is poured at `t+24s`, the bucket is at 6/5 capacity and overflows
+---
+##### Trigger
+The bucket will instantly overflow whenever an ip lands on a 404.
+
+```yaml
+type: trigger
+...
+filter: "evt.Meta.service == 'http' && evt.Meta.http_status == '404'"
+groupby: evt.Meta.source_ip
+...
+```
+---
+##### Counter
+The bucket will overflow 20s after the first event is poured.
+
+```yaml
+type: counter
+...
+filter: "evt.Meta.service == 'http' && evt.Meta.http_status == '404'"
+duration: 20s
+...
+```
+![timeline](/img/drawio/counter-schema.drawio.png)
+
+ - The bucket is created at `t+0s`
+ - _E0_ is poured at `t+0s`, count is at 1
+ - _E1_ is poured at `t+4s`, count is at 2
+ - _E2_ is poured at `t+8s`, count is at 3
+ - _E3_ is poured at `t+12s`, count is at 4
+ - _E4_ is poured at `t+14s`, count is at 5
+ - At `t+20s` the bucket overflows with a count of 5
+
+---
+##### Conditional
+This bucket will overflow when the condition is true. In this example it will overflow if a user sucessfully authenticates after failing 5 times previously. For a more indepht look, check out [our blogpost](https://www.crowdsec.net/blog/detecting-successful-ssh-brute-force) on the topic.
+
+```yaml
+type: conditional
+...
+filter: "evt.Meta.service == 'ssh'"
+...
+condition: |
+  count(queue.Queue, #.Meta.log_type == 'ssh_failed-auth') > 5 and count(queue.Queue, #.Meta.log_type == 'ssh_success-auth') > 0
+...
+```
+![timeline](/img/drawio/conditional-schema.drawio.png)
+ - The bucket is created at `t+0s`
+ - _E0_ is poured at `t+0s`
+ - _E1_ is poured at `t+4s`
+ - _E2_ is poured at `t+6s`
+ - _E3_ is poured at `t+12s`
+ - _E4_ is poured at `t+14s`, `count(queue.Queue, #.Meta.log_type == 'ssh_failed-auth') > 5` now evaluates true
+ - _E5_ is poured at `t+18s`
+ - when _E6_ is poured at `t+24s`, `count(queue.Queue, #.Meta.log_type == 'ssh_success-auth') > 0` also evaluates true and the bucket overflows
+
 
 ---
 ### `name`
@@ -216,6 +299,7 @@ A duration that represent how often an event will be leaking from the bucket.
 
 Must be compatible with [golang ParseDuration format](https://golang.org/pkg/time/#ParseDuration).
 
+---
 ### `condition`
 ```yaml
 condition: |
@@ -230,32 +314,6 @@ Make the bucket overflow when it returns true.
 The expression is evaluated each time an event is poured to the bucket.
 
 
-#### Example
-
-The bucket will leak one item every 10 seconds, and can hold up to 5 items before overflowing.
-
-```yaml
-type: leaky
-...
-leakspeed: "10s"
-capacity: 5
-...
-```
-
-![timeline](/img/leakspeed-schema.png)
-
- - The bucket is created at `t+0s`
- - _E0_ is poured at `t+2s`, bucket is at 1/5 capacity
- - _E1_ is poured at `t+4s`, bucket is at 2/5 capacity
- - At `t+10s` the bucket leaks one item, is now at 1/5 capacity
- - _E2_ is poured at `t+11s`, bucket is at 2/5 capacity
- - _E3_ and _E4_ are poured around `t+16s`, bucket is at 4/5 capacity
- - At `t+20s` the bucket leaks one item, is now at 3/5 capacity
- - _E5_ and _E6_ are poured at `t+23s`, bucket is at 5/5 capacity
- - when _E7_ is poured at `t+24s`, the bucket is at 6/5 capacity and overflows
-
-
----
 ### `labels`
 
 ```yaml
