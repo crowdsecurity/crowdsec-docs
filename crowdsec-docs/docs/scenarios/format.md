@@ -102,7 +102,7 @@ duration: 20s
 
 ---
 ##### Conditional
-This bucket will overflow when the condition is true. In this example it will overflow if a user sucessfully authenticates after failing 5 times previously. For a more indepht look, check out [our blogpost](https://www.crowdsec.net/blog/detecting-successful-ssh-brute-force) on the topic.
+This bucket will overflow when the condition is true. In this example it will overflow if a user sucessfully authenticates after failing 5 times previously. For a more in depth look, check out [our blogpost](https://www.crowdsec.net/blog/detecting-successful-ssh-brute-force) on the topic.
 
 ```yaml
 type: conditional
@@ -122,7 +122,32 @@ condition: |
  - _E4_ is poured at `t+14s`, `count(queue.Queue, #.Meta.log_type == 'ssh_failed-auth') > 5` now evaluates true
  - _E5_ is poured at `t+18s`
  - when _E6_ is poured at `t+24s`, `count(queue.Queue, #.Meta.log_type == 'ssh_success-auth') > 0` also evaluates true and the bucket overflows
+---
+##### Bayesian
+The bayesian bucket is based on the concept of [bayesian inference](https://en.wikipedia.org/wiki/Bayesian_inference). The bucket overflows if the bayesian posterior is bigger than the threshold. To calculate the posterior, the bucket will run bayesian updates for all the conditions defined in the scenario.  
+The bucket starts with a predefined prior `P(Evil)`. Whenever an event is poured the bucket will iteratively calculate `P(Evil|State(Condition_i))` for all defined conditions. The resulting posterior value for `P(Evil)` is then compared against the threshold. If the threshold is exceeded the bucket overflows. If the threshold is not exceeded, the bucket is reset by setting `P(Evil)` back to the prior.  
+In case the condition is costly to evaluate, the `guillotine` can be set. This will stop the condition from being evaluated after the first time it evaluates to `true`. The bayesian update will assume that the condition is `true` for every iteration after that.
 
+```yaml
+type: bayesian
+...
+filter: "evt.Meta.log_type == 'http_access-log' || evt.Meta.log_type == 'ssh_access-log'"
+...
+bayesian_prior: 0.5
+bayesian_threshold: 0.8
+bayesian_conditions:
+- condition: any(queue.Queue, {.Meta.http_path == "/"})
+  prob_given_evil: 0.8
+  prob_given_benign: 0.2
+- condition: evt.Meta.ssh_user == "admin"
+  prob_given_evil: 0.9
+  prob_given_benign: 0.5
+  guillotine : true
+...
+leakspeed: 30s
+capacity: -1
+...
+```
 
 ---
 ### `name`
@@ -313,6 +338,50 @@ Only applies to `conditional` buckets.
 Make the bucket overflow when it returns true.
 The expression is evaluated each time an event is poured to the bucket.
 
+---
+### `bayesian_prior`
+```yaml
+bayesian_prior: 0.03
+```
+
+Only applies to `bayesian` buckets.
+
+This is the initial probability that a given IP falls under the behavior you want to catch. A good first estimate for this parameter is `#evil_ips/#total_ips`, where evil are all the IPs you want to catch with this scenario.
+
+---
+### `bayesian_threshold`
+```yaml
+bayesian_threshold: 0.5
+```
+
+Only applies to `bayesian` buckets.
+
+This defines the threshold you want the posterior to exceed to trigger the bucket. This parameter can be finetuned according to individual preference. A higher threshold will decrease the number of false positives at the cost of missing some true positives while decreasing the threshold will catch more true positives at the cost of more false positives. If the term precision vs recall tradeoff is familiar to the reader, this is an application of this principle.
+
+---
+### `bayesian_conditions`
+```yaml
+bayesian_conditions:
+- condition: any(queue.Queue, {.Meta.http_path == "/"})
+  prob_given_evil: 0.8
+  prob_given_benign: 0.2
+- condition: evt.Meta.ssh_user == "admin"
+  prob_given_evil: 0.9
+  prob_given_benign: 0.5
+  guillotine : true
+```
+
+Only applies to `bayesian` buckets.
+
+Bayesian conditions are the heart of the bayesian bucket. Every `condition` represents an event we want to do a bayesian update for. Every time the inference is ran we evaluate the `condition`. The two parameters `prob_given_evil` and `prob_given_benign` are called likelihoods and are used during the update. They represent the two conditional probabilities `P(condition == true | IP is evil)` and `P(condition == true | IP is benign)` respectively.  
+
+A good estimate for the likelihoods is to look at all events in your logs and use the ratios `#evil_ips_satisfying_condition/#evil_ips` resp. `#benign_ips_satisfying_condition/#benign_ips`. If the results of the scenario are imprecise one should either add more conditions or play around with the threshold. It is not recommended to individually adjust the likelihoods as this leads to overfitting.  
+
+If the evalutaion of the `condition` is particularly expensive, one can add a `guillotine`. This will prevent the condition from being evaluated after the first time it evaluates to `true`. The bayesian updates will from then on out only consider the case `condition == true`.  
+
+Note: `prob_given_evil` and `prob_given_benign` do not have to sum up to 1 as they describe different events.
+
+---
 
 ### `labels`
 
