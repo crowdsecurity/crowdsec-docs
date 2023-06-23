@@ -9,6 +9,26 @@ sidebar_position: 4
 CTI Helper allows to query Crowdsec's CTI API to enhance the engine capabilities.
 It requires [creating a CTI API Key in the console, as described here](/docs/next/cti_api/getting_started).
 
+The CTI API Key must be present in the `api.cti` section of the configuration file:
+
+```yaml
+api:
+  cti:
+    #The API key you got from the console
+    key: <API CTI KEY>
+    #How long should CTI lookups be kept in cache
+    cache_timeout: 60s
+    #How many items can we keep in cache
+    cache_size: 50
+    enabled: true
+    log_level: info|debug|trace
+  client:
+    insecure_skip_verify: false
+    ...
+  server:
+    listen_uri: 127.0.0.1:8080
+    ...
+```
 
 ### `CrowdsecCTI(string) SmokeItem`
 
