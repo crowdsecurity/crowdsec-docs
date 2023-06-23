@@ -372,10 +372,15 @@ module.exports = {
             type: "category",
             label: "Expr",
             items: [
-                "expr/helpers",
-                "expr/event",
+                "expr/intro",
+                "expr/strings_helpers",
+                "expr/ip_helpers",
+                "expr/json_helpers",
+                "expr/cti_helpers",
+                "expr/other_helpers",
                 "expr/alert",
                 "expr/decision",
+                "expr/event",
             ],
         },
         {
