@@ -149,6 +149,8 @@ capacity: -1
 ...
 ```
 
+Guidelines on setting the bayesian parameters can be found [below](#bayesian_conditions)
+
 ---
 ### `name`
 
