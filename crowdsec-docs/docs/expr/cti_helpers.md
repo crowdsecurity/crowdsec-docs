@@ -17,7 +17,7 @@ api:
     #The API key you got from the console
     key: <API CTI KEY>
     #How long should CTI lookups be kept in cache
-    cache_timeout: 60s
+    cache_timeout: 60m
     #How many items can we keep in cache
     cache_size: 50
     enabled: true
