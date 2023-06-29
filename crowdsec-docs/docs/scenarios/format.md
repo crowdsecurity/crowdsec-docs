@@ -237,6 +237,13 @@ capacity: -1
 duration: 10m
 labels:
   service: ssh
+  confidence: 3
+  spoofable: 0
+  classification:
+  - attack.T1110
+  label: "SSH Bruteforce"
+  behavior : "ssh:bruteforce"
+  remediation: true
 ```
 
 ---
@@ -389,29 +396,80 @@ Note: `prob_given_evil` and `prob_given_benign` do not have to sum up to 1 as th
 
 ```yaml
 labels:
- service: ssh
- type: bruteforce
- remediation: true
+  service: ssh
+  confidence: 3
+  spoofable: 0
+  classification:
+  - attack.T1110
+  label: "SSH Bruteforce"
+  behavior : "ssh:bruteforce"
+  remediation: true
 ```
 
-Labels is a list of `label: values` that provide context to an overflow.
-The labels are (currently) not stored in the database, nor they are sent to the API.
+Labels is a list of `label: values` that provide context to an overflow. 
+The `value` can be any type (string, list, object ...).
+Some labels are required, but you can any label can be added.
 
-##### Special labels :
+note: the labels are (currently) not stored in the database, nor they are sent to the API.
 
- - The **remediation** label, if set to `true` indicate the the originating IP should be banned.
+#### `remediation`
+>type: bool
 
-#### Example
+The **remediation** label, if set to `true` indicate if the originating IP should be banned.
 
-The IP address that triggered the overflow (`.Meta.source_ip`) will be banned.
+
+#### `classification`
+>type: list
+
+This is a list of classifications that we can attribute to a scenario in the form:
+
 ```yaml
-type: leaky
-...
-labels:
- service: ssh
- type: bruteforce
- remediation: true
+<classification_type>.<classification_id>
 ```
+
+Only `cve` and `attack`  (for Mitre ATT&CK) are supported.
+
+- For a mitre_attack, this is the format:
+```yaml
+attack.<technique_id>   # example: attack.T1595
+```
+
+Where technique_id  is a Mitre ATT&CK technique. You can find the list [here](https://attack.mitre.org/techniques/enterprise/).
+
+- For a CVE this is the format:
+
+```yaml
+cve.<cve_id>   # example: cve.CVE-2021-44228
+```
+
+#### `behavior`
+>type: string
+
+behavior is a string in the form:
+```yaml
+<service_or_os>:<attack_type>
+```
+note: when the service is available, prefer to use the service instead of the OS.
+
+The behavior should exist in this file: https://github.com/crowdsecurity/hub/blob/scenario_taxonomy/taxonomy/behaviors.json
+
+
+#### `label`
+>type: string (optional)
+
+label  is a human-readable name for the scenario.
+
+For example, for the `crowdsecurity/apache_log4j2_cve-2021-44228` scenario it is Log4j CVE-2021-44228 .
+
+#### `spoofable`
+>type: int [0-3]
+
+The chance between 0 and 3 that the attacker behind the attack can spoof its origin.
+
+#### `confidence`
+>type: int [0-3]
+
+The confidence note between 0 and 3 that the scenario will not trigger false positive.
 
 ---
 ### `blackhole`

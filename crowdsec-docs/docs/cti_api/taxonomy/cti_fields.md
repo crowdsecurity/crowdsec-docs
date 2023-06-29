@@ -186,7 +186,7 @@ Delta in days between first and last seen timestamps.
 ```
 
 A list of the attack categories for which the IP was reported.
-The possibles values of this field are listed [here](cti_api/taxonomy/behaviors.md).
+The possibles values of this field are listed [here](cti_api/taxonomy/behaviors.mdx).
 
 
 ### `name`
@@ -340,7 +340,7 @@ Human-friendly description of the classification.
 ```
 
 A more exhaustive list of the scenarios for which a given IP was reported.
-The possibles values of this field are listed [here](cti_api/taxonomy/scenarios.md).
+The possibles values of this field are listed [here](cti_api/taxonomy/scenarios.mdx).
 
 
 ### `name`
