@@ -787,12 +787,12 @@ The number of CTI API responses to cache.
 ##### `enabled`
 >bool
 
-Whether to enable the CTI API.
+Whether to enable the CTI integration.
 
 ##### `log_level`
 >string
 
-The log level for the CTI API.
+The log level for the CTI integration.
 
 #### `client`
 
