@@ -490,7 +490,7 @@ However, for a number of cases, you don't want this, as it might lead to excessi
 
 By setting `cache_size` to a positive integer, we can control the maximum in-memory cache size of the bucket, without changing its capacity and such. It is useful when buckets are likely to stay alive for a long time or ingest a lot of events to avoid storing a lot of events in memory.
 
-:::warning
+:::info
 Cache size will affect the number of events you receive within an alert. If you set a cache size to 5, you will only receive the last 6 events (Cache size including the overflow) in the alert. Any pipelines that rely on the alert object will be affected by this (Notification, Profiles, Postoverflow).
 :::
 
