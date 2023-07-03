@@ -490,6 +490,10 @@ However, for a number of cases, you don't want this, as it might lead to excessi
 
 By setting `cache_size` to a positive integer, we can control the maximum in-memory cache size of the bucket, without changing its capacity and such. It is useful when buckets are likely to stay alive for a long time or ingest a lot of events to avoid storing a lot of events in memory.
 
+:::warn
+Cache size will affect the number of events you recieve within the postoverflow object. Meaning you will see less events than expected via a notification or a postoverflow scenario.
+:::
+
 ---
 ### `overflow_filter`
 
