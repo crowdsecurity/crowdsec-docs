@@ -38,6 +38,13 @@ It often makes sense for a new parser or scenario to be added to an existing [co
 If your parsers and/or scenarios cover a new or specific service, having a dedicated collection for this service makes sense.
 In other cases, having a parser for `SpecificWebServer` access logs would justify a collection as it might also include [all the default http related scenarios](https://hub.crowdsec.net/author/crowdsecurity/collections/base-http-scenarios).
 
+
+### Scenarios
+
+When you create a scenario, you must fill some fields in the [`labels`](/docs/scenarios/format#labels), else the CI won't accept the contribution.
+Those `labels` are:
+ - 
+
 ## Preparing your contribution
 
 Before asking for a review of your PR, please ensure you have the following:
