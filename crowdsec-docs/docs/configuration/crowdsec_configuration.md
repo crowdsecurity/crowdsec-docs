@@ -239,6 +239,12 @@ db_config:
       cert: "<max_duration_since_last_push>"
       login_password: "<max_duration_since_last_push>"
 api:
+  cti:
+    key: "<api_cti_key>"
+    cache_timeout: "60m"
+    cache_size: 50
+    enabled: "(true|false)"
+    log_level: "(info|debug|trace)"
   client:
     insecure_skip_verify: "(true|false)"
     credentials_path: "<path_to_local_api_client_credential_file>"
@@ -708,6 +714,12 @@ The api section is used by both `cscli`, `crowdsec` and the local API.
 
 ```yaml
 api:
+  cti:
+    key: "<api_cti_key>"
+    cache_timeout: "60m"
+    cache_size: 50
+    enabled: "(true|false)"
+    log_level: "(info|debug|trace)"
   client:
     insecure_skip_verify: "(true|false)"
     credentials_path: "<path_to_local_api_client_credential_file>"
@@ -733,6 +745,54 @@ api:
       cache_expiration: "<cache_duration_for_revocation_check>"
       
 ```
+
+#### `cti`
+
+The cti subsection is used by `crowdsec` and `cscli` to query the CrowdSec CTI.
+
+```yaml
+cti:
+  key: "<api_cti_key>"
+  cache_timeout: "60m"
+  cache_size: 50
+  enabled: "(true|false)"
+  log_level: "(info|debug|trace)"
+```
+
+##### `key`
+>string
+
+The API key to use to query the CTI. This key is generated via [console](https://app.crowdsec.net/)
+
+##### `cache_timeout`
+>string
+
+The duration to cache the CTI API response.
+
+Supported units:
+
+ - `s`: seconds
+
+ - `m`: minutes
+
+ - `h`: hours
+
+ - `d`: days
+
+##### `cache_size`
+>int
+
+The number of CTI API responses to cache.
+
+##### `enabled`
+>bool
+
+Whether to enable the CTI integration.
+
+##### `log_level`
+>string
+
+The log level for the CTI integration.
 
 #### `client`
 
