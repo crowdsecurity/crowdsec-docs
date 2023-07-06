@@ -9,8 +9,8 @@ module.exports = {
   tagline: 'CrowdSec - Real-time & crowdsourced protection against aggressive IPs',
   url: 'https://docs.crowdsec.net',
   baseUrl: '/',
-  onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'throw',
   favicon: 'img/crowdsec_no_txt.png',
   organizationName: 'CrowdSec',
   projectName: 'crowdsec-docs',
@@ -52,12 +52,12 @@ module.exports = {
           label: 'Cscli',
         },
         {
-           type: 'doc',
-           docId: 'cti_api/getting_started',
-           position: 'left',
-           label: 'CTI Api',
+          type: 'doc',
+          docId: 'cti_api/getting_started',
+          position: 'left',
+          label: 'CTI Api',
         },
-        {to: 'https://crowdsec.net/blog/category/tutorial/', label: 'Tutorials', position: 'left'},
+        { to: 'https://crowdsec.net/blog/category/tutorial/', label: 'Tutorials', position: 'left' },
         {
           type: 'doc',
           docId: 'faq',
@@ -131,7 +131,7 @@ module.exports = {
             {
               label: 'Twitter',
               href: 'https://twitter.com/crowd_security',
-            }           
+            }
           ],
         },
         {
@@ -149,7 +149,7 @@ module.exports = {
               label: 'Blog',
               href: 'https://crowdsec.net/blog/',
             },
-            
+
           ],
         },
       ],
