@@ -465,11 +465,13 @@ For example, for the `crowdsecurity/apache_log4j2_cve-2021-44228` scenario it is
 >type: int [0-3]
 
 The chance between 0 and 3 that the attacker behind the attack can spoof its origin.
+0 means not spoofable and 3 means spoofable.
 
 #### `confidence`
 >type: int [0-3]
 
 The confidence note between 0 and 3 that the scenario will not trigger false positive.
+0 means no confidence and 3 means high confident.
 
 ---
 ### `blackhole`
