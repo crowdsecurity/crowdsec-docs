@@ -4,7 +4,7 @@ title: Prometheus
 sidebar_position: 4
 ---
 
-CrowdSec can expose a [prometheus](https://github.com/prometheus/client_golang) endpoint for collection (on `http://127.0.0.1:6060/metrics` by default).
+CrowdSec can expose a [prometheus](https://github.com/prometheus/client_golang) endpoint for collection (on `http://127.0.0.1:6060/metrics` by default). You can edit the listen_addr in [config.yaml](/configuration/crowdsec_configuration.md#prometheus) to allow an external Prometheus to scrape the metrics.
 
 The goal of this endpoint, besides the usual resources consumption monitoring, aims at offering a view of CrowdSec "applicative" behavior :
 
