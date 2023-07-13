@@ -159,6 +159,8 @@
                             type: "doc",
                             label: "Stormshield",
                             id: "bouncers/stormshield",
+                            label: "Cloudflare Workers",
+                            id: "bouncers/cloudflare-workers",
                         },
                         {
                             type: "link",

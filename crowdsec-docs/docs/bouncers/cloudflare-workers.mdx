@@ -1,0 +1,259 @@
+---
+id: cloudflare-workers
+title: CrowdSec Cloudflare Worker Bouncer
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+
+<p align="center">
+  <img src={useBaseUrl('/img/crowdsec_cloudfare.svg')} width="400" height="300" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/build-pass-green"></img>
+  <img src="https://img.shields.io/badge/tests-pass-green"></img>
+</p>
+
+<p align="center">
+&#x1F4DA; <a href="#installation">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+
+This remediation component deploys Cloudflare Worker in front of a Cloudflare Zone/Website, which checks if incoming IP addresses are present in a KV store and takes necessary remedial actions. It also periodically updates the KV store with CrowdSec LAPI's decisions.
+
+
+## Manual Installation
+
+### From source
+
+:warning: requires go >= 1.20
+
+```bash
+make build
+./crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> > cfg.yaml # auto-generate cloudflare config for provided space separated tokens
+vi cfg.yaml # review config and set `crowdsec_lapi_key`
+./crowdsec-cloudflare-bouncer -c cfg.yaml # run the bouncer
+```
+
+
+## Configuration
+
+
+```yaml
+crowdsec_lapi_url: http://localhost:8080/
+crowdsec_lapi_key: ${API_KEY}
+crowdsec_update_frequency: 10s
+include_scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word
+exclude_scenarios_containing: [] # ignore IPs banned for triggering scenarios containing either of provided word
+only_include_decisions_from: [] # only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+cloudflare_config:
+    accounts:
+        - id: <ACCOUNT_ID>
+          zones:
+            - zone_id: <ZONE_ID> # crowdflare.co.uk
+              actions: # Supported Actions [captcha, ban]
+                - captcha
+              default_action: captcha # Supported Actions [captcha, ban, none]
+              routes_to_protect:
+                - '*crowdflare.co.uk/*'
+              turnstile:
+                enabled: true
+                rotate_secret_key: true
+                rotate_secret_key_every: 168h0m0s 
+                mode: managed # Supported Modes "managed"|"invisible"|"non-interactive"
+          token: <CLOUDFLARE_ACCOUNT_TOKEN>
+          owner_email: owner@example.com
+
+log_level: info
+log_mode: "stdout"
+log_dir: "/var/log/"
+
+prometheus:
+    enabled: true
+    listen_addr: 127.0.0.1
+    listen_port: "2112"
+
+key_path: ""  # Used for TLS authentification with CrowdSec LAPI
+cert_path: "" # Used for TLS authentification with CrowdSec LAPI
+ca_cert_path: "" # Used for TLS authentification with CrowdSec LAPI
+```
+
+
+## Cloudflare Configuration
+
+**Background:** In Cloudflare, each user can have access to multiple accounts. Each account can own/access multiple zones. In this context a zone can be considered as a domain. Each domain registered with cloudflare gets a distinct `zone_id`.
+
+
+For obtaining the `token`:
+1. Sign in as a user who has access to the desired account.
+2. Go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. 
+
+The bouncer requires the follwing permissions to function.
+
+
+![image](/img/bouncer/cloudflare-worker/cloudflare_token_permissions.png)
+
+To automatically generate config, check the helper section below.
+
+## Helpers
+
+The binary has built in helper scripts to do various operations.
+
+### Auto config generator
+
+Generates config by discovering all the accounts and the zones associated with provided list of tokens. 
+
+Example Usage:
+
+```bash
+sudo crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>...  -o cfg.yaml
+cat cfg.yaml  > /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml
+```
+
+:::note
+This script only generates cloudflare related config. By default it refers to the config at `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml` for crowdsec configuration. 
+:::
+
+Using custom config:
+```bash
+sudo crowdsec-cloudflare-bouncer -c ./cfg.yaml -g <TOKEN_1>,<TOKEN_2>... 
+```
+
+### Cloudflare Cleanup
+
+This deletes all the Cloudflare infrastructure which was created by the bouncer.
+
+Example Usage:
+```bash
+sudo crowdsec-cloudflare-bouncer -d 
+```
+
+## How it works
+
+The bouncer does the following:
+
+1. Create a Cloudflare Worker and a Worker KV per configured account.
+2. Create a Worker Route(s) per configured zone. Any request matching the route would be handled by the worker.
+3. For every matching incoming request, the worker checks whether it's IP, Country and AS have a decision against. It checks for this in it's KV store. If found it performs the corresponding remediation.
+4. The bouncer also periodically updates the KV store with the latest decisions from CrowdSec. 
+
+## Configuration Reference
+
+### `crowdsec_lapi_url`
+
+The URL of CrowdSec LAPI. It should be accessible from the bouncer.
+
+### `crowdsec_lapi_key`
+
+It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
+```bash
+
+sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for human friendly output.
+
+```
+
+### `crowdsec_update_frequency`
+
+The bouncer will poll the CrowdSec every `update_frequency` interval.
+
+### `include_scenarios_containing`
+
+Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
+
+### `exclude_scenarios_containing`
+
+Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"]
+
+### `only_include_decisions_from`
+
+Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+
+### `cloudflare_config.accounts[].id`
+
+The ID of the Cloudflare account.
+
+### `cloudflare_config.accounts[].zones[].zone_id`
+
+The ID of the Cloudflare zone.
+
+### `cloudflare_config.accounts[].zones[].actions`
+
+Supported actions for the zone. Supported values ["captcha", "ban"]
+
+### `cloudflare_config.accounts[].zones[].default_action`
+
+Default action to take for the zone. Example value ["captcha", "ban", "none"]
+
+### `cloudflare_config.accounts[].zones[].routes_to_protect`
+
+List of routes to protect within the zone. Example value ["*example.com/*"]
+
+### `cloudflare_config.accounts[].zones[].turnstile.enabled`
+
+Enable or disable turnstile for the zone. Example value `true` or `false`
+
+### `cloudflare_config.accounts[].zones[].turnstile.rotate_secret_key`
+
+Rotate the secret key for turnstile. Example value `true` or `false`
+
+### `cloudflare_config.accounts[].zones[].turnstile.rotate_secret_key_every`
+
+Duration for rotating the secret key. Values should be in the format of `1h2m3s`. Example value `168h0m0s` for 7 days.
+
+### `cloudflare_config.accounts[].zones[].turnstile.mode`
+
+Mode for turnstile. Supported values ["managed", "invisible", "non-interactive"]. See [cloudflare-docs](https://developers.cloudflare.com/turnstile/reference/widget-types/) for more details.
+
+### `cloudflare_config.accounts[].zones[].token`
+
+Cloudflare account token.
+
+### `cloudflare_config.accounts[].zones[].owner_email`
+
+Email address of the account owner.
+
+### `log_level`
+
+Logging level. Either of `info`, `debug`, `error`, `warning`, `trace` .
+
+### `log_mode`
+
+Logging mode. Either of `stdout`, `file`.
+
+### `log_dir`
+
+Directory for log files.
+
+### `prometheus.enabled`
+
+Enable or disable Prometheus metrics.
+
+### `prometheus.listen_addr`
+
+Address to listen for Prometheus metrics. Example value `127.0.0.1`
+
+### `prometheus.listen_port`
+
+Port to listen for Prometheus metrics. Example value `2112`
+
+### `key_path`
+
+Path to the TLS private key file used for [TLS authentication with CrowdSec LAPI](/docs/local_api/tls_auth).
+
+### `cert_path`
+
+Path to the TLS certificate file used for[TLS authentication with CrowdSec LAPI](/docs/local_api/tls_auth).
+
+### `ca_cert_path`
+
+Path to the TLS CA certificate file used for [TLS authentication with CrowdSec LAPI](/docs/local_api/tls_auth).
+
+
+
+## Troubleshooting
+ - Metrics can be seen at http://localhost:2112/metrics
