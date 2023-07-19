@@ -1,0 +1,139 @@
+---
+id: fastly
+title: Fastly Bouncer
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+  <img src={useBaseUrl('/img/crowdsec_fastly.png')} width="280" height="300" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/build-pass-green"></img>
+  <img src="https://img.shields.io/badge/tests-pass-green"></img>
+</p>
+
+<p align="center">
+&#x1F4DA; <a href="#installation">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+
+# cs-fastly-bouncer
+
+A bouncer that syncs the decisions made by CrowdSec with Fastly's VCL. Manages multi account, multi service setup. Supports IP, Country and AS scoped decisions.
+To learn how to setup crowdsec to consume fastly logs see [this](/docs/next/user_guides/consuming_fastly_logs)
+
+
+# Installation:
+
+## Using pip
+
+Make sure you have python3.8+ installed. Now in a virtual environment run the following:
+
+```bash
+pip install crowdsec-fastly-bouncer
+crowdsec-fastly-bouncer -g <FASTLY_TOKEN_1>,<FASTLY_TOKEN_2> > config.yaml # generate config
+vim config.yaml # Set crowdsec LAPI key, url, recaptcha keys, logging etc
+crowdsec-fastly-bouncer -c config.yaml # Run it !
+```
+
+See how to obtain fastly account tokens [here](https://docs.fastly.com/en/guides/using-api-tokens). The tokens must have write access for the configured services.
+
+**Note:** If your bouncer is not installed on the same machine than LAPI, don't forget to set the `lapi_url` and `lapi_key` in the configuration file /etc/crowdsec/bouncers/crowdsec-fastly-bouncer.yaml
+
+**Note:** For captcha to work you must provide the `recaptcha_site_key` and `recaptcha_secret_key` for each service. Learn how [here](http://www.google.com/recaptcha/admin)
+
+
+## Using Docker 
+
+Make sure you have docker or podman installed. In this guide we will use docker, but podman would work as a drop in replacement too.
+
+### Initial Setup
+
+```bash
+docker run crowdsecurity/fastly-bouncer \
+ -g <FASTLY_TOKEN_1>,<FASTLY_TOKEN_2> > cfg.yaml # auto-generate fastly config for provided comma separated tokens 
+vi cfg.yaml # review config and set `crowdsec_lapi_key`
+touch fastly-cache.json
+```
+
+The `lapi_key` can be obtained by running the following:
+```bash
+sudo cscli -oraw bouncers add fastlybouncer # -oraw flag can discarded for human friendly output.
+```
+
+The `lapi_url` must be accessible from the container.
+
+### Run the bouncer
+
+```bash
+  docker run \
+  -v $PWD/cfg.yaml:/etc/crowdsec/bouncers/crowdsec-fastly-bouncer.yaml \
+  -v $PWD/fastly-cache.json:/var/lib/crowdsec/crowdsec-fastly-bouncer/cache/fastly-cache.json \
+  crowdsecurity/fastly-bouncer
+```
+
+## Activate the new configuration:
+
+After starting the bouncer, go in the fastly web UI. For each configured service review the version created by the bouncer. If everything looks good, you can activate the new configration !
+
+# Configuration:
+
+```yaml
+crowdsec_config: 
+  lapi_key: ${LAPI_KEY} 
+  lapi_url: "http://localhost:8080/"
+
+fastly_account_configs:
+  - account_token: # Obtain this from fastly
+    services: 
+      - id: # The id of the service
+        recaptcha_site_key: # Required for captcha support
+        recaptcha_secret_key: # Required for captcha support
+        max_items: 20000 # max_items refers to the capacity of IP/IP ranges to ban/captcha. 
+        activate: false # # Set to true, to activate the new config in production
+        reference_version: # version to clone/use
+        clone_reference_version: true # whether to clone the "reference_version".
+        captcha_cookie_expiry_duration: '1800'  # Duration to persist the cookie containing proof of solving captcha
+
+bouncer_version:
+update_frequency: 10 # Duration in seconds to poll the crowdsec API
+log_level: info # Valid choices are either of "debug","info","warning","error"
+log_mode: stdout # Valid choices are "file" or "stdout" or "stderr"
+log_file: /var/log/crowdsec-fastly-bouncer.log # Ignore if logging to stdout or stderr
+```
+
+# Helpers:
+
+The bouncer has few builtin helper features:
+
+## Auto config generator:
+
+**Usage:**
+
+```bash
+crowdsec-fastly-bouncer -c <PATH_TO_BASE_CONFIG>\
+    -g <FASTLY_TOKEN_1>,<FASTLY_TOKEN_2> 
+```
+
+This will print boilerplate config with sane defaults for the provided comma separted fastly tokens.
+Always review the generated config before proceeding further.
+
+Crowdsec config is copied from the config at `PATH_TO_BASE_CONFIG`. 
+
+##  Cleaner:
+
+**Usage:**
+
+```bash
+sudo crowdsec-fastly-bouncer -c <PATH_TO_BASE_CONFIG> -d
+```
+
+This deletes the fastly resources created by the bouncer.
+It only works if the configured service version is not locked.
+It is useful for quick iteration before activateing the new service.   

@@ -1,0 +1,115 @@
+---
+id: windows_firewall
+title: Windows Firewall Bouncer
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+<img src={useBaseUrl('/img/cs-windows-firewall-bouncer-logo.png')} alt="CrowdSec" title="CrowdSec" width="300" height="300" />
+</p>
+
+<p align="center">
+&#x1F4DA; <a href="#installation/">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+## Overview
+
+The Windows firewall bouncer interacts with the Windows Firewall to block IPs banned by CrowdSec.
+
+It will create multiple rules in the firewall (one rule will contain 1000 IPs) and will manage their lifecycle.
+
+The rules are created on startup and automatically deleted when the bouncer stops.
+
+## Installation
+
+:::warning
+
+The .NET 6 runtime is required for the bouncer to work !
+
+:::
+
+You can download either a MSI (containing only the bouncer) or a setup bundle (containing the bouncer and the .NET 6 runtime) from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
+
+You can also install the bouncer with [Chocolatey](https://chocolatey.org/) (this will automatically install the .NET runtime):
+
+```powershell
+choco install crowdsec-windows-firewall-bouncer
+```
+
+## Configuration
+
+The configuration is stored in `C:\Program Files\CrowdSec\bouncers\cs-windows-firewall-bouncer\cs-windows-firewall-bouncer.yaml`
+
+### Example configuration
+
+```yaml
+api_key: <your-api-key>
+api_url: http://127.0.0.1:8080
+log_level: info
+update_frequency: 10s
+log_media: file
+log_dir: C:\ProgramData\CrowdSec\log\
+fw_profiles:
+ - domain
+```
+
+---
+
+#### `api_key`
+
+API key to use for communication with LAPI.
+
+#### `api_url`
+
+URL of LAPI.
+
+#### `update_frequency`
+
+How often the bouncer will contact LAPI to update its content in seconds.
+
+Defaults to `10`.
+
+#### `log_media`
+
+Wether to log to file or to the console.
+
+Defaults to file when running as service and console when running in interactive mode.
+
+#### `log_dir`
+
+Location of the log file.
+
+Defaults to `C:\ProgramData\CrowdSec\log\`.
+
+#### `log_level`
+
+Log level.
+
+Can be one of:
+ - `trace`
+ - `debug`
+ - `info`
+ - `warn`
+ - `error`
+ - `fatal`
+
+Defaults to `info`.
+
+#### fw_profiles
+
+The firewall profile the rules will be associated with.
+
+The bouncer automatically select the current profile, but you can override this behaviour with this parameter.
+
+Allowed values are:
+ - `domain`
+ - `private`
+ - `public`
+
+
+

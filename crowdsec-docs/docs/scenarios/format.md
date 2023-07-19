@@ -31,15 +31,125 @@ labels:
 
 
 ```yaml
-type: leaky|trigger|counter|conditional
+type: leaky|trigger|counter|conditional|bayesian
 ```
 
-Defines the type of the bucket. Currently three types are supported :
+Defines the type of the bucket. Currently five types are supported :
 
  - `leaky` : a [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) that must be configured with a [capacity](#capacity) and a [leakspeed](#leakspeed)
  - `trigger` : a bucket that overflows as soon as an event is poured (it is like a leaky bucket is a capacity of 0)
  - `counter` : a bucket that only overflows every [duration](#duration). It is especially useful to count things.
  - `conditional`: a bucket that overflows when the expression given in `condition` returns true. Useful if you want to look back at previous events that were poured to the bucket (to detect impossible travel or more behavioral patterns for example). If the capacity is not set to `-1`, it can overflow like a standard `leaky` bucket.
+ - `bayesian` : a bucket that runs bayesian inference internally. The overflow will trigger when the posterior probability reaches the threshold. This is useful for instance if the behaivor is a combination of events which alone wouldn't be worthy of suspicious.
+
+
+#### Examples:
+
+---
+##### Leaky
+The bucket will leak one item every 10 seconds, and can hold up to 5 items before overflowing.
+
+```yaml
+type: leaky
+...
+leakspeed: "10s"
+capacity: 5
+...
+```
+
+![timeline](/img/drawio/leakspeed-schema.drawio.png)
+
+ - The bucket is created at `t+0s`
+ - _E0_ is poured at `t+2s`, bucket is at 1/5 capacity
+ - _E1_ is poured at `t+4s`, bucket is at 2/5 capacity
+ - At `t+10s` the bucket leaks one item, is now at 1/5 capacity
+ - _E2_ is poured at `t+11s`, bucket is at 2/5 capacity
+ - _E3_ and _E4_ are poured around `t+16s`, bucket is at 4/5 capacity
+ - At `t+20s` the bucket leaks one item, is now at 3/5 capacity
+ - _E5_ and _E6_ are poured at `t+23s`, bucket is at 5/5 capacity
+ - when _E7_ is poured at `t+24s`, the bucket is at 6/5 capacity and overflows
+---
+##### Trigger
+The bucket will instantly overflow whenever an ip lands on a 404.
+
+```yaml
+type: trigger
+...
+filter: "evt.Meta.service == 'http' && evt.Meta.http_status == '404'"
+groupby: evt.Meta.source_ip
+...
+```
+---
+##### Counter
+The bucket will overflow 20s after the first event is poured.
+
+```yaml
+type: counter
+...
+filter: "evt.Meta.service == 'http' && evt.Meta.http_status == '404'"
+duration: 20s
+...
+```
+![timeline](/img/drawio/counter-schema.drawio.png)
+
+ - The bucket is created at `t+0s`
+ - _E0_ is poured at `t+0s`, count is at 1
+ - _E1_ is poured at `t+4s`, count is at 2
+ - _E2_ is poured at `t+8s`, count is at 3
+ - _E3_ is poured at `t+12s`, count is at 4
+ - _E4_ is poured at `t+14s`, count is at 5
+ - At `t+20s` the bucket overflows with a count of 5
+
+---
+##### Conditional
+This bucket will overflow when the condition is true. In this example it will overflow if a user sucessfully authenticates after failing 5 times previously. For a more in depth look, check out [our blogpost](https://www.crowdsec.net/blog/detecting-successful-ssh-brute-force) on the topic.
+
+```yaml
+type: conditional
+...
+filter: "evt.Meta.service == 'ssh'"
+...
+condition: |
+  count(queue.Queue, #.Meta.log_type == 'ssh_failed-auth') > 5 and count(queue.Queue, #.Meta.log_type == 'ssh_success-auth') > 0
+...
+```
+![timeline](/img/drawio/conditional-schema.drawio.png)
+ - The bucket is created at `t+0s`
+ - _E0_ is poured at `t+0s`
+ - _E1_ is poured at `t+4s`
+ - _E2_ is poured at `t+6s`
+ - _E3_ is poured at `t+12s`
+ - _E4_ is poured at `t+14s`, `count(queue.Queue, #.Meta.log_type == 'ssh_failed-auth') > 5` now evaluates true
+ - _E5_ is poured at `t+18s`
+ - when _E6_ is poured at `t+24s`, `count(queue.Queue, #.Meta.log_type == 'ssh_success-auth') > 0` also evaluates true and the bucket overflows
+---
+##### Bayesian
+The bayesian bucket is based on the concept of [bayesian inference](https://en.wikipedia.org/wiki/Bayesian_inference). The bucket overflows if the bayesian posterior is bigger than the threshold. To calculate the posterior, the bucket will run bayesian updates for all the conditions defined in the scenario.  
+The bucket starts with a predefined prior `P(Evil)`. Whenever an event is poured the bucket will iteratively calculate `P(Evil|State(Condition_i))` for all defined conditions. The resulting posterior value for `P(Evil)` is then compared against the threshold. If the threshold is exceeded the bucket overflows. If the threshold is not exceeded, the bucket is reset by setting `P(Evil)` back to the prior.  
+In case the condition is costly to evaluate, the `guillotine` can be set. This will stop the condition from being evaluated after the first time it evaluates to `true`. The bayesian update will assume that the condition is `true` for every iteration after that.
+
+```yaml
+type: bayesian
+...
+filter: "evt.Meta.log_type == 'http_access-log' || evt.Meta.log_type == 'ssh_access-log'"
+...
+bayesian_prior: 0.5
+bayesian_threshold: 0.8
+bayesian_conditions:
+- condition: any(queue.Queue, {.Meta.http_path == "/"})
+  prob_given_evil: 0.8
+  prob_given_benign: 0.2
+- condition: evt.Meta.ssh_user == "admin"
+  prob_given_evil: 0.9
+  prob_given_benign: 0.5
+  guillotine : true
+...
+leakspeed: 30s
+capacity: -1
+...
+```
+
+Guidelines on setting the bayesian parameters can be found [below](#bayesian_conditions)
 
 ---
 ### `name`
@@ -216,6 +326,7 @@ A duration that represent how often an event will be leaking from the bucket.
 
 Must be compatible with [golang ParseDuration format](https://golang.org/pkg/time/#ParseDuration).
 
+---
 ### `condition`
 ```yaml
 condition: |
@@ -229,33 +340,51 @@ Only applies to `conditional` buckets.
 Make the bucket overflow when it returns true.
 The expression is evaluated each time an event is poured to the bucket.
 
-
-#### Example
-
-The bucket will leak one item every 10 seconds, and can hold up to 5 items before overflowing.
-
+---
+### `bayesian_prior`
 ```yaml
-type: leaky
-...
-leakspeed: "10s"
-capacity: 5
-...
+bayesian_prior: 0.03
 ```
 
-![timeline](/img/leakspeed-schema.png)
+Only applies to `bayesian` buckets.
 
- - The bucket is created at `t+0s`
- - _E0_ is poured at `t+2s`, bucket is at 1/5 capacity
- - _E1_ is poured at `t+4s`, bucket is at 2/5 capacity
- - At `t+10s` the bucket leaks one item, is now at 1/5 capacity
- - _E2_ is poured at `t+11s`, bucket is at 2/5 capacity
- - _E3_ and _E4_ are poured around `t+16s`, bucket is at 4/5 capacity
- - At `t+20s` the bucket leaks one item, is now at 3/5 capacity
- - _E5_ and _E6_ are poured at `t+23s`, bucket is at 5/5 capacity
- - when _E7_ is poured at `t+24s`, the bucket is at 6/5 capacity and overflows
-
+This is the initial probability that a given IP falls under the behavior you want to catch. A good first estimate for this parameter is `#evil_ips/#total_ips`, where evil are all the IPs you want to catch with this scenario.
 
 ---
+### `bayesian_threshold`
+```yaml
+bayesian_threshold: 0.5
+```
+
+Only applies to `bayesian` buckets.
+
+This defines the threshold you want the posterior to exceed to trigger the bucket. This parameter can be finetuned according to individual preference. A higher threshold will decrease the number of false positives at the cost of missing some true positives while decreasing the threshold will catch more true positives at the cost of more false positives. If the term precision vs recall tradeoff is familiar to the reader, this is an application of this principle.
+
+---
+### `bayesian_conditions`
+```yaml
+bayesian_conditions:
+- condition: any(queue.Queue, {.Meta.http_path == "/"})
+  prob_given_evil: 0.8
+  prob_given_benign: 0.2
+- condition: evt.Meta.ssh_user == "admin"
+  prob_given_evil: 0.9
+  prob_given_benign: 0.5
+  guillotine : true
+```
+
+Only applies to `bayesian` buckets.
+
+Bayesian conditions are the heart of the bayesian bucket. Every `condition` represents an event we want to do a bayesian update for. Every time the inference is ran we evaluate the `condition`. The two parameters `prob_given_evil` and `prob_given_benign` are called likelihoods and are used during the update. They represent the two conditional probabilities `P(condition == true | IP is evil)` and `P(condition == true | IP is benign)` respectively.  
+
+A good estimate for the likelihoods is to look at all events in your logs and use the ratios `#evil_ips_satisfying_condition/#evil_ips` resp. `#benign_ips_satisfying_condition/#benign_ips`. If the results of the scenario are imprecise one should either add more conditions or play around with the threshold. It is not recommended to individually adjust the likelihoods as this leads to overfitting.  
+
+If the evalutaion of the `condition` is particularly expensive, one can add a `guillotine`. This will prevent the condition from being evaluated after the first time it evaluates to `true`. The bayesian updates will from then on out only consider the case `condition == true`.  
+
+Note: `prob_given_evil` and `prob_given_benign` do not have to sum up to 1 as they describe different events.
+
+---
+
 ### `labels`
 
 ```yaml
@@ -360,6 +489,10 @@ By default, a bucket holds [capacity](format#capacity) events "in memory".
 However, for a number of cases, you don't want this, as it might lead to excessive memory consumption.
 
 By setting `cache_size` to a positive integer, we can control the maximum in-memory cache size of the bucket, without changing its capacity and such. It is useful when buckets are likely to stay alive for a long time or ingest a lot of events to avoid storing a lot of events in memory.
+
+:::info
+Cache size will affect the number of events you receive within an alert. If you set a cache size to 5, you will only receive the last 6 events (Cache size including the overflow) in the alert. Any pipelines that rely on the alert object will be affected (Notification, Profiles, Postoverflow).
+:::
 
 ---
 ### `overflow_filter`

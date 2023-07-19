@@ -371,11 +371,19 @@ module.exports = {
         {
             type: "category",
             label: "Expr",
+            link: {
+                type: "doc",
+                id: "expr/intro",
+            },
             items: [
-                "expr/helpers",
-                "expr/event",
+                "expr/strings_helpers",
+                "expr/ip_helpers",
+                "expr/json_helpers",
+                "expr/cti_helpers",
+                "expr/other_helpers",
                 "expr/alert",
                 "expr/decision",
+                "expr/event",
             ],
         },
         {
