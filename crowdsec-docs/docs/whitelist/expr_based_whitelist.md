@@ -43,7 +43,9 @@ For example:
 ```bash
 sudo cscli explain --log '5.5.8.5 - - [04/Jan/2020:07:25:02 +0000] "GET /.well-known/acme-challenge/FMuukC2JOJ5HKmLBujjE_BkDo HTTP/1.1" 404 522 "-" "MySecretUserAgent"' --type nginx -v
 ```
-You get the followig output:
+
+<details>
+  <summary>Output: </summary>
 
 ```bash
 line: 5.5.8.5 - - [04/Jan/2020:07:25:02 +0000] "GET /.well-known/acme-challenge/FMuukC2JOJ5HKmLBujjE_BkDo HTTP/1.1" 404 522 "-" "MySecretUserAgent"
@@ -122,5 +124,6 @@ line: 5.5.8.5 - - [04/Jan/2020:07:25:02 +0000] "GET /.well-known/acme-challenge/
 		├ 🟢 crowdsecurity/http-crawl-non_statics
 		└ 🟢 crowdsecurity/http-probing
 ```
-
 You can see what data can be used from `s01-parse` stage.
+</details>
+
