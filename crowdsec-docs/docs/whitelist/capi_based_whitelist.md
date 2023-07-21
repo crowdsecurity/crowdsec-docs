@@ -29,4 +29,9 @@ ips:
  - 2.3.4.5
 cidrs:
  - 1.2.3.0/24
-`
+```
+
+```bash title="Reload CrowdSec"
+sudo systemctl reload crowdsec
+```
+
