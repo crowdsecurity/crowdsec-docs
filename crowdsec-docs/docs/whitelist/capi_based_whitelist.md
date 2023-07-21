@@ -15,9 +15,9 @@ api:
 
 We recommend to use the following files for each OS:
 
-- Linux `/etc/crowdsec/capi_whitelists.yaml` 
-- Freebsd `/usr/local/etc/crowdsec/capi_whitelists.yaml` 
-- Windows `c:/programdata/crowdsec/config/capi_whitelists.yaml`
+- Linux `/etc/crowdsec/capi-whitelists.yaml` 
+- Freebsd `/usr/local/etc/crowdsec/capi-whitelists.yaml` 
+- Windows `c:/programdata/crowdsec/config/capi-whitelists.yaml`
 
 *These files **DO NOT** exist and you **MUST** create them manually and configure the above settings*
 
