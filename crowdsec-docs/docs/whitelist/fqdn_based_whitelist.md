@@ -25,7 +25,7 @@ whitelist:
 ```
 Save and reload CrowdSec before to test
 
-```bash
+```bash title="Reload CrowdSec"
 sudo systemctl reload crowdsec
 ```
 

@@ -16,9 +16,7 @@ whitelist:
    - evt.Parsed.http_user_agent == 'MySecretUserAgent'
 ```
 
-Again, let's restart CrowdSec !
-
-```bash
+```bash title="Reload CrowdSec"
 sudo systemctl reload crowdsec
 ```
 

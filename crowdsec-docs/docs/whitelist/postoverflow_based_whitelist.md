@@ -33,7 +33,9 @@ whitelist:
     - evt.Enriched.reverse_dns endsWith '.asnieres.rev.numericable.fr.'
 ```
 
-After reloading CrowdSec, and launching (again!) nikto :
+```bash title="Reload CrowdSec"
+sudo systemctl reload crowdsec
+```
 
 ```bash
 nikto -host myfqdn.com
