@@ -1,6 +1,6 @@
 ---
 id: create_ip
-title: IP Address
+title: IP / CIDR
 ---
 
 IP whitelists are best suited at `Parser whitelists` level because once the log line has been parsed we already know the IP address and can save resources by discarding it earlier in the pipeline.
@@ -14,6 +14,8 @@ whitelist:
   reason: "my ip ranges"
   ip:
     - "80.x.x.x"
+  cidr:
+    - "80.x.x.x/24"
 ```
 
 ```bash title="Reload CrowdSec"
