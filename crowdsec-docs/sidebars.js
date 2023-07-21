@@ -259,7 +259,20 @@ module.exports = {
                 type: "doc",
                 id: "whitelist/intro",
             },
-            items: ["whitelist/format", "whitelist/create"],
+            items: [
+		    "whitelist/format",
+		    {
+			type: "category",
+			label: "Examples",
+			items: [
+				"whitelist/create_ip",
+				"whitelist/create_expr",
+				"whitelist/create_postoverflow",
+				"whitelist/create_fqdn",
+				"whitelist/create_capi",
+		    	],
+		    }
+	    ],
         },
         {
             type: "category",
