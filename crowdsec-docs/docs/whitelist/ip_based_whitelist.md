@@ -3,7 +3,7 @@ id: create_ip
 title: IP Address
 ---
 
-IP whitelists are best suited at `Parser whitelists` level as when the log line has been parsed we already know what the IP address is and can save resources by discarding it early in the pipeline.
+IP whitelists are best suited at `Parser whitelists` level because once the log line has been parsed we already know the IP address and can save resources by discarding it earlier in the pipeline.
 
 We will create the file `mywhitelist.yaml` please see [introduction](/whitelist/introduction.md) for your OS specific paths.
 
