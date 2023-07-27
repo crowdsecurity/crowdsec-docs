@@ -38,4 +38,4 @@ sudo cscli console enable console_management
 sudo systemctl restart crowdsec
 ```
 
-The console_management is now enable and our CrowdSec Security Engine is ready to receive orders from the CrowdSec Console.
+The console_management is now enabled and our CrowdSec Security Engine is ready to receive orders from the CrowdSec Console.
