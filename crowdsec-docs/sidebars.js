@@ -743,6 +743,7 @@
                 "cti_api/integration_splunk_siem",
                 "cti_api/integration_splunk_soar",
                 "cti_api/integration_thehive",
+                "cti_api/integration_msticpy",
             ],
         },
     ],
