@@ -534,9 +534,9 @@ data:
 
 `data` allows to specify an external source of data.
 
-This section is only relevant when `cscli` is used to install scenario from hub, as it will download the `source_url` and store it to `dest_file`. 
+The `source_url` section is only relevant when `cscli` is used to install scenario from hub, as it will download the `source_url` and store it in the `dest_file` within the data directory. 
 
-When the scenario is not installed from the hub, CrowdSec won't download the URL, but the file must exist for the scenario to be loaded correctly.
+When the scenario is not installed from the hub, CrowdSec will not download the `source_url`, however, if the file exists at `dest_file` within the data directory it will still be loaded into memory.
 
 The `type` is mandatory if you want to evaluate the data in the file, and should be `regex` for valid (re2) regular expression per line or `string` for string per line.
 
