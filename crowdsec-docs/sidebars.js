@@ -395,6 +395,7 @@
             },
             items: [
                 "expr/strings_helpers",
+                "expr/file_helpers",
                 "expr/ip_helpers",
                 "expr/json_helpers",
                 "expr/cti_helpers",

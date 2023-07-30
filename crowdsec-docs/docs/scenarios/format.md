@@ -525,6 +525,13 @@ data:
     [type: (regexp|string)]    
 ```
 
+:::info
+`dest_file` is relative to the data directory set within `config.yaml` default per OS:
+- Linux: `/var/lib/crowdsec/data`
+- Freebsd: `/var/db/crowdsec/data`
+- Windows: `C:\programdata\crowdsec\data`
+:::
+
 `data` allows to specify an external source of data.
 
 This section is only relevant when `cscli` is used to install scenario from hub, as it will download the `source_url` and store it to `dest_file`. 
