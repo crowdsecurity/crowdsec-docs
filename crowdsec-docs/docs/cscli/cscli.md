@@ -15,13 +15,13 @@ It is meant to allow you to manage bans, parsers/scenarios/etc, api and generall
 
 ```
   -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
-  -o, --output string   Output format: human, json, raw.
-      --color string    Output color: yes, no, auto. (default "auto")
-      --debug           Set logging to debug.
-      --info            Set logging to info.
-      --warning         Set logging to warning.
-      --error           Set logging to error.
-      --trace           Set logging to trace.
+  -o, --output string   Output format: human, json, raw
+      --color string    Output color: yes, no, auto (default "auto")
+      --debug           Set logging to debug
+      --info            Set logging to info
+      --warning         Set logging to warning
+      --error           Set logging to error
+      --trace           Set logging to trace
   -h, --help            help for cscli
 ```
 

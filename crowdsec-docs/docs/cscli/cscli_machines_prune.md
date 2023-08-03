@@ -1,29 +1,34 @@
 ---
-id: cscli_machines_validate
-title: cscli machines validate
+id: cscli_machines_prune
+title: cscli machines prune
 ---
-## cscli machines validate
+## cscli machines prune
 
-validate a machine to access the local API
+prune multiple machines from the database
 
 ### Synopsis
 
-validate a machine to access the local API.
+prune multiple machines that are not validated or have not connected to the local API in a given duration.
 
 ```
-cscli machines validate [flags]
+cscli machines prune [flags]
 ```
 
 ### Examples
 
 ```
-cscli machines validate "machine_name"
+cscli machines prune
+cscli machines prune --duration 1h
+cscli machines prune --not-validated-only --force
 ```
 
 ### Options
 
 ```
-  -h, --help   help for validate
+  -d, --duration string      duration of time since validated machine last heartbeat (default "10m")
+      --force                force prune without asking for confirmation
+  -h, --help                 help for prune
+      --not-validated-only   only prune machines that are not validated
 ```
 
 ### Options inherited from parent commands
