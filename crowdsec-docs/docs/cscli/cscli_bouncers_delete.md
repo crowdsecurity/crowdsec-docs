@@ -4,7 +4,7 @@ title: cscli bouncers delete
 ---
 ## cscli bouncers delete
 
-delete a single bouncer from the database
+delete bouncer(s) from the database
 
 ```
 cscli bouncers delete MyBouncerName [flags]
