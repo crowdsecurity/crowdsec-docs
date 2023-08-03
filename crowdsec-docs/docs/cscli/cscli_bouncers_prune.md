@@ -1,32 +1,28 @@
 ---
-id: cscli_collections_remove
-title: cscli collections remove
+id: cscli_bouncers_prune
+title: cscli bouncers prune
 ---
-## cscli collections remove
+## cscli bouncers prune
 
-Remove given collection(s)
-
-### Synopsis
-
-Remove given collection(s) from hub
+prune multiple bouncers from the database
 
 ```
-cscli collections remove collection [flags]
+cscli bouncers prune [flags]
 ```
 
 ### Examples
 
 ```
-cscli collections remove crowdsec/xxx crowdsec/xyz
+cscli bouncers prune -d 60m
+cscli bouncers prune -d 60m --force
 ```
 
 ### Options
 
 ```
-      --all     Delete all the collections
-      --force   Force remove : Remove tainted and outdated files
-  -h, --help    help for remove
-      --purge   Delete source file too
+  -d, --duration string   duration of time since last pull (default "60m")
+      --force             force prune without asking for confirmation
+  -h, --help              help for prune
 ```
 
 ### Options inherited from parent commands
@@ -44,5 +40,5 @@ cscli collections remove crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli collections](/cscli/cscli_collections.md)	 - Manage collections from hub
+* [cscli bouncers](/cscli/cscli_bouncers.md)	 - Manage bouncers [requires local API]
 
