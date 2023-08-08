@@ -37,10 +37,21 @@ type: leaky|trigger|counter|conditional|bayesian
 Defines the type of the bucket. Currently five types are supported :
 
  - `leaky` : a [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) that must be configured with a [capacity](#capacity) and a [leakspeed](#leakspeed)
- - `trigger` : a bucket that overflows as soon as an event is poured (it is like a leaky bucket is a capacity of 0)
- - `counter` : a bucket that only overflows every [duration](#duration). It is especially useful to count things.
- - `conditional`: a bucket that overflows when the expression given in `condition` returns true. Useful if you want to look back at previous events that were poured to the bucket (to detect impossible travel or more behavioral patterns for example). If the capacity is not set to `-1`, it can overflow like a standard `leaky` bucket.
- - `bayesian` : a bucket that runs bayesian inference internally. The overflow will trigger when the posterior probability reaches the threshold. This is useful for instance if the behaivor is a combination of events which alone wouldn't be worthy of suspicious.
+ - `trigger` : a bucket that overflows as soon as an event is poured
+   (it is like a leaky bucket is a capacity of 0)
+ - `counter` : a bucket that only overflows every
+   [duration](#duration). It is especially useful to count things.
+ - `conditional`: a bucket that overflows when the expression given in
+   `condition` returns true. Useful if you want to look back at
+   previous events that were poured to the bucket (to detect
+   impossible travel or more behavioral patterns for example). It
+   can't overflow like a leaky bucket and its capacity is
+   ignored. Incase the conditional bucket is meant to be used to hold
+   a large number of events, consider use the cashe_size field.
+ - `bayesian` : a bucket that runs bayesian inference internally. The
+   overflow will trigger when the posterior probability reaches the
+   threshold. This is useful for instance if the behaivor is a
+   combination of events which alone wouldn't be worthy of suspicious.
 
 
 #### Examples:
