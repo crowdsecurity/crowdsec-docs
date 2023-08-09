@@ -65,6 +65,7 @@
                             label: "Docker",
                             href: "https://hub.docker.com/r/crowdsecurity/crowdsec",
                         },
+                        "getting_started/install_source",
                     ],
                 },
                 {
