@@ -9,10 +9,10 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 :::warning
-This is only for advance users that wish to compile their own software. If you are not comfortable with this, please use the [official packages](/getting_started/getting_started.md)
+This is only for advanced users that wish to compile their own software. If you are not comfortable with this, please use the [official packages](/getting_started/getting_started.md)
 :::
 
-We define systems by there underlying distribution rather than a fork or modification of a distribution. For example, Ubuntu and Debian are both Debian based distributions, so they will share the same instructions as the term DEB. Centos and Fedora are both Redhat based distributions, so they will share the same instructions as the term RPM. Arch is just Arch, so it will have its own instructions.
+We define systems by their underlying distribution rather than a fork or modification of a distribution. For example, Ubuntu and Debian are both Debian based distributions, so they will share the same instructions as the term DEB. Centos and Fedora are both Redhat based distributions, so they will share the same instructions as the term RPM. Arch is just Arch, so it will have its own instructions.
 
 
 ## Dependencies
@@ -139,7 +139,7 @@ Static builds are builds that do not require any external dependencies to run. T
 - `BUILD_STATIC=1` - Build a static binary:
   - DEB: none
   - RPM/Arch:
-    - RPM: Enable [crb repo](https://linux.how2shout.com/enable-crb-code-ready-builder-powertools-in-almalinux-9/#:~:text=CRB%20(Code%20Ready%20Builder)%20is,their%20workflow%20and%20increase%20productivity.)
+    - RPM: Enable crb repo
     - RPM: `sudo yum install glibc-static libstdc++-static`
     - RPM/Arch: compile RE2 from source [install script](https://gist.github.com/LaurenceJJones/d17f7839b03acbe0e4e879fd60f4b433) as the version provided by package managers does not include the static library.
 
