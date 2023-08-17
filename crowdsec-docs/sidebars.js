@@ -740,6 +740,7 @@
                 "cti_api/integration_intelowl",
                 "cti_api/integration_maltego",
                 "cti_api/integration_misp",
+                "cti_api/integration_msticpy",
                 "cti_api/integration_opencti",
                 "cti_api/integration_paloalto_xsoar",
                 "cti_api/integration_sekoia_xdr",
