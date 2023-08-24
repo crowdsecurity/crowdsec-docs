@@ -34,7 +34,9 @@ The App is now configured !
 
 ## Usage
 
-Navigate to Log Activity pane in QRadar. Right click on an IP either in Source IP or Destination IP column. Hover over "More Options". You will see a new option "CrowdSec IP Lookup". Click on it.
+- Navigate to Log Activity pane in QRadar. 
+- Right click on an IP either in Source IP or Destination IP column. Hover over "More Options". 
+- You will see a new option "CrowdSec IP Lookup". Click on it.
 
 ![Qradar Log View](/img/qradar/log_view.png)
 
