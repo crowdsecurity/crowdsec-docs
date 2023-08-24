@@ -10,7 +10,7 @@ sidebar_position: 2
 This QRadar App leverages CrowdSec's CTI’s smoke endpoint to get information about IP as seen by CrowdSec's network. This is enabled via a right click on IP GUI action. The information is presented with a summary of the IP's known behaviors, a link to CrowdSec's console and the possibility to copy the raw json response for further processing within Qradar. The information includes:
 
 1. Types of attacks the IP has been observed performing.
-2. Background Noise Score. This can be used to know whether the particular IP is only targeting your infrastructure or is targeting others too.
+2. Background Noise Score. Background Noise (BN), also known as “Internet Background Radiation” defines automatic and mild attacks that are perpetrated at a large scale, without a specific target.
 3. Aggressivity which quantifies frequency of attacks.
 4. Other fields like Geolocation details, AS details, sighting details etc
 
