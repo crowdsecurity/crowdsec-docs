@@ -127,7 +127,7 @@ export DB_PASSWORD="<db_password>"
 If the variable is not defined, crowdsec >= 1.5.0 will leave the original
 string. This is to allow for literal `$` characters, especially in passwords:
 versions before 1.5.0 replaced a non-existent reference with an empty string
-which corrupted the password and made it harder to find configuration mistakeh.
+which corrupted the password and made it harder to find configuration mistakes.
 
 
 ## Overriding values
