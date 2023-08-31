@@ -520,6 +520,7 @@ db_config:
   port:     "<db_host_port>" # for mysql/postgresql/pgx # must be omitted if using socket file
   sslmode:  "<required/disable>" # for postgresql/pgx
   max_open_conns: "<max_number_of_conns_to_db>"
+  decision_bulk_size: "<decision_bulk_size>"
   flush:
     max_items: "<max_alerts_in_db>"
     max_age: "<max_age_of_alerts_in_db>"
@@ -632,6 +633,21 @@ Maximum number of open connections to the database.
 
 Defaults to 100. Set to 0 for unlimited connections.
 
+
+#### `decision_bulk_size`
+
+```yaml
+db_config:
+  decision_bulk_size: 1000
+```
+Maximum number of decisions inserted or updated in a single query.
+
+Added in v1.5.3.
+
+This can affect the responsiveness of the system. If you use big blocklists
+on devices like raspberry or similar appliances with slow disks, you can
+raise this up to 2000. Higher values will still be interpreted as 2000
+due to query size limits.
 
 #### `use_wal`
 
