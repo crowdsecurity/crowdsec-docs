@@ -156,6 +156,11 @@
                             id: "bouncers/misp-feed-generator",
                         },
                         {
+                            type: "doc",
+                            label: "Stormshield",
+                            id: "bouncers/stormshield",
+                        },
+                        {
                             type: "link",
                             label: "Third Party",
                             href: "https://hub.crowdsec.net/browse/#bouncers",
