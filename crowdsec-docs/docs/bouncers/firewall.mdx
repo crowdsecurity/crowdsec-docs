@@ -211,7 +211,7 @@ table ip6 crowdsec6 {
 
  - `iptables_chains` : specify a list of chains to insert rules (only relevant in `iptables` mode) :
  - `blacklists_ipv4` and `blacklists_ipv6` : names of ipv4 and ipv6 sets
- - `ipset_size`: maximum number of entries in the ipset (default: 65536)
+ - `ipset_size`: maximum number of entries in the ipset (default: 131072)
  - `ipset_type`: type to use for the set  (default: `nethash`)
 
 ```yaml
@@ -220,6 +220,8 @@ iptables_chains:
 #  - FORWARD
 #  - DOCKER-USER
 ```
+
+The default for ipset_size has been raised in v0.0.28 (from 65536) to allow for larger blocklists.
 
 ### Nftables specific directives
 
