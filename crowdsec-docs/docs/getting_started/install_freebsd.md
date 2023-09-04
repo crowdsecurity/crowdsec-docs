@@ -125,7 +125,9 @@ will compile and install the packages and all their dependencies. Then configure
 
 ## Troubleshooting
 
-In some cases, Crowdsec is unable to generate the machine id.
+In some cases, CrowdSec is unable to generate the machine id and is unable to initialize properly.
+
+We saw it happen with an APU board, likely due to the open source coreboot firmware.
 
 Start `hostid` and `hostid_save`:
 
@@ -134,4 +136,4 @@ Start `hostid` and `hostid_save`:
 /etc/rc.d/hostid_save start
 ```
 
-Then start again the Crowdsec' service  `service crowdsec start`.
+Then start again the CrowdSec' service  `service crowdsec start`.
