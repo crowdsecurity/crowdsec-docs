@@ -323,8 +323,8 @@ table <crowdsec6-blacklists> persist
 
  ### ipset
 
- ipset lists have to exist before crowdsec-firewall-bouncer starts
- you can create them and add them to your iptables like this:
+ ipset lists have to exist before crowdsec-firewall-bouncer starts.
+ You can create them and add them to your iptables like this:
 
 ```console
 ipset create crowdsec-blacklists hash:ip timeout 0 maxelem 150000

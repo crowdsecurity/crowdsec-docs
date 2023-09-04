@@ -125,7 +125,7 @@ will compile and install the packages and all their dependencies. Then configure
 
 ## Troubleshooting
 
-In some case, Crowdsec is unable to generate the machine id.
+In some cases, Crowdsec is unable to generate the machine id.
 
 Start `hostid` and `hostid_save`:
 
