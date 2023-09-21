@@ -24,20 +24,101 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-This remediation component deploys Cloudflare Worker in front of a Cloudflare Zone/Website, which checks if incoming IP addresses are present in a KV store and takes necessary remedial actions. It also periodically updates the KV store with CrowdSec LAPI's decisions.
+:::warning
+This remediation component heavily relies on Cloudflare Workers and KV store. It won't work without a paid Workers subscription.
+:::
+
+This remediation component deploys Cloudflare Worker in front of a Cloudflare Zone/Website, which checks if incoming request's IP address/Country/AS is present in a KV store and takes necessary remedial actions. It also periodically updates the KV store with CrowdSec LAPI's decisions.
+
+## Installation
+
+### Using packages
+
+Packages for crowdsec-cloudflare-worker-bouncer [are available on our repositories](/getting_started/install.mdx##install-our-repositories). You need to pick the package accord to your firewall system :
+
+<Tabs
+  defaultValue="debian"
+  values={[
+    { label: 'Debian/Ubuntu', value: 'debian' ,},
+    { label: 'RHEL/Centos/Fedora', value: 'rhel', },
+  ]
+}>
+<TabItem value="debian">
+
+```bash
+sudo apt install crowdsec-cloudflare-worker-bouncer
+```
+
+</TabItem>
+<TabItem value="rhel">
+
+```bash
+sudo yum install crowdsec-cloudflare-worker-bouncer
+```
+
+</TabItem>
+</Tabs>
 
 
-## Manual Installation
+Then run the following commands to setup your bouncer:
 
-### From source
+
+```bash
+sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens 
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't alread
+sudo systemctl start crowdsec-cloudflare-worker-bouncer # the bouncer now syncs the crowdsec decisions with cloudflare components.
+```
+
+:::warning
+
+Please configure your server to emit real IPs rather than cloudflare IPs in logs, so crowdsec can function properly. See how to [here](https://support.cloudflare.com/hc/en-us/articles/200170786-Restoring-original-visitor-IPs)
+
+:::
+
+:::info
+
+If your bouncer is not installed on the same machine than LAPI, don't forget to set the `crowdsec_lapi_url` and `crowdsec.lapi_key` in the configuration file `/etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml`
+
+:::
+
+:::note
+
+You need to run `sudo crowdsec-cloudflare-worker-bouncer -d` to cleanup exisiting cloudflare components created by bouncer before editing the config files.
+
+:::
+
+:::note
+
+You can run `sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml` to generate the configuration by discovering all the accounts and the zones associated with the provided tokens.
+
+:::
+
+### Manual Installation
+
+#### Assisted
+
+Download the [latest release](https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer/releases).
+
+```bash
+tar xzvf crowdsec-cloudflare-worker-bouncer.tgz
+cd crowdsec-cloudflare-worker-bouncer/
+sudo ./install.sh
+sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided tokens 
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't already
+sudo systemctl start crowdsec-cloudflare-worker-bouncer # the bouncer now syncs the crowdsec decisions with cloudflare components.
+```
+
+#### From source
 
 :warning: requires go >= 1.20
 
 ```bash
+git clone https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer
+cd cs-cloudflare-worker-bouncer
 make build
-./crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> > cfg.yaml # auto-generate cloudflare config for provided space separated tokens
-vi cfg.yaml # review config and set `crowdsec_lapi_key`
-./crowdsec-cloudflare-bouncer -c cfg.yaml # run the bouncer
+./crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> > cfg.yaml # auto-generate cloudflare config for provided space separated tokens
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't alread
+./crowdsec-cloudflare-worker-bouncer -c cfg.yaml # run the bouncer
 ```
 
 
@@ -45,12 +126,18 @@ vi cfg.yaml # review config and set `crowdsec_lapi_key`
 
 
 ```yaml
-crowdsec_lapi_url: http://localhost:8080/
-crowdsec_lapi_key: ${API_KEY}
-crowdsec_update_frequency: 10s
-include_scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word
-exclude_scenarios_containing: [] # ignore IPs banned for triggering scenarios containing either of provided word
-only_include_decisions_from: [] # only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+crowdsec_config:
+  lapi_key: ${API_KEY}
+  lapi_url: ${CROWDSEC_LAPI_URL}
+  update_frequency: 10s
+  include_scenarios_containing: []
+  exclude_scenarios_containing: []
+  only_include_decisions_from: []
+  insecure_skip_verify: false
+  key_path: ""  # Used for TLS authentification with CrowdSec LAPI
+  cert_path: "" # Used for TLS authentification with CrowdSec LAPI
+  ca_cert_path: "" # Used for TLS authentification with CrowdSec LAPI
+
 cloudflare_config:
     accounts:
         - id: <ACCOUNT_ID>
@@ -59,8 +146,7 @@ cloudflare_config:
               actions: # Supported Actions [captcha, ban]
                 - captcha
               default_action: captcha # Supported Actions [captcha, ban, none]
-              routes_to_protect:
-                - '*crowdflare.co.uk/*'
+              routes_to_protect: []
               turnstile:
                 enabled: true
                 rotate_secret_key: true
@@ -70,17 +156,14 @@ cloudflare_config:
           owner_email: owner@example.com
 
 log_level: info
-log_mode: "stdout"
+log_media: "stdout"
 log_dir: "/var/log/"
+ban_template_path: "" # set to empty to use default template
 
 prometheus:
     enabled: true
     listen_addr: 127.0.0.1
     listen_port: "2112"
-
-key_path: ""  # Used for TLS authentification with CrowdSec LAPI
-cert_path: "" # Used for TLS authentification with CrowdSec LAPI
-ca_cert_path: "" # Used for TLS authentification with CrowdSec LAPI
 ```
 
 
@@ -111,17 +194,17 @@ Generates config by discovering all the accounts and the zones associated with p
 Example Usage:
 
 ```bash
-sudo crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>...  -o cfg.yaml
-cat cfg.yaml  > /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml
+sudo crowdsec-cloudflare-worker-bouncer -g <TOKEN_1>,<TOKEN_2>...  -o cfg.yaml
+cat cfg.yaml  > /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
 ```
 
 :::note
-This script only generates cloudflare related config. By default it refers to the config at `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml` for crowdsec configuration. 
+This script only generates cloudflare related config. By default it refers to the config at `/etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml` for crowdsec configuration. 
 :::
 
 Using custom config:
 ```bash
-sudo crowdsec-cloudflare-bouncer -c ./cfg.yaml -g <TOKEN_1>,<TOKEN_2>... 
+sudo crowdsec-cloudflare-worker-bouncer -c ./cfg.yaml -g <TOKEN_1>,<TOKEN_2>... 
 ```
 
 ### Cloudflare Cleanup
@@ -130,10 +213,12 @@ This deletes all the Cloudflare infrastructure which was created by the bouncer.
 
 Example Usage:
 ```bash
-sudo crowdsec-cloudflare-bouncer -d 
+sudo crowdsec-cloudflare-worker-bouncer -d 
 ```
 
 ## How it works
+
+![Architecture](/img/bouncer/cloudflare-worker/cfworkerarch.png)
 
 The bouncer does the following:
 
@@ -144,11 +229,11 @@ The bouncer does the following:
 
 ## Configuration Reference
 
-### `crowdsec_lapi_url`
+### `crowdsec.lapi_url`
 
 The URL of CrowdSec LAPI. It should be accessible from the bouncer.
 
-### `crowdsec_lapi_key`
+### `crowdsec.lapi_key`
 
 It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
 ```bash
@@ -157,21 +242,37 @@ sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for h
 
 ```
 
-### `crowdsec_update_frequency`
+### `crowdsec.update_frequency`
 
 The bouncer will poll the CrowdSec every `update_frequency` interval.
 
-### `include_scenarios_containing`
+### `crowdsec.include_scenarios_containing`
 
 Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
 
-### `exclude_scenarios_containing`
+### `crowdsec.exclude_scenarios_containing`
 
 Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"]
 
-### `only_include_decisions_from`
+### `crowdsec.only_include_decisions_from`
 
 Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+
+### `crowdsec.insecure_skip_verify`
+
+Skip TLS verification when connecting to CrowdSec LAPI.
+
+### `crowdsec.key_path`
+
+Path to the private key file to use for TLS authentication with CrowdSec LAPI.
+
+### `crowdsec.cert_path`
+
+Path to the certificate file to use for TLS authentication with CrowdSec LAPI.
+
+### `crowdsec.ca_cert_path`
+
+Path to the CA certificate file to use for TLS authentication with CrowdSec LAPI.
 
 ### `cloudflare_config.accounts[].id`
 
@@ -217,6 +318,10 @@ Cloudflare account token.
 
 Email address of the account owner.
 
+### `ban_template_path`
+
+Path to the ban template file. If not provided, the default template is used. This HTML would be rendered to requests when they are banned.
+
 ### `log_level`
 
 Logging level. Either of `info`, `debug`, `error`, `warning`, `trace` .
@@ -241,17 +346,6 @@ Address to listen for Prometheus metrics. Example value `127.0.0.1`
 
 Port to listen for Prometheus metrics. Example value `2112`
 
-### `key_path`
-
-Path to the TLS private key file used for [TLS authentication with CrowdSec LAPI](/docs/local_api/tls_auth).
-
-### `cert_path`
-
-Path to the TLS certificate file used for[TLS authentication with CrowdSec LAPI](/docs/local_api/tls_auth).
-
-### `ca_cert_path`
-
-Path to the TLS CA certificate file used for [TLS authentication with CrowdSec LAPI](/docs/local_api/tls_auth).
 
 
 

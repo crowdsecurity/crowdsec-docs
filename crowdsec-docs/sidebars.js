@@ -76,101 +76,99 @@
                     },
                     items: [
                         {
-                            type: "doc",
-                            label: "Firewall",
-                            id: "bouncers/firewall",
+                            "type": "doc",
+                            "label": "AWS WAF",
+                            "id": "bouncers/aws_waf"
                         },
                         {
-                            type: "doc",
-                            label: "Nginx",
-                            id: "bouncers/nginx",
+                            "type": "doc",
+                            "label": "BlockList Mirror",
+                            "id": "bouncers/blocklist-mirror"
                         },
                         {
-                            type: "doc",
-                            label: "OpenResty",
-                            id: "bouncers/openresty",
+                            "type": "doc",
+                            "label": "Cloudflare",
+                            "id": "bouncers/cloudflare"
                         },
                         {
-                            type: "doc",
-                            label: "Ingress Nginx",
-                            id: "bouncers/ingress-nginx",
+                            "type": "doc",
+                            "label": "Cloudflare Workers",
+                            "id": "bouncers/cloudflare-workers"
                         },
                         {
-                            type: "doc",
-                            label: "Custom",
-                            id: "bouncers/custom",
+                            "type": "doc",
+                            "label": "Custom",
+                            "id": "bouncers/custom"
                         },
                         {
-                            type: "doc",
-                            label: "Cloudflare",
-                            id: "bouncers/cloudflare",
+                            "type": "doc",
+                            "label": "Fastly",
+                            "id": "bouncers/fastly"
                         },
                         {
-                            type: "doc",
-                            label: "Wordpress",
-                            id: "bouncers/wordpress",
+                            "type": "doc",
+                            "label": "Firewall",
+                            "id": "bouncers/firewall"
                         },
                         {
-                            type: "doc",
-                            label: "PHP Library",
-                            id: "bouncers/php-lib",
+                            "type": "doc",
+                            "label": "HAProxy",
+                            "id": "bouncers/haproxy"
                         },
                         {
-                            type: "doc",
-                            label: "PHP",
-                            id: "bouncers/php",
+                            "type": "doc",
+                            "label": "Ingress Nginx",
+                            "id": "bouncers/ingress-nginx"
                         },
                         {
-                            type: "doc",
-                            label: "Magento 2",
-                            id: "bouncers/magento",
+                            "type": "doc",
+                            "label": "Magento 2",
+                            "id": "bouncers/magento"
                         },
                         {
-                            type: "doc",
-                            label: "Fastly",
-                            id: "bouncers/fastly",
+                            "type": "doc",
+                            "label": "MISP Feed Generator",
+                            "id": "bouncers/misp-feed-generator"
                         },
                         {
-                            type: "doc",
-                            label: "AWS WAF",
-                            id: "bouncers/aws_waf",
+                            "type": "doc",
+                            "label": "Nginx",
+                            "id": "bouncers/nginx"
                         },
                         {
-                            type: "doc",
-                            label: "Windows Firewall",
-                            id: "bouncers/windows_firewall",
+                            "type": "doc",
+                            "label": "OpenResty",
+                            "id": "bouncers/openresty"
                         },
                         {
-                            type: "doc",
-                            label: "HAProxy",
-                            id: "bouncers/haproxy",
+                            "type": "doc",
+                            "label": "PHP",
+                            "id": "bouncers/php"
                         },
                         {
-                            type: "doc",
-                            label: "BlockList Mirror",
-                            id: "bouncers/blocklist-mirror",
+                            "type": "doc",
+                            "label": "PHP Library",
+                            "id": "bouncers/php-lib"
                         },
                         {
-                            type: "doc",
-                            label: "MISP Feed Generator",
-                            id: "bouncers/misp-feed-generator",
+                            "type": "doc",
+                            "label": "Windows Firewall",
+                            "id": "bouncers/windows_firewall"
                         },
                         {
-                            type: "doc",
-                            label: "Stormshield",
-                            id: "bouncers/stormshield",
-                            label: "Cloudflare Workers",
-                            id: "bouncers/cloudflare-workers",
+                            "type": "doc",
+                            "label": "Wordpress",
+                            "id": "bouncers/wordpress"
                         },
                         {
-                            type: "link",
-                            label: "Third Party",
-                            href: "https://hub.crowdsec.net/browse/#bouncers",
+                            "type": "link",
+                            "label": "Third Party",
+                            "href": "https://hub.crowdsec.net/browse/#bouncers"
                         },
                         {
-                            type: "doc",
-                            label: "Contributing",
-                            id: "contributing/contributing_bouncers",
+                            "type": "doc",
+                            "label": "Contributing",
+                            "id": "contributing/contributing_bouncers"
                         },
                     ],
                 },
