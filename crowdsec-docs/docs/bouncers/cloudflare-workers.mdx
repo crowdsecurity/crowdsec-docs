@@ -29,7 +29,7 @@ This remediation component heavily relies on Cloudflare Workers and KV store. It
 :::
 
 :::warning
-After configuring and starting the remediation component, please see the [setting up worker fail mode] section.  
+After configuring and starting the remediation component, please see the [setting up worker fail mode](#setting-up-the-worker-route-fail-mode) section.  
 :::
 
 This remediation component deploys Cloudflare Worker in front of a Cloudflare Zone/Website, which checks if incoming request's IP address/Country/AS is present in a KV store and takes necessary remedial actions. It also periodically updates the KV store with CrowdSec LAPI's decisions.
@@ -237,7 +237,7 @@ The remediation component creates worker routes to make the workers act as a rev
 
 With `Fail Closed` mode, Routes in fail closed mode will display a Cloudflare 1027 error page to visitors if there's an error within the worker. This error could be triggered due to quotas exceeding your plan etc. Cloudflare doesn't mention all the possible scenarios which could trigger this error page. 
 
-Thus we recommend you to manually override the failover mode to `Fail Open` for all the worker routes created by our remediation component. With `Fail Open` mode the requests would bypass the worker and be served directly from your origin servers. Thus your website would continue to function even if there's an error within the worker.
+Thus **we recommend you to manually override the failover mode to `Fail Open`** for all the worker routes created by our remediation component. With `Fail Open` mode the requests would bypass the worker and be served directly from your origin servers. Thus your website would continue to function even if there's an error within the worker.
 
 This can be done by following the steps below:
 
