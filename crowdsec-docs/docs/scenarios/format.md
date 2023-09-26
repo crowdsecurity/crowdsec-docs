@@ -331,7 +331,7 @@ Should be set to `-1` in most situations for `conditional` buckets.
 leakspeed: "10s"
 ```
 
-Only applies to `leaky` buckets.
+Only applies to `leaky` and  `conditional` buckets.
 
 A duration that represent how often an event will be leaking from the bucket.
 
