@@ -43,12 +43,14 @@ timeout: 20s          # Time to wait for response from the plugin before conside
 # The following template receives a list of models.Alert objects
 # The output goes in the email message body
 format: |
+  <html><body>
   {{range . -}}
     {{$alert := . -}}
     {{range .Decisions -}}
-      <html><body><p><a href=https://www.whois.com/whois/{{.Value}}>{{.Value}}</a> will get <b>{{.Type}}</b> for next <b>{{.Duration}}</b> for triggering <b>{{.Scenario}}</b> on machine <b>{{$alert.MachineID}}</b>.</p> <p><a href=https://app.crowdsec.net/cti/{{.Value}}>CrowdSec CTI</a></p></body></html>
+      <p><a href=https://www.whois.com/whois/{{.Value}}>{{.Value}}</a> will get <b>{{.Type}}</b> for next <b>{{.Duration}}</b> for triggering <b>{{.Scenario}}</b> on machine <b>{{$alert.MachineID}}</b>.</p> <p><a href=https://app.crowdsec.net/cti/{{.Value}}>CrowdSec CTI</a></p>
     {{end -}}
   {{end -}}
+  </body></html>
 
 smtp_host:            # example: smtp.gmail.com
 smtp_username:        # Replace with your actual username
@@ -72,6 +74,12 @@ encryption_type: "ssltls"
 #
 # connect_timeout: 10s
 # send_timeout: 10s
+
+---
+
+# type: email
+# name: email_second_notification
+# ...
 ```
 
 The `format` configuration directive is a [go template](https://pkg.go.dev/text/template), which receives a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
