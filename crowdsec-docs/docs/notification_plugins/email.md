@@ -3,25 +3,27 @@ id: email
 title: Email Plugin
 ---
 
-The Email plugin is by default shipped with your CrowdSec installation. The following guide shows how to enable it.
+The Email plugin is shipped by default with CrowdSec. This guide shows how to enable it.
 
 ## Enabling the plugin:
 
-In your profile file (by default `/etc/crowdsec/profiles.yaml`) , uncomment the section
+In the profile configuration (by default `/etc/crowdsec/profiles.yaml`) , uncomment the section:
+
 ```
 #notifications:
 # - email_default 
 ```
 
-Every alert which would pass the profile's filter would be dispatched to `email_default` plugin.
-## Configuring the plugin: 
+Every alert that passes the profile's filter will be dispatched to the `email_default` plugin.
 
-By default the configuration for email plugin is located at `/etc/crowdsec/notifications/email.yaml`.
-You'll need to fill the credentials for the SMTP server here. 
+## Configuring the plugin:
+
+The default configuration for the email plugin is located at `/etc/crowdsec/notifications/email.yaml`.
+You need to provide the credentials for the SMTP server here.
 
 ### Example configuration for Gmail
 
-Example config which mail's the alerts to `receiver@gmail.com`.
+Here's an example configuration that sends alerts to `receiver@gmail.com`:
 
 ```yaml
 # Don't change this
@@ -59,16 +61,17 @@ timeout: 20s # duration to wait for response from plugin before considering this
 
 ```
 
-The configuration directive `format` is a [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
+The `format` configuration directive is a [go template](https://pkg.go.dev/text/template), which receives a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
 
-The configuration directive ``encryption_type`` is either `none`, `starttls` and `ssltls` which are self-explanatory and the configuration directive ``auth_type`` is either `none`, `crammd5`, `login` or `plain`.
+The `encryption_type` configuration directive can be `none`, `starttls`, or `ssltls`.
+The `auth_type` configuration directive can be `none`, `crammd5`, `login`, or `plain`.
 
 ## Final Steps:
 
-Let's restart crowdsec
+Restart CrowdSec with the following command:
 
 ```bash
 sudo systemctl restart crowdsec
 ```
 
-You can verify whether the plugin is properly working by triggering scenarios using tools like wapiti, nikto etc. 
+To verify if the plugin is functioning correctly, you can trigger scenarios using tools like wapiti, nikto etc. 
