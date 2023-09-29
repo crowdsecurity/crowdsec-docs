@@ -18,7 +18,7 @@ By installing the `CrowdSec` plugin, available through the OPNsense repositories
 ### Plugin installation
 
 :::caution
-With OPNsense 22.1, if you are using a RAM filesystem for `/var` (you can verify `Settings > Miscellaneous > Disk/Memory Settings`) you need to disable it before proceeding, because the `Security Engine` keeps a small persistent database in `/var/db`. When the `/var` directory is in RAM, the database is re-created from scratch at each reboot. The ram disk was changed to `/var/log` for 22.7, which does not interfere with the database.
+With OPNsense 22.1, if you are using a RAM filesystem for `/var` (you can verify `System > Settings > Miscellaneous > Disk/Memory Settings`) you need to disable it before proceeding, because the `Security Engine` keeps a small persistent database in `/var/db`. When the `/var` directory is in RAM, the database is re-created from scratch at each reboot. The ram disk was changed to `/var/log` for 22.7, which does not interfere with the database.
 :::
 
 With OPNsense 22.1:
