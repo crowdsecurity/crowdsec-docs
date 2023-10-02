@@ -157,3 +157,4 @@ sidebar_position: 3
 | device:hikvision | Hikvision | IP belongs to a Hikvision camera |
 | device:ipcam | IpCamera | IP belongs to an IP camera |
 | profile:likely_botnet | Likely Botnet | IP is likely to belong to a botnet (based on behavior and/or characteristics) |
+| crowdsec:ai_vpn_proxy | VPN or Proxy | IP is identified as a VPN or a Proxy by CrowdSec AI Detection Algorithm |
