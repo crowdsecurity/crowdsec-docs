@@ -17,6 +17,7 @@ be aware of all the channels of crowdsec distribution. Our official distribution
 |----|----------|--------------|------------------|----------------------|-------------------|
 | Linux | amd64/arm64/armhf | Debian | bookworm/bullseye/buster/stretch | 1.5.4 and 1.4.6 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
 | Linux | amd64/arm64 | RedHat/CentOS | 6/7/8/9 | 1.5.4 and 1.4.6| [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| Linux | amd64/arm64 | Oracle Linux | 7/8/9 | 1.5.4 and 1.4.6| [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
 | Linux | amd64/arm64/armel/armhf/i386/mips64el/mipsel/ppc64el/s390x | Debian | 1.4.6 | [official debian repository](https://packages.debian.org/search?keywords=crowdsec&searchon=names&suite=stable&section=all) |
 | Linux | amd64/arm64 | Fedora | 37/38 | 1.5.4 (and 1.4.6 only for fc37) | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
 | Linux | amd64/arm64 | Amazon linux | 2 | 1.5.4 and 1.4.6 |  [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
