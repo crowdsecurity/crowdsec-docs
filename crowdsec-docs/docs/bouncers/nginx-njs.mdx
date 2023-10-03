@@ -1,0 +1,211 @@
+---
+id: nginx-njs
+title: Nginx NJS Bouncer
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+<img src={useBaseUrl('/img/crowdsec_nginx.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
+</p>
+<p align="center">
+<img src="https://img.shields.io/badge/build-pass-green" />
+<img src="https://img.shields.io/badge/tests-pass-green" />
+</p>
+<p align="center">
+&#x1F4DA; <a href="#installation/">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+A bouncer for Nginx using NJS.
+
+## Installation
+
+### From source
+
+#### Pre-requisites
+
+- Typescript, with tsc available
+- NodeJS
+- make
+
+```bash
+make release
+cd crowdsec-nginx-njs-bouncer-* 
+sudo ./install.sh
+```
+
+Bouncer's config file is at `/etc/crowdsec/bouncers/crowdsec-nginx-njs-bouncer.json`.
+
+Make sure to replace the `crowdsec_config.lapi_key` and `crowdsec_config.lapi_url` fields with your own values.
+
+
+In your nginx configuration file, usually located at /etc/nginx/nginx.conf  make the following changes
+
+1. Add the following line in the http block
+
+```nginx
+include /var/lib/crowdsec/njs/conf/crowdsec_root.conf;
+```
+
+2. For each server block which you want to protect, add the following line
+
+```nginx
+include /var/lib/crowdsec/njs/conf/crowdsec_server.conf;
+```
+
+### (Optional) Enabling Country Remediations
+
+To enable country remediations, set `country_remediations.enabled` to `true` in the bouncer's config file. Download the GeoLite2-Country database by referring to the [Maxmind website](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data#accessing-geolite2-free-geolocation-data). 
+
+Then set the `ip_to_country_mmdb_path` to the path of the downloaded database file. 
+
+You can test if the country remediations by creating a country scoped decision and checking whether requests originating from that country are remediated.
+
+```bash
+sudo cscli decisions add --scope country --type ban --value CN
+```
+
+### (Optional) Enabling AS Remediations
+
+To enable AS remediations, set `as_remediations.enabled` to `true` in the bouncer's config file. Download the GeoLite2-ASN database by referring to the [Maxmind website](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data#accessing-geolite2-free-geolocation-data). 
+
+Then set the `ip_to_as_mmdb_path` to the path of the downloaded database file.
+
+You can test if the AS remediations by creating a AS scoped decision and checking whether requests originating from that AS are remediated.
+
+```bash
+sudo cscli decisions add --scope as --type ban --value 12345
+```
+
+## Configuration Reference
+
+### Bouncer Config
+
+Here's how the config file looks like:
+
+```javascript
+{
+    "crowdsec_config": {
+        "lapi_key": "${API_KEY}",
+        "lapi_url": "${CROWDSEC_LAPI_URL}",
+        "include_scenarios_containing": [],
+        "exclude_scenarios_containing": [],
+        "only_include_decisions_from": []
+    },
+
+    "ban": {
+        "enabled": true,
+        "template_path": "/var/lib/crowdsec/njs/templates/ban.html"
+    },
+
+    "captcha": {
+        "enabled": true,
+        "provider": "<turnstile>|<hcaptcha>|<recaptcha_v2>",
+        "secret_key": "<CAPTHCA_SECRET_KEY>",
+        "site_key": "<CAPTCHA_SITE_KEY>",
+        "template_path": "/var/lib/crowdsec/njs/templates/captcha.html"
+    },
+
+    "country_remediations":{
+        "enabled": false,
+        "ip_to_country_mmdb_path": "/var/lib/crowdsec/njs/GeoLite2-Country.mmdb"
+    },
+
+    "as_remediations":{
+        "enabled": false, 
+        "ip_to_as_mmdb_path": "/var/lib/crowdsec/njs/GeoLite2-ASN.mmdb"
+    }
+        
+}
+```
+
+This config is applied globally to all the servers. You can learn how to override this config for a specific server in the next section.
+
+#### `crowdsec_config.lapi_key`
+ Your API key for CrowdSec's Local API (LAPI).
+
+#### `crowdsec_config.lapi_url`
+ The URL of the CrowdSec Local API (LAPI) that the system will connect to.
+
+#### `crowdsec_config.include_scenarios_containing`
+  Include scenarios containing any of these keywords in decision processing.
+
+#### `crowdsec_config.exclude_scenarios_containing`
+  Exclude scenarios containing any of these keywords from decision processing.
+
+#### `crowdsec_config.only_include_decisions_from`
+ Sources. Only include decisions from these sources in decision processing.
+
+#### `ban.enabled`
+ Enable or disable the IP banning feature.
+
+#### `ban.template_path`
+ Path to the HTML template for the ban page displayed to blocked users.
+
+#### `captcha.enabled`
+ Enable or disable the CAPTCHA challenge feature.
+
+#### `captcha.provider`
+ Specify the CAPTCHA provider. Supported values is one of ["turnstile", "hcaptcha", "recaptcha_v2"].
+
+#### `captcha.secret_key`
+ The secret key used for CAPTCHA verification.
+
+#### `captcha.site_key`
+ The site key used for CAPTCHA verification.
+
+#### `captcha.template_path`
+ Path to the HTML template for the CAPTCHA challenge page.
+
+#### `country_remediations.enabled`
+ Enable or disable country-based remediations.
+
+#### `country_remediations.ip_to_country_mmdb_path`
+ Path to the GeoLite2 Country MMDB database file for IP to country mapping.
+
+#### `as_remediations.enabled`
+ Enable or disable AS-based remediations.
+
+#### `as_remediations.ip_to_as_mmdb_path`
+ Path to the GeoLite2 ASN MMDB database file for IP to AS mapping.
+
+
+
+
+### Nginx Config
+
+You can override the following config for a specific server by adding the following lines in the server block
+
+```nginx
+    js_var $disable_ban true; 
+    js_var $disable_captcha true;
+    js_var $ban_template_path /etc/nginx/ban.html;
+    js_var $captcha_template_path /etc/nginx/ban.html;
+```
+
+#### `$disable_ban`
+ Enable or disable the ban remeditions for this server.
+
+#### `$disable_captcha`
+ Enable or disable the CAPTCHA remediations for this server.
+
+#### `$ban_template_path`
+ Path to the HTML template for the ban page displayed to banned users.
+
+#### `$captcha_template_path`
+ Path to the HTML template for the CAPTCHA challenge page. 
+
+ In the template, you can use the following variables
+
+ - {{captcha_frontend_js}} -> This gets automatically replaced with the URL of the CAPTCHA frontend JS file depending upon the selected captcha provider. This is required for the CAPTCHA challenge to work. 
+
+- {{captcha_frontend_css_class}} -> This gets automatically replaced with the CSS class name of the CAPTCHA frontend JS file depending upon the selected captcha provider. This is required for the CAPTCHA challenge to work. The HTML element on which this class is applied is the one which is inspected for the CAPTCHA challenge response.
+
+ - {{captcha_site_key}} -> This gets replaced with `captcha.site_key` from the bouncer's config file. This is required for the CAPTCHA challenge to work.
+
+ You can refer to the default template by checking the contents at `/var/lib/crowdsec/njs/templates/captcha.html`

@@ -137,6 +137,11 @@
                         },
                         {
                             "type": "doc",
+                            "label": "Nginx NJS",
+                            "id": "bouncers/nginx-njs"
+                        },
+                        {
+                            "type": "doc",
                             "label": "OpenResty",
                             "id": "bouncers/openresty"
                         },
