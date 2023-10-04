@@ -18,7 +18,7 @@ The default profile will not forward manual decisions (`cscli decisions add -i x
 
 The default plugins are shipped with crowdsec uppon installation, and can trivially be enabled without further installation.
 
-Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`.md).
+Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yam).
 
 
 

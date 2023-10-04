@@ -179,7 +179,7 @@ always replaced.
 - `bouncers/crowdsec-blocklist-mirror.yaml`
 
 In the case of `profiles.yaml`, the files are read as a whole (as if they were
-attached) instead of merged. See [profiles - introduction](/profiles/intro).
+attached) instead of merged. See [profiles - introduction](/profiles/intro.md).
 
 
 ## Configuration directives
@@ -226,7 +226,7 @@ db_config:
   db_name:  "<db_name>"      # for mysql/pgsql
   host:     "<db_host_ip>"   # for mysql/pgsql
   port:     "<db_host_port>" # for mysql/pgsql
-  sslmode:  "<require/disable>" # for pgsql
+  sslmode:  "<required/disable>" # for pgsql
   use_wal:  "true|false" # for sqlite
   max_open_conns: "<max_number_of_conns_to_db>"
   flush:
@@ -509,7 +509,7 @@ db_config:
   db_name:  "<db_name>"      # for mysql/postgresql/pgx
   host:     "<db_host_ip>"   # for mysql/postgresql/pgx # must be omitted if using socket file
   port:     "<db_host_port>" # for mysql/postgresql/pgx # must be omitted if using socket file
-  sslmode:  "<require/disable>" # for postgresql/pgx
+  sslmode:  "<required/disable>" # for postgresql/pgx
   max_open_conns: "<max_number_of_conns_to_db>"
   flush:
     max_items: "<max_alerts_in_db>"
@@ -604,15 +604,13 @@ db_config:
 ```
 The port to connect to (only if the type of database is `mysql` or `postgresql`). Must be omitted if using socket file.
 
-#### `sslmode`
-
 ```yaml
 db_config:
   type: postgresql
 
-  sslmode: require
+  sslmode: required
 ```
-Require or disable ssl connection to database (only if the type of database is `postgresql`). See [PostgreSQL SSL modes](https://www.postgresql.org/docs/current/libpq-ssl.html#LIBPQ-SSL-SSLMODE-STATEMENTS) for possible values.
+Required or disable ssl connection to database (only if the type of database is `postgresql`)
 
 #### `max_open_conns`
 

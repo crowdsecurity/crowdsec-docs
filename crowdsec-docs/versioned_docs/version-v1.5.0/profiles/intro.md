@@ -15,7 +15,7 @@ The profiles configuration allows users to configure which kind of remediation s
 The profiles configuration is located in `/etc/crowdsec/profiles.yaml`.
 
 You can also write your profiles in a `profiles.yaml.local` file (as explained
-in [Crowdsec configuration](/configuration/crowdsec_configuration)), and they
+in [Crowdsec configuration](/configuration/crowdsec_configuration.md)), and they
 will be read _before_ `profiles.yaml`. In this case, you may want to provide
 `on_success: break` because the YAML files are not merged together, but read as
 a single multi-document configuration.

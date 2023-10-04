@@ -48,7 +48,7 @@ sidebar_position: 3
    - `false_positive`: A list of false positives tags associated with the IP. Any IP with `known_false_positive` tags shouldn't be considered as malicious
    - `classifications`: A list of categories associated with the IP. Those data can be sourced from 3rd parties (i.e. tor exit nodes list). [An exhaustive list](#list-of-common-classifications) is available bellow,
  - `attack details`: A more exhaustive list of the scenarios for which a given IP was reported. Each entry contains the following information :
-   - `name`: name of the scenario (see [hub.crowdsec.net](hub.crowdsec.net))
+   - `name`: name of the scenario (see [hub.crowdsec.net](https://hub.crowdsec.net/))
    - `label`, `description`: Human-friendly descriptions of said scenarios
  - `target_countries`: The top 10 reports repartition by country about the IP, as a percentage
  - `background_noise_score`: Evaluate the noisiness of an IP address, from a scale of 0 (not noisy) to 10 (extremely noisy)

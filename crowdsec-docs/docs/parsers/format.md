@@ -171,7 +171,7 @@ DEBU[31-07-2020 16:36:28]        evt.Parsed.program = 'nginx'           id=withe
 filter: expression
 ```
 
-`filter` must be a valid [expr](/expr/helpers.md) expression that will be evaluated against the [event](/expr/event.md).
+`filter` must be a valid [expr](/expr/intro.md) expression that will be evaluated against the [event](/expr/event.md).
 
 If `filter` evaluation returns true or is absent, node will be processed.
 
@@ -194,7 +194,7 @@ A valid grok pattern
 
 #### `expression`
 
-A valid [expr](/expr/helpers.md) expression that return a string to apply the pattern on.
+A valid [expr](/expr/intro.md) expression that return a string to apply the pattern on.
 
 #### `apply_on`
 
@@ -463,11 +463,11 @@ The name of the stash. Distinct parsers can manipulate the same cache.
 
 #### `key`
 
-The [expression](/expr/helpers.md) that defines the string that will be used as a key.
+The [expression](/expr/intro.md) that defines the string that will be used as a key.
 
 #### `value`
 
-The [expression](/expr/helpers.md) that defines the string that will be used as a value.
+The [expression](/expr/intro.md) that defines the string that will be used as a value.
 
 #### `ttl`
 
