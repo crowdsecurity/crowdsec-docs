@@ -130,7 +130,7 @@ A good example is the [crowdsecurity/whitelist-good-actors](https://hub.crowdsec
 But let's craft ours based on our previous example !
 First of all, install the [crowdsecurity/rdns postoverflow](https://hub.crowdsec.net/author/crowdsecurity/configurations/rdns) : it will be in charge of enriching overflows with reverse dns information of the offending IP address.
 
-Let's put the following file in `/etc/crowdsec/postoverflows/s01-whitelists/mywhitelists.yaml` :
+Let's put the following file in `/etc/crowdsec/postoverflows/s01-whitelist/mywhitelists.yaml` :
 
 ```yaml
 name: me/my_cool_whitelist

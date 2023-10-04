@@ -76,6 +76,7 @@ api:
     console_path: /etc/crowdsec/console.yaml
     online_client: # Crowdsec API
       credentials_path: /etc/crowdsec/online_api_credentials.yaml
+#    disable_remote_lapi_registration: false
 #    capi_whitelists_path: /etc/crowdsec/capi_whitelists.yaml
 #    tls:
 #      cert_file: /etc/crowdsec/ssl/cert.pem
@@ -127,7 +128,7 @@ export DB_PASSWORD="<db_password>"
 If the variable is not defined, crowdsec >= 1.5.0 will leave the original
 string. This is to allow for literal `$` characters, especially in passwords:
 versions before 1.5.0 replaced a non-existent reference with an empty string
-which corrupted the password and made it harder to find configuration mistakeh.
+which corrupted the password and made it harder to find configuration mistakes.
 
 
 ## Overriding values
@@ -226,7 +227,7 @@ db_config:
   db_name:  "<db_name>"      # for mysql/pgsql
   host:     "<db_host_ip>"   # for mysql/pgsql
   port:     "<db_host_port>" # for mysql/pgsql
-  sslmode:  "<required/disable>" # for pgsql
+  sslmode:  "<require/disable>" # for pgsql
   use_wal:  "true|false" # for sqlite
   max_open_conns: "<max_number_of_conns_to_db>"
   flush:
@@ -239,6 +240,12 @@ db_config:
       cert: "<max_duration_since_last_push>"
       login_password: "<max_duration_since_last_push>"
 api:
+  cti:
+    key: "<api_cti_key>"
+    cache_timeout: "60m"
+    cache_size: 50
+    enabled: "(true|false)"
+    log_level: "(info|debug|trace)"
   client:
     insecure_skip_verify: "(true|false)"
     credentials_path: "<path_to_local_api_client_credential_file>"
@@ -251,6 +258,8 @@ api:
     console_path: <path_to_console_file>
     online_client:
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
+    disable_remote_lapi_registration: (true|false)
+    capi_whitelists_path: "<path_to_capi_whitelists_file>"
     tls:
       cert_file: "<path_to_certificat_file>"
       key_file: "<path_to_certificat_key_file>"
@@ -509,8 +518,9 @@ db_config:
   db_name:  "<db_name>"      # for mysql/postgresql/pgx
   host:     "<db_host_ip>"   # for mysql/postgresql/pgx # must be omitted if using socket file
   port:     "<db_host_port>" # for mysql/postgresql/pgx # must be omitted if using socket file
-  sslmode:  "<required/disable>" # for postgresql/pgx
+  sslmode:  "<require/disable>" # for postgresql/pgx
   max_open_conns: "<max_number_of_conns_to_db>"
+  decision_bulk_size: "<decision_bulk_size>"
   flush:
     max_items: "<max_alerts_in_db>"
     max_age: "<max_age_of_alerts_in_db>"
@@ -604,13 +614,15 @@ db_config:
 ```
 The port to connect to (only if the type of database is `mysql` or `postgresql`). Must be omitted if using socket file.
 
+#### `sslmode`
+
 ```yaml
 db_config:
   type: postgresql
 
-  sslmode: required
+  sslmode: require
 ```
-Required or disable ssl connection to database (only if the type of database is `postgresql`)
+Require or disable ssl connection to database (only if the type of database is `postgresql`). See [PostgreSQL SSL modes](https://www.postgresql.org/docs/current/libpq-ssl.html#LIBPQ-SSL-SSLMODE-STATEMENTS) for possible values.
 
 #### `max_open_conns`
 
@@ -623,6 +635,21 @@ Maximum number of open connections to the database.
 
 Defaults to 100. Set to 0 for unlimited connections.
 
+
+#### `decision_bulk_size`
+
+```yaml
+db_config:
+  decision_bulk_size: 1000
+```
+Maximum number of decisions inserted or updated in a single query.
+
+Added in v1.5.3.
+
+This can affect the responsiveness of the system. If you use big blocklists
+on devices like raspberry or similar appliances with slow disks, you can
+raise this up to 2000. Higher values will still be interpreted as 2000
+due to query size limits.
 
 #### `use_wal`
 
@@ -708,6 +735,12 @@ The api section is used by both `cscli`, `crowdsec` and the local API.
 
 ```yaml
 api:
+  cti:
+    key: "<api_cti_key>"
+    cache_timeout: "60m"
+    cache_size: 50
+    enabled: "(true|false)"
+    log_level: "(info|debug|trace)"
   client:
     insecure_skip_verify: "(true|false)"
     credentials_path: "<path_to_local_api_client_credential_file>"
@@ -720,6 +753,8 @@ api:
     console_path: <path_to_console_file>
     online_client:
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
+    disable_remote_lapi_registration: (true|false)
+    capi_whitelists_path: "<path_to_capi_whitelists_file>"
     tls:
       cert_file: "<path_to_certificat_file>"
       key_file: "<path_to_certificat_key_file>"
@@ -733,6 +768,54 @@ api:
       cache_expiration: "<cache_duration_for_revocation_check>"
       
 ```
+
+#### `cti`
+
+The cti subsection is used by `crowdsec` and `cscli` to query the CrowdSec CTI.
+
+```yaml
+cti:
+  key: "<api_cti_key>"
+  cache_timeout: "60m"
+  cache_size: 50
+  enabled: "(true|false)"
+  log_level: "(info|debug|trace)"
+```
+
+##### `key`
+>string
+
+The API key to use to query the CTI. This key is generated via [console](https://app.crowdsec.net/)
+
+##### `cache_timeout`
+>string
+
+The duration to cache the CTI API response.
+
+Supported units:
+
+ - `s`: seconds
+
+ - `m`: minutes
+
+ - `h`: hours
+
+ - `d`: days
+
+##### `cache_size`
+>int
+
+The number of CTI API responses to cache.
+
+##### `enabled`
+>bool
+
+Whether to enable the CTI integration.
+
+##### `log_level`
+>string
+
+The log level for the CTI integration.
 
 #### `client`
 
@@ -772,7 +855,8 @@ server:
   console_path: <path_to_console_file>
   online_client:
     credentials_path: <path_to_crowdsec_api_client_credential_file>
-  capi_whitelists_path: <path_to_capi_whitelists_file>
+  disable_remote_lapi_registration: (true|false)
+  capi_whitelists_path: "<path_to_capi_whitelists_file>"
   tls:
     cert_file: <path_to_certificat_file>
     key_file: <path_to_certificat_key_file>
@@ -805,6 +889,11 @@ The path to the profiles configuration.
 > string
 
 The path to the console configuration.
+
+#### `disable_remote_lapi_registration`
+> bool
+
+This option will disable the registration of remote agents using `cscli lapi register` command. As by default the local API registration will create a machine in the database (not validated), this option will prevent the creation of a machine in the database.
 
 ##### `capi_whitelists_path`
 > string

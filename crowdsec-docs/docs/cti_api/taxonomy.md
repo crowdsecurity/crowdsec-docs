@@ -86,14 +86,14 @@ sidebar_position: 3
 |------|-------|-------------|
 | database:bruteforce | Database Bruteforce | IP has been reported for performing brute force on databases. |
 | ftp:bruteforce | FTP Bruteforce | IP has been reported for performing brute force on FTP services. |
-| generic:exploit | Exploitation attempt | IP has been reported trying to exploit known vulnerability/CVE on unspecified protocol. |
-| http:bruteforce | HTTP Bruteforce | IP has been reported for performing a HTTP brute force attack (either generic http probing or applicative related brute force). |
+| generic:exploit | Exploitation attempt | IP has been reported trying to exploit known vulnerability/CVE on unspecified protocols. |
+| http:bruteforce | HTTP Bruteforce | IP has been reported for performing a HTTP brute force attack (either generic HTTP probing or applicative related brute force). |
 | http:crawl | HTTP Crawl | IP has been reported for performing aggressive crawling of web applications. |
 | http:exploit | HTTP Exploit | IP has been reported for attempting to exploit a vulnerability in a web application. |
 | http:scan | HTTP Scan | IP has been reported for performing actions related to HTTP vulnerability scanning and discovery. |
 | http:spam | Web form spam | IP has been reported trying to perform spam via web forms/forums. |
-| iot:bruteforce | IOT Bruteforce | IP has been reported for performing brute force on IOT management interfaces. |
-| ldap:bruteforce | LDAP Bruteforce | IP has been reported for performing brute force on ldap services. |
+| iot:bruteforce | IOT Bruteforce | IP has been reported for performing brute force on IoT management interfaces. |
+| ldap:bruteforce | LDAP Bruteforce | IP has been reported for performing brute force on LDAP services. |
 | pop3/imap:bruteforce | POP3/IMAP Bruteforce | IP has been reported for performing a POP3/IMAP brute force attack. |
 | sip:bruteforce | SIP Bruteforce | IP has been reported for performing a SIP (VOIP) brute force attack. |
 | smb:bruteforce | SMB Bruteforce | IP has been reported for performing brute force on samba services. |
@@ -101,7 +101,7 @@ sidebar_position: 3
 | ssh:bruteforce | SSH Bruteforce | IP has been reported for performing brute force on ssh services. |
 | tcp:scan | TCP Scan | IP has been reported for performing TCP port scanning. |
 | telnet:bruteforce | TELNET Bruteforce | IP has been reported for performing brute force on telnet services. |
-| vm-management:bruteforce | VM Management Bruteforce | IP has been reported for performing brute force on virtual environement management applications. |
+| vm-management:bruteforce | VM Management Bruteforce | IP has been reported for performing brute force on virtual environment management applications. |
 | windows:bruteforce | SMB/RDP bruteforce | IP has been reported for performing brute force on Windows (samba, remote desktop) services. |
 
 ## False positives
@@ -114,38 +114,47 @@ sidebar_position: 3
 | msp:scanner | Legitimate Scanner | IP belongs to a known 'legitimate' scanner (MSP) and should not be flagged as a threat. |
 | seo:crawler | SEO crawler | IP belongs to a known SEO crawler and should not be flagged as a threat. |
 | seo:duckduckbot | Duckduckbot SEO crawler | IP belongs to Duckduckbot SEO crawler and should not be flagged as a threat. |
+| seo:googlebot | Googlebot SEO crawler | IP belongs to Googlebot SEO crawler and should not be flagged as a threat. |
+| seo:bingbot | Bingbot SEO crawler | IP belongs to Bingbot SEO crawler and should not be flagged as a threat. |
 | seo:pinterest | Pinterest crawler | IP belongs to Pinterest crawler and should not be flagged as a threat. |
 | seo:crawler | SEO crawler | IP belongs to a known SEO crawler and should not be flagged as a threat. |
+| dns:public | Public DNS resolver | IP belongs to a known public DNS resolver and should not be flagged as a threat. |
+| scanner:enterprise | Legit Security Company | IP belongs to a company that scans its clients |
 
 ## Classifications
 
 | Name | Label | Description | 
 |------|-------|-------------|
-| community-blocklist | CrowdSec Community Blocklist | IP belong to the CrowdSec Community Blocklist |
-| profile:insecure_services | Dangerous Services Exposed | IP exposes dangerous services (vnc, telnet, rdp), possibly due to a misconfiguration or because it's a honeypot. |
-| profile:many_services | Many Services Exposed | IP exposes many open port, possibly due to a misconfiguration or because it's a honeypot. |
+| community-blocklist | CrowdSec Community Blocklist | IP belongs to the CrowdSec Community Blocklist |
+| profile:insecure_services | Dangerous Services Exposed | IP exposes dangerous services (VNC, Telnet, RDP), possibly due to a misconfiguration or because it's a honeypot. |
+| profile:many_services | Many Services Exposed | IP exposes many open ports, possibly due to a misconfiguration or because it's a honeypot. |
 | proxy:tor | TOR exit node | IP is being flagged as a TOR exit node. |
 | proxy:vpn | VPN | IP exposes a VPN service or is being flagged as one. |
 | range:data_center | Data Center | IP is known to be hosted in a data center. |
-| scanner:alphastrike | Known Security Company | IP belongs to a company that scans internet : AlphaSrike. |
-| scanner:binaryedge | Known Security Company | IP belongs to a company that scans internet : binaryedge. |
-| scanner:censys | Known Security Company | IP belongs to a company that scans internet : Censys. |
-| scanner:cert.ssi.gouv.fr | Known CERT | IP belongs to an entity that scans internet : cert.ssi.gouv.fr. |
-| scanner:cisa.dhs.gov | Known CERT | IP belongs to an entity that scans internet : cisa.dhs.gov. |
-| scanner:internet-census | Known Security Company | IP belongs to a company that scans internet : internet-census. |
-| scanner:leakix | Known Security Company | IP belongs to a company that scans internet : leakix. |
-| scanner:legit | Legit scanner | IP belongs to a company that scans internet |
-| scanner:shadowserver.org | Known Security Company | IP belongs to an entity that scans internet : www.shadowserver.org. |
-| scanner:shodan | Known Security Company | IP belongs to a company that scans internet : Shodan. |
-| scanner:stretchoid | Known Security Company | IP belongs to an entity that scans internet : stretchoid. |
+| scanner:alphastrike | Known Security Company | IP belongs to a company that scans the internet: AlphaSrike. |
+| scanner:arcticwolf | Known Security Company | IP belongs to an entity that scans the internet: Arctic Wolf |
+| scanner:qualys | Known Security Company | IP belongs to a company that scans the internet: Qualys. |
+| scanner:binaryedge | Known Security Company | IP belongs to a company that scans the internet: binaryedge. |
+| scanner:censys | Known Security Company | IP belongs to a company that scans the internet: Censys. |
+| scanner:cert.ssi.gouv.fr | Known CERT | IP belongs to an entity that scans the internet: cert.ssi.gouv.fr. |
+| scanner:cisa.dhs.gov | Known CERT | IP belongs to an entity that scans the internet: cisa.dhs.gov. |
+| scanner:internet-census | Known Security Company | IP belongs to a company that scans the internet: internet-census. |
+| scanner:leakix | Known Security Company | IP belongs to a company that scans the internet: leakix. |
+| scanner:legit | Legit scanner | IP belongs to a security company |
+| scanner:mass | Legit scanner | IP belongs to a company that scans the internet |
+| scanner:shadowserver.org | Known Security Company | IP belongs to an entity that scans the internet: www.shadowserver.org. |
+| scanner:shodan | Known Security Company | IP belongs to a company that scans the internet: Shodan. |
+| scanner:stretchoid | Known Security Company | IP belongs to an entity that scans the internet: Stretchoid. |
 | profile:fake_rdns | Fake RDNS | IP is using a fake RDNS |
 | profile:nxdomain | NXDOMAIN | RDNS doesn't exist |
-| profile:router | Router | IP belongs to a router exping services on the internet |
+| profile:router | Router | IP belongs to a router exposing services on the internet |
 | profile:proxy | Proxy | IP exposes services that are commonly used by proxies |
-| profile:jupiter-vpn | JupiterVPN | IP belongs to a jupiter vpn |
+| profile:corporate-proxy | Corporate Proxy | IP exposes services that are commonly used by proxies |
+| profile:jupiter-vpn | JupiterVPN | IP belongs to a Jupiter VPN |
 | device:cyberoam | Cyberoam | IP belongs to a Cyberoam router |
 | device:microtik | Mikrotik | IP belongs to a Mikrotik router |
-| device:asuswrt | AsusWRT | IP belongs to a AsusWRT router |
+| device:asuswrt | AsusWRT | IP belongs to an AsusWRT router |
 | device:hikvision | Hikvision | IP belongs to a Hikvision camera |
-| device:ipcam | IpCamera | IP belongs to a IP camera |
-| profile:likely_botnet | Likely Botnet | IP is likely to belong to a botnet (based on behaviour and/or characteristics) |
+| device:ipcam | IpCamera | IP belongs to an IP camera |
+| profile:likely_botnet | Likely Botnet | IP is likely to belong to a botnet (based on behavior and/or characteristics) |
+| crowdsec:ai_vpn_proxy | VPN or Proxy | IP is identified as a VPN or a Proxy by CrowdSec AI Detection Algorithm |

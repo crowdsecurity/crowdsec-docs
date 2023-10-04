@@ -27,26 +27,27 @@ cscli dashboard setup -l 0.0.0.0 -p 443 --password <password>
 ### Options
 
 ```
-  -d, --dir string        Shared directory with metabase container.
-  -f, --force             Force setup : override existing files.
-  -h, --help              help for setup
-  -l, --listen string     Listen address of container (default "127.0.0.1")
-      --password string   metabase password
-  -p, --port string       Listen port of container (default "3000")
-  -y, --yes               force  yes
+  -d, --dir string              Shared directory with metabase container
+  -f, --force                   Force setup : override existing files
+  -h, --help                    help for setup
+  -l, --listen string           Listen address of container (default "127.0.0.1")
+      --metabase-image string   Metabase image to use (default "metabase/metabase:v0.46.6.1")
+      --password string         metabase password
+  -p, --port string             Listen port of container (default "3000")
+  -y, --yes                     force  yes
 ```
 
 ### Options inherited from parent commands
 
 ```
-      --color string    Output color: yes, no, auto. (default "auto")
+      --color string    Output color: yes, no, auto (default "auto")
   -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
-      --debug           Set logging to debug.
-      --error           Set logging to error.
-      --info            Set logging to info.
-  -o, --output string   Output format: human, json, raw.
-      --trace           Set logging to trace.
-      --warning         Set logging to warning.
+      --debug           Set logging to debug
+      --error           Set logging to error
+      --info            Set logging to info
+  -o, --output string   Output format: human, json, raw
+      --trace           Set logging to trace
+      --warning         Set logging to warning
 ```
 
 ### SEE ALSO

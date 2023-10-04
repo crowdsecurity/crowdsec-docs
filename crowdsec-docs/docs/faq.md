@@ -136,7 +136,7 @@ Several initiatives have been taken to tackle the false positives approach as ea
  - The scenarios published on the hub are tailored to favor low false positive rates
  - You can find [generic whitelists](https://hub.crowdsec.net/author/crowdsecurity/collections/whitelist-good-actors) that should allow to cover most common cases (SEO whitelists, CDN whitelists etc.)
  - The [simulation configuration](/scenarios/simulation.md) allows you to keep a tight control over scenario and their false positives
- - Or add your own [whitelists](/whitelist/create.md)
+ - Or add your own [whitelists](/whitelist/introduction.md)
 
 
 ## I need some help

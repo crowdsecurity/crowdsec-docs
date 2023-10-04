@@ -12,20 +12,6 @@ Parses a string representation of a float number to an actual float number (bind
 
 > `Atof(evt.Parsed.tcp_port)`
 
-### `File(FileName) []string`
-
-Returns the content of `FileName` as an array of string, while providing cache mechanism.
-
-> `evt.Parsed.some_field in File('some_patterns.txt')`
-
-> `any(File('rdns_seo_bots.txt'), { evt.Enriched.reverse_dns endsWith #})`
-
-### `RegexpInFile(StringToMatch, FileName) bool`
-
-Returns `true` if the `StringToMatch` is matched by one of the expressions contained in `FileName` (uses RE2 regexp engine).
-
-> `RegexpInFile( evt.Enriched.reverse_dns, 'my_legit_seo_whitelists.txt')`
-
 ### `Upper(string) string`
 
 Returns the uppercase version of the string
