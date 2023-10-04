@@ -23,6 +23,14 @@ sudo cscli lapi context add --key target_fqdn --value evt.Meta.target_fqdn
 sudo cscli lapi context add --key user_agent --value evt.Parsed.http_user_agent
 ```
 
+It is not mandatory to specify the key. If you don't specify it, it will be guessed from the value field.
+For example, running this command:
+
+```bash
+sudo cscli lapi context add --value evt.Meta.target_fqdn
+```
+
+Will add the context with the key `target_fqdn`.
 
 ## Vizualise alert context
 
