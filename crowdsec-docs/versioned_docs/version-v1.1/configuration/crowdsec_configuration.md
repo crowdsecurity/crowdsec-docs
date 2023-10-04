@@ -327,7 +327,7 @@ db_config:
   sslmode:  "<require/disable>" # for pgsql
   flush:
     max_items: "<max_alerts_in_db>"
-	  max_age: "<max_age_of_alerts_in_db>"
+    max_age: "<max_age_of_alerts_in_db>"
 ```
 
 #### `type`
