@@ -7,20 +7,18 @@ const TableRender = ({ columns, url }) => {
 
     const [jsonContent, setJsonContent] = useState()
 
-    const globalTheme = useTheme();
-
     const currentTheme = localStorage.getItem('theme')
     const isLight = currentTheme === 'light'
 
     const tableTheme =
         createTheme({
             palette: {
-                mode: currentTheme, //let's use the same dark/light mode as the global theme
+                mode: currentTheme,
                 background: {
                     default:
                         isLight
-                            ? 'rgb(255,255,255)' //random light yellow color for the background in light mode
-                            : '#000', //pure black table in dark mode for fun
+                            ? 'rgb(255,255,255)'
+                            : '#000',
                 },
             },
         },
@@ -55,6 +53,11 @@ const TableRender = ({ columns, url }) => {
                 data={jsonContent}
                 columns={columns}
                 enableColumnResizing={true}
+                initialState={{ pagination: { pageSize: 25 } }}
+                enableGlobalFilter={true}
+                muiTablePaginationProps={{
+                    rowsPerPageOptions: [10, 15, 25, 50, 100],
+                }}
             />
         </ThemeProvider>
     );
