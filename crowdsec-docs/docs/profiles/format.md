@@ -51,7 +51,7 @@ filters:
  - Alert.Remediation == true && Alert.GetScope() == "Ip"
 ```
 
-If any `filter` of the list returns `true`, the profile is eligible and the `decisions` will be applied (note: `filter` can use [expr helpers](/expr/helpers.md)).
+If any `filter` of the list returns `true`, the profile is eligible and the `decisions` will be applied (note: `filter` can use [expr helpers](/expr/intro.md)).
 
 The filter allows you to then create custom decisions for some specific scenarios for example:
 
@@ -113,7 +113,7 @@ duration_expr: "Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)"
 If the profile applies, and the `duration_expr` generates a valid [golang's duration](https://pkg.go.dev/time#ParseDuration), it will replace the decision duration.
 
 It can be used to have custom duration. For example, you can have an increased duration every time an attacker comes back.
-It relies on [expr helpers](/expr/helpers.md).
+It relies on [expr helpers](/expr/intro.md).
 
 ### `on_success`
 

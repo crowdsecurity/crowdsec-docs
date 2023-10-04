@@ -37,7 +37,7 @@ cscli scenarios remove crowdsecurity/ssh-bf
 
 ### SEE ALSO
 
-* [cscli](/docs/v1.0/cscli/cscli)	 - cscli allows you to manage crowdsec
+* [cscli](/docs/v1.0/cscli/)	 - cscli allows you to manage crowdsec
 * [cscli scenarios inspect](/docs/v1.0/cscli/cscli_scenarios_inspect)	 - Inspect given scenario
 * [cscli scenarios install](/docs/v1.0/cscli/cscli_scenarios_install)	 - Install given scenario(s)
 * [cscli scenarios list](/docs/v1.0/cscli/cscli_scenarios_list)	 - List all scenario(s) or given one

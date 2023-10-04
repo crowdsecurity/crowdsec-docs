@@ -49,7 +49,7 @@ sudo cscli decisions list
  - `ALERT ID` is the ID of the corresponding alert
 
 
-Check [command usage](/docs/v1.0/cscli/cscli) for additional filtering and output control flags.
+Check [command usage](/docs/v1.0/cscli/) for additional filtering and output control flags.
 
 
 ## Add a decision

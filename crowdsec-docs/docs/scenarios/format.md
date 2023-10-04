@@ -208,7 +208,7 @@ A reference to third party documents. This is a list of string.
 filter: expression
 ```
 
-`filter` must be a valid [expr](/expr/helpers.md) expression that will be evaluated against the event.
+`filter` must be a valid [expr](/expr/intro.md) expression that will be evaluated against the event.
 
 If `filter` evaluation returns true or is absent, event will be pour in the bucket.
 
@@ -258,7 +258,7 @@ groupby: evt.Meta.source_ip
 ```
 
 
-An [expression](/expr/helpers.md) that must return a string. This string will be used as a partition for the buckets.
+An [expression](/expr/intro.md) that must return a string. This string will be used as a partition for the buckets.
 
 
 #### Examples
@@ -289,7 +289,7 @@ distinct: evt.Meta.http_path
 ```
 
 
-An [expression](/expr/helpers.md) that must return a string. The event will be poured **only** if the string is not already present in the bucket.
+An [expression](/expr/intro.md) that must return a string. The event will be poured **only** if the string is not already present in the bucket.
 
 #### Examples
 
@@ -512,7 +512,7 @@ Cache size will affect the number of events you receive within an alert. If you 
 overflow_filter: any(queue.Queue, { .Enriched.IsInEU  == "true" })
 ```
 
-`overflow_filter` is an [expression](/expr/helpers.md) that is run when the bucket overflows.
+`overflow_filter` is an [expression](/expr/intro.md) that is run when the bucket overflows.
 If this expression is present and returns false, the overflow will be discarded.
 
 ---
@@ -522,7 +522,7 @@ If this expression is present and returns false, the overflow will be discarded.
 cancel_on: evt.Parsed.something == 'somevalue'
 ```
 
-`cancel_on` is an [expression](/expr/helpers.md) that runs on each event poured to the bucket.
+`cancel_on` is an [expression](/expr/intro.md) that runs on each event poured to the bucket.
 If the `cancel_on` expression returns true, the bucket is immediately destroyed (and doesn't overflow).
 
 

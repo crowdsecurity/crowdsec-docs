@@ -26,6 +26,6 @@ Manage interaction with Crowdsec console (https://app.crowdsec.net)
 
 ### SEE ALSO
 
-* [cscli](/docs/v1.0/cscli/cscli)	 - cscli allows you to manage crowdsec
+* [cscli](/docs/v1.0/cscli/)	 - cscli allows you to manage crowdsec
 * [cscli console enroll](/docs/v1.0/cscli/cscli_console_enroll)	 - Enroll this instance to https://app.crowdsec.net [requires local API]
 

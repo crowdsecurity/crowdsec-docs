@@ -27,7 +27,7 @@ The Security Engine by default uses the following ports:
   - 8080/tcp for the API
   - 6060/tcp for the Prometheus metrics / Debugging
 
-If these ports are not available on your system, you can change them in the configuration file post installation. See [Configuration](/docs/configuration.md) for more information.
+If these ports are not available on your system, you can change them in the configuration file post installation. See [Configuration](/configuration/crowdsec_configuration.md) for more information.
 
 Please note that the API is mandatory for your security engine, do not remove it from your configuration.
 

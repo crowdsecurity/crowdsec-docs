@@ -15,7 +15,7 @@ Name | Type | Stream | One-shot
 [file](/data_sources/file.md) | single files, glob expressions and .gz files | yes | yes
 [journald](/data_sources/journald.md) | journald via filter | yes | yes
 [AWS cloudwatch](/data_sources/cloudwatch.md) | single stream or log group | yes | yes
-[syslog service](/data_sources/syslog.md) | read logs received via syslog protocol | yes | no
+[syslog service](/data_sources/syslog_service.md) | read logs received via syslog protocol | yes | no
 [docker](/data_sources/docker.md) | read logs from docker containers | yes | yes
 [AWS kinesis](/data_sources/kinesis.md)| read logs from a kinesis strean | yes | no
 [Kafka](/data_sources/kafka.md)| read logs from kafka topic | yes | no
