@@ -244,6 +244,7 @@ labels:
   label: "SSH Bruteforce"
   behavior : "ssh:bruteforce"
   remediation: true
+  cti: true
 ```
 
 ---
@@ -472,6 +473,12 @@ The chance between 0 and 3 that the attacker behind the attack can spoof its ori
 
 The confidence note between 0 and 3 that the scenario will not trigger false positive.
 0 means no confidence and 3 means high confident.
+
+#### `cti`
+>type: bool [true|false]
+
+Specify that the scenario is used mostly for auditing and not to detect threat.
+`false` means that the scenario is not to detect threat.
 
 ---
 ### `blackhole`

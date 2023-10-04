@@ -48,6 +48,7 @@ Those `labels` are:
  - `confidence`: between 0 and 3, is the confidence that the scenario will not trigger false positive
  - `behaviors`: an existing behavior in [this file](https://github.com/crowdsecurity/hub/blob/scenario_taxonomy/taxonomy/behaviors.json)
  - `label` : a human readable name for the scenario
+ - `cti` : (optional) true or false, used to specify that a scenario is mainly used for audit rather than detecting a threat 
 
 [Here](/scenarios/format.md#labels) is the `labels` documentation for more information.
 
