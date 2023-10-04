@@ -24,7 +24,7 @@ There are three kinds of authentication to the Local API :
 
  - Machines: they authenticate with a login and password and can not only read decisions, but create new ones too
 
- - TLS client certificates: it allows you to connect new bouncers or agents to the local API without registring them first 
+ - TLS client certificates: it allows you to connect new bouncers or machines to the local API without registring them first 
 
 
 ### Bouncers

@@ -8,7 +8,7 @@ Register a machine to Local API (LAPI)
 
 ### Synopsis
 
-Register you machine to the Local API (LAPI).
+Register your machine to the Local API (LAPI).
 Keep in mind the machine needs to be validated by an administrator on LAPI side to be effective.
 
 ```
@@ -27,14 +27,14 @@ cscli lapi register [flags]
 ### Options inherited from parent commands
 
 ```
-      --color string    Output color: yes, no, auto. (default "auto")
+      --color string    Output color: yes, no, auto (default "auto")
   -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
-      --debug           Set logging to debug.
-      --error           Set logging to error.
-      --info            Set logging to info.
-  -o, --output string   Output format: human, json, raw.
-      --trace           Set logging to trace.
-      --warning         Set logging to warning.
+      --debug           Set logging to debug
+      --error           Set logging to error
+      --info            Set logging to info
+  -o, --output string   Output format: human, json, raw
+      --trace           Set logging to trace
+      --warning         Set logging to warning
 ```
 
 ### SEE ALSO

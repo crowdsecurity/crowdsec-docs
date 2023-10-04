@@ -187,7 +187,7 @@ We can see that our log lines were successfully parsed by both syslog-logs and m
 ## Parser creation : actual parser
 
 
-Let's modify our parser, `./parsers/crowdsecurity/s01-parse/myservice-logs.yaml` :
+Let's modify our parser, `./parsers/s01-parse/crowdsecurity/myservice-logs.yaml` :
 
 ```yaml
 onsuccess: next_stage

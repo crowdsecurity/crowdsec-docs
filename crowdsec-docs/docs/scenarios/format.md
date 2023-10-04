@@ -37,10 +37,21 @@ type: leaky|trigger|counter|conditional|bayesian
 Defines the type of the bucket. Currently five types are supported :
 
  - `leaky` : a [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) that must be configured with a [capacity](#capacity) and a [leakspeed](#leakspeed)
- - `trigger` : a bucket that overflows as soon as an event is poured (it is like a leaky bucket is a capacity of 0)
- - `counter` : a bucket that only overflows every [duration](#duration). It is especially useful to count things.
- - `conditional`: a bucket that overflows when the expression given in `condition` returns true. Useful if you want to look back at previous events that were poured to the bucket (to detect impossible travel or more behavioral patterns for example). If the capacity is not set to `-1`, it can overflow like a standard `leaky` bucket.
- - `bayesian` : a bucket that runs bayesian inference internally. The overflow will trigger when the posterior probability reaches the threshold. This is useful for instance if the behaivor is a combination of events which alone wouldn't be worthy of suspicious.
+ - `trigger` : a bucket that overflows as soon as an event is poured
+   (it is like a leaky bucket is a capacity of 0)
+ - `counter` : a bucket that only overflows every
+   [duration](#duration). It is especially useful to count things.
+ - `conditional`: a bucket that overflows when the expression given in
+   `condition` returns true. Useful if you want to look back at
+   previous events that were poured to the bucket (to detect
+   impossible travel or more behavioral patterns for example). It
+   can't overflow like a leaky bucket and its capacity is
+   ignored. Incase the conditional bucket is meant to be used to hold
+   a large number of events, consider use the cashe_size field.
+ - `bayesian` : a bucket that runs bayesian inference internally. The
+   overflow will trigger when the posterior probability reaches the
+   threshold. This is useful for instance if the behaivor is a
+   combination of events which alone wouldn't be worthy of suspicious.
 
 
 #### Examples:
@@ -328,7 +339,7 @@ Should be set to `-1` in most situations for `conditional` buckets.
 leakspeed: "10s"
 ```
 
-Only applies to `leaky` buckets.
+Only applies to `leaky` and  `conditional` buckets.
 
 A duration that represent how often an event will be leaking from the bucket.
 
@@ -557,6 +568,10 @@ However, for a number of cases, you don't want this, as it might lead to excessi
 
 By setting `cache_size` to a positive integer, we can control the maximum in-memory cache size of the bucket, without changing its capacity and such. It is useful when buckets are likely to stay alive for a long time or ingest a lot of events to avoid storing a lot of events in memory.
 
+:::info
+Cache size will affect the number of events you receive within an alert. If you set a cache size to 5, you will only receive the last 6 events (Cache size including the overflow) in the alert. Any pipelines that rely on the alert object will be affected (Notification, Profiles, Postoverflow).
+:::
+
 ---
 ### `overflow_filter`
 
@@ -588,11 +603,18 @@ data:
     [type: (regexp|string)]    
 ```
 
+:::info
+`dest_file` is relative to the data directory set within `config.yaml` default per OS:
+- Linux: `/var/lib/crowdsec/data`
+- Freebsd: `/var/db/crowdsec/data`
+- Windows: `C:\programdata\crowdsec\data`
+:::
+
 `data` allows to specify an external source of data.
 
-This section is only relevant when `cscli` is used to install scenario from hub, as it will download the `source_url` and store it to `dest_file`. 
+The `source_url` section is only relevant when `cscli` is used to install scenario from hub, as it will download the `source_url` and store it in the `dest_file` within the data directory. 
 
-When the scenario is not installed from the hub, CrowdSec won't download the URL, but the file must exist for the scenario to be loaded correctly.
+When the scenario is not installed from the hub, CrowdSec will not download the `source_url`, however, if the file exists at `dest_file` within the data directory it will still be loaded into memory.
 
 The `type` is mandatory if you want to evaluate the data in the file, and should be `regex` for valid (re2) regular expression per line or `string` for string per line.
 

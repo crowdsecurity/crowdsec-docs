@@ -3,72 +3,93 @@ id: email
 title: Email Plugin
 ---
 
-The Email plugin is by default shipped with your CrowdSec installation. The following guide shows how to enable it.
+The Email plugin is shipped by default with CrowdSec. This guide shows how to enable it.
 
 ## Enabling the plugin:
 
-In your profile file (by default `/etc/crowdsec/profiles.yaml`) , uncomment the section
+In the profile configuration (by default `/etc/crowdsec/profiles.yaml`) , uncomment the section:
+
 ```
 #notifications:
 # - email_default 
 ```
 
-Every alert which would pass the profile's filter would be dispatched to `email_default` plugin.
-## Configuring the plugin: 
+Every alert that passes the profile's filter will be dispatched to the `email_default` plugin.
 
-By default the configuration for email plugin is located at `/etc/crowdsec/notifications/email.yaml`.
-You'll need to fill the credentials for the SMTP server here. 
+## Configuring the plugin:
+
+The default configuration for the email plugin is located at `/etc/crowdsec/notifications/email.yaml`.
+You need to provide the credentials for the SMTP server here.
 
 ### Example configuration for Gmail
 
-Example config which mail's the alerts to `receiver@gmail.com`.
+Here's an example configuration that sends alerts to `receiver@gmail.com`:
 
 ```yaml
-# Don't change this
-type: email
+type: email           # Don't change
+name: email_default   # Must match the registered plugin in the profile
 
-name: email_default # this must match with the registered plugin in the profile
-log_level: info # Options include: trace, debug, info, warn, error, off
+# One of "trace", "debug", "info", "warn", "error", "off"
+log_level: info
 
-format: |  # This template receives list of models.Alert objects
+# group_wait:         # Time to wait collecting alerts before relaying a message to this plugin, eg "30s"
+# group_threshold:    # Amount of alerts that triggers a message before <group_wait> has expired, eg "10"
+# max_retry:          # Number of attempts to relay messages to plugins in case of error
+timeout: 20s          # Time to wait for response from the plugin before considering the attempt a failure, eg "10s"
+
+#-------------------------
+# plugin-specific options
+
+# The following template receives a list of models.Alert objects
+# The output goes in the email message body
+format: |
+  <html><body>
   {{range . -}}
     {{$alert := . -}}
     {{range .Decisions -}}
-      <a href=https://www.whois.com/whois/{{.Value}}>{{.Value}}</a> will get <b>{{.Type}}</b> for next <b>{{.Duration}}</b> for triggering <b>{{.Scenario}}</b>. <a href=https://www.shodan.io/host/{{.Value}}>Shodan</a>  
+      <p><a href="https://www.whois.com/whois/{{.Value}}">{{.Value}}</a> will get <b>{{.Type}}</b> for next <b>{{.Duration}}</b> for triggering <b>{{.Scenario}}</b> on machine <b>{{$alert.MachineID}}</b>.</p> <p><a href="https://app.crowdsec.net/cti/{{.Value}}">CrowdSec CTI</a></p>
     {{end -}}
   {{end -}}
+  </body></html>
 
-smtp_host: smtp.gmail.com
-smtp_username: myemail@gmail.com
-smtp_password: mypassword 
-smtp_port: 465
-sender_email: myemail@gmail.com
+smtp_host:            # example: smtp.gmail.com
+smtp_username:        # Replace with your actual username
+smtp_password:        # Replace with your actual password
+smtp_port:            # Common values are any of [25, 465, 587, 2525]
+auth_type:            # Valid choices are "none", "crammd5", "login", "plain"
+sender_name: "CrowdSec"
+sender_email:         # example: foo@gmail.com
+email_subject: "CrowdSec Notification"
 receiver_emails:
- - receiver@gmail.com
-encryption_type: ssltls # Required
-auth_type: login # "plain" also works
-email_subject: CrowdSec Notification
+# - email1@gmail.com
+# - email2@gmail.com
 
-# group_wait: # duration to wait collecting alerts before sending to this plugin, eg "30s"
+# One of "ssltls", "starttls", "none"
+encryption_type: "ssltls"
 
-# group_threshold: # if alerts exceed this, then the plugin will be sent the message. eg "10"
+# If you need to set the HELO hostname:
+# helo_host: "localhost"
 
-# max_retry: # number of tries to attempt to send message to plugins in case of error.
+# If the email server is hitting the default timeouts (10 seconds), you can increase them here
+#
+# connect_timeout: 10s
+# send_timeout: 10s
 
-timeout: 20s # duration to wait for response from plugin before considering this attempt a failure. eg "10s"
+---
 
+# type: email
+# name: email_second_notification
+# ...
 ```
 
-The configuration directive `format` is a [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
-
-The configuration directive ``encryption_type`` is either `none`, `starttls` and `ssltls` which are self-explanatory and the configuration directive ``auth_type`` is either `none`, `crammd5`, `login` or `plain`.
+The `format` configuration directive is a [go template](https://pkg.go.dev/text/template), which receives a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
 
 ## Final Steps:
 
-Let's restart crowdsec
+Restart CrowdSec with the following command:
 
 ```bash
 sudo systemctl restart crowdsec
 ```
 
-You can verify whether the plugin is properly working by triggering scenarios using tools like wapiti, nikto etc. 
+To verify if the plugin is functioning correctly, you can trigger scenarios using tools like wapiti, nikto etc. 
