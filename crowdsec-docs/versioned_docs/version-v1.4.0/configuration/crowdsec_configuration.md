@@ -571,7 +571,6 @@ db_config:
 ```
 The port to connect to (only if the type of database is `mysql` or `postgresql`)
 
-#### `sslmode`
 
 ```yaml
 db_config:

@@ -614,7 +614,6 @@ db_config:
 ```
 The port to connect to (only if the type of database is `mysql` or `postgresql`). Must be omitted if using socket file.
 
-#### `sslmode`
 
 ```yaml
 db_config:
