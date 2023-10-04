@@ -3,13 +3,10 @@ import { MaterialReactTable } from 'material-react-table';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material';
 
 
-const TableRender = ({ columns, url }) => {
 
-    const [jsonContent, setJsonContent] = useState()
-
-    const currentTheme = localStorage.getItem('theme')
+const getTheme = function () {
+    currentTheme = localStorage.getItem('theme')
     const isLight = currentTheme === 'light'
-
     const tableTheme =
         createTheme({
             palette: {
@@ -18,11 +15,17 @@ const TableRender = ({ columns, url }) => {
                     default:
                         isLight
                             ? 'rgb(255,255,255)'
-                            : '#000',
+                            : '#1b1b1d',
                 },
             },
         },
         )
+    return tableTheme
+}
+
+
+const TableRender = ({ columns, url }) => {
+    const [jsonContent, setJsonContent] = useState()
 
     useEffect(() => {
         fetch(url)
@@ -48,18 +51,20 @@ const TableRender = ({ columns, url }) => {
     }
 
     return (
-        <ThemeProvider theme={tableTheme}>
-            <MaterialReactTable
-                data={jsonContent}
-                columns={columns}
-                enableColumnResizing={true}
-                initialState={{ pagination: { pageSize: 25 } }}
-                enableGlobalFilter={true}
-                muiTablePaginationProps={{
-                    rowsPerPageOptions: [10, 15, 25, 50, 100],
-                }}
-            />
-        </ThemeProvider>
+        <BrowserOnly>
+            <ThemeProvider theme={getTheme()}>
+                <MaterialReactTable
+                    data={jsonContent}
+                    columns={columns}
+                    enableColumnResizing={true}
+                    initialState={{ pagination: { pageSize: 25 } }}
+                    enableGlobalFilter={true}
+                    muiTablePaginationProps={{
+                        rowsPerPageOptions: [10, 15, 25, 50, 100],
+                    }}
+                />
+            </ThemeProvider>
+        </BrowserOnly>
     );
 
 }
