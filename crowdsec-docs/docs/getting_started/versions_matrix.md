@@ -26,10 +26,10 @@ be aware of all the channels of crowdsec distribution. Our official distribution
 | FreeBSD | amd64/i386/arm64/armv7 | N/A | 13 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
 | FreeBSD | amd64/i386 | N/A | 14 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
 | FreeBSD | arm64/armv7 | N/A | 14 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
-| OPNsense | amd64 | N/A | 22.7 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
+| OPNsense | amd64 | N/A | 23.7 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
 | Windows | amd64 | to be defined | 1.5.4 | [github releases](https://github.com/crowdsecurity/crowdsec/releases/tag/v1.4.4)|
 | Windows | amd64 | to be defined | 1.4.2 | [chocolatey](https://community.chocolatey.org/packages?q=crowdsec) |
-| Linux | almost all OpenWRT supported platform | OpenWRT | 21.02/22.03 | 1.3.0 | [OpenWrt repository](https://openwrt.org/packages/pkgdata/crowdsec) |
+| Linux | almost all OpenWRT supported platform | OpenWRT | 23.05 | 1.5.4 | [OpenWrt repository](https://openwrt.org/packages/pkgdata/crowdsec) |
 | Linux/Windows | amd64/arm64 | docker | N/A | 1.5.4 | [dockerhub](https://hub.docker.com/r/crowdsecurity/crowdsec) |
 | helm chart | amd64/arm64 | helm | N/A | 1.5.4 | [helm chart](https://github.com/crowdsecurity/helm-charts) |
 | home assistant | amd64/arm64 | docker | N/A | 1.4.4 | [crowdsecurity home assistant addon repo](https://github.com/crowdsecurity/home-assistant-addons/)|
