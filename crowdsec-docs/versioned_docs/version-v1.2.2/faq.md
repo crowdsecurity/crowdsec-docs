@@ -178,7 +178,11 @@ $ sudo HTTP_PROXY=socks5://127.0.0.1:9050 HTTPS_PROXY=socks5://127.0.0.1:9050 cs
 
 ## How to setup High Availability for Local API
 
-When setting up High Availability for Local API, do not forget to share the same `CS_LAPI_SECRET` between your Local API instances : it is the secret used to signed JWT tokens. (By default it's generated from PRNG at startup)
+If you want to deploy CrowdSec in a high availability setup, you need this requirement:
+
+ - Using a shared database (PostgreSQL, MySQL, MariaDB, etc.) for storing decisions and alerts
+ - Each Local API instance should have unique online credentials to be able to push metrics
+ - Share the same `CS_LAPI_SECRET` between your Local API instances : it is the secret used to signed JWT tokens. (By default it's generated from PRNG at startup)
 
 ## How to disable the central API
 
