@@ -1,0 +1,26 @@
+---
+id: false_positives
+title: False Positives Taxonomy
+sidebar_position: 7
+---
+
+import TableRender from '@site/src/components/tableRender';
+import GithubIconRender from '@site/src/components/githubIconRender';
+
+export const fpURL = "https://hub-cdn.crowdsec.net/master/taxonomy/false_positives.json";
+export const columns = [
+    {
+        header: "Name",
+        accessorKey: "name",
+    },
+    {
+        header: "Description",
+        accessorKey: "description",
+    },
+];
+
+<GithubIconRender url={fpURL}></GithubIconRender>
+
+
+<TableRender columns={columns} url={fpURL}></TableRender>
+

@@ -727,9 +727,17 @@
             id: "cti_api/getting_started",
         },
         {
-            type: "doc",
-            label: "Taxonomy",
-            id: "cti_api/taxonomy",
+            type: 'category',
+            label: 'Taxonomy',
+            items: [
+                "cti_api/taxonomy/intro",
+                "cti_api/taxonomy/cti_object",
+                "cti_api/taxonomy/scores",
+                "cti_api/taxonomy/scenarios",
+                "cti_api/taxonomy/classifications",
+                "cti_api/taxonomy/behaviors",
+                "cti_api/taxonomy/false_positives"
+            ]
         },
         {
             type: "link",
