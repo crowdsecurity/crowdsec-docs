@@ -424,9 +424,9 @@ labels:
   remediation: true
 ```
 
-Labels is a list of `label: values` that provide context to an overflow. 
-The `value` can be any type (string, list, object ...).
-Some labels are required, but you can any label can be added.
+Labels is a list of `label: values` that provide context to an alert.
+The `value` can be of any type (string, list, object ...).
+Some labels are required, but other labels can be added.
 
 note: the labels are (currently) not stored in the database, nor they are sent to the API.
 
