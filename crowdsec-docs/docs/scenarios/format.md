@@ -19,9 +19,15 @@ capacity: 5
 leakspeed: "10s"
 blackhole: 5m
 labels:
- service: http
- type: scan
- remediation: true
+  service: http
+  confidence: 3
+  spoofable: 0
+  classification:
+    - attack.T1595
+  behavior: "http:scan"
+  service: http
+  label: "Multiple unique 404 detection"
+  remediation: true
 ```
 
 ## Scenario directives
