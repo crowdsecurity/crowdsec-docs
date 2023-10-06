@@ -5,7 +5,7 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 
 const getTheme = function () {
-    currentTheme = localStorage.getItem('theme')
+    let currentTheme = localStorage.getItem('theme')
     const isLight = currentTheme === 'light'
     const tableTheme =
         createTheme({
