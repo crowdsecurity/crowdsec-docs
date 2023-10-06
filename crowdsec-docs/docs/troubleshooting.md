@@ -55,9 +55,19 @@ Each bouncer has its own configuration file, which is located in the `/etc/crowd
 
 They all have an `api_url` option to set the local API URL.
 
-## CrowdSec doesn't start (common causes)
+## CrowdSec Log Location
 
-By default you will find the CrowdSec logs in `/var/log/` folder (e.g. `/var/log/crowdsec.log`). Within this file you will find the error message that prevents CrowdSec from starting.
+By default CrowdSec will log to the following locations depending on platform:
+
+- **Linux** `/var/log/crowdsec.log`
+- **Freebsd** `/var/log/crowdsec.log`
+  - **Opnsense** `/var/log/crowdsec/crowdsec.log`
+  - **Pfsense** `/var/log/crowdsec/crowdsec.log`
+- **Windows** `C:\Program Files\CrowdSec\logs\crowdsec.log`
+
+This is the default log location if you are using a third party integration they may change the log location.
+
+## CrowdSec doesn't start (common causes)
 
 :::info
 If it's a configuration file issue, the error message may log in a different location. For example, if a parser/scenario file is invalid, the error message will be logged in `/var/log/crowdsec.log` but if `config.yaml` is invalid, the error message will be logged in syslog instead.
