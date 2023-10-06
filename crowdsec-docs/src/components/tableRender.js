@@ -52,18 +52,20 @@ const TableRender = ({ columns, url }) => {
 
     return (
         <BrowserOnly>
-            <ThemeProvider theme={getTheme()}>
-                <MaterialReactTable
-                    data={jsonContent}
-                    columns={columns}
-                    enableColumnResizing={true}
-                    initialState={{ pagination: { pageSize: 25 } }}
-                    enableGlobalFilter={true}
-                    muiTablePaginationProps={{
-                        rowsPerPageOptions: [10, 15, 25, 50, 100],
-                    }}
-                />
-            </ThemeProvider>
+            {() =>
+                <ThemeProvider theme={getTheme()}>
+                    <MaterialReactTable
+                        data={jsonContent}
+                        columns={columns}
+                        enableColumnResizing={true}
+                        initialState={{ pagination: { pageSize: 25 } }}
+                        enableGlobalFilter={true}
+                        muiTablePaginationProps={{
+                            rowsPerPageOptions: [10, 15, 25, 50, 100],
+                        }}
+                    />
+                </ThemeProvider>
+            }
         </BrowserOnly>
     );
 

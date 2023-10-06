@@ -43,7 +43,7 @@ In other cases, having a parser for `SpecificWebServer` access logs would justif
 
 When you create a scenario, you must fill some fields in the [`labels`](/scenarios/format.md#labels), else the CI won't accept the contribution.
 Those `labels` are:
- - `classification`: this array contains the CVE ID and the Mitre Techniques related to the scenario (when applicable)
+ - `classification`: this array contains the CVE ID and the [Mitre Techniques](https://attack.mitre.org/techniques/enterprise/) related to the scenario (when applicable)
  - `spoofable`: between 0 and 3, is the chance that the attacker behind the attack can spoof its origin
  - `confidence`: between 0 and 3, is the confidence that the scenario will not trigger false positive
  - `behaviors`: an existing behavior in [this file](https://github.com/crowdsecurity/hub/blob/scenario_taxonomy/taxonomy/behaviors.json)
@@ -51,6 +51,20 @@ Those `labels` are:
  - `cti` : (optional) true or false, used to specify that a scenario is mainly used for audit rather than detecting a threat 
 
 [Here](/scenarios/format.md#labels) is the `labels` documentation for more information.
+
+Here is an example:
+
+```
+labels:
+  service: ssh
+  confidence: 3
+  spoofable: 0
+  classification:
+    - attack.T1110
+  label: "SSH Bruteforce"
+  behavior: "ssh:bruteforce"
+  remediation: true
+```
 
 
 ## Preparing your contribution
