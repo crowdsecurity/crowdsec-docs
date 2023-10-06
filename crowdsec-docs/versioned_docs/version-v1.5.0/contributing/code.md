@@ -39,7 +39,7 @@ Run with `make bats-build bats-fixture` once, then `make bats-test-hub`.
 
 We receive contributions on the _master_ branch (or _main_, in recent repositories). To contribute, fork the repository, commit the code in a dedicated branch and ask for a Pull Request. By default it will target the master branch on the upstream repository, so in most cases you don't have to change anything. It will be reviewed by the core team and merged when ready, possibly after some changes. It is recommended to open [an Issue linked to the PR](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue) in order to discuss it and track its progression.
 
-You may also receive feedback from the CI scripts (directory [.github/workflows](.github/workflows)) that run a series of linters and tests. You are encouraged to run these on your environment as well, before committing (see the "Testing" section above, and "Style guide" below).
+You may also receive feedback from the CI scripts (directory [.github/workflows](https://github.com/crowdsecurity/hub/tree/master/.github/workflows)) that run a series of linters and tests. You are encouraged to run these on your environment as well, before committing (see the "Testing" section above, and "Style guide" below).
 
 ## Release branches
 

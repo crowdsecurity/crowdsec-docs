@@ -12,7 +12,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 A parser is a YAML configuration file that describes how a string must be parsed. Said string can be a log line, or a field extracted from a previous parser. 
 
-While a lot of parsers rely on the **GROK** approach (a.k.a regular expression named capture groups), parsers can also use [expressions](/expr/helpers.md) to perform parsing on specific data (ie. json), [refer to external methods for enrichment](https://hub.crowdsec.net/author/crowdsecurity/configurations/geoip-enrich) or even [perform whitelisting](https://hub.crowdsec.net/author/crowdsecurity/configurations/whitelists.md).
+While a lot of parsers rely on the **GROK** approach (a.k.a regular expression named capture groups), parsers can also use [expressions](/expr/intro.md) to perform parsing on specific data (ie. json), [refer to external methods for enrichment](https://hub.crowdsec.net/author/crowdsecurity/configurations/geoip-enrich) or even [perform whitelisting](https://hub.crowdsec.net/author/crowdsecurity/configurations/whitelists.md).
 
 The [event](/expr/event.md) enters the parser, and might exit successfully or not:
 

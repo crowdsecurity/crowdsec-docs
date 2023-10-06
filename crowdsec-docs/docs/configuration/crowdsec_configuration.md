@@ -180,7 +180,7 @@ always replaced.
 - `bouncers/crowdsec-blocklist-mirror.yaml`
 
 In the case of `profiles.yaml`, the files are read as a whole (as if they were
-attached) instead of merged. See [profiles - introduction](/profiles/intro).
+attached) instead of merged. See [profiles - introduction](/profiles/intro.md).
 
 
 ## Configuration directives
@@ -614,7 +614,6 @@ db_config:
 ```
 The port to connect to (only if the type of database is `mysql` or `postgresql`). Must be omitted if using socket file.
 
-#### `sslmode`
 
 ```yaml
 db_config:

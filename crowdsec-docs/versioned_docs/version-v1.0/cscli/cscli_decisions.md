@@ -36,7 +36,7 @@ cscli decisions [action] [filter]
 
 ### SEE ALSO
 
-* [cscli](/docs/v1.0/cscli/cscli)	 - cscli allows you to manage crowdsec
+* [cscli](/docs/v1.0/cscli/)	 - cscli allows you to manage crowdsec
 * [cscli decisions add](/docs/v1.0/cscli/cscli_decisions_add)	 - Add decision to LAPI
 * [cscli decisions delete](/docs/v1.0/cscli/cscli_decisions_delete)	 - Delete decisions
 * [cscli decisions list](/docs/v1.0/cscli/cscli_decisions_list)	 - List decisions from LAPI

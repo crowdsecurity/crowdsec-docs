@@ -50,7 +50,7 @@ Acquistion configuration defines which streams of information CrowdSec is going 
 
 A stream of information can be a file, a journald event log, a cloudwatch stream, and more or less any kind of stream, such as a kafka topic.
 
-Acquisition configuration always contains a stream (ie. a file to tail) and a [tag](/data_sources/introduction.md) (ie. "these are in syslog format" "these are non-syslog nginx logs".md).
+Acquisition configuration always contains a stream (ie. a file to tail) and a [tag](/data_sources/introduction.md) (ie. "these are in syslog format" "these are non-syslog nginx logs").
 
 File acquisition configuration is defined as :
 
@@ -163,7 +163,7 @@ An example could be slack/mattermost enrichment plugin that requires human confi
 
 An `Event` is the runtime representation of an item being processed by crowdsec : It be a Log line being parsed, or an Overflow being reprocessed.
 
-The `Event` object is modified by parses, scenarios, and directly via user [statics expressions](/parsers/format.md#statics) (for example.md).
+The `Event` object is modified by parses, scenarios, and directly via user [statics expressions](/parsers/format.md#statics) (for example).
 
 
 <!--TBD: check ref-->
