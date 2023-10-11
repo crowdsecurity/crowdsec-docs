@@ -299,6 +299,7 @@
                     items: [
                         "profiles/cti_profile",
                         "profiles/captcha_profile",
+                        "profiles/pid_profile",
                     ],
                 }
             ],

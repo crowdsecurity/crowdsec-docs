@@ -4,11 +4,15 @@ title: CrowdSec CTI
 sidebar_position: 1
 ---
 
-Here is an example of a profile that uses the CTI module to make decisions based on the background noise score of an IP address.
+Here is an example of a profile that uses the CTI module.
 
 :::info
 You **MUST** configure the CTI beforehand, see [CTI helpers](/expr/cti_helpers.md).
 :::
+
+### Background Noise Score
+
+Background noise score can be used to inform you if the ip address is noisy or not. You can use this information to make the decision more or less aggressive.
 
 ```yaml
 name: high_bn_score
@@ -65,7 +69,9 @@ decisions:
 on_success: break
 ```
 
-Send a notification about a potential false positive and break the alert evaluation:
+### Potential False Triggers
+
+Send a notification about a potential false triggers and break the alert evaluation:
 
 ```yaml
 name: false_positive
