@@ -39,10 +39,11 @@ decisions:
 on_success: break
 ```
 
+A key piece of profile to point out is the `on_error` directive. It is set to `continue` to ensure that the alert will continue to be evaluated even if your API key is rate limited.
+
 You could also use the background noise within the `duration_expr` to make the ban duration proportional to the background noise score:
 
 ```yaml
----
 name: bn_score
 on_error: continue
 filters:
