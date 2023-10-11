@@ -131,6 +131,16 @@ on_failure: break
 
 If the profile didn't apply and `on_failure` is set to `break`, decisions processing will stop here and it won't evaluate against following profiles.
 
+### `on_error`
+
+```yaml
+on_error: continue
+```
+
+If the filter expression generates an error, this would normally stop the alert from being processed to prevent a potential unwanted outcome.
+
+However, there may be some expressions that do generate expected errors for example, when using the [CTI helpers](/expr/cti_helpers.md) it may throw a rate limit error.
+
 ### `notifications`
 
 ```yaml

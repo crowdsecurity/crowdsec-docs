@@ -291,7 +291,17 @@
                 type: "doc",
                 id: "profiles/intro",
             },
-            items: ["profiles/format"],
+            items: [
+                "profiles/format",
+                {
+                    type: "category",
+                    label: "Examples",
+                    items: [
+                        "profiles/cti_profile",
+                        "profiles/captcha_profile",
+                    ],
+                }
+            ],
         },
         {
             type: "category",
