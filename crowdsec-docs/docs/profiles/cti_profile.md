@@ -64,3 +64,22 @@ decisions:
    duration: 4h
 on_success: break
 ```
+
+Send a notification about a potential false positive to theHive and break the alert evaluation:
+
+```yaml
+name: false_positive
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip" && CrowdsecCTI(Alert.GetValue()).IsFalsePositive()
+notifications:
+    - http_hive
+on_success: break
+---
+name: default_ip_remediation
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+on_success: break
+```
