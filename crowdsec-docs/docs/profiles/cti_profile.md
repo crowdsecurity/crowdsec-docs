@@ -65,7 +65,7 @@ decisions:
 on_success: break
 ```
 
-Send a notification about a potential false positive to theHive and break the alert evaluation:
+Send a notification about a potential false positive and break the alert evaluation:
 
 ```yaml
 name: false_positive
