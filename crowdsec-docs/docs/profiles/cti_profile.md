@@ -1,7 +1,7 @@
 ---
 id: cti_profile
 title: CrowdSec CTI
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 Here is an example of a profile that uses the CTI module to make decisions based on the background noise score of an IP address.
@@ -52,7 +52,8 @@ decisions:
  - type: ban
    duration: 12h
 duration_expr: "Sprintf('%dm', (240 + (144 * CrowdsecCTI(Alert.GetValue()).GetBackgroundNoiseScore()))"
-## 240 minutes (4 hours) + 144 minutes (2 hours) per point of background noise score
+## 240 minutes (4 hours) + 144 minutes per point of background noise score
+## 144 = 24 * 60 / 10
 on_success: break
 ---
 name: default_ip_remediation
