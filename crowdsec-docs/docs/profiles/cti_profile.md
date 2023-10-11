@@ -51,7 +51,7 @@ filters:
 decisions:
  - type: ban
    duration: 12h
-duration_expr: "Sprintf('%dm', (240 + (144 * CrowdsecCTI(Alert.GetValue()).GetBackgroundNoiseScore()))"
+duration_expr: "Sprintf('%dm', (240 + (144 * CrowdsecCTI(Alert.GetValue()).GetBackgroundNoiseScore())))"
 ## 240 minutes (4 hours) + 144 minutes per point of background noise score
 ## 144 = 24 * 60 / 10
 on_success: break
