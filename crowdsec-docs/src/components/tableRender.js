@@ -1,50 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { MaterialReactTable } from 'material-react-table';
 import { createTheme, ThemeProvider } from '@mui/material';
 import BrowserOnly from '@docusaurus/BrowserOnly';
-
-
-const getTheme = function () {
-    let currentTheme = localStorage.getItem('theme')
-    const isLight = currentTheme === 'light'
-    const tableTheme =
-        createTheme({
-            palette: {
-                mode: currentTheme,
-                background: {
-                    default:
-                        isLight
-                            ? 'rgb(255,255,255)'
-                            : '#1b1b1d',
-                },
-            },
-        },
-        )
-    return tableTheme
-}
+import {useColorMode} from '@docusaurus/theme-common';
 
 
 const TableRender = ({ columns, url }) => {
     const [jsonContent, setJsonContent] = useState()
+    const {colorMode} = useColorMode();
 
-    useEffect(() => {
+    const theme = useMemo(() => {
+      const isLight = colorMode === 'light';
+
+      return createTheme({
+          palette: {
+            mode: colorMode,
+            background: {
+              default:
+                isLight
+                  ? 'rgb(255,255,255)'
+                  : '#1b1b1d',
+            },
+          },
+        },
+      );
+    }, [colorMode]);
+
+
+  useEffect(() => {
         fetch(url)
             .then((res) => res.json())
             .then((data) => {
-                var newData = [];
-                var names = [];
+                const newData = [];
+                const names = [];
+
                 Object.keys(data).map((key, i) => {
                     // filter duplicate names
-                    var name = data[key]["name"];
+                    const name = data[key]["name"];
+
                     if (names.includes(name)) {
                         return
                     }
+
                     names.push(name)
                     newData.push(data[key]);
                 })
                 setJsonContent(newData)
             })
-    })
+    // execute this fetch only once (on mount)
+    }, []);
 
     if (!columns || !jsonContent) {
         return <></>
@@ -53,7 +57,7 @@ const TableRender = ({ columns, url }) => {
     return (
         <BrowserOnly>
             {() =>
-                <ThemeProvider theme={getTheme()}>
+                <ThemeProvider theme={theme}>
                     <MaterialReactTable
                         data={jsonContent}
                         columns={columns}
