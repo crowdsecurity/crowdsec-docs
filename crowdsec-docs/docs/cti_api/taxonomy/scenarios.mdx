@@ -28,10 +28,14 @@ export const columns = [
         header: "Mitre ATT&CK",
         accessorKey: "mitre_attacks",
         size: 180,
-        Cell: ({ cell}) => {
+        Cell: ({ cell }) => {
             const values = cell.getValue();
+            if (values == undefined) {
+                return values;
+            }
             return (
-                values.map((item, i) => {
+                // values is a CSV to allow global search, so we need to split it again for proper rendering
+                values.split('\n').map((item, i) => {
                     var v = item.split(":");
                     var technique = v.slice(-1)[0]
                     return (
@@ -53,7 +57,7 @@ export const columns = [
                 return values;
             }
             return (
-                values.map((item, i) => {
+                values.split('\n').map((item, i) => {
                     return (
                         <div>
                             <a key={item} href={'https://cve.mitre.org/cgi-bin/cvename.cgi?name='+item}>{item}</a>

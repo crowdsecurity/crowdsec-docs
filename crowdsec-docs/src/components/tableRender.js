@@ -31,21 +31,30 @@ const TableRender = ({ columns, url }) => {
         fetch(url)
             .then((res) => res.json())
             .then((data) => {
-                const newData = [];
+                const updatedData = [];
                 const names = [];
 
                 Object.keys(data).map((key, i) => {
                     // filter duplicate names
-                    const name = data[key]["name"];
+                    const item = data[key];
+                    const name = item["name"];
 
                     if (names.includes(name)) {
                         return
                     }
 
                     names.push(name)
-                    newData.push(data[key]);
-                })
-                setJsonContent(newData)
+                    updatedData.push({
+                      ...item,
+                      // flattening list of strings into CSV strings allow global filtering on them
+                      // /!\ it requires special handling in the rendering side (see crowdsec-docs/docs/cti_api/taxonomy) /!\
+                      ...item.behaviors ? { behaviors: item.behaviors.join('\n') } : {},
+                      ...item.mitre_attacks ? { mitre_attacks: item.mitre_attacks.join('\n') } : {},
+                      ...item.cves ? { cves: item.cves.join('\n') } : {},
+                    });
+                });
+
+                setJsonContent(updatedData);
             })
     // execute this fetch only once (on mount)
     }, []);
