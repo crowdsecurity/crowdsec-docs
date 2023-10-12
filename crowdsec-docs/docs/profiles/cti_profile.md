@@ -55,9 +55,9 @@ filters:
 decisions:
  - type: ban
    duration: 12h
-duration_expr: "Sprintf('%dm', (240 + (144 * CrowdsecCTI(Alert.GetValue()).GetBackgroundNoiseScore())))"
-## 240 minutes (4 hours) + 144 minutes per point of background noise score
-## 144 = 24 * 60 / 10
+duration_expr: "Sprintf('%dm', (240 + (120 * CrowdsecCTI(Alert.GetValue()).GetBackgroundNoiseScore())))"
+## 240 minutes (4 hours) + 120 minutes per point of background noise score
+## 120 = 20 * 60 / 10 (Max Background Noise Score)
 on_success: break
 ---
 name: default_ip_remediation
