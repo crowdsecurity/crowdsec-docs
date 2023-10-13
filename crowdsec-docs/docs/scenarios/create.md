@@ -136,7 +136,7 @@ We have the following fields:
  - a [groupby](/scenarios/format.md#groupby): a field from the event to partition the bucket. It is often the `source_ip` of the event.
  - a [blackhole](/scenarios/format.md#blackhole): the number of minute to not retrigger this scenario for the same `groupby` field.
  - a [reprocess](/scenarios/format.md#reprocess): ingest the alert in crowdsec for further processing.
- - some [labels](/scenarios/format.md#reprocess): some labels to apply on the trigger event. Don't forget to set `remediation: true` if you want the IP to be blocked by bouncers.
+ - some [labels](/scenarios/format.md#labels): some labels to apply on the trigger event. Don't forget to set `remediation: true` if you want the IP to be blocked by bouncers.
 
 
 
