@@ -572,7 +572,7 @@ Mitre Technique description.
 > type: **list(string)**
 
 ```json
-"mitre_techniques" : [
+"cves" : [
   "CVE-2023-1234",
   "CVE-2023-1245"
 ]
