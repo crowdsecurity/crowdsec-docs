@@ -11,9 +11,9 @@ sidebar_position: 2
 ```json
 {
   "ip_range_score": 5,
-  "ip": "[CENSURED]",
-  "ip_range": "[CENSURED]",
-  "as_name": "[CENSURED]",
+  "ip": "[CENSORED]",
+  "ip_range": "[CENSORED]",
+  "as_name": "[CENSORED]",
   "as_num": 0,
   "location": {
     "country": "FR",
@@ -21,7 +21,7 @@ sidebar_position: 2
     "latitude": 0.0,
     "longitude": 0.0
   },
-  "reverse_dns": "[CENSURED]",
+  "reverse_dns": "[CENSORED]",
   "behaviors": [
     {
       "name": "http:scan",
