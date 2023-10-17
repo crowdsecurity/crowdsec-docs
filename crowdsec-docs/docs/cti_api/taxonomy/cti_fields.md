@@ -14,7 +14,7 @@ sidebar_position: 2
   "ip": "[CENSURED]",
   "ip_range": "[CENSURED]",
   "as_name": "[CENSURED]",
-  "as_num": [CENSURED],
+  "as_num": 0,
   "location": {
     "country": "FR",
     "city": "",
