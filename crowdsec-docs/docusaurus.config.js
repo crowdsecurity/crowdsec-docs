@@ -16,9 +16,9 @@ module.exports = {
   projectName: 'crowdsec-docs',
   //plugins: [path.resolve(__dirname, 'plugins', 'matomo')],
   stylesheets: [
-      {
-        href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
-      }
+    {
+      href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
+    }
   ],
   themeConfig: {
     algolia: {
@@ -57,12 +57,12 @@ module.exports = {
           label: 'Cscli',
         },
         {
-           type: 'doc',
-           docId: 'cti_api/getting_started',
-           position: 'left',
-           label: 'CTI Api',
+          type: 'doc',
+          docId: 'cti_api/getting_started',
+          position: 'left',
+          label: 'CTI API',
         },
-        {to: 'https://crowdsec.net/blog/category/tutorial/', label: 'Tutorials', position: 'left'},
+        { to: 'https://crowdsec.net/blog/category/tutorial/', label: 'Tutorials', position: 'left' },
         {
           type: 'doc',
           docId: 'faq',
@@ -136,7 +136,7 @@ module.exports = {
             {
               label: 'Twitter',
               href: 'https://twitter.com/crowd_security',
-            }           
+            }
           ],
         },
         {
@@ -154,7 +154,7 @@ module.exports = {
               label: 'Blog',
               href: 'https://crowdsec.net/blog/',
             },
-            
+
           ],
         },
       ],

@@ -1,6 +1,6 @@
 ---
 id: scores
-title: CrowdSec CTI Scores
+title: CTI Scores
 sidebar_position: 3
 ---
 

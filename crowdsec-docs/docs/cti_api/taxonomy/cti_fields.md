@@ -1,8 +1,164 @@
 ---
 id: cti_object
-title: CTI Object Taxonomy
+title: CTI Format
 sidebar_position: 2
 ---
+
+
+<details>
+  <summary>Object example</summary>
+
+```json
+{
+  "ip_range_score": 5,
+  "ip": "[CENSURED]",
+  "ip_range": "[CENSURED]",
+  "as_name": "[CENSURED]",
+  "as_num": [CENSURED],
+  "location": {
+    "country": "FR",
+    "city": "",
+    "latitude": 0.0,
+    "longitude": 0.0
+  },
+  "reverse_dns": "[CENSURED]",
+  "behaviors": [
+    {
+      "name": "http:scan",
+      "label": "HTTP Scan",
+      "description": "IP has been reported for performing actions related to HTTP vulnerability scanning and discovery."
+    },
+    {
+      "name": "ssh:bruteforce",
+      "label": "SSH Bruteforce",
+      "description": "IP has been reported for performing brute force on ssh services."
+    },
+    {
+      "name": "http:exploit",
+      "label": "HTTP Exploit",
+      "description": "IP has been reported for attempting to exploit a vulnerability in a web application."
+    },
+    {
+      "name": "generic:exploit",
+      "label": "Exploitation attempt",
+      "description": "IP has been reported trying to exploit known vulnerability/CVE on unspecified protocols."
+    }
+  ],
+  "history": {
+    "first_seen": "2022-05-28T16:00:00+00:00",
+    "last_seen": "2023-10-15T05:45:00+00:00",
+    "full_age": 507,
+    "days_age": 505
+  },
+  "classifications": {
+    "false_positives": [],
+    "classifications": []
+  },
+  "attack_details": [
+    {
+      "name": "crowdsecurity/http-probing",
+      "label": "HTTP Probing",
+      "description": "Detect site scanning/probing from a single ip",
+      "references": []
+    },
+    {
+      "name": "crowdsecurity/ssh-bf",
+      "label": "SSH Bruteforce",
+      "description": "Detect ssh bruteforce",
+      "references": []
+    },
+    {
+      "name": "crowdsecurity/ssh-slow-bf",
+      "label": "SSH Bruteforce",
+      "description": "Detect slow ssh bruteforce",
+      "references": []
+    },
+    {
+      "name": "crowdsecurity/http-bad-user-agent",
+      "label": "detection of bad user-agents",
+      "description": "Detect bad user-agents",
+      "references": []
+    },
+    {
+      "name": "crowdsecurity/suricata-major-severity",
+      "label": "Suricata Severity 1 Event",
+      "description": "Detect exploit attempts via emerging threat rules",
+      "references": []
+    },
+    {
+      "name": "crowdsecurity/modsecurity",
+      "label": "Modsecurity Alert",
+      "description": "Web exploitation via modsecurity",
+      "references": []
+    }
+  ],
+  "target_countries": {
+    "AT": 0,
+    "AU": 2,
+    "BR": 0,
+    "CA": 4,
+    "CH": 0,
+    "CN": 0,
+    "DE": 79,
+    "DK": 0,
+    "ES": 0,
+    "FI": 12
+  },
+  "background_noise_score": 10,
+  "mitre_techniques": [
+    {
+      "name": "T1595",
+      "label": "Active Scanning",
+      "description": "Adversaries may execute active reconnaissance scans to gather information that can be used during targeting. Active scans are those where the adversary probes victim infrastructure via network traffic, as opposed to other forms of reconnaissance that do not involve direct interaction.\n\nAdversaries may perform different forms of active scanning depending on what information they seek to gather. These scans can also be performed in various ways, including using native features of network protocols such as ICMP.(Citation: Botnet Scan)(Citation: OWASP Fingerprinting) Information from these scans may reveal opportunities for other forms of reconnaissance (ex: [Search Open Websites/Domains](https://attack.mitre.org/techniques/T1593) or [Search Open Technical Databases](https://attack.mitre.org/techniques/T1596)), establishing operational resources (ex: [Develop Capabilities](https://attack.mitre.org/techniques/T1587) or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or initial access (ex: [External Remote Services](https://attack.mitre.org/techniques/T1133) or [Exploit Public-Facing Application](https://attack.mitre.org/techniques/T1190))."
+    },
+    {
+      "name": "T1110",
+      "label": "Brute Force",
+      "description": "Adversaries may use brute force techniques to gain access to accounts when passwords are unknown or when password hashes are obtained. Without knowledge of the password for an account or set of accounts, an adversary may systematically guess the password using a repetitive or iterative mechanism. Brute forcing passwords can take place via interaction with a service that will check the validity of those credentials or offline against previously acquired credential data, such as password hashes.\n\nBrute forcing credentials may take place at various points during a breach. For example, adversaries may attempt to brute force access to [Valid Accounts](https://attack.mitre.org/techniques/T1078) within a victim environment leveraging knowledge gathered from other post-compromise behaviors such as [OS Credential Dumping](https://attack.mitre.org/techniques/T1003), [Account Discovery](https://attack.mitre.org/techniques/T1087), or [Password Policy Discovery](https://attack.mitre.org/techniques/T1201). Adversaries may also combine brute forcing activity with behaviors such as [External Remote Services](https://attack.mitre.org/techniques/T1133) as part of Initial Access."
+    },
+    {
+      "name": "T1190",
+      "label": "Exploit Public-Facing Application",
+      "description": "Adversaries may attempt to exploit a weakness in an Internet-facing host or system to initially access a network. The weakness in the system can be a software bug, a temporary glitch, or a misconfiguration.\n\nExploited applications are often websites/web servers, but can also include databases (like SQL), standard services (like SMB or SSH), network device administration and management protocols (like SNMP and Smart Install), and any other system with Internet accessible open sockets.(Citation: NVD CVE-2016-6662)(Citation: CIS Multiple SMB Vulnerabilities)(Citation: US-CERT TA18-106A Network Infrastructure Devices 2018)(Citation: Cisco Blog Legacy Device Attacks)(Citation: NVD CVE-2014-7169) Depending on the flaw being exploited this may also involve [Exploitation for Defense Evasion](https://attack.mitre.org/techniques/T1211). \n\nIf an application is hosted on cloud-based infrastructure and/or is containerized, then exploiting it may lead to compromise of the underlying instance or container. This can allow an adversary a path to access the cloud or container APIs, exploit container host access via [Escape to Host](https://attack.mitre.org/techniques/T1611), or take advantage of weak identity and access management policies.\n\nAdversaries may also exploit edge network infrastructure and related appliances, specifically targeting devices that do not support robust host-based defenses.(Citation: Mandiant Fortinet Zero Day)(Citation: Wired Russia Cyberwar)\n\nFor websites and databases, the OWASP top 10 and CWE top 25 highlight the most common web-based vulnerabilities.(Citation: OWASP Top 10)(Citation: CWE top 25)"
+    }
+  ],
+  "cves": [],
+  "scores": {
+    "overall": {
+      "aggressiveness": 5,
+      "threat": 2,
+      "trust": 4,
+      "anomaly": 0,
+      "total": 4
+    },
+    "last_day": {
+      "aggressiveness": 0,
+      "threat": 0,
+      "trust": 0,
+      "anomaly": 0,
+      "total": 0
+    },
+    "last_week": {
+      "aggressiveness": 5,
+      "threat": 2,
+      "trust": 4,
+      "anomaly": 0,
+      "total": 4
+    },
+    "last_month": {
+      "aggressiveness": 5,
+      "threat": 2,
+      "trust": 4,
+      "anomaly": 0,
+      "total": 4
+    }
+  },
+  "references": []
+}
+
+```
+
+</details>
 
 
 ## `ip`
@@ -296,7 +452,7 @@ Human-friendly description of the false positive.
 ]
 ```
 
-A list of false positives tags associated with the IP. Any IP with `classifications` tags shouldn't be considered as malicious.
+A list of `classifications` tags associated with the IP.
 
 #### `name`
 > type: **string**
@@ -369,6 +525,60 @@ Human-friendly name of the scenario.
 ```
 
 Human-friendly description of the scenario.
+
+## `mitre_techniques`
+> type: **list(object)**
+
+```json
+"mitre_techniques" : [
+  {
+    "name" : "technique_id",
+    "label" : "technique name",
+    "description" : "Technique description"
+  }
+]
+```
+
+A list of Mitre techniques associated with the IP.
+
+### `name`
+> type: **string**
+
+```json
+"name" : "technique ID"
+```
+
+Mitre Technique ID.
+
+### `label`
+> type: **string**
+
+```json
+"label" : "technique name"
+```
+
+Mitre Technique name.
+
+### `description`
+> type: **string**
+
+```json
+"description" : "technique description"
+```
+
+Mitre Technique description.
+
+## `cves`
+> type: **list(string)**
+
+```json
+"mitre_techniques" : [
+  "CVE-2023-1234",
+  "CVE-2023-1245"
+]
+```
+
+A list of CVEs for which the IP has been reported for.
 
 
 ## `target_countries`
