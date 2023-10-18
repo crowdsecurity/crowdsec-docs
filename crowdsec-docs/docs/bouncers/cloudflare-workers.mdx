@@ -119,12 +119,24 @@ sudo systemctl start crowdsec-cloudflare-worker-bouncer # the bouncer now syncs 
 ```bash
 git clone https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer
 cd cs-cloudflare-worker-bouncer
-make build
-./crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> > cfg.yaml # auto-generate cloudflare config for provided space separated tokens
-sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't alread
-./crowdsec-cloudflare-worker-bouncer -c cfg.yaml # run the bouncer
+make release
+cd cd crowdsec-cloudflare-worker-bouncer-*
+./crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't already
+sudo systemctl start crowdsec-cloudflare-worker-bouncer
 ```
 
+
+## How it works
+
+![Architecture](/img/bouncer/cloudflare-worker/cfworkerarch.png)
+
+The bouncer does the following:
+
+1. Create a Cloudflare Worker and a Worker KV per configured account.
+2. Create a Worker Route(s) per configured zone. Any request matching the route would be handled by the worker.
+3. For every matching incoming request, the worker checks whether it's IP, Country and AS have a decision against. It checks for this in it's KV store. If found it performs the corresponding remediation.
+4. The bouncer also periodically updates the KV store with the latest decisions from CrowdSec. 
 
 ## Configuration
 
@@ -157,7 +169,7 @@ cloudflare_config:
                 rotate_secret_key_every: 168h0m0s 
                 mode: managed # Supported Modes "managed"|"invisible"|"non-interactive"
           token: <CLOUDFLARE_ACCOUNT_TOKEN>
-          owner_email: owner@example.com
+          account_name: owner@example.com
 
 log_level: info
 log_media: "stdout"
@@ -177,11 +189,16 @@ prometheus:
 
 
 For obtaining the `token`:
+
 1. Sign in as a user who has access to the desired account.
-2. Go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. 
+
+Then click [this link](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%5D&name=) and create the token. 
+
+Alternatively, you can
+
+Go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. 
 
 The bouncer requires the follwing permissions to function.
-
 
 ![image](/img/bouncer/cloudflare-worker/cloudflare_token_permissions.png)
 
@@ -219,17 +236,6 @@ Example Usage:
 ```bash
 sudo crowdsec-cloudflare-worker-bouncer -d 
 ```
-
-## How it works
-
-![Architecture](/img/bouncer/cloudflare-worker/cfworkerarch.png)
-
-The bouncer does the following:
-
-1. Create a Cloudflare Worker and a Worker KV per configured account.
-2. Create a Worker Route(s) per configured zone. Any request matching the route would be handled by the worker.
-3. For every matching incoming request, the worker checks whether it's IP, Country and AS have a decision against. It checks for this in it's KV store. If found it performs the corresponding remediation.
-4. The bouncer also periodically updates the KV store with the latest decisions from CrowdSec. 
 
 ## Setting up the worker route fail mode
 
@@ -342,9 +348,9 @@ Mode for turnstile. Supported values ["managed", "invisible", "non-interactive"]
 
 Cloudflare account token.
 
-### `cloudflare_config.accounts[].zones[].owner_email`
+### `cloudflare_config.accounts[].zones[].account_name`
 
-Email address of the account owner.
+Account name.
 
 ### `ban_template_path`
 
