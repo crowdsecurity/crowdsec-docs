@@ -93,6 +93,17 @@ Yes, you can transfer the security engine within the console interface to anothe
 
 If for whatever reason you cannot access the old account you can force the new enrollment by running the `cscli` command with the force flag:
 
-```bash
-sudo cscli console enroll $ID --force
-```
+<Tabs
+  defaultValue="nix"
+  groupId="console-operating-systems"
+  values={[
+    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Windows', value: 'windows'},
+  ]}>
+  <TabItem value="nix">
+    <CodeBlock className="language-bash">sudo cscli console enroll $ID --force</CodeBlock>
+  </TabItem>
+  <TabItem value="windows">
+    <CodeBlock className="language-bash">cscli.exe console enroll $ID --force</CodeBlock>
+  </TabItem>
+</Tabs>
