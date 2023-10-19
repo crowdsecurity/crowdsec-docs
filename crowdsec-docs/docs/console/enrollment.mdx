@@ -8,8 +8,10 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 :::info
-$ID is the enrollment ID shown in the [console](https://app.crowdsec.net/).
+$ID will be used as the placeholder for your enrollment ID, you can find this within the [console](https://app.crowdsec.net/).
 :::
+
+## Standalone
 
 You can enroll a [Security Engine](/getting_started/getting_started.md) into the console to get a full overview of your alerts. This process is handled by the following `cscli` command:
 
@@ -27,3 +29,46 @@ You can enroll a [Security Engine](/getting_started/getting_started.md) into the
     <CodeBlock className="language-bash">cscli.exe console enroll $ID</CodeBlock>
   </TabItem>
 </Tabs>
+
+## Docker / Podman
+
+:::info
+Docker commands are interchangeable with podman.
+:::
+
+If you are using docker, you can enroll the Security Engine by passing the enrollment ID as an environment variable:
+
+```bash
+docker run -e ENROLL_KEY=$ID crowdsecurity/crowdsec
+```
+
+If you already have a deployment running this can also be enrolled by using the `cscli` command:
+
+```bash
+docker exec -it <CONTAINER_ID> cscli console enroll $ID
+```
+
+If you are using automatic deployments, then you can automate the enrollment process depending on the system:
+
+## K8s / Helm
+
+K8's and helm use our standard container image so can also use the enrollment ID as an environment variable:
+
+```yaml
+lapi:
+  env:
+    - name: ENROLL_KEY
+      value: $ID
+```
+
+:::info
+Note here we are placing it within the LAPI environment **NOT** the agent as the agent is not responsible for the enrollment process.
+:::
+
+## Chef, Puppet, Ansible
+
+If you are using a configuration management tool, you can use the `cscli` command to enroll the Security Engine:
+
+```bash
+sudo cscli console enroll $ID
+```
