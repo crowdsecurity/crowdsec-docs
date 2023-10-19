@@ -22,7 +22,7 @@ Name | Type | Stream | One-shot
 [Windows Event](/data_sources/windows_event_log.md)| read logs from windows event log | yes | no
 [Kubernetes Audit](/data_sources/kubernetes_audit.md) | expose a webhook to receive audit logs from a Kubernetes cluster  | yes | no
 [S3](/data_sources/s3.md)| read logs from a S3 bucket | yes | yes
-
+[Loki](/data_sources/loki.md) | read logs from loki | yes | yes
 
 ## Common configuration parameters
 

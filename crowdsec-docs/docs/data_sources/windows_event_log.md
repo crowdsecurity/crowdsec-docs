@@ -12,6 +12,7 @@ To monitor all events with the ID 4625, from the `Security` channel (ie, authent
 
 ```yaml
 source: wineventlog
+log_level: info
 event_channel: Security
 event_ids:
  - 4625
