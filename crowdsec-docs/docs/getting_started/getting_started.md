@@ -53,3 +53,9 @@ Once you have installed the Security Engine, you can install a Remediation Compo
 Depending on your network / OS setup, you will need to install a different Remediation Component.
 
 If you are unsure which to install, please see our [Remediation Components](/bouncers/intro.md) section OR join our [discord](https://discord.gg/crowdsec) and ask our community.
+
+## Enrolling your instance
+
+Next step is to enroll your instance to the CrowdSec console. This will allow you to view your instance in the console, and enhance your security by using our third party lists.
+
+See the [console section](/console/intro.md) for more information.

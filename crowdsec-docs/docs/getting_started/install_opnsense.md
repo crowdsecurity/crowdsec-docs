@@ -122,3 +122,8 @@ For more information on the topic:
 
  - [Improve The CrowdSec Multi-Server Installation With HTTPS Between Agents](https://www.linuxjournal.com/content/improve-crowdsec-multi-server-installation-https-between-agents) (Linux Journal)
 
+## Enrolling your instance
+
+Next step is to enroll your instance to the CrowdSec console. This will allow you to view your instance in the console, and enhance your security by using our third party lists.
+
+See the [console section](/console/intro.md) for more information.
