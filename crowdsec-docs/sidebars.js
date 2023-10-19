@@ -61,9 +61,26 @@
                             href: "https://artifacthub.io/packages/helm/crowdsec/crowdsec",
                         },
                         {
-                            type: "link",
-                            label: "Docker",
-                            href: "https://hub.docker.com/r/crowdsecurity/crowdsec",
+                            type: "category",
+                            label: "Container",
+                            items: [
+                                {
+                                    type: "link",
+                                    href: "https://hub.docker.com/r/crowdsecurity/crowdsec",
+                                    label: "Docker Hub",
+                                },
+                                {
+                                    type: "link",
+                                    href: "https://github.com/crowdsecurity/crowdsec/pkgs/container/crowdsec",
+                                    label: "GHCR",
+                                }
+                                ,
+                                {
+                                    type: "link",
+                                    href: "https://github.com/crowdsecurity/example-docker-compose",
+                                    label: "Examples",
+                                }
+                            ]
                         },
                     ],
                 },
