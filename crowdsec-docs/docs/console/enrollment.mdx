@@ -91,7 +91,7 @@ The Security Engine and `cscli` must have internet access, this can be through a
 
 Yes, you can transfer the security engine within the console interface to another organization.
 
-If for whatever reason you cannot access the old account you can force the new enrollment by running the `cscli` command with the force flag:
+If for whatever reason you cannot access the old account you can force the new enrollment by running the `cscli` command with the overwrite flag:
 
 <Tabs
   defaultValue="nix"
@@ -101,9 +101,9 @@ If for whatever reason you cannot access the old account you can force the new e
     {label: 'Windows', value: 'windows'},
   ]}>
   <TabItem value="nix">
-    <CodeBlock className="language-bash">sudo cscli console enroll $ID --force</CodeBlock>
+    <CodeBlock className="language-bash">sudo cscli console enroll $ID --overwrite</CodeBlock>
   </TabItem>
   <TabItem value="windows">
-    <CodeBlock className="language-bash">cscli.exe console enroll $ID --force</CodeBlock>
+    <CodeBlock className="language-bash">cscli.exe console enroll $ID --overwrite</CodeBlock>
   </TabItem>
 </Tabs>
