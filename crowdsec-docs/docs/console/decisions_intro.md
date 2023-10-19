@@ -1,5 +1,5 @@
 ---
-id: intro
+id: decisions_intro
 title: Introduction
 sidebar_position: 1
 ---

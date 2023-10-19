@@ -137,3 +137,9 @@ Start `hostid` and `hostid_save`:
 ```
 
 Then start again the CrowdSec' service  `service crowdsec start`.
+
+## Enrolling your instance
+
+Next step is to enroll your instance to the CrowdSec console. This will allow you to view your instance in the console, and enhance your security by using our third party lists.
+
+See the [console section](/console/intro.md) for more information.
