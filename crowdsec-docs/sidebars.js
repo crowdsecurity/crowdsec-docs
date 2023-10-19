@@ -393,15 +393,7 @@
                 },
             ],
         },
-        {
-            type: "category",
-            label: "Console Management",
-            link: {
-                type: "doc",
-                id: "console_management/intro",
-            },
-            items: ["console_management/decisions"],
-        },
+
         {
             type: "category",
             label: "Expr",
@@ -437,9 +429,24 @@
             ],
         },
         {
-            type: "doc",
+            type: "category",
             label: "Console",
-            id: "console",
+            link: {
+                type: "doc",
+                id: "console/intro",
+            },
+            items: [
+                'console/enrollment',
+                {
+                    type: "category",
+                    label: "Decision Management",
+                    link: {
+                        type: "doc",
+                        id: "console/decisions_intro",
+                    },
+                    items: ["console/decisions"],
+                },
+            ]
         },
         {
             type: "doc",

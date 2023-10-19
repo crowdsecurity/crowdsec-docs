@@ -1,5 +1,5 @@
 ---
-id: console
+id: intro
 title: Console
 sidebar_position: 10
 ---
@@ -14,13 +14,6 @@ The [console](https://app.crowdsec.net) is a web interface hosted by crowdsec th
 ![console-overview](/img/console-overview.png)
 
 Once your [registration done](https://app.crowdsec.net/signup), follow the tour !
-
-
-You will be able to register any instance directly from `cscli` :
-
-```bash
-sudo cscli console enroll <id> 
-```
 
 And see what's going in the console :
 

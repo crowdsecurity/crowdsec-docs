@@ -1,0 +1,29 @@
+---
+id: enrollment
+title: Enrollment
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+:::info
+$ID is the enrollment ID shown in the [console](https://app.crowdsec.net/).
+:::
+
+You can enroll a [Security Engine](/getting_started/getting_started.md) into the console to get a full overview of your alerts. This process is handled by the following `cscli` command:
+
+<Tabs
+  defaultValue="nix"
+  groupId="console-operating-systems"
+  values={[
+    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Windows', value: 'windows'},
+  ]}>
+  <TabItem value="nix">
+    <CodeBlock className="language-bash">sudo cscli console enroll $ID</CodeBlock>
+  </TabItem>
+  <TabItem value="windows">
+    <CodeBlock className="language-bash">cscli.exe console enroll $ID</CodeBlock>
+  </TabItem>
+</Tabs>
