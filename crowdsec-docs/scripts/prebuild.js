@@ -22,7 +22,6 @@ const merge_sidebars = async (key, check = false) => {
             }
         }
         await symlink(`../../docs/${lookupMap.get(key)}`, `./versioned_docs/version-${version}/${lookupMap.get(key)}`)
-        await fs.writeFile(`${versionedSidebarPath}.bak`, JSON.stringify(versionedJson, null, 2));
         await fs.writeFile(versionedSidebarPath, JSON.stringify(versionedJson, null, 2));
     }
 }
