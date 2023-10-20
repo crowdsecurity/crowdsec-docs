@@ -58,6 +58,12 @@ module.exports = {
         },
         {
           type: 'doc',
+          docId: 'bouncers/intro',
+          position: 'left',
+          label: 'Remediation',
+        },
+        {
+          type: 'doc',
           docId: 'cti_api/getting_started',
           position: 'left',
           label: 'CTI API',
