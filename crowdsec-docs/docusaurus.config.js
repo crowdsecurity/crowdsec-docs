@@ -41,7 +41,10 @@ module.exports = {
     },
     navbar: {
       items: [
-
+        {
+          type: 'localeDropdown',
+          position: 'right',
+        }
       ],
     },
     navbar: {
@@ -92,6 +95,10 @@ module.exports = {
           docId: 'troubleshooting',
           position: 'left',
           label: 'Troubleshooting',
+        },
+        {
+          type: 'localeDropdown',
+          position: 'left',
         },
         {
           href: 'https://github.com/crowdsecurity/crowdsec',
