@@ -14,6 +14,18 @@ module.exports = {
   favicon: 'img/crowdsec_no_txt.png',
   organizationName: 'CrowdSec',
   projectName: 'crowdsec-docs',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'es'],
+    localeConfigs: {
+      en: {
+        htmlLang: 'en-GB',
+      },
+      es: {
+        htmlLang: 'es-ES',
+      }
+    },
+  },
   //plugins: [path.resolve(__dirname, 'plugins', 'matomo')],
   stylesheets: [
     {
