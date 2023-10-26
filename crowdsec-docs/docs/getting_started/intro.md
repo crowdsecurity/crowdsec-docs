@@ -14,7 +14,7 @@ The Security Engine is a core component of CrowdSec. It is the component that wi
 
 ## Supported Platforms
 
-See [Version Matrix](/getting_started/version_matrix.md) for a list of supported platforms.
+See [Version Matrix](/getting_started/versions_matrix.md) for a list of supported platforms.
 
 ## Why is my Security Engine classed as a "log processor" within the console?
 
