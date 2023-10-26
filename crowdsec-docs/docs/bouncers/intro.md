@@ -23,7 +23,7 @@ Don't know which component suits your needs? Then join our [discord](https://dis
 - [cloudflare](/bouncers/cloudflare.mdx) will add IPs to the Cloudflare firewall.
 - [blocklist](/bouncers/blocklist-mirror.mdx) will serve the blocklist to a appliance such as pfsense, fortinet, untangle via a http server.
 
-**The above is not an exhaustive list of remediation components, you can find more on the [hub](https://hub.crowdsec.net/browse/#bouncers).**
+**The above is not an exhaustive list of remediation components, you can find more on the [hub](https://app.crowdsec.net/hub/bouncers).**
 
 Remediation Components interact with [crowdsec's Local API](/local_api/intro.md) to retrieve active decisions and remediate appropriately.
 
