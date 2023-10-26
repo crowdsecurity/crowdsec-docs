@@ -9,18 +9,23 @@ sidebar_position: 1
 :::info
 You may see Remediation Components referred to as "bouncers" in the documentation and/or within cscli commands.
 :::
+
 ## Introduction
 
-Remediation Components are software packages in charge of acting upon decision's provided by the Security Engine.
+Remediation Components are software packages in charge of acting upon decision's provided by the Security Engine. Depending on where you would like to remediate the decision, you will need to install the appropriate remediation component.
 
-- [nginx bouncer](/bouncers/nginx.mdx) will check requester IP against the local API before granting or denying access.
-- [firewall bouncer](/bouncers/firewall.mdx) will add IPs to nftables/ipset set.
-- [cloudflare bouncer](/bouncers/cloudflare.mdx) will add IPs to the Cloudflare firewall.
-- [blocklist mirror](/bouncers/blocklist-mirror.mdx) will serve the blocklist to a appliance such as pfsense, fortinet, untangle via a http server.
+:::info
+Don't know which component suits your needs? Then join our [discord](https://discord.gg/crowdsec) and ask the community!
+:::
+
+- [nginx](/bouncers/nginx.mdx) will check requester IP against the local API before granting or denying access.
+- [firewall](/bouncers/firewall.mdx) will add IPs to nftables/ipset set.
+- [cloudflare](/bouncers/cloudflare.mdx) will add IPs to the Cloudflare firewall.
+- [blocklist](/bouncers/blocklist-mirror.mdx) will serve the blocklist to a appliance such as pfsense, fortinet, untangle via a http server.
+
+**The above is not an exhaustive list of remediation components, you can find more on the [hub](https://hub.crowdsec.net/browse/#bouncers).**
 
 Remediation Components interact with [crowdsec's Local API](/local_api/intro.md) to retrieve active decisions and remediate appropriately.
-
-You can explore [available remediation components on the hub](https://hub.crowdsec.net/browse/#bouncers).
 
 For your remediation components to communicate with the local API, you have to generate an API token with `cscli` and put it in the associated configuration file:
 
