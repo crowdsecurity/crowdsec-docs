@@ -12,8 +12,11 @@ You may see Security Engine referred to as "agent" in the documentation/videos a
 
 The Security Engine is a core component of CrowdSec. It is the component that will analyze logs and will expose an API endpoint for the remediation components to get the decisions made by the engine.
 
+## Supported Platforms
 
-### Why is my Security Engine classed as a "log processor" within the console?
+See [Version Matrix](/getting_started/version_matrix.md) for a list of supported platforms.
+
+## Why is my Security Engine classed as a "log processor" within the console?
 
 The `Security Engine` comes compiled with a number of optional features that can be enabled or disabled at runtime. One of these features is called the "LAPI" (Local API). If this feature is disabled at runtime, the Security Engine will be classed as a "log processor" within the console as it will only be able to process logs and forward the alerts to the local API you define in the configuration.
 

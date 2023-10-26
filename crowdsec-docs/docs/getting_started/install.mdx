@@ -96,8 +96,6 @@ Before installing the package, you might want to check [the ports that will be u
   </TabItem>
 </Tabs>
 
-<!-- TBD : fix links -->
-
 You now have the Security Engine running ! You can move forward and install a [remediation component](/bouncers/intro.md), or take a [tour](/getting_started/crowdsec_tour.md) of the software beforehand !
 
 Directories:
@@ -105,54 +103,15 @@ Directories:
 * The application lives in the folder `\etc\crowdsec` using less than 0.5 MBytes of storage.
 * The data is stored in the folder `\lib\crowdsec\data` and needs around 97 MBytes of storage.
 
+
+## Install a Remediation Component
+
 :::caution
 
 Keep in mind that a CrowdSec package is only in charge of the "detection", and won't block anything on its own.
 You need to deploy a [Remediation Component](/bouncers/intro.md) to enforce decisions.
 
 :::
-
-
-## Install a Remediation Component
-
-:::info
-While we're suggesting to install the firewall remediation component it may not be best suited for your setup.
-
-Please reffer to [remediation components](/bouncers/intro.md) section about different components we have.
-:::
-
-<Tabs
-  defaultValue="debian"
-  groupId="operating-systems"
-  values={[
-    {label: 'Debian/Ubuntu', value: 'debian'},
-    {label: 'EL/Fedora/Centos7', value: 'centos7'},
-    {label: 'EL/Fedora/Centos8', value: 'centos8'},
-    {label: 'Amzn Linux 2', value: 'amz'},
-    {label: 'OpenWRT', value: 'openwrt'},
-    {label: 'CloudLinux', value: 'cloudlinux'},
-  ]}>
-  <TabItem value="debian">
-    <CodeBlock className="language-bash">apt install crowdsec-firewall-bouncer-iptables</CodeBlock>
-  </TabItem>
-  
-  <TabItem value="centos7">
-      <CodeBlock className="language-bash">yum install crowdsec-firewall-bouncer-iptables</CodeBlock>
-  </TabItem>
-  <TabItem value="centos8">
-    <CodeBlock className="language-bash">dnf install crowdsec-firewall-bouncer-iptables</CodeBlock>
-  </TabItem>
-  <TabItem value="amz">
-    <CodeBlock className="language-bash">yum install crowdsec-firewall-bouncer-iptables</CodeBlock>
-  </TabItem>
-  <TabItem value="openwrt">
-    <CodeBlock className="language-bash">opkg install crowdsec-firewall-bouncer</CodeBlock>
-  </TabItem>
-  <TabItem value="cloudlinux">
-      <CodeBlock className="language-bash">yum install crowdsec-firewall-bouncer-iptables</CodeBlock>
-  </TabItem>
-</Tabs>
-
 
 ## Running CrowdSec on Raspberry Pi OS/Raspbian 
 
