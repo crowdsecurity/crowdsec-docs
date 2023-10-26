@@ -147,6 +147,10 @@ module.exports = {
               label: 'Blog',
               href: 'https://crowdsec.net/blog/',
             },
+            {
+              label: 'Tutorial',
+              href: 'https://crowdsec.net/blog/category/tutorial/',
+            },
 
           ],
         },
