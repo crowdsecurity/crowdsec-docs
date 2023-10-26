@@ -12,7 +12,7 @@ You may see Remediation Components referred to as "bouncers" in the documentatio
 
 ## Introduction
 
-Remediation Components are software packages in charge of acting upon decision's provided by the Security Engine. Depending on where you would like to remediate the decision, you will need to install the appropriate remediation component.
+Remediation Components are software packages in charge of acting upon decisions provided by the Security Engine. Depending on where you would like to remediate the decision, you will need to install the appropriate remediation component.
 
 :::info
 Don't know which component suits your needs? Then join our [discord](https://discord.gg/crowdsec) and ask the community!
