@@ -68,7 +68,7 @@ module.exports = {
           position: 'left',
           label: 'CTI API',
         },
-        { to: 'https://crowdsec.net/blog/category/tutorial/', label: 'Tutorials', position: 'left' },
+        { to: 'https://academy.crowdsec.net/', label: 'Academy', position: 'left' },
         {
           type: 'doc',
           docId: 'faq',
@@ -112,19 +112,6 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Doc Mini-Tutorial Articles',
-              to: '/blog',
-            },
-            {
-              label: 'Documentation',
-              to: '/docs/intro',
-            },
-          ],
-        },
-        {
           title: 'Community',
           items: [
             {
@@ -159,6 +146,10 @@ module.exports = {
             {
               label: 'Blog',
               href: 'https://crowdsec.net/blog/',
+            },
+            {
+              label: 'Tutorial',
+              href: 'https://crowdsec.net/blog/category/tutorial/',
             },
 
           ],
