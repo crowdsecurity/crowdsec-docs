@@ -68,7 +68,7 @@ module.exports = {
           position: 'left',
           label: 'CTI API',
         },
-        { to: 'https://crowdsec.net/blog/category/tutorial/', label: 'Tutorials', position: 'left' },
+        { to: 'https://academy.crowdsec.net/', label: 'Academy', position: 'left' },
         {
           type: 'doc',
           docId: 'faq',
