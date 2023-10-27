@@ -13,7 +13,10 @@ To embark on your CrowdSec journey, the optimal starting point is to set up a co
 
 The CrowdSec console serves as a web-based interface enabling you to conveniently monitor all your CrowdSec instances from a centralized hub. To get started, simply [sign up here](https://app.crowdsec.net/signup).
 
-## Walkthrough
+
+## Deploy 
+
+### Walkthrough
 
 If you prefer a guided, step-by-step video tutorial for installing the Security Engine in a sandbox environment, please refer to our comprehensive guide.
 
@@ -21,13 +24,13 @@ If you prefer a guided, step-by-step video tutorial for installing the Security 
 
 or follow the steps below.
 
-## Installation Security Engine
+### Security Engine
 
 :::info
 In our updated documentation, we now refer to CrowdSec as the "Security Engine" and Bouncers as "Remediation Components" to better describe their roles in the ecosystem.
 :::
 
-### Prerequisites
+#### Prerequisites
 
 The Security Engine by default uses the following ports:
   - 8080/tcp for the API
@@ -52,7 +55,7 @@ Should you opt for a source-based installation, we offer a brief video guide to 
 
 <iframe width="100%" height="500" src="https://www.youtube.com/embed/-1xxkwQyI2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-#### Installing a Remediation Component
+### Remediation Component
 
 After installing the Security Engine, you can proceed to install a Remediation Component, which is responsible for executing actions based on the decisions made by the Security Engine.
 
@@ -60,3 +63,8 @@ The specific Remediation Component to install may vary based on your network and
 
 If you are uncertain about which one to install, please refer to our [Remediation Components](/bouncers/intro.md) section or join our [Discord](https://discord.gg/crowdsec) and ask our community.
 
+## Enroll
+
+Since you created your account on the CrowdSec console, you can now enroll your Security Engine to your account.
+
+To do so, you can find steps outlined [here](/console/enrollment.mdx).
