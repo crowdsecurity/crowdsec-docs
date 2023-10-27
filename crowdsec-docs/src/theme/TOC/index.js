@@ -3,7 +3,6 @@ import React from "react";
 import clsx from "clsx";
 import TOCItems from "@theme/TOCItems";
 import styles from "./styles.module.css";
-import ConsoleAd from '@site/static/img/console_ad_dark.svg'
 
 // Define custom classNames
 const LINK_CLASS_NAME = "table-of-contents__link toc-highlight";
@@ -20,7 +19,7 @@ export default function TOC({ className, ...props }) {
         linkActiveClassName={LINK_ACTIVE_CLASS_NAME}
       />
       <a href={SIGNUP_LINK} target="_blank">
-        <ConsoleAd width="100%" />
+        <img src="/img/console_ad_dark.svg" alt="CrowdSec Console" width="100%" />
       </a>
     </div>
   );
