@@ -4,21 +4,20 @@ title: Console
 sidebar_position: 10
 ---
 
-The [console](https://app.crowdsec.net) is a web interface hosted by crowdsec that allows you to get even more from crowdsec :
- - aggregate, tag and classify your instances (without having them share a common local API)
- - view/filter/export alerts in real-time
- - get statistics and insights on your alerts compared
- - organization management, MFA and more
- - and much more
+The [CrowdSec console](https://app.crowdsec.net/signup) is a web-based interface provided by CrowdSec, offering a wide range of features and capabilities to enhance your experience with CrowdSec:
 
-![console-overview](/img/console-overview.png)
+- **Instance Management**: You can aggregate, tag, and classify your instances, all without the need for them to share a common local API. This allows you to organize and manage multiple instances more effectively.
 
-Once your [registration done](https://app.crowdsec.net/signup), follow the tour !
+- **Real-Time Alert Handling**: The console enables you to view, filter, and export alerts in real-time. This means you can react promptly to security events and take immediate action.
 
-Then [enroll your instance](/console/enrollment.mdx) to the console.
+- **Third-Party Blocklists**: Enhance your security operations by leveraging third-party blocklists. You have the flexibility to import blocklists from various sources, including widely recognized open-source blocklists.
 
-And see what's going in the console :
+- **Alert Statistics and Insights**: Gain access to comprehensive statistics and insights regarding your alerts. This feature allows you to analyze and understand your security landscape, helping you make informed decisions.
 
-![instance-overview](/img/console-instance-overview.png)
+- **Organization Management**: The console provides tools for efficiently managing your organization's security operations. You can organize users, configure multi-factor authentication (MFA), and more to ensure robust security practices.
 
-![stats-overview](/img/console-stats-overview.png)
+- **And Much More**: Beyond the mentioned features, the CrowdSec console offers a host of additional functionalities to empower your security operations and enhance your overall experience.
+
+Whether you're an individual user or part of a larger organization, the CrowdSec console serves as a powerful hub for maximizing the benefits of CrowdSec's security solutions.
+
+**Feel ready to take your security to the next level? [Sign up now](https://app.crowdsec.net/signup) and unlock a world of enhanced protection!**

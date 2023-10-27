@@ -29,11 +29,6 @@
             id: "intro",
         },
         {
-            type: "doc",
-            label: "Concepts",
-            id: "concepts",
-        },
-        {
             type: "category",
             label: "Getting Started",
             collapsed: false,
@@ -203,6 +198,11 @@
                 "getting_started/crowdsec_tour",
                 "getting_started/versions_matrix",
             ],
+        },
+        {
+            type: "doc",
+            label: "Concepts",
+            id: "concepts",
         },
         {
             type: "category",
