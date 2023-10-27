@@ -68,7 +68,7 @@ module.exports = {
           position: 'left',
           label: 'CTI API',
         },
-        { to: 'https://academy.crowdsec.net/', label: 'Academy', position: 'left' },
+        { to: `https://academy.crowdsec.net/courses?${process.env.NODE_ENV === 'production' ? 'utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs' : ''}`, label: 'Academy', position: 'left' },
         {
           type: 'doc',
           docId: 'faq',
