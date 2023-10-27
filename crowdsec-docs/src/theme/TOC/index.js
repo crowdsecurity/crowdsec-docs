@@ -8,7 +8,7 @@ import ConsoleAd from '@site/static/img/console_ad_dark.svg'
 // Define custom classNames
 const LINK_CLASS_NAME = "table-of-contents__link toc-highlight";
 const LINK_ACTIVE_CLASS_NAME = "table-of-contents__link--active";
-const SIGNUP_LINK = `https://app.crowdsec.net/signup${process.env.NODE_ENV === 'production' ? '?utm_source=docs&utm_medium=tocAd&utm_campaign=Console' : ''}`
+const SIGNUP_LINK = `https://app.crowdsec.net/signup${process.env.NODE_ENV === 'production' ? '?mtm_campaign=Console&mtm_source=docs&mtm_medium=tocAd&mtm_content=Console' : ''}`
 
 // Modified TOC component
 export default function TOC({ className, ...props }) {
