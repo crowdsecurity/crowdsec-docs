@@ -6,7 +6,7 @@ title: pfSense
 We have created a [pfSense package](https://docs.netgate.com/pfsense/en/latest/packages/list.html) with
 a simple UI to configure the Security Engine and the Firewall Remediation Component (bouncer).
 
-Three types of configuration are supported:
+Three types of setup are supported:
 
 **Small** (remediation only) - the pfSense machine receives blocklists from a CrowdSec
 Security Engine that you are running on a different machine.
@@ -14,7 +14,7 @@ Incoming connections are blocked at the firewall by (configurable) pfSense rules
 
 **Medium** (small+log processor) - in addition to enforcing blocklists, the pfSense
 machine can detect attacks directed at the firewall itself, for example port scans.
-The data about the attacks is sent (for analysis an possibly sharing) to a Security Engine
+The data about the attacks is sent (for analysis and possibly sharing) to a Security Engine
 that you are running on a different machine.
 
 **Large** (medium+LAPI) - deploy a fully autonomous Security Engine on the firewall
@@ -57,15 +57,15 @@ Writing configuration... done.
 
 ## Configuration
 
-Once the packages are installed, go to `Service/CrowdSec`. The options *Remediation Component*,
+Once the package and its dependencies are installed, go to `Service/CrowdSec`. The options *Remediation Component*,
 *Log Processor* and *Local API* should be enabled. Click Save.
 
-With the size analogy, the default is a "Large", autonomous installation. For a small or medium, disable `Local API` and fill the fields in the *Remove LAPI* section.
+With the size analogy, the default is a "Large", autonomous installation. For a "Medium", disable *Local API* and fill the fields in the *Remote LAPI* section. For a "Small", disable *Log Processor* too.
 
 CrowdSec on pfSense is fully functional from the command line but the web interface is read-only, with the exception of decision revocation (unban).
 Most actions require the shell or the [CrowdSec Console](https://app.crowdsec.net).
 For simple things, `Diagnostics/Command Prompt` works as well as ssh.
-You are free to edit the files in `/usr/local/etc/crowdsec`, but some setting may be overwritten by the pfSense package if they are mandatory.
+You are free to edit the files in `/usr/local/etc/crowdsec`, although some setting may be overwritten by the pfSense package if they are mandatory.
 
 :::caution
 *Ram Disk*: unless you disable Local API, ensure that you are [not using a RAM disk](https://docs.netgate.com/pfsense/en/latest/config/advanced-misc.html#ram-disk-settings)
@@ -95,6 +95,7 @@ If a Log Processor is running, the following scenarios are enabled by default:
  - portscan
  - ssh brute-force
  - pfSense admin UI brute-force
+ - HTTP vulnerability probing
 
 These will trigger a ban on the attacking IP (4 hours by default) and report it to the CrowdSec Central API
 (meaning [timestamp, scenario, attacking IP](https://docs.crowdsec.net/docs/concepts/), for inclusion in the
