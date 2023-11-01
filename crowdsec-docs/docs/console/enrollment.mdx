@@ -16,13 +16,14 @@ $ID will be used as the placeholder for your enrollment ID, you can find this wi
 You can enroll a [Security Engine](/getting_started/getting_started.md) into the console to get a overview of your alerts. This process is handled by the following `cscli` command:
 
 <Tabs
-  defaultValue="nix"
+  defaultValue="unix"
   groupId="console-operating-systems"
+  queryString
   values={[
-    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Linux/Freebsd', value: 'unix'},
     {label: 'Windows', value: 'windows'},
   ]}>
-  <TabItem value="nix">
+  <TabItem value="unix">
     <CodeBlock className="language-bash">sudo cscli console enroll $ID</CodeBlock>
   </TabItem>
   <TabItem value="windows">
@@ -94,13 +95,14 @@ Yes, you can transfer the security engine within the console interface to anothe
 If for whatever reason you cannot access the old account you can force the new enrollment by running the `cscli` command with the overwrite flag:
 
 <Tabs
-  defaultValue="nix"
+  defaultValue="unix"
   groupId="console-operating-systems"
+  queryString
   values={[
-    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Linux/Freebsd', value: 'unix'},
     {label: 'Windows', value: 'windows'},
   ]}>
-  <TabItem value="nix">
+  <TabItem value="unix">
     <CodeBlock className="language-bash">sudo cscli console enroll $ID --overwrite</CodeBlock>
   </TabItem>
   <TabItem value="windows">
