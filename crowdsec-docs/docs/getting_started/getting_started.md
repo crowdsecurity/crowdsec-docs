@@ -3,6 +3,8 @@ id: getting_started
 title: Getting Started
 ---
 
+import AcademyPromo from '@site/src/components/AcademyPromo';
+
 Welcome to CrowdSec!
 
 In this section, you'll be taken through the process of creating a console account, with the initial step being the installation of the Security Engine, followed by the deployment of your first Remediation Component.
@@ -21,6 +23,14 @@ The CrowdSec console serves as a web-based interface enabling you to convenientl
 If you prefer a guided, step-by-step video tutorial for installing the Security Engine in a sandbox environment, please refer to our comprehensive guide.
 
 <iframe width="100%" height="500" src="https://www.youtube-nocookie.com/embed/yxbimVtd2nw?controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<AcademyPromo
+  image="crowdsec_fundamentals.svg"
+  description="Watch a short series of videos on how to install CrowdSec and protect your infrastructure"
+  title="Complete Introduction"
+  course="crowdsec-fundamentals"
+  utm="?utm_source=docs&utm_medium=banner&utm_campaign=intro-page&utm_id=academydocs"
+/>
 
 or follow the steps below.
 

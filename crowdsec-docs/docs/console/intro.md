@@ -4,7 +4,18 @@ title: Console
 sidebar_position: 10
 ---
 
+import AcademyPromo from '@site/src/components/AcademyPromo';
+
+<AcademyPromo
+  image="crowdsec_console.svg"
+  description="Watch a short series of videos on how to get started with the CrowdSec Console and enroll your first Security Engine"
+  title="Get started with the Console"
+  course="get-started-with-the-crowdsec-console"
+  utm="?utm_source=docs&utm_medium=banner&utm_campaign=console-page&utm_id=academydocs"
+/>
+
 The [CrowdSec console](https://app.crowdsec.net/signup) is a web-based interface provided by CrowdSec, offering a wide range of features and capabilities to enhance your experience with CrowdSec:
+
 
 - **Instance Management**: You can aggregate, tag, and classify your instances, all without the need for them to share a common local API. This allows you to organize and manage multiple instances more effectively.
 
