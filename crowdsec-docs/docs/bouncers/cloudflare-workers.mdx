@@ -97,6 +97,14 @@ You can run `sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLO
 
 :::
 
+:::note
+By default the generated config only sets up captcha remediation for all the zones.
+You can change this by editing `cloudflare_config.accounts[*].zones[*].actions` and `cloudflare_config.accounts[*].zones[*].default_action` in the config to support ban action. Or make ban action the default. 
+
+To support ban and captcha remediations simultaneously, you can set `cloudflare_config.accounts[*].zones[*].actions` to `["captcha", "ban"]`
+IP's originating from decisions with `captcha` action would be handled by captcha remediation and decisions with `ban` action would be handled by ban remediation. Decisions with other actions would be applied remedications specified by `cloudflare_config.accounts[*].zones[*].default_action` value.
+:::
+
 ### Manual Installation
 
 #### Assisted
