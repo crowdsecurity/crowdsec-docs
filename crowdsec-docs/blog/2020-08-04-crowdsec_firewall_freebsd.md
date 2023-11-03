@@ -112,7 +112,7 @@ crowdsec-cli machines list
 sudo cp /usr/local/etc/crowdsec-firewall-bouncer/crowdsec-firewall-bouncer.yaml.sample /usr/local/etc/crowdsec-firewall-bouncer/crowdsec-firewall-bouncer.yaml
 ```
 
-* Add the new bouncer and it will generate the token for <your_api_key> to use
+* Add the new bouncer and it will generate the token for `{your_api_key}` to use
 
 ```
 crowdsec-cli bouncers add --name freebsd-pf-bouncer

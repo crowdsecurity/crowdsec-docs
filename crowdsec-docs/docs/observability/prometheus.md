@@ -27,45 +27,29 @@ All the counters are "since CrowdSec start".
  - `cs_bucket_underflowed_total` : total number of underflow of each scenario (bucket was created but expired because of lack of events)
  - `cs_bucket_poured_total` : total number of event poured to each scenario with source as complementary key 
 
-<details>
-  <summary>example</summary>
 
-
-```
+```bash title="example"
 #2030 lines from `/var/log/nginx/access.log` were poured to `crowdsecurity/http-scan-uniques_404` scenario
 cs_bucket_poured_total{name="crowdsecurity/http-scan-uniques_404",source="/var/log/nginx/access.log"} 2030
 ```
-
-</details>
 
 
 #### Parsers
  - `cs_node_hits_total` : how many times an event from a specific source was processed by a parser node :
 
 
-<details>
-  <summary>example</summary>
-
-
-```
+```bash title="example"
 # 235 lines from `auth.log` were processed by the `crowdsecurity/dateparse-enrich` parser
 cs_node_hits_total{name="crowdsecurity/dateparse-enrich",source="/var/log/auth.log"} 235
 ```
 
-</details>
-
  - `cs_node_hits_ko_total` : how many times an event from a specific was unsuccessfully parsed by a specific parser
 
-<details>
-  <summary>example</summary>
 
-
-```
+```bash title="example"
 # 2112 lines from `error.log` failed to be parsed by `crowdsecurity/http-logs`
 cs_node_hits_ko_total{name="crowdsecurity/http-logs",source="/var/log/nginx/error.log"} 2112
 ```
-
-</details>
 
  - `cs_node_hits_ok_total` : how many times an event from a specific source was successfully parsed by a specific parser
 

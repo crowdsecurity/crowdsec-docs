@@ -9,8 +9,7 @@ CrowdSec has a main `yaml` configuration file, usually located in `/etc/crowdsec
 
 ## Configuration example
 
-<details>
-  <summary>Default configuration</summary>
+## Default configuration
 
 ```yaml
 common:
@@ -95,8 +94,6 @@ prometheus:
   listen_addr: 127.0.0.1
   listen_port: 6060
 ```
-
-</details>
 
 ## Environment variables
 

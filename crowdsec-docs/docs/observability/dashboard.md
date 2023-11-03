@@ -38,8 +38,7 @@ Optional arguments:
 
 
 
-<details>
-  <summary>cscli dashboard setup</summary>
+## cscli dashboard setup
 
 ```bash
 INFO[0000] Pulling docker image metabase/metabase       
@@ -54,7 +53,6 @@ INFO[0051] Metabase is ready
 	password  : '<RANDOM_PASSWORD>'
 
 ```
-</details>
 
 :::tip
 The `dashboard setup` command will output generated credentials for metabase.

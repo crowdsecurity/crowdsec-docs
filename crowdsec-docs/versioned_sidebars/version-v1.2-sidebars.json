@@ -1,12 +1,12 @@
 {
-  "version-v1.2/tutorialSidebar": [
+  "tutorialSidebar": [
     {
       "type": "doc",
-      "id": "version-v1.2/intro"
+      "id": "intro"
     },
     {
       "type": "doc",
-      "id": "version-v1.2/concepts"
+      "id": "concepts"
     },
     {
       "type": "category",
@@ -15,11 +15,11 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/getting_started/install_crowdsec"
+          "id": "getting_started/install_crowdsec"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/getting_started/crowdsec_tour"
+          "id": "getting_started/crowdsec_tour"
         }
       ],
       "collapsible": true
@@ -30,35 +30,35 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/user_guides/hub_mgmt"
+          "id": "user_guides/hub_mgmt"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/user_guides/decisions_mgmt"
+          "id": "user_guides/decisions_mgmt"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/user_guides/bouncers_configuration"
+          "id": "user_guides/bouncers_configuration"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/user_guides/machines_mgmt"
+          "id": "user_guides/machines_mgmt"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/user_guides/lapi_mgmt"
+          "id": "user_guides/lapi_mgmt"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/user_guides/building"
+          "id": "user_guides/building"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/user_guides/replay_mode"
+          "id": "user_guides/replay_mode"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/user_guides/cscli_macos"
+          "id": "user_guides/cscli_macos"
         }
       ],
       "collapsible": true,
@@ -70,27 +70,27 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/data_sources/intro"
+          "id": "data_sources/intro"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/data_sources/file"
+          "id": "data_sources/file"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/data_sources/journald"
+          "id": "data_sources/journald"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/data_sources/cloudwatch"
+          "id": "data_sources/cloudwatch"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/data_sources/syslog"
+          "id": "data_sources/syslog"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/data_sources/troubleshoot"
+          "id": "data_sources/troubleshoot"
         }
       ],
       "collapsible": true,
@@ -102,23 +102,23 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/parsers/intro"
+          "id": "parsers/intro"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/parsers/format"
+          "id": "parsers/format"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/parsers/create"
+          "id": "parsers/create"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/parsers/enricher"
+          "id": "parsers/enricher"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/parsers/patterns"
+          "id": "parsers/patterns"
         }
       ],
       "collapsible": true,
@@ -130,19 +130,19 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/scenarios/intro"
+          "id": "scenarios/intro"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/scenarios/format"
+          "id": "scenarios/format"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/scenarios/simulation"
+          "id": "scenarios/simulation"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/scenarios/create"
+          "id": "scenarios/create"
         }
       ],
       "collapsible": true,
@@ -154,11 +154,11 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/collections/intro"
+          "id": "collections/intro"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/collections/format"
+          "id": "collections/format"
         }
       ],
       "collapsible": true,
@@ -170,15 +170,15 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/whitelist/intro"
+          "id": "whitelist/intro"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/whitelist/format"
+          "id": "whitelist/format"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/whitelist/create"
+          "id": "whitelist/create"
         }
       ],
       "collapsible": true,
@@ -190,11 +190,11 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/profiles/intro"
+          "id": "profiles/intro"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/profiles/format"
+          "id": "profiles/format"
         }
       ],
       "collapsible": true,
@@ -206,27 +206,27 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/notification_plugins/intro"
+          "id": "notification_plugins/intro"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/notification_plugins/http"
+          "id": "notification_plugins/http"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/notification_plugins/slack"
+          "id": "notification_plugins/slack"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/notification_plugins/splunk"
+          "id": "notification_plugins/splunk"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/notification_plugins/elastic"
+          "id": "notification_plugins/elastic"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/notification_plugins/writing_your_own_plugin"
+          "id": "notification_plugins/writing_your_own_plugin"
         }
       ],
       "collapsible": true,
@@ -238,11 +238,11 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/configuration/crowdsec_configuration"
+          "id": "configuration/crowdsec_configuration"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/configuration/network_management"
+          "id": "configuration/network_management"
         }
       ],
       "collapsible": true,
@@ -254,23 +254,23 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/observability/intro"
+          "id": "observability/intro"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/observability/cscli"
+          "id": "observability/cscli"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/observability/prometheus"
+          "id": "observability/prometheus"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/observability/dashboard"
+          "id": "observability/dashboard"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/observability/pprof"
+          "id": "observability/pprof"
         }
       ],
       "collapsible": true,
@@ -282,15 +282,15 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/local_api/intro"
+          "id": "local_api/intro"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/local_api/database"
+          "id": "local_api/database"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/local_api/bouncers"
+          "id": "local_api/bouncers"
         },
         {
           "type": "link",
@@ -307,7 +307,7 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/central_api/intro"
+          "id": "central_api/intro"
         },
         {
           "type": "link",
@@ -324,19 +324,19 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/expr/helpers"
+          "id": "expr/helpers"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/expr/event"
+          "id": "expr/event"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/expr/alert"
+          "id": "expr/alert"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/expr/decision"
+          "id": "expr/decision"
         }
       ],
       "collapsible": true,
@@ -348,19 +348,19 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/contributing/contributing_test_env"
+          "id": "contributing/contributing_test_env"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/contributing/contributing_code"
+          "id": "contributing/contributing_code"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/contributing/contributing_hub"
+          "id": "contributing/contributing_hub"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/contributing/contributing_doc"
+          "id": "contributing/contributing_doc"
         }
       ],
       "collapsible": true,
@@ -368,17 +368,17 @@
     },
     {
       "type": "doc",
-      "id": "version-v1.2/console"
+      "id": "console"
     },
     {
       "type": "doc",
-      "id": "version-v1.2/contact_team"
+      "id": "contact_team"
     }
   ],
-  "version-v1.2/cscliSidebar": [
+  "cscliSidebar": [
     {
       "type": "doc",
-      "id": "version-v1.2/cscli/cscli"
+      "id": "cscli/cscli"
     },
     {
       "type": "category",
@@ -386,19 +386,19 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_alerts"
+          "id": "cscli/cscli_alerts"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_alerts_delete"
+          "id": "cscli/cscli_alerts_delete"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_alerts_inspect"
+          "id": "cscli/cscli_alerts_inspect"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_alerts_list"
+          "id": "cscli/cscli_alerts_list"
         }
       ],
       "collapsible": true,
@@ -410,19 +410,19 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_bouncers"
+          "id": "cscli/cscli_bouncers"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_bouncers_add"
+          "id": "cscli/cscli_bouncers_add"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_bouncers_delete"
+          "id": "cscli/cscli_bouncers_delete"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_bouncers_list"
+          "id": "cscli/cscli_bouncers_list"
         }
       ],
       "collapsible": true,
@@ -434,15 +434,15 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_capi"
+          "id": "cscli/cscli_capi"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_capi_register"
+          "id": "cscli/cscli_capi_register"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_capi_status"
+          "id": "cscli/cscli_capi_status"
         }
       ],
       "collapsible": true,
@@ -454,27 +454,27 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_collections"
+          "id": "cscli/cscli_collections"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_collections_inspect"
+          "id": "cscli/cscli_collections_inspect"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_collections_install"
+          "id": "cscli/cscli_collections_install"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_collections_list"
+          "id": "cscli/cscli_collections_list"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_collections_remove"
+          "id": "cscli/cscli_collections_remove"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_collections_upgrade"
+          "id": "cscli/cscli_collections_upgrade"
         }
       ],
       "collapsible": true,
@@ -486,7 +486,7 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_completion"
+          "id": "cscli/cscli_completion"
         }
       ],
       "collapsible": true,
@@ -498,19 +498,19 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_config"
+          "id": "cscli/cscli_config"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_config_backup"
+          "id": "cscli/cscli_config_backup"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_config_restore"
+          "id": "cscli/cscli_config_restore"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_config_show"
+          "id": "cscli/cscli_config_show"
         }
       ],
       "collapsible": true,
@@ -522,11 +522,11 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_console"
+          "id": "cscli/cscli_console"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_console_enroll"
+          "id": "cscli/cscli_console_enroll"
         }
       ],
       "collapsible": true,
@@ -538,23 +538,23 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_dashboard"
+          "id": "cscli/cscli_dashboard"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_dashboard_remove"
+          "id": "cscli/cscli_dashboard_remove"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_dashboard_setup"
+          "id": "cscli/cscli_dashboard_setup"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_dashboard_start"
+          "id": "cscli/cscli_dashboard_start"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_dashboard_stop"
+          "id": "cscli/cscli_dashboard_stop"
         }
       ],
       "collapsible": true,
@@ -566,19 +566,19 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_decisions"
+          "id": "cscli/cscli_decisions"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_decisions_add"
+          "id": "cscli/cscli_decisions_add"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_decisions_delete"
+          "id": "cscli/cscli_decisions_delete"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_decisions_list"
+          "id": "cscli/cscli_decisions_list"
         }
       ],
       "collapsible": true,
@@ -590,19 +590,19 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_hub"
+          "id": "cscli/cscli_hub"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_hub_list"
+          "id": "cscli/cscli_hub_list"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_hub_update"
+          "id": "cscli/cscli_hub_update"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_hub_upgrade"
+          "id": "cscli/cscli_hub_upgrade"
         }
       ],
       "collapsible": true,
@@ -614,15 +614,15 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_lapi"
+          "id": "cscli/cscli_lapi"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_lapi_register"
+          "id": "cscli/cscli_lapi_register"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_lapi_status"
+          "id": "cscli/cscli_lapi_status"
         }
       ],
       "collapsible": true,
@@ -634,23 +634,23 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_machines"
+          "id": "cscli/cscli_machines"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_machines_add"
+          "id": "cscli/cscli_machines_add"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_machines_delete"
+          "id": "cscli/cscli_machines_delete"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_machines_list"
+          "id": "cscli/cscli_machines_list"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_machines_validate"
+          "id": "cscli/cscli_machines_validate"
         }
       ],
       "collapsible": true,
@@ -662,7 +662,7 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_metrics"
+          "id": "cscli/cscli_metrics"
         }
       ],
       "collapsible": true,
@@ -674,27 +674,27 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_parsers"
+          "id": "cscli/cscli_parsers"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_parsers_inspect"
+          "id": "cscli/cscli_parsers_inspect"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_parsers_install"
+          "id": "cscli/cscli_parsers_install"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_parsers_list"
+          "id": "cscli/cscli_parsers_list"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_parsers_remove"
+          "id": "cscli/cscli_parsers_remove"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_parsers_upgrade"
+          "id": "cscli/cscli_parsers_upgrade"
         }
       ],
       "collapsible": true,
@@ -706,27 +706,27 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_postoverflows"
+          "id": "cscli/cscli_postoverflows"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_postoverflows_inspect"
+          "id": "cscli/cscli_postoverflows_inspect"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_postoverflows_install"
+          "id": "cscli/cscli_postoverflows_install"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_postoverflows_list"
+          "id": "cscli/cscli_postoverflows_list"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_postoverflows_remove"
+          "id": "cscli/cscli_postoverflows_remove"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_postoverflows_upgrade"
+          "id": "cscli/cscli_postoverflows_upgrade"
         }
       ],
       "collapsible": true,
@@ -738,27 +738,27 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_scenarios"
+          "id": "cscli/cscli_scenarios"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_scenarios_inspect"
+          "id": "cscli/cscli_scenarios_inspect"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_scenarios_install"
+          "id": "cscli/cscli_scenarios_install"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_scenarios_list"
+          "id": "cscli/cscli_scenarios_list"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_scenarios_remove"
+          "id": "cscli/cscli_scenarios_remove"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_scenarios_upgrade"
+          "id": "cscli/cscli_scenarios_upgrade"
         }
       ],
       "collapsible": true,
@@ -770,19 +770,19 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_simulation"
+          "id": "cscli/cscli_simulation"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_simulation_disable"
+          "id": "cscli/cscli_simulation_disable"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_simulation_enable"
+          "id": "cscli/cscli_simulation_enable"
         },
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_simulation_status"
+          "id": "cscli/cscli_simulation_status"
         }
       ],
       "collapsible": true,
@@ -794,49 +794,49 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v1.2/cscli/cscli_version"
+          "id": "cscli/cscli_version"
         }
       ],
       "collapsible": true,
       "collapsed": true
     }
   ],
-  "version-v1.2/bouncersSidebar": [
+  "bouncersSidebar": [
     {
       "type": "doc",
-      "id": "version-v1.2/bouncers/intro"
+      "id": "bouncers/intro"
     },
     {
       "type": "doc",
-      "id": "version-v1.2/bouncers/firewall"
+      "id": "bouncers/firewall"
     },
     {
       "type": "doc",
-      "id": "version-v1.2/bouncers/nginx"
+      "id": "bouncers/nginx"
     },
     {
       "type": "doc",
-      "id": "version-v1.2/bouncers/openresty"
+      "id": "bouncers/openresty"
     },
     {
       "type": "doc",
-      "id": "version-v1.2/bouncers/ingress-nginx"
+      "id": "bouncers/ingress-nginx"
     },
     {
       "type": "doc",
-      "id": "version-v1.2/bouncers/custom"
+      "id": "bouncers/custom"
     },
     {
       "type": "doc",
-      "id": "version-v1.2/bouncers/cloudflare"
+      "id": "bouncers/cloudflare"
     },
     {
       "type": "doc",
-      "id": "version-v1.2/bouncers/wordpress"
+      "id": "bouncers/wordpress"
     },
     {
       "type": "doc",
-      "id": "version-v1.2/bouncers/php"
+      "id": "bouncers/php"
     },
     {
       "type": "link",
@@ -845,7 +845,7 @@
     },
     {
       "type": "doc",
-      "id": "version-v1.2/contributing/contributing_bouncers"
+      "id": "contributing/contributing_bouncers"
     }
   ]
 }

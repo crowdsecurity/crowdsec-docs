@@ -91,7 +91,7 @@ Required. Name of this config  eg "slackreport". This should match with register
 
 #### `format` :
 
-Required. [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects. The go templates provide additional directives provide by [sprig](https://masterminds.github.io/sprig/) . eg "Received {{.len}} alerts"
+Required. [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects. The go templates provide additional directives provide by [sprig](https://masterminds.github.io/sprig/) . eg "Received ``{{.len}}`` alerts"
 
 #### `group_wait` :
 
@@ -188,8 +188,7 @@ Note that this was generated using the `toJson` sprig function, so field names a
 
 To use them in a go-template, you can check [here](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) to get the actual field names.
 
-<details>
-<summary>Show the full alert object</summary>
+## Show the full alert object
 <CodeBlock className="language-json">
 {`[
     {
@@ -574,7 +573,6 @@ To use them in a go-template, you can check [here](https://pkg.go.dev/github.com
     }
 ]`}
 </CodeBlock>
-</details>
 
 #### Usage examples
 
