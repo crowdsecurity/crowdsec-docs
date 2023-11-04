@@ -70,7 +70,7 @@ const TableRender = ({ columns, url }) => {
                     <MaterialReactTable
                         data={jsonContent}
                         columns={columns}
-                        enableColumnResizing={true}
+                        enableColumnResizing={false}
                         initialState={{ pagination: { pageSize: 25 } }}
                         enableGlobalFilter={true}
                         muiTablePaginationProps={{
