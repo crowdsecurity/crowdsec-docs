@@ -166,6 +166,7 @@ module.exports = {
     prism: {
       theme: themes.github,
       darkTheme: themes.dracula,
+      additionalLanguages: ['bash', 'yaml', 'json'],
     },
   },
   presets: [
