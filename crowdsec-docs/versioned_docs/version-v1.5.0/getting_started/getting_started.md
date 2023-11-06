@@ -7,15 +7,20 @@ import AcademyPromo from '@site/src/components/AcademyPromo';
 
 Welcome to CrowdSec!
 
-This section will guide you through the installation of the Security Engine, and deployment of your first Remediation Component.
+In this section, you'll be taken through the process of creating a console account, with the initial step being the installation of the Security Engine, followed by the deployment of your first Remediation Component.
 
-:::info
-You may see CrowdSec referred to as "Security Engine" and Bouncers referred to as "Remediation Components" within new documentation. This is to better reflect the role of each component within the CrowdSec ecosystem.
-:::
+## Creating a console account
 
-## Walkthrough
+To embark on your CrowdSec journey, the optimal starting point is to set up a console account, as it grants you access to complimentary features that seamlessly integrate with your Security Engine.
 
-If you would like to follow a step-by-step video to install Security Engine on a sandbox environment please follow our guide.
+The CrowdSec console serves as a web-based interface enabling you to conveniently monitor all your CrowdSec instances from a centralized hub. To get started, simply [sign up here](https://app.crowdsec.net/signup).
+
+
+## Deploy 
+
+### Walkthrough
+
+If you prefer a guided, step-by-step video tutorial for installing the Security Engine in a sandbox environment, please refer to our comprehensive guide.
 
 <iframe width="100%" height="500" src="https://www.youtube-nocookie.com/embed/yxbimVtd2nw?controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
@@ -29,9 +34,13 @@ If you would like to follow a step-by-step video to install Security Engine on a
 
 or follow the steps below.
 
-## Installation Security Engine
+### Security Engine
 
-### Prerequisites
+:::info
+In our updated documentation, we now refer to CrowdSec as the "Security Engine" and Bouncers as "Remediation Components" to better describe their roles in the ecosystem.
+:::
+
+#### Prerequisites
 
 The Security Engine by default uses the following ports:
   - 8080/tcp for the API
@@ -43,7 +52,7 @@ Please note that the API is mandatory for your security engine, do not remove it
 
 #### Using the repository
 
-The easiest way to install  the Security Engine is to use the official repository. This will ensure that you always have the latest version of the Security Engine.
+For the most straightforward installation of the Security Engine, utilize the official repository, guaranteeing you'll constantly have the latest version.
 
 Please see the relevant documentation for your OS:
 - [Linux](/getting_started/install.mdx)
@@ -52,14 +61,18 @@ Please see the relevant documentation for your OS:
 
 #### Installing from source
 
-If you wish to install from source, we have a short video guide on how to do this.
+Should you opt for a source-based installation, we offer a brief video guide to assist you in the process.
 
 <iframe width="100%" height="500" src="https://www.youtube.com/embed/-1xxkwQyI2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-#### Installing a Remediation Component
+### Remediation Component
 
-Once you have installed the Security Engine, you can install a Remediation Component. This is the component that will take action on the decisions made by the Security Engine.
+After installing the Security Engine, you can proceed to install a Remediation Component, which is responsible for executing actions based on the decisions made by the Security Engine.
 
-Depending on your network / OS setup, you will need to install a different Remediation Component.
+The specific Remediation Component to install may vary based on your network and operating system configuration.
 
-If you are unsure which to install, please see our [Remediation Components](/bouncers/intro.md) section OR join our [discord](https://discord.gg/crowdsec) and ask our community.
+If you are uncertain about which one to install, please refer to our [Remediation Components](/bouncers/intro.md) section or join our [Discord](https://discord.gg/crowdsec) and ask our community.
+
+## Enroll
+
+Since you created your account on the CrowdSec console, you can now enroll your Security Engine to your account.

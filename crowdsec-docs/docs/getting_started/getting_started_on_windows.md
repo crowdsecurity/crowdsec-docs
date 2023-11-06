@@ -185,6 +185,6 @@ When done, you will need to enable the `cs-windows-firewall-bouncer` service and
 
 ## Enrolling your instance
 
-Next step is to enroll your instance to the CrowdSec console. This will allow you to view your instance in the console, and enhance your security by using our third party lists.
+The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/signup).
 
-See the [console section](/console/intro.md) for more information.
+For the benefits, please visit the [Console section](/console/intro.md).
