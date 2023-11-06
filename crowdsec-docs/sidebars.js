@@ -783,6 +783,10 @@
         {
             type: "category",
             label: "Integrations",
+            link: {
+                type: "doc",
+                id: "cti_api/integration_intro",
+            },
             items: [
                 "cti_api/integration_chrome",
                 "cti_api/integration_gigasheet",
