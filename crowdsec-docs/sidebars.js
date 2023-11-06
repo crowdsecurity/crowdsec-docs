@@ -49,6 +49,7 @@
                         "getting_started/install_crowdsec",
                         "getting_started/install_crowdsec_freebsd",
                         "getting_started/install_crowdsec_opnsense",
+                        "getting_started/install_crowdsec_pfsense",
                         "getting_started/install_windows",
                         {
                             type: "link",
