@@ -44,7 +44,7 @@ If the package is not available yet, you'll have to install it manually.
  * Open an ssh connection to your pfSense box and run the following commands in the right order. Do not activate or run the services,
    because pfSense will take care of it.
 
-```bash
+```console
 # setenv IGNORE_OSVERSION yes
 # pkg add <link to abseil>
 # pkg add <link to re2>
