@@ -5,7 +5,7 @@ title: Integrations
 
 | Integration          | Description                                   |
 |---------------------------|----------------------------------------|
-| [Chrome](/cti_api/integration_browser_chrome.md)                 | A Chrome extension which allows you to quickly select an IP on a web page       |
+| [Chrome](/cti_api/integration_browser_chrome.md)                 | A Chrome extension which allows you to quickly search an IP on a web page       |
 | [Gigasheet](/cti_api/integration_gigasheet.md)                 | Gigasheet's No-Code API-data-enrichment feature     |
 | [IntelOwl](/cti_api/integration_intelowl.md)                 | IntelOwl is an open-source framework and platform for analyzing and processing threat intelligence data     |
 | [Maltego](/cti_api/integration_maltego.md)                    | Maltego is a powerful and versatile data visualization and link analysis tool used primarily in the field of digital forensics, cybersecurity, and intelligence gathering |
