@@ -49,11 +49,11 @@ Returns the background noise score associated to the given IP, from a scale of 0
 
 #### `SmokeItem.GetBehaviors() []string`
 
-Returns the list of [behaviors](/docs/next/cti_api/taxonomy#behaviors) associated to the IP. The list of behaviors is derived from the scenarios the IP triggered.
+Returns the list of [behaviors](/cti_api/taxonomy/behaviors.mdx) associated to the IP. The list of behaviors is derived from the scenarios the IP triggered.
 
 #### `SmokeItem.GetFalsePositives() []string`
 
-Returns the list of eventual [false positive categories](/docs/next/cti_api/taxonomy#false-positives) associatted to the IP.
+Returns the list of eventual [false positive categories](/cti_api/taxonomy/false_positives.mdx) associatted to the IP.
 
 #### `SmokeItem.GetMaliciousnessScore() float32`
 

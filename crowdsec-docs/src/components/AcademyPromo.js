@@ -1,6 +1,3 @@
-import React from 'react';
-
-
 export default function AcademyPromo({ ...props }) {
     const LINK = `https://academy.crowdsec.net/course/${props.course}${process.env.NODE_ENV === 'production' ? props.utm : ' '}`
     return (

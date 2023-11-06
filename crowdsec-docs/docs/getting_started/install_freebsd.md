@@ -48,7 +48,7 @@ You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
 :::
 
 
-If all this sounds confusing, it might be a good moment to take a [tour](/getting_started/crowdsec_tour.md) of the software before continuing.
+If all this sounds confusing, it might be a good moment to take a [tour](/getting_started/crowdsec_tour.mdx) of the software before continuing.
 
 ## Installing the firewall remediation component
 

@@ -123,7 +123,7 @@ tarteaucitronCustomText = {
 tarteaucitron.init(...);
 ```
 
-There is a special case for engagement text. By the default, the engagement text is  _{SERVICE_NAME} is disabled._, however you can change it per service. For example:
+There is a special case for engagement text. By the default, the engagement text is  `_{SERVICE_NAME}` is disabled._, however you can change it per service. For example:
 ```js
 tarteaucitronCustomText = {
   'engage-twitter': 'Follow us on Twitter!'
