@@ -1,3 +1,4 @@
+import React from 'react';
 import { useColorMode } from '@docusaurus/theme-common';
 
 const SIGNUP_LINK = `https://app.crowdsec.net/signup${process.env.NODE_ENV === 'production' ? '?mtm_campaign=Console&mtm_source=docs&mtm_medium=tocAd&mtm_content=Console' : ''}`
