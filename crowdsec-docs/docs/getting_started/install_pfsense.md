@@ -34,25 +34,23 @@ to reconfigure it or backup separately.
 
 We have submitted the package to the pfSense developers for review and inclusion in the official repositories.
 
-If you find `crowdsec` under `System/Package Manager`, that's all you need - if not, the installation requires an extra step.
+If you find `crowdsec` under `System/Package Manager`, we recommend you to install it from there.
 
-In the menu `Diagnostics/Command Prompt` (or in an ssh session) paste the following shell command and click Execute:
+If the package is not available yet, you'll have to install it manually.
+
+ * Choose [the release you want to install](https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases),
+   click `Assets` for the list of packages to install.
+
+ * Open an ssh connection to your pfSense box and run the following commands in the right order. Do not activate or run the services,
+   because pfSense will take care of it.
 
 ```bash
-IGNORE_OSVERSION=yes pkg add https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases/download/v0.0.4/re2-20230301.pkg https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases/download/v0.0.4/crowdsec-firewall-bouncer-0.0.28.r6.pkg https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases/download/v0.0.4/crowdsec-1.5.4.pkg https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases/download/v0.0.4/pfSense-pkg-crowdsec-0.0.4.pkg
-```
-
-In the Shell Output box, you should see the following:
-
-```
-Fetching re2-20230301.pkg: .......... done
-Installing re2-20230301...
-[...]
-Executing custom_php_install_command()...done.
-Executing custom_php_resync_config_command()...done.
-Menu items... done.
-Services... done.
-Writing configuration... done.
+# setenv IGNORE_OSVERSION yes
+# pkg add <link to abseil>
+# pkg add <link to re2>
+# pkg add <link to crowdsec-firewall-bouncer>
+# pkg add <link to crowdsec>
+# pkg add <link to pfSense-pkg-crowdsec>
 ```
 
 ## Configuration
