@@ -7,8 +7,7 @@ const SIGNUP_LINK = `https://app.crowdsec.net/signup${process.env.NODE_ENV === '
 export default function ConsoleAd() {
     const { colorMode  } = useColorMode();
     const image = useMemo(() => {
-        const isDarkTheme = colorMode === 'dark';
-        return isDarkTheme ? "/img/console_ad_dark.svg" : "/img/console_ad_light_alt.svg"
+        return colorMode === 'light' ? "/img/console_ad_light_alt.svg" : "/img/console_ad_dark.svg"
       }, [colorMode]);
     return (
         <a href={SIGNUP_LINK} target="_blank">
