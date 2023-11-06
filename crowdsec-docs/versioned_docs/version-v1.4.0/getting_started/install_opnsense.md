@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## The OPNsense plugin
 
-OPNSense, the widely known firewall and routing software, is based on FreeBSD. The standard packages that we provide for FreeBSD (agent+lapi and bouncer) can also run on OPNsense, but need more integration with the rest of the system (for example, to feed the firewall tables).
+OPNsense, the widely known firewall and routing software, is based on FreeBSD. The standard packages that we provide for FreeBSD (agent+lapi and bouncer) can also run on OPNsense, but need more integration with the rest of the system (for example, to feed the firewall tables).
 
 By installing the CrowdSec plugin, available through the OPNsense repositories, you can:
 
@@ -61,7 +61,7 @@ well - your servers, your right to choose. But you'll have to manually tweak the
 
 Be aware: the list of machines and bouncers shown in the Overview tab will be incorrect. In the current version, the crowdsec instance on OPNsense has no way (and no permission) to retrieve the list of machines and bouncers from the LAPI if it resides on another server, so it displays the local (and outdated) information.
 
-The following steps assume you already have set up a central LAPI server that is reachable by the OPNSense instance. You will also need SSH access with root permissions to both OPNSense and LAPI server.
+The following steps assume you already have set up a central LAPI server that is reachable by the OPNsense instance. You will also need SSH access with root permissions to both OPNsense and LAPI server.
 
  - On the LAPI server, edit `config.yaml` (`/usr/local/etc/crowdsec/` on FreeBSD, `/etc/crowdsec/` on Linux).
 
