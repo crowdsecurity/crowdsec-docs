@@ -212,4 +212,3 @@ a viable solution, it has slower performance than the method described above,
 especially in terms of latency when receiving decision updates.
 It also required pfBlockerNG in addition to CrowdSec.
 
-
