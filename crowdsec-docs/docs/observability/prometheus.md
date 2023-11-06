@@ -37,19 +37,27 @@ cs_bucket_poured_total{name="crowdsecurity/http-scan-uniques_404",source="/var/l
 #### Parsers
  - `cs_node_hits_total` : how many times an event from a specific source was processed by a parser node :
 
+<details>
+  <summary>example</summary>
 
-```bash title="example"
+```bash
 # 235 lines from `auth.log` were processed by the `crowdsecurity/dateparse-enrich` parser
 cs_node_hits_total{name="crowdsecurity/dateparse-enrich",source="/var/log/auth.log"} 235
 ```
 
+</details>
+
  - `cs_node_hits_ko_total` : how many times an event from a specific was unsuccessfully parsed by a specific parser
 
+<details>
+  <summary>example</summary>
 
-```bash title="example"
+```bash
 # 2112 lines from `error.log` failed to be parsed by `crowdsecurity/http-logs`
 cs_node_hits_ko_total{name="crowdsecurity/http-logs",source="/var/log/nginx/error.log"} 2112
 ```
+
+</details>
 
  - `cs_node_hits_ok_total` : how many times an event from a specific source was successfully parsed by a specific parser
 

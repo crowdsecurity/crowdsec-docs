@@ -5,7 +5,8 @@ sidebar_position: 2
 ---
 
 
-## Object example
+<details>
+  <summary>Object example</summary>
 
 ```json
 {
@@ -157,6 +158,7 @@ sidebar_position: 2
 
 ```
 
+</details>
 
 ## `ip`
 > type: **string**

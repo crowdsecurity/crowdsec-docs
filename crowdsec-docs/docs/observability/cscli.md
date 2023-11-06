@@ -36,7 +36,8 @@ For example, [sshd-logs parser](https://hub.crowdsec.net/author/crowdsecurity/co
 
 :::
 
-cscli metrics example
+<details>
+  <summary>cscli metrics example</summary>
 
 ```bash
 sudo cscli metrics
@@ -102,3 +103,4 @@ INFO[0000] Local Api Bouncers Metrics:
 +------------------------------+----------------------+--------+------+
 
 ```
+</details>

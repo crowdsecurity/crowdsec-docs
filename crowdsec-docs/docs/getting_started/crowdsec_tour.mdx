@@ -18,7 +18,8 @@ Adding `-a` will list all the available configurations in the hub.
 
 See more [here](/user_guides/hub_management.md).
 
-### Listing Hub example
+<details>
+  <summary>Listing Hub example</summary>
 
 ```bash
 sudo cscli hub list
@@ -57,6 +58,8 @@ INFO[0000] POSTOVERFLOWS:
 --------------------------------------
 
 ```
+
+</details>
 
 ## Installing configurations
 
@@ -105,7 +108,8 @@ If you just deployed CrowdSec, the list might be empty, but don't worry, it simp
 Check [decisions](/user_guides/hub_management.md) management for more !
 
 
-### Listing decisions example
+<details>
+  <summary>Listing decisions example</summary>
 
 ```bash
 sudo cscli decisions list
@@ -117,6 +121,7 @@ sudo cscli decisions list
 | 801 | crowdsec  | Ip:1.2.3.4  | crowdsecurity/ssh-bf               | ban    |         |    |      6 | 3h59m45.100387557s |     801  |
 +-----+-----------+-------------+------------------------------------+--------+---------+----+--------+--------------------+----------+
 ```
+</details>
 
 There are different decisions `SOURCE`:
 
@@ -145,7 +150,8 @@ While decisions won't be shown anymore once they expire (or are manually deleted
 You will here see the alerts, even if the associated decisions expired.
 
 
-### Listing alerts example
+<details>
+  <summary>Listing alerts example</summary>
 
 ```bash
 sudo cscli alerts list --since 1h
@@ -155,7 +161,7 @@ sudo cscli alerts list --since 1h
 |  5 | Ip:1.2.3.6  | crowdsecurity/ssh-bf (0.1) | US      |    | ban:1     | 2020-10-29T11:33:36+01:00 |
 +----+-------------+----------------------------+---------+----+-----------+---------------------------+
 ```
-
+</details>
 
 ## Monitor on-going activity (prometheus)
 
@@ -172,7 +178,8 @@ The indicators are grouped by scope :
  - Local Api Metrics : Know how often each endpoint of crowdsec's local API has been used
 
 
-### Listing metrics example
+<details>
+  <summary>Listing metrics example</summary>
 
 ```bash
 sudo cscli metrics
@@ -236,6 +243,7 @@ INFO[0000] Local Api Bouncers Metrics:
 | cs-firewall-bouncer-n3W19Qua | /v1/decisions/stream | GET    | 6498 |
 +------------------------------+----------------------+--------+------+
 ```
+</details>
 
 ### Reading metrics
 

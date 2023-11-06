@@ -188,7 +188,8 @@ Note that this was generated using the `toJson` sprig function, so field names a
 
 To use them in a go-template, you can check [here](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) to get the actual field names.
 
-## Show the full alert object
+<details>
+<summary>Show the full alert object</summary>
 <CodeBlock className="language-json">
 {`[
     {
@@ -573,6 +574,7 @@ To use them in a go-template, you can check [here](https://pkg.go.dev/github.com
     }
 ]`}
 </CodeBlock>
+</details>
 
 #### Usage examples
 
