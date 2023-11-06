@@ -30,6 +30,7 @@ All the counters are "since CrowdSec start".
 <details>
   <summary>example</summary>
 
+
 ```
 #2030 lines from `/var/log/nginx/access.log` were poured to `crowdsecurity/http-scan-uniques_404` scenario
 cs_bucket_poured_total{name="crowdsecurity/http-scan-uniques_404",source="/var/log/nginx/access.log"} 2030
@@ -37,11 +38,14 @@ cs_bucket_poured_total{name="crowdsecurity/http-scan-uniques_404",source="/var/l
 
 </details>
 
+
 #### Parsers
  - `cs_node_hits_total` : how many times an event from a specific source was processed by a parser node :
 
+
 <details>
   <summary>example</summary>
+
 
 ```
 # 235 lines from `auth.log` were processed by the `crowdsecurity/dateparse-enrich` parser
@@ -54,6 +58,7 @@ cs_node_hits_total{name="crowdsecurity/dateparse-enrich",source="/var/log/auth.l
 
 <details>
   <summary>example</summary>
+
 
 ```
 # 2112 lines from `error.log` failed to be parsed by `crowdsecurity/http-logs`
