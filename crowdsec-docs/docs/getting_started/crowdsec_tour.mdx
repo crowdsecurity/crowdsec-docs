@@ -58,7 +58,6 @@ INFO[0000] POSTOVERFLOWS:
 --------------------------------------
 
 ```
-
 </details>
 
 ## Installing configurations
@@ -107,7 +106,6 @@ If you just deployed CrowdSec, the list might be empty, but don't worry, it simp
 
 Check [decisions](/user_guides/hub_management.md) management for more !
 
-
 <details>
   <summary>Listing decisions example</summary>
 
@@ -149,7 +147,6 @@ sudo cscli alerts list
 While decisions won't be shown anymore once they expire (or are manually deleted), the alerts will stay visible, allowing you to keep track of past decisions.
 You will here see the alerts, even if the associated decisions expired.
 
-
 <details>
   <summary>Listing alerts example</summary>
 
@@ -162,6 +159,7 @@ sudo cscli alerts list --since 1h
 +----+-------------+----------------------------+---------+----+-----------+---------------------------+
 ```
 </details>
+
 
 ## Monitor on-going activity (prometheus)
 
@@ -176,7 +174,6 @@ The indicators are grouped by scope :
  - Acquisition : Know which file produce logs and if thy are parsed (or end up in bucket)
  - Parser : Know how frequently the individual parsers are triggered and their success rate
  - Local Api Metrics : Know how often each endpoint of crowdsec's local API has been used
-
 
 <details>
   <summary>Listing metrics example</summary>
@@ -243,6 +240,7 @@ INFO[0000] Local Api Bouncers Metrics:
 | cs-firewall-bouncer-n3W19Qua | /v1/decisions/stream | GET    | 6498 |
 +------------------------------+----------------------+--------+------+
 ```
+
 </details>
 
 ### Reading metrics
