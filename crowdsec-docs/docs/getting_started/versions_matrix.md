@@ -7,31 +7,36 @@ sidebar_position: 1
 
 ## Maintenance policy
 
-The last two major releases are supported. Hence as of now 1.4.4 and
-1.3.4 are supported. Crowdsec is open-source, and as such, we may not
-be aware of all the channels of crowdsec distribution. Our official distribution channel is packagecloud.io for packages, and github 
+The last two releases are supported, see [releases page](https://github.com/crowdsecurity/crowdsec/releases) for more details.
+
+LTS versioning is not yet defined, but we are working on it.
+
+:::info
+Crowdsec is open-source, and as such, we may not be aware of all the channels of crowdsec distribution. Our official distribution channel is packagecloud.io for packages, and github
+:::
 
 ## Matrix Versions
 
 | OS | Platform | Distribution | Distribution Version | CrowdSec Version | CrowdSec Location |
 |----|----------|--------------|------------------|----------------------|-------------------|
-| Linux | amd64/arm64/armhf | Debian | bookworm/bullseye/buster/stretch | 1.4.4 and 1.3.4 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
-| Linux | amd64/arm64 | RedHat/CentOS | 6/7/8/9 | 1.4.4 and 1.3.4 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
-| Linux | amd64/arm64/armel/armhf/i386/mips64el/mipsel/ppc64el/s390x | Debian | 1.0.9 | [official debian repository](https://packages.debian.org/search?keywords=crowdsec&searchon=names&suite=stable&section=all) |
-| Linux | amd64/arm64 | Fedora | 34/35/36/37 | 1.4.4 and 1.3.4 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
-| Linux | amd64/arm64 | Amazon linux | 2 | 1.4.4 and 1.3.4 |  [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
-| Linux | amd64/arm64 | Ubuntu Linux| 16.04/18.04/20.04/22.04/22.10 | 1.4.4 and 1.3.4 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
-| FreeBSD | amd64/i386 | N/A | 12 | 1.4.3 | [freshports](https://www.freshports.org/security/crowdsec/) |
-| FreeBSD | amd64/i386/arm64/armv7 | N/A | 13 | 1.4.3 | [freshports](https://www.freshports.org/security/crowdsec/) |
-| FreeBSD | amd64/i386 | N/A | 14 | 1.4.3 | [freshports](https://www.freshports.org/security/crowdsec/) |
-| FreeBSD | arm64/armv7 | N/A | 14 | 1.4.3 | [freshports](https://www.freshports.org/security/crowdsec/) |
-| OPNsense | amd64 | N/A | 22.7 | 1.4.3 | [freshports](https://www.freshports.org/security/crowdsec/) |
-| Windows | amd64 | to be defined | 1.4.4 | [github releases](https://github.com/crowdsecurity/crowdsec/releases/tag/v1.4.4)|
-| Windows | amd64 | to be defined | 1.4.2 | [chocolatey](https://community.chocolatey.org/packages?q=crowdsec) |
-| Linux | almost all OpenWRT supported platform | OpenWRT | 21.02/22.03 | 1.3.0 | [OpenWrt repository](https://openwrt.org/packages/pkgdata/crowdsec) |
-| Linux/Windows | amd64/arm64 | docker | N/A | 1.4.4 | [dockerhub](https://hub.docker.com/r/crowdsecurity/crowdsec) |
-| helm chart | amd64/arm64 | helm | N/A | 1.4.4 | [helm chart](https://github.com/crowdsecurity/helm-charts) |
-| home assitant | amd64/arm64 | docker | N/A | 1.4.4 | [crowdsecurity home assistant addon repo](https://github.com/crowdsecurity/home-assistant-addons/)|
+| [Linux](/getting_started/install.mdx) | amd64/arm64/armhf | Debian | bookworm/bullseye/buster/stretch | 1.5.4 and 1.4.6 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64 | RedHat/CentOS | 6/7/8/9 | 1.5.4 and 1.4.6| [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64 | Oracle Linux | 7/8/9 | 1.5.4 and 1.4.6| [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64/armel/armhf/i386/mips64el/mipsel/ppc64el/s390x | Debian | 1.4.6 | [official debian repository](https://packages.debian.org/search?keywords=crowdsec&searchon=names&suite=stable&section=all) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64 | Fedora | 37/38 | 1.5.4 (and 1.4.6 only for fc37) | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64 | Amazon linux | 2 | 1.5.4 and 1.4.6 |  [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64 | Ubuntu Linux| 16.04/18.04/20.04/22.04/22.10 | 1.4.4 and 1.4.6| [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| [FreeBSD](/getting_started/install_freebsd.md) | amd64/i386 | N/A | 12 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
+| [FreeBSD](/getting_started/install_freebsd.md) | amd64/i386/arm64/armv7 | N/A | 13 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
+| [FreeBSD](/getting_started/install_freebsd.md) | amd64/i386 | N/A | 14 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
+| [FreeBSD](/getting_started/install_freebsd.md) | arm64/armv7 | N/A | 14 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
+| [OPNsense](/getting_started/install_opnsense.md) | amd64 | N/A | 23.7 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
+| [Windows](/getting_started/getting_started_on_windows.md) | amd64 | to be defined | 1.5.4 | [github releases](https://github.com/crowdsecurity/crowdsec/releases/tag/v1.4.4)|
+| [Windows](/getting_started/getting_started_on_windows.md) | amd64 | to be defined | 1.4.2 | [chocolatey](https://community.chocolatey.org/packages?q=crowdsec) |
+| Linux | almost all OpenWRT supported platform | OpenWRT | 23.05 | 1.5.4 | [OpenWrt repository](https://openwrt.org/packages/pkgdata/crowdsec) |
+| Linux/Windows | amd64/arm64 | docker | N/A | 1.5.4 | [dockerhub](https://hub.docker.com/r/crowdsecurity/crowdsec) |
+| helm chart | amd64/arm64 | helm | N/A | 1.5.4 | [helm chart](https://github.com/crowdsecurity/helm-charts) |
+| home assistant | amd64/arm64 | docker | N/A | 1.4.4 | [crowdsecurity home assistant addon repo](https://github.com/crowdsecurity/home-assistant-addons/)|
 
 Note: There is a subtile difference between armel, armhf and armv7:
 armel and armhf are the ports name defined by debian, armel is

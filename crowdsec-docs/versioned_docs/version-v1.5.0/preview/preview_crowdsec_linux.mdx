@@ -7,7 +7,6 @@ sidebar_position: 1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-const current = `1.5.0~rc4`; // change this to update current preview
 
 :::warning
 Before upgrading an installation, ensure you make a backup of your configuration files you can follow our guide [here](backup_guide/)
@@ -36,23 +35,33 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
     {label: 'CloudLinux', value: 'cloudlinux'},
   ]}>
   <TabItem value="debian">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.deb.sh | sudo bash</CodeBlock>
+    ```bash
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.deb.sh | sudo bash
+```
   </TabItem>
   
   <TabItem value="centos7">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.rpm.sh | sudo bash</CodeBlock>
+    ```bash
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.rpm.sh | sudo bash
+```
   </TabItem>
 
   <TabItem value="centos8">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.rpm.sh | sudo bash</CodeBlock>
+    ```bash
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.rpm.sh | sudo bash
+```
   </TabItem>
 
   <TabItem value="amz">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.rpm.sh | sudo bash</CodeBlock>
+    ```bash
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.rpm.sh | sudo bash
+```
   </TabItem>
 
   <TabItem value="cloudlinux">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.rpm.sh | os=el dist=7 sudo bash</CodeBlock>
+    ```bash
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.rpm.sh | os=el dist=7 sudo bash
+```
   </TabItem>
 </Tabs>
 
@@ -71,23 +80,23 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
     {label: 'CloudLinux', value: 'cloudlinux'},
   ]}>
   <TabItem value="debian">
-    <CodeBlock className="language-bash">apt install crowdsec={current}</CodeBlock>
+    <CodeBlock className="language-bash">apt install crowdsec=1.5.0~rc4</CodeBlock>
   </TabItem>
   
   <TabItem value="centos7">
-    <CodeBlock className="language-bash">yum install crowdsec-{current}</CodeBlock>
+    <CodeBlock className="language-bash">yum install crowdsec-1.5.0~rc4</CodeBlock>
   </TabItem>
 
   <TabItem value="centos8">
-    <CodeBlock className="language-bash">dnf install crowdse-{current}</CodeBlock>
+    <CodeBlock className="language-bash">dnf install crowdse-1.5.0~rc4</CodeBlock>
   </TabItem>
 
   <TabItem value="amz">
-    <CodeBlock className="language-bash">yum install crowdsec-{current}</CodeBlock>
+    <CodeBlock className="language-bash">yum install crowdsec-1.5.0~rc4</CodeBlock>
   </TabItem>
 
   <TabItem value="cloudlinux">
-    <CodeBlock className="language-bash">yum install crowdsec-{current}</CodeBlock>
+    <CodeBlock className="language-bash">yum install crowdsec-1.5.0~rc4</CodeBlock>
   </TabItem>
 </Tabs>
 

@@ -1,5 +1,4 @@
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const { themes } = require('prism-react-renderer');
 
 const path = require('path')
 
@@ -14,7 +13,19 @@ module.exports = {
   favicon: 'img/crowdsec_no_txt.png',
   organizationName: 'CrowdSec',
   projectName: 'crowdsec-docs',
-  plugins: [path.resolve(__dirname, 'plugins', 'matomo')],
+  markdown: {
+    mdx1Compat: {
+      comments: true,
+      admonitions: true,
+      headingIds: true,
+    },
+  },
+  //plugins: [path.resolve(__dirname, 'plugins', 'matomo')],
+  stylesheets: [
+    {
+      href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
+    }
+  ],
   themeConfig: {
     algolia: {
       appId: 'PWTZ94KULF',
@@ -52,12 +63,18 @@ module.exports = {
           label: 'Cscli',
         },
         {
-           type: 'doc',
-           docId: 'cti_api/getting_started',
-           position: 'left',
-           label: 'CTI Api',
+          type: 'doc',
+          docId: 'bouncers/intro',
+          position: 'left',
+          label: 'Remediation',
         },
-        {to: 'https://crowdsec.net/blog/category/tutorial/', label: 'Tutorials', position: 'left'},
+        {
+          type: 'doc',
+          docId: 'cti_api/getting_started',
+          position: 'left',
+          label: 'CTI API',
+        },
+        { to: `https://academy.crowdsec.net/courses?${process.env.NODE_ENV === 'production' ? 'utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs' : ''}`, label: 'Academy', position: 'left' },
         {
           type: 'doc',
           docId: 'faq',
@@ -101,19 +118,6 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Doc Mini-Tutorial Articles',
-              to: '/blog',
-            },
-            {
-              label: 'Documentation',
-              to: '/docs/intro',
-            },
-          ],
-        },
-        {
           title: 'Community',
           items: [
             {
@@ -131,7 +135,7 @@ module.exports = {
             {
               label: 'Twitter',
               href: 'https://twitter.com/crowd_security',
-            }           
+            }
           ],
         },
         {
@@ -149,15 +153,20 @@ module.exports = {
               label: 'Blog',
               href: 'https://crowdsec.net/blog/',
             },
-            
+            {
+              label: 'Tutorial',
+              href: 'https://crowdsec.net/blog/category/tutorial/',
+            },
+
           ],
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} CrowdSec`,
     },
     prism: {
-      theme: lightCodeTheme,
-      darkTheme: darkCodeTheme,
+      theme: themes.github,
+      darkTheme: themes.dracula,
+      additionalLanguages: ['bash', 'yaml', 'json'],
     },
   },
   presets: [

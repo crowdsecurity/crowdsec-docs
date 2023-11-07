@@ -182,3 +182,9 @@ To do so, open an administrator powershell or DOS prompt and run `cscli.exe boun
 Add this key in the Remediation Component configuration file located in `C:\Program Files\CrowdSec\bouncers\cs-windows-firewall-bouncer\cs-windows-firewall-bouncer.yaml`.
 
 When done, you will need to enable the `cs-windows-firewall-bouncer` service and start it.
+
+## Enrolling your instance
+
+The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/signup).
+
+For the benefits, please visit the [Console section](/console/intro.md).

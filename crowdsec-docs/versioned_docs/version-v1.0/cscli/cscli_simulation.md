@@ -34,7 +34,7 @@ cscli simulation disable crowdsecurity/ssh-bf
 
 ### SEE ALSO
 
-* [cscli](/docs/v1.0/cscli/cscli)	 - cscli allows you to manage crowdsec
+* [cscli](/docs/v1.0/cscli/)	 - cscli allows you to manage crowdsec
 * [cscli simulation disable](/docs/v1.0/cscli/cscli_simulation_disable)	 - Disable the simulation mode. Disable only specified scenarios
 * [cscli simulation enable](/docs/v1.0/cscli/cscli_simulation_enable)	 - Enable the simulation, globally or on specified scenarios
 * [cscli simulation status](/docs/v1.0/cscli/cscli_simulation_status)	 - Show simulation mode status

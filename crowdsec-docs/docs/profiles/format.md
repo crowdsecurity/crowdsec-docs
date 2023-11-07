@@ -51,7 +51,7 @@ filters:
  - Alert.Remediation == true && Alert.GetScope() == "Ip"
 ```
 
-If any `filter` of the list returns `true`, the profile is eligible and the `decisions` will be applied (note: `filter` can use [expr helpers](/expr/helpers.md)).
+If any `filter` of the list returns `true`, the profile is eligible and the `decisions` will be applied (note: `filter` can use [expr helpers](/expr/intro.md)).
 
 The filter allows you to then create custom decisions for some specific scenarios for example:
 
@@ -113,23 +113,42 @@ duration_expr: "Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)"
 If the profile applies, and the `duration_expr` generates a valid [golang's duration](https://pkg.go.dev/time#ParseDuration), it will replace the decision duration.
 
 It can be used to have custom duration. For example, you can have an increased duration every time an attacker comes back.
-It relies on [expr helpers](/expr/helpers.md).
+It relies on [expr helpers](/expr/intro.md).
 
 ### `on_success`
 
 ```yaml
-on_success: break
+on_success: continue|break
 ```
 
 If the profile applies and `on_success` is set to `break`, decisions processing will stop here and it won't evaluate against following profiles.
 
+- `continue` will apply the profile even if the filter expression generates an error. (DEFAULT)
+- `break` will stop the processing of the alert if the filter expression generates an error.
 ### `on_failure`
 
 ```yaml
-on_failure: break
+on_failure: continue|break
 ```
 
 If the profile didn't apply and `on_failure` is set to `break`, decisions processing will stop here and it won't evaluate against following profiles.
+
+- `continue` will continue to the next profile if the filter expression generates an error. (DEFAULT)
+- `break` will stop the processing of the alert if the filter expression generates an error. 
+### `on_error`
+
+```yaml
+on_error: continue|break|apply|ignore
+```
+
+If the filter expression generates an error, this would normally stop the alert from being processed to prevent a potential unwanted outcome.
+
+- `break` will stop the processing of the alert if the filter expression generates an error. (DEFAULT)
+- `continue` will continue to the next profile if the filter expression generates an error.
+- `apply` will apply the profile even if the filter expression generates an error.
+- `ignore` will ignore the error and continue to the next profile.
+
+However, there may be some expressions that do generate expected errors for example, when using the [CTI helpers](/expr/cti_helpers.md) it may throw a rate limit error.
 
 ### `notifications`
 

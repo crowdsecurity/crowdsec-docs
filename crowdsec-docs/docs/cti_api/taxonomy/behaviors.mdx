@@ -1,0 +1,26 @@
+---
+id: behaviors
+title: Behaviors
+sidebar_position: 6
+---
+
+
+import TableRender from '@site/src/components/tableRender';
+import GithubIconRender from '@site/src/components/githubIconRender';
+
+export const behaviorsURL = "https://hub-cdn.crowdsec.net/master/taxonomy/behaviors.json";
+export const columns = [
+    {
+        header: "Name",
+        accessorKey: "name",
+    },
+    {
+        header: "Description",
+        accessorKey: "description",
+    },
+];
+
+<GithubIconRender url={behaviorsURL}></GithubIconRender>
+
+
+<TableRender columns={columns} url={behaviorsURL}></TableRender>

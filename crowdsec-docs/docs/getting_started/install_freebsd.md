@@ -48,7 +48,7 @@ You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
 :::
 
 
-If all this sounds confusing, it might be a good moment to take a [tour](/getting_started/crowdsec_tour.md) of the software before continuing.
+If all this sounds confusing, it might be a good moment to take a [tour](/getting_started/crowdsec_tour.mdx) of the software before continuing.
 
 ## Installing the firewall remediation component
 
@@ -125,7 +125,9 @@ will compile and install the packages and all their dependencies. Then configure
 
 ## Troubleshooting
 
-In some case, Crowdsec is unable to generate the machine id.
+In some cases, CrowdSec is unable to generate the machine id and is unable to initialize properly.
+
+We saw it happen with an APU board, likely due to the open source coreboot firmware.
 
 Start `hostid` and `hostid_save`:
 
@@ -134,4 +136,10 @@ Start `hostid` and `hostid_save`:
 /etc/rc.d/hostid_save start
 ```
 
-Then start again the Crowdsec' service  `service crowdsec start`.
+Then start again the CrowdSec' service  `service crowdsec start`.
+
+## Enrolling your instance
+
+The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/signup).
+
+For the benefits, please visit the [Console section](/console/intro.md).

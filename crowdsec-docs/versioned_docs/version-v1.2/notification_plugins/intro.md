@@ -18,7 +18,7 @@ The default profile will not forward manual decisions (`cscli decisions add -i x
 
 The default plugins are shipped with crowdsec uppon installation, and can trivially be enabled without further installation.
 
-Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`.md).
+Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml).
 
 
 
@@ -89,7 +89,7 @@ Required. Name of this config  eg "slackreport". This should match with register
 
 ### `format` :
 
-Required. [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects. The go templates provide additional directives provide by [sprig](https://masterminds.github.io/sprig/) . eg "Received {{.len}} alerts"
+Required. [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects. The go templates provide additional directives provide by [sprig](https://masterminds.github.io/sprig/) . eg "Received `{{.len}}` alerts"
 
 ### `group_wait` :
 

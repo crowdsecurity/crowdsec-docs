@@ -1,6 +1,6 @@
 ---
 id: nginx
-title: Nginx Bouncer
+title: Nginx
 sidebar_position: 1
 ---
 
@@ -26,7 +26,7 @@ A lua bouncer for nginx.
 
 ## How does it work ?
 
-This bouncer leverages nginx lua's API, namely `access_by_lua_block` to check e IP address against the local API.
+This bouncer leverages nginx lua's API, namely `access_by_lua_block` to check the IP address against the local API.
 
 Supported features:
 
@@ -277,7 +277,7 @@ API_KEY=<API_KEY>
 
 CrowdSec Local API key.
 
-Generated with [`sudo cscli bouncers add`](../cscli/cscli_bouncers_add) command.
+Generated with [`sudo cscli bouncers add`](/cscli/cscli_bouncers_add.md) command.
 
 ### `API_URL`
 ```bash

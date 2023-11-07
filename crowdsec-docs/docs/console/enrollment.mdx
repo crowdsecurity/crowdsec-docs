@@ -1,0 +1,111 @@
+---
+id: enrollment
+title: Enrollment
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+:::info
+`$ID` will be used as the placeholder for your enrollment ID, you can find this within the [console](https://app.crowdsec.net/signup).
+:::
+
+## Standalone
+
+To obtain an overview of your alerts, you can enroll a [Security Engine](/getting_started/getting_started.md) in the console. This procedure is executed using the following `cscli` command:
+
+<Tabs
+  defaultValue="nix"
+  groupId="console-operating-systems"
+  values={[
+    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Windows', value: 'windows'},
+  ]}>
+  <TabItem value="nix">
+    <CodeBlock className="language-bash">sudo cscli console enroll $ID</CodeBlock>
+  </TabItem>
+  <TabItem value="windows">
+    <CodeBlock className="language-bash">cscli.exe console enroll $ID</CodeBlock>
+  </TabItem>
+</Tabs>
+
+## Docker / Podman
+
+:::info
+Docker commands are interchangeable with podman.
+:::
+
+If you are using Docker, you can enroll the Security Engine by setting the enrollment ID as an environment variable:
+
+```bash
+docker run -e ENROLL_KEY=$ID crowdsecurity/crowdsec
+```
+
+If you already have an existing deployment in operation, you can also enroll it by utilizing the `cscli` command:
+
+```bash
+docker exec -it <CONTAINER_ID> cscli console enroll $ID
+```
+
+If you are employing automatic deployments, you can automate the enrollment process based on your system:
+
+## K8s / Helm
+
+Kubernetes (K8s) and Helm utilize our standard container image, allowing you to use the enrollment ID as an environment variable:
+
+```yaml
+lapi:
+  env:
+    - name: ENROLL_KEY
+      value: $ID
+```
+
+:::info
+Note that we are placing it within the LAPI environment **NOT** the agent, as the agent is not responsible for the enrollment process.
+:::
+
+## Chef, Puppet, Ansible
+
+If you utilize a configuration management tool, you have the option to enroll the Security Engine using the `cscli` command:
+
+```bash
+sudo cscli console enroll $ID
+```
+
+---
+
+# Troubleshooting
+
+## Where can I find my enrollment key?
+
+Your enrollment key can be located within the [console](https://app.crowdsec.net/).
+
+After authentication, you can find the key by clicking the `Add Security Engine` button on the [Security Engines page](https://app.crowdsec.net/security-engines).
+
+## My security engine is failing to connect to the console?
+
+Both the Security Engine and `cscli` require internet access, which can be achieved through a proxy or direct connection.
+
+If you are using a proxy, you can configure it using the GOLANG `HTTP_PROXY` and `HTTPS_PROXY` environment variables.
+
+## My security engine has already been enrolled on another account, can I transfer it?
+
+Yes, you have the ability to transfer the Security Engine from within the console interface to another organization.
+
+If, for any reason, you are unable to access the old account, you can trigger the new enrollment by using the `cscli` command with the overwrite flag:
+
+<Tabs
+  defaultValue="nix"
+  groupId="console-operating-systems"
+  values={[
+    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Windows', value: 'windows'},
+  ]}>
+  <TabItem value="nix">
+    <CodeBlock className="language-bash">sudo cscli console enroll $ID --overwrite</CodeBlock>
+  </TabItem>
+  <TabItem value="windows">
+    <CodeBlock className="language-bash">cscli.exe console enroll $ID --overwrite</CodeBlock>
+  </TabItem>
+</Tabs>

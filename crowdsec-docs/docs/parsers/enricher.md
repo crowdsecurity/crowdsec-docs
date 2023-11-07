@@ -35,7 +35,7 @@ This method uses an Ip as an input, and tries to give information on
 this IP on return. It requires the maxmind database to be installed,
 which is done at the parser `crowdsecurity/geoip-enrich` installation.
 It will fill the fields `Enriched.Isocode` with county ISO code and
-`Enrichred.IsInEU` with the string `true` of `false`. It fills also
+`Enriched.IsInEU` with the string `true` of `false`. It fills also
 `Enriched.Latitude` and `Enriched.Longitude` with the latitude and
 longitude.
 

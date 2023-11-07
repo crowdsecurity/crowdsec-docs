@@ -1,6 +1,6 @@
 ---
 id: custom
-title: Custom Bouncer
+title: Custom
 sidebar_position: 5
 ---
 
@@ -27,7 +27,7 @@ CrowdSec bouncers are written in golang for custom scripts.
 
 The crowdsec-custom-bouncer will periodically fetch new, expired and removed decisions from the CrowdSec Local API and will pass them as arguments to a custom user script.
 
-## Installation from packages
+## Installation
 
 [Setup crowdsec repositories](/getting_started/install.mdx#install-our-repositories).
 
@@ -56,34 +56,12 @@ sudo yum install crowdsec-custom-bouncer
 </Tabs>
 
 
-
-
-## Manual installation via script
-
-First, download the latest [`crowdsec-custom-bouncer` release](https://github.com/crowdsecurity/cs-custom-bouncer/releases).
-
-```sh
-$ tar xzvf crowdsec-custom-bouncer.tgz
-$ sudo ./install.sh
-```
-
-## From source
-
-Run the following commands:
-
-```bash
-git clone https://github.com/crowdsecurity/crowdsec-custom-bouncer.git
-cd crowdsec-custom-bouncer/
-make release
-tar xzvf crowdsec-custom-bouncer.tgz
-cd crowdsec-custom-bouncer-v*/
-sudo ./install.sh
-```
-
-# Configuration
+## Configuration
 
 Before starting the `crowdsec-custom-bouncer` service, please edit the configuration file to add your API URL and key.
 The default configuration file is located under : `/etc/crowdsec/bouncers/`
+
+### Basic
 
 ```sh
 $ vim /etc/crowdsec/bouncers/crowdsec-custom-bouncer.yaml
@@ -91,15 +69,33 @@ $ vim /etc/crowdsec/bouncers/crowdsec-custom-bouncer.yaml
 
 ```yaml
 bin_path: <absolute_path_to_binary>
+bin_args: []
+feed_via_stdin: false # Invokes binary once and feeds incoming decisions to it's stdin.
+total_retries: 0 
+scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word, eg ["ssh", "http"]
+scenarios_not_containing: [] # ignore IPs banned for triggering scenarios containing either of provided word
+scopes: []  # scopes of the decisions to filter on
+origins: [] # origins of the decisions to filter on
+origins: []
 piddir: /var/run/
 update_frequency: 10s
+cache_retention_duration: 10s
 daemonize: true
 log_mode: file
 log_dir: /var/log/
 log_level: info
-api_url: <API_URL>  # when install, default is "localhost:8080"
-api_key: <API_KEY>  # Add your API key generated with `cscli bouncers add --name <bouncer_name>`
-cache_retention_duration: 10s 
+log_compression: true
+log_max_size: 100
+log_max_backups: 3
+log_max_age: 30
+api_url: <API_URL>
+api_key: <API_KEY>
+
+prometheus:
+  enabled: true
+  listen_addr: 127.0.0.1
+  listen_port: 60602
+
 ```
 
 `cache_retention_duration` : The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. If a decision is identical to some decision already present in the cache, then the custom script is not invoked. The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `1.2.3.4`,  `CH` etc).
@@ -116,17 +112,7 @@ by package upgrades, starting from v0.0.12 you can write them in a `crowdsec-cus
 Package upgrades may have good reasons to modify the configuration, so be careful if you use a `.local` file.
 
 
-# Upgrade (for manual install only)
-
-If you already have `crowdsec-custom-bouncer` installed, please download the [latest release](https://github.com/crowdsecurity/cs-custom-bouncer/releases) and run the following commands to upgrade it:
-
-```bash
-tar xzvf crowdsec-custom-bouncer.tgz
-cd crowdsec-custom-bouncer-v*/
-sudo ./upgrade.sh
-```
-
-# Usage
+### Usage
 
 The custom binary will be called with the following arguments :
 
@@ -143,10 +129,193 @@ The custom binary will be called with the following arguments :
 :warning: don't forget to add execution permissions to your binary/script. If it's a script,
 the first line must be a shebang (like `#!/bin/sh`).
 
-### Examples:
+### Examples
 
 ```bash
-custom_binary.sh add 1.2.3.4/32 3600 "test blacklist"
-custom_binary.sh del 1.2.3.4/32 3600 "test blacklist"
+custom_binary.sh add 1.2.3.4/32 3600 "test blacklist" <json_object>
+custom_binary.sh del 1.2.3.4/32 3600 "test blacklist" <json_object>
 ```
 
+
+## Configuration directives
+
+#### `bin_path`
+> type: string
+
+Absolute path to the binary that will be invoked
+
+#### `bin_args`
+> type: array
+
+Array of argument to give to the script that will be invoked
+
+#### `feed_via_stdin`
+> type: bool
+
+Indicate weither or not the script will will be feed via STDIN or via its arguments
+
+#### `total_retries`
+> type: int
+
+Number of times to restart binary. relevant if `feed_via_stdin=true`. 
+Set to -1 for infinite retries.
+
+#### `scenarios_containing`
+> type: array
+
+Get only IPs banned for triggering scenarios containing either of provided word, eg ["ssh", "http"]
+
+#### `scenarios_not_containing`
+> type: array
+
+Ignore IPs banned for triggering scenarios containing either of provided word, eg ["ssh", "http"]
+
+
+#### `scopes`
+> type: array
+
+Decisions will be filtered on the provided scopes.
+
+#### `origins`
+> type: array
+
+Decisions will be filtered on the provided origins.
+
+#### `cache_retention_duration`
+> type: string
+
+The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. 
+If a decision is identical to some decision already present in the cache, then the custom script is not invoked. 
+The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `1.2.3.4`,  `CH` etc).
+
+#### `piddir`
+
+Directory to drop the PID file
+
+#### `update_frequency`
+> type: string
+
+controls how often the bouncer is going to query the local API
+
+#### `daemonize`
+> type: bool
+
+To run the bouncer as a service
+
+#### `log_mode`
+> type: string
+
+Logging mode: can be `file` or `stdout`
+
+#### `log_dir`
+> type: string
+
+Log folder path
+
+#### `log_level`
+> type: string
+
+Log level: can be `trace`, `debug`, `info`, or `error`
+
+#### `log_compression`
+> type: bool
+
+Compress logs on rotation, `true` or `false`
+
+#### `log_max_size`
+> type: int
+
+Maximum file size before rotation
+
+#### `log_max_backups`
+> type: int
+
+How many backup log files to keep
+
+#### `log_max_age`
+> type: int
+
+Log file max age before deletion
+
+#### `api_url`
+> type: string
+
+URL of the CrowdSec Local API
+
+#### `api_key`
+> type: string
+
+API Key to communicate with the CrowdSec Local API
+
+#### `insecure_skip_verify`
+> type: bool
+
+Allow self-signed certificates for LAPI, `false` or `true`
+
+#### `prometheus`
+> type: object
+
+Prometheus configuration
+
+##### `enabled`
+> type: bool
+
+Enable or not the prometheus server
+
+Example:
+
+```yaml
+prometheus:
+  enabled: true
+  listen_addr: 127.0.0.1
+  listen_port: 60602
+```
+
+##### `listen_addr`
+> type: string
+
+IP Address to listen on for the prometheus server
+
+##### `listen_port`
+> type: int
+
+Port to listen on for the prometheus server
+
+## Manual Installation
+
+### Assisted
+
+First, download the latest [`crowdsec-custom-bouncer` release](https://github.com/crowdsecurity/cs-custom-bouncer/releases).
+
+```sh
+$ tar xzvf crowdsec-custom-bouncer.tgz
+$ sudo ./install.sh
+```
+
+### From source
+
+Run the following commands:
+
+```bash
+git clone https://github.com/crowdsecurity/cs-custom-bouncer.git
+cd cs-custom-bouncer/
+make release
+tar xzvf crowdsec-custom-bouncer.tgz
+cd crowdsec-custom-bouncer-v*/
+sudo ./install.sh
+```
+
+### Upgrade
+
+If you already have `crowdsec-custom-bouncer` installed, please download the [latest release](https://github.com/crowdsecurity/cs-custom-bouncer/releases) and run the following commands to upgrade it:
+
+```bash
+tar xzvf crowdsec-custom-bouncer.tgz
+cd crowdsec-custom-bouncer-v*/
+sudo ./upgrade.sh
+```
+
+
+### Logs
+
+Logs can be found in `/var/log/crowdsec-custom-bouncer.log`

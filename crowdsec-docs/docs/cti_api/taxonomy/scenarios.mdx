@@ -1,0 +1,77 @@
+---
+id: scenarios
+title: Scenarios
+sidebar_position: 4
+---
+
+import TableRender from '@site/src/components/tableRender';
+import GithubIconRender from '@site/src/components/githubIconRender';
+
+export const scenarioURL = "https://hub-cdn.crowdsec.net/master/taxonomy/scenarios.json";
+export const columns = [
+    {
+        header: "Name",
+        accessorKey: "name",
+        size: 250
+    },
+    {
+        header: "Description",
+        accessorKey: "description",
+        size: 250
+    },
+    {
+        header: "Behaviors",
+        accessorKey: "behaviors",
+        size: 150
+    },
+    {
+        header: "Mitre ATT&CK",
+        accessorKey: "mitre_attacks",
+        size: 180,
+        Cell: ({ cell }) => {
+            const values = cell.getValue();
+            if (values == undefined) {
+                return values;
+            }
+            return (
+                // values is a CSV to allow global search, so we need to split it again for proper rendering
+                values.split('\n').map((item, i) => {
+                    var v = item.split(":");
+                    var technique = v.slice(-1)[0]
+                    return (
+                        <div>
+                            <a key={item} href={'https://attack.mitre.org/techniques/'+technique}>{item}</a>
+                        </div>
+                    )
+                })
+            )
+        },
+    },
+    {
+        header: "CVES",
+        accessorKey: "cves",
+        size: 120,
+        Cell: ({ cell}) => {
+            const values = cell.getValue();
+            if (values == undefined) {
+                return values;
+            }
+            return (
+                values.split('\n').map((item, i) => {
+                    return (
+                        <div>
+                            <a key={item} href={'https://cve.mitre.org/cgi-bin/cvename.cgi?name='+item}>{item}</a>
+                        </div>
+                    )
+                })
+            )
+        },
+    },
+];
+
+<GithubIconRender url={scenarioURL}></GithubIconRender>
+
+
+<TableRender columns={columns} url={scenarioURL}></TableRender>
+
+

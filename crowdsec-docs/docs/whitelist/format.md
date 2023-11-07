@@ -107,7 +107,7 @@ whitelist:
     - "127.0.0.1"
 ```
 
-A valid [expr](/expr/helpers.md) expression that return a string to apply the pattern on.
+A valid [expr](/expr/intro.md) expression that return a string to apply the pattern on.
 
 
 #### `cidr`
@@ -120,7 +120,7 @@ whitelist:
     - "172.16.0.0/12"
 ```
 
-A valid [expr](/expr/helpers.md) expression that return a string to apply the pattern on.
+A valid [expr](/expr/intro.md) expression that return a string to apply the pattern on.
 
 
 #### `expression`
@@ -134,7 +134,7 @@ whitelist:
     - evt.Enriched.IsoCode == 'FR'
 ```
 
-A valid [expr](/expr/helpers.md) expression that return a string to apply the pattern on.
+A valid [expr](/expr/intro.md) expression that return a string to apply the pattern on.
 
 
 ### `data`

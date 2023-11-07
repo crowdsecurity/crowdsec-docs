@@ -1,0 +1,229 @@
+---
+id: stormshield
+title: Stormshield
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+<img src={useBaseUrl('/img/bouncer/stormshield/logo.png')} alt="CrowdSec" title="CrowdSec" width="300" height="300" />
+</p>
+
+<p align="center">
+&#x1F4DA; <a href="#installation/">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+## Overview
+
+The Stormshield Remediation syncs IP bans from Crowdsec with Stormshield appliances.
+
+
+## Installation 
+
+### Using pip
+
+```bash
+pip install crowdsec-stormshield-bouncer
+```
+
+### Using docker
+
+```bash
+docker pull crowdsecurity/stormshield-bouncer
+```
+
+See docker specific documentation [here](https://registry.hub.docker.com/r/crowdsecurity/stormshield-bouncer).
+
+### Setup
+
+Run the following command to generate the base configuration file. This will generate a configuration file named `cfg.yaml` in the current directory.
+
+```bash
+crowdsec-stormshield-bouncer -g > cfg.yaml
+```
+
+You need to edit this file to configure the remediation component.
+Make sure you give the correct LAPI key and URL. 
+The stormshield configuration should be updated with the correct values.
+The container will use SSH to connect to the firewall and the API to update the blacklist.
+Make sure the firewall is configured to allow SSH and API access from the machine running the container.
+
+
+See how to enable ssh access on the firewall [here](https://documentation.stormshield.eu/SNS/v4/en/Content/Basic_Command_Line_Interface_configurations/Enable_ssh_access_with_password.htm). Usually the username and password is the same as the web interface.
+
+You can generate a LAPI key using the following command on the machine with CrowdSec installed.
+
+```bash
+cscli bouncers add crowdsec-stormshield-bouncer
+```
+
+Please refer to [configuration reference section](#configuration-reference) for more details on the configuration options.
+
+### Running the remediation component
+
+After configuring the remediation component, you can run it using the following command:
+
+```bash
+crowdsec-stormshield-bouncer -c cfg.yaml
+```
+
+## How it Works
+
+The remediation component will poll the CrowdSec LAPI every `update_frequency` interval.
+It will then fetch the list of IP bans and sync them with the Stormshield's appliance's [black list](https://documentation.stormshield.eu/SNS/v4/en/Content/User_Configuration_Manual_SNS_v4/Monitoring/Black_lists_Monitoring.htm)
+
+Since CrowdSec provides huge number of banned IPs, using the Stormshield API solely is not possible. The API only allows adding one IP at a time to blacklist directly. Which is extremely slow.
+
+To overcome this limitation, the remediation component will use SSH to connect to the firewall appliance to:
+
+- Create 2 groups 1.Crowdsec and 2.CrowdsecDeleteGroup
+- Create objects for all the new banned IPs and expired bans.
+- Add all the banned IPs to the CrowdSec group. Add all the expired bans to the CrowdsecDeleteGroup. This is done by modifying the `/data/Main/ConfigFiles/objectgroup` and `/data/Main/ConfigFiles/object` files
+
+Then the remediation component will use the Stormshield API to:
+
+- Add the CrowdSec group to the blacklist.
+- Remove the CrowdsecDeleteGroup from the blacklist.
+
+Finally remediation component empties the CrowdsecDeleteGroup using ssh.
+
+This process is repeated every `update_frequency` interval.
+
+## Configuration Reference
+
+```yaml
+crowdsec:
+  lapi_key: <CROWDSEC_LAPI_KEY>
+  lapi_url: "http://localhost:8080/"
+  update_frequency: 30s
+  include_scenarios_containing: []
+  exclude_scenarios_containing: []
+  only_include_decisions_from: []
+  insecure_skip_verify: false
+  key_path: ""  # Used for TLS authentification with CrowdSec LAPI
+  cert_path: "" # Used for TLS authentification with CrowdSec LAPI
+  ca_cert_path: "" # Used for TLS authentification with CrowdSec LAPI
+
+# Stormshield Config
+stormshield:
+  host: <STORMSHIELD_HOST>
+
+  ssh_port: 22  # SSH port
+  ssh_username: admin
+  ssh_password: <STORMSHIELD_SSH_PASSWORD> # optional if using private key auth
+  ssh_private_key_path: <SSH_PRIVATE_KEY_PATH> # optional if using password auth
+
+  api_username: admin 
+  api_password: <STORMSHIELD_API_PASSWORD>
+  api_port: 443
+  api_ssl_verify_host: false
+
+# Log Config
+log_level: info
+log_media: "stdout"
+log_dir: "/var/log/"
+```
+
+
+### `crowdsec.lapi_url`
+
+The URL of CrowdSec LAPI. It should be accessible from the bouncer.
+
+### `crowdsec.lapi_key`
+
+It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
+```bash
+
+sudo cscli -oraw bouncers add  # -oraw flag can discarded for human friendly output.
+
+```
+
+### `crowdsec.update_frequency`
+
+The bouncer will poll the CrowdSec every `update_frequency` interval.
+
+Value can be in seconds (eg 30s), minutes (eg 5m), hours (eg 1h), days (eg 1d), weeks (eg 1w), months (eg 1M) or years (eg 1y).
+
+### `crowdsec.include_scenarios_containing`
+
+Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
+
+### `crowdsec.exclude_scenarios_containing`
+
+Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"]
+
+### `crowdsec.only_include_decisions_from`
+
+Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+
+### `crowdsec.insecure_skip_verify`
+
+Skip TLS verification when connecting to CrowdSec LAPI.
+
+### `crowdsec.key_path`
+
+Path to the private key file to use for TLS authentication with CrowdSec LAPI.
+
+### `crowdsec.cert_path`
+
+Path to the certificate file to use for TLS authentication with CrowdSec LAPI.
+
+### `crowdsec.ca_cert_path`
+
+Path to the CA certificate file to use for TLS authentication with CrowdSec LAPI.
+
+### `stormshield.host`
+
+The IP address or hostname of the Stormshield firewall.
+
+### `stormshield.ssh_port`
+
+The SSH port of the Stormshield firewall.
+
+### `stormshield.ssh_username`
+
+The SSH username of the Stormshield firewall.
+
+### `stormshield.ssh_password`
+
+The SSH password of the Stormshield firewall.
+
+### `stormshield.ssh_private_key_path`
+
+The path to the SSH private key of the Stormshield firewall.
+
+### `stormshield.api_username`
+
+The API username of the Stormshield firewall.
+
+### `stormshield.api_password`
+
+The API password of the Stormshield firewall.
+
+### `stormshield.api_port`
+
+The API port of the Stormshield firewall.
+
+### `stormshield.api_ssl_verify_host`
+
+Verify the SSL certificate of the Stormshield firewall.
+
+### `log_level`
+
+The log level for the bouncer. Example value: "info"
+
+Valid values: "debug", "info", "warning", "error"
+
+### `log_mode`
+
+The log mode for the bouncer.
+
+Valid values: "stdout", "stderr", "file"
+
+### `log_dir`
+
+The directory to store the logs in. This is only applicable when `log_mode` is set to "file".

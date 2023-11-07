@@ -4,6 +4,7 @@ title: Introduction
 sidebar_position: 1
 ---
 
+
 Whitelists are special parsers that allow you to "discard" events, and can exist at two different steps :
 
  - *Parser whitelists* : Allows you to discard an event at parse time, so that it never hits the buckets.

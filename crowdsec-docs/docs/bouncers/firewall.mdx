@@ -1,6 +1,6 @@
 ---
 id: firewall
-title: Firewall Bouncer
+title: Firewall
 sidebar_position: 1
 ---
 
@@ -60,13 +60,6 @@ sudo yum install crowdsec-firewall-bouncer-iptables
 ```
 
 </TabItem>
-<TabItem value="iptables_freebsd">
-
-```bash
-sudo pkg install crowdsec-firewall-bouncer
-```
-
-</TabItem>
 </Tabs>
 
 
@@ -90,13 +83,6 @@ sudo apt install crowdsec-firewall-bouncer-nftables
 
 ```bash
 sudo yum install crowdsec-firewall-bouncer-nftables
-```
-
-</TabItem>
-<TabItem value="nftables_freebsd">
-
-```bash
-sudo pkg install crowdsec-firewall-bouncer
 ```
 
 </TabItem>
@@ -211,7 +197,7 @@ table ip6 crowdsec6 {
 
  - `iptables_chains` : specify a list of chains to insert rules (only relevant in `iptables` mode) :
  - `blacklists_ipv4` and `blacklists_ipv6` : names of ipv4 and ipv6 sets
- - `ipset_size`: maximum number of entries in the ipset (default: 65536)
+ - `ipset_size`: maximum number of entries in the ipset (default: 131072)
  - `ipset_type`: type to use for the set  (default: `nethash`)
 
 ```yaml
@@ -220,6 +206,8 @@ iptables_chains:
 #  - FORWARD
 #  - DOCKER-USER
 ```
+
+The default for ipset_size has been raised in v0.0.28 (from 65536) to allow for larger blocklists.
 
 ### Nftables specific directives
 
@@ -321,8 +309,8 @@ table <crowdsec6-blacklists> persist
 
  ### ipset
 
- ipset lists have to exist before crowdsec-firewall-bouncer starts
- you can create them and add them to your iptables like this:
+ ipset lists have to exist before crowdsec-firewall-bouncer starts.
+ You can create them and add them to your iptables like this:
 
 ```console
 ipset create crowdsec-blacklists hash:ip timeout 0 maxelem 150000

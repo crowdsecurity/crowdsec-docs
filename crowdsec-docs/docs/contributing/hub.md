@@ -38,6 +38,35 @@ It often makes sense for a new parser or scenario to be added to an existing [co
 If your parsers and/or scenarios cover a new or specific service, having a dedicated collection for this service makes sense.
 In other cases, having a parser for `SpecificWebServer` access logs would justify a collection as it might also include [all the default http related scenarios](https://hub.crowdsec.net/author/crowdsecurity/collections/base-http-scenarios).
 
+
+### Scenarios
+
+When you create a scenario, you must fill some fields in the [`labels`](/scenarios/format.md#labels), else the CI won't accept the contribution.
+Those `labels` are:
+ - `classification`: this array contains the CVE ID and the [Mitre Techniques](https://attack.mitre.org/techniques/enterprise/) related to the scenario (when applicable)
+ - `spoofable`: between 0 and 3, is the chance that the attacker behind the attack can spoof its origin
+ - `confidence`: between 0 and 3, is the confidence that the scenario will not trigger false positive
+ - `behaviors`: an existing behavior in [this file](https://github.com/crowdsecurity/hub/blob/scenario_taxonomy/taxonomy/behaviors.json)
+ - `label` : a human readable name for the scenario
+ - `cti` : (optional) true or false, used to specify that a scenario is mainly used for audit rather than detecting a threat 
+
+[Here](/scenarios/format.md#labels) is the `labels` documentation for more information.
+
+Here is an example:
+
+```
+labels:
+  service: ssh
+  confidence: 3
+  spoofable: 0
+  classification:
+    - attack.T1110
+  label: "SSH Bruteforce"
+  behavior: "ssh:bruteforce"
+  remediation: true
+```
+
+
 ## Preparing your contribution
 
 Before asking for a review of your PR, please ensure you have the following:

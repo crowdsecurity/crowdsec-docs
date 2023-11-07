@@ -19,9 +19,15 @@ capacity: 5
 leakspeed: "10s"
 blackhole: 5m
 labels:
- service: http
- type: scan
- remediation: true
+  service: http
+  confidence: 3
+  spoofable: 0
+  classification:
+    - attack.T1595
+  behavior: "http:scan"
+  service: http
+  label: "Multiple unique 404 detection"
+  remediation: true
 ```
 
 ## Scenario directives
@@ -208,7 +214,7 @@ A reference to third party documents. This is a list of string.
 filter: expression
 ```
 
-`filter` must be a valid [expr](/expr/helpers.md) expression that will be evaluated against the event.
+`filter` must be a valid [expr](/expr/intro.md) expression that will be evaluated against the event.
 
 If `filter` evaluation returns true or is absent, event will be pour in the bucket.
 
@@ -248,6 +254,14 @@ capacity: -1
 duration: 10m
 labels:
   service: ssh
+  confidence: 3
+  spoofable: 0
+  classification:
+  - attack.T1110
+  label: "SSH Bruteforce"
+  behavior : "ssh:bruteforce"
+  remediation: true
+  cti: true
 ```
 
 ---
@@ -258,7 +272,7 @@ groupby: evt.Meta.source_ip
 ```
 
 
-An [expression](/expr/helpers.md) that must return a string. This string will be used as a partition for the buckets.
+An [expression](/expr/intro.md) that must return a string. This string will be used as a partition for the buckets.
 
 
 #### Examples
@@ -289,7 +303,7 @@ distinct: evt.Meta.http_path
 ```
 
 
-An [expression](/expr/helpers.md) that must return a string. The event will be poured **only** if the string is not already present in the bucket.
+An [expression](/expr/intro.md) that must return a string. The event will be poured **only** if the string is not already present in the bucket.
 
 #### Examples
 
@@ -331,7 +345,7 @@ Should be set to `-1` in most situations for `conditional` buckets.
 leakspeed: "10s"
 ```
 
-Only applies to `leaky` buckets.
+Only applies to `leaky` and  `conditional` buckets.
 
 A duration that represent how often an event will be leaking from the bucket.
 
@@ -400,29 +414,88 @@ Note: `prob_given_evil` and `prob_given_benign` do not have to sum up to 1 as th
 
 ```yaml
 labels:
- service: ssh
- type: bruteforce
- remediation: true
+  service: ssh
+  confidence: 3
+  spoofable: 0
+  classification:
+  - attack.T1110
+  label: "SSH Bruteforce"
+  behavior : "ssh:bruteforce"
+  remediation: true
 ```
 
-Labels is a list of `label: values` that provide context to an overflow.
-The labels are (currently) not stored in the database, nor they are sent to the API.
+Labels is a list of `label: values` that provide context to an alert.
+The `value` can be of any type (string, list, object ...).
+Some labels are required, but other labels can be added.
 
-##### Special labels :
+note: the labels are (currently) not stored in the database, nor they are sent to the API.
 
- - The **remediation** label, if set to `true` indicate the the originating IP should be banned.
+#### `remediation`
+>type: bool
 
-#### Example
+The **remediation** label, if set to `true` indicate if the originating IP should be banned.
 
-The IP address that triggered the overflow (`.Meta.source_ip`) will be banned.
+
+#### `classification`
+>type: list
+
+This is a list of classifications that we can attribute to a scenario in the form:
+
 ```yaml
-type: leaky
-...
-labels:
- service: ssh
- type: bruteforce
- remediation: true
+<classification_type>.<classification_id>
 ```
+
+Only `cve` and `attack`  (for Mitre ATT&CK) are supported.
+
+- For a mitre_attack, this is the format:
+```yaml
+attack.<technique_id>   # example: attack.T1595
+```
+
+Where technique_id  is a Mitre ATT&CK technique. You can find the list [here](https://attack.mitre.org/techniques/enterprise/).
+
+- For a CVE this is the format:
+
+```yaml
+cve.<cve_id>   # example: cve.CVE-2021-44228
+```
+
+#### `behavior`
+>type: string
+
+behavior is a string in the form:
+```yaml
+<service_or_os>:<attack_type>
+```
+note: when the service is available, prefer to use the service instead of the OS.
+
+The behavior should exist in this file: https://github.com/crowdsecurity/hub/blob/scenario_taxonomy/taxonomy/behaviors.json
+
+
+#### `label`
+>type: string (optional)
+
+label  is a human-readable name for the scenario.
+
+For example, for the `crowdsecurity/apache_log4j2_cve-2021-44228` scenario it is Log4j CVE-2021-44228 .
+
+#### `spoofable`
+>type: int [0-3]
+
+The chance between 0 and 3 that the attacker behind the attack can spoof its origin.
+0 means not spoofable and 3 means spoofable.
+
+#### `confidence`
+>type: int [0-3]
+
+The confidence note between 0 and 3 that the scenario will not trigger false positive.
+0 means no confidence and 3 means high confident.
+
+#### `cti`
+>type: bool [true|false]
+
+Specify that the scenario is used mostly for auditing and not to detect threat.
+`false` means that the scenario is not to detect threat.
 
 ---
 ### `blackhole`
@@ -512,7 +585,7 @@ Cache size will affect the number of events you receive within an alert. If you 
 overflow_filter: any(queue.Queue, { .Enriched.IsInEU  == "true" })
 ```
 
-`overflow_filter` is an [expression](/expr/helpers.md) that is run when the bucket overflows.
+`overflow_filter` is an [expression](/expr/intro.md) that is run when the bucket overflows.
 If this expression is present and returns false, the overflow will be discarded.
 
 ---
@@ -522,7 +595,7 @@ If this expression is present and returns false, the overflow will be discarded.
 cancel_on: evt.Parsed.something == 'somevalue'
 ```
 
-`cancel_on` is an [expression](/expr/helpers.md) that runs on each event poured to the bucket.
+`cancel_on` is an [expression](/expr/intro.md) that runs on each event poured to the bucket.
 If the `cancel_on` expression returns true, the bucket is immediately destroyed (and doesn't overflow).
 
 
