@@ -13,7 +13,7 @@ In this section, you will see the documentations about:
 
  - [Scores](/cti_api/taxonomy/scores.md): CrowdSec compute some scores for a given IP address. Those scores are computed for the last day, the last week, the last month and overall.
 
- - [Behaviors](/cti_api/taxonomy/behaviors.mdx): The behaviors associated to an IP address
+ - [behaviours](/cti_api/taxonomy/behaviours.mdx): The behaviors associated to an IP address
 
  - [Scenarios](/cti_api/taxonomy/scenarios.mdx): The scenarios for which an IP address has been reported for
 
