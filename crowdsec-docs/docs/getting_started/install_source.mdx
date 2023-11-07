@@ -122,15 +122,13 @@ make [build_flags] build
 
 #### Build flags
 
-##### Required
+##### Optional
 
-- `BUILD_VERSION=v1.2.3` - The version you want to build. This is required for the build to work.
+- `BUILD_VERSION=v1.2.3` - The version you want to build. This will default to the latest version, however, if you fork the project then you will need to use this flag.
 
 :::info
 Do not use a version we have already released as you will get old hub parsers. We recommend using the latest tag from the [releases page](https://github.com/crowdsecurity/crowdsec/releases/latest).
 :::
-
-##### Optional
 
 :::info What is a static build?
 Static builds are builds that do not require any external dependencies to run. This means a compiled binary on your system will work on any other system running your architecture and linux/windows/freebsd. As an example if I compile a static build on my Arch Linux machine, I can copy that binary to a Debian machine and it will work without any issues. 
@@ -154,7 +152,7 @@ The following build flags are what we recommend you use when building CrowdSec.
 #### Binary will run on different machine (Built on dev machine then copied to production machine)
 
 ```bash
-make BUILD_STATIC=1 BUILD_VERSION=v1.2.3 release
+make BUILD_STATIC=1 release
 ```
 
 Then you can copy the `crowdsec-release.tgz` file to your production machine and extract it.
@@ -162,7 +160,7 @@ Then you can copy the `crowdsec-release.tgz` file to your production machine and
 #### Binary will only run on your machine (Testing new features)
 
 ```bash
-make BUILD_VERSION=v1.2.3 build
+make build
 ```
 
 If you run into any issues when compiling please join our [discord](https://discord.gg/crowdsec) and ask for help. Please provide the output of the build command and the error you are getting.
