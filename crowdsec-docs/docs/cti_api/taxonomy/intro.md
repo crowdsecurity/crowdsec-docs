@@ -9,13 +9,13 @@ CrowdSec CTI Taxonomy aim to help users to understand and to anticipate what is 
 
 In this section, you will see the documentations about:
 
- - the fields: Those are the fields returned by the CrowdSec API when requesting an IP address (or the fire database)
+ - [Fields](/cti_api/taxonomy/cti_fields.md): Those are the fields returned by the CrowdSec API when requesting an IP address (or the fire database)
 
- - the scores: CrowdSec compute some scores for a given IP address. Those scores are computed for the last day, the last week, the last month and overall.
+ - [Scores](/cti_api/taxonomy/scores.md): CrowdSec compute some scores for a given IP address. Those scores are computed for the last day, the last week, the last month and overall.
 
- - the behaviors: The behaviors associated to an IP address
+ - [Behaviors](/cti_api/taxonomy/behaviours.mdx): The behaviors associated to an IP address
 
- - the scenarios: The scenarios for which an IP address has been reported for
+ - [Scenarios](/cti_api/taxonomy/scenarios.mdx): The scenarios for which an IP address has been reported for
 
- - the false positives: The possible false positives values associateed to an IP address
+ - [False Positives](/cti_api/taxonomy/false_positives.mdx): The possible false positives values associateed to an IP address
 
