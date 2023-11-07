@@ -48,7 +48,7 @@ You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
 :::
 
 
-If all this sounds confusing, it might be a good moment to take a [tour](/getting_started/crowdsec_tour.md) of the software before continuing.
+If all this sounds confusing, it might be a good moment to take a [tour](/getting_started/crowdsec_tour.mdx) of the software before continuing.
 
 ## Installing the firewall remediation component
 
@@ -140,6 +140,6 @@ Then start again the CrowdSec' service  `service crowdsec start`.
 
 ## Enrolling your instance
 
-Next step is to enroll your instance to the CrowdSec console. This will allow you to view your instance in the console, and enhance your security by using our third party lists.
+The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/signup).
 
-See the [console section](/console/intro.md) for more information.
+For the benefits, please visit the [Console section](/console/intro.md).

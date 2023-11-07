@@ -29,11 +29,6 @@
             id: "intro",
         },
         {
-            type: "doc",
-            label: "Concepts",
-            id: "concepts",
-        },
-        {
             type: "category",
             label: "Getting Started",
             collapsed: false,
@@ -54,6 +49,7 @@
                         "getting_started/install_crowdsec",
                         "getting_started/install_crowdsec_freebsd",
                         "getting_started/install_crowdsec_opnsense",
+                        "getting_started/install_crowdsec_pfsense",
                         "getting_started/install_windows",
                         {
                             type: "link",
@@ -203,6 +199,11 @@
                 "getting_started/crowdsec_tour",
                 "getting_started/versions_matrix",
             ],
+        },
+        {
+            type: "doc",
+            label: "Concepts",
+            id: "concepts",
         },
         {
             type: "category",
@@ -782,6 +783,10 @@
         {
             type: "category",
             label: "Integrations",
+            link: {
+                type: "doc",
+                id: "cti_api/integration_intro",
+            },
             items: [
                 "cti_api/integration_chrome",
                 "cti_api/integration_gigasheet",
