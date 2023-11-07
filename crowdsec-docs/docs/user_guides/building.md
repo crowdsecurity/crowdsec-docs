@@ -90,11 +90,6 @@ git clone https://github.com/crowdsecurity/crowdsec.git && cd crowdsec
 docker build -t crowdsec .
 ```
 
-## Building from sources
+## Building from source
 
-You can build your own crowdsec release like this :
-
-```bash
-git clone https://github.com/crowdsecurity/crowdsec.git && cd crowdsec
-make release
-```
+You can see the [build instructions](/getting_started/install_source.mdx) for more details.

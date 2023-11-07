@@ -78,6 +78,7 @@
                                 }
                             ]
                         },
+                        "getting_started/install_source",
                     ],
                 },
                 {
