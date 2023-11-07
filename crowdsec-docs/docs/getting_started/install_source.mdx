@@ -130,16 +130,16 @@ make [build_flags] build
 Do not use a version we have already released as you will get old hub parsers. We recommend using the latest tag from the [releases page](https://github.com/crowdsecurity/crowdsec/releases/latest).
 :::
 
-:::info What is a static build?
-Static builds are builds that do not require any external dependencies to run. This means a compiled binary on your system will work on any other system running your architecture and linux/windows/freebsd. As an example if I compile a static build on my Arch Linux machine, I can copy that binary to a Debian machine and it will work without any issues. 
-:::
-
 - `BUILD_STATIC=1` - Build a static binary:
   - DEB: none
   - RPM/Arch:
     - RPM: Enable crb repo
     - RPM: `sudo yum install glibc-static libstdc++-static`
     - RPM/Arch: compile RE2 from source [install script](https://gist.github.com/LaurenceJJones/d17f7839b03acbe0e4e879fd60f4b433) as the version provided by package managers does not include the static library.
+
+:::info What is a static build?
+Static builds are builds that do not require any external dependencies to run. This means a compiled binary on your system will work on any other system running your architecture and linux/windows/freebsd. As an example if I compile a static build on my Arch Linux machine, I can copy that binary to a Debian machine and it will work without any issues. 
+:::
 
 - `BUILD_RE2_WASM=1` - Build the RE2 WASM library
 :::info
