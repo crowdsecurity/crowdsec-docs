@@ -89,3 +89,7 @@ Crowdsec provides a docker image and can simply built like this :
 git clone https://github.com/crowdsecurity/crowdsec.git && cd crowdsec
 docker build -t crowdsec .
 ```
+
+## Building from source
+
+You can see the [build instructions](/getting_started/install_source.mdx) for more details.
