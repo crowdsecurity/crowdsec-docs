@@ -35,3 +35,10 @@ cidrs:
 sudo systemctl reload crowdsec
 ```
 
+:::warning
+
+The whitelist only applies when crowdsec pulls the blocklist from CAPI. This means that any IPs already in your local database will not get whitelisted.
+
+You can either manually delete the decisions for the IPs you want to whitelist with `csli decisions delete`, or delete all alerts and active decisions from the database with `cscli alerts delete --all` and restart crowdsec.
+
+:::
