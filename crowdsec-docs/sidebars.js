@@ -347,6 +347,7 @@
                     ],
                 },
                 "notification_plugins/email",
+                "notification_plugins/sentinel",
                 "notification_plugins/slack",
                 "notification_plugins/splunk",
                 "notification_plugins/template_helpers",
