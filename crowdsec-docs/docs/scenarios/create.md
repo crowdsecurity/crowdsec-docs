@@ -4,6 +4,8 @@ title: Creating scenarios
 sidebar_position: 4
 ---
 
+import AcademyPromo from '@site/src/components/AcademyPromo';
+
 :::caution
 
 All the examples assume that you have read the [Creating parsers](/docs/next/parsers/create) documentation.
@@ -260,3 +262,11 @@ We can either deploy it to our production systems to do stuff, or even better, c
 If you want to know more about directives and possibilities, take a look at [the scenario reference documentation](/scenarios/format.md) !
 
 See as well [this blog article](https://crowdsec.net/blog/how-to-write-crowdsec-parsers-and-scenarios) on the topic.
+
+<AcademyPromo
+  image="parsers_and_scenarios.svg"
+  description="Watch a short series of videos on how to create Scenarios, as well as Parsers"
+  title="More ways to learn"
+  course="writing-parsers-and-scenarios"
+  utm="?utm_source=docs&utm_medium=banner&utm_campaign=scenario-page&utm_id=academydocs"
+/>

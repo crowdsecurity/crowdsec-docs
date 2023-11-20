@@ -19,7 +19,7 @@ Install the fork via by following instructions given [here](https://github.com/M
 
 ### Configure the plugin
 
-1. Navigate to plugin settings page at http://<your_misp_address>/servers/serverSettings/Plugin
+1. Navigate to plugin settings page at `http://<your_misp_address>/servers/serverSettings/Plugin`
 
 2. Click on Enrichment.
 

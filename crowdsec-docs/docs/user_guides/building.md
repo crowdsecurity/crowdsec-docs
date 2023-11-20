@@ -43,7 +43,7 @@ The wizard is going to guide you through the following steps :
  
 The process should take less than a minute, [please report if there are any issues](https://github.com/crowdsecurity/crowdsec/issues).
 
-You are then ready to [take a tour](/getting_started/crowdsec_tour.md) of your freshly deployed CrowdSec !
+You are then ready to [take a tour](/getting_started/crowdsec_tour.mdx) of your freshly deployed CrowdSec !
 
 :::info
 
@@ -90,11 +90,6 @@ git clone https://github.com/crowdsecurity/crowdsec.git && cd crowdsec
 docker build -t crowdsec .
 ```
 
-## Building from sources
+## Building from source
 
-You can build your own crowdsec release like this :
-
-```bash
-git clone https://github.com/crowdsecurity/crowdsec.git && cd crowdsec
-make release
-```
+You can see the [build instructions](/getting_started/install_source.mdx) for more details.

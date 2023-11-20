@@ -45,6 +45,7 @@ Connect to your `PostgreSQL` server and run the following commands:
 ```
 postgres=# CREATE DATABASE crowdsec;
 postgres=# CREATE USER crowdsec WITH PASSWORD '<password>';
+postgres=# ALTER SCHEMA public owner to crowdsec;
 postgres=# GRANT ALL PRIVILEGES ON DATABASE crowdsec TO crowdsec;
 ```
 

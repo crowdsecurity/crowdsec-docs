@@ -8,7 +8,7 @@ sidebar_position: 10
 # Patterns documentation
 
 You will find here a generated documentation of all the patterns loaded by crowdsec.
-They are sorted by pattern length, and are meant to be used in parsers, in the form %{PATTERN_NAME}.
+They are sorted by pattern length, and are meant to be used in parsers, in the form `%{PATTERN_NAME}`.
 
 
 ## MONGO3_SEVERITY

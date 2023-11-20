@@ -101,7 +101,7 @@ crowdsec_config:
   insecure_skip_verify: false
 
 blocklists:
-  - format: plain_text # Supported formats are either of "plain_text"
+  - format: plain_text # See supported formats below
     endpoint: /security/blocklist
     authentication:
       type: none # Supported types are either of "none", "ip_based", "basic"
@@ -195,7 +195,11 @@ List of blocklists to serve. Each blocklist has the following configuration.
 
 #### `format`:
 
-Format of the blocklist. Currently only `plain_text` and `mikrotik` are supported.
+Format of the blocklist, the following are supported:
+
+ - `plain_text` : One IP per line
+ - `mikrotik` : Lines for mikrotik, format is `/ip|/ipv6 firewall address-list add list={list_name} address={ip} comment="{scenario} for {duration}"`
+ - `F5` : Lines for f5 appliances, format is `{ip|range},{netmask},bl,{scenario}`
 
 #### `endpoint`:
 

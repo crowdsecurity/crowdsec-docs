@@ -18,9 +18,8 @@ The cscli command `cscli dashboard setup` will use [docker](https://docs.docker.
 If you use `podman` instead of `docker` and want to install the crowdsec dashboard, you need to run:
 
 	sudo systemctl enable --now podman.socket
-	export DOCKER_HOST=unix:///run/podman/podman.sock
 
-Then you can setup the dashboard with `sudo -E cscli dashboard setup`.
+Then you can setup the dashboard with `sudo env DOCKER_HOST=unix:///run/podman/podman.sock cscli dashboard setup`.
 :::
 
 ## Setup
