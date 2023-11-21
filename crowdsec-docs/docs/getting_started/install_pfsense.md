@@ -212,3 +212,8 @@ a viable solution, it has slower performance than the method described above,
 especially in terms of latency when receiving decision updates.
 It also required pfBlockerNG in addition to CrowdSec.
 
+## Enrolling your instance
+
+The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/security-engines?enroll-engine=true).
+
+For the benefits, please visit the [Console section](/console/intro.md).
