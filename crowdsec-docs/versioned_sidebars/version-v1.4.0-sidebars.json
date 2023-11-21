@@ -931,33 +931,6 @@
       "collapsed": true
     }
   ],
-
-  "ctiApiSidebar": [
-    {
-      "type": "doc",
-      "id": "cti_api/intro"
-    },
-    {
-      "type": "doc",
-      "id": "cti_api/getting_started"
-    },
-    {
-      "type": "doc",
-      "id": "cti_api/taxonomy"
-    },
-    {
-      "type": "link", 
-      "label": "Swagger",
-      "href": "https://crowdsecurity.github.io/cti-api/"
-    },
-    {
-      "type": "category",
-      "label": "Integrations",
-      "items": ["cti_api/integration_chrome", "cti_api/integration_misp", "cti_api/integration_opencti", "cti_api/integration_thehive"]
-    }
-  ],
-
-
   "bouncersSidebar": [
     {
       "type": "doc",
