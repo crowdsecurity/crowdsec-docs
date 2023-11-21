@@ -47,7 +47,7 @@ You are then ready to [take a tour](/getting_started/crowdsec_tour.mdx) of your 
 
 :::info
 
-Keep in mind that CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
+Keep in mind that CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a [bouncer](/u/bouncers/intro) to "apply" decisions.
 
 :::
 

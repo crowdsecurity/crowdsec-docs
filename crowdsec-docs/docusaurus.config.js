@@ -46,6 +46,7 @@ module.exports = {
       items: [
         {
           type: 'docsVersionDropdown',
+          docsPluginId: 'default',
           position: 'left',
           dropdownActiveClassDisabled: true,
         },
@@ -62,13 +63,12 @@ module.exports = {
           label: 'Cscli',
         },
         {
-          type: 'doc',
-          docId: 'bouncers/intro',
+          to: '/u/bouncers/intro',
           position: 'left',
           label: 'Remediation',
         },
         {
-          to: '/cti_api/getting_started',
+          to: '/u/cti_api/getting_started',
           position: 'left',
           label: 'CTI API',
         },
@@ -193,10 +193,10 @@ module.exports = {
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'cti',
-        path: 'cti_api',
-        routeBasePath: 'cti_api',
-        sidebarPath: require.resolve('./sidebarsCTI.js'),
+        id: 'unversioned',
+        path: 'unversioned',
+        routeBasePath: 'u',
+        sidebarPath: require.resolve('./sidebarsUnversioned.js'),
       },
     ],
   ],

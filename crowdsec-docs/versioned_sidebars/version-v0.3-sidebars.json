@@ -18,11 +18,5 @@
       "type": "doc",
       "id": "cscli/cscli"
     }
-  ],
-  "bouncersSidebar": [
-    {
-      "type": "doc",
-      "id": "bouncers/intro"
-    }
   ]
 }

@@ -34,7 +34,7 @@ This is the only data that is sent to our API, and it is processed on our side t
 
 ## Remediation Components
 
-[[References](/bouncers/intro.md)]
+[[References](/u/bouncers/intro)]
 
 Remediation Components are software packages in charge of acting upon decision's provided by the Security Engine.
 To do so, the component queries the Local API to know if there is an existing decision against a given IP, range, username, etc. [You can find a list of existing Remediation Components on the hub](https://hub.crowdsec.net/browse/#bouncers)
