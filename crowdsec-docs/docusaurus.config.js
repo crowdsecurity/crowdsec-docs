@@ -20,7 +20,6 @@ module.exports = {
       headingIds: true,
     },
   },
-  //plugins: [path.resolve(__dirname, 'plugins', 'matomo')],
   stylesheets: [
     {
       href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
@@ -69,8 +68,7 @@ module.exports = {
           label: 'Remediation',
         },
         {
-          type: 'doc',
-          docId: 'cti_api/getting_started',
+          to: '/cti_api/getting_started',
           position: 'left',
           label: 'CTI API',
         },
@@ -188,6 +186,17 @@ module.exports = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
+      },
+    ],
+  ],
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'cti',
+        path: 'cti_api',
+        routeBasePath: 'cti_api',
+        sidebarPath: require.resolve('./sidebarsCTI.js'),
       },
     ],
   ],

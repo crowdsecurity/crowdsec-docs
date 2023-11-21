@@ -753,59 +753,6 @@
             id: "cscli/cscli_version",
         },
     ],
-    ctiApiSidebar: [
-        {
-            type: "doc",
-            label: "Introduction",
-            id: "cti_api/intro",
-        },
-        {
-            type: "doc",
-            label: "Getting Started",
-            id: "cti_api/getting_started",
-        },
-        {
-            type: 'category',
-            label: 'Taxonomy',
-            items: [
-                "cti_api/taxonomy/intro",
-                "cti_api/taxonomy/cti_object",
-                "cti_api/taxonomy/scores",
-                "cti_api/taxonomy/scenarios",
-                "cti_api/taxonomy/classifications",
-                "cti_api/taxonomy/behaviors",
-                "cti_api/taxonomy/false_positives"
-            ]
-        },
-        {
-            type: "link",
-            label: "Swagger",
-            href: "https://crowdsecurity.github.io/cti-api/",
-        },
-        {
-            type: "category",
-            label: "Integrations",
-            link: {
-                type: "doc",
-                id: "cti_api/integration_intro",
-            },
-            items: [
-                "cti_api/integration_chrome",
-                "cti_api/integration_gigasheet",
-                "cti_api/integration_intelowl",
-                "cti_api/integration_maltego",
-                "cti_api/integration_misp",
-                "cti_api/integration_msticpy",
-                "cti_api/integration_opencti",
-                "cti_api/integration_paloalto_xsoar",
-                "cti_api/integration_qradar",
-                "cti_api/integration_sekoia_xdr",
-                "cti_api/integration_splunk_siem",
-                "cti_api/integration_splunk_soar",
-                "cti_api/integration_thehive",
-            ],
-        },
-    ],
     betaSidebar: [
         {
             type: "category",
