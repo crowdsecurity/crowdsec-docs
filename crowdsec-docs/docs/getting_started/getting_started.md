@@ -61,9 +61,8 @@ Please see the relevant documentation for your OS:
 
 #### Installing from source
 
-Should you opt for a source-based installation, we offer a brief video guide to assist you in the process.
+Should you opt for a source-based installation, you can follow the steps outlined [here](/getting_started/install_source.mdx).
 
-<iframe width="100%" height="500" src="https://www.youtube.com/embed/-1xxkwQyI2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ### Remediation Component
 
