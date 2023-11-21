@@ -25,7 +25,7 @@ Install the fork via by following instructions given [here](https://github.com/M
 
 3. Set the value of Plugin.Enrichment_crowdsec_enabled to `true`
 
-4. Set the value of Plugin.Enrichment_crowdsec_api_key to your CTI API key. See [instructions to obtain it](/docs/next/cti_api/getting_started)
+4. Set the value of Plugin.Enrichment_crowdsec_api_key to your CTI API key. See [instructions to obtain it](/cti_api/getting_started.mdx)
 
 5. Set the value of Plugin.Enrichment_crowdsec_api_version to "v2".
 

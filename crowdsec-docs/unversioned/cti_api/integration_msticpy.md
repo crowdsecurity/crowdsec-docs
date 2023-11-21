@@ -21,7 +21,7 @@ TIProviders:
     Provider: "CrowdSec"
 ```
 
-Make sure to replace `<your_api_key>` with your API key for CrowdSec CTI API. You can learn more about getting your API key [here](/docs/next/cti_api/getting_started).
+Make sure to replace `<your_api_key>` with your API key for CrowdSec CTI API. You can learn more about getting your API key [here](/cti_api/getting_started.mdx).
 
 You can uncomment the `Primary` line if you want to use CrowdSec as your primary TIProvider, for enriching IOCs of ipv4 and ipv6 types.
 
