@@ -39,6 +39,11 @@
           ]
         },
         {
+          "type": "link",
+          "label": "Remediation",
+          "href": "/u/bouncers/intro"
+        },
+        {
           "type": "category",
           "label": "SDK",
           "items": [
