@@ -63,7 +63,7 @@ The consumer group id to use.
 Cannot be used with `partition`. 
 
 :::warning
-It is highly recommend to set this value, or crowdsec will only read logs from the 1st partition of the topic.
+It is highly recommended to set this value, or crowdsec will only read logs from the 1st partition of the topic.
 :::
 
 ### `partition`
