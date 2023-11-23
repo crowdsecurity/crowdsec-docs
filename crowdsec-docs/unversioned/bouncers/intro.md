@@ -25,7 +25,7 @@ Don't know which component suits your needs? Then join our [discord](https://dis
 
 **The above is not an exhaustive list of remediation components, you can find more on the [hub](https://app.crowdsec.net/hub/bouncers).**
 
-Remediation Components interact with [crowdsec's Local API](/local_api/intro.md) to retrieve active decisions and remediate appropriately.
+Remediation Components interact with [crowdsec's Local API](/docs/next/local_api/intro) to retrieve active decisions and remediate appropriately.
 
 For your remediation components to communicate with the local API, you have to generate an API token with `cscli` and put it in the associated configuration file:
 
@@ -42,7 +42,7 @@ Please keep this key since you will not be able to retrieve it!
 This command must be run on the server where the local API is installed (or at least with a cscli that has valid credentials to communicate with the database used by the API). This is only necessary if you "manually" install a bouncer, packages and install scripts usually take care of this.
 :::
 
-If you wish to create your own remediation component, look at [this section](/local_api/bouncers-api.md) of the local API documentation.
+If you wish to create your own remediation component, look at [this section](/docs/next/local_api/bouncers) of the local API documentation.
 
 
 

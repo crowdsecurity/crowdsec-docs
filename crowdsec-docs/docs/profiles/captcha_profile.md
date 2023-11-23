@@ -7,7 +7,7 @@ sidebar_position: 2
 Here is an example of a profile that provides users with a captcha challenge when they trigger a HTTP scenario.
 
 :::info
-You **MUST** have configured a remediation component that supports captcha challenges, see [Remediation](/bouncers/intro.md).
+You **MUST** have configured a remediation component that supports captcha challenges, see [Remediation](/u/bouncers/intro).
 :::
 
 ```yaml

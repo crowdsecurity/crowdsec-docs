@@ -15,7 +15,7 @@ CrowdSec Security Engine is a open-source security software. See the [overview](
 
 ## I've installed the Security Engine, it detects attacks but doesn't block anything ?!
 
-Yes, the Security Engine is in charge of detecting attacks, and [Remediation Component](/bouncers/intro.md) are applying decisions.
+Yes, the Security Engine is in charge of detecting attacks, and [Remediation Component](/u/bouncers/intro) are applying decisions.
 If you want to block the detected IPs, you should deploy a Remediation Component, such as the ones found on the [hub](https://hub.crowdsec.net/browse/#bouncers) !
 
 ## How to know if my setup is working correctly ? Some of my logs are unparsed, is it normal ?
@@ -64,7 +64,7 @@ When pulling block-lists from the platform, the following information is shared 
 ## What is the performance impact ?
 
 As the Security Engine only works on logs, it shouldn't impact your production.
-When it comes to [remediation components](/bouncers/intro.md), please refer to their [documentation](/bouncers/intro.md).
+When it comes to [remediation components](/u/bouncers/intro), please refer to their [documentation](/u/bouncers/intro).
 
 ## How fast is it ?
 

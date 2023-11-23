@@ -13,7 +13,7 @@ The Splunk SIEM App is available in Splunkbase. You can download it from [here](
 
 ## Usage
 
-- Get your API key for CrowdSec CTI API by following [this guide.](/docs/next/cti_api/getting_started)
+- Get your API key for CrowdSec CTI API by following [this guide.](/cti_api/getting_started.mdx)
 
 - Complete the App setup by providing your API Key 
 

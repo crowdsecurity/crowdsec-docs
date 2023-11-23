@@ -82,7 +82,7 @@ crowdsec:
 
 Replace `opencti.token` with your openCTI token
 Replace `connector.id` with an ID of your choice. 
-Replace `crowdsec.key` with your CrowdSec CTI API key. See [instructions about obtaining it](/docs/next/cti_api/getting_started)
+Replace `crowdsec.key` with your CrowdSec CTI API key. See [instructions about obtaining it](/cti_api/getting_started.mdx)
 
 Finally run the connector
 

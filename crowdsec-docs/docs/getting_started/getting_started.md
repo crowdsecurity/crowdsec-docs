@@ -70,7 +70,7 @@ After installing the Security Engine, you can proceed to install a Remediation C
 
 The specific Remediation Component to install may vary based on your network and operating system configuration.
 
-If you are uncertain about which one to install, please refer to our [Remediation Components](/bouncers/intro.md) section or join our [Discord](https://discord.gg/crowdsec) and ask our community.
+If you are uncertain about which one to install, please refer to our [Remediation Components](/u/bouncers/intro) section or join our [Discord](https://discord.gg/crowdsec) and ask our community.
 
 ## Enroll
 

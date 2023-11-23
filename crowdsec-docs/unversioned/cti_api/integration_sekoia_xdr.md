@@ -8,7 +8,7 @@ CrowdSec's CTI API can be used in Sekoia XDR Playbooks to enrich alerts with Cro
 
 ## Usage
 
-Get your API key for CrowdSec CTI API by following [this guide.](/docs/next/cti_api/getting_started)
+Get your API key for CrowdSec CTI API by following [this guide.](/cti_api/getting_started.mdx)
 
 In your playbook you can now create a Node which calls CrowdSec's CTI API. 
 

@@ -81,7 +81,7 @@ In your maltego client register the Seed URL we created in the above deployment 
 
 #### Adding CrowdSec API key to the transforms
 
-1. Obtain the CrowdSec CTI API key by following [this guide.](/docs/next/cti_api/getting_started)
+1. Obtain the CrowdSec CTI API key by following [this guide.](/cti_api/getting_started.mdx)
 
 2. Follow [this guide](https://docs.maltego.com/support/solutions/articles/15000017851-setting-api-keys-for-all-transforms-inside-a-hub-item) except select CrowdSec Transform Server.
 

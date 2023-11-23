@@ -1,7 +1,45 @@
 const { themes } = require('prism-react-renderer');
 
 const path = require('path')
-
+const { remediationSideBar, ctiApiSidebar} = require('./sidebarsUnversioned.js')
+const backportRedirect = ({ id, link, items }) => {
+  const arr = [];
+  if (id) {
+    arr.push({
+      to: `/u/${id}`,
+      from: `/docs/${id}`,
+    },{
+      to: `/u/${id}`,
+      from: `/docs/next/${id}`,
+    })
+  }
+  if (link && link.id) {
+    arr.push({
+      to: `/u/${link.id}`,
+      from: `/docs/${link.id}`,
+    },{
+      to: `/u/${link.id}`,
+      from: `/docs/next/${link.id}`,
+    })
+  }
+  if (items) {
+    for (const item of items) {
+      if (typeof item === 'string') {
+        arr.push({
+          to: `/u/${item}`,
+          from: `/docs/${item}`,
+        },{
+          to: `/u/${item}`,
+          from: `/docs/next/${item}`,
+        })
+      }
+      if (typeof item === 'object') {
+        arr.push(...backportRedirect(item));
+      }
+    }
+  }
+  return arr;
+}
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'CrowdSec',
@@ -46,6 +84,7 @@ module.exports = {
       items: [
         {
           type: 'docsVersionDropdown',
+          docsPluginId: 'default',
           position: 'left',
           dropdownActiveClassDisabled: true,
         },
@@ -62,13 +101,12 @@ module.exports = {
           label: 'Cscli',
         },
         {
-          type: 'doc',
-          docId: 'bouncers/intro',
+          to: '/u/bouncers/intro',
           position: 'left',
           label: 'Remediation',
         },
         {
-          to: '/cti_api/getting_started',
+          to: '/u/cti_api/getting_started',
           position: 'left',
           label: 'CTI API',
         },
@@ -193,10 +231,17 @@ module.exports = {
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'cti',
-        path: 'cti_api',
-        routeBasePath: 'cti_api',
-        sidebarPath: require.resolve('./sidebarsCTI.js'),
+        id: 'unversioned',
+        path: 'unversioned',
+        routeBasePath: 'u',
+        sidebarPath: require.resolve('./sidebarsUnversioned.js'),
+      },
+    ],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        // Redirect current and next routes to unversioned to avoid 404 on articles and app.crowdsec.net
+        redirects: [...remediationSideBar,...ctiApiSidebar].flatMap(backportRedirect),
       },
     ],
   ],

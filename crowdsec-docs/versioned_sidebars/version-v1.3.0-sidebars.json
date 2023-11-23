@@ -896,52 +896,5 @@
       "collapsible": true,
       "collapsed": true
     }
-  ],
-  "bouncersSidebar": [
-    {
-      "type": "doc",
-      "id": "bouncers/intro"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/firewall"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/nginx"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/openresty"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/ingress-nginx"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/custom"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/cloudflare"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/wordpress"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/php"
-    },
-    {
-      "type": "link",
-      "label": "Hub",
-      "href": "https://hub.crowdsec.net/browse/#bouncers"
-    },
-    {
-      "type": "doc",
-      "id": "contributing/contributing_bouncers"
-    }
   ]
 }

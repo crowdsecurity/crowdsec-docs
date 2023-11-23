@@ -6,7 +6,7 @@ sidebar_position: 2
 
 CrowdSec's CTI API can be used in Gigasheet's No-Code API-data-enrichment feature. 
 
-As always you'll need a CTI API-key: [Follow this guide to get yours](https://docs.crowdsec.net/docs/next/cti_api/getting_started/).
+As always you'll need a CTI API-key: [Follow this guide to get yours](https://docs.crowdsec.net/cti_api/getting_started.mdx/).
 
 ## Preview
 
