@@ -52,6 +52,20 @@ module.exports = {
             ],
         },
     ],
+    appsecSideBar: [
+        {
+            type: "doc",
+            id: "appsec/intro",
+        },
+        {
+            type: "doc",
+            id: "appsec/install",
+        },
+        {
+            type: "doc",
+            id: "appsec/rules",
+        },
+    ],
     remediationSideBar: [
         {
             type: "doc",

@@ -87,6 +87,11 @@
                     href: '/u/bouncers/intro',
                 },
                 {
+                    type: 'link',
+                    href: '/u/appsec/intro',
+                    label: 'AppSec',
+                },
+                {
                     type: "category",
                     label: "SDK",
                     items: [

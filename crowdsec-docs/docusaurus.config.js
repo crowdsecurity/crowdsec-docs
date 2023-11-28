@@ -1,7 +1,7 @@
 const { themes } = require('prism-react-renderer');
 
 const path = require('path')
-const { remediationSideBar, ctiApiSidebar} = require('./sidebarsUnversioned.js')
+const { remediationSideBar, ctiApiSidebar, appsecSideBar} = require('./sidebarsUnversioned.js')
 const backportRedirect = ({ id, link, items }) => {
   const arr = [];
   if (id) {
@@ -104,6 +104,11 @@ module.exports = {
           to: '/u/bouncers/intro',
           position: 'left',
           label: 'Remediation',
+        },
+        {
+          to: '/u/appsec/intro',
+          position: 'left',
+          label: 'AppSec',
         },
         {
           to: '/u/cti_api/getting_started',
