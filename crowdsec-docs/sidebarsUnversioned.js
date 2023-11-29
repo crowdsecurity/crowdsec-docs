@@ -65,6 +65,10 @@ module.exports = {
             type: "doc",
             id: "appsec/rules",
         },
+        {
+            type: "doc",
+            id: "appsec/protocol",
+        },
     ],
     remediationSideBar: [
         {
