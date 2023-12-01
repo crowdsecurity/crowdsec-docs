@@ -1,7 +1,7 @@
 ---
 id: troubleshoot
 title: Troubleshooting
-sidebar_position: 3
+sidebar_position: 6
 ---
 
 

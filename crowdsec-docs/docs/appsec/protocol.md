@@ -1,8 +1,15 @@
 ---
 id: protocol
 title: Protocol
-sidebar_position: 1
+sidebar_position: 5
 ---
+
+:::warning
+
+This section is only relevant if you want to add support for the CrowdSec application security engine in your own remediation component or directly at the application level.
+
+:::
+
 
 ## Introduction
 
@@ -58,11 +65,11 @@ username=admin' OR '1'='1' -- &password=password
 ```
 GET / HTTP/1.1
 Host: localhost:4241
-X-Crowdsec-Waf-ip: 1.2.3.4
-X-Crowdsec-Waf-Uri: /login
-X-Crowdsec-Waf-Host: example.com
-X-Crowdsec-Waf-Verb: POST
-X-Crowdsec-Waf-Api-Key: <API_KEY>
+X-Crowdsec-Waap-ip: 1.2.3.4
+X-Crowdsec-Waap-Uri: /login
+X-Crowdsec-Waap-Host: example.com
+X-Crowdsec-Waap-Verb: POST
+X-Crowdsec-Waap-Api-Key: <API_KEY>
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-US,en;q=0.5
