@@ -88,7 +88,7 @@
                 },
                 {
                     type: 'link',
-                    href: '/u/appsec/intro',
+                    href: 'appsec/intro',
                     label: 'AppSec',
                 },
                 {
@@ -127,6 +127,7 @@
                 "user_guides/multiserver_setup",
                 "user_guides/consuming_fastly_logs",
                 "user_guides/alert_context",
+                "user_guides/appsec_tuto",
             ],
         },
         {
@@ -137,6 +138,7 @@
                 id: "data_sources/intro",
             },
             items: [
+                "data_sources/appsec",
                 "data_sources/file",
                 "data_sources/journald",
                 "data_sources/cloudwatch",
@@ -148,6 +150,22 @@
                 "data_sources/kubernetes_audit",
                 "data_sources/s3",
                 "data_sources/troubleshoot",
+            ],
+        },
+        {
+            type: "category",
+            label: "Application Security Engine",
+            link: {
+                type: "doc",
+                id: "appsec/intro",
+            },
+            items: [
+                "appsec/install",
+                "appsec/rules",
+                "appsec/hooks",
+                "appsec/troubleshoot",
+                "appsec/protocol",
+                "appsec/performances",
             ],
         },
         {
