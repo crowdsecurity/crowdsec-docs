@@ -13,11 +13,11 @@ sidebar_position: 3
 
 -->
 
-Rules are the core of the application security engine. They are used to detect and block attacks.
+Rules are the core of the aplication security component. They are used to detect and block attacks.
 
 There are 2 types of rules:
- - In-band rules: Those rules are evaluated by the Application Security Engine in a "blocking" manner, meaing the remediation component will wait for all rules to be evaluated before blocking or not the request (based on the response from the Application Security Engine).
- - Out-band rules: Those rules are evaluated by the Application Security Engine in a "non-blocking" manner, after the remediation component has received the response. It is very useful if you have rules that could be considered expensive to evaluate, or are part of a more complex detection logic (eg, blocking an exploit that span multiple requests).
+ - In-band rules: Those rules are evaluated by the Application Security Component in a "blocking" manner, meaing the remediation component will wait for all rules to be evaluated before blocking or not the request (based on the response from the Application Security Component).
+ - Out-band rules: Those rules are evaluated by the Application Security Component in a "non-blocking" manner, after the remediation component has received the response. It is very useful if you have rules that could be considered expensive to evaluate, or are part of a more complex detection logic (eg, blocking an exploit that span multiple requests).
 
 
 In-Band rules and out-band rules differ slightly in their default behavior when a rule matches:
@@ -37,7 +37,7 @@ The rules syntax follows a simple DSL:
 
 ### Seclang Support
 
-The application security engine is also able to load rule in the seclang format (modsecurity rules).
+The aplication security component is also able to load rule in the seclang format (modsecurity rules).
 
 We recommend using this format only to use existings rules you may have.
 

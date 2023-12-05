@@ -4,7 +4,7 @@ title: Hooks
 sidebar_position: 4
 ---
 
-The Application Security Engine allows you to hook at different stages in order to change its behavior at runtime.
+The Application Security Component allows you to hook at different stages in order to change its behavior at runtime.
 
 The three phases are:
  - `on_load`: Called just after the rules have been loaded into the engine.
@@ -61,9 +61,9 @@ This hooks is intented to used to change the behavior of the engine after a matc
 | --- | --- | --- |
 | `SetRemediation` | `func(remediation string)` | Change the remediation that will be returned to the remediation component |
 | `SetHTTPCode` | `func(code int)` | Change the HTTP code that will be returned to the remediation component |
-| `CancelAlert` | `func()` | Prevent the Application Security Engine to create a crowdsec alert |
-| `SendAlert` | `func()` | Force the Application Security Engine to create a crowdsec alert |
-| `CancelEvent` | `func()` | Prevent the Application Security Engine to create a crowdsec event |
-| `SendEvent` | `func()` | Force the Application Security Engine to create a crowdsec event |
+| `CancelAlert` | `func()` | Prevent the Application Security Component to create a crowdsec alert |
+| `SendAlert` | `func()` | Force the Application Security Component to create a crowdsec alert |
+| `CancelEvent` | `func()` | Prevent the Application Security Component to create a crowdsec event |
+| `SendEvent` | `func()` | Force the Application Security Component to create a crowdsec event |
 | `IsInBand` | `bool` | `true` if the request is in the in-band processing phase |
 | `IsOutBand` | `bool` | `true` if the request is in the out-of-band processing phase |

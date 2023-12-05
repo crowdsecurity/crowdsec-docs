@@ -154,7 +154,7 @@
         },
         {
             type: "category",
-            label: "Application Security Engine",
+            label: "Application Security Component",
             link: {
                 type: "doc",
                 id: "appsec/intro",
