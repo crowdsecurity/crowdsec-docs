@@ -20,25 +20,27 @@ To have a functional aplication security component, you need:
 | --- | --- |
 | nginx | X.Y.Z |
 
+# Introduction
+
+Before jumping into the action, let's review the type of configuration items that are involved into the appsec component configuration:
+
+ - **acquisition configuration** tells on which interface and port is the service exposed, as well as the associated AppSec component configuration it will use.
+ - **appsec component configuration** tells which rules are loaded in inband (blocking) and out-of-band (non-blocking) 
+phases, [and allows to tweak the behavior of the component via the powerfull expr bindings](/appsec/rules.md). <!--@sbl we need anchor for the on_whatever and expr helpers -->
+
+ - **rules** allow you to write a [signature to detect and/or block malevolent requests](/appsec/rules.md).
+
+With that covered, let's jump into the installation!
 
 # Configuration: Collection install
 
-As often in crowdsec, the relevant pieces of configuration can be acquired by installing a collection. We are going to use the `crowdsecurity-waap/cisa-virtual-patching` collection, which can be installed as any other collection.
-
-Before jumping into the action, let's review the type of configuration items that are involved into the appsec component configuration:
- - **acquisition configuration** tells on which interface and port is the service exposed, as well as the associated AppSec component configuration it will use.
-<!--@sbl we need anchor for the on_whatever and expr helpers -->
- - **appsec component configuration** tells which rules are loaded in inband (blocking) and out-of-band (non-blocking) 
-phases. [it as well allows you to tweak the behavior of the component via the powerfull expr bindings](/appsec/rules.md)
- - **rules** allow you to write a signature to detect and/or block malevolent requests. [You can find more information about the syntax here](/appsec/rules.md)
-
-With that covered, we can now install our collection. This will bring the appsec component configuration, alongside with a set of rules for virtual patching. It will as well install some scenarios that are here to laverage the alerts from the appsec component, banning attackers that trigger too many rules:
+As often in crowdsec, the relevant pieces of configuration can be acquired by installing a collection, here we are going to use a collection inspired from the [CISA's catalog of known exploited vulnerabilities](https://www.cisa.gov/known-exploited-vulnerabilities-catalog). The goal is to target vulnerabilities that are popular and might be exploited by bad guys trying to break into your server:
 
 ```
 cscli collections install crowdsecurity-waap/cisa-virtual-patching
 ```
 
-Now that this is done, let's configure crowdsec to run the application security component.
+Installing this collection brings the relevant appsec-rules (attack signatures), and the `crowdsecurity/vpatch` appsec-configuration (configuration for the appsec component).
 
 # Configuration: Application Security Component
 
@@ -55,9 +57,9 @@ labels:
 EOF
 ```
 
-Mostly, the important lines are `listen_addr` that indicates on which interface/port the service listens too, and `appsec_config` that tells which configuration the appsec component will run.
+The important lines are `listen_addr` that indicates on which interface/port the service listens too, and `appsec_config` that tells which configuration the appsec component will run.
 
-Once this is done, you should be able to start crowdsec and test the aplication security component:
+Restart crowdsec:
 
 ```bash
 systemctl restart crowdsec
@@ -103,7 +105,9 @@ We can now restart our remediation component:
 sudo systemctl restart nginx
 ```
 
-and if we try to trigger a rule that is part of the collection we installed (`CVE-2023-42793`):
+# Testing
+
+We can try to trigger a rule that is part of the [CISA Virtual Patching Collection](https://hub.crowdsec.net), for example the rule for `CVE-2023-42793`. It is trivial, as it only requires us to try to access a URI that ends with `/rpc2`: <!-- @tko : fix link to collec when merged -->
 
 ```
 ▶ curl -I localhost/rpc2 
@@ -117,3 +121,8 @@ Connection: keep-alive
 And if we look at it in a browser, the user is presented with the HTML page emitted by the remediation component (that can be customized):
 
 ![appsec-denied](/img/appsec_denied.png)
+
+
+# Next steps
+
+Voila! Your application should now be protected from the most common exploitation attempts. [If you have already enrolled your instance in the console](/docs/next/console/enrollment), you will see alerts appearing there too!
