@@ -16,11 +16,43 @@ sidebar_position: 6
 
 -->
 
-# Authenticating with the AppSec component
+
+## Authenticating with the AppSec component
+
+:::note
+We are assuming the appsec engine is running on `127.0.0.1:4242`. See [installation directives](/docs/next/appsec/install)
+:::
+
+> Create a valid API Key
+
+```bash
+cscli bouncers add appsec_test -k this_is_a_bad_password
+```
+
+> Emit a request to the AppSec component
+
+```bash
+curl -I -X POST localhost:4242/ -i -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password' -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET' 
+HTTP/1.1 200 OK
+Date: Tue, 05 Dec 2023 19:37:56 GMT
+Content-Length: 18
+Content-Type: text/plain; charset=utf-8
+```
+
+If you receive a `200 OK`, you can authenticate to the appsec component. If the component is misconfigured or your API key is invalid, you will receive a `401 Unauthorized`:
+
+```bash
+curl -I -X POST localhost:4242/ -i  -H 'x-crowdsec-appsec-api-key: meeh' -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET'          
+HTTP/1.1 401 Unauthorized
+Date: Tue, 05 Dec 2023 19:38:51 GMT
+Content-Length: 0
+
+```
+
 
 <!-- do the thing with the API key and 403/non-403-->
 
-# Ensuring your rule(s) are loaded
+## Ensuring your rule(s) are loaded
 
 <!-- ?-->
 
