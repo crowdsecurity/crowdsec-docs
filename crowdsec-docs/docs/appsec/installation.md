@@ -74,75 +74,8 @@ INFO[2023-12-05 09:16:31] Appsec Runner ready to process event          type=app
 and actively listening on the port:
 
 ```bash
-# netstat -laputen | grep 4241    
-tcp        0      0 127.0.0.1:4241          0.0.0.0:*               LISTEN      0          6923691    779516/crowdsec     
-
-```
-
-## Testing the appsec engine
-
-Before moving to the configuration of the remediation component, we can quickly check that our appsec component is working correctly. At the time of writting, the following appsec rule is part of the `cisa-virtual-patching`, and we will deliberately try to trigger it, by sending a request with an URI ending with `/rpc2`:
-
-> cat /etc/crowdsec/appsec-rules/vpatch-CVE-2023-42793.yaml
-```yaml
-name: crowdsecurity/vpatch-CVE-2023-42793
-description: "Detect CVE-2023-42793"
-rules:
-  - zones:
-    - URI
-    transform:
-    - lowercase
-    match:
-      type: endsWith
-      value: /rpc2
-labels:
-  type: exploit
-  service: http
-  confidence: 3
-  spoofable: 0
-  behavior: "http:exploit"
-  label: "JetBrains Teamcity auth bypass (CVE-2023-42793)"
-  classification:
-   - cve.CVE-2023-42793
-   - attack.T1595
-   - attack.T1190
-   - cwe.CWE-288
-```
-
-Let's add a dedicated remediation component API Key for our test:
-
-```bash
-cscli bouncers add appsec_test -k this_is_a_bad_password
-```
-
-We can now query our appsec component (it uses the same auth mechanism as bouncers):
-
-```bash
-▶ curl -X POST localhost:4242/ -i -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /rpc2' -H 'x-crowdsec-appsec-host: google.com' -H 'x-crowdsec-appsec-verb: POST' -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password'
-HTTP/1.1 403 Forbidden
-Date: Tue, 05 Dec 2023 11:17:51 GMT
-Content-Length: 16
-Content-Type: text/plain; charset=utf-8
-
-{"action":"ban"}
-```
-
-And we see the alert appearing in `crowdsec.log` :
-
-```
-...
-INFO[2023-12-05 12:17:52] (test) alert : crowdsecurity/vpatch-CVE-2023-42793 by ip 42.42.42.42
-...
-```
-
-And in `cscli alerts list` : 
-
-```
-╭────┬────────────────┬─────────────────────────────────────┬─────────┬────┬───────────┬───────────────────────────────╮
-│ ID │     value      │               reason                │ country │ as │ decisions │          created_at           │
-├────┼────────────────┼─────────────────────────────────────┼─────────┼────┼───────────┼───────────────────────────────┤
-│ 1  │ Ip:42.42.42.42 │ crowdsecurity/vpatch-CVE-2023-42793 │         │    │           │ 2023-12-05 11:17:51 +0000 UTC │
-╰────┴────────────────┴─────────────────────────────────────┴─────────┴────┴───────────┴───────────────────────────────╯
+# netstat -laputen | grep 4242    
+tcp        0      0 127.0.0.1:4242          0.0.0.0:*               LISTEN      0          6923691    779516/crowdsec     
 
 ```
 
@@ -170,7 +103,7 @@ We can now restart our remediation component:
 sudo systemctl restart nginx
 ```
 
-and if we try to trigger the same rule we did while testing our AppSec component directly:
+and if we try to trigger a rule that is part of the collection we installed (`CVE-2023-42793`):
 
 ```
 ▶ curl -I localhost/rpc2 
@@ -184,6 +117,3 @@ Connection: keep-alive
 And if we look at it in a browser, the user is presented with the HTML page emitted by the remediation component (that can be customized):
 
 ![appsec-denied](/img/appsec_denied.png)
-
-# Next steps
-
