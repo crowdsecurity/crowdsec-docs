@@ -1,6 +1,6 @@
 ---
 id: appsec_tuto
-title: Application Security Engine
+title: Application Security Component
 sidebar_position: 1
 ---
 

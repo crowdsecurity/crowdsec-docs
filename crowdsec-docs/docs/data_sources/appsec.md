@@ -1,10 +1,10 @@
 ---
 id: appsec
-title: Application Security Engine
+title: Application Security Component
 ---
 
 
-This module allows you to enable the `Application Security Engine` as a data source.
+This module allows you to enable the `Application Security Component` as a data source.
 
 A more detailed documentation is available [here](/docs/appsec/intro.md).
 
@@ -12,7 +12,7 @@ An introduction tutorial is available [here](/docs/user_guides/waap.md).
 
 ## Configuration example
 
-To start an Application Security Engine on port 7422, listening on 127.0.0.1, using the `crowdsecurity/vpatch` config:
+To start an Application Security Component on port 7422, listening on 127.0.0.1, using the `crowdsecurity/vpatch` config:
 
 ```yaml
 source: waap
@@ -38,7 +38,7 @@ Mandatory.
 
 ### `path`
 
-The path the Application Security Engine will respond to.
+The path the Application Security Component will respond to.
 
 ### `waap_config`
 

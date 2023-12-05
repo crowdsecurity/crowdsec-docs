@@ -172,3 +172,18 @@ sudo systemctl restart nginx
 
 and if we try to trigger the same rule we did while testing our AppSec component directly:
 
+```
+▶ curl -I localhost/rpc2 
+HTTP/1.1 403 Forbidden
+Server: nginx/1.18.0 (Ubuntu)
+Date: Tue, 05 Dec 2023 14:26:03 GMT
+Content-Type: text/html
+Connection: keep-alive
+```
+
+And if we look at it in a browser, the user is presented with the HTML page emitted by the remediation component (that can be customized):
+
+![appsec-denied](/img/appsec_denied.png)
+
+# Next steps
+
