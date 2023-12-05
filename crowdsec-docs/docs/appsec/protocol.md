@@ -25,11 +25,11 @@ To work with the CrowdSec aplication security component, some HTTP headers are r
 
 | Header Name               | Description                                                              |
 | ------------------------- | ------------------------------------------------------------------------ |
-| `X-Crowdsec-Waap-Ip`      | The Real IP address of the original HTTP request                         |
-| `X-Crowdsec-Waap-Uri`     | The URI of the original HTTP request                                     |
-| `X-Crowdsec-Waap-Host`    | The Host of the original HTTP request                                    |
-| `X-Crowdsec-Waap-Verb`    | The Method of the original HTTP request                                  |
-| `X-Crowdsec-Waap-Api-Key` | The API Key to communicate with the CrowdSec aplication security component |
+| `X-Crowdsec-Appsec-Ip`      | The Real IP address of the original HTTP request                         |
+| `X-Crowdsec-Appsec-Uri`     | The URI of the original HTTP request                                     |
+| `X-Crowdsec-Appsec-Host`    | The Host of the original HTTP request                                    |
+| `X-Crowdsec-Appsec-Verb`    | The Method of the original HTTP request                                  |
+| `X-Crowdsec-Appsec-Api-Key` | The API Key to communicate with the CrowdSec aplication security component |
 
 ### Example
 
@@ -65,11 +65,11 @@ username=admin' OR '1'='1' -- &password=password
 ```
 GET / HTTP/1.1
 Host: localhost:4241
-X-Crowdsec-Waap-ip: 1.2.3.4
-X-Crowdsec-Waap-Uri: /login
-X-Crowdsec-Waap-Host: example.com
-X-Crowdsec-Waap-Verb: POST
-X-Crowdsec-Waap-Api-Key: <API_KEY>
+X-Crowdsec-Appsec-ip: 1.2.3.4
+X-Crowdsec-Appsec-Uri: /login
+X-Crowdsec-Appsec-Host: example.com
+X-Crowdsec-Appsec-Verb: POST
+X-Crowdsec-Appsec-Api-Key: <API_KEY>
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-US,en;q=0.5

@@ -16,11 +16,24 @@ sidebar_position: 6
 
 -->
 
+# Authenticating with the AppSec component
+
+<!-- do the thing with the API key and 403/non-403-->
+
+# Ensuring your rule(s) are loaded
+
+<!-- ?-->
+
+# Testing a given rule
+
+<!-- write EICAR like rule -->
+
 # Interacting with the AppSec Component
 
 To test that the AppSec component is working correctly, you can send requests directly to it. A few things to know:
  - To speak to the appsec component, you need to have a valid remediation component API Key
  - The appsec component expects to receive some of the element in specific headers
+
 
 We are going to test that the appsec component detects correctly CVE-2023-42793, which is part of the [CISA virtual patching collection](https://hub.crowdsec.net), that should be installed for this to work (see `cscli appsec-rules list`). <!-- @tko: fix link to collection when merged -->This rule is pretty straightforward and detects requests to an URI ending with `/rpc2`:
 

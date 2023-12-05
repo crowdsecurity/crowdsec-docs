@@ -36,6 +36,8 @@ With that covered, let's jump into the installation!
 
 As often in crowdsec, the relevant pieces of configuration can be acquired by installing a collection, here we are going to use a collection inspired from the [CISA's catalog of known exploited vulnerabilities](https://www.cisa.gov/known-exploited-vulnerabilities-catalog). The goal is to target vulnerabilities that are popular and might be exploited by bad guys trying to break into your server:
 
+<!-- @tko fix collection name -->
+
 ```
 cscli collections install crowdsecurity-waap/cisa-virtual-patching
 ```
