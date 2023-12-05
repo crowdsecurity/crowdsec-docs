@@ -10,7 +10,6 @@ This section is only relevant if you want to add support for the CrowdSec aplica
 
 :::
 
-
 ## Introduction
 
 To interact with the CrowdSec aplication security component, a protocol need to be respected.
@@ -23,20 +22,26 @@ This documentation can be useful in case you want to write your own remediation 
 
 To work with the CrowdSec aplication security component, some HTTP headers are require, in addition to the other HTTP headers and the body of the original request.
 
-| Header Name               | Description                                                              |
-| ------------------------- | ------------------------------------------------------------------------ |
-| `X-Crowdsec-Appsec-Ip`      | The Real IP address of the original HTTP request                         |
-| `X-Crowdsec-Appsec-Uri`     | The URI of the original HTTP request                                     |
-| `X-Crowdsec-Appsec-Host`    | The Host of the original HTTP request                                    |
-| `X-Crowdsec-Appsec-Verb`    | The Method of the original HTTP request                                  |
+| Header Name                 | Description                                                                |
+| --------------------------- | -------------------------------------------------------------------------- |
+| `X-Crowdsec-Appsec-Ip`      | The Real IP address of the original HTTP request                           |
+| `X-Crowdsec-Appsec-Uri`     | The URI of the original HTTP request                                       |
+| `X-Crowdsec-Appsec-Host`    | The Host of the original HTTP request                                      |
+| `X-Crowdsec-Appsec-Verb`    | The Method of the original HTTP request                                    |
 | `X-Crowdsec-Appsec-Api-Key` | The API Key to communicate with the CrowdSec aplication security component |
+
+:::note
+
+All requests forwarded by the remediation component must be sent via a `GET` request. However, if the HTTP request contains a body, a `POST` request must be sent to the Application Security Component.
+
+:::
 
 ### Example
 
 For this example:
 
-- A HTTP request has been made by the IP `1.2.3.4`.
-- The aplication security component listen on `http://localhost:4241/`.
+- A `POST` HTTP request has been made by the IP `1.2.3.4` to a website on `example.com`.
+- The Application Security Component listen on `http://localhost:4241/`.
 
 <details>
 <summary>Original HTTP Request</summary>
@@ -63,7 +68,7 @@ username=admin' OR '1'='1' -- &password=password
 <summary>HTTP Request sent to the aplication security component</summary>
 
 ```
-GET / HTTP/1.1
+POST / HTTP/1.1
 Host: localhost:4241
 X-Crowdsec-Appsec-ip: 1.2.3.4
 X-Crowdsec-Appsec-Uri: /login
@@ -89,9 +94,9 @@ username=admin' OR '1'='1' -- &password=password
 
 According to the result of the processing of the HTTP request, the aplication security component will response with a different HTTP code and body.
 
-| HTTP Code | Description                                                                                                                                        | Body                                             |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| `200`     | The HTTP request is allowed                                                                                                                        | `{"action" : "allow"}`                           |
+| HTTP Code | Description                                                                                                                                          | Body                                             |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| `200`     | The HTTP request is allowed                                                                                                                          | `{"action" : "allow"}`                           |
 | `403`     | The HTTP request triggered one or more aplication security component rules                                                                           | `{"action" : "ban"}` or `{"action" : "captcha"}` |
 | `500`     | An error occurred in the aplication security component. The remediation component must support a `WAAP_FAILURE_ACTION` parameter to handle this case | `null`                                           |
-| `401`     | The remediation component is not authenticated. It must use the same API Key that was generated to pull the local API request                      | `null`                                           |
+| `401`     | The remediation component is not authenticated. It must use the same API Key that was generated to pull the local API request                        | `null`                                           |
