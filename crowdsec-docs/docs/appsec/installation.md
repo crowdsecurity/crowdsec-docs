@@ -34,15 +34,15 @@ With that covered, let's jump into the installation!
 
 # Configuration: Collection install
 
-As often in crowdsec, the relevant pieces of configuration can be acquired by installing a collection, here we are going to use a collection inspired from the [CISA's catalog of known exploited vulnerabilities](https://www.cisa.gov/known-exploited-vulnerabilities-catalog). The goal is to target vulnerabilities that are popular and might be exploited by bad guys trying to break into your server:
+As often in crowdsec, the relevant pieces of configuration can be acquired by installing a collection, here we are going to use a collection targeting vulnerabilities that are popular and might be exploited by bad guys trying to break into your server:
 
 <!-- @tko fix collection name -->
 
 ```
-cscli collections install crowdsecurity-waap/cisa-virtual-patching
+cscli collections install crowdsecurity/appsec-virtual-patching
 ```
 
-Installing this collection brings the relevant appsec-rules (attack signatures), and the `crowdsecurity/vpatch` appsec-configuration (configuration for the appsec component).
+Installing this collection brings the relevant appsec-rules (attack signatures), and the `crowdsecurity/virtual-patching` appsec-configuration (configuration for the appsec component).
 
 # Configuration: Application Security Component
 
@@ -52,7 +52,7 @@ The appsec component is available as a data-source in crowdsec, and allows us to
 mkdir  -p /etc/crowdsec/acquis.d
 cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
 listen_addr: 127.0.0.1:4242
-appsec_config: crowdsecurity/vpatch
+appsec_config: crowdsecurity/virtual-patching
 source: appsec
 labels:
   type: appsec
