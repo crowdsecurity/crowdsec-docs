@@ -162,6 +162,7 @@
             items: [
                 "appsec/install",
                 "appsec/rules",
+                "appsec/scenarios",
                 "appsec/hooks",
                 "appsec/troubleshoot",
                 "appsec/protocol",
