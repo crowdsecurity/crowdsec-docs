@@ -1,6 +1,6 @@
 ---
 id: rules
-title: Rules
+title: Appsec rules format
 sidebar_position: 3
 ---
 
@@ -26,12 +26,109 @@ In-Band rules and out-band rules differ slightly in their default behavior when 
 
 
 
-## Rules Syntax
+## Rules File Format
 
-The rules syntax follows a simple DSL:
+The rule files share some common directives with the scenarios:
+ - a `name` and `description`
+ - a `rules` section describing the rule to match the HTTP request
+ - [a label section](https://doc.crowdsec.net/docs/next/scenarios/format/#labels)
+
 
 ```yaml
+name: crowdsecurity/example-rule
+description: "Detect example pattern"
+rules:
+  - zones:
+    - URI
+    transform:
+    - lowercase
+    match:
+      type: contains
+      value: this-is-a-appsec-rule-test
+labels:
+  type: exploit
+  service: http
+  behavior: "http:exploit"
+  confidence: 3
+  spoofable: 0
+  label: "A good description of the rule"
+  classification:
+   - cve.CVE-...
+   - attack....
+```
 
+The `rules` contain one or more conditions that can be linked together by an operator (`or`/`and`).
+Each condition contains:
+
+
+## A target
+ - _(mandatory)_ `zones` one or more of:
+   - `ARGS`: Query string parameters
+   - `ARGS_NAMES`: Name of the query string parameters
+   - `BODY_ARGS`: Body args
+   - `BODY_ARGS_NAMES`: Name of the body args
+   - `HEADERS`: HTTP headers sent in the request
+   - `METHOD`: HTTP method of the request
+   - `PROTOCOL`: HTTP protocol used in the query (HTTP/1.0, HTTP/1.1, ...)
+   - `URI`: The URI of the request
+ - _(optional)_ `variables` containing one or more variable names to restrict the matching operation to (only relevant for `ARGS`, `BODY_ARGS` and `HEADERS`)
+
+```yaml
+#match only in 'foo' and 'bar' query string parameters
+ - zones:
+    - ARGS
+   variables:
+    - foo
+    - bar
+---
+#match in any args or part of the URI
+ - zones:
+    - URI
+    - ARGS
+```
+
+## A matching operation
+
+ - _(mandatory)_ `match` containing both:
+   - _(mandatory)_ `type` indicates the matching method, one of:
+     - `regex`: matches _target_ against value (_value_ is a RE2 regexp)
+     - `equal`: _target_ is a string equal to _value_
+     - `startsWith`: _target_ starts with _value_
+     - `endsWith`: _target_ ends with _value_
+     - `contains`: _target_ contains value
+     - `libinjectionSQL`: _target_ is detected by lib injection SQL
+     - `libinjectionXSS`: _target_ is detected by lib injection XSS
+     - `gt`: _target_ is greater than _value_
+     - `lt`: _target_ is lower than _value_
+     - `ge`: _target_ is greater or equal to _value_
+     - `le`: _target_ is lower or equal to _value_
+  
+   - _(mandatory)_ `value` a string that is compared to the _target_
+ - _(optional)_ `transform` section, containing one or more operation that will be applied on _target_ before performing the match operation:
+   - `lowercase`
+   - `uppercase`
+   - `b64decode` : base64 decode
+   - `hexdecode` : hex decode
+   - `length` : transform _target_ to a number representing the string's length
+
+```yaml
+# we want the query parameter foo to be equal to 'toto'
+ - zones:
+   - ARGS
+   variables:
+   - foo
+   match:
+    type: equal
+    value: toto
+---
+# we want URI to contain any variation of 'blah' (ie. blah BLah BlAH ...)
+  - zones:
+    - URI
+    tranform:
+    - uppercase 
+    match:
+      type: contains
+      value: BLAH
 ```
 
 
@@ -55,7 +152,6 @@ The default paths for the data directory per OS:
 :::
 
 ```yaml
-type: waap-rule
 name: example/secrules
 seclang_rules:
  - SecRule ARGS:ip ";" "t:none,log,deny,msg:'semi colon test',id:2"
@@ -63,6 +159,7 @@ seclang_files_rules:
  - my-rule-file.conf
 ```
 
+<!-- @sbl cadeau
 ## Writing your own rules
 
 ### Rules
@@ -134,3 +231,4 @@ rules:
 
 
 ## Debugging rules
+-->
