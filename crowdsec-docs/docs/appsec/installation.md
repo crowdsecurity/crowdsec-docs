@@ -4,13 +4,17 @@ title: Installation
 sidebar_position: 2
 ---
 
-# Objectives
+## AppSec Component Installation
 
-We are going to cover a basic setup of the application security component, with a set of rules focused on virtual patching. Virtual patching rules focus on preventing exploitation of well-known vulnerabilities, and is a great way to deter and slow down someone scanning your web application. This configuration offers aims at offering the best ROI for your web application firewall!
+We are going to cover a basic setup of the **AppSec component**, with a set of rules focused on virtual patching.  
+
+**Virtual patching** rules focus on preventing exploitation of well-known vulnerabilities and are a great way to deter and slow down someone scanning your web application.
+
+The following configuration is crafted to offer the best ROI for your web application firewall!
 
 # Pre-requisites
 
-To have a functional aplication security component, you need:
+To have a functional AppSec component, you need:
  - Crowdsec security engine >= 1.5.6
  - One of the compatible bouncers:
 
@@ -20,21 +24,23 @@ To have a functional aplication security component, you need:
 | --- | --- |
 | nginx | X.Y.Z |
 
-# Introduction
+## Overview
 
-Before jumping into the action, let's review the type of configuration items that are involved into the appsec component configuration:
+Before jumping into the action, it's essential to understand the key configuration elements of the AppSec component:  
 
- - **acquisition configuration** tells on which interface and port is the service exposed, as well as the associated AppSec component configuration it will use.
- - **appsec component configuration** tells which rules are loaded in inband (blocking) and out-of-band (non-blocking) 
+ - **acquisition configuration**: Specifies how to acquire the AppSec component stream of data
+ - **AppSec Component configuration**: Tells which rules are loaded in inband (blocking) and out-of-band (non-blocking) 
 phases, [and allows to tweak the behavior of the component via the powerfull expr bindings](/appsec/rules.md). <!--@sbl we need anchor for the on_whatever and expr helpers -->
+ - **rules** allow writing a [signature to detect and/or block malevolent requests](/appsec/rules.md).
 
- - **rules** allow you to write a [signature to detect and/or block malevolent requests](/appsec/rules.md).
+With that covered, let's jump into the installation.  
 
-With that covered, let's jump into the installation!
+*In the following sections, we'll start with retrieving items from the CrowdSec hub to have a base to work on and then customize them.*
 
-# Configuration: Collection install
+# Initialise AppSec configuration and rules
 
-As often in crowdsec, the relevant pieces of configuration can be acquired by installing a collection, here we are going to use a collection targeting vulnerabilities that are popular and might be exploited by bad guys trying to break into your server:
+As often in CrowdSec, the relevant pieces of configuration can be acquired by installing a collection.  
+We are going to use a collection targeting vulnerabilities that are popular and might be exploited by bad actors trying to break into your server:
 
 <!-- @tko fix collection name -->
 
@@ -42,32 +48,42 @@ As often in crowdsec, the relevant pieces of configuration can be acquired by in
 cscli collections install crowdsecurity/appsec-virtual-patching
 ```
 
-Installing this collection brings the relevant appsec-rules (attack signatures), and the `crowdsecurity/virtual-patching` appsec-configuration (configuration for the appsec component).
+This collection provides you:
+- The config for the AppSec component (`crowdsecurity/virtual-patching`)
+- All our virtual patching rules
 
-# Configuration: Application Security Component
 
-The appsec component is available as a data-source in crowdsec, and allows us to expose a port that the remediation engine / bouncer will send requests to, and gets verdict from. To enable it, we need to add the data source. This can be done by editing `/etc/crowdsec/acquis.yaml` or adding a new data source file in `/etc/crowdsec/acquis.d/`. We are going to add an aplication security component focused on detecting and blocking the exploitation of well-known vulnerabilities (virtual patching):
+# Configure the AppSec Component acquisition
+
+The AppSec component works as a data-source by relaying the request's data to the security engine. We'll add this data-source similarly to other data-sources via an acquisition file.  
+
+This can be done by editing `/etc/crowdsec/acquis.yaml` or adding a new yaml file in `/etc/crowdsec/acquis.d/`  
+
+For this type of data-source we'll declare the **address** and **port** through which the AppSec component will communicate with the security engine to relay request data and get the verdict.  
+
+The important lines are:
+- `listen_addr` that indicates on which interface/port the service listens to
+- `appsec_config` is the name of the config that the appsec component will run. We'll be using `crowdsecurity/virtual-patching` we just got from the hub for this example, but you can create your own config and name it as you'd like. you can find them in `/etc/crowdsec/...`
 
 ```bash
 mkdir  -p /etc/crowdsec/acquis.d
 cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
 listen_addr: 127.0.0.1:4242
 appsec_config: crowdsecurity/virtual-patching
+name: myAppSecComponent
 source: appsec
 labels:
   type: appsec
 EOF
 ```
 
-The important lines are `listen_addr` that indicates on which interface/port the service listens too, and `appsec_config` that tells which configuration the appsec component will run.
-
-Restart crowdsec:
+We'll then restart CrowdSec:
 
 ```bash
 systemctl restart crowdsec
 ```
 
-You should be able to see crowdsec starting the aplication security component in the logs (`/var/log/crowdsec.log`):
+And you should be able to see CrowdSec starting the AppSec component in the logs (`/var/log/crowdsec.log`):
 
 ```
 INFO[2023-12-05 09:16:31] 1 appsec runner to start                      type=appsec
@@ -75,7 +91,7 @@ INFO[2023-12-05 09:16:31] Starting Appsec server on 127.0.0.1:4242/     type=app
 INFO[2023-12-05 09:16:31] Appsec Runner ready to process event          type=appsec uuid=3b80fefe-6665-4f81-8567-a2a7f09a706a
 ```
 
-and actively listening on the port:
+As well as actively listening on the specified port:
 
 ```bash
 # netstat -laputen | grep 4242    
@@ -99,7 +115,8 @@ APPSEC_URL=http://127.0.0.1:4242
 ...
 ```
 
-:warning: The remediation component authenticates to the AppSec component using the same API KEY it uses to authenticate to LAPI. Your bouncer must thus have a valid api key for the LAPI the security engine running the AppSec component is connected to :warning:
+:warning:*The remediation component uses the same API key for both AppSec and LAPI communication.*  
+*Make sure your bouncer have a valid API and is properly connected to the LAPI via* `sudo cscli metrics`:warning:
 
 We can now restart our remediation component:
 
@@ -107,9 +124,11 @@ We can now restart our remediation component:
 sudo systemctl restart nginx
 ```
 
-# Testing
+# Making sure everything works
 
-We can try to trigger a rule that is part of the [CISA Virtual Patching Collection](https://hub.crowdsec.net), for example the rule for `CVE-2023-42793`. It is trivial, as it only requires us to try to access a URI that ends with `/rpc2`: <!-- @tko : fix link to collec when merged -->
+For testing purposes, lets trigger a rule that is part of the [CISA Virtual Patching Collection](https://hub.crowdsec.net):
+
+It is trivial, for example, lets trigger the rule for `CVE-2023-42793` by trying to access an URI that ends with `/rpc2`:<!-- @tko : fix link to collec when merged -->
 
 ```
 ▶ curl -I localhost/rpc2 
@@ -125,6 +144,6 @@ And if we look at it in a browser, the user is presented with the HTML page emit
 ![appsec-denied](/img/appsec_denied.png)
 
 
-# Next steps
+# Et Voila !
 
-Voila! Your application should now be protected from the most common exploitation attempts. [If you have already enrolled your instance in the console](/docs/next/console/enrollment), you will see alerts appearing there too!
+Your application should now be protected from the most common exploitation attempts. [If you have already enrolled your instance in the console](/docs/next/console/enrollment), you will see alerts appearing there too!

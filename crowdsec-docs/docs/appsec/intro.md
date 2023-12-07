@@ -4,13 +4,12 @@ title: Introduction
 sidebar_position: 1
 ---
 
-# Introduction
+## Introduction
 
 <!-- xx : fix crowdsec version -->
-Meet the Crowdsec **Application Security Component** (AKA : **AppSec Component**), a new capability for advanced application security:"  
+Meet the Crowdsec **Application Security Component** (AKA : **AppSec Component**), a new capability for advanced application security:  
 
 The **AppSec Component** offers:  
-
 - Low-effort **virtual patching** capabilities.
 - Support for your legacy **ModSecurity** rules.
 - Combining classic WAF benefits with advanced CrowdSec features for otherwise difficult **advanced behavior detection**.
@@ -25,21 +24,20 @@ This component capitalizes on existing remediation functions in web servers (suc
 
 Examining Three Key Layers of the AppSec Component's Request Inspection
 
-### Remediation component: request relaying
+### 1 Remediation component: request relaying
 
 If the AppSec capability is activated on the remediation component, the incoming requests will be channeled to the CrowdSec Security engine.
 
-### Security Engine: inband rule processing
+### 2 Security Engine: inband rule processing
 
-The security engine first evaluates the inband rules, designed to identify and block specific requests.
-
-Once these rules are evaluated, a response is relayed to the remediation component.
+The security engine first evaluates the inband rules, designed to identify and block specific requests.  
+Once these rules are evaluated, a response is relayed to the remediation component.  
 
 This leads to two possible outcomes:
    1. If no inband rule is triggered, the processing of the request will continue on the web-server side as usual
    2. If an inband rule is triggered, the remediation component will answer with a 403 or a captcha request to the user of the incriminated request, stopping the request processing.
 
-### Security Engine: out-of-band rules processing
+### 3 Security Engine: out-of-band rules processing
 
 In the background, the security engine will then evaluate the out-of-band rules. These rules do not impact performance or response time, as they are evaluated after the AppSec component instructs the webserver to continue or stop processing the request.
 

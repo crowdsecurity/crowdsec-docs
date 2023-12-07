@@ -13,7 +13,7 @@ sidebar_position: 3
 
 -->
 
-Rules are the core of the aplication security component. They are used to detect and block attacks.
+Rules are the core of the application security component. They are used to detect and block attacks.
 
 There are 2 types of rules:
  - In-band rules: Those rules are evaluated by the Application Security Component in a "blocking" manner, meaing the remediation component will wait for all rules to be evaluated before blocking or not the request (based on the response from the Application Security Component).
@@ -37,7 +37,7 @@ The rules syntax follows a simple DSL:
 
 ### Seclang Support
 
-The aplication security component is also able to load rule in the seclang format (modsecurity rules).
+The application security component is also able to load rule in the seclang format (modsecurity rules).
 
 We recommend using this format only to use existings rules you may have.
 

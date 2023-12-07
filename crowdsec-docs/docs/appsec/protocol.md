@@ -6,21 +6,21 @@ sidebar_position: 5
 
 :::warning
 
-This section is only relevant if you want to add support for the CrowdSec aplication security component in your own remediation component or directly at the application level.
+This section is only relevant if you want to add support for the CrowdSec application security component in your own remediation component or directly at the application level.
 
 :::
 
 ## Introduction
 
-To interact with the CrowdSec aplication security component, a protocol need to be respected.
+To interact with the CrowdSec application security component, a protocol need to be respected.
 
-The aplication security component expect some headers to be present in the HTTP request (in addition to the original HTTP headers and body) and according to the result, the aplication security component will respond differently.
+The application security component expect some headers to be present in the HTTP request (in addition to the original HTTP headers and body) and according to the result, the application security component will respond differently.
 
-This documentation can be useful in case you want to write your own remediation component that interact with the CrowdSec aplication security component, or if you want to improve your existing one.
+This documentation can be useful in case you want to write your own remediation component that interact with the CrowdSec application security component, or if you want to improve your existing one.
 
 ## HTTP Headers
 
-To work with the CrowdSec aplication security component, some HTTP headers are require, in addition to the other HTTP headers and the body of the original request.
+To work with the CrowdSec application security component, some HTTP headers are require, in addition to the other HTTP headers and the body of the original request.
 
 | Header Name                 | Description                                                                |
 | --------------------------- | -------------------------------------------------------------------------- |
@@ -28,7 +28,7 @@ To work with the CrowdSec aplication security component, some HTTP headers are r
 | `X-Crowdsec-Appsec-Uri`     | The URI of the original HTTP request                                       |
 | `X-Crowdsec-Appsec-Host`    | The Host of the original HTTP request                                      |
 | `X-Crowdsec-Appsec-Verb`    | The Method of the original HTTP request                                    |
-| `X-Crowdsec-Appsec-Api-Key` | The API Key to communicate with the CrowdSec aplication security component |
+| `X-Crowdsec-Appsec-Api-Key` | The API Key to communicate with the CrowdSec application security component |
 
 :::note
 
@@ -65,7 +65,7 @@ username=admin' OR '1'='1' -- &password=password
 </details>
 
 <details>
-<summary>HTTP Request sent to the aplication security component</summary>
+<summary>HTTP Request sent to the application security component</summary>
 
 ```
 POST / HTTP/1.1
@@ -92,11 +92,11 @@ username=admin' OR '1'='1' -- &password=password
 
 ## Response Code
 
-According to the result of the processing of the HTTP request, the aplication security component will response with a different HTTP code and body.
+According to the result of the processing of the HTTP request, the application security component will response with a different HTTP code and body.
 
 | HTTP Code | Description                                                                                                                                          | Body                                             |
 | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
 | `200`     | The HTTP request is allowed                                                                                                                          | `{"action" : "allow"}`                           |
-| `403`     | The HTTP request triggered one or more aplication security component rules                                                                           | `{"action" : "ban"}` or `{"action" : "captcha"}` |
-| `500`     | An error occurred in the aplication security component. The remediation component must support a `WAAP_FAILURE_ACTION` parameter to handle this case | `null`                                           |
+| `403`     | The HTTP request triggered one or more application security component rules                                                                           | `{"action" : "ban"}` or `{"action" : "captcha"}` |
+| `500`     | An error occurred in the application security component. The remediation component must support a `WAAP_FAILURE_ACTION` parameter to handle this case | `null`                                           |
 | `401`     | The remediation component is not authenticated. It must use the same API Key that was generated to pull the local API request                        | `null`                                           |
