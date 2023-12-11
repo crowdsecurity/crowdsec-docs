@@ -166,6 +166,7 @@
                 "appsec/hooks",
                 "appsec/troubleshoot",
                 "appsec/protocol",
+                "appsec/create",
                 "appsec/performances",
             ],
         },
