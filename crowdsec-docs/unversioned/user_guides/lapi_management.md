@@ -1,6 +1,6 @@
 ---
 id: lapi_mgmt
-title: Local API management
+title: Local API
 sidebar_position: 4
 ---
 

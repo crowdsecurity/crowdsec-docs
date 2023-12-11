@@ -84,7 +84,7 @@ module.exports = {
           label: 'CrowdSec',
         },
         {
-          to: '/u/guides/intro',
+          to: '/u/user_guides/intro',
           position: 'left',
           label: 'Guides',
         },

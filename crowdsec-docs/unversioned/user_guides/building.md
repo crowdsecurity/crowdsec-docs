@@ -13,7 +13,6 @@ Fetch your package from the [public repository](https://packagecloud.io/crowdsec
 sudo dpkg -i ./crowdsec_1.1.1_amd64.deb
 ```
 
-
 ## Install from the release tarball
 
 Fetch CrowdSec latest version [here](https://github.com/crowdsecurity/crowdsec/releases).

@@ -1,6 +1,6 @@
 ---
 id: decisions_mgmt
-title: Decisions management
+title: Decisions
 sidebar_position: 1
 ---
 
@@ -18,10 +18,9 @@ sudo cscli decisions list
 ```
 
 <details>
-  <summary>Example</summary>
+  <summary>Output</summary>
 
 ```bash
-sudo cscli decisions list
 +--------+----------+------------------+------------------------------------+--------+---------+--------------------------------+--------+-----------------+----------+
 |   ID   |  SOURCE  |   SCOPE:VALUE    |               REASON               | ACTION | COUNTRY |               AS               | EVENTS |   EXPIRATION    | ALERT ID |
 +--------+----------+------------------+------------------------------------+--------+---------+--------------------------------+--------+-----------------+----------+
@@ -31,9 +30,7 @@ sudo cscli decisions list
 |        |          |                  |                                    |        |         | LTDA                           |        |                 |          |
 +--------+----------+------------------+------------------------------------+--------+---------+--------------------------------+--------+-----------------+----------+
 ```
-
-</details>
-
+ - `Decision ID` is the ID of the decision
  - `SOURCE` : the source of the decisions:
     - `crowdsec` : decision from the CrowdSec agent
     - `cscli`    : decision from `cscli` (manual decision)
@@ -49,6 +46,7 @@ sudo cscli decisions list
  - `EXPIRATION` is the time left on remediation
  - `ALERT ID` is the ID of the corresponding alert
 
+</details>
 
 Check [command usage](/cscli/cscli_decisions.md) for additional filtering and output control flags.
 
@@ -124,8 +122,6 @@ However, several decisions targeting the same IP address can exist. If you want 
 sudo cscli  decisions delete --id 74
 ```
 
-
-
 ## Delete all existing bans
 
 > Flush all the existing bans
@@ -135,16 +131,14 @@ sudo cscli decisions delete --all
 ```
 
 :::caution
-
-This will as well remove any existing ban
-
+This will as well remove local and community decisions.
 :::
 
 ## Import decisions
 
-```bash
-sudo cscli decisions import -i foo.csv
-```
+::: warning
+Importing over 1000 decisions may impact the performance of the backend temporarily, `cscli` will split the import into batches to avoid this.
+:::
 
 You can import a CSV or JSON file containing decisions directly with cscli.
 
@@ -159,9 +153,26 @@ The `value` field is mandatory and contains the target of the decision (ip, rang
 
 All the fields (except for `value`) can be overwritten by command line arguments, you can see the list in the [cscli documentation](/cscli/cscli_decisions_import.md).
 
-Example JSON file:
+We use the file extension to determine the format of the file, but you can also use the `--format` flag to specify it.
 
-```json
+### CSV File
+
+```bash
+sudo cscli decisions import -i foo.csv
+```
+
+```csv title="Example CSV file"
+duration,scope,value
+24h,ip,1.2.3.4
+```
+
+### JSON File
+
+```bash
+sudo cscli decisions import -i foo.json
+```
+
+```json title="Example JSON file"
 [
    {
       "duration" : "4h", 
@@ -171,17 +182,18 @@ Example JSON file:
    }
 ]
 ```
+### STDIN
 
-Example CSV file :
-
-```csv
-duration,scope,value
-24h,ip,1.2.3.4
-```
-
-
-
-:::caution
-  If you use the sqlite database backend, the performance can be negatively impacted when importing a lot of decisions (> 10000 decisions).
+:::info
+In the example we command we show how to use `cat` to pipe the content of a file to `cscli`. However, you can use any command that outputs the contents to STDOUT.
 :::
 
+```bash
+cat ips.txt | sudo cscli decisions import -i- --format values
+```
+
+```text title="Example of ips.txt"
+10.10.10.10
+10.10.10.11
+10.10.10.12
+```

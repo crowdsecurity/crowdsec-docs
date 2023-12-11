@@ -1,6 +1,6 @@
 ---
 id: bouncers_configuration
-title: Bouncers management
+title: Bouncers
 sidebar_position: 1
 ---
 

@@ -1,6 +1,6 @@
 ---
 id: hub_mgmt
-title: Hub management
+title: Hub
 sidebar_position: 1
 ---
 
