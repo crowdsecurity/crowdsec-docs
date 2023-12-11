@@ -154,24 +154,6 @@
         },
         {
             type: "category",
-            label: "Application Security Component",
-            link: {
-                type: "doc",
-                id: "appsec/intro",
-            },
-            items: [
-                "appsec/install",
-                "appsec/rules",
-                "appsec/scenarios",
-                "appsec/hooks",
-                "appsec/troubleshoot",
-                "appsec/protocol",
-                "appsec/create",
-                "appsec/performances",
-            ],
-        },
-        {
-            type: "category",
             label: "Parsers",
             link: {
                 type: "doc",
@@ -726,4 +708,15 @@
             id: "preview/rollback",
         },
     ],
+    appSecSideBar : [
+        { type: "doc", id: "appsec/intro"},
+        { type: "doc", id: "appsec/install"},
+        { type: "doc", id: "appsec/rules"},
+        { type: "doc", id: "appsec/scenarios"},
+        { type: "doc", id: "appsec/hooks"},
+        { type: "doc", id: "appsec/troubleshoot"},
+        { type: "doc", id: "appsec/protocol"},
+        { type: "doc", id: "appsec/create"},
+        { type: "doc", id: "appsec/performances"},
+    ]
 };

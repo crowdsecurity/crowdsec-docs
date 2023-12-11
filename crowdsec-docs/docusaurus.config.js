@@ -89,26 +89,31 @@ module.exports = {
           dropdownActiveClassDisabled: true,
         },
         {
-          type: 'doc',
-          docId: 'intro',
-          position: 'left',
+          type: 'dropdown',
           label: 'CrowdSec',
-        },
-        {
-          type: 'doc',
-          docId: 'cscli/cscli',
           position: 'left',
-          label: 'Cscli',
+          items: [
+            {
+              type: 'doc',
+              docId: 'intro',
+              label: 'Security Engine',
+            },
+            {
+              type: 'docsVersion',
+              to: '/docs/next/appsec/intro',
+              label: 'Application Security Component',
+            },
+            {
+              type: 'doc',
+              docId: 'cscli/cscli',
+              label: 'Cscli',
+            },
+          ],
         },
         {
           to: '/u/bouncers/intro',
           position: 'left',
           label: 'Remediation',
-        },
-        {
-          to: '/u/appsec/intro',
-          position: 'left',
-          label: 'AppSec',
         },
         {
           to: '/u/cti_api/getting_started',
