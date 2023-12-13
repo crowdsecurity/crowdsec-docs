@@ -92,9 +92,15 @@
                     items: [
                         {
                             type: "doc",
+                            label: "Python",
+                            id: "getting_started/install_pyagent",
+                        },
+                        {
+                            type: "doc",
                             label: "PHP",
                             id: "getting_started/install_softagent",
                         },
+
                     ],
                 },
                 "getting_started/crowdsec_tour",
