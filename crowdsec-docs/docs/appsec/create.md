@@ -6,6 +6,31 @@ sidebar_position: 6
 
 ## Hub Test
 
+### Requirements
+
+In order to run the hubtest for the AppSec, a Web Server with a remediation component supporting the AppSec feature must be running.
+You can do this easily by starting the provided Docker:
+
+```
+docker-compose -f docker/appsec/docker-compose.yaml up -d
+```
+
+About testing the AppSec Rules, `hubtest` uses [`Nuclei`](https://github.com/projectdiscovery/nuclei) to emulate the exploit and then to validate that the AppSec has blocked the request.
+
+So we need to [install the Nuclei tool](https://github.com/projectdiscovery/nuclei?tab=readme-ov-file#install-nuclei) in order to run `hubtest` for AppSec:
+
+`go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest`
+
+We are now ready to run `hubtest` for AppSec rules!
+
+:::info
+
+CrowdSec need to be installed on the machine where you run the tests, and your working directory must be the [`hub` repository](https://github.com/crowdsecurity/hub).
+
+:::
+
+### Run the tests
+
 Create the test:
 
 ```
@@ -70,3 +95,28 @@ cscli hubtest run <TEST_NAME> --appsec
  <TEST_NAME>        ✅
 ─────────────────────────
 ```
+
+### Debug HubTest
+
+This section provides a step-by-step guide to troubleshoot issues in failing AppSec Hubtests.
+
+Follow these steps for effective identification and resolution of problems.
+
+#### Inspecting target logs
+
+To understand the failure reasons, it is important to check the logs of the remediation component. Sometimes, issues might be due to network problems between the remediation component and AppSec.
+
+If you are using the Docker setup we provided before, you can access these logs easily with this command:
+
+```bash
+docker logs -f appsec_target_1
+```
+
+#### Inspecting runtime logs
+
+In case of a test failure, do not delete the `.appsec-tests/<test_name>/runtime/` folder.
+
+Rather, inspect the files inside the `.appsec-tests/<test_name>/runtime/` folder:
+
+- `<test_name>-<timestamp>_[stderr|stdout].txt`: These files have the output from the nuclei command. They show the response of the request, which may suggest that the request was not blocked.
+- `log/crowdsec.log`: This log file is from the crowdsec that was started by `cscli hubtest`. Here, you might find errors related to CrowdSec, like problems starting or loading the AppSec Component.
