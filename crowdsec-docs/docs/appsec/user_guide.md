@@ -37,9 +37,9 @@ source: appsec
 
 You can find more about this configuration [here](data_sources/appsec).
 
-```note
+:::note
 The `appsec_config` to set is the one installed previously with the collection. You can find its name with `sudo cscli appsec-configs list`.
-```
+:::
 
 You can now restart CrowdSec:
 
