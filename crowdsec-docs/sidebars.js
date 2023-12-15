@@ -711,12 +711,23 @@
     appSecSideBar : [
         { type: "doc", id: "appsec/intro"},
         { type: "doc", id: "appsec/install"},
-        { type: "doc", id: "appsec/rules"},
-        { type: "doc", id: "appsec/scenarios"},
-        { type: "doc", id: "appsec/hooks"},
+        { type: "doc", id: "appsec/usage"},
         { type: "doc", id: "appsec/troubleshoot"},
+        { type: "doc", id: "appsec/configuration"},
+        { 
+            type: "category",
+            label: "Rules & Scenarios",
+            items: [
+                { type: "doc", id: "appsec/create"}, 
+                { type: "doc", id: "appsec/rules"}, 
+                { type: "doc", id: "appsec/hooks"}, 
+                { type: "doc", id: "appsec/scenarios"}, 
+            ]
+        },
+
         { type: "doc", id: "appsec/protocol"},
-        { type: "doc", id: "appsec/create"},
         { type: "doc", id: "appsec/performances"},
+        { type: "doc", id: "appsec/faq"},
+
     ]
 };
