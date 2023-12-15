@@ -35,7 +35,7 @@ listen_addr: 127.0.0.1:7422
 source: appsec
 ```
 
-You can find more about this configuration [here](data_sources/appsec).
+You can find more about this configuration [here](/data_sources/appsec.md).
 
 :::note
 The `appsec_config` to set is the one installed previously with the collection. You can find its name with `sudo cscli appsec-configs list`.
@@ -52,7 +52,7 @@ sudo systemctl restart crowdsec
 Now that our Application Security Component is running in CrowdSec, we need to setup the remediation component to interact with it.
 
 Note that every remediation component may have different option names for this.
-I suggest you to check directly in the remediation component documentation, but here we will use the [OpenResty remediation component](../u/bouncers/openresty) as an example.
+I suggest you to check directly in the remediation component documentation, but here we will use the [OpenResty remediation component](/u/bouncers/openresty) as an example.
 
 To setup the AppSec in the OpenResty remediation component, we just need to set the Application Security Component URL previously exposed:
 
