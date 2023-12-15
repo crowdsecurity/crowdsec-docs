@@ -728,6 +728,6 @@
         { type: "doc", id: "appsec/protocol"},
         { type: "doc", id: "appsec/performances"},
         { type: "doc", id: "appsec/faq"},
-
+        {type: "doc" , id: "appsec/user_guide"}
     ]
 };
