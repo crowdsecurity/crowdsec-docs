@@ -718,10 +718,10 @@
             type: "category",
             label: "Rules & Scenarios",
             items: [
-                { type: "doc", id: "appsec/create"}, 
                 { type: "doc", id: "appsec/rules"}, 
-                { type: "doc", id: "appsec/hooks"}, 
                 { type: "doc", id: "appsec/scenarios"}, 
+                { type: "doc", id: "appsec/create_rules"}, 
+                { type: "doc", id: "appsec/hooks"}, 
             ]
         },
 
