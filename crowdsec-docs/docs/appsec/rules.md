@@ -56,8 +56,8 @@ labels:
   spoofable: 0
   label: "A good description of the rule"
   classification:
-   - cve.CVE-...
-   - attack....
+   - cve.CVE-xxxx-xxxxx
+   - attack.Txxxx
 ```
 
 The `rules` contain one or more conditions that can be linked together by an operator (`or`/`and`).
@@ -103,8 +103,8 @@ Each condition contains:
      - `libinjectionXSS`: _target_ is detected by lib injection XSS
      - `gt`: _target_ is greater than _value_
      - `lt`: _target_ is lower than _value_
-     - `ge`: _target_ is greater or equal to _value_
-     - `le`: _target_ is lower or equal to _value_
+     - `gte`: _target_ is greater or equal to _value_
+     - `lte`: _target_ is lower or equal to _value_
   
    - _(mandatory)_ `value` a string that is compared to the _target_
  - _(optional)_ `transform` section, containing one or more operation that will be applied on _target_ before performing the match operation:
@@ -137,15 +137,15 @@ Each condition contains:
 
 ### Seclang Support
 
-The application security component is also able to load rule in the seclang format (modsecurity rules).
+In order to support your existing/legacy rules set, CrowdSec's AppSec component is also able to load rules in the **seclang** format (**ModSecurity** rules).
 
 We recommend using this format only to use existings rules you may have.
 
-Modsecurity syntax support is provided by [coraza](https://github.com/corazawaf/coraza/), and the reference documentation is available [here](https://coraza.io/docs/seclang/syntax/).
+**ModSecurity** syntax support is provided by [coraza](https://github.com/corazawaf/coraza/), and the reference documentation is available [here](https://coraza.io/docs/seclang/syntax/).
 
 There are 2 ways to provide crowdsec with seclang rules:
  - Provide rules directly by using the `seclang_rules` parameter in your rule file
- - Provide a file containing the rules by using the `seclang_rules_file` parameter in your rule file. The file must be located inside crowdsec data directory
+ - Provide a file containing the rules by using the `seclang_rules_file` parameter in your rule file. The file must be located inside CrowdSec data directory
 
  :::info
 The default paths for the data directory per OS:
