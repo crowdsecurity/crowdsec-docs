@@ -4,14 +4,6 @@ title: CrowdSec Appsec rules
 sidebar_position: 1
 ---
 
-<!--
-
- describe the overall rule (waap rules) organization, relevant section.
- explain the DSL
- speak a bit about how to write yours and how to write waap-tests in the hub (kka)
- how to debug them
-
--->
 ## CrowdSec AppSec rules type
 
 Rules are the core of the **AppSec component**. They are used to detect and block attacks.
@@ -108,7 +100,7 @@ Each condition contains:
      - `lte`: _target_ is lower or equal to _value_
   
    - _(mandatory)_ `value` a string that is compared to the _target_
- - _(optional)_ `transform` section, containing one or more operation that will be applied on _target_ before performing the match operation:
+ - _(optional)_ `transform` section, containing one or more operations that will be applied on _target_ before performing the match operation:
    - `lowercase`
    - `uppercase`
    - `b64decode` : base64 decode
@@ -140,7 +132,7 @@ Each condition contains:
 
 In order to support your existing/legacy rules set, CrowdSec's AppSec component is also able to load rules in the **seclang** format (**ModSecurity** rules).
 
-We recommend using this format only to use existings rules you may have.
+We recommend using this format only to use existing rules you may have.
 
 **ModSecurity** syntax support is provided by [coraza](https://github.com/corazawaf/coraza/), and the reference documentation is available [here](https://coraza.io/docs/seclang/syntax/).
 
@@ -162,77 +154,3 @@ seclang_rules:
 seclang_files_rules:
  - my-rule-file.conf
 ```
-
-<!-- @sbl cadeau
-## Writing your own rules
-
-### Rules
-
-
-#### In-band rules
-
-
-#### Out-band rules
-
-Now, we will write an out-band rule to detect a specific behaviour.
-
-Let's assume that we have a web application that exposes an API endpoint on `/api` with multiple actions, and that always return a `200` status code, even if the action failed:
- - Login
- - Get information about a product
- 
-It is not possible to detect a brute-force attack on this endpoint by looking only at the logs, as the application will always return a `200` status code, meaning we cannot distinguish a login attempt from a simple information request.
-
-But we can write an out-band rule that will generate an event for any login attempt, and a scenario that will used a standard [leaky bucket](/scenarios/format.md) to detect brute-force attacks.
-
-Here is an example of a login request:
-```http
-POST /api HTTP/1.1
-
-Content-Type: application/json
-
-{
-  "action": "login",
-  "username": "admin",
-  "password": "password"
-}
-```
- 
-First, our waap-rule:
-
-```yaml
-type: waap-rule
-name: example/bf-detection
-description: "Always matches on login attempts"
-rules:
-  - body_type: json
-    and:
-    - zones:
-        - METHOD
-      match:
-        type: equal
-        value: POST
-	- zones:
-		- URI
-	  match:
-	  	type: equal
-		value: /api
-    - zones:
-        - BODY_ARGS
-      variables:
-        - login
-      match:
-        type: regex
-        value: ".+"
-    - zones:
-        - BODY_ARGS
-      variables:
-        - password
-      match:
-        type: regex
-        value: ".+"
-
-### Testing
-
-
-## Debugging rules
--->

@@ -1,8 +1,9 @@
 ---
-id: user_guide
-title: User Guide
-sidebar_position: 4
+id: install
+title: Installation
+sidebar_position: 2
 ---
+
 
 The AppSec installation and configuration are pretty straightforward.
 
@@ -49,12 +50,12 @@ sudo systemctl restart crowdsec
 
 ### Setup the remediation component
 
-Now that our Application Security Component is running in CrowdSec, we need to setup the remediation component to interact with it.
+Now that our Application Security Component is running in CrowdSec, we need to set up the remediation component to interact with it.
 
 Note that every remediation component may have different option names for this.
-I suggest you to check directly in the remediation component documentation, but here we will use the [OpenResty remediation component](/u/bouncers/openresty) as an example.
+I suggest you check directly in the remediation component documentation, but here we will use the [OpenResty remediation component](/u/bouncers/openresty) as an example.
 
-To setup the AppSec in the OpenResty remediation component, we just need to set the Application Security Component URL previously exposed:
+To set up the AppSec in the OpenResty remediation component, we just need to set the Application Security Component URL previously exposed:
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf"
 APPSEC_URL=http://127.0.0.1:7422 # in case the AppSec run on the same machine, else provide the AppSec IP
