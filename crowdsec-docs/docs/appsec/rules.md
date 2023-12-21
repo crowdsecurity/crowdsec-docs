@@ -1,10 +1,10 @@
 ---
 id: rules
-title: CrowdSec Appsec rules
+title: Appsec rules syntax
 sidebar_position: 1
 ---
 
-## CrowdSec AppSec rules type
+## CrowdSec AppSec rules
 
 Rules are the core of the **AppSec component**. They are used to detect and block attacks.
 
@@ -56,7 +56,12 @@ The `rules` contain one or more conditions that can be linked together by an ope
 Each condition contains:
 
 
-## A target
+## Target
+
+:::info
+The target allows to specify which part of the requests needs to be inspected. You can have more than one.
+:::
+
  - _(mandatory)_ `zones` one or more of:
    - `ARGS`: Query string parameters
    - `ARGS_NAMES`: Name of the query string parameters
@@ -85,7 +90,12 @@ Each condition contains:
     - ARGS
 ```
 
-## A matching operation
+## Match
+
+:::info
+Match provides the pattern to match the target against, including optional transformations.
+:::
+
 
  - _(mandatory)_ `match` containing both:
    - _(mandatory)_ `type` indicates the matching method, one of:

@@ -4,115 +4,248 @@ title: Create Rules
 sidebar_position: 3
 ---
 
-## Hub Test
+## Foreword
 
-### Requirements
 
-In order to run the hubtest for the AppSec, a Web Server with a remediation component supporting the AppSec feature must be running.
-You can do this easily by starting the provided Docker:
+This documentation assumes you're trying to create an appsec rules with the intent of submitting to the hub, and thus creating the associated functional testing. The creation of said functional testing will guide our process and will make it easier.
+
+We're going to create a rule for an imaginary vulnerability: [a shell injection in the user_id parameter](https://nvd.nist.gov/vuln/detail/CVE-2022-46169) that can be triggered because [the `x-foobar-bypass` header confuses the application](https://nvd.nist.gov/vuln/detail/CVE-2023-22515).
+
+The exploit looks like this:
+`curl localhost -H "x-foobar-bypass: 1" -d "user_id=123;cat /etc/password&do=yes"`
+
+And results in a HTTP request looking like this:
+```
+POST / HTTP/1.1
+...
+x-foobar-bypass: 1
+Content-Length: 36
+Content-Type: application/x-www-form-urlencoded
+
+user_id=123;cat /etc/password&do=yes
+```
+
+## Pre-requisites
+
+1. [Create a local test environment](https://doc.crowdsec.net/docs/contributing/contributing_test_env) or have crowdsec (>= 1.5.6) installed locally
+2. Have docker installed locally to run the test web server
+3. Have [nuclei installed](https://docs.projectdiscovery.io/tools/nuclei/install) (`go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest`)
+4. Clone the hub
+  
+```bash
+git clone https://github.com/crowdsecurity/hub.git
+```
+
+## Create our test
+
+From the root of the hub repository:
+
+```bash
+▶ cscli hubtest create my-vuln --appsec
+
+  Test name                   :  my-vuln
+  Test path                   :  /home/bui/github/crowdsec/hub/.appsec-tests/my-vuln
+  Config File                 :  /home/bui/github/crowdsec/hub/.appsec-tests/my-vuln/config.yaml
+  Nuclei Template             :  /home/bui/github/crowdsec/hub/.appsec-tests/my-vuln/my-vuln.yaml
 
 ```
+
+If you are creating a virtual-patching rule, please name your test `CVE-YYYY-XYZ` and your rule `vpatch-CVE-YYYY-XYZ`.
+
+## Configure our test
+
+Let's add our appsec rule to the configuration file.
+
+> .appsec-tests/my-vuln/config.yaml
+```yaml
+appsec-rules:
+- ./appsec-rules/crowdsecurity/my-vuln.yaml
+nuclei_template: my-vuln.yaml
+```
+*note:* as our custom appsec rule is not yet part of the hub, we specify their path relative to the root of the hub directory.
+
+
+The `hubtest create` command created a boilerplate nuclei template that we can edit to add our HTTP request:
+
+> .appsec-tests/my-vuln/my-vuln.yaml
+```yaml
+id: my-vuln
+info:
+  name: my-vuln
+  author: crowdsec
+  severity: info
+  description: my-vuln testing
+  tags: appsec-testing
+http:
+#this is a dummy request, edit the request(s) to match your needs
+  - raw:
+    - |
+      POST / HTTP/1.1
+      Host: {{Hostname}}
+      x-foobar-bypass: 1
+      Content-Length: 36
+      Content-Type: application/x-www-form-urlencoded
+
+      user_id=123;cat /etc/password&do=yes
+    cookie-reuse: true
+#test will fail because we won't match http status 
+    matchers:
+    - type: status
+      status:
+       - 403
+```
+
+A few notes about [the nuclei template](https://docs.projectdiscovery.io/templates/introduction):
+ - The template expects to get a `403` from the server. It's how `hubtest` can tell if the request was caught.
+ - To capture the HTTP request, running your exploit against a `nc` running locally can be useful:
+
+`curl localhost:4245 -H "x-foobar-bypass: 1" -d "user_id=123;cat /etc/password&do=yes"`
+
+```bash
+▶ nc -lvp 4245
+Listening on 0.0.0.0 4245
+Connection received on localhost 50408
+POST / HTTP/1.1
+Host: localhost:4245
+User-Agent: curl/7.68.0
+Accept: */*
+x-foobar-bypass: 1
+Content-Length: 36
+Content-Type: application/x-www-form-urlencoded
+
+user_id=123;cat /etc/password&do=yes
+
+```
+
+## Rule creation
+
+Let's now create our appsec rule:
+
+> appsec-rules/crowdsecurity/my-vuln.yaml
+```yaml
+name: crowdsecurity/my-vuln
+description: "Imaginary RCE (CVE-YYYY-XYZ)"
+rules:
+  - and:
+    - zones:
+      - METHOD
+      match:
+        type: equals
+        value: POST
+    - zones:
+      - HEADERS_NAMES
+      transform:
+        - lowercase
+      match:
+        type: equals
+        value: x-foobar-bypass
+    - zones:
+      - BODY_ARGS
+      variables:
+       - user_id
+      match:
+        type: regex
+        value: "[^a-zA-Z0-9_]"
+labels:
+  type: exploit
+  service: http
+  confidence: 3
+  spoofable: 0
+  behavior: "http:exploit"
+  label: "Citrix RCE"
+  classification:
+   - cve.CVE-YYYY-XYZ
+   - attack.T1595
+   - attack.T1190
+   - cwe.CWE-284
+```
+
+Let's get over the relevant parts: 
+ - `name` is how the alert will appear to users (in `cscli` or [the console](http://app.crowdsec.net))
+ - `description` is how your scenario will appear in [the hub](https://hub.crowdsec.net)
+ - `labels` section is used both in [the hub](https://hub.crowdsec.net) and [the console](https://app.crowdsec.net). [It must follow rules described here](/scenarios/format.md#labels)
+ - `rules` describe what we want to match:
+   - a [`METHOD`](/appsec/rules.md#target) [equal to `POST`](/appsec/rules.md#match)
+   - the presence of a header ([`HEADERS_NAME`](/appsec/rules.md#target)) with a name that once transformed to `lowercase`, is `x-foobar-bypass`
+   - a post parameter (`BODY_ARGS`), `user_id` that contains something else than a-z A-Z or 0-9 or `_`
+
+:::info
+You can [find detailed rules syntax here](/appsec/rules.md).
+:::
+
+## Testing
+
+We now have the needed pieces:
+ - a nuclei template that simulates exploitation
+ - an appsec rule to detect the vulnerability exploitation
+ - a test that ties both together, ensuring our rule detects our exploit
+
+
+To run our test, we're going to use the provided docker-compose file. It starts an nginx server (listening on port `7822`), that will be used as a "target" for our exploitation attempt. The nginx service is configured to interact with the ephemeral crowdsec service started by `hubtest`:
+
+> from the root of the hub repository
+```bash
 docker-compose -f docker/appsec/docker-compose.yaml up -d
 ```
 
-About testing the AppSec Rules, `hubtest` uses [`Nuclei`](https://github.com/projectdiscovery/nuclei) to emulate the exploit and then to validate that the AppSec has blocked the request.
-
-So we need to [install the Nuclei tool](https://github.com/projectdiscovery/nuclei?tab=readme-ov-file#install-nuclei) in order to run `hubtest` for AppSec:
-
-`go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest`
-
-We are now ready to run `hubtest` for AppSec rules!
-
-:::info
-
-CrowdSec need to be installed on the machine where you run the tests, and your working directory must be the [`hub` repository](https://github.com/crowdsecurity/hub).
-
-:::
-
-### Run the tests
-
-Create the test:
-
-```
-cscli hubtest create --appsec <TEST RULE NAME>
-
-  Test name                   :  <TEST_NAME>
-  Test path                   :  .appsec-tests/<TEST_NAME>
-  Config File                 :  .appsec-tests/<TEST_NAME>/config.yaml
-  Nuclei Template             :  .appsec-tests/<TEST_NAME>/<TEST_NAME>.yaml
+Depending on how you installed `nuclei`, be sure to add it to your `$PATH`:
+```bash
+PATH=~/go/bin/:$PATH
 ```
 
-This will create a new test folder in `.appsec-tests/<TEST_NAME>/`
-
-- Edit the configuration file with the path of the appsec rule (the path of the Nuclei template will already be filled):
-
-```yaml title=".appsec-tests/<TEST_NAME>/config.yaml"
-appsec-rules:
-  - ./appsec-rules/crowdsecurity/<APPSEC_RULE_FILE_NAME>
-nuclei_template: <NUCLEI_FILE>
-```
-
-- Edit the Nuclei template (TODO: change this template with the CVE to use in this doc):
-
-```yaml title=".appsec-tests/<TEST_NAME>/<TEST_NAME>.yaml"
-id: <CVE_ID>
-info:
-  name: <CVE_ID>
-  author: crowdsec
-  severity: info
-  description: <CVE_ID> testing
-  tags: appsec-testing
-http:
-  #this is a dummy request, edit the request(s) to match your needs
-  - raw:
-      - |
-        GET /wp-admin/admin-ajax.php?action=duplicator_download&file=..%2F..%2F..%2F..%2F..%2Fetc%2Fpasswd HTTP/1.1
-        Host: {{Hostname}}
-    cookie-reuse: true
-    matchers:
-      - type: status
-        status:
-          - 403
-```
-
-This Nuclei template will be used by `hubtest` to check that the Application Security Component has blocked the request.
-
-Here are the minimal field to keep in the Nuclei template:
-
-- `id`: ID of the Nuclei template
-- `info` : only the `name`/`author`/`description`/`tags` are enough
-- `http.raw`: Nuclei can provide multiple HTTP request for a CVE, but we are interested only with the ones that will trigger our `appsec` rule.
-- `http.matchers`: This one should always be a `status` equal to `403`. Since the application security component return a `403` when an appsec rule is triggered, we can check directly by running this Nuclei template if the Application Security Component has blocked the attack or not.
-
-We can now run our test:
-
-```console
-cscli hubtest run <TEST_NAME> --appsec
-
-─────────────────────────
- Test             Result
-─────────────────────────
- <TEST_NAME>        ✅
-─────────────────────────
-```
-
-### Debug HubTest
-
-This section provides a step-by-step guide to troubleshoot issues in failing AppSec Hubtests.
-
-Follow these steps for effective identification and resolution of problems.
-
-#### Inspecting target logs
-
-To understand the failure reasons, it is important to check the logs of the remediation component. Sometimes, issues might be due to network problems between the remediation component and AppSec.
-
-If you are using the Docker setup we provided before, you can access these logs easily with this command:
+We're now ready to go!
 
 ```bash
-docker logs -f appsec_target_1
+▶ cscli hubtest run my-vuln --appsec
+INFO[2023-12-21 16:43:28] Running test 'my-vuln'                       
+INFO[2023-12-21 16:43:30] Appsec test my-vuln succeeded                
+INFO[2023-12-21 16:43:30] Test 'my-vuln' passed successfully (0 assertions) 
+──────────────────
+ Test      Result 
+──────────────────
+ my-vuln   ✅     
+──────────────────
+
 ```
 
-#### Inspecting runtime logs
+Congrats to you, you are now ready to make your contribution available to the crowd! Head [to our github repository, and open a PR](https://github.com/crowdsecurity/hub) (including the tests).
+
+## Troubleshooting your tests
+
+Things didn't work as intended?
+
+### Startup errors
+
+If your test doesn't work, chances are that something prevented it to run.
+
+
+1. nuclei isn't in the standard PATH
+  
+You will see an error message such as: `ERRO[2023-12-21 16:43:16] Appsec test my-vuln failed:  exec: "nuclei": executable file not found in $PATH`.
+
+2. your nuclei template isn't valid
+
+```
+WARN[2023-12-21 16:50:33] Error running nuclei: exit status 1          
+WARN[2023-12-21 16:50:33] Stdout saved to /.../my-vuln-1703173832_stdout.txt 
+WARN[2023-12-21 16:50:33] Stderr saved to /.../my-vuln-1703173832_stderr.txt 
+WARN[2023-12-21 16:50:33] Nuclei generated output saved to /.../my-vuln-1703173832.json
+```
+
+note that you can always run your nuclei template "manually" to debug it: `nuclei -t path/to/my-vuln.yaml -u target`
+
+3. your appsec rule isn't valid
+
+You will see crowdsec fataling at startup:
+
+```
+time="2023-12-21 15:42:10" level=info msg="loading inband rule crowdsecurity/*" component=appsec_config name=appsec-test type=appsec
+time="2023-12-21 15:42:10" level=error msg="unable to convert rule crowdsecurity/my-vuln : unknown zone 'BODY'" component=appsec_collection_loader name=appsec-test type=appsec
+time="2023-12-21 15:42:10" level=fatal msg="crowdsec init: while loading acquisition config: while configuring datasource of type appsec fro...
+```
+
+
+### Inspecting runtime logs
 
 In case of a test failure, do not delete the `.appsec-tests/<test_name>/runtime/` folder.
 
