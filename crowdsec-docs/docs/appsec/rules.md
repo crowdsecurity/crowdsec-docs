@@ -63,10 +63,12 @@ Each condition contains:
    - `BODY_ARGS`: Body args
    - `BODY_ARGS_NAMES`: Name of the body args
    - `HEADERS`: HTTP headers sent in the request
+   - `HEADERS_NAMES`: Name of the HTTP headers sent in the request
    - `METHOD`: HTTP method of the request
    - `PROTOCOL`: HTTP protocol used in the query (HTTP/1.0, HTTP/1.1, ...)
    - `URI`: The URI of the request
    - `RAW_BODY`: The entire body of the request
+   - `FILENAMES`: The name of the files sent in the request
  - _(optional)_ `variables` containing one or more variable names to restrict the matching operation to (only relevant for `ARGS`, `BODY_ARGS` and `HEADERS`)
 
 ```yaml
