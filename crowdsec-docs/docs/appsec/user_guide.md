@@ -130,10 +130,9 @@ sudo systemctl restart nginx
 
 # Making sure everything works
 
-For testing purposes, let's trigger a rule that is part of the [CISA Virtual Patching Collection](https://hub.crowdsec.net):
+For testing purposes, let's trigger a rule that is part of the [Virtual Patching Collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching):
 
-It is trivial, for example, lets trigger the rule for `CVE-2023-42793` by trying to access an URI that ends with `/rpc2`:<!-- @tko : fix link to collec when merged -->
-
+It is trivial, for example, let's trigger [the rule](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-CVE-2023-42793) for `CVE-2023-42793` by trying to access an URI that ends with `/rpc2`:
 ```
 ▶ curl -I localhost/rpc2
 HTTP/1.1 403 Forbidden

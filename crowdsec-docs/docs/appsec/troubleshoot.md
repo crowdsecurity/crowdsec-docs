@@ -33,6 +33,8 @@ The prometheus metrics are more detailed, detailing analysis time for each reque
 
 They can be seen in the dedicated [grafana dashboard](/observability/prometheus.md#exploitation-with-prometheus-server--grafana).
 
+You can also inspect an appsec rule directly with `cscli appsec-rules inspect <rule_name>` to see the amount of requests that were blocked by the rule.
+
 ## Enabling Debug in the AppSec Component
 
 Debugging configuration is cascading in the AppSec Component.
@@ -61,7 +63,7 @@ DEBU[2023-12-06 15:40:26] Finish evaluating rule                        band=inb
 ## Authenticating with the AppSec component
 
 :::note
-We are assuming the appsec engine is running on `127.0.0.1:4242`. See [installation directives](/docs/next/appsec/install)
+We are assuming the appsec engine is running on `127.0.0.1:7422`. See [installation directives](/docs/next/appsec/install)
 :::
 
 > Create a valid API Key
@@ -73,7 +75,7 @@ cscli bouncers add appsec_test -k this_is_a_bad_password
 > Emit a request to the AppSec component
 
 ```bash
-curl -I -X POST localhost:4242/ -i -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password' -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET' 
+curl -I -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password' -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET' 
 HTTP/1.1 200 OK
 Date: Tue, 05 Dec 2023 19:37:56 GMT
 Content-Length: 18
@@ -83,7 +85,7 @@ Content-Type: text/plain; charset=utf-8
 If you receive a `200 OK`, you can authenticate to the appsec component. If the component is misconfigured or your API key is invalid, you will receive a `401 Unauthorized`:
 
 ```bash
-curl -I -X POST localhost:4242/ -i  -H 'x-crowdsec-appsec-api-key: meeh' -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET'          
+curl -I -X POST localhost:7422/ -i  -H 'x-crowdsec-appsec-api-key: meeh' -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET'          
 HTTP/1.1 401 Unauthorized
 Date: Tue, 05 Dec 2023 19:38:51 GMT
 Content-Length: 0
@@ -93,7 +95,8 @@ Content-Length: 0
 
 ## Ensuring your rule(s) are loaded
 
-When starting crowdsec is AppSec component enabled, the list of loaded rules is displayed in logs:
+Crowdsec will show on startup all the rules that are installed (even if they are not used by any active appsec-config).
+Seeing a rule here does not mean it will be used by the appsec component, depending on the appsec-config you are using:
 
 ```
 ...
@@ -167,11 +170,12 @@ time="2023-12-20 13:39:29" level=info msg="Appsec Runner ready to process event"
 ## Interacting with the AppSec Component
 
 To test that the AppSec component is working correctly, you can send requests directly to it. A few things to know:
- - To speak to the appsec component, you need to have a valid remediation component API Key
- - The appsec component expects to receive some of the element in specific headers
+ - To query the appsec component, you need to have a valid remediation component API Key
+ - The appsec component expects to receive some of the elements in specific headers
 
 
-We are going to test that the appsec component detects correctly CVE-2023-42793, which is part of the [CISA virtual patching collection](https://hub.crowdsec.net), that should be installed for this to work (see `cscli appsec-rules list`). <!-- @tko: fix link to collection when merged -->This rule is pretty straightforward and detects requests to an URI ending with `/rpc2`:
+We are going to test that the appsec component detects correctly CVE-2023-42793, which is part of the [virtual patching collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching), that should be installed for this to work (see `cscli appsec-rules list`).
+[This rule](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-CVE-2023-42793) is pretty straightforward and detects requests to an URI ending with `/rpc2`:
 
 > cat /etc/crowdsec/appsec-rules/vpatch-CVE-2023-42793.yaml
 ```yaml
@@ -199,16 +203,16 @@ labels:
    - cwe.CWE-288
 ```
 
-To be able to communicate with the appsec component, let's create an bouncer API Key:
+To be able to communicate with the appsec component, let's create a bouncer API Key:
 
 ```bash
 cscli bouncers add appsec_test -k this_is_a_bad_password
 ```
 
-We can now query our appsec component (we're assuming here that it runs on `127.0.0.1:4242`, see the `listen_addr` parameter of the acquisition config):
+We can now query our appsec component (we're assuming here that it runs on the default `127.0.0.1:7422`, see the `listen_addr` parameter of the acquisition config):
 
 ```bash
-▶ curl -X POST localhost:4242/ -i -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /rpc2' -H 'x-crowdsec-appsec-host: google.com' -H 'x-crowdsec-appsec-verb: POST' -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password'
+▶ curl -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /rpc2' -H 'x-crowdsec-appsec-host: google.com' -H 'x-crowdsec-appsec-verb: POST' -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password'
 HTTP/1.1 403 Forbidden
 Date: Tue, 05 Dec 2023 11:17:51 GMT
 Content-Length: 16
