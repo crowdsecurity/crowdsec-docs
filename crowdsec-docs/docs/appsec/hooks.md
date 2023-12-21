@@ -10,7 +10,7 @@ The three phases are:
  - `on_load`: Called just after the rules have been loaded into the engine.
  - `pre_eval`: Called after a request has been received but before the rules are evaluated.
  - `post_eval`: Called after the rules have been evaluated.
- - `on_match`: Called after a successful match of a rules. If multiple rules, this hook will be called only once.
+ - `on_match`: Called after a successful match of a rule. If multiple rules, this hook will be called only once.
 
 
 
@@ -57,7 +57,7 @@ This hook is intended to be used to disable rules only for this particular reque
 
 ### `post_eval`
 
-This hook is mostly intended for debugging or threat hunting purposes.
+This hook is mostly intended for debugging or threat-hunting purposes.
 
 #### Available helpers
 | Helper Name | Type | Description |
@@ -94,7 +94,7 @@ This will discard the body of the request, remove the query parameters `var1` an
 
 ### `on_match`
 
-This hooks is intented to used to change the behavior of the engine after a match (eg, to change the remediation that will be used dynamically).
+This hook is intended to be used to change the behavior of the engine after a match (eg, to change the remediation that will be used dynamically).
 
 #### Available helpers
 
