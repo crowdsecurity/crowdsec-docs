@@ -140,7 +140,7 @@ We can now restart our remediation component:
 sudo systemctl restart nginx
 ```
 
-# Making sure everything works
+## Making sure everything works
 
 For testing purposes, let's trigger a rule that is part of the [Virtual Patching Collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching):
 
@@ -158,7 +158,7 @@ And if we look at it in a browser, the user is presented with the HTML page emit
 
 ![appsec-denied](/img/appsec_denied.png)
 
-# Et Voila !
+## Et Voila !
 
 Your application should now be protected from the most common exploitation attempts.   
 [If you have already enrolled your instance in the console](/docs/next/console/enrollment), you will see alerts appearing there too!
