@@ -1,10 +1,10 @@
 ---
-id: user_guide
-title: User Guide
+id: installation_tutorial
+title: Installation Tutorial
 sidebar_position: 4
 ---
 
-## AppSec Component Installation
+# AppSec Component
 
 We are going to cover a basic setup of the **AppSec component**, with a set of rules focused on virtual patching.
 
@@ -12,18 +12,19 @@ We are going to cover a basic setup of the **AppSec component**, with a set of r
 
 The following configuration is crafted to offer the best ROI for your web application firewall!
 
-# Pre-requisites
+## Pre-requisites
 
 To have a functional AppSec component, you need:
 
 - Crowdsec security engine >= 1.5.6
 - One of the compatible bouncers:
 
-<!-- @kka min nginx version-->
+<!-- @kka min nginx & openresty version-->
 
-| Name  | Minimum Version |
-| ----- | --------------- |
-| nginx | X.Y.Z           |
+| Name          | Minimum Version |
+| ------------- | --------------- |
+| nginx         | 1.0.6rc         |
+| openresty     | 1.0.1rc         |
 
 ## Overview
 
@@ -38,7 +39,7 @@ With that covered, let's jump into the installation.
 
 _In the following sections, we'll start with retrieving items from the CrowdSec hub to have a base to work on and then customize them._
 
-# Initialize AppSec configuration and rules
+## Initialize AppSec configuration and rules
 
 As often in CrowdSec, the relevant pieces of configuration can be acquired by installing a collection.  
 We are going to use a collection targeting vulnerabilities that are popular and might be exploited by bad actors trying to break into your server:
@@ -53,8 +54,10 @@ This collection provides you:
 
 - The config for the AppSec component (`crowdsecurity/virtual-patching`)
 - All our virtual patching rules
+  - The CrowdSec Parser for AppSec
+  - The CrowdSec Scenario(s) for AppSec
 
-# Configure the AppSec Component acquisition
+## Configure the AppSec Component acquisition
 
 The AppSec component works as a data-source by relaying the request's data to the security engine. We'll add this data-source similarly to other data-sources via an acquisition file.
 
@@ -70,7 +73,7 @@ The important lines are:
 ```bash
 mkdir  -p /etc/crowdsec/acquis.d
 cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
-listen_addr: 127.0.0.1:4242
+listen_addr: 127.0.0.1:7422
 appsec_config: crowdsecurity/virtual-patching
 name: myAppSecComponent
 source: appsec
@@ -89,19 +92,19 @@ And you should be able to see CrowdSec starting the AppSec component in the logs
 
 ```
 INFO[2023-12-05 09:16:31] 1 appsec runner to start                      type=appsec
-INFO[2023-12-05 09:16:31] Starting Appsec server on 127.0.0.1:4242/     type=appsec
+INFO[2023-12-05 09:16:31] Starting Appsec server on 127.0.0.1:7422/     type=appsec
 INFO[2023-12-05 09:16:31] Appsec Runner ready to process event          type=appsec uuid=3b80fefe-6665-4f81-8567-a2a7f09a706a
 ```
 
 As well as actively listening on the specified port:
 
 ```bash
-# netstat -laputen | grep 4242
-tcp        0      0 127.0.0.1:4242          0.0.0.0:*               LISTEN      0          6923691    779516/crowdsec
+# netstat -laputen | grep 7422
+tcp        0      0 127.0.0.1:7422          0.0.0.0:*               LISTEN      0          6923691    779516/crowdsec
 
 ```
 
-# Configuration : Remediation component
+## Configuration : Remediation component
 
 <!-- @kka fix version -->
 
@@ -109,13 +112,22 @@ At the time of writing, only the crowdsec nginx bouncer supports native integrat
 
 [If you don't have the bouncer installed, do it now !](https://docs.crowdsec.net/u/bouncers/nginx)
 
-To enable the integration, you simply have to add a `APPSEC_URL` parameter to the existing nginx bouncer remediation configuration :
+To enable the integration, you simply have to add a `APPSEC_URL` parameter to the existing bouncer remediation configuration: 
 
-> /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
+Note: *Some remediation components might have different parameter name for the APPSEC_URL, directly check their documentation if APPSEC_URL doesn't work*
 
+
+In your bouncer config file:
+> /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf 
+
+> /etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf
+
+> ...
+
+Add the communication URL with the port you want:
 ```
 ...
-APPSEC_URL=http://127.0.0.1:4242
+APPSEC_URL=http://127.0.0.1:7422
 ...
 ```
 
@@ -148,5 +160,6 @@ And if we look at it in a browser, the user is presented with the HTML page emit
 
 # Et Voila !
 
-Your application should now be protected from the most common exploitation attempts. [If you have already enrolled your instance in the console](/docs/next/console/enrollment), you will see alerts appearing there too!
+Your application should now be protected from the most common exploitation attempts.   
+[If you have already enrolled your instance in the console](/docs/next/console/enrollment), you will see alerts appearing there too!
 

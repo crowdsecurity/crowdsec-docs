@@ -4,6 +4,7 @@ title: Installation
 sidebar_position: 2
 ---
 
+<!-- @jdv deprecated, or we link it in installation tutorial (renaming it too) but lets not have dup content -->
 
 The AppSec installation and configuration are pretty straightforward.
 
