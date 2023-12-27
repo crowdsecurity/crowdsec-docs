@@ -710,7 +710,7 @@
     ],
     appSecSideBar : [
         { type: "doc", id: "appsec/intro"},
-        { type: "doc", id: "appsec/installation_tutorial"},
+        { type: "doc", id: "appsec/quickstart"},
         { type: "doc", id: "appsec/configuration"},
         { 
             type: "category",
@@ -721,6 +721,7 @@
                 { type: "doc", id: "appsec/create_rules"}, 
             ]
         },
+        { type: "doc", id: "appsec/installation"},
         { type: "doc", id: "appsec/protocol"},
         { type: "doc", id: "appsec/benchmark"},
         { type: "doc", id: "appsec/troubleshooting"},

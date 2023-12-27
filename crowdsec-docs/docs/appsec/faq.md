@@ -1,5 +1,5 @@
 ---
 id: faq
 title: FAQ
-sidebar_position: 4
+sidebar_position: 5
 ---
