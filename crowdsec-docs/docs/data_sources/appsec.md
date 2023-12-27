@@ -39,6 +39,10 @@ Defaults to `/`.
 
 The name of the appsec-config to use (as seen in `cscli appsec-configs list`).
 
+### `appsec_config_path`
+
+The path to the appsec-config to use (as seen in `cscli appsec-configs list`).
+
 ### `routines`
 
 Number of routines to use to process the requests. Defaults to 1.
@@ -48,6 +52,13 @@ Number of routines to use to process the requests. Defaults to 1.
 How long to cache the auth token for. Accepts value supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
 Defaults to 1m.
 
+### `cert_file`
+
+Path to the cert file to allow HTTPS communication between the remediation component and the appsec component.
+
+### `key_file`
+
+Path to the key file to allow HTTPS communication between the remediation component and the appsec component.
 
 ## DSN and command-line
 
