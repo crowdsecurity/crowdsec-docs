@@ -46,11 +46,11 @@ If the package is not available yet, you'll have to install it manually.
 
 ```console
 # setenv IGNORE_OSVERSION yes
-# pkg add <link to abseil>
-# pkg add <link to re2>
-# pkg add <link to crowdsec-firewall-bouncer>
-# pkg add <link to crowdsec>
-# pkg add <link to pfSense-pkg-crowdsec>
+# pkg add -f <link to abseil>
+# pkg add -f <link to re2>
+# pkg add -f <link to crowdsec-firewall-bouncer>
+# pkg add -f <link to crowdsec>
+# pkg add -f <link to pfSense-pkg-crowdsec>
 ```
 
 ## Configuration
