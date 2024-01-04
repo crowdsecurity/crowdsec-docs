@@ -1,7 +1,7 @@
 const { themes } = require('prism-react-renderer');
 
 const path = require('path')
-const { remediationSideBar, ctiApiSidebar} = require('./sidebarsUnversioned.js')
+const { remediationSideBar, ctiApiSidebar, appsecSideBar} = require('./sidebarsUnversioned.js')
 const backportRedirect = ({ id, link, items }) => {
   const arr = [];
   if (id) {
@@ -89,16 +89,26 @@ module.exports = {
           dropdownActiveClassDisabled: true,
         },
         {
-          type: 'doc',
-          docId: 'intro',
-          position: 'left',
+          type: 'dropdown',
           label: 'CrowdSec',
-        },
-        {
-          type: 'doc',
-          docId: 'cscli/cscli',
           position: 'left',
-          label: 'Cscli',
+          items: [
+            {
+              type: 'doc',
+              docId: 'intro',
+              label: 'Security Engine',
+            },
+            {
+              type: 'docsVersion',
+              to: '/docs/next/appsec/intro',
+              label: 'Application Security Component',
+            },
+            {
+              type: 'doc',
+              docId: 'cscli/cscli',
+              label: 'Cscli',
+            },
+          ],
         },
         {
           to: '/u/bouncers/intro',

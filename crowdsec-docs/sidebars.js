@@ -87,6 +87,11 @@
                     href: '/u/bouncers/intro',
                 },
                 {
+                    type: 'link',
+                    href: 'appsec/intro',
+                    label: 'AppSec',
+                },
+                {
                     type: "category",
                     label: "SDK",
                     items: [
@@ -128,6 +133,7 @@
                 "user_guides/multiserver_setup",
                 "user_guides/consuming_fastly_logs",
                 "user_guides/alert_context",
+                "user_guides/appsec_tuto",
             ],
         },
         {
@@ -138,6 +144,7 @@
                 id: "data_sources/intro",
             },
             items: [
+                "data_sources/appsec",
                 "data_sources/file",
                 "data_sources/journald",
                 "data_sources/cloudwatch",
@@ -707,4 +714,22 @@
             id: "preview/rollback",
         },
     ],
+    appSecSideBar : [
+        { type: "doc", id: "appsec/intro"},
+        { type: "doc", id: "appsec/quickstart"},
+        { type: "doc", id: "appsec/configuration"},
+        { 
+            type: "category",
+            label: "Rules & Scenarios",
+            items: [
+                { type: "doc", id: "appsec/rules_syntax"}, 
+                { type: "doc", id: "appsec/hooks"}, 
+                { type: "doc", id: "appsec/create_rules"}, 
+            ]
+        },
+        { type: "doc", id: "appsec/installation"},
+        { type: "doc", id: "appsec/protocol"},
+        { type: "doc", id: "appsec/benchmark"},
+        { type: "doc", id: "appsec/troubleshooting"},
+    ]
 };
