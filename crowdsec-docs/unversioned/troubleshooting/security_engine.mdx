@@ -55,6 +55,27 @@ time="27-11-2023 13:56:13" level=info msg="You can successfully interact with Lo
 This command can be run on child nodes to check if they can reach the LAPI of the parent node.
 :::
 
+### How to check if CAPI is reachable
+  
+```bash
+cscli capi status
+```
+<details>
+
+<summary>Example output</summary>
+
+```bash
+time="2024-01-08 14:08:20" level=info msg="Loaded credentials from /etc/crowdsec/online_api_credentials.yaml"
+time="2024-01-08 14:08:20" level=info msg="Trying to authenticate with username XXXXXXXXXXX on https://api.crowdsec.net/"
+time="2024-01-08 14:08:22" level=info msg="You can successfully interact with Central API (CAPI)"
+```
+
+</details>
+
+:::info
+This command can should **ONLY** be run on the parent node.
+:::
+
 ## Decisions
 
 ### How to list current decisions
@@ -68,7 +89,7 @@ Additional filtering is possible please read [cscli decisions list](/docs/next/c
 ### How to remove a decision on a IP
 
 ```bash
-cscli decisions delete -i x.x.x.x\
+cscli decisions delete -i x.x.x.x
 ```
 Additional filtering is possible please read [cscli decisions delete](/docs/next/cscli/cscli_decisions_delete) for more information.
 

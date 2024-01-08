@@ -132,7 +132,15 @@ $ sudo HTTP_PROXY=socks5://127.0.0.1:9050 HTTPS_PROXY=socks5://127.0.0.1:9050 cs
 
 ### How to report a bug
 
-To report a bug, please open an issue on the [repository](https://github.com/crowdsecurity/crowdsec/issues/new?assignees=&labels=bug&template=bug_report.md&title=Bug%2F).
+To report a bug, please open an issue on the affected component's repository:
+
+[CrowdSec Repo](https://github.com/crowdsecurity/crowdsec/issues/new/choose)
+
+[CrowdSec Hub Repo](https://github.com/crowdsecurity/hub/issues/new/choose)
+
+:::info
+CrowdSec Hub should be used when you have an issue with a parser, scenario or collection.
+:::
 
 ### How to disable the central API
 
