@@ -15,6 +15,7 @@
   --ifm-color-primary-lighter: rgb(102, 212, 189);
   --ifm-color-primary-lightest: rgb(146, 224, 208);
   --ifm-code-font-size: 95%;
+  --docusaurus-announcement-bar-height: 2.5rem !important;
 }
 
 .docusaurus-highlight-code-line {
@@ -139,4 +140,9 @@ html[data-theme="dark"] .header-console-link:before {
   .navbar__items--right .navbar__link {
     display: none;
   }
+}
+
+.content_node_modules-\@docusaurus-theme-classic-lib-theme-AnnouncementBar-Content-styles-module {
+  font-size: 100% !important;
+  padding: 20px 0 !important;
 }
