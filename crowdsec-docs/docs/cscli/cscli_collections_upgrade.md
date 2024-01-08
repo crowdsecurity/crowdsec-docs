@@ -8,23 +8,23 @@ Upgrade given collection(s)
 
 ### Synopsis
 
-Fetch and upgrade given collection(s) from hub
+Fetch and upgrade one or more collections from the hub
 
 ```
-cscli collections upgrade collection [flags]
+cscli collections upgrade [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli collections upgrade crowdsec/xxx crowdsec/xyz
+cscli collections upgrade crowdsecurity/http-cve crowdsecurity/iptables
 ```
 
 ### Options
 
 ```
   -a, --all     Upgrade all the collections
-      --force   Force upgrade : Overwrite tainted and outdated files
+      --force   Force upgrade: overwrite tainted and outdated files
   -h, --help    help for upgrade
 ```
 
@@ -43,5 +43,5 @@ cscli collections upgrade crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli collections](/cscli/cscli_collections.md)	 - Manage collections from hub
+* [cscli collections](/cscli/cscli_collections.md)	 - Manage hub collections
 

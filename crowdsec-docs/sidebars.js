@@ -390,6 +390,36 @@
         },
         {
             type: "category",
+            label: "cscli appsec-configs",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_appsec-configs",
+            },
+            items: [
+                "cscli/cscli_appsec-configs_inspect",
+                "cscli/cscli_appsec-configs_install",
+                "cscli/cscli_appsec-configs_list",
+                "cscli/cscli_appsec-configs_remove",
+                "cscli/cscli_appsec-configs_upgrade",
+            ],
+        },
+        {
+            type: "category",
+            label: "cscli appsec-rules",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_appsec-rules",
+            },
+            items: [
+                "cscli/cscli_appsec-rules_inspect",
+                "cscli/cscli_appsec-rules_install",
+                "cscli/cscli_appsec-rules_list",
+                "cscli/cscli_appsec-rules_remove",
+                "cscli/cscli_appsec-rules_upgrade",
+            ],
+        },
+        {
+            type: "category",
             label: "cscli bouncers",
             link: {
                 type: "doc",
@@ -461,6 +491,21 @@
         },
         {
             type: "category",
+            label: "cscli contexts",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_contexts",
+            },
+            items: [
+                "cscli/cscli_contexts_install",
+                "cscli/cscli_contexts_remove",
+                "cscli/cscli_contexts_upgrade",
+                "cscli/cscli_contexts_list",
+                "cscli/cscli_contexts_inspect",
+            ],
+        },
+        {
+            type: "category",
             label: "cscli dashboard",
             link: {
                 type: "doc",
@@ -499,6 +544,7 @@
                 "cscli/cscli_hub_list",
                 "cscli/cscli_hub_update",
                 "cscli/cscli_hub_upgrade",
+                "cscli/cscli_hub_types"
             ],
         },
         {
@@ -554,6 +600,19 @@
                 "cscli/cscli_notifications_inspect",
                 "cscli/cscli_notifications_list",
                 "cscli/cscli_notifications_reinject",
+                "cscli/cscli_notifications_test",
+            ],
+        },
+        {
+            type: "category",
+            label: "cscli papi",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_papi",
+            },
+            items: [
+                "cscli/cscli_papi_status",
+                "cscli/cscli_papi_sync",
             ],
         },
         {

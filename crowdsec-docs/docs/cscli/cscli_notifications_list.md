@@ -4,11 +4,11 @@ title: cscli notifications list
 ---
 ## cscli notifications list
 
-List active notifications plugins
+list active notifications plugins
 
 ### Synopsis
 
-List active notifications plugins
+list active notifications plugins
 
 ```
 cscli notifications list [flags]

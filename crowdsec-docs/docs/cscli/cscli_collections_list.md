@@ -4,20 +4,24 @@ title: cscli collections list
 ---
 ## cscli collections list
 
-List all collections
+List collection(s)
 
 ### Synopsis
 
-List all collections
+List of installed/available/specified collections
 
 ```
-cscli collections list collection [-a] [flags]
+cscli collections list [item... | -a] [flags]
 ```
 
 ### Examples
 
 ```
 cscli collections list
+cscli collections list -a
+cscli collections list crowdsecurity/http-cve crowdsecurity/iptables
+
+List only enabled collections unless "-a" or names are specified.
 ```
 
 ### Options
@@ -42,5 +46,5 @@ cscli collections list
 
 ### SEE ALSO
 
-* [cscli collections](/cscli/cscli_collections.md)	 - Manage collections from hub
+* [cscli collections](/cscli/cscli_collections.md)	 - Manage hub collections
 

@@ -10,7 +10,7 @@ While CrowdSec doesn't store any logs after processing it, it can be useful to g
 
 The context configuration is part of the CrowdSec Hub and each collection should come with a context configuration file.
 
-The only thing to do if you want to see the context in the console is to enable the `context` option in your CrowdSec Local API (see below).
+The only thing to do if you want to see the context in the console is to enable the `context` option in your CrowdSec Local API [see below](#send-alert-context-to-crowdsec-console).
 
 You can get context values from:
 
@@ -20,7 +20,7 @@ You can get context values from:
 - More generally, anything available in `evt` (eg, `evt.Unmarshaled` with some parsers)
 - From expr helpers (all expr helpers are available in the context, allowing for example `CrowdsecCTI(evt.Meta.source_ip).GetMaliciousnessScore()`)
 
-More information [here](../cscli/cscli_contexts.md) for managing the context from the Hub with `cscli`.
+More information [here](/docs/next/cscli/cscli_contexts) for managing the context from the Hub with `cscli`.
 
 ## Send alert context to CrowdSec Console
 

@@ -7,15 +7,14 @@ title: cscli bouncers add
 add a single bouncer to the database
 
 ```
-cscli bouncers add MyBouncerName [--length 16] [flags]
+cscli bouncers add MyBouncerName [flags]
 ```
 
 ### Examples
 
 ```
 cscli bouncers add MyBouncerName
-cscli bouncers add MyBouncerName -l 24
-cscli bouncers add MyBouncerName -k <random-key>
+cscli bouncers add MyBouncerName --key <random-key>
 ```
 
 ### Options
@@ -23,7 +22,6 @@ cscli bouncers add MyBouncerName -k <random-key>
 ```
   -h, --help         help for add
   -k, --key string   api key for the bouncer
-  -l, --length int   length of the api key (default 16)
 ```
 
 ### Options inherited from parent commands

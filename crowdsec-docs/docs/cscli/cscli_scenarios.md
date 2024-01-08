@@ -4,16 +4,16 @@ title: cscli scenarios
 ---
 ## cscli scenarios
 
-Install/Remove/Upgrade/Inspect scenario(s) from hub
+Manage hub scenarios
 
 ### Examples
 
 ```
-cscli scenarios list [-a]
-cscli scenarios install crowdsecurity/ssh-bf
-cscli scenarios inspect crowdsecurity/ssh-bf
-cscli scenarios upgrade crowdsecurity/ssh-bf
-cscli scenarios remove crowdsecurity/ssh-bf
+cscli scenarios list -a
+cscli scenarios install crowdsecurity/ssh-bf crowdsecurity/http-probing
+cscli scenarios inspect crowdsecurity/ssh-bf crowdsecurity/http-probing
+cscli scenarios upgrade crowdsecurity/ssh-bf crowdsecurity/http-probing
+cscli scenarios remove crowdsecurity/ssh-bf crowdsecurity/http-probing
 
 ```
 
@@ -39,9 +39,9 @@ cscli scenarios remove crowdsecurity/ssh-bf
 ### SEE ALSO
 
 * [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
-* [cscli scenarios inspect](/cscli/cscli_scenarios_inspect.md)	 - Inspect given scenario
+* [cscli scenarios inspect](/cscli/cscli_scenarios_inspect.md)	 - Inspect given scenario(s)
 * [cscli scenarios install](/cscli/cscli_scenarios_install.md)	 - Install given scenario(s)
-* [cscli scenarios list](/cscli/cscli_scenarios_list.md)	 - List all scenario(s) or given one
+* [cscli scenarios list](/cscli/cscli_scenarios_list.md)	 - List scenario(s)
 * [cscli scenarios remove](/cscli/cscli_scenarios_remove.md)	 - Remove given scenario(s)
 * [cscli scenarios upgrade](/cscli/cscli_scenarios_upgrade.md)	 - Upgrade given scenario(s)
 

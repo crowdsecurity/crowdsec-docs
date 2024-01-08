@@ -15,6 +15,7 @@ cscli lapi context add [flags]
 ```
 cscli lapi context add --key source_ip --value evt.Meta.source_ip
 cscli lapi context add --key file_source --value evt.Line.Src
+cscli lapi context add --value evt.Meta.source_ip --value evt.Meta.target_user 
 		
 ```
 

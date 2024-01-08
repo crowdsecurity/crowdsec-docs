@@ -8,23 +8,23 @@ Remove given scenario(s)
 
 ### Synopsis
 
-remove given scenario(s)
+Remove one or more scenarios
 
 ```
-cscli scenarios remove [config] [flags]
+cscli scenarios remove [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli scenarios remove crowdsec/xxx crowdsec/xyz
+cscli scenarios remove crowdsecurity/ssh-bf crowdsecurity/http-probing
 ```
 
 ### Options
 
 ```
-      --all     Delete all the scenarios
-      --force   Force remove : Remove tainted and outdated files
+      --all     Remove all the scenarios
+      --force   Force remove: remove tainted and outdated files
   -h, --help    help for remove
       --purge   Delete source file too
 ```
@@ -44,5 +44,5 @@ cscli scenarios remove crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli scenarios](/cscli/cscli_scenarios.md)	 - Install/Remove/Upgrade/Inspect scenario(s) from hub
+* [cscli scenarios](/cscli/cscli_scenarios.md)	 - Manage hub scenarios
 
