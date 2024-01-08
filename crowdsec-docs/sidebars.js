@@ -87,14 +87,25 @@
                     href: '/u/bouncers/intro',
                 },
                 {
+                    type: 'link',
+                    href: 'appsec/intro',
+                    label: 'AppSec',
+                },
+                {
                     type: "category",
                     label: "SDK",
                     items: [
                         {
                             type: "doc",
+                            label: "Python",
+                            id: "getting_started/install_pyagent",
+                        },
+                        {
+                            type: "doc",
                             label: "PHP",
                             id: "getting_started/install_softagent",
                         },
+
                     ],
                 },
                 "getting_started/crowdsec_tour",
@@ -114,6 +125,7 @@
                 id: "data_sources/intro",
             },
             items: [
+                "data_sources/appsec",
                 "data_sources/file",
                 "data_sources/journald",
                 "data_sources/cloudwatch",
@@ -683,4 +695,22 @@
             id: "preview/rollback",
         },
     ],
+    appSecSideBar : [
+        { type: "doc", id: "appsec/intro"},
+        { type: "doc", id: "appsec/quickstart"},
+        { type: "doc", id: "appsec/configuration"},
+        { 
+            type: "category",
+            label: "Rules & Scenarios",
+            items: [
+                { type: "doc", id: "appsec/rules_syntax"}, 
+                { type: "doc", id: "appsec/hooks"}, 
+                { type: "doc", id: "appsec/create_rules"}, 
+            ]
+        },
+        { type: "doc", id: "appsec/installation"},
+        { type: "doc", id: "appsec/protocol"},
+        { type: "doc", id: "appsec/benchmark"},
+        { type: "doc", id: "appsec/troubleshooting"},
+    ]
 };

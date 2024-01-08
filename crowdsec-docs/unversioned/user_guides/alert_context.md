@@ -4,33 +4,51 @@ title: Contextualize Alerts
 sidebar_position: 10
 ---
 
-
-
 # Alert Contextualization
-
 
 While CrowdSec doesn't store any logs after processing it, it can be useful to get some context about why an alert has been triggered (source machine, targeted FQDN ...).
 
-It is possible to enable this feature in your CrowdSec agent configuration. You can choose which fields from a parsed log you want to be added in the context of the alert.
+The context configuration is part of the CrowdSec Hub and each collection should come with a context configuration file.
 
+The only thing to do if you want to see the context in the console is to enable the `context` option in your CrowdSec Local API (see below).
 
-## Add context to alerts
+You can get context values from:
 
-You can choose the fields that you want to add to the context of your alerts with `cscli`:
+- Part of a parsed log line (with `evt.Parsed`)
+- Meta values set by parsers (with `evt.Meta`)
+- Hardcoded strings in the context configuration (with `"my_value"`)
+- More generally, anything available in `evt` (eg, `evt.Unmarshaled` with some parsers)
+- From expr helpers (all expr helpers are available in the context, allowing for example `CrowdsecCTI(evt.Meta.source_ip).GetMaliciousnessScore()`)
+
+More information [here](../cscli/cscli_contexts.md) for managing the context from the Hub with `cscli`.
+
+## Send alert context to CrowdSec Console
+
+> This command has to be run on the CrowdSec Local API
+
+To send the context with the alert to the CrowdSec Console, you need to enable the feature on the CrowdSec Local API server:
 
 ```bash
-sudo cscli lapi context add --key target_fqdn --value evt.Meta.target_fqdn
-sudo cscli lapi context add --key user_agent --value evt.Parsed.http_user_agent
+$ sudo cscli console enable context
+INFO[12-12-2022 08:21:29 PM] context set to true
+INFO[12-12-2022 08:21:29 PM] [context] have been enabled
+INFO[12-12-2022 08:21:29 PM] Run 'sudo systemctl reload crowdsec' for the new configuration to be effective.
 ```
 
-It is not mandatory to specify the key. If you don't specify it, it will be guessed from the value field.
-For example, running this command:
+You can view the current status of your console options with:
 
 ```bash
-sudo cscli lapi context add --value evt.Meta.target_fqdn
+sudo cscli console status
+╭────────────────────┬───────────┬───────────────────────────────────────────────────╮
+│ Option Name        │ Activated │ Description                                       │
+├────────────────────┼───────────┼───────────────────────────────────────────────────┤
+│ custom             │ ✅        │ Send alerts from custom scenarios to the console  │
+│ manual             │ ❌        │ Send manual decisions to the console              │
+│ tainted            │ ✅        │ Send alerts from tainted scenarios to the console │
+│ context            │ ✅        │ Send context with alerts to the console           │
+│ console_management │ ❌        │ Receive decisions from console                    │
+╰────────────────────┴───────────┴───────────────────────────────────────────────────╯
 ```
-
-Will add the context with the key `target_fqdn`.
 
 ## Vizualise alert context
 
@@ -46,8 +64,8 @@ $ sudo cscli alerts inspect 7
  - Reason     : crowdsecurity/http-bad-user-agent
  - Events Count : 2
  - Scope:Value: Ip:127.0.0.1
- - Country    : 
- - AS         : 
+ - Country    :
+ - AS         :
  - Begin      : 2022-12-12 18:46:43.339960525 +0000 UTC
  - End        : 2022-12-12 18:46:43.341210351 +0000 UTC
  - Active Decisions  :
@@ -69,27 +87,7 @@ $ sudo cscli alerts inspect 7
 
 And we can see that the `target_fqdn` and the `user_agent` are now displayed in the context of the alert.
 
-
-## Delete a context
-
-It is possible to delete a context by its key:
-```bash
-sudo cscli lapi context  delete --key user_agent       
-INFO[12-12-2022 07:49:01 PM] key 'user_agent' has been removed            
-INFO[12-12-2022 07:49:01 PM] /etc/crowdsec/console/context.yaml file saved
-```
-
-
-Or it is possible to delete a context by its value:
-
-```bash
-sudo cscli lapi context delete --value evt.Meta.target_fqdn
-INFO[12-12-2022 07:48:38 PM] value 'evt.Meta.target_fqdn' has been removed from key 'target_fqdn' 
-INFO[12-12-2022 07:48:38 PM] /etc/crowdsec/console/context.yaml file saved 
-```
-
 ## Detect possible values for context
-
 
 It is possible to detect all the possible fields that a given parser can output (or all the installed parsers with `--all` flag):
 
@@ -132,14 +130,28 @@ crowdsecurity/nginx-logs :
   - evt.StrTime
 ```
 
-## Send alert context to CrowdSec Console
+## Add manual context to alerts
 
+> This command has to be run on the CrowdSec Engine
 
-To send the context with the alert to the CrowdSec Console, you need to enable the feature on the CrowdSec Local API server:
+You can choose the fields that you want to add to the context of your alerts with `cscli`:
 
 ```bash
-$ sudo cscli console enable context       
-INFO[12-12-2022 08:21:29 PM] context set to true                          
-INFO[12-12-2022 08:21:29 PM] [context] have been enabled                  
-INFO[12-12-2022 08:21:29 PM] Run 'sudo systemctl reload crowdsec' for the new configuration to be effective. 
+sudo cscli lapi context add --key target_fqdn --value evt.Meta.target_fqdn
+sudo cscli lapi context add --key user_agent --value evt.Parsed.http_user_agent
 ```
+
+It is not mandatory to specify the key. If you don't specify it, it will be guessed from the value field.
+For example, running this command:
+
+```bash
+sudo cscli lapi context add --value evt.Meta.target_fqdn
+```
+
+Will add the context with the key `target_fqdn`.
+
+## Delete a context
+
+It is not possible to delete the context added manually or in a context item with `cscli`.
+
+The context added manually will be stored in `/etc/crowdsec/console/context.yaml`, so if you want to remove a context added manually, you can edit directly this configuration file.

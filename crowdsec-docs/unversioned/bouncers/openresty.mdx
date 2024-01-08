@@ -154,6 +154,15 @@ SECRET_KEY=
 SITE_KEY=
 CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
 CAPTCHA_EXPIRATION=3600
+
+## Application Security Component Configuration
+APPSEC_URL=
+APPSEC_FAILURE_ACTION=passthrough  # default
+APPSEC_CONNECT_TIMEOUT=100         # default
+APPSEC_SEND_TIMEOUT=100            # default
+APPSEC_PROCESS_TIMEOUT=1000        # default
+ALWAYS_SEND_TO_APPSEC=false        # default
+SSL_VERIFY=true                    # default
 ```
 
 ### OpenResty Configuration
@@ -201,6 +210,26 @@ You can also change this with a valid one :
   - /etc/pki/tls/cacert.pem (OpenELEC)
   - /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem (CentOS/RHEL 7)
   - /etc/ssl/cert.pem (OpenBSD, Alpine)
+```
+
+
+### Application Security Component Configuration
+
+To setup the Application Security Component you first need to install it in your CrowdSec Security Engine.
+
+On the remediation component side, you just need to configure the following option in the remediation component file:
+
+```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
+# Mandatory
+APPSEC_URL=http://127.0.0.1:7422   # URL of the AppSec Component
+
+# Optional
+APPSEC_FAILURE_ACTION=passthrough  # default
+APPSEC_CONNECT_TIMEOUT=100         # default
+APPSEC_SEND_TIMEOUT=100            # default
+APPSEC_PROCESS_TIMEOUT=1000        # default
+ALWAYS_SEND_TO_APPSEC=false        # default
+SSL_VERIFY=true                    # default
 ```
 
 
@@ -437,5 +466,73 @@ By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/cap
 CAPTCHA_EXPIRATION=3600
 ```
 
-
 The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IPs address will get a captcha again.
+
+
+### `APPSEC_URL`
+
+> URL of the Application Security Component
+
+```bash
+APPSEC_URL=http://127.0.0.1:7422
+```
+
+### `APPSEC_FAILURE_ACTION`
+
+> passthrough|deny
+
+```bash
+APPSEC_FAILURE_ACTION=passthrough  # default
+```
+
+Behavior when the AppSec Component return a 500. Can let the request passthrough or deny it.
+
+### `ALWAYS_SEND_TO_APPSEC`
+
+> true|false
+
+```bash
+ALWAYS_SEND_TO_APPSEC=false  # default
+```
+
+Send the request to the AppSec Component even if there is a decision for the IP.
+
+### `SSL_VERIFY`
+
+> true|false
+
+```bash
+SSL_VERIFY=false  # default
+```
+
+Verify the AppSec Component SSL certificate validity.
+
+
+### `APPSEC_CONNECT_TIMEOUT`
+> In milliseconds
+
+```bash
+APPSEC_CONNECT_TIMEOUT=100  # default
+```
+
+The timeout of the connection between the remediation component and AppSec Component.
+
+
+### `APPSEC_SEND_TIMEOUT`
+> In milliseconds
+
+```bash
+APPSEC_SEND_TIMEOUT=100  # default
+```
+
+The timeout to send data from the remediation component to the AppSec Component.
+
+
+### `APPSEC_PROCESS_TIMEOUT`
+> In milliseconds
+
+```bash
+APPSEC_PROCESS_TIMEOUT=500  # default
+```
+
+The timeout to process the request from the remediation component to the AppSec Component.
