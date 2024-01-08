@@ -142,7 +142,7 @@ html[data-theme="dark"] .header-console-link:before {
   }
 }
 
-.content_node_modules-\@docusaurus-theme-classic-lib-theme-AnnouncementBar-Content-styles-module {
-  font-size: 100% !important;
-  padding: 20px 0 !important;
+/* Announcement Bar */
+div[class^='announcementBar'] > div[class^='content'] {
+  font-size: 100%;
 }
