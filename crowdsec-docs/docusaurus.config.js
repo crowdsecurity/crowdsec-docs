@@ -64,6 +64,13 @@ module.exports = {
     }
   ],
   themeConfig: {
+    announcementBar: {
+      id: 'banner_docs',
+      content: '<a target="_blank" href="https://www.youtube.com/watch?v=4W46yUpsKkU">Getting started with the CrowdSec AppSec Component! Live January 18th 5PM CET</a>',
+      backgroundColor: '#f7a718',
+      textColor: '#131132',
+      isCloseable: true,
+    },
     algolia: {
       appId: 'PWTZ94KULF',
       apiKey: '31673122672f1eb819e16c87468e53b4',
