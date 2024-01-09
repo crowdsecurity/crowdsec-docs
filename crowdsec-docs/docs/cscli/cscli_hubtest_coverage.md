@@ -13,6 +13,7 @@ cscli hubtest coverage [flags]
 ### Options
 
 ```
+      --appsec      Show only appsec coverage
   -h, --help        help for coverage
       --parsers     Show only parsers coverage
       --percent     Show only percentages of coverage

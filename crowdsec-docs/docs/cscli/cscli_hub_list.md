@@ -4,7 +4,7 @@ title: cscli hub list
 ---
 ## cscli hub list
 
-List installed configs
+List all installed configurations
 
 ```
 cscli hub list [-a] [flags]
@@ -20,7 +20,6 @@ cscli hub list [-a] [flags]
 ### Options inherited from parent commands
 
 ```
-  -b, --branch string   Use given branch from hub
       --color string    Output color: yes, no, auto (default "auto")
   -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
       --debug           Set logging to debug
@@ -33,5 +32,5 @@ cscli hub list [-a] [flags]
 
 ### SEE ALSO
 
-* [cscli hub](/cscli/cscli_hub.md)	 - Manage Hub
+* [cscli hub](/cscli/cscli_hub.md)	 - Manage hub index
 

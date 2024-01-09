@@ -48,58 +48,6 @@
     },
     {
       "type": "category",
-      "label": "User Guides",
-      "items": [
-        {
-          "type": "doc",
-          "id": "user_guides/hub_mgmt"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/decisions_mgmt"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/bouncers_configuration"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/machines_mgmt"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/lapi_mgmt"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/building"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/replay_mode"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/cscli_explain"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/cscli_macos"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/multiserver_setup"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/consuming_fastly_logs"
-        }
-      ],
-      "collapsible": true,
-      "collapsed": true
-    },
-    {
-      "type": "category",
       "label": "Data Sources",
       "items": [
         {

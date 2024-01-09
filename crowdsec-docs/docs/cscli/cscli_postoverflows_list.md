@@ -4,21 +4,24 @@ title: cscli postoverflows list
 ---
 ## cscli postoverflows list
 
-List all postoverflows or given one
+List postoverflow(s)
 
 ### Synopsis
 
-List all postoverflows or given one
+List of installed/available/specified postoverflows
 
 ```
-cscli postoverflows list [config] [flags]
+cscli postoverflows list [item... | -a] [flags]
 ```
 
 ### Examples
 
 ```
 cscli postoverflows list
-cscli postoverflows list crowdsecurity/xxx
+cscli postoverflows list -a
+cscli postoverflows list crowdsecurity/cdn-whitelist crowdsecurity/rdns
+
+List only enabled postoverflows unless "-a" or names are specified.
 ```
 
 ### Options
@@ -43,5 +46,5 @@ cscli postoverflows list crowdsecurity/xxx
 
 ### SEE ALSO
 
-* [cscli postoverflows](/cscli/cscli_postoverflows.md)	 - Install/Remove/Upgrade/Inspect postoverflow(s) from hub
+* [cscli postoverflows](/cscli/cscli_postoverflows.md)	 - Manage hub postoverflows
 

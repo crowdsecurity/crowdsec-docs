@@ -8,23 +8,23 @@ Remove given parser(s)
 
 ### Synopsis
 
-Remove given parse(s) from hub
+Remove one or more parsers
 
 ```
-cscli parsers remove [config] [flags]
+cscli parsers remove [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli parsers remove crowdsec/xxx crowdsec/xyz
+cscli parsers remove crowdsecurity/caddy-logs crowdsecurity/sshd-logs
 ```
 
 ### Options
 
 ```
-      --all     Delete all the parsers
-      --force   Force remove : Remove tainted and outdated files
+      --all     Remove all the parsers
+      --force   Force remove: remove tainted and outdated files
   -h, --help    help for remove
       --purge   Delete source file too
 ```
@@ -44,5 +44,5 @@ cscli parsers remove crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli parsers](/cscli/cscli_parsers.md)	 - Install/Remove/Upgrade/Inspect parser(s) from hub
+* [cscli parsers](/cscli/cscli_parsers.md)	 - Manage hub parsers
 

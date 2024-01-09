@@ -20,6 +20,7 @@ cscli hubtest eval [flags]
 ### Options inherited from parent commands
 
 ```
+      --appsec            Command relates to appsec tests
       --color string      Output color: yes, no, auto (default "auto")
   -c, --config string     path to crowdsec config file (default "/etc/crowdsec/config.yaml")
       --crowdsec string   Path to crowdsec (default "crowdsec")

@@ -4,26 +4,29 @@ title: cscli scenarios inspect
 ---
 ## cscli scenarios inspect
 
-Inspect given scenario
+Inspect given scenario(s)
 
 ### Synopsis
 
-Inspect given scenario
+Inspect the state of one or more scenarios
 
 ```
-cscli scenarios inspect [config] [flags]
+cscli scenarios inspect [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli scenarios inspect crowdsec/xxx
+cscli scenarios inspect crowdsecurity/ssh-bf crowdsecurity/http-probing
 ```
 
 ### Options
 
 ```
+      --diff         Show diff with latest version (for tainted items)
   -h, --help         help for inspect
+      --no-metrics   Don't show metrics (when cscli.output=human)
+      --rev          Reverse diff output
   -u, --url string   Prometheus url
 ```
 
@@ -42,5 +45,5 @@ cscli scenarios inspect crowdsec/xxx
 
 ### SEE ALSO
 
-* [cscli scenarios](/cscli/cscli_scenarios.md)	 - Install/Remove/Upgrade/Inspect scenario(s) from hub
+* [cscli scenarios](/cscli/cscli_scenarios.md)	 - Manage hub scenarios
 

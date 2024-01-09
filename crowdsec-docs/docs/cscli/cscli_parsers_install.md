@@ -8,23 +8,23 @@ Install given parser(s)
 
 ### Synopsis
 
-Fetch and install given parser(s) from hub
+Fetch and install one or more parsers from the hub
 
 ```
-cscli parsers install [config] [flags]
+cscli parsers install [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli parsers install crowdsec/xxx crowdsec/xyz
+cscli parsers install crowdsecurity/caddy-logs crowdsecurity/sshd-logs
 ```
 
 ### Options
 
 ```
   -d, --download-only   Only download packages, don't enable
-      --force           Force install : Overwrite tainted and outdated files
+      --force           Force install: overwrite tainted and outdated files
   -h, --help            help for install
       --ignore          Ignore errors when installing multiple parsers
 ```
@@ -44,5 +44,5 @@ cscli parsers install crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli parsers](/cscli/cscli_parsers.md)	 - Install/Remove/Upgrade/Inspect parser(s) from hub
+* [cscli parsers](/cscli/cscli_parsers.md)	 - Manage hub parsers
 
