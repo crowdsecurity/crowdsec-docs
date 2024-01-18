@@ -17,6 +17,8 @@ To monitor a given stream within a group :
 
 ```yaml
 source: cloudwatch
+log_level: info
+
 group_name: /aws/my/group/
 stream_name: 'given_stream'
 aws_profile: monitoring
