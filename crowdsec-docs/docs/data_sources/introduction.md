@@ -12,7 +12,7 @@ DataSources are configured via the [acquisition](/configuration/crowdsec_configu
 
 Name | Type | Stream | One-shot
 -----|------|--------|----------
-[Appsec](/data_source/appsec.md) | expose HTTP service for the Appsec component | yes | no
+[Appsec](/data_sources/appsec.md) | expose HTTP service for the Appsec component | yes | no
 [AWS cloudwatch](/data_sources/cloudwatch.md) | single stream or log group | yes | yes
 [AWS kinesis](/data_sources/kinesis.md)| read logs from a kinesis strean | yes | no
 [AWS S3](/data_sources/s3.md)| read logs from a S3 bucket | yes | yes
