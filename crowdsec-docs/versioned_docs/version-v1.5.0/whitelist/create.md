@@ -80,7 +80,7 @@ Here, we don't get *any* logs, as the event have been discarded at parsing time.
 
 ## Create whitelist by expression
 
-Now, let's make something more tricky : let's whitelist a **specific** user-agent (of course, it's just an example, don't do this at home !). The [hub's taxonomy](https://hub.crowdsec.net/fields) will helps us to find which data is present in which field.
+Now, let's make something more tricky : let's whitelist a **specific** user-agent (of course, it's just an example, don't do this at home !). The [hub's taxonomy](https://doc.crowdsec.net/docs/cti_api/taxonomy) will helps us to find which data is present in which field.
 
 Let's change our whitelist to :
 
