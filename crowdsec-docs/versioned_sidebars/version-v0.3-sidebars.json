@@ -1,28 +1,22 @@
 {
-  "version-v0.3/tutorialSidebar": [
+  "tutorialSidebar": [
     {
       "type": "doc",
-      "id": "version-v0.3/intro"
+      "id": "intro"
     },
     {
       "type": "doc",
-      "id": "version-v0.3/contact_team"
+      "id": "contact_team"
     },
     {
       "type": "doc",
-      "id": "version-v0.3/migrating"
+      "id": "migrating"
     }
   ],
-  "version-v0.3/cscliSidebar": [
+  "cscliSidebar": [
     {
       "type": "doc",
-      "id": "version-v0.3/cscli/cscli"
-    }
-  ],
-  "version-v0.3/bouncersSidebar": [
-    {
-      "type": "doc",
-      "id": "version-v0.3/bouncers/intro"
+      "id": "cscli/cscli"
     }
   ]
 }

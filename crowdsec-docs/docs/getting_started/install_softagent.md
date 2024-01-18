@@ -71,7 +71,7 @@ Please get in touch with us to validate
 
 When sending signals the name of your scenario must follow this convention **^[a-z0-9_-]+\/[a-z0-9_-]+$** example **mysecmodule/login-bruteforce**
 
-For categories of behaviors, you can refer to our behaviors list in the [taxonomy ](https://doc.crowdsec.net/docs/next/cti_api/taxonomy/#behaviors)
+For categories of behaviors, you can refer to our behaviors list in the [taxonomy ](https://doc.crowdsec.net/docs/next/u/cti_api/taxonomy/#behaviors)
 
 (!) **Avoid spamming CAPI with signals:**
 

@@ -31,5 +31,5 @@ Manage interaction with Crowdsec console (https://app.crowdsec.net)
 * [cscli console disable](/cscli/cscli_console_disable.md)	 - Disable a console option
 * [cscli console enable](/cscli/cscli_console_enable.md)	 - Enable a console option
 * [cscli console enroll](/cscli/cscli_console_enroll.md)	 - Enroll this instance to https://app.crowdsec.net [requires local API]
-* [cscli console status](/cscli/cscli_console_status.md)	 - Shows status of one or all console options
+* [cscli console status](/cscli/cscli_console_status.md)	 - Shows status of the console options
 

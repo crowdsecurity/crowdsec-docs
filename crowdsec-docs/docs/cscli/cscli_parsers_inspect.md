@@ -4,26 +4,29 @@ title: cscli parsers inspect
 ---
 ## cscli parsers inspect
 
-Inspect given parser
+Inspect given parser(s)
 
 ### Synopsis
 
-Inspect given parser
+Inspect the state of one or more parsers
 
 ```
-cscli parsers inspect [name] [flags]
+cscli parsers inspect [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli parsers inspect crowdsec/xxx
+cscli parsers inspect crowdsecurity/httpd-logs crowdsecurity/sshd-logs
 ```
 
 ### Options
 
 ```
+      --diff         Show diff with latest version (for tainted items)
   -h, --help         help for inspect
+      --no-metrics   Don't show metrics (when cscli.output=human)
+      --rev          Reverse diff output
   -u, --url string   Prometheus url
 ```
 
@@ -42,5 +45,5 @@ cscli parsers inspect crowdsec/xxx
 
 ### SEE ALSO
 
-* [cscli parsers](/cscli/cscli_parsers.md)	 - Install/Remove/Upgrade/Inspect parser(s) from hub
+* [cscli parsers](/cscli/cscli_parsers.md)	 - Manage hub parsers
 

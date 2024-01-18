@@ -1,0 +1,246 @@
+---
+id: misp-feed-generator
+title: MISP Feed Generator
+sidebar_position: 7
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+<img src={useBaseUrl('/img/bouncer/misp_feed_generator/logo.png')} alt="CrowdSec" title="CrowdSec" />
+</p>
+
+
+<p align="center">
+<p align="center">
+<img src="https://img.shields.io/badge/build-pass-green"></img>
+<img src="https://img.shields.io/badge/tests-pass-green"></img>
+</p>
+<p align="center">
+&#x1F4DA; <a href="#installation/">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+</p>
+
+
+This bouncer generates MISP Feed from CrowdSec decisions. It exposes this Feed over HTTP/S.
+This can be used to feed CrowdSec decisions to MISP using the "Feeds" functionality of MISP.
+
+## Quick Start
+
+### Installation using pip
+
+Make sure you've Python 3.6+ installed. Using virtualenv is recommended.
+Run the following command to install the feed generator.
+
+```bash
+pip install crowdsec-misp-feed-generator
+```
+
+### Installation using docker:
+
+Refer to docker [hub docs](https://hub.docker.com/r/crowdsecurity/misp-feed-generator)
+
+### Configuration
+
+Run the following command to generate the base configuration file:
+
+```bash
+crowdsec-misp-feed-generator -g > crowdsec-misp-feed-generator.yaml
+```
+
+This will generate a configuration file named `crowdsec-misp-feed-generator.yaml` in the current directory.
+
+You need to edit this file to configure the feed generator. Make sure you give the correct LAPI key and URL.
+You can generate a LAPI key using the following command on the machine with CrowdSec installed.
+
+```bash
+cscli bouncers add crowdsec-misp-feed-generator
+```
+
+Please refer to [configuration reference section](#configuration-reference) for more details on the configuration options.
+
+### Running the feed generator
+
+After configuring the feed generator, you can run it using the following command:
+
+```bash
+crowdsec-misp-feed-generator -c crowdsec-misp-feed-generator.yaml
+```
+
+This will start the feed generator and expose the feed over HTTP/S, on the configured port and address.
+
+### Setting MISP to use the feed
+
+You can now configure MISP to use this feed. To do this:
+
+1. Navigate to the "Feeds" tab in MISP. 
+
+![MISP Feeds](/img/bouncer/misp_feed_generator/misp_feed_opt.png)
+
+2. Click on the "Add Feed" button.
+
+![MISP Add Feed](/img/bouncer/misp_feed_generator/misp_feed_add_menu.png)
+
+Fill the form with appropriate details. Don't forget to set the authentication if you've enabled it in the feed generator configuration.
+
+3. That's it! You can now use the feed in MISP. You can test it by clicking on the "Fetch now" button in the actions column. Few events should be added to MISP.
+
+## Configuration Reference
+
+```yaml
+# CrowdSec Config
+crowdsec_lapi_url: http://localhost:8080/
+crowdsec_lapi_key: <your-lapi-key>
+crowdsec_update_frequency: 1m
+include_scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word, eg ["ssh", "http"]
+exclude_scenarios_containing: [] # ignore IPs banned for triggering scenarios containing either of provided word
+only_include_decisions_from: [] # only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+
+# MISP Config
+misp_feed_reset_frequency: 1w
+misp_event_analysis_level: 2
+misp_feed_orgc:
+  name: CrowdSec
+  uuid: 5f6e7b5a-6b1a-4c0e-8a3c-9b9c5a474e8c
+
+misp_feed_threat_level_id: 4
+misp_feed_published: false
+misp_feed_tags: []
+
+# Bouncer Config
+
+output_dir: ./crowdsec-misp-feed/
+
+# Bouncer Server Config
+listen_addr: 0.0.0.0
+listen_port: 2450
+tls:
+  enabled: false
+  cert_file: ""
+  key_file: ""
+
+basic_auth:
+  enabled: false
+  username: ""
+  password: ""
+
+# Log Config
+log_level: info # debug, info, warning, error
+log_mode: stdout # stdout, stderr, file
+```
+
+### `crowdsec_lapi_url`
+
+The URL of CrowdSec LAPI. It should be accessible from the bouncer.
+
+### `crowdsec_lapi_key`
+
+It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
+```bash
+
+sudo cscli -oraw bouncers add misp-feed-generator # -oraw flag can discarded for human friendly output.
+
+```
+
+### `crowdsec_update_frequency`
+
+The bouncer will poll the CrowdSec every `update_frequency` interval.
+
+Value can be in seconds (eg 30s), minutes (eg 5m), hours (eg 1h), days (eg 1d), weeks (eg 1w), months (eg 1M) or years (eg 1y).
+
+### `include_scenarios_containing`
+
+Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
+
+### `exclude_scenarios_containing`
+
+Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"]
+
+### `only_include_decisions_from`
+
+Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+
+### `misp_feed_reset_frequency`
+
+The bouncer will reset the feed every `misp_feed_reset_frequency` interval.
+
+Value can be in seconds (eg 30s), minutes (eg 5m), hours (eg 1h), days (eg 1d), weeks (eg 1w), months (eg 1M) or years (eg 1y).
+
+### `misp_event_analysis_level`
+
+The analysis level of the events generated. Refer to [MISP docs](https://github.com/MISP/misp-rfc/blob/243bec4f5b7c42f5c450c71b092032f431b56f25/misp-core-format/raw.md.txt#L216) for more details.
+
+
+### `misp_feed_orgc.name`
+
+The name of author organisation of the feed. Example value: "CrowdSec"
+
+### `misp_feed_orgc.uuid`
+
+The UUID of author organisation of the feed. Example value: "5f6e7b5a-6b1a-4c0e-8a3c-9b9c5a474e8c"
+
+### `misp_feed_threat_level_id`
+
+The threat level of the feed. Refer to [MISP docs](https://github.com/MISP/misp-rfc/blob/243bec4f5b7c42f5c450c71b092032f431b56f25/misp-core-format/raw.md.txt#L201). Example value: 4
+
+### `misp_feed_published`
+
+Whether the feed is published or not. Refer to [MISP docs](https://github.com/MISP/misp-rfc/blob/243bec4f5b7c42f5c450c71b092032f431b56f25/misp-core-format/raw.md.txt#L183). Example value: false
+
+### `misp_feed_tags`
+
+The tags to be added to the events generated by the feed. Refer to [MISP docs](https://github.com/MISP/misp-rfc/blob/243bec4f5b7c42f5c450c71b092032f431b56f25/misp-core-format/raw.md.txt#L1715).
+
+```bash title="Example Value"
+[{"exportable": true,"colour": "#ffffff","name": "tlp:white","id": "2" }]
+```
+
+output_dir: ./crowdsec-misp-feed/
+
+### `listen_addr`
+
+The address to listen on for serving the feed. Example value: "0.0.0.0"
+
+### `listen_port`
+
+The port to listen on for serving the feed. Example value: 2450
+
+### `tls.enabled`
+
+Whether to enable TLS for serving the feed. Example value: false
+
+### `tls.cert_file`
+
+The path to the certificate file. Example value: "/etc/ssl/certs/crowdsec-misp-feed-generator.crt"
+
+### `tls.key_file`
+
+The path to the key file. Example value: "/etc/ssl/private/crowdsec-misp-feed-generator.key"
+
+### `basic_auth.enabled`
+
+Whether to enable basic authentication for serving the feed. Example value: false
+
+### `basic_auth.username`
+
+Username for basic authentication. Example value: "crowdsec"
+
+### `basic_auth.password`
+
+Password for basic authentication. Example value: "myhardtohackpassword"
+
+### `log_level`
+
+The log level for the bouncer. Example value: "info"
+
+Valid values: "debug", "info", "warning", "error"
+
+### `log_mode`
+
+The log mode for the bouncer.
+
+Valid values: "stdout", "stderr", "file"

@@ -34,19 +34,27 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
     {label: 'Kubernetes', value: 'k8s'},
   ]}>
   <TabItem value="debian">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash</CodeBlock>
+    ```bash
+    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
+    ```
   </TabItem>
   
   <TabItem value="centos7">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash</CodeBlock>
+    ```bash
+    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
+    ```
   </TabItem>
 
   <TabItem value="centos8">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash</CodeBlock>
+    ```bash
+    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
+    ```
   </TabItem>
 
   <TabItem value="amz">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash</CodeBlock>
+    ```bash
+    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
+    ```
   </TabItem>
 
   <TabItem value="freebsd">
@@ -62,7 +70,9 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
   </TabItem>
 
   <TabItem value="k8s">
-    <CodeBlock className="language-bash">helm repo add crowdsec https://crowdsecurity.github.io/helm-charts && helm repo update</CodeBlock>
+    ```bash
+    helm repo add crowdsec https://crowdsecurity.github.io/helm-charts && helm repo update
+    ```
   </TabItem>
 
 </Tabs>
@@ -121,13 +131,13 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
 
 <!-- TBD : fix links -->
 
-You now have crowdsec running ! You can move forward and install a [bouncer](/docs/v1.0/bouncers/intro), or take a [tour](/docs/v1.0/getting_started/crowdsec_tour) of the software beforehand !
+You now have crowdsec running ! You can move forward and install a [bouncer](/u/bouncers/intro), or take a [tour](/docs/v1.0/getting_started/crowdsec_tour) of the software beforehand !
 
 
 :::caution
 
 Keep in mind that CrowdSec is only in charge of the "detection", and won't block anything on its own.
-You need to deploy a [bouncer](/docs/v1.0/bouncers/intro) to "apply" decisions.
+You need to deploy a [bouncer](/u/bouncers/intro) to "apply" decisions.
 
 :::
 

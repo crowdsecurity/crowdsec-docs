@@ -44,11 +44,11 @@ to our documentation to add parsers, scenarios and more.
 
 :::caution
 Keep in mind that the crowdsec package is only in charge of the "detection", and won't block anything on its own.
-You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
+You need to deploy a [bouncer](/u/bouncers/intro) to "apply" decisions.
 :::
 
 
-If all this sounds confusing, it might be a good moment to take a [tour](/getting_started/crowdsec_tour.md) of the software before continuing.
+If all this sounds confusing, it might be a good moment to take a [tour](/getting_started/crowdsec_tour.mdx) of the software before continuing.
 
 ## Installing the firewall remediation component
 
@@ -137,3 +137,9 @@ Start `hostid` and `hostid_save`:
 ```
 
 Then start again the CrowdSec' service  `service crowdsec start`.
+
+## Enrolling your instance
+
+The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/security-engines?enroll-engine=true).
+
+For the benefits, please visit the [Console section](/console/intro.md).

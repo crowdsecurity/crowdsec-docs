@@ -32,19 +32,27 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
     {label: 'Kubernetes', value: 'k8s'},
   ]}>
   <TabItem value="debian">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash</CodeBlock>
+    ```bash
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
+```
   </TabItem>
   
   <TabItem value="centos7">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash</CodeBlock>
+    ```bash
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
+```
   </TabItem>
 
   <TabItem value="centos8">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash</CodeBlock>
+    ```bash
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
+```
   </TabItem>
 
   <TabItem value="amz">
-    <CodeBlock className="language-bash">curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash</CodeBlock>
+    ```bash
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
+```
   </TabItem>
 
   <TabItem value="openwrt">
@@ -108,13 +116,13 @@ While `curl | sudo bash` can be convenient for some, [alternative installation m
 
 <!-- TBD : fix links -->
 
-You now have crowdsec running ! You can move forward and install a [bouncer](/bouncers/intro.md), or take a [tour](/getting_started/crowdsec_tour.md) of the software beforehand !
+You now have crowdsec running ! You can move forward and install a [bouncer](/u/bouncers/intro), or take a [tour](/getting_started/crowdsec_tour.md) of the software beforehand !
 
 
 :::caution
 
 Keep in mind that the crowdsec package is only in charge of the "detection", and won't block anything on its own.
-You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
+You need to deploy a [bouncer](/u/bouncers/intro) to "apply" decisions.
 
 :::
 

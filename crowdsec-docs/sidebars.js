@@ -29,11 +29,6 @@
             id: "intro",
         },
         {
-            type: "doc",
-            label: "Concepts",
-            id: "concepts",
-        },
-        {
             type: "category",
             label: "Getting Started",
             collapsed: false,
@@ -54,6 +49,7 @@
                         "getting_started/install_crowdsec",
                         "getting_started/install_crowdsec_freebsd",
                         "getting_started/install_crowdsec_opnsense",
+                        "getting_started/install_crowdsec_pfsense",
                         "getting_started/install_windows",
                         {
                             type: "link",
@@ -61,116 +57,39 @@
                             href: "https://artifacthub.io/packages/helm/crowdsec/crowdsec",
                         },
                         {
-                            type: "link",
-                            label: "Docker",
-                            href: "https://hub.docker.com/r/crowdsecurity/crowdsec",
+                            type: "category",
+                            label: "Container",
+                            items: [
+                                {
+                                    type: "link",
+                                    href: "https://hub.docker.com/r/crowdsecurity/crowdsec",
+                                    label: "Docker Hub",
+                                },
+                                {
+                                    type: "link",
+                                    href: "https://github.com/crowdsecurity/crowdsec/pkgs/container/crowdsec",
+                                    label: "GHCR",
+                                }
+                                ,
+                                {
+                                    type: "link",
+                                    href: "https://github.com/crowdsecurity/example-docker-compose",
+                                    label: "Examples",
+                                }
+                            ]
                         },
+                        "getting_started/install_source",
                     ],
                 },
                 {
-                    type: "category",
-                    label: "Remediation Components",
-                    link: {
-                        type: "doc",
-                        id: "bouncers/intro",
-                    },
-                    items: [
-                        {
-                            "type": "doc",
-                            "label": "AWS WAF",
-                            "id": "bouncers/aws_waf"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "BlockList Mirror",
-                            "id": "bouncers/blocklist-mirror"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "Cloudflare",
-                            "id": "bouncers/cloudflare"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "Cloudflare Workers",
-                            "id": "bouncers/cloudflare-workers"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "Custom",
-                            "id": "bouncers/custom"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "Fastly",
-                            "id": "bouncers/fastly"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "Firewall",
-                            "id": "bouncers/firewall"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "HAProxy",
-                            "id": "bouncers/haproxy"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "Ingress Nginx",
-                            "id": "bouncers/ingress-nginx"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "Magento 2",
-                            "id": "bouncers/magento"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "MISP Feed Generator",
-                            "id": "bouncers/misp-feed-generator"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "Nginx",
-                            "id": "bouncers/nginx"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "OpenResty",
-                            "id": "bouncers/openresty"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "PHP",
-                            "id": "bouncers/php"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "PHP Library",
-                            "id": "bouncers/php-lib"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "Windows Firewall",
-                            "id": "bouncers/windows_firewall"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "Wordpress",
-                            "id": "bouncers/wordpress"
-                        },
-                        {
-                            "type": "link",
-                            "label": "Third Party",
-                            "href": "https://hub.crowdsec.net/browse/#bouncers"
-                        },
-                        {
-                            "type": "doc",
-                            "label": "Contributing",
-                            "id": "contributing/contributing_bouncers"
-                        },
-                    ],
+                    type: 'link',
+                    label: 'Remediation',
+                    href: '/u/bouncers/intro',
+                },
+                {
+                    type: 'link',
+                    href: 'appsec/intro',
+                    label: 'AppSec',
                 },
                 {
                     type: "category",
@@ -178,9 +97,15 @@
                     items: [
                         {
                             type: "doc",
+                            label: "Python",
+                            id: "getting_started/install_pyagent",
+                        },
+                        {
+                            type: "doc",
                             label: "PHP",
                             id: "getting_started/install_softagent",
                         },
+
                     ],
                 },
                 "getting_started/crowdsec_tour",
@@ -188,22 +113,9 @@
             ],
         },
         {
-            type: "category",
-            label: "User Guides",
-            items: [
-                "user_guides/hub_mgmt",
-                "user_guides/decisions_mgmt",
-                "user_guides/bouncers_configuration",
-                "user_guides/machines_mgmt",
-                "user_guides/lapi_mgmt",
-                "user_guides/building",
-                "user_guides/replay_mode",
-                "user_guides/cscli_explain",
-                "user_guides/cscli_macos",
-                "user_guides/multiserver_setup",
-                "user_guides/consuming_fastly_logs",
-                "user_guides/alert_context",
-            ],
+            type: "doc",
+            label: "Concepts",
+            id: "concepts",
         },
         {
             type: "category",
@@ -213,6 +125,7 @@
                 id: "data_sources/intro",
             },
             items: [
+                "data_sources/appsec",
                 "data_sources/file",
                 "data_sources/journald",
                 "data_sources/cloudwatch",
@@ -328,6 +241,7 @@
                     ],
                 },
                 "notification_plugins/email",
+                "notification_plugins/sentinel",
                 "notification_plugins/slack",
                 "notification_plugins/splunk",
                 "notification_plugins/template_helpers",
@@ -393,15 +307,7 @@
                 },
             ],
         },
-        {
-            type: "category",
-            label: "Console Management",
-            link: {
-                type: "doc",
-                id: "console_management/intro",
-            },
-            items: ["console_management/decisions"],
-        },
+
         {
             type: "category",
             label: "Expr",
@@ -437,9 +343,24 @@
             ],
         },
         {
-            type: "doc",
+            type: "category",
             label: "Console",
-            id: "console",
+            link: {
+                type: "doc",
+                id: "console/intro",
+            },
+            items: [
+                'console/enrollment',
+                {
+                    type: "category",
+                    label: "Decision Management",
+                    link: {
+                        type: "doc",
+                        id: "console/decisions_intro",
+                    },
+                    items: ["console/decisions"],
+                },
+            ]
         },
         {
             type: "doc",
@@ -465,6 +386,36 @@
                 "cscli/cscli_alerts_flush",
                 "cscli/cscli_alerts_inspect",
                 "cscli/cscli_alerts_list",
+            ],
+        },
+        {
+            type: "category",
+            label: "cscli appsec-configs",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_appsec-configs",
+            },
+            items: [
+                "cscli/cscli_appsec-configs_inspect",
+                "cscli/cscli_appsec-configs_install",
+                "cscli/cscli_appsec-configs_list",
+                "cscli/cscli_appsec-configs_remove",
+                "cscli/cscli_appsec-configs_upgrade",
+            ],
+        },
+        {
+            type: "category",
+            label: "cscli appsec-rules",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_appsec-rules",
+            },
+            items: [
+                "cscli/cscli_appsec-rules_inspect",
+                "cscli/cscli_appsec-rules_install",
+                "cscli/cscli_appsec-rules_list",
+                "cscli/cscli_appsec-rules_remove",
+                "cscli/cscli_appsec-rules_upgrade",
             ],
         },
         {
@@ -540,6 +491,21 @@
         },
         {
             type: "category",
+            label: "cscli contexts",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_contexts",
+            },
+            items: [
+                "cscli/cscli_contexts_install",
+                "cscli/cscli_contexts_remove",
+                "cscli/cscli_contexts_upgrade",
+                "cscli/cscli_contexts_list",
+                "cscli/cscli_contexts_inspect",
+            ],
+        },
+        {
+            type: "category",
             label: "cscli dashboard",
             link: {
                 type: "doc",
@@ -578,6 +544,7 @@
                 "cscli/cscli_hub_list",
                 "cscli/cscli_hub_update",
                 "cscli/cscli_hub_upgrade",
+                "cscli/cscli_hub_types"
             ],
         },
         {
@@ -633,6 +600,19 @@
                 "cscli/cscli_notifications_inspect",
                 "cscli/cscli_notifications_list",
                 "cscli/cscli_notifications_reinject",
+                "cscli/cscli_notifications_test",
+            ],
+        },
+        {
+            type: "category",
+            label: "cscli papi",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_papi",
+            },
+            items: [
+                "cscli/cscli_papi_status",
+                "cscli/cscli_papi_sync",
             ],
         },
         {
@@ -726,55 +706,6 @@
             id: "cscli/cscli_version",
         },
     ],
-    ctiApiSidebar: [
-        {
-            type: "doc",
-            label: "Introduction",
-            id: "cti_api/intro",
-        },
-        {
-            type: "doc",
-            label: "Getting Started",
-            id: "cti_api/getting_started",
-        },
-        {
-            type: 'category',
-            label: 'Taxonomy',
-            items: [
-                "cti_api/taxonomy/intro",
-                "cti_api/taxonomy/cti_object",
-                "cti_api/taxonomy/scores",
-                "cti_api/taxonomy/scenarios",
-                "cti_api/taxonomy/classifications",
-                "cti_api/taxonomy/behaviors",
-                "cti_api/taxonomy/false_positives"
-            ]
-        },
-        {
-            type: "link",
-            label: "Swagger",
-            href: "https://crowdsecurity.github.io/cti-api/",
-        },
-        {
-            type: "category",
-            label: "Integrations",
-            items: [
-                "cti_api/integration_chrome",
-                "cti_api/integration_gigasheet",
-                "cti_api/integration_intelowl",
-                "cti_api/integration_maltego",
-                "cti_api/integration_misp",
-                "cti_api/integration_msticpy",
-                "cti_api/integration_opencti",
-                "cti_api/integration_paloalto_xsoar",
-                "cti_api/integration_qradar",
-                "cti_api/integration_sekoia_xdr",
-                "cti_api/integration_splunk_siem",
-                "cti_api/integration_splunk_soar",
-                "cti_api/integration_thehive",
-            ],
-        },
-    ],
     betaSidebar: [
         {
             type: "category",
@@ -823,4 +754,22 @@
             id: "preview/rollback",
         },
     ],
+    appSecSideBar : [
+        { type: "doc", id: "appsec/intro"},
+        { type: "doc", id: "appsec/quickstart"},
+        { type: "doc", id: "appsec/configuration"},
+        { 
+            type: "category",
+            label: "Rules & Scenarios",
+            items: [
+                { type: "doc", id: "appsec/rules_syntax"}, 
+                { type: "doc", id: "appsec/hooks"}, 
+                { type: "doc", id: "appsec/create_rules"}, 
+            ]
+        },
+        { type: "doc", id: "appsec/installation"},
+        { type: "doc", id: "appsec/protocol"},
+        { type: "doc", id: "appsec/benchmark"},
+        { type: "doc", id: "appsec/troubleshooting"},
+    ]
 };

@@ -4,21 +4,24 @@ title: cscli scenarios list
 ---
 ## cscli scenarios list
 
-List all scenario(s) or given one
+List scenario(s)
 
 ### Synopsis
 
-List all scenario(s) or given one
+List of installed/available/specified scenarios
 
 ```
-cscli scenarios list [config] [flags]
+cscli scenarios list [item... | -a] [flags]
 ```
 
 ### Examples
 
 ```
 cscli scenarios list
-cscli scenarios list crowdsecurity/xxx
+cscli scenarios list -a
+cscli scenarios list crowdsecurity/ssh-bf crowdsecurity/http-probing
+
+List only enabled scenarios unless "-a" or names are specified.
 ```
 
 ### Options
@@ -43,5 +46,5 @@ cscli scenarios list crowdsecurity/xxx
 
 ### SEE ALSO
 
-* [cscli scenarios](/cscli/cscli_scenarios.md)	 - Install/Remove/Upgrade/Inspect scenario(s) from hub
+* [cscli scenarios](/cscli/cscli_scenarios.md)	 - Manage hub scenarios
 

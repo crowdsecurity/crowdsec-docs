@@ -4,7 +4,7 @@ title: cscli hub upgrade
 ---
 ## cscli hub upgrade
 
-Upgrade all configs installed from hub
+Upgrade all configurations to their latest version
 
 ### Synopsis
 
@@ -19,14 +19,13 @@ cscli hub upgrade [flags]
 ### Options
 
 ```
-      --force   Force upgrade : Overwrite tainted and outdated files
+      --force   Force upgrade: overwrite tainted and outdated files
   -h, --help    help for upgrade
 ```
 
 ### Options inherited from parent commands
 
 ```
-  -b, --branch string   Use given branch from hub
       --color string    Output color: yes, no, auto (default "auto")
   -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
       --debug           Set logging to debug
@@ -39,5 +38,5 @@ cscli hub upgrade [flags]
 
 ### SEE ALSO
 
-* [cscli hub](/cscli/cscli_hub.md)	 - Manage Hub
+* [cscli hub](/cscli/cscli_hub.md)	 - Manage hub index
 

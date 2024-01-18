@@ -1,0 +1,543 @@
+---
+id: nginx
+title: Nginx
+sidebar_position: 1
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+<p align="center">
+  <img
+    src={useBaseUrl("/img/crowdsec_nginx.svg")}
+    alt="CrowdSec"
+    title="CrowdSec"
+    width="400"
+    height="300"
+  />
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/build-pass-green" />
+  <img src="https://img.shields.io/badge/tests-pass-green" />
+</p>
+<p align="center">
+  &#x1F4DA; <a href="#installation/">Documentation</a>
+  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+  &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+A lua bouncer for nginx.
+
+## How does it work ?
+
+This bouncer leverages nginx lua's API, namely `access_by_lua_block` to check the IP address against the local API.
+
+Supported features:
+
+- Live mode (query the local API for each request)
+- Stream mode (pull the local API for new/old decisions every X seconds)
+- Ban remediation (can ban an IP address by redirecting him or returning a custom HTML page)
+- Captcha remediation (can return a captcha)
+- Works with IPv4/IPv6
+- Support IP ranges (can apply a remediation on an IP range)
+- Application Security Component (forward request to CrowdSec Application Security Engine and block is necessary)
+
+At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
+
+## Installation
+
+### Dependencies
+
+Install the following packages:
+
+```bash
+sudo apt install nginx lua5.1 libnginx-mod-http-lua luarocks gettext-base lua-cjson
+```
+
+### Using packages
+
+First, [setup crowdsec repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories).
+
+<Tabs
+  defaultValue="nginx_debian"
+  values={[
+    { label: 'Debian/Ubuntu', value: 'nginx_debian' ,},
+  ]
+}>
+<TabItem value="nginx_debian">
+
+```bash
+sudo apt install crowdsec-nginx-bouncer
+```
+
+</TabItem>
+
+</Tabs>
+
+:::info
+In stream mode, the bouncer will launch an internal timer to pull the local API at the first request made to the server.
+:::
+
+### Manual installation
+
+:::warning
+CrowdSec NGINX Bouncer depends on `nginx lua5.1 libnginx-mod-http-lua luarocks gettext-base`.
+
+It has been tested only on Debian/Ubuntu based distributions.
+:::
+
+Download the latest release [here](https://github.com/crowdsecurity/cs-nginx-bouncer/releases)
+
+```bash
+tar xvzf crowdsec-nginx-bouncer.tgz
+cd crowdsec-nginx-bouncer-v*/
+./install.sh
+```
+
+Note: Don't run the script with `sudo` (the script already use `sudo` to install dependencies).
+
+If you are on a mono-machine setup, the `crowdsec-nginx-bouncer` install script will register directly to the local crowdsec, so you're good to go !
+
+:warning: the installation script will take care of dependencies for Debian/Ubuntu
+
+<details>
+  <summary>non-debian based dependencies</summary>
+
+- libnginx-mod-http-lua : nginx lua support
+- lua5.1: Lua
+- lua-cjson: JSON parser/encoder for Lua
+- luarocks : Lua package manager
+- gettext-base: for the installation script
+
+</details>
+
+## Upgrade
+
+### From package
+
+```bash
+sudo apt-get update
+sudo apt-get install crowdsec-nginx-bouncer
+```
+
+:::warning
+Upgrade from v0 to v1 introduce many changes. Pick up the maintainer configuration to avoid anything breaking. Configuration migration might not be trivial.
+:::
+
+### Manual Upgrade
+
+If you already have `crowdsec-nginx-bouncer` installed, please download the [latest release](https://github.com/crowdsecurity/cs-nginx-bouncer/releases) and run the following commands:
+
+```bash
+tar xzvf crowdsec-nginx-bouncer.tgz
+cd crowdsec-nginx-bouncer-v*/
+sudo ./upgrade.sh
+sudo systemctl restart nginx
+```
+
+## Configuration
+
+### Bouncer configuration
+
+```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
+API_URL=<CROWDSEC_LAPI_URL>
+API_KEY=<CROWDSEC_LAPI_KEY>
+# bounce for all type of remediation that the bouncer can receive from the local API
+BOUNCING_ON_TYPE=all
+# when the bouncer receive an unknown remediation, fallback to this remediation
+FALLBACK_REMEDIATION=ban
+MODE=stream
+REQUEST_TIMEOUT=1000
+# exclude the bouncing on those location
+EXCLUDE_LOCATION=
+# Cache expiration in live mode, in second
+CACHE_EXPIRATION=1
+# Update frequency in stream mode, in second
+UPDATE_FREQUENCY=10
+#those apply for "ban" action
+# /!\ REDIRECT_LOCATION and BAN_TEMPLATE_PATH/RET_CODE can't be used together. REDIRECT_LOCATION take priority over RET_CODE AND BAN_TEMPLATE_PATH
+BAN_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/ban.html
+REDIRECT_LOCATION=
+RET_CODE=
+#those apply for "captcha" action
+#valid providers are recaptcha, hcaptcha, turnstile
+CAPTCHA_PROVIDER=
+# default is recaptcha to ensure backwards compatibility
+# Captcha Secret Key
+SECRET_KEY=
+# Captcha Site key
+SITE_KEY=
+CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
+CAPTCHA_EXPIRATION=3600
+
+## Application Security Component Configuration
+APPSEC_URL=
+APPSEC_FAILURE_ACTION=passthrough  # default
+APPSEC_CONNECT_TIMEOUT=100         # default
+APPSEC_SEND_TIMEOUT=100            # default
+APPSEC_PROCESS_TIMEOUT=1000        # default
+ALWAYS_SEND_TO_APPSEC=false        # default
+SSL_VERIFY=true                    # default
+```
+
+### NGINX Configuration
+
+The bouncer NGINX configuration is located in `/etc/nginx/conf.d/crowdsec_nginx.conf` :
+
+```bash title="/etc/nginx/conf.d/crowdsec_nginx.conf"
+lua_package_path '/usr/lib/crowdsec/lua/?.lua;;';
+lua_shared_dict crowdsec_cache 50m;
+resolver 8.8.8.8 ipv6=off;
+lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+init_by_lua_block {
+        cs = require "crowdsec"
+        local ok, err = cs.init("/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf", "crowdsec-nginx-bouncer/v0.0.7")
+        if ok == nil then
+                ngx.log(ngx.ERR, "[Crowdsec] " .. err)
+                error()
+        end
+        ngx.log(ngx.ALERT, "[Crowdsec] Initialisation done")
+}
+
+access_by_lua_block {
+        local cs = require "crowdsec"
+        cs.Allow(ngx.var.remote_addr)
+}
+```
+
+The bouncer uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict) to share cache between all workers.
+
+If you want to increase the cache size you need to change this value `lua_shared_dict crowdsec_cache 50m;`.
+
+:warning: Do not rename the `crowdsec_cache` shared dict, else the bouncer will not work anymore.
+
+#### When using captcha remediation
+
+To make HTTP request in the bouncer, you need to configure a resolver and ssl certifcates. Here is a [our example](#resolver-and-certificates).
+
+To make secure HTTP request in the bouncer, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`).
+You can also change this with a valid one :
+
+```
+  - /etc/ssl/certs/ca-certificates.crt (Debian/Ubuntu/Gentoo)
+  - /etc/pki/tls/certs/ca-bundle.crt (Fedora/RHEL 6)
+  - /etc/ssl/ca-bundle.pem (OpenSUSE)
+  - /etc/pki/tls/cacert.pem (OpenELEC)
+  - /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem (CentOS/RHEL 7)
+  - /etc/ssl/cert.pem (OpenBSD, Alpine)
+```
+
+### Application Security Component Configuration
+
+To setup the Application Security Component you first need to install it in your CrowdSec Security Engine.
+
+On the remediation component side, you just need to configure the following option in the remediation component file:
+
+```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
+# Mandatory
+APPSEC_URL=http://127.0.0.1:7422   # URL of the AppSec Component
+
+# Optional
+APPSEC_FAILURE_ACTION=passthrough  # default
+APPSEC_CONNECT_TIMEOUT=100         # default
+APPSEC_SEND_TIMEOUT=100            # default
+APPSEC_PROCESS_TIMEOUT=1000        # default
+ALWAYS_SEND_TO_APPSEC=false        # default
+SSL_VERIFY=true                    # default
+```
+
+### Setup captcha
+
+> Currently, we have support for 3 providers: recaptcha, hcaptcha or turnstile
+
+If you want to use captcha with your Nginx Bouncer, you must provide a Site key and Secret key in your bouncer configuration. If you wish to use any other provider than recaptcha you must also provide a Captcha provider.
+
+([recaptcha documentation](https://developers.google.com/recaptcha/intro)).
+
+([tunstile documentation](https://developers.cloudflare.com/turnstile/)).
+
+([hcaptcha documentation](https://docs.hcaptcha.com/))
+
+Edit `etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf` and configure the following options:
+
+```bash
+CAPTCHA_PROVDER=
+SECRET_KEY=
+SITE_KEY=
+CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
+CAPTCHA_EXPIRATION=3600
+```
+
+Restart Nginx.
+
+You can add a decisions with a type `captcha` to check if it works correctly:
+
+```bash
+sudo cscli decisions add -i <IP_TO_TEST> -t captcha
+```
+
+## FAQ
+
+### Why aren't decisions applied instantly
+
+In stream mode, the bouncer will launch an internal timer to pull the local API at the first request. So the cache won't be refreshed until the first request hits the service.
+
+### Resolver and certificates
+
+In order to resolve the captcha provider you need to set a resolver and a SSL certificate in your nginx configuration.
+If you already have a resolver set in nginx configuration, you don't need to add another one.
+Here is a config example, but you can change values:
+
+```bash title="/etc/nginx/conf.d/crowdsec_nginx.conf"
+resolver 8.8.8.8 ipv6=off;
+lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+```
+
+And restart Nginx.
+
+## References
+
+### `API_KEY`
+
+```bash
+API_KEY=<API_KEY>
+```
+
+CrowdSec Local API key.
+
+Generated with [`sudo cscli bouncers add`](/docs/next/getting_started/install_crowdsec) command.
+
+### `API_URL`
+
+```bash
+API_URL=http://<ip>:<port>
+```
+
+CrowdSec local API URL.
+
+### `BOUNCING_ON_TYPE`
+
+```bash
+BOUNCING_ON_TYPE=all|ban|captcha
+```
+
+Type of remediation we want to bounce.
+If you choose `ban` only and receive a decision with `captcha` as remediation, the bouncer will skip the decision.
+
+### `FALLBACK_REMEDIATION`
+
+```bash
+FALLBACK_REMEDIATION=ban
+```
+
+The fallback remediation is applied if the bouncer receives a decision with an unknown remediation.
+
+### `MODE`
+
+```bash
+MODE=stream|live
+```
+
+The default mode is `live`.
+
+The bouncer mode:
+
+- stream: The bouncer will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
+
+Note: The timer that pull the local API will be triggered after the first request.
+
+- live: The bouncer will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
+
+### `REQUEST_TIMEOUT`
+
+```bash
+REQUEST_TIMEOUT=1000
+```
+
+Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or captcha provider (for the captcha verification).
+
+### `EXCLUDE_LOCATION`
+
+```bash
+EXCLUDE_LOCATION=/<path1>,/<path2>
+```
+
+The locations to exclude while bouncing. It is a list of location, separated by commas.
+
+:warning: It is not recommended to put `EXCLUDE_LOCATION=/`.
+
+### `CACHE_EXPIRATION`
+
+> This option is only for the `live` mode.
+
+```bash
+CACHE_EXPIRATION=1
+```
+
+The cache expiration, in second, for IPs that the bouncer store in cache in `live` mode.
+
+### `UPDATE_FREQUENCY`
+
+> This option is only for the `stream` mode.
+
+```bash
+UPDATE_FREQUENCY=10
+```
+
+The frequency of update, in second, to pull new/old IPs from the CrowdSec local API.
+
+### `REDIRECT_LOCATION`
+
+> This option is only for the `ban` remediation.
+
+```bash
+REDIRECT_LOCATION=/<path>
+```
+
+The location to redirect the user when there is a ban.
+
+If it is not set, the bouncer will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
+
+### `BAN_TEMPLATE_PATH`
+
+> This option is only for the `ban` remediation.
+
+```bash
+BAN_TEMPLATE_PATH=<path_to_html_template>
+```
+
+The path to a HTML page to return to IPs that trigger `ban` remediation.
+
+By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/ban.html`.
+
+### `RET_CODE`
+
+> This option is only for the `ban` remediation.
+
+```bash
+RET_CODE=403
+```
+
+The HTTP code to return for IPs that trigger a `ban` remediation.
+If nothing specified, it will return a 403.
+
+### `CAPTCHA_PROVIDER`
+
+> This option is only for the `captcha` remediation.
+
+```bash
+CAPTCHA_PROVIDER=<recaptcha | hcaptcha | turnstile>
+```
+
+### `SECRET_KEY`
+
+> This option is only for the `captcha` remediation.
+
+```bash
+SECRET_KEY=<captcha_secret_key>
+```
+
+The captcha secret key.
+
+### `SITE_KEY`
+
+> This option is only for the `captcha` remediation.
+
+```bash
+SITE_KEY=<captcha_site_key>
+```
+
+The captcha site key.
+
+### `CAPTCHA_TEMPLATE_PATH`
+
+> This option is only for the `captcha` remediation.
+
+```bash
+CAPTCHA_TEMPLATE_PATH=<path_to_html_template>
+```
+
+The path to a captcha HTML template.
+
+The bouncer will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
+
+By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/captcha.html`.
+
+### `CAPTCHA_EXPIRATION`
+
+> This option is only for the `captcha` remediation.
+
+```bash
+CAPTCHA_EXPIRATION=3600
+```
+
+The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IPs address will get a captcha again.
+
+### `APPSEC_URL`
+
+> URL of the Application Security Component
+
+```bash
+APPSEC_URL=http://127.0.0.1:7422
+```
+
+### `APPSEC_FAILURE_ACTION`
+
+> passthrough|deny
+
+```bash
+APPSEC_FAILURE_ACTION=passthrough  # default
+```
+
+Behavior when the AppSec Component return a 500. Can let the request passthrough or deny it.
+
+### `ALWAYS_SEND_TO_APPSEC`
+
+> true|false
+
+```bash
+ALWAYS_SEND_TO_APPSEC=false  # default
+```
+
+Send the request to the AppSec Component even if there is a decision for the IP.
+
+### `SSL_VERIFY`
+
+> true|false
+
+```bash
+SSL_VERIFY=false  # default
+```
+
+Verify the AppSec Component SSL certificate validity.
+
+
+### `APPSEC_CONNECT_TIMEOUT`
+> In milliseconds
+
+```bash
+APPSEC_CONNECT_TIMEOUT=100  # default
+```
+
+The timeout of the connection between the remediation component and AppSec Component.
+
+
+### `APPSEC_SEND_TIMEOUT`
+> In milliseconds
+
+```bash
+APPSEC_SEND_TIMEOUT=100  # default
+```
+
+The timeout to send data from the remediation component to the AppSec Component.
+
+
+### `APPSEC_PROCESS_TIMEOUT`
+> In milliseconds
+
+```bash
+APPSEC_PROCESS_TIMEOUT=500  # default
+```
+
+The timeout to process the request from the remediation component to the AppSec Component.

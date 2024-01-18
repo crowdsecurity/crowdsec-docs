@@ -8,23 +8,23 @@ Upgrade given postoverflow(s)
 
 ### Synopsis
 
-Fetch and Upgrade given postoverflow(s) from hub
+Fetch and upgrade one or more postoverflows from the hub
 
 ```
-cscli postoverflows upgrade [config] [flags]
+cscli postoverflows upgrade [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli postoverflows upgrade crowdsec/xxx crowdsec/xyz
+cscli postoverflows upgrade crowdsecurity/cdn-whitelist crowdsecurity/rdns
 ```
 
 ### Options
 
 ```
   -a, --all     Upgrade all the postoverflows
-      --force   Force upgrade : Overwrite tainted and outdated files
+      --force   Force upgrade: overwrite tainted and outdated files
   -h, --help    help for upgrade
 ```
 
@@ -43,5 +43,5 @@ cscli postoverflows upgrade crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli postoverflows](/cscli/cscli_postoverflows.md)	 - Install/Remove/Upgrade/Inspect postoverflow(s) from hub
+* [cscli postoverflows](/cscli/cscli_postoverflows.md)	 - Manage hub postoverflows
 

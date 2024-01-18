@@ -33,7 +33,7 @@ cscli lapi context [command] [flags]
 
 * [cscli lapi](/cscli/cscli_lapi.md)	 - Manage interaction with Local API (LAPI)
 * [cscli lapi context add](/cscli/cscli_lapi_context_add.md)	 - Add context to send with alerts. You must specify the output key with the expr value you want
-* [cscli lapi context delete](/cscli/cscli_lapi_context_delete.md)	 - Delete context to send with alerts
+* [cscli lapi context delete](/cscli/cscli_lapi_context_delete.md)	 - 
 * [cscli lapi context detect](/cscli/cscli_lapi_context_detect.md)	 - Detect available fields from the installed parsers
 * [cscli lapi context status](/cscli/cscli_lapi_context_status.md)	 - List context to send with alerts
 

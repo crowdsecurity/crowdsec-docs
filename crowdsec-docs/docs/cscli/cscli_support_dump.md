@@ -15,6 +15,7 @@ Dump the following informations:
 - Installed parsers list
 - Installed scenarios list
 - Installed postoverflows list
+- Installed context list
 - Bouncers list
 - Machines list
 - CAPI status

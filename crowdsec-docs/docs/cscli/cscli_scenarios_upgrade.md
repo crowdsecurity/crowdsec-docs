@@ -8,23 +8,23 @@ Upgrade given scenario(s)
 
 ### Synopsis
 
-Fetch and Upgrade given scenario(s) from hub
+Fetch and upgrade one or more scenarios from the hub
 
 ```
-cscli scenarios upgrade [config] [flags]
+cscli scenarios upgrade [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli scenarios upgrade crowdsec/xxx crowdsec/xyz
+cscli scenarios upgrade crowdsecurity/ssh-bf crowdsecurity/http-probing
 ```
 
 ### Options
 
 ```
   -a, --all     Upgrade all the scenarios
-      --force   Force upgrade : Overwrite tainted and outdated files
+      --force   Force upgrade: overwrite tainted and outdated files
   -h, --help    help for upgrade
 ```
 
@@ -43,5 +43,5 @@ cscli scenarios upgrade crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli scenarios](/cscli/cscli_scenarios.md)	 - Install/Remove/Upgrade/Inspect scenario(s) from hub
+* [cscli scenarios](/cscli/cscli_scenarios.md)	 - Manage hub scenarios
 

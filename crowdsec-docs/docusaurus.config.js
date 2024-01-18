@@ -1,8 +1,34 @@
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const { themes } = require('prism-react-renderer');
 
 const path = require('path')
-
+const { remediationSideBar, ctiApiSidebar, guidesSideBar} = require('./sidebarsUnversioned.js')
+const generateCurrentAndNextRedirects = (s) => ([{
+  from: `/docs/${s}`,
+  to: `/u/${s}`,
+  },{
+  from: `/docs/next/${s}`,
+  to: `/u/${s}`,
+}])
+const backportRedirect = ({ id, link, items }) => {
+  const arr = [];
+  if (id) {
+    arr.push(...generateCurrentAndNextRedirects(id))
+  }
+  if (link && link.id) {
+    arr.push(...generateCurrentAndNextRedirects(link.id))
+  }
+  if (items) {
+    for (const item of items) {
+      if (typeof item === 'string') {
+        arr.push(...generateCurrentAndNextRedirects(item))
+      }
+      if (typeof item === 'object') {
+        arr.push(...backportRedirect(item));
+      }
+    }
+  }
+  return arr;
+}
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'CrowdSec',
@@ -14,13 +40,26 @@ module.exports = {
   favicon: 'img/crowdsec_no_txt.png',
   organizationName: 'CrowdSec',
   projectName: 'crowdsec-docs',
-  //plugins: [path.resolve(__dirname, 'plugins', 'matomo')],
+  markdown: {
+    mdx1Compat: {
+      comments: true,
+      admonitions: true,
+      headingIds: true,
+    },
+  },
   stylesheets: [
     {
       href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
     }
   ],
   themeConfig: {
+    announcementBar: {
+      id: 'banner_docs',
+      content: '<a target="_blank" href="https://www.youtube.com/watch?v=4W46yUpsKkU">Getting started with the CrowdSec AppSec Component! Live January 18th 5PM CET</a>',
+      backgroundColor: '#f7a718',
+      textColor: '#131132',
+      isCloseable: true,
+    },
     algolia: {
       appId: 'PWTZ94KULF',
       apiKey: '31673122672f1eb819e16c87468e53b4',
@@ -41,39 +80,51 @@ module.exports = {
       items: [
         {
           type: 'docsVersionDropdown',
+          docsPluginId: 'default',
           position: 'left',
           dropdownActiveClassDisabled: true,
         },
         {
-          type: 'doc',
-          docId: 'intro',
-          position: 'left',
           label: 'CrowdSec',
-        },
-        {
-          type: 'doc',
-          docId: 'cscli/cscli',
           position: 'left',
-          label: 'Cscli',
+          items: [
+            {
+              type: 'doc',
+              docId: 'intro',
+              label: 'Security Engine',
+            },
+            {
+              type: 'docsVersion',
+              to: '/docs/next/appsec/intro',
+              label: 'Application Security Component',
+            },
+            {
+              type: 'doc',
+              docId: 'cscli/cscli',
+              label: 'Cscli',
+            },
+          ],
         },
         {
-          type: 'doc',
-          docId: 'cti_api/getting_started',
+          to: '/u/bouncers/intro',
+          position: 'left',
+          label: 'Remediation',
+        },
+        {
+          to: '/u/user_guides/intro',
+          position: 'left',
+          label: 'Guides',
+        },
+        {
+          to: '/u/cti_api/getting_started',
           position: 'left',
           label: 'CTI API',
         },
-        { to: 'https://crowdsec.net/blog/category/tutorial/', label: 'Tutorials', position: 'left' },
+        { to: `https://academy.crowdsec.net/courses?${process.env.NODE_ENV === 'production' ? 'utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs' : ''}`, label: 'Academy', position: 'left' },
         {
-          type: 'doc',
-          docId: 'faq',
+          to: '/u/troubleshooting/intro',
           position: 'left',
-          label: 'FAQ',
-        },
-        {
-          type: 'doc',
-          docId: 'troubleshooting',
-          position: 'left',
-          label: 'Troubleshooting',
+          label: 'FAQ/Troubleshooting',
         },
         {
           href: 'https://github.com/crowdsecurity/crowdsec',
@@ -105,19 +156,6 @@ module.exports = {
     footer: {
       style: 'dark',
       links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Doc Mini-Tutorial Articles',
-              to: '/blog',
-            },
-            {
-              label: 'Documentation',
-              to: '/docs/intro',
-            },
-          ],
-        },
         {
           title: 'Community',
           items: [
@@ -154,6 +192,10 @@ module.exports = {
               label: 'Blog',
               href: 'https://crowdsec.net/blog/',
             },
+            {
+              label: 'Tutorial',
+              href: 'https://crowdsec.net/blog/category/tutorial/',
+            },
 
           ],
         },
@@ -161,8 +203,9 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} CrowdSec`,
     },
     prism: {
-      theme: lightCodeTheme,
-      darkTheme: darkCodeTheme,
+      theme: themes.github,
+      darkTheme: themes.dracula,
+      additionalLanguages: ['bash', 'yaml', 'json'],
     },
   },
   presets: [
@@ -184,6 +227,42 @@ module.exports = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
+      },
+    ],
+  ],
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'unversioned',
+        path: 'unversioned',
+        routeBasePath: 'u',
+        sidebarPath: require.resolve('./sidebarsUnversioned.js'),
+      },
+    ],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          // Redirect current and next routes to unversioned to avoid 404 on articles and app.crowdsec.net
+          ...[...remediationSideBar,...ctiApiSidebar, ...guidesSideBar].flatMap(backportRedirect),
+          {
+            from: '/docs/troubleshooting',
+            to: '/u/troubleshooting/intro',
+          },
+          {
+            from: '/docs/next/troubleshooting',
+            to: '/u/troubleshooting/intro',
+          },
+          {
+            from: '/docs/faq',
+            to: '/u/troubleshooting/intro',
+          },
+          {
+            from: '/docs/next/faq',
+            to: '/u/troubleshooting/intro',
+          },
+        ],
       },
     ],
   ],

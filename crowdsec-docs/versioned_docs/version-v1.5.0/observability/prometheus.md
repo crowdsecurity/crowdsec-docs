@@ -4,6 +4,8 @@ title: Prometheus
 sidebar_position: 4
 ---
 
+import AcademyPromo from '@site/src/components/AcademyPromo';
+
 CrowdSec can expose a [prometheus](https://github.com/prometheus/client_golang) endpoint for collection (on `http://127.0.0.1:6060/metrics` by default). You can edit the listen_addr in [config.yaml](/configuration/crowdsec_configuration.md#prometheus) to allow an external Prometheus to scrape the metrics.
 
 The goal of this endpoint, besides the usual resources consumption monitoring, aims at offering a view of CrowdSec "applicative" behavior :
@@ -106,7 +108,13 @@ Acquisition metrics are split by datasource. The following metrics are available
 
  - `cs_info` : Information about CrowdSec (software version)
 
-
+<AcademyPromo
+  image="monitoring_crowdsec.svg"
+  description="Watch a short series of videos on how to observe and monitor CrowdSec."
+  title="More ways to learn"
+  course="monitoring-crowdsec"
+  utm="?utm_source=docs&utm_medium=banner&utm_campaign=prometheus-page&utm_id=academydocs"
+/>
 
 ### Exploitation with prometheus server & grafana
 

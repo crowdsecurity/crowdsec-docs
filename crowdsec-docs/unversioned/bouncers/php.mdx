@@ -1,0 +1,537 @@
+---
+id: php
+title: PHP Standalone
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+<img src={useBaseUrl('/img/crowdsec_bouncer_php.png')} alt="CrowdSec" title="CrowdSec" width="300" height="300" />
+</p>
+
+<p align="center">
+&#x1F4DA; <a href="#installation/">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+
+## Overview
+
+This bouncer allows you to protect your PHP application from IPs that have been detected by CrowdSec. Depending on
+the decision taken by CrowdSec, user will either get denied (403) or have to fill a captcha (401).
+
+It uses the [PHP `auto_prepend_file` mechanism](https://www.php.net/manual/en/ini.core.php#ini.auto-prepend-file) and 
+the [Crowdsec php bouncer library](https://github.com/crowdsecurity/php-cs-bouncer) to offer bouncer/IPS capability directly in your PHP application.
+
+It supports "ban" and "captcha" remediations, and all decisions of type Ip, Range or Country (geolocation).
+
+
+### Prerequisites
+
+- This is a PHP library, so you must have a working PHP (>= 7.2.5) installation.
+- Requires PHP extensions : `ext-curl`, `ext-gd`, `ext-json`, `ext-mbstring`.
+- Code sources are dealt with via `composer` and `git`.
+- Have CrowdSec on the same machine, or at least be able to reach LAPI.
+
+
+## Installation
+
+### Preparation
+
+#### Install composer
+
+Please follow [this documentation](https://getcomposer.org/download/) to install composer.
+
+#### Install GIT
+
+Please follow [this documentation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) to install GIT.
+
+#### Install CrowdSec
+
+To be able to use this bouncer, the first step is to install [CrowdSec v1](https://doc.crowdsec.net/docs/getting_started/install_crowdsec/). CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a bouncer to "apply" decisions.
+
+Please note that first and foremost a CrowdSec agent must be installed on a server that is accessible by this bouncer.
+
+### Server and bouncer setup
+
+Once you set up your server as below, every browser access to a PHP script will be bounced by the standalone bouncer.
+
+You will have to :
+
+- retrieve sources of the bouncer in some `/path/to/the/crowdsec-standalone-bouncer` folder
+- give the correct permission for the folder that contains the bouncer
+- copy the `scripts/settings.php.dist` file to a `scripts/settings.php` file and edit it.
+- set an `auto_prepend_file` directive in your PHP setup.
+- Optionally, if you want to use the standalone bouncer in stream mode, you will have to set a cron task to refresh
+  cache periodically.
+
+#### Bouncer sources copy
+
+- Create a folder that will contain the project sources:
+
+```bash
+sudo mkdir -p /var/www/crowdsec-standalone-bouncer
+```
+
+We use here `/var/www/crowdsec-standalone-bouncer` but you can choose the path that suits your needs.
+
+- Change permission to allow composer to be run in this folder. As you should run composer with your user, this
+  can be done with:
+
+```bash
+sudo chown -R $(whoami):$(whoami) /var/www/crowdsec-standalone-bouncer
+```
+
+- Retrieve the last version of the bouncer:
+
+```bash
+composer create-project crowdsec/standalone-bouncer /var/www/crowdsec-standalone-bouncer --keep-vcs
+```
+
+Note that we have to keep the vcs data as we will use it to update the bouncer when a new version is available.
+
+#### Files permission
+
+The owner of the `/var/www/crowdsec-standalone-bouncer` folder should be your web-server owner (e.g. `www-data`) and the group should have the write permission on this folder.
+
+You can achieve it by running commands like:
+
+```bash
+sudo chown -R www-data /var/www/crowdsec-standalone-bouncer
+sudo chmod g+w /var/www/crowdsec-standalone-bouncer
+```
+
+#### Settings file
+
+Please copy the `scripts/settings.php.dist` file to a `scripts/settings.php` file and fill the necessary settings in it
+(see [Configurations settings](#configurations) for more details).
+
+For a quick start, simply search for `YOUR_BOUNCER_API_KEY` in the `settings.php` file and set the bouncer key.
+To obtain a bouncer key, you can run the `cscli` bouncer creation command:
+
+```
+sudo cscli bouncers add standalone-bouncer
+```
+
+#### `auto_prepend_file` directive
+
+We will now describe how to set an `auto_prepend_file` directive in order to call the `scripts/bounce.php` for each php access.
+
+Adding an `auto_prepend_file` directive can be done in different ways:
+
+###### `.ini` file
+
+You should add this line to a `.ini` file :
+
+    auto_prepend_file = /var/www/crowdsec-standalone-bouncer/scripts/bounce.php
+
+###### Nginx
+
+If you are using Nginx, you should modify your Nginx configuration file by adding a `fastcgi_param` directive. The php block should look like below:
+
+```
+location ~ \.php$ {
+    ...
+    ...
+    ...
+    fastcgi_param PHP_VALUE "auto_prepend_file=/var/www/crowdsec-standalone-bouncer/scripts/bounce.php";
+}
+```
+
+###### Apache
+
+If you are using Apache, you should add this line to your `.htaccess` file:
+
+    php_value auto_prepend_file "/var/www/crowdsec-standalone-bouncer/scripts/bounce.php"
+
+or modify your `Virtual Host` accordingly:
+
+```
+<VirtualHost ...>
+    ...
+    ...
+    php_value auto_prepend_file "/var/www/crowdsec-standalone-bouncer/scripts/bounce.php"
+    
+</VirtualHost>
+```
+
+#### Stream mode cron task
+
+To use the stream mode, you first have to set the `stream_mode` setting value to `true` in your `script/settings.php` file.
+
+Then, you could edit the web server user (e.g. `www-data`) crontab:
+
+```shell
+sudo -u www-data crontab -e
+```
+
+and add the following line
+
+```shell
+*/15 * * * * /usr/bin/php /var/www/crowdsec-standalone-bouncer/scripts/refresh-cache.php
+```
+
+In this example, cache is refreshed every 15 minutes, but you can modify the cron expression depending on your needs.
+
+#### Cache pruning cron task
+
+If you use the PHP file system as cache, you should prune the cache with a cron job:
+
+```shell
+sudo -u www-data crontab -e
+```
+
+and add the following line
+
+```shell
+0 0 * * * /usr/bin/php /var/www/crowdsec-standalone-bouncer/scripts/prune-cache.php
+```
+
+In this example, cache is pruned at midnight every day, but you can modify the cron expression depending on your needs.
+
+
+
+## Upgrade
+
+When a new release of the bouncer is available, you may want to update sources to the last version.
+
+### Before upgrading
+
+**Please look at the [CHANGELOG](https://github.com/crowdsecurity/cs-standalone-php-bouncer/blob/main/CHANGELOG.md) before upgrading in order to see the list of changes that could break your application.**
+
+To limit the risk of breaking your web application during upgrade, you can perform the following actions to disable bouncing:
+
+- Remove the `auto_prepend_file` directive that point to the `bounce.php` file  and restart your web server
+- Disable any scheduled cron task linked to bouncer feature
+
+Alternatively, but a little more risky, you could disable bouncing by editing the `scripts/settings.php` file and set the value `'bouncing_disabled'` for the `'bouncing_level'` parameter.
+
+Once the update is done, you can reactivate the bounce. You could look at the `/var/www/crowdsec-standalone-bouncer/scripts/.logs` to see if all is working as expected.
+
+Below are the steps to take to upgrade your current bouncer:
+
+### Retrieve the last tag
+
+As we kept the vcs data during installation (with the `--keep-vcs` flag), we can use git to get the last tagged sources:
+
+```bash
+cd /var/www/crowdsec-standalone-bouncer
+git fetch
+```
+
+If you get an error message about "detected dubious ownership", you can run
+
+```bash
+git config --global --add safe.directory /var/www/crowdsec-standalone-bouncer
+```
+
+You should see a list of tags (`vX.Y.Z` format )that have been published after your initial installation.
+
+### Checkout to last tag and update sources
+
+Once you have picked up the `vX.Y.Z` tag you want to try, you could switch to it and update composer dependencies:
+
+```bash
+git checkout vX.Y.Z && composer update
+```
+
+
+## Usage
+
+### Features
+
+- CrowdSec Local API Support
+  - Handle `ip`, `range` and `country` scoped decisions
+  - `Live mode` or `Stream mode`
+- Support IpV4 and Ipv6 (Ipv6 range decisions are yet only supported in `Live mode`)
+- Large PHP matrix compatibility: 7.2, 7.3, 7.4, 8.0, 8.1 and 8.2
+- Built-in support for the most known cache systems Redis, Memcached and PhpFiles
+  - Clear, prune and refresh the bouncer cache
+- Cap remediation level (ex: for sensitives websites: ban will be capped to captcha)
+
+### Ban and captcha walls
+
+When a user is suspected by CrowdSec to be malevolent, the bouncer would either display a captcha to resolve or
+simply a page notifying that access is denied. If the user is considered as a clean user, he/she will access the page
+as normal.
+
+By default, the ban wall is displayed as below:
+
+<img src={useBaseUrl('/img/bouncer/standalone-php/screenshots/front-ban.jpg')} alt="Ban wall" title="Ban wall" />
+
+By default, the captcha wall is displayed as below:
+
+<img src={useBaseUrl('/img/bouncer/standalone-php/screenshots/front-captcha.jpg')} alt="Captcha wall" title="Captcha wall" />
+
+Please note that it is possible to customize all the colors of these pages so that they integrate best with your design.
+
+On the other hand, all texts are also fully customizable. This will allow you, for example, to present translated pages in your users' language.
+
+### Configurations
+
+Here is the list of available settings that you could define in the `scripts/settings.php` file:
+
+#### Bouncer behavior
+
+- `bouncing_level`:  Select from `bouncing_disabled`, `normal_bouncing` or `flex_bouncing`. Choose if you want to apply CrowdSec directives (Normal bouncing) or be more permissive (Flex bouncing). With the `Flex mode`, it is impossible to accidentally block access to your site to people who don’t deserve it. This mode makes it possible to never ban an IP but only to offer a captcha, in the worst-case scenario.
+
+
+- `fallback_remediation`: Select from `bypass` (minimum remediation), `captcha` or `ban` (maximum remediation). Default to 'captcha'. Handle unknown remediations as.
+
+
+- `trust_ip_forward_array`:  If you use a CDN, a reverse proxy or a load balancer, set an array of IPs. For other IPs, the bouncer will not trust the X-Forwarded-For header.
+
+
+- `excluded_uris`: array of URIs that will not be bounced.
+
+
+- `stream_mode`: true to enable stream mode, false to enable the live mode. Default to false. By default, the `live mode` is enabled. The first time a user connects to your website, this mode means that the IP will be checked directly by the CrowdSec API. The rest of your user’s browsing will be even more transparent thanks to the fully customizable cache system. But you can also activate the `stream mode`. This mode allows you to constantly feed the bouncer with the malicious IP list via a background task (CRON), making it to be even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
+
+#### Local API Connection
+
+- `auth_type`: Select from `api_key` and `tls`. Choose if you want to use an API-KEY or a TLS (pki) authentification.
+  TLS authentication is only available if you use CrowdSec agent with a version superior to 1.4.0.
+
+
+- `api_key`: Key generated by the cscli (CrowdSec cli) command like `cscli bouncers add standlone-php-bouncer`.
+  Only required if you choose `api_key` as `auth_type`.
+
+
+- `tls_cert_path`: absolute path to the bouncer certificate (e.g. pem file).
+  Only required if you choose `tls` as `auth_type`.
+  **Make sure this path is not publicly accessible.** [See security note below](#security-note).
+
+
+- `tls_key_path`: Absolute path to the bouncer key (e.g. pem file).
+  Only required if you choose `tls` as `auth_type`.
+  **Make sure this path is not publicly accessible.** [See security note below](#security-note).
+
+
+- `tls_verify_peer`: This option determines whether request handler verifies the authenticity of the peer's certificate.
+  Only required if you choose `tls` as `auth_type`.
+  When negotiating a TLS or SSL connection, the server sends a certificate indicating its identity.
+  If `tls_verify_peer` is set to true, request handler verifies whether the certificate is authentic.
+  This trust is based on a chain of digital signatures,
+  rooted in certification authority (CA) certificates you supply using the `tls_ca_cert_path` setting below.
+
+
+- `tls_ca_cert_path`: Absolute path to the CA used to process peer verification.
+  Only required if you choose `tls` as `auth_type` and `tls_verify_peer` is set to true.
+  **Make sure this path is not publicly accessible.** [See security note below](#security-note).
+
+
+- `api_url`: Define the URL to your Local API server, default to `http://localhost:8080`.
+
+
+- `api_timeout`: In seconds. The timeout when calling Local API. Default to 120 sec. If set to a negative value,
+  timeout will be unlimited.
+
+
+- `use_curl`: By default, this lib call the REST Local API using `file_get_contents` method (`allow_url_fopen` is required).
+  You can set `use_curl` to `true` in order to use `cURL` request instead (`ext-curl` is in then required)
+
+#### Cache
+
+- `cache_system`: Select from `phpfs` (PHP file cache), `redis` or `memcached`.
+
+
+- `fs_cache_path`: Will be used only if you choose PHP file cache as `cache_system`.
+  **Make sure this path is not publicly accessible.** [See security note below](#security-note).
+
+
+- `redis_dsn`:   Will be used only if you choose Redis cache as `cache_system`.
+
+
+- `memcached_dsn`: Will be used only if you choose Memcached as `cache_system`.
+
+
+- `clean_ip_cache_duration`: Set the duration we keep in cache the fact that an IP is clean. In seconds. Defaults to 5.
+
+
+- `bad_ip_cache_duration`: Set the duration we keep in cache the fact that an IP is bad. In seconds. Defaults to 20.
+
+
+- `captcha_cache_duration`: Set the duration we keep in cache the captcha flow variables for an IP. In seconds.
+  Defaults to 86400.. In seconds. Defaults to 20.
+
+
+#### Geolocation
+
+- `geolocation`: Settings for geolocation remediation (i.e. country based remediation).
+
+  - `geolocation[enabled]`: true to enable remediation based on country. Default to false.
+
+  - `geolocation[type]`:  Geolocation system. Only 'maxmind' is available for the moment. Default to `maxmind`.
+
+  - `geolocation[cache_duration]`: This setting will be used to set the lifetime (in seconds) of a cached country
+    associated to an IP. The purpose is to avoid multiple call to the geolocation system (e.g. maxmind database). Default to 86400. Set 0 to disable caching.
+
+  - `geolocation[maxmind]`: MaxMind settings.
+
+  - `geolocation[maxmind][database_type]`: Select from `country` or `city`. Default to `country`. These are the two available MaxMind database types.
+
+  - `geolocation[maxmind][database_path]`: Absolute path to the MaxMind database (e.g. mmdb file)
+    **Make sure this path is not publicly accessible.** [See security note below](#security-note).
+
+
+#### Captcha and ban wall settings
+
+
+- `hide_mentions`: true to hide CrowdSec mentions on ban and captcha walls.
+
+
+- `custom_css`: Custom css directives for ban and captcha walls
+
+
+- `color`: Array of settings for ban and captcha walls colors.
+
+  - `color[text][primary]`
+
+  - `color[text][secondary]`
+
+  - `color[text][button]`
+
+  - `color[text][error_message]`
+
+  - `color[background][page]`
+
+  - `color[background][container]`
+
+  - `color[background][button]`
+
+  - `color[background][button_hover]`
+
+
+- `text`: Array of settings for ban and captcha walls texts.
+
+  - `text[captcha_wall][tab_title]`
+
+  - `text[captcha_wall][title]`
+
+  - `text[captcha_wall][subtitle]`
+
+  - `text[captcha_wall][refresh_image_link]`
+
+  - `text[captcha_wall][captcha_placeholder]`
+
+  - `text[captcha_wall][send_button]`
+
+  - `text[captcha_wall][error_message]`
+
+  - `text[captcha_wall][footer]`
+
+  - `text[ban_wall][tab_title]`
+
+  - `text[ban_wall][title]`
+
+  - `text[ban_wall][subtitle]`
+
+  - `text[ban_wall][footer]`
+
+
+#### Debug
+- `debug_mode`: `true` to enable verbose debug log. Default to `false`.
+
+
+- `disable_prod_log`: `true` to disable prod log. Default to `false`.
+
+
+- `log_directory_path`: Absolute path to store log files.
+  **Make sure this path is not publicly accessible.** [See security note below](#security-note).
+
+
+- `display_errors`: true to stop the process and display errors on browser if any.
+
+
+- `forced_test_ip`: Only for test or debug purpose. Default to empty. If not empty, it will be used instead of the
+  real remote ip.
+
+
+- `forced_test_forwarded_ip`: Only for test or debug purpose. Default to empty. If not empty, it will be used
+  instead of the real forwarded ip. If set to `no_forward`, the x-forwarded-for mechanism will not be used at all.
+
+#### Security note
+
+Some files should not be publicly accessible because they may contain sensitive data:
+
+- Log files
+- Cache files of the File system cache
+- TLS authentication files
+- Geolocation database files
+
+If you define publicly accessible folders in the settings, be sure to add rules to deny access to these files.
+
+In the following example, we will suppose that you use a folder `crowdsec` with sub-folders `logs`, `cache`, `tls` and `geolocation`.
+
+If you are using Nginx, you could use the following snippet to modify your website configuration file:
+
+```nginx
+server {
+   ...
+   ...
+   ...
+   # Deny all attempts to access some folders of the crowdsec standalone bouncer
+   location ~ /crowdsec/(logs|cache|tls|geolocation) {
+           deny all;
+   }
+   ...
+   ...
+}
+```
+
+If you are using Apache, you could add this kind of directive in a `.htaccess` file:
+
+```htaccess
+Redirectmatch 403 crowdsec/logs/
+Redirectmatch 403 crowdsec/cache/
+Redirectmatch 403 crowdsec/tls/
+Redirectmatch 403 crowdsec/geolocation/
+```
+
+**N.B.:**
+- There is no need to protect the `cache` folder if you are using Redis or Memcached cache systems.
+- There is no need to protect the `logs` folder if you disable debug and prod logging.
+- There is no need to protect the `tls` folder if you use Bouncer API key authentication type.
+- There is no need to protect the `geolocation` folder if you don't use the geolocation feature.
+
+## Testing & Troubleshooting
+
+### Logs
+
+Enable `debug_mode` in the (`scripts/settings.php`) file to enable debug logging. By default, logs will be
+located in the scripts path, i.e. `/var/www/crowdsec-standalone-bouncer/scripts/.logs`.
+
+### Testing ban remediation
+
+To test the ban remediation :
+- identify or create simple php file (even a `<?php print("hello") ?>` would do)
+- add a decision on your crowdsec agent (`sudo cscli decisions add -i <your ip>`)
+- try to access the php file, and you should see the HTML forbidden ban page
+
+
+### Testing the captcha feature
+
+To test the captcha remediation :
+- identify or create simple php file (even a `<?php print("hello") ?>` would do)
+- add a decision on your crowdsec agent (`cscli decisions add -i <your ip> -t captcha`)
+- try to access the php file, and you should see the captcha page
+
+
+
+### Testing geolocation remediation
+
+The bouncer is expecting decisions with a scope of `Country`, and 2-letters code value.
+
+To test the geolocation remediation :
+- identify or create simple php file (even a `<?php print("hello") ?>` would do)
+- add a decision on your crowdsec agent (`cscli decisions add --scope Country --value FR -t captcha`)
+- try to access the php file, and you should see the captcha page
+
+
+## Developer guide
+
+See [Developer guide](https://github.com/crowdsecurity/cs-standalone-php-bouncer/blob/main/doc/DEVELOPER.md)
