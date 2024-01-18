@@ -102,3 +102,8 @@ Allows to set the "since" duration for loki query.
 ### `log_level`
 
 Set the `log_level` for loki datasource.
+
+```bash
+crowdsec -type foobar -dsn 'loki://login:password@localhost:3102/?query={server="demo"}'
+```
+
