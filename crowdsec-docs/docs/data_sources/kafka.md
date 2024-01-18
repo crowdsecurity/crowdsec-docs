@@ -56,6 +56,22 @@ The topic name you want to read logs from.
 
 Required.
 
+### `group_id`
+
+The consumer group id to use.
+
+Cannot be used with `partition`. 
+
+:::warning
+It is highly recommended to set this value, or crowdsec will only read logs from the 1st partition of the topic.
+:::
+
+### `partition`
+
+Read messages from the given partition. Mostly useful for debugging.
+
+Cannot be used with `group_id`.
+
 ### `tls.insecure_skip_verify`
 
 To disable security checks on the certificate.
