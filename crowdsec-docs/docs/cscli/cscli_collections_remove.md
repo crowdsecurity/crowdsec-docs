@@ -8,23 +8,23 @@ Remove given collection(s)
 
 ### Synopsis
 
-Remove given collection(s) from hub
+Remove one or more collections
 
 ```
-cscli collections remove collection [flags]
+cscli collections remove [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli collections remove crowdsec/xxx crowdsec/xyz
+cscli collections remove crowdsecurity/http-cve crowdsecurity/iptables
 ```
 
 ### Options
 
 ```
-      --all     Delete all the collections
-      --force   Force remove : Remove tainted and outdated files
+      --all     Remove all the collections
+      --force   Force remove: remove tainted and outdated files
   -h, --help    help for remove
       --purge   Delete source file too
 ```
@@ -44,5 +44,5 @@ cscli collections remove crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli collections](/cscli/cscli_collections.md)	 - Manage collections from hub
+* [cscli collections](/cscli/cscli_collections.md)	 - Manage hub collections
 

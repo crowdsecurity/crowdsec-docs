@@ -4,11 +4,18 @@ title: cscli collections
 ---
 ## cscli collections
 
-Manage collections from hub
+Manage hub collections
 
-### Synopsis
+### Examples
 
-Install/Remove/Upgrade/Inspect collections from the CrowdSec Hub.
+```
+cscli collections list -a
+cscli collections install crowdsecurity/http-cve crowdsecurity/iptables
+cscli collections inspect crowdsecurity/http-cve crowdsecurity/iptables
+cscli collections upgrade crowdsecurity/http-cve crowdsecurity/iptables
+cscli collections remove crowdsecurity/http-cve crowdsecurity/iptables
+
+```
 
 ### Options
 
@@ -32,9 +39,9 @@ Install/Remove/Upgrade/Inspect collections from the CrowdSec Hub.
 ### SEE ALSO
 
 * [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
-* [cscli collections inspect](/cscli/cscli_collections_inspect.md)	 - Inspect given collection
+* [cscli collections inspect](/cscli/cscli_collections_inspect.md)	 - Inspect given collection(s)
 * [cscli collections install](/cscli/cscli_collections_install.md)	 - Install given collection(s)
-* [cscli collections list](/cscli/cscli_collections_list.md)	 - List all collections
+* [cscli collections list](/cscli/cscli_collections_list.md)	 - List collection(s)
 * [cscli collections remove](/cscli/cscli_collections_remove.md)	 - Remove given collection(s)
 * [cscli collections upgrade](/cscli/cscli_collections_upgrade.md)	 - Upgrade given collection(s)
 

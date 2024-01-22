@@ -12,17 +12,18 @@ DataSources are configured via the [acquisition](/configuration/crowdsec_configu
 
 Name | Type | Stream | One-shot
 -----|------|--------|----------
+[Appsec](/data_sources/appsec.md) | expose HTTP service for the Appsec component | yes | no
+[AWS cloudwatch](/data_sources/cloudwatch.md) | single stream or log group | yes | yes
+[AWS kinesis](/data_sources/kinesis.md)| read logs from a kinesis strean | yes | no
+[AWS S3](/data_sources/s3.md)| read logs from a S3 bucket | yes | yes
+[docker](/data_sources/docker.md) | read logs from docker containers | yes | yes
 [file](/data_sources/file.md) | single files, glob expressions and .gz files | yes | yes
 [journald](/data_sources/journald.md) | journald via filter | yes | yes
-[AWS cloudwatch](/data_sources/cloudwatch.md) | single stream or log group | yes | yes
-[syslog service](/data_sources/syslog_service.md) | read logs received via syslog protocol | yes | no
-[docker](/data_sources/docker.md) | read logs from docker containers | yes | yes
-[AWS kinesis](/data_sources/kinesis.md)| read logs from a kinesis strean | yes | no
 [Kafka](/data_sources/kafka.md)| read logs from kafka topic | yes | no
-[Windows Event](/data_sources/windows_event_log.md)| read logs from windows event log | yes | no
 [Kubernetes Audit](/data_sources/kubernetes_audit.md) | expose a webhook to receive audit logs from a Kubernetes cluster  | yes | no
-[S3](/data_sources/s3.md)| read logs from a S3 bucket | yes | yes
-
+[Loki](/data_sources/loki.md) | read logs from loki | yes | yes
+[syslog service](/data_sources/syslog_service.md) | read logs received via syslog protocol | yes | no
+[Windows Event](/data_sources/windows_event_log.md)| read logs from windows event log | yes | no
 
 ## Common configuration parameters
 

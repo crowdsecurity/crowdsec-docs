@@ -153,4 +153,43 @@ module.exports = {
         //     "id": "bouncers/contributing/contributing_bouncers"
         // },
     ],
+    troubleshootingSideBar: [
+        {
+            "type": "doc",
+            "id": "troubleshooting/intro",
+            "label": "Introduction",
+        },
+        {
+            "type": "doc",
+            "id": "troubleshooting/security_engine",
+            "label": "Security Engine",
+        },
+        {
+            "type": "doc",
+            "id": "troubleshooting/remediation_components",
+            "label": "Remediation Components",
+        }
+    ],
+    guidesSideBar: [
+        "user_guides/intro",
+        {
+            type: "category",
+            label: "Management",
+            items: [
+                "user_guides/hub_mgmt",
+                "user_guides/decisions_mgmt",
+                "user_guides/bouncers_configuration",
+                "user_guides/machines_mgmt",
+                "user_guides/lapi_mgmt",
+            ]
+        },
+        "user_guides/building",
+        "user_guides/replay_mode",
+        "user_guides/cscli_explain",
+        "user_guides/cscli_macos",
+        "user_guides/multiserver_setup",
+        "user_guides/consuming_fastly_logs",
+        "user_guides/alert_context",
+        "user_guides/appsec_tuto",
+    ],
 }

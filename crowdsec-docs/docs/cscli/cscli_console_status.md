@@ -4,10 +4,10 @@ title: cscli console status
 ---
 ## cscli console status
 
-Shows status of one or all console options
+Shows status of the console options
 
 ```
-cscli console status [option] [flags]
+cscli console status [flags]
 ```
 
 ### Examples

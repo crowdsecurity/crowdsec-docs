@@ -8,23 +8,23 @@ Upgrade given parser(s)
 
 ### Synopsis
 
-Fetch and upgrade given parser(s) from hub
+Fetch and upgrade one or more parsers from the hub
 
 ```
-cscli parsers upgrade [config] [flags]
+cscli parsers upgrade [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli parsers upgrade crowdsec/xxx crowdsec/xyz
+cscli parsers upgrade crowdsecurity/caddy-logs crowdsecurity/sshd-logs
 ```
 
 ### Options
 
 ```
-      --all     Upgrade all the parsers
-      --force   Force upgrade : Overwrite tainted and outdated files
+  -a, --all     Upgrade all the parsers
+      --force   Force upgrade: overwrite tainted and outdated files
   -h, --help    help for upgrade
 ```
 
@@ -43,5 +43,5 @@ cscli parsers upgrade crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli parsers](/cscli/cscli_parsers.md)	 - Install/Remove/Upgrade/Inspect parser(s) from hub
+* [cscli parsers](/cscli/cscli_parsers.md)	 - Manage hub parsers
 

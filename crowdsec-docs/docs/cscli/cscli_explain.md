@@ -35,6 +35,7 @@ tail -n 5 myfile.log | cscli explain --type nginx -f -
       --failures                  Only show failed lines
   -f, --file string               Log file to test
   -h, --help                      help for explain
+      --labels string             Additional labels to add to the acquisition format (key:value,key2:value2)
   -l, --log string                Log line to test
       --only-successful-parsers   Only show successful parsers
   -t, --type string               Type of the acquisition to test

@@ -4,7 +4,7 @@ title: cscli version
 ---
 ## cscli version
 
-Display version and exit.
+Display version
 
 ```
 cscli version [flags]

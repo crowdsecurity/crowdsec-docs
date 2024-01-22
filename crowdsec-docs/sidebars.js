@@ -119,25 +119,6 @@
         },
         {
             type: "category",
-            label: "User Guides",
-            items: [
-                "user_guides/hub_mgmt",
-                "user_guides/decisions_mgmt",
-                "user_guides/bouncers_configuration",
-                "user_guides/machines_mgmt",
-                "user_guides/lapi_mgmt",
-                "user_guides/building",
-                "user_guides/replay_mode",
-                "user_guides/cscli_explain",
-                "user_guides/cscli_macos",
-                "user_guides/multiserver_setup",
-                "user_guides/consuming_fastly_logs",
-                "user_guides/alert_context",
-                "user_guides/appsec_tuto",
-            ],
-        },
-        {
-            type: "category",
             label: "Data Sources",
             link: {
                 type: "doc",
@@ -145,16 +126,17 @@
             },
             items: [
                 "data_sources/appsec",
-                "data_sources/file",
-                "data_sources/journald",
                 "data_sources/cloudwatch",
                 "data_sources/kinesis",
-                "data_sources/syslog",
+                "data_sources/s3",
                 "data_sources/docker",
-                "data_sources/windows_evt_log",
+                "data_sources/file",
+                "data_sources/journald",
                 "data_sources/kafka",
                 "data_sources/kubernetes_audit",
-                "data_sources/s3",
+                "data_sources/loki",
+                "data_sources/syslog",
+                "data_sources/windows_evt_log",
                 "data_sources/troubleshoot",
             ],
         },
@@ -409,6 +391,36 @@
         },
         {
             type: "category",
+            label: "cscli appsec-configs",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_appsec-configs",
+            },
+            items: [
+                "cscli/cscli_appsec-configs_inspect",
+                "cscli/cscli_appsec-configs_install",
+                "cscli/cscli_appsec-configs_list",
+                "cscli/cscli_appsec-configs_remove",
+                "cscli/cscli_appsec-configs_upgrade",
+            ],
+        },
+        {
+            type: "category",
+            label: "cscli appsec-rules",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_appsec-rules",
+            },
+            items: [
+                "cscli/cscli_appsec-rules_inspect",
+                "cscli/cscli_appsec-rules_install",
+                "cscli/cscli_appsec-rules_list",
+                "cscli/cscli_appsec-rules_remove",
+                "cscli/cscli_appsec-rules_upgrade",
+            ],
+        },
+        {
+            type: "category",
             label: "cscli bouncers",
             link: {
                 type: "doc",
@@ -480,6 +492,21 @@
         },
         {
             type: "category",
+            label: "cscli contexts",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_contexts",
+            },
+            items: [
+                "cscli/cscli_contexts_install",
+                "cscli/cscli_contexts_remove",
+                "cscli/cscli_contexts_upgrade",
+                "cscli/cscli_contexts_list",
+                "cscli/cscli_contexts_inspect",
+            ],
+        },
+        {
+            type: "category",
             label: "cscli dashboard",
             link: {
                 type: "doc",
@@ -518,6 +545,7 @@
                 "cscli/cscli_hub_list",
                 "cscli/cscli_hub_update",
                 "cscli/cscli_hub_upgrade",
+                "cscli/cscli_hub_types"
             ],
         },
         {
@@ -573,6 +601,19 @@
                 "cscli/cscli_notifications_inspect",
                 "cscli/cscli_notifications_list",
                 "cscli/cscli_notifications_reinject",
+                "cscli/cscli_notifications_test",
+            ],
+        },
+        {
+            type: "category",
+            label: "cscli papi",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_papi",
+            },
+            items: [
+                "cscli/cscli_papi_status",
+                "cscli/cscli_papi_sync",
             ],
         },
         {

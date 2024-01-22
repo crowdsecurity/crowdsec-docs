@@ -4,26 +4,16 @@ title: cscli lapi context delete
 ---
 ## cscli lapi context delete
 
-Delete context to send with alerts
+
 
 ```
 cscli lapi context delete [flags]
 ```
 
-### Examples
-
-```
-cscli lapi context delete --key source_ip
-cscli lapi context delete --value evt.Line.Src
-		
-```
-
 ### Options
 
 ```
-  -h, --help            help for delete
-  -k, --key strings     The keys to delete
-      --value strings   The expr fields to delete
+  -h, --help   help for delete
 ```
 
 ### Options inherited from parent commands

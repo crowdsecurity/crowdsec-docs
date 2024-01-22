@@ -8,23 +8,23 @@ Install given postoverflow(s)
 
 ### Synopsis
 
-Fetch and install given postoverflow(s) from hub
+Fetch and install one or more postoverflows from the hub
 
 ```
-cscli postoverflows install [config] [flags]
+cscli postoverflows install [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli postoverflows install crowdsec/xxx crowdsec/xyz
+cscli postoverflows install crowdsecurity/cdn-whitelist crowdsecurity/rdns
 ```
 
 ### Options
 
 ```
   -d, --download-only   Only download packages, don't enable
-      --force           Force install : Overwrite tainted and outdated files
+      --force           Force install: overwrite tainted and outdated files
   -h, --help            help for install
       --ignore          Ignore errors when installing multiple postoverflows
 ```
@@ -44,5 +44,5 @@ cscli postoverflows install crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli postoverflows](/cscli/cscli_postoverflows.md)	 - Install/Remove/Upgrade/Inspect postoverflow(s) from hub
+* [cscli postoverflows](/cscli/cscli_postoverflows.md)	 - Manage hub postoverflows
 

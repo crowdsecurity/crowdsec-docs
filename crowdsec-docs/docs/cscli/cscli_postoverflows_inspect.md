@@ -4,26 +4,30 @@ title: cscli postoverflows inspect
 ---
 ## cscli postoverflows inspect
 
-Inspect given postoverflow
+Inspect given postoverflow(s)
 
 ### Synopsis
 
-Inspect given postoverflow
+Inspect the state of one or more postoverflows
 
 ```
-cscli postoverflows inspect [config] [flags]
+cscli postoverflows inspect [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli postoverflows inspect crowdsec/xxx crowdsec/xyz
+cscli postoverflows inspect crowdsecurity/cdn-whitelist crowdsecurity/rdns
 ```
 
 ### Options
 
 ```
-  -h, --help   help for inspect
+      --diff         Show diff with latest version (for tainted items)
+  -h, --help         help for inspect
+      --no-metrics   Don't show metrics (when cscli.output=human)
+      --rev          Reverse diff output
+  -u, --url string   Prometheus url
 ```
 
 ### Options inherited from parent commands
@@ -41,5 +45,5 @@ cscli postoverflows inspect crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli postoverflows](/cscli/cscli_postoverflows.md)	 - Install/Remove/Upgrade/Inspect postoverflow(s) from hub
+* [cscli postoverflows](/cscli/cscli_postoverflows.md)	 - Manage hub postoverflows
 

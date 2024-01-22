@@ -13,6 +13,7 @@ Run functional tests on hub configurations (parsers, scenarios, collections...)
 ### Options
 
 ```
+      --appsec            Command relates to appsec tests
       --crowdsec string   Path to crowdsec (default "crowdsec")
       --cscli string      Path to cscli (default "cscli")
   -h, --help              help for hubtest

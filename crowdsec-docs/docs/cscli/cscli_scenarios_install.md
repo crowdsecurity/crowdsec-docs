@@ -8,23 +8,23 @@ Install given scenario(s)
 
 ### Synopsis
 
-Fetch and install given scenario(s) from hub
+Fetch and install one or more scenarios from the hub
 
 ```
-cscli scenarios install [config] [flags]
+cscli scenarios install [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli scenarios install crowdsec/xxx crowdsec/xyz
+cscli scenarios install crowdsecurity/ssh-bf crowdsecurity/http-probing
 ```
 
 ### Options
 
 ```
   -d, --download-only   Only download packages, don't enable
-      --force           Force install : Overwrite tainted and outdated files
+      --force           Force install: overwrite tainted and outdated files
   -h, --help            help for install
       --ignore          Ignore errors when installing multiple scenarios
 ```
@@ -44,5 +44,5 @@ cscli scenarios install crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli scenarios](/cscli/cscli_scenarios.md)	 - Install/Remove/Upgrade/Inspect scenario(s) from hub
+* [cscli scenarios](/cscli/cscli_scenarios.md)	 - Manage hub scenarios
 

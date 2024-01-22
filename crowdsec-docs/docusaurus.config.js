@@ -1,37 +1,26 @@
 const { themes } = require('prism-react-renderer');
 
 const path = require('path')
-const { remediationSideBar, ctiApiSidebar, appsecSideBar} = require('./sidebarsUnversioned.js')
+const { remediationSideBar, ctiApiSidebar, guidesSideBar} = require('./sidebarsUnversioned.js')
+const generateCurrentAndNextRedirects = (s) => ([{
+  from: `/docs/${s}`,
+  to: `/u/${s}`,
+  },{
+  from: `/docs/next/${s}`,
+  to: `/u/${s}`,
+}])
 const backportRedirect = ({ id, link, items }) => {
   const arr = [];
   if (id) {
-    arr.push({
-      to: `/u/${id}`,
-      from: `/docs/${id}`,
-    },{
-      to: `/u/${id}`,
-      from: `/docs/next/${id}`,
-    })
+    arr.push(...generateCurrentAndNextRedirects(id))
   }
   if (link && link.id) {
-    arr.push({
-      to: `/u/${link.id}`,
-      from: `/docs/${link.id}`,
-    },{
-      to: `/u/${link.id}`,
-      from: `/docs/next/${link.id}`,
-    })
+    arr.push(...generateCurrentAndNextRedirects(link.id))
   }
   if (items) {
     for (const item of items) {
       if (typeof item === 'string') {
-        arr.push({
-          to: `/u/${item}`,
-          from: `/docs/${item}`,
-        },{
-          to: `/u/${item}`,
-          from: `/docs/next/${item}`,
-        })
+        arr.push(...generateCurrentAndNextRedirects(item))
       }
       if (typeof item === 'object') {
         arr.push(...backportRedirect(item));
@@ -64,6 +53,13 @@ module.exports = {
     }
   ],
   themeConfig: {
+    announcementBar: {
+      id: 'banner_docs',
+      content: '<a target="_blank" href="https://www.youtube.com/watch?v=4W46yUpsKkU">Getting started with the CrowdSec AppSec Component!</a>',
+      backgroundColor: '#f7a718',
+      textColor: '#131132',
+      isCloseable: true,
+    },
     algolia: {
       appId: 'PWTZ94KULF',
       apiKey: '31673122672f1eb819e16c87468e53b4',
@@ -89,7 +85,6 @@ module.exports = {
           dropdownActiveClassDisabled: true,
         },
         {
-          type: 'dropdown',
           label: 'CrowdSec',
           position: 'left',
           items: [
@@ -116,22 +111,20 @@ module.exports = {
           label: 'Remediation',
         },
         {
+          to: '/u/user_guides/intro',
+          position: 'left',
+          label: 'Guides',
+        },
+        {
           to: '/u/cti_api/getting_started',
           position: 'left',
           label: 'CTI API',
         },
         { to: `https://academy.crowdsec.net/courses?${process.env.NODE_ENV === 'production' ? 'utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs' : ''}`, label: 'Academy', position: 'left' },
         {
-          type: 'doc',
-          docId: 'faq',
+          to: '/u/troubleshooting/intro',
           position: 'left',
-          label: 'FAQ',
-        },
-        {
-          type: 'doc',
-          docId: 'troubleshooting',
-          position: 'left',
-          label: 'Troubleshooting',
+          label: 'FAQ/Troubleshooting',
         },
         {
           href: 'https://github.com/crowdsecurity/crowdsec',
@@ -250,8 +243,26 @@ module.exports = {
     [
       '@docusaurus/plugin-client-redirects',
       {
-        // Redirect current and next routes to unversioned to avoid 404 on articles and app.crowdsec.net
-        redirects: [...remediationSideBar,...ctiApiSidebar].flatMap(backportRedirect),
+        redirects: [
+          // Redirect current and next routes to unversioned to avoid 404 on articles and app.crowdsec.net
+          ...[...remediationSideBar,...ctiApiSidebar, ...guidesSideBar].flatMap(backportRedirect),
+          {
+            from: '/docs/troubleshooting',
+            to: '/u/troubleshooting/intro',
+          },
+          {
+            from: '/docs/next/troubleshooting',
+            to: '/u/troubleshooting/intro',
+          },
+          {
+            from: '/docs/faq',
+            to: '/u/troubleshooting/intro',
+          },
+          {
+            from: '/docs/next/faq',
+            to: '/u/troubleshooting/intro',
+          },
+        ],
       },
     ],
   ],
