@@ -52,7 +52,7 @@ inband_rules:
 on_load:
  - apply:
     - RemoveInBandRuleByName("my_rule")
-	- SetRemediationByTag("my_tag", "captcha")
+    - SetRemediationByTag("my_tag", "captcha")
 ```
 
 
@@ -175,5 +175,5 @@ post_eval:
  - filter: IsInBand == true && req.RemoteAddr == "42.42.42.42"
    apply:
     - CancelAlert()
-	- CancelEvent()
+    - CancelEvent()
 ```
