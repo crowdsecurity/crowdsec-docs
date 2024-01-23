@@ -240,6 +240,7 @@ module.exports = {
         sidebarPath: require.resolve('./sidebarsUnversioned.js'),
       },
     ],
+    ['./plugins/gtag/index.js', { trackingID: 'G-0TFBMNTDFQ' }],
     [
       '@docusaurus/plugin-client-redirects',
       {
