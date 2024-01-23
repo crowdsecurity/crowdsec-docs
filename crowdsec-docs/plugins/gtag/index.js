@@ -7,8 +7,6 @@ export default function pluginGoogleGtag(
  ) {
   const isProd = process.env.NODE_ENV === 'production';
 
-  const firstTrackingId = options.trackingID[0];
-
   return {
     name: 'simple-gtag',
 
@@ -50,7 +48,7 @@ export default function pluginGoogleGtag(
               // we shouldn't install multiple tags/scripts on the same page
               // Instead we should load one script and use n * gtag("config",id)
               // See https://developers.google.com/tag-platform/gtagjs/install#add-products
-              src: `https://www.googletagmanager.com/gtag/js?id=${firstTrackingId}`,
+              src: `https://www.googletagmanager.com/gtag/js?id=${options.trackingID}`,
             },
           },
           {
