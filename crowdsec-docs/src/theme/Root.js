@@ -1,10 +1,9 @@
+import {useStorageSlot} from "@docusaurus/theme-common"
 import CookieConsent from "../../plugins/gtag/theme/cookieconsent";
 export default function Root({children}) {
-  const cookieConsentResponse = JSON.parse(
-    localStorage.getItem('docusaurus.cookieConsent') ?? 'null',
-  );
+  const [value, _] = useStorageSlot('docusaurus.cookieConsent');
   return <>
     {children}
-    {cookieConsentResponse === null && <CookieConsent />}
+    {value === null && <CookieConsent />}
   </>;
 }
