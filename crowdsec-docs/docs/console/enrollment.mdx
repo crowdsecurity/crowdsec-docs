@@ -16,13 +16,14 @@ import CodeBlock from '@theme/CodeBlock';
 To obtain an overview of your alerts, you can enroll a [Security Engine](/getting_started/getting_started.md) in the console. This procedure is executed using the following `cscli` command:
 
 <Tabs
-  defaultValue="nix"
+  defaultValue="unix"
   groupId="console-operating-systems"
+  queryString
   values={[
-    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Linux/Freebsd', value: 'unix'},
     {label: 'Windows', value: 'windows'},
   ]}>
-  <TabItem value="nix">
+  <TabItem value="unix">
     <CodeBlock className="language-bash">sudo cscli console enroll $ID</CodeBlock>
   </TabItem>
   <TabItem value="windows">
@@ -96,13 +97,14 @@ Yes, you have the ability to transfer the Security Engine from within the consol
 If, for any reason, you are unable to access the old account, you can trigger the new enrollment by using the `cscli` command with the overwrite flag:
 
 <Tabs
-  defaultValue="nix"
+  defaultValue="unix"
   groupId="console-operating-systems"
+  queryString
   values={[
-    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Linux/Freebsd', value: 'unix'},
     {label: 'Windows', value: 'windows'},
   ]}>
-  <TabItem value="nix">
+  <TabItem value="unix">
     <CodeBlock className="language-bash">sudo cscli console enroll $ID --overwrite</CodeBlock>
   </TabItem>
   <TabItem value="windows">
