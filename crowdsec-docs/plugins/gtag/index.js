@@ -1,8 +1,6 @@
 
 const createConfigSnippet = ({ trackingID, anonymizeIP }) => `gtag('config', '${trackingID}', { ${anonymizeIP ? "'anonymize_ip': true" : ''} });`
 
-const createConfigSnippets = ({arr, anonymizeIP}) => arr.map((trackingID) => createConfigSnippet({trackingID, anonymizeIP})).join('\n')
-
 export default function pluginGoogleGtag(
   _,
   options,
@@ -61,7 +59,7 @@ export default function pluginGoogleGtag(
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              ${createConfigSnippets(options)};
+              ${createConfigSnippet(options)};
               `,
           },
         ],
