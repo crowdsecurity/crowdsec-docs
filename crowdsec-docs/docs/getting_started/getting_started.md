@@ -61,9 +61,8 @@ Please see the relevant documentation for your OS:
 
 #### Installing from source
 
-Should you opt for a source-based installation, we offer a brief video guide to assist you in the process.
+Should you opt for a source-based installation, you can follow the steps outlined [here](/getting_started/install_source.mdx).
 
-<iframe width="100%" height="500" src="https://www.youtube.com/embed/-1xxkwQyI2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ### Remediation Component
 
@@ -71,10 +70,10 @@ After installing the Security Engine, you can proceed to install a Remediation C
 
 The specific Remediation Component to install may vary based on your network and operating system configuration.
 
-If you are uncertain about which one to install, please refer to our [Remediation Components](/bouncers/intro.md) section or join our [Discord](https://discord.gg/crowdsec) and ask our community.
+If you are uncertain about which one to install, please refer to our [Remediation Components](/u/bouncers/intro) section or join our [Discord](https://discord.gg/crowdsec) and ask our community.
 
 ## Enroll
 
-Since you created your account on the CrowdSec console, you can now enroll your Security Engine to your account.
+Since you created your account on the CrowdSec console, you can now [enroll your Security Engine to your account](https://app.crowdsec.net/security-engines?enroll-engine=true).
 
 To do so, you can find steps outlined [here](/console/enrollment.mdx).

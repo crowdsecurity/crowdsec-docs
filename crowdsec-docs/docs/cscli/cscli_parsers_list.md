@@ -4,21 +4,24 @@ title: cscli parsers list
 ---
 ## cscli parsers list
 
-List all parsers or given one
+List parser(s)
 
 ### Synopsis
 
-List all parsers or given one
+List of installed/available/specified parsers
 
 ```
-cscli parsers list [name] [flags]
+cscli parsers list [item... | -a] [flags]
 ```
 
 ### Examples
 
 ```
 cscli parsers list
-cscli parser list crowdsecurity/xxx
+cscli parsers list -a
+cscli parsers list crowdsecurity/caddy-logs crowdsecurity/sshd-logs
+
+List only enabled parsers unless "-a" or names are specified.
 ```
 
 ### Options
@@ -43,5 +46,5 @@ cscli parser list crowdsecurity/xxx
 
 ### SEE ALSO
 
-* [cscli parsers](/cscli/cscli_parsers.md)	 - Install/Remove/Upgrade/Inspect parser(s) from hub
+* [cscli parsers](/cscli/cscli_parsers.md)	 - Manage hub parsers
 

@@ -8,23 +8,23 @@ Install given collection(s)
 
 ### Synopsis
 
-Fetch and install given collection(s) from hub
+Fetch and install one or more collections from the hub
 
 ```
-cscli collections install collection [flags]
+cscli collections install [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli collections install crowdsec/xxx crowdsec/xyz
+cscli collections install crowdsecurity/http-cve crowdsecurity/iptables
 ```
 
 ### Options
 
 ```
   -d, --download-only   Only download packages, don't enable
-      --force           Force install : Overwrite tainted and outdated files
+      --force           Force install: overwrite tainted and outdated files
   -h, --help            help for install
       --ignore          Ignore errors when installing multiple collections
 ```
@@ -44,5 +44,5 @@ cscli collections install crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli collections](/cscli/cscli_collections.md)	 - Manage collections from hub
+* [cscli collections](/cscli/cscli_collections.md)	 - Manage hub collections
 

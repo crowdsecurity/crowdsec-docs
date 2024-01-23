@@ -4,12 +4,12 @@ title: cscli hub update
 ---
 ## cscli hub update
 
-Fetch available configs from hub
+Download the latest index (catalog of available configurations)
 
 ### Synopsis
 
 
-Fetches the [.index.json](https://github.com/crowdsecurity/hub/blob/master/.index.json) file from hub, containing the list of available configs.
+Fetches the .index.json file from the hub, containing the list of available configs.
 
 
 ```
@@ -25,7 +25,6 @@ cscli hub update [flags]
 ### Options inherited from parent commands
 
 ```
-  -b, --branch string   Use given branch from hub
       --color string    Output color: yes, no, auto (default "auto")
   -c, --config string   path to crowdsec config file (default "/etc/crowdsec/config.yaml")
       --debug           Set logging to debug
@@ -38,5 +37,5 @@ cscli hub update [flags]
 
 ### SEE ALSO
 
-* [cscli hub](/cscli/cscli_hub.md)	 - Manage Hub
+* [cscli hub](/cscli/cscli_hub.md)	 - Manage hub index
 

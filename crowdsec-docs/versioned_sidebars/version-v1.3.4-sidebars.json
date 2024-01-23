@@ -44,58 +44,6 @@
     },
     {
       "type": "category",
-      "label": "User Guides",
-      "items": [
-        {
-          "type": "doc",
-          "id": "user_guides/hub_mgmt"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/decisions_mgmt"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/bouncers_configuration"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/machines_mgmt"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/lapi_mgmt"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/building"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/replay_mode"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/cscli_explain"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/cscli_macos"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/multiserver_setup"
-        },
-        {
-          "type": "doc",
-          "id": "user_guides/consuming_fastly_logs"
-        }
-      ],
-      "collapsible": true,
-      "collapsed": true
-    },
-    {
-      "type": "category",
       "label": "Data Sources",
       "items": [
         {
@@ -921,69 +869,6 @@
       ],
       "collapsible": true,
       "collapsed": true
-    }
-  ],
-  "bouncersSidebar": [
-    {
-      "type": "doc",
-      "id": "bouncers/intro"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/firewall"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/nginx"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/openresty"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/ingress-nginx"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/custom"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/cloudflare"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/wordpress"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/php"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/fastly"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/aws_waf"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/windows_firewall"
-    },
-    {
-      "type": "doc",
-      "id": "bouncers/blocklist-mirror"
-    },
-    {
-      "type": "link",
-      "label": "Hub",
-      "href": "https://hub.crowdsec.net/browse/#bouncers"
-    },
-    {
-      "type": "doc",
-      "id": "contributing/contributing_bouncers"
     }
   ]
 }

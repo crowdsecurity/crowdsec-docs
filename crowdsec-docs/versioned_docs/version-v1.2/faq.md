@@ -11,7 +11,7 @@ CrowdSec is a security open-source software. See the [overview](/intro.mdx).
 
 ## I've installed crowdsec, it detects attacks but doesn't block anything ?!
 
-Yes, CrowdSec is in charge of detecting attacks, and [bouncers](/bouncers/intro.md) are applying decisions.
+Yes, CrowdSec is in charge of detecting attacks, and [bouncers](/u/bouncers/intro) are applying decisions.
 If you want to block the detected IPs, you should deploy a bouncer, such as the ones found on the [hub](https://hub.crowdsec.net/browse/#bouncers) !
 
 
@@ -50,7 +50,7 @@ When pulling block-lists from the platform, the following information is shared 
 ## What is the performance impact ?
 
 As CrowdSec only works on logs, it shouldn't impact your production.
-When it comes to [bouncers](/bouncers/intro.md), it should perform **one** request to the database when a **new** IP is discovered thus have minimal performance impact.
+When it comes to [bouncers](/u/bouncers/intro), it should perform **one** request to the database when a **new** IP is discovered thus have minimal performance impact.
 
 ## How fast is it ?
 

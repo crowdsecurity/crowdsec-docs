@@ -42,7 +42,7 @@ to our documentation to add parsers, scenarios and more.
 
 :::caution
 Keep in mind that the crowdsec package is only in charge of the "detection", and won't block anything on its own.
-You need to deploy a [bouncer](/bouncers/intro.md) to "apply" decisions.
+You need to deploy a [bouncer](/u/bouncers/intro) to "apply" decisions.
 :::
 
 

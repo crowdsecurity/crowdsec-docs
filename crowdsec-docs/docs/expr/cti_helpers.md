@@ -7,7 +7,7 @@ sidebar_position: 4
 ## CTI Helpers
 
 CTI Helper allows to query Crowdsec's CTI API to enhance the engine capabilities.
-It requires [creating a CTI API Key in the console, as described here](/docs/next/cti_api/getting_started).
+It requires [creating a CTI API Key in the console, as described here](/u/cti_api/getting_started).
 
 The CTI API Key must be present in the `api.cti` section of the configuration file:
 
@@ -49,11 +49,11 @@ Returns the background noise score associated to the given IP, from a scale of 0
 
 #### `SmokeItem.GetBehaviors() []string`
 
-Returns the list of [behaviors](/cti_api/taxonomy/behaviors.mdx) associated to the IP. The list of behaviors is derived from the scenarios the IP triggered.
+Returns the list of [behaviors](/u/cti_api/taxonomy/behaviors) associated to the IP. The list of behaviors is derived from the scenarios the IP triggered.
 
 #### `SmokeItem.GetFalsePositives() []string`
 
-Returns the list of eventual [false positive categories](/cti_api/taxonomy/false_positives.mdx) associatted to the IP.
+Returns the list of eventual [false positive categories](/u/cti_api/taxonomy/false_positives) associatted to the IP.
 
 #### `SmokeItem.GetMaliciousnessScore() float32`
 

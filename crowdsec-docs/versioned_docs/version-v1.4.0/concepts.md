@@ -34,7 +34,7 @@ This is the only data that is sent to our API, and it is processed on our side t
 
 ## Bouncers
 
-[[References](/bouncers/intro.md)]
+[[References](/u/bouncers/intro)]
 
 Bouncers are standalone software pieces in charge of acting upon actors that triggered alerts.
 To do so, the bouncers query the Local API to know if there is an existing decision against a given IP, range, username, etc. [You can find a list of existing bouncers on the hub](https://hub.crowdsec.net/browse/#bouncers)

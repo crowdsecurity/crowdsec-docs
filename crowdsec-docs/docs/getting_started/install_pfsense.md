@@ -46,11 +46,11 @@ If the package is not available yet, you'll have to install it manually.
 
 ```console
 # setenv IGNORE_OSVERSION yes
-# pkg add <link to abseil>
-# pkg add <link to re2>
-# pkg add <link to crowdsec-firewall-bouncer>
-# pkg add <link to crowdsec>
-# pkg add <link to pfSense-pkg-crowdsec>
+# pkg add -f <link to abseil>
+# pkg add -f <link to re2>
+# pkg add -f <link to crowdsec-firewall-bouncer>
+# pkg add -f <link to crowdsec>
+# pkg add -f <link to pfSense-pkg-crowdsec>
 ```
 
 ## Configuration
@@ -212,3 +212,8 @@ a viable solution, it has slower performance than the method described above,
 especially in terms of latency when receiving decision updates.
 It also required pfBlockerNG in addition to CrowdSec.
 
+## Enrolling your instance
+
+The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/security-engines?enroll-engine=true).
+
+For the benefits, please visit the [Console section](/console/intro.md).

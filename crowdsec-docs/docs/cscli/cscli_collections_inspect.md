@@ -4,26 +4,29 @@ title: cscli collections inspect
 ---
 ## cscli collections inspect
 
-Inspect given collection
+Inspect given collection(s)
 
 ### Synopsis
 
-Inspect given collection
+Inspect the state of one or more collections
 
 ```
-cscli collections inspect collection [flags]
+cscli collections inspect [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli collections inspect crowdsec/xxx crowdsec/xyz
+cscli collections inspect crowdsecurity/http-cve crowdsecurity/iptables
 ```
 
 ### Options
 
 ```
+      --diff         Show diff with latest version (for tainted items)
   -h, --help         help for inspect
+      --no-metrics   Don't show metrics (when cscli.output=human)
+      --rev          Reverse diff output
   -u, --url string   Prometheus url
 ```
 
@@ -42,5 +45,5 @@ cscli collections inspect crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli collections](/cscli/cscli_collections.md)	 - Manage collections from hub
+* [cscli collections](/cscli/cscli_collections.md)	 - Manage hub collections
 

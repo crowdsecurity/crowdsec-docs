@@ -8,23 +8,23 @@ Remove given postoverflow(s)
 
 ### Synopsis
 
-remove given postoverflow(s)
+Remove one or more postoverflows
 
 ```
-cscli postoverflows remove [config] [flags]
+cscli postoverflows remove [item]... [flags]
 ```
 
 ### Examples
 
 ```
-cscli postoverflows remove crowdsec/xxx crowdsec/xyz
+cscli postoverflows remove crowdsecurity/cdn-whitelist crowdsecurity/rdns
 ```
 
 ### Options
 
 ```
-      --all     Delete all the postoverflows
-      --force   Force remove : Remove tainted and outdated files
+      --all     Remove all the postoverflows
+      --force   Force remove: remove tainted and outdated files
   -h, --help    help for remove
       --purge   Delete source file too
 ```
@@ -44,5 +44,5 @@ cscli postoverflows remove crowdsec/xxx crowdsec/xyz
 
 ### SEE ALSO
 
-* [cscli postoverflows](/cscli/cscli_postoverflows.md)	 - Install/Remove/Upgrade/Inspect postoverflow(s) from hub
+* [cscli postoverflows](/cscli/cscli_postoverflows.md)	 - Manage hub postoverflows
 

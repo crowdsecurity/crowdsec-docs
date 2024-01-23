@@ -1,0 +1,295 @@
+---
+title: Troubleshooting Security Engine
+id: security_engine
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+## Community support
+
+Please try to resolve your issue by reading the documentation. If you're unable to find a solution, don't hesitate to seek assistance in:
+
+- [Discourse](https://discourse.crowdsec.net/)
+- [Discord](https://discord.gg/crowdsec)
+
+## Health
+
+### How to check the status
+
+<Tabs
+  defaultValue="nix"
+  groupId="console-operating-systems"
+  values={[
+    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Windows', value: 'windows'},
+  ]}>
+  <TabItem value="nix">
+    <CodeBlock className="language-bash">sudo systemctl status crowdsec</CodeBlock>
+  </TabItem>
+  <TabItem value="windows">
+    <CodeBlock className="language-bash">Get-Service crowdsec</CodeBlock>
+  </TabItem>
+</Tabs>
+
+### How to check if LAPI is reachable
+
+```bash
+cscli lapi status
+```
+
+<details>
+
+<summary>Example output</summary>
+
+```bash
+time="27-11-2023 13:56:13" level=info msg="Loaded credentials from /etc/crowdsec/local_api_credentials.yaml"
+time="27-11-2023 13:56:13" level=info msg="Trying to authenticate with username 6df9e06234fa428d9ba8e78f9b557c4axNHfFR9BmLcUlSfq on http://127.0.0.1:8080/"
+time="27-11-2023 13:56:13" level=info msg="You can successfully interact with Local API (LAPI)"
+```
+
+</details>
+
+:::info
+This command can be run on child nodes to check if they can reach the LAPI of the parent node.
+:::
+
+### How to check if CAPI is reachable
+  
+```bash
+cscli capi status
+```
+<details>
+
+<summary>Example output</summary>
+
+```bash
+time="2024-01-08 14:08:20" level=info msg="Loaded credentials from /etc/crowdsec/online_api_credentials.yaml"
+time="2024-01-08 14:08:20" level=info msg="Trying to authenticate with username XXXXXXXXXXX on https://api.crowdsec.net/"
+time="2024-01-08 14:08:22" level=info msg="You can successfully interact with Central API (CAPI)"
+```
+
+</details>
+
+:::info
+This command can should **ONLY** be run on the parent node.
+:::
+
+## Decisions
+
+### How to list current decisions
+
+```bash
+cscli decisions list
+```
+
+Additional filtering is possible please read [cscli decisions list](/docs/next/cscli/cscli_decisions_list) for more information.
+
+### How to remove a decision on a IP
+
+```bash
+cscli decisions delete -i x.x.x.x
+```
+Additional filtering is possible please read [cscli decisions delete](/docs/next/cscli/cscli_decisions_delete) for more information.
+
+### How to control granularity of decisions
+
+The Security Engine is designed to be as flexible as possible, and allows you to control the granularity of decisions.
+
+[Profiles](/docs/next/profiles/intro) allows you to control which decision will be applied to which alert.
+
+### How to add whitelists or prevent the Security Engine from banning a given IP
+
+There are many ways to prevent the Security Engine from banning a given IP, depending on your use case. You can see the [whitelist section](/docs/next/whitelist/intro) on how to achieve this.
+
+#### I need to whitelist an event pattern instead of a single IP address
+
+You can whitelist a specific event pattern by following the [expression section](/docs/next/whitelist/create_expr).
+
+## Scenarios
+
+### Scenario X keeps triggering, it's a false trigger
+
+To address a particular scenario that is causing concern, you can choose from several options:
+
+- Activate [simulation mode](/docs/next/cscli/cscli_simulation_enable): In this mode, you'll receive alerts, but no actual decisions will be implemented.
+
+- Completely [remove the scenario](/docs/next/cscli/cscli_scenarios_remove): By doing this, the scenario will be entirely disabled.
+
+### Set a custom/tainted scenario in simulation mode
+
+If you want to set a custom/tainted scenario in simulation mode, you need to provide the scenario's filename instead of its name.
+
+For example, i have a scenario called `crowdsecurity/my-custom-scenario` located in `{config_dir}/scenarios/my_custom_scenario.yaml`.
+
+:::info
+Please see [configuration section](#where-is-configuration-stored) to see where the file will be located on your system.
+:::
+
+To enable the simulation mode for this scenario, i need to run:
+
+```bash
+sudo cscli simulation enable my_custom_scenario.yaml
+```
+
+### My scenario is triggered with less logs than the scenario capacity
+
+When you install CrowdSec, the CrowdSec Wizard runs automatically to find and add basic log files to the acquisition configuration. If you run the 'wizard.sh' script again after installing and you have common log files, they might be added multiple times to your acquisition configuration. This causes CrowdSec to read each log line as many times as the file is configured in the acquisition settings.
+
+Please review your acquisition files and remove any duplicate log entires.
+
+### Is scenario X working on my logs ?
+
+You can replay old logs with [replay mode](/docs/next/user_guides/replay_mode/), which will allow you to see which scenarios would have been triggered. If no scenario seem to trigger, you can have a closer look at potential parsing errors with [`cscli explain`](/docs/next/cscli/cscli_explain).
+
+## Configuration
+
+### Where is configuration stored?
+
+Depending on your installation method and/or operating system, the configuration files are stored in different locations.
+
+Here is a list of the most common locations:
+
+- **Linux** `/etc/crowdsec/`
+- **Freebsd** `/usr/local/etc/crowdsec/`
+- **Windows** `C:\Program Files\CrowdSec\`
+
+### Where is data stored?
+
+CrowdSec stores its data in `/var/lib/crowdsec/data/` folder for UNIX and `C:\Program Files\CrowdSec\data\` for Windows.
+
+This is where the default sqlite database and data files needed for scenarios are kept.
+
+### Which databases does the Security Engine support and how to switch ?
+
+Security Engine versions (after v1) supports SQLite (default), MySQL and PostgreSQL databases.
+See [databases configuration](/docs/next/local_api/database) for relevant configuration. Thanks to the [Local API](/docs/next/local_api/intro), distributed architectures are resolved even with sqlite database.
+
+SQLite by default as it's suitable for standalone/single-engine setups.
+
+### Multi-server setup
+
+For multi-server setup please follow our guides on [distributed architecture](/docs/next/distributed_architecture/intro).
+
+## Logs
+
+### Where are the logs stored?
+
+By default CrowdSec will log to the following locations depending on platform:
+
+- **Linux** `/var/log/crowdsec.log`
+- **Freebsd** `/var/log/crowdsec.log`
+  - **Opnsense** `/var/log/crowdsec/crowdsec.log`
+  - **Pfsense** `/var/log/crowdsec/crowdsec.log`
+- **Windows** `C:\ProgramData\CrowdSec\log\crowdsec.log`
+
+This is the default log location if you are using a third party integration they may change the log location.
+
+:::info
+If you are unsure where CrowdSec is logging you can view the configuration file `config.yaml` and look for `log_dir` to see the configured location.
+:::
+
+### Filtering logs to only show errors
+
+You can use the os related commands to filter the logs to only show errors.
+
+<Tabs
+  defaultValue="nix"
+  groupId="console-operating-systems"
+  values={[
+    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Windows', value: 'windows'},
+  ]}>
+  <TabItem value="nix">
+    <CodeBlock className="language-bash">sudo grep -E "level=(error|fatal)" /var/log/crowdsec.log</CodeBlock>
+    **Please make sure the log location is correct for your distribution.**
+  </TabItem>
+  <TabItem value="windows">
+    <Tabs
+    defaultValue="powershell"
+    groupId="windows-terminal"
+    values={[
+      {label: 'Powershell', value: 'powershell'},
+      {label: 'CMD', value: 'terminal'},
+    ]}>
+      <TabItem value="powershell">
+        <CodeBlock className="language-bash">Select-String "level=(error|fatal)" C:\ProgramData\CrowdSec\log\crowdsec.log</CodeBlock>
+      </TabItem>
+      <TabItem value="terminal">
+        <CodeBlock className="language-bash">findstr "level=error level=fatal" C:\ProgramData\CrowdSec\log\crowdsec.log</CodeBlock>
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>
+
+## Common Errors
+
+:::info
+If it's a configuration file issue, the error message may log in a different location. As an example, if a parser/scenario file is invalid, the error message will be logged within the configured log file, however, if `config.yaml` is invalid, the error message will be logged in syslog instead.
+:::
+
+### Cannot bind to the configured port or IP
+  - **error** message might look like:
+```
+level=fatal msg="while serving local API: listen tcp 127.0.0.1:8080: bind: address already in use"
+```
+  - **solution** verify another service is not already using the port or ip address + port combination. If it is, you can edit the `listen_uri` in the configuration file `config.yaml` and update `local_api_credentials.yaml` to the same value. Then you can restart CrowdSec with `sudo systemctl restart crowdsec`.
+
+#### How can I check to see if a service is already using a port?
+
+You can use the following os commands to check if a service is already using a port.
+
+For example, to check if a service is using port 8080: (Our default port for the local API)
+
+<Tabs
+  defaultValue="nix"
+  groupId="console-operating-systems"
+  values={[
+    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Windows', value: 'windows'},
+  ]}>
+  <TabItem value="nix">
+    ```bash
+    sudo netstat -tulpn | grep :8080
+    ```
+  </TabItem>
+  <TabItem value="windows">
+    ```bash
+    Get-NetTCPConnection | where Localport -eq 8080 | select Localport,OwningProcess
+    ```
+  </TabItem>
+</Tabs>
+
+See [prerequisites](/docs/next/getting_started/#prerequisites) for all the ports used by the Security Engine.
+
+### Cannot authenticate to the local API
+  - **error** message might look like:
+```
+level=fatal msg="starting outputs error : authenticate watcher (fcb7303c4df44c03ada289dd7ec3dbe7cU3GaseSWdqUaVg6): API error: ent: machine not found"
+```
+  - **solution** regenerate the credentials via [cscli machines](/docs/next/cscli/cscli_machines_add) command. If the local API is on the same machine you can run `sudo cscli machines add -a` (`-a` will automatically generate a random machine name and password). Then you can restart CrowdSec with `sudo systemctl restart crowdsec`.
+
+### Cannot connect to the local API
+  - **error** message might look like:
+```
+level=error msg="error while performing request: dial tcp 127.0.0.1:8080: connect: connection refused; 4 retries left"
+```
+:::info
+There may be other variations of this error message just note if the message contains `connection refused` or `connection reset by peer` or `no such host` its likely a connection issue or configuration.
+:::
+  - **solution** verify that the local API runs on the logged IP and port. If the logged IP and port is incorrect, you can update `/etc/crowdsec/local_api_credentials.yaml` to the correct IP and port (If local API is running on the same machine you can run `grep listen_uri /etc/crowdsec/config.yaml` to find it). Then you can restart CrowdSec with `sudo systemctl restart crowdsec`. If the logged IP and port is correct, verify that the local API is running via `sudo systemctl status crowdsec`.
+
+### Cannot start because of an invalid configuration file
+
+  - **error** message might look like:
+```
+level=fatal msg="/etc/crowdsec/config.yaml: yaml: unmarshal errors:\n  line 1: field test not found in type csconfig.Config"
+```
+  - **solution** CrowdSec will inform you which field or line is invalid. You can edit the configuration file and fix the error. Then you can restart CrowdSec with `sudo systemctl restart crowdsec`. If you are unsure what the configuration file should look like you can find the default configuration files [here](https://github.com/crowdsecurity/crowdsec/tree/master/config) or examples via the [documentation](/docs/configuration/crowdsec_configuration).
+
+### I receive few IPs in the community-blocklist
+
+The community-blocklist that you receive is based on your installed scenarios, if they are neither tainted nor custom.
+
+For example, if your `crowdsecurity/ssh-bf` scenario is tainted, you will not receive IPs concerning this scenario in the `community-blocklist`.

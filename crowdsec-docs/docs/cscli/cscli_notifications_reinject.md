@@ -4,11 +4,11 @@ title: cscli notifications reinject
 ---
 ## cscli notifications reinject
 
-reinject alert into notifications system
+reinject an alert into profiles to trigger notifications
 
 ### Synopsis
 
-Reinject alert into notifications system
+reinject an alert into profiles to be evaluated by the filter and sent to matched notifications plugins
 
 ```
 cscli notifications reinject [flags]
@@ -19,7 +19,7 @@ cscli notifications reinject [flags]
 ```
 
 cscli notifications reinject <alert_id>
-cscli notifications reinject <alert_id> --remediation
+cscli notifications reinject <alert_id> -a '{"remediation": false,"scenario":"notification/test"}'
 cscli notifications reinject <alert_id> -a '{"remediation": true,"scenario":"notification/test"}'
 
 ```
@@ -29,7 +29,6 @@ cscli notifications reinject <alert_id> -a '{"remediation": true,"scenario":"not
 ```
   -a, --alert string   JSON string used to override alert fields in the reinjected alert (see crowdsec/pkg/models/alert.go in the source tree for the full definition of the object)
   -h, --help           help for reinject
-  -r, --remediation    Set Alert.Remediation to false in the reinjected alert (see your profile filter configuration)
 ```
 
 ### Options inherited from parent commands
