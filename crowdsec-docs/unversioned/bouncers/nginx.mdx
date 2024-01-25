@@ -173,12 +173,14 @@ CAPTCHA_EXPIRATION=3600
 
 ## Application Security Component Configuration
 APPSEC_URL=
-APPSEC_FAILURE_ACTION=passthrough  # default
-APPSEC_CONNECT_TIMEOUT=100         # default
-APPSEC_SEND_TIMEOUT=100            # default
-APPSEC_PROCESS_TIMEOUT=1000        # default
-ALWAYS_SEND_TO_APPSEC=false        # default
-SSL_VERIFY=true                    # default
+#### default ###
+APPSEC_FAILURE_ACTION=passthrough  
+APPSEC_CONNECT_TIMEOUT=100        
+APPSEC_SEND_TIMEOUT=100            
+APPSEC_PROCESS_TIMEOUT=1000        
+ALWAYS_SEND_TO_APPSEC=false        
+SSL_VERIFY=true
+################
 ```
 
 ### NGINX Configuration
