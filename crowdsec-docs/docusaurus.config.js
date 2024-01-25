@@ -2,7 +2,6 @@ const { themes } = require('prism-react-renderer');
 
 const path = require('path')
 const { remediationSideBar, ctiApiSidebar, guidesSideBar} = require('./sidebarsUnversioned.js');
-const { type } = require('os');
 const generateCurrentAndNextRedirects = (s) => ([{
   from: `/docs/${s}`,
   to: `/u/${s}`,
