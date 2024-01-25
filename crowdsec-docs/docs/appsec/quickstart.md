@@ -61,7 +61,8 @@ I suggest you check directly in the remediation component documentation, but her
 To set up the AppSec in the OpenResty remediation component, we just need to set the Application Security Component URL previously exposed:
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf"
-APPSEC_URL=http://127.0.0.1:7422 # in case the AppSec run on the same machine, else provide the AppSec IP
+APPSEC_URL=http://127.0.0.1:7422
+# in case the AppSec run on the same machine, else provide the AppSec IP
 ```
 
 And restart the service:
