@@ -1,7 +1,8 @@
 const { themes } = require('prism-react-renderer');
 
 const path = require('path')
-const { remediationSideBar, ctiApiSidebar, guidesSideBar} = require('./sidebarsUnversioned.js')
+const { remediationSideBar, ctiApiSidebar, guidesSideBar} = require('./sidebarsUnversioned.js');
+const { type } = require('os');
 const generateCurrentAndNextRedirects = (s) => ([{
   from: `/docs/${s}`,
   to: `/u/${s}`,
@@ -9,23 +10,28 @@ const generateCurrentAndNextRedirects = (s) => ([{
   from: `/docs/next/${s}`,
   to: `/u/${s}`,
 }])
-const backportRedirect = ({ id, link, items }) => {
+const backportRedirect = (s) => {
   const arr = [];
-  if (id) {
-    arr.push(...generateCurrentAndNextRedirects(id))
-  }
-  if (link && link.id) {
-    arr.push(...generateCurrentAndNextRedirects(link.id))
-  }
-  if (items) {
-    for (const item of items) {
-      if (typeof item === 'string') {
-        arr.push(...generateCurrentAndNextRedirects(item))
-      }
-      if (typeof item === 'object') {
-        arr.push(...backportRedirect(item));
+  if (typeof s !== 'string') {
+    const { id, link, items } = s;
+    if (id) {
+      arr.push(...generateCurrentAndNextRedirects(id))
+    }
+    if (link && link.id) {
+      arr.push(...generateCurrentAndNextRedirects(link.id))
+    }
+    if (items) {
+      for (const item of items) {
+        if (typeof item === 'string') {
+          arr.push(...generateCurrentAndNextRedirects(item))
+        }
+        if (typeof item === 'object') {
+          arr.push(...backportRedirect(item));
+        }
       }
     }
+  } else {
+    arr.push(...generateCurrentAndNextRedirects(s))
   }
   return arr;
 }
