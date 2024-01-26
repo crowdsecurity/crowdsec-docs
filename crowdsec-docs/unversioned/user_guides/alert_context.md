@@ -6,11 +6,11 @@ sidebar_position: 10
 
 ## Introduction
 
-CrowdSec doesn't store any logs after processing them, but you can join information to an alert with what we call *alert context*:
+CrowdSec doesn't store raw log information once it has finished processing them. However, you can send additional data within an alert with a feature we call **alert context**:
 
 ![Alert Context Example](/img/alert_context.png)
 
-While some collections already include an alert context configuration to join the relevant information to an alert, you have to explicitely enable it:
+While some collections already include an alert context configuration to join the relevant information to an alert, you have to explicitly enable it:
 
 ```bash
 sudo cscli console enable context
@@ -217,3 +217,8 @@ crowdsecurity/nginx-logs :
 ## Delete a context
 
 Delete the yaml file containing your custom alert context, and reload crowdsec.
+
+```bash
+rm /etc/crowdsec/contexts/example.yaml
+systemctl restart crowdsec
+```
