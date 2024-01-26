@@ -10,7 +10,9 @@ CrowdSec doesn't store raw log information once it has finished processing them.
 
 ![Alert Context Example](/img/alert_context.png)
 
-While some collections already include an alert context configuration to join the relevant information to an alert, you have to explicitly enable it:
+Whilst some collections already include a context configuration, you must enable the `context` option within your security engine console configuration.
+
+This can be achieved by running:
 
 ```bash
 sudo cscli console enable context
