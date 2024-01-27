@@ -239,7 +239,7 @@ SSL_VERIFY=true                    # default
 ### Setup captcha
 > Currently, we have support for 3 providers: recaptcha, hcaptcha or turnstile
 
-If you want to use captcha with your Nginx Bouncer, you must provide a Site key and Secret key in your bouncer configuration. If you wish to use any other provider than recaptcha you must also provide a Captcha provider.
+If you want to use captcha with your OpenResty Bouncer, you must provide a Site key and Secret key in your bouncer configuration. If you wish to use any other provider than recaptcha you must also provide a Captcha provider.
 
 ([recaptcha documentation](https://developers.google.com/recaptcha/intro)).
 
@@ -247,7 +247,7 @@ If you want to use captcha with your Nginx Bouncer, you must provide a Site key 
 
 ([hcaptcha documentation](https://docs.hcaptcha.com/))
 
-Edit `etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf` and configure the following options:
+Edit `etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf` and configure the following options:
 
 ```bash
 CAPTCHA_PROVDER=
