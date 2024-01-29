@@ -138,7 +138,7 @@ In `crowdsec.log`, we're seeing our alert:
 time="2024-01-24T18:08:34+01:00" level=info msg="Ip x.x.x.x performed 'crowdsecurity/http-cve-2021-41773' (1 events over 336ns) at 2024-01-24 17:08:34.026228434 +0000 UTC"
 ```
 
-It as well appears when we're inspect our alert:
+It as well appears when we're inspecting our alert:
 
 ```bash
 $ cscli  alerts list
