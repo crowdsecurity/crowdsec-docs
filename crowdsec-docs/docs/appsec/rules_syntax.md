@@ -6,7 +6,7 @@ sidebar_position: 8
 
 ## CrowdSec AppSec rules
 
-Rules are the core of the **AppSec component**. They are used to detect and block attacks.
+Rules are the core of the **AppSec Component**. They are used to detect and block attacks.
 
 There are 2 types of rules:
 
@@ -143,7 +143,7 @@ Match provides the pattern to match the target against, including optional trans
 
 ### Seclang Support
 
-In order to support your existing/legacy rules set, CrowdSec's AppSec component is also able to load rules in the **seclang** format (**ModSecurity** rules).
+In order to support your existing/legacy rules set, CrowdSec's AppSec Component is also able to load rules in the **seclang** format (**ModSecurity** rules).
 
 We recommend using this format only to use existing rules you may have.
 
