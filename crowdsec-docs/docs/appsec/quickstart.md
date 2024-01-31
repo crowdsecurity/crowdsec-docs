@@ -6,16 +6,16 @@ sidebar_position: 2
 
 ## Objectives
 
-The objective(s) of this quickstart is to cover a functional setup of the [AppSec Component](/appsec/intro.md#introduction) to protect web applications exposed via [Nginx](https://nginx.com). We will then deploy a comprehensive [set of rules](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) focused on preventing the exploitation of well-known and [actively exploited vulnerabilities](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching). We will also cover the visualization of those alerts in the [console](https://app.crowdsec.net/).
+The goal of this quickstart is to set up the [AppSec Component](/appsec/intro.md#introduction) to safeguard web applications running on [Nginx](https://nginx.com). We'll deploy a [set of rules](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) designed to block well-known and [currently exploited vulnerabilities](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching). Additionally, we'll show how to monitor these alerts through the [console](https://app.crowdsec.net/).
 
 ## Pre-requisites
 
-1. If you're not familiar with the [AppSec Component](/appsec/intro.md#introduction) or **W**eb **A**pplication **F**irewalls, take a look at the [Introduction](/appsec/intro.md#introduction) first.
+1. If you're new to the [AppSec Component](/appsec/intro.md#introduction) or **W**eb **A**pplication **F**irewalls, start with the [Introduction](/appsec/intro.md#introduction) for a better understanding.
 
-2. We assume you already installed:
-   - **Crowdsec [Security Engine](/docs/next/intro)**: see [QuickStart here](/docs/getting_started/install_crowdsec). The AppSec Component is part of the security engine and will be used to analyze the HTTP requests.
-   - Nginx and its **[Remediation Component](/u/bouncers/intro)**: see [QuickStart here](/u/bouncers/nginx). The Remediation Component will be used to intercept the HTTP requests at the webserver/reverse-proxy level and forward them to the AppSec Component for analysis and remediation.
-
+2. It's assumed that you have already installed:
+   - **Crowdsec [Security Engine](/docs/next/intro)**: for installation, refer to the [QuickStart guide](/docs/getting_started/install_crowdsec). The AppSec Component, which analyzes HTTP requests, is included within the security engine.
+   - Nginx and its **[Remediation Component](/u/bouncers/intro)**: installation instructions are available in the [QuickStart guide](/u/bouncers/nginx). This component intercepts HTTP requests at the webserver or reverse-proxy level and forwards them to the AppSec Component for analysis and action.
+   - 
 ## AppSec Component Setup
 
 ### Collection installation
