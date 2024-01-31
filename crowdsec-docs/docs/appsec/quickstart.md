@@ -134,20 +134,20 @@ sudo cscli bouncers delete test_waf
 
 ## Remediation Component Setup
 
-Now that our AppSec Component is running in CrowdSec, we need to set up the remediation component to interact with it.
+With our AppSec Component active within CrowdSec, it's time to configure the remediation component to forward requests to it.
 
 :::info
-Various Remediation Components might have different options for this, look at your dedicated component documentation.
+Different Remediation Components may offer various options for this setup, so consult the documentation for your specific component.
 :::
 
-To set up the AppSec in the Nginx remediation component, let's edit its configuration file (`/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`), to add the following:
+To setup forwarding of requests in the Nginx remediation component, we'll modify its configuration file (`/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`) by adding the following entries:
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
 APPSEC_URL=http://127.0.0.1:7422
 # in case the AppSec run on the same machine, else provide the AppSec IP
 ```
 
-This tells our nginx plugin (the remediation component) that we want it to interact with the AppSec Component that is located at `http://127.0.0.1:7422`. With this configuration set, every incoming HTTP request will be forwarded there for validation.
+This instructs our Nginx plugin (the remediation component) to communicate with the AppSec Component at `http://127.0.0.1:7422`. Once configured, all incoming HTTP requests will be sent there for analysis.
 
 We can now restart the service:
 
@@ -158,10 +158,10 @@ sudo systemctl restart nginx
 ### Testing the AppSec Component + Nginx
 
 :::note
-We're assuming that nginx runs on the same machine and listens on the port 80. Adapt your test otherwise.
+We're assuming Nginx is installed on the same machine and is listening on port 80. Please adjust your testing accordingly if this is not the case.
 :::
 
-if now try to access `http://localhost/.env` from a browser, our request will be blocked, and we will see the following HTML page:
+if now try to access `http://localhost/.env` from a browser, our If you now attempt to access `http://localhost/.env` from a browser, your request will be blocked, resulting in the display of the following HTML page: will be blocked, and we will see the following HTML page:
 
 ![appsec-denied](/img/appsec_denied.png)
 
