@@ -54,7 +54,7 @@ If you are creating a virtual-patching rule, please name your test `CVE-YYYY-XYZ
 
 ## Configure our test
 
-Let's add our AppSec rule to the configuration file.
+Let's incorporate our AppSec rule into the configuration file.
 
 > .appsec-tests/my-vuln/config.yaml
 
@@ -64,7 +64,7 @@ appsec-rules:
 nuclei_template: my-vuln.yaml
 ```
 
-_note:_ as our custom AppSec rule is not yet part of the hub, we specify their path relative to the root of the hub directory.
+_note:_ Since our custom AppSec rule has not been added to the hub yet, we need to define its path relative to the root of the hub directory.
 
 The `hubtest create` command created a boilerplate nuclei template that we can edit to add our HTTP request:
 

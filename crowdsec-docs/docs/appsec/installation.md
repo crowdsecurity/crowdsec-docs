@@ -6,7 +6,7 @@ sidebar_position: 3
 
 # AppSec Component
 
-We are going to cover a basic setup of the **AppSec Component**, with a set of rules focused on virtual patching.
+We will explore a fundamental configuration of the **AppSec Component**, emphasizing a rule set dedicated to virtual patching.
 
 **Virtual patching** rules focus on preventing the exploitation of well-known vulnerabilities and are a great way to deter and slow down someone scanning your web application.
 
@@ -28,7 +28,7 @@ To have a functional AppSec Component, you need:
 
 ## Overview
 
-Before jumping into the action, it's essential to understand the key configuration elements of the AppSec Component:
+Before diving into the practical steps, it's crucial to familiarize yourself with the core configuration aspects of the AppSec Component:
 
 - **acquisition configuration**: Specifies how to acquire the AppSec Component stream of data
 - **AppSec Component configuration**: Tells which rules are loaded in inband (blocking) and out-of-band (non-blocking)
@@ -59,7 +59,7 @@ This collection provides you:
 
 ## Configure the AppSec Component acquisition
 
-The AppSec Component works as a data-source by relaying the request's data to the security engine. We'll add this data-source similarly to other data-sources via an acquisition file.
+The AppSec Component acts as a data source, sending request data to the security engine. We'll connect this data source using an acquisition file, just like we do with other data sources.
 
 This can be done by editing `/etc/crowdsec/acquis.yaml` or adding a new YAML file in `/etc/crowdsec/acquis.d/`
 
@@ -67,8 +67,8 @@ For this type of data-source we'll declare the **address** and **port** through 
 
 The important lines are:
 
-- `listen_addr` that indicates on which interface/port the service listens to
-- `appsec_config` is the name of the config that the AppSec Component will run. We'll be using `crowdsecurity/virtual-patching` we just got from the hub for this example, but you can create your config and name it as you'd like. you can find them in `/etc/crowdsec/...`
+ - `listen_addr` that indicates on which interface/port the service listens to
+ - `appsec_config` is the configuration name that the AppSec Component will use. For this example, we're employing `crowdsecurity/virtual-patching` that we obtained from the hub, but feel free to create and name your own configuration. You can locate them in `/etc/crowdsec/...`
 
 ```bash
 mkdir  -p /etc/crowdsec/acquis.d

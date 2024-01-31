@@ -6,11 +6,12 @@ sidebar_position: 6
 
 ## Foreword
 
-A few files are often involved when configuring the AppSec Component:
- - [AppSec rules](/appsec/rules_syntax.md) allows you to write a signature to detect and/or block malevolent requests. [You can find more information about the syntax here](/appsec/rules_syntax.md)
- - [acquisition configuration](/data_sources/appsec.md) indicates on which port is the AppSec Component listening to, and which AppSec configuration it will use.
+onfiguring the AppSec Component usually requires the use of multiple files:
+
+ - [AppSec rules](/appsec/rules_syntax.md) allow you to write a signature to detect and/or block malevolent requests. [You can find more information about the syntax here](/appsec/rules_syntax.md)
+ - [acquisition configuration](/data_sources/appsec.md) indicates which port is the AppSec Component listening to, and which AppSec configuration it will use.
  - AppSec configuration tells which rules are loaded in inband (blocking) and out-of-band (non-blocking)
-  phases. [it as well allows you to tweak the behavior of the component via the powerfull expr bindings](/appsec/rules_syntax.md)
+  phases. [it as well allows you to tweak the behavior of the component via the powerful expr bindings](/appsec/rules_syntax.md)
 
 
 ## Appsec configuration
@@ -35,7 +36,7 @@ inband_rules:
 
 ### `outofband_rules`
 
-An optional list of rules to be loaded in out of band phase. Out of band rules are non-blocking and are evaluated only once the AppSec Component answered to the remediation component. Useful for rules that are either expensive, can trigger false positives or are used for other scenarios.
+A supplementary list of rules can be loaded during the out-of-band phase. These out-of-band rules are non-blocking and are assessed only after the AppSec Component has responded to the remediation component. This approach is beneficial for rules that may be costly to execute, have a higher likelihood of generating false positives, or are applicable in specific scenarios.
 
 ### `inband_rules`
 
