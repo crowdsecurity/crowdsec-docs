@@ -20,9 +20,9 @@ The goal of this quickstart is to set up the [AppSec Component](/appsec/intro.md
 
 ### Collection installation
 
-The first thing to do to set up the AppSec Component is to install a set of relevant rules. We are going to use the [`crowdsecurity/appsec-virtual-patching`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) collection to get a comprehensive set of rules. This [collection](/concepts.md#collections) focuses on detecting and blocking the exploitation of well-known vulnerabilities and is updated when new vulnerabilities appear. Once installed, it is automatically updated daily for always up-to-date protection.
+To begin setting up the AppSec Component, the initial step is to install a relevant set of rules. We will utilize the [`crowdsecurity/appsec-virtual-patching`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) collection, which offers a wide range of rules aimed at identifying and preventing the exploitation of known vulnerabilities. This [collection](/concepts.md#collections) is regularly updated to include protection against newly discovered vulnerabilities. Upon installation, it receives automatic daily updates to ensure your protection is always current.
 
-On the machine where you installed the Security Engine, simply run:
+On the machine where the Security Engine is installed, just execute the following command:
 
 :::info
 You can always view the content of a [collection on the hub](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching)
@@ -32,7 +32,7 @@ You can always view the content of a [collection on the hub](https://app.crowdse
 sudo cscli collections install crowdsecurity/appsec-virtual-patching
 ```
 
-This command is going to install the following configuration items:
+Executing this command will install the following items:
 
 - The [*AppSec Rules*](/appsec/rules_syntax.md) contain the definition of malevolent requests to be matched and stopped
 - The [*AppSec configuration*](/appsec/configuration.md#appsec-configuration) links together a set of rules to provide a coherent set
@@ -40,7 +40,7 @@ This command is going to install the following configuration items:
 
 ### Setup the acquisition
 
-Now that we have installed the necessary items, we need to set up the CrowdSec [Acquisition](/concepts.md#acquisition) to expose the Application Security Component to our Nginx web server. This step is needed so that our Nginx server can forward requests to the AppSec Component for analysis and verdict.
+Having installed the required components, it's time to configure the CrowdSec [Acquisition](/concepts.md#acquisition) to connect the Application Security Component with our Nginx web server. This configuration allows our Nginx server to send requests to the AppSec Component for evaluation and decision-making.
 
  - Create the `/etc/crowdsec/acquis.d/` directory with `mkdir -p /etc/crowdsec/acquis.d/` (if it doesn't exist on your machine)
  - Put the following content in `/etc/crowdsec/acquis.d/appsec.yaml` :
@@ -68,12 +68,12 @@ You can now restart CrowdSec:
 sudo systemctl restart crowdsec
 ```
 
-### First test
+<details>
+  <summary>(Optional) Manually testing the AppSec Component with `curl`</summary>
 
-Before moving on with the Remediation Component, let's ensure that everything we already setup works as expected.
+Before we proceed with configuring the Remediation Component, let's verify that all our current setups are functioning correctly.
 
 1. Create a Remediation Component (Bouncer) API Key:
-
 
 ```bash
 sudo cscli bouncers add test_waf -k this_is_a_bad_password
@@ -128,6 +128,9 @@ Let's now delete our test API Key:
 ```bash
 sudo cscli bouncers delete test_waf
 ```
+
+</details>
+
 
 ## Remediation Component Setup
 
