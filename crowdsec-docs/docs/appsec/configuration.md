@@ -9,7 +9,7 @@ sidebar_position: 6
 Configuring the AppSec Component usually requires the use of multiple files:
 
  - [AppSec rules](/appsec/rules_syntax.md) allow you to write a signature to detect and/or block malevolent requests. [You can find more information about the syntax here](/appsec/rules_syntax.md)
- - [acquisition configuration](/data_sources/appsec.md) indicates which port is the AppSec Component listening to, and which AppSec configuration it will use.
+ - [acquisition configuration](/data_sources/appsec.md) indicates which port is the AppSec Component listening on, and which AppSec configuration it will use.
  - AppSec configuration tells which rules are loaded in inband (blocking) and out-of-band (non-blocking)
   phases. [it as well allows you to tweak the behavior of the component via the powerful expr bindings](/appsec/rules_syntax.md)
 
