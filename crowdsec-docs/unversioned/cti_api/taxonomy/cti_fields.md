@@ -4,7 +4,6 @@ title: CTI Format
 sidebar_position: 2
 ---
 
-
 <details>
   <summary>Object example</summary>
 
@@ -14,6 +13,12 @@ sidebar_position: 2
   "ip": "[CENSORED]",
   "ip_range": "[CENSORED]",
   "as_name": "[CENSORED]",
+  "reputation": "malicious",
+  "ip_range_24": "[CENSORED]",
+  "ip_range_24_reputation": "suspicious",
+  "ip_range_24_score": 3,
+  "background_noise_score": 10,
+  "background_noise": "high",
   "as_num": 0,
   "location": {
     "country": "FR",
@@ -104,7 +109,6 @@ sidebar_position: 2
     "ES": 0,
     "FI": 12
   },
-  "background_noise_score": 10,
   "mitre_techniques": [
     {
       "name": "T1595",
@@ -155,13 +159,12 @@ sidebar_position: 2
   },
   "references": []
 }
-
 ```
 
 </details>
 
-
 ## `ip`
+
 > type: **string**
 
 ```json
@@ -171,15 +174,75 @@ sidebar_position: 2
 The requested IP.
 
 ## `ip_range`
+
 > type: **string**
 
 ```json
-"ip_range": "1.2.3.0/24"
+"ip_range": "1.2.3.0/18"
 ```
 
 The range to which the IP belongs.
 
+## `reputation`
+
+> type: **string**
+
+```json
+"reputation" : "malicious"
+```
+
+The reputation of the IP address.
+
+The possible values are:
+
+- `malicious` : IP is malicious
+- `suspicious` : IP has been reported by many CrowdSec users but is not enough aggressive to be considered as malicious
+- `known` : IP is known in the CrowdSec network, but we don't have enough sightings
+- `safe` : IP is safe and can be trusted (ex: Google DNS, Cloudflare DNS ...)
+- `unknown`: IP is unknown or its last report is more than 3 month ago
+
+## `ip_range_24`
+
+> type: **string**
+
+```json
+"ip_range_24" : "1.2.3.0/24"
+```
+
+The /24 range of the IP address.
+
+## `ip_range_24_reputation`
+
+> type: **string**
+
+```json
+"ip_range_24_reputation" : "malicious"
+```
+
+The reputation of the /24 range of the IP address.
+
+The possible values are:
+
+- `malicious` : The range 24 of the IP is malicious
+- `suspicious` : The range 24 of the IP contains some IPs that has been reported by the CrowdSec network
+- `known` : The range 24 of the IP is known in CrowdSec network, but we don't have enough sightings about the its IP addresses
+- `safe` : The range 24 of the IP is safe and can be trusted (ex: Google DNS, Cloudflare DNS ...)
+- `unknown`: The range 24 of the IP is unknown or its last report is more than 3 month ago
+
+## `ip_range_24_score`
+
+> type: **string**
+
+```json
+"ip_range_24_score" : 4
+```
+
+The malevolence score of the /24 IP range the IP belongs to.
+
+0 is unknown, 1 is a couple of IP reported, 5 is the highest level for the most aggressive range.
+
 ## `background_noise_score`
+
 > type: **int**
 
 ```json
@@ -188,8 +251,25 @@ The range to which the IP belongs.
 
 Evaluate the noisiness of an IP address, from a scale of 0 (not noisy) to 10 (extremely noisy)
 
+## `background_noise`
+
+> type: **string**
+
+```json
+"background_noise" : "malicious"
+```
+
+The background_noise level of the IP address.
+
+The possible values are:
+
+- `high` : IP is background noise
+- `medium` : IP has been reported by many members of the CrowdSec network, but not enough to be considered as background noise
+- `low` : IP has been reported by a few members of the CrowdSec network
+- `none` : IP has never been reported or only by very a few members of the CrowdSec network
 
 ## `ip_range_score`
+
 > type: **int**
 
 ```json
@@ -198,8 +278,8 @@ Evaluate the noisiness of an IP address, from a scale of 0 (not noisy) to 10 (ex
 
 The malevolence score of the IP range the IP belongs to. 0 is unknown, 1 is a couple of IP reported, 5 is the highest level for the most aggressive range. See "scoring" above.
 
-
 ## `as_name`
+
 > type: **string**
 
 ```json
@@ -209,6 +289,7 @@ The malevolence score of the IP range the IP belongs to. 0 is unknown, 1 is a co
 The autonomous system name to which the IP belongs.
 
 ## `as_num`
+
 > type: **int**
 
 ```json
@@ -218,6 +299,7 @@ The autonomous system name to which the IP belongs.
 The autonomous system to which the IP belongs.
 
 ## `reverse_dns`
+
 > type: **string**
 
 ```json
@@ -227,6 +309,7 @@ The autonomous system to which the IP belongs.
 Reverse DNS lookup of the IP, when available.
 
 ## `location`
+
 > type: **object**
 
 ```json
@@ -241,6 +324,7 @@ Reverse DNS lookup of the IP, when available.
 The geo location information about the IP address.
 
 ### `country`
+
 > type: **string**
 
 ```json
@@ -250,6 +334,7 @@ The geo location information about the IP address.
 The two letters country code of the IP following ISO 3166 format, when available.
 
 ### `city`
+
 > type: **string**
 
 ```json
@@ -259,6 +344,7 @@ The two letters country code of the IP following ISO 3166 format, when available
 The associated city name of the IP, when available.
 
 ### `latitude`
+
 > type: **float**
 
 ```json
@@ -268,6 +354,7 @@ The associated city name of the IP, when available.
 Latitude of the IP, when available.
 
 ### `longitude`
+
 > type: **float**
 
 ```json
@@ -277,7 +364,8 @@ Latitude of the IP, when available.
 Longitude of the IP, when available.
 
 ## `history`
->type: **object**
+
+> type: **object**
 
 ```json
 "history" : {
@@ -290,8 +378,8 @@ Longitude of the IP, when available.
 
 The geo location information about the IP address.
 
-
 ### `first_seen`
+
 > type: **string**
 
 ```json
@@ -301,6 +389,7 @@ The geo location information about the IP address.
 Date of the first time this IP was reported. Please note that due to "progressive data degradation" this date might be later than the first time the IP was actually seen.
 
 ### `last_seen`
+
 > type: **string**
 
 ```json
@@ -310,6 +399,7 @@ Date of the first time this IP was reported. Please note that due to "progressiv
 Date of the last time this IP was reported.
 
 ### `full_age`
+
 > type: **int**
 
 ```json
@@ -319,6 +409,7 @@ Date of the last time this IP was reported.
 Delta in days between first seen and today.
 
 ### `days_age`
+
 > type: **int**
 
 ```json
@@ -327,8 +418,8 @@ Delta in days between first seen and today.
 
 Delta in days between first and last seen timestamps.
 
-
 ## `behaviors`
+
 > type: **list(object)**
 
 ```json
@@ -344,8 +435,8 @@ Delta in days between first and last seen timestamps.
 A list of the attack categories for which the IP was reported.
 The possibles values of this field are listed [here](cti_api/taxonomy/behaviors.mdx).
 
-
 ### `name`
+
 > type: **string**
 
 ```json
@@ -355,6 +446,7 @@ The possibles values of this field are listed [here](cti_api/taxonomy/behaviors.
 Category name of the attack, often in the form `protocol-or-scope:attack_type`.
 
 ### `label`
+
 > type: **string**
 
 ```json
@@ -364,6 +456,7 @@ Category name of the attack, often in the form `protocol-or-scope:attack_type`.
 Human-friendly name of the behavior.
 
 ### `description`
+
 > type: **string**
 
 ```json
@@ -372,8 +465,8 @@ Human-friendly name of the behavior.
 
 Human-friendly description of the behavior.
 
-
 ## `classifications`
+
 > type: **object**
 
 ```json
@@ -396,6 +489,7 @@ Human-friendly description of the behavior.
 The possible false positives and classifications attributed to this IP address.
 
 ### `false_positives`
+
 > type: **list(object)**
 
 ```json
@@ -411,6 +505,7 @@ The possible false positives and classifications attributed to this IP address.
 A list of false positives tags associated with the IP. Any IP with `false_positives` tags shouldn't be considered as malicious.
 
 #### `name`
+
 > type: **string**
 
 ```json
@@ -420,6 +515,7 @@ A list of false positives tags associated with the IP. Any IP with `false_positi
 False positive name.
 
 #### `label`
+
 > type: **string**
 
 ```json
@@ -429,6 +525,7 @@ False positive name.
 Human-friendly name of the false positive.
 
 #### `description`
+
 > type: **string**
 
 ```json
@@ -437,9 +534,8 @@ Human-friendly name of the false positive.
 
 Human-friendly description of the false positive.
 
-
-
 ### `classifications`
+
 > type: **list(object)**
 
 ```json
@@ -455,6 +551,7 @@ Human-friendly description of the false positive.
 A list of `classifications` tags associated with the IP.
 
 #### `name`
+
 > type: **string**
 
 ```json
@@ -464,6 +561,7 @@ A list of `classifications` tags associated with the IP.
 Classification name.
 
 #### `label`
+
 > type: **string**
 
 ```json
@@ -473,6 +571,7 @@ Classification name.
 Human-friendly name of the classification.
 
 #### `description`
+
 > type: **string**
 
 ```json
@@ -481,8 +580,8 @@ Human-friendly name of the classification.
 
 Human-friendly description of the classification.
 
-
 ## `attack_details`
+
 > type: **list(object)**
 
 ```json
@@ -498,8 +597,8 @@ Human-friendly description of the classification.
 A more exhaustive list of the scenarios for which a given IP was reported.
 The possibles values of this field are listed [here](cti_api/taxonomy/scenarios.mdx).
 
-
 ### `name`
+
 > type: **string**
 
 ```json
@@ -509,6 +608,7 @@ The possibles values of this field are listed [here](cti_api/taxonomy/scenarios.
 Name of the scenario, often in the form `author/scenario_name`.
 
 ### `label`
+
 > type: **string**
 
 ```json
@@ -518,6 +618,7 @@ Name of the scenario, often in the form `author/scenario_name`.
 Human-friendly name of the scenario.
 
 ### `description`
+
 > type: **string**
 
 ```json
@@ -527,6 +628,7 @@ Human-friendly name of the scenario.
 Human-friendly description of the scenario.
 
 ## `mitre_techniques`
+
 > type: **list(object)**
 
 ```json
@@ -542,6 +644,7 @@ Human-friendly description of the scenario.
 A list of Mitre techniques associated with the IP.
 
 ### `name`
+
 > type: **string**
 
 ```json
@@ -551,6 +654,7 @@ A list of Mitre techniques associated with the IP.
 Mitre Technique ID.
 
 ### `label`
+
 > type: **string**
 
 ```json
@@ -560,6 +664,7 @@ Mitre Technique ID.
 Mitre Technique name.
 
 ### `description`
+
 > type: **string**
 
 ```json
@@ -569,6 +674,7 @@ Mitre Technique name.
 Mitre Technique description.
 
 ## `cves`
+
 > type: **list(string)**
 
 ```json
@@ -580,8 +686,8 @@ Mitre Technique description.
 
 A list of CVEs for which the IP has been reported for.
 
-
 ## `target_countries`
+
 > type: **object**
 
 ```json
@@ -596,8 +702,8 @@ A list of CVEs for which the IP has been reported for.
 
 The top 10 reports repartition by country about the IP, as a percentage
 
-
 ## `scores`
+
 > type: **object**
 
 ```json
@@ -638,6 +744,7 @@ Indicators of Malevolence computed on different time periods.
 :warning: All scores are from a scall of 0 to 5.
 
 ### `overall`
+
 > type: **object**
 
 ```json
@@ -653,6 +760,7 @@ Indicators of Malevolence computed on different time periods.
 Malevolence score over the total period (3 months).
 
 #### `total`
+
 > type: **int**
 
 ```json
@@ -661,47 +769,48 @@ Malevolence score over the total period (3 months).
 
 The aggregated malevolence score.
 
-
 #### `aggressiveness`
+
 > type: **int**
 
 ```json
 "aggressiveness" : 5
 ```
 
-The score of the *aggressiveness* component (see [more here](cti_api/taxonomy/scores.md)).
+The score of the _aggressiveness_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 #### `threat`
+
 > type: **int**
 
 ```json
 "threat" : 5
 ```
 
-The score of the *threat* component (see [more here](cti_api/taxonomy/scores.md)).
-
+The score of the _threat_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 #### `trust`
+
 > type: **int**
 
 ```json
 "trust" : 5
 ```
 
-The score of the *trust* component (see [more here](cti_api/taxonomy/scores.md)).
+The score of the _trust_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 #### `anomaly`
+
 > type: **int**
 
 ```json
 "anomaly" : 5
 ```
 
-The score of the *anomaly* component (see [more here](cti_api/taxonomy/scores.md)).
-
-
+The score of the _anomaly_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 ### `last_month`
+
 > type: **object**
 
 ```json
@@ -717,6 +826,7 @@ The score of the *anomaly* component (see [more here](cti_api/taxonomy/scores.md
 Malevolence score over the last month.
 
 #### `total`
+
 > type: **int**
 
 ```json
@@ -725,46 +835,48 @@ Malevolence score over the last month.
 
 The aggregated malevolence score.
 
-
 #### `aggressiveness`
+
 > type: **int**
 
 ```json
 "aggressiveness" : 5
 ```
 
-The score of the *aggressiveness* component (see [more here](cti_api/taxonomy/scores.md)).
+The score of the _aggressiveness_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 #### `threat`
+
 > type: **int**
 
 ```json
 "threat" : 5
 ```
 
-The score of the *threat* component (see [more here](cti_api/taxonomy/scores.md)).
-
+The score of the _threat_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 #### `trust`
+
 > type: **int**
 
 ```json
 "trust" : 5
 ```
 
-The score of the *trust* component (see [more here](cti_api/taxonomy/scores.md)).
+The score of the _trust_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 #### `anomaly`
+
 > type: **int**
 
 ```json
 "anomaly" : 5
 ```
 
-The score of the *anomaly* component (see [more here](cti_api/taxonomy/scores.md)).
-
+The score of the _anomaly_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 ### `last_week`
+
 > type: **object**
 
 ```json
@@ -780,6 +892,7 @@ The score of the *anomaly* component (see [more here](cti_api/taxonomy/scores.md
 Malevolence score over the last week.
 
 #### `total`
+
 > type: **int**
 
 ```json
@@ -788,46 +901,48 @@ Malevolence score over the last week.
 
 The aggregated malevolence score.
 
-
 #### `aggressiveness`
+
 > type: **int**
 
 ```json
 "aggressiveness" : 5
 ```
 
-The score of the *aggressiveness* component (see [more here](cti_api/taxonomy/scores.md)).
+The score of the _aggressiveness_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 #### `threat`
+
 > type: **int**
 
 ```json
 "threat" : 5
 ```
 
-The score of the *threat* component (see [more here](cti_api/taxonomy/scores.md)).
-
+The score of the _threat_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 #### `trust`
+
 > type: **int**
 
 ```json
 "trust" : 5
 ```
 
-The score of the *trust* component (see [more here](cti_api/taxonomy/scores.md)).
+The score of the _trust_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 #### `anomaly`
+
 > type: **int**
 
 ```json
 "anomaly" : 5
 ```
 
-The score of the *anomaly* component (see [more here](cti_api/taxonomy/scores.md)).
-
+The score of the _anomaly_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 ### `last_day`
+
 > type: **object**
 
 ```json
@@ -843,6 +958,7 @@ The score of the *anomaly* component (see [more here](cti_api/taxonomy/scores.md
 Malevolence score over the last day.
 
 #### `total`
+
 > type: **int**
 
 ```json
@@ -851,45 +967,48 @@ Malevolence score over the last day.
 
 The aggregated malevolence score.
 
-
 #### `aggressiveness`
+
 > type: **int**
 
 ```json
 "aggressiveness" : 5
 ```
 
-The score of the *aggressiveness* component (see [more here](cti_api/taxonomy/scores.md)).
+The score of the _aggressiveness_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 #### `threat`
+
 > type: **int**
 
 ```json
 "threat" : 5
 ```
 
-The score of the *threat* component (see [more here](cti_api/taxonomy/scores.md)).
-
+The score of the _threat_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 #### `trust`
+
 > type: **int**
 
 ```json
 "trust" : 5
 ```
 
-The score of the *trust* component (see [more here](cti_api/taxonomy/scores.md)).
+The score of the _trust_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 #### `anomaly`
+
 > type: **int**
 
 ```json
 "anomaly" : 5
 ```
 
-The score of the *anomaly* component (see [more here](cti_api/taxonomy/scores.md)).
+The score of the _anomaly_ component (see [more here](cti_api/taxonomy/scores.md)).
 
 ## `state`
+
 > type: **string**
 
 ```json
@@ -902,6 +1021,7 @@ Only present for the `fire` route.
 - `refused` means it was part of the community blocklist, but was manually purged (ie. false positive)
 
 ## `expiration`
+
 > type: **string**
 
 ```json
@@ -911,4 +1031,3 @@ Only present for the `fire` route.
 Only present for the `fire` route.
 
 Date at which the IP address expire from the community blocklist.
-
