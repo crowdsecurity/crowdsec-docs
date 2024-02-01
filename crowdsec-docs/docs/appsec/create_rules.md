@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Foreword
 
-This documentation assumes you're trying to create an appsec rules with the intent of submitting to the hub, and thus creating the associated functional testing. The creation of said functional testing will guide our process and will make it easier.
+This documentation assumes you're trying to create an AppSec rules with the intent of submitting to the hub, and thus creating the associated functional testing. The creation of said functional testing will guide our process and will make it easier.
 
 We're going to create a rule for an imaginary vulnerability: [a shell injection in the user_id parameter](https://nvd.nist.gov/vuln/detail/CVE-2022-46169) that can be triggered because [the `x-foobar-bypass` header confuses the application](https://nvd.nist.gov/vuln/detail/CVE-2023-22515).
 
@@ -54,7 +54,7 @@ If you are creating a virtual-patching rule, please name your test `CVE-YYYY-XYZ
 
 ## Configure our test
 
-Let's add our appsec rule to the configuration file.
+Let's incorporate our AppSec rule into the configuration file.
 
 > .appsec-tests/my-vuln/config.yaml
 
@@ -64,7 +64,7 @@ appsec-rules:
 nuclei_template: my-vuln.yaml
 ```
 
-_note:_ as our custom appsec rule is not yet part of the hub, we specify their path relative to the root of the hub directory.
+_note:_ Since our custom AppSec rule has not been added to the hub yet, we need to define its path relative to the root of the hub directory.
 
 The `hubtest create` command created a boilerplate nuclei template that we can edit to add our HTTP request:
 
@@ -122,7 +122,7 @@ user_id=123;cat /etc/password&do=yes
 
 ## Rule creation
 
-Let's now create our appsec rule:
+Let's now create our AppSec rule:
 
 > appsec-rules/crowdsecurity/my-vuln.yaml
 
@@ -183,7 +183,7 @@ You can [find detailed rules syntax here](/appsec/rules_syntax.md).
 We now have the needed pieces:
 
 - a nuclei template that simulates exploitation
-- an appsec rule to detect the vulnerability exploitation
+- an AppSec rule to detect the vulnerability exploitation
 - a test that ties both together, ensuring our rule detects our exploit
 
 To run our test, we're going to use the provided docker-compose file. It starts an nginx server (listening on port `7822`), that will be used as a "target" for our exploitation attempt. The nginx service is configured to interact with the ephemeral crowdsec service started by `hubtest`:
@@ -240,14 +240,14 @@ WARN[2023-12-21 16:50:33] Nuclei generated output saved to /.../my-vuln-17031738
 
 note that you can always run your nuclei template "manually" to debug it: `nuclei -t path/to/my-vuln.yaml -u target`
 
-3. your appsec rule isn't valid
+3. your AppSec rule isn't valid
 
 You will see crowdsec fataling at startup:
 
 ```
 time="2023-12-21 15:42:10" level=info msg="loading inband rule crowdsecurity/*" component=appsec_config name=appsec-test type=appsec
 time="2023-12-21 15:42:10" level=error msg="unable to convert rule crowdsecurity/my-vuln : unknown zone 'BODY'" component=appsec_collection_loader name=appsec-test type=appsec
-time="2023-12-21 15:42:10" level=fatal msg="crowdsec init: while loading acquisition config: while configuring datasource of type appsec fro...
+time="2023-12-21 15:42:10" level=fatal msg="crowdsec init: while loading acquisition config: while configuring datasource of type AppSec fro...
 ```
 
 ### Inspecting runtime logs
