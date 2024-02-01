@@ -6,7 +6,7 @@ sidebar_position: 6
 
 ## Foreword
 
-onfiguring the AppSec Component usually requires the use of multiple files:
+Configuring the AppSec Component usually requires the use of multiple files:
 
  - [AppSec rules](/appsec/rules_syntax.md) allow you to write a signature to detect and/or block malevolent requests. [You can find more information about the syntax here](/appsec/rules_syntax.md)
  - [acquisition configuration](/data_sources/appsec.md) indicates which port is the AppSec Component listening to, and which AppSec configuration it will use.
