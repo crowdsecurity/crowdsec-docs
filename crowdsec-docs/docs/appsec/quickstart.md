@@ -15,7 +15,7 @@ The goal of this quickstart is to set up the [AppSec Component](/appsec/intro.md
 2. It's assumed that you have already installed:
    - **Crowdsec [Security Engine](/docs/next/intro)**: for installation, refer to the [QuickStart guide](/docs/getting_started/install_crowdsec). The AppSec Component, which analyzes HTTP requests, is included within the security engine.
    - Nginx and its **[Remediation Component](/u/bouncers/intro)**: installation instructions are available in the [QuickStart guide](/u/bouncers/nginx). This component intercepts HTTP requests at the webserver or reverse-proxy level and forwards them to the AppSec Component for analysis and action.
-   - 
+
 ## AppSec Component Setup
 
 ### Collection installation
@@ -144,10 +144,11 @@ To setup forwarding of requests in the Nginx remediation component, we'll modify
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
 APPSEC_URL=http://127.0.0.1:7422
-# in case the AppSec run on the same machine, else provide the AppSec IP
 ```
 
-This instructs our Nginx plugin (the remediation component) to communicate with the AppSec Component at `http://127.0.0.1:7422`. Once configured, all incoming HTTP requests will be sent there for analysis.
+
+
+This instructs our Nginx plugin (the remediation component) to communicate with the AppSec Component at `http://127.0.0.1:7422`. Once configured, all incoming HTTP requests will be sent there for analysis. The snippet above assumes that the AppSec Component is running on the same machine.
 
 We can now restart the service:
 
