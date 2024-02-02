@@ -195,11 +195,11 @@ The reputation of the IP address.
 
 The possible values are:
 
-- `malicious` : IP is malicious
-- `suspicious` : IP has been reported by many CrowdSec users but is not enough aggressive to be considered as malicious
-- `known` : IP is known in the CrowdSec network, but we don't have enough sightings
-- `safe` : IP is safe and can be trusted (ex: Google DNS, Cloudflare DNS ...)
-- `unknown`: IP is unknown or its last report is more than 3 month ago
+- `malicious` : The IP address is malicious
+- `suspicious` : Many CrowdSec users have reported the IP, but it is not aggressive enough to be considered malicious
+- `known` : At this time, the CrowdSec network has identified the IP, but we still require additional information to make a decision
+- `safe` : The IP address is safe and can be trusted (ex: Google DNS, Cloudflare DNS ...)
+- `unknown`: The IP address is either unknown or its last report is from more than three months ago
 
 ## `ip_range_24`
 
@@ -219,15 +219,14 @@ The /24 range of the IP address.
 "ip_range_24_reputation" : "malicious"
 ```
 
-The reputation of the /24 range of the IP address.
+For range reputation, only the IPs in the immediate proximity of the requested IP address are considered. For convenience, the range (network prefix) size is always fixed to /24, or 256 IPv4 addresses.
 
-The possible values are:
+The possible values for the /24 network prefix are:
 
-- `malicious` : The range 24 of the IP is malicious
-- `suspicious` : The range 24 of the IP contains some IPs that has been reported by the CrowdSec network
-- `known` : The range 24 of the IP is known in CrowdSec network, but we don't have enough sightings about the its IP addresses
-- `safe` : The range 24 of the IP is safe and can be trusted (ex: Google DNS, Cloudflare DNS ...)
-- `unknown`: The range 24 of the IP is unknown or its last report is more than 3 month ago
+- `malicious` : The range is considered malicious
+- `suspicious` : The IP range contains several IPs that have been reported by the CrowdSec network
+- `known` : The IP range is recognized in the CrowdSec network, but we lack sufficient sightings of its IP addresses
+- `unknown`: The last report for IP range is either unknown or over 3 months old
 
 ## `ip_range_24_score`
 
@@ -237,9 +236,35 @@ The possible values are:
 "ip_range_24_score" : 4
 ```
 
-The malevolence score of the /24 IP range the IP belongs to.
+For range scoring, only the IPs in the immediate proximity of the requested IP address are considered. For convenience, the range (network prefix) size is always fixed to /24, or 256 IPv4 addresses.
 
-0 is unknown, 1 is a couple of IP reported, 5 is the highest level for the most aggressive range.
+0 represents unknown, 1 represents a few reported IPs, and 5 represents the highest level for the most aggressive range
+
+Here is the mapping with the reputation:
+
+| Score | Reputation   |
+| ----- | ------------ |
+| 0     | `unknown`    |
+| 1-2   | `known`      |
+| 3     | `suspicious` |
+| 4-5   | `malicious`  |
+
+## `background_noise`
+
+> type: **string**
+
+```json
+"background_noise" : "malicious"
+```
+
+The level of background noise of an IP address is an indicator of its internet activity intensity.
+
+The possible values are:
+
+- `high` : IP is very noisy
+- `medium` : IP has been reported by many members of the CrowdSec network, but not enough to be considered as background noise
+- `low` : IP has been reported by a few members of the CrowdSec network
+- `none` : IP has never been reported or only by a very few members of the CrowdSec network
 
 ## `background_noise_score`
 
@@ -250,23 +275,6 @@ The malevolence score of the /24 IP range the IP belongs to.
 ```
 
 Evaluate the noisiness of an IP address, from a scale of 0 (not noisy) to 10 (extremely noisy)
-
-## `background_noise`
-
-> type: **string**
-
-```json
-"background_noise" : "malicious"
-```
-
-The background_noise level of the IP address.
-
-The possible values are:
-
-- `high` : IP is background noise
-- `medium` : IP has been reported by many members of the CrowdSec network, but not enough to be considered as background noise
-- `low` : IP has been reported by a few members of the CrowdSec network
-- `none` : IP has never been reported or only by very a few members of the CrowdSec network
 
 ## `ip_range_score`
 
