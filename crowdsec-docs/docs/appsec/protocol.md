@@ -92,11 +92,13 @@ username=admin' OR '1'='1' -- &password=password
 
 ## Response Code
 
-According to the result of the processing of the HTTP request, the application security component will response with a different HTTP code and body.
+According to the result of the processing of the HTTP request, the application security component will respond with a different HTTP code and body.
 
 | HTTP Code | Description                                                                                                                                          | Body                                             |
 | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
 | `200`     | The HTTP request is allowed                                                                                                                          | `{"action" : "allow"}`                           |
-| `403`     | The HTTP request triggered one or more application security component rules                                                                           | `{"action" : "ban"}` or `{"action" : "captcha"}` |
-| `500`     | An error occurred in the application security component. The remediation component must support a `WAAP_FAILURE_ACTION` parameter to handle this case | `null`                                           |
+| `403`     | The HTTP request triggered one or more application security component rules                                                                           | `{"action" : "ban", "http_status": 403}` or `{"action" : "captcha", "http_status": 403}` |
+| `500`     | An error occurred in the application security component. The remediation component must support a `APPSEC_FAILURE_ACTION` parameter to handle this case | `null`                                           |
 | `401`     | The remediation component is not authenticated. It must use the same API Key that was generated to pull the local API request                        | `null`                                           |
+
+In case of a `403` response, the body will contain the action to take and the HTTP status code to return to the client.
