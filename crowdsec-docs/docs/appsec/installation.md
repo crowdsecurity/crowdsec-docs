@@ -6,7 +6,7 @@ sidebar_position: 3
 
 # AppSec Component
 
-We are going to cover a basic setup of the **AppSec component**, with a set of rules focused on virtual patching.
+We will explore a fundamental configuration of the **AppSec Component**, emphasizing a rule set dedicated to virtual patching.
 
 **Virtual patching** rules focus on preventing the exploitation of well-known vulnerabilities and are a great way to deter and slow down someone scanning your web application.
 
@@ -14,7 +14,7 @@ The following configuration is crafted to offer the best ROI for your web applic
 
 ## Pre-requisites
 
-To have a functional AppSec component, you need:
+To have a functional AppSec Component, you need:
 
 - Crowdsec security engine >= 1.5.6
 - One of the compatible bouncers:
@@ -28,9 +28,9 @@ To have a functional AppSec component, you need:
 
 ## Overview
 
-Before jumping into the action, it's essential to understand the key configuration elements of the AppSec component:
+Before diving into the practical steps, it's crucial to familiarize yourself with the core configuration aspects of the AppSec Component:
 
-- **acquisition configuration**: Specifies how to acquire the AppSec component stream of data
+- **acquisition configuration**: Specifies how to acquire the AppSec Component stream of data
 - **AppSec Component configuration**: Tells which rules are loaded in inband (blocking) and out-of-band (non-blocking)
   phases, [and allows tweaking the behavior of the component via the powerful expr bindings](/appsec/hooks.md). <!--@sbl we need anchor for the on_whatever and expr helpers -->
 - **rules** allow writing a [signature to detect and/or block malevolent requests](/appsec/rules_syntax.md).
@@ -52,23 +52,23 @@ cscli collections install crowdsecurity/appsec-virtual-patching
 
 This collection provides you:
 
-- The config for the AppSec component (`crowdsecurity/virtual-patching`)
+- The config for the AppSec Component (`crowdsecurity/virtual-patching`)
 - All our virtual patching rules
   - The CrowdSec Parser for AppSec
   - The CrowdSec Scenario(s) for AppSec
 
 ## Configure the AppSec Component acquisition
 
-The AppSec component works as a data-source by relaying the request's data to the security engine. We'll add this data-source similarly to other data-sources via an acquisition file.
+The AppSec Component acts as a data source, sending request data to the security engine. We'll connect this data source using an acquisition file, just like we do with other data sources.
 
 This can be done by editing `/etc/crowdsec/acquis.yaml` or adding a new YAML file in `/etc/crowdsec/acquis.d/`
 
-For this type of data-source we'll declare the **address** and **port** through which the AppSec component will communicate with the security engine to relay request data and get the verdict.
+For this type of data-source we'll declare the **address** and **port** through which the AppSec Component will communicate with the security engine to relay request data and get the verdict.
 
 The important lines are:
 
-- `listen_addr` that indicates on which interface/port the service listens to
-- `appsec_config` is the name of the config that the appsec component will run. We'll be using `crowdsecurity/virtual-patching` we just got from the hub for this example, but you can create your config and name it as you'd like. you can find them in `/etc/crowdsec/...`
+ - `listen_addr` that indicates on which interface/port the service listens to
+ - `appsec_config` is the configuration name that the AppSec Component will use. For this example, we're employing `crowdsecurity/virtual-patching` that we obtained from the hub, but feel free to create and name your own configuration. You can locate them in `/etc/crowdsec/...`
 
 ```bash
 mkdir  -p /etc/crowdsec/acquis.d
@@ -88,7 +88,7 @@ We'll then restart CrowdSec:
 systemctl restart crowdsec
 ```
 
-And you should be able to see CrowdSec starting the AppSec component in the logs (`/var/log/crowdsec.log`):
+And you should be able to see CrowdSec starting the AppSec Component in the logs (`/var/log/crowdsec.log`):
 
 ```
 INFO[2023-12-05 09:16:31] 1 appsec runner to start                      type=appsec
@@ -108,7 +108,7 @@ tcp        0      0 127.0.0.1:7422          0.0.0.0:*               LISTEN      
 
 <!-- @kka fix version -->
 
-At the time of writing, only the crowdsec nginx bouncer supports native integration with the AppSec component, and requires version >= X.Y.Z.
+At the time of writing, only the crowdsec nginx bouncer supports native integration with the AppSec Component, and requires version >= X.Y.Z.
 
 [If you don't have the bouncer installed, do it now !](https://docs.crowdsec.net/u/bouncers/nginx)
 

@@ -7,7 +7,7 @@ sidebar_position: 81
 
 ## Monitoring with `cscli`
 
-`cscli metrics` expose minimal metrics about the appsec component:
+`cscli metrics` expose minimal metrics about the AppSec Component:
  - Number of requests processed and blocked by the component/data source
  - Number of triggers of each individual rules
 
@@ -33,18 +33,18 @@ The prometheus metrics are more detailed, detailing analysis time for each reque
 
 They can be seen in the dedicated [grafana dashboard](/observability/prometheus.md#exploitation-with-prometheus-server--grafana).
 
-You can also inspect an appsec rule directly with `cscli appsec-rules inspect <rule_name>` to see the amount of requests that were blocked by the rule.
+You can also inspect an AppSec rule directly with `cscli appsec-rules inspect <rule_name>` to see the amount of requests that were blocked by the rule.
 
 ## Enabling Debug in the AppSec Component
 
 Debugging configuration is cascading in the AppSec Component.
 
-Setting `log_level` to `debug` or `trace` in the acquisition config section or the appsec config will enable debug logging for the whole appsec component. You can also set `debug` to `true` directly in an appsec rule.
+Setting `log_level` to `debug` or `trace` in the acquisition config section or the AppSec config will enable debug logging for the whole AppSec Component. You can also set `debug` to `true` directly in an AppSec rule.
 
 
-When enabling debug at acquisition or appsec config level:
+When enabling debug at acquisition or AppSec config level:
  - load time debug will be enabled, such as information regarding the translation of the rule to `SecRule` format.
- - runtime debug will be enabled for all the rules loaded by the appsec component / appsec config.
+ - runtime debug will be enabled for all the rules loaded by the AppSec Component / AppSec config.
 
 When enabling debug directly at the appsec rule level, only runtime evaluation information of the rule will be displayed, such as:
 
@@ -60,10 +60,10 @@ DEBU[2023-12-06 15:40:26] Rule matched                                  band=inb
 DEBU[2023-12-06 15:40:26] Finish evaluating rule                        band=inband name=appseclol rule_id=2145145579 type=appsec uuid=adc5ffc4-6080-432c-af93-7c76c79afc25
 ```
 
-## Authenticating with the AppSec component
+## Authenticating with the AppSec Component
 
 :::note
-We are assuming the appsec engine is running on `127.0.0.1:7422`. See [installation directives](/docs/next/appsec/install)
+We are assuming the AppSec engine is running on `127.0.0.1:7422`. See [installation directives](/docs/next/appsec/install)
 :::
 
 > Create a valid API Key
@@ -72,7 +72,7 @@ We are assuming the appsec engine is running on `127.0.0.1:7422`. See [installat
 cscli bouncers add appsec_test -k this_is_a_bad_password
 ```
 
-> Emit a request to the AppSec component
+> Emit a request to the AppSec Component
 
 ```bash
 curl -I -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password' -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET' 
@@ -82,7 +82,7 @@ Content-Length: 18
 Content-Type: text/plain; charset=utf-8
 ```
 
-If you receive a `200 OK`, you can authenticate to the appsec component. If the component is misconfigured or your API key is invalid, you will receive a `401 Unauthorized`:
+If you receive a `200 OK`, you can authenticate to the AppSec Component. If the component is misconfigured or your API key is invalid, you will receive a `401 Unauthorized`:
 
 ```bash
 curl -I -X POST localhost:7422/ -i  -H 'x-crowdsec-appsec-api-key: meeh' -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET'          
@@ -96,7 +96,7 @@ Content-Length: 0
 ## Ensuring your rule(s) are loaded
 
 Crowdsec will show on startup all the rules that are installed (even if they are not used by any active appsec-config).
-Seeing a rule here does not mean it will be used by the appsec component, depending on the appsec-config you are using:
+Seeing a rule here does not mean it will be used by the AppSec Component, depending on the appsec-config you are using:
 
 ```
 ...
@@ -108,7 +108,7 @@ INFO[2023-12-06 14:58:19] loading acquisition file : ...
 ## Testing a given rule
 
 We can create a skeleton environment with:
- - acquisition config that is going to load your test appsec config
+ - acquisition config that is going to load your test AppSec config
  - appsec config to load the test rule
  - the test rule itself
 
@@ -169,12 +169,12 @@ time="2023-12-20 13:39:29" level=info msg="Appsec Runner ready to process event"
 
 ## Interacting with the AppSec Component
 
-To test that the AppSec component is working correctly, you can send requests directly to it. A few things to know:
- - To query the appsec component, you need to have a valid remediation component API Key
- - The appsec component expects to receive some of the elements in specific headers
+To test that the AppSec Component is working correctly, you can send requests directly to it. A few things to know:
+ - To query the AppSec Component, you need to have a valid remediation component API Key
+ - The AppSec Component expects to receive some of the elements in specific headers
 
 
-We are going to test that the appsec component detects correctly CVE-2023-42793, which is part of the [virtual patching collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching), that should be installed for this to work (see `cscli appsec-rules list`).
+We are going to test that the AppSec Component detects correctly CVE-2023-42793, which is part of the [virtual patching collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching), that should be installed for this to work (see `cscli appsec-rules list`).
 [This rule](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-CVE-2023-42793) is pretty straightforward and detects requests to an URI ending with `/rpc2`:
 
 > cat /etc/crowdsec/appsec-rules/vpatch-CVE-2023-42793.yaml
@@ -203,13 +203,13 @@ labels:
    - cwe.CWE-288
 ```
 
-To be able to communicate with the appsec component, let's create a bouncer API Key:
+To be able to communicate with the AppSec Component, let's create a bouncer API Key:
 
 ```bash
 cscli bouncers add appsec_test -k this_is_a_bad_password
 ```
 
-We can now query our appsec component (we're assuming here that it runs on the default `127.0.0.1:7422`, see the `listen_addr` parameter of the acquisition config):
+We can now query our AppSec Component (we're assuming here that it runs on the default `127.0.0.1:7422`, see the `listen_addr` parameter of the acquisition config):
 
 ```bash
 ▶ curl -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /rpc2' -H 'x-crowdsec-appsec-host: google.com' -H 'x-crowdsec-appsec-verb: POST' -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password'

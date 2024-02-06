@@ -63,6 +63,13 @@ labels:
 
 The `labels` part is here to tag the incoming logs with a type. `labels.type` are used by the parsers to know which logs to process.
 
+## Application Security Component
+
+[[References](/appsec/intro.md)]
+
+The Application Security Component is a special datasource that allows the supported remediation components to forward HTTP requests to crowdsec for analysis, before they can reach the application.
+Because CrowdSec can analyse the request and take a decision before it reaches the application, the combo of the Application Security Component and the remediation components acts as a Web Application Firewall (WAF).
+
 ## Stages
 
 [[References](/parsers/introduction.mdx#stages)]
@@ -115,7 +122,7 @@ Once again, you should be able to find the ones you're looking for on the [Hub](
 
 [[References](/scenarios/introduction.mdx)]
 
-A scenarios is the expression of a heuristic that allows you to qualify a specific event (usually an attack). It is a YAML file that describes a set of events characterizing a scenario. Scenarios in CrowdSec gravitate around the [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) principle.
+A scenario is the expression of a heuristic that allows you to qualify a specific event (usually an attack). It is a YAML file that describes a set of events characterizing a scenario. Scenarios in CrowdSec gravitate around the [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) principle.
 
 A scenario description includes at least:
 
@@ -133,6 +140,25 @@ See [Hub](https://hub.crowdsec.net/browse/#configurations) to explore scenarios 
 
 You can as well [write your own](/scenarios/create.md)!
 
+## AppSec Rules
+
+[[References](/appsec/intro.md)]
+
+An AppSec rule is a YAML configuration file that describe a rule for the [Application Security Component](/appsec/intro.md).
+
+An AppSec rule can match on various aspect of an HTTP request, such as the verb, the URI, the headers, the parameters, the body, etc.
+You can use them to detect and block exploitation of specific vulnerabilities (virtual patching) or to write more generic WAF rules.
+
+Contrary to scenarios, appsec rules can block a request before it reaches the application if configured in `in-band` mode.
+
+## AppSec Configs
+
+An Appsec Config file is a YAML configuration file that tell the [Application Security Component](/appsec/intro.md) which rules should be loaded, and in which band (in-band or out-of-band).
+
+The config also expose hooks allowing you to customize at runtime the behavior of the AppSec component (disable a rule on a specific URL, apply a captcha if a specific rule is triggered, etc.)
+
+  
+[[References](/appsec/intro.md)]
 
 ## Collections
 
