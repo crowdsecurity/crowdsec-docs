@@ -25,14 +25,15 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 
 :::warning
-This remediation component heavily relies on Cloudflare Workers and KV store. It won't work without a paid Workers subscription.
+This Bouncer heavily relies on Cloudflare Workers and KV store. It works best on a paid Workers subscription.
+More explanation in the chapter [Test with Cloudflare free plan](#appendix--test-with-cloudflare-free-plan)
 :::
 
 :::warning
-After configuring and starting the remediation component, please see the [setting up worker fail mode](#setting-up-the-worker-route-fail-mode) section.  
+After configuring and starting the Bouncer, please see the [setting up worker fail mode](#setting-up-the-worker-route-fail-mode) section.  
 :::
 
-This remediation component deploys Cloudflare Worker in front of a Cloudflare Zone/Website, which checks if incoming request's IP address/Country/AS is present in a KV store and takes necessary remedial actions. It also periodically updates the KV store with CrowdSec LAPI's decisions.
+This Bouncer deploys Cloudflare Worker in front of a Cloudflare Zone/Website, which checks if incoming request's IP address/Country/AS is present in a KV store and takes necessary remedial actions. It also periodically updates the KV store with CrowdSec LAPI's decisions.
 
 ## Installation
 
@@ -239,29 +240,60 @@ sudo crowdsec-cloudflare-worker-bouncer -d
 
 ## Setting up the worker route fail mode
 
-The remediation component creates worker routes to make the workers act as a reverse proxy for your origin servers. The worker routes are created with the failover mode set to `Fail Closed`. There's no public Cloudflare API we can use to change/update it to `Fail Open` mode.
+The Bouncer creates worker routes to make the workers act as a reverse proxy for your origin servers. The worker routes are created with the failover mode set to `Fail Closed`. There's no public Cloudflare API we can use to change/update it to `Fail Open` mode.
 
 With `Fail Closed` mode, Routes in fail closed mode will display a Cloudflare 1027 error page to visitors if there's an error within the worker. This error could be triggered due to quotas exceeding your plan etc. Cloudflare doesn't mention all the possible scenarios which could trigger this error page. 
 
-Thus **we recommend you to manually override the failover mode to `Fail Open`** for all the worker routes created by our remediation component. With `Fail Open` mode the requests would bypass the worker and be served directly from your origin servers. Thus your website would continue to function even if there's an error within the worker.
+Thus **we recommend you to manually override the failover mode to `Fail Open`** for all the worker routes created by our Bouncer. With `Fail Open` mode the requests would bypass the worker and be served directly from your origin servers. Thus your website would continue to function even if there's an error within the worker.
 
 This can be done by following the steps below:
 
 1. Log in to the Cloudflare dashboard and select your account.
-2. For all the websites configured with the remediation component, do the following:
+2. For all the websites configured with the Bouncer, do the following:
 3. Click on the website's name to open the Website's Overview page.
 4. Click on the Worker Routes tab from the left menu.
 
 ![Worker Route](/img/bouncer/cloudflare-worker/cfsitedashboard.png)
 
-5. Click on the route created by the remediation component.
+5. Click on the route created by the Bouncer.
 6. Click on the Edit button.
 7. Click on the Request limit failure mode. Check the Fail open button.
 
 ![Fail Open](/img/bouncer/cloudflare-worker/cffailmode.png)
 
+## Appendix: Test with Cloudflare free plan
+Because of some hard limits/quotas in the free plan, this bouncer is the most efficient on the paid Cloudflare plan.
+But you can use it on the free plan none the less.
+In this section we'll explore:
+  - What the Cloudflare freeplan limitations are and The consequences of those limitations on the capabilities of the bouncer
+  - An example of using this Bouncer on the free plan without issues
 
-## Configuration Reference
+### Cloudflare freeplan limitations 
+Our Bouncer uses Cloudflare Workers and Workers KeyValue storage
+You can find their official documentation about limits there:
+   - [KeyValue storage limits by plan](https://developers.cloudflare.com/kv/platform/limits/)
+   - [Workers limits by plan](https://developers.cloudflare.com/workers/platform/limits/)
+
+The limits to focus on for the freeplan are (in order of importance):
+  - KV write 1K/day
+  - Requests handled by worker: 100k/day and 1K/minute
+
+The KV write limit of 1K per day is the main restrictive limit for our Bouncer as our decisions list (blocklist) is most of the time comprised of tens of thousands of IPs
+The number of request quota is not such a massive limitation depending on the popularity of your service, but considering all the Background Noise attacks that can occur in a day, don't forget that legitimate requests are not the only thing hitting your endpoint. 
+
+From those limitations two things happen:
+  - The blocklist initial storage in KV is trucated to 1K IPs BUT will periodically receive new decisions and remove expired ones. So, eventually you'll have many more than 1K IPs in the KV but it could take a while
+  - If you reach the Worker request limits, the worker will fail and the request will just passthrough until the quota is refreshed. ⚠️ You need to [properly setup the failmode](#setting-up-the-worker-route-fail-mode)
+
+
+### Use the Bouncer with Cloudflare free plan.
+The main limit we can influence is the number of decisions we send to the worker.
+In this section we'll configure the Bouncer to only send decisions made locally and skip the decisions from the community blocklist.
+
+Once the you have [auto-generated the configuration](#auto-config-generator), we'll restrict the origin of decisions being sent via the config parameter [crowdsec.only_include_decisions_from](#crowdseconly_include_decisions_from)
+Don't forget to [properly setup the failmode](#setting-up-the-worker-route-fail-mode)
+
+## Appendix: Configuration Reference
 
 ### `crowdsec.lapi_url`
 
