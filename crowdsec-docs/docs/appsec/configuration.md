@@ -6,18 +6,19 @@ sidebar_position: 6
 
 ## Foreword
 
-A few files are often involved when configuring the appsec component:
- - [appsec rules](/appsec/rules_syntax.md) allows you to write a signature to detect and/or block malevolent requests. [You can find more information about the syntax here](/appsec/rules_syntax.md)
- - [acquisition configuration](/data_sources/appsec.md) indicates on which port is the appsec component listening to, and which appsec configuration it will use.
- - appsec configuration tells which rules are loaded in inband (blocking) and out-of-band (non-blocking)
-  phases. [it as well allows you to tweak the behavior of the component via the powerfull expr bindings](/appsec/rules_syntax.md)
+Configuring the AppSec Component usually requires the use of multiple files:
+
+ - [AppSec rules](/appsec/rules_syntax.md) allow you to write a signature to detect and/or block malevolent requests. [You can find more information about the syntax here](/appsec/rules_syntax.md)
+ - [acquisition configuration](/data_sources/appsec.md) indicates which port is the AppSec Component listening on, and which AppSec configuration it will use.
+ - AppSec configuration tells which rules are loaded in inband (blocking) and out-of-band (non-blocking)
+  phases. [it as well allows you to tweak the behavior of the component via the powerful expr bindings](/appsec/rules_syntax.md)
 
 
 ## Appsec configuration
 
-The appsec configuration is referenced by the acquisition configuration (`appsec_config` or `appsec_config_path`):
+The AppSec configuration is referenced by the acquisition configuration (`appsec_config` or `appsec_config_path`):
 
-> An example appsec configuration
+> An example AppSec configuration
 ```yaml
 name: crowdsecurity/virtual-patching
 default_remediation: ban
@@ -31,11 +32,11 @@ inband_rules:
 
 ### `name`
 
-(required) the `name` of the appsec configuration, used for both logging purposes and to reference the configuration from acquisition configuration.
+(required) the `name` of the AppSec configuration, used for both logging purposes and to reference the configuration from acquisition configuration.
 
 ### `outofband_rules`
 
-An optional list of rules to be loaded in out of band phase. Out of band rules are non-blocking and are evaluated only once the appsec component answered to the remediation component. Useful for rules that are either expensive, can trigger false positives or are used for other scenarios.
+A supplementary list of rules can be loaded during the out-of-band phase. These out-of-band rules are non-blocking and are assessed only after the AppSec Component has responded to the remediation component. This approach is beneficial for rules that may be costly to execute, have a higher likelihood of generating false positives, or are applicable in specific scenarios.
 
 ### `inband_rules`
 

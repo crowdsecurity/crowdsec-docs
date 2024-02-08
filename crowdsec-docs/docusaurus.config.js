@@ -60,7 +60,7 @@ module.exports = {
   themeConfig: {
     announcementBar: {
       id: 'banner_docs',
-      content: '<a target="_blank" href="https://www.youtube.com/watch?v=4W46yUpsKkU">Getting started with the CrowdSec AppSec Component!</a>',
+      content: '<a target="_blank" href="https://doc.crowdsec.net/u/user_guides/alert_context">Learn how to improve alert visualisation and threat hunting with alert context</a>',
       backgroundColor: '#f7a718',
       textColor: '#131132',
       isCloseable: true,

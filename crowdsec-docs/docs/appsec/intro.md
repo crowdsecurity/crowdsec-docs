@@ -43,7 +43,7 @@ This leads to two possible outcomes:
 
 ### 3 Security Engine: out-of-band rules processing
 
-In the background, the security engine will then evaluate the out-of-band rules. These rules do not impact performance or response time, as they are evaluated after the AppSec component instructs the webserver to continue or stop processing the request.
+In the background, the security engine will then evaluate the out-of-band rules. These rules do not impact performance or response time, as they are evaluated after the AppSec Component instructs the webserver to continue or stop processing the request.
 
 ## Post processing
 
@@ -60,7 +60,7 @@ Let's now start using this AppSec capabilities:
 
 - **Installation**: [How to configure the Application Security Component with an existing remediation component](/appsec/installation.md)
 - **Rules**: [How to read, write and debug rules](/appsec/rules_syntax.md)
-- **Scenarios**: [How to create scenarios that leverage the AppSec component events](/appsec/scenarios.md)
+- **Scenarios**: [How to create scenarios that leverage the AppSec Component events](/appsec/scenarios.md)
 - **Hooks**: [For advanced use let's talk about possible Hooks](/appsec/hooks.md)
-- **Troubleshoot**: [How to troubleshoot the behavior of the AppSec component](/appsec/troubleshooting.md)
+- **Troubleshoot**: [How to troubleshoot the behavior of the AppSec Component](/appsec/troubleshooting.md)
 - **AppSec Protocol**: [if you're maintaining or creating a remedation component and want to add the AppSec capabilities](/appsec/protocol.md)

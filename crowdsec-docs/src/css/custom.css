@@ -155,3 +155,7 @@ html[data-theme="dark"] .header-console-link:before {
 div[class^='announcementBar'] > div[class^='content'] {
   font-size: 100%;
 }
+
+div[class^='announcementBar'] {
+  height: 100%;
+}
