@@ -205,6 +205,18 @@ module.exports = {
                 "getting_started/installation/macos",
             ]
         },
-        "getting_started/next_steps",
+        {
+            type: "category",
+            label: "Next Steps",
+            link: {
+                type: "doc",
+                id: "getting_started/next_steps",
+            },
+            items: [
+                "getting_started/post_installation/acquisition",
+                "getting_started/post_installation/profiles",
+                "getting_started/post_installation/metrics",
+            ],
+        },
     ]
 }
