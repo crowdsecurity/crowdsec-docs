@@ -1,0 +1,43 @@
+---
+id: windows
+title: Windows
+pagination_prev: getting_started/pre_requisites
+pagination_next: getting_started/next_steps
+---
+
+# Windows
+
+## Install Security Engine 
+
+### MSI Installer
+
+We provide MSI installers for Windows. You can download the latest version from the [release page](https://github.com/crowdsecurity/crowdsec/releases/latest)
+
+Download and run the installer, it will install CrowdSec as a service and start it.
+
+### Chocolatey
+
+You can install CrowdSec using [Chocolatey](https://chocolatey.org/), a package manager for Windows.
+
+```bash
+choco install crowdsec
+```
+
+## Install Remediation Component
+
+:::warning
+Security Engine by itself is a detection engine, it will not block anything. You need to install a Remediation Component to enforce decisions
+:::
+
+:::info
+The Windows Firewall Remediation Component requires the **.NET 6 runtime**. Install it before running the Component or use our setup bundle to install it with the Component.
+
+The runtime can be downloaded from [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime).
+Choose the "Console App" download.
+:::
+
+You can download either a MSI (containing only the component) or a setup bundle (containing the component and the .NET 6 runtime) from the [github releases](https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases)
+
+---
+
+Great, you now have CrowdSec installed on your system. Within the post installation checklist you will find the next steps to configure and optimize your installation.

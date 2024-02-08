@@ -192,4 +192,19 @@ module.exports = {
         "user_guides/alert_context",
         "user_guides/appsec_tuto",
     ],
+    gettingStarted: [
+        "getting_started/intro",
+        "getting_started/pre_requisites",
+        {
+            type: "category",
+            label: "Installation",
+            items: [
+                "getting_started/installation/linux",
+                "getting_started/installation/freebsd",
+                "getting_started/installation/windows",
+                "getting_started/installation/macos",
+            ]
+        },
+        "getting_started/next_steps",
+    ]
 }
