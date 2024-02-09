@@ -262,56 +262,58 @@ This can be done by following the steps below:
 ![Fail Open](/img/bouncer/cloudflare-worker/cffailmode.png)
 
 ## Appendix: Test with Cloudflare free plan
-Because of some hard limits/quotas in the free plan, this bouncer is the most efficient on the paid Cloudflare plan.   
-But you can use it on the free plan none the less.   
-In this section we'll explore:
-  - What the Cloudflare freeplan limitations are and The consequences of those limitations on the capabilities of the bouncer
-  - An example of using this Bouncer on the free plan without issues
+Using Cloudflare's free plan with our Bouncer requires to understand the constraints of the CloudFlare freeplan.   
+Despite these constraints, it's entirely feasible to leverage the Bouncer for enhanced security.   
 
-### Cloudflare freeplan limitations 
-Our Bouncer uses Cloudflare Workers and Workers KeyValue storage
-You can find their official documentation about limits there:
+In this section we'll guide you through:
+  - An overview of the Cloudflare free plan's limitations and their impact on Bouncer functionality
+  - A walkthrough for deploying the Bouncer within these constraints successfully
+
+### Understanding Cloudflare Free Plan Limitations
+Our Bouncer integrates with Cloudflare Workers and Workers KeyValue storage, subject to specific thresholds under the free plan.  
+For the complete detailed information, refer to Cloudflare's official documentation:
    - [KeyValue storage limits by plan](https://developers.cloudflare.com/kv/platform/limits/)
    - [Workers limits by plan](https://developers.cloudflare.com/workers/platform/limits/)
 
-The limits we'll focus on for running the bouncer on the freeplan are (in order of importance):
-  - KV write 1K/day
-  - Requests handled by worker: 100k/day and 1K/minute
+Key limitations to note for Bouncer operation on the free plan include:
+  - KV write: Up to 1K per day
+  - Worker Requests:Up to 100k per day or 1K per minute
 
-The *KV write limit of 1K per day* is the main restrictive limit for our Bouncer as our decisions list (blocklist) is most of the time comprised of tens of thousands of IPs.    
-The *number of request quota* is not such a massive limitation depending on the popularity of your service, but considering all the Background Noise attacks that can occur in a day, don't forget that legitimate requests are not the only thing hitting your endpoint.   
+*KV write limit of 1K per day*:   
+It's the primary limiting factor as the full decisions list (blocklist) passed on to the bouncer often exceeds tens of thousands of IPs.   
+  - It implies that the initial population of decisions in the Worker's KV will be truncated to 1K
+  - However, it will still periodically receive new decisions and remove expired ones.
+  - So, eventually you'll have many more than 1K IPs in the KV but it still diminishes the immediate effectiveness of the bouncer
 
-From those limitations two things happen:
-  - The blocklist initial storage in KV is truncated to 1K IPs
-    - However, it will periodically receive new decisions and remove expired ones.
-    - So, eventually you'll have many more than 1K IPs in the KV but it could take a while
-  - If you reach the Worker request limits
-    - The worker will fail and the request will just passthrough until the quota is refreshed.
-    - ⚠️ You need to [properly setup the failmode](#setting-up-the-worker-route-fail-mode)
+The *request quota*:
+While the request quota might seem ample, it's essential to remember that both legitimate traffic and potential attack patterns contribute to this total.   
+  - ⚠️ It's primordial to [properly setup the failmode](#setting-up-the-worker-route-fail-mode)
+  - With the failmode set to passthrough, when you reach the Worker request limits your service will stay available, but the bouncer won't apply remediation anymore
 
-### Quick Guide : Use the Bouncer with Cloudflare free plan.
-The main limit we can influence is the number of decisions we'll store in the KV storage.   
-In this section we'll configure the Bouncer to only send decisions made locally and skip the decisions from the community blocklist.
+### Quick Guide : Configuring the Bouncer on Cloudflare's Free Plan
+To adapt to the free plan's constraints, we can prioritize local decision-making and manual intervention over broader community-driven blocklists.   
+Here's how to set it up:
 
-1. [Auto-generate the configuration](#auto-config-generator)
-2. We'll restrict the origin of decisions being sent to the KV
-  Using the config parameter [crowdsec.only_include_decisions_from](#crowdseconly_include_decisions_from)   
-  We'll restrict to the *decisions taken locally* based on your installed scenarios AND *descisions added manually* via the command line
+1. *Configuration Setup*: Begin by [auto-generating the Bouncer configuration](#auto-config-generator).
+2. *Limiting Decision Sources*: Modify the configuration to prioritize decisions generated by your Security Engine and added manually.   
+  - Using the config parameter [crowdsec.only_include_decisions_from](#crowdseconly_include_decisions_from)   
   ```yaml
 crowdsec_config:
   [...]
   only_include_decisions_from: ["cscli", "crowdsec"]
   ```
-3. Don't forget to [properly setup the failmode](#setting-up-the-worker-route-fail-mode). This will avoid breaking your service once you reach the request quotas
-4. Test *adding descisions* either of type *ban* or *captcha*
+3. *Failmode Configuration*: It's crucial to [configure the failmode properly](#setting-up-the-worker-route-fail-mode) to ensure your service remains operational even when request quotas are reached.
+4. *Testing with manual decisions*: Verify the functionality by adding decisions manually, which should be promptly reflected in KV storage and enforced by the Bouncer.
   ```bash
     sudo cscli decisions add --ip 1.2.3.4 --type captcha
   ```
-  You should be able to see it using:
+  check your decisions has been added using:
 ```bash
   sudo cscli decisions list --origin cscli
 ```
   And within a few seconds it will be sent to the KV and the proper remediation should be applied to the requests from the specified IP
+
+  <!-- Screenshot of CF KV ? or something -->
 
 ## Appendix: Configuration Reference
 
