@@ -311,7 +311,7 @@ Now, if we revoke the certificate used by the bouncer, crowdsec will reject any 
 
 ```shell
 #serials.txt contain the serial of the bouncer certificate
-$ cfssl gencrl serials.txt /tmp/inter.pem /tmp/inter-key.pem | base64 -D | openssl crl -inform DER -out /tmp/crl.pem
+$ cfssl gencrl serials.txt /tmp/inter.pem /tmp/inter-key.pem | base64 -d | openssl crl -inform DER -out /tmp/crl.pem
 ```
 
 Let's update crowdsec config to make use of our newly generated CRL:
