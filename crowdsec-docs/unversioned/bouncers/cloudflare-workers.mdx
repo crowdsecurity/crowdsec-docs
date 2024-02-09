@@ -262,8 +262,8 @@ This can be done by following the steps below:
 ![Fail Open](/img/bouncer/cloudflare-worker/cffailmode.png)
 
 ## Appendix: Test with Cloudflare free plan
-Because of some hard limits/quotas in the free plan, this bouncer is the most efficient on the paid Cloudflare plan.
-But you can use it on the free plan none the less.
+Because of some hard limits/quotas in the free plan, this bouncer is the most efficient on the paid Cloudflare plan.   
+But you can use it on the free plan none the less.   
 In this section we'll explore:
   - What the Cloudflare freeplan limitations are and The consequences of those limitations on the capabilities of the bouncer
   - An example of using this Bouncer on the free plan without issues
@@ -274,24 +274,44 @@ You can find their official documentation about limits there:
    - [KeyValue storage limits by plan](https://developers.cloudflare.com/kv/platform/limits/)
    - [Workers limits by plan](https://developers.cloudflare.com/workers/platform/limits/)
 
-The limits to focus on for the freeplan are (in order of importance):
+The limits we'll focus on for running the bouncer on the freeplan are (in order of importance):
   - KV write 1K/day
   - Requests handled by worker: 100k/day and 1K/minute
 
-The KV write limit of 1K per day is the main restrictive limit for our Bouncer as our decisions list (blocklist) is most of the time comprised of tens of thousands of IPs
-The number of request quota is not such a massive limitation depending on the popularity of your service, but considering all the Background Noise attacks that can occur in a day, don't forget that legitimate requests are not the only thing hitting your endpoint. 
+The *KV write limit of 1K per day* is the main restrictive limit for our Bouncer as our decisions list (blocklist) is most of the time comprised of tens of thousands of IPs.    
+The *number of request quota* is not such a massive limitation depending on the popularity of your service, but considering all the Background Noise attacks that can occur in a day, don't forget that legitimate requests are not the only thing hitting your endpoint.   
 
 From those limitations two things happen:
-  - The blocklist initial storage in KV is trucated to 1K IPs BUT will periodically receive new decisions and remove expired ones. So, eventually you'll have many more than 1K IPs in the KV but it could take a while
-  - If you reach the Worker request limits, the worker will fail and the request will just passthrough until the quota is refreshed. ⚠️ You need to [properly setup the failmode](#setting-up-the-worker-route-fail-mode)
+  - The blocklist initial storage in KV is truncated to 1K IPs
+    - However, it will periodically receive new decisions and remove expired ones.
+    - So, eventually you'll have many more than 1K IPs in the KV but it could take a while
+  - If you reach the Worker request limits
+    - The worker will fail and the request will just passthrough until the quota is refreshed.
+    - ⚠️ You need to [properly setup the failmode](#setting-up-the-worker-route-fail-mode)
 
-
-### Use the Bouncer with Cloudflare free plan.
-The main limit we can influence is the number of decisions we send to the worker.
+### Quick Guide : Use the Bouncer with Cloudflare free plan.
+The main limit we can influence is the number of decisions we'll store in the KV storage.   
 In this section we'll configure the Bouncer to only send decisions made locally and skip the decisions from the community blocklist.
 
-Once the you have [auto-generated the configuration](#auto-config-generator), we'll restrict the origin of decisions being sent via the config parameter [crowdsec.only_include_decisions_from](#crowdseconly_include_decisions_from)
-Don't forget to [properly setup the failmode](#setting-up-the-worker-route-fail-mode)
+1. [Auto-generate the configuration](#auto-config-generator)
+2. We'll restrict the origin of decisions being sent to the KV
+  Using the config parameter [crowdsec.only_include_decisions_from](#crowdseconly_include_decisions_from)   
+  We'll restrict to the *decisions taken locally* based on your installed scenarios AND *descisions added manually* via the command line
+  ```yaml
+crowdsec_config:
+  [...]
+  only_include_decisions_from: ["cscli", "crowdsec"]
+  ```
+3. Don't forget to [properly setup the failmode](#setting-up-the-worker-route-fail-mode). This will avoid breaking your service once you reach the request quotas
+4. Test *adding descisions* either of type *ban* or *captcha*
+  ```bash
+    sudo cscli decisions add --ip 1.2.3.4 --type captcha
+  ```
+  You should be able to see it using:
+```bash
+  sudo cscli decisions list --origin cscli
+```
+  And within a few seconds it will be sent to the KV and the proper remediation should be applied to the requests from the specified IP
 
 ## Appendix: Configuration Reference
 
@@ -310,19 +330,19 @@ sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for h
 
 ### `crowdsec.update_frequency`
 
-The bouncer will poll the CrowdSec every `update_frequency` interval.
+The bouncer will poll the CrowdSec every `update_frequency` interval. (default: 10s)
 
 ### `crowdsec.include_scenarios_containing`
 
-Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
+Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"] (default: includes all scenarios)
 
 ### `crowdsec.exclude_scenarios_containing`
 
-Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"]
+Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"] (default: exclude none)
 
 ### `crowdsec.only_include_decisions_from`
 
-Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"] (default: include all origins)
 
 ### `crowdsec.insecure_skip_verify`
 
