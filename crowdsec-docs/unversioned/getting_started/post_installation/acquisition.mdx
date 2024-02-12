@@ -153,12 +153,12 @@ From version `1.5.0` we have added the ability to add acquisitions via the `acqu
     ]}>
       <TabItem value="powershell">
           ```bash
-          New-Item -ItemType Directory -Force -Path C:\Program Files\CrowdSec\Config\acquis.d\
+          New-Item -ItemType Directory -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\
           ```
       </TabItem>
       <TabItem value="terminal">
           ```bash
-          mkdir "C:\Program Files\CrowdSec\Config\acquis.d\"
+          mkdir "C:\ProgramData\CrowdSec\Config\acquis.d\"
           ```
       </TabItem>
     </Tabs>
@@ -189,12 +189,12 @@ From version `1.5.0` we have added the ability to add acquisitions via the `acqu
     ]}>
       <TabItem value="powershell">
           ```bash
-          New-Item -ItemType File -Force -Path C:\Program Files\CrowdSec\Config\acquis.d\<collection_name>.yaml
+          New-Item -ItemType File -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml
           ```
       </TabItem>
       <TabItem value="terminal">
           ```bash
-          .>C:\Program Files\CrowdSec\Config\acquis.d\<collection_name>.yaml 2>NUL
+          .>C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml 2>NUL
           ```
       </TabItem>
     </Tabs>
