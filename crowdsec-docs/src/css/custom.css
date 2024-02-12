@@ -18,6 +18,33 @@
   --docusaurus-announcement-bar-height: 2.5rem !important;
 }
 
+html[data-theme="light"] .menu__link--active {
+  --ifm-menu-color-active: #4E4A99;
+}
+html[data-theme="light"] .navbar-sidebar__item .menu__list .menu__link--active {
+  --ifm-menu-color-active: #F8AB13;
+}
+
+html[data-theme="light"] .table-of-contents__link--active {
+  --ifm-color-primary: #4E4A99;
+}
+
+html[data-theme="light"] .tabs__item--active {
+  --ifm-color-primary: #4E4A99;
+  --ifm-tabs-color-active: #4E4A99;
+  border-bottom: 2px solid var(--ifm-color-primary);
+}
+html[data-theme="light"] .table-of-contents__link:hover {
+  --ifm-color-primary: #4E4A99;
+}
+html[data-theme="light"] .breadcrumbs__link {
+  --ifm-breadcrumb-color-active: #4E4A99;
+  --ifm-link-hover-color: #4E4A99;
+}
+html[data-theme="light"] .dropdown__link--active, html[data-theme="light"] .dropdown__link--active:hover {
+  --ifm-link-color: #4E4A99;
+}
+
 html[data-theme="dark"] {
   --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.1);
   /* --ifm-color-primary: #F8AB13; */
@@ -73,7 +100,7 @@ svg[class^='lightToggleIcon'], .navbar__toggle > svg, .navbar-sidebar__back {
 }
 
 
-.menu__link--sublist-caret::after {
+html[data-theme="light"] .navbar-sidebar__item > .menu__list .menu__link--sublist-caret::after, html[data-theme="light"] .navbar-sidebar__item > .menu__list .menu__caret::before {
   --ifm-menu-link-sublist-icon-filter: none;
   --ifm-menu-link-sublist-icon: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(255,255,255,0.5)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>')
 }
