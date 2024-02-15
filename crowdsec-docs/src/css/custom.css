@@ -13,6 +13,7 @@
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #F8AB13;
+  --ifm-global-shadow-md: 0px;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --ifm-code-font-size: 95%;
   --docusaurus-announcement-bar-height: 2.5rem !important;
@@ -127,6 +128,7 @@ html[data-theme="light"] .navbar-sidebar__item > .menu__list .menu__link--sublis
 
 .navbar__items--right .navbar__link:hover {
   opacity: 0.6;
+  background-color: #F8AB13;
 }
 
 .navbar {
@@ -184,4 +186,37 @@ div[class^='announcementBar'] > div[class^='content'] {
 div[class^='announcementBar'] {
   height: 100%;
   border-bottom: 0px;
+}
+
+@media screen and (max-width: 996px) {
+  :root {
+    --ifm-font-size-base: 18px;
+  }
+  article header h1 {
+    font-size: 1.5rem !important;
+  }
+  .hero .hero__title {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (min-width: 997px) {
+  :root {
+    --ifm-font-size-base: 17px;
+  }
+  article header h1 {
+    font-size: 2rem !important;
+  }
+}
+
+/* Header Dropdown Menu */
+.dropdown__link {
+  font-size: inherit;
+}
+
+.table-of-contents__link--active {
+  border-left: 4px solid var(--ifm-color-primary);
+  color: var(--ifm-font-color-base);
+  margin-left: -16px;
+  padding-left: 12px;
 }
