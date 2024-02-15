@@ -1,15 +1,17 @@
 ---
 id: next_steps
-title: Next Steps
+title: Post Installation Steps
 ---
-
-# Next Steps
 
 Now that you have installed CrowdSec, we have a post installation checklist to help continue your journey.
 
-## Post Installation Steps
+### 1. CrowdSec Console
 
-### 1. Acquisitions
+The CrowdSec Console is a web-based interface provided by CrowdSec, offering a wide range of features and capabilities to enhance your experience with CrowdSec.
+
+See the dedicated [CrowdSec Console](https://docs.crowdsec.net/docs/next/console/intro) section for more information.
+
+### 2. Acquisitions
 
 :::info
 Acquisitions are sources of logs that CrowdSec can analyze.
@@ -17,9 +19,9 @@ Acquisitions are sources of logs that CrowdSec can analyze.
 
 By default when CrowdSec is installed it will attempt to detect the running services and acquire the appropriate parsers and scenarios. However, not all services are detected, and you may want to manually acquire parsers and scenarios for services that are not detected.
 
-See the dedicated [Acquisition](/getting_started/post_installation/acquisition.md) guide for more information.
+See the dedicated [Acquisition](/getting_started/post_installation/acquisition.mdx) guide for more information.
 
-### 2. Profiles
+### 3. Profiles
 
 :::info
 Profiles are a set of rules that drives what decisions will be taken by CrowdSec.
@@ -29,7 +31,7 @@ CrowdSec comes with a default profile that is suitable for most use cases. Howev
 
 See the dedicated [Profiles](/getting_started/post_installation/profiles.md) guide for more information.
 
-### 3. Metrics
+### 4. Metrics
 
 :::info
 Metrics are a way to monitor the behavior of CrowdSec.

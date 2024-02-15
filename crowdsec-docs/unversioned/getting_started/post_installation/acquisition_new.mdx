@@ -1,0 +1,147 @@
+---
+id: acquisition_new
+title: Adding a new Acquisition
+pagination_prev: getting_started/next_steps
+pagination_next: getting_started/post_installation/profiles
+---
+
+:::info
+We will be adding a [file based acquisition](/docs/next/data_sources/file). If you need to use a different source then alter the instructions to match your needs.
+:::
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+
+Once you have found service you want to add, you can use the `cscli` command line tool to add the collection.
+
+```bash
+cscli collections add <collection_name>
+```
+
+Once the collection has been downloaded we need to add a new [Acquisition](https://docs.crowdsec.net/docs/next/data_sources/intro) to the configuration so CrowdSec knows where to find the log source.
+
+:::tip
+An example of an [Acquisition](https://docs.crowdsec.net/docs/next/data_sources/intro) is available in the collection on the [Hub](https://hub.crowdsec.net/), which will assist you in identifying the files to monitor and the labels to assign.
+:::
+
+:::info
+From version `1.5.0` we have added the ability to add acquisitions via the `acquis.d` directory. This allows you to add acquisitions without modifying the main configuration file.
+:::
+
+### Create the directory if it does not exist
+
+<Tabs
+  defaultValue="nix"
+  groupId="console-operating-systems"
+  values={[
+    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Windows', value: 'windows'},
+  ]}>
+  <TabItem value="nix">
+    <CodeBlock className="language-bash">sudo mkdir -p /etc/crowdsec/acquis.d</CodeBlock>
+  </TabItem>
+  <TabItem value="windows">
+        <Tabs
+    defaultValue="powershell"
+    groupId="windows-terminal"
+    values={[
+      {label: 'Powershell', value: 'powershell'},
+      {label: 'CMD', value: 'terminal'},
+    ]}>
+      <TabItem value="powershell">
+          ```bash
+          New-Item -ItemType Directory -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\
+          ```
+      </TabItem>
+      <TabItem value="terminal">
+          ```bash
+          mkdir "C:\ProgramData\CrowdSec\Config\acquis.d\"
+          ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>
+
+### Create the acquisition file
+
+<Tabs
+  defaultValue="nix"
+  groupId="console-operating-systems"
+  values={[
+    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Windows', value: 'windows'},
+  ]}>
+  <TabItem value="nix">
+    ```bash
+    sudo touch /etc/crowdsec/acquis.d/<collection_name>.yaml
+    ```
+  </TabItem>
+  <TabItem value="windows">
+        <Tabs
+    defaultValue="powershell"
+    groupId="windows-terminal"
+    values={[
+      {label: 'Powershell', value: 'powershell'},
+      {label: 'CMD', value: 'terminal'},
+    ]}>
+      <TabItem value="powershell">
+          ```bash
+          New-Item -ItemType File -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml
+          ```
+      </TabItem>
+      <TabItem value="terminal">
+          ```bash
+          .>C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml 2>NUL
+          ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>
+
+### Add the following contents to the file
+
+```yaml title="<collection_name>.yaml"
+filesnames:
+  - "/path/to/your/file.log" ## Single file
+  - "/path/to/your/files*" ## Wildcard support
+labels:
+  type: "<type of logs>" ## Type defined in the parser
+```
+
+Once you have added the acquisitions you can test the configuration and restart the service.
+
+<Tabs
+  defaultValue="nix"
+  groupId="console-operating-systems"
+  values={[
+    {label: 'Linux/Freebsd', value: 'nix'},
+    {label: 'Windows', value: 'windows'},
+  ]}>
+  <TabItem value="nix">
+    ```bash
+    sudo crowdsec -t && sudo systemctl restart crowdsec
+    ```
+  </TabItem>
+  <TabItem value="windows">
+      <Tabs
+    defaultValue="powershell"
+    groupId="windows-terminal"
+    values={[
+      {label: 'Powershell', value: 'powershell'},
+      {label: 'CMD', value: 'terminal'},
+    ]}>
+      <TabItem value="powershell">
+          ```bash
+          Restart-Service crowdsec
+          ```
+      </TabItem>
+      <TabItem value="terminal">
+          ```bash
+          net stop crowdsec && net start crowdsec
+          ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>

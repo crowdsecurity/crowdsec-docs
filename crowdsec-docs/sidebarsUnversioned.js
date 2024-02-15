@@ -207,13 +207,24 @@ module.exports = {
         },
         {
             type: "category",
-            label: "Next Steps",
+            label: "Post Installation Steps",
             link: {
                 type: "doc",
                 id: "getting_started/next_steps",
             },
             items: [
-                "getting_started/post_installation/acquisition",
+                {
+                    type: "category",
+                    label: "Acquisition",
+                    link: {
+                        type: "doc",
+                        id: "getting_started/post_installation/acquisition",
+                    },
+                    items: [
+                        "getting_started/post_installation/acquisition_new",
+                        "getting_started/post_installation/acquisition_troubleshoot",
+                    ],
+                },
                 "getting_started/post_installation/profiles",
                 "getting_started/post_installation/metrics",
             ],
