@@ -1,6 +1,6 @@
 ---
 id: next_steps
-title: 9
+title: Post Installation Steps
 ---
 
 Now that you have installed CrowdSec, we have a post installation steps to help continue your journey.
