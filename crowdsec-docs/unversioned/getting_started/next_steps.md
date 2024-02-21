@@ -9,7 +9,7 @@ Now that you have installed CrowdSec, we have a post installation steps to help 
 
 The CrowdSec Console is a web-based interface provided by CrowdSec, offering a wide range of features and capabilities to enhance your experience with CrowdSec.
 
-See the dedicated [CrowdSec Console](https://docs.crowdsec.net/docs/next/console/intro) section for more information.
+See the dedicated [CrowdSec Console](/getting_started/post_installation/console.mdx) guide for more information.
 
 ### 2. Acquisitions
 

@@ -128,7 +128,6 @@ html[data-theme="light"] .navbar-sidebar__item > .menu__list .menu__link--sublis
 
 .navbar__items--right .navbar__link:hover {
   opacity: 0.6;
-  background-color: #F8AB13;
 }
 
 .navbar {
