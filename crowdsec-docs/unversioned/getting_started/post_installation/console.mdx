@@ -72,6 +72,14 @@ At the very bottom of the page, you will see a code card with a command to run o
     powershell="cscli.exe console enroll $ENROLLMENT_KEY"
 />
 
+```bash title="Example output"
+INFO[2024-02-21T16:50:17Z] manual set to true
+INFO[2024-02-21T16:50:17Z] Enabled manual : Forward manual decisions to the console
+INFO[2024-02-21T16:50:17Z] Enabled tainted : Forward alerts from tainted scenarios to the console
+INFO[2024-02-21T16:50:17Z] Watcher successfully enrolled. Visit https://app.crowdsec.net to accept it.
+INFO[2024-02-21T16:50:17Z] Please restart crowdsec after accepting the enrollment.
+```
+
 <ThemedImage
     alt="CrowdSec Enrollment Key"
     sources={{
@@ -81,6 +89,30 @@ At the very bottom of the page, you will see a code card with a command to run o
 />
 
 :::info
-If you have a more complex setup you can see all [enrollment options here](/docs/next/console/enrollment).
+If your installtion is not bare metal you can see all [enrollment options here](/docs/next/console/enrollment).
+:::
 
+### Accept Enrollment
 
+After running the command, you will see a new engine appear on the engines page. Click "Accept enroll" on the engine to accept.
+
+<ThemedImage
+    alt="CrowdSec Accept Enrollment"
+    sources={{
+        light: useBaseUrl("/img/console_enroll_light.png"),
+        dark: useBaseUrl("/img/console_enroll_dark.png"),
+    }}
+/>
+
+:::tip
+If you don't see the engine appear, you can use the refresh button at the right of the page near "Add Security Engines".
+:::
+
+### Restart CrowdSec
+
+After accepting the enrollment, you will need to restart the CrowdSec service on your engine.
+
+<UnixWindowsTabs
+    bash="sudo systemctl restart crowdsec"
+    powershell="Restart-Service crowdsec"
+/>
