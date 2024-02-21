@@ -823,7 +823,7 @@ cidrs:
 ```
 
 ##### `use_forwarded_for_headers`
-> string
+> bool
 
 Allow the usage of `X-Forwarded-For` or `X-Real-IP` to get the client IP address. Do not enable if you are not running the LAPI behind a trusted reverse-proxy or LB.
 
