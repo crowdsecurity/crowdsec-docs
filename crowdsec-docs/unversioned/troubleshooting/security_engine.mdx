@@ -3,9 +3,7 @@ title: Troubleshooting Security Engine
 id: security_engine
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import UnixWindowsTabs from '../../src/components/UnixWindowsTabs';
 
 ## Community support
 
@@ -18,20 +16,10 @@ Please try to resolve your issue by reading the documentation. If you're unable 
 
 ### How to check the status
 
-<Tabs
-  defaultValue="nix"
-  groupId="console-operating-systems"
-  values={[
-    {label: 'Linux/Freebsd', value: 'nix'},
-    {label: 'Windows', value: 'windows'},
-  ]}>
-  <TabItem value="nix">
-    <CodeBlock className="language-bash">sudo systemctl status crowdsec</CodeBlock>
-  </TabItem>
-  <TabItem value="windows">
-    <CodeBlock className="language-bash">Get-Service crowdsec</CodeBlock>
-  </TabItem>
-</Tabs>
+<UnixWindowsTabs
+    bash="sudo systemctl status crowdsec"
+    powershell="Get-Service crowdsec"
+/>
 
 ### How to check if LAPI is reachable
 
@@ -129,9 +117,10 @@ Please see [configuration section](#where-is-configuration-stored) to see where 
 
 To enable the simulation mode for this scenario, i need to run:
 
-```bash
-sudo cscli simulation enable my_custom_scenario.yaml
-```
+<UnixWindowsTabs
+  bash="sudo cscli simulation enable my_custom_scenario.yaml"
+  powershell="cscli.exe simulation enable my_custom_scenario.yaml"
+/>
 
 ### My scenario is triggered with less logs than the scenario capacity
 
@@ -194,34 +183,13 @@ If you are unsure where CrowdSec is logging you can view the configuration file 
 
 You can use the os related commands to filter the logs to only show errors.
 
-<Tabs
-  defaultValue="nix"
-  groupId="console-operating-systems"
-  values={[
-    {label: 'Linux/Freebsd', value: 'nix'},
-    {label: 'Windows', value: 'windows'},
-  ]}>
-  <TabItem value="nix">
-    <CodeBlock className="language-bash">sudo grep -E "level=(error|fatal)" /var/log/crowdsec.log</CodeBlock>
-    **Please make sure the log location is correct for your distribution.**
-  </TabItem>
-  <TabItem value="windows">
-    <Tabs
-    defaultValue="powershell"
-    groupId="windows-terminal"
-    values={[
-      {label: 'Powershell', value: 'powershell'},
-      {label: 'CMD', value: 'terminal'},
-    ]}>
-      <TabItem value="powershell">
-        <CodeBlock className="language-bash">Select-String "level=(error|fatal)" C:\ProgramData\CrowdSec\log\crowdsec.log</CodeBlock>
-      </TabItem>
-      <TabItem value="terminal">
-        <CodeBlock className="language-bash">findstr "level=error level=fatal" C:\ProgramData\CrowdSec\log\crowdsec.log</CodeBlock>
-      </TabItem>
-    </Tabs>
-  </TabItem>
-</Tabs>
+<UnixWindowsTabs
+    bash='sudo grep -E "level=(error|fatal)" /var/log/crowdsec.log'
+    cmd='findstr "level=error level=fatal" C:\ProgramData\CrowdSec\log\crowdsec.log'
+    powershell='Select-String "level=(error|fatal)" C:\ProgramData\CrowdSec\log\crowdsec.log'
+/>
+
+**Please make sure the log location matches your distribution.**
 
 ## Common Errors
 
@@ -242,24 +210,10 @@ You can use the following os commands to check if a service is already using a p
 
 For example, to check if a service is using port 8080: (Our default port for the local API)
 
-<Tabs
-  defaultValue="nix"
-  groupId="console-operating-systems"
-  values={[
-    {label: 'Linux/Freebsd', value: 'nix'},
-    {label: 'Windows', value: 'windows'},
-  ]}>
-  <TabItem value="nix">
-    ```bash
-    sudo netstat -tulpn | grep :8080
-    ```
-  </TabItem>
-  <TabItem value="windows">
-    ```bash
-    Get-NetTCPConnection | where Localport -eq 8080 | select Localport,OwningProcess
-    ```
-  </TabItem>
-</Tabs>
+<UnixWindowsTabs
+    bash='sudo netstat -tulpn | grep :8080'
+    powershell='Get-NetTCPConnection | where Localport -eq 8080 | select Localport,OwningProcess'
+/>
 
 See [prerequisites](/docs/next/getting_started/#prerequisites) for all the ports used by the Security Engine.
 

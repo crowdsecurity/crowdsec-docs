@@ -2,3 +2,85 @@
 id: console
 title: CrowdSec Console
 ---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import UnixWindowsTabs from '../../../src/components/UnixWindowsTabs';
+
+# CrowdSec Console
+
+The CrowdSec Console serves as a web-based interface designed for managing your CrowdSec Security Engines effectively. This console comes equipped with an intuitive dashboard, offering a comprehensive visualization of your engines' activities, thereby enhancing the ease of monitoring and analysis.
+
+Additionally, it offers the capability to integrate enhanced functionalities, including the option to incorporate Third-Party blocklists. This feature not only extends the flexibility and adaptability of your security setup but also enables a more robust defense mechanism by leveraging external intelligence sources. 
+
+## Your first Enrollment
+
+### Sign Up
+
+Head over to the [CrowdSec Console](https://app.crowdsec.net/signup) and sign up for a new account.
+
+<a href="https://app.crowdsec.net/signup" target="_blank">
+    <ThemedImage
+        alt="CrowdSec Signup Screen"
+        sources={{
+            light: useBaseUrl("/img/console_login_light.png"),
+            dark: useBaseUrl("/img/console_login_dark.png"),
+        }}
+    />
+</a>
+
+### Verify Email
+
+After signing up, you will receive an email to verify your account. Click on the link provided or enter the code in the email to verify your account.
+
+#### Missing Email?
+
+If you don't receive an email, check your spam folder. If you still don't see it, you can request a new verification email by clicking on the "Resend verification email" link on the login page.
+
+If it has been over 30 minutes and you still don't see the email, please [contact us](mailto:support@crowdsec.net)
+
+### Survey
+
+Upon your first login you will get asked some questions to help us understand your use case better.
+
+<ThemedImage
+    alt="CrowdSec Survey"
+    sources={{
+        light: useBaseUrl("/img/console_signup_survey_light.png"),
+        dark: useBaseUrl("/img/console_signup_survey_dark.png"),
+    }}
+/>
+
+:::info
+The survey is optional and you can skip it if you want. We use this information to tailor your experience and to better understand our users.
+:::
+
+### Engines page
+
+The first destination after signing up is the engines page. Here you can see all your enrolled engines and their status.
+
+However! since this is your first enrollment, you won't see any engines yet. Let's fix that by enrolling a new engine.
+
+At the very bottom of the page, you will see a code card with a command to run on your engine. This command will install the CrowdSec agent and enroll it to your account.
+
+:::info
+`$ENROLLMENT_KEY` is a placeholder for your actual enrollment key.
+:::
+
+<UnixWindowsTabs
+    bash="sudo cscli console enroll $ENROLLMENT_KEY"
+    powershell="cscli.exe console enroll $ENROLLMENT_KEY"
+/>
+
+<ThemedImage
+    alt="CrowdSec Enrollment Key"
+    sources={{
+        light: useBaseUrl("/img/console_mainpage_light.png"),
+        dark: useBaseUrl("/img/console_mainpage_dark.png"),
+    }}
+/>
+
+:::info
+If you have a more complex setup you can see all [enrollment options here](/docs/next/console/enrollment).
+
+

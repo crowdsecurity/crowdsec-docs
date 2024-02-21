@@ -3,9 +3,7 @@ title: Troubleshooting Remediation Components
 id: remediation_components
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import UnixWindowsTabs from '../../src/components/UnixWindowsTabs';
 
 ## Community support
 
@@ -22,24 +20,10 @@ Please try to resolve your issue by reading the documentation. If you're unable 
 
 ### How to check the status
 
-<Tabs
-  defaultValue="nix"
-  groupId="console-operating-systems"
-  values={[
-    {label: 'Linux/Freebsd', value: 'nix'},
-    {label: 'Windows', value: 'windows'},
-  ]}>
-  <TabItem value="nix">
-    ```bash
-      sudo systemctl status {component}
-    ```
-  </TabItem>
-  <TabItem value="windows">
-    ```bash
-      Get-Service {component}
-    ```
-  </TabItem>
-</Tabs>
+<UnixWindowsTabs
+    bash="sudo systemctl status {component}"
+    powershell="Get-Service {component}"
+/>
 
 ## Configuration
 
@@ -67,41 +51,13 @@ By default Remediation components will log to the following locations depending 
 
 You can use the os related commands to filter the logs to only show errors.
 
-<Tabs
-  defaultValue="nix"
-  groupId="console-operating-systems"
-  values={[
-    {label: 'Linux/Freebsd', value: 'nix'},
-    {label: 'Windows', value: 'windows'},
-  ]}>
-  <TabItem value="nix">
-    ```bash
-      sudo grep -E "level=(error|fatal)" {component}.log
-    ```
-    **Please make sure the log location is correct for your distribution.**
-  </TabItem>
-  <TabItem value="windows">
-    <Tabs
-    defaultValue="powershell"
-    groupId="windows-terminal"
-    values={[
-      {label: 'Powershell', value: 'powershell'},
-      {label: 'CMD', value: 'terminal'},
-    ]}>
-      <TabItem value="powershell">
-        ```bash
-        Select-String "level=(error|fatal)" C:\ProgramData\CrowdSec\log\{component}.log
-        ```
-      </TabItem>
-      <TabItem value="terminal">
-        ```bash
-        findstr "level=error level=fatal" C:\ProgramData\CrowdSec\log\{component}.log
-        ```
-      </TabItem>
-    </Tabs>
-  </TabItem>
-</Tabs>
+<UnixWindowsTabs
+    bash='sudo grep -E "level=(error|fatal)" /var/log/{component}.log'
+    cmd='findstr "level=error level=fatal" C:\ProgramData\CrowdSec\log\{component}.log'
+    powershell='Select-String "level=(error|fatal)" C:\ProgramData\CrowdSec\log\{component}.log'
+/>
 
+**Please make sure the log location matches your distribution.**
 
 ## My Remediaton Component is not showing any error messages within its log file but its failing to start/work
 
