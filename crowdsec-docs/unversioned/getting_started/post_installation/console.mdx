@@ -59,9 +59,17 @@ The survey is optional and you can skip it if you want. We use this information 
 
 The first destination after signing up is the engines page. Here you can see all your enrolled engines and their status.
 
+<ThemedImage
+    alt="CrowdSec Enrollment Key"
+    sources={{
+        light: useBaseUrl("/img/console_mainpage_light.png"),
+        dark: useBaseUrl("/img/console_mainpage_dark.png"),
+    }}
+/>
+
 However! since this is your first enrollment, you won't see any engines yet. Let's fix that by enrolling a new engine.
 
-At the very bottom of the page, you will see a code card with a command to run on your engine. This command will install the CrowdSec agent and enroll it to your account.
+At the very bottom of the page, you will see a code card with a command to run on your engine. This command will enroll it to your account.
 
 :::info
 `$ENROLLMENT_KEY` is a placeholder for your actual enrollment key.
@@ -79,14 +87,6 @@ INFO[2024-02-21T16:50:17Z] Enabled tainted : Forward alerts from tainted scenari
 INFO[2024-02-21T16:50:17Z] Watcher successfully enrolled. Visit https://app.crowdsec.net to accept it.
 INFO[2024-02-21T16:50:17Z] Please restart crowdsec after accepting the enrollment.
 ```
-
-<ThemedImage
-    alt="CrowdSec Enrollment Key"
-    sources={{
-        light: useBaseUrl("/img/console_mainpage_light.png"),
-        dark: useBaseUrl("/img/console_mainpage_dark.png"),
-    }}
-/>
 
 :::info
 If your installtion is not bare metal you can see all [enrollment options here](/docs/next/console/enrollment).
@@ -110,7 +110,7 @@ If you don't see the engine appear, you can use the refresh button at the right 
 
 ### Restart CrowdSec
 
-After accepting the enrollment, you will need to restart the CrowdSec service on your engine.
+After accepting the enrollment, you will need to restart the CrowdSec service.
 
 <UnixWindowsTabs
     bash="sudo systemctl restart crowdsec"
