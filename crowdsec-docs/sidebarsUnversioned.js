@@ -213,7 +213,19 @@ module.exports = {
                 id: "getting_started/next_steps",
             },
             items: [
-                "getting_started/post_installation/console",
+                {
+                    type: "category",
+                    label: "CrowdSec Console",
+                    link: {
+                        type: "doc",
+                        id: "getting_started/post_installation/console",
+                    },
+                    items: [
+                        "getting_started/post_installation/console_blocklists",
+                        "getting_started/post_installation/console_hub",
+                        "getting_started/post_installation/console_cti",
+                    ],
+                },
                 {
                     type: "category",
                     label: "Acquisition",

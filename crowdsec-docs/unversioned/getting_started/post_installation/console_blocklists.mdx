@@ -1,0 +1,83 @@
+---
+id: console_blocklists
+title: CrowdSec Blocklists
+---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import UnixWindowsTabs from '../../../src/components/UnixWindowsTabs';
+
+# CrowdSec Blocklists
+
+In the community edition of CrowdSec, you have the capability to subscribe to three blocklists, offering proactive protection against known malicious sources.
+
+These lists are curated and frequently updated by the CrowdSec team to ensure your infrastructure remains safeguarded.
+
+## Subscribing to your first blocklist
+
+To subscribe to a blocklist, you need to go to the `Blocklists` tab in the console.
+
+<ThemedImage
+    alt="CrowdSec Blocklists"
+    sources={{
+        light: useBaseUrl("/img/console_blocklists_light.png"),
+        dark: useBaseUrl("/img/console_blocklists_dark.png"),
+    }}
+/>
+
+:::tip
+If you can't see the `Blocklists` tab, make sure you are logged in and are on the `Security Engines` page.
+:::
+
+### Which blocklist should I use?
+
+The answer to this question depends on the kind of traffic you aim to block and the security level you wish to uphold.
+
+For instance, if you're running a web server and wish to shield your websites from known free proxies, subscribing to the `Free Proxies list` blocklist would be a suitable measure.
+
+:::info
+A `proxy` is a server that acts as an intermediary for requests from clients seeking resources from other servers. Meaning the original requester IP address is hidden from your server.
+:::
+
+On the other hand, if you're not hosting websites, for example, you might opt for the `Firehol greensnow.co list`. This list compiles IPs known for conducting `bruteforce` attacks on a range of services, providing a targeted defense against such malicious activities.
+
+:::info
+`Bruteforce` attacks are a trial-and-error method used to obtain information such as a user password
+:::
+
+If neither of the two examples mentioned suits your specific needs, each blocklist comes with a description to assist you in making an informed decision about which one to utilize.
+
+### Subscribing an engine to a blocklist
+
+To subscribe an engine to a blocklist, click on the `Subscribe` button next to the blocklist you wish to use.
+
+Opening this will reveal the blocklist's details panel, where you can click on the `Add Security Engine(s)` button to bring up the modal for selecting engines.
+
+<ThemedImage
+    alt="CrowdSec Blocklist Subscription"
+    sources={{
+        light: useBaseUrl("/img/console_blocklist_subscribe_light.png"),
+        dark: useBaseUrl("/img/console_blocklist_subscribe_dark.png"),
+    }}
+/>
+
+After opening the modal, you can choose the engine(s) you want to add to the blocklist and select the appropriate action for the Security Engine to take. To finalize your choice, click `Save`.
+
+<ThemedImage
+    alt="CrowdSec Blocklist Engine Selection"
+    sources={{
+        light: useBaseUrl("/img/console_blocklist_engine_selection_light.png"),
+        dark: useBaseUrl("/img/console_blocklist_engine_selection_dark.png"),
+    }}
+/>
+
+After saving, as indicated, it could take up to `2 hours` for the blocklist to become fully functional. This delay is due to the blocklist being refreshed every 2 hours on the community plan.
+
+## Next Steps?
+
+Now that you have subscribed your engine to a list, you can continue exploring the console features:
+
+- [CrowdSec Hub](/getting_started/post_installation/console_hub.mdx)
+- [CrowdSec CTI](/getting_started/post_installation/console_cti.mdx)
+
+If not head back to the [post installation steps](/getting_started/next_steps.md#1-crowdsec-console) to follow the rest of the steps.

@@ -15,6 +15,13 @@ Additionally, it offers the capability to integrate enhanced functionalities, in
 
 ## Your first Enrollment
 
+This guide presumes you have already installed CrowdSec on your machine. If you haven't, you can check the following getting started guides:
+
+- [Install on Linux](/getting_started/installation/linux.mdx)
+- [Install on FreeBSD](/getting_started/installation/freebsd.mdx)
+- [Install on Windows](/getting_started/installation/windows.mdx)
+- [Install on MacOS](/getting_started/installation/macos.mdx)
+
 ### Sign Up
 
 Head over to the [CrowdSec Console](https://app.crowdsec.net/signup) and sign up for a new account.
@@ -37,11 +44,13 @@ After signing up, you will receive an email to verify your account. Click on the
 
 If you don't receive an email, check your spam folder. If you still don't see it, you can request a new verification email by clicking on the "Resend verification email" link on the login page.
 
-If it has been over 30 minutes and you still don't see the email, please [contact us](mailto:support@crowdsec.net)
+:::info
+If more than 5 minutes have passed and you haven't received the email, [please get in touch with us](mailto:support@crowdsec.net)
+:::
 
 ### Survey
 
-Upon your first login you will get asked some questions to help us understand your use case better.
+When you log in for the first time, we will ask you a few questions to gain a clearer understanding of your needs and use case.
 
 <ThemedImage
     alt="CrowdSec Survey"
@@ -57,7 +66,7 @@ The survey is optional and you can skip it if you want. We use this information 
 
 ### Engines page
 
-The first destination after signing up is the engines page. Here you can see all your enrolled engines and their status.
+After signing up, the first page you'll visit is the engines page. This is where you can view all your enrolled engines and check their current status.
 
 <ThemedImage
     alt="CrowdSec Enrollment Key"
@@ -94,7 +103,7 @@ If your installtion is not bare metal you can see all [enrollment options here](
 
 ### Accept Enrollment
 
-After running the command, you will see a new engine appear on the engines page. Click "Accept enroll" on the engine to accept.
+Once you execute the command, a new engine will show up on the engines page. Select this new engine and click on "Accept enroll" to proceed.
 
 <ThemedImage
     alt="CrowdSec Accept Enrollment"
@@ -116,3 +125,17 @@ After accepting the enrollment, you will need to restart the CrowdSec service.
     bash="sudo systemctl restart crowdsec"
     powershell="Restart-Service crowdsec"
 />
+
+:::warning
+While it's not critical to restart the service right away, it's advisable to do so at your earliest convenience to make sure all `metadata` is fully synchronized.
+:::
+
+## Next Steps?
+
+Now that you have enrolled your first engine, you can start exploring the console and its features. Here are a few things you can do next:
+
+- [Third-Party Blocklists](/getting_started/post_installation/console_blocklists.mdx)
+- [CrowdSec Hub](/getting_started/post_installation/console_hub.mdx)
+- [CrowdSec CTI](/getting_started/post_installation/console_cti.mdx)
+
+If not head back to the [post installation steps](/getting_started/next_steps.md#1-crowdsec-console) to follow the rest of the steps.
