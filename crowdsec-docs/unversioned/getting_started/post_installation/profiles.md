@@ -7,3 +7,128 @@ title: Profiles
 
 Profiles are a list of rules that drives what actions will be taken by CrowdSec upon a detection. This can be as trivial as banning an IP address, or as complex as computing previous detections and banning on a scaling factor.
 
+The `profiles.yaml` file, situated at the root of the configuration directory, outlines profiles to be used. It is loaded during startup and can be refreshed while the system is running.
+
+Here is the default file path fo profiles depending on your platform:
+
+- **Linux** `/etc/crowdsec/profiles.yaml`
+- **Freebsd** `/usr/local/etc/crowdsec/profiles.yaml`
+- **Windows** `C:\Program Files\CrowdSec\config\profiles.yaml`
+
+```yaml title="Default profiles.yaml"
+name: default_ip_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+#duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+# notifications:
+#   - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
+#   - splunk_default # Set the splunk url and token in /etc/crowdsec/notifications/splunk.yaml before enabling this.
+#   - http_default   # Set the required http parameters in /etc/crowdsec/notifications/http.yaml before enabling this.
+#   - email_default  # Set the required email parameters in /etc/crowdsec/notifications/email.yaml before enabling this.
+on_success: break
+```
+
+We won't delve into the file's specifics in this section, but further information is available in the [profiles.yaml reference](/docs/next/profiles/format#profile-directives).
+
+## Example Modifications
+
+Here are a few examples of how you might modify your profiles to better suit your needs.
+
+### Scaling Decision Duration
+
+```yaml
+duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+```
+
+This adjustment can be made by removing the comment (`#`) from the [`duration_expr`](/docs/next/profiles/format#duration_expr) line. The default formula utilizes [`GetDecisionsCount`](/docs/next/expr/other_helpers#getdecisionscountvalue-string-int) to determine how many times the specific value has been identified. We always add 1 to the count to ensure that the first ban is always 4 hours.
+
+The resulting duration is calculated by multiplying this count by 4, then the [`Sprintf`](/docs/next/expr/strings_helpers/#sprintfformat-string-a-interface-string) function formats the result into a string with the `h` suffix. The `h` suffix is used to denote hours within [Go's time package](https://pkg.go.dev/time#ParseDuration).
+
+So for example if an IP has been banned 3 times, the resulting string would be `12h` meaning 12 hours.
+
+<details>
+
+<summary>Modified profiles.yaml</summary>
+
+```yaml
+name: default_ip_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+#highlight-next-line
+duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+# notifications:
+#   - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
+#   - splunk_default # Set the splunk url and token in /etc/crowdsec/notifications/splunk.yaml before enabling this.
+#   - http_default   # Set the required http parameters in /etc/crowdsec/notifications/http.yaml before enabling this.
+#   - email_default  # Set the required email parameters in /etc/crowdsec/notifications/email.yaml before enabling this.
+on_success: break
+```
+
+</details>
+
+### Captcha Decision
+
+:::info
+You **MUST** have configured a remediation component that supports [Captcha Challenges](https://en.wikipedia.org/wiki/CAPTCHA), see [here](/u/bouncers/intro).
+:::
+
+Upon detecting an incident, instead of immediately imposing a ban, you could opt to challenge the individual with a [Captcha](https://en.wikipedia.org/wiki/CAPTCHA). This approach can be implemented by inserting an extra profile prior to the ban profile.
+
+```yaml
+name: captcha_remediation
+filters:
+  - Alert.Remediation == true && Alert.GetScope() == "Ip" && Alert.GetScenario() contains "http"
+## Any scenario with http in its name will trigger a captcha challenge
+decisions:
+ - type: captcha
+   duration: 4h
+on_success: break
+#highlight-next-line
+---
+name: default_ip_remediation
+...
+```
+
+The highlighted line above is the seperator between the two profiles. It is important to note that the `on_success` directive is set to `break` to ensure that the alert will not be evaluated by other profiles, so the offender will only get a captcha decision.
+
+
+<details>
+
+<summary>Modified profiles.yaml</summary>
+
+```yaml
+name: captcha_remediation
+filters:
+  - Alert.Remediation == true && Alert.GetScope() == "Ip" && Alert.GetScenario() contains "http"
+## Any scenario with http in its name will trigger a captcha challenge
+decisions:
+ - type: captcha
+   duration: 4h
+on_success: break
+#highlight-next-line
+---
+name: default_ip_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+#duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+# notifications:
+#   - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
+#   - splunk_default # Set the splunk url and token in /etc/crowdsec/notifications/splunk.yaml before enabling this.
+#   - http_default   # Set the required http parameters in /etc/crowdsec/notifications/http.yaml before enabling this.
+#   - email_default  # Set the required email parameters in /etc/crowdsec/notifications/email.yaml before enabling this.
+on_success: break
+```
+
+</details>
