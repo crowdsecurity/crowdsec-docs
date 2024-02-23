@@ -245,8 +245,8 @@ Here is the mapping with the reputation:
 | Score | Reputation   |
 | ----- | ------------ |
 | 0     | `unknown`    |
-| 1-2   | `known`      |
-| 3     | `suspicious` |
+| 1     | `known`      |
+| 2-3   | `suspicious` |
 | 4-5   | `malicious`  |
 
 ## `background_noise`
@@ -254,7 +254,7 @@ Here is the mapping with the reputation:
 > type: **string**
 
 ```json
-"background_noise" : "malicious"
+"background_noise" : "high"
 ```
 
 The level of background noise of an IP address is an indicator of its internet activity intensity.
