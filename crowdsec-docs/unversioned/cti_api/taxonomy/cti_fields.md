@@ -245,8 +245,8 @@ Here is the mapping with the reputation:
 | Score | Reputation   |
 | ----- | ------------ |
 | 0     | `unknown`    |
-| 1-2   | `known`      |
-| 3     | `suspicious` |
+| 1     | `known`      |
+| 2-3   | `suspicious` |
 | 4-5   | `malicious`  |
 
 ## `background_noise`
