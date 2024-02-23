@@ -73,6 +73,37 @@ After opening the modal, you can choose the engine(s) you want to add to the blo
 
 After saving, as indicated, it could take up to `2 hours` for the blocklist to become fully functional. This delay is due to the blocklist being refreshed every 2 hours on the community plan.
 
+### Where can I see blocklist decisions?
+
+To see the active blocklists within an engine, you can run the following command:
+
+<UnixWindowsTabs
+    bash="cscli metrics show decisions"
+    powershell="cscli.exe metrics show decisions"
+/>
+
+```bash title="Example Output"
+Local API Decisions:
+╭────────────────────────────────────────────┬──────────┬─────────┬───────╮
+│                   Reason                   │  Origin  │ Action  │ Count │
+├────────────────────────────────────────────┼──────────┼─────────┼───────┤
+# highlight-start
+│ free_proxies                               │ lists    │ captcha │ 12668 │
+│ tor-exit-nodes                             │ lists    │ captcha │ 1152  │
+# highlight-end
+│ crowdsecurity/CVE-2022-42889               │ CAPI     │ ban     │ 4     │
+│ crowdsecurity/nginx-req-limit-exceeded     │ CAPI     │ ban     │ 130   │
+│ crowdsecurity/http-probing                 │ CAPI     │ ban     │ 1805  │
+│ crowdsecurity/http-probing                 │ crowdsec │ ban     │ 3     │
+│ crowdsecurity/http-sensitive-files         │ CAPI     │ ban     │ 48    │
+│ crowdsecurity/ssh-slow-bf                  │ CAPI     │ ban     │ 63    │
+│ crowdsecurity/http-bad-user-agent          │ CAPI     │ ban     │ 11623 │
+│ crowdsecurity/http-bad-user-agent          │ crowdsec │ ban     │ 1     │
+╰────────────────────────────────────────────┴──────────┴─────────┴───────╯
+```
+
+In the example output, you can see that the `free_proxies` and `tor-exit-nodes` blocklists are active and have the origin `lists`.
+
 ## Next Steps?
 
 Now that you have subscribed your engine to a list, you can continue exploring the console features:
