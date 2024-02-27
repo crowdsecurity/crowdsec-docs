@@ -14,13 +14,18 @@ import UnixWindowsTabs from '../../../src/components/UnixWindowsTabs';
 
 Once you have found service you want to add, you can use the `cscli` command line tool to add the collection.
 
-```bash
-cscli collections add <collection_name>
-```
+:::tip
+You can view the available collections on the [Hub](https://hub.crowdsec.net/).
+:::
+
+<UnixWindowsTabs
+  bash="cscli collections add <collection_name>"
+  powershell="cscli.exe collections add <collection_name>"
+/>
 
 Once the collection has been downloaded we need to add a new [Acquisition](https://docs.crowdsec.net/docs/next/data_sources/intro) to the configuration so CrowdSec knows where to find the log source.
 
-:::tip
+:::info
 An example of an [Acquisition](https://docs.crowdsec.net/docs/next/data_sources/intro) is available in the collection on the [Hub](https://hub.crowdsec.net/), which will assist you in identifying the files to monitor and the labels to assign.
 :::
 
