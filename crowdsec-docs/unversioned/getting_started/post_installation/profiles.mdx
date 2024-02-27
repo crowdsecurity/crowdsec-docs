@@ -3,6 +3,8 @@ id: profiles
 title: Profiles
 ---
 
+import UnixWindowsTabs from '../../../src/components/UnixWindowsTabs';
+
 # Profiles
 
 Profiles are a list of rules that drives what actions will be taken by CrowdSec upon a detection. This can be as trivial as banning an IP address, or as complex as computing previous detections and banning on a scaling factor.
@@ -132,3 +134,12 @@ on_success: break
 ```
 
 </details>
+
+## Next Steps?
+
+Now that you have made some modifications to your profiles, you **MUST** restart the CrowdSec service to apply the changes. You can do this by running the following command:
+
+<UnixWindowsTabs
+  bash="sudo crowdsec -t && sudo systemctl restart crowdsec"
+  powershell="Restart-Service crowdsec"
+/>
