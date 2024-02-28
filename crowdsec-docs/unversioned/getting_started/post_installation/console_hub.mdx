@@ -3,17 +3,53 @@ id: console_hub
 title: CrowdSec Hub
 ---
 
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import UnixWindowsTabs from '../../../src/components/UnixWindowsTabs';
+
 # CrowdSec Hub
 
 The [CrowdSec Hub](https://hub.crowdsec.net/) serves as a repository where individuals can access an array of premade configuration files.
 
 These resources are developed by both the CrowdSec team and the broader community, offering a ready-to-use collection for integrating into your own configurations.
 
-### Hub Tour
+## Hub Tour
 
-The CrowdSec Hub is divided into many sections, each of which is designed to help you find the right configuration for your needs.
+The [Hub](https://hub.crowdsec.net/) is divided into many sections, each of which is designed to help you find the right configuration for your needs.
 
+<ThemedImage
+    alt="CrowdSec Hub"
+    sources={{
+        light: useBaseUrl("/img/console_hub_light.png"),
+        dark: useBaseUrl("/img/console_hub_dark.png"),
+    }}
+/>
 
+### Collections Tab
+
+[Collections](/docs/next/collections/intro) refers to a set of configurations intended to operate in unison. For instance, the [crowdsecurity/sshd collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/sshd) includes settings aimed at overseeing security breaches on an SSH server.
+
+<ThemedImage
+    alt="CrowdSec sshd collection"
+    sources={{
+        light: useBaseUrl("/img/console_sshd_collection_light.png"),
+        dark: useBaseUrl("/img/console_sshd_collection_dark.png"),
+    }}
+/>
+
+### Configurations Tab
+
+The configurations tab holds individual files that can be used to customize your CrowdSec setup. Each item will include tags to help you identify the intended use case.
+
+For example [apache_log4j2_cve-2021-44228](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/apache_log4j2_cve-2021-44228) is a `Attack scenario` configuration that is designed to detect attacks related to the Apache Log4j2 CVE-2021-44228 vulnerability.
+
+<ThemedImage
+    alt="CrowdSec apache_log4j2_cve-2021-44228"
+    sources={{
+        light: useBaseUrl("/img/console_log4j_light.png"),
+        dark: useBaseUrl("/img/console_log4j_dark.png"),
+    }}
+/>
 
 ## Next Steps?
 
