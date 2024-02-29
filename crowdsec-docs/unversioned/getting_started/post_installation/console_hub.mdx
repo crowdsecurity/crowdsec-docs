@@ -27,7 +27,7 @@ The [Hub](https://hub.crowdsec.net/) is divided into many sections, each of whic
 
 ### Collections Tab
 
-[Collections](/docs/next/collections/intro) refers to a set of configurations intended to operate in unison. For instance, the [crowdsecurity/sshd collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/sshd) includes settings aimed at overseeing security breaches on an SSH server.
+[Collections](/docs/next/collections/intro) refers to a set of configurations intended to operate in unison. For instance, the [crowdsecurity/sshd collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/sshd) includes settings aimed at overseeing attacks towards a SSH server.
 
 <ThemedImage
     alt="CrowdSec sshd collection"
@@ -37,11 +37,31 @@ The [Hub](https://hub.crowdsec.net/) is divided into many sections, each of whic
     }}
 />
 
+You can see the contents of the [collection](/docs/next/collections/intro) by viewing the `Content` section.
+
+<ThemedImage
+    alt="CrowdSec sshd collection content"
+    sources={{
+        light: useBaseUrl("/img/console_sshd_collection_content_light.png"),
+        dark: useBaseUrl("/img/console_sshd_collection_content_dark.png"),
+    }}
+/>
+
+As illustrated above, the `sshd` collection encompasses a [parser](/docs/next/parsers/intro) along with [scenarios](/docs/next/scenarios/intro) focused on `brute force` attacks.
+
 ### Configurations Tab
 
-The configurations tab holds individual files that can be used to customize your CrowdSec setup. Each item will include tags to help you identify the intended use case.
+The configurations tab holds individual files that can be used with your CrowdSec setup. Each item will include tags to help you identify the intended use case.
 
-For example [apache_log4j2_cve-2021-44228](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/apache_log4j2_cve-2021-44228) is a `Attack scenario` configuration that is designed to detect attacks related to the Apache Log4j2 CVE-2021-44228 vulnerability.
+<ThemedImage
+    alt="CrowdSec configurations"
+    sources={{
+        light: useBaseUrl("/img/console_configurations_light.png"),
+        dark: useBaseUrl("/img/console_configurations_dark.png"),
+    }}
+/>
+
+For example [apache_log4j2_cve-2021-44228](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/apache_log4j2_cve-2021-44228) is a `Attack scenario` that is designed to detect attacks related to the Apache Log4j2 CVE-2021-44228 vulnerability.
 
 <ThemedImage
     alt="CrowdSec apache_log4j2_cve-2021-44228"
@@ -50,6 +70,20 @@ For example [apache_log4j2_cve-2021-44228](https://app.crowdsec.net/hub/author/c
         dark: useBaseUrl("/img/console_log4j_dark.png"),
     }}
 />
+
+Another example is [crowdsecurity/nginx-logs](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/nginx-logs) which is a `Log parser` that is designed to parse `Nginx` logs.
+
+<ThemedImage
+    alt="CrowdSec nginx-logs"
+    sources={{
+        light: useBaseUrl("/img/console_nginx_logs_light.png"),
+        dark: useBaseUrl("/img/console_nginx_logs_dark.png"),
+    }}
+/>
+
+:::info
+There are more configuration types other than `Attack scenario` and `Log parser`. However, these are the most common types.
+:::
 
 ## Next Steps?
 
