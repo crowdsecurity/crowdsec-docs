@@ -85,6 +85,60 @@ Another example is [crowdsecurity/nginx-logs](https://app.crowdsec.net/hub/autho
 There are more configuration types other than `Attack scenario` and `Log parser`. However, these are the most common types.
 :::
 
+### Bouncers Tab
+
+:::info
+The term `Bouncers` has been updated to `Remediation Components` in the [Taxonomy](https://www.crowdsec.net/blog/updating-crowdsec-naming-taxonomy).
+
+However, legacy items might still use the term `bouncers` just know that they are the same thing.
+:::
+
+This tab contains [Remediation Components](/bouncers/intro.md) that can be used to enforce decisions made by CrowdSec [Security Engine](/docs/next/getting_started/security_engine_intro).
+
+<ThemedImage
+    alt="CrowdSec bouncers"
+    sources={{
+        light: useBaseUrl("/img/console_bouncers_light.png"),
+        dark: useBaseUrl("/img/console_bouncers_dark.png"),
+    }}
+/>
+
+For example, [crowdsecurity/iptables](https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/iptables) is a `Remediation Component` that can be used to block IP addresses using `iptables`.
+
+:::info
+Please note the download figures are solely from GitHub metrics and do not include downloads from other sources.
+:::
+
+### AppSec Configurations Tab
+
+:::info
+From version `1.6.0` CrowdSec introduced the [AppSec Component](/docs/next/appsec/intro) which allows you to turn CrowdSec into a Web Application Firewall (WAF).
+:::
+
+[AppSec configurations](/docs/next/appsec/configuration) are designed to configure the [AppSec Component](/docs/next/appsec/intro), it provides sensible defaults for various web applications.
+
+<ThemedImage
+    alt="CrowdSec AppSec configurations"
+    sources={{
+        light: useBaseUrl("/img/console_appsec_config_light.png"),
+        dark: useBaseUrl("/img/console_appsec_config_dark.png"),
+    }}
+/>
+
+### AppSec Rules Tab
+
+[AppSec Rules](/docs/next/appsec/rules_syntax) are designed to be used with the [AppSec Component](/docs/next/appsec/intro) to detect and block attacks against web applications.
+
+These rules are defined and loaded by [AppSec Configurations](/docs/next/appsec/configuration).
+
+<ThemedImage
+    alt="CrowdSec AppSec rules"
+    sources={{
+        light: useBaseUrl("/img/console_appsec_rules_light.png"),
+        dark: useBaseUrl("/img/console_appsec_rules_dark.png"),
+    }}
+/>
+
 ## Next Steps?
 
 Now that you have viewed the CrowdSec Hub, you can continue exploring the console features:
