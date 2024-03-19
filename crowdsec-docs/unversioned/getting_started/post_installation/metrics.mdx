@@ -6,12 +6,12 @@ title: Metrics
 # Crowdsec Metrics
 
 Crowdsec is instrumented using [prometheus](https://prometheus.io/) to provide detailed metrics and tracability about what is going on.
-The `cscli metrics` allows you to see a subset of the metrics exposed by crowdsec. For a more industrial solution, look into the [Grafana](/observability/prometheus.md) integration. <!-- why is the link not working ?-->
+The `cscli metrics` allows you to see a subset of the metrics exposed by crowdsec. For a more industrial solution, look into the [Grafana](/docs/next/observability/prometheus) integration.
 
 The best way to get an overview of the available metrics is to use `cscli metrics list`:
 
  Type          | Title                        | Description 
----------------|------------------------------|------ 
+---------------|------------------------------|-------------
 acquisition    | Acquisition Metrics          | Measures the lines read, parsed, and unparsed per datasource. Zero read lines indicate a misconfigured or inactive datasource. Zero parsed lines mean the parser(s) failed. Non-zero parsed lines are fine as crowdsec selects relevant lines. 
 alerts         | Local API Alerts             | Tracks the total number of past and present alerts for the installed scenarios. 
 appsec-engine  | Appsec Metrics               | Measures the number of parsed and blocked requests by the AppSec Component. 
@@ -42,7 +42,8 @@ You can as well combine various metrics sections (listed in `cscli metrics list`
 Using `cscli metrics show engine` will display the metrics sections relative to the security engine itself : acquisition, parsers, scenarios, whitelists and stash.
 
 <details>
-<summary>cscli metrics show engine</summary>
+
+<summary>Example Output</summary>
 
 ```bash
 ▶ cscli metrics show engine
@@ -90,8 +91,6 @@ Whitelist Metrics:
 ├──────────────────────────┼─────────────────────────────┼──────┼─────────────┤
 │ crowdsecurity/whitelists │ private ipv4/ipv6 ip/ranges │ 12   │ 12          │
 ╰──────────────────────────┴─────────────────────────────┴──────┴─────────────╯
-
-
 ```
 
 </details>
