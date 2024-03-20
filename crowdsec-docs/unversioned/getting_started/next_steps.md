@@ -3,7 +3,7 @@ id: next_steps
 title: Post Installation Steps
 ---
 
-Now that you have installed CrowdSec, we have a post installation steps to help continue your journey.
+Now that you have installed CrowdSec, we have a post installation steps to help continue your journey. However, if you encounter an error whilst installing you can follow our [troubleshooting guide](#TODO).
 
 ### 1. CrowdSec Console
 
