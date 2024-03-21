@@ -208,8 +208,7 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} CrowdSec`,
     },
     prism: {
-      theme: themes.github,
-      darkTheme: themes.duotoneDark,
+      theme: themes.shadesOfPurple,
       additionalLanguages: ['bash', 'yaml', 'json'],
     },
   },
