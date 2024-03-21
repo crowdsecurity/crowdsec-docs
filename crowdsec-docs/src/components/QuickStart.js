@@ -49,7 +49,7 @@ const staticData = [
     },
     {
         icon: PfsenseSvg,
-        text: "PFSense",
+        text: "pfSense",
         link: "/u/getting_started/installation/pfsense",
     },
 ];
