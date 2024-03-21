@@ -30,10 +30,14 @@ const staticData = [
         link: "/u/getting_started/installation/macos",
     },
     {
-	icon: faDocker,
-	text: "Docker",
-	link: "/u/getting_started/installation/docker",
-    
+	    icon: faDocker,
+	    text: "Docker",
+	    link: "/u/getting_started/installation/docker",
+    },
+    {
+        icon: faDocker,
+        text: "Kubernetes",
+        link: "/u/getting_started/installation/kubernetes",
     },
 ];
 

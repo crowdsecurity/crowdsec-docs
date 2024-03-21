@@ -3,7 +3,7 @@ id: profiles
 title: Profiles
 ---
 
-import UnixWindowsTabs from '../../../src/components/UnixWindowsTabs';
+import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
 
 # Profiles
 
@@ -16,6 +16,7 @@ Here is the default file path fo profiles depending on your platform:
 - **Linux** `/etc/crowdsec/profiles.yaml`
 - **Freebsd** `/usr/local/etc/crowdsec/profiles.yaml`
 - **Windows** `C:\ProgramData\CrowdSec\config\profiles.yaml`
+- **Kubernetes** By default, in `/etc/crowdsec/profiles.yaml` in `crowdsec-lapi-*` pod. You can overwrite it in `values.yaml -> config.profiles.yaml`
 
 ```yaml title="Default profiles.yaml"
 name: default_ip_remediation
@@ -177,7 +178,8 @@ on_success: break
 
 Now that you have made some modifications to your profiles, you **MUST** restart the CrowdSec service to apply the changes. You can do this by running the following command:
 
-<UnixWindowsTabs
+<UnixWindowsK8sTabs
   bash="sudo crowdsec -t && sudo systemctl restart crowdsec"
   powershell="Restart-Service crowdsec"
+  k8s="helm upgrade --install crowdsec crowdsecurity/crowdsec --namespace crowdsec -f values.yaml"
 />
