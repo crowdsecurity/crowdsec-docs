@@ -7,7 +7,8 @@ import {
     cibWindows,
     cibApple,
 } from "@coreui/icons";
-import OpnsenseSvg from "@site/static/img/Opnsense-logo.svg";
+import OpnsenseSvg from "@site/static/img/opnsense.svg";
+import PfsenseSvg from "@site/static/img/pfsense.svg";
 import Link from "@docusaurus/Link";
 
 const staticData = [
@@ -41,10 +42,16 @@ const staticData = [
         text: "Kubernetes",
         link: "/u/getting_started/installation/kubernetes",
     },
-    // {
-    //     icon: OpnsenseSvg,
-    //     link: "/u/getting_started/installation/opnsense",
-    // },
+    {
+        icon: OpnsenseSvg,
+        text: "OPNsense",
+        link: "/u/getting_started/installation/opnsense",
+    },
+    {
+        icon: PfsenseSvg,
+        text: "PFSense",
+        link: "/u/getting_started/installation/pfsense",
+    },
 ];
 
 export default function QuickStart() {
@@ -54,7 +61,7 @@ export default function QuickStart() {
                 <h1 className="tw-text-2xl tw-border-white tw-border-solid tw-rounded-xl tw-px-8 tw-bg-black tw--translate-y-4">
                     Quick Start
                 </h1>
-                <div className="tw-flex tw-flex-row tw-justify-between tw-gap-2 tw-w-1/2 sm:tw-w-4/5 tw-flex-wrap tw-pb-2">
+                <div className="tw-flex tw-flex-row tw-gap-2 tw-w-1/2 sm:tw-w-4/5 tw-flex-wrap tw-pb-2">
                     {staticData.map((item, index) => (
                         <div className="tw-w-full sm:tw-w-fit tw-p-4 tw-transition tw-duration-500 tw-ease-in-out tw-transform hover:tw-border-secondary">
                             <Link
@@ -63,7 +70,7 @@ export default function QuickStart() {
                                 className="tw-flex tw-flex-col tw-items-center tw-text-white tw-transition tw-duration-500 tw-ease-in-out tw-transform hover:tw-text-secondary"
                             >
                                 {!Array.isArray(item.icon) &&
-                                    <item.icon className="tw-text-white icon icon-8xl"/> ||
+                                    <item.icon className="icon icon-4xl"/> ||
                                     <CIcon icon={item.icon} size="4xl" />
                                 }
                                 {!!item.text && <p>{item.text}</p>}
