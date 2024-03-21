@@ -41,6 +41,44 @@ We won't delve into the file's specifics in this section, but further informatio
 
 Here are a few examples of how you might modify your profiles to better suit your needs.
 
+### Enable Notifications
+
+:::info
+Notifications are plugins that can forward alerts to another service for example the `http` plugin can forward to your SIEM
+::: 
+
+This adjustment can be made by configuring the plugin files located under:
+
+- **Linux** `/etc/crowdsec/notifications/`
+- **Freebsd** `/usr/local/etc/crowdsec/notifications/`
+- **Windows** `C:\ProgramData\CrowdSec\config\notifications\`
+
+We wont be covering the configuration as you can find [extensive documentation](/docs/next/notification_plugins/intro) on the files. Once this is done you can start by removing the comment (`#`) from the [`notifications`](/docs/next/profiles/format#notifications) lines. This will enable notifications for the specified components.
+
+<details>
+
+<summary>Modified profiles.yaml</summary>
+
+```yaml
+name: default_ip_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+#duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+#highlight-next-line
+notifications:
+#highlight-next-line
+  - slack_default
+on_success: break
+```
+
+</details>
+
+
+
 ### Scaling Decision Duration
 
 ```yaml

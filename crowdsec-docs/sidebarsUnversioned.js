@@ -203,9 +203,10 @@ module.exports = {
                 "getting_started/installation/freebsd",
                 "getting_started/installation/windows",
                 "getting_started/installation/macos",
-                "getting_started/installation/pfsense",
-                "getting_started/installation/opnsense",
+                "getting_started/installation/docker",
                 "getting_started/installation/kubernetes",
+                // "getting_started/installation/pfsense",
+                // "getting_started/installation/opnsense",
             ]
         },
         {

@@ -12,19 +12,19 @@ The best way to get an overview of the available metrics is to use `cscli metric
 
  Type          | Title                        | Description 
 ---------------|------------------------------|-------------
-acquisition    | Acquisition Metrics          | Measures the lines read, parsed, and unparsed per datasource. Zero read lines indicate a misconfigured or inactive datasource. Zero parsed lines mean the parser(s) failed. Non-zero parsed lines are fine as crowdsec selects relevant lines. 
-alerts         | Local API Alerts             | Tracks the total number of past and present alerts for the installed scenarios. 
-appsec-engine  | Appsec Metrics               | Measures the number of parsed and blocked requests by the AppSec Component. 
-appsec-rule    | Appsec Rule Metrics          | Provides “per AppSec Component” information about the number of matches for loaded AppSec Rules. 
-decisions      | Local API Decisions          | Provides information about all currently active decisions. Includes both local (crowdsec) and global decisions (CAPI), and lists subscriptions (lists). 
-lapi           | Local API Metrics            | Monitors the requests made to local API routes. 
-lapi-bouncer   | Local API Bouncers Metrics   | Tracks total hits to remediation component related API routes. 
-lapi-decisions | Local API Bouncers Decisions | Tracks the number of empty/non-empty answers from LAPI to bouncers that are working in "live" mode. 
-lapi-machine   | Local API Machines Metrics   | Tracks the number of calls to the local API from each registered machine. 
-parsers        | Parser Metrics               | Tracks the number of events processed by each parser and indicates success of failure. Zero parsed lines means the parer(s) failed. Non-zero unparsed lines are fine as crowdsec select relevant lines. 
+acquisition    | Acquisition Metrics          | Measures the lines read, parsed, and unparsed per datasource. Zero read lines indicate a misconfigured or inactive datasource. Zero parsed lines mean the parser(s) failed. Non-zero parsed lines are fine as crowdsec selects relevant lines.
+alerts         | Local API Alerts             | Tracks the total number of past and present alerts for the installed scenarios.
+appsec-engine  | Appsec Metrics               | Measures the number of parsed and blocked requests by the AppSec Component.
+appsec-rule    | Appsec Rule Metrics          | Provides “per AppSec Component” information about the number of matches for loaded AppSec Rules.
+decisions      | Local API Decisions          | Provides information about all currently active decisions. Includes both local (crowdsec) and global decisions (CAPI), and lists subscriptions (lists).
+lapi           | Local API Metrics            | Monitors the requests made to local API routes.
+lapi-bouncer   | Local API Bouncers Metrics   | Tracks total hits to remediation component related API routes.
+lapi-decisions | Local API Bouncers Decisions | Tracks the number of empty/non-empty answers from LAPI to bouncers that are working in "live" mode.
+lapi-machine   | Local API Machines Metrics   | Tracks the number of calls to the local API from each registered machine.
+parsers        | Parser Metrics               | Tracks the number of events processed by each parser and indicates success of failure. Zero parsed lines means the parer(s) failed. Non-zero unparsed lines are fine as crowdsec select relevant lines.
 scenarios      | Scenario Metrics             | Measure events in different scenarios. Current count is the number of buckets during metrics collection. Overflows are past event-producing buckets, while Expired are the ones that didn’t receive enough events to Overflow. 
-stash          | Parser Stash Metrics         | Tracks the status of stashes that might be created by various parsers and scenarios. 
-whitelists     | Whitelist Metrics            | Tracks the number of events processed and possibly whitelisted by each parser whitelist. 
+stash          | Parser Stash Metrics         | Tracks the status of stashes that might be created by various parsers and scenarios.
+whitelists     | Whitelist Metrics            | Tracks the number of events processed and possibly whitelisted by each parser whitelist.
 
 
 # Metrics sections
