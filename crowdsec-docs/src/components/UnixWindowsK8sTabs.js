@@ -10,7 +10,7 @@ import CodeBlock from "@theme/CodeBlock";
  * The powershell prop is used to display the code snippet for Windows Powershell.
  * The cmd prop is used to display the code snippet for Windows Command Prompt.
  */
-export default function UnixWindowsTabs({ ...props }) {
+export default function UnixWindowsK8sTabs({ ...props }) {
     return (
         <Tabs
             defaultValue="nix"
@@ -18,6 +18,7 @@ export default function UnixWindowsTabs({ ...props }) {
             values={[
                 { label: "Linux/Freebsd", value: "nix" },
                 { label: "Windows", value: "windows" },
+                { label: "Kubernetes", value: "kubernetes" },
             ]}
         >
             <TabItem value="nix">
@@ -52,6 +53,17 @@ export default function UnixWindowsTabs({ ...props }) {
                             </CodeBlock>
                         </TabItem>
                     </Tabs>
+                ) : null}
+            </TabItem>
+            <TabItem value="kubernetes">
+                {props.yaml === undefined && props.k8s === undefined ? (
+                    <p>Code snippet not available for Kubernetes</p>
+                ) : null}
+                {props.yaml !== undefined ? (
+                    <CodeBlock className="language-yaml">{props.yaml}</CodeBlock>
+                ) : null}
+                {props.k8s !== undefined ? (
+                    <CodeBlock className="language-bash">{props.k8s}</CodeBlock>
                 ) : null}
             </TabItem>
         </Tabs>

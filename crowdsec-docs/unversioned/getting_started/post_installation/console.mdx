@@ -5,7 +5,7 @@ title: CrowdSec Console
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
-import UnixWindowsTabs from '../../../src/components/UnixWindowsTabs';
+import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
 
 # CrowdSec Console
 
@@ -21,6 +21,7 @@ This guide presumes you have already installed CrowdSec on your machine. If you 
 - [Install on FreeBSD](/getting_started/installation/freebsd.mdx)
 - [Install on Windows](/getting_started/installation/windows.mdx)
 - [Install on MacOS](/getting_started/installation/macos.mdx)
+- [Install on Kubernetes](/getting_started/installation/kubernetes.mdx)
 
 ### Sign Up
 
@@ -84,9 +85,19 @@ At the very bottom of the page, you will see a code card with a command to run o
 `$ENROLLMENT_KEY` is a placeholder for your actual enrollment key.
 :::
 
-<UnixWindowsTabs
+<UnixWindowsK8sTabs
     bash="sudo cscli console enroll $ENROLLMENT_KEY"
     powershell="cscli.exe console enroll $ENROLLMENT_KEY"
+    yaml="# In your values.yml file
+          lapi:
+            env:
+                # To enroll the security engine to the console
+                - name: ENROLL_KEY
+                value: '{enroll-key}'
+                - name: ENROLL_INSTANCE_NAME
+                value: 'my-k8s-cluster'
+                - name: ENROLL_TAGS
+                value: 'k8s linux test'"
 />
 
 ```bash title="Example output"
@@ -121,9 +132,10 @@ If you don't see the engine appear, you can use the refresh button at the right 
 
 After accepting the enrollment, you will need to restart the CrowdSec service.
 
-<UnixWindowsTabs
+<UnixWindowsK8sTabs
     bash="sudo systemctl restart crowdsec"
     powershell="Restart-Service crowdsec"
+    k8s="kubectl delete pod -n crowdsec crowdsec-lapi-*"
 />
 
 :::warning

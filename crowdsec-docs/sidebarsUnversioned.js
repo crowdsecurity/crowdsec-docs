@@ -205,6 +205,7 @@ module.exports = {
                 "getting_started/installation/macos",
                 "getting_started/installation/pfsense",
                 "getting_started/installation/opnsense",
+                "getting_started/installation/kubernetes",
             ]
         },
         {

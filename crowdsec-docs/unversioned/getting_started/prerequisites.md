@@ -35,6 +35,7 @@ We support the following operating systems:
 * [FreeBSD](/getting_started/installation/freebsd.mdx)
 * [Windows](/getting_started/installation/windows.mdx)
 * [MacOS](/getting_started/installation/macos.mdx) (through Docker)
+* [Kubernetes](/getting_started/installation/kubernetes.mdx)
 
 [See version matrix for detailed breakdown](/docs/next/getting_started/versions_matrix)
 

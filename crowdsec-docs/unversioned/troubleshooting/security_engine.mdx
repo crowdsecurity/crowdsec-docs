@@ -3,7 +3,7 @@ title: Troubleshooting Security Engine
 id: security_engine
 ---
 
-import UnixWindowsTabs from '../../src/components/UnixWindowsTabs';
+import UnixWindowsK8sTabs from '../../src/components/UnixWindowsK8sTabs';
 
 ## Community support
 
@@ -16,9 +16,10 @@ Please try to resolve your issue by reading the documentation. If you're unable 
 
 ### How to check the status
 
-<UnixWindowsTabs
+<UnixWindowsK8sTabs
     bash="sudo systemctl status crowdsec"
     powershell="Get-Service crowdsec"
+    k8s="kubectl get pods -n crowdsec"
 />
 
 ### How to check if LAPI is reachable
@@ -117,9 +118,10 @@ Please see [configuration section](#where-is-configuration-stored) to see where 
 
 To enable the simulation mode for this scenario, i need to run:
 
-<UnixWindowsTabs
+<UnixWindowsK8sTabs
   bash="sudo cscli simulation enable my_custom_scenario.yaml"
   powershell="cscli.exe simulation enable my_custom_scenario.yaml"
+  k8s="kubectl exec -it crowdsec-agent-* -n crowdsec -- cscli simulation enable my_custom_scenario.yaml"
 />
 
 ### My scenario is triggered with less logs than the scenario capacity
@@ -143,6 +145,7 @@ Here is a list of the most common locations:
 - **Linux** `/etc/crowdsec/`
 - **Freebsd** `/usr/local/etc/crowdsec/`
 - **Windows** `C:\ProgramData\CrowdSec\`
+- **Kubernetes** `/etc/crowdsec/` can be overwriten in [values.yaml](https://artifacthub.io/packages/helm/crowdsec/crowdsec?modal=values).
 
 ### Where is data stored?
 
@@ -172,6 +175,7 @@ By default CrowdSec will log to the following locations depending on platform:
   - **Opnsense** `/var/log/crowdsec/crowdsec.log`
   - **Pfsense** `/var/log/crowdsec/crowdsec.log`
 - **Windows** `C:\ProgramData\CrowdSec\log\crowdsec.log`
+- **Kubernetes** `kubectl logs -n crowdsec crowdsec-(agent|lapi)-*`
 
 This is the default log location if you are using a third party integration they may change the log location.
 
@@ -183,10 +187,11 @@ If you are unsure where CrowdSec is logging you can view the configuration file 
 
 You can use the os related commands to filter the logs to only show errors.
 
-<UnixWindowsTabs
+<UnixWindowsK8sTabs
     bash='sudo grep -E "level=(error|fatal)" /var/log/crowdsec.log'
     cmd='findstr "level=error level=fatal" C:\ProgramData\CrowdSec\log\crowdsec.log'
     powershell='Select-String "level=(error|fatal)" C:\ProgramData\CrowdSec\log\crowdsec.log'
+    k8s='kubectl logs -n crowdsec crowdsec-agent-* | grep -E "level=(error|fatal)"'
 />
 
 **Please make sure the log location matches your distribution.**
@@ -210,7 +215,7 @@ You can use the following os commands to check if a service is already using a p
 
 For example, to check if a service is using port 8080: (Our default port for the local API)
 
-<UnixWindowsTabs
+<UnixWindowsK8sTabs
     bash='sudo netstat -tulpn | grep :8080'
     powershell='Get-NetTCPConnection | where Localport -eq 8080 | select Localport,OwningProcess'
 />

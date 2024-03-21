@@ -9,7 +9,7 @@ pagination_next: getting_started/post_installation/profiles
 We will be adding a [file based acquisition](/docs/next/data_sources/file). If you need to use a different source then alter the instructions to match your needs.
 :::
 
-import UnixWindowsTabs from '../../../src/components/UnixWindowsTabs';
+import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
 
 
 Once you have found service you want to add, you can use the `cscli` command line tool to add the collection.
@@ -18,9 +18,14 @@ Once you have found service you want to add, you can use the `cscli` command lin
 You can view the available collections on the [Hub](https://hub.crowdsec.net/).
 :::
 
-<UnixWindowsTabs
+<UnixWindowsK8sTabs
   bash="cscli collections add <collection_name>"
   powershell="cscli.exe collections add <collection_name>"
+  yaml="# In your values.yml file
+        agent:
+          env:
+            - name: COLLECTIONS
+              value: '<collection_name>'"
 />
 
 Once the collection has been downloaded we need to add a new [Acquisition](https://docs.crowdsec.net/docs/next/data_sources/intro) to the configuration so CrowdSec knows where to find the log source.
@@ -35,7 +40,7 @@ From version `1.5.0` we have added the ability to add acquisitions via the `acqu
 
 ### Create the directory if it does not exist
 
-<UnixWindowsTabs
+<UnixWindowsK8sTabs
   bash="sudo mkdir -p /etc/crowdsec/acquis.d"
   cmd="mkdir C:\ProgramData\CrowdSec\Config\acquis.d\"
   powershell="New-Item -ItemType Directory -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\"
@@ -43,10 +48,20 @@ From version `1.5.0` we have added the ability to add acquisitions via the `acqu
 
 ### Create the acquisition file
 
-<UnixWindowsTabs
+<UnixWindowsK8sTabs
   bash="sudo touch /etc/crowdsec/acquis.d/<collection_name>.yaml"
   cmd="New-Item -ItemType File -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml"
   powershell=".>C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml 2>NUL"
+  yaml="# In your values.yml file
+      agent:
+        # -- To add custom acquisitions using available datasources (https://docs.crowdsec.net/docs/next/data_sources/intro)
+        additionalAcquisition:
+          - source: file
+            filesnames:
+            - '/path/to/your/file.log' ## Single file
+            - '/path/to/your/files*' ## Wildcard support
+          labels:
+            type: '<type of logs>' ## Type defined in the parser"
 />
 
 ### Add the following contents to the file
@@ -61,10 +76,11 @@ labels:
 
 Once you have added the acquisitions you can test the configuration and restart the service.
 
-<UnixWindowsTabs
+<UnixWindowsK8sTabs
   bash="sudo crowdsec -t && sudo systemctl restart crowdsec"
   cmd="net stop crowdsec && net start crowdsec"
   powershell="Restart-Service crowdsec"
+  k8s="helm upgrade -f values.yaml crowdsec crowdsecurity/crowdsec"
 />
 
 ## Next Steps?

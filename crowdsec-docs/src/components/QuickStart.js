@@ -4,6 +4,7 @@ import {
     faLinux,
     faFreebsd,
     faApple,
+    faDocker,
 } from "@fortawesome/free-brands-svg-icons";
 import Link from "@docusaurus/Link";
 
@@ -28,6 +29,11 @@ const staticData = [
         text: "macOS",
         link: "/u/getting_started/installation/macos",
     },
+    {
+        icon: faDocker,
+        text: "Kubernetes",
+        "link": "/u/getting_started/installation/kubernetes"
+    }
 ];
 
 export default function QuickStart() {
