@@ -61,19 +61,18 @@ export default function QuickStart() {
                 <h1 className="tw-text-2xl tw-border-white tw-border-solid tw-rounded-xl tw-px-8 tw-bg-black tw--translate-y-4">
                     Quick Start
                 </h1>
-                <div className="tw-flex tw-flex-row tw-gap-2 tw-w-1/2 sm:tw-w-4/5 tw-flex-wrap tw-pb-2">
+                <div className="tw-flex tw-flex-row tw-gap-8 tw-px-4 tw-flex-wrap">
                     {staticData.map((item, index) => (
-                        <div className="tw-w-full sm:tw-w-fit tw-p-4 tw-transition tw-duration-500 tw-ease-in-out tw-transform hover:tw-border-secondary">
+                        <div className="tw-w-full md:tw-w-fit tw-transition tw-duration-500 tw-ease-in-out tw-transform hover:tw-border-secondary">
                             <Link
                                 key={index}
                                 to={item.link}
                                 className="tw-flex tw-flex-col tw-items-center tw-text-white tw-transition tw-duration-500 tw-ease-in-out tw-transform hover:tw-text-secondary"
                             >
-                                {!Array.isArray(item.icon) &&
-                                    <item.icon className="icon icon-4xl"/> ||
-                                    <CIcon icon={item.icon} size="4xl" />
-                                }
-                                {!!item.text && <p>{item.text}</p>}
+                                {(!Array.isArray(item.icon) && (
+                                    <item.icon className="icon icon-4xl" />
+                                )) || <CIcon icon={item.icon} size="4xl" />}
+                                {!!item.text && <p className="tw-text-xl">{item.text}</p>}
                             </Link>
                         </div>
                     ))}
