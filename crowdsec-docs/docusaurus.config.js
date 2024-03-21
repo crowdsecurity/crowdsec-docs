@@ -209,7 +209,7 @@ module.exports = {
     },
     prism: {
       theme: themes.github,
-      darkTheme: themes.dracula,
+      darkTheme: themes.duotoneDark,
       additionalLanguages: ['bash', 'yaml', 'json'],
     },
   },
