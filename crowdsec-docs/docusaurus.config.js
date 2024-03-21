@@ -1,7 +1,7 @@
 const { themes } = require('prism-react-renderer');
 
 const path = require('path')
-const { remediationSideBar, ctiApiSidebar, guidesSideBar} = require('./sidebarsUnversioned.js');
+const { remediationSideBar, ctiApiSidebar, consoleSidebar, guidesSideBar} = require('./sidebarsUnversioned.js');
 const generateCurrentAndNextRedirects = (s) => ([{
   from: `/docs/${s}`,
   to: `/u/${s}`,
@@ -109,6 +109,11 @@ module.exports = {
               label: 'Cscli',
             },
           ],
+        },
+        {
+          to: '/u/console/intro',
+          position: 'left',
+          label: 'Console',
         },
         {
           to: '/u/bouncers/intro',
@@ -251,7 +256,7 @@ module.exports = {
       {
         redirects: [
           // Redirect current and next routes to unversioned to avoid 404 on articles and app.crowdsec.net
-          ...[...remediationSideBar,...ctiApiSidebar, ...guidesSideBar].flatMap(backportRedirect),
+          ...[...remediationSideBar, ...consoleSidebar,...ctiApiSidebar, ...guidesSideBar].flatMap(backportRedirect),
           {
             from: '/docs/troubleshooting',
             to: '/u/troubleshooting/intro',
