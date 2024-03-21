@@ -1,41 +1,35 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faWindows,
-    faLinux,
-    faFreebsd,
-    faApple,
-    faDocker,
-} from "@fortawesome/free-brands-svg-icons";
+import CIcon from '@coreui/icons-react';
+import { cibKubernetes, cibDocker, cibLinux, cibFreebsd, cibWindows, cibApple } from "@coreui/icons";
 import Link from "@docusaurus/Link";
 
 const staticData = [
     {
-        icon: faLinux,
+        icon: cibLinux,
         text: "Linux",
         link: "/u/getting_started/installation/linux",
     },
     {
-        icon: faWindows,
+        icon: cibWindows,
         text: "Windows",
         link: "/u/getting_started/installation/windows",
     },
     {
-        icon: faFreebsd,
+        icon: cibFreebsd,
         text: "FreeBSD",
         link: "/u/getting_started/installation/freebsd",
     },
     {
-        icon: faApple,
+        icon: cibApple,
         text: "macOS",
         link: "/u/getting_started/installation/macos",
     },
     {
-	    icon: faDocker,
-	    text: "Docker",
-	    link: "/u/getting_started/installation/docker",
+        icon: cibDocker,
+        text: "Docker",
+        link: "/u/getting_started/installation/docker",
     },
     {
-        icon: faDocker,
+        icon: cibKubernetes,
         text: "Kubernetes",
         link: "/u/getting_started/installation/kubernetes",
     },
@@ -49,13 +43,14 @@ export default function QuickStart() {
             <div className="tw-flex tw-flex-row tw-justify-between tw-gap-2 tw-w-1/2 sm:tw-w-4/5 tw-flex-wrap tw-pb-2">
                 {staticData.map((item, index) => (
                     <div className="tw-w-full sm:tw-w-fit tw-p-4 tw-transition tw-duration-500 tw-ease-in-out tw-transform hover:tw-border-secondary">
-                        <Link key={index} to={item.link}>
-                            <FontAwesomeIcon
-				alt={item.text}
+                        <Link key={index} to={item.link} className="tw-flex tw-flex-col tw-items-center tw-text-white tw-transition tw-duration-500 tw-ease-in-out tw-transform hover:tw-text-secondary">
+                            <CIcon
                                 icon={item.icon}
-                                size="4x"
-				className="tw-text-white tw-transition tw-duration-500 tw-ease-in-out tw-transform hover:tw-text-secondary"
+                                size="4xl"
                             />
+                            <p>
+                                {item.text}
+                            </p>
                         </Link>
                     </div>
                 ))}
