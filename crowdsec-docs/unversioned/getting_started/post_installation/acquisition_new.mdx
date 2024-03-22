@@ -50,8 +50,8 @@ From version `1.5.0` we have added the ability to add acquisitions via the `acqu
 
 <UnixWindowsK8sTabs
   bash="sudo touch /etc/crowdsec/acquis.d/<collection_name>.yaml"
-  cmd="New-Item -ItemType File -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml"
-  powershell=".>C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml 2>NUL"
+  powershell="New-Item -ItemType File -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml"
+  cmd=".>C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml 2>NUL"
   yaml={`# In your values.yml file
 agent:
 # -- To add custom acquisitions using available datasources (https://docs.crowdsec.net/docs/next/data_sources/intro)
