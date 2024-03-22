@@ -227,7 +227,6 @@ module.exports = {
                     items: [
                         "getting_started/post_installation/console_blocklists",
                         "getting_started/post_installation/console_hub",
-                        "getting_started/post_installation/console_cti",
                     ],
                 },
                 {

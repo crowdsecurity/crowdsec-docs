@@ -60,7 +60,9 @@ export default function UnixWindowsK8sTabs({ ...props }) {
                     <p>Code snippet not available for Kubernetes</p>
                 ) : null}
                 {props.yaml !== undefined ? (
-                    <CodeBlock className="language-yaml">{props.yaml}</CodeBlock>
+                    <CodeBlock language="yaml">
+			{props.yaml}
+		    </CodeBlock>
                 ) : null}
                 {props.k8s !== undefined ? (
                     <CodeBlock className="language-bash">{props.k8s}</CodeBlock>

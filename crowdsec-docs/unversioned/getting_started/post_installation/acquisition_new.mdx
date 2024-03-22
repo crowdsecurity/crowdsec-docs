@@ -21,11 +21,11 @@ You can view the available collections on the [Hub](https://hub.crowdsec.net/).
 <UnixWindowsK8sTabs
   bash="cscli collections add <collection_name>"
   powershell="cscli.exe collections add <collection_name>"
-  yaml="# In your values.yml file
-        agent:
-          env:
-            - name: COLLECTIONS
-              value: '<collection_name>'"
+  yaml={`# In your values.yml file
+agent:
+  env:
+    - name: COLLECTIONS
+      value: '<collection_name>'`}
 />
 
 Once the collection has been downloaded we need to add a new [Acquisition](https://docs.crowdsec.net/docs/next/data_sources/intro) to the configuration so CrowdSec knows where to find the log source.
@@ -52,17 +52,21 @@ From version `1.5.0` we have added the ability to add acquisitions via the `acqu
   bash="sudo touch /etc/crowdsec/acquis.d/<collection_name>.yaml"
   cmd="New-Item -ItemType File -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml"
   powershell=".>C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml 2>NUL"
-  yaml="# In your values.yml file
-      agent:
-        # -- To add custom acquisitions using available datasources (https://docs.crowdsec.net/docs/next/data_sources/intro)
-        additionalAcquisition:
-          - source: file
-            filesnames:
-            - '/path/to/your/file.log' ## Single file
-            - '/path/to/your/files*' ## Wildcard support
-          labels:
-            type: '<type of logs>' ## Type defined in the parser"
+  yaml={`# In your values.yml file
+agent:
+# -- To add custom acquisitions using available datasources (https://docs.crowdsec.net/docs/next/data_sources/intro)
+  additionalAcquisition:
+    - source: file
+      filesnames:
+        - '/path/to/your/file.log' ## Single file
+        - '/path/to/your/files*' ## Wildcard support
+      labels:
+        type: '<type of logs>' ## Type defined in the parser`}
 />
+
+:::info
+You can skip the following step if you are on Kubernetes
+:::
 
 ### Add the following contents to the file
 

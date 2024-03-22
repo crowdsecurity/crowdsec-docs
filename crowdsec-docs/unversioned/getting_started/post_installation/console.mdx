@@ -88,16 +88,16 @@ At the very bottom of the page, you will see a code card with a command to run o
 <UnixWindowsK8sTabs
     bash="sudo cscli console enroll $ENROLLMENT_KEY"
     powershell="cscli.exe console enroll $ENROLLMENT_KEY"
-    yaml="# In your values.yml file
-          lapi:
-            env:
-                # To enroll the security engine to the console
-                - name: ENROLL_KEY
-                value: '{enroll-key}'
-                - name: ENROLL_INSTANCE_NAME
-                value: 'my-k8s-cluster'
-                - name: ENROLL_TAGS
-                value: 'k8s linux test'"
+    yaml={`# In your values.yml file
+lapi:
+  env:
+    # To enroll the security engine to the console
+    - name: ENROLL_KEY
+      value: '{enroll-key}'
+    - name: ENROLL_INSTANCE_NAME
+      value: 'my-k8s-cluster'
+    - name: ENROLL_TAGS
+      value: 'k8s linux test'`}
 />
 
 ```bash title="Example output"
@@ -148,6 +148,5 @@ Now that you have enrolled your first engine, you can start exploring the consol
 
 - [Third-Party Blocklists](/getting_started/post_installation/console_blocklists.mdx)
 - [CrowdSec Hub](/getting_started/post_installation/console_hub.mdx)
-- [CrowdSec CTI](/getting_started/post_installation/console_cti.mdx)
 
 If not head back to the [post installation steps](/getting_started/next_steps.md#1-crowdsec-console) to follow the rest of the steps.

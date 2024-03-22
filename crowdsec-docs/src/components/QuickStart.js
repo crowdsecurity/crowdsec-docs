@@ -61,7 +61,7 @@ export default function QuickStart() {
                 <h1 className="tw-text-2xl tw-border-white tw-border-solid tw-rounded-xl tw-px-8 tw-bg-black tw--translate-y-4">
                     Quick Start
                 </h1>
-                <div className="tw-flex tw-flex-row tw-gap-8 tw-px-4 tw-flex-wrap">
+                <div className="tw-flex tw-flex-row tw-gap-14 tw-px-8 tw-flex-wrap">
                     {staticData.map((item, index) => (
                         <div className="tw-w-full md:tw-w-fit tw-transition tw-duration-500 tw-ease-in-out tw-transform hover:tw-border-secondary">
                             <Link
