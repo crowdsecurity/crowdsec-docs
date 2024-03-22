@@ -55,7 +55,7 @@ crowdsec:
 ```
 
 :::info
-`Compose` snippet was taken from our [example-docker-compose repository](https://github.com/crowdsecurity/example-docker-compose/blob/57d55e5cd4d08ef5843bd1a32becde3c35e45507/basic/docker-compose.yml#L33-L47) which contains many examples of how CrowdSec container can be used in different scenarios. 
+`Compose` snippet was taken from our [example-docker-compose repository](https://github.com/crowdsecurity/example-docker-compose/blob/57d55e5cd4d08ef5843bd1a32becde3c35e45507/basic/docker-compose.yml#L33-L47) which contains many examples of how CrowdSec container can be used in different setups. 
 :::
 
 #### Compose key aspects
@@ -80,6 +80,20 @@ volumes:
   - crowdsec-db:/var/lib/crowdsec/data/ ## Data Directory
   - crowdsec-config:/etc/crowdsec/ ## Configuration Directory
 ```
+
+:::info
+If you haven't used named volumes within Docker before you can read their [documentation here](https://docs.docker.com/storage/volumes/#use-a-volume-with-docker-compose)
+:::
+
+##### Depends On
+
+Depends on directive allows Docker to bring up the compose stack in "order", the reason we use it within the snippet the container `reverse-proxy` creates the log files on startup and we want to make sure CrowdSec finds these files to monitor. 
+
+```yaml
+depends_on:
+  - 'reverse-proxy'
+```
+
 
 ## Next Steps?
 
