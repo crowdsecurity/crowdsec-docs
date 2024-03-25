@@ -245,5 +245,10 @@ module.exports = {
                 "getting_started/post_installation/metrics",
             ],
         },
+	{
+		type: "link",
+		label: "Technical Documentation",
+		href: "/docs/next/intro",
+	}
     ]
 }

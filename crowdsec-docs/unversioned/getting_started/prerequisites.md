@@ -6,12 +6,11 @@ sidebar_position: 1
 
 # Prerequisites
 
-We recommend that you understands the following prerequisites before installing CrowdSec:
+We recommend that you understand the following prerequisites before installing CrowdSec:
 
 ## Hardware
 
 CrowdSec is a lightweight software that can run on most modern hardware.
-
 
 However, the recommendation is at least:
 

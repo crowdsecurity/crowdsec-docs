@@ -41,14 +41,7 @@ You can as well combine various metrics sections (listed in `cscli metrics list`
 
 Using `cscli metrics show engine` will display the metrics sections relative to the security engine itself : acquisition, parsers, scenarios, whitelists and stash.
 
-<details>
-
-<summary>Example Output</summary>
-
-```bash
-▶ cscli metrics show engine
-
-
+```bash title="Command Output"
 Acquisition Metrics:
 ╭────────────────────────────────┬────────────┬──────────────┬────────────────┬────────────────────────┬───────────────────╮
 │             Source             │ Lines read │ Lines parsed │ Lines unparsed │ Lines poured to bucket │ Lines whitelisted │
@@ -93,4 +86,3 @@ Whitelist Metrics:
 ╰──────────────────────────┴─────────────────────────────┴──────┴─────────────╯
 ```
 
-</details>
