@@ -1,7 +1,14 @@
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
-
+import {
+cibKubernetes,
+cibDocker,
+cibLinux,
+cibFreebsd,
+cibWindows,
+cibApple,
+} from "@coreui/icons";
 /*
  * This component is used to display code snippets for both Unix and Windows operating systems.
  * It uses the Docusaurus Tabs component to display the code snippets for both operating systems.
@@ -16,9 +23,9 @@ export default function UnixWindowsK8sTabs({ ...props }) {
             defaultValue="nix"
             groupId="console-operating-systems"
             values={[
-                { label: "Linux/Freebsd", value: "nix" },
-                { label: "Windows", value: "windows" },
-                { label: "Kubernetes", value: "kubernetes" },
+                { label: "Linux/Freebsd", value: "nix", icon: cibLinux },
+                { label: "Windows", value: "windows", icon: cibWindows},
+                { label: "Kubernetes", value: "kubernetes", icon: cibKubernetes},
             ]}
         >
             <TabItem value="nix">
