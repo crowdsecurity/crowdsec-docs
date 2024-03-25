@@ -27,35 +27,27 @@ sudo pkg install crowdsec
 
 You'll see a message that tells you how to activate the service:
 
+#### Enable Service
+
 ```shell
 sudo sysrc crowdsec_enable="YES"
 ```
 
-<details>
-
-<summary>Command Output</summary>
-
-```
+```bash title="Command Output"
 crowdsec_enable:  -> YES
 ```
 
-</details>
+#### Start Service
 
 ```shell
 sudo service crowdsec start
 ```
 
-<details>
-
-<summary>Command Output</summary>
-
-```
+```bash title="Command Output"
 Fetching hub inventory
 INFO[21-12-2021 03:13:35 PM] Wrote new 197364 bytes index to /usr/local/etc/crowdsec/hub/.index.json 
 [...]
 ```
-
-</details>
 
 ## Install Remediation Component
 
@@ -73,33 +65,25 @@ sudo pkg install crowdsec-firewall-bouncer
 
 Then you must enable it with the following commands:
 
+#### Enable Service
+
 ```shell
 sudo sysrc crowdsec_firewall_enable="YES"
 ```
 
-<details>
-
-<summary>Command Output</summary>
-
-```
+```bash title="Command Output"
 crowdsec_firewall_enable:  -> YES
 ```
 
-</details>
+#### Start Service
 
 ```shell
 sudo service crowdsec_firewall start
 ```
 
-<details>
-
-<summary>Command Output</summary>
-
-```
+```bash title="Command Output"
 Registered: cs-firewall-bouncer-ZjpcXlUx
 ```
-
-</details>
 
 ## Next Steps?
 

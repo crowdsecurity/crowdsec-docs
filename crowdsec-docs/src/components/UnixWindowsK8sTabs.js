@@ -3,11 +3,10 @@ import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 import {
 cibKubernetes,
-cibDocker,
 cibLinux,
-cibFreebsd,
 cibWindows,
-cibApple,
+cibPowershell,
+cilShortText,
 } from "@coreui/icons";
 /*
  * This component is used to display code snippets for both Unix and Windows operating systems.
@@ -45,8 +44,8 @@ export default function UnixWindowsK8sTabs({ ...props }) {
                         defaultValue="powershell"
                         groupId="windows-terminal"
                         values={[
-                            { label: "Powershell", value: "powershell" },
-                            { label: "CMD", value: "terminal" },
+                            { label: "Powershell", value: "powershell", icon: cibPowershell },
+                            { label: "CMD", value: "terminal", icon: cilShortText},
                         ]}
                     >
                         <TabItem value="powershell">
