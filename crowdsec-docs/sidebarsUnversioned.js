@@ -101,6 +101,11 @@ module.exports = {
           label: "Remove an Engine",
           id: "console/security_engines/remove_engine",
         },
+        {
+          type: "doc",
+          label: "Troubleshooting",
+          id: "console/security_engines/troubleshooting",
+        },
       ],
     },
     // {
