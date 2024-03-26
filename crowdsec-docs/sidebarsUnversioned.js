@@ -86,6 +86,11 @@ module.exports = {
           label: "Pending Security Engines",
           id: "console/security_engines/pending_security_engines",
         },
+        {
+          type: "doc",
+          label: "Name and Tags",
+          id: "console/security_engines/name_and_tags",
+        },
       ],
     },
     // {
