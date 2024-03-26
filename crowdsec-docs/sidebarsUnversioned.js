@@ -118,6 +118,46 @@ module.exports = {
         },
       ],
     },
+    {
+      type: "category",
+      label: "Alerts",
+      link: {
+        type: "doc",
+        id: "console/alerts/intro",
+      },
+      items: [
+        {
+          type: "doc",
+          label: "Introduction",
+          id: "console/alerts/intro",
+        },
+        {
+          type: "doc",
+          label: "Visualizer",
+          id: "console/alerts/visualizer",
+        },
+        {
+          type: "doc",
+          label: "Alerts analysis",
+          id: "console/alerts/alerts_analysis",
+        },
+        {
+          type: "doc",
+          label: "Background noise",
+          id: "console/alerts/background_noise",
+        },
+        {
+          type: "doc",
+          label: "Alerts context",
+          id: "console/alerts/alerts_context",
+        },
+        {
+          type: "doc",
+          label: "Quotas",
+          id: "console/alerts/quotas",
+        },
+      ],
+    },
     // {
     //     type: 'category',
     //     label: 'Taxonomy',
