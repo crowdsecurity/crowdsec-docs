@@ -76,6 +76,11 @@ module.exports = {
           label: "Dashboard",
           id: "console/security_engines/dashboard",
         },
+        {
+          type: "doc",
+          label: "Filter And Sort",
+          id: "console/security_engines/filter_and_sort",
+        },
       ],
     },
     // {

@@ -15,7 +15,7 @@ If you haven't signed up for Security Engines, check out the ["Getting Started"]
 
 Different views are available based on the number of engines in an organization. If an organization have more than four engines, table views work best. (See below)
 
-![Table_view](/img/console/security_engines/table_view.png)
+![Table_view](/img/console/security_engines/table-view.png)
 
 ## Security Engine Card
 
@@ -31,11 +31,11 @@ Each Security Engine has a card that displays essential details to facilitate mo
 
 ### Basic Card
 
-![Basic_card](/img/console/security_engines/basic_card.png)
+![Basic_card](/img/console/security_engines/basic-card.png)
 
 ### Distributed Setup Card
 
-![Distributed_setup_card](/img/console/security_engines/distributed_setup_card.png)
+![Distributed_setup_card](/img/console/security_engines/distributed-setup-card.png)
 
 ## Security Engines Inactivity
 
