@@ -91,6 +91,11 @@ module.exports = {
           label: "Name and Tags",
           id: "console/security_engines/name_and_tags",
         },
+        {
+          type: "doc",
+          label: "Transfer an Engine",
+          id: "console/security_engines/transfer_engine",
+        },
       ],
     },
     // {
