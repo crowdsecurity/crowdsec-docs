@@ -111,6 +111,11 @@ module.exports = {
           label: "Select multiple organizations",
           id: "console/security_engines/select_multiple_organizations",
         },
+        {
+          type: "doc",
+          label: "Details page",
+          id: "console/security_engines/details_page",
+        },
       ],
     },
     // {
