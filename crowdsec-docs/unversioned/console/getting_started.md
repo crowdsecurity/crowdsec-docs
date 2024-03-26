@@ -31,7 +31,7 @@ One-click connection with Google or GitHub is also available.
 
   
 
-![](https://t2421256.p.clickup-attachments.com/t2421256/0863fa61-d9b2-4164-9417-b227facef68b/Capture%20d%E2%80%99e%CC%81cran%202024-03-01%20a%CC%80%2016.38.52.png)
+![](/img/console/getting_started/signin_form.png)
 
   
 
@@ -51,15 +51,15 @@ sudo cscli console enroll alpaga007fakeenrollkey42
 
   
 
-An enroll request will appear after few seconds in the Console.
+An enrollment request will appear after a few seconds in the Console.
 
-![](https://t2421256.p.clickup-attachments.com/t2421256/deb78443-b406-4257-a14e-fcd7e2578814/Capture%20d%E2%80%99e%CC%81cran%202024-03-01%20a%CC%80%2017.06.28.png)
+![](/img/console/getting_started/console_pending_enroll.png)
 
   
 
 After accepting the enrollment, the Security Engine overview will be displayed in the Engines dashboard.
 
-![](https://t2421256.p.clickup-attachments.com/t2421256/8a80652d-f067-4b24-9e5e-57b11a52e332/Capture%20d%E2%80%99e%CC%81cran%202024-03-01%20a%CC%80%2017.36.46.png)
+![](/img/console/getting_started/console_home.png)
 
   
 
