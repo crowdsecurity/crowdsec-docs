@@ -272,11 +272,6 @@
     },
     {
       "type": "doc",
-      "label": "Console",
-      "id": "console"
-    },
-    {
-      "type": "doc",
       "label": "Contact the team",
       "id": "contact_team"
     }
