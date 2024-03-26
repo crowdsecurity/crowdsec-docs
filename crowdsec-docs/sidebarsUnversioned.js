@@ -81,6 +81,11 @@ module.exports = {
           label: "Filter And Sort",
           id: "console/security_engines/filter_and_sort",
         },
+        {
+          type: "doc",
+          label: "Pending Security Engines",
+          id: "console/security_engines/pending_security_engines",
+        },
       ],
     },
     // {
