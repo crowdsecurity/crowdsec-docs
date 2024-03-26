@@ -148,8 +148,8 @@ module.exports = {
         },
         {
           type: "doc",
-          label: "Alerts contexts",
-          id: "console/alerts/alerts_contexts",
+          label: "Alerts context",
+          id: "console/alerts/alerts_context",
         },
         {
           type: "doc",
