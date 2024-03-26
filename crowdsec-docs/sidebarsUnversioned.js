@@ -106,6 +106,11 @@ module.exports = {
           label: "Troubleshooting",
           id: "console/security_engines/troubleshooting",
         },
+        {
+          type: "doc",
+          label: "Select multiple organizations",
+          id: "console/security_engines/select_multiple_organizations",
+        },
       ],
     },
     // {
