@@ -194,6 +194,7 @@
 				"whitelist/create_postoverflow",
 				"whitelist/create_fqdn",
 				"whitelist/create_capi",
+				"whitelist/create_lapi",
 		    	],
 		    }
 	    ],
