@@ -3,7 +3,7 @@ id: create_lapi
 title: LAPI
 ---
 
-LAPI based whitelist are not your traditional whitelists, as in they wont prevent an overflow from happening, but they will prevent a decision being made by the LAPI this means log processorsthat forward alerts to the LAPI will not need to be configured individually to ignore certain conditions.
+LAPI based whitelist are not your traditional whitelists, as in they wont prevent an overflow from happening, but they will prevent a decision being made by the LAPI this means log processors that forward alerts to the LAPI will not need to be configured individually to ignore certain conditions.
 
 You can create a LAPI based whitelist by prepending a profile to the `profiles.yaml` file:
 
