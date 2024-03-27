@@ -35,8 +35,9 @@ Crowdsec is open-source, and as such, we may not be aware of all the channels of
 | [Windows](/getting_started/getting_started_on_windows.md) | amd64 | to be defined | 1.4.2 | [chocolatey](https://community.chocolatey.org/packages?q=crowdsec) |
 | Linux | almost all OpenWRT supported platform | OpenWRT | 23.05 | 1.5.4 | [OpenWrt repository](https://openwrt.org/packages/pkgdata/crowdsec) |
 | Linux/Windows | amd64/arm64 | docker | N/A | 1.5.4 | [dockerhub](https://hub.docker.com/r/crowdsecurity/crowdsec) |
+| home assistant | amd64/arm64 | docker | N/A | 1.6.0 | [crowdsecurity home assistant addon repo](https://github.com/crowdsecurity/home-assistant-addons/)|
 | helm chart | amd64/arm64 | helm | N/A | 1.6.0 | [helm chart](https://github.com/crowdsecurity/helm-charts) |
-| home assistant | amd64/arm64 | docker | N/A | 1.5.4 | [crowdsecurity home assistant addon repo](https://github.com/crowdsecurity/home-assistant-addons/)|
+
 
 Note: There is a subtile difference between armel, armhf and armv7:
 armel and armhf are the ports name defined by debian, armel is

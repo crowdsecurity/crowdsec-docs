@@ -25,14 +25,15 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 
 :::warning
-This remediation component heavily relies on Cloudflare Workers and KV store. It won't work without a paid Workers subscription.
+This Remediation Component heavily relies on Cloudflare Workers and KV store. It works best on a paid Workers subscription.
+More explanation in the chapter [Test with Cloudflare free plan](#appendix--test-with-cloudflare-free-plan)
 :::
 
 :::warning
-After configuring and starting the remediation component, please see the [setting up worker fail mode](#setting-up-the-worker-route-fail-mode) section.  
+After configuring and starting the Remediation Component, please see the [setting up worker fail mode](#setting-up-the-worker-route-fail-mode) section.  
 :::
 
-This remediation component deploys Cloudflare Worker in front of a Cloudflare Zone/Website, which checks if incoming request's IP address/Country/AS is present in a KV store and takes necessary remedial actions. It also periodically updates the KV store with CrowdSec LAPI's decisions.
+This Remediation Component (aka Bouncer) deploys a Cloudflare Worker in front of a Cloudflare Zone/Website, which checks if incoming request's IP address/Country/AS is present in a KV store and takes necessary remedial actions. It also periodically updates the KV store with CrowdSec LAPI's decisions.
 
 ## Installation
 
@@ -64,13 +65,13 @@ sudo yum install crowdsec-cloudflare-worker-bouncer
 </Tabs>
 
 
-Then run the following commands to setup your bouncer:
+Then run the following commands to setup your Remediation Component:
 
 
 ```bash
 sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens 
 sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't alread
-sudo systemctl start crowdsec-cloudflare-worker-bouncer # the bouncer now syncs the crowdsec decisions with cloudflare components.
+sudo systemctl start crowdsec-cloudflare-worker-bouncer # the Remediation Component now syncs the crowdsec decisions with cloudflare components.
 ```
 
 :::warning
@@ -81,13 +82,13 @@ Please configure your server to emit real IPs rather than cloudflare IPs in logs
 
 :::info
 
-If your bouncer is not installed on the same machine than LAPI, don't forget to set the `crowdsec_lapi_url` and `crowdsec.lapi_key` in the configuration file `/etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml`
+If your Remediation Component is not installed on the same machine than LAPI, don't forget to set the `crowdsec_lapi_url` and `crowdsec.lapi_key` in the configuration file `/etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml`
 
 :::
 
 :::note
 
-You need to run `sudo crowdsec-cloudflare-worker-bouncer -d` to cleanup exisiting cloudflare components created by bouncer before editing the config files.
+You need to run `sudo crowdsec-cloudflare-worker-bouncer -d` to cleanup exisiting cloudflare components created by Remediation Component before editing the config files.
 
 :::
 
@@ -109,7 +110,7 @@ cd crowdsec-cloudflare-worker-bouncer/
 sudo ./install.sh
 sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided tokens 
 sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't already
-sudo systemctl start crowdsec-cloudflare-worker-bouncer # the bouncer now syncs the crowdsec decisions with cloudflare components.
+sudo systemctl start crowdsec-cloudflare-worker-bouncer # the Remediation Component now syncs the crowdsec decisions with cloudflare components.
 ```
 
 #### From source
@@ -131,12 +132,12 @@ sudo systemctl start crowdsec-cloudflare-worker-bouncer
 
 ![Architecture](/img/bouncer/cloudflare-worker/cfworkerarch.png)
 
-The bouncer does the following:
+The Remediation Component does the following:
 
 1. Create a Cloudflare Worker and a Worker KV per configured account.
 2. Create a Worker Route(s) per configured zone. Any request matching the route would be handled by the worker.
 3. For every matching incoming request, the worker checks whether it's IP, Country and AS have a decision against. It checks for this in it's KV store. If found it performs the corresponding remediation.
-4. The bouncer also periodically updates the KV store with the latest decisions from CrowdSec. 
+4. The Remediation Component also periodically updates the KV store with the latest decisions from CrowdSec. 
 
 ## Configuration
 
@@ -198,7 +199,7 @@ Alternatively, you can
 
 Go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. 
 
-The bouncer requires the follwing permissions to function.
+The Remediation Component requires the follwing permissions to function.
 
 ![image](/img/bouncer/cloudflare-worker/cloudflare_token_permissions.png)
 
@@ -230,7 +231,7 @@ sudo crowdsec-cloudflare-worker-bouncer -c ./cfg.yaml -g <TOKEN_1>,<TOKEN_2>...
 
 ### Cloudflare Cleanup
 
-This deletes all the Cloudflare infrastructure which was created by the bouncer.
+This deletes all the Cloudflare infrastructure which was created by the Remediation Component.
 
 Example Usage:
 ```bash
@@ -239,33 +240,86 @@ sudo crowdsec-cloudflare-worker-bouncer -d
 
 ## Setting up the worker route fail mode
 
-The remediation component creates worker routes to make the workers act as a reverse proxy for your origin servers. The worker routes are created with the failover mode set to `Fail Closed`. There's no public Cloudflare API we can use to change/update it to `Fail Open` mode.
+The Remediation Component creates worker routes to make the workers act as a reverse proxy for your origin servers. The worker routes are created with the failover mode set to `Fail Closed`. There's no public Cloudflare API we can use to change/update it to `Fail Open` mode.
 
 With `Fail Closed` mode, Routes in fail closed mode will display a Cloudflare 1027 error page to visitors if there's an error within the worker. This error could be triggered due to quotas exceeding your plan etc. Cloudflare doesn't mention all the possible scenarios which could trigger this error page. 
 
-Thus **we recommend you to manually override the failover mode to `Fail Open`** for all the worker routes created by our remediation component. With `Fail Open` mode the requests would bypass the worker and be served directly from your origin servers. Thus your website would continue to function even if there's an error within the worker.
+Thus **we recommend you to manually override the failover mode to `Fail Open`** for all the worker routes created by our Remediation Component. With `Fail Open` mode the requests would bypass the worker and be served directly from your origin servers. Thus your website would continue to function even if there's an error within the worker.
 
 This can be done by following the steps below:
 
 1. Log in to the Cloudflare dashboard and select your account.
-2. For all the websites configured with the remediation component, do the following:
+2. For all the websites configured with the Remediation Component, do the following:
 3. Click on the website's name to open the Website's Overview page.
 4. Click on the Worker Routes tab from the left menu.
 
 ![Worker Route](/img/bouncer/cloudflare-worker/cfsitedashboard.png)
 
-5. Click on the route created by the remediation component.
+5. Click on the route created by the Remediation Component.
 6. Click on the Edit button.
 7. Click on the Request limit failure mode. Check the Fail open button.
 
 ![Fail Open](/img/bouncer/cloudflare-worker/cffailmode.png)
 
+## Appendix: Test with Cloudflare free plan
+Using Cloudflare's free plan with our Remediation Component requires to understand the constraints of the CloudFlare freeplan.   
+Despite these constraints, it's entirely feasible to leverage the Remediation Component for enhanced security.   
 
-## Configuration Reference
+In this section we'll guide you through:
+  - An overview of the Cloudflare free plan's limitations and their impact on Remediation Component functionality
+  - A walkthrough for deploying the Remediation Component within these constraints successfully
+
+### Understanding Cloudflare Free Plan Limitations
+Our Remediation Component integrates with Cloudflare Workers and Workers KeyValue storage, subject to specific thresholds under the free plan.  
+For the complete detailed information, refer to Cloudflare's official documentation:
+   - [KeyValue storage limits by plan](https://developers.cloudflare.com/kv/platform/limits/)
+   - [Workers limits by plan](https://developers.cloudflare.com/workers/platform/limits/)
+
+Key limitations to note for Remediation Component operation on the free plan include:
+  - KV write: Up to 1K per day
+  - Worker Requests:Up to 100k per day or 1K per minute
+
+*KV write limit of 1K per day*:   
+It's the primary limiting factor as the full decisions list (blocklist) passed on to the Remediation Component often exceeds tens of thousands of IPs.   
+  - It implies that the initial population of decisions in the Worker's KV will be truncated to 1K
+  - However, it will still periodically receive new decisions and remove expired ones.
+  - So, eventually you'll have many more than 1K IPs in the KV but it still diminishes the immediate effectiveness of the Remediation Component
+
+The *request quota*:
+While the request quota might seem ample, it's essential to remember that both legitimate traffic and potential attack patterns contribute to this total.   
+  - ⚠️ It's primordial to [properly setup the failmode](#setting-up-the-worker-route-fail-mode)
+  - With the failmode set to passthrough, when you reach the Worker request limits your service will stay available, but the Remediation Component won't apply remediation anymore
+
+### Quick Guide : Configuring the Remediation Component on Cloudflare's Free Plan
+To adapt to the free plan's constraints, we can prioritize local decision-making and manual intervention over broader community-driven blocklists.   
+Here's how to set it up:
+
+1. *Configuration Setup*: Begin by [auto-generating the Remediation Component configuration](#auto-config-generator).
+2. *Limiting Decision Sources*: Modify the configuration to prioritize decisions generated by your Security Engine and added manually.   
+  - Using the config parameter [crowdsec.only_include_decisions_from](#crowdseconly_include_decisions_from)   
+  ```yaml
+crowdsec_config:
+  [...]
+  only_include_decisions_from: ["cscli", "crowdsec"]
+  ```
+3. *Failmode Configuration*: It's crucial to [configure the failmode properly](#setting-up-the-worker-route-fail-mode) to ensure your service remains operational even when request quotas are reached.
+4. *Testing with manual decisions*: Verify the functionality by adding decisions manually, which should be promptly reflected in KV storage and enforced by the Remediation Component.
+  ```bash
+    sudo cscli decisions add --ip 1.2.3.4 --type captcha
+  ```
+  check your decisions has been added using:
+```bash
+  sudo cscli decisions list --origin cscli
+```
+  And within a few seconds it will be sent to the KV and the proper remediation should be applied to the requests from the specified IP
+
+  <!-- Screenshot of CF KV ? or something -->
+
+## Appendix: Configuration Reference
 
 ### `crowdsec.lapi_url`
 
-The URL of CrowdSec LAPI. It should be accessible from the bouncer.
+The URL of CrowdSec LAPI. It should be accessible from the Remediation Component.
 
 ### `crowdsec.lapi_key`
 
@@ -278,19 +332,19 @@ sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for h
 
 ### `crowdsec.update_frequency`
 
-The bouncer will poll the CrowdSec every `update_frequency` interval.
+The Remediation Component will poll the CrowdSec every `update_frequency` interval. (default: 10s)
 
 ### `crowdsec.include_scenarios_containing`
 
-Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
+Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"] (default: includes all scenarios)
 
 ### `crowdsec.exclude_scenarios_containing`
 
-Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"]
+Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"] (default: exclude none)
 
 ### `crowdsec.only_include_decisions_from`
 
-Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"] (default: include all origins)
 
 ### `crowdsec.insecure_skip_verify`
 
