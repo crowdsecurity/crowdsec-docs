@@ -3,21 +3,21 @@ export default function AcademyPromo({ ...props }) {
     return (
       <div>
       <hr />
-      <section style={{width: '80%', margin: 'auto'}}>
-        {props.title && (
+      <section className="tw-w-4/5 tw-m-auto">
+        {!!props.title && (
             <h2>{props.title}</h2>
         )}
         <div className='row'>
           <div className='col'>
-            {props.image && (
+            {!!props.image && (
                 <a href={LINK} target='_blank'><img src={'/img/academy/' + props.image} alt={props.title} /></a>
             )}
           </div>
           <div className='col'>
-            {props.description && (
+            {!!props.description && (
                 <p>{props.description}</p>
             )}
-            {props.course && (
+            {!!props.course && (
                 <a href={LINK} target='_blank'><strong>Learn with CrowdSec Academy</strong></a>
             )}
           </div>
