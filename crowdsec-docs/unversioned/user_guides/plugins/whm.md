@@ -4,14 +4,18 @@ title: WHM plugin
 sidebar_position: 10
 ---
 
+The WHM plugin offers a streamlined approach for controlling and monitoring the CrowdSec Security Engine protecting your server directly from your WHM dashboard.  
+Designed specifically for WHM environments, this plugin comes packaged with configurations tailored to enhance your server's security posture efficiently.  
+
+In a few easy steps, this guide walks you through the installation of the WHM plugin, and post-install verification that everything is working fine.
+
 ## Installation
 
-### Prerequisites
+### Prerequisites: install CrowdSec
 
 To be able to use this plugin, the first step is to [install CrowdSec Security Engine](https://doc.crowdsec.net/docs/getting_started/install_crowdsec) on your WHM server.
 
-### Retrieve sources
-
+### Download the plugin
 
 First, connect to your WHM server.
 
@@ -64,13 +68,14 @@ sudo sh crowdsec.sh install --only-plugin
 ```
 
 
-### Go back to your WHM dashboard
+### Navigate to the plugin in WHM
 
 
-CrowdSec should appear in the sidebar (in the bottom Plugins sections)
+CrowdSec should appear in the sidebar (in the bottom Plugins sections).  
+Easily find it by filtering your sidebar by starting to type *"crowdsec"*
 
 
-## Post-installation
+## Post-installation checks
 
 Once installation is complete, you can perform a few post-installation tasks to ensure that everything works as expected.
 
@@ -81,15 +86,15 @@ At the top of all CrowdSec plugin pages, you can see the status of the CrowdSec 
 
 ![Service status](img/whm-service-status.png)
 
-If not, something's wrong with your CrowdSec engine.
+If not, [check the troubleshooting section](#crowdSec-is-not-running).
 
 ### Check the metrics
 
-Browse to the metrics tab and ensure that the metrics are being collected.
+Browse to the metrics tab and ensure that The CrowdSec security engine 
 
 ![Metrics](img/whm-metrics.png)
 
-If not, you may need to check your configuration.
+If not, [check the troubleshooting section](#changing-port-configuration).
 
 ### Check the default acquisition files
 
@@ -117,7 +122,26 @@ You just have to fill you enrollment key field and click the `Enroll` button.
 
 For the benefits, please visit the [Console section](https://docs.crowdsec.net/docs/next/console/intro)
 
+## Troubleshoot
 
+### CrowdSec is not running
+
+Most of the time it will be a port conflict or config file error
+- Check and change the ports [In the settings menu](#changing-port-configuration).
+- Check the logs for error
+  - In CrowdSec's logs sudo less /var/log/crowdsec.log : Note that it might be very verbose.
+  - You can also check:  sudo journalctl -u crowdsec
+- Ultimately, you can check the [Security Engine Troubleshooting section](/u/troubleshooting/security_engine/)
+
+### Changing port configuration
+
+Note that CrowdSec security engine local API uses the 8080 port by default. And the Prometheus service 6060.  
+It might be conflicting with another service installed on your server.  
+
+You may have port conflict on either the CrowdSec Security Engine local API port or the metric (Prometheus) port.  
+Easily change them and restart the service from the Settings menu of the plugin
+
+![Settings](img/whm-settings.png)
 
 
 
