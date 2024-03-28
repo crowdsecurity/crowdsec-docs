@@ -42,20 +42,23 @@ _In the following sections, we'll start with retrieving items from the CrowdSec 
 ## Initialize AppSec configuration and rules
 
 As often in CrowdSec, the relevant pieces of configuration can be acquired by installing a collection.  
-We are going to use a collection targeting vulnerabilities that are popular and might be exploited by bad actors trying to break into your server:
+We are going to use a collection targeting vulnerabilities that are popular and might be exploited by bad actors trying to break into your server and our collection of generic attack vectors:
 
 <!-- @tko fix collection name -->
 
 ```
 cscli collections install crowdsecurity/appsec-virtual-patching
+cscli collections install crowdsecurity/appsec-generic-rules
 ```
 
-This collection provides you:
+These collections provide you:
 
-- The config for the AppSec Component (`crowdsecurity/virtual-patching`)
+- The config for the AppSec Component (`crowdsecurity/appsec-default`)
 - All our virtual patching rules
-  - The CrowdSec Parser for AppSec
-  - The CrowdSec Scenario(s) for AppSec
+- The CrowdSec Parser for AppSec
+- The CrowdSec Scenario(s) for AppSec
+
+If you want to learn how to write your own rules you can check our [rule writing tutorial](/appsec/create_rules.md).
 
 ## Configure the AppSec Component acquisition
 
@@ -68,13 +71,13 @@ For this type of data-source we'll declare the **address** and **port** through 
 The important lines are:
 
  - `listen_addr` that indicates on which interface/port the service listens to
- - `appsec_config` is the configuration name that the AppSec Component will use. For this example, we're employing `crowdsecurity/virtual-patching` that we obtained from the hub, but feel free to create and name your own configuration. You can locate them in `/etc/crowdsec/...`
+ - `appsec_config` is the configuration name that the AppSec Component will use. For this example, we're employing `crowdsecurity/appsec-default` that we obtained from the hub, but feel free to create and name your own configuration. You can locate them in `/etc/crowdsec/...`
 
 ```bash
 mkdir  -p /etc/crowdsec/acquis.d
 cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
 listen_addr: 127.0.0.1:7422
-appsec_config: crowdsecurity/virtual-patching
+appsec_config: crowdsecurity/appsec-default
 name: myAppSecComponent
 source: appsec
 labels:
