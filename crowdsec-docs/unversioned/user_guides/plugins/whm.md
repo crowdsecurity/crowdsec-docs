@@ -71,8 +71,8 @@ sudo sh crowdsec.sh install --only-plugin
 ### Navigate to the plugin in WHM
 
 
-CrowdSec should appear in the sidebar (in the bottom Plugins sections).  
-Easily find it by filtering your sidebar by starting to type *"crowdsec"*
+CrowdSec should appear in the sidebar in the **Plugins** section.  
+Easily find it by filtering your sidebar by starting to type ***"crowdsec"***
 
 
 ## Post-installation checks
@@ -86,7 +86,7 @@ At the top of all CrowdSec plugin pages, you can see the status of the CrowdSec 
 
 ![Service status](img/whm-service-status.png)
 
-If not, [check the troubleshooting section](#crowdSec-is-not-running).
+If not, [check the troubleshooting section](#crowdsec-is-not-running).
 
 ### Check the metrics
 
@@ -98,27 +98,35 @@ If not, [check the troubleshooting section](#changing-port-configuration).
 
 ### Check the default acquisition files
 
-With the `sudo sh crowdsec.sh install` command, the plugin creates a few acquisition files in `etc/crowdsec/acquis.d/`. You can check that they are present and that they are correctly configured by browsing to the acquisition tab.
+The plugin comes with a set of default acquisition configuration files tailored for WHM typical logs directories.  
+Those files are created in `etc/crowdsec/acquis.d/`, each file allows reading the logs for the various services you want to protect. 
+Note that the main acquisition file is `/etc/crowdsec/acquis.yaml`, but all additional acquisitions should be placed in `/etc/crowdsec/acquis.d`.  
 
-In addition to the main acquisitions in the `/etc/crowdsec/acquis.yaml`, you should see some acquisitions whose 
-filenames begin with `default_` in the folder `/etc/crowdsec/acquis.d`.
+The **acquisition tab** of the plugin will list the various acquisition configuration files and a summary of their contents.
+This section is for a somewhat advanced usage of CrowdSec. If you installed WHM with the default configuration the default acquisitions should be sufficient.
 
-If you've just installed the plugin, you should see notification that files have not been already parsed by your 
-engine. 
+What is being parsed can be seen in the **metrics tab** of the plugin.  
+The principal thing you should be concerned about is that your web server logs are properly parsed which for the default cases means that the apache2 logs are properly read.
+
+Some acquisitions may display a warning (⚠)sign next to the "logs filenames" that indicates that "nothing was parsed from that path" since the last CrowdSec service restart.  
+Depending on the activity on your server it might be normal, you can check the lines parsed in the **metrics > acquisition** section.  
+Usually, you should see activity within a few minutes.
 
 ![Acquisition not read](img/whm-acquisition-not-read.png)
 
-This is normal, as it could take a few minutes for the engine to process the logs. But it is more than five minutes after the restart, you may need to check your configuration.
+### Enroll your engine in CrowdSec's Console
 
+CrowdSec's console can provide additional insights into what's happening on your park of security engines, along with additinonal features allowing you, among other things, to feed your security engine additional blocklists to protect your perimeter (if you want for example to block botnets of tor nodes from accessing your server).  
+The Console is available on [app.crowdsec.net](https://app.crowdsec.net/)
 
-### Enroll your engine
-
-You can also enroll your engine by going to the Enroll tab.
-
-
-You just have to fill you enrollment key field and click the `Enroll` button.
+You can enroll your engine by going to the Enroll tab.
+Fill in your enrollment key and click the `Enroll` button.
 
 ![Enroll](img/whm-enroll.png)
+
+You'll see A confirmation of enrollment in your console and upon acceptance, you'll see your instance in the console
+
+![Enrolled_SE](img/whm-console-example/png)
 
 For the benefits, please visit the [Console section](https://docs.crowdsec.net/docs/next/console/intro)
 
@@ -129,21 +137,16 @@ For the benefits, please visit the [Console section](https://docs.crowdsec.net/d
 Most of the time it will be a port conflict or config file error
 - Check and change the ports [In the settings menu](#changing-port-configuration).
 - Check the logs for error
-  - In CrowdSec's logs sudo less /var/log/crowdsec.log : Note that it might be very verbose.
+  - In CrowdSec's logs sudo less /var/log/crowdsec.log: Note that it might be very verbose.
   - You can also check:  sudo journalctl -u crowdsec
 - Ultimately, you can check the [Security Engine Troubleshooting section](/u/troubleshooting/security_engine/)
 
 ### Changing port configuration
 
-Note that CrowdSec security engine local API uses the 8080 port by default. And the Prometheus service 6060.  
+Note that CrowdSec security engine local API uses the 8080 port by default. And the metrics service (Prometheus) uses 6060.  
 It might be conflicting with another service installed on your server.  
-
 You may have port conflict on either the CrowdSec Security Engine local API port or the metric (Prometheus) port.  
-Easily change them and restart the service from the Settings menu of the plugin
+
+Easily change them and restart the service from the **Settings** menu of the plugin.
 
 ![Settings](img/whm-settings.png)
-
-
-
-
-
