@@ -128,7 +128,7 @@ You'll see A confirmation of enrollment in your console and upon acceptance, you
 
 ![Enrolled_SE](img/whm-console-example/png)
 
-For the benefits, please visit the [Console section](https://docs.crowdsec.net/docs/next/console/intro)
+Check some of the console features in the [Console section](https://docs.crowdsec.net/docs/next/console/intro)
 
 ## Troubleshoot
 
