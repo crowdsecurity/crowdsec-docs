@@ -18,6 +18,35 @@ labels:
   type: syslog
 ```
 
+Rather to specify each systemd service, you could also decide to acquire more informations from journald by referrencing a filter from _TRANSPORT
+
+```yaml
+---
+source: journalctl
+journalctl_filter:
+  - "_TRANSPORT=journal"
+labels:
+  type: syslog
+---
+source: journalctl
+journalctl_filter:
+  - "_TRANSPORT=syslog"
+labels:
+  type: syslog
+---
+source: journalctl
+journalctl_filter:
+  - "_TRANSPORT=stdout"
+labels:
+  type: syslog
+---
+source: journalctl
+journalctl_filter:
+  - "_TRANSPORT=kernel"
+labels:
+  type: syslog
+---
+```
 ## Parameters
 
 ### `journalctl_filter`
