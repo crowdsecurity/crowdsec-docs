@@ -19,7 +19,7 @@ To be able to use this plugin, the first step is to [install CrowdSec Security E
 
 First, connect to your WHM server.
 
-Go to your home directory or in any directory that can be used to download the sources.
+Go to your home directory or any directory that can be used to download the sources.
 
 Choose [the release X.Y.Z you want to install](https://github.com/crowdsecurity/cs-whm-plugin/releases),
 and:
