@@ -119,7 +119,6 @@ Match provides the pattern to match the target against, including optional trans
   - `lowercase`
   - `uppercase`
   - `b64decode` : base64 decode
-  - `hexdecode` : hex decode
   - `length` : transform _target_ to a number representing the string's length
   - `urldecode` : URL decode
   - `trim` : remove leading and trailing spaces
