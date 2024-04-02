@@ -72,7 +72,7 @@ The target allows to specify which part of the requests needs to be inspected. Y
   - `METHOD`: HTTP method of the request
   - `PROTOCOL`: HTTP protocol used in the query (HTTP/1.0, HTTP/1.1, ...)
   - `URI`: The URI of the request
-  - `URL_FULL`: The full URL of the request including the query string
+  - `URI_FULL`: The full URL of the request including the query string
   - `RAW_BODY`: The entire body of the request
   - `FILENAMES`: The name of the files sent in the request
 - _(optional)_ `variables` containing one or more variable names to restrict the matching operation to (only relevant for `ARGS`, `BODY_ARGS` and `HEADERS`)
