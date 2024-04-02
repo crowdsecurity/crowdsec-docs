@@ -126,7 +126,7 @@ Fill in your enrollment key and click the `Enroll` button.
 
 You'll see A confirmation of enrollment in your console and upon acceptance, you'll see your instance in the console
 
-![Enrolled_SE](img/whm-console-example/png)
+![Enrolled_SE](img/whm-console-example.png)
 
 Check some of the console features in the [Console section](https://docs.crowdsec.net/docs/next/console/intro)
 
