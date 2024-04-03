@@ -16,11 +16,26 @@ The three phases are:
 
 Hooks are configured in your `appsec-config` file.
 
-Except for the `on_load` hook, all hooks support a `filter` parameter and an `apply` parameter (`on_load` only has `apply`).
+`on_load` hook only supports `apply`, while other hooks support `filter` and `apply` parameters.
 
 Both `filter` and `apply` of the same phase have access to the same helpers.
 
 Except for `on_load`, hooks can be called twice per request: once for in-band processing and once for out-of-band processing, thus it is recommended to use the `IsInBand` and `IsOutBand` variables to filter the hook.
+
+
+Hooks have the following format:
+
+```yaml
+filter: 1 == 1
+apply:
+ - valid expression
+ - valid expression
+```
+
+If the filter returns `true`, each of the expressions in the `apply` section are executed.
+
+
+<!-- once https://github.com/crowdsecurity/crowdsec-docs/issues/555 is fixed, document on_success-->
 
 ### `on_load`
 
@@ -29,17 +44,17 @@ This hook is intended to be used to disable rules at loading (eg, to temporarily
 
 #### Available helpers
 
-| Helper Name | Type | Description |
-| --- | --- | --- |
-| `RemoveInBandRuleByName` | `func(tag str)` | Disable the named in-band rule |
-| `RemoveInBandRuleByTag` | `func(tag str)` | Disable the in-band rule identified by the tag (multiple rules can have the same tag) |
-| `RemoveInBandRuleByID` | `func(id int)` | Disable the in-band rule identified by the ID |
-| `RemoveOutBandRuleByName` | `func(tag str)` | Disable the named out-of-band rule |
-| `RemoveOutBandRuleByTag` | `func(tag str)` | Disable the out-of-band rule identified by the tag (multiple rules can have the same tag) |
-| `RemoveOutBandRuleByID` | `func(id int)` | Disable the out-of-band rule identified by the ID |
-| `SetRemediationByTag` | `func(tag str, remediation string)` | Change the remediation of the in-band rule identified by the tag (multiple rules can have the same tag) |
-| `SetRemediationByID` | `func(id int, remediation string)` | Change the remediation of the in-band rule identified by the ID |
-| `SetRemediationByName` | `func(name str, remediation string)` | Change the remediation of the in-band rule identified by the name |
+| Helper Name               | Type                                 | Description                                                                                             |
+| ------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `RemoveInBandRuleByName`  | `func(tag str)`                      | Disable the named in-band rule                                                                          |
+| `RemoveInBandRuleByTag`   | `func(tag str)`                      | Disable the in-band rule identified by the tag (multiple rules can have the same tag)                   |
+| `RemoveInBandRuleByID`    | `func(id int)`                       | Disable the in-band rule identified by the ID                                                           |
+| `RemoveOutBandRuleByName` | `func(tag str)`                      | Disable the named out-of-band rule                                                                      |
+| `RemoveOutBandRuleByTag`  | `func(tag str)`                      | Disable the out-of-band rule identified by the tag (multiple rules can have the same tag)               |
+| `RemoveOutBandRuleByID`   | `func(id int)`                       | Disable the out-of-band rule identified by the ID                                                       |
+| `SetRemediationByTag`     | `func(tag str, remediation string)`  | Change the remediation of the in-band rule identified by the tag (multiple rules can have the same tag) |
+| `SetRemediationByID`      | `func(id int, remediation string)`   | Change the remediation of the in-band rule identified by the ID                                         |
+| `SetRemediationByName`    | `func(name str, remediation string)` | Change the remediation of the in-band rule identified by the name                                       |
 
 ##### Example
 
@@ -62,20 +77,20 @@ This hook is intended to be used to disable rules only for this particular reque
 
 #### Available helpers
 
-| Helper Name | Type | Description |
-| --- | --- | --- |
-| `RemoveInBandRuleByName` | `func(tag str)` | Disable the named in-band rule |
-| `RemoveInBandRuleByTag` | `func(tag str)` | Disable the in-band rule identified by the tag (multiple rules can have the same tag) |
-| `RemoveInBandRuleByID` | `func(id int)` | Disable the in-band rule identified by the ID |
-| `RemoveOutBandRuleByName` | `func(tag str)` | Disable the named out-of-band rule |
-| `RemoveOutBandRuleByTag` | `func(tag str)` | Disable the out-of-band rule identified by the tag (multiple rules can have the same tag) |
-| `RemoveOutBandRuleByID` | `func(id int)` | Disable the out-of-band rule identified by the ID |
-| `IsInBand` | `bool` | `true` if the request is in the in-band processing phase |
-| `IsOutBand` | `bool` | `true` if the request is in the out-of-band processing phase |
-| `SetRemediationByTag` | `func(tag str, remediation string)` | Change the remediation of the in-band rule identified by the tag (multiple rules can have the same tag) |
-| `SetRemediationByID` | `func(id int, remediation string)` | Change the remediation of the in-band rule identified by the ID |
-| `SetRemediationByName` | `func(name str, remediation string)` | Change the remediation of the in-band rule identified by the name |
-| `req` | `http.Request` | Original HTTP request received by the remediation component |
+| Helper Name               | Type                                 | Description                                                                                             |
+| ------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `RemoveInBandRuleByName`  | `func(tag str)`                      | Disable the named in-band rule                                                                          |
+| `RemoveInBandRuleByTag`   | `func(tag str)`                      | Disable the in-band rule identified by the tag (multiple rules can have the same tag)                   |
+| `RemoveInBandRuleByID`    | `func(id int)`                       | Disable the in-band rule identified by the ID                                                           |
+| `RemoveOutBandRuleByName` | `func(tag str)`                      | Disable the named out-of-band rule                                                                      |
+| `RemoveOutBandRuleByTag`  | `func(tag str)`                      | Disable the out-of-band rule identified by the tag (multiple rules can have the same tag)               |
+| `RemoveOutBandRuleByID`   | `func(id int)`                       | Disable the out-of-band rule identified by the ID                                                       |
+| `IsInBand`                | `bool`                               | `true` if the request is in the in-band processing phase                                                |
+| `IsOutBand`               | `bool`                               | `true` if the request is in the out-of-band processing phase                                            |
+| `SetRemediationByTag`     | `func(tag str, remediation string)`  | Change the remediation of the in-band rule identified by the tag (multiple rules can have the same tag) |
+| `SetRemediationByID`      | `func(id int, remediation string)`   | Change the remediation of the in-band rule identified by the ID                                         |
+| `SetRemediationByName`    | `func(name str, remediation string)` | Change the remediation of the in-band rule identified by the name                                       |
+| `req`                     | `http.Request`                       | Original HTTP request received by the remediation component                                             |
 
 #### Example
 
@@ -96,12 +111,12 @@ pre_eval:
 This hook is mostly intended for debugging or threat-hunting purposes.
 
 #### Available helpers
-| Helper Name | Type | Description |
-| --- | --- | --- |
-| `IsInBand` | `bool` | `true` if the request is in the in-band processing phase |
-| `IsOutBand` | `bool` | `true` if the request is in the out-of-band processing phase |
-| `DumpRequest` | `func()` | Dump the request to a file |
-| `req` | `http.Request` | Original HTTP request received by the remediation component |
+| Helper Name   | Type           | Description                                                  |
+| ------------- | -------------- | ------------------------------------------------------------ |
+| `IsInBand`    | `bool`         | `true` if the request is in the in-band processing phase     |
+| `IsOutBand`   | `bool`         | `true` if the request is in the out-of-band processing phase |
+| `DumpRequest` | `func()`       | Dump the request to a file                                   |
+| `req`         | `http.Request` | Original HTTP request received by the remediation component  |
 
 #### DumpRequest
 
@@ -149,19 +164,19 @@ This hook is intended to be used to change the behavior of the engine after a ma
 
 #### Available helpers
 
-| Helper Name | Type | Description |
-| --- | --- | --- |
+| Helper Name      | Type                       | Description                                                               |
+| ---------------- | -------------------------- | ------------------------------------------------------------------------- |
 | `SetRemediation` | `func(remediation string)` | Change the remediation that will be returned to the remediation component |
-| `SetReturnCode` | `func(code int)` | Change the HTTP code that will be returned to the remediation component |
-| `CancelAlert` | `func()` | Prevent the Application Security Component to create a crowdsec alert |
-| `SendAlert` | `func()` | Force the Application Security Component to create a crowdsec alert |
-| `CancelEvent` | `func()` | Prevent the Application Security Component to create a crowdsec event |
-| `SendEvent` | `func()` | Force the Application Security Component to create a crowdsec event |
-| `DumpRequest` | `func()` | Dump the request to a file (see previous section for detailed usage) |
-| `IsInBand` | `bool` | `true` if the request is in the in-band processing phase |
-| `IsOutBand` | `bool` | `true` if the request is in the out-of-band processing phase |
-| `evt` | `types.Event` | The event that has been generated by the Application Security Component |
-| `req` | `http.Request` | Original HTTP request received by the remediation component |
+| `SetReturnCode`  | `func(code int)`           | Change the HTTP code that will be returned to the remediation component   |
+| `CancelAlert`    | `func()`                   | Prevent the Application Security Component to create a crowdsec alert     |
+| `SendAlert`      | `func()`                   | Force the Application Security Component to create a crowdsec alert       |
+| `CancelEvent`    | `func()`                   | Prevent the Application Security Component to create a crowdsec event     |
+| `SendEvent`      | `func()`                   | Force the Application Security Component to create a crowdsec event       |
+| `DumpRequest`    | `func()`                   | Dump the request to a file (see previous section for detailed usage)      |
+| `IsInBand`       | `bool`                     | `true` if the request is in the in-band processing phase                  |
+| `IsOutBand`      | `bool`                     | `true` if the request is in the out-of-band processing phase              |
+| `evt`            | `types.Event`              | The event that has been generated by the Application Security Component   |
+| `req`            | `http.Request`             | Original HTTP request received by the remediation component               |
 
 #### Example
 
@@ -177,3 +192,14 @@ post_eval:
     - CancelAlert()
     - CancelEvent()
 ```
+
+## Detailed Helpers Information
+
+### `SetRemediation*`
+
+When using `SetRemediation*` helpers, the only special value is `allow`: the remediation component won't block the request.
+Any other values (including `ban` and `captcha`) are transmitted as-is to the remediation component.
+
+
+
+
