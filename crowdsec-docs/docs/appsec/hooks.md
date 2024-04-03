@@ -26,10 +26,11 @@ Except for `on_load`, hooks can be called twice per request: once for in-band pr
 Hooks have the following format:
 
 ```yaml
-filter: 1 == 1
-apply:
- - valid expression
- - valid expression
+on_match:
+  - filter: 1 == 1
+    apply:
+    - valid expression
+    - valid expression
 ```
 
 If the filter returns `true`, each of the expressions in the `apply` section are executed.
