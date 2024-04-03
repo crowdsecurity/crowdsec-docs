@@ -40,7 +40,7 @@ tar -xvf vX.Y.Z.tar.gz
 * Go to the extracted folder:
 
 ```shell
-cd cs-whm-plugin-X.Y.Z/plugin
+cd cs-whm-plugin-*/plugin
 ``` 
 
 
@@ -116,7 +116,7 @@ Usually, you should see activity within a few minutes.
 
 ### Enroll your engine in CrowdSec's Console
 
-CrowdSec's console can provide additional insights into what's happening on your park of security engines, along with additinonal features allowing you, among other things, to feed your security engine additional blocklists to protect your perimeter (if you want for example to block botnets of tor nodes from accessing your server).  
+CrowdSec's console offers deeper insights into the activities within your network of security engines. It also includes extra functionalities that enable you to enhance your security engine's capabilities, such as integrating additional blocklists. This feature is particularly useful if you wish to prevent botnets or Tor nodes from accessing your server, among other potential security enhancements.  
 The Console is available on [app.crowdsec.net](https://app.crowdsec.net/)
 
 You can enroll your engine by going to the Enroll tab.
@@ -124,7 +124,8 @@ Fill in your enrollment key and click the `Enroll` button.
 
 ![Enroll](img/whm-enroll.png)
 
-You'll see A confirmation of enrollment in your console and upon acceptance, you'll see your instance in the console
+You'll see A confirmation of enrollment in your console and upon acceptance, you'll see your instance in the console.
+You can restart your CrowdSec instance after confirmation to force a refresh of the metadata of your installation and immediately see your attached bouncers in the console. If you don't restart, the info will be updated within 15 to 30 minutes in the console.
 
 ![Enrolled_SE](img/whm-console-example.png)
 
