@@ -58,6 +58,14 @@ The HTTP code to return to the remediation component when a request should be bl
 
 The HTTP code to return to the remediation component when a request should not be blocked. Defaults to `200`
 
+### `user_blocked_http_code`
+
+The HTTP code to return to the final client when a request should be blocked. Defaults to `403`
+
+### `user_passed_http_code` 
+
+The HTTP code to return to the final client when a request should not be blocked. Defaults to `200`
+
 ### `on_load`
 
 See the [dedicated doc](/docs/appsec/hooks.md#on_load)
