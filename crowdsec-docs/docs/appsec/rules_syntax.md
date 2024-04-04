@@ -101,7 +101,7 @@ Match provides the pattern to match the target against, including optional trans
   - _(mandatory)_ `type` indicates the matching method, one of:
 
     - `regex`: matches _target_ against value (_value_ is a RE2 regexp)
-    - `equal`: _target_ is a string equal to _value_
+    - `equals`: _target_ is a string equal to _value_
     - `startsWith`: _target_ starts with _value_
     - `endsWith`: _target_ ends with _value_
     - `contains`: _target_ contains value
