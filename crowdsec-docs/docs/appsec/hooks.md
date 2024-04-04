@@ -27,7 +27,7 @@ Hooks have the following format:
 
 ```yaml
 on_match:
-  - filter: 1 == 1
+  - filter: IsInBand && 1 == 1
     apply:
     - valid expression
     - valid expression
