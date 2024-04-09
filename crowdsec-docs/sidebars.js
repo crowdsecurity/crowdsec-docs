@@ -246,6 +246,7 @@
                 "notification_plugins/sentinel",
                 "notification_plugins/slack",
                 "notification_plugins/splunk",
+                "notification_plugins/file",
                 "notification_plugins/template_helpers",
                 "notification_plugins/writing_your_own_plugin",
             ],
