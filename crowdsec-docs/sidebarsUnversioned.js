@@ -52,6 +52,58 @@ module.exports = {
             ],
         },
     ],
+    consoleSidebar: [
+        {
+            type: "doc",
+            label: "Introduction",
+            id: "console/intro",
+        },
+        {
+            type: "doc",
+            label: "Getting Started",
+            id: "console/getting_started",
+        },
+        // {
+        //     type: 'category',
+        //     label: 'Taxonomy',
+        //     items: [
+        //         "cti_api/taxonomy/intro",
+        //         "cti_api/taxonomy/cti_object",
+        //         "cti_api/taxonomy/scores",
+        //         "cti_api/taxonomy/scenarios",
+        //         "cti_api/taxonomy/classifications",
+        //         "cti_api/taxonomy/behaviors",
+        //         "cti_api/taxonomy/false_positives"
+        //     ]
+        // },
+        // {
+        //     type: "link",
+        //     label: "Swagger",
+        //     href: "https://crowdsecurity.github.io/cti-api/",
+        // },
+        {
+            type: "category",
+            label: "Blocklists",
+            link: {
+                type: "doc",
+                id: "console/blocklists/overview",
+            },
+            items: [
+                {"type": "doc",label: 'Catalog',id:"console/blocklists/catalog"},
+                {"type": "doc",label: 'Details',id:"console/blocklists/details"},
+                {"type": "doc",label: 'Subscription',id:"console/blocklists/subscription"},
+            ],
+        },
+        {           
+            type: "category",
+            label: "Decision",
+            link: {
+                type: "doc",
+                id: "console/decisions/decisions_intro",
+            },
+            items: ["console/decisions/decisions"],
+        },
+    ],
     remediationSideBar: [
         {
             type: "doc",
