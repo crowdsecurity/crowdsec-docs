@@ -1,5 +1,5 @@
 ---
-id: decisions
+id: decisions_management
 title: Decisions Management
 sidebar_position: 1
 ---

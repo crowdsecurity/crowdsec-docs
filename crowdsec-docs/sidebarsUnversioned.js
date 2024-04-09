@@ -63,24 +63,6 @@ module.exports = {
             label: "Getting Started",
             id: "console/getting_started",
         },
-        // {
-        //     type: 'category',
-        //     label: 'Taxonomy',
-        //     items: [
-        //         "cti_api/taxonomy/intro",
-        //         "cti_api/taxonomy/cti_object",
-        //         "cti_api/taxonomy/scores",
-        //         "cti_api/taxonomy/scenarios",
-        //         "cti_api/taxonomy/classifications",
-        //         "cti_api/taxonomy/behaviors",
-        //         "cti_api/taxonomy/false_positives"
-        //     ]
-        // },
-        // {
-        //     type: "link",
-        //     label: "Swagger",
-        //     href: "https://crowdsecurity.github.io/cti-api/",
-        // },
         {
             type: "category",
             label: "Blocklists",
@@ -101,7 +83,7 @@ module.exports = {
                 type: "doc",
                 id: "console/decisions/decisions_intro",
             },
-            items: ["console/decisions/decisions"],
+            items: ["console/decisions/decisions_management"],
         },
     ],
     remediationSideBar: [
