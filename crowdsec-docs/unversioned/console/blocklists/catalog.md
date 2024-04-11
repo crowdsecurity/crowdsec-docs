@@ -1,7 +1,5 @@
 #  Blocklists catalog
 
-  
-
 To provide blocklists tailored to each need, CrowdSec has a wide catalog of blocklists, encompassing a variety of threat types and sources. This diversity allows to select and implement blocklists that best match their specific security requirements.
 
 ![](/img/console/blocklists/catalog.png)

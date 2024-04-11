@@ -5,29 +5,33 @@ title: Getting started
 
 # Getting Started
 
-## Pre-requisites
+The CrowdSec Console provides a range of tools designed to bolster your infrastructure's security. Should you choose not to utilize the [Security Engine](/docs/next/intro/) for active monitoring of your infrastructure, feel free to bypass the optional prerequisites. It's perfectly acceptable to opt out of using the security engine.
 
-Step 1: Install a Security Engine to detect attacks on your server
+## Optional pre-requisites
 
-[Security Engine](https://docs.crowdsec.net/docs/getting_started/#security-engine)
+Deploy a Security Engine on your server to identify potential attacks.
 
-Step 2 (Optional): Install a Remediation Component to enforce decisions with the Security Engine
+[Security Engine](/docs/next/getting_started/#security-engine)
+
+Install a Remediation Component to enforce decisions made by the Security Engine
 
 [Remediation Components](https://docs.crowdsec.net/u/bouncers/intro/)
 
-### Step 1 Sign Up and Log In
+### Sign Up and Log In
 
-Visit the [CrowdSec Console](https://app.crowdsec.net) and complete the sign-up process.
-
-You can sign up with an email address and password or using our SSO providers (Google or GitHub).
+Head over to the [CrowdSec Console](https://app.crowdsec.net/signup) to go through the registration process. You have the option to sign up using your email address and password or by leveraging our Single Sign-On (SSO) services, including Google and GitHub.
 
 ![](/img/console/getting_started/signin_form.png)
 
 Once your account is created, log in to access the Console dashboard.
 
-### Step 2 Connect the Security Engine to the Console
+### Connect the Security Engine to the Console
 
 Upon account creation in the Console, an enroll key will be generated and attached to your account. This private key will link your CrowdSec Security Engine to the Console.
+
+:::warning
+Consider your enrollment key confidential and exercise caution before disclosing it to anyone.
+:::
 
 Enroll your Security Engine by executing the following command from your server:
 
