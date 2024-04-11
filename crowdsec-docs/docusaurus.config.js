@@ -111,11 +111,6 @@ module.exports = {
           ],
         },
         {
-          to: '/u/console/intro',
-          position: 'left',
-          label: 'Console',
-        },
-        {
           to: '/u/bouncers/intro',
           position: 'left',
           label: 'Remediation',
@@ -129,6 +124,11 @@ module.exports = {
           to: '/u/cti_api/getting_started',
           position: 'left',
           label: 'CTI API',
+        },
+        {
+          to: '/u/console/intro',
+          position: 'left',
+          label: 'Console',
         },
         { to: `https://academy.crowdsec.net/courses?${process.env.NODE_ENV === 'production' ? 'utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs' : ''}`, label: 'Academy', position: 'left' },
         {
@@ -150,11 +150,6 @@ module.exports = {
           href: 'https://discourse.crowdsec.net',
           position: 'right',
           className: "header-discourse-link",
-        },
-        {
-          href: 'https://app.crowdsec.net/',
-          position: 'right',
-          className: "header-console-link",
         },
         {
           href: 'https://hub.crowdsec.net/',
