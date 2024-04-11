@@ -57,11 +57,11 @@ systemctl restart crowdsec
 
 Congratulations, your infrastructure is ready to go with the Console!
 
-:::tip
-How to verify the Security Engine sends signals to the Console
-:::
+## Next Steps?
 
-Execute the following command
+### Verify the Security Engine sends alerts to the Console
+
+Execute the following command on the newly enrolled Security Engine to generate a decision:
 
 <!--TODO Update to unixwindowsk8s tabs -->
 ```bash
@@ -70,8 +70,15 @@ cscli decisions add --ip 1.2.3.4 --duration 1m
 
 This action will create a decision for the IP address 1.2.3.4, trigger an alert in the Console, and block the IP for a duration of one minute.
 
-Within a maximum timeframe of 5 minutes, the Console will be notified of the alert, and the Alerts tally on the Security Engine's card will increase.
+Allow a maximum timeframe of 5 minutes, the Console will be notified of the alert, and the Alerts tally on the Security Engine's card will increase.
 
 :::info
 The timeframe may differ based on numerous factors, such as network latency, the number of Security Engines, etc.
-::: 
+:::
+
+### Blocklists
+
+Within the community plan of the Console you are able to enroll your engines into 3 curated third-party blocklists.
+
+You can move into the [Blocklists section](/console/blocklists/overview.md) to learn how to achieve this.
+

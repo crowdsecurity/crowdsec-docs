@@ -2,23 +2,15 @@
 
 To help decide to install a blocklist on your infrastructure, many figures are provided to give a comprehensive view of the value provided by the Blocklist
 
-  
-
 ### Popularity of the blocklist
 
-  
-
 The first section gives info about the popularity of the blocklist among CrowdSec users
-
-  
 
 *   A new feature to give the possibility to rate a blocklist when installed is under development
 *   The number of users who have subscribed to the blocklist.
 *   The last card shows the number of IPs present in the blocklist versus the number of IPs
 
 ![](/img/console/blocklists/popularity.png)
-
-  
 
 ### Quality of the blocklist
 
@@ -42,8 +34,6 @@ Hovering the circled graph gives the accurate percentage of items concerned by t
 :::
 
 ![](/img/console/blocklists/exclusivity.png)
-
-  
 
 ### Portions of the blocklist content
 

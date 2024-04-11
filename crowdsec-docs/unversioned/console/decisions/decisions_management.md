@@ -45,15 +45,11 @@ sudo cscli decisions list
 
  - Go to the decision you want to delete. You can then choose if you want to delete the decision on all the machines, or only on the specified machine:
 
-
 ![Delete decision](/img/delete_decision.png)
-
 
  - And confirm that you want to delete it:
 
 ![Delete decision confirm](/img/delete_decision_confirm.png)
-
-
 
 And we can see that our CrowdSec Local API received the order to delete the decision:
 
