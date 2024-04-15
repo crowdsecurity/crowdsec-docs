@@ -18,54 +18,13 @@ Before getting started it is advised to read the [prerequisites](/unversioned/ge
 The CrowdSec repository contains the latest stable version of CrowdSec and is the recommended way to install our packages.
 
 :::info
-We understand that security conscious users may prefer not to use `curl | bash` syntax, [manual install options here](https://packagecloud.io/crowdsec/crowdsec/install#manual)
+We are using [packagecloud.io service](https://packagecloud.io/crowdsec/crowdsec/).
+While `curl | sudo shell` can be convenient for some, [alternative installation methods are available](https://packagecloud.io/crowdsec/crowdsec/install#manual).
 :::
 
-<Tabs
-  defaultValue="debian"
-  groupId="operating-systems"
-  values={[
-    {label: 'Debian/Ubuntu', value: 'debian'},
-    {label: 'EL/Centos7', value: 'centos7'},
-    {label: 'EL/Centos Stream 8', value: 'centos8'},
-    {label: 'Amzn Linux 2', value: 'amz'},
-    {label: 'OpenWRT', value: 'openwrt'},
-    {label: 'CloudLinux', value: 'cloudlinux'},
-  ]}>
-  <TabItem value="debian">
-    ```bash
-    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
-    ```
-  </TabItem>
-  
-  <TabItem value="centos7">
-    ```bash
-    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
-    ```
-  </TabItem>
-
-  <TabItem value="centos8">
-    ```bash
-    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
-    ```
-  </TabItem>
-
-  <TabItem value="amz">
-    ```bash
-    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
-    ```
-  </TabItem>
-
-  <TabItem value="openwrt">
-    OpenWRT packages are available in the official repositories.
-  </TabItem>
-
-  <TabItem value="cloudlinux">
-    ```bash
-    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | os=el dist=7 sudo bash
-    ```
-  </TabItem>
-</Tabs>
+```bash
+curl -s https://install.crowdsec.net | sudo sh
+```
 
 ### Install Security Engine
 
