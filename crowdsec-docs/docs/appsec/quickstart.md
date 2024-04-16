@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Objectives
 
-The goal of this quickstart is to set up the [AppSec Component](/appsec/intro.md#introduction) to safeguard web applications running on [Nginx](https://nginx.com). We'll deploy a [set of rules](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) designed to block well-known and [currently exploited vulnerabilities](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching). Additionally, we'll show how to monitor these alerts through the [console](https://app.crowdsec.net/).
+The goal of this quickstart is to set up the [AppSec Component](/appsec/intro.md#introduction) to safeguard web applications running on [Nginx](https://nginx.com). We'll deploy a [set of rules](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) designed to block [well-known attacks](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) and [currently exploited vulnerabilities](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching). Additionally, we'll show how to monitor these alerts through the [console](https://app.crowdsec.net/).
 
 ## Pre-requisites
 
@@ -21,6 +21,7 @@ The goal of this quickstart is to set up the [AppSec Component](/appsec/intro.md
 ### Collection installation
 
 To begin setting up the AppSec Component, the initial step is to install a relevant set of rules. We will utilize the [`crowdsecurity/appsec-virtual-patching`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) collection, which offers a wide range of rules aimed at identifying and preventing the exploitation of known vulnerabilities. This [collection](/concepts.md#collections) is regularly updated to include protection against newly discovered vulnerabilities. Upon installation, it receives automatic daily updates to ensure your protection is always current.
+Furthermore we also install the [`crowdsecurity/appsec-generic-rules`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) collection. This collection contains detection scenarios for generic attack vectors. It provides some protection in cases where specific scenarios for vulnerabilities do not exist (yet).
 
 On the machine where the Security Engine is installed, just execute the following command:
 
@@ -30,6 +31,7 @@ You can always view the content of a [collection on the hub](https://app.crowdse
 
 ```
 sudo cscli collections install crowdsecurity/appsec-virtual-patching
+sudo cscli collections install crowdsecurity/appsec-generic-rules
 ```
 
 Executing this command will install the following items:
@@ -46,7 +48,7 @@ Having installed the required components, it's time to configure the CrowdSec [A
  - Put the following content in `/etc/crowdsec/acquis.d/appsec.yaml` :
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
-appsec_config: crowdsecurity/virtual-patching
+appsec_config: crowdsecurity/appsec-default
 labels:
   type: appsec
 listen_addr: 127.0.0.1:7422

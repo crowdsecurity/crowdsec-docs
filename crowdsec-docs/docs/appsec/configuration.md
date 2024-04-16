@@ -40,15 +40,15 @@ A supplementary list of rules can be loaded during the out-of-band phase. These 
 
 ### `inband_rules`
 
-An optional list of rules to be loaded in inband phase. In band rules are blocking and evaluated before answering to the remediation component. Useful for virtual patching, rules with no/low false positives.
+An optional list of rules to be loaded in inband phase. In band rules are blocking and evaluated before answering the remediation component. Useful for virtual patching, rules with no/low false positives.
 
 ### `default_remediation`
 
-An optional remediation for inband rules, defaults to `block`.
+An optional remediation for inband rules, defaults to `ban`. If set to `allow`, remediation component won't block the request (even if it matched rules). Any other value (including `captcha`) is passed as-is back to the remediation component.
 
 ### `default_pass_action`
 
-An optional remediation for requests that didn't match any rules (or rules with a pass action). Defaults to nothing.
+An optional remediation for requests that didn't match any rules (or rules with a pass action). Defaults to `allow`. Any other value will be passed as-is to the remediation component.
 
 ### `blocked_http_code`
 
@@ -57,6 +57,14 @@ The HTTP code to return to the remediation component when a request should be bl
 ### `passed_http_code`
 
 The HTTP code to return to the remediation component when a request should not be blocked. Defaults to `200`
+
+### `user_blocked_http_code`
+
+The HTTP code to return to the final client when a request should be blocked. Defaults to `403`
+
+### `user_passed_http_code` 
+
+The HTTP code to return to the final client when a request should not be blocked. Defaults to `200`
 
 ### `on_load`
 
