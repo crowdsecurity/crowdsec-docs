@@ -27,6 +27,10 @@ If you see empty table or the log source you want to monitor is not listed then 
 
 When running `cscli metrics show acquisition` you will see detected log sources and columns running from `Lines read` to `Lines whitelisted`.
 
+:::info
+CrowdSec will start tailing the acquisitions at start up, so you may not see any data in the table if there has been no activity on the log source since the start of the CrowdSec service.
+:::
+
 ```
 Acquisition Metrics:
 ╭────────────────────────────────┬────────────┬──────────────┬────────────────┬────────────────────────┬───────────────────╮
