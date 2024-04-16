@@ -1,0 +1,88 @@
+---
+id: troubleshoot
+title: Troubleshoot
+pagination_prev: getting_started/next_steps
+pagination_next: getting_started/next_steps
+---
+
+# Troubleshoot
+
+import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
+
+This troubleshoot section is intended to help you resolve common issues that may arise during the installation process. You can find extensive [troubleshooting documentation](/troubleshooting/intro.md) if this document does not resolve your issues.
+
+# Logs and Errors
+
+Before starting to troubleshoot the installation processes we need to find the underlying error that happened. The logs are the best place to start looking for errors.
+
+The log location alter depending on your platform here are the default locations:
+
+- **Linux** `/var/log/crowdsec.log`
+- **Freebsd** `/var/log/crowdsec.log`
+  - **Opnsense** `/var/log/crowdsec/crowdsec.log`
+  - **Pfsense** `/var/log/crowdsec/crowdsec.log`
+- **Windows** `C:\ProgramData\CrowdSec\log\crowdsec.log`
+- **Kubernetes** `kubectl logs -n crowdsec crowdsec-(agent|lapi)-*`
+
+## Filter logs for error messages
+
+By default CrowdSec can be quite verbose, to filter the logs for error messages you can use the following commands:
+
+<UnixWindowsK8sTabs
+    bash='sudo grep -E "level=(error|fatal)" /var/log/crowdsec.log'
+    cmd='findstr "level=error level=fatal" C:\ProgramData\CrowdSec\log\crowdsec.log'
+    powershell='Select-String "level=(error|fatal)" C:\ProgramData\CrowdSec\log\crowdsec.log'
+    k8s='kubectl logs -n crowdsec crowdsec-agent-* | grep -E "level=(error|fatal)"'
+/>
+
+:::info
+Please update the above commands to match your log location if it is different.
+:::
+
+## Common errors and solutions
+
+### Port Conflict
+
+```bash title="Error Message"
+level=fatal msg="while serving local API: listen tcp 127.0.0.1:8080: bind: address already in use"
+```
+
+By default as outlined in the [prerequisites](/unversioned/getting_started/prerequisites.md) page, CrowdSec uses ports `6060` and `8080`. If you have another service using these ports you will need to alter CrowdSec configuration to use different ports.
+
+This can be achieved by modifying two configuration files here are the locations of the files:
+
+- **Linux**
+  - `/etc/crowdsec/config.yaml`
+  - `/etc/crowdsec/local_api_credentials.yaml`
+- **Freebsd**, **Opnsense**, **Pfsense**
+  - `/usr/local/etc/crowdsec/config.yaml`
+  - `/usr/local/etc/crowdsec/local_api_credentials.yaml`
+- **Windows**
+  - `C:\ProgramData\CrowdSec\config\config.yaml`
+  - `C:\ProgramData\CrowdSec\config\local_api_credentials.yaml`
+
+You can then use your favourite text editor to modify the files, here is an example of how to change the ports:
+
+:::info
+These configuration files are owned by the default admin user and you will need to use `sudo` or `Administrator` permissions to modify them.
+:::
+
+```yaml title="config.yaml"
+api:
+ server:
+   listen_uri: 127.0.0.1:8080 # CHANGE this line to the port you wish to listen on
+```
+
+```yaml title="local_api_credentials.yaml"
+url: http://127.0.0.1:8080 # CHANGE this line to the same port as you configured above
+login: ...
+password: ...
+```
+
+After you have made the changes you will need to restart the CrowdSec service.
+
+<UnixWindowsK8sTabs
+    bash="sudo systemctl restart crowdsec"
+    powershell="Restart-Service crowdsec"
+    k8s="kubectl delete pod -n crowdsec crowdsec-agent-*"
+/>

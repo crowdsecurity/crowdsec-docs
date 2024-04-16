@@ -243,6 +243,7 @@ module.exports = {
                 },
                 "getting_started/post_installation/profiles",
                 "getting_started/post_installation/metrics",
+                "getting_started/post_installation/troubleshoot",
             ],
         },
 	{
