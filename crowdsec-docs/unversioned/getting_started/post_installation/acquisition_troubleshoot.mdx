@@ -60,3 +60,38 @@ poll_without_inotify: true
 labels:
   type: your_type
 ```
+
+### Log file is read but not parsed
+
+If the log file is read but not parsed, you may want to check the acquisition is correctly configured.
+
+#### Type Label
+
+Firstly it best to check the acquistion configuration matches the example that is shown on the [hub](https://hub.crowdsec.net/).
+
+As an example if you are using the [NGINX Collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx) you will need to set the `type` to `nginx` in the acquisition configuration.
+
+```bash title="Example acquisition"
+filenames:
+  - /var/log/nginx/*.log
+labels:
+  type: nginx
+```
+
+If you provide the wrong `type` the acquisition will not be able to find the correct parser to parse the log lines. Please refer to the [Collection](https://hub.crowdsec.net/collections) when setting up a new acquisition as most have an example acquisition configuration to guide you.
+
+#### Explain the log line
+
+If you are still having issues with parsing the log lines you can use the `cscli` tool to explain the log line.
+
+```bash
+tail -n 10 /path/to/your/file.log | cscli explain -f- --type $TYPE -v
+```
+
+:::info
+Replace `$TYPE` with the type you have set in the acquisition configuration.
+:::
+
+Keep in mind that certain collections are specifically designed to target specific types of log entries and will not parse every log line. For instance, the [sshd collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/sshd) is intended to only parse lines related to failed authentication and not all entries from the sshd log.
+
+If you are struggling to rectify the issue you can reach out to [discord](https://discord.gg/crowdsec) or the [community forum](https://discourse.crowdsec.net/).
