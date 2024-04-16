@@ -4,3 +4,59 @@ title: Troubleshooting Acquisition
 pagination_prev: getting_started/next_steps
 pagination_next: getting_started/post_installation/profiles
 ---
+
+import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
+
+# Troubleshoting Acquisition
+
+In this section we will walk you through how to troubleshoot acquisitions that are not working as expected.
+
+Depending on the acquisition type you are using, you may need to check different things.
+
+## File based acquisitions
+
+### Check the log file is found and readable
+
+The first thing to check is that the log file is found and readable by the CrowdSec service.
+
+Within the CrowdSec log file it will log if the file was found or not.
+
+Log file locations change by distribution, you can find the default log location [outlined here](/troubleshooting/security_engine.mdx#where-are-the-logs-stored).
+
+<UnixWindowsK8sTabs
+  bash="grep '/path/to/your/file.log' /var/log/crowdsec.log"
+  powershell='Select-String "/path/to/your/file.log" C:\ProgramData\CrowdSec\log\crowdsec.log'
+  k8s="kubectl logs -n crowdsec crowdsec-agent-* | grep '/path/to/your/file.log'"
+/>
+
+:::info
+Please update the above commands to match your log location if it is different and which file you are looking for.
+:::
+
+```bash title="File is found"
+time="2024-04-16T11:47:55Z" level=info msg="Adding file /path/to/your/file.log to datasources" type=file
+```
+
+```bash title="File is not found"
+time="2024-04-16T11:54:26Z" level=warning msg="No matching files for pattern /path/to/your/file.log" type=file
+```
+
+:::warning
+The above log message will log the pattern that is set on the source if you are using a globbing pattern. So you may want to alter the filter to match the parent folder for example: `grep '/path/to/your/' /var/log/crowdsec.log`
+:::
+
+### Log file is found but not read
+
+If the log file is found but not read, you may want to check the permissions on the file.
+
+This should be highly unlikely as the CrowdSec service runs as root and should be able to read any file. However, if you are running inside a container environment you may need to check the permissions on the file.
+
+If you are not running inside a container enviromnet you may be facing issues with the default setting on file based acquisitons which is to use `inotify` to watch the file. You can disable this by setting `poll_without_inotify` to `true` in the acquisition configuration.
+
+```bash title="Example acquisition"
+filenames:
+  - /path/to/your/file.log
+poll_without_inotify: true
+labels:
+  type: your_type
+```
