@@ -103,7 +103,7 @@ Bouncers configuration files by default are located in:
 
 - **Linux** `/etc/crowdsec/bouncers/`
 - **Freebsd** `/usr/local/etc/crowdsec/bouncers/`
-- **Windows** `C:\Program Files\CrowdSec\bouncers\`
+- **Windows** `C:\ProgramData\CrowdSec\bouncers\`
 
 ## My scenario is triggered with less logs than the scenario capacity
 

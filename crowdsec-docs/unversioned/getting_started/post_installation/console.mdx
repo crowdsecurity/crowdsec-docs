@@ -1,0 +1,152 @@
+---
+id: console
+title: CrowdSec Console
+---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
+
+# CrowdSec Console
+
+The CrowdSec Console serves as a web-based interface designed for managing your CrowdSec Security Engines effectively. This console comes equipped with an intuitive dashboard, offering a comprehensive visualization of your engines' activities, thereby enhancing the ease of monitoring and analysis.
+
+Additionally, it offers the capability to integrate enhanced functionalities, including the option to incorporate Third-Party blocklists. This feature not only extends the flexibility and adaptability of your security setup but also enables a more robust defense mechanism by leveraging external intelligence sources. 
+
+## Your first Enrollment
+
+This guide presumes you have already installed CrowdSec on your machine. If you haven't, you can check the following getting started guides:
+
+- [Install on Linux](/getting_started/installation/linux.mdx)
+- [Install on FreeBSD](/getting_started/installation/freebsd.mdx)
+- [Install on Windows](/getting_started/installation/windows.mdx)
+- [Install on MacOS](/getting_started/installation/macos.mdx)
+- [Install on Kubernetes](/getting_started/installation/kubernetes.mdx)
+
+### Sign Up
+
+Head over to the [CrowdSec Console](https://app.crowdsec.net/signup) and sign up for a new account.
+
+<a href="https://app.crowdsec.net/signup" target="_blank">
+    <ThemedImage
+        alt="CrowdSec Signup Screen"
+        sources={{
+            light: useBaseUrl("/img/console_login_light.png"),
+            dark: useBaseUrl("/img/console_login_dark.png"),
+        }}
+    />
+</a>
+
+### Verify Email
+
+After signing up, you will receive an email to verify your account. Click on the link provided or enter the code in the email to verify your account.
+
+#### Missing Email?
+
+If you don't receive an email, check your spam folder. If you still don't see it, you can request a new verification email by clicking on the "Resend verification email" link on the login page.
+
+:::info
+If more than 5 minutes have passed and you haven't received the email, [please get in touch with us](mailto:support@crowdsec.net)
+:::
+
+### Survey
+
+When you log in for the first time, we will ask you a few questions to gain a clearer understanding of your needs and use case.
+
+<ThemedImage
+    alt="CrowdSec Survey"
+    sources={{
+        light: useBaseUrl("/img/console_signup_survey_light.png"),
+        dark: useBaseUrl("/img/console_signup_survey_dark.png"),
+    }}
+/>
+
+:::info
+The survey is optional and you can skip it if you want. We use this information to tailor your experience and to better understand our users.
+:::
+
+### Engines page
+
+After signing up, the first page you'll visit is the engines page. This is where you can view all your enrolled engines and check their current status.
+
+<ThemedImage
+    alt="CrowdSec Enrollment Key"
+    sources={{
+        light: useBaseUrl("/img/console_mainpage_light.png"),
+        dark: useBaseUrl("/img/console_mainpage_dark.png"),
+    }}
+/>
+
+However! since this is your first enrollment, you won't see any engines yet. Let's fix that by enrolling a new engine.
+
+At the very bottom of the page, you will see a code card with a command to run on your engine. This command will enroll it to your account.
+
+:::info
+`$ENROLLMENT_KEY` is a placeholder for your actual enrollment key.
+:::
+
+<UnixWindowsK8sTabs
+    bash="sudo cscli console enroll $ENROLLMENT_KEY"
+    powershell="cscli.exe console enroll $ENROLLMENT_KEY"
+    yaml={`# In your values.yml file
+lapi:
+  env:
+    # To enroll the security engine to the console
+    - name: ENROLL_KEY
+      value: '{enroll-key}'
+    - name: ENROLL_INSTANCE_NAME
+      value: 'my-k8s-cluster'
+    - name: ENROLL_TAGS
+      value: 'k8s linux test'`}
+/>
+
+```bash title="Command Output"
+INFO[2024-02-21T16:50:17Z] manual set to true
+INFO[2024-02-21T16:50:17Z] Enabled manual : Forward manual decisions to the console
+INFO[2024-02-21T16:50:17Z] Enabled tainted : Forward alerts from tainted scenarios to the console
+INFO[2024-02-21T16:50:17Z] Watcher successfully enrolled. Visit https://app.crowdsec.net to accept it.
+INFO[2024-02-21T16:50:17Z] Please restart crowdsec after accepting the enrollment.
+```
+
+:::info
+If your installtion is not bare metal you can see all [enrollment options here](/docs/next/console/enrollment).
+:::
+
+### Accept Enrollment
+
+Once you execute the command, a new engine will show up on the engines page. Select this new engine and click on "Accept enroll" to proceed.
+
+<ThemedImage
+    alt="CrowdSec Accept Enrollment"
+    sources={{
+        light: useBaseUrl("/img/console_enroll_light.png"),
+        dark: useBaseUrl("/img/console_enroll_dark.png"),
+    }}
+/>
+
+:::tip
+If you don't see the engine appear, you can use the refresh button at the right of the page near "Add Security Engine".
+:::
+
+### Restart CrowdSec
+
+After accepting the enrollment, you will need to restart the CrowdSec service.
+
+<UnixWindowsK8sTabs
+    bash="sudo systemctl restart crowdsec"
+    powershell="Restart-Service crowdsec"
+    k8s="kubectl delete pod -n crowdsec crowdsec-lapi-*"
+/>
+
+:::warning
+While it's not critical to restart the service right away, it's advisable to do so at your earliest convenience to make sure all `metadata` is fully synchronized.
+:::
+
+## Next Steps?
+
+Now that you have enrolled your first engine, you can start exploring the console and its features. Here are a few things you can do next:
+
+- [Third-Party Blocklists](/getting_started/post_installation/console_blocklists.mdx)
+- [CrowdSec Hub](/getting_started/post_installation/console_hub.mdx)
+
+If not head back to the [post installation steps](/getting_started/next_steps.md#1-crowdsec-console) to follow the rest of the steps.
