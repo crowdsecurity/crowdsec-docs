@@ -1,0 +1,97 @@
+---
+id: acquisition_troubleshoot
+title: Troubleshooting Acquisition
+pagination_prev: getting_started/next_steps
+pagination_next: getting_started/post_installation/profiles
+---
+
+import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
+
+# Troubleshoting Acquisition
+
+In this section we will walk you through how to troubleshoot acquisitions that are not working as expected.
+
+Depending on the acquisition type you are using, you may need to check different things.
+
+## File based acquisitions
+
+### Check the log file is found and readable
+
+The first thing to check is that the log file is found and readable by the CrowdSec service.
+
+Within the CrowdSec log file it will log if the file was found or not.
+
+Log file locations change by distribution, you can find the default log location [outlined here](/troubleshooting/security_engine.mdx#where-are-the-logs-stored).
+
+<UnixWindowsK8sTabs
+  bash="grep '/path/to/your/file.log' /var/log/crowdsec.log"
+  powershell='Select-String "/path/to/your/file.log" C:\ProgramData\CrowdSec\log\crowdsec.log'
+  k8s="kubectl logs -n crowdsec crowdsec-agent-* | grep '/path/to/your/file.log'"
+/>
+
+:::info
+Please update the above commands to match your log location if it is different and which file you are looking for.
+:::
+
+```bash title="File is found"
+time="2024-04-16T11:47:55Z" level=info msg="Adding file /path/to/your/file.log to datasources" type=file
+```
+
+```bash title="File is not found"
+time="2024-04-16T11:54:26Z" level=warning msg="No matching files for pattern /path/to/your/file.log" type=file
+```
+
+:::warning
+The above log message will log the pattern that is set on the source if you are using a globbing pattern. So you may want to alter the filter to match the parent folder for example: `grep '/path/to/your/' /var/log/crowdsec.log`
+:::
+
+### Log file is found but not read
+
+If the log file is found but not read, you may want to check the permissions on the file.
+
+This should be highly unlikely as the CrowdSec service runs as root and should be able to read any file. However, if you are running inside a container environment you may need to check the permissions on the file.
+
+If you are not running inside a container enviromnet you may be facing issues with the default setting on file based acquisitons which is to use `inotify` to watch the file. You can disable this by setting `poll_without_inotify` to `true` in the acquisition configuration.
+
+```bash title="Example acquisition"
+filenames:
+  - /path/to/your/file.log
+poll_without_inotify: true
+labels:
+  type: your_type
+```
+
+### Log file is read but not parsed
+
+If the log file is read but not parsed, you may want to check the acquisition is correctly configured.
+
+#### Type Label
+
+Firstly it best to check the acquistion configuration matches the example that is shown on the [hub](https://hub.crowdsec.net/).
+
+As an example if you are using the [NGINX Collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx) you will need to set the `type` to `nginx` in the acquisition configuration.
+
+```bash title="Example acquisition"
+filenames:
+  - /var/log/nginx/*.log
+labels:
+  type: nginx
+```
+
+If you provide the wrong `type` the acquisition will not be able to find the correct parser to parse the log lines. Please refer to the [Collection](https://hub.crowdsec.net/collections) when setting up a new acquisition as most have an example acquisition configuration to guide you.
+
+#### Explain the log line
+
+If you are still having issues with parsing the log lines you can use the `cscli` tool to explain the log line.
+
+```bash
+tail -n 10 /path/to/your/file.log | cscli explain -f- --type $TYPE -v
+```
+
+:::info
+Replace `$TYPE` with the type you have set in the acquisition configuration.
+:::
+
+Keep in mind that certain collections are specifically designed to target specific types of log entries and will not parse every log line. For instance, the [sshd collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/sshd) is intended to only parse lines related to failed authentication and not all entries from the sshd log.
+
+If you are struggling to rectify the issue you can reach out to [discord](https://discord.gg/crowdsec) or the [community forum](https://discourse.crowdsec.net/).

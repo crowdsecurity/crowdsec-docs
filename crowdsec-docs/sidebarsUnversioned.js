@@ -226,4 +226,64 @@ module.exports = {
         "user_guides/alert_context",
         "user_guides/appsec_tuto",
     ],
+    gettingStarted: [
+        "getting_started/intro",
+        "getting_started/pre_requisites",
+        {
+            type: "category",
+            label: "Installation",
+            items: [
+                "getting_started/installation/linux",
+                "getting_started/installation/freebsd",
+                "getting_started/installation/windows",
+                "getting_started/installation/macos",
+                "getting_started/installation/docker",
+                "getting_started/installation/kubernetes",
+                // "getting_started/installation/pfsense",
+                // "getting_started/installation/opnsense",
+            ]
+        },
+        {
+            type: "category",
+            label: "Post Installation Steps",
+            link: {
+                type: "doc",
+                id: "getting_started/next_steps",
+            },
+            items: [
+                {
+                    type: "category",
+                    label: "CrowdSec Console",
+                    link: {
+                        type: "doc",
+                        id: "getting_started/post_installation/console",
+                    },
+                    items: [
+                        "getting_started/post_installation/console_blocklists",
+                        "getting_started/post_installation/console_hub",
+                    ],
+                },
+                {
+                    type: "category",
+                    label: "Acquisition",
+                    link: {
+                        type: "doc",
+                        id: "getting_started/post_installation/acquisition",
+                    },
+                    items: [
+                        "getting_started/post_installation/acquisition_new",
+                        "getting_started/post_installation/acquisition_troubleshoot",
+                    ],
+                },
+                "getting_started/post_installation/profiles",
+                "getting_started/post_installation/metrics",
+                "getting_started/post_installation/troubleshoot",
+            ],
+        },
+	{
+		type: "link",
+		label: "Technical Documentation",
+		href: "/docs/next/intro",
+	}
+    ]
 }

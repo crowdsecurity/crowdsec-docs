@@ -61,7 +61,7 @@ module.exports = {
     announcementBar: {
       id: 'banner_docs',
       content: '<a target="_blank" href="https://doc.crowdsec.net/u/user_guides/alert_context">Learn how to improve alert visualisation and threat hunting with alert context</a>',
-      backgroundColor: '#f7a718',
+      backgroundColor: '#F8AB13',
       textColor: '#131132',
       isCloseable: true,
     },
@@ -208,8 +208,7 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} CrowdSec`,
     },
     prism: {
-      theme: themes.github,
-      darkTheme: themes.dracula,
+      theme: themes.shadesOfPurple,
       additionalLanguages: ['bash', 'yaml', 'json'],
     },
   },
@@ -271,5 +270,16 @@ module.exports = {
         ],
       },
     ],
+    async function myPlugin(context, options) {
+      return {
+        name: "docusaurus-tailwindcss",
+        configurePostCss(postcssOptions) {
+          // Appends TailwindCSS and AutoPrefixer.
+          postcssOptions.plugins.push(require("tailwindcss"));
+          postcssOptions.plugins.push(require("autoprefixer"));
+          return postcssOptions;
+        },
+      };
+    },
   ],
 };

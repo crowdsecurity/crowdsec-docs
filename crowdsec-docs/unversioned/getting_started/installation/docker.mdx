@@ -1,0 +1,100 @@
+---
+id: docker
+title: Docker
+pagination_prev: getting_started/pre_requisites
+pagination_next: getting_started/next_steps
+---
+
+# Docker / Podman Deployment
+
+:::info
+Prerequisites are written for bare metal installations. Please keep in mind the containerization layer may make some of these items unnecessary.
+:::
+
+Before getting started it is advised to read the [prerequisites](/unversioned/getting_started/prerequisites.md) page to understand the requirements for running CrowdSec.
+
+## Docker
+
+We will presume you have Docker installed on your system. If not, you can install it by following the instructions on the [official Docker website](https://docs.docker.com/get-docker/).
+
+### Run
+
+Docker run command will run a container, this is useful for testing and development purposes.
+
+```bash
+docker run -d \
+  --name crowdsec \
+  --volume /etc/crowdsec:/etc/crowdsec \
+  --volume /var/lib/crowdsec/data/:/var/lib/crowdsec/data/ \
+  --volume /var/log:/var/log:ro \
+  crowdsecurity/crowdsec:latest
+```
+
+However, for most users it is recommended to use `compose` module for production deployments. Since it allows you to define your container deployments in a more structured format.
+
+### Compose
+
+Docker Compose is a tool for defining and running multi-container setups in a structured format. It uses a YAML file to configure the application's services, networks, and volumes.
+
+Here is a snippet:
+
+```yaml
+crowdsec:
+  image: crowdsecurity/crowdsec
+  restart: always
+  environment:
+    COLLECTIONS: "crowdsecurity/nginx"
+    GID: "${GID-1000}"
+  depends_on:
+    - 'reverse-proxy'
+  volumes:
+    - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
+    - logs:/var/log/nginx
+    - crowdsec-db:/var/lib/crowdsec/data/
+    - crowdsec-config:/etc/crowdsec/
+```
+
+:::info
+`Compose` snippet was taken from our [example-docker-compose repository](https://github.com/crowdsecurity/example-docker-compose/blob/57d55e5cd4d08ef5843bd1a32becde3c35e45507/basic/docker-compose.yml#L33-L47) which contains many examples of how CrowdSec container can be used in different setups. 
+:::
+
+#### Compose key aspects
+
+If you dont find an example that fits your needs, you can create your own `docker-compose.yml` file. Here are the key aspects:
+
+##### Provide Access To Logs
+
+Since CrowdSec is running within a container layer you need to provide access to log sources within the example above we provide a named volume called `logs` which other containers will output their log files too.
+
+```yaml
+volumes:
+  - logs:/var/log/nginx
+```
+
+##### Persistent Data Directories
+
+We recommend persisting the following directories:
+
+```yaml
+volumes:
+  - crowdsec-db:/var/lib/crowdsec/data/ ## Data Directory
+  - crowdsec-config:/etc/crowdsec/ ## Configuration Directory
+```
+
+:::info
+If you haven't used named volumes within Docker before you can read their [documentation here](https://docs.docker.com/storage/volumes/#use-a-volume-with-docker-compose)
+:::
+
+##### Depends On
+
+Depends on directive allows Docker to bring up the compose stack in "order", the reason we use it within the snippet the container `reverse-proxy` creates the log files on startup and we want to make sure CrowdSec finds these files to monitor. 
+
+```yaml
+depends_on:
+  - 'reverse-proxy'
+```
+
+
+## Next Steps?
+
+Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.md) you will find the next steps to configure and optimize your installation.
