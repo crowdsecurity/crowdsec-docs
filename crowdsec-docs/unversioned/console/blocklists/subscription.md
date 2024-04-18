@@ -1,23 +1,20 @@
 # Blocklist Subscription
 
-To start the subscription process the top button is the most straightforward way.
+To begin the subscription process, simply click the _Subscribe_ button located at the top of the blocklist details page.
 
 ![](/img/console/blocklists/header_point_subscribe.png)
   
-:::info
- You can also use the _security engines_ dashboard actions to start the process
-:::
+If your account already includes enrolled Security Engines, you'll find a section at the bottom that can also be used to start the subscription process.
 
 ![](/img/console/blocklists/se_section_point_subscribe.png)
 
-After clicking the button, a popup will open to show all the security engines enrolled and available for subscription.
+When initiated, a popup will appear displaying all available methods for subscription, including Security Engines and Blocklist-as-a-Service options.
 
 ![](/img/console/blocklists/subscription_popup.png)
 
 :::warning
- To subscribe a _security engine_ to a Blocklist, the CrowdSec version used must be 1.4.2 or higher.
-Otherwise, a red message will warn that the subscription is impossible.
- :::
+Please note only _security engines_ version 1.4.2 or higher can be subscribed to a blocklist. If you are using an older version, please update your security engine to the latest version.
+:::
 
 ![](/img/console/blocklists/subscription_lapi_error.png)
   

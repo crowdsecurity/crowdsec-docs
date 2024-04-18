@@ -5,25 +5,64 @@ sidebar_position: 2
 ---
 
 import AcademyPromo from '@site/src/components/AcademyPromo';
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+## Your first CTI Key
+
+### Sign Up
+
+Head over to the [CrowdSec Console](https://app.crowdsec.net/signup) and sign up for a new account.
+
+<a href="https://app.crowdsec.net/signup" target="_blank">
+    <ThemedImage
+        alt="CrowdSec Signup Screen"
+        sources={{
+            light: useBaseUrl("/img/console_login_light.png"),
+            dark: useBaseUrl("/img/console_login_dark.png"),
+        }}
+    />
+</a>
 
 ## Getting an API Key
 
-[Subscribe to the CrowdSec Console, if you haven't already!](https://app.crowdsec.net/) 
+When you are authenticated you can click the `+` button in the top right hand corner near your profile icon to create a new API key.
 
-When logged on the console, you can create an API Key from the "CTI API" section :
+<ThemedImage
+    alt="CrowdSec Create API Key Dropdown"
+    sources={{
+        light: useBaseUrl("/img/console_create_api_key_dropdown_light.png"),
+        dark: useBaseUrl("/img/console_create_api_key_dropdown_dark.png"),
+    }}
+/>
 
-![create api key](/img/crowdsec-console-api-key-creation.png)
+On the next page you can create an API key by clicking the `+ New Key` button.
+
+<ThemedImage
+    alt="CrowdSec Create API Key Page"
+    sources={{
+        light: useBaseUrl("/img/console_create_api_key_page_light.png"),
+        dark: useBaseUrl("/img/console_create_api_key_page_dark.png"),
+    }}
+/>
 
 ## Accessing the API
 
-You can query the API about a given IP from the command line:
+You can test your newly created API key by running the following command in your terminal:
+
+:::info
+Replease `$API_KEY` with your actual API key.
+:::
 
 ```shell
-curl -H "x-api-key: YOUR_API_KEY" https://cti.api.crowdsec.net/v2/smoke/185.7.214.104 | jq .
-
+curl -H "x-api-key: $API_KEY" https://cti.api.crowdsec.net/v2/smoke/185.7.214.104 | jq .
 ```
 
 And the default output looks something like this:
+
+<details>
+
+<summary>Command Output</summary>
 
 ```json
 {
@@ -174,6 +213,8 @@ And the default output looks something like this:
 }
 
 ```
+
+</details>
 
 <AcademyPromo
   image="crowdsec_threat_intelligence.svg"
