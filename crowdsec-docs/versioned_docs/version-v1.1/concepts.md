@@ -18,7 +18,7 @@ CrowdSec runtime revolves around a few simple concepts :
  - Those information (the signal, the associated decisions) are then sent to crowdsec's [Local API](/local_api/intro.md) and stored in the database
 
 As you might have guessed by now, CrowdSec itself does the detection part and stores those decisions.
-Then, [bouncers](/user_guides/bouncers_configuration.md) can "consume" those decisions (via the very same [Local API](/local_api/intro.md) and apply some actual remediation.
+Then, [bouncers](/u/user_guides/bouncers_configuration) can "consume" those decisions (via the very same [Local API](/local_api/intro.md) and apply some actual remediation.
 
 ## Crowd sourced aspect
 

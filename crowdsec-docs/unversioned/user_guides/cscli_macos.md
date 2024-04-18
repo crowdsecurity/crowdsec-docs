@@ -52,7 +52,7 @@ Create a local `config.yaml` (you can use the default [configuration file](http
 
 Update the `db_config` section to put the correct `type`, `host`, `port`, `username` and `password`.
 
-You can refer [here](/local_api/database.md) for more information about the database configuration.
+You can refer [here](/docs/next/local_api/database) for more information about the database configuration.
 
 Optionally, if you have built `cscli` from source, you can also update the various paths in the configuration to point them to files in your home directory for simplicity.  
 
