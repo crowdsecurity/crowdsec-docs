@@ -108,17 +108,16 @@ module.exports = {
               docId: 'cscli/cscli',
               label: 'Cscli',
             },
+            {
+              to: '/u/user_guides/intro',
+              label: 'Guides',
+            },
           ],
         },
         {
           to: '/u/bouncers/intro',
           position: 'left',
           label: 'Remediation',
-        },
-        {
-          to: '/u/user_guides/intro',
-          position: 'left',
-          label: 'Guides',
         },
         {
           to: '/u/cti_api/getting_started',
