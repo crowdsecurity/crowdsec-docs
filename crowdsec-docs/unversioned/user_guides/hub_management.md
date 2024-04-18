@@ -191,7 +191,7 @@ INFO[0000] Run 'systemctl reload crowdsec' for the new configuration to be effec
 sudo cscli parsers list
 ```
 
-[Parsers](/parsers/introduction.mdx) are yaml files in `/etc/crowdsec/parsers/<STAGE>/parser.yaml`.
+[Parsers](/docs/next/parsers/intro) are yaml files in `/etc/crowdsec/parsers/<STAGE>/parser.yaml`.
 
 
 <details>
@@ -293,13 +293,13 @@ Current metrics :
 
 ### Reference
 
-See more details about parsers [here](/parsers/introduction.mdx).
+See more details about parsers [here](/docs/next/parsers/intro).
 
 ## Enrichers
 
-Enrichers are basically [parsers](/parsers/introduction.mdx) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich` stage (after most of the parsing happened).
+Enrichers are basically [parsers](/docs/next/parsers/intro) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich` stage (after most of the parsing happened).
 
-Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the [event](/expr/event.md).
+Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the [event](/docs/next/expr/event).
 
 :::caution
 
@@ -323,7 +323,7 @@ Take a tour at the [Hub](https://hub.crowdsec.net/browse/#configurations) to fin
 
 ### Reference
 
-See more about enrichers [here](/parsers/enricher.md).
+See more about enrichers [here](/docs/next/parsers/enricher).
 
 
 ## Scenarios
@@ -364,7 +364,7 @@ Use `--all` to list available parsers.
 
 :::
 
-[Scenario](/scenarios/introduction.mdx) are yaml files in `/etc/crowdsec/scenarios/`.
+[Scenario](/docs/next/scenarios/intro) are yaml files in `/etc/crowdsec/scenarios/`.
 
 
 <details>
@@ -464,4 +464,4 @@ Current metrics :
 
 ### Reference
 
-See more about scenarios [here](/scenarios/introduction.mdx).
+See more about scenarios [here](/docs/next/scenarios/intro).

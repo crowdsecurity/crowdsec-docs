@@ -36,7 +36,7 @@ sudo cscli bouncers add testBouncer
 
 and keep the generated API token to use it in your bouncers configuration file.
 
-See [here](/local_api/tls_auth.md) for the documentation about TLS authentication.
+See [here](/docs/next/local_api/tls_auth) for the documentation about TLS authentication.
 
 
 ### Machines
@@ -69,7 +69,7 @@ sudo cscli machines validate <machineName>
 You can use `cscli machines list` to list all the machines registered to the API and view the ones that are not validated yet.
 :::
 
-See [here](/local_api/tls_auth.md) for the documentation about TLS authentication.
+See [here](/docs/next/local_api/tls_auth) for the documentation about TLS authentication.
 
 
 ## Configuration
@@ -103,8 +103,8 @@ sudo cscli machines validate <machineName>
 #### Configure listen URL
 
 If you would like your Local API to be used by a remote CrowdSec you will need to modify the URL it listens on.
-Modify the [`listen_uri` option](/configuration/crowdsec_configuration.md#listen_uri) in the main configuration file.
-Then see [how to configure your crowdsec to use a remote API](/user_guides/machines_management.mdx#machine-register).
+Modify the [`listen_uri` option](/docs/next/configuration/crowdsec_configuration#listen_uri) in the main configuration file.
+Then see [how to configure your crowdsec to use a remote API](/u/user_guides/machines_mgmt#machine-register).
 
 
 #### Enable SSL
@@ -112,7 +112,7 @@ Then see [how to configure your crowdsec to use a remote API](/user_guides/machi
 The most common use case of the Local API is to listen on 127.0.0.1. In that case there's no need for
 configuring any SSL layer. In some cases, the Local API will listen for other CrowdSec installations that
 will report their triggered scenarios. In that case the endpoint may be configured with SSL.
-You can see how to configure SSL on your Local API [here](/configuration/crowdsec_configuration.md#tls).
+You can see how to configure SSL on your Local API [here](/docs/next/configuration/crowdsec_configuration#tls).
 
 
 See the [Local API public documentation](https://crowdsecurity.github.io/api_doc/lapi/).

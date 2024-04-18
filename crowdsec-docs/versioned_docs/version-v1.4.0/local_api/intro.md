@@ -103,7 +103,7 @@ sudo cscli machines validate <machineName>
 
 If you would like your Local API to be used by a remote CrowdSec installation, you will need to modify the URL it listens on.
 Modify the [`listen_uri` option](/configuration/crowdsec_configuration.md#listen_uri) in the main configuration file.
-Then see [how to configure your crowdsec to use a remote API](/user_guides/machines_management.mdx).
+Then see [how to configure your crowdsec to use a remote API](/u/user_guides/machines_mgmt).
 
 
 #### Enable SSL

@@ -1,7 +1,7 @@
 const { themes } = require('prism-react-renderer');
 
 const path = require('path')
-const { remediationSideBar, ctiApiSidebar, guidesSideBar} = require('./sidebarsUnversioned.js');
+const { remediationSideBar, ctiApiSidebar, consoleSidebar, guidesSideBar} = require('./sidebarsUnversioned.js');
 const generateCurrentAndNextRedirects = (s) => ([{
   from: `/docs/${s}`,
   to: `/u/${s}`,
@@ -61,7 +61,7 @@ module.exports = {
     announcementBar: {
       id: 'banner_docs',
       content: '<a target="_blank" href="https://doc.crowdsec.net/u/user_guides/alert_context">Learn how to improve alert visualisation and threat hunting with alert context</a>',
-      backgroundColor: '#f7a718',
+      backgroundColor: '#F8AB13',
       textColor: '#131132',
       isCloseable: true,
     },
@@ -108,6 +108,10 @@ module.exports = {
               docId: 'cscli/cscli',
               label: 'Cscli',
             },
+            {
+              to: '/u/user_guides/intro',
+              label: 'Guides',
+            },
           ],
         },
         {
@@ -116,14 +120,14 @@ module.exports = {
           label: 'Remediation',
         },
         {
-          to: '/u/user_guides/intro',
-          position: 'left',
-          label: 'Guides',
-        },
-        {
           to: '/u/cti_api/getting_started',
           position: 'left',
           label: 'CTI API',
+        },
+        {
+          to: '/u/console/intro',
+          position: 'left',
+          label: 'Console',
         },
         { to: `https://academy.crowdsec.net/courses?${process.env.NODE_ENV === 'production' ? 'utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs' : ''}`, label: 'Academy', position: 'left' },
         {
@@ -145,11 +149,6 @@ module.exports = {
           href: 'https://discourse.crowdsec.net',
           position: 'right',
           className: "header-discourse-link",
-        },
-        {
-          href: 'https://app.crowdsec.net/',
-          position: 'right',
-          className: "header-console-link",
         },
         {
           href: 'https://hub.crowdsec.net/',
@@ -208,8 +207,7 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} CrowdSec`,
     },
     prism: {
-      theme: themes.github,
-      darkTheme: themes.dracula,
+      theme: themes.shadesOfPurple,
       additionalLanguages: ['bash', 'yaml', 'json'],
     },
   },
@@ -251,7 +249,7 @@ module.exports = {
       {
         redirects: [
           // Redirect current and next routes to unversioned to avoid 404 on articles and app.crowdsec.net
-          ...[...remediationSideBar,...ctiApiSidebar, ...guidesSideBar].flatMap(backportRedirect),
+          ...[...remediationSideBar, ...consoleSidebar,...ctiApiSidebar, ...guidesSideBar].flatMap(backportRedirect),
           {
             from: '/docs/troubleshooting',
             to: '/u/troubleshooting/intro',
@@ -271,5 +269,16 @@ module.exports = {
         ],
       },
     ],
+    async function myPlugin(context, options) {
+      return {
+        name: "docusaurus-tailwindcss",
+        configurePostCss(postcssOptions) {
+          // Appends TailwindCSS and AutoPrefixer.
+          postcssOptions.plugins.push(require("tailwindcss"));
+          postcssOptions.plugins.push(require("autoprefixer"));
+          return postcssOptions;
+        },
+      };
+    },
   ],
 };

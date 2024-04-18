@@ -1,0 +1,90 @@
+---
+id: freebsd
+title: FreeBSD
+pagination_prev: getting_started/pre_requisites
+pagination_next: getting_started/next_steps
+---
+
+# Installation FreeBSD
+
+Before getting started it is advised to read the [prerequisites](/unversioned/getting_started/prerequisites.md) page to understand the requirements for running CrowdSec.
+
+# Configuring the repositories
+
+FreeBSD packages are available in the official repositories.
+
+By default, the command `pkg install` should use the quarterly releases (January, April, July and October, updated with security fixes).
+
+You can check `/etc/pkg/FreeBSD.conf` and [change **quarterly** to **latest**](https://wiki.freebsd.org/Ports/QuarterlyBranch) if you feel comfortable upgrading your system.
+
+## Install Security Engine
+
+The CrowdSec package itself can be installed with:
+
+```shell
+sudo pkg install crowdsec
+```
+
+You'll see a message that tells you how to activate the service:
+
+#### Enable Service
+
+```shell
+sudo sysrc crowdsec_enable="YES"
+```
+
+```bash title="Command Output"
+crowdsec_enable:  -> YES
+```
+
+#### Start Service
+
+```shell
+sudo service crowdsec start
+```
+
+```bash title="Command Output"
+Fetching hub inventory
+INFO[21-12-2021 03:13:35 PM] Wrote new 197364 bytes index to /usr/local/etc/crowdsec/hub/.index.json 
+[...]
+```
+
+## Install Remediation Component
+
+:::warning
+Security Engine by itself is a detection engine, it will not block anything. You need to install a [Remediation Component](/bouncers/intro.md) to enforce decisions
+:::
+
+For the quick start guide we will be installing the [PF](https://en.wikipedia.org/wiki/PF_(firewall)) firewall [Remediation Component](/bouncers/intro.md). (This may not be optimal for your environment, please refer to the [Remediation Documentation](/bouncers/intro.md) for more information)
+
+To install 
+
+```shell
+sudo pkg install crowdsec-firewall-bouncer
+```
+
+Then you must enable it with the following commands:
+
+#### Enable Service
+
+```shell
+sudo sysrc crowdsec_firewall_enable="YES"
+```
+
+```bash title="Command Output"
+crowdsec_firewall_enable:  -> YES
+```
+
+#### Start Service
+
+```shell
+sudo service crowdsec_firewall start
+```
+
+```bash title="Command Output"
+Registered: cs-firewall-bouncer-ZjpcXlUx
+```
+
+## Next Steps?
+
+Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.md) you will find the next steps to configure and optimize your installation.

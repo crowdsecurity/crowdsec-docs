@@ -179,7 +179,7 @@ First, you will need to create an API key for the Remediation Component.
 To do so, open an administrator powershell or DOS prompt and run `cscli.exe bouncers add windows-firewall-bouncer`. This will display an API key.
 
 
-Add this key in the Remediation Component configuration file located in `C:\Program Files\CrowdSec\bouncers\cs-windows-firewall-bouncer\cs-windows-firewall-bouncer.yaml`.
+Add this key in the Remediation Component configuration file located in `C:\ProgramData\CrowdSec\bouncers\cs-windows-firewall-bouncer\cs-windows-firewall-bouncer.yaml`.
 
 When done, you will need to enable the `cs-windows-firewall-bouncer` service and start it.
 
@@ -187,4 +187,4 @@ When done, you will need to enable the `cs-windows-firewall-bouncer` service and
 
 The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/security-engines?enroll-engine=true).
 
-For the benefits, please visit the [Console section](/console/intro.md).
+For the benefits, please visit the [Console section](/u/console/intro).
