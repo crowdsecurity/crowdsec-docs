@@ -126,4 +126,4 @@ For more information on the topic:
 
 The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/security-engines?enroll-engine=true).
 
-For the benefits, please visit the [Console section](/console/intro.md).
+For the benefits, please visit the [Console section](/u/console/intro).

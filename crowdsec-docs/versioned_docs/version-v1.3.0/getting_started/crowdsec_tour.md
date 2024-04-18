@@ -16,7 +16,7 @@ They represent what your CrowdSec setup can parse (logs) and detect (scenarios).
 
 Adding `-a` will list all the available configurations in the hub.
 
-See more [here](/user_guides/hub_management.md).
+See more [here](/u/user_guides/hub_mgmt).
 
 <details>
   <summary>Listing Hub example</summary>
@@ -92,7 +92,7 @@ You can as well use a more granular approach like `sudo cscli <configuration_typ
 
 They can be found and browsed on the [Hub](https://hub.crowdsec.net/browse/#configurations).
 
-See more [here](/user_guides/hub_management.md).
+See more [here](/u/user_guides/hub_mgmt).
 
 
 ## List active decisions
@@ -104,7 +104,7 @@ sudo cscli decisions list
 
 If you just deployed CrowdSec, the list might be empty, but don't worry, it simply means you haven't yet been attacked, congrats! Adding `-a` flag will as well list the decisions you received from the [community blocklist](/central_api/intro.md).
 
-Check [decisions](/user_guides/hub_management.md) management for more !
+Check [decisions](/u/user_guides/hub_mgmt) management for more !
 
 <details>
   <summary>Listing decisions example</summary>
