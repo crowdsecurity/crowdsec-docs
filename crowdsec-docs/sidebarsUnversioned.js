@@ -11,8 +11,8 @@ module.exports = {
             id: "cti_api/getting_started",
         },
         {
-            type: 'category',
-            label: 'Taxonomy',
+            type: "category",
+            label: "Taxonomy",
             items: [
                 "cti_api/taxonomy/intro",
                 "cti_api/taxonomy/cti_object",
@@ -20,8 +20,8 @@ module.exports = {
                 "cti_api/taxonomy/scenarios",
                 "cti_api/taxonomy/classifications",
                 "cti_api/taxonomy/behaviors",
-                "cti_api/taxonomy/false_positives"
-            ]
+                "cti_api/taxonomy/false_positives",
+            ],
         },
         {
             type: "link",
@@ -65,18 +65,85 @@ module.exports = {
         },
         {
             type: "category",
+            label: "Security Engine",
+            link: {
+                type: "doc",
+                id: "console/security_engines/dashboard",
+            },
+            items: [
+                {
+                    type: "doc",
+                    label: "Dashboard",
+                    id: "console/security_engines/dashboard",
+                },
+                {
+                    type: "doc",
+                    label: "Filter And Sort",
+                    id: "console/security_engines/filter_and_sort",
+                },
+                {
+                    type: "doc",
+                    label: "Pending Security Engines",
+                    id: "console/security_engines/pending_security_engines",
+                },
+                {
+                    type: "doc",
+                    label: "Name and Tags",
+                    id: "console/security_engines/name_and_tags",
+                },
+                {
+                    type: "doc",
+                    label: "Transfer an Engine",
+                    id: "console/security_engines/transfer_engine",
+                },
+                {
+                    type: "doc",
+                    label: "Remove an Engine",
+                    id: "console/security_engines/remove_engine",
+                },
+                {
+                    type: "doc",
+                    label: "Troubleshooting",
+                    id: "console/security_engines/troubleshooting",
+                },
+                {
+                    type: "doc",
+                    label: "Select multiple organizations",
+                    id: "console/security_engines/select_multiple_organizations",
+                },
+                {
+                    type: "doc",
+                    label: "Details page",
+                    id: "console/security_engines/details_page",
+                },
+            ],
+        },
+        {
+            type: "category",
             label: "Blocklists",
             link: {
                 type: "doc",
                 id: "console/blocklists/overview",
             },
             items: [
-                {"type": "doc",label: 'Catalog',id:"console/blocklists/catalog"},
-                {"type": "doc",label: 'Details',id:"console/blocklists/details"},
-                {"type": "doc",label: 'Subscription',id:"console/blocklists/subscription"},
+                {
+                    type: "doc",
+                    label: "Catalog",
+                    id: "console/blocklists/catalog",
+                },
+                {
+                    type: "doc",
+                    label: "Details",
+                    id: "console/blocklists/details",
+                },
+                {
+                    type: "doc",
+                    label: "Subscription",
+                    id: "console/blocklists/subscription",
+                },
             ],
         },
-        {           
+        {
             type: "category",
             label: "Decision",
             link: {
@@ -92,94 +159,94 @@ module.exports = {
             id: "bouncers/intro",
         },
         {
-            "type": "doc",
-            "label": "AWS WAF",
-            "id": "bouncers/aws_waf"
+            type: "doc",
+            label: "AWS WAF",
+            id: "bouncers/aws_waf",
         },
         {
-            "type": "doc",
-            "label": "BlockList Mirror",
-            "id": "bouncers/blocklist-mirror"
+            type: "doc",
+            label: "BlockList Mirror",
+            id: "bouncers/blocklist-mirror",
         },
         {
-            "type": "doc",
-            "label": "Cloudflare",
-            "id": "bouncers/cloudflare"
+            type: "doc",
+            label: "Cloudflare",
+            id: "bouncers/cloudflare",
         },
         {
-            "type": "doc",
-            "label": "Cloudflare Workers",
-            "id": "bouncers/cloudflare-workers"
+            type: "doc",
+            label: "Cloudflare Workers",
+            id: "bouncers/cloudflare-workers",
         },
         {
-            "type": "doc",
-            "label": "Custom",
-            "id": "bouncers/custom"
+            type: "doc",
+            label: "Custom",
+            id: "bouncers/custom",
         },
         {
-            "type": "doc",
-            "label": "Fastly",
-            "id": "bouncers/fastly"
+            type: "doc",
+            label: "Fastly",
+            id: "bouncers/fastly",
         },
         {
-            "type": "doc",
-            "label": "Firewall",
-            "id": "bouncers/firewall"
+            type: "doc",
+            label: "Firewall",
+            id: "bouncers/firewall",
         },
         {
-            "type": "doc",
-            "label": "HAProxy",
-            "id": "bouncers/haproxy"
+            type: "doc",
+            label: "HAProxy",
+            id: "bouncers/haproxy",
         },
         {
-            "type": "doc",
-            "label": "Ingress Nginx",
-            "id": "bouncers/ingress-nginx"
+            type: "doc",
+            label: "Ingress Nginx",
+            id: "bouncers/ingress-nginx",
         },
         {
-            "type": "doc",
-            "label": "Magento 2",
-            "id": "bouncers/magento"
+            type: "doc",
+            label: "Magento 2",
+            id: "bouncers/magento",
         },
         {
-            "type": "doc",
-            "label": "MISP Feed Generator",
-            "id": "bouncers/misp-feed-generator"
+            type: "doc",
+            label: "MISP Feed Generator",
+            id: "bouncers/misp-feed-generator",
         },
         {
-            "type": "doc",
-            "label": "Nginx",
-            "id": "bouncers/nginx"
+            type: "doc",
+            label: "Nginx",
+            id: "bouncers/nginx",
         },
         {
-            "type": "doc",
-            "label": "OpenResty",
-            "id": "bouncers/openresty"
+            type: "doc",
+            label: "OpenResty",
+            id: "bouncers/openresty",
         },
         {
-            "type": "doc",
-            "label": "PHP",
-            "id": "bouncers/php"
+            type: "doc",
+            label: "PHP",
+            id: "bouncers/php",
         },
         {
-            "type": "doc",
-            "label": "PHP Library",
-            "id": "bouncers/php-lib"
+            type: "doc",
+            label: "PHP Library",
+            id: "bouncers/php-lib",
         },
         {
-            "type": "doc",
-            "label": "Windows Firewall",
-            "id": "bouncers/windows_firewall"
+            type: "doc",
+            label: "Windows Firewall",
+            id: "bouncers/windows_firewall",
         },
         {
-            "type": "doc",
-            "label": "Wordpress",
-            "id": "bouncers/wordpress"
+            type: "doc",
+            label: "Wordpress",
+            id: "bouncers/wordpress",
         },
         {
-            "type": "link",
-            "label": "Third Party",
-            "href": "https://hub.crowdsec.net/browse/#bouncers"
+            type: "link",
+            label: "Third Party",
+            href: "https://hub.crowdsec.net/browse/#bouncers",
         },
         // {
         //     "type": "doc",
@@ -189,20 +256,20 @@ module.exports = {
     ],
     troubleshootingSideBar: [
         {
-            "type": "doc",
-            "id": "troubleshooting/intro",
-            "label": "Introduction",
+            type: "doc",
+            id: "troubleshooting/intro",
+            label: "Introduction",
         },
         {
-            "type": "doc",
-            "id": "troubleshooting/security_engine",
-            "label": "Security Engine",
+            type: "doc",
+            id: "troubleshooting/security_engine",
+            label: "Security Engine",
         },
         {
-            "type": "doc",
-            "id": "troubleshooting/remediation_components",
-            "label": "Remediation Components",
-        }
+            type: "doc",
+            id: "troubleshooting/remediation_components",
+            label: "Remediation Components",
+        },
     ],
     guidesSideBar: [
         "user_guides/intro",
@@ -215,7 +282,7 @@ module.exports = {
                 "user_guides/bouncers_configuration",
                 "user_guides/machines_mgmt",
                 "user_guides/lapi_mgmt",
-            ]
+            ],
         },
         "user_guides/building",
         "user_guides/replay_mode",
@@ -241,7 +308,7 @@ module.exports = {
                 "getting_started/installation/kubernetes",
                 // "getting_started/installation/pfsense",
                 // "getting_started/installation/opnsense",
-            ]
+            ],
         },
         {
             type: "category",
@@ -280,10 +347,10 @@ module.exports = {
                 "getting_started/post_installation/troubleshoot",
             ],
         },
-	{
-		type: "link",
-		label: "Technical Documentation",
-		href: "/docs/next/intro",
-	}
-    ]
+        {
+            type: "link",
+            label: "Technical Documentation",
+            href: "/docs/next/intro",
+        },
+    ],
 }
