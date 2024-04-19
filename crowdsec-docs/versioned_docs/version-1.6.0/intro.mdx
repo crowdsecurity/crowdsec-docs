@@ -1,0 +1,53 @@
+---
+title: Introduction
+id: intro
+---
+
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import AcademyPromo from '@site/src/components/AcademyPromo';
+
+<div style={{display: 'flex'}}>
+    <div style={{textAlign: 'center', flex: '1'}}>
+    <img width="800" height="auto" src={useBaseUrl('/img/crowdsec_ecosystem.png')} />
+    </div>
+</div>
+&nbsp;
+&nbsp;
+
+The [CrowdSec Security Engine](https://github.com/crowdsecurity/crowdsec) is an open-source, lightweight software that detects and blocks malicious actors from accessing your systems at various levels, using log analysis and threat patterns called scenarios. 
+
+CrowdSec is a modular framework, offering a variety of [popular scenarios](https://app.crowdsec.net/hub/collections). Users can choose their protection scenarios and deploy [Remediation Components](https://app.crowdsec.net/hub/bouncers) to block malicious access.
+
+The crowd-sourced aspect allows sharing attack information among users, enhancing real-time attack detection and preemptive blocking of known bad actors from your system.
+
+## Main Features
+
+In addition to the core "detect and react" mechanism, CrowdSec is committed to several other key aspects:
+
+- **Easy Installation**: Effortless out-of-the-box installation on all [supported platforms](/getting_started/versions_matrix.md).
+- **Simplified Daily Operations**: Use [cscli](/cscli/cscli.md) and the [hub](http://hub.crowdsec.net) for effortless maintenance and keeping your detection mechanisms up-to-date.
+- **Reproducibility**: The Security Engine can analyze not only live logs but also [cold logs](/u/user_guides/replay_mode), making it easier to detect potential false triggers, conduct forensic analysis, or generate reports.
+- **Observability**: Providing valuable insights into the system's activity:
+    - Users can view/manage alerts from the ([Console](https://app.crowdsec.net/signup)).
+    - Operations personnel have access to detailed Prometheus metrics ([Prometheus](/observability/prometheus.md)).
+    - Administrators can utilize a user-friendly command-line interface tool ([cscli](/observability/cscli.md)).
+- **API-Centric**: All components communicate via an [HTTP API](/local_api/intro.md), facilitating multi-machine setups.
+
+
+## Architecture
+
+
+<div style={{display: 'flex'}}>
+    <div style={{textAlign: 'center', flex: '1'}}>
+    <img src={useBaseUrl('/img/crowdsec_architecture.png')}></img>
+    </div>
+</div>
+
+<AcademyPromo
+  image="crowdsec_fundamentals.svg"
+  description="Watch a short series of videos on how to install CrowdSec and protect your infrastructure"
+  title="More ways to learn"
+  course="crowdsec-fundamentals"
+  utm="?utm_source=docs&utm_medium=banner&utm_campaign=intro-page&utm_id=academydocs"
+/>

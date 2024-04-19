@@ -1,0 +1,64 @@
+---
+id: intro
+title: Introduction
+sidebar_position: 1
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+
+## Parser
+
+
+A parser is a YAML configuration file that describes how a string must be parsed. Said string can be a log line, or a field extracted from a previous parser. 
+
+While a lot of parsers rely on the **GROK** approach (a.k.a regular expression named capture groups), parsers can also use [expressions](/expr/intro.md) to perform parsing on specific data (ie. json), [refer to external methods for enrichment](https://hub.crowdsec.net/author/crowdsecurity/configurations/geoip-enrich) or even [perform whitelisting](https://hub.crowdsec.net/author/crowdsecurity/configurations/whitelists.md).
+
+The [event](/expr/event.md) enters the parser, and might exit successfully or not:
+
+
+<div style={{display: 'flex'}}>
+    <div style={{textAlign: 'center', flex: '1'}}>
+    <img src={useBaseUrl('/img/parser-diagram.png')} />
+    </div>
+</div>
+
+
+## Stages
+
+Parsers are organized into stages to allow pipelines and branching in parsing. An event can go to the next stage if at least one parser in the given stage parsed it successfully while having `onsuccess` set to `next_stage`. Otherwise, the event is considered unparsed and will exit the pipeline (and be discarded):
+
+<div style={{display: 'flex'}}>
+    <div style={{textAlign: 'center', flex: '1'}}>
+    <img src={useBaseUrl('/img/global-parser-diagrams.png')} />
+    </div>
+</div>
+
+Each parser can add, change or even delete data from the event. The current approach is: 
+ - `s00-raw`: takes care of the overall log structure (ie. extract log lines from JSON blob, [parse syslog protocol](https://hub.crowdsec.net/author/crowdsecurity/configurations/syslog-logs) info)
+ - `s01-parse`: parses the *actual* log line ([ssh](https://hub.crowdsec.net/author/crowdsecurity/configurations/sshd-logs), [nginx](https://hub.crowdsec.net/author/crowdsecurity/configurations/nginx-logs) etc.)
+ - `s02-enrich`: does some post processing, such as [geoip-enrich](https://hub.crowdsec.net/author/crowdsecurity/configurations/geoip-enrich) or post-parsing of [http events to provide more context](https://hub.crowdsec.net/author/crowdsecurity/configurations/http-logs)
+
+
+Once an event has successfully exited the parsing pipeline, it is ready to be matched against scenarios. As you might expect, each parser relies on the information that is parsed during previous stages.
+
+## Postoverflows
+
+Once a scenario overflows, the resulting event is going to be processed by a distinct set of parsers, called "postoverflows".
+
+Those parsers are located in `/etc/crowdsec/postoverflows/` and typically contain additional whitelists, a [common example is to whitelist decisions coming from some specific FQDN](https://hub.crowdsec.net/author/crowdsecurity/collections/whitelist-good-actors).
+
+Usually, those parsers should be kept for "expensive" parsers that might rely on external services.
+
+----
+
+
+
+See the [Hub](https://hub.crowdsec.net/browse/#configurations) to explore parsers, or see below some examples:
+
+ - [apache2 access/error log parser](https://github.com/crowdsecurity/hub/blob/master/parsers/s01-parse/crowdsecurity/apache2-logs.yaml)
+ - [iptables logs parser](https://github.com/crowdsecurity/hub/blob/master/parsers/s01-parse/crowdsecurity/iptables-logs.yaml)
+ - [http logs post-processing](https://github.com/crowdsecurity/hub/blob/master/parsers/s02-enrich/crowdsecurity/http-logs.yaml)
+
+The parsers usually reside in `/etc/crowdsec/parsers/<STAGE>/`.
+
