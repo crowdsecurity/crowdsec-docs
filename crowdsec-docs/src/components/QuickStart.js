@@ -7,8 +7,9 @@ import {
     cibWindows,
     cibApple,
 } from "@coreui/icons";
-import OpnsenseSvg from "@site/static/img/opnsense.svg";
-import PfsenseSvg from "@site/static/img/pfsense.svg";
+import opnsenseLogo from "@site/static/img/logo-opnsense.svg";
+import pfSenseLogo from "@site/static/img/logo-pfsense.svg";
+import whmLogo from "@site/static/img/logo-whm.svg";
 import Link from "@docusaurus/Link";
 
 const staticData = [
@@ -43,15 +44,20 @@ const staticData = [
         link: "/u/getting_started/installation/kubernetes",
     },
     // {
-    //     icon: OpnsenseSvg,
+    //     icon: opnsenseLogo,
     //     text: "OPNsense",
     //     link: "/u/getting_started/installation/opnsense",
     // },
     // {
-    //     icon: PfsenseSvg,
+    //     icon: pfSenseLogo,
     //     text: "pfSense",
     //     link: "/u/getting_started/installation/pfsense",
     // },
+    {
+        icon: whmLogo,
+        text: "WHM",
+        link: "/u/user_guides/plugins/whm",
+    },
 ];
 
 export default function QuickStart() {
