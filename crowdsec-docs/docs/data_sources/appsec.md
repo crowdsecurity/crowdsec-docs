@@ -6,9 +6,9 @@ title: Application Security Component
 
 This module allows you to enable the `Application Security Component` as a data source.
 
-A more detailed documentation is available [here](/docs/appsec/intro.md).
+A more detailed documentation is available [here](/appsec/intro.md).
 
-An introduction tutorial is available [here](/docs/user_guides/appsec.md).
+A quickstart tutorial is available [here](/appsec/quickstart.md).
 
 ## Configuration example
 

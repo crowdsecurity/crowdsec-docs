@@ -161,7 +161,7 @@ Current metrics :
 
 ### Reference
 
-See more about collection [here](/collections/introduction.md).
+See more about collection [here](/docs/next/collections/intro).
 
 
 ## Parsers
