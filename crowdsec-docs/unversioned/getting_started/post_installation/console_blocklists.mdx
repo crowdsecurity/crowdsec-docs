@@ -1,0 +1,110 @@
+---
+id: console_blocklists
+title: CrowdSec Blocklists
+---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
+
+# CrowdSec Blocklists
+
+In the community edition of CrowdSec, you have the capability to subscribe to three blocklists, offering proactive protection against known malicious sources.
+
+These lists are curated and frequently updated by the CrowdSec team to ensure your infrastructure remains safeguarded.
+
+## Subscribing to your first blocklist
+
+To subscribe to a blocklist, you need to go to the `Blocklists` tab in the console.
+
+<ThemedImage
+    alt="CrowdSec Blocklists"
+    sources={{
+        light: useBaseUrl("/img/console_blocklists_light.png"),
+        dark: useBaseUrl("/img/console_blocklists_dark.png"),
+    }}
+/>
+
+### Which blocklist should I use?
+
+The answer to this question depends on the kind of traffic you aim to block and the security level you wish to uphold.
+
+For instance, if you're running a web server and wish to shield your websites from known free proxies, subscribing to the `Free Proxies list` blocklist would be a suitable measure.
+
+:::info
+A `proxy` is a server that acts as an intermediary for requests from clients seeking resources from other servers. Meaning the original requester IP address is hidden from your server.
+:::
+
+On the other hand, if you're not hosting websites, for example, you might opt for the `Firehol greensnow.co list`. This list compiles IPs known for conducting `bruteforce` attacks on a range of services, providing a targeted defense against such malicious activities.
+
+:::info
+`Bruteforce` attacks are a trial-and-error method used to obtain information such as a user password
+:::
+
+If neither of the two examples mentioned suits your specific needs, each blocklist comes with a description to assist you in making an informed decision about which one to utilize.
+
+### Subscribing an engine to a blocklist
+
+To subscribe an engine to a blocklist, click on the `Subscribe` button next to the blocklist you wish to use.
+
+Opening this will reveal the blocklist's details panel, where you can click on the `Add Security Engine(s)` button to bring up the modal for selecting engines.
+
+<ThemedImage
+    alt="CrowdSec Blocklist Subscription"
+    sources={{
+        light: useBaseUrl("/img/console_blocklist_subscribe_light.png"),
+        dark: useBaseUrl("/img/console_blocklist_subscribe_dark.png"),
+    }}
+/>
+
+After opening the modal, you can choose the engine(s) you want to add to the blocklist and select the appropriate action for the Security Engine to take. To finalize your choice, click `Save`.
+
+<ThemedImage
+    alt="CrowdSec Blocklist Engine Selection"
+    sources={{
+        light: useBaseUrl("/img/console_blocklist_engine_selection_light.png"),
+        dark: useBaseUrl("/img/console_blocklist_engine_selection_dark.png"),
+    }}
+/>
+
+After saving, as indicated, it could take up to `2 hours` for the blocklist to become fully functional. This delay is due to the blocklist being refreshed every 2 hours on the community plan.
+
+### Where can I see blocklist decisions?
+
+To see the active blocklists within an engine, you can run the following command:
+
+<UnixWindowsK8sTabs
+    bash="cscli metrics show decisions"
+    powershell="cscli.exe metrics show decisions"
+    k8s="kubectl exec -n crowdsec -it crowdsec-lapi-<id> -- cscli metrics show decisions"
+/>
+
+```bash title="Command Output"
+Local API Decisions:
+╭────────────────────────────────────────────┬──────────┬─────────┬───────╮
+│                   Reason                   │  Origin  │ Action  │ Count │
+├────────────────────────────────────────────┼──────────┼─────────┼───────┤
+# highlight-start
+│ free_proxies                               │ lists    │ captcha │ 12668 │
+│ tor-exit-nodes                             │ lists    │ captcha │ 1152  │
+# highlight-end
+│ crowdsecurity/CVE-2022-42889               │ CAPI     │ ban     │ 4     │
+│ crowdsecurity/nginx-req-limit-exceeded     │ CAPI     │ ban     │ 130   │
+│ crowdsecurity/http-probing                 │ CAPI     │ ban     │ 1805  │
+│ crowdsecurity/http-probing                 │ crowdsec │ ban     │ 3     │
+│ crowdsecurity/http-sensitive-files         │ CAPI     │ ban     │ 48    │
+│ crowdsecurity/ssh-slow-bf                  │ CAPI     │ ban     │ 63    │
+│ crowdsecurity/http-bad-user-agent          │ CAPI     │ ban     │ 11623 │
+│ crowdsecurity/http-bad-user-agent          │ crowdsec │ ban     │ 1     │
+╰────────────────────────────────────────────┴──────────┴─────────┴───────╯
+```
+
+In the example output, you can see that the `free_proxies` and `tor-exit-nodes` blocklists are active and have the origin `lists`.
+
+## Next Steps?
+
+Now that you have subscribed your engine to a list, you can continue exploring the console features:
+
+- [CrowdSec Hub](/getting_started/post_installation/console_hub.mdx)
+
+If not head back to the [post installation steps](/getting_started/next_steps.md#1-crowdsec-console) to follow the rest of the steps.

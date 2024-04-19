@@ -1,0 +1,90 @@
+---
+id: macos
+title: MacOS
+pagination_prev: getting_started/pre_requisites
+pagination_next: getting_started/next_steps
+---
+
+# MacOS Deployment
+
+:::warning
+We do not compile software directly for MacOS. You can use a container runtime like [Docker](https://www.docker.com/) to run a Linux container on MacOS.
+:::
+
+:::tip
+We advise you to use our online sandbox to test CrowdSec on MacOS since it comes with a preinstalled application.
+
+[Find it here](https://killercoda.com/iiamloz/scenario/crowdsec-setup)
+:::
+
+Before getting started it is advised to read the [prerequisites](/unversioned/getting_started/prerequisites.md) page to understand the requirements for running CrowdSec.
+
+## Running CrowdSec on MacOS
+
+Open a terminal and ensure the docker runtime is currently running on your MacOS machine.
+
+```bash
+docker version
+```
+
+```bash title="Command Output"
+Client: Docker Engine - Community
+ Version:           20.10.7
+ API version:       1.41
+ Go version:        go1.13.15
+ Git commit:        f0df350
+ Built:             Wed Jun  2 11:56:35 2021
+ OS/Arch:           darwin/amd64
+ Context:           default
+ Experimental:      true
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          20.10.7
+  API version:      1.41 (minimum version 1.12)
+  Go version:       go1.13.15
+  Git commit:       b0f5bc3
+  Built:            Wed Jun  2 11:54:58 2021
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.4.6
+  GitCommit:        d71fcd7d8303cbf684402823e425e9dd2e99285d
+ runc:
+  Version:          1.0.0-rc95
+  GitCommit:        b9ee9c6314599f1b4a7f497e1f1f856fe433d3b7
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+```
+
+Once you have confirmed that the docker runtime is running, you can pull the CrowdSec docker image and run it.
+
+```bash
+docker pull crowdsecurity/crowdsec
+```
+
+```bash title="Command Output"
+Using default tag: latest
+latest: Pulling from crowdsecurity/crowdsec
+Digest: sha256:
+Status: Image is up to date for crowdsecurity/crowdsec:latest
+docker.io/crowdsecurity/crowdsec:latest
+```
+
+Now you can run the CrowdSec container.
+
+```bash
+docker run -d --name crowdsec -v /var/run/docker.sock:/var/run/docker.sock -v /etc/crowdsec:/etc/crowdsec -v /var/log:/var/log crowdsecurity/crowdsec
+```
+
+:::warning
+Since we are running on MacOS there might not be any applications running locally for us to detect, it is advised to use the [online sandbox](https://killercoda.com/iiamloz/scenario/crowdsec-setup) to test CrowdSec.
+:::
+
+You can bring down the container down by running the following Command
+
+```bash
+docker rm --force crowdsec
+```
+

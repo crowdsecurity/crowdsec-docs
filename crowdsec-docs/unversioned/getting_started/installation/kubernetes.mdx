@@ -1,0 +1,202 @@
+---
+id: kubernetes
+title: Kubernetes
+pagination_prev: getting_started/pre_requisites
+pagination_next: getting_started/next_steps
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+
+# Kubernetes Deployment
+
+Before proceeding, ensure you have met all [prerequisites](/unversioned/getting_started/prerequisites.md) necessary for running CrowdSec on Kubernetes.
+
+## Requirements
+
+- [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+- [Helm](https://helm.sh/docs/intro/install/)
+
+## Helm Repository Installation
+
+Add the CrowdSec helm repository to your Helm installation:
+
+```bash
+helm repo add crowdsec https://crowdsecurity.github.io/helm-charts
+helm repo update
+```
+
+### Install Security Engine
+
+Once the helm repository is added, first you need to write your crowdsec-values.yaml file. You can use the following example:
+
+```yaml
+# for raw logs format: json or cri (docker|containerd)
+container_runtime: containerd
+agent:
+  # Specify each pod whose logs you want to process
+  acquisition:
+    # The namespace where the pod is located
+    - namespace: traefik
+      # The pod name
+      podName: traefik-*
+      # as in crowdsec configuration, we need to specify the program name to find a matching parser
+      program: traefik
+  env:
+    - name: COLLECTIONS
+      value: "crowdsecurity/traefik"
+lapi:
+  env:
+    # To enroll the security engine to the console
+    - name: ENROLL_KEY
+      value: "<enroll-key>"
+    - name: ENROLL_INSTANCE_NAME
+      value: "my-k8s-cluster"
+    - name: ENROLL_TAGS
+      value: "k8s linux test"
+```
+
+If you want more information about the configuration, you can check the default [values.yaml](https://artifacthub.io/packages/helm/crowdsec/crowdsec#values)
+
+Then, you can install the security engine with the following command:
+
+```bash
+# Create a namespace for crowdsec
+kubectl create ns crowdsec
+# Install the helm chart
+helm install crowdsec crowdsec/crowdsec -n crowdsec -f crowdsec-values.yaml
+```
+
+Check the installation status:
+```bash
+kubectl -n crowdsec get pods
+```
+
+```bash title="Command Output"
+NAME READY STATUS RESTARTS AGE
+crowdsec-agent-kf9fr 1/1 Running 0 34s
+crowdsec-lapi-777c469947-jbk9q 1/1 Running 0 34s
+```
+
+### Install Remediation Component
+
+:::info
+Depends which ingress controller you are using, you can install the remediation component.
+:::
+
+First you need to already have an ingress controller installed in your cluster (we consider that you installed it using helm).
+
+For now, we support:
+
+* Traefik
+* Nginx
+
+Before installing the remediation component, you need to generate API key to communicate with the LAPI.
+
+:::info
+If you **have persistentVolumes enabled** in `values.yaml`, you can generate the api key directly from the LAPI pod:
+
+```bash
+kubectl -n crowdsec exec -it crowdsec-lapi-<pod-id> -- cscli bouncers add my-bouncer-name
+```
+
+Else you **don't have persistentVolumes enabled**, you need to specify your key in the `values.yaml` file:
+
+```yaml
+lapi:
+  env:
+    - name: BOUNCER_KEY_<name>
+      value: "<bouncer-key>"
+```
+example:
+```yaml
+lapi:
+  env:
+    - name: BOUNCER_KEY_traefik
+      value: "mysecretkey12345"
+```
+:::
+
+Then, you can install the remediation component with the following command:
+
+
+#### Traefik
+
+Traefik expects a resource of "Middleware" type named "bouncer", which we will create now.
+
+Here is bouncer-middleware.yaml:
+  
+```yaml
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: bouncer
+  namespace: traefik
+spec:
+  plugin:
+    bouncer:
+      enabled: true
+      crowdsecMode: stream
+      crowdsecLapiScheme: https
+      crowdsecLapiHost: crowdsec-service.crowdsec:8080
+      crowdsecLapiKey: mysecretkey12345
+```
+
+You can see all the configuration options in the [bouncer documentation](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin).
+
+Now, you can install the remediation component:
+
+```bash
+kubectl apply -f bouncer-middleware.yaml
+```
+
+#### Nginx
+
+:::info
+We supposed that you have already installed the Nginx ingress controller using this [helm chart](https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx).
+:::
+
+We need to patch ingress-nginx helm chart to add and enable [the crowdsec lua plugin](https://github.com/crowdsecurity/cs-openresty-bouncer).
+You can put this configuration example in a file `crowdsec-ingress-nginx.yaml`:
+
+```yaml
+controller:
+  extraVolumes:
+  - name: crowdsec-bouncer-plugin
+    emptyDir: {}
+  extraInitContainers:
+  - name: init-clone-crowdsec-bouncer
+    image: crowdsecurity/lua-bouncer-plugin
+    imagePullPolicy: IfNotPresent
+    env:
+      - name: API_URL
+        value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080"
+      - name: API_KEY
+        value: "mysecretkey12345"
+      - name: BOUNCER_CONFIG
+        value: "/crowdsec/crowdsec-bouncer.conf"
+    command: ['sh', '-c', "sh /docker_start.sh; mkdir -p /lua_plugins/crowdsec/; cp -R /crowdsec/* /lua_plugins/crowdsec/"]
+    volumeMounts:
+    - name: crowdsec-bouncer-plugin
+      mountPath: /lua_plugins
+  extraVolumeMounts:
+  - name: crowdsec-bouncer-plugin
+    mountPath: /etc/nginx/lua/plugins/crowdsec
+    subPath: crowdsec
+  config:
+    plugins: "crowdsec"
+    lua-shared-dicts: "crowdsec_cache: 50m"
+```
+
+Once we have this patch we can upgrade the ingress-nginx chart
+
+```bash
+helm -n ingress-nginx upgrade -f ingress-nginx-values.yaml -f crowdsec-ingress-bouncer.yaml ingress-nginx ingress-nginx/ingress-nginx
+```
+
+
+## Next Steps?
+
+Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.md) you will find the next steps to configure and optimize your installation.

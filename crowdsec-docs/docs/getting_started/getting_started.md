@@ -76,4 +76,4 @@ If you are uncertain about which one to install, please refer to our [Remediatio
 
 Since you created your account on the CrowdSec console, you can now [enroll your Security Engine to your account](https://app.crowdsec.net/security-engines?enroll-engine=true).
 
-To do so, you can find steps outlined [here](/console/enrollment.mdx).
+To do so, you can find steps outlined [here](/u/getting_started/post_installation/console/#engines-page).

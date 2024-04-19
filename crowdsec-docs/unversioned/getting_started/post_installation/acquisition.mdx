@@ -1,0 +1,67 @@
+---
+id: acquisition
+title: Acquisition
+---
+
+# Acquisition
+
+By default when CrowdSec is installed it will attempt to detect the running services and acquire the appropriate log sources and [Collections](https://docs.crowdsec.net/docs/next/collections/intro).
+
+However, we should check that this detection worked or you may want to manually acquire additional [Collections](https://docs.crowdsec.net/docs/next/collections/intro) for other services that are not detected.
+
+## What log sources are already detected?
+
+To find what log sources are already detected, you can use the `cscli` command line tool.
+
+```bash
+cscli metrics show acquisition
+```
+
+### How to interpret the output
+
+The output will show a list of log sources that are currently being monitored.
+
+If you see empty table or the log source you want to monitor is not listed then you may need to perform additional checks on the configuration see [next steps](#next-steps)
+
+### Are the detected log sources working correctly?
+
+When running `cscli metrics show acquisition` you will see detected log sources and columns running from `Lines read` to `Lines whitelisted`.
+
+:::info
+CrowdSec will start tailing the acquisitions at start up, so you may not see any data in the table if there has been no activity on the log source since the start of the CrowdSec service.
+:::
+
+```
+Acquisition Metrics:
+╭────────────────────────────────┬────────────┬──────────────┬────────────────┬────────────────────────┬───────────────────╮
+│             Source             │ Lines read │ Lines parsed │ Lines unparsed │ Lines poured to bucket │ Lines whitelisted │
+├────────────────────────────────┼────────────┼──────────────┼────────────────┼────────────────────────┼───────────────────┤
+│ file:/var/log/nginx/access.log │ 3          │ 3            │ -              │ -                      │ 3                 │
+╰────────────────────────────────┴────────────┴──────────────┴────────────────┴────────────────────────┴───────────────────╯
+```
+
+Here is a short explanation of the columns:
+
+- `Lines read` - The number of lines read from the log source.
+- `Lines parsed` - The number of lines that were successfully parsed.
+- `Lines unparsed` - The number of lines that were not parsed.
+- `Lines poured to bucket` - The number of lines that were not parsed and were sent to the bucket.
+- `Lines whitelisted` - The number of lines that were successfully parsed and were whitelisted before being sent to the bucket.
+
+In some cases you will see a higher number of unparsed lines to parsed lines, this could be due to the [Collection](https://docs.crowdsec.net/docs/next/collections/intro) only detecting a subset of the log lines.
+
+## What services are currently supported?
+
+You can find a list of [Collections](https://docs.crowdsec.net/docs/next/collections/intro) on the [Hub](https://hub.crowdsec.net/).
+
+:::info
+Collections are a group of [Parsers](https://docs.crowdsec.net/docs/next/parsers/intro) and [Scenarios](https://docs.crowdsec.net/docs/next/scenarios/intro).
+:::
+
+## Next steps?
+
+If you already see all services you want covered by the then you can [head back to the post installation steps.](/getting_started/next_steps.md#2-acquisitions)
+
+Follow the [how to setup a new acquisition](/getting_started/post_installation/acquisition_new.mdx) section if you see some log sources are not being monitored.
+
+Follow the [troubleshooting](/getting_started/post_installation/acquisition_troubleshoot.mdx) section if your table is empty.

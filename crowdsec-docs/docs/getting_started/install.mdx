@@ -8,7 +8,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-For those that prefer hands-on approach, you can as well [manually install crowdsec](/user_guides/building.md).
+For those that prefer hands-on approach, you can as well [manually install crowdsec](/getting_started/install_source.mdx).
 
 ## Install our repositories
 
@@ -16,54 +16,12 @@ Installing our repositories allows you to access the latest packages of the Secu
 
 :::info
 We are using [packagecloud.io service](https://packagecloud.io/crowdsec/crowdsec/).
-While `curl | sudo bash` can be convenient for some, [alternative installation methods are available](https://packagecloud.io/crowdsec/crowdsec/install#manual).
+While `curl | sudo shell` can be convenient for some, [alternative installation methods are available](https://packagecloud.io/crowdsec/crowdsec/install#manual).
 :::
 
-<Tabs
-  defaultValue="debian"
-  groupId="operating-systems"
-  values={[
-    {label: 'Debian/Ubuntu', value: 'debian'},
-    {label: 'EL/Centos7', value: 'centos7'},
-    {label: 'EL/Centos Stream 8', value: 'centos8'},
-    {label: 'Amzn Linux 2', value: 'amz'},
-    {label: 'OpenWRT', value: 'openwrt'},
-    {label: 'CloudLinux', value: 'cloudlinux'},
-  ]}>
-  <TabItem value="debian">
-    ```bash
-    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
-    ```
-  </TabItem>
-  
-  <TabItem value="centos7">
-    ```bash
-    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
-    ```
-  </TabItem>
-
-  <TabItem value="centos8">
-    ```bash
-    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
-    ```
-  </TabItem>
-
-  <TabItem value="amz">
-    ```bash
-    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
-    ```
-  </TabItem>
-
-  <TabItem value="openwrt">
-    OpenWRT packages are available in the official repositories.
-  </TabItem>
-
-  <TabItem value="cloudlinux">
-    ```bash
-    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | os=el dist=7 sudo bash
-    ```
-  </TabItem>
-</Tabs>
+```bash
+curl -s https://install.crowdsec.net | sudo sh
+```
 
 
 ## Install the Security Engine
@@ -127,7 +85,7 @@ You need to deploy a [Remediation Component](/u/bouncers/intro) to enforce decis
 
 The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/security-engines?enroll-engine=true).
 
-For the benefits, please visit the [Console section](/console/intro.md).
+For the benefits, please visit the [Console section](/u/console/intro).
 
 ## Running CrowdSec on Raspberry Pi OS/Raspbian 
 

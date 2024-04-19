@@ -48,7 +48,7 @@ sudo cscli decisions list
 
 </details>
 
-Check [command usage](/cscli/cscli_decisions.md) for additional filtering and output control flags.
+Check [command usage](/docs/next/cscli/cscli_decisions) for additional filtering and output control flags.
 
 #### List active decisions from the CrowdSec Central API
 
@@ -151,7 +151,7 @@ The `value` field is mandatory and contains the target of the decision (ip, rang
   - `type`: action to apply for the decision, defaults to `ban`
   - `scope`: scope of the decision, defaults to `ip`
 
-All the fields (except for `value`) can be overwritten by command line arguments, you can see the list in the [cscli documentation](/cscli/cscli_decisions_import.md).
+All the fields (except for `value`) can be overwritten by command line arguments, you can see the list in the [cscli documentation](/docs/next/cscli/cscli_decisions_import).
 
 We use the file extension to determine the format of the file, but you can also use the `--format` flag to specify it.
 
