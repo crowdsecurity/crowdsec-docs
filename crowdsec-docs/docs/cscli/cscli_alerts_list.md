@@ -6,6 +6,10 @@ title: cscli alerts list
 
 List alerts
 
+### Synopsis
+
+List alerts with optional filters
+
 ```
 cscli alerts list [filters] [flags]
 ```
@@ -16,6 +20,7 @@ cscli alerts list [filters] [flags]
 cscli alerts list
 cscli alerts list --ip 1.2.3.4
 cscli alerts list --range 1.2.3.0/24
+cscli alerts list --origin lists
 cscli alerts list -s crowdsecurity/ssh-bf
 cscli alerts list --type ban
 ```

@@ -1,28 +1,23 @@
 ---
-id: cscli_bouncers_prune
-title: cscli bouncers prune
+id: cscli_metrics_list
+title: cscli metrics list
 ---
-## cscli bouncers prune
+## cscli metrics list
 
-prune multiple bouncers from the database
+List available types of metrics.
 
-```
-cscli bouncers prune [flags]
-```
+### Synopsis
 
-### Examples
+List available types of metrics.
 
 ```
-cscli bouncers prune -d 45m
-cscli bouncers prune -d 45m --force
+cscli metrics list [flags]
 ```
 
 ### Options
 
 ```
-  -d, --duration duration   duration of time since last pull (default 1h0m0s)
-      --force               force prune without asking for confirmation
-  -h, --help                help for prune
+  -h, --help   help for list
 ```
 
 ### Options inherited from parent commands
@@ -40,5 +35,5 @@ cscli bouncers prune -d 45m --force
 
 ### SEE ALSO
 
-* [cscli bouncers](/cscli/cscli_bouncers.md)	 - Manage bouncers [requires local API]
+* [cscli metrics](/cscli/cscli_metrics.md)	 - Display crowdsec prometheus metrics.
 
