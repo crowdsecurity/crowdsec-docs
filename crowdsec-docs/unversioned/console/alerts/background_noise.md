@@ -3,9 +3,7 @@ title: Background Noise Filtering
 description: Focus on alerts that matter.
 ---
 
-## Background noise filtering
-
-Focus on alerts that matter.
+The back noise filter is designed to eliminate irrelevant background sounds, enabling users to concentrate on important alerts.
 
 > 🌟 Premium feature
 
