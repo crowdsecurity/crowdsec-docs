@@ -145,6 +145,46 @@ module.exports = {
         },
         {
             type: "category",
+            label: "Alerts",
+            link: {
+                type: "doc",
+                id: "console/alerts/intro",
+            },
+            items: [
+                {
+                    type: "doc",
+                    label: "Introduction",
+                    id: "console/alerts/intro",
+                },
+                {
+                    type: "doc",
+                    label: "Visualizer",
+                    id: "console/alerts/visualizer",
+                },
+                {
+                    type: "doc",
+                    label: "Alerts analysis",
+                    id: "console/alerts/alerts_analysis",
+                },
+                {
+                    type: "doc",
+                    label: "Alerts contexts",
+                    id: "console/alerts/alerts_contexts",
+                },
+                {
+                    type: "doc",
+                    label: "Background Noise",
+                    id: "console/alerts/background_noise",
+                },
+                {
+                    type: "doc",
+                    label: "Quotas",
+                    id: "console/alerts/quotas",
+                },
+            ],
+        },
+        {
+            type: "category",
             label: "Decision",
             link: {
                 type: "doc",
