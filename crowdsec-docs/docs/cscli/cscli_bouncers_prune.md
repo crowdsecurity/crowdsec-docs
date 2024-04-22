@@ -13,16 +13,16 @@ cscli bouncers prune [flags]
 ### Examples
 
 ```
-cscli bouncers prune -d 60m
-cscli bouncers prune -d 60m --force
+cscli bouncers prune -d 45m
+cscli bouncers prune -d 45m --force
 ```
 
 ### Options
 
 ```
-  -d, --duration string   duration of time since last pull (default "60m")
-      --force             force prune without asking for confirmation
-  -h, --help              help for prune
+  -d, --duration duration   duration of time since last pull (default 1h0m0s)
+      --force               force prune without asking for confirmation
+  -h, --help                help for prune
 ```
 
 ### Options inherited from parent commands

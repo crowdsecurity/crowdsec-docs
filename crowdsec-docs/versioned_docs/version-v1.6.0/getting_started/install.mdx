@@ -1,0 +1,104 @@
+---
+id: install_crowdsec
+title: Linux
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+For those that prefer hands-on approach, you can as well [manually install crowdsec](/getting_started/install_source.mdx).
+
+## Install our repositories
+
+Installing our repositories allows you to access the latest packages of the Security Engine and Remediation Components.
+
+:::info
+We are using [packagecloud.io service](https://packagecloud.io/crowdsec/crowdsec/).
+While `curl | sudo shell` can be convenient for some, [alternative installation methods are available](https://packagecloud.io/crowdsec/crowdsec/install#manual).
+:::
+
+```bash
+curl -s https://install.crowdsec.net | sudo sh
+```
+
+
+## Install the Security Engine
+
+Before installing the package, you might want to check [the ports that will be used](/docs/next/configuration/network_management).
+
+<Tabs
+  defaultValue="debian"
+  groupId="operating-systems"
+  values={[
+    {label: 'Debian/Ubuntu', value: 'debian'},
+    {label: 'EL/Centos7', value: 'centos7'},
+    {label: 'EL/Centos Stream 8', value: 'centos8'},
+    {label: 'Amzn Linux 2', value: 'amz'},
+    {label: 'OpenWRT', value: 'openwrt'},
+    {label: 'CloudLinux', value: 'cloudlinux'},
+  ]}>
+  <TabItem value="debian">
+    <CodeBlock className="language-bash">apt install crowdsec</CodeBlock>
+  </TabItem>
+  
+  <TabItem value="centos7">
+    <CodeBlock className="language-bash">yum install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="centos8">
+    <CodeBlock className="language-bash">dnf install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="amz">
+    <CodeBlock className="language-bash">yum install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="openwrt">
+    <CodeBlock className="language-bash">opkg install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="cloudlinux">
+    <CodeBlock className="language-bash">yum install crowdsec</CodeBlock>
+  </TabItem>
+</Tabs>
+
+You now have the Security Engine running ! You can move forward and install a [remediation component](/u/bouncers/intro), or take a [tour](/getting_started/crowdsec_tour.mdx) of the software beforehand !
+
+Directories:
+
+* The application lives in the folder `/etc/crowdsec`.
+* The data is stored in the folder `/var/lib/crowdsec/data`.
+
+
+## Remediation Component
+
+:::caution
+
+Keep in mind that a CrowdSec package is only in charge of the "detection", and won't block anything on its own.
+You need to deploy a [Remediation Component](/u/bouncers/intro) to enforce decisions.
+
+:::
+
+## Enrolling your instance
+
+The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/security-engines?enroll-engine=true).
+
+For the benefits, please visit the [Console section](/u/console/intro).
+
+## Running CrowdSec on Raspberry Pi OS/Raspbian 
+
+Please keep in mind that Raspberry Pi OS is designed to work on all
+Raspberry Pi versions. Even if the port target is known as armhf, it's
+not exactly the same target as the debian named armhf port.
+
+The best way to have a CrowdSec version for such an architecture is to
+do:
+
+1. install golang (all versions from 1.20 will do)
+2. `export GOARCH=arm`
+3. `export CGO=1`
+4. Update the GOARCH variable in the Makefile to `arm`
+5. install the arm gcc cross compiler (On debian the package is gcc-arm-linux-gnueabihf)
+6. Compile CrowdSec using the usual `make` command

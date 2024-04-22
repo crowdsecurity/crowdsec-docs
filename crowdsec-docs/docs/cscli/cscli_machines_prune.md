@@ -25,7 +25,7 @@ cscli machines prune --not-validated-only --force
 ### Options
 
 ```
-  -d, --duration string      duration of time since validated machine last heartbeat (default "10m")
+  -d, --duration duration    duration of time since validated machine last heartbeat (default 10m0s)
       --force                force prune without asking for confirmation
   -h, --help                 help for prune
       --not-validated-only   only prune machines that are not validated

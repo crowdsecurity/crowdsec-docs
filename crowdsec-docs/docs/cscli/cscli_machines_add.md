@@ -17,11 +17,10 @@ cscli machines add [flags]
 ### Examples
 
 ```
-
 cscli machines add --auto
 cscli machines add MyTestMachine --auto
 cscli machines add MyTestMachine --password MyPassword
-
+cscli machines add -f- --auto > /tmp/mycreds.yaml
 ```
 
 ### Options

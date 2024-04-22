@@ -16,7 +16,7 @@ cscli decisions list [options] [flags]
 cscli decisions list -i 1.2.3.4
 cscli decisions list -r 1.2.3.0/24
 cscli decisions list -s crowdsecurity/ssh-bf
-cscli decisions list -t ban
+cscli decisions list --origin lists --scenario list_name
 
 ```
 

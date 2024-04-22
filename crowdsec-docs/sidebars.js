@@ -567,9 +567,16 @@
             ],
         },
         {
-            type: "doc",
+            type: "category",
             label: "cscli metrics",
-            id: "cscli/cscli_metrics",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_metrics",
+            },
+            items: [
+                "cscli/cscli_metrics_list",
+                "cscli/cscli_metrics_show",
+            ]
         },
         {
             type: "category",
