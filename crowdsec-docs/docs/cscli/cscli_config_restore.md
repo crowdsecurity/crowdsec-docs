@@ -24,8 +24,7 @@ cscli config restore "directory" [flags]
 ### Options
 
 ```
-  -h, --help         help for restore
-      --old-backup   To use when you are upgrading crowdsec v0.X to v1.X and you need to restore backup from v0.X
+  -h, --help   help for restore
 ```
 
 ### Options inherited from parent commands

@@ -8,10 +8,23 @@ Display crowdsec prometheus metrics.
 
 ### Synopsis
 
-Fetch metrics from the prometheus server and display them in a human-friendly way
+Fetch metrics from a Local API server and display them
 
 ```
 cscli metrics [flags]
+```
+
+### Examples
+
+```
+# Show all Metrics, skip empty tables (same as "cecli metrics show")
+cscli metrics
+
+# Show only some metrics, connect to a different url
+cscli metrics --url http://lapi.local:6060/metrics show acquisition parsers
+
+# List available metric types
+cscli metrics list
 ```
 
 ### Options
@@ -38,4 +51,6 @@ cscli metrics [flags]
 ### SEE ALSO
 
 * [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli metrics list](/cscli/cscli_metrics_list.md)	 - List available types of metrics.
+* [cscli metrics show](/cscli/cscli_metrics_show.md)	 - Display all or part of the available metrics.
 
