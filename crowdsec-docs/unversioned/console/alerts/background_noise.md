@@ -11,8 +11,7 @@ Focus on alerts that matter.
 
 ### Introduction
 
-We define Background Noise (BN), sometimes also referred to as “Internet Background
-Radiation” is an automatic and mild attack perpetrated on a large scale, without a specific target, at a constant pace over time. It includes, for example, mass scanning or brute-force attempts on popular services and is not specific to one domain or infrastructure in particular. Get more information [there](https://www.crowdsec.net/blog/background-noise-filter-available-crowdsec-console).
+We define Background Noise (BN), sometimes also referred to as “Internet Background Radiation” is an automatic and mild attack perpetrated on a large scale, without a specific target, at a constant pace over time. It includes, for example, mass scanning or brute-force attempts on popular services and is not specific to one domain or infrastructure in particular. Get more information [there](https://www.crowdsec.net/blog/background-noise-filter-available-crowdsec-console).
 
 ### Activate Noise cancelling
 

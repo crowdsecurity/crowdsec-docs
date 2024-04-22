@@ -173,6 +173,11 @@ module.exports = {
                 },
                 {
                     type: "doc",
+                    label: "Background Noise",
+                    id: "console/alerts/background_noise",
+                },
+                {
+                    type: "doc",
                     label: "Quotas",
                     id: "console/alerts/quotas",
                 },
