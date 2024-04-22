@@ -8,6 +8,7 @@ sidebar_position: 1
 
 CrowdSec Local API is able to receive or delete local decisions from the Console.
 
+> 🌟 Premium feature
 
 ### Adding decision
 
