@@ -7,7 +7,7 @@ description: Security Engines Dashboard page
 
 This section displays all the CrowdSec Security Engines available in an Organization. This feature provides a quick overview of the organization's security status and allows the management of all the security engines remotely.
 
-If you haven't signed up for Security Engines, check out the ["Getting Started"](/console/getting_started) guide.
+If you haven't signed up for Security Engines, check out the ["Getting Started"](/getting_started/post_installation/console.mdx) guide.
 
 ![Security_engines_page](/img/console/security_engines/page.png)
 
@@ -24,10 +24,10 @@ Each Security Engine has a card that displays essential details to facilitate mo
 - **Name**: Clicking on the name will redirect to the detailed page of the Security Engine.
 - **IP**: Clicking on the IP will copy it to the clipboard.
 - **Enroll Date**
-- **Tags**: Add custom tags to the engines by using the ["doc"](/console/security_engines/name_and_tags) tag format.
+- **Tags**: Add custom tags to the engines by using the ["doc"](/console/security_engines/name_and_tags.md) tag format.
 - **Alerts / Scenarios / Remediation Components / Blocklists / Log Processors (Distributed Setup only)**: Clicking any items will redirect to a dedicated section with relevant information.
-- **Activity**: This feature helps focus on Security Engines that require your attention. The ["Troubleshoot"](/console/security_engines/troubleshooting) feature can identify problems in your stack by analyzing past engine activity.
-- **Distributed Setup**: These are considered Distributed Setup Engines when multiple log processors are attached. [(Get more info here)](https://docs.crowdsec.net/docs/getting_started/security_engine_intro/#why-is-my-security-engine-classed-as-a-log-processor-within-the-console)
+- **Activity**: This feature helps focus on Security Engines that require your attention. The ["Troubleshoot"](/console/security_engines/troubleshooting.md) feature can identify problems in your stack by analyzing past engine activity.
+- **Distributed Setup**: These are considered Distributed Setup Engines when multiple log processors are attached. [(Get more info here)](/docs/next/getting_started/security_engine_intro/#why-is-my-security-engine-classed-as-a-log-processor-within-the-console)
 
 ### Basic Card
 
