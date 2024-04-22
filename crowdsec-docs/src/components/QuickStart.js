@@ -56,7 +56,7 @@ const staticData = [
     {
         icon: whmLogo,
         text: "WHM",
-        link: "/u/user_guides/plugins/whm",
+        link: "/u/getting_started/installation/whm",
     },
 ];
 

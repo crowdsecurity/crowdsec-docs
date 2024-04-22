@@ -1,7 +1,8 @@
 ---
 id: whm
 title: WHM plugin
-sidebar_position: 10
+pagination_prev: getting_started/pre_requisites
+pagination_next: getting_started/next_steps
 ---
 
 The WHM plugin offers a streamlined approach for controlling and monitoring the CrowdSec Security Engine protecting your server directly from your WHM dashboard.  
@@ -91,7 +92,7 @@ Once installation is complete, you can perform a few post-installation tasks to 
 
 At the top of all CrowdSec plugin pages, you can see the status of the CrowdSec service: if there's a green tick, the service is running. 
 
-![Service status](img/whm-service-status.png)
+![Service status](/img/whm-service-status.png)
 
 If not, [check the troubleshooting section](#crowdsec-is-not-running).
 
@@ -99,7 +100,7 @@ If not, [check the troubleshooting section](#crowdsec-is-not-running).
 
 Browse to the metrics tab and ensure that The CrowdSec security engine 
 
-![Metrics](img/whm-metrics.png)
+![Metrics](/img/whm-metrics.png)
 
 If not, [check the troubleshooting section](#changing-port-configuration).
 
@@ -119,7 +120,7 @@ Some acquisitions may display a warning (⚠)sign next to the "logs filenames" t
 Depending on the activity on your server it might be normal, you can check the lines parsed in the **metrics > acquisition** section.  
 Usually, you should see activity within a few minutes.
 
-![Acquisition not read](img/whm-acquisition-not-read.png)
+![Acquisition not read](/img/whm-acquisition-not-read.png)
 
 ### Enroll your engine in CrowdSec's Console
 
@@ -129,12 +130,12 @@ The Console is available on [app.crowdsec.net](https://app.crowdsec.net/)
 You can enroll your engine by going to the Enroll tab.
 Fill in your enrollment key and click the `Enroll` button.
 
-![Enroll](img/whm-enroll.png)
+![Enroll](/img/whm-enroll.png)
 
 You'll see A confirmation of enrollment in your console and upon acceptance, you'll see your instance in the console.
 You can restart your CrowdSec instance after confirmation to force a refresh of the metadata of your installation and immediately see your attached bouncers in the console. If you don't restart, the info will be updated within 15 to 30 minutes in the console.
 
-![Enrolled_SE](img/whm-console-example.png)
+![Enrolled_SE](/img/whm-console-example.png)
 
 Check some of the console features in the [Console section](https://docs.crowdsec.net/docs/next/console/intro)
 
@@ -147,7 +148,7 @@ Most of the time it will be a port conflict or config file error
 - Check the logs for error
   - In CrowdSec's logs sudo less /var/log/crowdsec.log: Note that it might be very verbose.
   - You can also check:  sudo journalctl -u crowdsec
-- Ultimately, you can check the [Security Engine Troubleshooting section](/u/troubleshooting/security_engine/)
+- Ultimately, you can check the [Security Engine Troubleshooting section](/troubleshooting/security_engine.mdx)
 
 ### Changing port configuration
 
@@ -157,4 +158,8 @@ You may have port conflict on either the CrowdSec Security Engine local API port
 
 Easily change them and restart the service from the **Settings** menu of the plugin.
 
-![Settings](img/whm-settings.png)
+![Settings](/img/whm-settings.png)
+
+## Next Steps?
+
+Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.md) you will find the next steps to configure and optimize your installation.
