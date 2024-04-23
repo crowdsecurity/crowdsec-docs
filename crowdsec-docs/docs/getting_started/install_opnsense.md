@@ -4,45 +4,53 @@ title: OPNsense
 sidebar_position: 1
 ---
 
-## The OPNsense plugin
+# OPNsense plugin
 
-OPNsense, the widely known firewall and routing software, is based on FreeBSD. The standard packages that we provide for FreeBSD (agent+lapi and bouncer) can also run on OPNsense, but need more integration with the rest of the system (for example, to feed the firewall tables).
+The CrowdSec plugin for OPNsense is installed from the official repositories.
+It includes a Log Processor, LAPI service, and Remediation Component. This allows you
+to:
 
-By installing the `CrowdSec` plugin, available through the OPNsense repositories, you can:
-
- - use the OPNsense server as LAPI for other agents and bouncers
- - deploy an agent on OPNsense and scan its logs for attacks
- - block attackers from your whole network with a single firewall bouncer
+ - block attacking traffic from entering the network (protect machines that don't have CrowdSec)
+ - deploy a log processor on OPNsense and scan its logs for attacks
+ - use the OPNsense server as LAPI for other log processors and remediation components
  - list the hub plugins (parsers, scenarios..) and decisions on the OPNsense admin interface
 
-### Plugin installation
+## Plugin installation
 
-:::caution
-With OPNsense 22.1, if you are using a RAM filesystem for `/var` (you can verify `System > Settings > Miscellaneous > Disk/Memory Settings`) you need to disable it before proceeding, because the `Security Engine` keeps a small persistent database in `/var/db`. When the `/var` directory is in RAM, the database is re-created from scratch at each reboot. The ram disk was changed to `/var/log` for 22.7, which does not interfere with the database.
-:::
-
-With OPNsense 22.1:
-
-```console
-# pkg install os-crowdsec-devel
-```
-
-With OPNsense >= 22.7:
-
-Download CrowdSec from the `System > Firmware > Plugins` menu. It will deploy three packages:
+Click `System > Firmware > Plugins` menu. Select os-crowdsec. It will deploy three packages:
 
  - `os-crowdsec`, the plugin itself
  - `crowdsec`
  - `crowdsec-firewall-bouncer`
 
-On the Settings tab, select the first three checkboxes: IDS, LAPI and IPS. Click Apply.
+Do not enable/start the services from the terminal like you would on a standard freebsd system, because the plugin takes care of that.
 
-Do not enable/start the agent and bouncer services with `sysrc` or `/etc/rc.conf` like you would on a standard freebsd system, because the plugin takes care of that (in a different way).
+Refresh the page and go to `Services > CrowdSec > Overview` to verify the running services and installed configurations.
+
+Great, you now have CrowdSec installed on your system. Have a look at the [post installation steps](/getting_started/next_steps.md) to see how to to configure and optimize it,
+these recommendations are valid for any system.
+
+
+## Plugin Configuration
+
+You will find some options under `Services > CrowdSec > Settings`. You will see the first three are enabled by default: Log Processor (previously known as IDS), LAPI and Remediation Component (previously known as IPS).
+You can disable them for testing or if you have special requirements.
 
 The parsers, scenarios and all objects from the [CrowdSec Hub](https://hub.crowdsec.net/) are periodically upgraded. The [crowdsecurity/freebsd](https://hub.crowdsec.net/author/crowdsecurity/collections/freebsd) and [crowdsecurity/opnsense](https://hub.crowdsec.net/author/crowdsecurity/collections/opnsense) collections are installed by default.
 
-### Testing the plugin
+Since crowdsec 1.6.3, private IP networks are whitelisted by default as well. This means for example an IP from a LAN or WAN which is on 192.168.x.y won't get blocked by a local decision
+(cummunity blocklists don't contain private IPs).
 
+If you want to revert to the previous behavior, to block private IPs as well, you can remove the related parser.
+
+```console
+[root@OPNsense ~]# cscli parsers remove crowdsecurity/whitelists
+```
+
+If on the other hand you upgrade from a version before 1.6.3, you need to install the lists yourself.
+
+
+## Testing the remediation component
 
 A quick way to test that everything is working correctly is to execute the following command. Your ssh session should freeze and you should be kicked out from the firewall. You will not be able to connect to it (from the same IP address) for two minutes. It might be a good idea to have a secondary IP from which you can connect, should anything go wrong.
 
@@ -54,7 +62,7 @@ This is a more secure way to test than attempting to brute-force yourself: the d
 
 You can find a list of all available flags with `cscli decisions add --help`.
 
-#### How do I find my connecting IP address to test?
+### How do I find my connecting IP address to test?
 
 We have provided some examples below to help you find your connecting IP address. Depending on your shell / environment, you may need to use a different command. 
 
@@ -65,8 +73,7 @@ We have provided some examples below to help you find your connecting IP address
 
 ## Remote LAPI setup (optional)
 
-You may have a need to put the LAPI service on a different machine, possibly because you already have it, or opnsense is running on a slow machine or...
-well - your servers, your right to choose. But you'll have to manually tweak the configuration (thanks [Jarno Rankinen](https://github.com/0ranki)).
+If you don't want to run the LAPI service on the OPNsense machine (because it's small/slow or you already have LAPI somewhere) then you'll have to manually tweak the configuration (thanks [Jarno Rankinen](https://github.com/0ranki)).
 
 Be aware: the list of machines and bouncers shown in the Overview tab will be incorrect. In the current version, the crowdsec instance on OPNsense has no way (and no permission) to retrieve the list of machines and bouncers from the LAPI if it resides on another server, so it displays the local (and outdated) information.
 
@@ -122,8 +129,3 @@ For more information on the topic:
 
  - [Improve The CrowdSec Multi-Server Installation With HTTPS Between Agents](https://www.linuxjournal.com/content/improve-crowdsec-multi-server-installation-https-between-agents) (Linux Journal)
 
-## Enrolling your instance
-
-The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/security-engines?enroll-engine=true).
-
-For the benefits, please visit the [Console section](/u/console/intro).

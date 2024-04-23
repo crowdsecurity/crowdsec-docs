@@ -5,4 +5,28 @@ pagination_prev: getting_started/pre_requisites
 pagination_next: getting_started/next_steps
 ---
 
-## TODO BY @MMETC
+# OPNsense plugin
+
+The CrowdSec plugin for OPNsense is installed from the official repositories.
+It includes a Log Processor, LAPI service, and Remediation Component. This allows you
+to:
+
+ - block attacking traffic from entering the network (protect machines that don't have CrowdSec)
+ - deploy a log processor on OPNsense and scan its logs for attacks
+ - use the OPNsense server as LAPI for other log processors and remediation components
+ - list the hub plugins (parsers, scenarios..) and decisions on the OPNsense admin interface
+
+## Plugin installation
+
+Click `System > Firmware > Plugins` menu. Select os-crowdsec. It will deploy three packages:
+
+ - `os-crowdsec`, the plugin itself
+ - `crowdsec`
+ - `crowdsec-firewall-bouncer`
+
+Do not enable/start the services from the terminal like you would on a standard freebsd system, because the plugin takes care of that.
+
+Refresh the page and go to `Services > CrowdSec > Overview` to verify the running services and installed configurations.
+
+Great, you now have CrowdSec installed on your system. Have a look at the [post installation steps](/getting_started/next_steps.md) to see how to to configure and optimize it,
+or keep reading [the rest of the plugin documentation](/getting_started/install_opnsense.md)
