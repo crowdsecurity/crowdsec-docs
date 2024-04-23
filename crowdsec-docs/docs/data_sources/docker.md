@@ -96,6 +96,7 @@ use_container_labels: true
 Currently here is the list of reserved labels for the container:
 
 `crowdsec.enable` : Enable crowdsec acquisition for this container the value must be set to `crowdsec.enable=true` for the container to be adopted.
+
 `crowdsec.labels` : Top level key that will parse into the labels struct for the acquisition, for example `crowdsec.labels.type=nginx` will be parsed to the following:
 
 ```yaml
