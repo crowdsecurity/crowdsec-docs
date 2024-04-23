@@ -39,7 +39,15 @@ Now let's play around with this plugin.
 
 ### Basic prompts
 
-You can simply ask: "What does CrowdSec know about <an IP>". For example: "What does CrowdSec know about 102.0.4.250".  
+You can simply ask:  
+```
+What does CrowdSec know about <an IP>
+```
+For example: 
+```
+What does CrowdSec know about 102.0.4.250
+```  
+
 The 3 steps copilot take will be: to select the plugin, do the request and format his response as shown below:  
 
 ![Basic result](/img/securitycopilot_basic_prompt_result.png)
