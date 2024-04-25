@@ -20,7 +20,7 @@ Currently, only 4 orders are available:
 ## Enable console management
 
 :::info
-These steps are only needed if you are using CrowdSec version `1.6.0` and below. We advise to update to the latest version of CrowdSec to benefit from the latest features and security patches.
+These steps are only needed if you are using CrowdSec version below `1.6.0`. We advise to update to the latest version of CrowdSec to benefit from the latest features and security patches.
 :::
 
 There are two ways to enable this feature flag:
