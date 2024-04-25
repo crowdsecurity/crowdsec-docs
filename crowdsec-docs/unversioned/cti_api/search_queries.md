@@ -99,7 +99,7 @@ classifications.classifications.label:"TOR" AND behaviors.label:"http exploit"
 
 :::warning
 
-Always use `AND`, `OR`, `NOT` in uppercase to ensure correct results
+Always use `AND`, `OR`, `NOT` in uppercase to ensure correct results.
 
 :::
 
