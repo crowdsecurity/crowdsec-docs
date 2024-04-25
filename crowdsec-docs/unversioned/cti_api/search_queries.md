@@ -155,7 +155,7 @@ It is possible to search for malicious IPs reported for HTTP exploitation or HTT
 reputation:malicious AND ((behaviors.label:"http exploit" OR behaviors.label:"http scan") AND NOT behaviors.label:"ssh bruteforce")
 ```
 
-## Wildcard Queries
+## Wildcard
 
 :::warning
 
@@ -181,4 +181,26 @@ It is possible to search for IP addresses reported for at least one CVE and not 
 
 ```bash
 cves:CVE-* AND NOT classifications.classifications.name:scanner*
+```
+
+## Regular Expression
+
+:::warning
+
+Do not enclose regular expression queries between double quotes.
+
+:::
+
+Regular expression must be enclosed between `/`.
+
+For example, you can query any IPs reported for a CVE published in 2024:
+
+```bash
+cves:/CVE-2024-[0-9]+/
+```
+
+Or you can search for any IPs belonging to Amazon or Google:
+
+```bash
+as_name:/(amazon-02|google)/
 ```
