@@ -6,6 +6,8 @@ sidebar_position: 1
 
 ## Console Management
 
+> 🌟 Premium feature
+
 The CrowdSec security engine is now able to receive instructions from the console.
 This is done via a polling API, it means that the CrowdSec Local API will use long polling to get orders from the CrowdSec Console.
 Currently, only 4 orders are available:
@@ -17,7 +19,10 @@ Currently, only 4 orders are available:
 
 ## Enable console management
 
-The console management is still under feature flag on the CrowdSec Security Engine side. 
+:::info
+These steps are only needed if you are using CrowdSec version below `1.6.0`. We advise to update to the latest version of CrowdSec to benefit from the latest features and security patches.
+:::
+
 There are two ways to enable this feature flag:
  - Create or edit `/etc/crowdsec/feature.yaml` with the following flag
 

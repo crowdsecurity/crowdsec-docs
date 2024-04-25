@@ -14,7 +14,6 @@ Some of the feature flags might not be documented because they are for features 
 
 - `re2_grok_support`: Enable RE2 support for GROK patterns. [Brings a very significant performance improvement in parsing at the cost of extra memory](https://www.crowdsec.net/blog/increasing-performance-crowdsec-1-5).
 - `re2_regexp_in_file_support`: Enable RE2 support for `RegexpInFile` expr helper. Similar to `re2_grok_support` but more niche as regexps used by `RegexpInFile` are usually less complex than grok patterns.
-- `papi_client`: Enable polling API client (feature requires a console subscription to allow centralized decision management from the console).
 - `chunked_decisions_stream`: Enable chunked decisions stream. Useful when you have a lot of remediation pulling from the same local API, as it reduces the memory consumption related to decision fetch.
 
 ## Enabling a Feature Flag
