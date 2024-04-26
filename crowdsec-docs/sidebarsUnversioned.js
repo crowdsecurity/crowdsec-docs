@@ -51,6 +51,11 @@ module.exports = {
                 "cti_api/integration_thehive",
             ],
         },
+        {
+            type: "doc",
+            label: "Search Queries",
+            id: "cti_api/search_queries",
+        },
     ],
     consoleSidebar: [
         {
