@@ -16,7 +16,7 @@ You can create a trial key or retrieve your existing keys in the [console](https
 If you need more details check out the [CTI API Key - getting started section](/cti_api/getting_started.mdx)
 
 ### Activate and setup the plugin
-This consist of 3 easy step: browse plugins, select "CrowdSec Threat Intelligence" plugin, paste API Key in setting
+This consists of 3 easy steps: browse plugins, select "CrowdSec Threat Intelligence" plugin, paste API Key in settings
 
 #### 1. Browse plugins
 Within the [Security Copilot](https://securitycopilot.microsoft.com/) main page, on the right hand side of the prompt input, you'll see an icon represented by 4 squares with a "source" tooltip like shown in the picture there after.   
