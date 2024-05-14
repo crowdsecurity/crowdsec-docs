@@ -45,6 +45,7 @@ module.exports = {
                 "cti_api/integration_opencti",
                 "cti_api/integration_paloalto_xsoar",
                 "cti_api/integration_qradar",
+                "cti_api/integration_securitycopilot",
                 "cti_api/integration_sekoia_xdr",
                 "cti_api/integration_splunk_siem",
                 "cti_api/integration_splunk_soar",
