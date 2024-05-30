@@ -198,6 +198,11 @@ module.exports = {
             },
             items: ["console/decisions/decisions_management"],
         },
+        {
+            type: "doc",
+            label: "Console API",
+            id: "console/api/intro",
+        },
     ],
     remediationSideBar: [
         {
