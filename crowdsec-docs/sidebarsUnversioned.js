@@ -147,6 +147,22 @@ module.exports = {
                     label: "Subscription",
                     id: "console/blocklists/subscription",
                 },
+                {
+                    type: "category",
+                    label: "Integrations",
+                    link: {
+                        type: "doc",
+                        id: "console/blocklists/integrations/firewall",
+                    },
+                    items: [
+                        {
+                            type: "doc",
+                            label: "Firewall integrations",
+                            id: "console/blocklists/integrations/firewall",
+                        }
+                     
+                    ],
+                }
             ],
         },
         {
