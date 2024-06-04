@@ -10,9 +10,8 @@ You will find the integration page under the blocklist menu. When it's your firs
 
 ![](/img/console/blocklists/integrations/catalog.png)
 
-You can click on the desired provider or the generic vendor format to create a new integration.
-Once you have an integration, the page is built differently, and you can click on the "Add Integration" button at the top right corner to complete the same action.
-A popup will then appear, asking for the integration name and an optional description to help you organize your future integrations.
+To create a new integration, click on the desired provider or the generic vendor format. The generic vendor format is a one-IP per-line format that will suit many situations. If you need another format, please ask us by clicking the _Request integration_ button. <br />
+Once you have an integration, the page is built differently, and you can click on the "Add Integration" button at the top right corner to complete the same action. A popup will then appear, asking for the integration name and an optional description to help you organize your future integrations.
 
 ![](/img/console/blocklists/integrations/create.png)
 
@@ -24,7 +23,7 @@ In the next step, we will provide the necessary details for retrieving the IP ad
 
 | Don't forgot to [subscribe to a blocklist](/u/console/blocklists/subscription) to make the integration useful.
 
-Every product has his own way to handle external blocklists. We provide a simple URL to retrieve the IPs in a format that suits your needs. You can find the supported provider documentations and output format examples in the following array.
+Every product product has its way to handle external blocklists. We provide a simple URL to retrieve the IPs in a format that suits your needs. You can find the supported provider documentations and output format examples in the following array.
 
 :::info  
  Some providers have technical limits on the number of IPs they can pull at once. That's why we recommand to monitor the number of IPS returned by the integration and use the pagination feature if needed.
@@ -37,8 +36,9 @@ Every product has his own way to handle external blocklists. We provide a simple
 | [F5](https://techdocs.f5.com/kb/en-us/products/big-ip-afm/manuals/product/big-ip-network-firewall-policies-and-implementations-14-0-0/07.html)                                           | Custom     | `192.168.38.187,32,BL,crowdsec-myf5Integration`<br /> `192.168.38.188,32,BL,crowdsec-myf5Integration`                           |
 | [Fortinet](https://docs.fortinet.com/document/fortigate/6.4.5/administration-guide/891236/external-blocklist-policy)                                                                     | Plain text | `192.168.38.187`<br />`192.168.38.186`                                                                                          |
 | [Palo Alto](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/policy/use-an-external-dynamic-list-in-policy/external-dynamic-list#idf36cb80a-77f1-4d17-9c4b-7efe9fe426af)       | Plain text | `192.168.38.187`<br />`192.168.38.186`                                                                                          |
+| Generic vendor                                                                                                                                                                           | Plain text | `192.168.38.187`<br />`192.168.38.186`                                                                                          |
 
-## Pagination
+## How to bypass provider limit?
 
 Some providers have technical limits on the number of IPs they can pull at once. That's why we recommand to monitor the number of IPS returned by the integration and use the pagination feature if needed.
 For this, you can use the page and page_size query parameters in the URL.
@@ -47,7 +47,7 @@ For this, you can use the page and page_size query parameters in the URL.
 
 You can then use the page parameter to get the next page of IPs.
 
-## Credentials
+## I lost my credentials
 
 Remember that you can only view your credentials once when you create the integration. If you lose them, you must generate new credentials and update your firewall configuration. You can do this under the "Configure" menu, which is located on the corresponding integration catalog item.
 
