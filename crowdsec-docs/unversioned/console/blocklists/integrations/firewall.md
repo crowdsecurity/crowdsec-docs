@@ -21,7 +21,7 @@ In the next step, we will provide the necessary details for retrieving the IP ad
 
 ## Use an integration
 
-| Don't forgot to [subscribe to a blocklist](/u/console/blocklists/subscription) to make the integration useful.
+| Don't forgot to [subscribe to a blocklist](/u/console/blocklists/subscription/#subscribe-a-firewall-integration-to-a-blocklist) to make the integration useful.
 
 Every product product has its way to handle external blocklists. We provide a simple URL to retrieve the IPs in a format that suits your needs. You can find the supported provider documentations and output format examples in the following array.
 
