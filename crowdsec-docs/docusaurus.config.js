@@ -1,11 +1,11 @@
 const { themes } = require('prism-react-renderer');
 
 const path = require('path')
-const { remediationSideBar, ctiApiSidebar, consoleSidebar, guidesSideBar} = require('./sidebarsUnversioned.js');
+const { remediationSideBar, ctiApiSidebar, consoleSidebar, guidesSideBar, serviceApiSideBar } = require('./sidebarsUnversioned.js');
 const generateCurrentAndNextRedirects = (s) => ([{
   from: `/docs/${s}`,
   to: `/u/${s}`,
-  },{
+}, {
   from: `/docs/next/${s}`,
   to: `/u/${s}`,
 }])
@@ -120,9 +120,19 @@ module.exports = {
           label: 'Remediation',
         },
         {
-          to: '/u/cti_api/getting_started',
+          label: 'API(s)',
           position: 'left',
-          label: 'CTI API',
+          items: [
+            {
+              label: 'CTI API',
+              to: '/u/cti_api/getting_started',
+            },
+            {
+              label: 'Service API',
+              to: '/u/service_api/intro',
+            },
+
+          ],
         },
         {
           to: '/u/console/intro',
@@ -249,7 +259,7 @@ module.exports = {
       {
         redirects: [
           // Redirect current and next routes to unversioned to avoid 404 on articles and app.crowdsec.net
-          ...[...remediationSideBar, ...consoleSidebar,...ctiApiSidebar, ...guidesSideBar].flatMap(backportRedirect),
+          ...[...remediationSideBar, ...consoleSidebar, ...ctiApiSidebar, ...guidesSideBar, ...serviceApiSideBar].flatMap(backportRedirect),
           {
             from: '/docs/troubleshooting',
             to: '/u/troubleshooting/intro',

@@ -322,6 +322,13 @@ module.exports = {
             label: "Remediation Components",
         },
     ],
+    serviceApiSideBar: [
+        "service_api/intro",
+        "service_api/quickstart",
+        "service_api/blocklists",
+        "service_api/integrations",
+        "service_api/faq",
+    ],
     guidesSideBar: [
         "user_guides/intro",
         {
