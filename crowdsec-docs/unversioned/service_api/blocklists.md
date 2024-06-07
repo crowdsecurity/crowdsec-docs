@@ -13,16 +13,6 @@ When populating blocklists, two strategies are currently available:
  - [`/upload`](https://admin.api.crowdsec.net/v1/docs#/Blocklists/uploadBlocklistContent) allows you to replace the existing content of the blocklist.
  - [`/ips`](https://admin.api.crowdsec.net/v1/docs#/Blocklists/addIpsToBlocklist) and [`/ips/delete`](https://admin.api.crowdsec.net/v1/docs#/Blocklists/deleteIpsFromBlocklist) allow you to perform incremental changes on the blocklist by adding or removing IPs by batches.
 
-
-
-<!--
-
- - explain process if you want to publish your public blocklists
- - how to find your org ID
-
-
--->
-
 ## Blocklist subscription mechanism
 
 When [subscribing to blocklists](https://admin.api.crowdsec.net/v1/docs#/Blocklists/subscribeBlocklist), you can use various `entity_type` :
@@ -40,10 +30,6 @@ The `/blocklists/{blocklist_id}/shares` endpoint allows you to share a private b
 When sharing your blocklist with another organization, decide the `permission` you give them on your blocklist:
  - `read` : they can subscribe to the blocklist, download its content and view the blocklist(s) statistics.
  - `write` : they can add and remove IPs
-
-## Creating public blocklists
-
-As you might have noticed in the [blocklist creation](https://admin.api.crowdsec.net/v1/docs#/Blocklists/createBlocklist) methods, there is a `public` flag that is set to `false` by default. We decided to manually vest any new public blocklist for the time being. If you want to share yours on the platform, you're more than welcome to reach us at `support *at* crowdsec.net`.
 
 ## Statistics Explained
 
