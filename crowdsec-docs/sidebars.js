@@ -324,6 +324,7 @@
                 "expr/ip_helpers",
                 "expr/json_helpers",
                 "expr/cti_helpers",
+                "expr/libinjection_helpers",
                 "expr/other_helpers",
                 "expr/alert",
                 "expr/decision",
