@@ -9,6 +9,12 @@ title: Quickstart
 
 ## Blocklist(s) manipulation
 
+<!--
+
+ - show how to download blocklists
+
+-->
+
 ### Create a blocklist
 
 > Create a new private blocklist named `my_test_blocklist`
@@ -334,3 +340,60 @@ https://admin.api.crowdsec.net/v1//blocklists/1234MYBLOCKLISTID/subscribers \
 ```
 </details>
 
+
+### Download blocklist content
+
+```bash
+GET -H "x-api-key: ${KEY}" https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/download
+```
+
+## Integrations manipulation
+
+### Creating integration
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/integrations \
+-d '{ "name": "test_integration_1", "description": "my test integration", "entity_type": "firewall_integration", "output_format": "plain_text" }'
+```
+
+:::warning
+The `username` and `password` will only be displayed at creation time, be sure to write them down.
+:::
+
+ - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Integrations/createIntegration)
+
+<details>
+  <summary>answer on success</summary>
+```json
+{
+  "id": "INTEGRATIONID12345",
+  "name": "test_integration_1",
+  "organization_id": "MY-ORG-ID-abcdef1234",
+  "description": "my test integration",
+  "created_at": "2024-06-07T14:00:31.645929Z",
+  "updated_at": "2024-06-07T14:00:31.645943Z",
+  "entity_type": "firewall_integration",
+  "output_format": "plain_text",
+  "last_pull": null,
+  "blocklists": [],
+  "endpoint": "https://admin.api.crowdsec.net/v1/integrations/INTEGRATIONID12345/content",
+  "stats": {
+    "count": 0
+  },
+  "credentials": {
+    "username": "<login>",
+    "password": "<password>"
+  }
+}
+
+```
+</details>
+
+### View integration content
+
+View integration content allows you to preview the list of IPs that are returned to your firewall (or whatever is going to consume the integration).
+
+```bash
+curl -i   -u '<login>:<password>' https://admin.api.crowdsec.net/v1/integrations/INTEGRATIONID12345/content
+```
