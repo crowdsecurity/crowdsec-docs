@@ -27,13 +27,11 @@ The statistics provided when you query the [`GET /blocklists/{blocklist_id}`](ht
 
 <!--
 
- - sharing lists
- - explain the subscriptions (ie. sub to org, you cannot unsub engine)
+ - explain process if you want to publish your public blocklists
+ - how to find your org ID
 
 
 -->
-
-
 
 ## Blocklist subscription mechanism
 
@@ -44,3 +42,13 @@ When [subscribing to blocklists](https://admin.api.crowdsec.net/v1/docs#/Blockli
  - A [Remediation Component](https://doc.crowdsec.net/u/bouncers/intro) (entity_type `remediation_component_integration`). This allows to use a Bouncer directly without having to deploy a Security Engine.
  - You can as well subscribe via a `tag` (entity_type `tag`). This means that future Security Engines <!-- or Integrations  @hes --> associated to this tag will **automatically** be subscribed to the blocklist.
  - You can also subscribe via an `org` directly. This means that future Security Engines <!-- and Integrations @hes --> enrolled in this org will **automatically** be subscribed to the blocklist.
+
+## Sharing blocklists with other organizations
+
+The `/blocklists/{blocklist_id}/shares` endpoint allows you to share a private blocklist with other organizations.
+
+When sharing your blocklist with another organization, decide the `permission` you give them on your blocklist:
+ - `read` : they can subscribe to the blocklist, download its content and view the blocklist(s) statistics.
+ - `write` : they can add and remove IPs
+
+
