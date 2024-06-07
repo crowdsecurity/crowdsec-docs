@@ -318,20 +318,14 @@ https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID
 
 ### Subscribe to a blocklist
 
-**Entity types (`entity_type`) that can subscribe to blocklists**
-
- - A [Security Engine](https://doc.crowdsec.net/docs/next/intro) (entity_type `engine`). [Remediation Components (Bouncers)](https://doc.crowdsec.net/u/bouncers/intro) connected to it will benefit of the blocklist
- - A [Firewall Integration](https://doc.crowdsec.net/u/console/blocklists/integrations/firewall) (entity_type `firewall_integration`). This allows to use blocklists directly on your existing Firewall Appliances (CISCO, F5, Palo Alto etc.) without having to install a Security Engine or Bouncer.
- - A [Remediation Component](https://doc.crowdsec.net/u/bouncers/intro) (entity_type `remediation_component_integration`). This allows to use a Bouncer directly without having to deploy a Security Engine.
- - You can as well subscribe via a `tag` (entity_type `tag`). This means that future Security Engines <!-- or Integrations  @hes --> associated to this tag will **automatically** be subscribed to the blocklist.
- - You can also subscribe via an `org` directly. This means that future Security Engines <!-- and Integrations @hes --> enrolled in this org will **automatically** be subscribed to the blocklist.
-
+You can see details about the [subscriber's logic here](/unversioned/service_api/blocklists.md#subscribing-to-blocklists).
 
 ```bash
 curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
 https://admin.api.crowdsec.net/v1//blocklists/1234MYBLOCKLISTID/subscribers \
 -d '{ "ids": ["SECENGINEID5678"], "entity_type": "engine", "remediation": "ban" }'
 ```
+ - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Blocklists/subscribeBlocklist)
 
 <details>
   <summary>answer on success</summary>
