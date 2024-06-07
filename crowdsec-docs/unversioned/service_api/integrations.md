@@ -20,4 +20,9 @@ For all the other providers, the `plain_text` format consists of one ip per line
 
 ## Dealing with blocklist size limits
 
-<!-- @hes : this one is for you, explain the pagination trick-->
+Some providers have technical limits on the number of IPs they can pull at once. That's why we recommand to monitor the number of IPS returned by the integration and use the pagination feature if needed. For this, you can use the page and page_size query parameters in the URL.
+
+https://admin.api.dev.crowdsec.net/v1/integrations/123/content?page=1&page_size=1500
+
+You can then use the page parameter to get the next page of IPs.
+
