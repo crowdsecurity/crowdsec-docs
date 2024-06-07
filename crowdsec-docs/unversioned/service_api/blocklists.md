@@ -16,6 +16,7 @@ When populating blocklists, two strategies are currently available:
 
 ## Statistics Explained
 
+<!-- @ese detailed stats -->
 
 The statistics provided when you query the [`GET /blocklists/{blocklist_id}`](https://admin.api.crowdsec.net/v1/docs#/Blocklists/getBlocklist) endpoint are the following:
  - `id`: 
