@@ -76,7 +76,7 @@ The `id` element of the response payload is going to be used as the future ident
   "from_cti_query": null,
   "since": null,
   "shared_with": [],
-  "organization_id": "02b7ea10-4591-4110-b8f2-3f1bf0fb6218",
+  "organization_id": "MY-ORG-ID-abcdef1234",
   "subscribers": []
 }
 
@@ -308,7 +308,7 @@ https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID
   "from_cti_query": null,
   "since": null,
   "shared_with": [],
-  "organization_id": "02b7ea10-4591-4110-b8f2-3f1bf0fb6218",
+  "organization_id": "MY-ORG-ID-abcdef1234",
   "subscribers": []
 }
 
