@@ -316,6 +316,13 @@ module.exports = {
         //     "id": "bouncers/contributing/contributing_bouncers"
         // },
     ],
+    integrationsSideBar: [
+        {
+            type: "doc",
+            id: "integrations/intro",
+            label: "Introduction",
+        }
+    ],
     troubleshootingSideBar: [
         {
             type: "doc",
