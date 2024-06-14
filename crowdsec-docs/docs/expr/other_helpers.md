@@ -50,7 +50,8 @@ Returns true if it's a valid IP (v4 or v6).
 
 ### `GetDecisionsCount(value string) int`
 
-Returns the number of existing decisions in database with the same value.
+Returns the number of existing decisions in the database with the same value.
+This can return expired decisions if they have not been flushed yet.
 
 > `GetDecisionsCount("192.168.1.1")`
 
@@ -58,15 +59,33 @@ Returns the number of existing decisions in database with the same value.
 
 ### `GetDecisionsSinceCount(value string, since string) int`
 
-Returns the number of existing decisions in database with the same value since duration string (valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".).
+Returns the number of existing decisions in the database with the same value since duration string (valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".).
+This can return expired decisions if they have not been flushed yet.
 
-> `GetDecisionsCount("192.168.1.1", "7h")`
+> `GetDecisionsSinceCount("192.168.1.1", "7h")`
 
-> `GetDecisionsCount(Alert.GetValue(), "30min")`
+> `GetDecisionsSinceCount(Alert.GetValue(), "30min")`
+
+### `GetActiveDecisionsCount(value string) int`
+
+Returns the number of active decisions in the database with the same value.
+
+> `GetActiveDecisionsCount(Alert.GetValue())`
+
+
+### `GetActiveDecisionsTimeLeft(value string) time.Duration`
+
+Returns the time left for the longest decision associated with the value.
+
+The returned value type is `time.Duration`, so you can use all the [time.Duration methods](https://pkg.go.dev/time#Duration).
+
+> `GetActiveDecisionsTimeLeft(Alert.GetValue())`
+
+> `GetActiveDecisionsTimeLeft(Alert.GetValue()).Hours() > 1"
 
 ### `KeyExists(key string, map map[string]interface{}) bool`
 
-Return true if the `key` exist in the map.
+Return true if the `key` exists in the map.
 
 ### `Get(arr []string, index int) string`
 
