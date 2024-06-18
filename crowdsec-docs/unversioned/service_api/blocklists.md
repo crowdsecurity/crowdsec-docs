@@ -18,14 +18,14 @@ When populating blocklists, two strategies are currently available:
 When [subscribing to blocklists](https://admin.api.crowdsec.net/v1/docs#/Blocklists/subscribeBlocklist), you can use various `entity_type` :
 
  - A [Security Engine](https://doc.crowdsec.net/docs/next/intro) (entity_type `engine`). [Remediation Components (Bouncers)](https://doc.crowdsec.net/u/bouncers/intro) connected to it will benefit of the blocklist
- - A [Firewall Integration](https://doc.crowdsec.net/u/console/blocklists/integrations/firewall) (entity_type `firewall_integration`). This allows to use blocklists directly on your existing Firewall Appliances (CISCO, F5, Palo Alto etc.) without having to install a Security Engine or Bouncer.
- - A [Remediation Component](https://doc.crowdsec.net/u/bouncers/intro) (entity_type `remediation_component_integration`). This allows to use a Bouncer directly without having to deploy a Security Engine.
+ - A [Firewall Integration](https://doc.crowdsec.net/u/console/blocklists/integrations/firewall) (entity_type `firewall_integration`). This allows to use blocklists directly on your existing Firewall Appliances (CISCO, F5, Palo Alto etc.) without having to install a Security Engine or "Bouncer".
+ - A [Remediation Component](https://doc.crowdsec.net/u/bouncers/intro) (entity_type `remediation_component_integration`). This allows to use a "Bouncer" directly without having to deploy a Security Engine.
  - You can as well subscribe via a `tag` (entity_type `tag`). This means that future Security Engines <!-- or Integrations  @hes --> associated to this tag will **automatically** be subscribed to the blocklist.
  - You can also subscribe via an `org` directly. This means that future Security Engines <!-- and Integrations @hes --> enrolled in this org will **automatically** be subscribed to the blocklist.
 
 ## Sharing private blocklists with other organizations
 
-The `/blocklists/{blocklist_id}/shares` endpoint allows you to share a private blocklist with other organizations.
+The [`/blocklists/{blocklist_id}/shares`](https://admin.api.crowdsec.net/v1/docs#/Blocklists/shareBlocklist) endpoint allows you to share a private blocklist with other organizations.
 
 When sharing your blocklist with another organization, decide the `permission` you give them on your blocklist:
  - `read` : they can subscribe to the blocklist, download its content and view the blocklist(s) statistics.

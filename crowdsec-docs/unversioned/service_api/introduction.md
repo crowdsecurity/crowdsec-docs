@@ -29,9 +29,11 @@ You can create and retrieve your API keys directly in your [console account](htt
 
 ## API Specification
 
-You can find a detailed description of the API in the swagger file:
+You can find a detailed description of the API in multiple formats here:
 
- - [Swagger](https://admin.api.crowdsec.net/v1/docs#/)
+ - [Swagger UI](https://admin.api.crowdsec.net/v1/docs#/)
+ - [Redoc](https://admin.api.dev.crowdsec.net/v1/redoc)
+ - [Openapi specs](https://admin.api.crowdsec.net/v1/openapi.json)
 
 
 

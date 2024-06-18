@@ -33,11 +33,15 @@ curl -X 'GET' 'https://admin.api.crowdsec.net/v1/blocklists' -H 'accept: applica
 
 The CrowdSec Service API reference is available at:
 
-* [https://admin.api.dev.crowdsec.net/v1/docs](https://admin.api.dev.crowdsec.net/v1/docs): The Swagger documentation for the CrowdSec Service API.
-* [https://admin.api.dev.crowdsec.net/v1/redoc](https://admin.api.dev.crowdsec.net/v1/redoc): The ReDoc documentation for the CrowdSec Service API.
+* [Swagger UI](https://admin.api.dev.crowdsec.net/v1/docs): The Swagger documentation for the CrowdSec Service API.
+* [Redoc](https://admin.api.dev.crowdsec.net/v1/redoc): The ReDoc documentation for the CrowdSec Service API.
 
 ## SDKs
 
 We provide SDKs for the CrowdSec Service API to make it easier to interact with the API in your preferred programming language:
 
-* [Python SDK](https://github.com/crowdsecurity/console-api-sdk-python): A Python SDK for the CrowdSec Service API.
+* [Python SDK](https://github.com/crowdsecurity/crowdsec-service-api-sdk-python): A Python SDK for the CrowdSec Service API.
+
+## Next Steps
+
+Now that you have an API key and know how to authenticate requests, you can start using the CrowdSec Service API to manage blocklists and integrations. Check out the API reference and SDKs to get started. You can also check out the [CrowdSec Service API Examples](

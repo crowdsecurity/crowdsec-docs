@@ -3,27 +3,62 @@ id: quickstart
 title: Quickstart
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 :::info
  - We're assuming your API key is set in the environment variable `$KEY`
 :::
 
 ## Blocklist(s) manipulation
 
-<!--
-
- - show how to download blocklists
-
--->
-
 ### Create a blocklist
 
 > Create a new private blocklist named `my_test_blocklist`
+
+<Tabs
+  defaultValue="curl"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
 
 ```bash
 curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
 https://admin.api.crowdsec.net/v1/blocklists \
 -d '{ "name":"my_test_blocklist", "description": "testing blocklists feature" }' 
 ```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Blocklists,
+    Server,
+    ApiKeyAuth,
+)
+auth = ApiKeyAuth(api_key=KEY)
+client = Blocklists(base_url=Server.production_server.value, auth=auth)
+request = BlocklistCreateRequest(
+        name='my_test_blocklist',
+        description='testing blocklists feature',
+)
+response = client.create_blocklist(
+    request=request,
+)
+print(response)
+```
+
+</TabItem>
+</Tabs>
 
  - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Blocklists/createBlocklist)
 
@@ -95,11 +130,51 @@ The `id` element of the response payload is going to be used as the future ident
 
 > Add IPs `1.2.3.4` and `5.6.7.8` to blocklist for the next 24h
 
+<Tabs
+  defaultValue="curl"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
 ```bash
 curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
 https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/ips \
 -d '{ "ips": ["1.2.3.4", "5.6.7.8"], "expiration": "'`date --date='tomorrow' '+%FT%T'`'"}'
 ```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+import datetime
+
+KEY = os.getenv('KEY')
+EXPIRATION = (datetime.datetime.now() + datetime.timedelta(days=1)).isoformat()
+
+from crowdsec_service_api import (
+    Blocklists,
+    Server,
+    ApiKeyAuth,
+)
+auth = ApiKeyAuth(api_key=KEY)
+client = Blocklists(base_url=Server.production_server.value, auth=auth)
+request = BlocklistAddIPsRequest(
+        ips=["1.2.3.4", "5.6.7.8"],
+        expiration=EXPIRATION,
+)
+response = client.add_ips_to_blocklist(
+    request=request,
+    blocklist_id='sample-blocklist-id',
+)
+print(response)
+```
+
+</TabItem>
+</Tabs>
 
  - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Blocklists/addIpsToBlocklist)
 
@@ -118,10 +193,43 @@ When querying stats about a blocklist, you will also get information about how t
 However, keep in mind that those statistics are computed upon list modification, and then refreshed every 6 hours.
 :::
 
+<Tabs
+  defaultValue="curl"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
 ```bash
 curl -i -H "x-api-key: ${KEY}"  -H "Content-Type: application/json" \
 https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID
 ```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Blocklists,
+    Server,
+    ApiKeyAuth,
+)
+auth = ApiKeyAuth(api_key=KEY)
+client = Blocklists(base_url=Server.production_server.value, auth=auth)
+response = client.get_blocklist(
+    blocklist_id='1234MYBLOCKLISTID',
+)
+print(response)
+```
+
+</TabItem>
+</Tabs>
 
  - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Blocklists/getBlocklist)
 
@@ -324,13 +432,53 @@ https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID
 
 ### Subscribe to a blocklist
 
-You can see details about the [subscriber's logic here](/unversioned/service_api/blocklists.md#subscribing-to-blocklists).
+You can see details about the [subscriber's logic here](/unversioned/service_api/blocklists.md#blocklist-subscription-mechanism).
+
+<Tabs
+  defaultValue="curl"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
 
 ```bash
 curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
 https://admin.api.crowdsec.net/v1//blocklists/1234MYBLOCKLISTID/subscribers \
 -d '{ "ids": ["SECENGINEID5678"], "entity_type": "engine", "remediation": "ban" }'
 ```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Blocklists,
+    Server,
+    ApiKeyAuth,
+)
+auth = ApiKeyAuth(api_key=KEY)
+client = Blocklists(base_url=Server.production_server.value, auth=auth)
+request = BlocklistSubscriptionRequest(
+        ids=['SECENGINEID5678'],
+        entity_type='engine',
+        remediation="ban",
+)
+response = client.subscribe_blocklist(
+    request=request,
+    blocklist_id='1234MYBLOCKLISTID',
+)
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
  - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Blocklists/subscribeBlocklist)
 
 <details>
@@ -343,13 +491,65 @@ https://admin.api.crowdsec.net/v1//blocklists/1234MYBLOCKLISTID/subscribers \
 
 ### Download blocklist content
 
+<Tabs
+  defaultValue="curl"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
 ```bash
 GET -H "x-api-key: ${KEY}" https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/download
 ```
 
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Blocklists,
+    Server,
+    ApiKeyAuth,
+)
+auth = ApiKeyAuth(api_key=KEY)
+client = Blocklists(base_url=Server.production_server.value, auth=auth)
+response = client.download_blocklist_content(
+    blocklist_id='1234MYBLOCKLISTID',
+    if_modified_since=None,
+    if_none_match=None,
+)
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>answer on success</summary>
+```text
+1.2.3.4
+5.6.7.8
+```
+</details>
+
 ## Integrations manipulation
 
 ### Creating integration
+
+<Tabs
+  defaultValue="curl"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
 
 ```bash
 curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
@@ -357,8 +557,38 @@ https://admin.api.crowdsec.net/v1/integrations \
 -d '{ "name": "test_integration_1", "description": "my test integration", "entity_type": "firewall_integration", "output_format": "plain_text" }'
 ```
 
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Integrations,
+    Server,
+    ApiKeyAuth,
+)
+auth = ApiKeyAuth(api_key=KEY)
+client = Integrations(base_url=Server.production_server.value, auth=auth)
+request = IntegrationCreateRequest(
+  name='test_integration_1',
+  description='my test integration',
+  entity_type='firewall_integration',
+  output_format='plain_text',
+)
+response = client.create_integration(
+    request=request,
+)
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
 :::warning
-The `username` and `password` will only be displayed at creation time, be sure to write them down.
+The `username` and `password` will only be displayed at creation time, be sure to write them down. If you lose them, you can always regenerate them with the [`update`](https://admin.api.crowdsec.net/v1/docs#/Integrations/updateIntegration) method.
 :::
 
  - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Integrations/createIntegration)

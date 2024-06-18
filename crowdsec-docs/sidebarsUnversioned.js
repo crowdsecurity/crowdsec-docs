@@ -216,7 +216,7 @@ module.exports = {
         },
         {
             type: "doc",
-            label: "Console API",
+            label: "Service API",
             id: "console/api/intro",
         },
     ],
