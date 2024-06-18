@@ -32,6 +32,7 @@ config_paths:
   index_path: /etc/crowdsec/hub/.index.json
   notification_dir: /etc/crowdsec/notifications/
   plugin_dir: /var/lib/crowdsec/plugins/
+  pattern_dir: /etc/crowdsec/patterns/
 crowdsec_service:
   enable: true
   acquisition_path: /etc/crowdsec/acquis.yaml
@@ -366,6 +367,7 @@ config_paths:
   index_path: "<path_to_hub_index_file>"
   notification_dir: "<path_to_notification_config_folder>"
   plugin_dir: "<path_to_notification_binaries_folder>"
+  pattern_dir: "<path_to_patterns_folder>"
 ```
 
 #### `config_dir`
@@ -404,6 +406,11 @@ Path to directory where the plugin binaries/scripts are located.
 Path to directory where configuration files for `notification` plugins are kept.
 
 Each notification plugin is expected to have its own configuration file.
+
+#### `pattern_dir`
+> string
+
+Path to directory where pattern files are located. Can be omitted from configuration and CrowdSec will use the `config_dir` + `patterns/` as default.
 
 
 ### `crowdsec_service`

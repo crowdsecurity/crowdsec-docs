@@ -267,3 +267,53 @@ Name of the cloudwatch metric. Default to the rule group name.
 ##### Environment variable: `BOUNCER_WAF_CONFIG_X_SAMPLE_REQUESTS`
 
 Whether or not to sample requests from the rule groups created by the bouncer.
+
+## IAM Permissions
+
+Because the remediation component needs to interact with AWS resources, it need the proper permissions.
+
+Here is the set of required permissions:
+```json
+{
+    "Statement": [
+        {
+            "Action": [
+                "wafv2:UpdateWebACL",
+                "wafv2:UpdateRuleGroup",
+                "wafv2:UpdateIPSet",
+                "wafv2:TagResource",
+                "wafv2:GetWebACL",
+                "wafv2:GetRuleGroup",
+                "wafv2:GetIPSet",
+                "wafv2:DeleteRuleGroup",
+                "wafv2:DeleteIPSet",
+                "wafv2:CreateRuleGroup",
+                "wafv2:CreateIPSet"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:wafv2:*:*:global/webacl/*/*",
+                "arn:aws:wafv2:*:*:global/rulegroup/*/*",
+                "arn:aws:wafv2:*:*:global/managedruleset/*/*",
+                "arn:aws:wafv2:*:*:*/ipset/*/*"
+            ],
+            "Sid": "WAF1"
+        },
+        {
+            "Action": [
+                "wafv2:ListWebACLs",
+                "wafv2:ListRuleGroups",
+                "wafv2:ListIPSets"
+            ],
+            "Effect": "Allow",
+            "Resource": "*",
+            "Sid": "WAF2"
+        }
+    ],
+    "Version": "2012-10-17"
+}
+```
+
+AWS requires the resource for `wafv2:List*` to be `*`.
+
+For the other permissions, we recommend to restrict the resources to only the WebACL the remediation component is configured to interact with and the rule groups/ipsets the remediation component will create. 

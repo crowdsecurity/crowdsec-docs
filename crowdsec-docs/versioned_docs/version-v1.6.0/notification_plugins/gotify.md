@@ -11,7 +11,7 @@ An example configuration:
 
 ```yaml
 type: http          # Don't change
-name: http_gotify # Must match the registered plugin in the profile
+name: http_default # Must match the registered plugin in the profile
 
 # One of "trace", "debug", "info", "warn", "error", "off"
 log_level: info
