@@ -13,7 +13,7 @@ export default function ConsolePromo({ ...props }) {
                     to={props.link}
                     className="tw-px-4 tw-w-full lg:tw-w-1/2 tw-py-2 tw-rounded-lg hover:tw-cursor-pointer tw-bg-secondary tw-text-black hover:tw-text-black tw-text-center"
                 >
-                    Get Started
+                    { props.text ?? "Get Started"}
                 </Link>
             </div>
             {!!props.image ? (

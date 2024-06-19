@@ -4,7 +4,9 @@ To begin the subscription process, click the _Subscribe_ button at the top of th
 
 ![](/img/console/blocklists/header_point_subscribe.png)
 
-## Subscribe security engines to a blocklist
+## Subscribe
+
+### Security Engines
   
 If your account already includes enrolled Security Engines, you'll find a section at the bottom that can also be used to start the subscription process.
 
@@ -50,7 +52,7 @@ When performing an action, a popup will prompt to validate the action performed.
 
 ![](/img/console/blocklists/remediation_popup.png)
 
-## Subscribe a firewall integration to a blocklist
+### Integrations
 
 If your organization already has integrations, a section at the bottom can also be used to start the subscription process.
 

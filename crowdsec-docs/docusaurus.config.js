@@ -4,7 +4,6 @@ const path = require("path")
 const {
     remediationSideBar,
     ctiApiSidebar,
-    consoleSidebar,
     guidesSideBar,
 } = require("./sidebarsUnversioned.js")
 const generateCurrentAndNextRedirects = (s) => [
@@ -98,13 +97,17 @@ module.exports = {
                     dropdownActiveClassDisabled: true,
                 },
                 {
-                    label: "CrowdSec",
+                    label: "Security Stack",
                     position: "left",
                     items: [
                         {
                             type: "doc",
                             docId: "intro",
                             label: "Security Engine",
+                        },
+                        {
+                            to: "/u/bouncers/intro",
+                            label: "Remediation Components",
                         },
                         {
                             type: "docsVersion",
@@ -123,18 +126,9 @@ module.exports = {
                     ],
                 },
                 {
+                    to: "/u/blocklists/getting_started",
                     position: "left",
-                    label: "Remediation",
-                    items: [
-                        {
-                            to: "/u/bouncers/intro",
-                            label: "Components",
-                        },
-                        {
-                            to: "/u/integrations/intro",
-                            label: "Integrations",
-                        },
-                    ],
+                    label: "Blocklists",
                 },
                 {
                     to: "/u/cti_api/getting_started",
@@ -275,7 +269,6 @@ module.exports = {
                     // Redirect current and next routes to unversioned to avoid 404 on articles and app.crowdsec.net
                     ...[
                         ...remediationSideBar,
-                        ...consoleSidebar,
                         ...ctiApiSidebar,
                         ...guidesSideBar,
                     ].flatMap(backportRedirect),

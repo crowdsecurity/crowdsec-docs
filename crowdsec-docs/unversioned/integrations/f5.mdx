@@ -1,0 +1,73 @@
+---
+id: f5
+title: F5
+---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+The CrowdSec F5 integration allows you to block malicious IPs in your F5 firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your F5 firewall.
+
+### Prerequisites
+
+Before you begin, please ensure your F5 device supports ingesting blocklists. If you are unsure, please refer to the F5 documentation or contact F5 support.
+
+### Steps
+
+We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
+
+Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
+
+Once the page has loaded, you can click the "Connect" button under the F5 logo.
+
+<ThemedImage
+    alt="F5 Integration Card"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_f5_card_light.png"),
+        dark: useBaseUrl("/img/console_integrations_f5_card_dark.png"),
+    }}
+/>
+
+Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
+
+<ThemedImage
+    alt="F5 Integration Creation Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_creation_light.png"),
+        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
+    }}
+/>
+
+Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your F5 Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
+
+<ThemedImage
+    alt="F5 Integration Credentials Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_f5_credentials_light.png"),
+        dark: useBaseUrl("/img/console_integrations_f5_credentials_dark.png"),
+    }}
+/>
+
+[F5 Documentation](https://techdocs.f5.com/kb/en-us/products/big-ip-afm/manuals/product/big-ip-network-firewall-policies-and-implementations-14-0-0/07.html)
+
+## Format example
+
+The CrowdSec blocklist will be in F5 format, with formatted data per line. Here is an example of how the blocklist will look:
+
+```
+192.168.38.187,32,BL,crowdsec-myf5Integration
+192.168.38.188,32,BL,crowdsec-myf5Integration
+```
+
+:::info
+The format is as follows: IP, Mask, WL/BL, Category
+:::
+
+## Contribute to this documentation
+
+Since CrowdSec is a community-driven project, we welcome contributions to this documentation. If you have any instructions or tips that you would like to share with the community, please feel free to open a pull request on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs)
+
+## Next Steps
+
+Now that you have integrated CrowdSec integration with your F5 Firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
+
