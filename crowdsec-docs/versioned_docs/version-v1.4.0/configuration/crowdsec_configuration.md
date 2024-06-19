@@ -12,6 +12,7 @@ CrowdSec has a main `yaml` configuration file, usually located in `/etc/crowdsec
 You can find the default configurations on our GitHub repository:
 
 [Linux default configuration](https://github.com/crowdsecurity/crowdsec/blob/releases/1.4.x/config/config.yaml)
+
 [Windows default configuration](https://github.com/crowdsecurity/crowdsec/blob/releases/1.4.x/config/config_win.yaml)
 
 ## Environment variables
