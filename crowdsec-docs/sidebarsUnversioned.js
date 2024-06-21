@@ -343,6 +343,7 @@ module.exports = {
         "service_api/quickstart",
         "service_api/blocklists",
         "service_api/integrations",
+        "service_api/sdks",
         "service_api/faq",
     ],
     guidesSideBar: [
