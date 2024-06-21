@@ -167,7 +167,7 @@ See [CAPI documentation](/docs/next/central_api/intro).
 
 ### How to know if my setup is working correctly ? Some of my logs are unparsed, is it normal ?
 
-Yes, security engine parsers only parse the logs that are relevant for scenarios.
+Yes, Security Engine parsers only parse the logs that are relevant for scenarios.
 
 Take a look at `cscli metrics` [and understand what do they mean](/docs/next/observability/cscli) to know if your setup is correct.
 

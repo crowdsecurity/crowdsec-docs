@@ -8,7 +8,7 @@ sidebar_position: 1
 
 > 🌟 Premium feature
 
-The CrowdSec security engine is now able to receive instructions from the console.
+The CrowdSec Security Engine is now able to receive instructions from the console.
 This is done via a polling API, it means that the CrowdSec Local API will use long polling to get orders from the CrowdSec Console.
 Currently, only 4 orders are available:
  - Adding decisions from the console

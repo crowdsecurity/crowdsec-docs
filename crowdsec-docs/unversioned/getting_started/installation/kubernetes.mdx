@@ -49,7 +49,7 @@ agent:
       value: "crowdsecurity/traefik"
 lapi:
   env:
-    # To enroll the security engine to the console
+    # To enroll the Security Engine to the console
     - name: ENROLL_KEY
       value: "<enroll-key>"
     - name: ENROLL_INSTANCE_NAME
@@ -60,7 +60,7 @@ lapi:
 
 If you want more information about the configuration, you can check the default [values.yaml](https://artifacthub.io/packages/helm/crowdsec/crowdsec#values)
 
-Then, you can install the security engine with the following command:
+Then, you can install the Security Engine with the following command:
 
 ```bash
 # Create a namespace for crowdsec

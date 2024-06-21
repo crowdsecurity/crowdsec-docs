@@ -1,6 +1,6 @@
 # Blocklist Subscription
 
-To begin the subscription process, click the _Subscribe_ button at the top of the blocklist details page. This will bring you to the bottom of the page, where you can subscribe to either security engines or integrations.
+To begin the subscription process, click the _Subscribe_ button at the top of the blocklist details page. This will bring you to the bottom of the page, where you can subscribe to either Security Engines or integrations.
 
 ![](/img/console/blocklists/header_point_subscribe.png)
 
@@ -17,7 +17,7 @@ When initiated, a popup displays all available subscription methods, including S
 ![](/img/console/blocklists/subscription_popup.png)
 
 :::warning
-Please note that only security engines version 1.4.2 or higher can be subscribed to a blocklist. If you use an older version, please update it to the latest version.
+Please note that only Security Engines version 1.4.2 or higher can be subscribed to a blocklist. If you use an older version, please update it to the latest version.
 :::
 
 ![](/img/console/blocklists/subscription_lapi_error.png)
@@ -42,7 +42,7 @@ To interact with the engines subscribed, two options are available:
 
 ![](/img/console/blocklists/se_section_action_list.png)
 
-* To perform quick actions, the buttons on the right side of the item can switch the remediation type or unsubscribe the security engine from the blocklist.
+* To perform quick actions, the buttons on the right side of the item can switch the remediation type or unsubscribe the Security Engine from the blocklist.
 
 ![](/img/console/blocklists/se_section_point_unsubscribe.png)
 
