@@ -307,6 +307,11 @@ module.exports = {
             id: "console/blocklists/subscription",
         },
         {
+            type: "doc",
+            label: "Security Engine",
+            id: "blocklists/security_engine",
+        },
+        {
             type: "category",
             link: {
                 type: "doc",

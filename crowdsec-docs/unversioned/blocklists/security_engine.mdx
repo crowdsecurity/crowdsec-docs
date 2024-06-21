@@ -1,0 +1,41 @@
+---
+id: security_engine
+title: Security Engine
+---
+
+import QuickStart from '@site/src/components/QuickStart'
+
+This page is used to reference other pages into a single guide. It is not meant to be used as a standalone page.
+
+### Pre-requisites
+
+:::info
+If you already have installed and enrolled your Security Engine you can skip this section.
+:::
+
+Before using blocklists with Security Engines, we recommend following these guides:
+
+Security Engine Quick Start:
+- [Linux](getting_started/installation/linux.mdx)
+- [FreeBSD](getting_started/installation/freebsd.mdx)
+- [Windows](getting_started/installation/windows.mdx)
+- [Docker](getting_started/installation/docker.mdx)
+- [Kubernetes](getting_started/installation/kubernetes.mdx)
+- [WHM](getting_started/installation/whm.mdx)
+
+Install Remediation Component:
+- [Unix Firewall](bouncers/firewall.mdx)
+- [Nginx](bouncer/nginx.mdx)
+- [HAProxy](bouncers/haproxy.mdx)
+- [Cloudflare Workers](bouncers/cloudflare-workers.mdx)
+
+The above is just a limited selection of the available Remediation Components. To see the complete list, including Third Party options, visit the [Hub](https://hub.crowdsec.net/remediation-components).
+
+After installing a Security Engine, ensure you enroll it to the [Console](https://app.crowdsec.net/). If you need assistance with this process, you can follow [this guide](getting_started/post_installation/console.mdx).
+
+### Blocklists
+
+Once you have completed the above steps, you can start using blocklists with your Security Engine. To do this, you will need to:
+
+- Find a blocklist on the [Catalog](console/blocklists/catalog.md) you wish to use.
+- Use the [Subscription Section](console/blocklists/subscription.md##security-engines) to tie the blocklist to your Security Engine.
