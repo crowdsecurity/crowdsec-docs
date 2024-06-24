@@ -125,45 +125,9 @@ module.exports = {
             ],
         },
         {
-            type: "category",
             label: "Blocklists",
-            link: {
-                type: "doc",
-                id: "console/blocklists/overview",
-            },
-            items: [
-                {
-                    type: "doc",
-                    label: "Catalog",
-                    id: "console/blocklists/catalog",
-                },
-                {
-                    type: "doc",
-                    label: "Details",
-                    id: "console/blocklists/details",
-                },
-                {
-                    type: "doc",
-                    label: "Subscription",
-                    id: "console/blocklists/subscription",
-                },
-                {
-                    type: "category",
-                    label: "Integrations",
-                    link: {
-                        type: "doc",
-                        id: "console/blocklists/integrations/firewall",
-                    },
-                    items: [
-                        {
-                            type: "doc",
-                            label: "Firewall integrations",
-                            id: "console/blocklists/integrations/firewall",
-                        }
-                     
-                    ],
-                }
-            ],
+            type: "doc",
+            id: "blocklists/intro"
         },
         {
             type: "category",
@@ -315,6 +279,54 @@ module.exports = {
         //     "label": "Contributing",
         //     "id": "bouncers/contributing/contributing_bouncers"
         // },
+    ],
+    blocklistsSideBar: [
+        {
+            type: "doc",
+            id: "blocklists/intro",
+            label: "Introduction",
+        },
+        {
+            type: "doc",
+            id: "blocklists/getting_started",
+            label: "Getting Started",
+        },
+        {
+            type: "doc",
+            label: "Catalog",
+            id: "console/blocklists/catalog",
+        },
+        {
+            type: "doc",
+            label: "Details",
+            id: "console/blocklists/details",
+        },
+        {
+            type: "doc",
+            label: "Subscription",
+            id: "console/blocklists/subscription",
+        },
+        {
+            type: "doc",
+            label: "Security Engine",
+            id: "blocklists/security_engine",
+        },
+        {
+            type: "category",
+            link: {
+                type: "doc",
+                id: "integrations/intro",
+            },
+            label: "Integrations",
+            items: [
+                "integrations/cisco",
+                "integrations/checkpoint",
+                "integrations/f5",
+                "integrations/fortinet",
+                "integrations/paloalto",
+                "integrations/genericvendor",
+            ]
+        }
     ],
     troubleshootingSideBar: [
         {

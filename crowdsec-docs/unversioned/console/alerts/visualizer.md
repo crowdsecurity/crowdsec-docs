@@ -15,7 +15,7 @@ The **Summary** view presents a synthesis of critical information that allows fo
 
 - **Most Active IPs**: Identify the IP addresses that generate the most alerts.
 - **Common Attack Scenarios**: Discover the most frequent types of attacks and the tactics used by attackers.
-- **Target Security Engines**: Specify the security engines that are the focus of the attacks.
+- **Target Security Engines**: Specify the Security Engines that are the focus of the attacks.
 - **Source AS**: Determine the Autonomous Systems responsible for originating the network traffic.
 
 ![Alerts Summary](/img/console/alerts/visualizer-summary.png)
