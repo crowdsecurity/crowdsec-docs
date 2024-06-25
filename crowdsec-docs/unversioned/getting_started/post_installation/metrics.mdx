@@ -31,15 +31,15 @@ whitelists     | Whitelist Metrics            | Tracks the number of events proc
 
 You can use aliases to view metrics related to specific areas (`cscli metrics show $alias`):
 
- - `engine` : security engine dedicated metrics (acquisition, parsers, scenarios, whitelists)
+ - `engine` : Security Engine dedicated metrics (acquisition, parsers, scenarios, whitelists)
  - `lapi` : local api dedicated metrics (bouncer api calls, local api decisions, machines decisions etc.)
- - `appsec` : application security engine - WAF specifics (requests processed, rules evaluated and triggered)
+ - `appsec` : application Security Engine - WAF specifics (requests processed, rules evaluated and triggered)
 
 You can as well combine various metrics sections (listed in `cscli metrics list`).
 
 ## Example : Security Engine Metrics
 
-Using `cscli metrics show engine` will display the metrics sections relative to the security engine itself : acquisition, parsers, scenarios, whitelists and stash.
+Using `cscli metrics show engine` will display the metrics sections relative to the Security Engine itself : acquisition, parsers, scenarios, whitelists and stash.
 
 ```bash title="Command Output"
 Acquisition Metrics:

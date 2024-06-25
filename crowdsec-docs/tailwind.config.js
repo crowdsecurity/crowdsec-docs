@@ -6,9 +6,9 @@ module.exports = {
     },
     darkMode: ["class", '[data-theme="dark"]'],
     content: [
-        "./src/**/*.{js,jsx,ts,tsx}",
-        "./unversioned/**/*.{js,jsx,ts,tsx}",
-        "./versioned_docs/**/*.{js,jsx,ts,tsx}",
+        "./src/**/*.{js,jsx,ts,tsx,mdx}",
+        "./unversioned/**/*.{js,jsx,ts,tsx,mdx}",
+        "./versioned_docs/**/*.{js,jsx,ts,tsx,mdx}",
     ],
     theme: {
         colors: {

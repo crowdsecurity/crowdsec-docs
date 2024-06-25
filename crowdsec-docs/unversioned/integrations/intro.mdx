@@ -1,0 +1,62 @@
+---
+id: intro
+title: Integrations
+sidebar_position: 1
+---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+# Integrations
+
+## Introduction
+
+Integrations are direct integration with services that can act upon a feed provided by CrowdSec. Depending on if you would like to remediate or simply log, you would need to integrate with the appropriate service.
+
+## Use Cases
+
+- **Remediation**: Block malicious IPs in your firewall, CDN, or other security solutions
+- **Logging**: Log malicious IPs in your SIEM, logging solution, or other security solutions
+
+## Getting Started
+
+Firstly you will need to create a Console account you can do so [here](https://app.crowdsec.net/signup).
+
+<a href="https://app.crowdsec.net/signup" target="_blank">
+    <ThemedImage
+        alt="CrowdSec Signup Screen"
+        sources={{
+            light: useBaseUrl("/img/console_login_light.png"),
+            dark: useBaseUrl("/img/console_login_dark.png"),
+        }}
+    />
+</a>
+
+Once you have created an account you can can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
+
+<a href="https://app.crowdsec.net/blocklists/integrations" target="_blank">
+    <ThemedImage
+        alt="CrowdSec Integrations Screen"
+        sources={{
+            light: useBaseUrl("/img/console_integrations_light.png"),
+            dark: useBaseUrl("/img/console_integrations_dark.png"),
+        }}
+    />
+</a>
+
+If you are on a mobile device you can use menu icon in top right hand corner to access the menu, within the menu you will see the Blocklist and tapping on it will reveal the Integrations sub menu.
+
+Once you are on the Integrations page you can select the integration you would like to use and follow the instructions provided.
+
+## Current Integrations
+
+- [Cisco](integrations/cisco.mdx)
+- [Checkpoint](integrations/checkpoint.mdx)
+- [F5](integrations/f5.mdx)
+- [Fortinet](integrations/fortinet.mdx)
+- [Palo Alto](integrations/paloalto.mdx)
+- [Generic vendor](integrations/genericvendor.mdx)
+
+:::info
+If you don't see an integration for your specific vendor, you can use the [Generic Vendor](integrations/genericvendor.mdx) integration in most cases.
+:::

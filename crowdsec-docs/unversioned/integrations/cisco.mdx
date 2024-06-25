@@ -1,0 +1,69 @@
+---
+id: cisco
+title: Cisco
+---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+The CrowdSec Cisco integration allows you to block malicious IPs in your Cisco firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Cisco firewall.
+
+### Prerequisites
+
+Before you begin, please ensure your Cisco device supports ingesting blocklists. If you are unsure, please refer to the Cisco documentation or contact Cisco support.
+
+### Steps
+
+We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
+
+Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
+
+Once the page has loaded, you can click the "Connect" button under the Cisco logo.
+
+<ThemedImage
+    alt="Cisco Integration Card"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_cisco_card_light.png"),
+        dark: useBaseUrl("/img/console_integrations_cisco_card_dark.png"),
+    }}
+/>
+
+Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration". Note the name should be unique per integration that is tied to your account.
+
+<ThemedImage
+    alt="Cisco Integration Creation Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_creation_light.png"),
+        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
+    }}
+/>
+Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your Cisco firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
+
+<ThemedImage
+    alt="Cisco Integration Credentials Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_cisco_credentials_light.png"),
+        dark: useBaseUrl("/img/console_integrations_cisco_credentials_dark.png"),
+    }}
+/>
+
+Depending on the make and model of your Cisco firewall, you will need to follow the appropriate steps to ingest the blocklist. We provide public documentation that we found on Cisco devices, however, we recommend you refer to the official Cisco documentation for your device.
+
+[Cisco Documentation](https://www.cisco.com/c/en/us/td/docs/security/secure-firewall/management-center/device-config/710/management-center-device-config-71/objects-object-mgmt.html#ID-2243-00000291)
+
+## Format example
+
+The CrowdSec blocklist will be in plain text format, with one IP address per line. Here is an example of how the blocklist will look:
+
+```
+192.168.38.187
+192.168.38.186
+```
+
+## Contribute to this documentation
+
+Since CrowdSec is a community-driven project, we welcome contributions to this documentation. If you have any instructions or tips that you would like to share with the community, please feel free to open a pull request on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs)
+
+## Next Steps
+
+Now that you have integrated CrowdSec integration with your Cisco firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
