@@ -4,7 +4,7 @@ title: Service API Presentation
 ---
 
 :::info
-This is an enterprise plan feature
+This is an [enterprise plan](https://www.crowdsec.net/pricing) feature
 :::
 
 ## What is the Service API ?
@@ -13,12 +13,12 @@ The **Service API**, **SAPI** for short, provides access to selected **CrowdSec 
 New SaaS features will usually appear on **SAPI** first before getting their UI counterpart.
 The current capabilities of this API are:
 
--  [**Blocklist** creation & management](/u/service_api/blocklists.md)
+-  [**Blocklist** creation & management](/u/service_api/blocklists)
    -  Allowing you to create private blocklists and share them 
    -  As well as subscribing to any of the blocklists available to your organization
--  [**Integrations** endpoints creation & management](/u/service_api/integrations.md)
+-  [**Integrations** endpoints creation & management](/u/service_api/integrations)
    -  An Essential part of the **Blocklist as a Service** feature.
-   -  Manage endpoints for your **Firewalls** or [**Remediation Components**](/u/bouncers/intro.md) to connect directly to.
+   -  Manage endpoints for your [**Firewalls**](/u/integrations/intro) or [**Remediation Components**](/u/bouncers/intro) to connect directly to.
 
 ## Getting your API keys
 
