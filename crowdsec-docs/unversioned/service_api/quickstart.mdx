@@ -45,6 +45,8 @@ from crowdsec_service_api import (
     Server,
     ApiKeyAuth,
 )
+from crowdsec_service_api.models import BlocklistCreateRequest
+
 auth = ApiKeyAuth(api_key=KEY)
 client = Blocklists(base_url=Server.production_server.value, auth=auth)
 request = BlocklistCreateRequest(
@@ -160,6 +162,8 @@ from crowdsec_service_api import (
     Server,
     ApiKeyAuth,
 )
+from crowdsec_service_api.models import BlocklistAddIPsRequest
+
 auth = ApiKeyAuth(api_key=KEY)
 client = Blocklists(base_url=Server.production_server.value, auth=auth)
 request = BlocklistAddIPsRequest(
@@ -462,6 +466,8 @@ from crowdsec_service_api import (
     Server,
     ApiKeyAuth,
 )
+from crowdsec_service_api.models import BlocklistSubscriptionRequest
+
 auth = ApiKeyAuth(api_key=KEY)
 client = Blocklists(base_url=Server.production_server.value, auth=auth)
 request = BlocklistSubscriptionRequest(
@@ -570,6 +576,8 @@ from crowdsec_service_api import (
     Server,
     ApiKeyAuth,
 )
+from crowdsec_service_api.models import IntegrationCreateRequest
+
 auth = ApiKeyAuth(api_key=KEY)
 client = Integrations(base_url=Server.production_server.value, auth=auth)
 request = IntegrationCreateRequest(
