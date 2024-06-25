@@ -1,12 +1,11 @@
 const { themes } = require("prism-react-renderer")
 
-const path = require("path")
 const {
     remediationSideBar,
     ctiApiSidebar,
-    consoleSidebar,
     guidesSideBar,
 } = require("./sidebarsUnversioned.js")
+
 const generateCurrentAndNextRedirects = (s) => [
     {
         from: `/docs/${s}`,
@@ -43,6 +42,7 @@ const backportRedirect = (s) => {
     }
     return arr
 }
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
     title: "CrowdSec",
@@ -64,7 +64,7 @@ module.exports = {
     },
     stylesheets: [
         {
-          href: "https://fonts.googleapis.com/icon?family=Material+Icons",
+            href: "https://fonts.googleapis.com/icon?family=Material+Icons",
         },
     ],
     themeConfig: {
@@ -133,16 +133,16 @@ module.exports = {
                     label: "Blocklists",
                 },
                 {
-                    label: 'API(s)',
-                    position: 'left',
+                    label: "API(s)",
+                    position: "left",
                     items: [
                         {
-                            label: 'CTI API',
-                            to: '/u/cti_api/getting_started',
+                            label: "CTI API",
+                            to: "/u/cti_api/getting_started",
                         },
                         {
-                            label: 'Service API',
-                            to: '/u/service_api/intro',
+                            label: "Service API",
+                            to: "/u/service_api/intro",
                         },
                     ],
                 },
