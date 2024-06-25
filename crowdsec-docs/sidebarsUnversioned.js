@@ -178,6 +178,11 @@ module.exports = {
             },
             items: ["console/decisions/decisions_management"],
         },
+        {
+            type: "doc",
+            label: "Service API",
+            id: "console/api/intro",
+        },
     ],
     remediationSideBar: [
         {
@@ -344,6 +349,14 @@ module.exports = {
             id: "troubleshooting/remediation_components",
             label: "Remediation Components",
         },
+    ],
+    serviceApiSideBar: [
+        "service_api/intro",
+        "service_api/quickstart",
+        "service_api/blocklists",
+        "service_api/integrations",
+        "service_api/sdks",
+        "service_api/faq",
     ],
     guidesSideBar: [
         "user_guides/intro",

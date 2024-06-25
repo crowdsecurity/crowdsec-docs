@@ -1,11 +1,11 @@
 const { themes } = require("prism-react-renderer")
 
-const path = require("path")
 const {
     remediationSideBar,
     ctiApiSidebar,
     guidesSideBar,
 } = require("./sidebarsUnversioned.js")
+
 const generateCurrentAndNextRedirects = (s) => [
     {
         from: `/docs/${s}`,
@@ -16,6 +16,7 @@ const generateCurrentAndNextRedirects = (s) => [
         to: `/u/${s}`,
     },
 ]
+
 const backportRedirect = (s) => {
     const arr = []
     if (typeof s !== "string") {
@@ -41,6 +42,7 @@ const backportRedirect = (s) => {
     }
     return arr
 }
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
     title: "CrowdSec",
@@ -131,9 +133,18 @@ module.exports = {
                     label: "Blocklists",
                 },
                 {
-                    to: "/u/cti_api/getting_started",
+                    label: "API(s)",
                     position: "left",
-                    label: "CTI API",
+                    items: [
+                        {
+                            label: "CTI API",
+                            to: "/u/cti_api/getting_started",
+                        },
+                        {
+                            label: "Service API",
+                            to: "/u/service_api/intro",
+                        },
+                    ],
                 },
                 {
                     to: "/u/console/intro",
