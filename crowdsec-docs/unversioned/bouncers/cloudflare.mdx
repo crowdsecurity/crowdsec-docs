@@ -24,17 +24,17 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-A bouncer that syncs the decisions made by CrowdSec with CloudFlare's firewall. Manages multi user, multi account, multi zone setup. Supports IP, Country and AS scoped decisions.
+A remediation that syncs the decisions made by CrowdSec with CloudFlare's firewall. Manages multi user, multi account, multi zone setup. Supports IP, Country and AS scoped decisions.
 
 :::warning
-Currently use of this bouncer is discouraged if you are on free plan with Cloudflare due to rate limitations. We are working to resolve this with Cloudflare support.
+Currently use of this remediation is discouraged if you are on free plan with Cloudflare due to rate limitations. We are working to resolve this with Cloudflare support.
 
 If you are on a premium plan with Cloudflare contact thier support to ask about increasing your rate limit.
 :::
 
 ## Installation
 
-### Using packages
+### Repository
 
 Packages for crowdsec-cloudflare-bouncer [are available on our repositories](/docs/next/getting_started/install_crowdsec#intall-our-repositories). You need to pick the package accord to your firewall system :
 
@@ -79,13 +79,13 @@ Please configure your server to emit real IPs rather than cloudflare IPs in logs
 
 :::info
 
-If your bouncer is not installed on the same machine than LAPI, don't forget to set the `crowdsec_lapi_url` and `crowdsec_lapi_key` in the configuration file `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
+If your remediation is not installed on the same machine than LAPI, don't forget to set the `crowdsec_lapi_url` and `crowdsec_lapi_key` in the configuration file `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
 
 :::
 
 :::note
 
-You need to run `sudo crowdsec-cloudflare-bouncer -d` to cleanup exisiting cloudflare components created by bouncer before editing the config files.
+You need to run `sudo crowdsec-cloudflare-bouncer -d` to cleanup exisiting cloudflare components created by remediation before editing the config files.
 
 :::
 
@@ -96,9 +96,9 @@ You can run `sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE
 :::
 
 
-## Manual Installation
+### Manual
 
-### Assisted
+#### Assisted
 
 Download the [latest release](https://github.com/crowdsecurity/cs-cloudflare-bouncer/releases).
 
@@ -111,7 +111,7 @@ sudo crowdsec-cloudflare-bouncer -s # this sets up IP lists and firewall rules a
 sudo systemctl start crowdsec-cloudflare-bouncer # the bouncer now syncs the crowdsec decisions with cloudflare components.
 ```
 
-### From source
+#### From source
 
 ```bash
 make release
@@ -121,26 +121,32 @@ sudo ./install.sh
 Rest of the steps are same as of the above method.
 
 
-## Using Docker 
+## Container
 
 Make sure you have docker or podman installed. In this guide we will use docker, but podman would work as a drop in replacement too.
 
-### Initial Setup
+### Setup
 
 ```bash
 docker run crowdsecurity/cloudflare-bouncer \
  -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> > cfg.yaml # auto-generate cloudflare config for provided space separated tokens 
-vi cfg.yaml # review config and set `crowdsec_lapi_key`
+```
+
+You can then review the contents of the file `cfg.yaml` and make any necessary changes.
+
+```
+vim cfg.yaml # review config and set `crowdsec_lapi_key`
 ```
 
 The `crowdsec_lapi_key` can be obtained by running the following:
+
 ```bash
 sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for human friendly output.
 ```
 
 The `crowdsec_lapi_url` must be accessible from the container.
 
-### Run the bouncer
+### Runtime
 
 ```bash
   docker run \
@@ -197,7 +203,7 @@ prometheus:
 
 ## Making changes to configuration
 
-The bouncer creates Cloudflare infra (IP lists, rules etc) according to your config file. 
+The remediation creates Cloudflare infra (IP lists, rules etc) according to your config file. 
 
 Before changing the config, always run the following command to clear old infra:
 
@@ -211,7 +217,7 @@ During v0.0.X there was no `managed_challenge` action, instead `challenge` actio
 
 This section assumes you used the default config (generated via `crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>` )
 
-After upgrading the bouncer from v0.0.X to v0.1.Y , run the following commands to migrate to `managed_challenge`.
+After upgrading the remediation from v0.0.X to v0.1.Y , run the following commands to migrate to `managed_challenge`.
 
 ```bash
 sudo crowdsec-cloudflare-bouncer -d
@@ -227,7 +233,7 @@ sudo systemctl restart crowdsec-cloudflare-bouncer
 
 For obtaining the `token`:
 1. Sign in as a user who has access to the desired account.
-2. Go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. The bouncer requires the follwing permissions to function.
+2. Go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. The remediation requires the follwing permissions to function.
 ![image](https://raw.githubusercontent.com/crowdsecurity/cs-cloudflare-bouncer/main/docs/assets/token_permissions.png)
 
 To automatically generate config for cloudflare check the helper section below.
@@ -239,7 +245,7 @@ If the zone is subscribed to a paid Cloudflare plan then it can be configured to
 
 ## Helpers
 
-The bouncer's binary has built in helper scripts to do various operations.
+The remediation binary has built in helper scripts to do various operations.
 
 ### Auto config generator
 
@@ -248,8 +254,7 @@ Generates bouncer config by discovering all the accounts and the zones associate
 Example Usage:
 
 ```bash
-sudo crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>...  -o cfg.yaml
-cat cfg.yaml  > /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml
+sudo crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>... -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml
 ```
 
 :::note
@@ -257,8 +262,9 @@ This script only generates cloudflare related config. By default it refers to th
 :::
 
 Using custom config:
+
 ```bash
-sudo crowdsec-cloudflare-bouncer -c ./cfg.yaml -g <TOKEN_1>,<TOKEN_2>... 
+sudo crowdsec-cloudflare-bouncer -c /path/to/config/file -g <TOKEN_1>,<TOKEN_2>... 
 ```
 
 ### Cloudflare Setup
@@ -281,76 +287,96 @@ sudo crowdsec-cloudflare-bouncer -d
 
 ## How it works
 
-The service polls the CrowdSec Local API for new decisions. It then makes API calls to Cloudflare
-to update IP lists and firewall rules depending upon the decision.
+The service polls the CrowdSec Local API for new / deleted decisions. It then makes API calls to Cloudflare to update IP lists and firewall rules depending upon the decision.
 
 ## Configuration Reference
 
 ### `crowdsec_lapi_url`
+> string
 
-The URL of CrowdSec LAPI. It should be accessible from the bouncer.
+The URL of CrowdSec LAPI. It should be accessible from the remediation.
 
 ### `crowdsec_lapi_key`
+> string
 
-It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
-```bash
+API key to authenticate with the LAPI.
 
-sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for human friendly output.
+### `cert_path`
+> string
 
-```
+Path to the certificate file used to authenticate with the LAPI.
+
+### `key_path`
+> string
+
+Path to the key file used to authenticate with the LAPI.
+
+### `ca_path_file`
+> string
+
+Path to the CA file used to trust the LAPI certificate.
 
 ### `crowdsec_update_frequency`
+> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
-The bouncer will poll the CrowdSec every `update_frequency` interval.
+The remediation will poll the CrowdSec every `update_frequency` interval.
 
 ### `include_scenarios_containing`
+> [ ]string
 
 Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
 
 ### `exclude_scenarios_containing`
+> [ ]string
 
 Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"]
 
-
 ### `only_include_decisions_from`
+> [ ]string
 
 Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
 
 ### `cloudflare_config`
+> [CloudflareConfig](https://github.com/crowdsecurity/cs-cloudflare-bouncer/blob/20c902ee1e95fe13135dd493d7e96840bafc931b/pkg/cfg/config.go#L34-L37)
 
 This block contains cloudflare specific config.
 
 #### `update_frequency`
+> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
 The frequency at which to update the cloudflare resources.  eg values include `5s` or `1m` etc.
 
 #### `accounts`
+> [ ][AccountConfig](https://github.com/crowdsecurity/cs-cloudflare-bouncer/blob/20c902ee1e95fe13135dd493d7e96840bafc931b/pkg/cfg/config.go#L26-L33)
 
 List of account of configs
 
 ##### `id`
+> string
 
 id of cloudflare account
 
 ##### `token`
+> string
 
 cloudflare token to use to access the account.
 
 ##### `ip_list_prefix`
+> string
 
 The prefix to use for naming the IP lists created by the bouncer. The name of IP list will be of the form `ip_list_prefix`+`action`.
 
 ##### `total_ip_list_capacity`
+> int
 
-Limit the number of items in IP lists by this number. This is required for avoiding limit of 10k items for lists.
+Limit the number of items in IP lists. This is required for avoiding limit of 10k items for lists.
 
 ##### `default_action`
+> `managed_challenge` | `block` | `js_challenge` | `challenge` | `none`
 
 The action to be applied for a decision, if the decision's action is not supported by a zone. 
 
 `default_action` must be supported by all zones.
-
-Valid choice includes either of  'managed_challenge', 'block', 'js_challenge', 'challenge' or 'none' to ignore unsupported decision.
 
 **Example:**
 
@@ -380,14 +406,17 @@ Following table is mapping of decision type to it's destination IP list.
 :::
 
 #### `zones`
+> [ ][ZoneConfig](https://github.com/crowdsecurity/cs-cloudflare-bouncer/blob/20c902ee1e95fe13135dd493d7e96840bafc931b/pkg/cfg/config.go#L21-L25)
 
-This block contains config for each zone to be managed by the bouncer. The zone must be accessible from the parent account.
+This block contains config for each zone to be managed by the remediation. The zone must be accessible from the parent account.
 
 ##### `zone_id`
+> string
 
 The id of the zone.
 
 ##### `actions`
+> [ ]string
 
 List of actions to be supported by this zone. If the zone is not subscribed to premium plan, then only a single action can be given.
 
@@ -418,29 +447,52 @@ Following table is mapping of decision type to it's destination IP list, which a
 
 
 
-### `daemon` 
+### `daemon`
+> boolean
 
-Boolean (true|false). Set to true if the bouncer is being run as background daemon service.
+:::warning
+This field has now been deprecated as is ignored within the remediation
+:::
+
+Run the remediation as a daemon.
 
 ### `log_mode`
+> `stdout` | `file`
 
-Valid values are `stdout` or `file`
+Where the log contents are written (With `file` it will be written to `log_dir` with the name `crowdsec-cloudflare-bouncer.log`)
 
 ### `log_dir`
+> string
 
 Relevant if `log_mode` is `file`. This determines where to create log file.
 
 ### `log_level`
+> `trace` | `debug` | `info` | `error`
 
-Valid choices are either debug, info, error
+Log level for the remediation.
 
-### `log_max_size`, `log_max_age`, `log_max_backups`, `compress_logs`
+### `compress_logs`
+> `true` | `false`
 
-Log rotation releated config.
+Compress log files on rotation
 
+### `log_max_size`
+> int (in MB)
+
+Max size of log files before rotation
+
+### `log_max_backups`
+> int
+
+How many backup log files to keep before deletion (can happen before `log_max_age` is reached)
+
+### `log_max_age`
+> int (in days)
+
+Max age of backup files before deletion (can happen before `log_max_backups` is reached)
 
 ## Troubleshooting
  - Metrics can be seen at http://localhost:2112/metrics
- - Logs are in `/var/log/crowdsec-cloudflare-bouncer.log`
+ - Logs are in `/var/log/crowdsec-cloudflare-bouncer.log` (Default unless changed in config)
  - You can view/interact directly in the ban list either with `cscli`
  - Service can be started/stopped with `systemctl start/stop crowdsec-cloudflare-bouncer`

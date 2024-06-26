@@ -23,7 +23,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-CrowdSec bouncer written in golang for firewalls.
+CrowdSec remediation written in golang for firewalls.
 
 crowdsec-firewall-bouncer will fetch new and old decisions from a CrowdSec API and add them to a blocklist used by supported firewalls.
 
@@ -108,20 +108,17 @@ sudo pkg install crowdsec-firewall-bouncer
 
 See as well [Manual Installation documentation below](#manual-installation)
 
-
-
 ## Configuration
 
 There are two primary ways to use the firewall bouncer:
  - **managed** (default): cs-firewall-bouncer will create ipset/nft sets, insert the associated firewall rules and manage the set contents
  - **set only**: you already have a (complex) firewall setup, cs-firewall-bouncer will only manage the _content_ of existing specified sets
 
-
 ### Managed mode : Iptables/ipset or Nftables
 
 __This is the default behaviour__
 
-In "managed" mode (mode `nftables` or `iptables`), bouncer creates all the needed elements (rules, sets) and insert the appropriate rules in nftables or iptables.
+In "managed" mode (mode `nftables` or `iptables`), remediation creates all the needed elements (rules, sets) and insert the appropriate rules in nftables or iptables.
 
 :::warning
 
@@ -131,18 +128,16 @@ IPSet (when using `iptables` mode) does not support a timeout greater than 21474
 
 ### Set Only : Iptables/Ipset table
 
-In iptable set-only mode (mode `ipset`), the bouncer only handles the **contents** of sets that are specified by `blacklists_ipv4` and `blacklists_ipv6`.
-These sets must be created before starting the bouncer, and it is the user's responsibility to create the associated iptables rules.
+In iptables set-only mode (mode `ipset`), the remediation only handles the **contents** of sets that are specified by `blacklists_ipv4` and `blacklists_ipv6`.
+These sets must be created before starting the remediation, and it is the user's responsibility to create the associated iptables rules.
 
 :::warning
-
 IPSet does not support a timeout greater than 2147483 seconds (about 596 hours). If crowdsec is configured to take decisions longer than that, the bouncer will cap the duration to 2147482 seconds.
-
 :::
 
 ### Set Only : nftables
 
-In nftables set only mode (mode `nftables` with `nftables.{ipv4,ipv6}.set-only` set to `true`), the bouncer only manages the **contents** of the sets.
+In nftables set only mode (mode `nftables` with `nftables.{ipv4,ipv6}.set-only` set to `true`), the remediation only manages the **contents** of the sets.
 It's the user's responsibility to create the associated chains and sets :
 
 ```yaml title="/tmp/bouncer.nft"
@@ -171,45 +166,158 @@ table ip6 crowdsec6 {
 ```
 
 
-## Configuration directives
+## Configuration Reference
 
+You can find a default configuration hosted on the [Github Repository](https://github.com/crowdsecurity/cs-firewall-bouncer/blob/main/config/crowdsec-firewall-bouncer.yaml) this is provided with the installation package.
 
- - `mode` : can be set to `iptables`, `nftables` , `ipset` or `pf`
- - `pid_dir` : directory to drop pid file
- - `update_frequency` controls how often the bouncer is going to query the local API
- - `daemonize` : for systemd unit
- - `log_mode` : can be `file` or `stdout`
- - `log_dir` : log directory
- - `log_level` : can be `trace`, `debug`, `info`, or `error`
- - `log_compression` : compress logs on rotation, `true` or `false`
- - `log_max_size` : maximum file size before rotation
- - `log_max_backups` : how many backup log files to keep
- - `log_max_age` : oldest backup log file before deletion
- - `api_url` and `api_key` control local API parameters.
- - `insecure_skip_verify` : allow self-signed certificates for LAPI, `false` or `true`
- - `disable_ipv6` : disable ipv6 support, defaults to `false`
- - `deny_action` : firewall action to apply, defaults to `DROP`, but can be `REJECT`
- - `deny_log` : if set to `true`, enables logging of dropped packets (ie. `-j LOG`)
- - `deny_log_prefix` : if logging is true, this sets the log prefix, defaults to "crowdsec: "
+### `pid_dir`
+> Depreacted
 
-### Iptables/Ipset specific directives
+Directory to store the pid file
 
+### `daemonize`
+> Deprecated
 
- - `iptables_chains` : specify a list of chains to insert rules (only relevant in `iptables` mode) :
- - `blacklists_ipv4` and `blacklists_ipv6` : names of ipv4 and ipv6 sets
- - `ipset_size`: maximum number of entries in the ipset (default: 131072)
- - `ipset_type`: type to use for the set  (default: `nethash`)
+Run the bouncer in the background
+
+### `mode`
+> `iptables` | `nftables` | `ipset` | `pf`
+
+Firewall mode to use
+
+### `update_frequency`
+> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+
+Frequency to contact the API for new/deleted decisions
+
+### `log_mode`
+> `file` | `stdout`
+
+Where the log contents are written (With `file` it will be written to `log_dir` with the name `crowdsec-firewall-bouncer.log`)
+
+### `log_dir`
+> string
+
+Log directory path, that will contain the log file
+
+### `log_level`
+> `trace` | `debug` | `info` | `warn` | `error`
+
+Log level
+
+### `log_compression`
+> `true` | `false`
+
+Compress log files on rotation
+
+### `log_max_size`
+> int (in MB)
+
+Max size of log files before rotation
+
+### `log_max_backups`
+> int
+
+How many backup log files to keep before deletion (can happen before `log_max_age` is reached)
+
+### `log_max_age`
+> int (in days)
+
+Max age of backup files before deletion (can happen before `log_max_backups` is reached)
+
+### `api_url`
+> string
+
+URL of the local API EG: `http://127.0.0.1:8080`
+
+### `api_key`
+> string
+
+API key to authenticate with the local API
+
+### `cert_path`
+> string
+
+Path to the client certificate for authentication
+
+### `key_path`
+> string
+
+Path to the certificate key used with `cert_path`
+
+### `ca_cert_path`
+> string
+
+Path to the CA certificate to trust usually used in conjunction with `cert_path` and `key_path`
+
+### `insecure_skip_verify`
+> `true` | `false`
+
+Skip verification of the API certificate, typical for self-signed certificates
+
+### `disable_ipv6`
+> `true` | `false`
+
+disable interacting with ipv6 chains/sets, defaults to `false`
+
+### `deny_action`
+> `DROP` | `REJECT`
+
+firewall action to apply, defaults to `DROP`
+
+### `deny_log`
+> `true` | `false`
+
+if set to `true`, enables logging of dropped packets (ie. `-j LOG`)
+
+### `deny_log_prefix`
+> string
+
+if logging is true, this sets the log prefix, defaults to "crowdsec: "
+
+## Iptables/Ipset specific directives
+
+### `iptables_chains`
+> []string
+
+specify a list of chains to insert rules
 
 ```yaml
 iptables_chains:
   - INPUT
-#  - FORWARD
-#  - DOCKER-USER
+  #- FORWARD
+  #- DOCKER-USER
 ```
 
-The default for ipset_size has been raised in v0.0.28 (from 65536) to allow for larger blocklists.
+:::info
+If you are using a dockerized application and allow remote connections to the exposed port, you need to add the `DOCKER-USER` chain to the list of chains.
+:::
 
-### Nftables specific directives
+### `blacklists_ipv4`
+> string
+
+name of the ipv4 set
+
+### `blacklists_ipv6`
+
+name of the ipv6 set
+
+###  `ipset_size`
+> int
+
+maximum number of entries in the ipset (default: 131072)
+
+### `ipset_type`
+> string
+
+type to use for the set  (default: `nethash`)
+
+
+:::info
+The default value for [`ipset_size`](#ipset_size) has been raised in v0.0.28 (from 65536) to allow for larger blocklists.
+:::
+
+## Nftables specific directives
 
 Nftables mode has its own `nftables` section, with sub-section of ipv4 and ipv6 :
 
@@ -228,7 +336,25 @@ nftables:
     chain: crowdsec6-chain
 ```
 
-if `set-only` is set to true, the bouncer will only manage the set contents.
+### `enabled`
+> `true` | `false`
+
+Enable or disable ipv4 or ipv6
+
+### `set-only`
+> `true` | `false`
+
+If `set-only` is set to true, the remediation will only manage the set contents.
+
+### `table`
+> string
+
+Name of the nftables table
+
+### `chain`
+> string
+
+Name of the nftables chain
 
 ## Manual installation
 
@@ -275,7 +401,7 @@ If it was not the case, the default configuration is in `/etc/crowdsec/bouncers/
 You can then start the service:
 
 ```bash
-sudo systemctl start crowdsec-firewall-bouncer
+sudo systemctl enable --now crowdsec-firewall-bouncer
 ```
 
 If you need to make changes to the configuration file and be sure they will never be modified or reverted
