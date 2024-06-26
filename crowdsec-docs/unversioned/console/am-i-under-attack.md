@@ -16,7 +16,7 @@ If the situation occurs, multiple communication channels will be used to reach o
 
   
 
-These inputs will contain a link to the alert page of the Console to get a precise overview giving the possibility to assess the situation and quickly react accordingly.
+These inputs will contain a link to the alert page of the Console, with the predefined filters to quickly get a precise overview. This sanitized overview gives the possibility to assess the situation and react accordingly.
 
   
 
