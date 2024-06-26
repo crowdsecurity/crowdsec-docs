@@ -76,4 +76,6 @@ The allowlist expression checks that the triggered scenario is `crowdsecurity/ht
 
 It then checks that all the `http_path` of events that lead to trigger the scenario start with `/mywebapp`.
 
+:warning: Since the `capacity` of the `crowdsecurity/http-crawl-non_statics` scenario is set to 40 and its `cache_size` to 5, the allowlist can only do this check on the last 5 events.
+
 If it matches both conditions, the overflow is allowed.
