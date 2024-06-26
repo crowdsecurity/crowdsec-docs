@@ -19,7 +19,7 @@ By default there would be a http config at `/etc/crowdsec/notifications/http.yam
 
 ### Base configuration
 
-This configuration uses the base [Alert] to drive the information if you wish to see additional details then see [Alert Context Configuration](#alert-context-configuration) for more information.
+This configuration uses the base [Alert] to drive the information if you wish to see additional details then see [Alert Context Configuration](#Additional-alert-context) for more information.
 
 ```yaml
 # Don't change this
