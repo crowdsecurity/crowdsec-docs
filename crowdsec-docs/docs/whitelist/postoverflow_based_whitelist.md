@@ -57,7 +57,7 @@ time="07-07-2020 17:11:09" level=info msg="Processing Overflow with no decisions
 
 This time, we can see that logs are being produced when the event is discarded.
 
-## Whitelist event for a specific scenario
+## Allow event for a specific scenario
 
 It is possible to allow an event for a specific scenario.
 
