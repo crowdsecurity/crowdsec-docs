@@ -183,6 +183,11 @@ module.exports = {
             label: "Service API",
             id: "console/api/intro",
         },
+        {
+            label: "Am I Under Attack?",
+            type: "doc",
+            id: "console/am-i-under-attack"
+        },
     ],
     remediationSideBar: [
         {
