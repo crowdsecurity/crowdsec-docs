@@ -57,7 +57,7 @@ agent:
 # -- To add custom acquisitions using available datasources (https://docs.crowdsec.net/docs/next/data_sources/intro)
   additionalAcquisition:
     - source: file
-      filesnames:
+      filenames:
         - '/path/to/your/file.log' ## Single file
         - '/path/to/your/files*' ## Wildcard support
       labels:
@@ -71,7 +71,7 @@ You can skip the following step if you are on Kubernetes
 ### Add the following contents to the file
 
 ```yaml title="<collection_name>.yaml"
-filesnames:
+filenames:
   - "/path/to/your/file.log" ## Single file
   - "/path/to/your/files*" ## Wildcard support
 labels:
