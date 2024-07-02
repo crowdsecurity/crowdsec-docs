@@ -1,0 +1,54 @@
+---
+id: remediationcomponent
+title: Remediation Component
+---
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+The [Remediation Component](bouncers/intro.md) integration allows you to feed the component without a [Security Engine](blocklists/security_engine.mdx).
+
+### Steps
+
+We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
+
+Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
+
+Once the page has loaded, you can click the "Connect" button under the CrowdSec Remediation Component logo.
+
+<ThemedImage
+    alt="CrowdSec Remediation Component Integration Card"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_rc_card_light.png"),
+        dark: useBaseUrl("/img/console_integrations_rc_card_dark.png"),
+    }}
+/>
+
+Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
+
+<ThemedImage
+    alt="CrowdSec Remediation Component Integration Creation Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_creation_light.png"),
+        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
+    }}
+/>
+
+Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
+
+<ThemedImage
+    alt="CrowdSec Remediation Component Integration Credentials Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_rc_credentials_light.png"),
+        dark: useBaseUrl("/img/console_integrations_rc_credentials_dark.png"),
+    }}
+/>
+
+You can read the [Remediation Component](bouncers/intro.md) documentation to learn more about how to configure the component.
+
+## Contribute to this documentation
+
+Since CrowdSec is a community-driven project, we welcome contributions to this documentation. If you have any instructions or tips that you would like to share with the community, please feel free to open a pull request on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs)
+
+## Next Steps
+
+Now that you have integrated CrowdSec integration with your CrowdSec Remediation Component, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 

@@ -330,6 +330,7 @@ module.exports = {
                 "integrations/fortinet",
                 "integrations/paloalto",
                 "integrations/genericfirewall",
+                "integrations/remediationcomponent",
             ]
         }
     ],
