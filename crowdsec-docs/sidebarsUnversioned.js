@@ -329,7 +329,7 @@ module.exports = {
                 "integrations/f5",
                 "integrations/fortinet",
                 "integrations/paloalto",
-                "integrations/genericvendor",
+                "integrations/genericfirewall",
             ]
         }
     ],
