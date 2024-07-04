@@ -45,13 +45,13 @@ choco install crowdsec-windows-firewall-bouncer
 
 The configuration is stored in `C:\ProgramData\CrowdSec\bouncers\cs-windows-firewall-bouncer\cs-windows-firewall-bouncer.yaml`
 
-### Example configuration
+### Example
 
 ```yaml
 api_key: <your-api-key>
 api_url: http://127.0.0.1:8080
 log_level: info
-update_frequency: 10s
+update_frequency: 10
 log_media: file
 log_dir: C:\\ProgramData\\CrowdSec\\log\\
 fw_profiles:
@@ -60,47 +60,48 @@ fw_profiles:
 
 ---
 
+### Configuration reference
+
 #### `api_key`
+> string 
 
 API key to use for communication with LAPI.
 
 #### `api_url`
+> string
 
 URL of LAPI.
 
 #### `update_frequency`
+> int
 
 How often the bouncer will contact LAPI to update its content in seconds.
 
 Defaults to `10`.
 
 #### `log_media`
+> file | console
 
 Wether to log to file or to the console.
 
 Defaults to file when running as service and console when running in interactive mode.
 
 #### `log_dir`
+> string
 
 Location of the log file.
 
 Defaults to `C:\ProgramData\CrowdSec\log\`.
 
 #### `log_level`
+> trace | debug | info | warn | error | fatal
 
 Log level.
-
-Can be one of:
- - `trace`
- - `debug`
- - `info`
- - `warn`
- - `error`
- - `fatal`
 
 Defaults to `info`.
 
 #### fw_profiles
+> [ ]string
 
 The firewall profile the rules will be associated with.
 

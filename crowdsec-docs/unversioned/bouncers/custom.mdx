@@ -228,23 +228,39 @@ Set to -1 for infinite retries.
 ### `scenarios_containing`
 > [ ]string
 
-Get only IPs banned for triggering scenarios containing either of provided word, eg ["ssh", "http"]
+Get only IPs banned for triggering scenarios containing either of provided word.
+
+```yaml title="Example"
+scenarios_containing: ["ssh", "http"]
+```
+
 
 ### `scenarios_not_containing`
 > [ ]string
 
-Ignore IPs banned for triggering scenarios containing either of provided word, eg ["ssh", "http"]
+Ignore IPs banned for triggering scenarios containing either of provided word.
 
+```yaml title="Example"
+scenarios_not_containing: ["ssh", "http"]
+```
 
 ### `scopes`
 > [ ]string
 
 Decisions will be filtered on the provided scopes.
 
+```yaml title="Example"
+scopes: ["Ip"]
+```
+
 ### `origins`
 > [ ]string
 
 Decisions will be filtered on the provided origins.
+
+```yaml title="Example"
+origins: ["cscli", "crowdsec"]
+```
 
 ### `cache_retention_duration`
 > string

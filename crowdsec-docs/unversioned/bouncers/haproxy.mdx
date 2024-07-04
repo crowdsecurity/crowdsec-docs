@@ -273,6 +273,8 @@ In order to query captcha provider for verification, you need SSL certificates. 
 ## References
 
 ### `API_KEY`
+> string
+
 ```bash
 API_KEY=<API_KEY>
 ```
@@ -282,14 +284,18 @@ CrowdSec Local API key.
 Generated with [`sudo cscli bouncers add`](/docs/next/getting_started/install_crowdsec) command.
 
 ### `BOUNCING_ON_TYPE`
+> all | ban | captcha
+
 ```bash
-BOUNCING_ON_TYPE=all|ban|captcha
+BOUNCING_ON_TYPE=all
 ```
 
 Type of remediation we want to bounce. 
 If you choose `ban` only and receive a decision with `captcha` as remediation, the bouncer will skip the decision.
 
 ### `FALLBACK_REMEDIATION`
+> ban | captcha
+
 ```bash
 FALLBACK_REMEDIATION=ban
 ```
@@ -297,6 +303,8 @@ FALLBACK_REMEDIATION=ban
 The fallback remediation is applied if the bouncer receives a decision with an unknown remediation.
 
 ### `REQUEST_TIMEOUT`
+> int
+
 ```bash
 REQUEST_TIMEOUT=1000
 ```
@@ -304,6 +312,8 @@ REQUEST_TIMEOUT=1000
 Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
+> string (Seperate by comma)
+
 ```bash
 EXCLUDE_LOCATION=/<path1>,/<path2>
 ```
@@ -314,6 +324,8 @@ The locations to exclude while bouncing. It is a list of location, separated by 
 
 
 ### `UPDATE_FREQUENCY`
+> int
+
 > This option is only for the `stream` mode.
 
 ```bash
@@ -324,6 +336,8 @@ The frequency of update, in second, to pull new/old IPs from the CrowdSec local 
 
 
 ### `REDIRECT_LOCATION`
+> string
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -335,6 +349,8 @@ The location to redirect the user when there is a ban.
 If it is not set, the bouncer will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
 
 ### `BAN_TEMPLATE_PATH`
+> string (path to file)
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -347,6 +363,8 @@ By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/ban
 
 
 ### `RET_CODE`
+> int
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -358,6 +376,8 @@ If nothing specified, it will return a 403.
 
 
 ### `SECRET_KEY`
+> string
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -368,6 +388,8 @@ The captcha secret key.
 
 
 ### `SITE_KEY`
+> string
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -378,6 +400,8 @@ The captcha site key.
 
 
 ### `CAPTCHA_TEMPLATE_PATH`
+> string (path to file)
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -392,6 +416,8 @@ By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/cap
 
 
 ### `CAPTCHA_EXPIRATION`
+> int
+
 > This option is only for the `captcha` remediation.
 
 ```bash

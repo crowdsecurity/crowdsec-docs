@@ -128,13 +128,11 @@ API key to use for communication with LAPI.
 URL of LAPI EG `http://127.0.0.1:8080`
 
 ### `update_frequency`
-> string
+> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
 > Environment variable: `BOUNCER_UPDATE_FREQUENCY`
 
 How often the remediation will contact LAPI to update its content.
-
-The format must be supported by [golang ParseDuration](https://pkg.go.dev/time#ParseDuration).
 
 ### `supported_actions`
 > string
@@ -241,7 +239,9 @@ One ipset will be created per 10k IPs, and will be automatically deleted if it b
 
 Differents ipsets are used for ban and captcha.
 
+:::warning
 All ipsets are deleted on shutdown.
+:::
 
 ### `aws_profile`
 > string

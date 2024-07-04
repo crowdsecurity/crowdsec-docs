@@ -137,15 +137,27 @@ The remediation will poll the CrowdSec LAPI every `update_frequency` interval.
 
 Ignore IPs banned for triggering scenarios not containing the provided words.
 
+```yaml title="Example"
+include_scenarios_containing: ["ssh", "http"]
+```
+
 #### `exclude_scenarios_containing`
 > [ ]string 
 
 Ignore IPs banned for triggering scenarios containing the provided words.
 
+```yaml title="Example"
+exclude_scenarios_containing: ["ssh", "http"]
+```
+
 #### `only_include_decisions_from`
 > [ ]string
 
-Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+Only include IPs banned due to decisions orginating from provided sources.
+
+```yaml title="Example"
+only_include_decisions_from: ["cscli", "crowdsec"]
+```
 
 #### `insecure_skip_verify`
 > boolean
@@ -155,7 +167,11 @@ Set to true to skip verifying certificate usually used for self-signed certifica
 #### `listen_uri`
 > string (`<IP>:<PORT>`)
 
-The bindable address and port for the remedation to listen on EG: `127.0.0.1:41412`
+The bindable address and port for the remedation to listen on
+
+```yaml title="Example"
+listen_uri: "127.0.0.1:41412"
+```
 
 ### `metrics`
 

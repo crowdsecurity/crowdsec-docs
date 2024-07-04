@@ -143,6 +143,8 @@ You can also change this with a valid one :
 ## References
 
 ### `API_KEY`
+> string
+
 ```bash
 API_KEY=<API_KEY>
 ```
@@ -152,22 +154,27 @@ CrowdSec Local API key.
 Generated with [`sudo cscli bouncers add`](/docs/next/getting_started/install_crowdsec) command.
 
 ### `API_URL`
+> string
+
 ```bash
 API_URL=http://<ip>:<port>
 ```
 
 CrowdSec local API URL.
 
-
 ### `BOUNCING_ON_TYPE`
+> all | ban | captcha
+
 ```bash
-BOUNCING_ON_TYPE=all|ban|captcha
+BOUNCING_ON_TYPE=all
 ```
 
 Type of remediation we want to bounce. 
 If you choose `ban` only and receive a decision with `captcha` as remediation, the bouncer will skip the decision.
 
 ### `FALLBACK_REMEDIATION`
+> ban | captcha
+
 ```bash
 FALLBACK_REMEDIATION=ban
 ```
@@ -175,17 +182,23 @@ FALLBACK_REMEDIATION=ban
 The fallback remediation is applied if the bouncer receives a decision with an unknown remediation.
 
 ### `MODE`
+> stream | live
+
 ```bash
-MODE=stream|live
+MODE=stream
 ```
 
 The bouncer mode:
  - stream: The bouncer will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
-
-Note: The timer that pull the local API will be triggered after the first request.
  - live: The bouncer will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
 
+:::note
+The timer that pull the local API will be triggered after the first request.
+:::
+
 ### `REQUEST_TIMEOUT`
+> int
+
 ```bash
 REQUEST_TIMEOUT=1000
 ```
@@ -193,6 +206,8 @@ REQUEST_TIMEOUT=1000
 Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
+> string (comma separated)
+
 ```bash
 EXCLUDE_LOCATION=/<path1>,/<path2>
 ```
@@ -203,15 +218,19 @@ The locations to exclude while bouncing. It is a list of location, separated by 
 
 
 ### `CACHE_EXPIRATION`
+> int
+
 > This option is only for the `live` mode.
 
 ```bash
-CACHE_EXPIRATION=1
+CACHE_EXPIRATION=120
 ```
 
 The cache expiration, in second, for IPs that the bouncer store in cache in `live` mode.
 
 ### `UPDATE_FREQUENCY`
+> int
+
 > This option is only for the `stream` mode.
 
 ```bash
@@ -222,6 +241,8 @@ The frequency of update, in second, to pull new/old IPs from the CrowdSec local 
 
 
 ### `REDIRECT_LOCATION`
+> string
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -233,6 +254,8 @@ The location to redirect the user when there is a ban.
 If it is not set, the bouncer will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
 
 ### `BAN_TEMPLATE_PATH`
+> string (path to file)
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -245,6 +268,8 @@ By default, the HTML template is located in `/etc/nginx/lua/plugins/crowdsec/tem
 
 
 ### `RET_CODE`
+> int
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -255,13 +280,21 @@ The HTTP code to return for IPs that trigger a `ban` remediation.
 If nothing specified, it will return a 403.
 
 ### `CAPTCHA_PROVIDER`
+> recaptcha | hcaptcha | turnstile
+
 > This option is only for the `captcha` remediation.
 
 ```bash
-CAPTCHA_PROVIDER=<recaptcha | hcaptcha | turnstile>
+CAPTCHA_PROVIDER=recaptcha
 ```
 
+:::info
+For backwards compatability reasons `recaptcha` is the default if no value is set.
+:::
+
 ### `SECRET_KEY`
+> string
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -272,6 +305,8 @@ The captcha secret key.
 
 
 ### `SITE_KEY`
+> string
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -282,6 +317,8 @@ The captcha site key.
 
 
 ### `CAPTCHA_TEMPLATE_PATH`
+> string (path to file)
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -296,11 +333,12 @@ By default, the HTML template is located in `/etc/nginx/lua/plugins/crowdsec/tem
 
 
 ### `CAPTCHA_EXPIRATION`
+> int
+
 > This option is only for the `captcha` remediation.
 
 ```bash
 CAPTCHA_EXPIRATION=3600
 ```
-
 
 The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IPs address will get a captcha again.

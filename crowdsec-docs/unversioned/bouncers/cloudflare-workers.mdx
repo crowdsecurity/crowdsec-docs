@@ -313,7 +313,7 @@ crowdsec_config:
 ```
   And within a few seconds it will be sent to the KV and the proper remediation should be applied to the requests from the specified IP
 
-## Appendix: Configuration Reference
+## Configuration Reference
 
 ### `crowdsec`
 
@@ -341,17 +341,29 @@ The Remediation Component will poll the CrowdSec every `update_frequency` interv
 #### `include_scenarios_containing`
 > [ ]string
 
-Ignore IPs banned for triggering scenarios not containing either of provided word. Example value `["ssh", "http"]` (default: includes all scenarios)
+Ignore IPs banned for triggering scenarios not containing either of provided word.
+
+```yaml title="Example"
+include_scenarios_containing: ["ssh", "http"]
+```
 
 #### `exclude_scenarios_containing`
 > [ ]string
 
-Ignore IPs banned for triggering scenarios containing either of provided word. Example value `["ssh", "http"]` (default: exclude none)
+Ignore IPs banned for triggering scenarios containing either of provided word.
+
+```yaml title="Example"
+exclude_scenarios_containing: ["ssh", "http"]
+```
 
 #### `only_include_decisions_from`
 > [ ]string
 
-Only include IPs banned due to decisions orginating from provided sources. eg value `["cscli", "crowdsec"]` (default: include all origins)
+Only include IPs banned due to decisions orginating from provided sources.
+
+```yaml title="Example"
+only_include_decisions_from: ["cscli", "crowdsec"]
+```
 
 #### `insecure_skip_verify`
 > boolean

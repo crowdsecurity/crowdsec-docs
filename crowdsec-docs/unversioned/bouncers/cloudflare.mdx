@@ -324,17 +324,29 @@ The remediation will poll the CrowdSec every `update_frequency` interval.
 ### `include_scenarios_containing`
 > [ ]string
 
-Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
+Ignore IPs banned for triggering scenarios not containing either of provided word.
+
+```yaml title="Example"
+include_scenarios_containing: ["ssh", "http"]
+```
 
 ### `exclude_scenarios_containing`
 > [ ]string
 
-Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"]
+Ignore IPs banned for triggering scenarios containing either of provided word.
+
+```yaml title="Example"
+exclude_scenarios_containing: ["ssh", "http"]
+```
 
 ### `only_include_decisions_from`
 > [ ]string
 
-Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+Only include IPs banned due to decisions orginating from provided sources.
+
+```yaml title="Example"
+only_include_decisions_from: ["cscli", "crowdsec"]
+```
 
 ### `cloudflare_config`
 > [CloudflareConfig](https://github.com/crowdsecurity/cs-cloudflare-bouncer/blob/20c902ee1e95fe13135dd493d7e96840bafc931b/pkg/cfg/config.go#L34-L37)
@@ -344,7 +356,11 @@ This block contains cloudflare specific config.
 #### `update_frequency`
 > string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
-The frequency at which to update the cloudflare resources.  eg values include `5s` or `1m` etc.
+The frequency at which to update the cloudflare resources.
+
+```yaml title="Example"
+update_frequency: "10s"
+```
 
 #### `accounts`
 > [ ][AccountConfig](https://github.com/crowdsecurity/cs-cloudflare-bouncer/blob/20c902ee1e95fe13135dd493d7e96840bafc931b/pkg/cfg/config.go#L26-L33)

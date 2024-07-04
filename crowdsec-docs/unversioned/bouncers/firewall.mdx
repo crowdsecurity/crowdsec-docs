@@ -190,6 +190,42 @@ Firewall mode to use
 
 Frequency to contact the API for new/deleted decisions
 
+### `scenarios_containing`
+> [ ]string
+
+Get only IPs banned for triggering scenarios containing either of provided word.
+
+```yaml title="Example"
+scenarios_containing: ["ssh", "http"]
+```
+
+### `scenarios_not_containing`
+> [ ]string
+
+Ignore IPs banned for triggering scenarios containing either of provided word.
+
+```yaml title="Example"
+scenarios_not_containing: ["ssh", "http"]
+```
+
+### `scopes`
+> [ ]string
+
+Decisions will be filtered on the provided scopes.
+
+```yaml title="Example"
+scopes: ["Ip", "Range"]
+```
+
+### `origins`
+> [ ]string
+
+Decisions will be filtered on the provided origins.
+
+```yaml title="Example"
+origins: ["cscli", "crowdsec"]
+```
+
 ### `log_mode`
 > `file` | `stdout`
 
