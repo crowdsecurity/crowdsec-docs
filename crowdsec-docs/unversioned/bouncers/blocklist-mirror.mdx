@@ -26,7 +26,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-This remediation exposes CrowdSec's active decisions via provided HTTP(S) endpoints in pre-defined formats. It can be used by network appliances which support consumption of blocklists via HTTP.
+This component exposes CrowdSec's active decisions via provided HTTP(S) endpoints in pre-defined formats. It can be used by network appliances which support consumption of blocklists via HTTP.
 
 
 ## Installation from repositories
@@ -101,7 +101,7 @@ Used to nest the configuration related to crowdsec.
 #### `lapi_url`
 > string
 
-The URL of CrowdSec LAPI. It should be accessible from whichever network the remediation has access.
+The URL of CrowdSec LAPI. It should be accessible from whichever network the component has access.
 
 #### `lapi_key`
 > string
@@ -130,7 +130,7 @@ Path to the CA file used to trust the LAPI certificate.
 #### `update_frequency`
 > string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
-The remediation will poll the CrowdSec LAPI every `update_frequency` interval.
+The component will poll the CrowdSec LAPI every `update_frequency` interval.
 
 #### `include_scenarios_containing`
 > [ ]string
@@ -292,7 +292,7 @@ Package upgrades may have good reasons to modify the configuration, so be carefu
 
 ## Formats
 
-The remediation can expose the blocklist in the following formats. You can configure the format of the blocklist by setting it's `format` parameter to any of the supported formats described below.
+The component can expose the blocklist in the following formats. You can configure the format of the blocklist by setting it's `format` parameter to any of the supported formats described below.
 
 ### plain_text
 

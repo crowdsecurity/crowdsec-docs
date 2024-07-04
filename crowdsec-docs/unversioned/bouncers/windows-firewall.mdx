@@ -19,23 +19,23 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Overview
 
-The Windows firewall remediation interacts with the Windows Firewall to block IPs banned by CrowdSec.
+The Windows firewall Remediation Component interacts with the Windows Firewall to block IPs banned by CrowdSec.
 
 It will create multiple rules in the firewall (one rule will contain 1000 IPs) and will manage their lifecycle.
 
-The rules are created on startup and automatically deleted when the remediation stops.
+The rules are created on startup and automatically deleted when the component stops.
 
 ## Installation
 
 :::warning
 
-The .NET 6 runtime is required for the remediation to work !
+The .NET 6 runtime is required for the component to work !
 
 :::
 
-You can download either a MSI (containing only the remediation) or a setup bundle (containing the remediation and the .NET 6 runtime) from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
+You can download either a MSI (containing only the component) or a setup bundle (containing the component and the .NET 6 runtime) from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
 
-You can also install the remediation with [Chocolatey](https://chocolatey.org/) (this will automatically install the .NET runtime):
+You can also install the component with [Chocolatey](https://chocolatey.org/) (this will automatically install the .NET runtime):
 
 ```powershell
 choco install crowdsec-windows-firewall-bouncer
@@ -75,7 +75,7 @@ URL of LAPI.
 #### `update_frequency`
 > int
 
-How often the remediation will contact LAPI to update its content in seconds.
+How often the component will contact LAPI to update its content in seconds.
 
 Defaults to `10`.
 
@@ -105,7 +105,7 @@ Defaults to `info`.
 
 The firewall profile the rules will be associated with.
 
-The remediation automatically select the current profile, but you can override this behaviour with this parameter.
+The component automatically select the current profile, but you can override this behaviour with this parameter.
 
 Allowed values are:
  - `domain`

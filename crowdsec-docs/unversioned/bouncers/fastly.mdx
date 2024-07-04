@@ -69,7 +69,7 @@ sudo cscli -oraw bouncers add fastlybouncer # -oraw flag can discarded for human
 
 The `lapi_url` must be accessible from the container.
 
-### Run the remediation
+### Run the component
 
 ```bash
   docker run \
@@ -80,7 +80,7 @@ The `lapi_url` must be accessible from the container.
 
 ## Activate the new configuration:
 
-After starting the remediation, go in the fastly web UI. For each configured service review the version created by the bouncer. If everything looks good, you can activate the new configration !
+After starting the component, go in the fastly web UI. For each configured service review the version created by the bouncer. If everything looks good, you can activate the new configration !
 
 # Configuration:
 
@@ -110,7 +110,7 @@ log_file: /var/log/crowdsec-fastly-bouncer.log # Ignore if logging to stdout or 
 
 # Helpers:
 
-The remediation has few builtin helper features:
+The component has few builtin helper features:
 
 ## Auto config generator:
 
@@ -134,6 +134,6 @@ Crowdsec config is copied from the config at `PATH_TO_BASE_CONFIG`.
 sudo crowdsec-fastly-bouncer -c <PATH_TO_BASE_CONFIG> -d
 ```
 
-This deletes the fastly resources created by the remediation.
+This deletes the fastly resources created by the component.
 It only works if the configured service version is not locked.
 It is useful for quick iteration before activateing the new service.   

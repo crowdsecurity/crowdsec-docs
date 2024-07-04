@@ -21,7 +21,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Overview
 
-This remediation allows you to protect your PHP application from IPs that have been detected by CrowdSec. Depending on
+This Remediation Component allows you to protect your PHP application from IPs that have been detected by CrowdSec. Depending on
 the decision taken by CrowdSec, user will either get denied (403) or have to fill a captcha (401).
 
 It uses the [PHP `auto_prepend_file` mechanism](https://www.php.net/manual/en/ini.core.php#ini.auto-prepend-file) and 
@@ -52,13 +52,13 @@ Please follow [this documentation](https://git-scm.com/book/en/v2/Getting-Starte
 
 #### Install CrowdSec
 
-To be able to use this remediation, the first step is to install [CrowdSec v1](https://doc.crowdsec.net/docs/getting_started/install_crowdsec/). CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a bouncer to "apply" decisions.
+To be able to use this component, the first step is to install [CrowdSec v1](https://doc.crowdsec.net/docs/getting_started/install_crowdsec/). CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a bouncer to "apply" decisions.
 
-Please note that first and foremost a CrowdSec agent must be installed on a server that is accessible by this remediation.
+Please note that first and foremost a CrowdSec agent must be installed on a server that is accessible by this component.
 
-### Server and remediation setup
+### Server and component setup
 
-Once you set up your server as below, every browser access to a PHP script will be bounced by the standalone remediation.
+Once you set up your server as below, every browser access to a PHP script will be remediated by the standalone component.
 
 You will have to :
 
@@ -66,10 +66,10 @@ You will have to :
 - give the correct permission for the folder that contains the remediation
 - copy the `scripts/settings.php.dist` file to a `scripts/settings.php` file and edit it.
 - set an `auto_prepend_file` directive in your PHP setup.
-- Optionally, if you want to use the standalone remediation in stream mode, you will have to set a cron task to refresh
+- Optionally, if you want to use the standalone component in stream mode, you will have to set a cron task to refresh
   cache periodically.
 
-#### Remediation sources copy
+#### Component sources copy
 
 - Create a folder that will contain the project sources:
 
@@ -86,13 +86,13 @@ We use here `/var/www/crowdsec-standalone-bouncer` but you can choose the path t
 sudo chown -R $(whoami):$(whoami) /var/www/crowdsec-standalone-bouncer
 ```
 
-- Retrieve the last version of the remediation:
+- Retrieve the last version of the component:
 
 ```bash
 composer create-project crowdsec/standalone-bouncer /var/www/crowdsec-standalone-bouncer --keep-vcs
 ```
 
-Note that we have to keep the vcs data as we will use it to update the remediation when a new version is available.
+Note that we have to keep the vcs data as we will use it to update the component when a new version is available.
 
 #### Files permission
 
@@ -110,8 +110,8 @@ sudo chmod g+w /var/www/crowdsec-standalone-bouncer
 Please copy the `scripts/settings.php.dist` file to a `scripts/settings.php` file and fill the necessary settings in it
 (see [Configurations settings](#configurations) for more details).
 
-For a quick start, simply search for `YOUR_BOUNCER_API_KEY` in the `settings.php` file and set the remediation key.
-To obtain a remediation key, you can run the `cscli` remediation creation command:
+For a quick start, simply search for `YOUR_BOUNCER_API_KEY` in the `settings.php` file and set the API key.
+To obtain a API key, you can run the `cscli bouncers add` command:
 
 ```
 sudo cscli bouncers add standalone-bouncer
@@ -197,7 +197,7 @@ In this example, cache is pruned at midnight every day, but you can modify the c
 
 ## Upgrade
 
-When a new release of the remediation is available, you may want to update sources to the last version.
+When a new release of the component is available, you may want to update sources to the last version.
 
 ### Before upgrading
 
@@ -212,7 +212,7 @@ Alternatively, but a little more risky, you could disable bouncing by editing th
 
 Once the update is done, you can reactivate the bounce. You could look at the `/var/www/crowdsec-standalone-bouncer/scripts/.logs` to see if all is working as expected.
 
-Below are the steps to take to upgrade your current remediation:
+Below are the steps to take to upgrade your current component:
 
 ### Retrieve the last tag
 
@@ -250,12 +250,12 @@ git checkout vX.Y.Z && composer update
 - Support IpV4 and Ipv6 (Ipv6 range decisions are yet only supported in `Live mode`)
 - Large PHP matrix compatibility: 7.2, 7.3, 7.4, 8.0, 8.1 and 8.2
 - Built-in support for the most known cache systems Redis, Memcached and PhpFiles
-  - Clear, prune and refresh the remediation cache
+  - Clear, prune and refresh the cache
 - Cap remediation level (ex: for sensitives websites: ban will be capped to captcha)
 
 ### Ban and captcha walls
 
-When a user is suspected by CrowdSec to be malevolent, the remediation would either display a captcha to resolve or
+When a user is suspected by CrowdSec to be malevolent, the component would either display a captcha to resolve or
 simply a page notifying that access is denied. If the user is considered as a clean user, he/she will access the page
 as normal.
 
@@ -275,7 +275,7 @@ On the other hand, all texts are also fully customizable. This will allow you, f
 
 Here is the list of available settings that you could define in the `scripts/settings.php` file:
 
-#### Remediation behavior
+#### Component behavior
 
 - `bouncing_level`:  Select from `bouncing_disabled`, `normal_bouncing` or `flex_bouncing`. Choose if you want to apply CrowdSec directives (Normal bouncing) or be more permissive (Flex bouncing). With the `Flex mode`, it is impossible to accidentally block access to your site to people who don’t deserve it. This mode makes it possible to never ban an IP but only to offer a captcha, in the worst-case scenario.
 
@@ -301,12 +301,12 @@ Here is the list of available settings that you could define in the `scripts/set
   Only required if you choose `api_key` as `auth_type`.
 
 
-- `tls_cert_path`: absolute path to the remediation certificate (e.g. pem file).
+- `tls_cert_path`: absolute path to the component certificate (e.g. pem file).
   Only required if you choose `tls` as `auth_type`.
   **Make sure this path is not publicly accessible.** [See security note below](#security-note).
 
 
-- `tls_key_path`: Absolute path to the remediation key (e.g. pem file).
+- `tls_key_path`: Absolute path to the component key (e.g. pem file).
   Only required if you choose `tls` as `auth_type`.
   **Make sure this path is not publicly accessible.** [See security note below](#security-note).
 
@@ -495,7 +495,7 @@ Redirectmatch 403 crowdsec/geolocation/
 **N.B.:**
 - There is no need to protect the `cache` folder if you are using Redis or Memcached cache systems.
 - There is no need to protect the `logs` folder if you disable debug and prod logging.
-- There is no need to protect the `tls` folder if you use remediation API key authentication type.
+- There is no need to protect the `tls` folder if you use API key authentication type.
 - There is no need to protect the `geolocation` folder if you don't use the geolocation feature.
 
 ## Testing & Troubleshooting

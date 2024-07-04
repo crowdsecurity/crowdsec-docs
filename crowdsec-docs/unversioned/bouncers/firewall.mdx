@@ -23,7 +23,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-CrowdSec remediation written in golang for firewalls.
+CrowdSec Remediation Component written in golang for firewalls.
 
 crowdsec-firewall-bouncer will fetch new and old decisions from a CrowdSec API and add them to a blocklist used by supported firewalls.
 
@@ -118,7 +118,7 @@ There are two primary ways to use the firewall bouncer:
 
 __This is the default behaviour__
 
-In "managed" mode (mode `nftables` or `iptables`), remediation creates all the needed elements (rules, sets) and insert the appropriate rules in nftables or iptables.
+In "managed" mode (mode `nftables` or `iptables`), component creates all the needed elements (rules, sets) and insert the appropriate rules in nftables or iptables.
 
 :::warning
 
@@ -128,8 +128,8 @@ IPSet (when using `iptables` mode) does not support a timeout greater than 21474
 
 ### Set Only : Iptables/Ipset table
 
-In iptables set-only mode (mode `ipset`), the remediation only handles the **contents** of sets that are specified by `blacklists_ipv4` and `blacklists_ipv6`.
-These sets must be created before starting the remediation, and it is the user's responsibility to create the associated iptables rules.
+In iptables set-only mode (mode `ipset`), the component only handles the **contents** of sets that are specified by `blacklists_ipv4` and `blacklists_ipv6`.
+These sets must be created before starting the component, and it is the user's responsibility to create the associated iptables rules.
 
 :::warning
 IPSet does not support a timeout greater than 2147483 seconds (about 596 hours). If crowdsec is configured to take decisions longer than that, the bouncer will cap the duration to 2147482 seconds.
@@ -137,7 +137,7 @@ IPSet does not support a timeout greater than 2147483 seconds (about 596 hours).
 
 ### Set Only : nftables
 
-In nftables set only mode (mode `nftables` with `nftables.{ipv4,ipv6}.set-only` set to `true`), the remediation only manages the **contents** of the sets.
+In nftables set only mode (mode `nftables` with `nftables.{ipv4,ipv6}.set-only` set to `true`), the component only manages the **contents** of the sets.
 It's the user's responsibility to create the associated chains and sets :
 
 ```yaml title="/tmp/bouncer.nft"
@@ -178,10 +178,10 @@ Directory to store the pid file
 ### `daemonize`
 > Deprecated
 
-Run the remediation in the background
+Run the component in the background
 
 :::warning
-This field has now been deprecated and is ignored within the remediation
+This field has now been deprecated and is ignored within the component
 :::
 
 ### `mode`
@@ -384,7 +384,7 @@ Enable or disable ipv4 or ipv6
 ### `set-only`
 > `true` | `false`
 
-If `set-only` is set to true, the remediation will only manage the set contents.
+If `set-only` is set to true, the component will only manage the set contents.
 
 ### `table`
 > string

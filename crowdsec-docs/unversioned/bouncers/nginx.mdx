@@ -27,11 +27,11 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
   &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
-A lua remediation for nginx.
+A lua Remediation Component for nginx.
 
 ## How does it work ?
 
-This remediation leverages nginx lua's API, namely `access_by_lua_block` to check the IP address against the local API.
+This component leverages nginx lua's API, namely `access_by_lua_block` to check the IP address against the local API.
 
 Supported features:
 
@@ -43,7 +43,7 @@ Supported features:
 - Support IP ranges (can apply a remediation on an IP range)
 - Application Security Component (forward request to CrowdSec Application Security Engine and block is necessary)
 
-At the back, this remediation uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
+At the back, this component uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
 ## Installation
 
@@ -76,13 +76,13 @@ sudo apt install crowdsec-nginx-bouncer
 </Tabs>
 
 :::info
-In stream mode, the remediation will launch an internal timer to pull the local API at the first request made to the server.
+In stream mode, the component will launch an internal timer to pull the local API at the first request made to the server.
 :::
 
 ### Manual installation
 
 :::warning
-CrowdSec NGINX Remediation depends on `nginx lua5.1 libnginx-mod-http-lua luarocks gettext-base`.
+CrowdSec NGINX component depends on `nginx lua5.1 libnginx-mod-http-lua luarocks gettext-base`.
 
 It has been tested only on Debian/Ubuntu based distributions.
 :::
@@ -138,7 +138,7 @@ sudo systemctl restart nginx
 
 ## Configuration
 
-### Remediation configuration
+### Component configuration
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
 API_URL=<CROWDSEC_LAPI_URL>
@@ -185,7 +185,7 @@ SSL_VERIFY=true
 
 ### NGINX Configuration
 
-The remediation NGINX configuration is located in `/etc/nginx/conf.d/crowdsec_nginx.conf` :
+The Remediation Component NGINX configuration is located in `/etc/nginx/conf.d/crowdsec_nginx.conf` :
 
 ```bash title="/etc/nginx/conf.d/crowdsec_nginx.conf"
 lua_package_path '/usr/lib/crowdsec/lua/?.lua;;';
@@ -208,17 +208,17 @@ access_by_lua_block {
 }
 ```
 
-The remediation uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict) to share cache between all workers.
+The component uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict) to share cache between all workers.
 
 If you want to increase the cache size you need to change this value `lua_shared_dict crowdsec_cache 50m;`.
 
-:warning: Do not rename the `crowdsec_cache` shared dict, else the remediation will not work anymore.
+:warning: Do not rename the `crowdsec_cache` shared dict, else the component will not work anymore.
 
 #### When using captcha remediation
 
-To make HTTP request in the remediation, you need to configure a resolver and ssl certifcates. Here is a [our example](#resolver-and-certificates).
+To make HTTP request in the component, you need to configure a resolver and ssl certifcates. Here is a [our example](#resolver-and-certificates).
 
-To make secure HTTP request in the remediation, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`).
+To make secure HTTP request in the component, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`).
 You can also change this with a valid one :
 
 ```
@@ -234,7 +234,7 @@ You can also change this with a valid one :
 
 To setup the Application Security Component you first need to install it in your CrowdSec Security Engine.
 
-On the remediation component side, you just need to configure the following option in the remediation component file:
+On the Remediation Component side, you just need to configure the following option in the component file:
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
 # Mandatory
@@ -254,7 +254,7 @@ SSL_VERIFY=true                    # default
 
 > Currently, we have support for 3 providers: recaptcha, hcaptcha or turnstile
 
-If you want to use captcha with your Nginx Remediation, you must provide a Site key and Secret key in your remediation configuration. If you wish to use any other provider than recaptcha you must also provide a Captcha provider.
+If you want to use captcha with your Nginx, you must provide a Site key and Secret key in your component configuration. If you wish to use any other provider than recaptcha you must also provide a Captcha provider.
 
 ([recaptcha documentation](https://developers.google.com/recaptcha/intro)).
 
@@ -284,7 +284,7 @@ sudo cscli decisions add -i <IP_TO_TEST> -t captcha
 
 ### Why aren't decisions applied instantly
 
-In stream mode, the remediation will launch an internal timer to pull the local API at the first request. So the cache won't be refreshed until the first request hits the service.
+In stream mode, the component will launch an internal timer to pull the local API at the first request. So the cache won't be refreshed until the first request hits the service.
 
 ### Resolver and certificates
 
@@ -329,7 +329,7 @@ BOUNCING_ON_TYPE=all
 ```
 
 Type of remediation we want to bounce.
-If you choose `ban` only and receive a decision with `captcha` as remediation, the remediation will skip the decision.
+If you choose `ban` only and receive a decision with `captcha` as remediation, the component will skip the decision.
 
 ### `FALLBACK_REMEDIATION`
 > ban | captcha
@@ -338,7 +338,7 @@ If you choose `ban` only and receive a decision with `captcha` as remediation, t
 FALLBACK_REMEDIATION=ban
 ```
 
-The fallback remediation is applied if the remediation receives a decision with an unknown remediation.
+The fallback remediation is applied if the component receives a decision with an unknown remediation.
 
 ### `MODE`
 > stream | live
@@ -349,9 +349,9 @@ MODE=stream
 
 The default mode is `live`.
 
-The remediation mode:
- - stream: The remediation will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
- - live: The remediation will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
+The component mode:
+ - stream: The component will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
+ - live: The component will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
 
 :::note
 The timer that pull the local API will be triggered after the first request.
@@ -364,7 +364,7 @@ The timer that pull the local API will be triggered after the first request.
 REQUEST_TIMEOUT=1000
 ```
 
-Timeout in milliseconds for the HTTP requests done by the remediation to query CrowdSec local API or captcha provider (for the captcha verification).
+Timeout in milliseconds for the HTTP requests done by the component to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
 > string (comma separated)
@@ -410,7 +410,7 @@ REDIRECT_LOCATION=/<path>
 
 The location to redirect the user when there is a ban.
 
-If it is not set, the remediation will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
+If it is not set, the component will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
 
 ### `BAN_TEMPLATE_PATH`
 > string (path to file)
@@ -483,7 +483,7 @@ CAPTCHA_TEMPLATE_PATH=<path_to_html_template>
 
 The path to a captcha HTML template.
 
-The remediation will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
+The component will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
 
 By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/captcha.html`.
 

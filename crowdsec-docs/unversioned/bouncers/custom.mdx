@@ -23,7 +23,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-CrowdSec remediation written to invoke custom scripts.
+CrowdSec Remediation Component written to invoke custom scripts.
 
 The crowdsec-custom-bouncer will periodically fetch new, expired and removed decisions from the CrowdSec Local API and will pass them as arguments to a custom user script.
 
@@ -265,7 +265,7 @@ origins: ["cscli", "crowdsec"]
 ### `cache_retention_duration`
 > string
 
-The remediation keeps track of all custom script invocations from the last `cache_retention_duration` interval. 
+The component keeps track of all custom script invocations from the last `cache_retention_duration` interval. 
 If a decision is identical to some decision already present in the cache, then the custom script is not invoked. 
 The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `1.2.3.4`,  `CH` etc).
 
@@ -273,7 +273,7 @@ The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Va
 > string
 
 :::warning
-This field has been depreacted and is ignored by the remediation
+This field has been depreacted and is ignored by the component
 :::
 
 Directory to drop the PID file
@@ -286,10 +286,10 @@ controls how often the remedation is going to query the local API
 ### `daemonize`
 > boolean
 
-To run the remediation as a service
+To run the component as a service
 
 :::warning
-This field has now been deprecated and is ignored within the remediation
+This field has now been deprecated and is ignored within the component
 :::
 
 ### `log_mode`

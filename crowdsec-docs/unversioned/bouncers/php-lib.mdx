@@ -41,7 +41,7 @@ composer require crowdsec/bouncer
 
 ### Prerequisites
 
-To be able to use a remediation based on this library, the first step is to install [CrowdSec v1](https://doc.crowdsec.net/docs/getting_started/install_crowdsec/). CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a bouncer to "apply" decisions.
+To be able to use a remediation component based on this library, the first step is to install [CrowdSec v1](https://doc.crowdsec.net/docs/getting_started/install_crowdsec/). CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a bouncer to "apply" decisions.
 
 Please note that first and foremost a CrowdSec agent must be installed on a server that is accessible by this library.
 
@@ -53,12 +53,12 @@ Please note that first and foremost a CrowdSec agent must be installed on a serv
 - Support IpV4 and Ipv6 (Ipv6 range decisions are yet only supported in `Live mode`)
 - Large PHP matrix compatibility: 7.2, 7.3, 7.4, 8.0, 8.1 and 8.2
 - Built-in support for the most known cache systems Redis, Memcached and PhpFiles
-  - Clear, prune and refresh the remediation cache
+  - Clear, prune and refresh the cache
 - Cap remediation level (ex: for sensitives websites: ban will be capped to captcha)
 
 ### Ban and captcha walls
 
-When a user is suspected by CrowdSec to be malevolent, a remediation would either display a captcha to resolve or
+When a user is suspected by CrowdSec to be malevolent, a component would either display a captcha to resolve or
 simply a page notifying that access is denied. If the user is considered as a clean user, he/she will access the page
 as normal.
 
@@ -74,11 +74,11 @@ Please note that it is possible to customize all the colors of these pages so th
 
 On the other hand, all texts are also fully customizable. This will allow you, for example, to present translated pages in your users' language.
 
-## Create your own remediation
+## Create your own component
 
 ### Implementation
 
-You can use this library to develop your own PHP application remediation. Any custom remediation should extend the [`AbstractBouncer`](https://github.com/crowdsecurity/php-cs-bouncer/blob/main/src/AbstractBouncer.php) class.
+You can use this library to develop your own PHP application component. Any custom component should extend the [`AbstractBouncer`](https://github.com/crowdsecurity/php-cs-bouncer/blob/main/src/AbstractBouncer.php) class.
 
 ```php
 namespace MyNameSpace;
@@ -143,12 +143,12 @@ class MyCustomBouncer extends AbstractBouncer
 ```
 
 
-Once you have implemented these methods, you could retrieve all required configurations to instantiate your remediation
+Once you have implemented these methods, you could retrieve all required configurations to instantiate your component
 and then call the `run` method to apply a bounce for the current detected IP. Please [see below](#configurations) for
 the list of
 available configurations.
 
-In order to instantiate the remediation, you will have to create at least a `CrowdSec\RemediationEngine\LapiRemediation`
+In order to instantiate the component, you will have to create at least a `CrowdSec\RemediationEngine\LapiRemediation`
 object too.
 
 
@@ -169,9 +169,9 @@ $bouncer->run();
 ```
 
 
-### Test your remediation
+### Test your component
 
-To test your remediation, you could add decision to ban your own IP for 5 minutes for example:
+To test your component, you could add decision to ban your own IP for 5 minutes for example:
 
 ```bash
 cscli decisions add --ip <YOUR_IP> --duration 5m --type ban
@@ -194,7 +194,7 @@ The first parameter of the `AbstractBouncer` class constructor method is an arra
 
 Below is the list of available settings:
 
-### Remediation behavior
+### Component behavior
 
 - `bouncing_level`:  Select from `bouncing_disabled`, `normal_bouncing` or `flex_bouncing`. Choose if you want to apply CrowdSec directives (Normal bouncing) or be more permissive (Flex bouncing). With the `Flex mode`, it is impossible to accidentally block access to your site to people who don’t deserve it. This mode makes it possible to never ban an IP but only to offer a captcha, in the worst-case scenario.
 
@@ -221,12 +221,12 @@ Below is the list of available settings:
   Only required if you choose `api_key` as `auth_type`.
 
 
-- `tls_cert_path`: absolute path to the remediation certificate (e.g. pem file).
+- `tls_cert_path`: absolute path to the component certificate (e.g. pem file).
   Only required if you choose `tls` as `auth_type`.
   **Make sure this path is not publicly accessible.** [See security note below](#security-note).
 
 
-- `tls_key_path`: Absolute path to the remediation key (e.g. pem file).
+- `tls_key_path`: Absolute path to the component key (e.g. pem file).
   Only required if you choose `tls` as `auth_type`.
   **Make sure this path is not publicly accessible.** [See security note below](#security-note).
 

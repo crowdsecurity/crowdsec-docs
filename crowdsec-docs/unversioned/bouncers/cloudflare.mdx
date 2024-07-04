@@ -24,10 +24,10 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-A remediation that syncs the decisions made by CrowdSec with CloudFlare's firewall. Manages multi user, multi account, multi zone setup. Supports IP, Country and AS scoped decisions.
+A component that syncs the decisions made by CrowdSec with CloudFlare's firewall. Manages multi user, multi account, multi zone setup. Supports IP, Country and AS scoped decisions.
 
 :::warning
-Currently use of this remediation is discouraged if you are on free plan with Cloudflare due to rate limitations. We are working to resolve this with Cloudflare support.
+Currently use of this component is discouraged if you are on free plan with Cloudflare due to rate limitations. We are working to resolve this with Cloudflare support.
 
 If you are on a premium plan with Cloudflare contact thier support to ask about increasing your rate limit.
 :::
@@ -79,13 +79,13 @@ Please configure your server to emit real IPs rather than cloudflare IPs in logs
 
 :::info
 
-If your remediation is not installed on the same machine than LAPI, don't forget to set the `crowdsec_lapi_url` and `crowdsec_lapi_key` in the configuration file `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
+If your component is not installed on the same machine than LAPI, don't forget to set the `crowdsec_lapi_url` and `crowdsec_lapi_key` in the configuration file `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
 
 :::
 
 :::note
 
-You need to run `sudo crowdsec-cloudflare-bouncer -d` to cleanup exisiting cloudflare components created by remediation before editing the config files.
+You need to run `sudo crowdsec-cloudflare-bouncer -d` to cleanup exisiting cloudflare components created by component before editing the config files.
 
 :::
 
@@ -185,7 +185,7 @@ cloudflare_config:
     
   update_frequency: 30s # the frequency to update the cloudflare IP list 
 
-# Remediation Config
+# Component Config
 daemon: true
 log_mode: file
 log_dir: /var/log/ 
@@ -203,7 +203,7 @@ prometheus:
 
 ## Making changes to configuration
 
-The remediation creates Cloudflare infra (IP lists, rules etc) according to your config file. 
+The component creates Cloudflare infra (IP lists, rules etc) according to your config file. 
 
 Before changing the config, always run the following command to clear old infra:
 
@@ -217,7 +217,7 @@ During v0.0.X there was no `managed_challenge` action, instead `challenge` actio
 
 This section assumes you used the default config (generated via `crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>` )
 
-After upgrading the remediation from v0.0.X to v0.1.Y , run the following commands to migrate to `managed_challenge`.
+After upgrading the component from v0.0.X to v0.1.Y , run the following commands to migrate to `managed_challenge`.
 
 ```bash
 sudo crowdsec-cloudflare-bouncer -d
@@ -233,7 +233,7 @@ sudo systemctl restart crowdsec-cloudflare-bouncer
 
 For obtaining the `token`:
 1. Sign in as a user who has access to the desired account.
-2. Go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. The remediation requires the follwing permissions to function.
+2. Go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. The component requires the follwing permissions to function.
 ![image](https://raw.githubusercontent.com/crowdsecurity/cs-cloudflare-bouncer/main/docs/assets/token_permissions.png)
 
 To automatically generate config for cloudflare check the helper section below.
@@ -245,11 +245,11 @@ If the zone is subscribed to a paid Cloudflare plan then it can be configured to
 
 ## Helpers
 
-The remediation binary has built in helper scripts to do various operations.
+The component binary has built in helper scripts to do various operations.
 
 ### Auto config generator
 
-Generates remediation config by discovering all the accounts and the zones associated with provided list of tokens. 
+Generates component config by discovering all the accounts and the zones associated with provided list of tokens. 
 
 Example Usage:
 
@@ -278,7 +278,7 @@ sudo  crowdsec-cloudflare-bouncer -s
 
 ### Cloudflare Cleanup
 
-This deletes all IP lists and firewall rules at cloudflare which were created by the remediation.
+This deletes all IP lists and firewall rules at cloudflare which were created by the component.
 
 Example Usage:
 ```bash
@@ -294,7 +294,7 @@ The service polls the CrowdSec Local API for new / deleted decisions. It then ma
 ### `crowdsec_lapi_url`
 > string
 
-The URL of CrowdSec LAPI. It should be accessible from the remediation.
+The URL of CrowdSec LAPI. It should be accessible from the component.
 
 ### `crowdsec_lapi_key`
 > string
@@ -319,7 +319,7 @@ Path to the CA file used to trust the LAPI certificate.
 ### `crowdsec_update_frequency`
 > string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
-The remediation will poll the CrowdSec every `update_frequency` interval.
+The component will poll the CrowdSec every `update_frequency` interval.
 
 ### `include_scenarios_containing`
 > [ ]string
@@ -424,7 +424,7 @@ Following table is mapping of decision type to it's destination IP list.
 #### `zones`
 > [ ][ZoneConfig](https://github.com/crowdsecurity/cs-cloudflare-bouncer/blob/20c902ee1e95fe13135dd493d7e96840bafc931b/pkg/cfg/config.go#L21-L25)
 
-This block contains config for each zone to be managed by the remediation. The zone must be accessible from the parent account.
+This block contains config for each zone to be managed by the component. The zone must be accessible from the parent account.
 
 ##### `zone_id`
 > string
@@ -444,7 +444,7 @@ Valid choice includes either of
 - `challenge`
 - `managed_challenge`. 
 
-The remediation creates an IP list for each action. IP list is at account level, so multiple zones with same parent account will share lists for particular action.
+The component creates an IP list for each action. IP list is at account level, so multiple zones with same parent account will share lists for particular action.
 
 :::warning 
 `challenge` action is deprecated in favour of `managed_challenge`
@@ -467,10 +467,10 @@ Following table is mapping of decision type to it's destination IP list, which a
 > boolean
 
 :::warning
-This field has now been deprecated and is ignored within the remediation
+This field has now been deprecated and is ignored within the component
 :::
 
-Run the remediation as a daemon.
+Run the component as a daemon.
 
 ### `log_mode`
 > `stdout` | `file`
@@ -485,7 +485,7 @@ Relevant if `log_mode` is `file`. This determines where to create log file.
 ### `log_level`
 > `trace` | `debug` | `info` | `error`
 
-Log level for the remediation.
+Log level for the component.
 
 ### `compress_logs`
 > `true` | `false`
