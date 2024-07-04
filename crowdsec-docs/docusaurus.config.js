@@ -142,7 +142,7 @@ module.exports = {
                         },
                         {
                             label: "Service API",
-                            to: "/u/service_api/intro",
+                            to: "/u/service_api/getting_started",
                         },
                     ],
                 },

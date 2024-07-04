@@ -1,22 +1,21 @@
 ---
-id: sdks
-title: SDKs
+id: python
+title: Python
 ---
 
-## Overview
+## Installation
 
-The SDKs are designed to simplify the integration with Service API, enabling developers to interact with effortlessly. These SDKs offer pre-built functions and methods that encapsulate the API endpoints, reducing the complexity and boilerplate code required for making API requests.
+You can install the Python SDK using `pip`.
 
-## Available SDKs
+```bash
+pip install crowdsec-service-api
+```
 
-You will find the installation instructions, and the reference documentation for each SDK in the respective repositories:
+## References
 
-- [Python SDK](https://github.com/crowdsecurity/crowdsec-service-api-sdk-python)
+You will find the references for the Python SDK below.
 
-
-:::info
-If you need an SDK for a specific programming language, please let us know by contacting us at [Discord](https://discord.gg/crowdsec).
-:::
+- [https://github.com/crowdsecurity/crowdsec-service-api-sdk-python/tree/main/doc](https://github.com/crowdsecurity/crowdsec-service-api-sdk-python/tree/main/doc)
 
 ## Usage
 
@@ -46,6 +45,11 @@ KEY = os.getenv('KEY')
 
 auth = ApiKeyAuth(api_key=KEY)
 client = Blocklists(base_url=Server.production_server.value, auth=auth)
+# Get 1234MYBLOCKLISTID blocklist as an example
+response = client.get_blocklist(
+    blocklist_id='1234MYBLOCKLISTID',
+)
+print(response)
 ```
 
 ### Making Requests

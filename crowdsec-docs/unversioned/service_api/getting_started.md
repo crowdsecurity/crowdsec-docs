@@ -1,6 +1,6 @@
 ---
-id: intro
-title: Service API Presentation
+id: getting_started
+title: Getting Started
 ---
 
 :::info
@@ -22,18 +22,24 @@ The current capabilities of this API are:
 
 ## Getting your API keys
 
-The **Service API** is different from the **CTI API**.  
-You can create and retrieve your API keys in your console account's **Settings** section for your eligible organization(s)
+The CrowdSec Service API uses API keys to authenticate requests. You can create an API key in the CrowdSec Console by:
 
-[You can find a dedicated guide here.](/u/console/api/intro)
+1. **Logging in** to the [CrowdSec Console](https://app.crowdsec.net/).
+2. Go to the **Settings** page.
+3. Click on the **Service API Keys** section.
+4. Click on the **Create API Key** button.
+5. Give your API key a name, description, set expiration if needed and select the permissions you want to grant.
+6. Click on the **Create key** button.
+
+Once you have created an API key, you can use it to authenticate requests to the CrowdSec Service API by including it in the `x-api-key` header of your HTTP requests.
 
 
-## API Specification
+## API Specifications
 
 You can find a detailed description of the API in multiple formats here:
 
  - [Swagger](https://admin.api.crowdsec.net/v1/docs#/)
- - [Redoc](https://admin.api.dev.crowdsec.net/v1/redoc)
+ - [Redoc](https://admin.api.crowdsec.net/v1/redoc)
  - [Openapi specs](https://admin.api.crowdsec.net/v1/openapi.json)
 
 

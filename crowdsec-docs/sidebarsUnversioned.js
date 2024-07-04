@@ -179,9 +179,9 @@ module.exports = {
             items: ["console/decisions/decisions_management"],
         },
         {
-            type: "doc",
+            type: "link",
             label: "Service API",
-            id: "console/api/intro",
+            href: "/u/service_api/getting_started",
         },
     ],
     remediationSideBar: [
@@ -352,12 +352,46 @@ module.exports = {
         },
     ],
     serviceApiSideBar: [
-        "service_api/intro",
-        "service_api/quickstart",
-        "service_api/blocklists",
-        "service_api/integrations",
-        "service_api/sdks",
-        "service_api/faq",
+        {
+            type: "doc",
+            id: "service_api/getting_started",
+            label: "Getting Started"
+        },
+        {
+            type: "category",
+            label: "Quickstart",
+            items: [
+                "service_api/quickstart/blocklists",
+                "service_api/quickstart/integrations",
+            ]
+
+        },
+        {
+            type: "category",
+            label: "SDKs",
+            items: [
+                {
+                    type: "doc",
+                    label: "Python",
+                    id: "service_api/sdks/python"
+                }
+            ]
+        },
+        {
+            type: "link",
+            label: "Swagger",
+            href: "https://admin.api.crowdsec.net/v1/docs#/"
+        },
+        {
+            type: "link",
+            label: "Redoc",
+            href: "https://admin.api.crowdsec.net/v1/redoc"
+        },
+        {
+            type: "doc",
+            id: "service_api/faq",
+            label: "FAQ"
+        },
     ],
     guidesSideBar: [
         "user_guides/intro",

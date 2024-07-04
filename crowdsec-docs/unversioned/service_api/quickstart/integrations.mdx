@@ -1,0 +1,103 @@
+---
+id: integrations
+title: Integrations
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+:::info
+ - We're assuming your API key is set in the environment variable `$KEY`
+:::
+
+### Creating integration
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/integrations \
+-d '{ "name": "test_integration_1", "description": "my test integration", "entity_type": "firewall_integration", "output_format": "plain_text" }'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Integrations,
+    Server,
+    ApiKeyAuth,
+)
+from crowdsec_service_api.models import IntegrationCreateRequest
+
+auth = ApiKeyAuth(api_key=KEY)
+client = Integrations(base_url=Server.production_server.value, auth=auth)
+request = IntegrationCreateRequest(
+  name='test_integration_1',
+  description='my test integration',
+  entity_type='firewall_integration',
+  output_format='plain_text',
+)
+response = client.create_integration(
+    request=request,
+)
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
+:::warning
+The `username` and `password` will only be displayed at creation time, be sure to write them down. If you lose them, you can always regenerate them with the [`update`](https://admin.api.crowdsec.net/v1/docs#/Integrations/updateIntegration) method.
+:::
+
+ - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Integrations/createIntegration)
+
+<details>
+  <summary>answer on success</summary>
+```json
+{
+  "id": "INTEGRATIONID12345",
+  "name": "test_integration_1",
+  "organization_id": "MY-ORG-ID-abcdef1234",
+  "description": "my test integration",
+  "created_at": "2024-06-07T14:00:31.645929Z",
+  "updated_at": "2024-06-07T14:00:31.645943Z",
+  "entity_type": "firewall_integration",
+  "output_format": "plain_text",
+  "last_pull": null,
+  "blocklists": [],
+  "endpoint": "https://admin.api.crowdsec.net/v1/integrations/INTEGRATIONID12345/content",
+  "stats": {
+    "count": 0
+  },
+  "credentials": {
+    "username": "<login>",
+    "password": "<password>"
+  }
+}
+
+```
+</details>
+
+### View integration content
+
+View integration content allows you to preview the list of IPs that are returned to your firewall (or whatever is going to consume the integration).
+
+```bash
+curl -i -u '<login>:<password>' https://admin.api.crowdsec.net/v1/integrations/INTEGRATIONID12345/content
+```
