@@ -219,7 +219,7 @@ You can also change this with a valid one :
 
 To setup the Application Security Component you first need to install it in your CrowdSec Security Engine.
 
-On the remediation component side, you just need to configure the following option in the remediation component file:
+On the Remediation Component side, you just need to configure the following option in the Remediation Component file:
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf"
 # Mandatory
@@ -546,7 +546,7 @@ Verify the AppSec Component SSL certificate validity.
 APPSEC_CONNECT_TIMEOUT=100  # default
 ```
 
-The timeout of the connection between the remediation component and AppSec Component.
+The timeout of the connection between the Remediation Component and AppSec Component.
 
 
 ### `APPSEC_SEND_TIMEOUT`
@@ -556,7 +556,7 @@ The timeout of the connection between the remediation component and AppSec Compo
 APPSEC_SEND_TIMEOUT=100  # default
 ```
 
-The timeout to send data from the remediation component to the AppSec Component.
+The timeout to send data from the Remediation Component to the AppSec Component.
 
 ### `APPSEC_PROCESS_TIMEOUT`
 > int (milliseconds)
@@ -565,4 +565,4 @@ The timeout to send data from the remediation component to the AppSec Component.
 APPSEC_PROCESS_TIMEOUT=500  # default
 ```
 
-The timeout to process the request from the remediation component to the AppSec Component.
+The timeout to process the request from the Remediation Component to the AppSec Component.
