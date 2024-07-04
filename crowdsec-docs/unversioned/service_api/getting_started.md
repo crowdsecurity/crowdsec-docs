@@ -24,12 +24,21 @@ The current capabilities of this API are:
 
 The CrowdSec Service API uses API keys to authenticate requests. You can create an API key in the CrowdSec Console by:
 
-1. **Logging in** to the [CrowdSec Console](https://app.crowdsec.net/).
-2. Go to the **Settings** page.
-3. Click on the **Service API Keys** section.
-4. Click on the **Create API Key** button.
-5. Give your API key a name, description, set expiration if needed and select the permissions you want to grant.
+1. **Logging in** to the [CrowdSec Console](https://app.crowdsec.net/) and go to the **Settings** page.
+
+![Settings_page](/img/console/settings/main.png)
+
+2. Click on the **Service API Keys** section.
+
+![Service_API_Keys](/img/console/settings/sapi_keys.png)
+
+3. Click on the **Create API Key** button, fill in the form, set the permissions you want to grant.
+
+![Create_API_Key](/img/console/settings/sapi_create_key.png)
+
 6. Click on the **Create key** button.
+
+![API_Key_Created](/img/console/settings/sapi_key_created.png)
 
 Once you have created an API key, you can use it to authenticate requests to the CrowdSec Service API by including it in the `x-api-key` header of your HTTP requests.
 

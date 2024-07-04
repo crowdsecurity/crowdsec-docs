@@ -15,14 +15,14 @@ pip install crowdsec-service-api
 
 You will find the references for the Python SDK below.
 
-- [https://github.com/crowdsecurity/crowdsec-service-api-sdk-python/tree/main/doc](https://github.com/crowdsecurity/crowdsec-service-api-sdk-python/tree/main/doc)
+- [crowdsecurity/crowdsec-service-api-sdk-python](https://github.com/crowdsecurity/crowdsec-service-api-sdk-python/tree/main/doc)
 
 ## Usage
 
 ### Pre-requisites
 
 - An active [CrowdSec account](https://app.crowdsec.net/)
-- An API key for the Service API (guide [here](/u/console/api/intro))
+- An API key for the Service API (guide [here](/u/service_api/getting_started#getting-your-api-keys))
 
 ### Authentication
 
@@ -45,10 +45,8 @@ KEY = os.getenv('KEY')
 
 auth = ApiKeyAuth(api_key=KEY)
 client = Blocklists(base_url=Server.production_server.value, auth=auth)
-# Get 1234MYBLOCKLISTID blocklist as an example
-response = client.get_blocklist(
-    blocklist_id='1234MYBLOCKLISTID',
-)
+# Get info about the user
+response = client.get_info()
 print(response)
 ```
 
