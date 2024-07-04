@@ -185,7 +185,7 @@ cloudflare_config:
     
   update_frequency: 30s # the frequency to update the cloudflare IP list 
 
-# Bouncer Config
+# Remediation Config
 daemon: true
 log_mode: file
 log_dir: /var/log/ 
@@ -249,7 +249,7 @@ The remediation binary has built in helper scripts to do various operations.
 
 ### Auto config generator
 
-Generates bouncer config by discovering all the accounts and the zones associated with provided list of tokens. 
+Generates remediation config by discovering all the accounts and the zones associated with provided list of tokens. 
 
 Example Usage:
 
@@ -278,7 +278,7 @@ sudo  crowdsec-cloudflare-bouncer -s
 
 ### Cloudflare Cleanup
 
-This deletes all IP lists and firewall rules at cloudflare which were created by the bouncer.
+This deletes all IP lists and firewall rules at cloudflare which were created by the remediation.
 
 Example Usage:
 ```bash
@@ -444,7 +444,7 @@ Valid choice includes either of
 - `challenge`
 - `managed_challenge`. 
 
-The bouncer creates an IP list for each action. IP list is at account level, so multiple zones with same parent account will share lists for particular action.
+The remediation creates an IP list for each action. IP list is at account level, so multiple zones with same parent account will share lists for particular action.
 
 :::warning 
 `challenge` action is deprecated in favour of `managed_challenge`
@@ -467,7 +467,7 @@ Following table is mapping of decision type to it's destination IP list, which a
 > boolean
 
 :::warning
-This field has now been deprecated as is ignored within the remediation
+This field has now been deprecated and is ignored within the remediation
 :::
 
 Run the remediation as a daemon.

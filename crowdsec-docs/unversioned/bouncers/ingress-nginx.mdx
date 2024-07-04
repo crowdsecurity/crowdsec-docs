@@ -23,11 +23,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 
 
-A lua plugin bouncer for Ingress Nginx Controller.
+A lua plugin remediation for Ingress Nginx Controller.
 
 ## How does it work ?
 
-This bouncer leverages OpenResty lua's API, used the ingress nginx controller as a [plugin](https://github.com/kubernetes/ingress-nginx/blob/main/rootfs/etc/nginx/lua/plugins/README.md).
+This remediation leverages OpenResty lua's API, used the ingress nginx controller as a [plugin](https://github.com/kubernetes/ingress-nginx/blob/main/rootfs/etc/nginx/lua/plugins/README.md).
 
 Supported features:
 
@@ -38,7 +38,7 @@ Supported features:
  - Works with IPv4/IPv6
  - Support IP ranges (can apply a remediation on an IP range)
 
-At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
+At the back, this remediation uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
 ## Installation
 
@@ -108,12 +108,12 @@ kubectl -n ingress-nginx get pods
 ```
 
 :::info
-In stream mode, the bouncer will launch an internal timer to pull the local API at the first request made to the ingress controller.
+In stream mode, the remediation will launch an internal timer to pull the local API at the first request made to the ingress controller.
 :::
 
 ### Ingress controller Configuration
 
-The bouncer uses [lua_shared_dict](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#lua-shared-dicts) to share cache between all workers.
+The remediation uses [lua_shared_dict](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#lua-shared-dicts) to share cache between all workers.
 
 If you want to increase the cache size you need to change this value :
 
@@ -123,13 +123,13 @@ controller:
     lua-shared-dicts: "crowdsec_cache: 50m"
 ````
 
-:warning: Do not rename the `crowdsec_cache` shared dict, else the bouncer will not work anymore.
+:warning: Do not rename the `crowdsec_cache` shared dict, else the remediation will not work anymore.
 
 #### When using captcha remediation
 
-To make HTTP request in the bouncer, we need to set a `resolver` in the configuration. We choose `local=on` directive since we query `google.com` for the captcha verification, but you can replace it with a valid one.
+To make HTTP request in the remediation, we need to set a `resolver` in the configuration. We choose `local=on` directive since we query `google.com` for the captcha verification, but you can replace it with a valid one.
 
-To make secure HTTP request in the bouncer, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`). 
+To make secure HTTP request in the remediation, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`). 
 You can also change this with a valid one :
 ```
   - /etc/ssl/certs/ca-certificates.crt (Debian/Ubuntu/Gentoo)
@@ -170,7 +170,7 @@ BOUNCING_ON_TYPE=all
 ```
 
 Type of remediation we want to bounce. 
-If you choose `ban` only and receive a decision with `captcha` as remediation, the bouncer will skip the decision.
+If you choose `ban` only and receive a decision with `captcha` as remediation, the remediation will skip the decision.
 
 ### `FALLBACK_REMEDIATION`
 > ban | captcha
@@ -179,7 +179,7 @@ If you choose `ban` only and receive a decision with `captcha` as remediation, t
 FALLBACK_REMEDIATION=ban
 ```
 
-The fallback remediation is applied if the bouncer receives a decision with an unknown remediation.
+The fallback remediation is applied if the remediation receives a decision with an unknown remediation.
 
 ### `MODE`
 > stream | live
@@ -188,9 +188,9 @@ The fallback remediation is applied if the bouncer receives a decision with an u
 MODE=stream
 ```
 
-The bouncer mode:
- - stream: The bouncer will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
- - live: The bouncer will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
+The remediation mode:
+ - stream: The remediation will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
+ - live: The remediation will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
 
 :::note
 The timer that pull the local API will be triggered after the first request.
@@ -203,7 +203,7 @@ The timer that pull the local API will be triggered after the first request.
 REQUEST_TIMEOUT=1000
 ```
 
-Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or captcha provider (for the captcha verification).
+Timeout in milliseconds for the HTTP requests done by the remediation to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
 > string (comma separated)
@@ -226,7 +226,7 @@ The locations to exclude while bouncing. It is a list of location, separated by 
 CACHE_EXPIRATION=120
 ```
 
-The cache expiration, in second, for IPs that the bouncer store in cache in `live` mode.
+The cache expiration, in second, for IPs that the remediation store in cache in `live` mode.
 
 ### `UPDATE_FREQUENCY`
 > int
@@ -251,7 +251,7 @@ REDIRECT_LOCATION=/<path>
 
 The location to redirect the user when there is a ban.
 
-If it is not set, the bouncer will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
+If it is not set, the remediation will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
 
 ### `BAN_TEMPLATE_PATH`
 > string (path to file)
@@ -327,7 +327,7 @@ CAPTCHA_TEMPLATE_PATH=<path_to_html_template>
 
 The path to a captcha HTML template.
 
-The bouncer will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
+The remediation will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
 
 By default, the HTML template is located in `/etc/nginx/lua/plugins/crowdsec/templates/captcha.html`.
 

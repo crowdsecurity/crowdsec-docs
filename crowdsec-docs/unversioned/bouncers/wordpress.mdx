@@ -22,15 +22,15 @@ attacks by using [CrowdSec](https://crowdsec.net/) technology.
 
 ### Prerequisites
 
-To be able to use this bouncer, the first step is to install [CrowdSec v1](https://doc.crowdsec.net/docs/getting_started/install_crowdsec/).
-CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a bouncer to "apply" decisions.
+To be able to use this remediation, the first step is to install [CrowdSec v1](https://doc.crowdsec.net/docs/getting_started/install_crowdsec/).
+CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a remediation to "apply" decisions.
 
 Please note that first and foremost CrowdSec must be installed on a server that is accessible via the WordPress site.
 
 
 ### Features
 
-When a user is suspected by CrowdSec to be malevolent, this bouncer will either send him/her a captcha to resolve or
+When a user is suspected by CrowdSec to be malevolent, this remediation will either send him/her a captcha to resolve or
 simply a page notifying that access is denied. If the user is considered as a clean user, he will access the page as normal.
 
 By default, the ban wall is displayed as below:
@@ -89,11 +89,11 @@ Only if you chose `Bouncer API key` as authentication type.
 
 ***
 
-`Connection details → Path to the bouncer certificate`
+`Connection details → Path to the remediation certificate`
 
 Relative path to the `wp-content/plugins/crowdsec/tls` folder of your WordPress instance.
 
-Example: `bouncer.pem`.
+Example: `remediation.pem`.
 
 Only if you chose `TLS certificates` as authentication type.
 
@@ -103,7 +103,7 @@ Only if you chose `TLS certificates` as authentication type.
 
 Relative path to the `wp-content/plugins/crowdsec/tls` folder of your WordPress instance.
 
-Example: `bouncer-key.pem`.
+Example: `remediation-key.pem`.
 
 Only if you chose `TLS certificates` as authentication type.
 
@@ -166,7 +166,7 @@ title="Test your settings" />
 
 `Test your settings → Test bouncing`
 
-Click the "Test bouncing" button and the configured bouncer will try to get the remediation (bypass, captcha or ban)
+Click the "Test bouncing" button and the configured remediation will try to get the remediation (bypass, captcha or ban)
 for
 the IP entered in the text field. By default, tested IP is the current detected remote IP.
 
@@ -210,7 +210,7 @@ Choose if you want to enable the `stream mode` or stay in `live mode`.
 
 By default, the `live mode` is enabled. The first time a stranger connects to your website, this mode means that the IP will be checked directly by the CrowdSec API. The rest of your user’s browsing will be even more transparent thanks to the fully customizable cache system.
 
-But you can also activate the `stream mode`. This mode allows you to constantly feed the bouncer with the malicious IP list via a background task (CRON), making it to be even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
+But you can also activate the `stream mode`. This mode allows you to constantly feed the remediation with the malicious IP list via a background task (CRON), making it to be even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
 
 ***
 
@@ -288,7 +288,7 @@ Choose which remediation to apply when CrowdSec advises unhandled remediation.
 
 `Remediations → Trust these CDN IPs (or Load Balancer, HTTP Proxy)`
 
-If you use a CDN, a reverse proxy or a load balancer, it is possible to indicate in the bouncer settings the IP ranges of these devices in order to be able to check the IP of your users. For other IPs, the bouncer will not trust the X-Forwarded-For header.
+If you use a CDN, a reverse proxy or a load balancer, it is possible to indicate in the remediation settings the IP ranges of these devices in order to be able to check the IP of your users. For other IPs, the remediation will not trust the X-Forwarded-For header.
 ***
 
 `Remediations → Hide CrowdSec mentions`
@@ -438,7 +438,7 @@ Feel free to look at the [associated article](https://crowdsec.net/wordpress-bou
 
 ### Add the plugin
 
-The bouncer itself can be installed from the marketplace in WordPress back-office.
+The remediation itself can be installed from the marketplace in WordPress back-office.
 
 Installing the CrowdSec WordPress plugin is as easy as installing any other WordPress plugin:
 

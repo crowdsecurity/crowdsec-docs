@@ -23,11 +23,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 
 
-A lua bouncer for OpenResty.
+A lua remediation for OpenResty.
 
 ## How does it work ?
 
-This bouncer leverages OpenResty lua's API, namely `access_by_lua_block` to check e IP address against the local API.
+This remediation leverages OpenResty lua's API, namely `access_by_lua_block` to check e IP address against the local API.
 
 Supported features:
 
@@ -38,16 +38,16 @@ Supported features:
  - Works with IPv4/IPv6
  - Support IP ranges (can apply a remediation on an IP range)
 
-At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
+At the back, this remediation uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
 :::warning
-If you need to upgrade the bouncer from v0.X to v1.X, please follow [this migration process](#migrate-from-v0-to-v1) 
+If you need to upgrade the remediation from v0.X to v1.X, please follow [this migration process](#migrate-from-v0-to-v1) 
 :::
 
 ## Installation
 
 :::caution Before installation
-openresty bouncer depends on openresty, openresty-opm, gettext-base. it has been tested only on debian/ubuntu based distributions.
+openresty remediation depends on openresty, openresty-opm, gettext-base. it has been tested only on debian/ubuntu based distributions.
 You can install openresty and openresty-opm from [openresty linux packages](https://openresty.org/en/linux-packages.html).
 :::
 
@@ -87,7 +87,7 @@ sudo yum install crowdsec-openresty-bouncer
 
 
 :::info
-In stream mode, the bouncer will launch an internal timer to pull the local API at the first request made to the server.
+In stream mode, the remediation will launch an internal timer to pull the local API at the first request made to the server.
 :::
 
 :::caution After installation
@@ -122,14 +122,14 @@ If you are on a mono-machine setup, the `crowdsec-openresty-bouncer` install scr
 
 ## Configuration
 
-### Bouncer configuration
+### Remediation configuration
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf"
 API_URL=<CROWDSEC_LAPI_URL>
 API_KEY=<CROWDSEC_LAPI_KEY>
-# bounce for all type of remediation that the bouncer can receive from the local API
+# bounce for all type of remediation that the remediation can receive from the local API
 BOUNCING_ON_TYPE=all
-# when the bouncer receive an unknown remediation, fallback to this remediation
+# when the remediation receive an unknown remediation, fallback to this remediation
 FALLBACK_REMEDIATION=ban
 MODE=stream
 REQUEST_TIMEOUT=1000
@@ -169,7 +169,7 @@ SSL_VERIFY=true
 
 ### OpenResty Configuration
 
-The bouncer OpenResty configuration is located in `/usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf` :
+The remediation OpenResty configuration is located in `/usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf` :
 
 ```bash title="/usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf"
 lua_package_path '$prefix/../lualib/plugins/crowdsec/?.lua;;';
@@ -193,7 +193,7 @@ access_by_lua_block {
 ```
 
 
-The bouncer uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict) to share cache between all workers.
+The remediation uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict) to share cache between all workers.
 
 If you want to increase the cache size you need to change this value `lua_shared_dict crowdsec_cache 50m;`.
 
@@ -201,9 +201,9 @@ If you want to increase the cache size you need to change this value `lua_shared
 
 #### When using captcha remediation
 
-To make HTTP request in the bouncer, we need to set a `resolver` in the configuration. We choose `local=on` directive since we query `google.com` for the captcha verification, but you can replace it with a valid one.
+To make HTTP request in the remediation, we need to set a `resolver` in the configuration. We choose `local=on` directive since we query `google.com` for the captcha verification, but you can replace it with a valid one.
 
-To make secure HTTP request in the bouncer, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`). 
+To make secure HTTP request in the remediation, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`). 
 You can also change this with a valid one :
 ```
   - /etc/ssl/certs/ca-certificates.crt (Debian/Ubuntu/Gentoo)
@@ -239,7 +239,7 @@ SSL_VERIFY=true                    # default
 ### Setup captcha
 > Currently, we have support for 3 providers: recaptcha, hcaptcha or turnstile
 
-If you want to use captcha with your OpenResty Bouncer, you must provide a Site key and Secret key in your bouncer configuration. If you wish to use any other provider than recaptcha you must also provide a Captcha provider.
+If you want to use captcha with your OpenResty remediation, you must provide a Site key and Secret key in your remediation configuration. If you wish to use any other provider than recaptcha you must also provide a Captcha provider.
 
 ([recaptcha documentation](https://developers.google.com/recaptcha/intro)).
 
@@ -269,7 +269,7 @@ sudo cscli decisions add -i <IP_TO_TEST> -t captcha
 
 ### Why aren't decisions applied instantly
 
-In stream mode, the bouncer will launch an internal timer to pull the local API at the first request. So the cache won't be refreshed until the first request hits the service.
+In stream mode, the remediation will launch an internal timer to pull the local API at the first request. So the cache won't be refreshed until the first request hits the service.
 
 ### Resolver and certificates
 
@@ -290,19 +290,19 @@ And restart OpenResty.
 The best way to migrate from the crowdsec-openresty-bouncer v0.* to v1 is to reinstall the bouncer. Indeed, many new configurations options are now available and some has been removed.
 
 - Backup your CrowdSec Local API key from your configuration file (`/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`)
-- Remove the old bouncer:
+- Remove the old remediation:
 
 ```bash
 sudo apt-get remove --purge crowdsec-openresty-bouncer
 ```
 
-- Install the new bouncer:
+- Install the new remediation:
 ```bash
 sudo apt-get update
 sudo apt-get install crowdsec-openresty-bouncer
 ```
 
-- Configure the bouncer in `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`
+- Configure the remediation in `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`
 
 ## Configuration Reference
 
@@ -334,7 +334,7 @@ BOUNCING_ON_TYPE=all
 ```
 
 Type of remediation we want to bounce.
-If you choose `ban` only and receive a decision with `captcha` as remediation, the bouncer will skip the decision.
+If you choose `ban` only and receive a decision with `captcha` as remediation, the remediation will skip the decision.
 
 ### `FALLBACK_REMEDIATION`
 > ban | captcha
@@ -343,7 +343,7 @@ If you choose `ban` only and receive a decision with `captcha` as remediation, t
 FALLBACK_REMEDIATION=ban
 ```
 
-The fallback remediation is applied if the bouncer receives a decision with an unknown remediation.
+The fallback remediation is applied if the remediation receives a decision with an unknown remediation.
 
 ### `MODE`
 > stream | live
@@ -354,9 +354,9 @@ MODE=stream
 
 The default mode is `live`.
 
-The bouncer mode:
- - stream: The bouncer will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
- - live: The bouncer will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
+The remediation mode:
+ - stream: The remediation will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
+ - live: The remediation will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
 
 :::note
 The timer that pull the local API will be triggered after the first request.
@@ -369,7 +369,7 @@ The timer that pull the local API will be triggered after the first request.
 REQUEST_TIMEOUT=1000
 ```
 
-Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or captcha provider (for the captcha verification).
+Timeout in milliseconds for the HTTP requests done by the remediation to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
 > string (comma separated)
@@ -391,7 +391,7 @@ The locations to exclude while bouncing. It is a list of location, separated by 
 CACHE_EXPIRATION=1
 ```
 
-The cache expiration, in second, for IPs that the bouncer store in cache in `live` mode.
+The cache expiration, in second, for IPs that the remediation store in cache in `live` mode.
 
 ### `UPDATE_FREQUENCY`
 > int
@@ -415,7 +415,7 @@ REDIRECT_LOCATION=/<path>
 
 The location to redirect the user when there is a ban.
 
-If it is not set, the bouncer will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
+If it is not set, the remediation will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
 
 ### `BAN_TEMPLATE_PATH`
 > string (path to file)
@@ -488,7 +488,7 @@ CAPTCHA_TEMPLATE_PATH=<path_to_html_template>
 
 The path to a captcha HTML template.
 
-The bouncer will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
+The remediation will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
 
 By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/captcha.html`.
 

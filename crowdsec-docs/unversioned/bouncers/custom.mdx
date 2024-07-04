@@ -265,7 +265,7 @@ origins: ["cscli", "crowdsec"]
 ### `cache_retention_duration`
 > string
 
-The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. 
+The remediation keeps track of all custom script invocations from the last `cache_retention_duration` interval. 
 If a decision is identical to some decision already present in the cache, then the custom script is not invoked. 
 The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `1.2.3.4`,  `CH` etc).
 
@@ -281,12 +281,16 @@ Directory to drop the PID file
 ### `update_frequency`
 > string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
-controls how often the bouncer is going to query the local API
+controls how often the remedation is going to query the local API
 
 ### `daemonize`
 > boolean
 
-To run the bouncer as a service
+To run the remediation as a service
+
+:::warning
+This field has now been deprecated and is ignored within the remediation
+:::
 
 ### `log_mode`
 > `file` | `stdout`

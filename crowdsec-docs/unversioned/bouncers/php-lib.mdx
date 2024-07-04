@@ -1,6 +1,6 @@
 ---
 id: php-lib
-title: PHP Bouncer Library
+title: PHP Remediation Library
 sidebar_position: 1
 ---
 
@@ -41,7 +41,7 @@ composer require crowdsec/bouncer
 
 ### Prerequisites
 
-To be able to use a bouncer based on this library, the first step is to install [CrowdSec v1](https://doc.crowdsec.net/docs/getting_started/install_crowdsec/). CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a bouncer to "apply" decisions.
+To be able to use a remediation based on this library, the first step is to install [CrowdSec v1](https://doc.crowdsec.net/docs/getting_started/install_crowdsec/). CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a bouncer to "apply" decisions.
 
 Please note that first and foremost a CrowdSec agent must be installed on a server that is accessible by this library.
 
@@ -53,12 +53,12 @@ Please note that first and foremost a CrowdSec agent must be installed on a serv
 - Support IpV4 and Ipv6 (Ipv6 range decisions are yet only supported in `Live mode`)
 - Large PHP matrix compatibility: 7.2, 7.3, 7.4, 8.0, 8.1 and 8.2
 - Built-in support for the most known cache systems Redis, Memcached and PhpFiles
-  - Clear, prune and refresh the bouncer cache
+  - Clear, prune and refresh the remediation cache
 - Cap remediation level (ex: for sensitives websites: ban will be capped to captcha)
 
 ### Ban and captcha walls
 
-When a user is suspected by CrowdSec to be malevolent, a bouncer would either display a captcha to resolve or
+When a user is suspected by CrowdSec to be malevolent, a remediation would either display a captcha to resolve or
 simply a page notifying that access is denied. If the user is considered as a clean user, he/she will access the page
 as normal.
 
@@ -74,11 +74,11 @@ Please note that it is possible to customize all the colors of these pages so th
 
 On the other hand, all texts are also fully customizable. This will allow you, for example, to present translated pages in your users' language.
 
-## Create your own bouncer
+## Create your own remediation
 
 ### Implementation
 
-You can use this library to develop your own PHP application bouncer. Any custom bouncer should extend the [`AbstractBouncer`](https://github.com/crowdsecurity/php-cs-bouncer/blob/main/src/AbstractBouncer.php) class.
+You can use this library to develop your own PHP application remediation. Any custom remediation should extend the [`AbstractBouncer`](https://github.com/crowdsecurity/php-cs-bouncer/blob/main/src/AbstractBouncer.php) class.
 
 ```php
 namespace MyNameSpace;
@@ -143,12 +143,12 @@ class MyCustomBouncer extends AbstractBouncer
 ```
 
 
-Once you have implemented these methods, you could retrieve all required configurations to instantiate your bouncer
+Once you have implemented these methods, you could retrieve all required configurations to instantiate your remediation
 and then call the `run` method to apply a bounce for the current detected IP. Please [see below](#configurations) for
 the list of
 available configurations.
 
-In order to instantiate the bouncer, you will have to create at least a `CrowdSec\RemediationEngine\LapiRemediation`
+In order to instantiate the remediation, you will have to create at least a `CrowdSec\RemediationEngine\LapiRemediation`
 object too.
 
 
@@ -169,9 +169,9 @@ $bouncer->run();
 ```
 
 
-### Test your bouncer
+### Test your remediation
 
-To test your bouncer, you could add decision to ban your own IP for 5 minutes for example:
+To test your remediation, you could add decision to ban your own IP for 5 minutes for example:
 
 ```bash
 cscli decisions add --ip <YOUR_IP> --duration 5m --type ban
@@ -194,7 +194,7 @@ The first parameter of the `AbstractBouncer` class constructor method is an arra
 
 Below is the list of available settings:
 
-### Bouncer behavior
+### Remediation behavior
 
 - `bouncing_level`:  Select from `bouncing_disabled`, `normal_bouncing` or `flex_bouncing`. Choose if you want to apply CrowdSec directives (Normal bouncing) or be more permissive (Flex bouncing). With the `Flex mode`, it is impossible to accidentally block access to your site to people who don’t deserve it. This mode makes it possible to never ban an IP but only to offer a captcha, in the worst-case scenario.
 
@@ -221,12 +221,12 @@ Below is the list of available settings:
   Only required if you choose `api_key` as `auth_type`.
 
 
-- `tls_cert_path`: absolute path to the bouncer certificate (e.g. pem file).
+- `tls_cert_path`: absolute path to the remediation certificate (e.g. pem file).
   Only required if you choose `tls` as `auth_type`.
   **Make sure this path is not publicly accessible.** [See security note below](#security-note).
 
 
-- `tls_key_path`: Absolute path to the bouncer key (e.g. pem file).
+- `tls_key_path`: Absolute path to the remediation key (e.g. pem file).
   Only required if you choose `tls` as `auth_type`.
   **Make sure this path is not publicly accessible.** [See security note below](#security-note).
 
@@ -389,7 +389,7 @@ server {
    ...
    ...
    ...
-   # Deny all attempts to access some folders of the crowdsec bouncer lib
+   # Deny all attempts to access some folders of the crowdsec remediation lib
    location ~ /crowdsec/(logs|cache|tls|geolocation) {
            deny all;
    }
@@ -410,7 +410,7 @@ Redirectmatch 403 crowdsec/geolocation/
 **N.B.:**
 - There is no need to protect the `cache` folder if you are using Redis or Memcached cache systems.
 - There is no need to protect the `logs` folder if you disable debug and prod logging.
-- There is no need to protect the `tls` folder if you use Bouncer API key authentication type.
+- There is no need to protect the `tls` folder if you use remediation API key authentication type.
 - There is no need to protect the `geolocation` folder if you don't use the geolocation feature.
 
 

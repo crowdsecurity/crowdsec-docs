@@ -26,7 +26,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-This bouncer generates MISP Feed from CrowdSec decisions. It exposes this Feed over HTTP/S.
+This remediation generates MISP Feed from CrowdSec decisions. It exposes this Feed over HTTP/S.
 This can be used to feed CrowdSec decisions to MISP using the "Feeds" functionality of MISP.
 
 ## Quick Start
@@ -111,11 +111,11 @@ misp_feed_threat_level_id: 4
 misp_feed_published: false
 misp_feed_tags: []
 
-# Bouncer Config
+# Remediation Config
 
 output_dir: ./crowdsec-misp-feed/
 
-# Bouncer Server Config
+# Remediation Server Config
 listen_addr: 0.0.0.0
 listen_port: 2450
 tls:
@@ -136,7 +136,7 @@ log_mode: stdout # stdout, stderr, file
 ### `crowdsec_lapi_url`
 > string
 
-The URL of CrowdSec LAPI. It should be accessible from the bouncer.
+The URL of CrowdSec LAPI. It should be accessible from the remediation.
 
 ### `crowdsec_lapi_key`
 > string
@@ -150,7 +150,7 @@ sudo cscli -oraw bouncers add misp-feed-generator # -oraw flag can discarded for
 ### `crowdsec_update_frequency`
 > string
 
-The bouncer will poll the CrowdSec every `update_frequency` interval.
+The remediation will poll the CrowdSec every `update_frequency` interval.
 
 Value can be in seconds (eg 30s), minutes (eg 5m), hours (eg 1h), days (eg 1d), weeks (eg 1w), months (eg 1M) or years (eg 1y).
 
@@ -184,7 +184,7 @@ only_include_decisions_from: ["cscli", "crowdsec"]
 ### `misp_feed_reset_frequency`
 > string
 
-The bouncer will reset the feed every `misp_feed_reset_frequency` interval.
+The remediation will reset the feed every `misp_feed_reset_frequency` interval.
 
 Value can be in seconds (eg 30s), minutes (eg 5m), hours (eg 1h), days (eg 1d), weeks (eg 1w), months (eg 1M) or years (eg 1y).
 
@@ -329,7 +329,7 @@ basic_auth:
 ### `log_level`
 > debug | info | warning | error
 
-The log level for the bouncer.
+The log level for the remediation.
 
 ```yaml title="Example"
 log_level: info
@@ -338,5 +338,5 @@ log_level: info
 ### `log_mode`
 > stdout | stderr | file
 
-The log mode for the bouncer.
+The log mode for the remediation.
 

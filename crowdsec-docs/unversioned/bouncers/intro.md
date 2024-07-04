@@ -39,7 +39,7 @@ Please keep this key since you will not be able to retrieve it!
 ```
 
 :::info
-This command must be run on the server where the local API is installed (or at least with a cscli that has valid credentials to communicate with the database used by the API). This is only necessary if you "manually" install a bouncer, packages and install scripts usually take care of this.
+This command must be run on the server where the local API is installed (or at least with a cscli that has valid credentials to communicate with the database used by the API). This is only necessary if you "manually" install a remediation, packages and install scripts usually take care of this.
 :::
 
 If you wish to create your own remediation component, look at [this section](/docs/next/local_api/bouncers) of the local API documentation.
