@@ -13,10 +13,10 @@ The **Service API**, **SAPI** for short, provides access to selected **CrowdSec 
 New SaaS features will usually appear on **SAPI** first before getting their UI counterpart.
 The current capabilities of this API are:
 
--  [**Blocklist** creation & management](/u/service_api/blocklists)
+-  **Blocklist** creation & management
    -  Allowing you to create private blocklists and share them 
    -  As well as subscribing to any of the blocklists available to your organization
--  [**Integrations** endpoints creation & management](/u/service_api/integrations)
+-  **Integrations** endpoints creation & management
    -  An Essential part of the **Blocklist as a Service** feature.
    -  Manage endpoints for your [**Firewalls**](/u/integrations/intro) or [**Remediation Components**](/u/bouncers/intro) to connect directly to.
 
