@@ -37,12 +37,13 @@ import os
 from crowdsec_service_api import (
     Server,
     ApiKeyAuth,
+    Info,
 )
 
 KEY = os.getenv('KEY')
 
 auth = ApiKeyAuth(api_key=KEY)
-client = Blocklists(base_url=Server.production_server.value, auth=auth)
+client = Info(base_url=Server.production_server.value, auth=auth)
 # Get info about the user
 response = client.get_info()
 print(response)
