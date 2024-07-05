@@ -1,0 +1,64 @@
+---
+id: authentication
+title: Authentication
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+
+Once you have created an API key, you can use it to authenticate requests to the CrowdSec Service API by including it in the `x-api-key` header of your HTTP requests.
+
+:::info
+ - We're assuming your API key is set in the environment variable `$KEY`
+:::
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X GET -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/info 
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+from crowdsec_service_api import (
+    Server,
+    ApiKeyAuth,
+)
+
+KEY = os.getenv('KEY')
+
+auth = ApiKeyAuth(api_key=KEY)
+client = Blocklists(base_url=Server.production_server.value, auth=auth)
+# Get info about the user
+response = client.get_info()
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>answer on success</summary>
+
+```json
+{
+  "organization_id": "MY-ORG-ID-abcdef1234",
+  "subscription_type": "ENTERPRISE",
+  "api_key_name": "my test api key"
+}
+```
+</details>

@@ -361,6 +361,7 @@ module.exports = {
             type: "category",
             label: "Quickstart",
             items: [
+                "service_api/quickstart/authentication",
                 "service_api/quickstart/blocklists",
                 "service_api/quickstart/integrations",
             ]
