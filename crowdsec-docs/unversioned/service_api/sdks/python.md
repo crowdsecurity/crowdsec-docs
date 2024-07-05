@@ -1,29 +1,28 @@
 ---
-id: sdks
-title: SDKs
+id: python
+title: Python
 ---
 
-## Overview
+## Installation
 
-The SDKs are designed to simplify the integration with Service API, enabling developers to interact with effortlessly. These SDKs offer pre-built functions and methods that encapsulate the API endpoints, reducing the complexity and boilerplate code required for making API requests.
+You can install the Python SDK using `pip`.
 
-## Available SDKs
+```bash
+pip install crowdsec-service-api
+```
 
-You will find the installation instructions, and the reference documentation for each SDK in the respective repositories:
+## References
 
-- [Python SDK](https://github.com/crowdsecurity/crowdsec-service-api-sdk-python)
+You will find the references for the Python SDK below.
 
-
-:::info
-If you need an SDK for a specific programming language, please let us know by contacting us at [Discord](https://discord.gg/crowdsec).
-:::
+- [crowdsecurity/crowdsec-service-api-sdk-python](https://github.com/crowdsecurity/crowdsec-service-api-sdk-python/tree/main/doc)
 
 ## Usage
 
 ### Pre-requisites
 
 - An active [CrowdSec account](https://app.crowdsec.net/)
-- An API key for the Service API (guide [here](/u/console/api/intro))
+- An API key for the Service API (guide [here](/u/service_api/getting_started#getting-your-api-keys))
 
 ### Authentication
 
@@ -46,6 +45,9 @@ KEY = os.getenv('KEY')
 
 auth = ApiKeyAuth(api_key=KEY)
 client = Blocklists(base_url=Server.production_server.value, auth=auth)
+# Get info about the user
+response = client.get_info()
+print(response)
 ```
 
 ### Making Requests

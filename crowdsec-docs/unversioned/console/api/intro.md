@@ -44,4 +44,4 @@ We provide SDKs for the CrowdSec Service API to make it easier to interact with 
 
 ## Next Steps
 
-Now that you have an API key and know how to authenticate requests, you can start using the CrowdSec Service API to manage blocklists and integrations. Check out the API reference and SDKs to get started. You can also check out the [CrowdSec Service API Examples](
+Now that you have an API key and know how to authenticate requests, you can start using the CrowdSec Service API to manage blocklists and integrations. Check out the API reference and SDKs to get started.
