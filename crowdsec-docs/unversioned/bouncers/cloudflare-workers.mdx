@@ -193,15 +193,35 @@ For obtaining the `token`:
 
 1. Sign in as a user who has access to the desired account.
 
-Then click [this link](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%5D&name=) and create the token. 
+Then click [this link](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%2C%20%7B%22key%22%3A%20%22dns%22%2C%20%22type%22%3A%22read%22%7D%5D&name=) and create the token. 
 
-Alternatively, you can
+Alternatively, you can go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. 
 
-Go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. 
+The Remediation Component requires the following permissions to function:
 
-The Remediation Component requires the follwing permissions to function.
+| Permission Group | Item | Permission |
+| --- | --- | --- |
+| Account | Turnstile | Edit |
+| Account | Workers KV Storage | Edit |
+| Account | Workers Scripts | Edit |
+| Account | Account Settings | Read |
+| User | User Details | Read |
+| Zone | DNS | Read |
+| Zone | Workers Routes | Edit |
+| Zone | Zone | Read |
 
-![image](/img/bouncer/cloudflare-worker/cloudflare_token_permissions.png)
+
+:::info
+By default, the token will be scopped to all accounts / zones you have access to.\
+We recommend scoping the token only to the required accounts and zones.
+:::
+
+:::warning
+
+This remediation component require each configured to have at least one `A` or `AAAA` records.\
+If you have zones without them (eg, with only `CNAME` records), exclude them from the scope.\
+The bouncer will try to automatically ignore such zones, but if it fails to do so for any reason, you might incur higher KV storage usage.
+:::
 
 To automatically generate config, check the helper section below.
 
