@@ -9,88 +9,11 @@ CrowdSec has a main `yaml` configuration file, usually located in `/etc/crowdsec
 
 ## Configuration example
 
-<details>
-  <summary>Default configuration</summary>
+You can find the default configurations on our GitHub repository:
 
-```yaml
-common:
-  daemonize: true
-  pid_dir: /var/run/
-  log_media: file
-  log_level: info
-  log_dir: /var/log/
-  log_max_size: 500
-  log_max_age: 28
-  log_max_files: 3
-  compress_logs: true
-  working_dir: .
-config_paths:
-  config_dir: /etc/crowdsec/
-  data_dir: /var/lib/crowdsec/data/
-  simulation_path: /etc/crowdsec/simulation.yaml
-  hub_dir: /etc/crowdsec/hub/
-  index_path: /etc/crowdsec/hub/.index.json
-  notification_dir: /etc/crowdsec/notifications/
-  plugin_dir: /var/lib/crowdsec/plugins/
-crowdsec_service:
-  acquisition_path: /etc/crowdsec/acquis.yaml
-  #acquisition_dir: /etc/crowdsec/acquis/
-  parser_routines: 1
-  buckets_routines: 1
-  output_routines: 1
-cscli:
-  output: human
-  hub_branch: wip_lapi
-db_config:
-  log_level: info
-  type: sqlite
-  db_path: /var/lib/crowdsec/data/crowdsec.db
-  #max_open_conns: 100
-  #user:
-  #password:
-  #db_name:
-  #host:
-  #port:
-  flush:
-    max_items: 5000
-    max_age: 7d
-    #bouncers_autodelete:
-    #  cert: 7d
-    #  api_key: 7d
-    #agents_autodelete:
-    #  cert: 7d
-    #  login_password: 7d
-api:
-  client:
-    insecure_skip_verify: false
-    credentials_path: /etc/crowdsec/local_api_credentials.yaml
-  server:
-    log_level: info
-    listen_uri: 127.0.0.1:8080
-    profiles_path: /etc/crowdsec/profiles.yaml
-    use_forwarded_for_headers: false
-    console_path: /etc/crowdsec/console.yaml
-    online_client: # Crowdsec API
-      credentials_path: /etc/crowdsec/online_api_credentials.yaml
-#    tls:
-#      cert_file: /etc/crowdsec/ssl/cert.pem
-#      key_file: /etc/crowdsec/ssl/key.pem
-#      client_verification: "VerifyClientCertIfGiven"
-#      ca_cert_path: /path/to/ca.crt
-#      agents_allowed_ou: # List of allowed Organisational Unit for the agents
-#       - agents_ou
-#      bouncers_allowed_ou: # List of allowed Organisational Unit for the bouncers
-#       - bouncers_ou
-#      crl_path: /path/to/file.crl
-#      cache_expiration: 1h
-prometheus:
-  enabled: true
-  level: full
-  listen_addr: 127.0.0.1
-  listen_port: 6060
-```
+[Linux default configuration](https://github.com/crowdsecurity/crowdsec/blob/releases/1.4.x/config/config.yaml)
 
-</details>
+[Windows default configuration](https://github.com/crowdsecurity/crowdsec/blob/releases/1.4.x/config/config_win.yaml)
 
 ## Environment variables
 

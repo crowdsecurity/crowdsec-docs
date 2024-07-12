@@ -125,45 +125,9 @@ module.exports = {
             ],
         },
         {
-            type: "category",
             label: "Blocklists",
-            link: {
-                type: "doc",
-                id: "console/blocklists/overview",
-            },
-            items: [
-                {
-                    type: "doc",
-                    label: "Catalog",
-                    id: "console/blocklists/catalog",
-                },
-                {
-                    type: "doc",
-                    label: "Details",
-                    id: "console/blocklists/details",
-                },
-                {
-                    type: "doc",
-                    label: "Subscription",
-                    id: "console/blocklists/subscription",
-                },
-                {
-                    type: "category",
-                    label: "Integrations",
-                    link: {
-                        type: "doc",
-                        id: "console/blocklists/integrations/firewall",
-                    },
-                    items: [
-                        {
-                            type: "doc",
-                            label: "Firewall integrations",
-                            id: "console/blocklists/integrations/firewall",
-                        }
-                     
-                    ],
-                }
-            ],
+            type: "doc",
+            id: "blocklists/intro"
         },
         {
             type: "category",
@@ -213,6 +177,11 @@ module.exports = {
                 id: "console/decisions/decisions_intro",
             },
             items: ["console/decisions/decisions_management"],
+        },
+        {
+            type: "link",
+            label: "Service API",
+            href: "/u/service_api/getting_started",
         },
     ],
     remediationSideBar: [
@@ -316,6 +285,55 @@ module.exports = {
         //     "id": "bouncers/contributing/contributing_bouncers"
         // },
     ],
+    blocklistsSideBar: [
+        {
+            type: "doc",
+            id: "blocklists/intro",
+            label: "Introduction",
+        },
+        {
+            type: "doc",
+            id: "blocklists/getting_started",
+            label: "Getting Started",
+        },
+        {
+            type: "doc",
+            label: "Catalog",
+            id: "console/blocklists/catalog",
+        },
+        {
+            type: "doc",
+            label: "Details",
+            id: "console/blocklists/details",
+        },
+        {
+            type: "doc",
+            label: "Subscription",
+            id: "console/blocklists/subscription",
+        },
+        {
+            type: "doc",
+            label: "Security Engine",
+            id: "blocklists/security_engine",
+        },
+        {
+            type: "category",
+            link: {
+                type: "doc",
+                id: "integrations/intro",
+            },
+            label: "Integrations",
+            items: [
+                "integrations/cisco",
+                "integrations/checkpoint",
+                "integrations/f5",
+                "integrations/fortinet",
+                "integrations/paloalto",
+                "integrations/genericfirewall",
+                "integrations/remediationcomponent",
+            ]
+        }
+    ],
     troubleshootingSideBar: [
         {
             type: "doc",
@@ -331,6 +349,49 @@ module.exports = {
             type: "doc",
             id: "troubleshooting/remediation_components",
             label: "Remediation Components",
+        },
+    ],
+    serviceApiSideBar: [
+        {
+            type: "doc",
+            id: "service_api/getting_started",
+            label: "Getting Started"
+        },
+        {
+            type: "category",
+            label: "Quickstart",
+            items: [
+                "service_api/quickstart/authentication",
+                "service_api/quickstart/blocklists",
+                "service_api/quickstart/integrations",
+            ]
+
+        },
+        {
+            type: "category",
+            label: "SDKs",
+            items: [
+                {
+                    type: "doc",
+                    label: "Python",
+                    id: "service_api/sdks/python"
+                }
+            ]
+        },
+        {
+            type: "link",
+            label: "Swagger",
+            href: "https://admin.api.crowdsec.net/v1/docs#/"
+        },
+        {
+            type: "link",
+            label: "Redoc",
+            href: "https://admin.api.crowdsec.net/v1/redoc"
+        },
+        {
+            type: "doc",
+            id: "service_api/faq",
+            label: "FAQ"
         },
     ],
     guidesSideBar: [
