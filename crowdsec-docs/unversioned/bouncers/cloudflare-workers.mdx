@@ -199,7 +199,7 @@ Alternatively, you can
 
 Go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. 
 
-The Remediation Component requires the follwing permissions to function.
+The Remediation Component requires the following permissions to function.
 
 ![image](/img/bouncer/cloudflare-worker/cloudflare_token_permissions.png)
 
@@ -240,9 +240,9 @@ sudo crowdsec-cloudflare-worker-bouncer -d
 
 ## Setting up the worker route fail mode
 
-The Remediation Component creates worker routes to make the workers act as a reverse proxy for your origin servers. The worker routes are created with the failover mode set to `Fail Closed`. There's no public Cloudflare API we can use to change/update it to `Fail Open` mode.
+The Remediation Component creates worker routes to make the workers act as a reverse proxy for your origin servers. The worker routes are created with the failover mode set to `Fail Closed`. **There's no public Cloudflare API we can use to change/update it to `Fail Open` mode**.
 
-With `Fail Closed` mode, Routes in fail closed mode will display a Cloudflare 1027 error page to visitors if there's an error within the worker. This error could be triggered due to quotas exceeding your plan etc. Cloudflare doesn't mention all the possible scenarios which could trigger this error page. 
+With `Fail Closed` mode, Routes in fail closed mode will display a Cloudflare 1027 error page to visitors if there's an error within the worker. This error could be triggered due to quotas exceeding your plan etc. **Cloudflare doesn't mention all the possible scenarios which could trigger this error page**. 
 
 Thus **we recommend you to manually override the failover mode to `Fail Open`** for all the worker routes created by our Remediation Component. With `Fail Open` mode the requests would bypass the worker and be served directly from your origin servers. Thus your website would continue to function even if there's an error within the worker.
 
@@ -313,129 +313,173 @@ crowdsec_config:
 ```
   And within a few seconds it will be sent to the KV and the proper remediation should be applied to the requests from the specified IP
 
-  <!-- Screenshot of CF KV ? or something -->
+## Configuration Reference
 
-## Appendix: Configuration Reference
+### `crowdsec`
 
-### `crowdsec.lapi_url`
+Used to nest the configuration related to crowdsec.
+
+#### `lapi_url`
+> string
 
 The URL of CrowdSec LAPI. It should be accessible from the Remediation Component.
 
-### `crowdsec.lapi_key`
+#### `lapi_key`
+> string
 
 It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
+
 ```bash
-
 sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for human friendly output.
-
 ```
 
-### `crowdsec.update_frequency`
+#### `update_frequency`
+> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
 The Remediation Component will poll the CrowdSec every `update_frequency` interval. (default: 10s)
 
-### `crowdsec.include_scenarios_containing`
+#### `include_scenarios_containing`
+> [ ]string
 
-Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"] (default: includes all scenarios)
+Ignore IPs banned for triggering scenarios not containing either of provided word.
 
-### `crowdsec.exclude_scenarios_containing`
+```yaml title="Example"
+include_scenarios_containing: ["ssh", "http"]
+```
 
-Ignore IPs banned for triggering scenarios containing either of provided word. Example value ["ssh", "http"] (default: exclude none)
+#### `exclude_scenarios_containing`
+> [ ]string
 
-### `crowdsec.only_include_decisions_from`
+Ignore IPs banned for triggering scenarios containing either of provided word.
 
-Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"] (default: include all origins)
+```yaml title="Example"
+exclude_scenarios_containing: ["ssh", "http"]
+```
 
-### `crowdsec.insecure_skip_verify`
+#### `only_include_decisions_from`
+> [ ]string
 
-Skip TLS verification when connecting to CrowdSec LAPI.
+Only include IPs banned due to decisions orginating from provided sources.
 
-### `crowdsec.key_path`
+```yaml title="Example"
+only_include_decisions_from: ["cscli", "crowdsec"]
+```
+
+#### `insecure_skip_verify`
+> boolean
+
+Skip verification of the LAPI certificate, usually used for self-signed certificates
+
+#### `key_path`
+> string
 
 Path to the private key file to use for TLS authentication with CrowdSec LAPI.
 
-### `crowdsec.cert_path`
+#### `cert_path`
+> string
 
 Path to the certificate file to use for TLS authentication with CrowdSec LAPI.
 
-### `crowdsec.ca_cert_path`
+#### `ca_cert_path`
+> string
 
 Path to the CA certificate file to use for TLS authentication with CrowdSec LAPI.
 
-### `cloudflare_config.accounts[].id`
+### `cloudflare_config`
+
+Cloudflare configuration.
+
+#### `accounts[].id`
+> string
 
 The ID of the Cloudflare account.
 
-### `cloudflare_config.accounts[].zones[].zone_id`
+#### `accounts[].zones[].zone_id`
+> string
 
 The ID of the Cloudflare zone.
 
-### `cloudflare_config.accounts[].zones[].actions`
+#### `accounts[].zones[].actions`
+> `captcha` | `ban`
 
-Supported actions for the zone. Supported values ["captcha", "ban"]
+Supported actions for the zone.
 
-### `cloudflare_config.accounts[].zones[].default_action`
+#### `accounts[].zones[].default_action`
+> `captcha` | `ban` | `none`
 
-Default action to take for the zone. Example value ["captcha", "ban", "none"]
+Default action to take for the zone.
 
-### `cloudflare_config.accounts[].zones[].routes_to_protect`
+#### `accounts[].zones[].routes_to_protect`
+> [ ]string
 
 List of routes to protect within the zone. Example value ["*example.com/*"]
 
-### `cloudflare_config.accounts[].zones[].turnstile.enabled`
+#### `accounts[].zones[].turnstile.enabled`
+> boolean
 
-Enable or disable turnstile for the zone. Example value `true` or `false`
+Enable or disable turnstile for the zone.
 
-### `cloudflare_config.accounts[].zones[].turnstile.rotate_secret_key`
+#### `accounts[].zones[].turnstile.rotate_secret_key`
+> boolean
 
-Rotate the secret key for turnstile. Example value `true` or `false`
+Rotate the secret key for turnstile.
 
-### `cloudflare_config.accounts[].zones[].turnstile.rotate_secret_key_every`
+#### `accounts[].zones[].turnstile.rotate_secret_key_every`
+> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
 Duration for rotating the secret key. Values should be in the format of `1h2m3s`. Example value `168h0m0s` for 7 days.
 
-### `cloudflare_config.accounts[].zones[].turnstile.mode`
+#### `accounts[].zones[].turnstile.mode`
 
 Mode for turnstile. Supported values ["managed", "invisible", "non-interactive"]. See [cloudflare-docs](https://developers.cloudflare.com/turnstile/reference/widget-types/) for more details.
 
-### `cloudflare_config.accounts[].zones[].token`
+#### `accounts[].zones[].token`
+> string
 
 Cloudflare account token.
 
-### `cloudflare_config.accounts[].zones[].account_name`
+#### `accounts[].zones[].account_name`
+> string
 
 Account name.
 
-### `ban_template_path`
+#### `ban_template_path`
+> string
 
 Path to the ban template file. If not provided, the default template is used. This HTML would be rendered to requests when they are banned.
 
-### `log_level`
+#### `log_level`
+> `info` | `debug` | `error` | `warning` | `trace`
 
-Logging level. Either of `info`, `debug`, `error`, `warning`, `trace` .
+Log level of the Remediation Component.
 
-### `log_mode`
+#### `log_mode`
+> `stdout` | `file`
 
-Logging mode. Either of `stdout`, `file`.
+Where the log contents are written (With `file` it will be written to `log_dir` with the name `crowdsec-cloudflare-worker-bouncer.log`)
 
-### `log_dir`
+#### `log_dir`
 
-Directory for log files.
+Relevant if `log_mode` is `file`. This determines where to create log file.
 
-### `prometheus.enabled`
+### `prometheus`
+
+Prometheus configuration.
+
+#### `enabled`
+> boolean
 
 Enable or disable Prometheus metrics.
 
-### `prometheus.listen_addr`
+#### `listen_addr`
+> string
 
 Address to listen for Prometheus metrics. Example value `127.0.0.1`
 
-### `prometheus.listen_port`
+#### `listen_port`
+> string
 
 Port to listen for Prometheus metrics. Example value `2112`
-
-
-
 
 ## Troubleshooting
  - Metrics can be seen at http://localhost:2112/metrics

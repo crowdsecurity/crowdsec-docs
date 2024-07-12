@@ -10,6 +10,10 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 
 <p align="center">
+  <img src={useBaseUrl('/img/crowdsec_http.svg')} width="400" height="300" />
+</p>
+
+<p align="center">
 <p align="center">
 <img src="https://img.shields.io/badge/build-pass-green"></img>
 <img src="https://img.shields.io/badge/tests-pass-green"></img>
@@ -22,10 +26,10 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-This bouncer exposes CrowdSec's active decisions via provided HTTP endpoints in pre-defined formats. It can be used by network appliances which support consumption of blocklists via HTTP.
+This Remediation Component exposes CrowdSec's active decisions via provided HTTP(S) endpoints in pre-defined formats. It can be used by network appliances which support consumption of blocklists via HTTP.
 
 
-## Installation from packages
+## Installation from repositories
 
 [Setup crowdsec repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories).
 
@@ -53,13 +57,13 @@ $ sudo yum install crowdsec-blocklist-mirror
 
 </Tabs>
 
-## Installation using docker:
+## Docker / Podman:
 
-Refer to docker [hub docs](https://hub.docker.com/r/crowdsecurity/blocklist-mirror)
+Refer to [docker hub](https://hub.docker.com/r/crowdsecurity/blocklist-mirror)
 
+## Manual
 
-
-## Manual installation via script
+### installation via script
 
 First, download the latest [`crowdsec-blocklist-mirror` release](https://github.com/crowdsecurity/cs-blocklist-mirror/releases).
 
@@ -68,7 +72,7 @@ $ tar xzvf crowdsec-blocklist-mirror.tgz
 $ sudo ./install.sh
 ```
 
-## From source
+### From source
 
 Run the following commands:
 
@@ -80,120 +84,116 @@ $ cd crowdsec-blocklist-mirror-v*/
 $ sudo ./install.sh
 ```
 
-# Configuration
+### Configuration
 
-Before starting the `crowdsec-blocklist-mirror` service, please edit the configuration file to add your API URL and key.
-The default configuration file is located under : `/etc/crowdsec/bouncers/`
+For manual installations before starting the `crowdsec-blocklist-mirror` service, please edit the configuration file to add your API URL and key.
 
-```console
-$ vim /etc/crowdsec/bouncers/crowdsec-blocklist-mirror.yaml
-```
+The default configuration file is located under : `/etc/crowdsec/bouncers/` as file `crowdsec-blocklist-mirror.yaml`.
 
-```yaml
-config_version: v1.0
-crowdsec_config:
-  lapi_key: ${API_KEY}
-  lapi_url: http://127.0.0.1:8080/
-  update_frequency: 10s
-  include_scenarios_containing: []
-  exclude_scenarios_containing: []
-  only_include_decisions_from: []
-  insecure_skip_verify: false
+If you need to download and restore the configuration file you can find an example on the [Respository](https://github.com/crowdsecurity/cs-blocklist-mirror/blob/main/config/crowdsec-blocklist-mirror.yaml)
 
-blocklists:
-  - format: plain_text # See supported formats below
-    endpoint: /security/blocklist
-    authentication:
-      type: none # Supported types are either of "none", "ip_based", "basic"
-      user:
-      password:
-      trusted_ips: # IP ranges, or IPs which don't require auth to access this blocklist
-        - 127.0.0.1
-        - ::1
-
-listen_uri: 127.0.0.1:41412
-tls:
-  cert_file:
-  key_file:
-
-metrics:
-  enabled: true
-  endpoint: /metrics
-
-log_media: file
-log_dir: /var/log/
-log_level: info
-log_max_size: 40
-log_max_age: 30
-log_max_backups: 3
-enable_access_logs: true
-compress_logs: true
-```
+## Configuration Reference
 
 ### `crowdsec_config`
 
-#### `lapi_url`:
+Used to nest the configuration related to crowdsec.
 
-The URL of CrowdSec LAPI. It should be accessible from whichever network the bouncer has access.
+#### `lapi_url`
+> string
 
-#### `lapi_key`:
+The URL of CrowdSec LAPI. It should be accessible from whichever network the component has access.
+
+#### `lapi_key`
+> string
 
 It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
+
 ```bash
-
 sudo cscli -oraw bouncers add blocklistMirror # -oraw flag can discarded for human friendly output.
-
 ```
 
-#### `update_frequency`:
+#### `cert_path`
+> string
 
-The bouncer will poll the CrowdSec every `update_frequency` interval.
+Path to the certificate file used to authenticate with the LAPI.
 
-#### `include_scenarios_containing`:
+#### `key_path`
+> string
 
-Ignore IPs banned for triggering scenarios not containing either of provided word.
+Path to the key file used to authenticate with the LAPI.
 
-#### `exclude_scenarios_containing`: 
+#### `ca_path_file`
+> string
 
-Ignore IPs banned for triggering scenarios containing either of provided word.
+Path to the CA file used to trust the LAPI certificate.
 
-#### `only_include_decisions_from`:
+#### `update_frequency`
+> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
-Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+The component will poll the CrowdSec LAPI every `update_frequency` interval.
 
-#### `insecure_skip_verify`:
+#### `include_scenarios_containing`
+> [ ]string
 
-Set to true to skip verifying certificate.
+Ignore IPs banned for triggering scenarios not containing the provided words.
 
-#### `listen_uri`: 
+```yaml title="Example"
+include_scenarios_containing: ["ssh", "http"]
+```
 
-Location where the mirror will start server.
+#### `exclude_scenarios_containing`
+> [ ]string 
 
-### `tls_config`
+Ignore IPs banned for triggering scenarios containing the provided words.
 
-#### `cert_file`:
+```yaml title="Example"
+exclude_scenarios_containing: ["ssh", "http"]
+```
 
-Path to certificate to use if TLS is to be enabled on the mirror server.
+#### `only_include_decisions_from`
+> [ ]string
 
-#### `key_file`:
+Only include IPs banned due to decisions orginating from provided sources.
 
-Path to certificate key file.
+```yaml title="Example"
+only_include_decisions_from: ["cscli", "crowdsec"]
+```
 
-### `metrics`:
+#### `insecure_skip_verify`
+> boolean
 
-#### `enabled`:
+Set to true to skip verifying certificate usually used for self-signed certificates.
 
-Boolean (true|false). Set to true to enable serving and collecting metrics. 
+#### `listen_uri`
+> string (`<IP>:<PORT>`)
 
-#### `endpoint`:
+The bindable address and port for the component to listen on
 
-Endpoint to serve the metrics on.
+```yaml title="Example"
+listen_uri: "127.0.0.1:41412"
+```
 
-### `blocklists`:
+### `metrics`
+
+Prometheus metrics
+
+#### `enabled`
+> boolean
+
+Set to true to enable serving and collecting metrics. 
+
+#### `endpoint`
+> string
+
+The URI endpoint to serve the metrics on.
+
+### `blocklists`
+> [ ][BlockListConfig](https://github.com/crowdsecurity/cs-blocklist-mirror/blob/dc326b759d2671b803c2882500a3df5da2474bf4/pkg/cfg/config.go#L36-L46)
 
 List of blocklists to serve. Each blocklist has the following configuration.
 
-#### `format`:
+#### `format`
+> string
 
 Format of the blocklist, the following are supported:
 
@@ -201,33 +201,52 @@ Format of the blocklist, the following are supported:
  - `mikrotik` : Lines for mikrotik, format is `/ip|/ipv6 firewall address-list add list={list_name} address={ip} comment="{scenario} for {duration}"`
  - `F5` : Lines for f5 appliances, format is `{ip|range},{netmask},bl,{scenario}`
 
-#### `endpoint`:
+#### `endpoint`
+> string
 
-Endpoint to serve the blocklist on.
+The URI endpoint to serve the blocklist on.
 
-### `authentication`:
+#### `authentication`
 
-Authentication related config.
+Configuration used to enforce or bypass authentication on the blocklist.
 
-#### `type`:
+##### `type`:
+> `none` | `basic` | `ip_based`
 
-Currently "basic" and "ip_based" authentication is supported. You can disable authentication completely by setting this to 'none'.
+The type of authetentication to impose:
 
-- `basic`: It's Basic HTTP  Authentication. Only requests with valid `user` and `password` as specified in below config would pass through
+- `none` : No authentication required.
+- `basic` : Basic authentication required.
+- `ip_based` : IP based authentication required.
 
-- `ip_based`: Only requests originating from `trusted_ips` would be allowed. 
+##### `user`
+> string
 
-#### `user`:
+Valid username if using `basic` type.
 
-Valid username if using `basic` authentication.
-
-#### `password`:
+##### `password`:
+> string
 
 Password for the provided user and using `basic` authentication.
 
-#### `trusted_ips`:
+##### `trusted_ips`:
+> [ ]string
 
 List of valid IPv4 and IPv6 IPs and ranges which have access to blocklist. It's only applicable when authentication `type` is `ip_based`.
+
+### `tls`
+
+TLS Configuration is utilized to activate HTTPS on the mirror server.
+
+#### `cert_file`:
+> string
+
+Path to certificate to use if TLS is to be enabled on the mirror server.
+
+#### `key_file`:
+> string
+
+Path to certificate key file.
 
 ## Global RunTime Query Parameters
 
@@ -246,7 +265,7 @@ http://localhost:41412/security/blocklist?ipv6only
 ```
 `?nosort` - Do not sort IP's
 
-> Only use if you do not care about the sorting of the list, can result in average 1ms improvement 
+> Only use if you do not care about the sorting of the list, can result in better performance.
 
 Example usage
 ```
@@ -273,15 +292,15 @@ Package upgrades may have good reasons to modify the configuration, so be carefu
 
 ## Formats
 
-The bouncer can expose the blocklist in the following formats. You can configure the format of the blocklist by setting it's `format` parameter to any of the supported formats described below.
+The component can expose the blocklist in the following formats. You can configure the format of the blocklist by setting it's `format` parameter to any of the supported formats described below.
 
 ### plain_text
 
 Example:
 
 ```text
-1.2.3.4
-4.3.2.1
+192.168.1.1
+192.168.1.2
 ```
 
 ### mikrotik
@@ -293,8 +312,8 @@ Example:
 ```text
 /ip firewall address-list remove [find list=CrowdSec]
 /ipv6 firewall address-list remove [find list=CrowdSec]
-/ip firewall address-list add list=CrowdSec address=1.2.3.4 comment="crowdsecurity/ssh-bf for 152h40m24.308868973s"
-/ip firewall address-list add list=CrowdSec address=4.3.2.1 comment="crowdsecurity/postfix-spam for 166h40m25.280338424s"/ipv6 firewall address-list add list=CrowdSec address=2001:470:1:c84::17 comment="crowdsecurity/ssh-bf for 165h13m42.405449876s"
+/ip firewall address-list add list=CrowdSec address=192.168.1.1 comment="crowdsecurity/ssh-bf for 152h40m24.308868973s"
+/ip firewall address-list add list=CrowdSec address=192.168.1.2 comment="crowdsecurity/postfix-spam for 166h40m25.280338424s"/ipv6 firewall address-list add list=CrowdSec address=2001:470:1:c84::17 comment="crowdsecurity/ssh-bf for 165h13m42.405449876s"
 ```
 
 #### mikrotik query parameters
@@ -305,6 +324,15 @@ example output:
 ```text
 /ip firewall address-list remove [find list=foo]
 /ipv6 firewall address-list remove [find list=foo]
-/ip firewall address-list add list=foo address=1.2.3.4 comment="crowdsecurity/ssh-bf for 152h40m24.308868973s"
-/ip firewall address-list add list=foo address=4.3.2.1 comment="crowdsecurity/postfix-spam for 166h40m25.280338424s"/ipv6 firewall address-list add list=foo address=2001:470:1:c84::17 comment="crowdsecurity/ssh-bf for 165h13m42.405449876s"
+/ip firewall address-list add list=foo address=192.168.1.1 comment="crowdsecurity/ssh-bf for 152h40m24.308868973s"
+/ip firewall address-list add list=foo address=192.168.1.2 comment="crowdsecurity/postfix-spam for 166h40m25.280338424s"/ipv6 firewall address-list add list=foo address=2001:470:1:c84::17 comment="crowdsecurity/ssh-bf for 165h13m42.405449876s"
+```
+
+### F5
+
+Example:
+
+```text
+192.168.1.1,32,bl,ssh-slow-bf
+192.168.1.2,32,bl,ssh-slow-bf
 ```

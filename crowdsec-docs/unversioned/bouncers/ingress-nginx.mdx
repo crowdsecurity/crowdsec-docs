@@ -22,12 +22,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-
-A lua plugin bouncer for Ingress Nginx Controller.
+A lua Remediation Component for Ingress Nginx Controller.
 
 ## How does it work ?
 
-This bouncer leverages OpenResty lua's API, used the ingress nginx controller as a [plugin](https://github.com/kubernetes/ingress-nginx/blob/main/rootfs/etc/nginx/lua/plugins/README.md).
+This component leverages OpenResty lua's API, used the ingress nginx controller as a [plugin](https://github.com/kubernetes/ingress-nginx/blob/main/rootfs/etc/nginx/lua/plugins/README.md).
 
 Supported features:
 
@@ -38,7 +37,7 @@ Supported features:
  - Works with IPv4/IPv6
  - Support IP ranges (can apply a remediation on an IP range)
 
-At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
+At the back, this component uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
 ## Installation
 
@@ -108,12 +107,12 @@ kubectl -n ingress-nginx get pods
 ```
 
 :::info
-In stream mode, the bouncer will launch an internal timer to pull the local API at the first request made to the ingress controller.
+In stream mode, the component will launch an internal timer to pull the local API at the first request made to the ingress controller.
 :::
 
 ### Ingress controller Configuration
 
-The bouncer uses [lua_shared_dict](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#lua-shared-dicts) to share cache between all workers.
+The component uses [lua_shared_dict](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#lua-shared-dicts) to share cache between all workers.
 
 If you want to increase the cache size you need to change this value :
 
@@ -123,13 +122,13 @@ controller:
     lua-shared-dicts: "crowdsec_cache: 50m"
 ````
 
-:warning: Do not rename the `crowdsec_cache` shared dict, else the bouncer will not work anymore.
+:warning: Do not rename the `crowdsec_cache` shared dict, else the component will not work anymore.
 
 #### When using captcha remediation
 
-To make HTTP request in the bouncer, we need to set a `resolver` in the configuration. We choose `local=on` directive since we query `google.com` for the captcha verification, but you can replace it with a valid one.
+To make HTTP request in the component, we need to set a `resolver` in the configuration. We choose `local=on` directive since we query `google.com` for the captcha verification, but you can replace it with a valid one.
 
-To make secure HTTP request in the bouncer, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`). 
+To make secure HTTP request in the component, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`). 
 You can also change this with a valid one :
 ```
   - /etc/ssl/certs/ca-certificates.crt (Debian/Ubuntu/Gentoo)
@@ -143,6 +142,8 @@ You can also change this with a valid one :
 ## References
 
 ### `API_KEY`
+> string
+
 ```bash
 API_KEY=<API_KEY>
 ```
@@ -152,47 +153,60 @@ CrowdSec Local API key.
 Generated with [`sudo cscli bouncers add`](/docs/next/getting_started/install_crowdsec) command.
 
 ### `API_URL`
+> string
+
 ```bash
 API_URL=http://<ip>:<port>
 ```
 
 CrowdSec local API URL.
 
-
 ### `BOUNCING_ON_TYPE`
+> all | ban | captcha
+
 ```bash
-BOUNCING_ON_TYPE=all|ban|captcha
+BOUNCING_ON_TYPE=all
 ```
 
 Type of remediation we want to bounce. 
-If you choose `ban` only and receive a decision with `captcha` as remediation, the bouncer will skip the decision.
+If you choose `ban` only and receive a decision with `captcha` as remediation, the component will skip the decision.
 
 ### `FALLBACK_REMEDIATION`
+> ban | captcha
+
 ```bash
 FALLBACK_REMEDIATION=ban
 ```
 
-The fallback remediation is applied if the bouncer receives a decision with an unknown remediation.
+The fallback remediation is applied if the component receives a decision with an unknown remediation.
 
 ### `MODE`
+> stream | live
+
 ```bash
-MODE=stream|live
+MODE=stream
 ```
 
-The bouncer mode:
- - stream: The bouncer will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
+The component mode:
+ - stream: The component will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
+ - live: The component will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
 
-Note: The timer that pull the local API will be triggered after the first request.
- - live: The bouncer will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
+:::note
+The timer that pull the local API will be triggered after the first request.
+:::
 
 ### `REQUEST_TIMEOUT`
+> int
+
 ```bash
 REQUEST_TIMEOUT=1000
 ```
 
-Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or captcha provider (for the captcha verification).
+Timeout in milliseconds for the HTTP requests done by the component to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
+> string (comma separated)
+
 ```bash
 EXCLUDE_LOCATION=/<path1>,/<path2>
 ```
@@ -203,15 +217,19 @@ The locations to exclude while bouncing. It is a list of location, separated by 
 
 
 ### `CACHE_EXPIRATION`
+> int
+
 > This option is only for the `live` mode.
 
 ```bash
-CACHE_EXPIRATION=1
+CACHE_EXPIRATION=120
 ```
 
-The cache expiration, in second, for IPs that the bouncer store in cache in `live` mode.
+The cache expiration, in second, for IPs that the component store in cache in `live` mode.
 
 ### `UPDATE_FREQUENCY`
+> int
+
 > This option is only for the `stream` mode.
 
 ```bash
@@ -222,6 +240,8 @@ The frequency of update, in second, to pull new/old IPs from the CrowdSec local 
 
 
 ### `REDIRECT_LOCATION`
+> string
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -230,9 +250,11 @@ REDIRECT_LOCATION=/<path>
 
 The location to redirect the user when there is a ban.
 
-If it is not set, the bouncer will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
+If it is not set, the component will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
 
 ### `BAN_TEMPLATE_PATH`
+> string (path to file)
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -245,6 +267,8 @@ By default, the HTML template is located in `/etc/nginx/lua/plugins/crowdsec/tem
 
 
 ### `RET_CODE`
+> int
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -255,13 +279,21 @@ The HTTP code to return for IPs that trigger a `ban` remediation.
 If nothing specified, it will return a 403.
 
 ### `CAPTCHA_PROVIDER`
+> recaptcha | hcaptcha | turnstile
+
 > This option is only for the `captcha` remediation.
 
 ```bash
-CAPTCHA_PROVIDER=<recaptcha | hcaptcha | turnstile>
+CAPTCHA_PROVIDER=recaptcha
 ```
 
+:::info
+For backwards compatability reasons `recaptcha` is the default if no value is set.
+:::
+
 ### `SECRET_KEY`
+> string
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -272,6 +304,8 @@ The captcha secret key.
 
 
 ### `SITE_KEY`
+> string
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -282,6 +316,8 @@ The captcha site key.
 
 
 ### `CAPTCHA_TEMPLATE_PATH`
+> string (path to file)
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -290,17 +326,18 @@ CAPTCHA_TEMPLATE_PATH=<path_to_html_template>
 
 The path to a captcha HTML template.
 
-The bouncer will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
+The component will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
 
 By default, the HTML template is located in `/etc/nginx/lua/plugins/crowdsec/templates/captcha.html`.
 
 
 ### `CAPTCHA_EXPIRATION`
+> int
+
 > This option is only for the `captcha` remediation.
 
 ```bash
 CAPTCHA_EXPIRATION=3600
 ```
-
 
 The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IPs address will get a captcha again.

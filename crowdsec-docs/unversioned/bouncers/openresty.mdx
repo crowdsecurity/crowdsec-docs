@@ -23,11 +23,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 
 
-A lua bouncer for OpenResty.
+A lua Remediation Component for OpenResty.
 
 ## How does it work ?
 
-This bouncer leverages OpenResty lua's API, namely `access_by_lua_block` to check e IP address against the local API.
+This component leverages OpenResty lua's API, namely `access_by_lua_block` to check e IP address against the local API.
 
 Supported features:
 
@@ -38,16 +38,16 @@ Supported features:
  - Works with IPv4/IPv6
  - Support IP ranges (can apply a remediation on an IP range)
 
-At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
+At the back, this component uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
 :::warning
-If you need to upgrade the bouncer from v0.X to v1.X, please follow [this migration process](#migrate-from-v0-to-v1) 
+If you need to upgrade the component from v0.X to v1.X, please follow [this migration process](#migrate-from-v0-to-v1) 
 :::
 
 ## Installation
 
 :::caution Before installation
-openresty bouncer depends on openresty, openresty-opm, gettext-base. it has been tested only on debian/ubuntu based distributions.
+openresty component depends on openresty, openresty-opm, gettext-base. it has been tested only on debian/ubuntu based distributions.
 You can install openresty and openresty-opm from [openresty linux packages](https://openresty.org/en/linux-packages.html).
 :::
 
@@ -87,7 +87,7 @@ sudo yum install crowdsec-openresty-bouncer
 
 
 :::info
-In stream mode, the bouncer will launch an internal timer to pull the local API at the first request made to the server.
+In stream mode, the component will launch an internal timer to pull the local API at the first request made to the server.
 :::
 
 :::caution After installation
@@ -122,14 +122,14 @@ If you are on a mono-machine setup, the `crowdsec-openresty-bouncer` install scr
 
 ## Configuration
 
-### Bouncer configuration
+### Component configuration
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf"
 API_URL=<CROWDSEC_LAPI_URL>
 API_KEY=<CROWDSEC_LAPI_KEY>
-# bounce for all type of remediation that the bouncer can receive from the local API
+# bounce for all type of remediation that the remediation can receive from the local API
 BOUNCING_ON_TYPE=all
-# when the bouncer receive an unknown remediation, fallback to this remediation
+# when the remediation receive an unknown remediation, fallback to this remediation
 FALLBACK_REMEDIATION=ban
 MODE=stream
 REQUEST_TIMEOUT=1000
@@ -169,7 +169,7 @@ SSL_VERIFY=true
 
 ### OpenResty Configuration
 
-The bouncer OpenResty configuration is located in `/usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf` :
+The component OpenResty configuration is located in `/usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf` :
 
 ```bash title="/usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf"
 lua_package_path '$prefix/../lualib/plugins/crowdsec/?.lua;;';
@@ -193,7 +193,7 @@ access_by_lua_block {
 ```
 
 
-The bouncer uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict) to share cache between all workers.
+The component uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict) to share cache between all workers.
 
 If you want to increase the cache size you need to change this value `lua_shared_dict crowdsec_cache 50m;`.
 
@@ -201,9 +201,9 @@ If you want to increase the cache size you need to change this value `lua_shared
 
 #### When using captcha remediation
 
-To make HTTP request in the bouncer, we need to set a `resolver` in the configuration. We choose `local=on` directive since we query `google.com` for the captcha verification, but you can replace it with a valid one.
+To make HTTP request in the component, we need to set a `resolver` in the configuration. We choose `local=on` directive since we query `google.com` for the captcha verification, but you can replace it with a valid one.
 
-To make secure HTTP request in the bouncer, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`). 
+To make secure HTTP request in the component, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`). 
 You can also change this with a valid one :
 ```
   - /etc/ssl/certs/ca-certificates.crt (Debian/Ubuntu/Gentoo)
@@ -219,7 +219,7 @@ You can also change this with a valid one :
 
 To setup the Application Security Component you first need to install it in your CrowdSec Security Engine.
 
-On the remediation component side, you just need to configure the following option in the remediation component file:
+On the Remediation Component side, you just need to configure the following option in the Remediation Component file:
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf"
 # Mandatory
@@ -239,7 +239,7 @@ SSL_VERIFY=true                    # default
 ### Setup captcha
 > Currently, we have support for 3 providers: recaptcha, hcaptcha or turnstile
 
-If you want to use captcha with your OpenResty Bouncer, you must provide a Site key and Secret key in your bouncer configuration. If you wish to use any other provider than recaptcha you must also provide a Captcha provider.
+If you want to use captcha with your OpenResty, you must provide a Site key and Secret key in your component configuration. If you wish to use any other provider than recaptcha you must also provide a Captcha provider.
 
 ([recaptcha documentation](https://developers.google.com/recaptcha/intro)).
 
@@ -269,7 +269,7 @@ sudo cscli decisions add -i <IP_TO_TEST> -t captcha
 
 ### Why aren't decisions applied instantly
 
-In stream mode, the bouncer will launch an internal timer to pull the local API at the first request. So the cache won't be refreshed until the first request hits the service.
+In stream mode, the component will launch an internal timer to pull the local API at the first request. So the cache won't be refreshed until the first request hits the service.
 
 ### Resolver and certificates
 
@@ -290,24 +290,25 @@ And restart OpenResty.
 The best way to migrate from the crowdsec-openresty-bouncer v0.* to v1 is to reinstall the bouncer. Indeed, many new configurations options are now available and some has been removed.
 
 - Backup your CrowdSec Local API key from your configuration file (`/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`)
-- Remove the old bouncer:
+- Remove the old component:
 
 ```bash
 sudo apt-get remove --purge crowdsec-openresty-bouncer
 ```
 
-- Install the new bouncer:
+- Install the new component:
 ```bash
 sudo apt-get update
 sudo apt-get install crowdsec-openresty-bouncer
 ```
 
-- Configure the bouncer in `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`
+- Configure the component in `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`
 
-
-## References
+## Configuration Reference
 
 ### `API_KEY`
+> string
+
 ```bash
 API_KEY=<API_KEY>
 ```
@@ -317,49 +318,62 @@ CrowdSec Local API key.
 Generated with [`sudo cscli bouncers add`](/docs/next/getting_started/install_crowdsec) command.
 
 ### `API_URL`
+> string
+
 ```bash
 API_URL=http://<ip>:<port>
 ```
 
 CrowdSec local API URL.
 
-
 ### `BOUNCING_ON_TYPE`
+> all | ban | captcha
+
 ```bash
-BOUNCING_ON_TYPE=all|ban|captcha
+BOUNCING_ON_TYPE=all
 ```
 
-Type of remediation we want to bounce. 
-If you choose `ban` only and receive a decision with `captcha` as remediation, the bouncer will skip the decision.
+Type of remediation we want to bounce.
+If you choose `ban` only and receive a decision with `captcha` as remediation, the component will skip the decision.
 
 ### `FALLBACK_REMEDIATION`
+> ban | captcha
+
 ```bash
 FALLBACK_REMEDIATION=ban
 ```
 
-The fallback remediation is applied if the bouncer receives a decision with an unknown remediation.
+The fallback remediation is applied if the component receives a decision with an unknown remediation.
 
 ### `MODE`
+> stream | live
+
 ```bash
-MODE=stream|live
+MODE=stream
 ```
 
 The default mode is `live`.
 
-The bouncer mode:
- - stream: The bouncer will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
+The component mode:
+ - stream: The component will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
+ - live: The component will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
 
-Note: The timer that pull the local API will be triggered after the first request.
- - live: The bouncer will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
+:::note
+The timer that pull the local API will be triggered after the first request.
+:::
 
 ### `REQUEST_TIMEOUT`
+> int
+
 ```bash
 REQUEST_TIMEOUT=1000
 ```
 
-Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or captcha provider (for the captcha verification).
+Timeout in milliseconds for the HTTP requests done by the component to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
+> string (comma separated)
+
 ```bash
 EXCLUDE_LOCATION=/<path1>,/<path2>
 ```
@@ -368,17 +382,20 @@ The locations to exclude while bouncing. It is a list of location, separated by 
 
 :warning: It is not recommended to put `EXCLUDE_LOCATION=/`.
 
-
 ### `CACHE_EXPIRATION`
+> int
+
 > This option is only for the `live` mode.
 
 ```bash
 CACHE_EXPIRATION=1
 ```
 
-The cache expiration, in second, for IPs that the bouncer store in cache in `live` mode.
+The cache expiration, in second, for IPs that the remediation store in cache in `live` mode.
 
 ### `UPDATE_FREQUENCY`
+> int
+
 > This option is only for the `stream` mode.
 
 ```bash
@@ -387,8 +404,9 @@ UPDATE_FREQUENCY=10
 
 The frequency of update, in second, to pull new/old IPs from the CrowdSec local API.
 
-
 ### `REDIRECT_LOCATION`
+> string
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -397,9 +415,11 @@ REDIRECT_LOCATION=/<path>
 
 The location to redirect the user when there is a ban.
 
-If it is not set, the bouncer will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
+If it is not set, the component will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
 
 ### `BAN_TEMPLATE_PATH`
+> string (path to file)
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -410,8 +430,9 @@ The path to a HTML page to return to IPs that trigger `ban` remediation.
 
 By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/ban.html`.
 
-
 ### `RET_CODE`
+> int
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -422,13 +443,21 @@ The HTTP code to return for IPs that trigger a `ban` remediation.
 If nothing specified, it will return a 403.
 
 ### `CAPTCHA_PROVIDER`
+> recaptcha | hcaptcha | turnstile
+
 > This option is only for the `captcha` remediation.
 
 ```bash
-CAPTCHA_PROVIDER=<recaptcha | hcaptcha | turnstile>
+CAPTCHA_PROVIDER=<recaptcha
 ```
 
+:::info
+For backwards compatability reasons `recaptcha` is the default if no value is set.
+:::
+
 ### `SECRET_KEY`
+> string
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -437,8 +466,9 @@ SECRET_KEY=<captcha_secret_key>
 
 The captcha secret key.
 
-
 ### `SITE_KEY`
+> string
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -447,8 +477,9 @@ SITE_KEY=<captcha_site_key>
 
 The captcha site key.
 
-
 ### `CAPTCHA_TEMPLATE_PATH`
+> string (path to file)
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -457,12 +488,13 @@ CAPTCHA_TEMPLATE_PATH=<path_to_html_template>
 
 The path to a captcha HTML template.
 
-The bouncer will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
+The component will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
 
 By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/captcha.html`.
 
-
 ### `CAPTCHA_EXPIRATION`
+> int
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -471,8 +503,8 @@ CAPTCHA_EXPIRATION=3600
 
 The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IPs address will get a captcha again.
 
-
 ### `APPSEC_URL`
+> string
 
 > URL of the Application Security Component
 
@@ -481,8 +513,7 @@ APPSEC_URL=http://127.0.0.1:7422
 ```
 
 ### `APPSEC_FAILURE_ACTION`
-
-> passthrough|deny
+> passthrough | deny
 
 ```bash
 APPSEC_FAILURE_ACTION=passthrough  # default
@@ -491,8 +522,7 @@ APPSEC_FAILURE_ACTION=passthrough  # default
 Behavior when the AppSec Component return a 500. Can let the request passthrough or deny it.
 
 ### `ALWAYS_SEND_TO_APPSEC`
-
-> true|false
+> boolean
 
 ```bash
 ALWAYS_SEND_TO_APPSEC=false  # default
@@ -501,8 +531,7 @@ ALWAYS_SEND_TO_APPSEC=false  # default
 Send the request to the AppSec Component even if there is a decision for the IP.
 
 ### `SSL_VERIFY`
-
-> true|false
+> boolean
 
 ```bash
 SSL_VERIFY=false  # default
@@ -510,32 +539,30 @@ SSL_VERIFY=false  # default
 
 Verify the AppSec Component SSL certificate validity.
 
-
 ### `APPSEC_CONNECT_TIMEOUT`
-> In milliseconds
+> int (milliseconds)
 
 ```bash
 APPSEC_CONNECT_TIMEOUT=100  # default
 ```
 
-The timeout of the connection between the remediation component and AppSec Component.
+The timeout of the connection between the Remediation Component and AppSec Component.
 
 
 ### `APPSEC_SEND_TIMEOUT`
-> In milliseconds
+> int (milliseconds)
 
 ```bash
 APPSEC_SEND_TIMEOUT=100  # default
 ```
 
-The timeout to send data from the remediation component to the AppSec Component.
-
+The timeout to send data from the Remediation Component to the AppSec Component.
 
 ### `APPSEC_PROCESS_TIMEOUT`
-> In milliseconds
+> int (milliseconds)
 
 ```bash
 APPSEC_PROCESS_TIMEOUT=500  # default
 ```
 
-The timeout to process the request from the remediation component to the AppSec Component.
+The timeout to process the request from the Remediation Component to the AppSec Component.
