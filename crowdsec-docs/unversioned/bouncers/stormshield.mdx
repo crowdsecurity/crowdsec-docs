@@ -46,7 +46,7 @@ Run the following command to generate the base configuration file. This will gen
 crowdsec-stormshield-bouncer -g > cfg.yaml
 ```
 
-You need to edit this file to configure the remediation component.
+You need to edit this file to configure the Remediation Component.
 Make sure you give the correct LAPI key and URL. 
 The stormshield configuration should be updated with the correct values.
 The container will use SSH to connect to the firewall and the API to update the blacklist.
@@ -63,9 +63,9 @@ cscli bouncers add crowdsec-stormshield-bouncer
 
 Please refer to [configuration reference section](#configuration-reference) for more details on the configuration options.
 
-### Running the remediation component
+### Running the Remediation Component
 
-After configuring the remediation component, you can run it using the following command:
+After configuring the Remediation Component, you can run it using the following command:
 
 ```bash
 crowdsec-stormshield-bouncer -c cfg.yaml
@@ -73,23 +73,23 @@ crowdsec-stormshield-bouncer -c cfg.yaml
 
 ## How it Works
 
-The remediation component will poll the CrowdSec LAPI every `update_frequency` interval.
+The Remediation Component will poll the CrowdSec LAPI every `update_frequency` interval.
 It will then fetch the list of IP bans and sync them with the Stormshield's appliance's [black list](https://documentation.stormshield.eu/SNS/v4/en/Content/User_Configuration_Manual_SNS_v4/Monitoring/Black_lists_Monitoring.htm)
 
 Since CrowdSec provides huge number of banned IPs, using the Stormshield API solely is not possible. The API only allows adding one IP at a time to blacklist directly. Which is extremely slow.
 
-To overcome this limitation, the remediation component will use SSH to connect to the firewall appliance to:
+To overcome this limitation, the Remediation Component will use SSH to connect to the firewall appliance to:
 
 - Create 2 groups 1.Crowdsec and 2.CrowdsecDeleteGroup
 - Create objects for all the new banned IPs and expired bans.
 - Add all the banned IPs to the CrowdSec group. Add all the expired bans to the CrowdsecDeleteGroup. This is done by modifying the `/data/Main/ConfigFiles/objectgroup` and `/data/Main/ConfigFiles/object` files
 
-Then the remediation component will use the Stormshield API to:
+Then the Remediation Component will use the Stormshield API to:
 
 - Add the CrowdSec group to the blacklist.
 - Remove the CrowdsecDeleteGroup from the blacklist.
 
-Finally remediation component empties the CrowdsecDeleteGroup using ssh.
+Finally Remediation Component empties the CrowdsecDeleteGroup using ssh.
 
 This process is repeated every `update_frequency` interval.
 

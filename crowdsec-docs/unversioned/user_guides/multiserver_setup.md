@@ -59,4 +59,4 @@ To avoid any confusion, disabling the LAPI service on the machine running the ag
  - You can use the [console](https://app.crowdsec.net), it supports multiserver setups!
  - If you have an important setup, switching LAPI backend from SQLite to MySQL/PgSQL is strongly advised
 
-[This existing article](https://crowdsec.net/blog/multi-server-setup/) might as well be useful!
+[This existing article](https://www.crowdsec.net/blog/multi-server-setup/) might as well be useful!

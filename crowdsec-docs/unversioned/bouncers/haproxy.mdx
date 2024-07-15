@@ -21,15 +21,15 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 
 
-A lua bouncer for haproxy.
+A lua Remediation Component for haproxy.
 
 :::warning
-This bouncer is compatible with HAProxy version 2.5 and higher.
+This component is compatible with HAProxy version 2.5 and higher.
 :::
 
 ## How does it work ?
 
-This bouncer leverages haproxy lua's API to check e IP address against the local API.
+This component leverages haproxy lua's API to check e IP address against the local API.
 
 Supported features:
 
@@ -64,7 +64,7 @@ sudo apt install crowdsec-haproxy-bouncer
 
 
 :::info
-In stream mode, the bouncer will launch an internal timer to pull the local API at the first request made to the server.
+In stream mode, the component will launch an internal timer to pull the local API at the first request made to the server.
 :::
 
 ### Manual installation
@@ -105,12 +105,12 @@ sudo systemctl restart haproxy
 
 ## Configuration
 
-### Bouncer configuration
+### Component configuration
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf"
 API_KEY=<CROWDSEC_LAPI_KEY>
 MAP_PATH= # path to community_blocklist.map
-# bounce for all type of remediation that the bouncer can receive from the local API
+# bounce for all type of remediation that the component can receive from the local API
 BOUNCING_ON_TYPE=all
 # when the bouncer receive an unknown remediation, fallback to this remediation
 FALLBACK_REMEDIATION=ban
@@ -206,7 +206,7 @@ Validated ips are cached in a [Stick table](https://www.haproxy.com/blog/introdu
 ### Setup captcha
 > Currently, we have support for 3 providers: recaptcha, hcaptcha or turnstile
 
-If you want to use captcha with your HAProxy Bouncer, you must provide a Site key and Secret key in your bouncer configuration.
+If you want to use captcha with your HAProxy component, you must provide a Site key and Secret key in your component configuration.
 
 If you wish to use any other provider than recaptcha you **MUST** adapt the server name in the backend:
 
@@ -264,7 +264,7 @@ sudo cscli decisions add -i <IP_TO_TEST> -t captcha
 
 ### Why aren't decisions applied instantly
 
-In stream mode, the bouncer will launch an internal timer to pull the local API at the first request. So the cache won't be refreshed until the first request hits the service.
+In stream mode, the component will launch an internal timer to pull the local API at the first request. So the cache won't be refreshed until the first request hits the service.
 
 ### SSL and certificates
 
@@ -273,6 +273,8 @@ In order to query captcha provider for verification, you need SSL certificates. 
 ## References
 
 ### `API_KEY`
+> string
+
 ```bash
 API_KEY=<API_KEY>
 ```
@@ -282,28 +284,36 @@ CrowdSec Local API key.
 Generated with [`sudo cscli bouncers add`](/docs/next/getting_started/install_crowdsec) command.
 
 ### `BOUNCING_ON_TYPE`
+> all | ban | captcha
+
 ```bash
-BOUNCING_ON_TYPE=all|ban|captcha
+BOUNCING_ON_TYPE=all
 ```
 
 Type of remediation we want to bounce. 
-If you choose `ban` only and receive a decision with `captcha` as remediation, the bouncer will skip the decision.
+If you choose `ban` only and receive a decision with `captcha` as remediation, the component will skip the decision.
 
 ### `FALLBACK_REMEDIATION`
+> ban | captcha
+
 ```bash
 FALLBACK_REMEDIATION=ban
 ```
 
-The fallback remediation is applied if the bouncer receives a decision with an unknown remediation.
+The fallback remediation is applied if the component receives a decision with an unknown remediation.
 
 ### `REQUEST_TIMEOUT`
+> int
+
 ```bash
 REQUEST_TIMEOUT=1000
 ```
 
-Timeout in milliseconds for the HTTP requests done by the bouncer to query CrowdSec local API or captcha provider (for the captcha verification).
+Timeout in milliseconds for the HTTP requests done by the component to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
+> string (Seperate by comma)
+
 ```bash
 EXCLUDE_LOCATION=/<path1>,/<path2>
 ```
@@ -314,6 +324,8 @@ The locations to exclude while bouncing. It is a list of location, separated by 
 
 
 ### `UPDATE_FREQUENCY`
+> int
+
 > This option is only for the `stream` mode.
 
 ```bash
@@ -324,6 +336,8 @@ The frequency of update, in second, to pull new/old IPs from the CrowdSec local 
 
 
 ### `REDIRECT_LOCATION`
+> string
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -332,9 +346,11 @@ REDIRECT_LOCATION=/<path>
 
 The location to redirect the user when there is a ban.
 
-If it is not set, the bouncer will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
+If it is not set, the component will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
 
 ### `BAN_TEMPLATE_PATH`
+> string (path to file)
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -347,6 +363,8 @@ By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/ban
 
 
 ### `RET_CODE`
+> int
+
 > This option is only for the `ban` remediation.
 
 ```bash
@@ -358,6 +376,8 @@ If nothing specified, it will return a 403.
 
 
 ### `SECRET_KEY`
+> string
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -368,6 +388,8 @@ The captcha secret key.
 
 
 ### `SITE_KEY`
+> string
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -378,6 +400,8 @@ The captcha site key.
 
 
 ### `CAPTCHA_TEMPLATE_PATH`
+> string (path to file)
+
 > This option is only for the `captcha` remediation.
 
 ```bash
@@ -386,12 +410,14 @@ CAPTCHA_TEMPLATE_PATH=<path_to_html_template>
 
 The path to a captcha HTML template.
 
-The bouncer will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
+The component will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
 
 By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/captcha.html`.
 
 
 ### `CAPTCHA_EXPIRATION`
+> int
+
 > This option is only for the `captcha` remediation.
 
 ```bash
