@@ -12,11 +12,11 @@ Get the most out of CrowdSec Threat Intelligence for a better understanding of b
 ## Installation
 
 You can check the [install guide on our repository](https://github.com/crowdsecurity/cs-opencti-internal-enrichment-connector/blob/main/docs/INSTALLATION_GUIDE.md)  
-We'll give you an overview of the steps there after.  
+We'll give you an overview of the steps thereafter.  
 
 ### Via Docker Compose using the official repo
 
-Add a `connector-crowdsec` in your `docker-compose.yml` file containing your OpenCTI deployment. Replace environment value `ChangeMe`  with appropriate values.
+Add a `connector-crowdsec` in your `docker-compose.yml` file containing your OpenCTI deployment. Replace the environment value `ChangeMe`  with appropriate values.
 
 ```yaml
   connector-crowdsec:
@@ -120,13 +120,27 @@ environment:
   - CROWDSEC_CREATE_SIGHTING=true
   - CROWDSEC_CREATE_TARGETED_COUNTRIES_SIGHTINGS=false
 ```
-## Usage
+## Usage & Preview
 
-Make sure the crowdsec connector is registered, by navigating to `http://<opencti_host>/dashboard/data/connectors`
+Make sure the CrowdSec connector is registered, by navigating to `https://<opencti_host>/dashboard/data/ingestion/connectors`
+(`http://<opencti_host>/dashboard/data/connectors` in older versions of openCTI)
 
-Whenever an IP object is imported in your OpenCTI instances, it will get enriched automatically by CrowdSec knowledge.
+Whenever an IP object is imported in your OpenCTI instances, it can get enriched automatically with CrowdSec Threat Intelligence.
 
-![OpenCTI enriched](/img/opencti_crowdsec.png)
+In the example below you can see that our observables have labels created by our connector.  
+They show the reputation, the mitre attack technique code and the behavior associated with that IP.  
+Labels can be activated and deactivated for various enrichment dimensions as well as have a custom color of your choice. Refer to the [User Guide](https://github.com/crowdsecurity/cs-opencti-internal-enrichment-connector/blob/main/docs/USER_GUIDE.md) to know more.
 
-### Preview
+![OpenCTI enriched](/img/opencti_observables_list.png)
 
+There after you can see the kind of enrichments added to your observable:
+- Labels of course
+- External reference
+- Various relationships like Indicators, Attack patterns ...
+- And a note mentionning important informations like the date of first and last seen, top target countries and more.
+
+![OpenCTI enriched](/img/opencti_observable_details.png)
+
+Finally you can browse the various relationships created for this observable like the indicators:
+
+![OpenCTI enriched](/img/opencti_indicators.png)
