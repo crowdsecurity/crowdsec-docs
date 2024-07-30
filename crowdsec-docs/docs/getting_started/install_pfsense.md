@@ -182,7 +182,7 @@ If you need more CrowdSec tests you may want to temporarily disable Login Protec
 ## LAN / private networks whitelist
 
 Since crowdsec 1.6.3, private IP networks are whitelisted by default as well. This means for example an IP from a LAN or WAN which is on 192.168.x.y won't get blocked by a local decision
-(cummunity blocklists don't contain private IPs).
+(community blocklists don't contain private IPs).
 
 If you want to revert to the previous behavior, to block private IPs as well, you can remove the related parser.
 
