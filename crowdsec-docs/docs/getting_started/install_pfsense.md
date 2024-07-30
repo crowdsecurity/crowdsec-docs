@@ -3,14 +3,13 @@ id: install_crowdsec_pfsense
 title: pfSense
 ---
 
-We have created a [pfSense package](https://docs.netgate.com/pfsense/en/latest/packages/list.html) with
-a simple UI to configure the Security Engine and the Firewall Remediation Component (bouncer).
+The CrowdSec package for pfSense requires some manual installation steps, as it is not yet available in the official repositories.
 
 Three types of setup are supported:
 
-**Small** (remediation only) - the pfSense machine receives blocklists from a CrowdSec
+**Small** (remediation only) - the pfSense machine receives blocklists from a
 Security Engine that you are running on a different machine.
-Incoming connections are blocked at the firewall by (configurable) pfSense rules.
+Attacking traffic is blocked at the firewall by (configurable) pfSense rules.
 
 **Medium** (small+log processor) - in addition to enforcing blocklists, the pfSense
 machine can detect attacks directed at the firewall itself, for example port scans.
@@ -27,16 +26,12 @@ values to enable remediation, log processor and Local API.
 
 :::info
 The CrowdSec configuration is not transferred when you restore a pfSense backup, and you'll need
-to reconfigure it or backup separately.
+to reconfigure it or backup separately. Major pfSense upgrades may also require you to re-install
+or re-configure CrowdSec so please verify that it's running afterwards. We have submitted the package
+for inclusion in the official repository which should smooth out these issues.
 :::
 
 ## Installing the package
-
-We have submitted the package to the pfSense developers for review and inclusion in the official repositories.
-
-If you find `crowdsec` under `System/Package Manager`, we recommend you to install it from there.
-
-If the package is not available yet, you'll have to install it manually.
 
  * Choose [the release you want to install](https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases),
    click `Assets` for the list of packages to install.
@@ -53,6 +48,10 @@ If the package is not available yet, you'll have to install it manually.
 # pkg add -f <link to pfSense-pkg-crowdsec>
 ```
 
+The direct links are for the most popular Community Edition of pfSense, architecture amd64. If you run on ARM or a different base version 
+of FreeBSD, you will find .tar files in the release assets containing the packages for the possible platforms.
+
+
 ## Configuration
 
 Once the package and its dependencies are installed, go to `Service/CrowdSec`. The options *Remediation Component*,
@@ -61,7 +60,7 @@ Once the package and its dependencies are installed, go to `Service/CrowdSec`. T
 With the size analogy, the default is a "Large", autonomous installation. For a "Medium", disable *Local API* and fill the fields in the *Remote LAPI* section. For a "Small", disable *Log Processor* too.
 
 CrowdSec on pfSense is fully functional from the command line but the web interface is read-only, with the exception of decision revocation (unban).
-Most actions require the shell or the [CrowdSec Console](https://app.crowdsec.net).
+Most other actions require the shell or the [CrowdSec Console](https://app.crowdsec.net).
 For simple things, `Diagnostics/Command Prompt` works as well as ssh.
 You are free to edit the files in `/usr/local/etc/crowdsec`, although some setting may be overwritten by the pfSense package if they are mandatory.
 
@@ -81,7 +80,8 @@ In the page `Status/CrowdSec` you can see
  - installed hub items (collections, scenarios, parsers, postoverflows)
  - alerts and local decisions
 
-All tables are read-only with an exception: you can delete single decisions, to unban an IP for example.
+All tables are read-only with an exception: you can delete decisions one by one, to unban an IP for example.
+An IP may have been banned for several reasons, which counts as separate decisions.
 
 All hub objects are periodically upgraded with a cron job.
 
@@ -181,9 +181,17 @@ If you need more CrowdSec tests you may want to temporarily disable Login Protec
 
 ## LAN / private networks whitelist
 
-By default the FreeBSD version of CrowdSec does not install any whitelist.
-If you trust your `10.0.0.0/8`, `192.168.0.0/16` and `172.16.0.0/12`
-networks, you can use `cscli parsers install crowdsecurity/whitelists` to whitelist them.
+Since crowdsec 1.6.3, private IP networks are whitelisted by default as well. This means for example an IP from a LAN or WAN which is on 192.168.x.y won't get blocked by a local decision
+(community blocklists don't contain private IPs).
+
+If you want to revert to the previous behavior, to block private IPs as well, you can remove the related parser.
+
+```console
+[root@OPNsense ~]# cscli parsers remove crowdsecurity/whitelists
+```
+
+If on the other hand you upgrade from a version before 1.6.3, you need to install the lists yourself.
+
 
 ## Uninstalling
 
@@ -203,17 +211,3 @@ If you need to make sure you removed all traces of CrowdSec, you can run the fol
 For testing purposes, you may want to remove the &lt;crowdsec&gt; section
 from `/conf/config.xml` as well.
 
-
-## The blocklist mirror
-
-Before releasing the official package, one way to integrate pfSense and CrowdSec
-was to install a blocklist mirror and connect it to pfBlockerNG. While this is still
-a viable solution, it has slower performance than the method described above,
-especially in terms of latency when receiving decision updates.
-It also required pfBlockerNG in addition to CrowdSec.
-
-## Enrolling your instance
-
-The next step is to enroll your instance with the [CrowdSec Console](https://app.crowdsec.net/security-engines?enroll-engine=true).
-
-For the benefits, please visit the [Console section](/u/console/intro).
