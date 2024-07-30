@@ -43,16 +43,16 @@ const staticData = [
         text: "Kubernetes",
         link: "/u/getting_started/installation/kubernetes",
     },
-    // {
-    //     icon: opnsenseLogo,
-    //     text: "OPNsense",
-    //     link: "/u/getting_started/installation/opnsense",
-    // },
-    // {
-    //     icon: pfSenseLogo,
-    //     text: "pfSense",
-    //     link: "/u/getting_started/installation/pfsense",
-    // },
+    {
+        icon: opnsenseLogo,
+        text: "OPNsense",
+        link: "/u/getting_started/installation/opnsense",
+    },
+    {
+        icon: pfSenseLogo,
+        text: "pfSense",
+        link: "/u/getting_started/installation/pfsense",
+    },
     {
         icon: whmLogo,
         text: "WHM",
