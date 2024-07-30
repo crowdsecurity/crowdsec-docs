@@ -39,7 +39,7 @@ You can disable them for testing or if you have special requirements.
 The parsers, scenarios and all objects from the [CrowdSec Hub](https://hub.crowdsec.net/) are periodically upgraded. The [crowdsecurity/freebsd](https://hub.crowdsec.net/author/crowdsecurity/collections/freebsd) and [crowdsecurity/opnsense](https://hub.crowdsec.net/author/crowdsecurity/collections/opnsense) collections are installed by default.
 
 Since crowdsec 1.6.3, private IP networks are whitelisted by default as well. This means for example an IP from a LAN or WAN which is on 192.168.x.y won't get blocked by a local decision
-(cummunity blocklists don't contain private IPs).
+(community blocklists don't contain private IPs).
 
 If you want to revert to the previous behavior, to block private IPs as well, you can remove the related parser.
 
@@ -48,7 +48,6 @@ If you want to revert to the previous behavior, to block private IPs as well, yo
 ```
 
 If on the other hand you upgrade from a version before 1.6.3, you need to install the lists yourself.
-
 
 ## Testing the remediation component
 
