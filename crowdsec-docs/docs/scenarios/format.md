@@ -469,7 +469,7 @@ behavior is a string in the form:
 ```
 note: when the service is available, prefer to use the service instead of the OS.
 
-The behavior should exist in this file: https://github.com/crowdsecurity/hub/blob/scenario_taxonomy/taxonomy/behaviors.json
+The behavior should exist in this file: https://github.com/crowdsecurity/hub/blob/master/taxonomy/behaviors.json
 
 
 #### `label`
