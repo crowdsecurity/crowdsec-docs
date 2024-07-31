@@ -88,7 +88,7 @@
                 },
                 {
                     type: 'link',
-                    href: 'appsec/intro',
+                    id: 'appsec/intro',
                     label: 'AppSec',
                 },
                 {
