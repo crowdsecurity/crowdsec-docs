@@ -87,8 +87,8 @@
                     href: '/u/bouncers/intro',
                 },
                 {
-                    type: 'link',
-                    href: '/./appsec/intro',
+                    type: 'doc',
+                    id: 'appsec/intro',
                     label: 'AppSec',
                 },
                 {
