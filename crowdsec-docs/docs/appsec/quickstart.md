@@ -14,7 +14,7 @@ The goal of this quickstart is to set up the [AppSec Component](/appsec/intro.md
 
 2. It's assumed that you have already installed:
    - **Crowdsec [Security Engine](/docs/next/intro)**: for installation, refer to the [QuickStart guide](/docs/getting_started/install_crowdsec). The AppSec Component, which analyzes HTTP requests, is included within the security engine.
-   - Nginx and its **[Remediation Component](/u/bouncers/intro)**: installation instructions are available in the [QuickStart guide](/u/bouncers/nginx). This component intercepts HTTP requests at the webserver or reverse-proxy level and forwards them to the AppSec Component for analysis and action.
+   - One of the supported web servers (here: nginx) and its **[Remediation Component](/u/bouncers/intro)**: installation instructions are available in the [QuickStart guide](/u/bouncers/nginx). This component intercepts HTTP requests at the webserver or reverse-proxy level and forwards them to the AppSec Component for analysis and action.
 
 ## AppSec Component Setup
 
