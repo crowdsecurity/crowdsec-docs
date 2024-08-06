@@ -29,6 +29,11 @@ To work with the CrowdSec application security component, some HTTP headers are 
 | `X-Crowdsec-Appsec-Host`    | The Host of the original HTTP request                                      |
 | `X-Crowdsec-Appsec-Verb`    | The Method of the original HTTP request                                    |
 | `X-Crowdsec-Appsec-Api-Key` | The API Key to communicate with the CrowdSec application security component |
+| `X-Crowdsec-Appsec-User-Agent`| The User-Agent of the original HTTP request                              |
+
+:::info
+`X-Crowdsec-Appsec-User-Agent` was introduced in version `1.6.1` moving forward this header should be supplied by the Remediation Component for the AppSec Component to handle client useragents properly
+:::
 
 :::note
 
@@ -75,7 +80,8 @@ X-Crowdsec-Appsec-Uri: /login
 X-Crowdsec-Appsec-Host: example.com
 X-Crowdsec-Appsec-Verb: POST
 X-Crowdsec-Appsec-Api-Key: <API_KEY>
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0
+X-Crowdsec-Appsec-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0
+User-Agent: lua-resty-http/0.17.1 (Lua) ngx_lua/10026
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
