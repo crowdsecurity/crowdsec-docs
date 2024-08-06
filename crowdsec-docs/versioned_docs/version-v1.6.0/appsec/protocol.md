@@ -31,6 +31,10 @@ To work with the CrowdSec application security component, some HTTP headers are 
 | `X-Crowdsec-Appsec-Api-Key` | The API Key to communicate with the CrowdSec application security component |
 | `X-Crowdsec-Appsec-User-Agent`| The User-Agent of the original HTTP request                              |
 
+:::info
+`X-Crowdsec-Appsec-User-Agent` was introduced in version `1.6.1` moving forward this header should be supplied by the Remediation Component for the AppSec Component to handle client useragents properly
+:::
+
 :::note
 
 All requests forwarded by the remediation component must be sent via a `GET` request. However, if the HTTP request contains a body, a `POST` request must be sent to the Application Security Component.
