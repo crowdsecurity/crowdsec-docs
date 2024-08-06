@@ -11,6 +11,33 @@ The [Sprig](https://masterminds.github.io/sprig/) library is available in the te
 
 ## Crowdsec specific helpers
 
+### `HTMLEscape`
+
+:::info
+When displaying untrusted data sources, such as metadata (for example, URIs), it is best to use this function to prevent the data from being rendered in notifications that support HTML format, such as emails.
+:::
+
+The string is processed through the [`html.EscapeString`](https://pkg.go.dev/html#EscapeString) function, which converts special characters into their HTML-encoded equivalents.
+
+```go
+{{ "I am <img src=x /> not escaped" }} // I am <img src=x /> not escaped
+{{ "I am <img src=x /> escaped" | HTMLEscape }} // I am &lt;img src=x /&gt; escaped
+```
+
+:::note
+This function only escapes five specific characters:
+
+| Character | Escape Sequence |
+|-----------|-----------------|
+| `<`       | `&lt;`          |
+| `>`       | `&gt;`          |
+| `&`       | `&amp;`         |
+| `'`       | `&#39;`         |
+| `"`       | `&quot;`        |
+
+It does not provide comprehensive sanitization.
+:::
+
 ### `Hostname`
 
 Returns the hostname of the machine running crowdsec.
