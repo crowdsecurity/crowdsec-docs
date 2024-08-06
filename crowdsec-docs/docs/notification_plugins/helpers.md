@@ -25,7 +25,17 @@ The string is processed through the [`html.EscapeString`](https://pkg.go.dev/htm
 ```
 
 :::note
-This function only escapes five specific characters: <, >, &, ', and ". It does not provide comprehensive sanitization.
+This function only escapes five specific characters:
+
+| Character | Escape Sequence |
+|-----------|-----------------|
+| `<`       | `&lt;`          |
+| `>`       | `&gt;`          |
+| `&`       | `&amp;`         |
+| `'`       | `&#39;`         |
+| `"`       | `&quot;`        |
+
+It does not provide comprehensive sanitization.
 :::
 
 ### `Hostname`
