@@ -6,10 +6,6 @@ title: cscli lapi context
 
 Manage context to send with alerts
 
-```
-cscli lapi context [command] [flags]
-```
-
 ### Options
 
 ```
