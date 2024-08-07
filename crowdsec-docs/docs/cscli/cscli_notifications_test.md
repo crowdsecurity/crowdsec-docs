@@ -8,7 +8,7 @@ send a generic test alert to notification plugin
 
 ### Synopsis
 
-send a generic test alert to a notification plugin to test configuration even if is not active
+send a generic test alert to a notification plugin even if it is not active in profiles
 
 ```
 cscli notifications test [plugin name] [flags]
