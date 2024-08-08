@@ -17,14 +17,7 @@ The following configuration is crafted to offer the best ROI for your web applic
 To have a functional AppSec Component, you need:
 
 - Crowdsec security engine >= 1.5.6
-- One of the compatible bouncers:
-
-<!-- @kka min nginx & openresty version-->
-
-| Name      | Minimum Version |
-| --------- | --------------- |
-| nginx     | 1.0.6rc         |
-| openresty | 1.0.1rc         |
+- One of the compatible bouncers: Nginx, OpenResty or Traefik.
 
 ## Overview
 
@@ -109,40 +102,19 @@ tcp        0      0 127.0.0.1:7422          0.0.0.0:*               LISTEN      
 
 ## Configuration : Remediation component
 
-<!-- @kka fix version -->
+Configuring the AppSec component [accross remediation components](/appsec/installation#pre-requisites) can vary:
 
-At the time of writing, only the crowdsec nginx bouncer supports native integration with the AppSec Component, and requires version >= X.Y.Z.
+| Name      | Minimum Version | Public Doc |
+| --------- | --------------- | ----------- |
+| nginx     | 1.0.6rc         | [Public Doc](/u/bouncers/nginx#application-security-component-configuration) |
+| openresty | 1.0.1rc         | [Public Doc](/u/bouncers/openresty#application-security-component-configuration) |
+| traefik | 1.2.0 | [Public Doc](https://github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin/blob/main/examples/appsec-enabled/README.md) |
 
-[If you don't have the bouncer installed, do it now !](https://docs.crowdsec.net/u/bouncers/nginx)
 
-To enable the integration, you simply have to add a `APPSEC_URL` parameter to the existing bouncer remediation configuration:
-
-Note: _Some remediation components might have different parameter name for the APPSEC_URL, directly check their documentation if APPSEC_URL doesn't work_
-
-In your bouncer config file:
-
-> /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
-
-> /etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf
-
-> ...
-
-Add the communication URL with the port you want:
-
-```
-...
-APPSEC_URL=http://127.0.0.1:7422
-...
-```
-
-:warning: _The remediation component uses the same API key for both AppSec and LAPI communication._  
-_Make sure your bouncer has a valid API and is properly connected to the LAPI via_ `sudo cscli metrics`:warning:
-
-We can now restart our remediation component:
-
-```bash
-sudo systemctl restart nginx
-```
+:::info
+The remediation component uses the same API key for both AppSec and LAPI communication._  
+_Make sure your bouncer has a valid API and is properly connected to the LAPI via_ `sudo cscli metrics`
+:::
 
 ## Making sure everything works
 
