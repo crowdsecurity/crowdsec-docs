@@ -67,10 +67,14 @@ Returns the first value for the `Key` Meta if it exists in the event.
 
 Sets the value of `key` to `value` in the Meta map.
 
+> `evt.SetMeta('foobar', 'toto)`
+
 
 ### `GetType() String`
 
-Returns the type of event, `overflow` or `log`.
+Returns the type of event, `overflow`, `appsec` or `log`.
+
+> `evt.GetType() in ["log", "appsec"]`
 
 ### `ParseIPSources() []net.IP`
 
@@ -88,6 +92,8 @@ If the `Event` is the result of a rule being, matched, `Event.Appsec` is present
 ### `Appsec.GetVar(name) value`
 
 Returns the `value` of the Appsec var `name`. 
+
+> `evt.Appsec.MatchedRules.GetVar("foobar") == "toto"`
 
 ### `Appsec.MatchedRules`
 
