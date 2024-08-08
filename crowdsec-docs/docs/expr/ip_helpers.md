@@ -6,6 +6,7 @@ sidebar_position: 3
 
 ## IP Helpers
 
+
 ### `IpInRange(IPStr, RangeStr) bool`
 
 Returns true if the IP `IPStr` is contained in the IP range `RangeStr` (uses `net.ParseCIDR`)
@@ -30,6 +31,25 @@ scope:
 > `IpToRange("192.168.42.1", "16")` returns `192.168.0.0/16`
 
 
+### `IsIP(ip string) bool`
+
+Returns true if it's a valid IP (v4 or v6).
+
+> `IsIP("2001:0db8:85a3:0000:0000:8a2e:0370:7334")`
+
+> `IsIP("1.2.3.4")`
+
+> `IsIP(Alert.GetValue())`
+
+
+### `IsIPV4(ip string) bool`
+
+Returns true if it's a valid IPv4.
+
+> `IsIPV4("1.2.3.4")`
+
+> `IsIPV4(Alert.GetValue())`
+
 ### `IsIPV6(ip string) bool`
 
 Returns true if it's a valid IPv6.
@@ -39,6 +59,7 @@ Returns true if it's a valid IPv6.
 > `IsIPV6(Alert.GetValue())`
 
 ### `LookupHost(host string) []string`
+
 :::warning
 * Only use this function within postoverflows as it is can be very slow
 * Note if you whitelist a domain behind a CDN provider, all domains using the same CDN provider will also be whitelisted
@@ -54,3 +75,16 @@ whitelist:
     - evt.Overflow.Alert.Source.IP in LookupHost('mydomain.tld')
 # This can be useful when you have a dynamic ip and use dynamic DNS providers
 ```
+
+### `GeoIPEnrich(ip string) *geoip2.City`
+
+Performs a geo lookup for IP and returns the associated [geoip2.City](https://pkg.go.dev/github.com/oschwald/geoip2-golang#City) object.
+
+
+### `GeoIPASNEnrich(ip string) *geoip2.ASN`
+
+Performs a geo lookup for IP and returns the associated [geoip2.ASN](https://pkg.go.dev/github.com/oschwald/geoip2-golang#ASN) object.
+
+### `GeoIPRangeEnrich(ip string) net.IPNet`
+
+Returns the `net.IPNet` object associated to the IP if possible.

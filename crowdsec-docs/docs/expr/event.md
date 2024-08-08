@@ -35,6 +35,28 @@ When `Event` is an event from the WAF/Appsec engine, `evt.GetType()` returns `ap
 
 ## Event Methods
 
+## Logs & Alerts Helpers
+
+### `Event.Time`
+
+The `event` object holds a `Time` field that is set to the date of the event (in time-machine mode) or the time of event acquisition (in live mode). As it is a golang's `time.Time` object, [all the time helpers are available](https://pkg.go.dev/time#Time), but only a few are showcased here.
+
+#### `Event.Time.Hour() int`
+
+Returns the hour of the day of the event.
+
+> `filter: "evt.Meta.log_type == '...' && (evt.Time.Hour() >= 20 || evt.Time.Hour() < 6)`
+
+Will detect if the event happened between 8pm and 6am (NWO).
+
+#### `Event.Time.Weekday().String() string`
+
+Returns the day of the week as a string (`Monday`, `Tuesday` etc.).
+
+> `filter: "evt.Meta.log_type == '...' && evt.Time.Weekday().String() in ['Saturday', 'Sunday']`
+
+Will detect if the event happend over the weekend (NWD).
+
 ### `GetMeta(Key) Value`
 
 Returns the first value for the `Key` Meta if it exists in the event.
@@ -105,48 +127,14 @@ on_match:
 
 You can view detailed [`MatchedRules` doc here](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/types#MatchedRules).
 
+## Source specific helpers
+
+### `Source.GetValue() string`
+
+Return the `Source.Value` field value of a `Source`.
+
+### `Source.GetScope() string`
+
+Return the `Source.Scope` field value of `Source` (`ip`, `range` ...)
 
 
-<!-- ## LOG relevant fields
-
- - `Type` is `types.LOG`
- - `Whitelisted` : if `true` the LOG or OVFLW will be dropped
- - `Line` : representation of the raw line
-    - `Raw` : the raw line representation
-    - `Src` : a label for the source
-    - `Time` : acquisition timestamp
-    - `Labels` : the static labels (from acquis.yaml) associated to the source
-    - `Process`: if set to false, processing of line will stop
- - `Parsed` : a `map[string]string` that can be used during parsing and enrichment. This is where GROK patterns will output their captures by default
- - `Enriched` : a `map[string]string` that can be used during parsing and enrichment. This is where enrichment functions will output their captures by default
- - `Meta` : a `map[string]string` that can be used to store *important* information about a log. This map is serialized into DB when storing event.
- - `Overflow` : representation of an Overflow if `Type` is set to `OVFLW`
- - `Time` : processing timestamp
- - `StrTime` : string representation of log timestamp. Can be set by parsers that capture timestamp in logs. Will be automatically processed by `crowdsecurity/dateparse-enrich` when processing logs in forensic mode to set `MarshaledTime`
- - `MarshaledTime` : if non-empty, the event's timestamp that will be used when processing buckets (for forensic mode)
- - `Appsec` : Appsec related fields
- 
-## OVERFLOW relevant fields
-
- - `Type` is `types.OVFLW`
- - `Whitelisted` : if `true` the LOG or OVFLW will be dropped
- - `Overflow` : representation of an Overflow if `Type` is set to `OVFLW`
- - `Time` : processing timestamp
- - `StrTime` : string representation of log timestamp. Can be set by parsers that capture timestamp in logs. Will be automatically processed by `crowdsecurity/dateparse-enrich` when processing logs in forensic mode to set `MarshaledTime`
- - `MarshaledTime` : if non-empty, the event's timestamp that will be used when processing buckets (for forensic mode)
- - `Overflow` : 
-    - `Whitelisted` : if true the OVFLW will be dropped
-    - `Reprocess` : if true, the OVFLOW will be reprocessed (inference)
-    - `Sources` : a `map[string]models.Source` representing the distinct sources that triggered the overflow, with their types and values. The key of the map is the IP address.
-    - `Alert` and `APIAlerts` : representation of the signals that will be sent to LAPI.
-
-[Here](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/types#RuntimeAlert) is full `evt.Overflow` object representation.
-
-## Methods
-
- - `GetMeta(key string) string`  
-
-
-## Source
-
-[Here](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/models#Source) is the representation of a `models.Source` object. -->
