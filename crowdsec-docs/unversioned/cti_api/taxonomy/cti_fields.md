@@ -261,7 +261,7 @@ The level of background noise of an IP address is an indicator of its internet a
 
 The possible values are:
 
-- `high` : IP is very noisy
+- `high` : IP is very noisy, validated as an untargeted mild-threat mass-attacks
 - `medium` : IP has been reported by many members of the CrowdSec network, but not enough to be considered as background noise
 - `low` : IP has been reported by a few members of the CrowdSec network
 - `none` : IP has never been reported or only by a very few members of the CrowdSec network
@@ -274,7 +274,8 @@ The possible values are:
 "background_noise_score" : 10
 ```
 
-Evaluate the noisiness of an IP address, from a scale of 0 (not noisy) to 10 (extremely noisy)
+CrowdSec intelligence calculated score: a high background noise scores highlights untargeted mild-threat mass-attacks.
+
 
 ## `ip_range_score`
 
