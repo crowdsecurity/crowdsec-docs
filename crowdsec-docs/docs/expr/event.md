@@ -93,13 +93,15 @@ If the `Event` is the result of a rule being, matched, `Event.Appsec` is present
 
 Returns the `value` of the Appsec var `name`. 
 
-> `evt.Appsec.MatchedRules.GetVar("foobar") == "toto"`
+> `evt.Appsec.GetVar("foobar")`
 
 ### `Appsec.MatchedRules`
 
 `MatchedRules` is the list of rules that matched in the HTTP Request. It is an array of `map`, and each entry contains the following keys:
 
  - `id`, `name`, `msg`, `rule_type`, `tags`, `file`, `confidence`, `revision`, `secmark`, `accuracy`, `severity`, `kind`
+
+> `evt.Appsec.MatchedRules` and use below functions
 
 Various filtering methods are available:
  - `MatchedRules.ByAccuracy(accuracy string) MatchedRules`
