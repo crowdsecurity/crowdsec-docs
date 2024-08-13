@@ -91,6 +91,17 @@ The target allows to specify which part of the requests needs to be inspected. Y
     - ARGS
 ```
 
+:::info
+
+The default config `crowdsecurity/base-config` enables specific decoders when the following content-types are set:
+ - **application/x-www-form-urlencoded**
+ - **multipart/form-data**
+ - **application/xml**
+ - **application/json** : when used, all the variable names are prefixed with `json.`
+ - **text/xml**
+
+:::
+
 ## Match
 
 :::info
@@ -145,6 +156,7 @@ Match provides the pattern to match the target against, including optional trans
     value: BLAH
 ```
 
+
 ### Seclang Support
 
 In order to support your existing/legacy rules set, CrowdSec's AppSec Component is also able to load rules in the **seclang** format (**ModSecurity** rules).
@@ -158,13 +170,14 @@ There are 2 ways to provide crowdsec with seclang rules:
 - Provide rules directly by using the `seclang_rules` parameter in your rule file
 - Provide a file containing the rules by using the `seclang_rules_file` parameter in your rule file. The file must be located inside CrowdSec data directory
 
-:::info
 The default paths for the data directory per OS:
 
 - Linux: `/var/lib/crowdsec/data`
 - Freebsd: `/var/db/crowdsec/data`
 - Windows: `C:\programdata\crowdsec\data`
-  :::
+
+
+> Example
 
 ```yaml
 name: example/secrules
@@ -173,3 +186,7 @@ seclang_rules:
 seclang_files_rules:
   - my-rule-file.conf
 ```
+
+:::warning
+Your rule **must** have a non-empty `msg` field to properly trigger an Event/Alert
+:::
