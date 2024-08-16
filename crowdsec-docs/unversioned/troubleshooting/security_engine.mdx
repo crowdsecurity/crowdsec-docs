@@ -3,7 +3,7 @@ title: Troubleshooting Security Engine
 id: security_engine
 ---
 
-import UnixWindowsK8sTabs from '../../src/components/UnixWindowsK8sTabs';
+import FormattedTabs from '@site/src/components/FormattedTabs';
 
 ## Community support
 
@@ -16,7 +16,7 @@ Please try to resolve your issue by reading the documentation. If you're unable 
 
 ### How to check the status
 
-<UnixWindowsK8sTabs
+<FormattedTabs
     bash="sudo systemctl status crowdsec"
     powershell="Get-Service crowdsec"
     k8s="kubectl get pods -n crowdsec"
@@ -118,7 +118,7 @@ Please see [configuration section](#where-is-configuration-stored) to see where 
 
 To enable the simulation mode for this scenario, i need to run:
 
-<UnixWindowsK8sTabs
+<FormattedTabs
   bash="sudo cscli simulation enable my_custom_scenario.yaml"
   powershell="cscli.exe simulation enable my_custom_scenario.yaml"
   k8s="kubectl exec -it crowdsec-agent-* -n crowdsec -- cscli simulation enable my_custom_scenario.yaml"
@@ -187,7 +187,7 @@ If you are unsure where CrowdSec is logging you can view the configuration file 
 
 You can use the os related commands to filter the logs to only show errors.
 
-<UnixWindowsK8sTabs
+<FormattedTabs
     bash='sudo grep -E "level=(error|fatal)" /var/log/crowdsec.log'
     cmd='findstr "level=error level=fatal" C:\ProgramData\CrowdSec\log\crowdsec.log'
     powershell='Select-String "level=(error|fatal)" C:\ProgramData\CrowdSec\log\crowdsec.log'
@@ -215,7 +215,7 @@ You can use the following os commands to check if a service is already using a p
 
 For example, to check if a service is using port 8080: (Our default port for the local API)
 
-<UnixWindowsK8sTabs
+<FormattedTabs
     bash='sudo netstat -tulpn | grep :8080'
     powershell='Get-NetTCPConnection | where Localport -eq 8080 | select Localport,OwningProcess'
 />

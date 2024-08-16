@@ -3,7 +3,7 @@ id: profiles
 title: Profiles
 ---
 
-import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
+import FormattedTabs from '@site/src/components/FormattedTabs';
 
 # Profiles
 
@@ -178,7 +178,7 @@ on_success: break
 
 Now that you have made some modifications to your profiles, you **MUST** restart the CrowdSec service to apply the changes. You can do this by running the following command:
 
-<UnixWindowsK8sTabs
+<FormattedTabs
   bash="sudo crowdsec -t && sudo systemctl restart crowdsec"
   powershell="Restart-Service crowdsec"
   k8s="helm upgrade --install crowdsec crowdsecurity/crowdsec --namespace crowdsec -f values.yaml"

@@ -9,7 +9,7 @@ pagination_next: getting_started/post_installation/profiles
 We will be adding a [file based acquisition](/docs/next/data_sources/file). If you need to use a different source then alter the instructions to match your needs.
 :::
 
-import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
+import FormattedTabs from '@site/src/components/FormattedTabs';
 
 
 Once you have found service you want to add, you can use the `cscli` command line tool to add the collection.
@@ -18,7 +18,7 @@ Once you have found service you want to add, you can use the `cscli` command lin
 You can view the available collections on the [Hub](https://hub.crowdsec.net/).
 :::
 
-<UnixWindowsK8sTabs
+<FormattedTabs
   bash="cscli collections add <collection_name>"
   powershell="cscli.exe collections add <collection_name>"
   yaml={`# In your values.yml file
@@ -40,7 +40,7 @@ From version `1.5.0` we have added the ability to add acquisitions via the `acqu
 
 ### Create the directory if it does not exist
 
-<UnixWindowsK8sTabs
+<FormattedTabs
   bash="sudo mkdir -p /etc/crowdsec/acquis.d"
   cmd="mkdir C:\ProgramData\CrowdSec\Config\acquis.d\"
   powershell="New-Item -ItemType Directory -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\"
@@ -48,7 +48,7 @@ From version `1.5.0` we have added the ability to add acquisitions via the `acqu
 
 ### Create the acquisition file
 
-<UnixWindowsK8sTabs
+<FormattedTabs
   bash="sudo touch /etc/crowdsec/acquis.d/<collection_name>.yaml"
   powershell="New-Item -ItemType File -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml"
   cmd=".>C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml 2>NUL"
@@ -80,7 +80,7 @@ labels:
 
 Once you have added the acquisitions you can test the configuration and restart the service.
 
-<UnixWindowsK8sTabs
+<FormattedTabs
   bash="sudo crowdsec -t && sudo systemctl restart crowdsec"
   cmd="net stop crowdsec && net start crowdsec"
   powershell="Restart-Service crowdsec"
