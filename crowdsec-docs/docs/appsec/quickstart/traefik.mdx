@@ -169,3 +169,31 @@ Instead if you define the configuration using labels on the containers you can a
       - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecappsechost=crowdsec:7422"
       - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecLapiKey=privateKey-foo"
 ```
+
+For more comprehensive documentation on the Traefik Plugin configuration, please refer to the [official documentation](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin).
+
+We can't cover all the possible configurations for Traefik in this guide, so please refer to the [official documentation](https://doc.traefik.io/traefik/) for more information.
+
+### Directives
+
+The following directives are available for the Traefik Plugin:
+
+#### `crowdsecAppsecEnabled`
+> `bool`
+
+Enable or disable the AppSec Component.
+
+#### `crowdsecAppsecHost`
+> `string`
+
+The host and port where the AppSec Component is running.
+
+#### `crowdsecAppsecFailureBlock`
+> `bool`
+
+If the AppSec Component returns `500` status code should the request be blocked.
+
+#### `crowdsecAppsecUnreachableBlock`
+> `bool`
+
+If the AppSec Component is unreachable should the request be blocked.
