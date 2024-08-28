@@ -202,6 +202,35 @@ You can use the os related commands to filter the logs to only show errors.
 If it's a configuration file issue, the error message may log in a different location. As an example, if a parser/scenario file is invalid, the error message will be logged within the configured log file, however, if `config.yaml` is invalid, the error message will be logged in syslog instead.
 :::
 
+### Hash Mismatch
+  - **error** message might look like:
+```
+level=fatal msg="error while installing 'crowdsecurity/traefik': while downloading crowdsecurity/http-cve: while downloading crowdsecurity/http-cve to https://hub-cdn.crowdsec.net/master/collections/crowdsecurity/http-cve.yaml: hash mismatch: expected dd2e8debbba19d19646b9a8010baf9bd901a4eec84a53a0cb62294b8da3e91ef, got b974f20dc2cf23c292eede422c1c6e0008297f8b3397e3851bb6a988866f3e34"
+```
+A hash mismatch may occur when the local `.index.json` (hub index) is out of date with the current latest.
+
+Solutions differ based on how you are running CrowdSec:
+  - **Bare Metal Install**: Run `cscli hub update` on the machine and this will update the index file for you to run the previous install command.
+  - **Docker/Podman**: The docker startup script will automatically try to update the hub index if there is an update pending.
+
+:::info
+Within the container the hub index will **NOT** be automatically updated if the modification time of the file is less than `24 hours` from when the container starts so to force a index update you can manually run a temporary container
+:::
+
+#### Temporary container to update index 
+
+```bash
+docker run --rm -it --entrypoint cscli -v $MountPath:/etc/crowdsec/ -v $MountPath:/var/lib/crowdsec/data/ crowdsecurity/crowdsec:latest hub update
+```
+
+In the example above I have used `$MountPath` as place holders for you to update where the mounts are if they are relative via your compose then launch the run within the compose directory with the values updated, if they are named volumes then replace with the named volumes. The names are volumes may have a prefix so check via `docker volume ls` for the actual names.
+
+Once the temporary container has run and terminated you will be able to bring up the container as normal via `docker compose up -d`
+
+:::note
+If you are running a previous version of CrowdSec then please update the `docker run` command to us the same tag as the one deployed
+:::
+
 ### Cannot bind to the configured port or IP
   - **error** message might look like:
 ```
