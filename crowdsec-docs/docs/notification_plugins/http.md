@@ -37,6 +37,7 @@ format: |  # This template receives list of models.Alert objects. The request bo
   {{.|toJson}}
 
 url: http://localhost # plugin will make requests to this url. Eg value https://www.example.com/
+# unix_socket: /var/run/example.sock # plugin will send the `url` across the unix socket instead of opening a remote connection
 
 method: POST # eg either of "POST", "GET", "PUT" and other http verbs is valid value. 
 
