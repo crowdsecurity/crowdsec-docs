@@ -68,7 +68,7 @@ module.exports = {
         },
     ],
     themeConfig: {
-        image: "img/crowdsec_og_image.svg",
+        image: "img/crowdsec_og_image.png",
         announcementBar: {
             id: "banner_docs",
             content:
