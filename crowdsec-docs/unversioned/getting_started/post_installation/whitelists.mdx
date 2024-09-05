@@ -1,0 +1,227 @@
+---
+id: whitelists
+title: Whitelists
+pagination_prev: getting_started/next_steps
+pagination_next: getting_started/next_steps
+---
+
+# Whitelists
+
+Whitelists are a way to tell CrowdSec to ignore certain events or IP addresses. This can be useful if you have a static IP address that you know is safe, or if you have a service that generates a lot of false positives.
+
+By default CrowdSec will whitelist private LAN IP addresses via [this scenario](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/whitelists), however you may want to whitelist additional IP addresses or events.
+
+In this guide we will cover how to create some whitelists and how to apply them to your CrowdSec instance.
+
+However, we can't cover every possible scenario, so if you have a specific use case that isn't covered here, please refer to [detailed whitelist documentation](/docs/next/whitelist/intro)
+
+:::info
+We use "event" as a term to describe a log line that is currently being processed by CrowdSec. An "event" can be a log line from a log file, or an "overflow" from a scenario.
+:::
+
+## Whitelist Types
+
+There are two different types of whitelists in CrowdSec:
+- Parser (at enrich stage)
+- Postoverflow
+
+Its important to note where these whitelists are applied in the pipeline, as this will affect the behavior and the context of the whitelists.
+
+### Parser
+
+Parser based whitelists are applied whilst the event is being Enriched. This means that the whitelists will prevent the event (log line) from hitting the scenario stage, leading to better memory management.
+
+typically these files are located in the following locations depending on your OS:
+- Linux: `/etc/crowdsec/parsers/s02-enrich/`
+- Freebsd: `/usr/local/etc/crowdsec/parsers/s02-enrich/`
+- Windows: `c:/programdata/crowdsec/config/parsers/s02-enrich/`
+
+### Postoverflow
+
+Postoverflow whitelists are applied after a scenario has been triggered. You may want use this stage to do _"expensive"_ whitelists, such as DNS lookups.
+
+:::info
+We deem a whitelist as _"expensive"_ if it requires a network call or a lookup that could potentially slow down the processing of the event.
+:::
+
+typically these files are located in the following locations depending on your OS:
+- Linux: `/etc/crowdsec/postoverflows/s01-whitelist/`
+- Freebsd: `/usr/local/etc/crowdsec/postoverflows/s01-whitelist/`
+- Windows: `c:/programdata/crowdsec/config/postoverflows/s01-whitelist/`
+
+*Postoverflow whitelist folders do not exist by default so you **MUST** manually create them*
+
+### Which one should I use?
+
+If you know which IP or event pattern you want to whitelist (for example a URI), then you should use a Parser whitelist. If you want to do a more complex whitelist, such as a DNS/rDNS lookup, then you should use the Postoverflow Whitelist.
+
+In short, enricher whitelists are applied to **every** event (log line), whereas postoverflow whitelists are only applied to **triggered** scenarios.
+
+## Should I create a whitelist?
+
+Whilst configuring CrowdSec for the first time you may want to create a whitelist for the following reasons:
+- You have a static IP address that you want to ensure is never banned.
+- You have a service that could generate a lot of false triggers.
+
+:::info
+An example of a service that could generate a lot of false triggers is a web application that loads a lot of resources such a thumbnails, images, or fonts.
+:::
+
+If you are unsure if you need a whitelist, you can monitor the logs and see if there are any false positives that you want to prevent.
+
+However, please note if you should get a decision made agaisnt your IP address and using remediation components such as `iptables` or `nftables` then this will prevent you from accessing **ANY** service on the server.
+
+Within our enterprise offering we have a feature called [Decision Management](console/decisions/decisions_management.md) that allows you to manage decisions via the [console](https://app.crowdsec.net/).
+
+## Creating your first whitelist.
+
+Depending on your criteria, you may want to create a whitelist for a specific IP address, a range of IP addresses, or a specific event pattern.
+
+We will provide examples for each of these scenarios.
+
+:::note
+The example location shown is for Linux, you will need to adjust the path based on your OS as noted above.
+:::
+
+### Static IP address
+
+If you want to whitelist a specific IP address for example `192.168.1.1`, you can create a file in the Enricher folder with the following content:
+
+```yaml title="/etc/crowdsec/parsers/s02-enrich/01-my-whitelist.yaml"
+name: my/whitelist ## Must be unqiue
+description: "Whitelist events from my IP"
+whitelist:
+  reason: "My IP"
+  ip: 
+    - "192.168.1.1"
+```
+
+Once you have created the file you will need to restart the CrowdSec service for the changes to take effect.
+
+```bash title="Restart CrowdSec"
+sudo systemctl restart crowdsec
+```
+
+### IP Range
+
+If you want to whitelist a range of IP addresses, for example `192.168.1.0/24` you can create a file in the Enricher folder with the following content:
+
+```yaml title="/etc/crowdsec/parsers/s02-enrich/01-my-whitelist.yaml"
+name: my/whitelist ## Must be unqiue
+description: "Whitelist events from my IP range"
+whitelist:
+  reason: "My IP range"
+  cidr: 
+    - "192.168.1.0/24"
+```
+
+Once you have created the file you will need to restart the CrowdSec service for the changes to take effect.
+
+```bash title="Restart CrowdSec"
+sudo systemctl restart crowdsec
+```
+
+### Expression pattern
+
+If you want to whitelist a specific event pattern, for example http log line that is a healthcheck so typically a `GET` request to `/health` you can create a file in the Enricher folder with the following content:
+
+```yaml title="/etc/crowdsec/parsers/s02-enrich/01-my-whitelist.yaml"
+name: my/whitelist ## Must be unqiue
+description: "Whitelist events with GET /health"
+filter: "evt.Meta.service == 'http' && evt.Meta.log_type in ['http_access-log', 'http_error-log']"
+whitelist:
+  reason: "GET /health"
+  expression: 
+    - "evt.Meta.http_verb == 'GET' && evt.Meta.http_path == '/health'"
+```
+
+:::note
+This will discard any event that has a `http_verb` of `GET` and a `http_path` of `/health` no matter the origin.
+:::
+
+Once you have created the file you will need to restart the CrowdSec service for the changes to take effect.
+
+```bash title="Restart CrowdSec"
+sudo systemctl restart crowdsec
+```
+
+Expression whitelists are very powerful and can be used to whitelist based on any field in the event. You can find a more detailed version of the [expression guide here](/docs/next/whitelist/create_expr) which will showcase how you can find which fields are available to you based on the log line you are processing.
+
+### Dynamic IP address
+
+If you want to whitelist an IP address that is not static, you need to use a external DDNS service to resolve the IP address and then use the Postoverflow whitelist to whitelist the resolved IP address.
+
+:::note
+This is a postoverflow whitelist as it requires a network call to resolve the IP address.
+:::
+
+```yaml title="/etc/crowdsec/postoverflows/s01-whitelist/01-my-whitelist.yaml"
+name: my/whitelist ## Must be unqiue
+description: "Whitelist events from my dynamic IP"
+whitelist:
+  reason: "My dynamic IP"
+  expression:
+      - evt.Overflow.Alert.Source.IP in LookupHost("foo.com")
+```
+
+:::warning
+Please read the [LookupHost](/docs/next/expr/ip_helpers/#lookuphosthost-string-string) function documentation before altering the current example.
+:::
+
+## Testing your whitelist
+
+Once you have created your whitelist, you can test it by running a log line through the parser and checking the output.
+
+:::info
+In the example we using Nginx logs, you will need to adjust the testing to point towards your log file.
+:::
+
+```bash title="Test an IP/Range whitelist"
+grep 192.168.1.1 /var/log/nginx/access.log | tail -n 1 | sudo cscli explain -f- --type nginx
+```
+
+```bash title="Test an Expression whitelist"
+grep /health /var/log/nginx/access.log | tail -n 1 | sudo cscli explain -f- --type nginx
+```
+
+```bash title="Example Output"
+line: 192.168.1.1 - - [05/Sep/2024:18:07:25 +0000] "GET /health? HTTP/2.0" 200 42 "-" "curl/7.68.0"
+├ s00-raw
+|       └ 🟢 crowdsecurity/non-syslog (+5 ~8)
+├ s01-parse
+|       └ 🟢 crowdsecurity/nginx-logs (+23 ~2)
+├ s02-enrich
+|       ├ 🟢 crowdsecurity/dateparse-enrich (+2 ~2)
+|       ├ 🟢 crowdsecurity/geoip-enrich (+13)
+|       ├ 🟢 crowdsecurity/http-logs (+8 ~1)
+#highlight-next-line
+|       └ 🟢 my/whitelist (~2 [whitelisted])
+#highlight-next-line
+└-------- parser success, ignored by whitelist (<Reason will vary here>) 🟢
+```
+
+:::info
+Currently postoverflows are not supported by `cscli explain` so you will need to check the logs to see if the whitelist is working.
+:::
+
+Example logs line you will see:
+    
+```bash title="Example logs"
+time="07-07-2020 17:11:09" level=info msg="Ban for 192.168.1.1 whitelisted, reason [My dynamic IP]" id=cold-sunset name=my/whitelist stage=s01
+```
+
+## Whitelisted but there still a decision?
+
+Whitelisting an IP address or event will prevent the events from triggering **new** decisions, however, any existing decisions will still be applied.
+
+You must manually remove the decisions by running:
+
+```bash title="Remove decisions"
+sudo cscli decisions delete --ip 192.168.1.1
+```
+
+## Next Steps?
+
+If you are still looking for examples on how to create a whitelist, you can find more detailed documentation [here](/docs/next/whitelist/intro).
+
+If you have created your first whitelist, tested it and happy to continue then [click here](getting_started/next_steps.md#2-whitelists).
