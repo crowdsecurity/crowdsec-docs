@@ -7,9 +7,9 @@ pagination_next: getting_started/next_steps
 
 # Whitelists
 
-Whitelists are a way to tell CrowdSec to ignore certain events or IP addresses. This can be useful if you have a static IP address that you know is safe, or if you have a service that generates a lot of false positives.
+Whitelists are a way to tell CrowdSec to ignore certain events or IP addresses. This can be useful if you have a static IP address that you know is safe, or if you have a service that _could_ generates a lot of false triggers by loading alot of thumbnails, images or fonts.
 
-By default CrowdSec will whitelist private LAN IP addresses via [this scenario](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/whitelists), however you may want to whitelist additional IP addresses or events.
+By default CrowdSec will whitelist private LAN IP addresses via [this parser](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/whitelists), however you may want to whitelist additional IP addresses or events.
 
 In this guide we will cover how to create some whitelists and how to apply them to your CrowdSec instance.
 
