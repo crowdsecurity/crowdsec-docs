@@ -18,7 +18,7 @@ The simplest way to subscribe to a blocklist is at the organization level. This 
 One remediation type will be applied to all the Security Engines and Integrations subscribed to the blocklist.
 :::
 
-If you want to apply different remediation methods to different Security Engines or Integrations, you will need to subscribe to the blocklist at the Security Engine or integration level.
+If you want to apply different remediation methods to different Security Engines or Integrations, you will need to subscribe to the blocklist at the Security Engine or Integration level.
 
 ### Security Engines
   
