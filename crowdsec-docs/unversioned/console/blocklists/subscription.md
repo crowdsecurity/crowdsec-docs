@@ -6,7 +6,7 @@ To begin the subscription process, click the _Subscribe_ button at the top of th
 
 ## Subscribe
 
-You can subscribe to a blocklist at the Organization, Security Engine, or Integration level. On the community plan you can subscribe to 3 blocklists, to remove this limitation you can upgrade to the enterprise plan which includes various perks.
+You can subscribe to a blocklist at the Organization, Security Engine, or Integration level. On the community plan you can subscribe to 3 blocklists, to remove this limitation you can upgrade to the [enterprise plan](https://www.crowdsec.net/pricing) which includes various perks.
 
 ### Organization Level
 
