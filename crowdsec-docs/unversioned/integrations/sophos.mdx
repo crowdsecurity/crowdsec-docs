@@ -1,0 +1,68 @@
+---
+id: sophos
+title: Sophos
+---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+The CrowdSec Sophos integration allows you to block malicious IPs in your Sophos firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Sophos firewall.
+
+### Prerequisites
+
+Before you begin, please ensure your Sophos device supports ingesting blocklists. If you are unsure, please refer to the Sophos documentation or contact Sophos support.
+
+### Steps
+
+We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
+
+Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
+
+Once the page has loaded, you can click the "Connect" button under the Sophos logo.
+
+<ThemedImage
+    alt="Sophos Integration Card"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_sophos_card_light.png"),
+        dark: useBaseUrl("/img/console_integrations_sophos_card_dark.png"),
+    }}
+/>
+
+Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
+
+<ThemedImage
+    alt="Sophos Integration Creation Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_creation_light.png"),
+        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
+    }}
+/>
+
+Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your Sophos Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
+
+<ThemedImage
+    alt="Sophos Integration Credentials Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_sophos_credentials_light.png"),
+        dark: useBaseUrl("/img/console_integrations_sophos_credentials_dark.png"),
+    }}
+/>
+
+[Sophos Documentation](https://docs.sophosnetworks.com/pan-os/11-1/pan-os-admin/policy/use-an-external-dynamic-list-in-policy/external-dynamic-list#idf36cb80a-77f1-4d17-9c4b-7efe9fe426af)
+
+## Format example
+
+The CrowdSec blocklist will be in plain text format, with one IP address per line. Here is an example of how the blocklist will look:
+
+```
+192.168.38.187
+192.168.38.186
+```
+
+## Contribute to this documentation
+
+Since CrowdSec is a community-driven project, we welcome contributions to this documentation. If you have any instructions or tips that you would like to share with the community, please feel free to open a pull request on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs)
+
+## Next Steps
+
+Now that you have integrated CrowdSec integration with your Sophos Firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
