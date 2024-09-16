@@ -1,0 +1,283 @@
+---
+id: cloudways
+title: Cloudways (CrowdSec + WP Remediation)
+pagination_prev: getting_started/pre_requisites
+pagination_next: getting_started/next_steps
+---
+
+@import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+# Preamble
+Cloudways is a managed cloud hosting platform that simplifies the process of hosting websites and applications on various cloud providers.  
+It provides you with a SSH access but with limited rights.  
+**However** there is a way to run CrowdSec on Cloudways and get both behavior detection on your services (nginx + apache) and applying remediation with our [WP plugin](/u/bouncers/wordpress.mdx) also unlocking the blocklist feature.  
+This guide is a bit longer than the other ones as it describes all specific steps needed for Cloudways integration.
+  
+We'll guide you through the following steps:  
+1. [Install CrowdSec from the static build](#install-crowdsec-from-the-static-build)  
+2. [Setup acquisitions and detection collections](#setup-acquisitions-and-detection-collections)  
+3. [Run a behavior detection on your past logs to see what it would have found](#run-a-behavior-detection-on-your-past-logs-to-see-what-it-would-have-found)  
+4. [Make CrowdSec run as a service at user level](#make-crowdsec-service-run-at-user-level)   
+5. [Bind it to the WP plugin to block the detected attackers](#bind-it-to-the-wp-plugin-to-block-the-detected-attackers)  
+
+## Install CrowdSec from the static build
+In this section, we'll get the latest static build of CrowdSec, build the folder hierarchy with the slightly tweaked test_env script and create the necessary config for the Local API and Central API.
+
+### Setup CrowdSec static build
+> For this setup we'll put CrowdSec in the */home/master/crowdsec* folder.
+#### Get the static build
+- Go to https://github.com/crowdsecurity/crowdsec/releases
+- Choose the version you want (at the time of writing 1.6.3 was the latest release)
+- Scroll down past the changelog, in the **Assets** section copy the link to the **crowdsec-release.tgz** file
+- download it in your */home/master* folder, example:
+```bash
+wget https://github.com/crowdsecurity/crowdsec/releases/download/v1.6.3/crowdsec-release.tgz
+```
+- Extract the archive:
+```bash
+tar -xvzf crowdsec-release.tgz
+```
+- Rename  the extracted folder to *crowdsec*:
+```bash
+mv crowdsec-v1.6.3 crowdsec
+```
+#### Create the folder hierarchy
+- cd into the *crowdsec* folder:
+```bash
+cd crowdsec
+```
+- Tweak the test_env script to create the necessary folders and config:
+```bash
+sed -i 's|BASE="./tests"|BASE="./"|' test_env.sh
+```
+- Run the script:
+```bash
+./test_env.sh
+```
+- Check one config file symlink to make sure the tweak worked:
+```bash
+ls -la config/parsers/s00-raw/syslog-logs.yaml 
+```  
+Should output *config/parsers/s00-raw/syslog-logs.yaml -> /home/master/crowdsec/config/hub/parsers/s00-raw/crowdsecurity/syslog-logs.yaml*
+
+#### Create the config
+We'll take the template config, update a few ports to avoid conflicts and setup the Local API and Central API.
+- We'll use the dev.yml template to create our config.yaml:
+```bash
+rn dev.yml >  config.yaml
+```
+- Now lets update the port number for the Local API.
+- Open the config.yaml file in you editor of choice and change the following values:
+  - common section:
+    - change **log_media: file**
+	  -  add **log_dir: ./logs/**
+  - api/server section:
+    - listen on a free port, example 19443
+    - listen_uri:127.0.0.1:19443
+
+#### Init/Reset CAPI and LAPI credentials
+  - Quickly register on CAPI. This will create the necessary credentials in the *config/online_api_credentials.yaml* file
+```bash
+./cscli -c config.yaml capi register
+```
+  - It should tell you to restart CrowdSec, ignore it for now, we'll do it later.
+	- LAPI setup relies on "machines"
+  - Remove the existing machine and create a new one in auto:
+```bash
+./cscli -c config.yaml machines list  //ignore the warning it's normal for now
+```
+  - You should see something like this
+```bash
+────────────────────────────────────────────────────────────────────────────────────────
+ Name  IP Address  Last Update           Status  Version  OS  Auth Type  Last Heartbeat 
+────────────────────────────────────────────────────────────────────────────────────────
+ test              2024-09-12T10:04:52Z  ✔️               ?   password   ⚠️ -           
+────────────────────────────────────────────────────────────────────────────────────────
+```
+		- Delete the test machine
+```bash
+./cscli -c config.yaml machines delete test_env
+```    
+		- Create a new default one with --force to override the existing credentials file
+```bash
+./cscli machines add my_logprocessor --auto --force 
+```
+		- C that the credential file has the proper port : *cat ./config/local_api_credentials.yaml*
+```yaml
+url: http://127.0.0.1
+login: my_logprocessor
+password: 321QSd54QERG321sq54AZEqs45AZDQSd654z65fps
+```
+
+## Setup acquisitions and detection collections
+Acquisition configuration indicates to CrowdSec what log files it should look at.  
+The Detection collections include parsers config and bad behavior detection scenarios for given services.
+
+In our case we'll look at the nginx logs and apache2 logs.
+- Identify the name of your application folder: ls /home/master/applications
+- There should be a folder in there, lets say "abcdefghij"
+- We'll replace the content of the config/acquis.yaml file (with you editor of choice) with the following:
+```yaml
+filenames:
+  - /home/master/applications/abcdefghij/logs/nginx_*.log
+labels:
+  type: nginx
+---
+filenames:
+  - /home/master/applications/abcdefghij/logs/apache_*.log
+labels:
+  type: apache2
+```
+- Don't forget to put the appropriate path to your logs and not "abcdefghij"
+
+### Getting collections
+Now we'll install the collections for nginx and apache2.  
+You can find our catalog on our [Hub](https://hub.crowdsec.net).  
+- Run the following command to install the collections:
+```bash
+./cscli -c config.yaml collections install crowdsecurity/nginx crowdsecurity/apache2
+```
+### Making the collections auto update
+CrowdSec collection often get updated with the behavior detections.  
+CrowdSec teams create and currate community scenarios allowing its users to benefit from the latest vulnerabilities detection.
+We'll allow hub auto-update with a cron:
+		- Create a hub_update.sh file in the crowdsec folder:
+```bash
+#!/bin/sh
+
+test -x /home/master/crowdsec/cscli || exit 0
+
+# splay hub upgrade and crowdsec reload
+sleep "$(seq 1 300 | shuf -n 1)"
+
+/home/master/crowdsec/cscli -c /home/master/crowdsec/config.yaml --error hub update
+
+upgraded=$(/home/master/crowdsec/cscli -c /home/master/crowdsec/config.yaml --error hub upgrade)
+if [ -n "$upgraded" ]; then
+    systemctl --user reload crowdsec
+fi
+
+exit 0
+```
+		- Add it to crontab, every day at 6 for example
+```
+0 6 * * * /home/master/crowdsec/hub_update.sh
+```
+
+## Run a behavior detection on your past logs to see what it would have found
+We can run the behavior detection on the past logs to catch alerts that happened in the past.  
+We'll run it on the nginx access logs and the first archive of nginx access logs (previous day)
+- Run the behavior detection on the past logs:
+```bash
+./crowdsec -c config.yaml -dsn file:///home/master/applications/abcdefghij/logs/nginx_*.access.log --type nginx --no-api
+```
+- Again, dont forget to put your own application folder and not "abcdefghij"
+- Note that **dsn** parameter take the **file://***/ protocol and an **absolute path**
+- After you ran the detection, detected alerts should be listed in:
+```bash
+./cscli -c config.yaml alerts list
+```
+
+## Make CrowdSec service run at user level
+We want CrowdSec to run in the background and start at boot.  
+For this we'll add a systemd service in the user level.
+
+### Create the systemd service for user
+- At the time of writting (for v1.6.3) you can use the following content:
+- Create and edit ~/.config/systemd/user/crowdsec.service
+```bash
+[Unit]
+Description=Crowdsec agent
+
+[Service]
+WorkingDirectory=/home/master/crowdsec
+Type=notify
+Environment=LC_ALL=C LANG=C
+ExecStartPre=/home/master/crowdsec/crowdsec -c /home/master/crowdsec/config.yaml -t -error
+ExecStart=/home/master/crowdsec/crowdsec -c /home/master/crowdsec/config.yaml
+#ExecStartPost=/bin/sleep 0.1
+ExecReload=/home/master/crowdsec/crowdsec -c /home/master/crowdsec/config.yaml -t -error
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
+```
+- Note that if you want to do it yourself the process is:
+  - Get the service description file from https://github.com/crowdsecurity/crowdsec/blob/master/config/crowdsec.service
+  - Move it to the user systemd user folder
+  - Modify this file to have the proper path to crowdsec executable and config
+
+### Enable the service to run at boot
+For a user level process to keep running after you close the connection we need to activate the "linger"
+  - Run the following command:
+```bash
+loginctl enable-linger
+```
+	- Then have systemctl reload and run crowdsec
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now crowdsec
+```
+  - Check the status of the service
+```bash
+systemctl --user status crowdsec
+```
+		- In the future you can **systemctl --user start crowdsec** or stop or restart
+
+### Checking that CrowdSec works
+We ran a behavior detection on the past logs so we might already have acquisition and parsing metrics. 
+But to check that its working, you can visit your website
+  - It should generate lines of logs
+  - As soon as new log lines arrive in any of those:
+    - You should see the acquisition metrics appear/update
+    - And the resulting parser acquisition and metrics
+```bash
+./cscli metrics -c config.yaml
+```
+- looking something like
+```bash
+Acquisition Metrics:
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────┬────────────┬──────────────┬────────────────┬────────────────────────┬───────────────────╮
+│ Source                                                                                                       │ Lines read │ Lines parsed │ Lines unparsed │ Lines poured to bucket │ Lines whitelisted │
+├──────────────────────────────────────────────────────────────────────────────────────────────────────────────┼────────────┼──────────────┼────────────────┼────────────────────────┼───────────────────┤
+│ file:/home/master/applications/abcdefghij/logs/apache_wordpress-1211499-4678369.cloudwaysapps.com.access.log │ 1          │ 1            │ -              │ -                      │ -                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────────┴──────────────┴────────────────┴────────────────────────┴───────────────────╯
+
+[...]
+
+Parser Metrics:
+╭──────────────────────────────────┬──────┬────────┬──────────╮
+│ Parsers                          │ Hits │ Parsed │ Unparsed │
+├──────────────────────────────────┼──────┼────────┼──────────┤
+│ child-crowdsecurity/apache2-logs │ 1    │ 1      │ -        │
+│ child-crowdsecurity/http-logs    │ 3    │ 3      │ -        │
+│ crowdsecurity/apache2-logs       │ 1    │ 1      │ -        │
+│ crowdsecurity/dateparse-enrich   │ 1    │ 1      │ -        │
+│ crowdsecurity/geoip-enrich       │ 1    │ 1      │ -        │
+│ crowdsecurity/http-logs          │ 1    │ 1      │ -        │
+│ crowdsecurity/non-syslog         │ 1    │ 1      │ -        │
+╰──────────────────────────────────┴──────┴────────┴──────────╯
+
+```
+
+## Bind it to the WP plugin to block the detected attackers
+Now that we have CrowdSec running and detecting bad behaviors.  
+Alerts are raised and decisions to block bad actors are stored in the local DB.  
+To actually apply a remediation and ban the attackers from your website you need:
+- To create a bouncer API key:
+```bash
+./cscli -c config.yaml bouncers add my_wp_bouncer
+```
+- You should see something like this:
+```bash
+API key for 'my_wp_bouncer':
+
+   OI8BQQqMcasoeuxK2g5lMSHPLVkH1tARqLIW0HS3cIY
+
+Please keep this key since you will not be able to retrieve it!
+```
+- Add those credentials to your WP bouncer plugin as described in the [WP plugin documentation](/u/bouncers/wordpress.mdx#configurations)
