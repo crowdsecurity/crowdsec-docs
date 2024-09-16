@@ -10,6 +10,7 @@ import {
 import opnsenseLogo from "@site/static/img/logo-opnsense.svg";
 import pfSenseLogo from "@site/static/img/logo-pfsense.svg";
 import whmLogo from "@site/static/img/logo-whm.svg";
+import cloudwaysLogo from "@site/static/img/logo-cloudways.svg";
 import Link from "@docusaurus/Link";
 
 const staticData = [
@@ -57,6 +58,11 @@ const staticData = [
         icon: whmLogo,
         text: "WHM",
         link: "/u/getting_started/installation/whm",
+    },
+    {
+        icon: cloudwaysLogo,
+        text: "Cloudways",
+        link: "/u/getting_started/installation/cloudways",
     },
 ];
 
