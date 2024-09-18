@@ -5,7 +5,7 @@ sidebar_position: 6
 ---
 
 :::info
-Usage metrics require to run CrowdSec v1.6.3.
+Usage metrics require at least CrowdSec v1.6.3
 
 Remediation component support is a work in progress, and we are working to add usage metrics to more of them.
 :::
@@ -16,11 +16,13 @@ Logs processors and remediation components can send more detailed information ab
 
 Remediation components can send detailed information about themselves and what they are blocking.
 
-The exact metrics sent will differ based on the type of remediation component used.
+The exact metrics sent differs based on the type of remediation component used.
 
 For example, the firewall remediation component will be able to report metrics about the amount of dropped bytes or packets and the openresty remediation component will be able to report metrics about the amount of dropped HTTP requests.
 
 The same goes for interpreting the metrics: if blocking at the firewall level, most bots/attackers will stop as soon as they see they cannot establish a connection to the target server, meaning the numbers of dropped packets or bytes should be interpreted as being relative to each other (ie, this is not the number of packets that would have been transmitted if the IP was not blocked, but more of an indication of the effectiveness of various blocking sources between each other).
+
+In contrast, HTTP-based bouncers are more likely to count each individual blocked request, as attackers might not stop when receiving a 403.
 
 Where possible, the remediation components will break down the values of blocked traffic per origin (ie, the source of the decision).
 
