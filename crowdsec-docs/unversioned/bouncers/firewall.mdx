@@ -189,7 +189,7 @@ As the firewall bouncer operates at the network level, most malicious programs w
 
 If you are running ipset only mode, crowdsec-firewall-bouncer tries parsing the output to produce metrics, but:
  - "managed" firewalls such ufw might confuse parser and lead to inconsistent metrics.
- - "total" counters amount since the machine start, or `iptables -Z` is ran. Running `iptables -Z` when using `ipset` only mode might help keep consistent metrics.
+ - "total" counters amount since the machine start, or iptables counter are reset, wich can lead to inconsistent metrics.
 
 ## Configuration Reference
 
