@@ -46,7 +46,7 @@ These numbers may differ from what is shown by [`cscli decisions list`](cscli/cs
 - Filters are applied when querying LAPI (such as scope, scenarios, etc.).
 - LAPI deduplicates decisions before sending. If an IP is listed in multiple sources, only the decision with the longest remaining time is sent (useful for assessing blocklist overlap).
 
-Remediation components will also send the version of the OS they are running on. You can see this information with `cscli bouncers inspect XXX`:
+Remediation components will also send the version of the OS they are running on. You can see this information with [`cscli bouncers inspect XXX`](cscli/cscli_bouncers_inspect.md):
 
 ![usage metrics bouncer OS](/img/usage_metrics_bouncer_os.png)
 
@@ -69,7 +69,7 @@ Logs processors can also send more information about themselves to LAPI:
     - Scenarios
 
 
-You can show this data by using `cscli machines inspect XXX`:
+You can show this data by using [`cscli machines inspect XXX`](cscli/cscli_machines_inspect.md):
 
 ![usage metrics LP](/img/usage_metrics_lp_cscli.png)
 
