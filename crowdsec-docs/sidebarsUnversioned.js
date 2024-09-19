@@ -329,6 +329,7 @@ module.exports = {
                 "integrations/f5",
                 "integrations/fortinet",
                 "integrations/paloalto",
+                "integrations/sophos",
                 "integrations/genericfirewall",
                 "integrations/remediationcomponent",
             ]
@@ -454,6 +455,7 @@ module.exports = {
                         "getting_started/post_installation/console_hub",
                     ],
                 },
+                "getting_started/post_installation/whitelists",
                 {
                     type: "category",
                     label: "Acquisition",
