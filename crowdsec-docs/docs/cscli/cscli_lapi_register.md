@@ -21,6 +21,7 @@ cscli lapi register [flags]
   -f, --file string      output file destination
   -h, --help             help for register
       --machine string   Name of the machine to register with
+      --token string     Auto registration token to use
   -u, --url string       URL of the API (ie. http://127.0.0.1)
 ```
 

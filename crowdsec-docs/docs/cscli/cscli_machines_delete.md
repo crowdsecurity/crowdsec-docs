@@ -19,7 +19,8 @@ cscli machines delete "machine1" "machine2"
 ### Options
 
 ```
-  -h, --help   help for delete
+  -h, --help             help for delete
+      --ignore-missing   don't print errors if one or more machines don't exist
 ```
 
 ### Options inherited from parent commands

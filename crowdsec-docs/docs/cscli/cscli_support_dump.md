@@ -8,20 +8,17 @@ Dump all your configuration to a zip file for easier support
 
 ### Synopsis
 
-Dump the following informations:
+Dump the following information:
 - Crowdsec version
 - OS version
-- Installed collections list
-- Installed parsers list
-- Installed scenarios list
-- Installed postoverflows list
-- Installed context list
-- Bouncers list
-- Machines list
-- CAPI status
-- LAPI status
+- Enabled feature flags
+- Latest Crowdsec logs (log processor, LAPI, remediation components)
+- Installed collections, parsers, scenarios...
+- Bouncers and machines list
+- CAPI/LAPI status
 - Crowdsec config (sensitive information like username and password are redacted)
 - Crowdsec metrics
+- Stack trace in case of process crash
 
 ```
 cscli support dump [flags]
