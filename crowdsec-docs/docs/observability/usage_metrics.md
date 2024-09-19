@@ -40,6 +40,12 @@ You can view those metrics using `cscli metrics show bouncers`:
 
 ![usage metrics csli](/img/usage_metrics_cscli_example.png)
 
+The remediation components will send the number of decisions that are actually applied.
+
+Those numbers can differ from what is displayed by `cscli decisions list` for a few reasons:
+ - Filters are used when querying LAPI (scope, scenarios, ...)
+ - LAPI performed deduplication when sending decision. If an IP belongs to multiple origins, only the decision with the longest remaining time will be sent (this can be used to evaluate the overlap between blocklists)
+
 
 Remediation components will also send the version of the OS they are running on. You can see this information with `cscli bouncers inspect XXX`:
 
