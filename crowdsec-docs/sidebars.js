@@ -412,6 +412,7 @@
             items: [
                 "cscli/cscli_bouncers_add",
                 "cscli/cscli_bouncers_delete",
+		"cscli/cscli_bouncers_inspect",
                 "cscli/cscli_bouncers_list",
                 "cscli/cscli_bouncers_prune",
             ],
@@ -563,6 +564,7 @@
             items: [
                 "cscli/cscli_machines_add",
                 "cscli/cscli_machines_delete",
+		"cscli/cscli_machines_inspect",
                 "cscli/cscli_machines_list",
                 "cscli/cscli_machines_prune",
                 "cscli/cscli_machines_validate",
