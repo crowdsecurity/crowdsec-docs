@@ -564,6 +564,7 @@
             items: [
                 "cscli/cscli_machines_add",
                 "cscli/cscli_machines_delete",
+		"cscli/cscli_machines_inspect",
                 "cscli/cscli_machines_list",
                 "cscli/cscli_machines_prune",
                 "cscli/cscli_machines_validate",
