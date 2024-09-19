@@ -150,6 +150,7 @@ db_config:
   flush:
     max_items: "<max_alerts_in_db>"
     max_age: "<max_age_of_alerts_in_db>"
+    metrics_max_age: "<max_age_metrics_in_db>"
     bouncers_autodelete:
       cert: "<max_duration_since_last_pull>"
       api_key: "<max_duration_since_last_pull>"
@@ -447,6 +448,7 @@ db_config:
   flush:
     max_items: "<max_alerts_in_db>"
     max_age: "<max_age_of_alerts_in_db>"
+    metrics_max_age: "<max_age_metrics_in_db>"
     bouncers_autodelete:
       cert: "<max_duration_since_last_pull>"
       api_key: "<max_duration_since_last_pull>"
@@ -593,6 +595,7 @@ When WAL is unspecified you will see the following warning message at startup :
 flush:
   max_items: <nb_max_alerts_in_database>
   max_age: <max_alerts_age_in_database>
+  metrics_max_age: <max_metrics_age_in_database>
   bouncers_autodelete:
     cert: "<max_duration_since_last_pull>"
     api_key: "<max_duration_since_last_pull>"
@@ -610,6 +613,21 @@ Number max of alerts in database.
 > string
 
 Alerts retention time.
+
+Supported units:
+
+ - `s`: seconds
+
+ - `m`: minutes
+
+ - `h`: hours
+
+ - `d`: days
+
+#### `metrics_max_age`
+> string
+
+Usage metrics retention time.
 
 Supported units:
 
