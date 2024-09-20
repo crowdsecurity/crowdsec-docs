@@ -193,6 +193,11 @@ api:
       #- 127.0.0.1
       #- ::1
       #- 10.0.0.0/24
+    auto_registration:
+      enabled: <true|false>
+      token: <string>
+      allowed_ranges:
+        - 10.0.0.0/24
 prometheus:
   enabled: "(true|false)"
   level: "(full|aggregated)"
@@ -706,7 +711,11 @@ api:
        - bouncers_ou
       crl_path: "<path_to_crl_file>"
       cache_expiration: "<cache_duration_for_revocation_check>"
-      
+    auto_registration:
+      enabled: <true|false>
+      token: <string>
+      allowed_ranges:
+       - 10.0.0.0/24 
 ```
 
 #### `cti`
@@ -808,6 +817,11 @@ server:
        - bouncers_ou
       crl_path: "<path_to_crl_file>"
       cache_expiration: "<cache_duration_for_revocation_check>"
+  auto_registration:
+    enabled: <true|false>
+    token: <string>
+    allowed_ranges:
+      - 10.0.0.0/24
 ```
 
 ##### `enable`
@@ -952,6 +966,40 @@ The format must be compatible with golang [time.Duration](https://pkg.go.dev/tim
 
 IPs or IP ranges which have admin access to API. The APIs would still need to have API keys.
 127.0.0.1 and ::1 are always given admin access whether specified or not.
+
+#### `auto_registration`
+
+This section configures LAPI to automatically accept new machine registrations
+
+```yaml
+auto_registration:
+  enabled: <true|false>
+  token: <string>
+  allowed_ranges:
+   - 10.0.0.0/24
+```
+
+##### `enabled`
+> bool
+
+Whether automatic registration should be enabled.
+
+Defaults to `false`.
+
+##### `token`
+> string
+
+Token that should be passed in the registration request if LAPI needs to automatically validate the machine.
+
+It must be at least 32 chars, and is mandatory if the feature is enabled.
+
+##### `allowed_ranges`
+> []string
+
+IP ranges that are allowed to use the auto registration features.
+
+It must have at least one entry if the feature is enabled
+
 
 ### `prometheus`
 
