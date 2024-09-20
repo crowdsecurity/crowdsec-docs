@@ -104,6 +104,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 ### Machine auto validation
 
+:::warning
+
+If you enabled this feature, make sure to restrict the IP ranges as much as possible.
+
+Any rogue machine registered in your LAPI will be able to push arbitrary alerts, and potentially lock you out.
+
+:::
+
 In some situation, it's not practical to manually create or validate new machines in LAPI (eg, when running in an environment that uses auto-scaling).
 
 It is possible to configure LAPI to automatically accept new machines upon creation with the `api.server.auto_registration` section:
