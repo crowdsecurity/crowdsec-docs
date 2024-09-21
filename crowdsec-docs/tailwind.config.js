@@ -1,3 +1,5 @@
+const colors = require("tailwindcss/colors")
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     corePlugins: {
@@ -67,6 +69,6 @@ module.exports = {
             }),
         },
     },
-    plugins: [],
+    plugins: [require("tailwindcss-animate")],
     prefix: "tw-", // This is the prefix for the tailwind classes to not clash with docusarus classes
 }
