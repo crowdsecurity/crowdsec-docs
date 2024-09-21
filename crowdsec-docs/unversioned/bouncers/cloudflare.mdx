@@ -6,6 +6,7 @@ title: Cloudflare
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import RemediationSupportTable from '@site/src/components/RemediationSupportTable.tsx';
 
 
 <p align="center">
@@ -23,6 +24,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
+<RemediationSupportTable
+  MTLS
+  Prometheus
+  Stream
+/>
 
 A Remediation Component that syncs the decisions made by CrowdSec with CloudFlare's firewall. Manages multi user, multi account, multi zone setup. Supports IP, Country and AS scoped decisions.
 

@@ -7,6 +7,7 @@ sidebar_position: 7
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import RemediationSupportTable from '@site/src/components/RemediationSupportTable.tsx';
 
 <p align="center">
 <img src={useBaseUrl('/img/bouncer/misp_feed_generator/logo.png')} alt="CrowdSec" title="CrowdSec" />
@@ -25,6 +26,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 </p>
 </p>
 
+<RemediationSupportTable
+  Stream
+/>
 
 This Remediation Component generates MISP Feed from CrowdSec decisions. It exposes this Feed over HTTP/S.
 This can be used to feed CrowdSec decisions to MISP using the "Feeds" functionality of MISP.
