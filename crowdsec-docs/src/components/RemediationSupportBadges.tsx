@@ -9,7 +9,7 @@ import {
 } from "@site/src/ui/tooltip"
 
 
-type RemediationSupportTableProps = {
+type RemediationSupportBadgesProps = {
     Prometheus: boolean; // Prometheus is a boolean that controls the color of the Prometheus bubble
     MTLS: boolean; // MTLS is a boolean that controls the color of the MTLS bubble
     Mode: boolean; // Mode is a boolean that controls the color of the Mode bubble
@@ -17,7 +17,7 @@ type RemediationSupportTableProps = {
     Appsec?: boolean; // Appsec is a boolean that controls the color of the AppSec bubble
 }
 
-const RemediationSupportItem = ({ title, description, supported }: { title: string, description: string, supported: boolean }) => {
+const RemediationSupportBadge = ({ title, description, supported }: { title: string, description: string, supported: boolean }) => {
     return (
         <TooltipProvider>
             <Tooltip>
@@ -36,16 +36,16 @@ const RemediationSupportItem = ({ title, description, supported }: { title: stri
     );
 }
 
-export default function RemediationSupportTable({ MTLS, Metrics, Prometheus, Mode, Appsec }: RemediationSupportTableProps): React.JSX.Element {
+export default function RemediationSupportBadges({ MTLS, Metrics, Prometheus, Mode, Appsec }: RemediationSupportBadgesProps): React.JSX.Element {
     return (
         <div className='tw-flex tw-justify-center tw-flex-wrap tw-mb-4 tw-gap-2'>
             {Appsec !== undefined && (
-                <RemediationSupportItem title='AppSec' description='Can forward HTTP requests to the AppSec Component' supported={Appsec} />
+                <RemediationSupportBadge title='AppSec' description='Can forward HTTP requests to the AppSec Component' supported={Appsec} />
             )}
-            <RemediationSupportItem title='Mode' description='Can be configured in different modes, typically live or stream' supported={Mode} />
-            <RemediationSupportItem title='Metrics' description='Can send detailed metrics to LAPI' supported={Metrics} />
-            <RemediationSupportItem title='MTLS' description='Can do mutual TLS authentication to LAPI' supported={MTLS} />
-            <RemediationSupportItem title='Prometheus' description='Can expose metrics to Prometheus' supported={Prometheus} />
+            <RemediationSupportBadge title='Mode' description='Can be configured in different modes, typically live or stream' supported={Mode} />
+            <RemediationSupportBadge title='Metrics' description='Can send detailed metrics to LAPI' supported={Metrics} />
+            <RemediationSupportBadge title='MTLS' description='Can do mutual TLS authentication to LAPI' supported={MTLS} />
+            <RemediationSupportBadge title='Prometheus' description='Can expose metrics to Prometheus' supported={Prometheus} />
         </div>
     );
 }
