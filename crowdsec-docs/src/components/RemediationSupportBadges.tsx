@@ -10,11 +10,11 @@ import {
 
 
 type RemediationSupportTableProps = {
-    Prometheus: boolean;
-    MTLS: boolean;
-    Stream: boolean;
-    Live: boolean;
-    Metrics: boolean;
+    Prometheus: boolean; // Prometheus is a boolean that controls the color of the Prometheus bubble
+    MTLS: boolean; // MTLS is a boolean that controls the color of the MTLS bubble
+    Mode: boolean; // Mode is a boolean that controls the color of the Mode bubble
+    Metrics: boolean; // Metrics is a boolean that controls the color of the Metrics bubble
+    Appsec?: boolean; // Appsec is a boolean that controls the color of the AppSec bubble
 }
 
 const RemediationSupportItem = ({ title, description, supported }: { title: string, description: string, supported: boolean }) => {
@@ -36,14 +36,16 @@ const RemediationSupportItem = ({ title, description, supported }: { title: stri
     );
 }
 
-export default function RemediationSupportTable({ MTLS, Metrics, Prometheus, Live, Stream }: RemediationSupportTableProps): React.JSX.Element {
+export default function RemediationSupportTable({ MTLS, Metrics, Prometheus, Mode, Appsec }: RemediationSupportTableProps): React.JSX.Element {
     return (
         <div className='tw-flex tw-justify-center tw-flex-wrap tw-mb-4 tw-gap-2'>
+            {Appsec !== undefined && (
+                <RemediationSupportItem title='AppSec' description='Can forward HTTP requests to the AppSec Component' supported={Appsec} />
+            )}
+            <RemediationSupportItem title='Mode' description='Can be configured in different modes, typically live or stream' supported={Mode} />
             <RemediationSupportItem title='Metrics' description='Can send detailed metrics to LAPI' supported={Metrics} />
             <RemediationSupportItem title='MTLS' description='Can do mutual TLS authentication to LAPI' supported={MTLS} />
             <RemediationSupportItem title='Prometheus' description='Can expose metrics to Prometheus' supported={Prometheus} />
-            <RemediationSupportItem title='Live' description='Can use live endpoint on LAPI' supported={Live} />
-            <RemediationSupportItem title='Stream' description='Can use stream endpoint on LAPI' supported={Stream} />
         </div>
     );
 }

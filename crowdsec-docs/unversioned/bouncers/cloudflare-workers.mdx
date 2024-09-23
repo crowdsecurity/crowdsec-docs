@@ -6,7 +6,7 @@ title: CrowdSec Cloudflare Worker
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportTable from '@site/src/components/RemediationSupportTable.tsx';
+import RemediationSupportTable from '@site/src/components/RemediationSupportBadges.tsx';
 
 
 
@@ -28,7 +28,6 @@ import RemediationSupportTable from '@site/src/components/RemediationSupportTabl
 <RemediationSupportTable
   MTLS
   Prometheus
-  Stream
 />
 
 This **Remediation Component** (aka Bouncer) deploys a **Cloudflare Worker** in front of a **Cloudflare Zone/Website**, which checks if incoming request's IP address/Country/AS is present in a KV store and takes necessary remedial actions.   
