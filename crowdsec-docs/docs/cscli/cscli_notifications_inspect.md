@@ -4,11 +4,11 @@ title: cscli notifications inspect
 ---
 ## cscli notifications inspect
 
-Inspect active notifications plugin configuration
+Inspect notifications plugin
 
 ### Synopsis
 
-Inspect active notifications plugin and show configuration
+Inspect notifications plugin and show configuration
 
 ```
 cscli notifications inspect [flags]

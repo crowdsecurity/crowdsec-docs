@@ -10,10 +10,17 @@ delete bouncer(s) from the database
 cscli bouncers delete MyBouncerName [flags]
 ```
 
+### Examples
+
+```
+cscli bouncers delete "bouncer1" "bouncer2"
+```
+
 ### Options
 
 ```
-  -h, --help   help for delete
+  -h, --help             help for delete
+      --ignore-missing   don't print errors if one or more bouncers don't exist
 ```
 
 ### Options inherited from parent commands

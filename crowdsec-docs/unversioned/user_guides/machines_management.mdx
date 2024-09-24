@@ -101,3 +101,42 @@ import CodeBlock from '@theme/CodeBlock';
   </TabItem>
 
 </Tabs>
+
+### Machine auto validation
+
+:::warning
+
+If you enabled this feature, make sure to restrict the IP ranges as much as possible.
+
+Any rogue machine registered in your LAPI will be able to push arbitrary alerts, and potentially lock you out.
+
+:::
+
+In some situation, it's not practical to manually create or validate new machines in LAPI (eg, when running in an environment that uses auto-scaling).
+
+It is possible to configure LAPI to automatically accept new machines upon creation with the `api.server.auto_registration` section:
+
+```yaml
+  api:
+    server:
+      auto_registration:
+        enabled: true
+        token: "long_token_that_is_at_least_32_characters_long"
+        allowed_ranges:
+         - 10.2.0.42/32
+         - 10.0.0.0/24
+```
+
+You have to specify both the `token` and `allowed_ranges`.
+
+Once the configuration is done, you can pass the token to your registration request with the `--token` parameter:
+
+```bash
+cscli lapi register --machine my_machine --token long_token_that_is_at_least_32_characters_long
+```
+
+If the token is valid and the request is coming from an authorized IP range, LAPI will automatically validate the machine and it will be able to login without any further configuration.
+
+If no token is sent, LAPI will treat the request as a normal registration, regardless of the configuration.
+
+If a token is set but invalid, the request will be refused.

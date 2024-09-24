@@ -1,29 +1,26 @@
 ---
-id: cscli_notifications_list
-title: cscli notifications list
+id: cscli_machines_inspect
+title: cscli machines inspect
 ---
-## cscli notifications list
+## cscli machines inspect
 
-list notifications plugins
-
-### Synopsis
-
-list notifications plugins and their status (active or not)
+inspect a machine by name
 
 ```
-cscli notifications list [flags]
+cscli machines inspect [machine_name] [flags]
 ```
 
 ### Examples
 
 ```
-cscli notifications list
+cscli machines inspect "machine1"
 ```
 
 ### Options
 
 ```
-  -h, --help   help for list
+  -h, --help   help for inspect
+  -H, --hub    show hub state
 ```
 
 ### Options inherited from parent commands
@@ -41,5 +38,5 @@ cscli notifications list
 
 ### SEE ALSO
 
-* [cscli notifications](/cscli/cscli_notifications.md)	 - Helper for notification plugin configuration
+* [cscli machines](/cscli/cscli_machines.md)	 - Manage local API machines [requires local API]
 
