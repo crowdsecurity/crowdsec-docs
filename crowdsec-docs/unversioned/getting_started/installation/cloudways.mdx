@@ -9,28 +9,33 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# Preamble
-Cloudways is a managed cloud hosting platform that simplifies the process of hosting websites and applications on various cloud providers.  
-It provides you with a SSH access but with limited rights.  
-**However** there is a way to run CrowdSec on Cloudways and get both behavior detection on your services (nginx + apache) and applying remediation with our [WP plugin](/u/bouncers/wordpress.mdx) also unlocking the blocklist feature.  
-This guide is a bit longer than the other ones as it describes all specific steps needed for Cloudways integration.
-  
-We'll guide you through the following steps:  
-1. [Install CrowdSec from the static build](#install-crowdsec-from-the-static-build)  
-2. [Setup acquisitions and detection collections](#setup-acquisitions-and-detection-collections)  
-3. [Run a behavior detection on your past logs to see what it would have found](#run-a-behavior-detection-on-your-past-logs-to-see-what-it-would-have-found)  
-4. [Make CrowdSec run as a service at user level](#make-crowdsec-service-run-at-user-level)   
-5. [Bind it to the WP plugin to block the detected attackers](#bind-it-to-the-wp-plugin-to-block-the-detected-attackers)  
+# Preface
+Cloudways is a managed cloud hosting platform that makes it easy to host websites and applications across different cloud providers.
+
+It gives you SSH access, but with limited permissions.
+
+**However**, you can still run the [Security Engine](/docs/next/intro) on Cloudways to enable behavior detection for your services (Nginx and Apache) and use our [WordPress plugin](bouncers/wordpress.mdx) to apply remediation, including the blocklist feature. This guide is more detailed than others because it covers the specific steps required for integrating CrowdSec with Cloudways.
+
+We'll walk you through the following steps:  
+1. [Install CrowdSec using the static build](#install-crowdsec-from-the-static-build)  
+2. [Set up acquisition and detection collections](#setup-acquisitions-and-detection-collections)  
+3. [Run behavior detection on your past logs to see what would have been flagged](#run-a-behavior-detection-on-your-past-logs-to-see-what-it-would-have-found)  
+4. [Make CrowdSec run as a user-level service](#make-crowdsec-service-run-at-user-level)   
+5. [Connect it to the WordPress plugin to block detected attackers](#bind-it-to-the-wp-plugin-to-block-the-detected-attackers)
 
 ## Install CrowdSec from the static build
 In this section, we'll get the latest static build of CrowdSec, build the folder hierarchy with the slightly tweaked test_env script and create the necessary config for the Local API and Central API.
 
 ### Setup CrowdSec static build
 > For this setup we'll put CrowdSec in the */home/master/crowdsec* folder.
+
 #### Get the static build
-- Go to https://github.com/crowdsecurity/crowdsec/releases
-- Choose the version you want (at the time of writing 1.6.3 was the latest release)
+- Go to the [latest release page](https://github.com/crowdsecurity/crowdsec/releases/latest)
 - Scroll down past the changelog, in the **Assets** section copy the link to the **crowdsec-release.tgz** file
+- ensure you are within the `/home/master` folder
+```bash
+cd /home/master
+```
 - download it in your */home/master* folder, example:
 ```bash
 wget https://github.com/crowdsecurity/crowdsec/releases/download/v1.6.3/crowdsec-release.tgz
@@ -39,7 +44,7 @@ wget https://github.com/crowdsecurity/crowdsec/releases/download/v1.6.3/crowdsec
 ```bash
 tar -xvzf crowdsec-release.tgz
 ```
-- Rename  the extracted folder to *crowdsec*:
+- Rename the extracted folder to *crowdsec*:
 ```bash
 mv crowdsec-v1.6.3 crowdsec
 ```
@@ -50,7 +55,7 @@ cd crowdsec
 ```
 - Tweak the test_env script to create the necessary folders and config:
 ```bash
-sed -i 's|BASE="./tests"|BASE="./"|' test_env.sh
+sed -i 's|BASE="./tests"|BASE="/home/master/crowdsec"|' test_env.sh
 ```
 - Run the script:
 ```bash
@@ -66,24 +71,38 @@ Should output *config/parsers/s00-raw/syslog-logs.yaml -> /home/master/crowdsec/
 We'll take the template config, update a few ports to avoid conflicts and setup the Local API and Central API.
 - We'll use the dev.yml template to create our config.yaml:
 ```bash
-rn dev.yml >  config.yaml
+mv dev.yml config.yaml
 ```
-- Now lets update the port number for the Local API.
-- Open the config.yaml file in you editor of choice and change the following values:
-  - common section:
-    - change **log_media: file**
-	  -  add **log_dir: ./logs/**
-  - api/server section:
-    - listen on a free port, example 19443
-    - listen_uri:127.0.0.1:19443
 
-#### Init/Reset CAPI and LAPI credentials
-  - Quickly register on CAPI. This will create the necessary credentials in the *config/online_api_credentials.yaml* file
+#### Update the configuration
+> /home/master/crowdsec/config.yaml
+
+We need to make alterations to the config file to avoid conflicts and setup the Local API. Open the `/home/master/crowdsec/config.yaml` with your favourite terminal editor and make the following changes:
+
+```yaml
+common:
+  log_media: file ## Alter this line from stdout to file
+  log_dir: ./logs ## Add this line, ensure it indented correctly
+api:
+  server:
+    listen_uri: 127.0.0.1:8081 ## Change this line to a free port like 19443
+```
+
+#### Init CAPI (Central API) credentials
+
+We can initilized the CAPI credentials with the following command:
+
 ```bash
 ./cscli -c config.yaml capi register
 ```
-  - It should tell you to restart CrowdSec, ignore it for now, we'll do it later.
-	- LAPI setup relies on "machines"
+
+This will generate `/home/master/crowdsec/config/online_api_credentials.yaml` make sure to keep this file safe.
+
+:::warning
+The output will instruct you to restart the service, but we'll do that later.
+:::
+
+#### Reset LAPI (Local API) credentials
   - Remove the existing machine and create a new one in auto:
 ```bash
 ./cscli -c config.yaml machines list  //ignore the warning it's normal for now
@@ -121,12 +140,12 @@ In our case we'll look at the nginx logs and apache2 logs.
 - We'll replace the content of the config/acquis.yaml file (with you editor of choice) with the following:
 ```yaml
 filenames:
-  - /home/master/applications/abcdefghij/logs/nginx_*.log
+  - /home/master/applications/**/logs/nginx_*.log
 labels:
   type: nginx
 ---
 filenames:
-  - /home/master/applications/abcdefghij/logs/apache_*.log
+  - /home/master/applications/**/logs/apache_*.log
 labels:
   type: apache2
 ```
