@@ -1,5 +1,6 @@
-const colors = require('tailwindcss/colors')
+const colors = require("tailwindcss/colors")
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
     corePlugins: {
         preflight: false,
@@ -15,12 +16,12 @@ module.exports = {
             ...colors, // Default colors
             primary: {
                 light: "#2E2A77",
-                dark: '#242441',
+                dark: "#242441",
             },
             secondary: "#F8AB13",
         },
         extend: {},
     },
-    plugins: [],
+    plugins: [require("tailwindcss-animate")],
     prefix: "tw-", // This is the prefix for the tailwind classes to not clash with docusarus classes
-};
+}
