@@ -102,13 +102,27 @@ api:
   server:
     listen_uri: 127.0.0.1:19443
 ```
+#### Create some quality of life aliases
+In order to make the command line easier to use, we'll create some aliases for the CrowdSec CLI and crowdsec itself.
+This way you won't have to call it from the full path with the config param each time.
+
+- Add the following to your* /home/master/.bash_aliases* file:
+```bash
+alias cscli="/home/master/crowdsec/cscli -c /home/master/crowdsec/config.yaml"
+alias crowdsec="/home/master/crowdsec/crowdsec -c /home/master/crowdsec/config.yaml"
+```
+
+- Reload your bash profile:
+```bash
+source /home/master/.bashrc
+```
 
 #### Init CAPI (Central API) credentials
 
 We can initilized the CAPI credentials with the following command:
 
 ```bash
-./cscli -c config.yaml capi register
+cscli capi register
 ```
 
 This will generate `/home/master/crowdsec/config/online_api_credentials.yaml` make sure to keep this file safe.
@@ -120,7 +134,7 @@ The output will instruct you to restart the service, but we'll do that later.
 #### Reset LAPI (Local API) credentials
   - Remove the existing machine and create a new one in auto:
 ```bash
-./cscli -c config.yaml machines list  //ignore the warning it's normal for now
+cscli machines list  //ignore the warning it's normal for now
 ```
   - You should see something like this
 ```bash
@@ -132,11 +146,11 @@ The output will instruct you to restart the service, but we'll do that later.
 ```
 		- Delete the test machine
 ```bash
-./cscli -c config.yaml machines delete test_env
+cscli machines delete test_env
 ```    
 		- Create a new default one with --force to override the existing credentials file
 ```bash
-./cscli machines add my_logprocessor --auto --force 
+cscli machines add my_logprocessor --auto --force 
 ```
 		- C that the credential file has the proper port : *cat ./config/local_api_credentials.yaml*
 ```yaml
@@ -171,7 +185,7 @@ Now we'll install the collections for nginx and apache2.
 You can find our catalog on our [Hub](https://hub.crowdsec.net).  
 - Run the following command to install the collections:
 ```bash
-./cscli -c config.yaml collections install crowdsecurity/nginx crowdsecurity/apache2
+cscli collections install crowdsecurity/nginx crowdsecurity/apache2
 ```
 ### Making the collections auto update
 CrowdSec collection often get updated with the behavior detections.  
@@ -211,7 +225,7 @@ We'll run it on the nginx access logs and the first archive of nginx access logs
 - Note that **dsn** parameter take the **file://***/ protocol and an **absolute path**
 - After you ran the detection, detected alerts should be listed in:
 ```bash
-./cscli -c config.yaml alerts list
+cscli alerts list
 ```
 
 ## Make CrowdSec service run at user level
@@ -270,7 +284,7 @@ But to check that its working, you can visit your website
     - You should see the acquisition metrics appear/update
     - And the resulting parser acquisition and metrics
 ```bash
-./cscli metrics -c config.yaml
+cscli metrics -c config.yaml
 ```
 - looking something like
 ```bash
@@ -304,7 +318,7 @@ Alerts are raised and decisions to block bad actors are stored in the local DB.
 To actually apply a remediation and ban the attackers from your website you need:
 - To create a bouncer API key:
 ```bash
-./cscli -c config.yaml bouncers add my_wp_bouncer
+cscli bouncers add my_wp_bouncer
 ```
 - You should see something like this:
 ```bash
