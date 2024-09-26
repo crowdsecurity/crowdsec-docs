@@ -77,15 +77,30 @@ mv dev.yml config.yaml
 #### Update the configuration
 > /home/master/crowdsec/config.yaml
 
-We need to make alterations to the config file to avoid conflicts and setup the Local API. Open the `/home/master/crowdsec/config.yaml` with your favourite terminal editor and make the following changes:
+We need to make alterations to the config file for this static install and to avoid conflicts and setup the Local API. 
+- First, replace all* ./ *with* /home/master/crowdsec/ *in the config.yaml file
+```bash
+sed -i 's|./|/home/master/crowdsec/|g' config.yaml
+```
 
+Open the `/home/master/crowdsec/config.yaml` with your favourite terminal editor and make the following changes:
+- Update log_media and add log dir
 ```yaml
 common:
   log_media: file ## Alter this line from stdout to file
   log_dir: ./logs ## Add this line, ensure it indented correctly
+```
+- Then uncomment and replace the hubdir with the correct path:
+```yaml
+[...]
+hub_dir: /home/master/crowdsec/config/hub
+```
+- Finally, change the local API port to 19443 in order to avoid conflicts
+```yaml
+[...]
 api:
   server:
-    listen_uri: 127.0.0.1:8081 ## Change this line to a free port like 19443
+    listen_uri: 127.0.0.1:19443
 ```
 
 #### Init CAPI (Central API) credentials
