@@ -3,11 +3,21 @@ id: gotify
 title: Gotify
 ---
 
-Gotify can be integrated with CrowdSec by using the HTTP plugin. Enable it by following these [instructions](/notification_plugins/http.md) .
+CrowdSec can forward Alerts to Gotify via the HTTP plugin. This guide will show you how to configure the HTTP plugin to send alerts to your Gotify instance.
+
+## Configuring the plugin
+
+By default the configuration for HTTP plugin is located at these default location per OS:
+
+- **Linux** `/etc/crowdsec/notifications/http.yaml`
+- **FreeBSD** `/usr/local/etc/crowdsec/notifications/http.yaml`
+- **Windows** `C:\ProgramData\CrowdSec\config\notifications\http.yaml`
+
+### Base configuration
+
+You can replace the file contents with the following configuration:
 
 Then replace the `<GOTFIY_URL>` and the `<GOTIFY_API_KEY>` of the plugin's config so that it send the events to your Gotify instance.
-
-An example configuration:
 
 ```yaml
 type: http          # Don't change
@@ -54,6 +64,57 @@ headers:
   Content-Type: application/json
 # skip_tls_verification:  # true or false. Default is false
 ```
+
+## Testing the plugin
+
+Before enabling the plugin it is best to test the configuration so the configuration is validated and you can see the output of the plugin. 
+
+```bash
+cscli notifications test http_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `http_default` with the new name.
+:::
+
+## Enabling the plugin
+
+In your profiles you will need to uncomment the `notifications` key and the `http_default` plugin list item.
+
+```
+#notifications:
+# - http_default 
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `http_default` with the new name.
+:::
+
+:::warning
+Ensure your YAML is properly formatted the `notifications` key should be at the top level of the profile.
+:::
+
+<details>
+
+<summary>Example profile with http plugin enabled</summary>
+
+```yaml
+name: default_ip_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+#duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+#highlight-next-line
+notifications:
+#highlight-next-line
+  - http_default
+on_success: break
+```
+
+</details>
 
 ## Final Steps:
 

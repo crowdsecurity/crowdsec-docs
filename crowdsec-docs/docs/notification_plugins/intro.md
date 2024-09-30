@@ -3,30 +3,25 @@ id: intro
 title: Introduction
 ---
 
-import CodeBlock from '@theme/CodeBlock';
-
 ### Goal
 
-CrowdSec supports notification plugins, meant to be able to push alerts to third party services for alerting or integration purposes.
-At the time of writing, plugins exists for [slack](/notification_plugins/slack.md), [splunk](/notification_plugins/splunk.md), and a generic [http push](/notification_plugins/http.md) plugin (allowing to push to services such as [elasticsearch](/notification_plugins/elasticsearch.md)).
+CrowdSec supports notification plugins, which allows alerts to pushed to third party services for alerting or integration purposes.
 
-Plugins are defined at LAPI level. Events get dispatched to said plugins via [profile configuration](/profiles/intro.md). 
+Plugins are defined and used at the LAPI level, so if you are running a multi-server setup, you will configure the plugins on the server that is receiving the alerts. If you are not running a multi-server setup, you will configure the plugins on the same server as the main CrowdSec process.
 
 ### Configuration
 
-The default plugins are shipped with CrowdSec upon installation, and can trivially be enabled without further installation.
+By default all plugins are shipped with CrowdSec are within the install package, and can trivially be enabled without further need to install additional packages.
 
 Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`.md).
 
-
-
 Plugin binaries are present in `config_paths.plugin_dir` (defaults to `/var/lib/crowdsec/plugins/`), and their individual configuration are present in `config_paths.notification_dir` (defaults to `/etc/crowdsec/notifications/`)
 
-
-**Important:** CrowdSec rejects the plugins if one of the following is true :
+:::warning
+CrowdSec rejects the plugins binaries if one of the following is true :
 1. plugin is not owned by the root user and root group.
 2. plugin is world-writable. 
-
+:::
 
 ### Environment variables
 
@@ -68,7 +63,8 @@ notifications:
 
 ### Notification plugin configuration:
 
-Following are the fields CrowdSec main process can interpret. 
+Following fields are provided to all notification plugins and not specific to any plugin.
+
 ```yaml
 type:
 name:
@@ -77,10 +73,8 @@ group_wait:
 group_threshold:
 max_retry:
 timeout:
-
-
-
 ```
+
 #### `type` : 
 
 Required. Type of plugin, eg "slack"
@@ -126,31 +120,35 @@ Currently only `notification` plugins are supported. Whenever CrowdSec receives 
 
 [See](https://github.com/crowdsecurity/crowdsec/blob/plugins/pkg/protobufs/notifier.proto) the gRPC protocol for `notification` plugins.
 
+In the following sections we use `/etc/crowdsec/config.yaml` for configuration file paths. However depending on your platform the paths can be interchanged with the following:
+
+- **Linux** `/etc/crowdsec/config.yaml`
+- **FreeBSD** `/usr/local/etc/crowdsec/config.yaml`
+- **Windows** `C:\ProgramData\CrowdSec\config\config.yaml`
+
 #### Plugin Discovery
 
 Plugins are discovered from the directories specified in `/etc/crowdsec/config.yaml`. 
 
-```yaml
-#/etc/crowdsec/config.yaml
-.....
+```yaml title="/etc/crowdsec/config.yaml"
 config_paths:
   notification_dir: /etc/crowdsec/notifications/
   plugin_dir: /var/lib/crowdsec/plugins/
-.....
 ```
 
 #### Plugin Process Owner
 
-Due to security reasons, plugins are ideally ran with dropped priveleges. This is done by setting owner and group of the plugin process as some unprivileged user. This can be configured via setting the desired user and group in `/etc/crowdsec/config.yaml`. 
+Due to security reasons, plugins process are operated under a user with limited privileges. This is done by setting owner and group of the plugin process as some unprivileged user. This can be configured via setting the desired user and group in `/etc/crowdsec/config.yaml`. 
 
-```yaml
-#/etc/crowdsec/config.yaml
-.....
+```yaml title="/etc/crowdsec/config.yaml"
 plugin_config:
   user: nobody
   group: nogroup
-.....
 ```
+
+:::note
+Depending on your distribution or platform these values may change to `nobody` or `nogroup`. If you wish to update these values, please ensure that the user and group exist on your system.
+:::
 
 ### Alert object
 
@@ -190,8 +188,9 @@ To use them in a go-template, you can check [here](https://pkg.go.dev/github.com
 
 <details>
 <summary>Show the full alert object</summary>
-<CodeBlock className="language-json">
-{`[
+
+```json
+[
     {
         "capacity": 5,
         "decisions": [
@@ -572,8 +571,9 @@ To use them in a go-template, you can check [here](https://pkg.go.dev/github.com
         "start_at": "2022-02-12T14:10:21Z",
         "stop_at": "2022-02-12T14:10:23Z"
     }
-]`}
-</CodeBlock>
+]
+```
+
 </details>
 
 #### Usage examples
@@ -606,55 +606,19 @@ Extract the meta associated with the alerts
 {{ end }}
 ```
 
----
-
-Teams webhook
-
-```
- {
-  "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
-  "type": "AdaptiveCard",
-  "version": "1.0",
-  "body": [
-   {{range .}}
-   {{ $decisions_len := len .Decisions }}
-      {
-        "type": "TextBlock",
-        "text": "Attack start: {{.StartAt}}"
-      },
-      {
-        "type": "TextBlock",
-        "text": "Attack End: {{.StopAt}}"
-      },
-      {{ range $index, $element := .Decisions }}
-      {
-        "type": "TextBlock",
-        "text": "{{$element.Value}} performed {{$element.Scenario}} and got a {{$element.Duration}} {{$element.Type}}"
-      }
-      {{ if lt $index (sub $decisions_len 1) }}
-      ,
-      {{ end }}
-      {{ end }}
-    {{end}}
-    ]
- } 
-```
-
 ### Debugging notifications plugins
 
-cscli cli tool provide some useful command to help write notification
+**cscli** tool provide some useful command to help write notification
 plugin configuration. Those are provided by the `cscli notifications`
 command and its subcommands.
 
-First `cscli notifications list` will list the active configured
-notifications plugins. Then it's possible to get configuration
-information for each notification plugin using its given name by
-executing `cscli notifications inspect <name>`.
+| SubCommand | Description |
+|---------|-------------|
+| [list](/cscli/cscli_notifications_list.md) | List all notification plugins and their status |
+| [inspect](/cscli/cscli_notifications_inspect.md) | Get configuration information for a notification plugin |
+| [test](/cscli/cscli_notifications_test.md) | Test the configuration by sending a `generic` alert directly to notification plugin |
+| [reinject](/cscli/cscli_notifications_reinject.md) | Reinject an Alert to the profiles pipeline to simulate real processing of an Alert |
 
-The last other helpful subcommand is for testing notifications plugins
-directly. It takes an id and reinject the alert through the matched
-profile notifications. If the alert matches a profile with no
-configured notifications then no notification will be generated. This
-can be useful to test both the profile configuration and the normal
-operation of the notifications plugins.
-
+:::info
+Please note the difference between `reinject` and `test`, `reinject` will send the alert to the profiles pipeline and then to the notification plugin that is `active` on the matched profile, while `test` will send the alert directly to the notification plugin no matter if the plugin is active or defined within a profile.
+:::
