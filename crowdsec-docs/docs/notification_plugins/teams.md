@@ -3,19 +3,17 @@ id: teams
 title: Microsoft Teams
 ---
 
-This guide will show you how to enable Microsoft Teams notifications via the HTTP plugin.
+The following guide shows how to configure, test and enable HTTP plugin to forward Alerts to Microsoft Teams.
 
-## Enabling the plugin:
+## Configuring the plugin
 
-In your profile file (by default `/etc/crowdsec/profiles.yaml`) , uncomment the section
-```
-#notifications:
-# - http_default
-```
+By default the configuration for HTTP plugin is located at these default location per OS:
 
-## Configuring the plugin:
+- **Linux** `/etc/crowdsec/notifications/http.yaml`
+- **FreeBSD** `/usr/local/etc/crowdsec/notifications/http.yaml`
+- **Windows** `C:\ProgramData\CrowdSec\config\notifications\http.yaml`
 
-By default there would be a http config at `/etc/crowdsec/notifications/http.yaml`. Simply replace the whole content in this file with this example below.
+Simply replace the whole content in this file with this example below.
 
 ### Base configuration
 
@@ -291,6 +289,57 @@ headers:
 * See [microsoft docs](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook) for instructions to obtain a webhook.
 * The `format` is a [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
 
+## Testing the plugin
+
+Before enabling the plugin it is best to test the configuration so the configuration is validated and you can see the output of the plugin. 
+
+```bash
+cscli notifications test http_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `http_default` with the new name.
+:::
+
+## Enabling the plugin
+
+In your profiles you will need to uncomment the `notifications` key and the `http_default` plugin list item.
+
+```
+#notifications:
+# - http_default 
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `http_default` with the new name.
+:::
+
+:::warning
+Ensure your YAML is properly formatted the `notifications` key should be at the top level of the profile.
+:::
+
+<details>
+
+<summary>Example profile with http plugin enabled</summary>
+
+```yaml
+name: default_ip_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+#duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+#highlight-next-line
+notifications:
+#highlight-next-line
+  - http_default
+on_success: break
+```
+
+</details>
+
 ## Final Steps:
 
 Let's restart crowdsec
@@ -298,5 +347,3 @@ Let's restart crowdsec
 ```bash
 sudo systemctl restart crowdsec
 ```
-
-You can verify whether the plugin is properly working by triggering scenarios using tools like wapiti, nikto etc.

@@ -3,26 +3,19 @@ id: file
 title: File Plugin
 ---
 
-The File plugin is by default shipped with your CrowdSec installation. The following guide shows how to enable it.
+The File plugin is by default shipped with your CrowdSec installation and allows you to write Alerts to an external file that can be monitored by external applications. The following guide shows how to configure, test and enable it.
 
-## Enabling the plugin:
+## Configuring the plugin
 
-In your profile file (by default `/etc/crowdsec/profiles.yaml`) , uncomment the section
+By default the configuration for Email plugin is located at these default location per OS:
 
-```
-#notifications:
-# - file_default 
-```
+- **Linux** `/etc/crowdsec/notifications/file.yaml`
+- **FreeBSD** `/usr/local/etc/crowdsec/notifications/file.yaml`
+- **Windows** `C:\ProgramData\CrowdSec\config\notifications\file.yaml`
 
-Every alert which would pass the profile's filter would be dispatched to `file_default` plugin.
+### Base configuration
 
-## Configuring the plugin: 
-
-By default the configuration for File plugin is located at `/etc/crowdsec/notifications/file.yaml`.
-
-### Adding the plugin configuration 
-
-Example config which writes a ndjson file to `/tmp/crowdsec_alerts.json`.
+Example config which writes Alerts to a file using NDJson (**N**ewline **D**elimiter **J**ava**S**cript **O**bject **N**otation) format to `/tmp/crowdsec_alerts.json`.
 
 ```yaml
 # Don't change this
@@ -56,9 +49,9 @@ rotate:
 Some SIEM agents may not support some top level keys we define in the default ndjson format. Please make sure to adjust the format to match your SIEM agent's requirements.
 :::
 
-## SIEM Integration
+### SIEM Integration
 
-### Filebeat
+#### Filebeat
 
 Filebeat has a set of reserved top level keys and should not be used in the ndjson format. The following format can be used to be compatible with Filebeat:
 
@@ -69,6 +62,57 @@ format: |
   {{ end -}}
 ```
 
+## Testing the plugin
+
+Before enabling the plugin it is best to test the configuration so the configuration is validated and you can see the output of the plugin. 
+
+```bash
+cscli notifications test file_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `file_default` with the new name.
+:::
+
+## Enabling the plugin
+
+In your profiles you will need to uncomment the `notifications` key and the `file_default` plugin list item.
+
+```
+#notifications:
+# - file_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `file_default` with the new name.
+:::
+
+:::warning
+Ensure your YAML is properly formatted the `notifications` key should be at the top level of the profile.
+:::
+
+<details>
+
+<summary>Example profile with file plugin enabled</summary>
+
+```yaml
+name: default_ip_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+#duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+#highlight-next-line
+notifications:
+#highlight-next-line
+  - file_default
+on_success: break
+```
+
+</details>
+
 ## Final Steps:
 
 Let's restart crowdsec
@@ -76,5 +120,3 @@ Let's restart crowdsec
 ```bash
 sudo systemctl restart crowdsec
 ```
-
-You can verify whether the plugin is properly working by triggering scenarios using tools like wapiti, nikto etc. 

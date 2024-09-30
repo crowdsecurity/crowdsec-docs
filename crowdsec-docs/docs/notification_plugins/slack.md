@@ -5,22 +5,17 @@ title: Slack Plugin
 
 The slack plugin is by default shipped with your CrowdSec installation. The following guide shows how to enable it.
 
-## Enabling the plugin:
-
-In your profile file (by default `/etc/crowdsec/profiles.yaml`) , uncomment the section
-```
-#notifications:
-# - slack_default 
-```
-
 ## Configuring the plugin: 
 
-### Adding the plugin configuration 
+By default the configuration for Slack plugin is located at these default location per OS:
 
-By default there would be a slack config at `/etc/crowdsec/notifications/slack.yaml`. Specify your
-`webhook`. 
+- **Linux** `/etc/crowdsec/notifications/slack.yaml`
+- **FreeBSD** `/usr/local/etc/crowdsec/notifications/slack.yaml`
+- **Windows** `C:\ProgramData\CrowdSec\config\notifications\slack.yaml`
 
-Example config: 
+### Base configuration
+
+Here is the base configuration for the Slack plugin:
 
 ```yaml
 # Don't change this
@@ -52,6 +47,56 @@ See [slack guide](https://slack.com/intl/en-in/help/articles/115005265063-Incomi
 
 **Note** that the `format` is a [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
 
+## Testing the plugin
+
+Before enabling the plugin it is best to test the configuration so the configuration is validated and you can see the output of the plugin. 
+
+```bash
+cscli notifications test slack_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `slack_default` with the new name.
+:::
+
+## Enabling the plugin
+
+In your profiles you will need to uncomment the `notifications` key and the `slack_default` plugin list item.
+
+```
+#notifications:
+# - slack_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `slack_default` with the new name.
+:::
+
+:::warning
+Ensure your YAML is properly formatted the `notifications` key should be at the top level of the profile.
+:::
+
+<details>
+
+<summary>Example profile with email plugin enabled</summary>
+
+```yaml
+name: default_ip_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+#duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+#highlight-next-line
+notifications:
+#highlight-next-line
+  - slack_default
+on_success: break
+```
+
+</details>
 
 ## Final Steps:
 
@@ -60,5 +105,3 @@ Let's restart crowdsec
 ```bash
 sudo systemctl restart crowdsec
 ```
-
-You can verify whether the plugin is properly working by triggering scenarios using tools like wapiti, nikto etc. 

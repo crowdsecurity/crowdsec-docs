@@ -9,7 +9,7 @@ In order to simplify some operation in the templates, we provide some custom hel
 
 The [Sprig](https://masterminds.github.io/sprig/) library is available in the templates, and provides a lot of useful functions. Refer to the sprig documentation for more information.
 
-## Crowdsec specific helpers
+## CrowdSec specific helpers
 
 ### `HTMLEscape`
 
