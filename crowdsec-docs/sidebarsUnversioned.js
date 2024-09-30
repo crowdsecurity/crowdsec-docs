@@ -351,6 +351,11 @@ module.exports = {
             id: "troubleshooting/remediation_components",
             label: "Remediation Components",
         },
+        {
+            type: "doc",
+            id: "troubleshooting/cti",
+            label: "CTI",
+        },
     ],
     serviceApiSideBar: [
         {

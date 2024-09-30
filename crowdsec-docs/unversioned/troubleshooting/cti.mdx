@@ -1,30 +1,20 @@
 ---
-id: false_positives
-title: False Positives
-sidebar_position: 7
+title: Troubleshooting CTI
+id: cti
 ---
 
-import TableRender from "@site/src/components/tableRender"
-import GithubIconRender from "@site/src/components/githubIconRender"
+import UnixWindowsK8sTabs from "../../src/components/UnixWindowsK8sTabs"
 
-export const fpURL =
-    "https://hub-cdn.crowdsec.net/master/taxonomy/false_positives.json"
-export const columns = [
-    {
-        header: "Name",
-        accessorKey: "name",
-    },
-    {
-        header: "Description",
-        accessorKey: "description",
-    },
-]
+## Community support
 
-<GithubIconRender url={fpURL}></GithubIconRender>
+Please try to resolve your issue by reading [the documentation](../cti_api/intro). If you're unable to find a solution, don't hesitate to seek assistance in:
 
-<TableRender columns={columns} url={fpURL}></TableRender>
+-   [Discourse](https://discourse.crowdsec.net/)
+-   [Discord](https://discord.gg/crowdsec)
 
-## How to Get Tagged as a False Positive
+## False Positive
+
+### How to Get Tagged as a False Positive
 
 To be marked as a false positive in the CrowdSec Threat Intelligence, you need to publicly share all the IP addresses and ranges you own.
 
