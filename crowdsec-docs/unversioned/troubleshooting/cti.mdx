@@ -1,30 +1,18 @@
 ---
-id: false_positives
-title: False Positives
-sidebar_position: 7
+title: Troubleshooting CTI
+id: cti
 ---
 
-import TableRender from "@site/src/components/tableRender"
-import GithubIconRender from "@site/src/components/githubIconRender"
+## Community support
 
-export const fpURL =
-    "https://hub-cdn.crowdsec.net/master/taxonomy/false_positives.json"
-export const columns = [
-    {
-        header: "Name",
-        accessorKey: "name",
-    },
-    {
-        header: "Description",
-        accessorKey: "description",
-    },
-]
+Please try to resolve your issue by reading [the documentation](../cti_api/intro). If you're unable to find a solution, don't hesitate to seek assistance in:
 
-<GithubIconRender url={fpURL}></GithubIconRender>
+-   [Discourse](https://discourse.crowdsec.net/)
+-   [Discord](https://discord.gg/crowdsec)
 
-<TableRender columns={columns} url={fpURL}></TableRender>
+## False Positive
 
-## How to Get Tagged as a False Positive
+### How to Get Tagged as a False Positive
 
 To be able to be classified as a false positive, you need a proper technical justification of why your IP might be misclassified as a threat. This part is to be reviewed and validated by crowdsec.
 
