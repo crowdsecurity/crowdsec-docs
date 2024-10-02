@@ -15,12 +15,14 @@ We have extended our troubleshooting documentation to cover more common issues a
 
 ### [Remediation Components](/troubleshooting/remediation_components.mdx)
 
+### [CTI](/troubleshooting/cti.mdx)
+
 ## Community support
 
 Please try to resolve your issue by reading the documentation. If you're unable to find a solution, don't hesitate to seek assistance in:
 
-- [Discourse](https://discourse.crowdsec.net/)
-- [Discord](https://discord.gg/crowdsec)
+-   [Discourse](https://discourse.crowdsec.net/)
+-   [Discord](https://discord.gg/crowdsec)
 
 # FAQ
 
@@ -64,9 +66,9 @@ If you need help for large scale deployment, please get in touch with us on the 
 
 Setting up a proxy works out of the box, the [net/http golang library](https://golang.org/src/net/http/transport.go) can handle those environment variables:
 
-* `HTTP_PROXY`
-* `HTTPS_PROXY`
-* `NO_PROXY`
+-   `HTTP_PROXY`
+-   `HTTPS_PROXY`
+-   `NO_PROXY`
 
 For example:
 
@@ -75,6 +77,7 @@ export HTTP_PROXY=http://<proxy_url>:<proxy_port>
 ```
 
 #### Systemd variable
+
 On Systemd devices you have to set the proxy variable in the environment section for the CrowdSec service. To avoid overwriting the service file during an update, a folder is created in `/etc/systemd/system/crowdsec.service.d` and a file in it named `http-proxy.conf`. The content for this file should look something like this:
 
 ```bash title="systemctl edit crowdsec.service"
@@ -90,6 +93,7 @@ Then you can restart CrowdSec like this:
 `systemctl restart crowdsec`
 
 #### Sudo
+
 If you use `sudo cscli`, just add this line in `visudo` after setting up the previous environment variables:
 
 ```
@@ -146,20 +150,22 @@ CrowdSec Hub should be used when you have an issue with a parser, scenario or co
 
 To disable the central API, simply comment out the [`online_client` section of the configuration file](/docs/next/configuration/crowdsec_configuration#online_client).
 
-### Why are some scenarios/parsers "tainted" or "custom" ? 
+### Why are some scenarios/parsers "tainted" or "custom" ?
 
 When using `cscli` to list your parsers, scenarios and collections, some might appear as "tainted" or "local".
 
 "tainted" items:
- - Originate from the hub
- - Were locally modified
- - Will not be automatically updated/upgraded by `cscli` operations (unless `--force` or similar is specified)
- - Won't be sent to Central API and won't appear in the Console (unless `cscli console enable tainted` has been specified)
+
+-   Originate from the hub
+-   Were locally modified
+-   Will not be automatically updated/upgraded by `cscli` operations (unless `--force` or similar is specified)
+-   Won't be sent to Central API and won't appear in the Console (unless `cscli console enable tainted` has been specified)
 
 "local" items:
- - Have been locally created by the user
- - Are not managed by `cscli` operations
- - Won't be sent to Central API and won't appear in the Console (unless `cscli console enable custom` has been specified)
+
+-   Have been locally created by the user
+-   Are not managed by `cscli` operations
+-   Won't be sent to Central API and won't appear in the Console (unless `cscli console enable custom` has been specified)
 
 ### Which information is sent to your services ?
 
@@ -201,6 +207,7 @@ line: May 16 07:50:30 sd-126005 sshd[10041]: Invalid user git from 78.142.18.204
 		├ 🟢 crowdsecurity/ssh-slow-bf
 		└ 🟢 crowdsecurity/ssh-slow-bf_user-enum
 ```
+
 This command will allow you to see each parser behavior.
 
 :::warning

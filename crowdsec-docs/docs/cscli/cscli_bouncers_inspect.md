@@ -1,29 +1,25 @@
 ---
-id: cscli_notifications_list
-title: cscli notifications list
+id: cscli_bouncers_inspect
+title: cscli bouncers inspect
 ---
-## cscli notifications list
+## cscli bouncers inspect
 
-list notifications plugins
-
-### Synopsis
-
-list notifications plugins and their status (active or not)
+inspect a bouncer by name
 
 ```
-cscli notifications list [flags]
+cscli bouncers inspect [bouncer_name] [flags]
 ```
 
 ### Examples
 
 ```
-cscli notifications list
+cscli bouncers inspect "bouncer1"
 ```
 
 ### Options
 
 ```
-  -h, --help   help for list
+  -h, --help   help for inspect
 ```
 
 ### Options inherited from parent commands
@@ -41,5 +37,5 @@ cscli notifications list
 
 ### SEE ALSO
 
-* [cscli notifications](/cscli/cscli_notifications.md)	 - Helper for notification plugin configuration
+* [cscli bouncers](/cscli/cscli_bouncers.md)	 - Manage bouncers [requires local API]
 

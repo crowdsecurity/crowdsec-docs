@@ -11,7 +11,18 @@ The CrowdSec Console is a web-based interface provided by CrowdSec, offering a w
 
 See the dedicated [CrowdSec Console](/getting_started/post_installation/console.mdx) guide for more information.
 
-### 2. Acquisitions
+
+### 2. Whitelists
+
+:::info
+Whitelists are a way to tell CrowdSec to ignore certain events or IP addresses.
+:::
+
+By default CrowdSec will whitelist private LAN IP addresses, however you may want to whitelist additional IP addresses or events.
+
+See the dedicated [Whitelists](/getting_started/post_installation/whitelists.mdx) guide for more information.
+
+### 3. Acquisitions
 
 :::info
 Acquisitions are sources of logs that CrowdSec can analyze.
@@ -21,7 +32,7 @@ By default when CrowdSec is installed it will attempt to detect the running serv
 
 See the dedicated [Acquisition](/getting_started/post_installation/acquisition.mdx) guide for more information.
 
-### 3. Profiles
+### 4. Profiles
 
 :::info
 Profiles are a set of rules that drives what decisions will be taken by CrowdSec.
@@ -31,7 +42,7 @@ CrowdSec comes with a default profile that is suitable for most use cases. Howev
 
 See the dedicated [Profiles](/getting_started/post_installation/profiles.mdx) guide for more information.
 
-### 4. Metrics
+### 5. Metrics
 
 :::info
 Metrics are a way to monitor the behavior of CrowdSec.

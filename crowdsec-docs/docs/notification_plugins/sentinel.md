@@ -3,21 +3,18 @@ id: sentinel
 title: Sentinel Plugin
 ---
 
-The sentinel plugin is by default shipped with your CrowdSec installation. The following guide shows how to enable it.
+The sentinel plugin is by default shipped with your CrowdSec installation. The following guide shows how to configure, test and enable it.
 
-## Enabling the plugin:
+## Configuring the plugin
 
-In your profile file (by default `/etc/crowdsec/profiles.yaml`) , uncomment the section
-```
-#notifications:
-# - sentinel_default 
-```
+By default there would be a sentinel config at these default location per OS:
 
-## Configuring the plugin: 
+- **Linux** `/etc/crowdsec/notifications/sentinel.yaml`
+- **FreeBSD** `/usr/local/etc/crowdsec/notifications/sentinel.yaml`
+- **Windows** `C:\ProgramData\CrowdSec\config\notifications\sentinel.yaml`
 
-### Adding the plugin configuration 
+### Base configuration
 
-By default there would be a sentinel config at `/etc/crowdsec/notifications/sentinel.yaml`.
 You will need to specify:
  - customer_id
  - shared_key
@@ -70,13 +67,61 @@ The log type is the name of the log that will be sent to azure.
 
 Assuming you chose `crowdsec`, it will appear as `crowdsec_CL` in azure.
 
+## Testing the plugin
 
-## Final Steps:
+Before enabling the plugin it is best to test the configuration so the configuration is validated and you can see the output of the plugin. 
+
+```bash
+cscli notifications test sentinel_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `sentinel_default` with the new name.
+:::
+
+## Enabling the plugin
+
+In your profiles you will need to uncomment the `notifications` key and the `sentinel_default` plugin list item.
+
+```
+#notifications:
+# - sentinel_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `sentinel_default` with the new name.
+:::
+
+:::warning
+Ensure your YAML is properly formatted the `notifications` key should be at the top level of the profile.
+:::
+
+<details>
+
+<summary>Example profile with sentinel plugin enabled</summary>
+
+```yaml
+name: default_ip_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+#duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+#highlight-next-line
+notifications:
+#highlight-next-line
+  - sentinel_default
+on_success: break
+```
+
+</details>
+
+## Final Steps
 
 Let's restart crowdsec
 
 ```bash
 sudo systemctl restart crowdsec
 ```
-
-You can verify whether the plugin is properly working by triggering scenarios using tools like wapiti, nikto etc. 

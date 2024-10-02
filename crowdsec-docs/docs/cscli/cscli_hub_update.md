@@ -19,7 +19,8 @@ cscli hub update [flags]
 ### Options
 
 ```
-  -h, --help   help for update
+  -h, --help           help for update
+      --with-content   Download index with embedded item content
 ```
 
 ### Options inherited from parent commands
