@@ -3,7 +3,7 @@ title: Troubleshooting Remediation Components
 id: remediation_components
 ---
 
-import UnixWindowsK8sTabs from '../../src/components/UnixWindowsK8sTabs';
+import FormattedTabs from '@site/src/components/FormattedTabs';
 
 ## Community support
 
@@ -20,7 +20,7 @@ Please try to resolve your issue by reading the documentation. If you're unable 
 
 ### How to check the status
 
-<UnixWindowsK8sTabs
+<FormattedTabs
     bash="sudo systemctl status {component}"
     powershell="Get-Service {component}"
 />
@@ -51,7 +51,7 @@ By default Remediation components will log to the following locations depending 
 
 You can use the os related commands to filter the logs to only show errors.
 
-<UnixWindowsK8sTabs
+<FormattedTabs
     bash='sudo grep -E "level=(error|fatal)" /var/log/{component}.log'
     cmd='findstr "level=error level=fatal" C:\ProgramData\CrowdSec\log\{component}.log'
     powershell='Select-String "level=(error|fatal)" C:\ProgramData\CrowdSec\log\{component}.log'

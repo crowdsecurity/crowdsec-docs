@@ -5,7 +5,7 @@ title: CrowdSec Blocklists
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
-import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
+import FormattedTabs from '@site/src/components/FormattedTabs';
 
 # CrowdSec Blocklists
 
@@ -73,7 +73,7 @@ After saving, as indicated, it could take up to `2 hours` for the blocklist to b
 
 To see the active blocklists within an engine, you can run the following command:
 
-<UnixWindowsK8sTabs
+<FormattedTabs
     bash="cscli metrics show decisions"
     powershell="cscli.exe metrics show decisions"
     k8s="kubectl exec -n crowdsec -it crowdsec-lapi-<id> -- cscli metrics show decisions"

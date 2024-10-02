@@ -5,7 +5,7 @@ pagination_prev: getting_started/next_steps
 pagination_next: getting_started/post_installation/profiles
 ---
 
-import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
+import FormattedTabs from '@site/src/components/FormattedTabs';
 
 # Troubleshoting Acquisition
 
@@ -23,7 +23,7 @@ Within the CrowdSec log file it will log if the file was found or not.
 
 Log file locations change by distribution, you can find the default log location [outlined here](/troubleshooting/security_engine.mdx#where-are-the-logs-stored).
 
-<UnixWindowsK8sTabs
+<FormattedTabs
   bash="grep '/path/to/your/file.log' /var/log/crowdsec.log"
   powershell='Select-String "/path/to/your/file.log" C:\ProgramData\CrowdSec\log\crowdsec.log'
   k8s="kubectl logs -n crowdsec crowdsec-agent-* | grep '/path/to/your/file.log'"
