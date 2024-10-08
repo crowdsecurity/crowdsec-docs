@@ -1,6 +1,6 @@
 ---
 id: installation
-title: Installation
+title: AppSec Component Installation
 sidebar_position: 3
 ---
 
