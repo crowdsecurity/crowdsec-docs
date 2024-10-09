@@ -1,6 +1,6 @@
 ---
 id: protocol
-title: Protocol
+title: AppSec Component Communication Protocol
 sidebar_position: 5
 ---
 

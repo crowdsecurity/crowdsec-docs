@@ -1,6 +1,6 @@
 ---
 id: configuration
-title: Configuration Files
+title: AppSec Component Configuration Files
 sidebar_position: 6
 ---
 

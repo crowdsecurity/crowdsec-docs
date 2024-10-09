@@ -1,6 +1,6 @@
 ---
 id: quickstart
-title: Quickstart
+title: CrowdSec WAF Quickstart
 sidebar_position: 2
 ---
 
