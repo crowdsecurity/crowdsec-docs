@@ -1015,7 +1015,7 @@ The score of the _trust_ component (see [more here](cti_api/taxonomy/scores.md))
 
 The score of the _anomaly_ component (see [more here](cti_api/taxonomy/scores.md)).
 
-## references
+## `references`
 
 > type: **list(object)**
 
