@@ -109,17 +109,17 @@ module.exports = {
                 },
                 {
                     type: "doc",
-                    label: "🏅 Troubleshooting Hints",
+                    label: "Troubleshooting Hints 🏅",
                     id: "console/security_engines/troubleshooting",
                 },
                 {
                     type: "doc",
-                    label: "🏅 Am I Under Attack",
+                    label: "Am I Under Attack 🏅",
                     id: "console/security_engines/am_i_under_attack",
                 },
                 {
                     type: "doc",
-                    label: "🧪 Select multiple organizations",
+                    label: "Select multiple organizations 🧪",
                     id: "console/security_engines/select_multiple_organizations",
                 },
                 {

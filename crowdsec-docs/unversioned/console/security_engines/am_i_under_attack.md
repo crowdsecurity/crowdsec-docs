@@ -1,5 +1,5 @@
 ---
-title: 🏅 Am I Under Attack
+title: Am I Under Attack 🏅
 description: Alerting you when a surge of attack is hitting you
 ---
 

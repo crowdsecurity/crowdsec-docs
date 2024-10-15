@@ -1,5 +1,5 @@
 ---
-title: 🏅 Troubleshooting Hints
+title: Troubleshooting Hints 🏅
 description: Troubleshooting Security Engines
 ---
 
