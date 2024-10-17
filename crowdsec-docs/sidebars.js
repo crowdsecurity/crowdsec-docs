@@ -749,7 +749,7 @@
         },
     ],
     appSecSideBar : [
-        { type: "doc", id: "appsec/intro"},
+        { type: "doc", id: "appsec/intro", label: "CrowdSec WAF"},
         {
             type: "category",
             label: "Quickstart",
@@ -769,8 +769,9 @@
                 { type: "doc", id: "appsec/create_rules"}, 
             ]
         },
-        { type: "doc", id: "appsec/protocol"},
-        { type: "doc", id: "appsec/benchmark"},
+        { type: "doc", id: "appsec/installation"},
+        { type: "doc", id: "appsec/protocol", label:"Communication Protocol"},
+        { type: "doc", id: "appsec/benchmark", label: "Benchmark"},
         { type: "doc", id: "appsec/troubleshooting"},
     ]
 };

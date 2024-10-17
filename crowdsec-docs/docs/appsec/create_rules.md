@@ -1,6 +1,6 @@
 ---
 id: create_rules
-title: Create Rules
+title: Create AppSec Rules
 sidebar_position: 3
 ---
 
