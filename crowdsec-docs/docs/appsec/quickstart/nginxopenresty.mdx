@@ -8,6 +8,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
+# CrowdSec WAF QuickStart for Nginx/OpenResty
+
 ## Objectives
 
 The goal of this quickstart is to set up the [AppSec Component](/appsec/intro.md#introduction) to safeguard web applications running on [Nginx](https://nginx.com) or [OpenResty](https://openresty.org/en/).
@@ -207,10 +209,6 @@ sudo cscli bouncers delete test_waf
 
 Since our AppSec Component is active and listening, we can now configure the Remediation Component to forward requests to it.
 
-:::info
-Different Remediation Components may offer various options for this setup, so consult the documentation for your specific component.
-:::
-
 To setup forwarding of requests in the remediation component, we'll modify its configuration file and append the following line:
 
 - `Nginx`: `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`
@@ -236,21 +234,18 @@ sudo systemctl restart nginx
 We're assuming the web server is installed on the same machine and is listening on port 80. Please adjust your testing accordingly if this is not the case.
 :::
 
-if now try to access `http://localhost/.env` from a browser, our If you now attempt to access `http://localhost/.env` from a browser, your request will be blocked, resulting in the display of the following HTML page: will be blocked, and we will see the following HTML page:
+if you try to access `http://localhost/.env` from a browser, your request will be blocked, resulting in the display of the following HTML page:
 
 ![appsec-denied](/img/appsec_denied.png)
 
-We can also look at the metrics from `cscli metrics`. Amongst other things, it will show:
+We can also look at the metrics from `cscli metrics show appsec` it will display:
  - the number of requests processed by the AppSec Component
  - Individual rule matches
 
  <details>
-  <summary>cscli metrics output example</summary>
+  <summary>Example Output</summary>
 
-```bash
-▶ sudo cscli metrics
-
-...
+```bash title="sudo cscli metrics show appsec"
 Appsec Metrics:
 ╭─────────────────┬───────────┬─────────╮
 │  Appsec Engine  │ Processed │ Blocked │
@@ -264,8 +259,8 @@ Appsec '127.0.0.1:7422/' Rules Metrics:
 ├─────────────────────────────────┼───────────┤
 │ crowdsecurity/vpatch-env-access │ 1         │
 ╰─────────────────────────────────┴───────────╯
-
 ```
+
 </details>
 
 ### Explanation
