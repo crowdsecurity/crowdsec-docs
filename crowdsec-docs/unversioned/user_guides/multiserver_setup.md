@@ -19,7 +19,7 @@ A typical multi server setup should thus have:
   - The agent should be registered to the local api
 
     **Using login/password authentication**
-    - By running `cscli machines add MyMachine` on the LAPI (and c/p the generated credentials to the agent)
+    - By running `cscli machines add MyMachine` on the LAPI (and copy the generated credentials to the agent)
     - or by running `cscli lapi register --machine MyMachine --url http://<lapi>` on the agent and accepting the machine from LAPI with `cscli machines validate MyMachine`
 
     **Using client cert authentication**
