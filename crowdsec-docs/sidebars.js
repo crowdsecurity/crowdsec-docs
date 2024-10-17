@@ -750,8 +750,16 @@
     ],
     appSecSideBar : [
         { type: "doc", id: "appsec/intro", label: "CrowdSec WAF"},
-        { type: "doc", id: "appsec/quickstart", label: "Quickstart"},
-        { type: "doc", id: "appsec/configuration", label: "Configuration Files"},
+        {
+            type: "category",
+            label: "Quickstart",
+            items: [
+                { type: "doc", id: "appsec/quickstart/nginxopenresty"},
+                { type: "doc", id: "appsec/quickstart/traefik"}
+            ]
+    
+        },
+        { type: "doc", id: "appsec/configuration"},
         { 
             type: "category",
             label: "Rules & Scenarios",
