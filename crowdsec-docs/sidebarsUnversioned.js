@@ -183,6 +183,11 @@ module.exports = {
             label: "Service API",
             href: "/u/service_api/getting_started",
         },
+        {
+            label: "Am I Under Attack?",
+            type: "doc",
+            id: "console/am-i-under-attack"
+        },
     ],
     remediationSideBar: [
         {
