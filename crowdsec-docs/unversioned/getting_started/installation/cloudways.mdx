@@ -164,9 +164,8 @@ Acquisition configuration indicates to CrowdSec what log files it should look at
 The Detection collections include parsers config and bad behavior detection scenarios for given services.
 
 In our case we'll look at the nginx logs and apache2 logs.
-- Identify the name of your application folder: ls /home/master/applications
-- There should be a folder in there, lets say "abcdefghij"
-- We'll replace the content of the config/acquis.yaml file (with you editor of choice) with the following:
+- We'll use wildcards to work with any application name of your application folder: ls /home/master/applications
+- Replace the content of the config/acquis.yaml file (with you editor of choice) with the following:
 ```yaml
 filenames:
   - /home/master/applications/**/logs/nginx_*.log
@@ -178,7 +177,6 @@ filenames:
 labels:
   type: apache2
 ```
-- Don't forget to put the appropriate path to your logs and not "abcdefghij"
 
 ### Getting collections
 Now we'll install the collections for nginx and apache2.  
@@ -219,9 +217,8 @@ We can run the behavior detection on the past logs to catch alerts that happened
 We'll run it on the nginx access logs and the first archive of nginx access logs (previous day)
 - Run the behavior detection on the past logs:
 ```bash
-./crowdsec -c config.yaml -dsn file:///home/master/applications/abcdefghij/logs/nginx_*.access.log --type nginx --no-api
+./crowdsec -c config.yaml -dsn file:///home/master/applications/\*\*/logs/nginx_*.access.log --type nginx --no-api
 ```
-- Again, dont forget to put your own application folder and not "abcdefghij"
 - Note that **dsn** parameter take the **file://***/ protocol and an **absolute path**
 - After you ran the detection, detected alerts should be listed in:
 ```bash
