@@ -1,5 +1,5 @@
 ---
-title: Select multiple organizations
+title: Select multiple organizations 🧪
 description: Learn how to select multiple organizations to all their Security Engines in the CrowdSec Console
 ---
 
