@@ -749,8 +749,16 @@
         },
     ],
     appSecSideBar : [
-        { type: "doc", id: "appsec/intro"},
-        { type: "doc", id: "appsec/quickstart"},
+        { type: "doc", id: "appsec/intro", label: "CrowdSec WAF"},
+        {
+            type: "category",
+            label: "Quickstart",
+            items: [
+                { type: "doc", id: "appsec/quickstart/nginxopenresty"},
+                { type: "doc", id: "appsec/quickstart/traefik"}
+            ]
+    
+        },
         { type: "doc", id: "appsec/configuration"},
         { 
             type: "category",
@@ -762,8 +770,8 @@
             ]
         },
         { type: "doc", id: "appsec/installation"},
-        { type: "doc", id: "appsec/protocol"},
-        { type: "doc", id: "appsec/benchmark"},
+        { type: "doc", id: "appsec/protocol", label:"Communication Protocol"},
+        { type: "doc", id: "appsec/benchmark", label: "Benchmark"},
         { type: "doc", id: "appsec/troubleshooting"},
     ]
 };

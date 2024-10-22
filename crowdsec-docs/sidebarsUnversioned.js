@@ -109,12 +109,17 @@ module.exports = {
                 },
                 {
                     type: "doc",
-                    label: "Troubleshooting",
+                    label: "Troubleshooting Hints 🏅",
                     id: "console/security_engines/troubleshooting",
                 },
                 {
                     type: "doc",
-                    label: "Select multiple organizations",
+                    label: "Am I Under Attack 🏅",
+                    id: "console/security_engines/am_i_under_attack",
+                },
+                {
+                    type: "doc",
+                    label: "Select multiple organizations 🧪",
                     id: "console/security_engines/select_multiple_organizations",
                 },
                 {
@@ -350,6 +355,11 @@ module.exports = {
             type: "doc",
             id: "troubleshooting/remediation_components",
             label: "Remediation Components",
+        },
+        {
+            type: "doc",
+            id: "troubleshooting/cti",
+            label: "CTI",
         },
     ],
     serviceApiSideBar: [

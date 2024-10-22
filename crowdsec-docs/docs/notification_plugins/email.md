@@ -3,27 +3,19 @@ id: email
 title: Email Plugin
 ---
 
-The Email plugin is shipped by default with CrowdSec. This guide shows how to enable it.
+The Email plugin is shipped by default with CrowdSec. The following guide shows how to configure, test and enable it.
 
-## Enabling the plugin:
+## Configuring the plugin
 
-In the profile configuration (by default `/etc/crowdsec/profiles.yaml`) , uncomment the section:
+By default the configuration for Email plugin is located at these default location per OS:
 
-```
-#notifications:
-# - email_default 
-```
+- **Linux** `/etc/crowdsec/notifications/email.yaml`
+- **FreeBSD** `/usr/local/etc/crowdsec/notifications/email.yaml`
+- **Windows** `C:\ProgramData\CrowdSec\config\notifications\email.yaml`
 
-Every alert that passes the profile's filter will be dispatched to the `email_default` plugin.
+### Base configuration
 
-## Configuring the plugin:
-
-The default configuration for the email plugin is located at `/etc/crowdsec/notifications/email.yaml`.
-You need to provide the credentials for the SMTP server here.
-
-### Example configuration for Gmail
-
-Here's an example configuration that sends alerts to `receiver@gmail.com`:
+Here is the base configuration for the Email plugin:
 
 ```yaml
 type: email           # Don't change
@@ -84,6 +76,73 @@ encryption_type: "ssltls"
 
 The `format` configuration directive is a [go template](https://pkg.go.dev/text/template), which receives a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
 
+Typical port and TLS/SSL settings
+
+| Port | Encryption Type |
+|------|-----------------|
+| 25   | none            |
+| 465  | ssltls          |
+| 587  | starttls        |
+
+:::warning
+Port 25 should be avoided at all costs as it is commonly blocked by ISPs and email providers and is insecure as it sends in plain text.
+:::
+
+:::info
+Port settings above are common, but may vary depending on your email provider. Please refer to your email provider's documentation for the correct settings.
+:::
+
+## Testing the plugin
+
+Before enabling the plugin it is best to test the configuration so the configuration is validated and you can see the output of the plugin. 
+
+```bash
+cscli notifications test email_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `email_default` with the new name.
+:::
+
+## Enabling the plugin
+
+In your profiles you will need to uncomment the `notifications` key and the `email_default` plugin list item.
+
+```
+#notifications:
+# - email_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `email_default` with the new name.
+:::
+
+:::warning
+Ensure your YAML is properly formatted the `notifications` key should be at the top level of the profile.
+:::
+
+<details>
+
+<summary>Example profile with email plugin enabled</summary>
+
+```yaml
+name: default_ip_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+#duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+#highlight-next-line
+notifications:
+#highlight-next-line
+  - email_default
+on_success: break
+```
+
+</details>
+
 ## Final Steps:
 
 Restart CrowdSec with the following command:
@@ -91,5 +150,3 @@ Restart CrowdSec with the following command:
 ```bash
 sudo systemctl restart crowdsec
 ```
-
-To verify if the plugin is functioning correctly, you can trigger scenarios using tools like wapiti, nikto etc. 

@@ -1,6 +1,6 @@
 ---
 id: intro
-title: Introduction
+title: AppSec Component - CrowdSec WAF
 sidebar_position: 1
 ---
 
@@ -8,7 +8,7 @@ sidebar_position: 1
 
 <!-- xx : fix crowdsec version -->
 
-Meet the Crowdsec **Application Security Component** (AKA : **AppSec Component**), a new capability for advanced application security:
+Meet the Crowdsec **Application Security Component** (AKA : **AppSec Component**), a new capability for advanced application security turning your CrowdSec install into a full fledged **WAF**.
 
 The **AppSec Component** offers:
 

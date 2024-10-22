@@ -5,22 +5,17 @@ title: Splunk Plugin
 
 The splunk plugin is by default shipped with your CrowdSec installation. The following guide shows how to enable it.
 
-## Enabling the plugin:
+## Configuring the plugin:
 
-In your profile file (by default `/etc/crowdsec/profiles.yaml`) , uncomment the section
-```
-#notifications:
-# - splunk_default
-```
+By default the configuration for Splunk plugin is located at these default location per OS:
 
-## Configuring the plugin: 
+- **Linux** `/etc/crowdsec/notifications/splunk.yaml`
+- **FreeBSD** `/usr/local/etc/crowdsec/notifications/splunk.yaml`
+- **Windows** `C:\ProgramData\CrowdSec\config\notifications\splunk.yaml`
 
-### Adding the plugin configuration 
+### Base configuration
 
-By default there would be a splunk config at `/etc/crowdsec/notifications/splunk.yaml`. Specify your
-`url`, `token` and `format` . 
-
-Example configuration which posts creates splunk event containing alerts serialized to JSON: 
+Here is the base configuration for the Splunk plugin:
 
 ```yaml
 # Don't change this
@@ -50,6 +45,57 @@ See [splunk guide](https://docs.splunk.com/Documentation/Splunk/8.2.1/Data/Useth
 
 
 **Note** that the `format` is a [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
+
+## Testing the plugin
+
+Before enabling the plugin it is best to test the configuration so the configuration is validated and you can see the output of the plugin. 
+
+```bash
+cscli notifications test splunk_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `splunk_default` with the new name.
+:::
+
+## Enabling the plugin
+
+In your profiles you will need to uncomment the `notifications` key and the `splunk_default` plugin list item.
+
+```
+#notifications:
+# - splunk_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `splunk_default` with the new name.
+:::
+
+:::warning
+Ensure your YAML is properly formatted the `notifications` key should be at the top level of the profile.
+:::
+
+<details>
+
+<summary>Example profile with Splunk plugin enabled</summary>
+
+```yaml
+name: default_ip_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+#duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+#highlight-next-line
+notifications:
+#highlight-next-line
+  - splunk_default
+on_success: break
+```
+
+</details>
 
 ## Final Steps:
 

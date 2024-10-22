@@ -5,9 +5,9 @@ pagination_prev: getting_started/next_steps
 pagination_next: getting_started/next_steps
 ---
 
-# Troubleshoot
+import FormattedTabs from '@site/src/components/FormattedTabs';
 
-import UnixWindowsK8sTabs from '../../../src/components/UnixWindowsK8sTabs';
+# Troubleshoot
 
 This troubleshoot section is intended to help you resolve common issues that may arise during the installation process. You can find extensive [troubleshooting documentation](/troubleshooting/intro.md) if this document does not resolve your issues.
 
@@ -28,7 +28,7 @@ The log location alter depending on your platform here are the default locations
 
 By default CrowdSec can be quite verbose, to filter the logs for error messages you can use the following commands:
 
-<UnixWindowsK8sTabs
+<FormattedTabs
     bash='sudo grep -E "level=(error|fatal)" /var/log/crowdsec.log'
     cmd='findstr "level=error level=fatal" C:\ProgramData\CrowdSec\log\crowdsec.log'
     powershell='Select-String "level=(error|fatal)" C:\ProgramData\CrowdSec\log\crowdsec.log'
@@ -81,7 +81,7 @@ password: ...
 
 After you have made the changes you will need to restart the CrowdSec service.
 
-<UnixWindowsK8sTabs
+<FormattedTabs
     bash="sudo systemctl restart crowdsec"
     powershell="Restart-Service crowdsec"
     k8s="kubectl delete pod -n crowdsec crowdsec-agent-*"

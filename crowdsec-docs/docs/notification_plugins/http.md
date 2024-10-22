@@ -3,26 +3,23 @@ id: http
 title: HTTP Plugin
 ---
 
-The HTTP plugin is by default shipped with your CrowdSec installation. The following guide shows how to enable it.
-
-## Enabling the plugin:
-
-In your profile file (by default `/etc/crowdsec/profiles.yaml`) , uncomment the section
-```
-#notifications:
-# - http_default 
-```
-
+The HTTP plugin is by default shipped with your CrowdSec installation. The following guide shows how to configure, test and enable it.
 
 Every alert which would pass the profile's filter would be dispatched to `http_default` plugin.
-## Configuring the plugin: 
 
-By default the configuration for HTTP plugin is located at `/etc/crowdsec/notifications/http.yaml`.
+## Configuring the plugin
+
+By default the configuration for HTTP plugin is located at these default location per OS:
+
+- **Linux** `/etc/crowdsec/notifications/http.yaml`
+- **FreeBSD** `/usr/local/etc/crowdsec/notifications/http.yaml`
+- **Windows** `C:\ProgramData\CrowdSec\config\notifications\http.yaml`
+
 Configure how to make web requests by providing the `url`, `method`, `headers` etc. 
 
 ### Adding the plugin configuration 
 
-By default there would be a http config at `/etc/crowdsec/notifications/http.yaml`. Configure  how to make web requests by providing the `url`, `method`, `headers` etc. 
+Configure how to make web requests by providing the `url`, `method`, `headers` etc. 
 
 Example config which posts the alerts serialized into json to localhost server.
 
@@ -56,8 +53,60 @@ method: POST # eg either of "POST", "GET", "PUT" and other http verbs is valid v
 
 ```
 
-**Note** that the `format` is a [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
+:::info
+`format` is a [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
+:::
 
+## Testing the plugin
+
+Before enabling the plugin it is best to test the configuration so the configuration is validated and you can see the output of the plugin. 
+
+```bash
+cscli notifications test http_default
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `http_default` with the new name.
+:::
+
+## Enabling the plugin
+
+In your profiles you will need to uncomment the `notifications` key and the `http_default` plugin list item.
+
+```
+#notifications:
+# - http_default 
+```
+
+:::note
+If you have changed the `name` property in the configuration file, you should replace `http_default` with the new name.
+:::
+
+:::warning
+Ensure your YAML is properly formatted the `notifications` key should be at the top level of the profile.
+:::
+
+<details>
+
+<summary>Example profile with http plugin enabled</summary>
+
+```yaml
+name: default_ip_remediation
+#debug: true
+filters:
+ - Alert.Remediation == true && Alert.GetScope() == "Ip"
+decisions:
+ - type: ban
+   duration: 4h
+#duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+#highlight-next-line
+notifications:
+#highlight-next-line
+  - http_default
+on_success: break
+```
+
+</details>
 
 ## Final Steps:
 
@@ -66,5 +115,3 @@ Let's restart crowdsec
 ```bash
 sudo systemctl restart crowdsec
 ```
-
-You can verify whether the plugin is properly working by triggering scenarios using tools like wapiti, nikto etc. 

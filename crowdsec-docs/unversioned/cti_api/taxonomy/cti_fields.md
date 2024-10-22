@@ -613,7 +613,7 @@ Human-friendly description of the classification.
 "attack_details" : [
   {
     "name" : "crowdsecurity/scenario",
-    "label" : "Scenario Labelr",
+    "label" : "Scenario Label",
     "description" : "Scenario description"
   }
 ]
@@ -627,7 +627,7 @@ The possibles values of this field are listed [here](cti_api/taxonomy/scenarios.
 > type: **string**
 
 ```json
-"name" : "protocol:behavior"
+"name" : "author/scenario_name"
 ```
 
 Name of the scenario, often in the form `author/scenario_name`.
@@ -1031,6 +1031,52 @@ The score of the _trust_ component (see [more here](cti_api/taxonomy/scores.md))
 ```
 
 The score of the _anomaly_ component (see [more here](cti_api/taxonomy/scores.md)).
+
+## `references`
+
+> type: **list(object)**
+
+```json
+"references" : [
+  {
+    "name" : "list_name",
+    "label" : "List Label",
+    "description" : "List descrption"
+  }
+]
+```
+
+A list of the [CrowdSec Blockists](https://app.crowdsec.net/blocklists) the IP belongs to.
+
+### `name`
+
+> type: **string**
+
+```json
+"name" : "list:list_name"
+```
+
+Name of the list, often in the form `list:<list_name>`.
+
+### `label`
+
+> type: **string**
+
+```json
+"label" : "List label"
+```
+
+Human-friendly name of the list.
+
+### `description`
+
+> type: **string**
+
+```json
+"description" : "List description"
+```
+
+Human-friendly description of the list.
 
 ## `state`
 
