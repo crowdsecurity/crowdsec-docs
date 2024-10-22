@@ -1,8 +1,7 @@
 ---
 slug: cscli_dashboard_deprecation
 title: Cscli dashboard deprecation
-author: Crowdsec Team
-author_url: https://github.com/crowdsecurity
+authors: crowdsec
 tags: [dashboard, Metabase]
 ---
 
