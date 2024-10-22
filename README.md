@@ -4,7 +4,7 @@ This repository holds the documentation for the [crowdsec project](https://githu
 
 Online version of this documentation is available here: https://doc.crowdsec.net/
 
-The documentation is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+The documentation is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
 ## Installation
 
