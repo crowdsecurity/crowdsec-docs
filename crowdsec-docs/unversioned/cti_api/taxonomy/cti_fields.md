@@ -276,6 +276,23 @@ The possible values are:
 
 CrowdSec intelligence calculated score: a high background noise scores highlights untargeted mild-threat mass-attacks.
 
+## `confidence`
+
+> type: **string**
+
+```json
+confidence: "high"
+```
+
+The confidence level about the reports used to compute the reputation and scores.
+
+The possible values are:
+
+-   `high`
+-   `medium`
+-   `low`
+-   `none`
+
 ## `ip_range_score`
 
 > type: **int**
