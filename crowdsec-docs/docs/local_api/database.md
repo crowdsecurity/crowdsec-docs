@@ -11,8 +11,8 @@ For `SQLite`, there is nothing to do to make it work with CrowdSec. For `MySQL`,
 Please refer to [ent.](https://entgo.io/) [supported database](https://entgo.io/docs/dialects/). At the time of writing :
 
  - MySQL `5.6.35`, `5.7.26` and `8`
- - MariaDB `10.2` and latest
- - PostgreSQL `10`, `11` and `12`
+ - MariaDB `10.2`, `10.3` and latest
+ - PostgreSQL `11`, `12`, `13`, `14` and `15`
  - SQLite
  - Gremlin
 
@@ -47,6 +47,13 @@ postgres=# CREATE DATABASE crowdsec;
 postgres=# CREATE USER crowdsec WITH PASSWORD '<password>';
 postgres=# ALTER SCHEMA public owner to crowdsec;
 postgres=# GRANT ALL PRIVILEGES ON DATABASE crowdsec TO crowdsec;
+```
+
+If you are running a version of PostgreSQL >= 15, you will also need to grant permission to create objects in the `public` schema:
+
+```
+postgres=# \c crowdsec
+postgres=# GRANT CREATE on SCHEMA public TO crowdsec;
 ```
 
 Then edit `/etc/crowdsec/config.yaml` to update the [`db_config`](/configuration/crowdsec_configuration.md#db_config) part.
