@@ -1,8 +1,7 @@
 ---
 slug: metabase_without_docker
 title: How to configure metabase dasbhoard without docker
-author: Crowdsec Team
-author_url: https://github.com/crowdsecurity
+authors: crowdsec
 tags: [dashboard, metabase]
 ---
 

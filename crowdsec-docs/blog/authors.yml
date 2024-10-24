@@ -1,0 +1,8 @@
+sbz:
+    name: Sofian Brabez
+    url: https://github.com/sbz
+
+crowdsec:
+    name: Crowdsec Team
+    url: https://github.com/crowdsecurity
+    image_url: /img/crowdsec_logo.png

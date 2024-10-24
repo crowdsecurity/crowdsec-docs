@@ -5,6 +5,7 @@ const {
     ctiApiSidebar,
     guidesSideBar,
 } = require("./sidebarsUnversioned.js")
+const tailwindConfig = require("./tailwind.config.js")
 
 const generateCurrentAndNextRedirects = (s) => [
     {
@@ -303,16 +304,6 @@ module.exports = {
                 ],
             },
         ],
-        async function myPlugin(context, options) {
-            return {
-                name: "docusaurus-tailwindcss",
-                configurePostCss(postcssOptions) {
-                    // Appends TailwindCSS and AutoPrefixer.
-                    postcssOptions.plugins.push(require("tailwindcss"))
-                    postcssOptions.plugins.push(require("autoprefixer"))
-                    return postcssOptions
-                },
-            }
-        },
+        "./plugins/tailwind-config.js",
     ],
 }
