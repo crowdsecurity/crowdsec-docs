@@ -4,6 +4,12 @@ title: Creating a test environment
 sidebar_position: 10
 ---
 
+:::warning
+The following documentation is written for use on Linux systems. If you are using a different operating system, please adjust the commands accordingly if we have prebuilt binaries for your system.
+
+**However, please note we do not compile for MacOS so you will need to compile from source.**
+::: 
+
 You need a test environment for several reasons:
 
 - Creation of new parsers or scenarios
