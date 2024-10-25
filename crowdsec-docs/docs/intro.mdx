@@ -54,27 +54,30 @@ In addition to the core "detect and react" mechanism, CrowdSec is committed to s
 -->
 <div style={{display: 'flex'}}>
     <div style={{textAlign: 'center', flex: '1'}}>
-    <img src={useBaseUrl('/img/simplified_SE_underthehood.gif')}></img>
+    <img src={useBaseUrl('/img/simplified_SE_underthehood.png')}></img>
     </div>
 </div>
 
 Under the hood, the Security Engine has various components:
  
- - The [Log Processor](...) is in charge of detection: it analyzes logs from various data sources or HTTP requests from web servers.
- - The [Local API](...) acts as a middle man between the [Log Processors](...) and the [Remediation Components](...) which are in charge of enforcing decisions.
- - The [Remediation Components](...) - also known as bouncers - are in charge of blocking bad IPs by using the components already available.
+ - The Log Processor is in charge of detection: it analyzes logs from [various data sources](/docs/data_sources/intro) or [HTTP requests](/appsec/intro.md) from web servers.
+ - The [WAF](/appsec/intro.md) feature is part of the Log Processor and filters HTTP Requests from the compatible web servers. 
+ - The [Local API](/local_api/intro.md) acts as a middle man between the [Log Processors](/docs/data_sources/intro) and the [Remediation Components](/u/bouncers/intro) which are in charge of enforcing decisions.
+ - The [Remediation Components](/u/bouncers/intro) - also known as bouncers - are in charge of blocking bad IPs by using the components already available.
 
 
 <!-- @tko
  - decide which ones to keep in the list and make (short) dedicated pages for those
 -->
 
-This architecture allows great flexibility in setups. Find the one relevant to you:
- - I have one or more machine with no log pit (ie. VPS)
- - I have an existing log pit (ie. rsyslog)
- - I am running containers
- - I am running kubernetes
- - Just show me an example architecture
+This architecture allows for both simple/standalone setups, or more distributed ones including several Log Processors, LAPIs and Remediation components collaborating together:
+
+ - One or more machines? Run crowdsec on each (alongside with a remediation component)
+ - Already have a log pit (such as rsyslog or loki)? Run crowdsec next to it, not on the production workloads
+ - Running Kubernetes? Have a look at our helm chart
+ - Running containers? The docker data source might be what you need
+ - Just looking for a WAF? Look at our quickstart
+
 
 
 <AcademyPromo
