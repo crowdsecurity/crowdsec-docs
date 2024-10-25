@@ -7,7 +7,7 @@ sidebar_position: 2
 ## Whitelist configuration example
 
 ```yaml
-name: crowdsecurity/my-whitelists
+name: "my/whitelist" ## Must be unique
 description: "Whitelist events from my ipv4 addresses"
 #it's a normal parser, so we can restrict its scope with filter
 filter: "1 == 1"

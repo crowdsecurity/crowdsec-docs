@@ -24,7 +24,7 @@ First of all, install the [crowdsecurity/rdns postoverflow](https://hub.crowdsec
 Let's create `mywhitelist.yaml` again but remember this is a postoverflow whitelist so the paths will be different to `Parsing whitelists` please see [introduction](/whitelist/introduction.md) for your OS specific path.
 
 ```yaml
-name: me/my_cool_whitelist
+name: "my/po_whitelist" ## Must be unique
 description: lets whitelist our own reverse dns
 whitelist:
     reason: dont ban my ISP
