@@ -10,7 +10,7 @@ This module allows the `Security Engine` to acquire logs from an HTTP endpoint.
 To receive logs from an HTTP endpoint with basic auth:
 ```yaml
 source: http
-port: 8080
+listen_addr: 127.0.0.1:8080
 path: /test
 auth_type: basic_auth
 basic_auth:
@@ -23,7 +23,7 @@ labels:
 To receive logs from an HTTP endpoint with headers:
 ```yaml
 source: http
-port: 8080
+listen_addr: 127.0.0.1:8080
 path: /test
 auth_type: headers
 headers:
@@ -36,7 +36,7 @@ To receive logs from an HTTP endpoint with TLS and headers:
 
 ```yaml
 source: http
-port: 8080
+listen_addr: 127.0.0.1:8080
 path: /test
 auth_type: headers
 headers:
@@ -52,7 +52,7 @@ To receive logs from an HTTP endpoint with mTLS:
 
 ```yaml
 source: http
-port: 8080
+listen_addr: 127.0.0.1:8080
 path: /test
 auth_type: mtls
 tls:
@@ -68,9 +68,9 @@ Look at the `configuration parameters` to view all supported options.
 ## Parameters
 
 
-### `port`
+### `listen_addr`
 
-The port to listen on.
+The address to listen on (e.g., `1270.0.1:8088`).
 
 Required.
 
@@ -82,7 +82,7 @@ The endpoint path to listen on.
 The request method is always `POST`.
 :::
 
-Required.
+Optional, default is `/`.
 
 ### `auth_type`
 
