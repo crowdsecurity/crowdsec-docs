@@ -70,13 +70,21 @@ Under the hood, the Security Engine has various components:
  - decide which ones to keep in the list and make (short) dedicated pages for those
 -->
 
-This architecture allows for both simple/standalone setups, or more distributed ones including several Log Processors, LAPIs and Remediation components collaborating together:
+This architecture allows for both simple/standalone setups, or more distributed ones including as illustrated below:
 
  - One or more machines? Run crowdsec on each (alongside with a remediation component)
  - Already have a log pit (such as rsyslog or loki)? Run crowdsec next to it, not on the production workloads
- - Running Kubernetes? Have a look at our helm chart
- - Running containers? The docker data source might be what you need
- - Just looking for a WAF? Look at our quickstart
+ - Running Kubernetes? Have a look at [our helm chart](/u/getting_started/installation/kubernetes)
+ - Running containers? The [docker data source](/docs/data_sources/docker) might be what you need
+ - Just looking for a WAF? Look at [our quickstart](/appsec/intro.md)
+
+Distributed architecture example:
+
+<div style={{display: 'flex'}}>
+    <div style={{textAlign: 'center', flex: '1'}}>
+    <img src={useBaseUrl('/img/distributed_SE_setup.png.png')}></img>
+    </div>
+</div>
 
 
 
