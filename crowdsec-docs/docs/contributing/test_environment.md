@@ -19,7 +19,7 @@ You need a test environment for several reasons:
 This can be done directly with the tarball of the release :
 
 ```bash
-VER=1.4.6 # Please check https://github.com/crowdsecurity/crowdsec/releases/latest for latest version
+VER=1.6.3 # Please check https://github.com/crowdsecurity/crowdsec/releases/latest for latest version
 wget https://github.com/crowdsecurity/crowdsec/releases/download/v$VER/crowdsec-release.tgz
 tar xvzf crowdsec-release.tgz
 cd crowdsec-v$VER
