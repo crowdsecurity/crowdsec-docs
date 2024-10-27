@@ -115,7 +115,7 @@ sudo systemctl start crowdsec-cloudflare-worker-bouncer # the Remediation Compon
 
 #### From source
 
-:warning: requires go >= 1.20
+:warning: requires go >= 1.23
 
 ```bash
 git clone https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer
@@ -137,7 +137,13 @@ The Remediation Component does the following:
 1. Create a Cloudflare Worker and a Worker KV per configured account.
 2. Create a Worker Route(s) per configured zone. Any request matching the route would be handled by the worker.
 3. For every matching incoming request, the worker checks whether it's IP, Country and AS have a decision against. It checks for this in it's KV store. If found it performs the corresponding remediation.
-4. The Remediation Component also periodically updates the KV store with the latest decisions from CrowdSec. 
+4. The Remediation Component also periodically updates the KV store with the latest decisions from CrowdSec.
+
+If your Cloudflare token has permission on D1, the remediation component will also automatically create a database to track:
+ - Number of requests processed
+ - Number of requests blocked
+
+Those metrics are exposed through the prometheus endpoint and automatically sent to crowdsec for visualisation with `cscli`.
 
 ## Configuration
 
@@ -193,7 +199,7 @@ For obtaining the `token`:
 
 1. Sign in as a user who has access to the desired account.
 
-Then click [this link](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%2C%20%7B%22key%22%3A%20%22dns%22%2C%20%22type%22%3A%22read%22%7D%5D&name=) and create the token. 
+Then click [this link](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%2C%20%7B%22key%22%3A%20%22dns%22%2C%20%22type%22%3A%22read%22%7D%2C%20%7B%22key%22%3A%22d1%22%2C%20%22type%22%3A%22edit%22%7D%5D&name=) and create the token. 
 
 Alternatively, you can go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. 
 
@@ -205,6 +211,7 @@ The Remediation Component requires the following permissions to function:
 | Account | Workers KV Storage | Edit |
 | Account | Workers Scripts | Edit |
 | Account | Account Settings | Read |
+| Account | D1 | Edit |
 | User | User Details | Read |
 | Zone | DNS | Read |
 | Zone | Workers Routes | Edit |
