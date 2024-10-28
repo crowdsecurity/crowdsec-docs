@@ -23,18 +23,19 @@ import AcademyPromo from '@site/src/components/AcademyPromo';
 &nbsp;
 &nbsp;
 
+
 The [CrowdSec Security Engine](https://github.com/crowdsecurity/crowdsec) is an open-source, lightweight software that detects and blocks malicious actors from accessing your systems at various levels, using log and HTTP Requests analysis with threat patterns called scenarios. 
 
-CrowdSec is a modular framework, offering a variety of [scenarios](https://app.crowdsec.net/hub/collections). Users can choose their protection scenarios and deploy [Remediation Components](https://app.crowdsec.net/hub/bouncers) to block malicious access.
+CrowdSec is a modular security tool offering [behavior-based detection](https://app.crowdsec.net/hub/collections), including [AppSec rules](https://app.crowdsec.net/hub/appsec-rules), and optional components to block threats called [Remediation Components](https://app.crowdsec.net/hub/bouncers)
 
-The crowd-sourced aspect allows sharing attack information among users, enhancing real-time attack detection and preemptive blocking of known bad actors from your system.
+The crowd-sourced aspect allows the sharing of attacks they detected and blocked. Participants of this crowd-sourced threat intel receive, automatically via the security engine, a curated list of validated attackers (community blocklist) enhancing their real-time protection capabilities by taking preemptive actions against known threats.
 
 ## Main Features
 
 In addition to the core "detect and react" mechanism, CrowdSec is committed to several other key aspects:
 
 - **Easy Installation**: Effortless out-of-the-box installation on all [supported platforms](/getting_started/versions_matrix.md).
-- **Simplified Daily Operations**: Use the [console](http://app.crowdsec.net) and [cscli](/cscli/cscli.md) for effortless maintenance and keeping your detection mechanisms up-to-date.
+- **Simplified Daily Operations**: You have access to our Web UI administration via [CrowdSec's console](http://app.crowdsec.net) or the powerful [Command line tool cscli](/cscli/cscli.md) for effortless maintenance and keeping your detection mechanisms up-to-date. 
 - **Reproducibility**: The Security Engine can analyze not only live logs but also [cold logs](/u/user_guides/replay_mode), making it easier to detect potential false triggers, conduct forensic analysis, or generate reports.
 - **Versatile**: The Security Engine can analyze [system logs](/docs/data_sources/intro) and [HTTP Requests](/docs/next/appsec/intro) to exhaustively protect your perimeter.
 - **Observability**: Providing valuable insights into the system's activity:
@@ -46,12 +47,6 @@ In addition to the core "detect and react" mechanism, CrowdSec is committed to s
 
 ## Architecture
 
-
-<!-- @kka : update schema:
-    - align text
-    - rename data sources to log sources
-    - move log sources out of the SE box
--->
 <div style={{display: 'flex'}}>
     <div style={{textAlign: 'center', flex: '1'}}>
     <img src={useBaseUrl('/img/simplified_SE_underthehood.png')}></img>
@@ -61,14 +56,9 @@ In addition to the core "detect and react" mechanism, CrowdSec is committed to s
 Under the hood, the Security Engine has various components:
  
  - The Log Processor is in charge of detection: it analyzes logs from [various data sources](/docs/data_sources/intro) or [HTTP requests](/appsec/intro.md) from web servers.
- - The [WAF](/appsec/intro.md) feature is part of the Log Processor and filters HTTP Requests from the compatible web servers. 
+ - The [Appsec](/appsec/intro.md) feature is part of the Log Processor and filters HTTP Requests from the compatible web servers. 
  - The [Local API](/local_api/intro.md) acts as a middle man between the [Log Processors](/docs/data_sources/intro) and the [Remediation Components](/u/bouncers/intro) which are in charge of enforcing decisions.
- - The [Remediation Components](/u/bouncers/intro) - also known as bouncers - are in charge of blocking bad IPs by using the components already available.
-
-
-<!-- @tko
- - decide which ones to keep in the list and make (short) dedicated pages for those
--->
+ - The [Remediation Components](/u/bouncers/intro) - also known as bouncers - block malicious IPs at your chosen level—whether via IpTables, firewalls, web servers, or reverse proxies. [See the full list on our CrowdSec Hub.](https://app.crowdsec.net/hub/remediation-components)
 
 This architecture allows for both simple/standalone setups, or more distributed ones including as illustrated below:
 
