@@ -23,27 +23,32 @@ This component capitalizes on existing remediation functions in web servers (suc
 
 ![appsec-global](/img/appsec-global.png)
 
-## Request inspection
+1) The Web Server receives the HTTP request
+2) The HTTP Request is intercepted and passed to the Crowdsec Security Engine via [the HTTP API](/appsec/protocol.md)
+3) The Security Engine answers to the Web Server once the Appsec inband rules have been processed.
+4) Based on the [Security Engine answer](/appsec/protocol#response-code), the Web Server either blocks the HTTP Request or processes it as usual
 
-Examining Three Key Layers of the AppSec Component's Request Inspection
+## Inband Rules and Out-Of-Band Rules
 
-### 1 Remediation component: request relaying
+The AppSec component relies on rules to inspect HTTP Requests:
+ - Inband rules are meant to interrupt request processing
+ - Out-Of-Band rules are non-blocking and are evaluated asynchronously
 
-If the AppSec capability is activated on the remediation component, the incoming requests will be channeled to the CrowdSec Security engine.
-
-### 2 Security Engine: inband rule processing
+### Inband rule processing
 
 The security engine first evaluates the inband rules, designed to identify and block specific requests.  
 Once these rules are evaluated, a response is relayed to the remediation component.
 
 This leads to two possible outcomes:
 
-1.  If no inband rule is triggered, the processing of the request will continue on the web-server side as usual
-2.  If an inband rule is triggered, the remediation component will answer with a 403 or a captcha request to the user of the incriminated request, stopping the request processing.
+1. If an inband rule is triggered, the remediation component will answer with a 403 or a captcha request to the user of the incriminated request, stopping the request processing.
+2. Otherwise, the request will be normally processed
 
-### 3 Security Engine: out-of-band rules processing
+### Out-of-band rules processing
 
 In the background, the security engine will then evaluate the out-of-band rules. These rules do not impact performance or response time, as they are evaluated after the AppSec Component instructs the webserver to continue or stop processing the request.
+
+They are usually meant to detect unwanted behaviors that exhibit a repetitive aspect (ie. Applicative Spam, Resource enumeration, Scalping etc.). When those rules trigger, they emit an event is processed by the Security Engine in the same way a log line is.
 
 ## Post processing
 
