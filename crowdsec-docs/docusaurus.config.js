@@ -83,6 +83,14 @@ module.exports = {
             indexName: "crowdsec",
             contextualSearch: true,
         },
+        zooming: {
+	    selector: '.markdown :not(a) > img',
+            delay: 500,
+            background: {
+            	light: 'rgba(101,108,133,0.8)',
+            	dark: 'rgba(9,10,17,0.8)'
+            },
+        },
         navbar: {
             items: [],
         },
@@ -264,6 +272,7 @@ module.exports = {
         ],
     ],
     plugins: [
+        "docusaurus-plugin-zooming",
         [
             "@docusaurus/plugin-content-docs",
             {
