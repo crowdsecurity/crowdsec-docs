@@ -63,6 +63,27 @@ labels:
   type: mytype
 ```
 
+:::info
+If most of cases when the logs are sent in JSON format, you can use the [`transform`](https://docs.crowdsec.net/docs/next/data_sources/intro/#transform) expression to parse the logs.
+
+For example, if the logs are sent in the following format:
+```json
+{
+  "Records": [
+    {
+      "message": "test",
+      "timestamp": "2021-01-01T00:00:00Z"
+    }
+  ]
+}
+```
+
+the `transform` expression can be:
+```yaml
+transform: map(JsonExtractSlice(evt.Line.Raw, "Records"), ToJsonString(#))
+```
+
+
 Look at the `configuration parameters` to view all supported options.
 
 ## Parameters
