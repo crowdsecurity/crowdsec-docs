@@ -84,11 +84,11 @@ module.exports = {
             contextualSearch: true,
         },
         zooming: {
-            selector: '.markdown img',
+	    selector: '.markdown :not(a) > img',
             delay: 500,
             background: {
-            light: 'rgba(101,108,133,0.8)',
-            dark: 'rgba(9,10,17,0.8)'
+            	light: 'rgba(101,108,133,0.8)',
+            	dark: 'rgba(9,10,17,0.8)'
             },
         },
         navbar: {
