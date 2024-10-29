@@ -8,7 +8,7 @@ Let's whitelist a **specific** user-agent (of course, it's just an example, don'
 Since we are using data that is present from the parsing stage we can do this within `Parsing Whitelist` level. Please see [introduction](/whitelist/introduction.md) for your OS specific paths.
 
 ```yaml
-name: crowdsecurity/whitelists
+name: "my/whitelist" ## Must be unique
 description: "Whitelist events from private ipv4 addresses"
 whitelist:
   reason: "private ipv4 ranges"
@@ -116,7 +116,7 @@ line: 5.5.8.5 - - [04/Jan/2020:07:25:02 +0000] "GET /.well-known/acme-challenge/
 	|		├ create evt.Parsed.static_ressource : false
 	|		├ create evt.Parsed.file_dir : /.well-known/acme-challenge/
 	|		├ create evt.Meta.http_args_len : 0
-	|	└ 🟢 crowdsecurity/whitelists (unchanged)
+	|	└ 🟢 my/whitelist (unchanged)
 	├-------- parser success 🟢
 	├ Scenarios
 		├ 🟢 crowdsecurity/http-crawl-non_statics
