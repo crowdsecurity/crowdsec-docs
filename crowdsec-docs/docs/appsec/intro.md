@@ -12,27 +12,28 @@ Meet the Crowdsec **Application Security Component** (AKA : **AppSec Component**
 
 The **AppSec Component** offers:
 
-- Low-effort **virtual patching** capabilities.
-- Support for your legacy **ModSecurity** rules.
-- Combining classic WAF benefits with advanced CrowdSec features for otherwise difficult **advanced behavior detection**.
-- **Full integration** with the Crowdsec software stack, including the console and remediation components.
+-   Low-effort **virtual patching** capabilities.
+-   Support for your legacy **ModSecurity** rules.
+-   Combining classic WAF benefits with advanced CrowdSec features for otherwise difficult **advanced behavior detection**.
+-   **Full integration** with the Crowdsec software stack, including the console and remediation components.
 
 <!-- xx :  links -->
 
 This component capitalizes on existing remediation functions in web servers (such as Nginx, Traefik, Haproxy, etc.) to provide web application firewall capabilities.
 
-![appsec-global](/img/appsec-global.png)
+![appsec-global](/img/appsec-global.svg)
 
-1) The Web Server receives the HTTP request
-2) The HTTP Request is intercepted and passed to the Crowdsec Security Engine via [the HTTP API](/appsec/protocol.md)
-3) The Security Engine answers to the Web Server once the Appsec inband rules have been processed.
-4) Based on the [Security Engine answer](/appsec/protocol#response-code), the Web Server either blocks the HTTP Request or processes it as usual
+1. The Web Server receives the HTTP request
+2. The HTTP Request is intercepted and passed to the Crowdsec Security Engine via [the HTTP API](/appsec/protocol.md)
+3. The Security Engine answers to the Web Server once the Appsec inband rules have been processed.
+4. Based on the [Security Engine answer](/appsec/protocol#response-code), the Web Server either blocks the HTTP Request or processes it as usual
 
 ## Inband Rules and Out-Of-Band Rules
 
 The AppSec component relies on rules to inspect HTTP Requests:
- - Inband rules are meant to interrupt request processing
- - Out-Of-Band rules are non-blocking and are evaluated asynchronously
+
+-   Inband rules are meant to interrupt request processing
+-   Out-Of-Band rules are non-blocking and are evaluated asynchronously
 
 ### Inband rule processing
 
@@ -54,8 +55,8 @@ They are usually meant to detect unwanted behaviors that exhibit a repetitive as
 
 When a request triggers one or more rules, either in the inband section (blocking) or out-of-band (non-blocking), several things happen:
 
-- Inband (blocking) rules will appear in your `cscli alerts list` (and thus in your [console dashboard](https://app.crowdsec.net)).
-- Inband and Out-Of-Band rules will trigger an internal crowdsec event that can be treated as any log lines.
+-   Inband (blocking) rules will appear in your `cscli alerts list` (and thus in your [console dashboard](https://app.crowdsec.net)).
+-   Inband and Out-Of-Band rules will trigger an internal crowdsec event that can be treated as any log lines.
 
 This is meant to allow for scenarios to exploit the WAF rules events, such as blocking for a longer time an IP that clearly engages in malevolent activities, triggering several virtual patching rules.
 
@@ -63,9 +64,9 @@ This is meant to allow for scenarios to exploit the WAF rules events, such as bl
 
 Let's now start using this AppSec capabilities:
 
-- **Installation**: [How to configure the Application Security Component with an existing remediation component](/appsec/installation.md)
-- **Rules**: [How to read, write and debug rules](/appsec/rules_syntax.md)
-- **Scenarios**: [How to create scenarios that leverage the AppSec Component events](#TODO)
-- **Hooks**: [For advanced use let's talk about possible Hooks](/appsec/hooks.md)
-- **Troubleshoot**: [How to troubleshoot the behavior of the AppSec Component](/appsec/troubleshooting.md)
-- **AppSec Protocol**: [if you're maintaining or creating a remedation component and want to add the AppSec capabilities](/appsec/protocol.md)
+-   **Installation**: [How to configure the Application Security Component with an existing remediation component](/appsec/installation.md)
+-   **Rules**: [How to read, write and debug rules](/appsec/rules_syntax.md)
+-   **Scenarios**: [How to create scenarios that leverage the AppSec Component events](#TODO)
+-   **Hooks**: [For advanced use let's talk about possible Hooks](/appsec/hooks.md)
+-   **Troubleshoot**: [How to troubleshoot the behavior of the AppSec Component](/appsec/troubleshooting.md)
+-   **AppSec Protocol**: [if you're maintaining or creating a remedation component and want to add the AppSec capabilities](/appsec/protocol.md)
