@@ -24,7 +24,7 @@ This component capitalizes on existing remediation functions in web servers (suc
 ![appsec-global](/img/appsec-global.svg)
 
 1. The Web Server receives the HTTP request
-2. The HTTP Request is intercepted and passed to the Crowdsec Security Engine via [the HTTP API](/appsec/protocol.md)
+2. The HTTP Request is intercepted and passed to the CrowdSec Security Engine via [the HTTP API](/appsec/protocol.md)
 3. The Security Engine answers to the Web Server once the Appsec inband rules have been processed.
 4. Based on the [Security Engine answer](/appsec/protocol#response-code), the Web Server either blocks the HTTP Request or processes it as usual
 
@@ -62,9 +62,13 @@ This is meant to allow for scenarios to exploit the WAF rules events, such as bl
 
 ## Next steps
 
-Let's now start using this AppSec capabilities:
+You can follow our quick start guides depending on your web server:
 
--   **Installation**: [How to configure the Application Security Component with an existing remediation component](/appsec/installation.md)
+-   [Nginx/OpenResty](/appsec/quickstart/nginxopenresty.mdx)
+-   [Traefik](/appsec/quickstart/traefik.mdx)
+
+Or consider learning more about the AppSec capabilities:
+
 -   **Rules**: [How to read, write and debug rules](/appsec/rules_syntax.md)
 -   **Scenarios**: [How to create scenarios that leverage the AppSec Component events](#TODO)
 -   **Hooks**: [For advanced use let's talk about possible Hooks](/appsec/hooks.md)
