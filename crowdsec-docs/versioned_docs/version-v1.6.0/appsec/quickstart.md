@@ -57,7 +57,7 @@ source: appsec
 
 The two important directives in this configuration file are:
 
- - `appsec_config` is the name of the [*AppSec configuration*](/appsec/configuration.md#appsec-configuration) that was included in the [collection](/concepts.md#colleccollectionstion) we just installed.
+ - `appsec_config` is the name of the [*AppSec configuration*](/appsec/configuration.md#appsec-configuration) that was included in the [collection](/concepts.md#collections) we just installed.
  - the `listen_addr` is the IP and port the AppSec Component will listen to.
 
 :::info
