@@ -104,11 +104,11 @@ tcp        0      0 127.0.0.1:7422          0.0.0.0:*               LISTEN      
 
 Configuring the AppSec component [accross remediation components](appsec/installation.md#pre-requisites) can vary:
 
-| Name      | Minimum Version | Public Doc |
-| --------- | --------------- | ----------- |
-| nginx     | 1.0.6rc         | [Public Doc](/u/bouncers/nginx#application-security-component-configuration) |
-| openresty | 1.0.1rc         | [Public Doc](/u/bouncers/openresty#application-security-component-configuration) |
-| traefik | 1.2.0 | [Public Doc](https://github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin/blob/main/examples/appsec-enabled/README.md) |
+| Name      | Minimum Version | Public Doc                                                                                                                |
+| --------- | --------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| nginx     | 1.0.6rc         | [Public Doc](/u/bouncers/nginx#application-security-component-configuration)                                              |
+| openresty | 1.0.1rc         | [Public Doc](/u/bouncers/openresty#application-security-component-configuration)                                          |
+| traefik   | 1.2.0           | [Public Doc](https://github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin/blob/main/examples/appsec-enabled/README.md) |
 
 
 :::info
@@ -138,4 +138,4 @@ And if we look at it in a browser, the user is presented with the HTML page emit
 ## Et Voila !
 
 Your application should now be protected from the most common exploitation attempts.  
-[If you have already enrolled your instance in the console](/docs/next/console/enrollment), you will see alerts appearing there too!
+[If you have already enrolled your instance in the console](/u/getting_started/post_installation/console#engines-page), you will see alerts appearing there too!

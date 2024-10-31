@@ -27,7 +27,7 @@ To use the multi organization selection, these steps should be followed:
 
 ![Select multiple organizations modal](/img/console/security_engines/select-multiple-organizations-list.png)
 
-The [**"Troubleshooting"**](/console/security_engines/troubleshooting) feature is also applied to multiple organizations. Allowing us to find issues directly across all selected organizations.
+The [**"Troubleshooting"**](/u/console/security_engines/troubleshooting) feature is also applied to multiple organizations. Allowing us to find issues directly across all selected organizations.
 
 ![Select multiple organizations modal](/img/console/security_engines/select-multiple-organizations-troubleshooting.png)
 

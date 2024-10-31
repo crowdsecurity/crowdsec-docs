@@ -82,7 +82,7 @@ decisions = client.get_decisions(
 
 ```
 
-To obtain attachment key for enrolling a machine see [this doc](../console/enrollment/#where-can-i-find-my-enrollment-key) 
+To obtain attachment key for enrolling a machine see [this doc](/u/getting_started/post_installation/console/#engines-page) 
 
 See reference section for more details. 
 
