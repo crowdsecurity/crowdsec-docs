@@ -66,7 +66,8 @@ Let's now start using this AppSec capabilities:
 
 -   **Installation**: [How to configure the Application Security Component with an existing remediation component](/appsec/installation.md)
 -   **Rules**: [How to read, write and debug rules](/appsec/rules_syntax.md)
--   **Scenarios**: [How to create scenarios that leverage the AppSec Component events](#TODO)
+  <!-- TODO -->
+-   **Scenarios**: How to create scenarios that leverage the AppSec Component events
 -   **Hooks**: [For advanced use let's talk about possible Hooks](/appsec/hooks.md)
 -   **Troubleshoot**: [How to troubleshoot the behavior of the AppSec Component](/appsec/troubleshooting.md)
 -   **AppSec Protocol**: [if you're maintaining or creating a remedation component and want to add the AppSec capabilities](/appsec/protocol.md)

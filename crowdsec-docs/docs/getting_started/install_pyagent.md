@@ -6,7 +6,7 @@ sidebar_position: 1
 
 # Using our Python SDK
 
-This python SDK is designed for signal sharing partners to send signals and benefit from the community blocklist. Learn more about [signal sharing](TODO).
+ This python SDK is designed for signal sharing partners to send signals and benefit from the community blocklist. <!-- Learn more about [signal sharing](TODO). -->
 
 Our SDK does the heavy lifting of the CAPI connectivity so you can simply, sendSignals and getDecisions, as well as enroll your soft-agent into the console.
 
