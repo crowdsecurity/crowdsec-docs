@@ -102,7 +102,7 @@ tcp        0      0 127.0.0.1:7422          0.0.0.0:*               LISTEN      
 
 ## Configuration : Remediation component
 
-Configuring the AppSec component [accross remediation components](/appsec/installation#pre-requisites) can vary:
+Configuring the AppSec component [accross remediation components](appsec/installation.md#pre-requisites) can vary:
 
 | Name      | Minimum Version | Public Doc |
 | --------- | --------------- | ----------- |

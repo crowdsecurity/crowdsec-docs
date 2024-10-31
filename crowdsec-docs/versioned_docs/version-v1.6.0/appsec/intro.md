@@ -26,7 +26,7 @@ This component capitalizes on existing remediation functions in web servers (suc
 1. The Web Server receives the HTTP request
 2. The HTTP Request is intercepted and passed to the Crowdsec Security Engine via [the HTTP API](/appsec/protocol.md)
 3. The Security Engine answers to the Web Server once the Appsec inband rules have been processed.
-4. Based on the [Security Engine answer](/appsec/protocol#response-code), the Web Server either blocks the HTTP Request or processes it as usual
+4. Based on the [Security Engine answer](/appsec/protocol.md#response-code), the Web Server either blocks the HTTP Request or processes it as usual
 
 ## Inband Rules and Out-Of-Band Rules
 

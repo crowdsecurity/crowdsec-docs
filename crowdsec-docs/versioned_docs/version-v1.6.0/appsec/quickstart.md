@@ -6,11 +6,11 @@ sidebar_position: 2
 
 ## Objectives
 
-The goal of this quickstart is to set up the [AppSec Component](/appsec/intro.md#introduction) to safeguard web applications running on [Nginx](https://nginx.com). We'll deploy a [set of rules](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) designed to block [well-known attacks](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) and [currently exploited vulnerabilities](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching). Additionally, we'll show how to monitor these alerts through the [console](https://app.crowdsec.net/).
+The goal of this quickstart is to set up the [AppSec Component](appsec/intro.md#introduction) to safeguard web applications running on [Nginx](https://nginx.com). We'll deploy a [set of rules](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) designed to block [well-known attacks](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) and [currently exploited vulnerabilities](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching). Additionally, we'll show how to monitor these alerts through the [console](https://app.crowdsec.net/).
 
 ## Pre-requisites
 
-1. If you're new to the [AppSec Component](/appsec/intro.md#introduction) or **W**eb **A**pplication **F**irewalls, start with the [Introduction](/appsec/intro.md#introduction) for a better understanding.
+1. If you're new to the [AppSec Component](appsec/intro.md#introduction) or **W**eb **A**pplication **F**irewalls, start with the [Introduction](appsec/intro.md#introduction) for a better understanding.
 
 2. It's assumed that you have already installed:
    - **Crowdsec [Security Engine](/docs/next/intro)**: for installation, refer to the [QuickStart guide](/docs/getting_started/install_crowdsec). The AppSec Component, which analyzes HTTP requests, is included within the security engine.
