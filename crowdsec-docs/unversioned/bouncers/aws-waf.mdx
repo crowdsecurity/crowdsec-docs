@@ -71,8 +71,19 @@ sudo yum install crowdsec-aws-waf-bouncer
 ### Docker
 
 ```shell
-docker run -v $(PWD)/config.yaml:/cs-aws-waf-bouncer.yaml crowdsecurity/aws-waf-bouncer
+docker run -e BOUNCER_CONFIG_FILE=/cs-aws-waf-bouncer.yaml -v $(PWD)/config.yaml:/cs-aws-waf-bouncer.yaml crowdsecurity/aws-waf-bouncer
 ```
+
+:::info
+
+The remediation component can take some time to delete all created ressources on shutdown.
+
+The default docker timeout of 10s before sending a `SIGKILL` to the process might not always been enough.
+
+You can increase it by specifying `--stop-timeout` in your `run` command or by setting `stop_grace_period` when using compose.
+
+:::
+
 
 ## Configuration Reference
 
