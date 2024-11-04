@@ -46,6 +46,9 @@ const backportRedirect = (s) => {
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
+    future: {
+	experimental_faster: true,
+    },
     title: "CrowdSec",
     tagline:
         "CrowdSec - Real-time & crowdsourced protection against aggressive IPs",

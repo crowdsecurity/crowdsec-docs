@@ -17,6 +17,7 @@
         "@coreui/icons": "^3.0.1",
         "@coreui/icons-react": "2.3.0",
         "@docusaurus/core": "^3.6.0",
+        "@docusaurus/faster": "^3.5.2",
         "@docusaurus/plugin-client-redirects": "^3.6.0",
         "@docusaurus/preset-classic": "^3.6.0",
         "@docusaurus/theme-common": "^3.6.0",
