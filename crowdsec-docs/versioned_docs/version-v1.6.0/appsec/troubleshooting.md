@@ -63,7 +63,7 @@ DEBU[2023-12-06 15:40:26] Finish evaluating rule                        band=inb
 ## Authenticating with the AppSec Component
 
 :::note
-We are assuming the AppSec engine is running on `127.0.0.1:7422`. See [installation directives](/docs/next/appsec/install)
+We are assuming the AppSec engine is running on `127.0.0.1:7422`. See [installation directives](/docs/next/appsec/installation)
 :::
 
 > Create a valid API Key

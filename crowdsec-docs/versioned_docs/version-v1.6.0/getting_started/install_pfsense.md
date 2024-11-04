@@ -141,8 +141,7 @@ and `crowdsec-firewall-bouncer.log`.
 
 ## Service Management
 
-Both services, Security Engine (crowdsec) and Remediation (crowdsec-firewall-bouncer) can be
-controlled from [Status/Services](/status_services.php).
+Both services, Security Engine (crowdsec) and Remediation (crowdsec-firewall-bouncer) can be controlled from `Status/Services`.
 The equivalent shell commands are `service crowdsec.sh start/stop/restart` and `service crowdsec_firewall.sh start/stop/restart`. Note the ending **.sh**!
 
 ## Viewing blocked IPs

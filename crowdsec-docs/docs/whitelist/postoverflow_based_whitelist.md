@@ -11,7 +11,7 @@ Whitelists in PostOverflows are applied _after_ the bucket overflow happens. Ple
 
 In PostOverflows, the `evt.Parsed` object will be empty at this stage.
 
-It means that you must work with the [`evt.Overflow`](/expr/event.md#overflow-relevant-fields) object for your expression.
+It means that you must work with the [`evt.Overflow`](/expr/event.md#event-object--overflow) object for your expression.
 
 :::
 
