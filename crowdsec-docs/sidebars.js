@@ -304,6 +304,7 @@
                 id: "central_api/intro",
             },
             items: [
+                "central_api/community_blocklist",
                 {
                     type: "link",
                     label: "Swagger",
