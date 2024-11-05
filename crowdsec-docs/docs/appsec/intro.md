@@ -24,9 +24,9 @@ This component capitalizes on existing remediation functions in web servers (suc
 ![appsec-global](/img/appsec-global.svg)
 
 1. The Web Server receives the HTTP request
-2. The HTTP Request is intercepted and passed to the CrowdSec Security Engine via [the HTTP API](/appsec/protocol.md)
+2. The HTTP Request is intercepted and passed to the CrowdSec Security Engine via [the HTTP API](appsec/protocol.md)
 3. The Security Engine answers to the Web Server once the Appsec inband rules have been processed.
-4. Based on the [Security Engine answer](/appsec/protocol#response-code), the Web Server either blocks the HTTP Request or processes it as usual
+4. Based on the [Security Engine answer](appsec/protocol.md#response-code), the Web Server either blocks the HTTP Request or processes it as usual
 
 ## Inband Rules and Out-Of-Band Rules
 
@@ -70,7 +70,8 @@ You can follow our quick start guides depending on your web server:
 Or consider learning more about the AppSec capabilities:
 
 -   **Rules**: [How to read, write and debug rules](/appsec/rules_syntax.md)
--   **Scenarios**: [How to create scenarios that leverage the AppSec Component events](#TODO)
+ <!-- TODO -->
+-   **Scenarios**: How to create scenarios that leverage the AppSec Component events
 -   **Hooks**: [For advanced use let's talk about possible Hooks](/appsec/hooks.md)
 -   **Troubleshoot**: [How to troubleshoot the behavior of the AppSec Component](/appsec/troubleshooting.md)
 -   **AppSec Protocol**: [if you're maintaining or creating a remedation component and want to add the AppSec capabilities](/appsec/protocol.md)

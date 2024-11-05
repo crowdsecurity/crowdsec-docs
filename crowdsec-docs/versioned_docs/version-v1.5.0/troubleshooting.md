@@ -107,7 +107,7 @@ Bouncers configuration files by default are located in:
 
 ## My scenario is triggered with less logs than the scenario capacity
 
-During the installation, the CrowdSec [Wizard](/docs/user_guides/building#using-the-wizard) is ran, which detects the basic logs files to add in the [acquisition](/docs/concepts#acquisition) configuration.
+During the installation, the CrowdSec [Wizard](/u/user_guides/building#using-the-wizard) is ran, which detects the basic logs files to add in the [acquisition](/docs/concepts#acquisition) configuration.
 If you re-run the `wizard.sh` script after the installation and you have common log files, they might be set up multiple times in your acquisition configuration. This means that CrowdSec will read each logs line as many time as you have the logs file configured in your acquisition configuration.
 
 
@@ -183,12 +183,12 @@ This command will allow you to see each parser behaviour.
 
 :::warning
 Do **not** use `cscli explain` on big log files, as this command will buffer a lot of information in memory to achieve this.
-If you want to check crowdsec's behaviour on big log files, please see [replay mode](/docs/user_guides/replay_mode/).
+If you want to check crowdsec's behaviour on big log files, please see [replay mode](/u/user_guides/replay_mode/).
 :::
 
 ## Is scenario XXX working on my logs ?
 
-You can replay old logs with [replay mode](/docs/user_guides/replay_mode/), which will allow you to see which scenarios would have been triggered. If no scenario seem to trigger, you can have a closer look at potential parsing errors with [`cscli explain`](/docs/cscli/cscli_explain).
+You can replay old logs with [replay mode](/u/user_guides/replay_mode/), which will allow you to see which scenarios would have been triggered. If no scenario seem to trigger, you can have a closer look at potential parsing errors with [`cscli explain`](/docs/cscli/cscli_explain).
 
 
 ## I want to add collection XXX : how to add log files, and how to test if it works ?

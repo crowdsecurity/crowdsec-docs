@@ -27,7 +27,7 @@ Do not enable/start the services from the terminal like you would on a standard 
 
 Refresh the page and go to `Services > CrowdSec > Overview` to verify the running services and installed configurations.
 
-Great, you now have CrowdSec installed on your system. Have a look at the [post installation steps](/getting_started/next_steps.md) to see how to to configure and optimize it,
+Great, you now have CrowdSec installed on your system. Have a look at the [post installation steps](/u/getting_started/next_steps) to see how to to configure and optimize it,
 these recommendations are valid for any system.
 
 

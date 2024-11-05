@@ -13,7 +13,7 @@ This page will reference information about a specific Security Engine. This page
 
 ### Summary
 
-At the top of the page, the essential information regarding the Security Engine is referenced. This includes the IP address, ID, last activity, tags, and the current version. This page will notify if the Security Engine is not running the latest CrowdSec version. To identify outdated Security Engines, you can also utilize the [**Troubleshooting**](/console/security_engines/troubleshooting) feature.
+At the top of the page, the essential information regarding the Security Engine is referenced. This includes the IP address, ID, last activity, tags, and the current version. This page will notify if the Security Engine is not running the latest CrowdSec version. To identify outdated Security Engines, you can also utilize the [**Troubleshooting**](/u/console/security_engines/troubleshooting) feature.
 
 ![Security Engine details page](/img/console/security_engines/details-page-summary.png)
 

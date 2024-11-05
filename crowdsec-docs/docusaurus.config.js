@@ -46,6 +46,9 @@ const backportRedirect = (s) => {
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
+    future: {
+	experimental_faster: true,
+    },
     title: "CrowdSec",
     tagline:
         "CrowdSec - Real-time & crowdsourced protection against aggressive IPs",
@@ -259,6 +262,16 @@ module.exports = {
                     // Please change this to your repo.
                     editUrl:
                         "https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/",
+                    lastVersion: "current",
+                    versions: {
+                        "v1.6.0": {
+                            banner: "none",
+                            path: "/"
+                        },
+                        current: {
+                            path: "/next"
+                        }
+                    }
                 },
                 blog: {
                     showReadingTime: true,
