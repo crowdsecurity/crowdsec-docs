@@ -259,6 +259,16 @@ module.exports = {
                     // Please change this to your repo.
                     editUrl:
                         "https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/",
+                    lastVersion: "current",
+                    versions: {
+                        "v1.6.0": {
+                            banner: "none",
+                            path: "/"
+                        },
+                        current: {
+                            path: "/next"
+                        }
+                    }
                 },
                 blog: {
                     showReadingTime: true,
