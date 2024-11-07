@@ -211,6 +211,49 @@ exit 0
 ```
 0 6 * * * /home/master/crowdsec/hub_update.sh
 ```
+### Make sure log rotation not breaking acquisition
+As CrowdSec is not running as root in our current context, there could be some race conditions with log rotation file creation making the acquisition fail.
+Future versions of CrowdSec might address this issue, but for now, we can use a simple script to ensure the acquisition is not broken.
+
+- Create a script to ensure the acquisition is not broken
+
+```bash
+vi /home/master/crowdsec/check_rotation.sh
+```
+
+```bash
+#!/bin/bash
+
+# Set the path to your CrowdSec log file
+LOG_FILE="/home/master/crowdsec/logs/crowdsec.log"
+
+# Get today's date in the format used in the logs (UTC time)
+TODAY=$(date -u +"%Y-%m-%d")
+
+# Define the error pattern to search for
+ERROR_PATTERN='level=warning .* died : Unable to open file .*: permission denied'
+
+# Search for the error in today's logs
+if grep "$TODAY" "$LOG_FILE" | grep -qE "$ERROR_PATTERN"; then
+    # Log the action
+    echo "$(date): Error found, restarting CrowdSec service" >> /home/master/crowdsec/logs/crowdsec_rotation_fail.log
+
+    # Restart the CrowdSec service
+    systemctl restart --user crowdsec
+
+    # Log the completion
+    echo "$(date): CrowdSec service restarted successfully" >> /home/master/crowdsec/logs/crowdsec_rotation_fail.log 
+else
+    # Log that no action was taken
+    echo "$(date): No error found, no action taken" >> /home/master/crowdsec/logs/crowdsec_rotation_fail.log 
+fi
+```
+
+Make the check run every day at 00:01
+```bash
+1 0 * * * /home/master/crowdsec/check_rotation.sh
+```
+
 
 ## Run a behavior detection on your past logs to see what it would have found
 We can run the behavior detection on the past logs to catch alerts that happened in the past.  
