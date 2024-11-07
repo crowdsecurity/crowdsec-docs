@@ -269,6 +269,8 @@ module.exports = {
                 },
                 "local_api/database",
                 "local_api/bouncers",
+                "local_api/configuration",
+                "local_api/authentication",
                 "local_api/tls_auth",
                 {
                     type: "link",
