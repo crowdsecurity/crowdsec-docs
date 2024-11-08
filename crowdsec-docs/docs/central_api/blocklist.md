@@ -24,7 +24,7 @@ Free users that are actively contributing to the network (sending signal on a re
 
 The content of the blocklist is unique to each Security Engine, as it mirrors the behaviours they report. For example, suppose you're running the Security Engine on a web server with WordPress. In that case, you will receive IPs performing generic attacks against web servers *and* IPs engaging in wordpress-specific attacks.
 
-The *Community Blocklist* content is capped at 15 thousand IPs at once.
+The *Community Blocklist* contains 15 thousand malicious IP's based on your reported scenarios.
 
 # Community Blocklist (Premium)
 
