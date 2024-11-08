@@ -898,7 +898,7 @@ online_client:
 ###### `sharing`
 > bool
 
-Whether you want to share signals with Central API, please note as outlined in the [Community blocklists](#TODO!!) section, enabling or disabling based on your plan type will affect how many IP's are downloaded from the community blocklists.
+Whether you want to share signals with Central API, please note as outlined in the [Community blocklists](central_api/blocklist.md) section, enabling or disabling based on your plan type will affect how many IP's are downloaded from the community blocklists.
 
 ###### `pull`
 
