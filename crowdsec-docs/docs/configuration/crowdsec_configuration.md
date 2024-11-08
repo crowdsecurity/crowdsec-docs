@@ -175,6 +175,10 @@ api:
     use_forwarded_for_headers: "<true|false>"
     console_path: <path_to_console_file>
     online_client:
+      sharing: "(true|false)"
+      pull:
+        community: "(true|false)"
+        blocklists: "(true|false)"
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     disable_remote_lapi_registration: (true|false)
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
@@ -697,6 +701,10 @@ api:
     use_forwarded_for_headers: "(true|false)"
     console_path: <path_to_console_file>
     online_client:
+      sharing: "(true|false)"
+      pull:
+        community: "(true|false)"
+        blocklists: "(true|false)"
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     disable_remote_lapi_registration: (true|false)
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
@@ -803,6 +811,10 @@ server:
     #- 10.0.0.0/24
   console_path: <path_to_console_file>
   online_client:
+    sharing: "(true|false)"
+    pull:
+      community: "(true|false)"
+      blocklists: "(true|false)"
     credentials_path: <path_to_crowdsec_api_client_credential_file>
   disable_remote_lapi_registration: (true|false)
   capi_whitelists_path: "<path_to_capi_whitelists_file>"
@@ -876,8 +888,35 @@ Configuration to push signals and receive bad IPs from Crowdsec API.
 
 ```yaml
 online_client:
+  sharing: "(true|false)"
+  pull:
+    community: "(true|false)"
+    blocklists: "(true|false)"
   credentials_path: "<path_to_crowdsec_api_client_credential_file>"
 ```
+
+###### `sharing`
+> bool
+
+Whether you want to share signals with Central API, please note as outlined in the [Community blocklists](#TODO!!) section, enabling or disabling based on your plan type will affect how many IP's are downloaded from the community blocklists.
+
+###### `pull`
+
+```yaml
+pull:
+  community: "(true|false)"
+  blocklists: "(true|false)"
+```
+
+###### `community`
+> bool
+
+Whether to pull signals from the community blocklists. Useful when you want to share your signals with the community but don't want to receive signals from the community.
+
+###### `blocklists`
+> bool
+
+Whether to pull signals from the CrowdSec blocklists. Useful when you want to share your signals with the community but don't want to receive signals from 3rd party or first party blocklists.
 
 ###### `credentials_path`
 > string
