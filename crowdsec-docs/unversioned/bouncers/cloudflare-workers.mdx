@@ -145,6 +145,8 @@ If your Cloudflare token has permission on D1, the remediation component will al
 
 Those metrics are exposed through the prometheus endpoint and automatically sent to crowdsec for visualisation with `cscli`.
 
+Metrics are stored in a D1 database to allow for easy retrieval by the remediation component. If your token does not have access to D1, a warning will be logged and metrics will be disabled.
+
 ## Configuration
 
 
@@ -177,6 +179,13 @@ cloudflare_config:
                 mode: managed # Supported Modes "managed"|"invisible"|"non-interactive"
           token: <CLOUDFLARE_ACCOUNT_TOKEN>
           account_name: owner@example.com
+    worker:
+      log_only: false # If true, allow all requests, but still keep track of what would have been blocked in the metrics
+      script_name: ""
+      logpush: null
+      tags: []
+      compatibility_date: ""
+      compatibility_flags: []
 
 log_level: info
 log_media: "stdout"
@@ -469,6 +478,41 @@ Cloudflare account token.
 > string
 
 Account name.
+
+#### `worker.log_only`
+> bool
+
+If true, allow all requests but keep track of what would have been blocked in the metrics.
+
+Defaults to `false`
+
+#### `worker.script_name`
+> string
+
+Name to use for the worker script.
+
+Default to `crowdsec-cloudflare-worker-bouncer`.
+
+#### `worker.logpush`
+> bool
+
+Enable logpush for the worker.
+
+Default to no value.
+
+#### `worker.compatibility_date`
+> string
+
+See https://developers.cloudflare.com/workers/configuration/compatibility-dates/.
+
+Default to no value
+
+#### `worker.compatibility_flags`
+> list of strings
+
+See https://developers.cloudflare.com/workers/configuration/compatibility-flags/.
+
+Default to no value.
 
 #### `ban_template_path`
 > string
