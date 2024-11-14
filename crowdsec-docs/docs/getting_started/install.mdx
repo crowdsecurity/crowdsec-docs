@@ -33,9 +33,9 @@ Before installing the package, you might want to check [the ports that will be u
   groupId="operating-systems"
   values={[
     {label: 'Debian/Ubuntu', value: 'debian'},
-    {label: 'EL/Centos7', value: 'centos7'},
+    {label: 'EL/Centos7/Amzn Linux 2', value: 'centos7'},
     {label: 'EL/Centos Stream 8', value: 'centos8'},
-    {label: 'Amzn Linux 2', value: 'amz'},
+    {label: 'Opensuse', value: 'opensuse'},
     {label: 'OpenWRT', value: 'openwrt'},
     {label: 'CloudLinux', value: 'cloudlinux'},
   ]}>
@@ -51,8 +51,8 @@ Before installing the package, you might want to check [the ports that will be u
     <CodeBlock className="language-bash">dnf install crowdsec</CodeBlock>
   </TabItem>
 
-  <TabItem value="amz">
-    <CodeBlock className="language-bash">yum install crowdsec</CodeBlock>
+  <TabItem value="opensuse">
+    <CodeBlock className="language-bash">zypper install crowdsec</CodeBlock>
   </TabItem>
 
   <TabItem value="openwrt">
