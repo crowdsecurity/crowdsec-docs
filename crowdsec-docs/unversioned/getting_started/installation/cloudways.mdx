@@ -209,7 +209,7 @@ exit 0
 ```
 		- Add it to crontab, every day at 6 for example
 ```
-0 6 * * * /home/master/crowdsec/hub_update.sh
+0 6 * * * sh /home/master/crowdsec/hub_update.sh
 ```
 ### Make sure log rotation not breaking acquisition
 As CrowdSec is not running as root in our current context, there could be some race conditions with log rotation file creation making the acquisition fail.
@@ -251,7 +251,7 @@ fi
 
 Make the check run every day at 00:01
 ```bash
-1 0 * * * /home/master/crowdsec/check_rotation.sh
+1 0 * * * sh /home/master/crowdsec/check_rotation.sh
 ```
 
 
