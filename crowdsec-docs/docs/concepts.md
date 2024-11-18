@@ -65,7 +65,7 @@ The `labels` part is here to tag the incoming logs with a type. `labels.type` ar
 
 ## Application Security Component
 
-[[References](/appsec/intro.md)]
+[[References](appsec/intro)]
 
 The Application Security Component is a special datasource that allows the supported remediation components to forward HTTP requests to crowdsec for analysis, before they can reach the application.
 Because CrowdSec can analyse the request and take a decision before it reaches the application, the combo of the Application Security Component and the remediation components acts as a Web Application Firewall (WAF).
@@ -142,9 +142,9 @@ You can as well [write your own](/scenarios/create.md)!
 
 ## AppSec Rules
 
-[[References](/appsec/intro.md)]
+[[References](appsec/intro)]
 
-An AppSec rule is a YAML configuration file that describe a rule for the [Application Security Component](/appsec/intro.md).
+An AppSec rule is a YAML configuration file that describe a rule for the [Application Security Component](appsec/intro).
 
 An AppSec rule can match on various aspect of an HTTP request, such as the verb, the URI, the headers, the parameters, the body, etc.
 You can use them to detect and block exploitation of specific vulnerabilities (virtual patching) or to write more generic WAF rules.
@@ -153,12 +153,12 @@ Contrary to scenarios, appsec rules can block a request before it reaches the ap
 
 ## AppSec Configs
 
-An Appsec Config file is a YAML configuration file that tell the [Application Security Component](/appsec/intro.md) which rules should be loaded, and in which band (in-band or out-of-band).
+An Appsec Config file is a YAML configuration file that tell the [Application Security Component](appsec/intro) which rules should be loaded, and in which band (in-band or out-of-band).
 
 The config also expose hooks allowing you to customize at runtime the behavior of the AppSec component (disable a rule on a specific URL, apply a captcha if a specific rule is triggered, etc.)
 
   
-[[References](/appsec/intro.md)]
+[[References](appsec/intro)]
 
 ## Collections
 

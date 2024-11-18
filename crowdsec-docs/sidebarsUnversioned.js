@@ -184,6 +184,15 @@ module.exports = {
             items: ["console/decisions/decisions_management"],
         },
         {
+            type: "category",
+            label: "Enterprise support",
+            link:{
+                type: "doc",
+                id: "console/enterprise_support",
+            },
+            items: []
+        },
+        {
             type: "link",
             label: "Service API",
             href: "/u/service_api/getting_started",

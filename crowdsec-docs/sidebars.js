@@ -87,8 +87,8 @@
                     href: '/u/bouncers/intro',
                 },
                 {
-                    type: 'link',
-                    href: 'appsec/intro',
+                    type: 'ref',
+                    id: 'appsec/intro',
                     label: 'AppSec',
                 },
                 {
@@ -304,6 +304,7 @@
                 id: "central_api/intro",
             },
             items: [
+                "central_api/community_blocklist",
                 {
                     type: "link",
                     label: "Swagger",

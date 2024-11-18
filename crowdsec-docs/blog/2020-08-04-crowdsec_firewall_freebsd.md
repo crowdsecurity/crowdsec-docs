@@ -1,8 +1,7 @@
 ---
 slug: crowdsec_firewall_freebsd
 title: How to install CrowdSec Firewall Bouncer on FreeBSD
-author: Sofian Brabez
-author_url: https://github.com/sbz
+authors: [sbz]
 tags: [bouncer, firewall, crowdsec]
 ---
 

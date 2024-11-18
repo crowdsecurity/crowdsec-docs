@@ -6,9 +6,9 @@ title: Application Security Component
 
 This module allows you to enable the `Application Security Component` as a data source.
 
-A more detailed documentation is available [here](/appsec/intro.md).
+A more detailed documentation is available [here](/docs/next/appsec/intro).
 
-A quickstart tutorial is available [here](/appsec/quickstart.md).
+A quickstart tutorial is available for [Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty) and [Traefik](/docs/next/appsec/quickstart/traefik).
 
 ## Configuration example
 

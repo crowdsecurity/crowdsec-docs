@@ -89,21 +89,31 @@ Default to `30 seconds`.
 
 ## DSN and command-line
 
-All the parameters above are available via DNS (one-shot mode), plus the following ones:
+All the parameters above are available via DSN (one-shot mode), plus the following ones:
 
 ### `ssl`
 
 if present, scheme will be set to `https`
 
+```bash
+crowdsec -type foobar -dsn 'loki://login:password@localhost:3102/?query={server="demo"}&ssl=true'
+```
+
 ### `since`
 
 Allows to set the "since" duration for loki query.
+
+Expects a valid [Go duration](https://pkg.go.dev/time#ParseDuration)
+
+```bash
+crowdsec -type foobar -dsn 'loki://login:password@localhost:3102/?query={server="demo"}&since=1d'
+```
 
 ### `log_level`
 
 Set the `log_level` for loki datasource.
 
 ```bash
-crowdsec -type foobar -dsn 'loki://login:password@localhost:3102/?query={server="demo"}'
+crowdsec -type foobar -dsn 'loki://login:password@localhost:3102/?query={server="demo"}&log_level=debug'
 ```
 
