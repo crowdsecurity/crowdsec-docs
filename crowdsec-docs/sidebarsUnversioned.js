@@ -188,6 +188,11 @@ module.exports = {
                     label: "Getting started",
                     id: "console/cti/getting_started",
                 },
+                {
+                    type: "doc",
+                    label: "IP report",
+                    id: "console/cti/ip_report",
+                },
             ],
         },
         {
