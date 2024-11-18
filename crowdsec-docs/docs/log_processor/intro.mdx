@@ -25,9 +25,11 @@ The Log Processor is an internal core component of the Security Engine in charge
 
 Once a pattern of interest is detected, the Log Processor will push alerts to the Local API (LAPI) for alert/decisions to be stored within the database.
 
+All subcategories below are related to the Log Processor and its functionalities. If you are utilizing a multi server architecture, you will only need to configure the functionality that you want to use on the Log Processor.
+
 ## Data Sources
 
-Data Sources are individual modules that can be loaded at runtime by the Log Processor to read logs from various sources. To define a Data Source, you will need to create an acquisition configuration file.
+Data Sources are individual modules that can be loaded at runtime by the Log Processor to read logs from various sources. To use a Data Source, you will need to create an acquisition configuration file.
 
 ### Acquistions
 
@@ -64,35 +66,7 @@ The parsing pipeline is broken down into multiple stages:
 - `s01-parse` : This is the second stage responsible for extracting relevant information from the normalized logs based on the application type to be used by `s02-enrich` and the [Scenarios](log_processor/scenarios/introduction.mdx).
 - `s02-enrich` : This is the third stage responsible for enriching the extracted information with additional context such as GEOIP, ASN etc.
 
-:::info
-We will give a breif overview of each stage, however, for most users this documentation is not required to get started with CrowdSec but can be used to understand the inner workings of the Log Processor.
-:::
-
-#### `s00-raw`
-
-This stage is responsible for normalizing logs from various [Data Sources](log_processor/data_sources/introduction.md) into a predictable format for `s01-parse` and `s02-enrich` to work on.
-
-For example if you have a `syslog` Data Source and a `container` Data Source writing the same application log lines you wouldnt want `s01-parse` to handle this logic twice, since `s00-raw` can normalize the logs into a predictable format. 
-
-For most instances we have already created these `s00-raw` parsers for you are available to view on the [Hub](https://hub.crowdsec.net/).
-
-#### `s01-parse`
-
-The stage is responsible for extracting relevant information from the normalized logs based on the application type.
-
-The application type is defined in different ways based on the Data Source. Please refer to the [Data Sources](log_processor/data_sources/introduction.md) documentation for more information.
-
-We list all available applications we support on the [Hub](https://hub.crowdsec.net/) and within the readme of the collection our users provide an example Acquisition configuration.
-
-#### `s02-enrich`
-
-The aim of this stage is to enrich the extracted information with additional context such as GEOIP, ASN etc.
-
-However, the stage can also be used to perform whitelist checks, however, we have dedicated documentation for this [here](log_processor/whitelist/introduction.md).
-
-Currently we have a few enrichers available on the [Hub](https://hub.crowdsec.net/), that are installed by default so you dont need to worry about this stage unless you want to create your own.
-
-For more information on Parsers, see the [Parsers](log_processor/parsers/introduction.mdx) documentation.
+You can see more information on Parsers in the [documentation](log_processor/parsers/introduction.mdx).
 
 ### Scenarios
 
@@ -101,3 +75,15 @@ Scenarios are the patterns of interest that the Log Processor is monitoring for.
 The patterns can be as simple as tracking the number of failed login attempts or as complex as tracking logging in from multiple countries within a short period of time which can be a indicator of a compromised account or VPN usage.
 
 The community provides a number of scenarios on the [Hub](https://hub.crowdsec.net/) that you can install and use. If you would like to create your own, see the [Scenarios](log_processor/scenarios/introduction.mdx) documentation.
+
+### whitelists
+
+Whitelists are used to exclude certain events from being processed by the Log Processor. For example, you may want to exclude certain IP addresses from being processed by the Log Processor.
+
+You can see more information on Whitelists in the [documentation](log_processor/whitelist/introduction.md).
+
+### Alert Context
+
+Alert Context is additional context that can sent with an alert to the LAPI. This context can be shown locally via `cscli` or within the [CrowdSec Console](https://app.crowdsec.net/signup) if you opt in to share context when you enroll your instance.
+
+You can read more about Alert Context in the [documentation](log_processor/alert_context/intro.md).
