@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: Introduction to the Alerts section of the CrowdSec Console
+description: Introduction to CrowdSec's Cyber Threat Intelligence (CTI) platform.
 ---
 
 **CrowdSec’s Cyber Threat Intelligence (CTI)** is a cutting-edge platform that enhances your cybersecurity defenses through community-driven insights and advanced threat intelligence. This introduction provides an overview of CTI’s purpose, benefits, competitive advantages and including a search page with filters and IP detail pages.
