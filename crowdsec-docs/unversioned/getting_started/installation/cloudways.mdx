@@ -238,6 +238,9 @@ if grep "$TODAY" "$LOG_FILE" | grep -qE "$ERROR_PATTERN"; then
     # Log the action
     echo "$(date): Error found, restarting CrowdSec service" >> /home/master/crowdsec/logs/crowdsec_rotation_fail.log
 
+    # Providing env context to the cron job
+    export XDG_RUNTIME_DIR=/run/user/$(id -u)
+    export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
     # Restart the CrowdSec service
     systemctl restart --user crowdsec
 
