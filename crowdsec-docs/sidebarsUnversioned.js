@@ -193,6 +193,11 @@ module.exports = {
                     label: "IP report",
                     id: "console/cti/ip_report",
                 },
+                {
+                    type: "doc",
+                    label: "Advanced search",
+                    id: "console/cti/advanced_search",
+                },
             ],
         },
         {
