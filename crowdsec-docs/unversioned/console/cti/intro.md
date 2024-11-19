@@ -7,7 +7,7 @@ description: Introduction to CrowdSec's Cyber Threat Intelligence (CTI) platform
 
 Investigate your first IP [there](https://app.crowdsec.net/cti).
 
-![Alerts](/img/console/cti/home.jpeg)
+![Alerts](/img/console/cti/home.png)
 
 # What Is Cyber Threat Intelligence (CTI)?
 
@@ -48,14 +48,9 @@ CTI integrates seamlessly into your existing CrowdSec setup, making it an invalu
 
 In this documentation, you’ll discover:
 
-### IP Details Pages
-
-Dive deep into individual IP profiles to uncover:
-
--   Risk assessment scores
--   Threat patterns
--   Timeline of malicious activity
--   Geographical distribution of attacks
+1. How to use the CTI in the [Getting Started guide](https://docs.crowdsec.net/u/console/cti/getting_started).
+2. How to investigate an IP address in the [IP Report guide](https://docs.crowdsec.net/u/console/cti/ip_report).
+3. How to perform advanced searches in the [Advanced Search guide](https://docs.crowdsec.net/u/console/cti/advanced_search).
 
 ### Faceted Research for Analysts
 
