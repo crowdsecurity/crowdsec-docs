@@ -10,7 +10,7 @@ This module allows the `Security Engine` to acquire logs from an HTTP endpoint.
 To receive logs from an HTTP endpoint with basic auth:
 ```yaml
 source: http
-listen_addr: 127.0.0.1:8080
+listen_addr: 127.0.0.1:8081
 path: /test
 auth_type: basic_auth
 basic_auth:
@@ -23,7 +23,7 @@ labels:
 To receive logs from an HTTP endpoint with headers:
 ```yaml
 source: http
-listen_addr: 127.0.0.1:8080
+listen_addr: 127.0.0.1:8081
 path: /test
 auth_type: headers
 headers:
@@ -36,7 +36,7 @@ To receive logs from an HTTP endpoint with TLS and headers:
 
 ```yaml
 source: http
-listen_addr: 127.0.0.1:8080
+listen_addr: 127.0.0.1:8081
 path: /test
 auth_type: headers
 headers:
@@ -52,7 +52,7 @@ To receive logs from an HTTP endpoint with mTLS:
 
 ```yaml
 source: http
-listen_addr: 127.0.0.1:8080
+listen_addr: 127.0.0.1:8081
 path: /test
 auth_type: mtls
 tls:
@@ -65,6 +65,7 @@ labels:
 
 :::info
 If most of cases when the logs are sent in JSON format, you can use the [`transform`](https://docs.crowdsec.net/docs/next/data_sources/intro/#transform) expression to parse the logs.
+:::
 
 For example, if the logs are sent in the following format:
 ```json
