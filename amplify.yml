@@ -1,0 +1,16 @@
+version: 1
+frontend:
+  phases:
+    build:
+      commands:
+        - nvm use 20
+        - cd crowdsec-docs
+        - npm install
+        - npm run build
+  artifacts:
+    baseDirectory: crowdsec-docs/build
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - crowdsec-docs/node_modules/**/*

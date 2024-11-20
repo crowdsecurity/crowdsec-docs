@@ -45,7 +45,7 @@ What does CrowdSec know about <an IP>
 ```
 For example: 
 ```
-What does CrowdSec know about 102.0.4.250
+What does CrowdSec know about 184.178.172.25
 ```  
 
 The 3 steps copilot take will be: to select the plugin, do the request and format his response as shown below:  

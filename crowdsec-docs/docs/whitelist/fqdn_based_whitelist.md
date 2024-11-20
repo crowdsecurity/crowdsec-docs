@@ -14,7 +14,7 @@ You might want to whitelist a fully qualified domain name (FQDN eg foo.com), in 
 Let's create the following file `FQDN-whitelists.yaml` (See [introduction](/whitelist/introduction.md) for your OS specific path) :
 
 ```yaml
-name: me/FQDN-whitlists
+name: "my/FQDN-whitlists" ## Must be unique
 description: "Whitelist postoverflows from FQDN"
 whitelist:
   reason: "do whitelistings by FQDN"

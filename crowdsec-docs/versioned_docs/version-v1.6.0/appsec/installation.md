@@ -166,4 +166,4 @@ And if we look at it in a browser, the user is presented with the HTML page emit
 ## Et Voila !
 
 Your application should now be protected from the most common exploitation attempts.  
-[If you have already enrolled your instance in the console](/docs/next/console/enrollment), you will see alerts appearing there too!
+[If you have already enrolled your instance in the console](/u/getting_started/post_installation/console#engines-page), you will see alerts appearing there too!

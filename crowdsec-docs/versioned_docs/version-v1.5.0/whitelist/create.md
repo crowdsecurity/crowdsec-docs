@@ -43,7 +43,7 @@ sudo cscli decisions list
 Let's create a `/etc/crowdsec/parsers/s02-enrich/mywhitelists.yaml` file with the following content :
 
 ```yaml
-name: crowdsecurity/whitelists
+name: my/whitelist
 description: "Whitelist events from my ip addresses"
 whitelist:
   reason: "my ip ranges"
@@ -85,7 +85,7 @@ Now, let's make something more tricky : let's whitelist a **specific** user-agen
 Let's change our whitelist to :
 
 ```yaml
-name: crowdsecurity/whitelists
+name: my/whitelist
 description: "Whitelist events from private ipv4 addresses"
 whitelist:
   reason: "private ipv4 ranges"
