@@ -131,6 +131,7 @@
                 "data_sources/s3",
                 "data_sources/docker",
                 "data_sources/file",
+                "data_sources/http",
                 "data_sources/journald",
                 "data_sources/kafka",
                 "data_sources/kubernetes_audit",
