@@ -202,6 +202,9 @@ sleep "$(seq 1 300 | shuf -n 1)"
 
 upgraded=$(/home/master/crowdsec/cscli -c /home/master/crowdsec/config.yaml --error hub upgrade)
 if [ -n "$upgraded" ]; then
+    # Providing env context to the cron job
+    export XDG_RUNTIME_DIR=/run/user/$(id -u)
+    export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
     systemctl --user reload crowdsec
 fi
 
