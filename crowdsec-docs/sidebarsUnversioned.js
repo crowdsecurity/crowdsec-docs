@@ -180,11 +180,6 @@ module.exports = {
             items: [
                 {
                     type: "doc",
-                    label: "Introduction",
-                    id: "console/cti/intro",
-                },
-                {
-                    type: "doc",
                     label: "Getting started",
                     id: "console/cti/getting_started",
                 },
@@ -197,6 +192,11 @@ module.exports = {
                     type: "doc",
                     label: "Advanced search",
                     id: "console/cti/advanced_search",
+                },
+                {
+                    type: "doc",
+                    label: "FAQ",
+                    id: "console/cti/faq",
                 },
             ],
         },

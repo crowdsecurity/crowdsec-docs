@@ -1,6 +1,6 @@
 ---
-title: Introduction
-description: Introduction to CrowdSec's Cyber Threat Intelligence (CTI) platform.
+title: FAQ
+description: CrowdSec's Cyber Threat Intelligence (CTI) FAQ.
 ---
 
 **CrowdSec’s Cyber Threat Intelligence (CTI)** is a cutting-edge platform that enhances your cybersecurity defenses through community-driven insights and advanced threat intelligence. This introduction provides an overview of CTI’s purpose, benefits, competitive advantages and including a search page with filters and IP detail pages.
@@ -43,14 +43,6 @@ With CTI’s advanced search and filtering capabilities, finding relevant inform
 **5. Integration-Friendly**
 
 CTI integrates seamlessly into your existing CrowdSec setup, making it an invaluable part of your defense strategy without requiring additional complexity. Use the [Free CrowdSec CTI API](https://app.crowdsec.net/settings/cti-api-keys) to access threat data programmatically and enhance your security operations.
-
-# What to Expect Next
-
-In this documentation, you’ll discover:
-
-1. How to use the CTI in the [Getting Started guide](https://docs.crowdsec.net/u/console/cti/getting_started).
-2. How to investigate an IP address in the [IP Report guide](https://docs.crowdsec.net/u/console/cti/ip_report).
-3. How to perform advanced searches in the [Advanced Search guide](https://docs.crowdsec.net/u/console/cti/advanced_search).
 
 ### Faceted Research for Analysts
 
