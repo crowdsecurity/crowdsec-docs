@@ -183,6 +183,11 @@ module.exports = {
                     label: "Introduction",
                     id: "console/cti/intro",
                 },
+                {
+                    type: "doc",
+                    label: "Getting started",
+                    id: "console/cti/getting_started",
+                },
             ],
         },
         {
