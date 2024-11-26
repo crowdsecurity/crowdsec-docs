@@ -207,7 +207,11 @@ module.exports = {
                 type: "doc",
                 id: "console/decisions/decisions_intro",
             },
-            items: ["console/decisions/decisions_management"],
+            items: [{
+                type: "doc",
+                id: "console/decisions/decisions_management",
+                label: "Decisions Management 🏅"
+            }],
         },
         {
             type: "category",
