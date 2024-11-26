@@ -236,6 +236,11 @@ module.exports = {
         },
         {
             type: "doc",
+            label: "Apache",
+            id: "bouncers/apache_bouncer",
+        },
+        {
+            type: "doc",
             label: "BlockList Mirror",
             id: "bouncers/blocklist-mirror",
         },
