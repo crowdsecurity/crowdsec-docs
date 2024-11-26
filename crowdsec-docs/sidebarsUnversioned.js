@@ -132,7 +132,7 @@ module.exports = {
         {
             label: "Blocklists",
             type: "doc",
-            id: "blocklists/intro"
+            id: "blocklists/intro",
         },
         {
             type: "category",
@@ -176,6 +176,32 @@ module.exports = {
         },
         {
             type: "category",
+            label: "CTI",
+            items: [
+                {
+                    type: "doc",
+                    label: "Getting started",
+                    id: "console/cti/getting_started",
+                },
+                {
+                    type: "doc",
+                    label: "IP report",
+                    id: "console/cti/ip_report",
+                },
+                {
+                    type: "doc",
+                    label: "Advanced search",
+                    id: "console/cti/advanced_search",
+                },
+                {
+                    type: "doc",
+                    label: "FAQ",
+                    id: "console/cti/faq",
+                },
+            ],
+        },
+        {
+            type: "category",
             label: "Decision",
             link: {
                 type: "doc",
@@ -186,11 +212,11 @@ module.exports = {
         {
             type: "category",
             label: "Enterprise support",
-            link:{
+            link: {
                 type: "doc",
                 id: "console/enterprise_support",
             },
-            items: []
+            items: [],
         },
         {
             type: "link",
@@ -351,8 +377,8 @@ module.exports = {
                 "integrations/sophos",
                 "integrations/genericfirewall",
                 "integrations/remediationcomponent",
-            ]
-        }
+            ],
+        },
     ],
     troubleshootingSideBar: [
         {
@@ -380,7 +406,7 @@ module.exports = {
         {
             type: "doc",
             id: "service_api/getting_started",
-            label: "Getting Started"
+            label: "Getting Started",
         },
         {
             type: "category",
@@ -389,8 +415,7 @@ module.exports = {
                 "service_api/quickstart/authentication",
                 "service_api/quickstart/blocklists",
                 "service_api/quickstart/integrations",
-            ]
-
+            ],
         },
         {
             type: "category",
@@ -399,24 +424,24 @@ module.exports = {
                 {
                     type: "doc",
                     label: "Python",
-                    id: "service_api/sdks/python"
-                }
-            ]
+                    id: "service_api/sdks/python",
+                },
+            ],
         },
         {
             type: "link",
             label: "Swagger",
-            href: "https://admin.api.crowdsec.net/v1/docs#/"
+            href: "https://admin.api.crowdsec.net/v1/docs#/",
         },
         {
             type: "link",
             label: "Redoc",
-            href: "https://admin.api.crowdsec.net/v1/redoc"
+            href: "https://admin.api.crowdsec.net/v1/redoc",
         },
         {
             type: "doc",
             id: "service_api/faq",
-            label: "FAQ"
+            label: "FAQ",
         },
     ],
     guidesSideBar: [
