@@ -51,6 +51,10 @@ Some SIEM agents may not support some top level keys we define in the default nd
 
 ### SIEM Integration
 
+:::warning
+Please note if you change the format that is printed to the file you must also configure the collector on the SIEM side to also expect the same format
+:::
+
 #### Filebeat
 
 Filebeat has a set of reserved top level keys and should not be used in the ndjson format. The following format can be used to be compatible with Filebeat:
@@ -59,6 +63,16 @@ Filebeat has a set of reserved top level keys and should not be used in the ndjs
 format: |
   {{range . -}}
    { "time": "{{.StopAt}}", "source": "crowdsec", "alert": {{. | toJson }} }
+  {{ end -}}
+```
+#### Wazuh
+
+Wazuh has set of reserved top level keys and may cause logs not to be sent by the agent. The following format can be used to be compatible with Wazuh:
+
+```yaml
+format: |
+  {{range . -}}
+   { "crowdsec": { "time": "", "program": "crowdsec", "alert": {{. | toJson }} }}
   {{ end -}}
 ```
 
