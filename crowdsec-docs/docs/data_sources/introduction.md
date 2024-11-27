@@ -24,7 +24,7 @@ Name | Type | Stream | One-shot
 [Kubernetes Audit](/data_sources/kubernetes_audit.md) | expose a webhook to receive audit logs from a Kubernetes cluster  | yes | no
 [Loki](/data_sources/loki.md) | read logs from loki | yes | yes
 [syslog service](/data_sources/syslog_service.md) | read logs received via syslog protocol | yes | no
-[Windows Event](/data_sources/windows_event_log.md)| read logs from windows event log | yes | no
+[Windows Event](/data_sources/windows_event_log.md)| read logs from windows event log | yes | yes
 
 ## Common configuration parameters
 

@@ -66,3 +66,50 @@ You can refer to the Windows documentation for more informations: https://docs.m
 Pretty name to use for the datasource in the metrics (`cscli metrics`).
 
 This parameter is optional, but strongly recommanded, as by default the full xpath query will be displayed in the metrics, which can be hard to read.
+
+## DSN and command-line
+
+This module supports acquisition directly from the command line, to replay content from event files.
+
+A single wineventlog URI is accepted with the `-dsn` parameter:
+
+```bash
+crowdsec -type sysmon -dsn wineventlog://C:\\path\\to\\file.evtx
+```
+
+### Supported parameters
+
+#### `log_level`
+
+Change the log level for the acquisition:
+
+```bash
+crowdsec -type sysmon -dsn wineventlog://C:\\path\\to\\file.evtx?log_level=debug
+```
+
+#### `event_id`
+
+Only process events with this ID.
+
+This parameter can be specified multiple times to filter on multiple IDs.
+
+```bash
+crowdsec -type sysmon -dsn wineventlog://C:\\path\\to\\file.evtx?event_id=1&event_id=2
+```
+
+#### `event_level`
+
+Only process events with this level.
+
+Must be a number between 0 and 5.
+
+The mapping between the number and the textual representation of the level is:
+
+ Text | Number 
+------|-----------
+ INFORMATION | 0 
+ CRITICAL | 1 
+ ERROR | 2 
+ WARNING | 3 
+ INFORMATION | 4 
+ VERBOSE | 5 
