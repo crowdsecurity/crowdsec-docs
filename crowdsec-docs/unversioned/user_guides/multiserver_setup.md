@@ -73,6 +73,10 @@ Because a log processor can push arbitrary alerts to LAPI (and hence can easily 
 
 Finally, restart crowdsec to apply the changes.
 
+Note that LAPI only receives the alerts and turn them into decisions, this means:
+ - You do not have to install any parser or scenario on it, they must be installed on the log processors directly.
+ - If you want to have custom decisions (custom duration for example), you need to modify the file `/etc/crowdsec/profiles.yaml` on the LAPI, not on the log processors.
+
 ### Log processors
 
 Again, follow the [getting started guide](/docs/next/getting_started/install_crowdsec) to install Crowdsec.
@@ -141,7 +145,7 @@ Since crowdsec v1.6.4, multiple remediations components running on different mac
 
 On installation, remediations components will try to automatically create an API key if they are installed on the same machine as LAPI, which likely won't be the case for a multi-server installation.
 
-In this case, you will need to manually create an API key for you remediation component:
+In this case, you will need to manually create an API key for you remediation component by running this command on your LAPI instance:
 
 ```bash
 $ sudo cscli bouncers add MyBouncer
@@ -155,54 +159,3 @@ Please keep this key since you will not be able to retrieve it!
 Next, update the remediation component configuration file with the API key that you created and the URL to LAPI.
 
 Remediation components will generally store their configuration in `/etc/crowdsec/bouncers/`, and the configuration directives naming for the API key and URL might vary from one remediation component to the other, please refer to the specific documentation of the component you have installed.
-
-
-A typical multi server setup should thus have:
-
-1. **Log processors push alerts to LAPI** : 
-  - The [local_api_credentials.yaml](/docs/configuration/crowdsec_configuration#client) should point to LAPI's Ip
-  - The log processor should be registered to the local api
-
-    **Using login/password authentication**
-    - By running `cscli machines add MyMachine` on the LAPI (and copy the generated credentials to the log processor configuration)
-    - By running `cscli lapi register --machine MyMachine --url <lapi_url> --token <token>` on the log processor for automatic validation of the machine if configured
-    - or by running `cscli lapi register --machine MyMachine --url http://<lapi>` on the log processor and accepting the machine from LAPI with `cscli machines validate MyMachine`
-
-    **Using client cert authentication**
-    - By using setting the [client verification method](/docs/next/configuration/crowdsec_configuration#client_verification)
-    - And setting the appropriate [allowed agents ou](/docs/next/configuration/crowdsec_configuration#agents_allowed_ou)
-
-Once done, you can check that the log processor can communicate with LAPI :
-
-```bash
-# cscli  lapi status
-INFO[20-12-2021 01:31:33 PM] Loaded credentials from /etc/crowdsec/local_api_credentials.yaml 
-INFO[20-12-2021 01:31:33 PM] Trying to authenticate with username xxxx on http://<LAPI IP>:8080/ 
-INFO[20-12-2021 01:31:33 PM] You can successfully interact with Local API (LAPI) 
-
-```
-
-
-:::info
-To avoid any confusion, disabling the LAPI service on the machine running the agent can be done by commenting out the api->server section in the `config.yaml` file
-:::
-
-
-
-2. **Bouncers speaking to LAPI**
-  - :warning: Most of the bouncers installers are going to assume that LAPI is running on the same machine
-  - You need to modify the bouncer's configuration (in `/etc/crowdsec/bouncers/`) to be sure they speak to the LAPI:
-    - Create an API key from LAPI with `cscli bouncers add MyBouncer`
-    - Or again, rely on [client certificate authentication](/docs/next/configuration/crowdsec_configuration#bouncers_allowed_ou) for the bouncers that support it
-    - Edit the bouncer's configuration file to be sure it points to the LAPI uri and uses the newly generated API key
-
-
-
-## Things to keep in mind
-
- - Parsers and Scenarios must be present on the agents. It's not useful to deploy them on LAPI
- - Decisions are made by LAPI. This is where you want to setup eventual custom profiles, and this is where you bouncers should point
- - You can use the [console](https://app.crowdsec.net), it supports multiserver setups!
- - If you have an important setup, switching LAPI backend from SQLite to MySQL/PgSQL is strongly advised
-
-[This existing article](https://www.crowdsec.net/blog/multi-server-setup/) might as well be useful!
