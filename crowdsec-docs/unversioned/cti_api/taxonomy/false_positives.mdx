@@ -1,6 +1,6 @@
 ---
 id: false_positives
-title: False Positives
+title: Safe Classifications
 sidebar_position: 7
 ---
 
@@ -22,11 +22,21 @@ export const columns = [
 
 <GithubIconRender url={fpURL}></GithubIconRender>
 
+IPs in this category are considered completely safe and trusted. Alerts triggered by these IPs are likely due to misconfiguration or overly sensitive alerting rules.
+
+IPs belonging to those categories will have the `safe` [reputation](/u/cti_api/taxonomy/cti_object#reputation).
+
+:::warning
+
+You might want to investigate any alerts associated with these IPs to ensure your configuration is correct.
+
+:::
+
 <TableRender columns={columns} url={fpURL}></TableRender>
 
-## How to Get Tagged as a False Positive
+## How to Get Tagged as Safe
 
-To be able to be classified as a false positive, you need a proper technical justification of why your IP might be misclassified as a threat. This part is to be reviewed and validated by crowdsec.
+To be able to be classified as a safe IP, you need a proper technical justification of why your IP might be misclassified as a threat. This part is to be reviewed and validated by crowdsec.
 
 You also need public documentation stating the IP, ranges, and/or reverse DNS associated with the assets in question. This data must be machine-readable (no HTML, no PDF, etc.).
 

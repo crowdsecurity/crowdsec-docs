@@ -1,7 +1,7 @@
 ---
-id: classifications
-title: Classifications
-sidebar_position: 5
+id: benign
+title: Benign Classifications
+sidebar_position: 7
 ---
 
 import TableRender from "@site/src/components/tableRender"
@@ -19,14 +19,22 @@ export const columns = [
         accessorKey: "description",
     },
 ]
-export const exclude = ["scanner:"]
+export const include = ["scanner:"]
 
 <GithubIconRender url={classificationsURL}></GithubIconRender>
 
-This classification page provides a taxonomy of IP addresses that exhibit potentially suspicious behaviors. These classifications are designed to help you identify and respond to various threat actors and malicious activities.
+IPs in this category may raise alerts, but they are not inherently dangerous. These IPs often belong to organizations that perform legitimate activities, such as internet-wide scanning or security research.
+
+IPs belonging to those categories will have the `benign` [reputation](/u/cti_api/taxonomy/cti_object#reputation).
+
+:::note
+
+Blocking these IPs may not be necessary unless their behavior directly impacts your operations.
+
+:::
 
 <TableRender
     columns={columns}
     url={classificationsURL}
-    exclude={exclude}
+    include={include}
 ></TableRender>

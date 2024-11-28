@@ -1,6 +1,6 @@
 ---
 id: scores
-title: CTI Scores
+title: Scores
 sidebar_position: 3
 ---
 
