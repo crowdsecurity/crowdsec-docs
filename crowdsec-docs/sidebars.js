@@ -136,6 +136,7 @@
                 "data_sources/kafka",
                 "data_sources/kubernetes_audit",
                 "data_sources/loki",
+                "data_sources/victorialogs",
                 "data_sources/syslog",
                 "data_sources/windows_evt_log",
                 "data_sources/troubleshoot",
