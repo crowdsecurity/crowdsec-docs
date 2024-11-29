@@ -5,8 +5,99 @@ sidebar_position: 10
 tags: [blaas,firewall,usecase]
 ---
 
-
-what we want to achieve,
+/* what we want to achieve,
 technicailty score: overall and per section
 required skills
 estimated time
+*/
+
+# **Use Case: Integrating CrowdSec Blocklists Directly Into Your Firewall**
+
+## **What We Want to Achieve**
+Enhance your firewall’s protection by integrating CrowdSec’s **"Blocklist as a Service" (BLaaS)** feature. This service provides a dynamically updated list of malicious IPs and ranges from selected blocklists, hosted on an endpoint with basic authentication. By leveraging this integration, your firewall will proactively block known malicious actors, reducing attack surface and risk.
+
+---
+
+## **Prerequisites**
+Before starting, ensure you meet the following requirements:
+
+1. **Firewall Capabilities**:
+   - Your firewall supports creating rules from an IP or CIDR list hosted on a given endpoint.
+   - The list must be accessible via **basic authentication**.
+
+2. **BLaaS Integration**:
+   - You have a valid CrowdSec BLaaS configuration, exposing the merged blocklist endpoint.
+   - Ensure the blocklists attached to this integration match your security policies.
+   - Documentation: [Configuring BLaaS](https://doc.crowdsec.net/docs/using-crowdsec/blocklist/#blocklist-as-a-service-blaas).
+
+3. **Access and Credentials**:
+   - Verify access to the BLaaS endpoint with provided basic auth credentials.
+
+4. **Network and API Access**:
+   - The firewall can access external endpoints over the internet or a designated network.
+
+5. **Testing Environment**:
+   - Ensure a testing setup is available to validate the integration before deploying it in production.
+
+---
+
+## **Technicality Score**
+- **Overall**: 🟠 Moderate (requires firewall configuration and API usage)
+- **Section Breakdown**:
+  - **Firewall Compatibility Check**: 🟢 Easy
+  - **Retrieving Blocklists via BLaaS**: 🟡 Moderate
+  - **Configuring the Firewall**: 🟠 Moderate to Complex (depends on the firewall)
+  - **Testing & Maintenance**: 🟢 Easy to Moderate
+
+---
+
+## **Required Skills**
+- Basic understanding of networking and firewalls.
+- Familiarity with basic authentication and endpoint configurations.
+- Experience with REST APIs or CLI tools is helpful but not mandatory.
+
+---
+
+## **Estimated Time**
+- **Compatibility Check**: 15 minutes  
+- **BLaaS Setup Validation**: 15–30 minutes  
+- **Firewall Configuration**: 1–2 hours  
+- **Testing and Fine-Tuning**: 30–60 minutes  
+**Total Time**: ~2.5–4 hours  
+
+---
+
+## **Steps to Achieve This Goal**
+
+### 1. **Check Firewall Compatibility**
+   - Verify that your firewall can:
+     - Fetch and process an external list of IPs or CIDRs.
+     - Authenticate to endpoints using basic authentication.
+   - Refer to your firewall's documentation or CrowdSec’s [Supported Firewalls Guide](https://doc.crowdsec.net/docs/firewalls/overview/).
+
+### 2. **Validate Your BLaaS Configuration**
+   - Ensure your BLaaS endpoint is configured and accessible.
+   - Use the credentials to test access via tools like `curl` or Postman:
+     ```bash
+     curl -u username:password https://your-blaas-endpoint/blocklist
+     ```
+   - Confirm the endpoint returns a properly formatted list of IPs and ranges.
+   - Documentation: [BLaaS Overview](https://doc.crowdsec.net/docs/using-crowdsec/blocklist/#blocklist-as-a-service-blaas).
+
+### 3. **Integrate Blocklists Into Your Firewall**
+   - Configure your firewall to fetch the list at regular intervals.
+   - Apply rules to enforce blocking based on the retrieved IPs and CIDRs.
+   - Example configurations for common firewalls are available in the [Firewall Integration Guide](https://doc.crowdsec.net/docs/using-crowdsec/firewall/).
+
+### 4. **Test and Verify**
+   - Simulate traffic from a blocked IP to verify that the firewall correctly applies the rules.
+   - Review logs to ensure legitimate traffic isn’t inadvertently blocked.
+
+### 5. **Automate and Maintain**
+   - Schedule periodic updates for the blocklist (e.g., cron jobs for API pulls).
+   - Monitor the firewall and CrowdSec logs for performance and effectiveness.
+   - Refer to [Monitoring Best Practices](https://doc.crowdsec.net/docs/monitoring/overview/).
+
+---
+
+By integrating CrowdSec’s "Blocklist as a Service" into your firewall, you gain access to dynamic, community-powered threat intelligence that keeps your infrastructure secure. For more detailed configuration examples and troubleshooting, explore the [CrowdSec Documentation](https://doc.crowdsec.net/).
