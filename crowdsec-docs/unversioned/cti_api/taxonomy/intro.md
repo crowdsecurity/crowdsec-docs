@@ -4,18 +4,19 @@ title: Introduction
 sidebar_position: 1
 ---
 
+## CrowdSec CTI Taxonomy
 
-CrowdSec CTI Taxonomy aim to help users to understand and to anticipate what is and can be returned by the CrowdSec CTI API.
+The CrowdSec CTI Taxonomy is designed to help users fully understand and effectively utilize the data returned by the CrowdSec CTI API.
 
-In this section, you will see the documentations about:
+By organizing threat intelligence into structured and actionable categories, it enables better anticipation of potential threats.
 
- - the fields: Those are the fields returned by the CrowdSec API when requesting an IP address (or the fire database)
+### Key Aspects
 
- - the scores: CrowdSec compute some scores for a given IP address. Those scores are computed for the last day, the last week, the last month and overall.
+This section covers the following key aspects:
 
- - the behaviors: The behaviors associated to an IP address
-
- - the scenarios: The scenarios for which an IP address has been reported for
-
- - the false positives: The possible false positives values associateed to an IP address
-
+-   [**CTI Format**](/u/cti_api/taxonomy/cti_object): The complete structure and fields returned by the CrowdSec API, providing a detailed view of the data for each queried IP address.
+-   [**CTI Scores**](/u/cti_api/taxonomy/scores): Detailed assessments computed for an IP address over different periods (daily, weekly, monthly, and overall).
+-   [**Behaviors**](/u/cti_api/taxonomy/behaviors): List of defined behaviors linked to an IP address, providing context for its activity.
+-   [**Classifications**](/u/cti_api/taxonomy/classifications): Category of an IP address, helping to identify whether an IP is part of a known group, network or other defined role, providing important context to understand its potential behavior.
+-   [**False Positives**](/u/cti_api/taxonomy/false_positives): Categories of potential false positives, ensuring accurate analysis and interpretation of API results.
+-   [**Scenarios**](/u/cti_api/taxonomy/scenarios): A detailed view of the scenarios that triggered reports for an IP address, helping to identify patterns or threats.

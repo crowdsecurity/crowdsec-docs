@@ -5,7 +5,7 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 import {useColorMode} from '@docusaurus/theme-common';
 
 
-const TableRender = ({ columns, url }) => {
+const TableRender = ({ columns, url, include=[], exclude=[] }) => {
     const [jsonContent, setJsonContent] = useState()
     const {colorMode} = useColorMode();
 
@@ -38,7 +38,16 @@ const TableRender = ({ columns, url }) => {
                     // filter duplicate names
                     const item = data[key];
                     const name = item["name"];
-
+                    for (let i = 0; i < exclude.length; i++) {
+                        if (name.includes(exclude[i])) {
+                            return
+                        }
+                    }
+                    for (let i = 0; i < include.length; i++) {
+                        if (!name.includes(include[i])) {
+                            return
+                        }
+                    }
                     if (names.includes(name)) {
                         return
                     }

@@ -18,9 +18,10 @@ module.exports = {
                 "cti_api/taxonomy/cti_object",
                 "cti_api/taxonomy/scores",
                 "cti_api/taxonomy/scenarios",
-                "cti_api/taxonomy/classifications",
                 "cti_api/taxonomy/behaviors",
+                "cti_api/taxonomy/classifications",
                 "cti_api/taxonomy/false_positives",
+                "cti_api/taxonomy/benign",
             ],
         },
         {
