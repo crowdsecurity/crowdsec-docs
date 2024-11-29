@@ -18,6 +18,10 @@ See [Version Matrix](/getting_started/versions_matrix.md) for a list of supporte
 
 ## Why is my Security Engine classed as a "log processor" within the console?
 
-The `Security Engine` comes compiled with a number of optional features that can be enabled or disabled at runtime. One of these features is called the "LAPI" (Local API). If this feature is disabled at runtime, the Security Engine will be classed as a "log processor" within the console as it will only be able to process logs and forward the alerts to the local API you define in the configuration.
+The `Security Engine` comes compiled with a number of core components that can be enabled or disabled at runtime.
+One of these features is called the **"LAPI"** (Local API) and other one is the **"log processor"**.  
 
-Most commonly this is the case when you are running in a distributed setup, where you have a central server that is running the LAPI and a number of remote servers that are running the "Log processors".
+A single `Security Engine` can run in autonomous mode where it handles reading logs (or requests) and processing them as well as handling alerts and other task on its own **"LAPI"**.   
+For **scaling** or **perimeter segmentation** reasons you might want to have a distributed setup. In that case multiple `Security Engines` process logs and send alerts to a central one's **"LAPI"**. In that distributed case you'll see **"log processors"** attached to the central `Security Engines` in the console UI.   
+
+Read more about the [Log Processor](log_processor/intro.mdx) and the [Local API](local_api/intro.md).
