@@ -16,7 +16,7 @@ The generated event looks like:
  - `evt.Meta.service` is set to `appsec`
  - `evt.Meta.log_type`:
     - `appsec-block` for blocked requests (_InBand_ rule matched for ex)
-    - `appsec-info` for non-blocked reuqests that triggered _OutOfBand_ rule
+    - `appsec-info` for reuqests that triggered _OutOfBand_ rule (not blocked)
  - `evt.Meta.source_ip` is set to the source (client) IP
  - `evt.Meta.target_host` is set to the FQDN if present (`Host` header in the HTTP request)
  - `evt.Meta.target_uri` is set to the full URI of the HTTP request
@@ -85,18 +85,26 @@ rules:
       value: test
 ```
 
-Let ensure it's loaded as an _OutOfBand_ rule:
+Let ensure it's loaded as an _OutOfBand_ rule, first by creating a new appsec-config:
 
-```yaml title="/etc/crowdsec/appsec-configs/appsec-default.yaml"
-name: crowdsecurity/appsec-default
+```yaml title="/etc/crowdsec/appsec-configs/appsec-oob.yaml"
+name: crowdsecurity/appsec-oob
 default_remediation: ban
-inband_rules:
- - crowdsecurity/base-config 
- - crowdsecurity/vpatch-*
- - crowdsecurity/generic-*
 #Let's add our rule as an out-of-band rule
 outofband_rules:
  - crowdsecurity/foobar-access
+```
+
+And then make sure this appsec-config is loaded:
+
+```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
+appsec_configs:
+ - crowdsecurity/appsec-default
+ - crowdsecurity/appsec-oob
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
 ```
 
 #### The Scenario
