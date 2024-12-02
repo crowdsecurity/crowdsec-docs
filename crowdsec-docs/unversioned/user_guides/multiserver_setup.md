@@ -51,7 +51,7 @@ api:
 
 Optionally, if you only want to run a LAPI instance on this machine, you can disable the log processor in the same file by removing the `crowdsec_service` section.
 
-You can also enable automatic registration of new machines to simplify adding log processors in the future by creating by adding the following to the configuration file:
+You can also enable automatic registration of new machines to simplify adding log processors in the future by adding the following to the configuration file:
 
 ```yaml
 api:
@@ -137,7 +137,7 @@ In this case, we recommend using a centralized logging solution and have a singl
 
 ### Remediation Components
 
-::: info
+:::info
 
 Since crowdsec v1.6.4, multiple remediations components running on different machines can use the same API key.
 
