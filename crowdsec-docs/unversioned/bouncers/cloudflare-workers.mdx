@@ -23,6 +23,16 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
+This **Remediation Component** (aka Bouncer) deploys a **Cloudflare Worker** in front of a **Cloudflare Zone/Website**, which checks if incoming request's IP address/Country/AS is present in a KV store and takes necessary remedial actions.   
+It also periodically updates the KV store with IPs coming from your **CrowdSec Security Engine** OR a **Blocklist as a Service Integration**for Remediation components.
+
+Useful links:
+* **Register** this **remediation component** into your **Security engine**: [Here](/u/bouncers/intro).
+* To setup a **Blocklist as a Service** endpoint for a **remediation component**: [Here](/u/integrations/remediationcomponent).
+
+The following documentation dives into the installation, configuration, and troubleshooting of the **CrowdSec Cloudflare Worker** Remediation Component.
+
+![cloudflare-worker remediation component global view](/img/bouncer/cloudflare-worker/cfworker_global_schema.png)
 
 :::warning
 This Remediation Component heavily relies on Cloudflare Workers and KV store. It works best on a paid Workers subscription.
@@ -33,7 +43,6 @@ More explanation in the chapter [Test with Cloudflare free plan](#appendix-test-
 After configuring and starting the Remediation Component, please see the [setting up worker fail mode](#setting-up-the-worker-route-fail-mode) section.  
 :::
 
-This Remediation Component (aka Bouncer) deploys a Cloudflare Worker in front of a Cloudflare Zone/Website, which checks if incoming request's IP address/Country/AS is present in a KV store and takes necessary remedial actions. It also periodically updates the KV store with CrowdSec LAPI's decisions.
 
 ## Installation
 
@@ -130,6 +139,8 @@ sudo systemctl start crowdsec-cloudflare-worker-bouncer
 
 ## How it works
 
+*Note that in the following Schema, a Blocklist as a Service Integration can be substituted to the Security Engine.*
+
 ![Architecture](/img/bouncer/cloudflare-worker/cfworkerarch.png)
 
 The Remediation Component does the following:
@@ -137,7 +148,7 @@ The Remediation Component does the following:
 1. Create a Cloudflare Worker and a Worker KV per configured account.
 2. Create a Worker Route(s) per configured zone. Any request matching the route would be handled by the worker.
 3. For every matching incoming request, the worker checks whether it's IP, Country and AS have a decision against. It checks for this in it's KV store. If found it performs the corresponding remediation.
-4. The Remediation Component also periodically updates the KV store with the latest decisions from CrowdSec.
+4. The Remediation Component also periodically updates the KV store with the latest decisions from CrowdSec's **Security Engine** OR **Blocklist Integration**.
 
 If your Cloudflare token has permission on D1, the remediation component will also automatically create a database to track:
  - Number of requests processed
