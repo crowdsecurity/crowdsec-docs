@@ -5,11 +5,17 @@ description: Get started with CrowdSec's Cyber Threat Intelligence (CTI) platfor
 
 Welcome to CrowdSec’s Cyber Threat Intelligence (CTI)! This guide will help you navigate the home page and make the most of its features, from searching for IP details to exploring real-time threat insights. Let’s get started!
 
-> You can access the [CTI Home page](https://app.crowdsec.net/cti) or directly call our [API](https://docs.crowdsec.net/u/cti_api/getting_started).
+> You can access CrowdSec's CTI via our **Web UI** on the [**CTI Home page** ↗️](https://app.crowdsec.net/cti)
+> Or [Create a **CTI API key** and use our **CTI API**](/u/console/cti/cti_api_keys)
 
-## What Can You Find on the Home Page?
+## Features on the CTI Web UI
 
-The CTI home page is designed to give you instant access to valuable threat intelligence. Here’s what you’ll find:
+The CTI home page is designed to give you instant access to valuable **threat intelligence**. There’s what you’ll find:
+- [Features on the CTI Web UI](#features-on-the-cti-web-ui)
+  - [Search Bar](#search-bar)
+  - [Check Your Own IP](#check-your-own-ip)
+  - [Predefined Searches](#predefined-searches)
+  - [Top 10 Most Aggressive IPs](#top-10-most-aggressive-ips)
 
 ### Search Bar
 

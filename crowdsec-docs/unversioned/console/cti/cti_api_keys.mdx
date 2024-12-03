@@ -1,0 +1,49 @@
+---
+title: CTI API Keys
+description: What can you access in the CTI API
+---
+
+import AcademyPromo from '@site/src/components/AcademyPromo';
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+This section will describe how to access to our CTI API and the different plans available.   
+If you want to know more about the CTI API itself, you can check the [CTI API documentation](/u/cti_api/getting_started).
+
+# Creating a CTI API Key
+
+You can create a CTI API key via the** + ** short cut on the top right corner that will lead you to the CrowdSec Console settings, CTI API Key section.
+
+![CTI API Key Creation](/img/console/cti_api_create_key.png)
+
+<ThemedImage
+    alt="CrowdSec Create API Key Page"
+    sources={{
+        light: useBaseUrl("/img/console_create_api_key_page_light.png"),
+        dark: useBaseUrl("/img/console_create_api_key_page_dark.png"),
+    }}
+/>
+
+# CTI Plans
+
+The CTI API contains multiple endpoints that are not all accessible with any plan.   
+The different plans are the following:
+
+## Ip Lookup Plans
+Those CTI API plans give you access to the search by IP and search query endpoints.   
+They return CrowdSec CTI enriched information about IPS.   
+IP returned will consume one token from your quota.
+
+The CTI endpoint accessible with those keys are:
+`/smoke/{ip}` and `/smoke/search`
+
+The plans quotas are the following:
+* Community CTI API Key (**1 free key** with a console account): **50 token/day**
+* Extended CTI API Key: [contact us to activate an extended key for additional quota ↗️](https://www.crowdsec.net/contact-threat-intelligence-subscription)
+
+## Advanced plans
+Those CTI API plans extend access to all CTI API endpoints:
+* `/smoke` : Allowing batch IP lookup
+* `/fire`  : Allowing a paginated pull of all enriched IPs from our CrowdSec Intelligence Blocklist
+
+[contact us to activate an extended key for additional quota ↗️](https://www.crowdsec.net/contact-threat-intelligence-subscription)
