@@ -10,7 +10,7 @@ Configuring the AppSec Component usually requires the use of multiple files:
 
  - [AppSec rules](/appsec/rules_syntax.md) allow you to write a signature to detect and/or block malevolent requests. [You can find more information about the syntax here](/appsec/rules_syntax.md)
  - [acquisition configuration](/data_sources/appsec.md) indicates which port is the AppSec Component listening on, and which AppSec configuration it will use.
- - AppSec configuration tells which rules are loaded in inband (blocking) and out-of-band (non-blocking)
+ - AppSec configuration tells which rules are loaded in in-band (blocking) and out-of-band (non-blocking)
   phases. [it as well allows you to tweak the behavior of the component via the powerful expr bindings](/appsec/rules_syntax.md)
 
 
@@ -40,11 +40,11 @@ A supplementary list of rules can be loaded during the out-of-band phase. These 
 
 ### `inband_rules`
 
-An optional list of rules to be loaded in inband phase. In band rules are blocking and evaluated before answering the remediation component. Useful for virtual patching, rules with no/low false positives.
+An optional list of rules to be loaded in in-band phase. In band rules are blocking and evaluated before answering the remediation component. Useful for virtual patching, rules with no/low false positives.
 
 ### `default_remediation`
 
-An optional remediation for inband rules, defaults to `ban`. If set to `allow`, remediation component won't block the request (even if it matched rules). Any other value (including `captcha`) is passed as-is back to the remediation component.
+An optional remediation for in-band rules, defaults to `ban`. If set to `allow`, remediation component won't block the request (even if it matched rules). Any other value (including `captcha`) is passed as-is back to the remediation component.
 
 ### `default_pass_action`
 
@@ -84,6 +84,6 @@ See the [dedicated doc](/docs/appsec/hooks.md#on_match)
 
 ### `inband_options` and `outofband_options`
 
-Subset of options that can be applied to the inband/outofband rules:
+Subset of options that can be applied to the in-band/out-of-band rules:
  - `disable_body_inspection` : boolean, allows to disable HTTP body inspection
  - `request_body_in_memory_limit` : a number of byes indicating the maximum body size to be loaded in memory
