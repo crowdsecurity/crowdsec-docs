@@ -14,7 +14,7 @@ For some constructors, the integrations can generate vendor-specific format, see
 | F5          | Basic Auth     | Yes           | [F5 doc](https://techdocs.f5.com/kb/en-us/products/big-ip-afm/manuals/product/big-ip-network-firewall-policies-and-implementations-14-0-0/07.html )                                          | `f5`         |
 | Fortinet    | Basic Auth     | Yes           | [Fortinet doc](https://docs.fortinet.com/document/fortigate/6.4.5/administration-guide/891236/external-blocklist-policy)                                                                     | `fortigate`  |
 | Palo alto   | Basic Auth     | Yes           | [PaloAlto doc](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/policy/use-an-external-dynamic-list-in-policy/configure-the-firewall-to-access-an-external-dynamic-list)           | `paloalto`   |
-| Sophos      | Basic Auth     | Yes           | [Sophos doc](https://docs.sophos.com/nsg/sophos-firewall/21.0/help/en-us/webhelp/onlinehelp/AdministratorHelp/ActiveThreatResponse/ThirdPartyThreatFeeds/index.html)                         | `sophos`     |
+| Sophos      | Basic Auth     | Yes           | [Sophos doc](https://docs.sophos.com/nsg/sophos-firewall/latest/Help/en-us/webhelp/onlinehelp/AdministratorHelp/ActiveThreatResponse/ConfigureFeeds/ThirdPartyThreatFeeds/index.html)                         | `sophos`     |
 
 
 For all the other providers, the `plain_text` format consists of one ip per line, and should be supported by most devices. If a specific format is missing, reach out to us and we'll help you support it!

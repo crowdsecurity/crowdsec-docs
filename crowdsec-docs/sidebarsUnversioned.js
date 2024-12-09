@@ -186,6 +186,11 @@ module.exports = {
                 },
                 {
                     type: "doc",
+                    label: "CTI API Keys",
+                    id: "console/cti/cti_api_keys",
+                },
+                {
+                    type: "doc",
                     label: "IP report",
                     id: "console/cti/ip_report",
                 },
