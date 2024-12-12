@@ -375,18 +375,18 @@ module.exports = {
             type: "category",
             link: {
                 type: "doc",
-                id: "integrations/intro",
+                id: "blaas_integrations/intro",
             },
-            label: "Integrations",
+            label: "Blocklist as a Service",
             items: [
-                "integrations/cisco",
-                "integrations/checkpoint",
-                "integrations/f5",
-                "integrations/fortinet",
-                "integrations/paloalto",
-                "integrations/sophos",
-                "integrations/genericfirewall",
-                "integrations/remediationcomponent",
+                "blaas_integrations/cisco",
+                "blaas_integrations/checkpoint",
+                "blaas_integrations/f5",
+                "blaas_integrations/fortinet",
+                "blaas_integrations/paloalto",
+                "blaas_integrations/sophos",
+                "blaas_integrations/genericfirewall",
+                "blaas_integrations/remediationcomponent",
             ],
         },
     ],
@@ -456,6 +456,13 @@ module.exports = {
     ],
     guidesSideBar: [
         "user_guides/intro",
+        {
+            type: "category",
+            label: "Use cases",
+            items: [
+                "user_guides/use_cases/blaas_to_firewall",
+            ],
+        },
         {
             type: "category",
             label: "Management",

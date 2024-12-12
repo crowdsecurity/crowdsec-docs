@@ -40,7 +40,7 @@ The Local API (abreviated as `LAPI`) has several functions:
 > The Remediation Components (also called `Bouncers`) are external components in charge of enforcing decisions.
 
 Remediation Components rely on the Local API to receive decisions about malevolent IPs to be blocked *(or other supported types or remediations such as Captcha, supported by some of our Bouncers).*    
-*Note that they also support [CrowdSec's Blocklist as a Service](/u/integrations/intro).*
+*Note that they also support [CrowdSec's Blocklist as a Service](/u/blocklists/blaas_integrations/intro).*
 
 Those Decisions can be based on behavioral detection made by the `LP` or from Blocklists.
 
