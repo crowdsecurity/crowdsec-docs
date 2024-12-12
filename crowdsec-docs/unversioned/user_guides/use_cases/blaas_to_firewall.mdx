@@ -12,15 +12,28 @@ tags: [blaas,firewall,usecase]
 
 # Use Case: Integrating CrowdSec Blocklists Directly Into Your Firewall
 
+> Use CrowdSec's Blocklist within your firewall without the need to 
+install the CrowdSec agent.
 
+## **TL;DR; Who What How**
+For this use case, you will need to:
+- Create a Blocklist As A Service endpoint within the CrowdSec Console UI or API
+   - **Who**: Anybody with a browser
+   - **Skill Level**: Easy
+   - **Time**: 5 minutes *(including account creation)*
+   - **Minium Plan**: free
+- Subscribe to the blocklist(s) you want to use
+   - **Who**: Anybody with a browser
+   - **Skill Level**: Easy
+   - **Time**: < 5 minutes
+   - **Minium Plan**: free
+- Make a rule into your firewall that fetches the blocklist from the BLAAS endpoint (basic auth URL)
+   - **Who**: Firewall administrator
+   - **Skill Level**: Easy
+   - **Time**: 5~10 minutes
 
-/* what we want to achieve,
-technicailty score: overall and per section
-required skills
-estimated time
-*/
-
-
+++ Test that it works and evaluate performance
+++ Scale and Automate >> SAPI >> centralize your own blokclists ++ link to other use cases
 
 
 //////////// GPT generated
