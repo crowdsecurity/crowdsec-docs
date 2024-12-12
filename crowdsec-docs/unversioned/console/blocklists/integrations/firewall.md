@@ -21,7 +21,7 @@ In the next step, we will provide the necessary details for retrieving the IP ad
 
 ## Use an integration
 
-| Don't forgot to [subscribe to a blocklist](/u/console/blocklists/subscription/#subscribe-a-firewall-integration-to-a-blocklist) to make the integration useful.
+| Don't forgot to [subscribe to a blocklist](/u/console/blocklists/subscription/#integrations) to make the integration useful.
 
 Every product product has its way to handle external blocklists. We provide a simple URL to retrieve the IPs in a format that suits your needs. You can find the supported provider documentations and output format examples in the following array.
 
@@ -36,7 +36,7 @@ Every product product has its way to handle external blocklists. We provide a si
 | [F5](https://techdocs.f5.com/kb/en-us/products/big-ip-afm/manuals/product/big-ip-network-firewall-policies-and-implementations-14-0-0/07.html)                                           | Custom     | `192.168.38.187,32,BL,crowdsec-myf5Integration`<br /> `192.168.38.188,32,BL,crowdsec-myf5Integration`                           |
 | [Fortinet](https://docs.fortinet.com/document/fortigate/6.4.5/administration-guide/891236/external-blocklist-policy)                                                                     | Plain text | `192.168.38.187`<br />`192.168.38.186`                                                                                          |
 | [Palo Alto](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/policy/use-an-external-dynamic-list-in-policy/external-dynamic-list#idf36cb80a-77f1-4d17-9c4b-7efe9fe426af)       | Plain text | `192.168.38.187`<br />`192.168.38.186`                                                                                          |
-| [Sophos](https://docs.sophos.com/nsg/sophos-firewall/21.0/help/en-us/webhelp/onlinehelp/AdministratorHelp/ActiveThreatResponse/ThirdPartyThreatFeeds/index.html)                         | Plain text | `192.168.38.187`<br />`192.168.38.186`                                                                                          |
+| [Sophos](https://docs.sophos.com/nsg/sophos-firewall/latest/Help/en-us/webhelp/onlinehelp/AdministratorHelp/ActiveThreatResponse/ConfigureFeeds/ThirdPartyThreatFeeds/index.html)                         | Plain text | `192.168.38.187`<br />`192.168.38.186`                                                                                          |
 | Generic vendor                                                                                                                                                                           | Plain text | `192.168.38.187`<br />`192.168.38.186`                                                                                          |
 
 ## How to bypass provider limit?
@@ -44,7 +44,7 @@ Every product product has its way to handle external blocklists. We provide a si
 Some providers have technical limits on the number of IPs they can pull at once. That's why we recommand to monitor the number of IPS returned by the integration and use the pagination feature if needed.
 For this, you can use the page and page_size query parameters in the URL.
 
-`https://admin.api.dev.crowdsec.net/v1/integrations/123/content?page=1&page_size=1500 `
+`https://admin.api.crowdsec.net/v1/integrations/123/content?page=1&page_size=1500 `
 
 You can then use the page parameter to get the next page of IPs.
 

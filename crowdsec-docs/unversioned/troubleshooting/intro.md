@@ -212,7 +212,7 @@ This command will allow you to see each parser behavior.
 
 :::warning
 Do **not** use `cscli explain` on big log files, as this command will buffer a lot of information in memory to achieve this.
-If you want to check crowdsec's behaviour on big log files, please see [replay mode](/docs/next/user_guides/replay_mode/).
+If you want to check crowdsec's behaviour on big log files, please see [replay mode](/u/user_guides/replay_mode/).
 :::
 
 ### I want to add collection X : how to add log files, and how to test if it works ?

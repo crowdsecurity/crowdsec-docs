@@ -1,6 +1,6 @@
 ---
 id: cti_object
-title: CTI Format
+title: Format
 sidebar_position: 2
 ---
 
@@ -199,6 +199,7 @@ The possible values are:
 -   `suspicious` : Many CrowdSec users have reported the IP, but it is not aggressive enough to be considered malicious
 -   `known` : At this time, the CrowdSec network has identified the IP, but we still require additional information to make a decision
 -   `safe` : The IP address is safe and can be trusted (ex: Google DNS, Cloudflare DNS ...)
+-   `benign` : The IP address belong to a known entity and is not dangerous (eg. Public Internet Scanners)
 -   `unknown`: The IP address is either unknown or its last report is from more than three months ago
 
 ## `ip_range_24`
@@ -401,7 +402,7 @@ Longitude of the IP, when available.
 }
 ```
 
-The geo location information about the IP address.
+Historical information we have collected about the IP.
 
 ### `first_seen`
 
@@ -411,7 +412,7 @@ The geo location information about the IP address.
 "first_seen" : "2022-01-01T00:00:00+00:00"
 ```
 
-Date of the first time this IP was reported. Please note that due to "progressive data degradation" this date might be later than the first time the IP was actually seen.
+Date of the first time this IP was reported. Please note that due to our progressive data degradation mechanism this date might be later than the first time the IP was actually seen.
 
 ### `last_seen`
 
@@ -450,7 +451,7 @@ Delta in days between first and last seen timestamps.
 ```json
 "behaviors" : [
   {
-    "name" : "protocol:protocol:behavior",
+    "name" : "protocol:behavior",
     "label" : "Protocol Behavior",
     "description" : "Protocol Behavior description"
   }
@@ -527,7 +528,7 @@ The possible false positives and classifications attributed to this IP address.
 ]
 ```
 
-A list of false positives tags associated with the IP. Any IP with `false_positives` tags shouldn't be considered as malicious.
+A list of false positive tags associated with the IP. Any IP with `false_positives` tags shouldn't be considered as malicious.
 
 #### `name`
 
@@ -566,14 +567,14 @@ Human-friendly description of the false positive.
 ```json
 "classifications" : [
   {
-    "name" : "classifications",
+    "name" : "classification",
     "label" : "Classification",
     "description" : "Classification description"
   }
 ]
 ```
 
-A list of `classifications` tags associated with the IP.
+A list of `classification` tags associated with the IP.
 
 #### `name`
 
@@ -666,7 +667,7 @@ Human-friendly description of the scenario.
 ]
 ```
 
-A list of Mitre techniques associated with the IP.
+A list of Mitre techniques associated with the IP. More detail on the Mitre Att&ck can be found [here](https://attack.mitre.org/techniques/enterprise/).
 
 ### `name`
 
@@ -725,7 +726,7 @@ A list of CVEs for which the IP has been reported for.
 },
 ```
 
-The top 10 reports repartition by country about the IP, as a percentage
+The top 10 countries targeted by the IP. The numbers represent the percentage of the total number of attacks.
 
 ## `scores`
 
@@ -764,9 +765,9 @@ The top 10 reports repartition by country about the IP, as a percentage
 }
 ```
 
-Indicators of Malevolence computed on different time periods.
+Indicators of Malevolence computed over different time periods.
 
-:warning: All scores are from a scall of 0 to 5.
+:warning: All scores are on a scale from 0 to 5.
 
 ### `overall`
 
@@ -1101,4 +1102,4 @@ Only present for the `fire` route.
 
 Only present for the `fire` route.
 
-Date at which the IP address expire from the community blocklist.
+Date at which the IP address expires from the community blocklist.

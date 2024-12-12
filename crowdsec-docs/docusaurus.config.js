@@ -5,6 +5,7 @@ const {
     ctiApiSidebar,
     guidesSideBar,
 } = require("./sidebarsUnversioned.js")
+const tailwindConfig = require("./tailwind.config.js")
 
 const generateCurrentAndNextRedirects = (s) => [
     {
@@ -45,6 +46,9 @@ const backportRedirect = (s) => {
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
+    future: {
+	experimental_faster: true,
+    },
     title: "CrowdSec",
     tagline:
         "CrowdSec - Real-time & crowdsourced protection against aggressive IPs",
@@ -72,7 +76,7 @@ module.exports = {
         announcementBar: {
             id: "banner_docs",
             content:
-                '<a target="_blank" href="https://doc.crowdsec.net/u/user_guides/alert_context">Learn how to improve alert visualisation and threat hunting with alert context</a>',
+                '<a target="_blank" href="https://doc.crowdsec.net/docs/next/appsec/intro">Learn how to guard your webserver in real-time with the CrowdSec WAF</a>',
             backgroundColor: "#F8AB13",
             textColor: "#131132",
             isCloseable: true,
@@ -82,6 +86,14 @@ module.exports = {
             apiKey: "31673122672f1eb819e16c87468e53b4",
             indexName: "crowdsec",
             contextualSearch: true,
+        },
+        zooming: {
+	    selector: '.markdown :not(a) > img',
+            delay: 500,
+            background: {
+            	light: 'rgba(101,108,133,0.8)',
+            	dark: 'rgba(9,10,17,0.8)'
+            },
         },
         navbar: {
             items: [],
@@ -250,6 +262,16 @@ module.exports = {
                     // Please change this to your repo.
                     editUrl:
                         "https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/",
+                    lastVersion: "current",
+                    versions: {
+                        "v1.6.0": {
+                            banner: "none",
+                            path: "/"
+                        },
+                        current: {
+                            path: "/next"
+                        }
+                    }
                 },
                 blog: {
                     showReadingTime: true,
@@ -264,6 +286,7 @@ module.exports = {
         ],
     ],
     plugins: [
+        "docusaurus-plugin-zooming",
         [
             "@docusaurus/plugin-content-docs",
             {
@@ -303,16 +326,6 @@ module.exports = {
                 ],
             },
         ],
-        async function myPlugin(context, options) {
-            return {
-                name: "docusaurus-tailwindcss",
-                configurePostCss(postcssOptions) {
-                    // Appends TailwindCSS and AutoPrefixer.
-                    postcssOptions.plugins.push(require("tailwindcss"))
-                    postcssOptions.plugins.push(require("autoprefixer"))
-                    return postcssOptions
-                },
-            }
-        },
+        "./plugins/tailwind-config.js",
     ],
 }

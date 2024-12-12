@@ -8,7 +8,7 @@ IP whitelists are best suited at `Parser whitelists` level because once the log 
 We will create the file `mywhitelist.yaml` please see [introduction](/whitelist/introduction.md) for your OS specific paths.
 
 ```yaml
-name: crowdsecurity/whitelists
+name: my/whitelist
 description: "Whitelist events from my ip addresses"
 whitelist:
   reason: "my ip ranges"

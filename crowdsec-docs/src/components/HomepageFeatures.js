@@ -18,7 +18,7 @@ const FeatureList = [
     //screenshot metabase ?
     title: 'Replayable',
     Svg: require('../../static/img/icon-replay.svg').default,
-    link: "/docs/user_guides/replay_mode",
+    link: "/u/user_guides/replay_mode",
     description: (
       <>
         CrowdSec is able to process both live and old logs, which makes it false-positive resilient. 

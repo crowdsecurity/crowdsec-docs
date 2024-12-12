@@ -1,24 +1,33 @@
 ---
 id: scores
-title: CTI Scores
+title: Scores
 sidebar_position: 3
 ---
 
+## Understanding CrowdSec CTI Scores
 
+While CrowdSec provides general scores for common use cases, this section offers a deeper breakdown of IP-related data.
 
-The scores are indicators of malevolence associated with an IP address, computed over several periods of time : 1 day, 1 week, 1 month and overall. 
- 
-For a given period, the indicator of malevolence is summarized under the `total` key with a value ranging from **0** (no reports) to **5** (high malevolence). 
- 
-This value is a summary based on 4 components (see below) also ranging from **0** (Not Applicable/ Missing) to **5** (High), comparing to all the the signals reported by the community.
+These scores help categorize alerts and can be used to build internal products tailored to your organization's needs.
 
-| indicator | explaination |
-|-----------|--------------|
-|Aggressiveness | _What is the intensity of the attack?_ This component measures the number of attacks reported over a period of time. |
-|Threat Level | _How serious is the type of threats reported?_ The category of attacks reported by the community defines the danger induced by the attacks. An IP known for crawling and scanning will have a lower threat level than an IP reported for brute-force and exploits. This score ranges from 1 (mainly crawling) to 5 (exploit). 0 is the default for unknown scenarios |
-|Trust| _What is the level of confidence in the actors which reported the IP address?_ This component is based on the reputation (age, number of reports) and the diversity (number of IP ranges, AS Numbers) of all the actors reporting the IP. It ranges from **0** (low\_confidence) to **5** (high confidence). |
-| Anomaly |  _What are the red flags associated with this IP address?_ It analyses the static description of the reported IP address and checks for red flags which can be linked to evidence of malicious activities |
-| Total | Aggregation of 4 component calculated on threats reported by the community and described below. |
+They serve as indicators of malevolent activity associated with an IP address, computed over several periods: 1 day, 1 week, 1 month, and overall.
 
+Each score is measured on a scale from **0** (lowest) to **5** (highest). Below is an overview of the main score components:
 
-The `ip_range_score` is the score of malevolence associated with an IP range, ranging from *0* (No IP reported) to *5* (massively reported). It is calculated based on the number of IPs belonging to this range that were reported by the community as malicious
+| Indicator          | Explanation                                                                                                                                                                                                                                                                                                                                |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Aggressiveness** | _How intense is the attack?_ <br /> Measures the frequency of attacks within a given time period. A higher score indicates a greater number of attack attempts, signaling aggressive behavior or persistent targeting over time.                                                                                                           |
+| **Threat**         | _How dangerous are the attacks?_ <br /> Reflects the severity of the attacks, ranging from low-risk activities like scanning to high-risk behaviors like exploiting vulnerabilities. A higher score means the IP is associated with more dangerous tactics.                                                                                |
+| **Trust**          | _How reliable is the information about the IP?_ <br /> Based on the credibility of the reporting sources. This score considers factors like the age of the reports, how many different security engines flagged the IP, and the diversity of the reports. A higher score indicates more trust in the accuracy and reliability of the data. |
+| **Anomaly**        | _Are there any suspicious behaviors associated with the device behind this IP?_ <br /> Evaluates red flags like outdated software, unusual configurations, or other traits that could indicate a compromised or malicious device. A higher score suggests more alarming anomalies linked to the IP.                                        |
+| **Total**          | Combines the scores of the above four components to give an overall malevolence score. The higher the total, the more likely the IP is associated with malicious activity indicators.                                                                                                                                                      |
+
+For a more detailed explanation on how we calculate these scores, read our [blog article](https://www.crowdsec.net/blog/crowdsec-cti-scoring-system).
+
+### IP Range Score
+
+The `ip_range_score` reflects the malevolence of an entire IP range, ranging from _0_ (no reports) to _5_ (highly reported).
+
+It is based on the number of IPs in the range that have been flagged as malicious by the CrowdSec community.
+
+The more IPs from the same range are reported, the higher the score, indicating a greater likelihood that the range is associated with malicious activity.
