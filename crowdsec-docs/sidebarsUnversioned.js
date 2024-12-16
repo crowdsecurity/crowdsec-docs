@@ -165,7 +165,7 @@ module.exports = {
                 },
                 {
                     type: "doc",
-                    label: "Background Noise",
+                    label: "Background Noise 🏅",
                     id: "console/alerts/background_noise",
                 },
                 {
@@ -221,7 +221,7 @@ module.exports = {
         },
         {
             type: "category",
-            label: "Enterprise support",
+            label: "Enterprise support 🏅",
             link: {
                 type: "doc",
                 id: "console/enterprise_support",
@@ -230,7 +230,7 @@ module.exports = {
         },
         {
             type: "link",
-            label: "Service API",
+            label: "Service API 🏅",
             href: "/u/service_api/getting_started",
         },
     ],
