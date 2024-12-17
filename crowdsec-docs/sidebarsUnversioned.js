@@ -460,7 +460,11 @@ module.exports = {
             type: "category",
             label: "Use cases",
             items: [
-                "user_guides/use_cases/blaas_to_firewall",
+                {
+                    type: "doc",
+                    label: "Blocklist to Firewall",
+                    id: "user_guides/use_cases/blaas_to_firewall",
+                },
             ],
         },
         {
