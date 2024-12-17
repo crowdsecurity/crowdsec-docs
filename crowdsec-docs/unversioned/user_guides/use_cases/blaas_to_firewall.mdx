@@ -5,39 +5,44 @@ sidebar_position: 10
 tags: [blaas,firewall,usecase]
 ---
 
-| **Difficulty**                  | 1/5          |
-| **CrowdSec Service Setup Time** | 5 minutes    |
-| **Firewall Configuration Time** | 5~10 minutes |
-| **Involved Resources**          | CrowdSec BLaaS Integration, CrowdSec Blocklists, User's Firewall |
+| :------------------------------ | :----------- |
+| **Difficulty**                  | 1/5          |   
+| **CrowdSec Service Setup Time** | 5 minutes    |   
+| **Firewall Configuration Time** | 5~10 minutes |   
+| **Involved Resources**          | CrowdSec BLaaS Integration, CrowdSec Blocklists, User's Firewall |   
 
 # Use Case: Integrating CrowdSec Blocklists Directly Into Your Firewall
 
-> Use CrowdSec's Blocklist within your firewall without the need to 
-install the CrowdSec agent.
+> Use CrowdSec's Blocklist within your firewall without the need to install the CrowdSec agent.
 
-## **TL;DR; Who What How**
+## **Steps to follow**
 For this use case, you will need to:
-- Create a Blocklist As A Service endpoint within the CrowdSec Console UI or API
+- [Create a **Blocklist As A Service endpoint** within the CrowdSec Console UI or API](/u/blocklists/blaas_integrations/intro)
    - **Who**: Anybody with a browser
    - **Skill Level**: Easy
    - **Time**: 5 minutes *(including account creation)*
    - **Minium Plan**: free
-- Subscribe to the blocklist(s) you want to use
+- [**Subscribe** to the blocklist(s) you want to use](u/console/blocklists/subscription)
    - **Who**: Anybody with a browser
    - **Skill Level**: Easy
    - **Time**: < 5 minutes
    - **Minium Plan**: free
-- Make a rule into your firewall that fetches the blocklist from the BLAAS endpoint (basic auth URL)
+- Make a **rule into your firewall** that fetches the blocklist from the BLAAS endpoint (basic auth URL)
    - **Who**: Firewall administrator
    - **Skill Level**: Easy
    - **Time**: 5~10 minutes
 
-++ Test that it works and evaluate performance
-++ Scale and Automate >> SAPI >> centralize your own blokclists ++ link to other use cases
+## Test that it works and evaluate performance
+Depending on your firewall capabilities you can chose a metered action in your rule OR observe volume of ingress reaching your services before and after using the blocklist.   
+Note that
 
---------
 
-[ ] Move u/integrations/ to u/console/blaas_integrations/
-   [ ] start with
-      - Need to create console account
-      - link of alternative via SAPI
+# Next step: Scale and Automate
+You can use CrowdSec Service API (SAPI) to automate both:
+- [**creation of BLaaS endpoints**](/u/service_api/quickstart/integrations#creating-integration) 
+- And [**blocklist subscriptions**](/u/service_api/quickstart/blocklists#subscribe-to-a-blocklist)
+
+You can also look into [**creating**](/u/service_api/quickstart/blocklists#create-a-blocklist) and Sharing your own blocklists via SAPI.   
+Check out our [swagger for SAPI ↗️](https://admin.api.crowdsec.net/v1/docs#/)
+
+*(usecase coming soon)*
