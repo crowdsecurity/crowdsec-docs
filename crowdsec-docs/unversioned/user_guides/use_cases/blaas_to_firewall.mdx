@@ -9,13 +9,8 @@ tags: [blaas,firewall,usecase]
 
 > Use CrowdSec's Blocklist within your firewall without the need to install the CrowdSec agent.
 
+<center>
 <table style={{ fontSize: '0.5em', borderCollapse: 'collapse', width: '100%' }}>
-  <thead>
-    <tr style={{ backgroundColor: 'transparent' }}>
-      <th style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Use Case Hints</th>
-      <th style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #ddd' }}></th>
-    </tr>
-  </thead>
   <tbody>
     <tr style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
       <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}><strong>Difficulty</strong></td>
@@ -35,6 +30,7 @@ tags: [blaas,firewall,usecase]
     </tr>
   </tbody>
 </table>
+</center>
 
 ## **Steps to follow**
 For this use case, you will need to:
@@ -54,14 +50,18 @@ For this use case, you will need to:
    - **Time**: 5~10 minutes
 
 ## Test that it works and evaluate performance
+1. Check that the end point is providing the blocklist you subscribed to at the format you chose by running a `curl` command:
+```
+curl -u <user>:<password> <url of the endpoint>
+```
+2. Check that the blocklist is being fetched by your firewall by observing the logs or metrics of your firewall.
 Depending on your firewall capabilities you can chose a metered action in your rule OR observe volume of ingress reaching your services before and after using the blocklist.   
 Note that
 
-
-# Next step: Scale and Automate
+## Next step - Scale and Automate
 You can use CrowdSec Service API (SAPI) to automate both:
-- [**creation of BLaaS endpoints**](/u/service_api/quickstart/integrations#creating-integration) 
-- And [**blocklist subscriptions**](/u/service_api/quickstart/blocklists#subscribe-to-a-blocklist)
+- [**Creation of BLaaS endpoints**](/u/service_api/quickstart/integrations#creating-integration) 
+- And [**Blocklist subscriptions**](/u/service_api/quickstart/blocklists#subscribe-to-a-blocklist)
 
 You can also look into [**creating**](/u/service_api/quickstart/blocklists#create-a-blocklist) and Sharing your own blocklists via SAPI.   
 Check out our [swagger for SAPI ↗️](https://admin.api.crowdsec.net/v1/docs#/)
