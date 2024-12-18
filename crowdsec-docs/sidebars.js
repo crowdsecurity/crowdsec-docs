@@ -754,7 +754,7 @@ module.exports = {
         { type: "doc", id: "appsec/configuration" },
         {
             type: "category",
-            label: "Rules & log_processor/scenarios",
+            label: "Rules",
             items: [
                 { type: "doc", id: "appsec/rules_syntax" },
                 { type: "doc", id: "appsec/hooks" },
