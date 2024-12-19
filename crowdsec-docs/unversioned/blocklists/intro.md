@@ -1,12 +1,16 @@
 ---
 id: intro
-title: Introduction
+title: CrowdSec Blocklists - Proactively defend your perimeter
 sidebar_position: 2
 ---
 
-## Objective
+CrowdSec's Blocklist regroup IPs and ranges that have been **validated** as performing **malicious behaviors** on **exposed endpoints**.   
+Those blocklists are kept up to date and are currated to ensure they don't contain false positives.   
+Their are meant to be directly actionable to protect your perimeter from thousands of known attackers.   
+The unique nature of CrowdSec's network, by its diversity and size brings unmatched exclusivity and quality.   
 
-Welcome to the documentation section dedicated to CrowdSec's Blocklists. This section will outline what Blocklists are, how they work, and how you can use them to protect your systems.
+
+This section will help you understand the nature of our different blocklists, how they work, and how you can use them to protect your systems.
 
 ## What are CrowdSec Blocklists?
 
