@@ -42,6 +42,11 @@
         "postcss": "^8.4.47",
         "tailwindcss": "^3.4.14"
     },
+    "overrides": {
+	    "@docusarus/faster": {
+		    "@rspack/core": "^1.1.8"
+	    }
+    },
     "browserslist": {
         "production": [
             ">0.5%",
