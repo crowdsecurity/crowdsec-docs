@@ -17,16 +17,21 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ### Description
 
-The `CrowdSec Bouncer` plugin for WordPress has been designed to protect WordPress websites from all kinds of
-attacks by using [CrowdSec](https://crowdsec.net/) technology.
+The `CrowdSec Bouncer` plugin for WordPress has been designed to protect WordPress websites from various malicious 
+activities by using [CrowdSec](https://www.crowdsec.net/) technology.
+
+**N.B.:**
+it's important to understand the scope and limitations of this bouncer, as described in the [Understanding the limitations of the bouncer](#understanding-the-limitations-of-the-bouncer) section.
+
 
 ### Prerequisites
 
-To be able to use this Remediation Component, the first step is to install [CrowdSec v1](https://doc.crowdsec.net/docs/getting_started/install_crowdsec/).
-CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a remediation to "apply" decisions.
+To be able to use this Remediation component, the first step is to install [CrowdSec v1](https://doc.crowdsec.net/docs/getting_started/install_crowdsec/).
+
+CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a remediation to 
+"apply" decisions.
 
 Please note that first and foremost CrowdSec must be installed on a server that is accessible via the WordPress site.
-
 
 ### Features
 
@@ -45,6 +50,34 @@ Please note that it is possible to customize all the colors of these pages in a 
 
 On the other hand, all texts are also fully customizable. This will allow you, for example, to present translated pages in your users’ language.
 
+#### Understanding the limitations of the bouncer
+
+While this plugin provides effective protection for most scenarios by intercepting and bouncing web requests that go through the [WordPress loading process](https://medium.com/@dendeffe/wordpress-loading-sequence-a-guided-tour-e077c7dbd119), 
+there are inherent limitations to this approach. These limitations can create potential gaps in coverage, which you should be aware of:
+
+1. Requests to PHP files outside the WordPress Core loading process
+
+   Since this plugin is loaded as part of the WordPress core process, it will not attempt to retrieve or apply a remediation if a custom public PHP script is accessed directly.
+   To ensure all PHP scripts are covered, consider enabling the [auto_prepend_file mode](#auto-prepend-file-mode).
+
+
+2. Requests to Non-PHP Files (e.g. `.env` or other static files)
+
+   Requests for non-PHP files, such as `.env` or other static files, are not handled by this plugin.
+   As this limitation is tied to the nature of PHP itself, you may need to implement additional server-level protections (e.g., strict file permissions or blocking access to sensitive files through server configuration) to secure such files.
+   For example, you can deny access to hidden files, using the Nginx directive
+   ```nginx
+   location ~ /\. {
+       deny all;
+   }
+   ```
+   or the Apache one:
+   ```htaccess
+   <FilesMatch "^\.">
+       Require all denied
+   </FilesMatch>
+   ```
+By understanding these limitations, you can take additional steps to secure your site comprehensively and complement the protection offered by the `CrowdSec Bouncer` plugin.
 
 ### Configurations
 
@@ -59,8 +92,7 @@ also be able to test your settings.
 
 ***
 
-<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-connection-details.jpg')} alt="Connection details"
-title="Connection details" />
+<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-connection-details.jpg')} alt="Connection details" title="Connection details" />
 
 ***
 
@@ -69,6 +101,8 @@ title="Connection details" />
 Url to join your CrowdSec Local API.
 
 If the CrowdSec Agent is installed on this server, you could set this field to `http://localhost:8080`.
+
+Default to `http://localhost:8080`
 
 ***
 
@@ -89,21 +123,21 @@ Only if you chose `Bouncer API key` as authentication type.
 
 ***
 
-`Connection details → Path to the component certificate`
+`Connection details → Path to the bouncer certificate`
 
-Relative path to the `wp-content/plugins/crowdsec/tls` folder of your WordPress instance.
+Absolute path. **Make sure this file is not publicly accessible.** [See security note below](#security).
 
-Example: `component.pem`.
+Example: `/var/crowdsec/tls/bouncer.pem`.
 
 Only if you chose `TLS certificates` as authentication type.
 
 ***
 
-`Connection details → Path to the component key`
+`Connection details → Path to the bouncer key`
 
-Relative path to the `wp-content/plugins/crowdsec/tls` folder of your WordPress instance.
+Absolute path. **Make sure this file is not publicly accessible.** [See security note below](#security).
 
-Example: `component-key.pem`.
+Example: `/var/crowdsec/tls/bouncer-key.pem`.
 
 Only if you chose `TLS certificates` as authentication type.
 
@@ -115,19 +149,15 @@ This option determines whether request handler verifies the authenticity of the 
 
 Only if you chose `TLS certificates` as authentication type.
 
-When negotiating a TLS or SSL connection, the server sends a certificate indicating its identity.
-If `Verify peer` is checked, request handler verifies whether the certificate is authentic.
-This trust is based on a chain of digital signatures,
-rooted in certification authority (CA) certificate you supply using the `Path to the CA used to process for peer
-verification` setting below.
+When negotiating a TLS or SSL connection, the server sends a certificate indicating its identity. If `Verify peer` is checked, request handler verifies whether the certificate is authentic. This trust is based on a chain of digital signatures, rooted in certification authority (CA) certificate you supply using the `Path to the CA used to process for peer verification` setting below.
 
 ***
 
 `Connection details → Path to the CA certificate used to process peer verification`
 
-Relative path to the `wp-content/plugins/crowdsec/tls` folder of your WordPress instance.
+Absolute path. **Make sure this file is not publicly accessible.** [See security note below](#security).
 
-Example: `ca-chain.pem`.
+Example: `/var/crowdsec/tls/ca-chain.pem`.
 
 Only if you chose `TLS certificates` as authentication type.
 
@@ -136,39 +166,42 @@ Only if you chose `TLS certificates` as authentication type.
 
 `Connection details → Use cURL to call Local API`
 
-By default, `file_get_contents` method is used to call Local API. This method requires to have enabled the option
-`allow_url_fopen`.
-Here, you can choose to use `cURL` requests instead. Beware that in this case, you need to have php `cURL` extension
-installed and enabled on your system.
+By default, `file_get_contents` method is used to call Local API. This method requires to have enabled the option `allow_url_fopen`.
+Here, you can choose to use `cURL` requests instead. Beware that in this case, you need to have php `cURL` extension installed and enabled on your system.
 
-<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-bouncing.jpg')} alt="Bouncing"
-title="Bouncing" />
 
 ***
+
+`Connection details → Local API request timeout`
+
+By default, the maximum allowed time to perform a Local API request is 120 seconds. You can change this setting here. If you set a negative value, request timeout will be unlimited.
+
+<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-bouncing.jpg')} alt="Connection details" title="Connection details" />
+
+***
+
 
 `Bouncing → Bouncing level`
 
 Choose if you want to apply CrowdSec directives (`Normal bouncing`) or be more permissive (`Flex bouncing`).
 
-With the `Flex mode`, it is impossible to accidentally block access to your site to people who don’t deserve it. This
-mode makes it possible to never ban an IP but only to offer a Captcha, in the worst-case scenario.
+With the `Flex mode`, it is impossible to accidentally block access to your site to people who don’t deserve it. This mode makes it possible to never ban an IP but only to offer a captcha, in the worst-case scenario.
 
 ***
 
 `Bouncing → Public website only`
 
-If enabled, the admin is not bounced.
+If enabled, the admin view is not bounced.
+
+This is not recommended in production.
 
 ***
 
-<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-test-your-settings.jpg')} alt="Test your settings"
-title="Test your settings" />
+<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-test-your-settings.jpg')} alt="Setting tests" title="Setting tests" />
 
 `Test your settings → Test bouncing`
 
-Click the "Test bouncing" button and the configured component will try to get the remediation (bypass, captcha or ban)
-for
-the IP entered in the text field. By default, tested IP is the current detected remote IP.
+Click the "Test bouncing" button and the configured bouncer will try to get the remediation (bypass, captcha or ban) for the IP entered in the text field. By default, tested IP is the current detected remote IP.
 
 This test allows you to know if your connection, bouncing and cache settings are correct.
 
@@ -180,7 +213,6 @@ This test allows you to know if your connection, bouncing and cache settings are
 Click the "Test geolocation" button to try getting country for the IP entered in the text field.
 
 This test allows you to know if your geolocation settings are correct.
-
 
 #### Theme customization
 
@@ -195,8 +227,7 @@ In the `Theme customization` part, you can modify texts and colors of ban and ca
 
 #### Advanced settings
 
-In the `Advanced` part, you can enable/disable the stream mode, choose your cache system for your CrowdSec
-Local API, handle your remediation policy, manage geolocation feature, adjust some debug parameters and testing parameters.
+In the `Advanced` part, you can enable/disable the stream mode, choose your cache system for your CrowdSec Local API, handle your remediation policy, manage geolocation feature, adjust some debug parameters and testing parameters.
 
 <img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-communication-mode.jpg')} alt="Communication mode" title="Communication mode" />
 
@@ -210,14 +241,13 @@ Choose if you want to enable the `stream mode` or stay in `live mode`.
 
 By default, the `live mode` is enabled. The first time a stranger connects to your website, this mode means that the IP will be checked directly by the CrowdSec API. The rest of your user’s browsing will be even more transparent thanks to the fully customizable cache system.
 
-But you can also activate the `stream mode`. This mode allows you to constantly feed the component with the malicious IP list via a background task (CRON), making it to be even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
+But you can also activate the `stream mode`. This mode allows you to constantly feed the bouncer with the malicious IP list via a background task (CRON), making it to be even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
 
 ***
 
 `Communication mode to the API → Resync decisions each (stream mode only)`
 
-With the stream mode, every decision is retrieved in an asynchronous way. Here you can define the frequency of this
-cache refresh.
+With the stream mode, every decision is retrieved in an asynchronous way. Here you can define the frequency of this cache refresh.
 
 **N.B** : There is also a refresh button if you want to refresh the cache manually.
 
@@ -233,8 +263,7 @@ Choose the cache technology that will use your CrowdSec Local API.
 
 The File system cache is faster than calling Local API. Redis or Memcached is faster than the File System cache.
 
-**N.B** : There are also a `Clear now` button fo all cache technologies and a `Prune now` button dedicated to the
-file system cache.
+**N.B**. : There are also a `Clear now` button fo all cache technologies and a `Prune now` button dedicated to the file system cache.
 
 ***
 
@@ -264,40 +293,107 @@ we store in cache some values in order to know if he has to resolve or not the c
 
 Minimum 1 second. Default: 86400 seconds.
 
+------
+
+`Caching configuration → Redis DSN (if applicable)`
+
+Fill in this field only if you have chosen the Redis cache.
+
+Example of DSN: redis://localhost:6379.
+
+------
+
+`Caching configuration → Memcached DSN (if applicable)`
+
+Fill in this field only if you have chosen the Memcached cache.
+
+Example of DSN: memcached://localhost:11211.
+
 ***
 
-`Caching configuration → Geolocation cache lifetime`
+<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-appsec.png')} alt="AppSec" title="AppSec" />
 
-The lifetime of cached country geolocation result for some IP.
+---
 
-Minimum 1 second. Default: 86400 seconds.
+`AppSec component → Enable AppSec`
 
+Enable if you want to ask the AppSec component for a remediation based on the current request, in case the initial LAPI remediation is a bypass.
+
+Not available if you use TLS certficates as authentication type.
+
+For more information on the AppSec component, please refer to the [documentation](https://docs.crowdsec.net/docs/appsec/intro/).
+
+---
+
+`AppSec component → Url `
+
+Your AppSec component url. Default to `http://localhost:7422`
+
+---
+
+`AppSec component → Request timeout`
+
+Maximum execution time (in milliseconds) for an AppSec request.
+
+Set a negative value to allow unlimited timeout
+
+Default to 400.
+
+---
+
+`AppSec component → Fallback to`
+
+What remediation to apply when AppSec call has failed due to a timeout.
+
+Recommended: `captcha`. Default: `bypass`.
+
+---
+
+`AppSec component → Maximum body size`
+
+Maximum size of the request body (in KB). Default to 1024.
+
+If exceeded, the action defined below will be applied.
+
+---
+
+`AppSec component → Body size exceeded action`
+
+Action to take when the request body size exceeds the maximum body size.
+
+Default to `headers_only`.
+
+- `Headers Only`: (recommended) Only headers of the original request are sent to the AppSec component. The body is not sent.
+- `Block`: The request is considered as malicious and a ban remediation is returned, without calling AppSec.
+- `Allow`: (not recommended): The request is considered as clean and a bypass remediation is returned, without calling AppSec.
+
+---
+
+
+
+<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-remediations.jpg')} alt="Remediation" title="Remediation" />
 
 ***
 
-
-<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-remediations.jpg')} alt="Remediations" title="Remediations" />
-
-***
-
-`Remediations → Fallback to`
+`Remediation → Fallback to`
 
 Choose which remediation to apply when CrowdSec advises unhandled remediation.
 
 ***
 
-`Remediations → Trust these CDN IPs (or Load Balancer, HTTP Proxy)`
+`Remediation → Trust these CDN IPs (or Load Balancer, HTTP Proxy)`
 
-If you use a CDN, a reverse proxy or a load balancer, it is possible to indicate in the component settings the IP ranges of these devices in order to be able to check the IP of your users. For other IPs, the component will not trust the X-Forwarded-For header.
+If you use a CDN, a reverse proxy or a load balancer, it is possible to indicate in the bouncer settings the IP ranges of these devices in order to be able to check the IP of your users. For other IPs, the bouncer will not trust the X-Forwarded-For header.
 ***
 
-`Remediations → Hide CrowdSec mentions`
+`Remediation → Hide CrowdSec mentions`
 
 Enable if you want to hide CrowdSec mentions on the Ban and Captcha walls.
+
+
 ***
 
-<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-geolocation.jpg')} alt="Geolocation"
-title="Geolocation" />
+<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-geolocation.jpg')} alt="Geolocation" title="Geolocation" />
 
 ***
 
@@ -324,16 +420,20 @@ Choose between `Country` and `City`.
 
 `Geolocation → Path to the MaxMind database`
 
-Relative path from `wp-content/plugins/crowdsec/geolocation` folder.
+Absolute path. **Make sure this file is not publicly accessible.** [See security note below](#security).
+
+Example: `/var/crowdsec/geolocation/Geoloc-country.mmdb` folder.
 
 ***
 
-`Geolocation → Save geolocalized country in cache`
+`Geolocation → Geolocation cache lifetime`
 
-Enabling this will avoid multiple call to the geolocation system (e.g. MaxMind database)
-If enabled, the geolocalized country associated to the IP will be saved in cache.
-See the `Geolocation cache lifetime` setting above to set the lifetime of this result.
+The lifetime of cached country geolocation result for some IP. Default: 86400.
+Set 0 to disable caching. Enabling this will avoid multiple call to the geolocation system (e.g. MaxMind database)
+
 ***
+
+
 
 <img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-debug.jpg')} alt="Debug" title="Debug" />
 
@@ -343,13 +443,32 @@ See the `Geolocation cache lifetime` setting above to set the lifetime of this r
 
 Enable if you want to see some debug information in a specific log file.
 
+When this mode is enabled, a `debug.log` file will be written in `wp-content/uploads/crowdsec/logs` folder.
+
+**Make sure this path is not publicly accessible.** [See security note below](#security).
+
 ***
 
 `Debug mode → Disable prod log`
 
-By default, a `prod.log` file will be written in `wp-content/plugins/crowdsec/logs` folder.
+By default, a `prod.log` file will be written in `wp-content/uploads/crowdsec/logs` folder.
+
+**Make sure this path is not publicly accessible.** [See security note below](#security).
 
 You can disable this log here.
+
+***
+
+`Debug mode → Custom User-Agent`
+
+By default, User-Agent used to call LAPI has the following format: `csphplapi_WordPress`.
+
+You can use this field to add a custom suffix: `csphplapi_WordPress[custom-suffix]`.
+
+This can be useful to debug crowdsec logs when using multiple WordPress sites with multiple bouncer plugins.
+
+Only alphanumeric characters (`[A-Za-z0-9]`) are allowed with a maximum of 5 characters.
+
 
 ***
 
@@ -358,15 +477,27 @@ You can disable this log here.
 When this mode is enabled, you will see every unexpected bouncing errors in the browser.
 Should be disabled in production.
 
+
 ***
 
-<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-test.jpg')} alt="Test" title="Test" />
+<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-standalone-and-test.png')} alt="Standalone and Test" title="Standalone and Test" />
+
+***
+
+
+`Auto prepend file mode → Enable auto_prepend_file mode`
+
+This setting allows the bouncer to bounce IPs before running any PHP script in the project.
+
+**Make sure the generated `standalone-settings.php` file is not publicly accessible.** [See security note below](#security).
+
 
 ***
 
 `Test settings → Forced test IP`
 
 This Ip will be used instead of the current detected browser IP.
+
 **Must be empty in production.**
 
 ***
@@ -374,26 +505,79 @@ This Ip will be used instead of the current detected browser IP.
 `Test settings → Forced test X-Forwarded-For IP`
 
 This Ip will be used instead of the current X-Forwarded-For Ip if any.
+
 **Must be empty in production.**
 
+
+### Security
+
+Some files used or created by this plugin must be protected from direct access attempts:
+
+- The `standalone-settings.php` file created in the `wp-content/plugins/crowdsec/inc` folder for the [Auto Prepend File](#auto-prepend-file-mode) mode
+- Log files are created in the `wp-content/uploads/crowdsec/logs` folder
+- Cache files of the File system cache are created in the `wp-content/uploads/crowdsec/cache` folder
+- TLS authentication files are located in a user defined path
+- Geolocation database files are located in a user defined path
+
+**N.B.:**
+
+- There is no need to protect `standalone-settings.php` file if you don't use `auto_prepend_file` mode.
+
+- There is no need to protect cache files if you are using Redis or Memcached cache systems.
+- There is no need to protect log files if you disable debug and prod logging.
+- There is no need to protect TLS files if you use Bouncer API key authentication type.
+- There is no need to protect geolocation files if you don't use the geolocation feature.
+
+#### Nginx
+
+If you are using Nginx, you should add a directive in your website configuration file to deny access to these folders.
+
+For log, cache and standalone setting files, this could be done with the following snippet:
+
+```
+server {
+   ...
+   ...
+   ...
+   # Deny all attempts to access some folders of the crowdsec plugin
+   location ~ /crowdsec/(cache|logs|inc/standalone-settings) {
+           deny all;
+   }
+   ...
+   ...
+}
+```
+
+#### Apache
+
+If you are using Apache, the plugin root folder already contain the required `.htaccess` file to protect log,  
+cache and standalone setting files:
+
+```htaccess
+Redirectmatch 403 wp-content/uploads/crowdsec/logs/
+Redirectmatch 403 wp-content/uploads/crowdsec/cache/
+Redirectmatch 403 wp-content/plugins/crowdsec/inc/standalone-settings
+```
 
 ### Auto Prepend File mode
 
 By default, this extension will bounce every web requests that pass through the classical process of WordPress core loading.
-This implies that if another php public script is called (any of your custom public php script for example)
-or if you are using some plugin that bypass the WordPress core load process
-(as the [WP Super Cache plugin](https://wordpress.org/plugins/wp-super-cache/) in Simple mode for example), bouncing will not be effective.
+This implies that if another php public script is called (any of your custom public php script for example) or if you are using some plugin that bypass the WordPress core load process (as the [WP Super Cache plugin](https://wordpress.org/plugins/wp-super-cache/) in Simple mode for example), bouncing will not be effective.
 
 To ensure that any php script will be bounced if called from a browser, you should try the `auto prepend file` mode.
 
-In this mode, every browser access to a php script will be bounced.
+In this mode, every browser access to a PHP script will be bounced.
 
-To enable the `auto prepend file` mode, you have to configure your server by adding an `auto_prepend_file` directive
-for your php setup.
+To enable the `auto prepend file` mode, you have to configure your server by adding an `auto_prepend_file` directive  for your php setup.
 
-**N.B:**
-- In this mode, a setting file `inc/standalone-settings.php` will be generated each time you save the
-  CrowdSec plugin configuration from the WordPress admin.
+**N.B.:**
+
+- In this mode, a setting file `inc/standalone-settings.php` will be generated each time you save the CrowdSec
+  plugin configuration from the WordPress admin. **Make sure this file is not publicly accessible.** [See security note
+  above](#security).
+
+- This mode requires to have the plugin installed in the `wp-content/plugins/crowdsec` folder. This is the default
+  installation folder of WordPress plugins.
 
 
 Adding an `auto_prepend_file` directive can be done in different ways:
@@ -416,7 +600,7 @@ location ~ \.php$ {
     ...
     ...
     ...
-    fastcgi_param PHP_VALUE "/wordpress-root-directory/wp-content/plugins/crowdsec/inc/standalone-bounce.php";
+    fastcgi_param PHP_VALUE "auto_prepend_file=/wordpress-root-directory/wp-content/plugins/crowdsec/inc/standalone-bounce.php";
 }
 ```
 
@@ -426,6 +610,18 @@ If you are using Apache, you should add this line to your `.htaccess` file:
 
     php_value auto_prepend_file "/wordpress-root-directory/wp-content/plugins/crowdsec/inc/standalone-bounce.php"
 
+### Multisite usage
+
+If you are using the [`multisite` WordPress feature](https://wordpress.org/documentation/article/wordpress-glossary/#multisite), the bouncer plugin has to be network activated and
+configurations will be used for all sites of the network. This means that every individual site on your network will be protected by the bouncer with the same settings.
+
+#### Differences with a single installation
+
+In a WordPress multisite installation, `CrowdSec` configurations are accessible via the `My Sites -> Network admin` left panel.
+
+<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/admin-multisite.jpg')} alt="Multisite admin" title="Multisite admin" />
+
+Settings are stored in the `wp_sitemeta` table instead of the `wp_options` table for a single WordPress installation.
 
 
 ### Resources

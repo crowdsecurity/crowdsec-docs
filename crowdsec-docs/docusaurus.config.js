@@ -154,7 +154,7 @@ module.exports = {
                             to: "/u/cti_api/getting_started",
                         },
                         {
-                            label: "Service API",
+                            label: "Service API 🏅",
                             to: "/u/service_api/getting_started",
                         },
                     ],

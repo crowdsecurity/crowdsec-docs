@@ -24,7 +24,7 @@ To have a functional AppSec Component, you need:
 Before diving into the practical steps, it's crucial to familiarize yourself with the core configuration aspects of the AppSec Component:
 
 - **acquisition configuration**: Specifies how to acquire the AppSec Component stream of data
-- **AppSec Component configuration**: Tells which rules are loaded in inband (blocking) and out-of-band (non-blocking)
+- **AppSec Component configuration**: Tells which rules are loaded in in-band (blocking) and out-of-band (non-blocking)
   phases, [and allows tweaking the behavior of the component via the powerful expr bindings](/appsec/hooks.md). <!--@sbl we need anchor for the on_whatever and expr helpers -->
 - **rules** allow writing a [signature to detect and/or block malevolent requests](/appsec/rules_syntax.md).
 

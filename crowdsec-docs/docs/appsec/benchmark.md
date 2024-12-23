@@ -33,8 +33,8 @@ The benchmarks cover the following tests:
 Each test has been run with multiple cases:
 
 - Application Security Component enabled but without any rules
-- Application Security Component enabled with 100 vpatch rules (in inband)
-- Application Security Component enabled with all the CRS (in inband)
+- Application Security Component enabled with 100 vpatch rules (in in-band)
+- Application Security Component enabled with all the CRS (in in-band)
 
 On the system, we deployed:
 

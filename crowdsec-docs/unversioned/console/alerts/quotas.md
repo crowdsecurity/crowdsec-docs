@@ -15,14 +15,14 @@ Our Community Plan is designed as an entry point for users beginning to explore 
 - **7 Days of Retention**: Access alerts for up to a week, giving you ample time to review and act on them.
   This plan is ideal for individual users or small teams looking for essential monitoring tools without the need for extensive historical data retention or a high volume of alerts.
 
-### Why Upgrade to Premium?
+### Why Upgrade to Premium? 🏅
 
 Transitioning to our Premium Plan unlocks a suite of advanced features and capabilities designed for users who require more robust cybersecurity monitoring and analysis.
 
 - **Custom Alert Quotas**: The Premium Plan allows custom quotas for alerts, scaling up to several million depending on the needs. This ensures that your monitoring capabilities grow with your network, no matter how extensive it becomes.
 - **Extended Retention Periods**: With up to a year of data retention, the Premium Plan enables long-term analysis and pattern recognition. This extended period is crucial for identifying trends, understanding the evolving nature of threats, and fine-tuning the security posture over time.
 
-### The Value of More Quotas and Longer Retention
+### The Value of More Quotas and Longer Retention 🏅
 
 More quotas and extended retention periods are essential for several reasons:
 
