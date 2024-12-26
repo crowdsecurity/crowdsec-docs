@@ -27,6 +27,22 @@ CrowdSec rejects the plugins binaries if one of the following is true :
 
 It is possible to set configuration values based on environment variables.
 
+However, depending on which key is using the environment variable, the syntax is different.
+
+#### Format
+
+The `format` key is a string that uses the [go template](https://pkg.go.dev/text/template) syntax. To use an environment variable in the `format` key, you can use the `env` function provided by [sprig](https://masterminds.github.io/sprig/).
+
+```yaml
+format: |
+    Received {{ len . }} alerts
+    Environment variable value: {{env "ENV_VAR"}}
+```
+
+#### Other keys
+
+All other keys than `format` can use the typical `${ENV_VAR}` or `$ENV_VAR` syntax.
+
 For example, if you don't want to store your SMTP host password in the configuration file, you can do this:
 
 ```yaml
@@ -40,6 +56,21 @@ sender_email: email@gmail.com
 email_subject: "CrowdSec Notification"
 ```
 
+:::warning
+Please note that `cscli notifications inspect` command does not interpolate environment variables and will always show the raw value of the key.
+:::
+
+If you wish to use `cscli notifications test` command, you must provide the environment variables in the command line. For example, if you have a `SMTP_PASSWORD` environment variable, you can test the email_default plugin with the following command:
+
+:::warning
+Some shells may hold this information in history, so please consult your shell documentation to ensure that the password is not stored in history.
+:::
+
+```bash 
+SMTP_PASSWORD=your_password cscli notifications test email_default
+```
+
+If you wish to not use the environment variable whilst running the command, you must configure the environment variables within your shell this is out of scope for this documentation so please use your favourite search engine.
 
 ### Registering plugin to profile
 
