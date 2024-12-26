@@ -119,10 +119,10 @@ statics:
     value: yes
 ```
 
- - a [filter](/parsers/format.md#filter) : if the expression is `true`, the event will enter the parser, otherwise, it won't
- - a [onsuccess](/parsers/format.md#onsuccess) : defines what happens when the event was successfully parsed : shall we continue ? shall we move to next stage ? etc.
+ - a [filter](/log_processor/parsers/format.md#filter) : if the expression is `true`, the event will enter the parser, otherwise, it won't
+ - a [onsuccess](/log_processor/parsers/format.md#onsuccess) : defines what happens when the event was successfully parsed : shall we continue ? shall we move to next stage ? etc.
  - a `name` & a `description`
- - some [statics](/parsers/format.md#statics) that will modify the event
+ - some [statics](/log_processor/parsers/format.md#statics) that will modify the event
  - a `debug` flag that allows to enable local debugging information
  - a `grok` pattern to capture some data in logs
 
@@ -230,7 +230,7 @@ Various changes have been made here :
  - We created to patterns to capture the two relevant type of log lines, Using an [online grok debugger](https://grokdebug.herokuapp.com/) or an [online regex debugger](https://www.debuggex.com/) [2]
 )
  - We keep track of the username and the source_ip (Please note that setting the source_ip in `evt.Meta.source_ip` and `evt.Parsed.source_ip` is important [1])
- - We setup various [statics](/parsers/format.md#statics) information to classify the log type [3]
+ - We setup various [statics](/log_processor/parsers/format.md#statics) information to classify the log type [3]
 
 
 
@@ -299,7 +299,7 @@ __note: we can see that our log line `accepted connection for user 'toto' from '
 We have now a fully functional parser for myservice logs !
 We can either deploy it to our production systems to do stuff, or even better, contribute to the hub !
 
-If you want to know more about directives and possibilities, take a look at [the parser reference documentation](/parsers/format.md) !
+If you want to know more about directives and possibilities, take a look at [the parser reference documentation](/log_processor/parsers/format.md) !
 
 See as well [this blog article](https://crowdsec.net/blog/how-to-write-crowdsec-parsers-and-scenarios) on the topic.
 

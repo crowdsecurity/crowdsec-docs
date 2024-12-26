@@ -7,7 +7,7 @@ This module allows the `Security Engine` to acquire logs from AWS's cloudwatch s
 
 :::info
 
-Instead of using this datasource, we recommend setting up a log subscription filter in your AWS account to push the logs to a kinesis stream, and use the [kinesis datasource](/data_sources/kinesis.md) to read them.
+Instead of using this datasource, we recommend setting up a log subscription filter in your AWS account to push the logs to a kinesis stream, and use the [kinesis datasource](/log_processor/data_sources/kinesis.md) to read them.
 
 :::
 

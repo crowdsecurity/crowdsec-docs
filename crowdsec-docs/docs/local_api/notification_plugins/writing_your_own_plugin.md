@@ -7,7 +7,7 @@ In this guide we will implement a plugin in Go, which dispatches an email with s
 
 Full code for this plugin can be found in [crowdsec repo](https://github.com/crowdsecurity/crowdsec/tree/master/plugins/notifications/email)
 
-Before we begin, make sure you read [intro](/notification_plugins/intro.md)
+Before we begin, make sure you read [intro](/local_api/notification_plugins/intro.md)
 
 Let's start by creating a new go project in a fresh directory:
 

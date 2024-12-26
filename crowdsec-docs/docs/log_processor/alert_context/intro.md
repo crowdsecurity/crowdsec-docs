@@ -5,13 +5,13 @@ title: Alert Context
 
 ## Introduction
 
-As the [Log Processor](log_processor/intro.mdx) processes logs, it will detect patterns of interest known as [Scenarios](log_processor/scenarios/introduction.mdx). When a scenario is detected, an alert is generated and sent to the [Local API](local_api/intro.md) (LAPI) for evaluation.
+As the [Log Processor](log_processor/intro.mdx) processes logs, it will detect patterns of interest known as [Scenarios](/log_processor/scenarios/introduction.mdx). When a scenario is detected, an alert is generated and sent to the [Local API](local_api/intro.md) (LAPI) for evaluation.
 
 When the alert is generated you can define additional Alert Context that can be sent along with the alert to give you context about the alert. This can be useful when you host multiple applications on the same server and you want to know which application generated the alert.
 
 ### Format
 
-The format of Alert Context are key value pairs that are sent along with the alert. When you install some [Collections](log_processor/collections/intro.md) you will see that they come with Alert Context pre-configured.
+The format of Alert Context are key value pairs that are sent along with the alert. When you install some [Collections](/log_processor/collections/introduction.md) you will see that they come with Alert Context pre-configured.
 
 For example if you install the `crowdsecurity/nginx` collection you will see that the `http_base` context is added:
 

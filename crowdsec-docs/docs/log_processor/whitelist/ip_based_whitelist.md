@@ -5,7 +5,7 @@ title: IP / CIDR
 
 IP whitelists are best suited at `Parser whitelists` level because once the log line has been parsed we already know the IP address and can save resources by discarding it earlier in the pipeline.
 
-We will create the file `mywhitelist.yaml` please see [introduction](/whitelist/introduction.md) for your OS specific paths.
+We will create the file `mywhitelist.yaml` please see [introduction](/log_processor/whitelist/introduction.md) for your OS specific paths.
 
 ```yaml
 name: "my/whitelist" ## Must be unique
