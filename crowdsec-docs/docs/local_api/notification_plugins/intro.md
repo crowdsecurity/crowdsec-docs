@@ -60,17 +60,17 @@ email_subject: "CrowdSec Notification"
 Please note that `cscli notifications inspect` command does not interpolate environment variables and will always show the raw value of the key.
 :::
 
-If you wish to use `cscli notifications test` command, you must provide the environment variables in the command line. For example, if you have a `SMTP_PASSWORD` environment variable, you can test the email_default plugin with the following command:
+If you wish to use `cscli notifications test` command, you must provide the environment variables in the command line or within your shell environment.
+
+For example, if you have a `SMTP_PASSWORD` environment variable, you can test the `email_default` plugin with the following command:
 
 :::warning
-Some shells may hold this information in history, so please consult your shell documentation to ensure that the password is not stored in history.
+Some shells may hold this information in history, so please consult your shell documentation to ensure that the password or other sensitive data is not stored in clear text.
 :::
 
 ```bash 
 SMTP_PASSWORD=your_password cscli notifications test email_default
 ```
-
-If you wish to not use the environment variable whilst running the command, you must configure the environment variables within your shell this is out of scope for this documentation so please use your favourite search engine.
 
 ### Registering plugin to profile
 
