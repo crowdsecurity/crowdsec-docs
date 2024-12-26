@@ -1,6 +1,6 @@
 ---
 id: intro
-title: Introduction
+title: Acquisition Datasources Introduction
 sidebar_position: 1
 ---
 
@@ -12,18 +12,19 @@ DataSources are configured via the [acquisition](/configuration/crowdsec_configu
 
 Name | Type | Stream | One-shot
 -----|------|--------|----------
-[Appsec](/data_sources/appsec.md) | expose HTTP service for the Appsec component | yes | no
-[AWS cloudwatch](/data_sources/cloudwatch.md) | single stream or log group | yes | yes
-[AWS kinesis](/data_sources/kinesis.md)| read logs from a kinesis strean | yes | no
-[AWS S3](/data_sources/s3.md)| read logs from a S3 bucket | yes | yes
-[docker](/data_sources/docker.md) | read logs from docker containers | yes | yes
-[file](/data_sources/file.md) | single files, glob expressions and .gz files | yes | yes
-[journald](/data_sources/journald.md) | journald via filter | yes | yes
-[Kafka](/data_sources/kafka.md)| read logs from kafka topic | yes | no
-[Kubernetes Audit](/data_sources/kubernetes_audit.md) | expose a webhook to receive audit logs from a Kubernetes cluster  | yes | no
-[Loki](/data_sources/loki.md) | read logs from loki | yes | yes
-[syslog service](/data_sources/syslog_service.md) | read logs received via syslog protocol | yes | no
-[Windows Event](/data_sources/windows_event_log.md)| read logs from windows event log | yes | no
+[Appsec](/log_processor/data_sources/appsec.md) | expose HTTP service for the Appsec component | yes | no
+[AWS cloudwatch](/log_processor/data_sources/cloudwatch.md) | single stream or log group | yes | yes
+[AWS kinesis](/log_processor/data_sources/kinesis.md)| read logs from a kinesis strean | yes | no
+[AWS S3](/log_processor/data_sources/s3.md)| read logs from a S3 bucket | yes | yes
+[docker](/log_processor/data_sources/docker.md) | read logs from docker containers | yes | yes
+[file](/log_processor/data_sources/file.md) | single files, glob expressions and .gz files | yes | yes
+[HTTP](/log_processor/data_sources/http.md) | read logs from an HTTP endpoint | yes | no
+[journald](/log_processor/data_sources/journald.md) | journald via filter | yes | yes
+[Kafka](/log_processor/data_sources/kafka.md)| read logs from kafka topic | yes | no
+[Kubernetes Audit](/log_processor/data_sources/kubernetes_audit.md) | expose a webhook to receive audit logs from a Kubernetes cluster  | yes | no
+[Loki](/log_processor/data_sources/loki.md) | read logs from loki | yes | yes
+[syslog service](/log_processor/data_sources/syslog_service.md) | read logs received via syslog protocol | yes | no
+[Windows Event](/log_processor/data_sources/windows_event_log.md)| read logs from windows event log | yes | yes
 
 ## Common configuration parameters
 

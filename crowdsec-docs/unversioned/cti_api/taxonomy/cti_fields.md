@@ -1,6 +1,6 @@
 ---
 id: cti_object
-title: CTI Format
+title: Format
 sidebar_position: 2
 ---
 
@@ -199,6 +199,7 @@ The possible values are:
 -   `suspicious` : Many CrowdSec users have reported the IP, but it is not aggressive enough to be considered malicious
 -   `known` : At this time, the CrowdSec network has identified the IP, but we still require additional information to make a decision
 -   `safe` : The IP address is safe and can be trusted (ex: Google DNS, Cloudflare DNS ...)
+-   `benign` : The IP address belong to a known entity and is not dangerous (eg. Public Internet Scanners)
 -   `unknown`: The IP address is either unknown or its last report is from more than three months ago
 
 ## `ip_range_24`
@@ -400,6 +401,7 @@ Longitude of the IP, when available.
   "days_age" : 40,
 }
 ```
+
 Historical information we have collected about the IP.
 
 ### `first_seen`

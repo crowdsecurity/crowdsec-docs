@@ -18,6 +18,7 @@ Name | Type | Stream | One-shot
 [AWS S3](/data_sources/s3.md)| read logs from a S3 bucket | yes | yes
 [docker](/data_sources/docker.md) | read logs from docker containers | yes | yes
 [file](/data_sources/file.md) | single files, glob expressions and .gz files | yes | yes
+[HTTP](/data_sources/http.md) | read logs from an HTTP endpoint | yes | no
 [journald](/data_sources/journald.md) | journald via filter | yes | yes
 [Kafka](/data_sources/kafka.md)| read logs from kafka topic | yes | no
 [Kubernetes Audit](/data_sources/kubernetes_audit.md) | expose a webhook to receive audit logs from a Kubernetes cluster  | yes | no

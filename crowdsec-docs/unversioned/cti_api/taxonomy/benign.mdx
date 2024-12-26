@@ -1,0 +1,40 @@
+---
+id: benign
+title: Benign Classifications
+sidebar_position: 7
+---
+
+import TableRender from "@site/src/components/tableRender"
+import GithubIconRender from "@site/src/components/githubIconRender"
+
+export const classificationsURL =
+    "https://hub-cdn.crowdsec.net/master/taxonomy/classifications.json"
+export const columns = [
+    {
+        header: "Name",
+        accessorKey: "name",
+    },
+    {
+        header: "Description",
+        accessorKey: "description",
+    },
+]
+export const include = ["scanner:"]
+
+<GithubIconRender url={classificationsURL}></GithubIconRender>
+
+IPs in this category may raise alerts, but they are not inherently dangerous. These IPs often belong to organizations that perform legitimate activities, such as internet-wide scanning or security research.
+
+IPs belonging to those categories will have the `benign` [reputation](/u/cti_api/taxonomy/cti_object#reputation).
+
+:::note
+
+Blocking these IPs may not be necessary unless their behavior directly impacts your operations.
+
+:::
+
+<TableRender
+    columns={columns}
+    url={classificationsURL}
+    include={include}
+></TableRender>

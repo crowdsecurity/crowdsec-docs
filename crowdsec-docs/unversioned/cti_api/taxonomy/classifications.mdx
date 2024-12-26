@@ -4,10 +4,11 @@ title: Classifications
 sidebar_position: 5
 ---
 
-import TableRender from '@site/src/components/tableRender';
-import GithubIconRender from '@site/src/components/githubIconRender';
+import TableRender from "@site/src/components/tableRender"
+import GithubIconRender from "@site/src/components/githubIconRender"
 
-export const classificationsURL = "https://hub-cdn.crowdsec.net/master/taxonomy/classifications.json";
+export const classificationsURL =
+    "https://hub-cdn.crowdsec.net/master/taxonomy/classifications.json"
 export const columns = [
     {
         header: "Name",
@@ -17,9 +18,15 @@ export const columns = [
         header: "Description",
         accessorKey: "description",
     },
-];
+]
+export const exclude = ["scanner:"]
 
 <GithubIconRender url={classificationsURL}></GithubIconRender>
 
+This classification page provides a taxonomy of IP addresses that exhibit potentially suspicious behaviors. These classifications are designed to help you identify and respond to various threat actors and malicious activities.
 
-<TableRender columns={columns} url={classificationsURL}></TableRender>
+<TableRender
+    columns={columns}
+    url={classificationsURL}
+    exclude={exclude}
+></TableRender>

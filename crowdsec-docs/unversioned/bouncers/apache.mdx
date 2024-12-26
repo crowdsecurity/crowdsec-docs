@@ -1,0 +1,194 @@
+---
+id: apache_bouncer
+title: Apache Bouncer
+sidebar_position: 2
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+<p align="center">
+  <img
+    src={useBaseUrl("/img/crowdsec_apache2.svg")}
+    alt="CrowdSec"
+    title="CrowdSec"
+    width="400"
+    height="300"
+  />
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/build-pass-green" />
+  <img src="https://img.shields.io/badge/tests-pass-green" />
+</p>
+<p align="center">
+  &#x1F4DA; <a href="#installation/">Documentation</a>
+  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+  &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+A Remediation Component for Apache.
+
+:::warning
+
+Beta Remediation Component, please report any issues on [GitHub](https://github.com/crowdsecurity/cs-apache2-bouncer/issues)
+
+:::
+
+## How does it work ?
+
+This component leverages Apache's module mecanism to provide IP address blocking capability.
+
+The module supports **Live mode** with a local (in-memory) cache.
+
+At the back, this component uses `mod_proxy`, `mod_ssl` for requests to LAPI, and `mod_socache` for the caching feature.
+
+## Installation
+
+:::warning
+
+There is not yet publicly available packages or this Remediation Component.
+
+We are providing ways to build your own while we're working on packaging.
+
+:::
+
+Clone or download directly [from our GitHub repository](https://github.com/crowdsecurity/cs-apache2-bouncer).
+
+
+<Tabs
+  defaultValue="nginx_debian"
+  values={[
+    { label: 'Debian/Ubuntu', value: 'nginx_debian' ,},
+    { label: 'Others (build from source)', value: 'others' ,},
+  ]
+}>
+<TabItem value="nginx_debian">
+
+```bash
+dpkg-buildpackage -us -uc
+sudo dpkg -i ../crowdsec-apache2-bouncer_1.0.0_amd64.deb
+```
+
+</TabItem>
+
+<TabItem value="others">
+
+```bash
+aclocal
+autoconf
+autoheader
+automake --add-missing
+./configure
+make
+sudo make install
+sudo cp config/mod_crowdsec.* /etc/apache2/mods-available/
+sudo mkdir  -p /etc/crowdsec/bouncers/
+sudo cp ./config/crowdsec-apache2-bouncer.conf  /etc/crowdsec/bouncers/
+```
+
+</TabItem>
+
+</Tabs>
+
+### Initial Configuration
+
+Enable the mod_crowdsec module:
+
+```bash
+sudo a2enmod  mod_crowdsec
+```
+
+Generate an API key for the bouncer [1]:
+
+```bash
+sudo cscli bouncers add apache2
+```
+
+Remediation Component config's is located in `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`:
+
+```bash
+## Replace the API key with the newly generated one [1]
+CrowdsecAPIKey this_is_a_bad_password
+...
+```
+
+:::info
+If needed, edit `CrowdsecURL` (and other parameters)
+:::
+
+```bash
+sudo systemctl restart apache2
+```
+
+## Configuration directives
+
+### `Crowdsec`
+
+> on|off
+
+Enable or disable module globally:
+ - `off` (**default**): Module has to be enabled per location.
+ - `on`: Module is enabled by default.
+
+Behavior can be overriden in any location.
+
+### `CrowdsecFallback`
+
+> fail|block|allow
+
+How to respond if the Crowdsec API is not available:
+ - `fail` (**default**) returns a 500 Internal Server Error. 
+ - `block` returns a 302 Redirect (or 429 Too Many Requests if CrowdsecLocation is unset).
+ - `allow` will allow the request through.
+
+### `CrowdsecBlockedHTTPCode`
+
+> 500|403|429
+
+HTTP code to return when a request is blocked (default is `429`).
+
+### `CrowdsecLocation`
+
+Set to the URL to redirect to when the IP address is banned. As per RFC 7231 may be a path, or a full URL. For example: /sorry.html
+
+### `CrowdsecURL`
+
+Set to the URL of the Crowdsec API. For example: http://localhost:8080.
+
+### `CrowdsecAPIKey`
+
+Set to the API key of the Crowdsec API. Add an API key using 'cscli bouncers add'.
+
+### `CrowdsecCache`
+
+Enable the crowdsec cache. Defaults to 'none'. Options detailed here: https://httpd.apache.org/docs/2.4/socache.html.
+
+### `CrowdsecCacheTimeout`
+
+Set the crowdsec cache timeout. Defaults to 60 seconds.
+
+## Next steps
+
+### Overriding HTTP Response
+
+If you want to return custom HTTP code and/or content, you can use `CrowdsecLocation` and `RewriteRules` :
+
+```bash
+CrowdsecLocation /one/
+```
+
+```bash
+<Location /one/>
+  Crowdsec off
+  RewriteEngine On
+  RewriteRule .* - [R=403,L]
+  # Require all denied
+  ErrorDocument 403 "hell nooo"
+</Location>
+
+```
+
+
+
+
