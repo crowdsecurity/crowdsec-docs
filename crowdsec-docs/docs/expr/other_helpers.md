@@ -25,7 +25,7 @@ Parses unix timestamp string and returns RFC3339 formatted time
 ### `GetFromStash(cache string, key string)`
 
 `GetFromStash` retrieves the value for `key` in the named `cache`.
-The cache are usually populated by [parser's stash section](/parsers/format.md#stash).
+The cache are usually populated by [parser's stash section](/log_processor/parsers/format.md#stash).
 An empty string if the key doesn't exist (or has been evicted), and error is raised if the `cache` doesn't exist.
 
 ## Others

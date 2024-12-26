@@ -97,7 +97,7 @@ always replaced.
 - `bouncers/crowdsec-blocklist-mirror.yaml`
 
 In the case of `profiles.yaml`, the files are read as a whole (as if they were
-attached) instead of merged. See [profiles - introduction](/profiles/intro.md).
+attached) instead of merged. See [profiles - introduction](/local_api/profiles/intro.md).
 
 
 ## Configuration directives

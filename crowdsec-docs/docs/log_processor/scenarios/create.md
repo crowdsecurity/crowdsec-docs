@@ -126,16 +126,16 @@ We filter on `evt.Meta.log_type == 'myservice_failed_auth'` because in the parse
 
 We have the following fields:
 
-- a [type](/scenarios/format.md#type): the type of bucket to use (trigger or leaky).
-- a [name](/scenarios/format.md#name)
-- a [description](/scenarios/format.md#description)
-- a [filter](/scenarios/format.md#type): the filter to apply on events to be filled in this bucket.
-- a [leakspeed](/scenarios/format.md#leakspeed)
-- a [capacity](/scenarios/format.md#capacity): the number of events in the bucket before it overflows.
-- a [groupby](/scenarios/format.md#groupby): a field from the event to partition the bucket. It is often the `source_ip` of the event.
-- a [blackhole](/scenarios/format.md#blackhole): the number of minute to not retrigger this scenario for the same `groupby` field.
-- a [reprocess](/scenarios/format.md#reprocess): ingest the alert in crowdsec for further processing.
-- some [labels](/scenarios/format.md#labels): Some labels are mandatory and the scenario will not be validated by the Hub if they are missing. Don't forget to set `remediation: true` if you want the IP to be blocked by bouncers.
+- a [type](/log_processor/scenarios/format.md#type): the type of bucket to use (trigger or leaky).
+- a [name](/log_processor/scenarios/format.md#name)
+- a [description](/log_processor/scenarios/format.md#description)
+- a [filter](/log_processor/scenarios/format.md#type): the filter to apply on events to be filled in this bucket.
+- a [leakspeed](/log_processor/scenarios/format.md#leakspeed)
+- a [capacity](/log_processor/scenarios/format.md#capacity): the number of events in the bucket before it overflows.
+- a [groupby](/log_processor/scenarios/format.md#groupby): a field from the event to partition the bucket. It is often the `source_ip` of the event.
+- a [blackhole](/log_processor/scenarios/format.md#blackhole): the number of minute to not retrigger this scenario for the same `groupby` field.
+- a [reprocess](/log_processor/scenarios/format.md#reprocess): ingest the alert in crowdsec for further processing.
+- some [labels](/log_processor/scenarios/format.md#labels): Some labels are mandatory and the scenario will not be validated by the Hub if they are missing. Don't forget to set `remediation: true` if you want the IP to be blocked by bouncers.
 
 We can then "test" our scenario like this :
 
@@ -252,7 +252,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' f
 We have now a fully functional scenario for myservice to detect brute forces!
 We can either deploy it to our production systems to do stuff, or even better, contribute to the hub !
 
-If you want to know more about directives and possibilities, take a look at [the scenario reference documentation](/scenarios/format.md) !
+If you want to know more about directives and possibilities, take a look at [the scenario reference documentation](/log_processor/scenarios/format.md) !
 
 See as well [this blog article](https://crowdsec.net/blog/how-to-write-crowdsec-parsers-and-scenarios) on the topic.
 

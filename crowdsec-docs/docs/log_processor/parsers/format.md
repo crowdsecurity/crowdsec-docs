@@ -28,7 +28,7 @@ statics:
     expression: "evt.Parsed.src_ip"
 ```
 
-The parser nodes are processed sequentially based on the alphabetical order of [stages](/parsers/introduction.mdx#stages) and subsequent files.
+The parser nodes are processed sequentially based on the alphabetical order of [stages](/log_processor/parsers/introduction.mdx#stages) and subsequent files.
 If the node is considered successful (grok is present and returned data or no grok is present) and "onsuccess" equals to `next_stage`, then the event is moved to the next stage.
 
 ## Parser trees
@@ -511,4 +511,4 @@ A parser is considered "successful" if :
   
 ### Patterns documentation
 
-You can find [exhaustive patterns documentation here](/parsers/patterns-documentation.md).
+You can find [exhaustive patterns documentation here](/log_processor/parsers/patterns-documentation.md).

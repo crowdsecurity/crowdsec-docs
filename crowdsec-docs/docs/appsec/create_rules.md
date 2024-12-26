@@ -168,7 +168,7 @@ Let's get over the relevant parts:
 
 - `name` is how the alert will appear to users (in `cscli` or [the console](http://app.crowdsec.net))
 - `description` is how your scenario will appear in [the hub](https://hub.crowdsec.net)
-- `labels` section is used both in [the hub](https://hub.crowdsec.net) and [the console](https://app.crowdsec.net). [It must follow rules described here](/scenarios/format.md#labels)
+- `labels` section is used both in [the hub](https://hub.crowdsec.net) and [the console](https://app.crowdsec.net). [It must follow rules described here](/log_processor/scenarios/format.md#labels)
 - `rules` describe what we want to match:
   - a [`METHOD`](/appsec/rules_syntax.md#target) [equal to `POST`](/appsec/rules_syntax.md#match)
   - the presence of a header ([`HEADERS_NAME`](/appsec/rules_syntax.md#target)) with a name that once transformed to `lowercase`, is `x-foobar-bypass`

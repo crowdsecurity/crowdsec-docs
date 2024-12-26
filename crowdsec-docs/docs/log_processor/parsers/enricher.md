@@ -7,7 +7,7 @@ sidebar_position: 4
 
 # Enrichers
 
-Enrichers are [parsers](/parsers/introduction.mdx) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich`  [stage](/parsers/introduction.mdx#stages) (after most of the parsing happened).
+Enrichers are [parsers](/log_processor/parsers/introduction.mdx) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich`  [stage](/log_processor/parsers/introduction.mdx#stages) (after most of the parsing happened).
 
 Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the [`Event`](/expr/event.md).
 
