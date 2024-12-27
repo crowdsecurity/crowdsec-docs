@@ -353,6 +353,11 @@ module.exports = {
         },
         {
             type: "doc",
+            label: "Featured",
+            id: "console/blocklists/featured",
+        },
+        {
+            type: "doc",
             label: "Catalog",
             id: "console/blocklists/catalog",
         },
