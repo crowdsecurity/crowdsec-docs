@@ -59,11 +59,12 @@ const staticData = [
         text: "WHM",
         link: "/u/getting_started/installation/whm",
     },
-    {
-        icon: cloudwaysLogo,
-        text: "Cloudways",
-        link: "/u/getting_started/installation/cloudways",
-    },
+    // Experimental, not linking to it
+    // {
+    //     icon: cloudwaysLogo,
+    //     text: "Cloudways",
+    //     link: "/u/getting_started/installation/cloudways",
+    // },
 ];
 
 export default function QuickStart() {
