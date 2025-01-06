@@ -8,6 +8,8 @@ tags: [blaas,firewall,usecase]
 # Integrating CrowdSec Blocklists Directly Into Your Firewall
 
 > Use CrowdSec's Blocklist within your firewall without the need to install the CrowdSec agent.
+> // Preemptive security greatly reducing mass attacks and saving resources at the same time.
+// or Turn your FW in preemptive mode with CS blocklist to block malicious ips before they reach you and reduce drastically the volume of alars for your soc
 
 <center>
 <table style={{ fontSize: '0.5em', borderCollapse: 'collapse', width: '100%' }}>
@@ -39,7 +41,7 @@ For this use case, you will need to:
    - **Skill Level**: Easy
    - **Time**: 5 minutes *(including account creation)*
    - **Minium Plan**: free
-- [**Subscribe** to the blocklist(s) you want to use](u/console/blocklists/subscription)
+- [**Subscribe** to the blocklist(s) you want to use](/u/console/blocklists/subscription)
    - **Who**: Anybody with a browser
    - **Skill Level**: Easy
    - **Time**: < 5 minutes
@@ -56,7 +58,7 @@ curl -u <user>:<password> <url of the endpoint>
 ```
 2. Check that the blocklist is being fetched by your firewall by observing the logs or metrics of your firewall.
 Depending on your firewall capabilities you can chose a metered action in your rule OR observe volume of ingress reaching your services before and after using the blocklist.   
-Note that
+
 
 ## Next step - Scale and Automate
 You can use CrowdSec Service API (SAPI) to automate both:
