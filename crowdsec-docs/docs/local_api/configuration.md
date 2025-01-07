@@ -72,8 +72,8 @@ You can configure the Local API to use SSL by setting the `tls` option under `ap
 api:
   server:
     tls:
-      cert_path: "/path/to/cert.pem"
-      key_path: "/path/to/key.pem"
+      cert_file: "/path/to/cert.pem"
+      key_file: "/path/to/key.pem"
 ```
 
 :::info
