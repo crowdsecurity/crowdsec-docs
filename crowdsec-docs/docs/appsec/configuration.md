@@ -9,14 +9,56 @@ sidebar_position: 6
 Configuring the AppSec Component usually requires the use of multiple files:
 
  - [AppSec rules](/appsec/rules_syntax.md) allow you to write a signature to detect and/or block malevolent requests. [You can find more information about the syntax here](/appsec/rules_syntax.md)
- - [acquisition configuration](/log_processor/data_sources/appsec.md) indicates which port is the AppSec Component listening on, and which AppSec configuration it will use.
+ - [Acquisition configuration](/log_processor/data_sources/appsec.md) indicates which port is the AppSec Component listening on, and which AppSec configuration it will use.
  - AppSec configuration tells which rules are loaded in in-band (blocking) and out-of-band (non-blocking)
   phases. [it as well allows you to tweak the behavior of the component via the powerful expr bindings](/appsec/rules_syntax.md)
 
+## Acquisition configuration
+
+## Default configuration
+
+The Acquisition configuration is usually present directly within `/etc/crowdsec/acquis.d/` or `/etc/crowdsec/acquis.yaml`:
+
+> The default AppSec acquisition configuration
+```yaml
+appsec_config: crowdsecurity/appsec-default
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+```
+
+## Creating custom configuration
+
+:::info
+If you want to add some custom rules or hooks, it is suggested to add a custom `appsec_config`.
+Modifying existing `appsec_config` will make it *tainted* and will interfere with future updates.
+:::
+
+
+
+```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
+appsec_configs:
+ - crowdsecurity/appsec-default
+ - custom/my_vpatch_rules
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+```
+
+```yaml title="/etc/crowdsec/appsec-configs/my_vpatch_rules.yaml"
+name: custom/my_vpatch_rules
+default_remediation: ban
+inband_rules:
+ - custom/custom-vpatch-* 
+#on_match:
+#...
+```
 
 ## Appsec configuration
 
-The AppSec configuration is referenced by the acquisition configuration (`appsec_config` or `appsec_config_path`):
+The AppSec configuration is referenced by the acquisition configuration (`appsec_config`, `appsec_configs` or `appsec_config_path`):
 
 > An example AppSec configuration
 ```yaml
