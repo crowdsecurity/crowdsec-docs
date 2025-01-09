@@ -31,8 +31,8 @@ Crowdsec is open-source, and as such, we may not be aware of all the channels of
 | [FreeBSD](/getting_started/install_freebsd.md) | amd64/i386/arm64/armv7 | N/A | 14 | 1.6.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
 | [FreeBSD](/getting_started/install_freebsd.md) | amd64/i386/arm64 | N/A | 15 | 1.6.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
 | [OPNsense](/getting_started/install_opnsense.md) | amd64 | N/A | 23.7 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
-| [Windows](/getting_started/getting_started_on_windows.md) | amd64 | to be defined | 1.6.4 | [github releases](https://github.com/crowdsecurity/crowdsec/releases/tag/v1.6.4)|
-| [Windows](/getting_started/getting_started_on_windows.md) | amd64 | to be defined | 1.6.4 | [chocolatey](https://community.chocolatey.org/packages?q=crowdsec) |
+| [Windows](/getting_started/getting_started_on_windows.md) | N/A | amd64 | to be defined | 1.6.4 | [github releases](https://github.com/crowdsecurity/crowdsec/releases/tag/v1.6.4)|
+| [Windows](/getting_started/getting_started_on_windows.md) | N/A | amd64 | to be defined | 1.6.4 | [chocolatey](https://community.chocolatey.org/packages?q=crowdsec) |
 | Linux | almost all OpenWRT supported platform | OpenWRT | 23.05 | 1.5.4 | [OpenWrt repository](https://openwrt.org/packages/pkgdata/crowdsec) |
 | Linux/Windows | amd64/arm64 | docker | N/A | 1.6.4 | [dockerhub](https://hub.docker.com/r/crowdsecurity/crowdsec) |
 | home assistant | amd64/arm64 | docker | N/A | 1.6.4 | [crowdsecurity home assistant addon repo](https://github.com/crowdsecurity/home-assistant-addons/)|
