@@ -22,7 +22,7 @@ Crowdsec is open-source, and as such, we may not be aware of all the channels of
 | [Linux](/getting_started/install.mdx) | amd64/arm64/armhf | Debian | bookworm/bullseye/buster/stretch | 1.6.4 and 1.5.5 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
 | [Linux](/getting_started/install.mdx) | amd64/arm64 | RedHat/CentOS | 7/8/10 | 1.6.4 and 1.5.5 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
 | [Linux](/getting_started/install.mdx) | amd64/arm64 | Oracle Linux | 7/8/9 | 1.6.4 and 1.5.5 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
-| [Linux](/getting_started/install.mdx) | amd64/arm64/armel/armhf/i386/mips64el/mipsel/ppc64el/s390x | Debian | 1.4.6 | [official debian repository](https://packages.debian.org/search?keywords=crowdsec&searchon=names&suite=stable&section=all) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64/armel/armhf/i386/mips64el/mipsel/ppc64el/s390x | Debian | 12 | 1.4.6 | [official debian repository](https://packages.debian.org/search?keywords=crowdsec&searchon=names&suite=stable&section=all) |
 | [Linux](/getting_started/install.mdx) | amd64/arm64 | Fedora | 40/41| 1.6.4 (and 1.5.5 only for fc39) | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
 | [Linux](/getting_started/install.mdx) | amd64/arm64 | Amazon linux | 2023 | 1.6.4 and 1.5.5 |  [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
 | [Linux](/getting_started/install.mdx) | amd64/arm64 | Ubuntu Linux| 16.04/18.04/20.04.6/22.04.5/24.04.1 | 1.6.0 and 1.5.5| [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
