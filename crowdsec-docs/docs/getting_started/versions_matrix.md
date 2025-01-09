@@ -19,24 +19,24 @@ Crowdsec is open-source, and as such, we may not be aware of all the channels of
 
 | OS | Platform | Distribution | Distribution Version | CrowdSec Version | CrowdSec Location |
 |----|----------|--------------|------------------|----------------------|-------------------|
-| [Linux](/getting_started/install.mdx) | amd64/arm64/armhf | Debian | bookworm/bullseye/buster/stretch | 1.6.0 and 1.5.5 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
-| [Linux](/getting_started/install.mdx) | amd64/arm64 | RedHat/CentOS | 6/7/8/9 | 1.6.0 and 1.5.5 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
-| [Linux](/getting_started/install.mdx) | amd64/arm64 | Oracle Linux | 7/8/9 | 1.6.0 and 1.5.5 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
-| [Linux](/getting_started/install.mdx) | amd64/arm64/armel/armhf/i386/mips64el/mipsel/ppc64el/s390x | Debian | 1.4.6 | [official debian repository](https://packages.debian.org/search?keywords=crowdsec&searchon=names&suite=stable&section=all) |
-| [Linux](/getting_started/install.mdx) | amd64/arm64 | Fedora | 38/39 | 1.6.0 (and 1.5.5 only for fc39) | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
-| [Linux](/getting_started/install.mdx) | amd64/arm64 | Amazon linux | 2 | 1.6.0 and 1.5.5 |  [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
-| [Linux](/getting_started/install.mdx) | amd64/arm64 | Ubuntu Linux| 16.04/18.04/20.04/22.04/22.10 | 1.6.0 and 1.5.5| [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
-| [FreeBSD](/getting_started/install_freebsd.md) | amd64/i386 | N/A | 12 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
-| [FreeBSD](/getting_started/install_freebsd.md) | amd64/i386/arm64/armv7 | N/A | 13 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
-| [FreeBSD](/getting_started/install_freebsd.md) | amd64/i386 | N/A | 14 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
-| [FreeBSD](/getting_started/install_freebsd.md) | arm64/armv7 | N/A | 14 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64/armhf | Debian | bookworm/bullseye/buster/stretch | 1.6.4 and 1.5.5 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64 | RedHat/CentOS | 7/8/9/10 | 1.6.4 and 1.5.5 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64 | Oracle Linux | 7/8/9 | 1.6.4 and 1.5.5 | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64/armel/armhf/i386/mips64el/mipsel/ppc64el/s390x | Debian | 12 | 1.4.6 | [official debian repository](https://packages.debian.org/search?keywords=crowdsec&searchon=names&suite=stable&section=all) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64 | Fedora | 40/41| 1.6.4 (and 1.5.5 only for fc39) | [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64 | Amazon linux | 2023 | 1.6.4 and 1.5.5 |  [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| [Linux](/getting_started/install.mdx) | amd64/arm64 | Ubuntu Linux| 16.04/18.04/20.04.6/22.04.5/24.04.1 | 1.6.0 and 1.5.5| [packagecloud](https://packagecloud.io/crowdsec/crowdsec) |
+| [FreeBSD](/getting_started/install_freebsd.md) | amd64/i386/arm64 | N/A | 13 | 1.6.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
+| [FreeBSD](/getting_started/install_freebsd.md) | armv7 | N/A | 13 | 1.6.3 | [freshports](https://www.freshports.org/security/crowdsec/) |
+| [FreeBSD](/getting_started/install_freebsd.md) | amd64/i386/arm64/armv7 | N/A | 14 | 1.6.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
+| [FreeBSD](/getting_started/install_freebsd.md) | amd64/i386/arm64 | N/A | 15 | 1.6.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
 | [OPNsense](/getting_started/install_opnsense.md) | amd64 | N/A | 23.7 | 1.5.4 | [freshports](https://www.freshports.org/security/crowdsec/) |
-| [Windows](/getting_started/getting_started_on_windows.md) | amd64 | to be defined | 1.6.0 | [github releases](https://github.com/crowdsecurity/crowdsec/releases/tag/v1.6.°)|
-| [Windows](/getting_started/getting_started_on_windows.md) | amd64 | to be defined | 1.4.2 | [chocolatey](https://community.chocolatey.org/packages?q=crowdsec) |
+| [Windows](/getting_started/getting_started_on_windows.md) | N/A | amd64 | to be defined | 1.6.4 | [github releases](https://github.com/crowdsecurity/crowdsec/releases/tag/v1.6.4)|
+| [Windows](/getting_started/getting_started_on_windows.md) | N/A | amd64 | to be defined | 1.6.4 | [chocolatey](https://community.chocolatey.org/packages?q=crowdsec) |
 | Linux | almost all OpenWRT supported platform | OpenWRT | 23.05 | 1.5.4 | [OpenWrt repository](https://openwrt.org/packages/pkgdata/crowdsec) |
-| Linux/Windows | amd64/arm64 | docker | N/A | 1.5.4 | [dockerhub](https://hub.docker.com/r/crowdsecurity/crowdsec) |
-| home assistant | amd64/arm64 | docker | N/A | 1.6.0 | [crowdsecurity home assistant addon repo](https://github.com/crowdsecurity/home-assistant-addons/)|
-| helm chart | amd64/arm64 | helm | N/A | 1.6.0 | [helm chart](https://github.com/crowdsecurity/helm-charts) |
+| Linux/Windows | amd64/arm64 | docker | N/A | 1.6.4 | [dockerhub](https://hub.docker.com/r/crowdsecurity/crowdsec) |
+| home assistant | amd64/arm64 | docker | N/A | 1.6.4 | [crowdsecurity home assistant addon repo](https://github.com/crowdsecurity/home-assistant-addons/)|
+| helm chart | amd64/arm64 | helm | N/A | 1.6.4 | [helm chart](https://github.com/crowdsecurity/helm-charts) |
 
 
 Note: There is a subtile difference between armel, armhf and armv7:
