@@ -30,12 +30,9 @@ source: appsec
 
 ## Creating custom configuration
 
-:::info
+
 If you want to add some custom rules or hooks, it is suggested to add a custom `appsec_config`.
 Modifying existing `appsec_config` will make it *tainted* and will interfere with future updates.
-:::
-
-
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
 appsec_configs:
@@ -46,6 +43,11 @@ labels:
 listen_addr: 127.0.0.1:7422
 source: appsec
 ```
+
+:::info
+When loading several app sec configs, _hooks_ and _appsec rules_ are appended, and for conflicting options (e.g., `default_remediation`), the last one takes precedence.
+:::
+
 
 ```yaml title="/etc/crowdsec/appsec-configs/my_vpatch_rules.yaml"
 name: custom/my_vpatch_rules
