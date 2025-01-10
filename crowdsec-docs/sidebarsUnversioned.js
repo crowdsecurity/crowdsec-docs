@@ -221,6 +221,15 @@ module.exports = {
         },
         {
             type: "category",
+            label: "Threat Forecast 🏅",
+            link: {
+                type: "doc",
+                id: "console/threat_forecast",
+            },
+            items: [],
+        },
+        {
+            type: "category",
             label: "Enterprise support 🏅",
             link: {
                 type: "doc",
