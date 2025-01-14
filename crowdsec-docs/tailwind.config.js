@@ -1,4 +1,3 @@
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     corePlugins: {
@@ -12,15 +11,62 @@ module.exports = {
     ],
     theme: {
         extend: {
-            colors:{
-                primary: {
-                    light: "#2E2A77",
-                    dark: '#242441',
+            colors: {
+                primary: `rgb(var(--color-primary) / <alpha-value>)`,
+                "primary-50": `rgb(var(--color-primary-50) / <alpha-value>)`,
+                "primary-100": `rgb(var(--color-primary-100) / <alpha-value>)`,
+                "primary-200": `rgb(var(--color-primary-200) / <alpha-value>)`,
+                "primary-300": `rgb(var(--color-primary-300) / <alpha-value>)`,
+                "primary-400": `rgb(var(--color-primary-400) / <alpha-value>)`,
+                "primary-500": `rgb(var(--color-primary-500) / <alpha-value>)`,
+                "primary-600": `rgb(var(--color-primary-600) / <alpha-value>)`,
+                "primary-700": `rgb(var(--color-primary-700) / <alpha-value>)`,
+                "primary-800": `rgb(var(--color-primary-800) / <alpha-value>)`,
+                "primary-900": `rgb(var(--color-primary-900) / <alpha-value>)`,
+                secondary: `rgb(var(--color-secondary) / <alpha-value>)`,
+                "secondary-50": `rgb(var(--color-secondary-50) / <alpha-value>)`,
+                "secondary-100": `rgb(var(--color-secondary-100) / <alpha-value>)`,
+                "secondary-200": `rgb(var(--color-secondary-200) / <alpha-value>)`,
+                "secondary-300": `rgb(var(--color-secondary-300) / <alpha-value>)`,
+                "secondary-400": `rgb(var(--color-secondary-400) / <alpha-value>)`,
+                "secondary-500": `rgb(var(--color-secondary-500) / <alpha-value>)`,
+                "secondary-600": `rgb(var(--color-secondary-600) / <alpha-value>)`,
+                "secondary-700": `rgb(var(--color-secondary-700) / <alpha-value>)`,
+                "secondary-800": `rgb(var(--color-secondary-800) / <alpha-value>)`,
+                "secondary-900": `rgb(var(--color-secondary-900) / <alpha-value>)`,
+                gray: {
+                    50: `rgb(var(--color-gray-50) / <alpha-value>)`,
+                    100: `rgb(var(--color-gray-100) / <alpha-value>)`,
+                    200: `rgb(var(--color-gray-200) / <alpha-value>)`,
+                    300: `rgb(var(--color-gray-300) / <alpha-value>)`,
+                    400: `rgb(var(--color-gray-400) / <alpha-value>)`,
+                    500: `rgb(var(--color-gray-500) / <alpha-value>)`,
+                    600: `rgb(var(--color-gray-600) / <alpha-value>)`,
+                    700: `rgb(var(--color-gray-700) / <alpha-value>)`,
+                    800: `rgb(var(--color-gray-800) / <alpha-value>)`,
+                    900: `rgb(var(--color-gray-900) / <alpha-value>)`,
+                    950: `rgb(var(--color-gray-950) / <alpha-value>)`,
                 },
-                secondary: "#F8AB13",
-            }
+                danger: `rgb(var(--color-red) / <alpha-value>)`,
+                success: `rgb(var(--color-green) / <alpha-value>)`,
+                premium: `rgb(var(--color-premium) / <alpha-value>)`,
+                platinum: `rgb(var(--color-platinum) / <alpha-value>)`,
+                card: `rgb(var(--color-background-card) / <alpha-value>)`,
+                // Zeplin primary and secondary
+                "alpa-primary": `rgb(var(--color-alpa-primary) / <alpha-value>)`,
+                "alpa-secondary": `rgb(var(--color-alpa-secondary) / <alpha-value>)`,
+                "alpa-dark": `rgb(var(--color-dark-color) / <alpha-value>)`,
+                "alpa-light-primary": `rgb(var(--color-alpa-light-primary) / <alpha-value>)`,
+                "alpa-light-secondary": `rgb(var(--color-alpa-light-secondary) / <alpha-value>)`,
+                "alpa-dark-darker": `rgb(var(--color-alpa-darker) / <alpha-value>)`,
+                "alpa-dark-primary": `rgb(var(--color-alpa-dark-primary) / <alpha-value>)`,
+                "alpa-dark-secondary": `rgb(var(--color-alpa-dark-secondary) / <alpha-value>)`,
+            },
+            backgroundImage: () => ({
+                landing: "url('/img/landing-page-bg.webp')",
+            }),
         },
     },
     plugins: [],
     prefix: "tw-", // This is the prefix for the tailwind classes to not clash with docusarus classes
-};
+}
