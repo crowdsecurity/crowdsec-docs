@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+
 /* stylelint-disable docusaurus/copyright-header */
 /**
  * Any CSS included here will be global. The classic template
@@ -17,7 +19,169 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --ifm-code-font-size: 95%;
   --docusaurus-announcement-bar-height: 2.5rem !important;
+  --ifm-font-family-base: 'Instrument Sans', sans-serif; /* For body text */
+  --ifm-font-family-monospace: 'Courier New', monospace; /* For code blocks */
 }
+
+/* COLORS */
+
+@layer base {
+  /* // Zeplin https://app.zeplin.io/project/655e038b64d81b7bd89cdadb/screen/65a7e811a2ae29e2fbb62a17 */
+  :root {
+      /* Primary */
+      --color-primary: 82 71 179; /* Purple */
+      --color-primary-50: 237 236 247;
+      --color-primary-100: 220 218 240;
+      --color-primary-200: 186 181 225;
+      --color-primary-300: 151 145 209;
+      --color-primary-400: 117 108 194;
+      --color-primary-500: 82 71 179;
+      --color-primary-600: 66 57 143;
+      --color-primary-700: 49 43 107;
+      --color-primary-800: 33 28 72;
+      --color-primary-900: 16 14 36;
+      --color-primary-night: 16 14 36;
+      --color-text-primary: 82 71 179;
+      --color-border-primary: 82 71 179;
+
+      /* Secondary */
+      --color-secondary: 159 107 4; /* Sunburst Orange */
+      --color-secondary-50: 245 240 229;
+      --color-secondary-100: 236 225 205;
+      --color-secondary-200: 217 196 155;
+      --color-secondary-300: 197 166 104;
+      --color-secondary-400: 178 137 54;
+      --color-secondary-500: 159 107 4;
+      --color-secondary-600: 127 86 3;
+      --color-secondary-700: 95 64 2;
+      --color-secondary-800: 64 43 2;
+      --color-secondary-900: 32 21 1;
+
+      /* Gray */
+      --color-gray-50: 248 250 252;
+      --color-gray-100: 241 245 249;
+      --color-gray-200: 226 232 240;
+      --color-gray-300: 203 213 225;
+      --color-gray-400: 148 163 184;
+      --color-gray-500: 100 116 139;
+      --color-gray-600: 71 85 105;
+      --color-gray-700: 46 59 77;
+      --color-gray-800: 22 30 47;
+      --color-gray-900: 16 24 39;
+      --color-gray-950: 4 4 31;
+
+      /* Zeplin Primary and Secondary */
+      --color-alpa-primary: 17 24 28;
+      --color-alpa-secondary: 84 89 100;
+      /*  Primary color in light mode in Zeplin */
+      --color-alpa-light-primary: 17 24 28;
+      /* Primary color in dark mode in Zeplin */
+      --color-alpa-dark-primary: 249 250 250; 
+      /* Secondary color in light mode in Zeplin */
+      --color-alpa-light-secondary: 84 89 100;
+      /* Secondary color in dark mode in Zeplin */
+      --color-alpa-dark-secondary: 176 181 191; 
+      /* Dark Theme/Dark+ color in Zeplin */
+      --color-alpa-darker: 4 4 31;
+
+      /* Complementary */
+      --color-red: 227 13 20;
+      --color-green: 31 168 81;
+      --color-orange: 240 111 5;
+      --color-yellow: 168 143 16;
+      --color-premium: 248 171 19;
+      --color-platinum: 251 217 131;
+
+      /* Components */
+      --color-background-card: 255 255 255;
+      --color-background-color: 248 249 251;
+      --color-dark-color: 231 234 238;
+
+      /* Corpo website colors */
+      --color-corpo-dark: 15 15 41;
+      --color-corpo-gray: 56 56 78;
+
+      /* Light premium radial gradient */
+      --premium-radial-gradient: radial-gradient(
+          50% 100% at top,
+          rgb(251 208 124),
+          rgb(250 193 80)
+      ); 
+      
+      /* From Dark secondary (300 to 400) */
+
+      --platinum-linear-gradient: linear-gradient(-45deg, rgba(var(--color-premium)), #acacac);
+  }
+
+  .dark {
+      /* Primary */
+      --color-primary: 136 139 206;
+      --color-primary-50: 27 28 41;
+      --color-primary-100: 54 56 82;
+      --color-primary-200: 82 83 172;
+      --color-primary-300: 109 111 165;
+      --color-primary-400: 136 139 206;
+      --color-primary-500: 160 162 216;
+      --color-primary-600: 184 185 226;
+      --color-primary-700: 207 209 235;
+      --color-primary-800: 231 232 245;
+      --color-primary-900: 243 243 250;
+      --color-primary-night: 27 28 41;
+      --color-text-primary: 136 139 206;
+      --color-border-primary: 184 185 226;
+
+      /* Secondary */
+      --color-secondary: 249 177 36;
+      --color-secondary-50: 254 247 233;
+      --color-secondary-100: 254 239 211;
+      --color-secondary-200: 253 224 167;
+      --color-secondary-300: 251 208 124;
+      --color-secondary-400: 250 193 80;
+      --color-secondary-500: 249 177 36;
+      --color-secondary-600: 199 142 29;
+      --color-secondary-700: 149 106 22;
+      --color-secondary-800: 100 71 14;
+      --color-secondary-900: 50 35 7;
+
+      /* Gray */
+      --color-gray-50: 4 4 31;
+      --color-gray-100: 16 24 39;
+      --color-gray-200: 22 30 47;
+      --color-gray-300: 46 59 77;
+      --color-gray-400: 71 85 105;
+      --color-gray-500: 100 116 139;
+      --color-gray-600: 148 163 184;
+      --color-gray-700: 203 213 225;
+      --color-gray-800: 226 232 240;
+      --color-gray-900: 241 245 249;
+      --colors-gray-950: 248 250 252;
+
+      /* Zeplin Primary and Secondary */
+      --color-alpa-primary: 249 250 250;
+      --color-alpa-secondary: 176 181 191;
+
+      /* Complementary */
+      --color-red: 245 91 96;
+      --color-green: 113 229 155;
+      --color-orange: 252 168 100;
+      --color-yellow: 227 195 95;
+      --color-premium: 248 171 19;
+      --color-platinum: 251 217 131;
+
+      /* Components */
+      --color-background-card: 22 33 47;
+      --color-background-color: 16 24 39;
+      --color-dark-color: 4 4 31;
+
+      /* Light premium radial gradient */
+      --premium-radial-gradient: radial-gradient(
+          50% 100% at top,
+          rgb(var(--color-secondary-400)),
+          rgb(var(--color-secondary-500))
+      );
+  }
+}
+
 
 html[data-theme="light"] .menu__link--active {
   --ifm-menu-color-active: #4E4A99;
@@ -67,17 +231,12 @@ div.markdown {
   text-align: justify;
 }
 
-.hero--primary {
-  --ifm-hero-text-color: white;
-  --ifm-color-primary: #141546;
-}
-
 a {
-  color: #7c79e9;
+  color: rgb(var(--color-primary));
 }
 
 blockquote {
-  --ifm-blockquote-border-color: #7c79e9;
+  --ifm-blockquote-border-color: rgb(var(--color-primary));
   --ifm-blockquote-background-color: transparent;
 }
 
@@ -86,13 +245,17 @@ blockquote {
 }
 
 .footer, .navbar, .navbar-sidebar {
-  background-color: #2E2A77;
+  background-color: rgb(22 33 47);
   --ifm-navbar-link-color: #fff;
   --ifm-menu-color: #fff;
 }
 
 html[data-theme="dark"] .footer, html[data-theme="dark"] .navbar, html[data-theme="dark"] .navbar-sidebar {
-  background-color: #242441;
+  background-color: rgb(22 33 47);
+}
+
+.footer__copyright {
+  color: rgb(var(--color-gray-300));
 }
 
 /** Patch some colors **/
@@ -312,3 +475,5 @@ div[class^='announcementBar'] {
   white-space: nowrap!important;
   border: 0!important;
 }
+
+

@@ -1,17 +1,15 @@
-import CIcon from "@coreui/icons-react";
-import {
-    cibKubernetes,
-    cibDocker,
-    cibLinux,
-    cibFreebsd,
-    cibWindows,
-    cibApple,
-} from "@coreui/icons";
-import opnsenseLogo from "@site/static/img/logo-opnsense.svg";
-import pfSenseLogo from "@site/static/img/logo-pfsense.svg";
-import whmLogo from "@site/static/img/logo-whm.svg";
-import cloudwaysLogo from "@site/static/img/logo-cloudways.svg";
-import Link from "@docusaurus/Link";
+import CIcon from "@coreui/icons-react"
+import cibLinux from "@site/static/img/logo/linux-colored.svg"
+import cibDocker from "@site/static/img/logo/docker-colored.svg"
+import cibWindows from "@site/static/img/logo/windows-colored.svg"
+import cibFreebsd from "@site/static/img/logo/freebsd-colored.svg"
+import cibApple from "@site/static/img/logo/apple-colored.svg"
+import opnsenseLogo from "@site/static/img/logo-opnsense.svg"
+import pfSenseLogo from "@site/static/img/logo-pfsense.svg"
+import cibKubernetes from "@site/static/img/logo/kubernetes-colored.svg"
+import whmLogo from "@site/static/img/logo-whm.svg"
+import cloudwaysLogo from "@site/static/img/logo-cloudways.svg"
+import Link from "@docusaurus/Link"
 
 const staticData = [
     {
@@ -65,37 +63,55 @@ const staticData = [
     //     text: "Cloudways",
     //     link: "/u/getting_started/installation/cloudways",
     // },
-];
+]
 
 export default function QuickStart() {
     return (
-        <>
-            <div className="tw-flex tw-flex-col tw-items-center tw-border-2 tw-border-white tw-border-solid tw-rounded-xl tw-2-4/5 sm:tw-w-2/3 tw-m-auto tw-transition tw-duration-500 tw-ease-in-out tw-transform hover:tw-border-secondary">
-                <h1 className="tw-text-2xl tw-border-white tw-border-solid tw-rounded-xl tw-px-8 tw-bg-black tw--translate-y-4">
-                    Quick Start
-                </h1>
-                <div className="tw-flex tw-flex-row tw-gap-14 tw-px-8 tw-flex-wrap">
-                    {staticData.map((item, index) => (
-                        <div className="tw-w-full md:tw-w-fit tw-transition tw-duration-500 tw-ease-in-out tw-transform hover:tw-border-secondary">
-                            <Link
-                                key={index}
-                                to={item.link}
-                                className="tw-flex tw-flex-col tw-items-center tw-text-white tw-transition tw-duration-500 tw-ease-in-out tw-transform hover:tw-text-secondary"
-                            >
-                                {(!Array.isArray(item.icon) && (
-                                    <item.icon className="icon icon-4xl" />
-                                )) || <CIcon icon={item.icon} size="4xl" />}
-                                {!!item.text && <p className="tw-text-xl">{item.text}</p>}
-                            </Link>
-                        </div>
-                    ))}
-                </div>
+        <section>
+            <div className="tw-text-left">
+                <h2 className="tw-mb-1 tw-text-white">
+                    Select your environment
+                </h2>
+                <p className="tw-max-w-xl tw-text-sm tw-text-gray-300">
+                    We can secure your stack. Just select your platform and get
+                    started.
+                </p>
             </div>
-            <p className="tw-text-xs tw-my-1">
-                **Logos and trademarks, such as the logos above, are the
-                property of their respective owners and are used here for
-                identification purposes only.
+
+            <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-4 tw-mt-4">
+                {staticData.map((props) => (
+                    <Link
+                        key={props.text}
+                        href={props.link}
+                        className="tw-border-0 hover:tw-no-underline"
+                    >
+                        <div
+                            className={
+                                "tw-w-full tw-flex tw-justify-start tw-items-center tw-border tw-border-transparent tw-flex-row tw-rounded-lg tw-px-2 tw-py-2 tw-gap-2 tw-flex-1 tw-cursor-pointer tw-bg-gray-800 tw-ease-in-out tw-text-white tw-duration-300 hover:tw-border-white hover:tw-bg-gray-700"
+                            }
+                        >
+                            <span className="tw-border-2 tw-border-gray-700 tw-bg-alpa-primary tw-w-12 tw-h-12 tw-rounded-lg tw-inline-flex tw-items-center tw-justify-center">
+                                {(!Array.isArray(props.icon) && (
+                                    <props.icon className="icon icon-xl" />
+                                )) || <CIcon icon={props.icon} size="xl" />}
+                            </span>
+
+                            <span
+                                className={
+                                    "tw-text-md tw-font-semibold tw-flex-1 tw-text-left"
+                                }
+                            >
+                                {props.text}
+                            </span>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+            <p className="tw-text-xs tw-my-1 tw-text-gray-300 tw-text-right">
+                *Logos and trademarks, such as the logos above, are the property
+                of their respective owners and are used here for identification
+                purposes only.
             </p>
-        </>
-    );
+        </section>
+    )
 }
