@@ -24,6 +24,10 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 A lua Remediation Component for Ingress Nginx Controller.
 
+:::warning
+Ingress Nginx Version **1.12** or higher currently is not supported due to removal of Lua plugins support see [this issue](https://github.com/crowdsecurity/cs-openresty-bouncer/issues/60) for latest news.
+:::
+
 ## How does it work ?
 
 This component leverages OpenResty lua's API, used the ingress nginx controller as a [plugin](https://github.com/kubernetes/ingress-nginx/blob/main/rootfs/etc/nginx/lua/plugins/README.md).
