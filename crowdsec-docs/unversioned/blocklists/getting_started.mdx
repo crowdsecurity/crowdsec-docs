@@ -1,29 +1,34 @@
 ---
 id: getting_started
-title: Getting Started
+title: How to use CrowdSec Blocklists
 ---
 
 import ConsolePromo from '@site/src/components/ConsolePromo.js';
 
-There are two ways to get started with Blocklists:
+There are two main paths to integrate CrowdSec blocklists into your infrastructure:
 
-1. **Security Engine** - Use the CrowdSec Security Engine to ingest blocklists
-2. **Integrations** - Use Integrations to ingest blocklists into firewall, CDN, or other security solutions
+1. **Security Engine** - If you already have a CrowdSec Security Engine, you can use it to ingest blocklists
+2. **Integrations** - For a purely SaaS approach, use Integrations to ingest blocklists into firewall, CDN, (...) via our Blockist as a Service Integrations endpoints
 
 Depending on which path you take you can start with the following guides:
 
+# Security Engine Ingestion
+If you already have security engines and remediation components installed in your infrastructure, you can follow the guide bellow.   
+<!-- We'll make those sections a bit more unifor later, maybe even in this current page rather than remote ones made only for this purpose -->
 <ConsolePromo
     title="CrowdSec Security Engine"
     description="The CrowdSec Security Engine is a powerful, open-source software for detecting and blocking malicious IPs, safeguarding both infrastructure and application security."
     image="Hero Security Engine.png"
     link="/u/blocklists/security_engine"
 />
-<br/>
+
+# SaaS Integration
+If you want to use blocklists without installing the CrowdSec Security Engine you can follow the guide bellow.    
 <ConsolePromo
     title="Integrations"
     description="A seemless way to integrate CrowdSec blocklists into your existing firewall, CDN, or other security solutions."
     image="Hero Blocklists.png"
-    link="/u/integrations/intro"
+    link="/u/blocklists/blaas_integrations/intro"
 />
 <br/>
 If you're new to CrowdSec, and want to use blocklists we recommend starting with the [Integrations guide](integrations/intro.mdx), however, if you are unsure where to start, feel free to browse our [main website for more information](https://www.crowdsec.net/).
