@@ -2,7 +2,8 @@
 
 > 🌟 Premium feature
 
-The Threat Forecast is a special blocklist for paying customers. It provides an additional layer of security on top of the community blocklist. In contrast to the community blocklist it is generated on a per-organization basis to deliver more precise protection based on the signals shared by the organization. 
+The Threat Forecast is a special blocklist for enterprise organizations.  
+It provides an additional layer of security on top of the community blocklist. In contrast to the community blocklist it is generated on a per-organization basis to deliver more precise protection based on the signals shared by the organization. 
 
 ## Enabling the Threat Forecast
 
