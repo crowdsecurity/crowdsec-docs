@@ -6,7 +6,7 @@ import {useColorMode} from '@docusaurus/theme-common';
 
 
 const TableRender = ({ columns, url, include=[], exclude=[] }) => {
-    const [jsonContent, setJsonContent] = useState()
+    const [jsonContent, setJsonContent] = useState([])
     const {colorMode} = useColorMode();
 
     const theme = useMemo(() => {
@@ -67,11 +67,10 @@ const TableRender = ({ columns, url, include=[], exclude=[] }) => {
             })
     // execute this fetch only once (on mount)
     }, []);
-
+    console.log(jsonContent)
     if (!columns || !jsonContent) {
         return <></>
     }
-
     return (
         <BrowserOnly>
             {() =>
@@ -85,6 +84,7 @@ const TableRender = ({ columns, url, include=[], exclude=[] }) => {
                         muiTablePaginationProps={{
                             rowsPerPageOptions: [10, 15, 25, 50, 100],
                         }}
+                        getRowId={(row) => row.name}
                     />
                 </ThemeProvider>
             }
