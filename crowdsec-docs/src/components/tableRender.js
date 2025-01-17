@@ -67,7 +67,6 @@ const TableRender = ({ columns, url, include=[], exclude=[] }) => {
             })
     // execute this fetch only once (on mount)
     }, []);
-    console.log(jsonContent)
     if (!columns || !jsonContent) {
         return <></>
     }
