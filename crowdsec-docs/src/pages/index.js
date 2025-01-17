@@ -34,7 +34,7 @@ function HomepageHeader() {
                             className="tw-h-20 tw-w-28 md:tw-h-24 md:tw-w-auto"
                         />
                     </div>
-                    <div className="tw-flex tw-justify-start tw-gap-2">
+                    <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-justify-start tw-gap-2">
                         <Link
                             className="button tw-bg-primary tw-text-white hover:tw-text-white/80 hover:tw-bg-primary/80 active:tw-bg-primary/90"
                             to="/u/getting_started/intro"
@@ -47,6 +47,13 @@ function HomepageHeader() {
                         >
                             Explore the Console
                         </Link>
+			<Link
+                            className="button tw-text-white hover:tw-text-white hover:tw-bg-white/10 active:tw-bg-white/20"
+                            to="https://killercoda.com/iiamloz/scenario/crowdsec-setup"
+                        >
+                            Online Sandbox
+                        </Link>
+
                     </div>
                 </div>
 
