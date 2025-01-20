@@ -117,6 +117,7 @@ module.exports = {
                         "log_processor/data_sources/s3",
                         "log_processor/data_sources/docker",
                         "log_processor/data_sources/file",
+                        "log_processor/data_sources/http",
                         "log_processor/data_sources/journald",
                         "log_processor/data_sources/kafka",
                         "log_processor/data_sources/kubernetes_audit",
