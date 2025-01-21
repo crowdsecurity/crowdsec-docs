@@ -488,8 +488,14 @@ The chance between 0 and 3 that the attacker behind the attack can spoof its ori
 #### `confidence`
 >type: int [0-3]
 
-The confidence note between 0 and 3 that the scenario will not trigger false positive.
-0 means no confidence and 3 means high confident.
+The confidence score ranges from 0 to 3, indicating the likelihood that the scenario will not produce a false positive.
+
+A lower score suggests that the action might not be malicious, while a higher score indicates higher confidence that the scenario identified malicious behavior.
+
+- `0`: The scenario is likely to produce false positives, so it is not reliable for identifying malicious behavior.
+- `1`: The scenario may produce false positives and is not highly reliable for identifying malicious behavior.
+- `2`: The scenario is reliable and unlikely to produce false positives. It can be used to identify malicious behavior.
+- `3`: The scenario is highly reliable and will not produce false positives. It is trustworthy for identifying malicious behavior.
 
 #### `cti`
 >type: bool [true|false]
