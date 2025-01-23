@@ -48,7 +48,41 @@ Once the integration is generated you will be presented with a credentials scree
     }}
 />
 
-[Checkpoint Documentation](https://support.checkpoint.com/results/sk/sk132193)
+## Checkpoint Configuration
+
+In the gateways and servers tab, double-click on the specific gateway you want to configure
+
+![](/img/checkpoint_step1.png)
+
+You will have this properties menu, select "Threat Prevention (Custom)", then activate at least Anti-Bot or Anti-Virus.
+
+![](/img/checkpoint_step2.png)
+
+Now go to the "Security policies" tab, and click on "New IOC Feed"
+
+![](/img/checkpoint_step3.png)
+
+Click on "Custom Policy", then below on "Indicators". Add your feed information and click "Test Feed".
+
+You need to put the username and password provided by the console in the "Feed URL" so it can use basic authentication:
+
+```
+https://<username>:<password>@admin.api.crowdsec.net/v1/integrations/<integration_id>/content
+```
+
+In this example, we used "Generic Firewall Format", but you can use checkpoint format and select the data column "1".
+
+![](/img/checkpoint_step4.png)
+
+Select the Gateway and click "Test Feed"
+
+![](/img/checkpoint_step5.png)
+
+Check That the feed is working and save the configuration.
+
+![](/img/checkpoint_step6.png)
+
+You can also take a look at the [Checkpoint Documentation](https://support.checkpoint.com/results/sk/sk132193) for more information (if you want to do it using CLI):
 
 ## Format example
 
