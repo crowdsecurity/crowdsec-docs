@@ -47,9 +47,9 @@ At the back, this component uses `mod_proxy`, `mod_ssl` for requests to LAPI, an
 
 :::warning
 
-There is not yet publicly available packages or this Remediation Component.
+Packages are only available for debian like systems.
 
-We are providing ways to build your own while we're working on packaging.
+THe module can be built and installed on other platform as well..
 
 :::
 
@@ -57,17 +57,28 @@ Clone or download directly [from our GitHub repository](https://github.com/crowd
 
 
 <Tabs
-  defaultValue="nginx_debian"
+  defaultValue="apache_debian"
   values={[
     { label: 'Debian/Ubuntu', value: 'nginx_debian' ,},
     { label: 'Others (build from source)', value: 'others' ,},
   ]
 }>
-<TabItem value="nginx_debian">
+<TabItem value="apache_debian">
+
+### Repository configuration
+
+:::warning
+
+Please note that the reposiroty for this package is not the same as the one holding CrowdSec's binary packages
 
 ```bash
-dpkg-buildpackage -us -uc
-sudo dpkg -i ../crowdsec-apache2-bouncer_1.0.0_amd64.deb
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
+```
+
+### Installation
+
+```bash
+sudo apt-get install crowdsec-apache2-bouncer
 ```
 
 </TabItem>
@@ -86,10 +97,6 @@ sudo cp config/mod_crowdsec.* /etc/apache2/mods-available/
 sudo mkdir  -p /etc/crowdsec/bouncers/
 sudo cp ./config/crowdsec-apache2-bouncer.conf  /etc/crowdsec/bouncers/
 ```
-
-</TabItem>
-
-</Tabs>
 
 ### Initial Configuration
 
@@ -120,6 +127,11 @@ If needed, edit `CrowdsecURL` (and other parameters)
 ```bash
 sudo systemctl restart apache2
 ```
+
+</TabItem>
+
+</Tabs>
+
 
 ## Configuration directives
 
