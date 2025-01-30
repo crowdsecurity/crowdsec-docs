@@ -16,7 +16,7 @@ In most cases you will use these lists to block malicious IP addresses from acce
 
 ## Zero False Positives
 
-Whilst we check for [Safe Classifications](/cti_api/taxonomy/false_postives.mdx) within **all** blocklist we provide (Third Party, CrowdSec Premium and CrowdSec Platinum), we cannot guarantee that **Third Party** blocklists are free from false positives as the data is not curated by CrowdSec. 
+Whilst we check for [Safe Classifications](/cti_api/taxonomy/false_positives.mdx) within **all** blocklist we provide (Third Party, CrowdSec Premium and CrowdSec Platinum), we cannot guarantee that **Third Party** blocklists are free from false positives as the data is not curated by CrowdSec. 
 
 ## How do CrowdSec Blocklists work?
 
