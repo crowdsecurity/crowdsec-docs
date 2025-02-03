@@ -13,9 +13,9 @@ The creation of said functional testing will guide our process and will make it 
 We're going to create a parser for the imaginary service "myservice" that produce three types of logs via syslog :
 
 ```
-Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '1.2.3.4'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '192.168.1.1'
 ```
 
 As we are going to parse those logs to further detect bruteforce and user-enumeration attacks, we're simply going to "discard" the last type of logs.
@@ -112,8 +112,8 @@ results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["program"] ==
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["timestamp"] == "Dec  8 06:28:43"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["is_my_service"] == "yes"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["logsource"] == "syslog"
-results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["message"] == "bad password for user 'toto' from '1.2.3.4'"
-results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["some_data"] == "bad password for user 'toto' from '1.2.3.4'"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["message"] == "bad password for user 'toto' from '192.168.1.1'"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["some_data"] == "bad password for user 'toto' from '192.168.1.1'"
 ...
 
 
@@ -130,19 +130,19 @@ Further inspection can be seen with `cscli hubtest explain` :
 
 ```bash
 ▶ cscli hubtest explain myservice-logs
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	└ s01-parse
 		└ 🟢 crowdsecurity/myservice-logs
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	└ s01-parse
 		└ 🟢 crowdsecurity/myservice-logs
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	└ s01-parse
@@ -218,12 +218,12 @@ results["s01-parse"]["crowdsecurity/myservice-logs"][0].Success == true
 ...
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["timestamp"] == "Dec  8 06:28:43"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["program"] == "myservice"
-results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["source_ip"] == "1.2.3.4"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["source_ip"] == "192.168.1.1"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["user"] == "toto"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["log_subtype"] == "myservice_bad_password"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["log_type"] == "myservice_failed_auth"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["service"] == "myservice"
-results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["source_ip"] == "1.2.3.4"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["source_ip"] == "192.168.1.1"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["username"] == "toto"
 ...
 results["s01-parse"]["crowdsecurity/myservice-logs"][1].Evt.Meta["log_subtype"] == "myservice_bad_user"
@@ -240,26 +240,26 @@ Again, further inspection with `cscli hubtest explain` will show us more about w
 
 ```bash
 ▶ cscli hubtest explain myservice-logs
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	└ s01-parse
 		└ 🟢 crowdsecurity/myservice-logs
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	└ s01-parse
 		└ 🟢 crowdsecurity/myservice-logs
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	└ s01-parse
 		└ 🔴 crowdsecurity/myservice-logs
 ```
 
-__note: we can see that our log line `accepted connection for user 'toto' from '1.2.3.4'` wasn't parsed by `crowdsecurity/myservice-logs` as we have no pattern for it__
+__note: we can see that our log line `accepted connection for user 'toto' from '192.168.1.1'` wasn't parsed by `crowdsecurity/myservice-logs` as we have no pattern for it__
 
 
 ## Closing word
