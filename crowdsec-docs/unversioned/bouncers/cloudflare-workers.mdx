@@ -356,7 +356,7 @@ crowdsec_config:
 3. *Failmode Configuration*: It's crucial to [configure the failmode properly](#setting-up-the-worker-route-fail-mode) to ensure your service remains operational even when request quotas are reached.
 4. *Testing with manual decisions*: Verify the functionality by adding decisions manually, which should be promptly reflected in KV storage and enforced by the Remediation Component.
   ```bash
-    sudo cscli decisions add --ip 1.2.3.4 --type captcha
+    sudo cscli decisions add --ip 192.168.1.1 --type captcha
   ```
   check your decisions has been added using:
 ```bash

@@ -72,7 +72,7 @@ As stated in the [swagger documentation](https://crowdsecurity.github.io/api_doc
 To have some data to query for, let's add two decisions to our local API
 
 ```bash
-▶ sudo cscli decisions add -i 1.2.3.4
+▶ sudo cscli decisions add -i 192.168.1.1
 INFO[0000] Decision successfully added      
 ▶ sudo cscli decisions add -r 2.2.3.0/24
 INFO[0000] Decision successfully added                  
@@ -82,7 +82,7 @@ INFO[0000] Decision successfully added
 +------+--------+------------------+----------------------------------------------------+--------+---------+----+--------+--------------------+----------+
 | 2337 | cscli  | Range:2.2.3.0/24 | manual 'ban' from                                  | ban    |         |    |      1 | 3h59m18.079301785s |     1164 |
 |      |        |                  | '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA' |        |         |    |        |                    |          |
-| 2336 | cscli  | Ip:1.2.3.4       | manual 'ban' from                                  | ban    |         |    |      1 | 3h59m11.079297437s |     1163 |
+| 2336 | cscli  | Ip:192.168.1.1       | manual 'ban' from                                  | ban    |         |    |      1 | 3h59m11.079297437s |     1163 |
 |      |        |                  | '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA' |        |         |    |        |                    |          |
 +------+--------+------------------+----------------------------------------------------+--------+---------+----+--------+--------------------+----------+
 
@@ -92,8 +92,8 @@ INFO[0000] Decision successfully added
 
 
 ```bash title="Query a single banned IP"
-▶ curl  -H "X-Api-Key: 837be58e22a28738066de1be8f53636b"  http://localhost:8080/v1/decisions\?ip=1.2.3.4
-[{"duration":"3h51m57.363171728s","id":2336,"origin":"cscli","scenario":"manual 'ban' from '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA'","scope":"Ip","type":"ban","value":"1.2.3.4"}]
+▶ curl  -H "X-Api-Key: 837be58e22a28738066de1be8f53636b"  http://localhost:8080/v1/decisions\?ip=192.168.1.1
+[{"duration":"3h51m57.363171728s","id":2336,"origin":"cscli","scenario":"manual 'ban' from '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA'","scope":"Ip","type":"ban","value":"192.168.1.1"}]
 ```
 
 ```bash title="Query a single IP"
@@ -112,7 +112,7 @@ _note: notice that the decision returned is the range that we banned earlier and
 
 ```bash title="Query a range in which one of the ban is contained"
 ▶ curl  -H "X-Api-Key: 837be58e22a28738066de1be8f53636b"  http://localhost:8080/v1/decisions\?range=1.2.3.0/24\&contains\=false
-[{"duration":"3h48m7.676653651s","id":2336,"origin":"cscli","scenario":"manual 'ban' from '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA'","scope":"Ip","type":"ban","value":"1.2.3.4"}]
+[{"duration":"3h48m7.676653651s","id":2336,"origin":"cscli","scenario":"manual 'ban' from '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA'","scope":"Ip","type":"ban","value":"192.168.1.1"}]
 ```
 _note: notice the `contains` flag that is set to false_
 
@@ -141,7 +141,7 @@ INFO[0000] Decision successfully added
 |      |        |                  | '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA' |             |         |    |        |                    |          |
 | 2337 | cscli  | Range:2.2.3.0/24 | manual 'ban' from                                  | ban         |         |    |      1 | 3h27m1.384972861s  |     1164 |
 |      |        |                  | '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA' |             |         |    |        |                    |          |
-| 2336 | cscli  | Ip:1.2.3.4       | manual 'ban' from                                  | ban         |         |    |      1 | 3h26m54.384971268s |     1163 |
+| 2336 | cscli  | Ip:192.168.1.1       | manual 'ban' from                                  | ban         |         |    |      1 | 3h26m54.384971268s |     1163 |
 |      |        |                  | '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA' |             |         |    |        |                    |          |
 +------+--------+------------------+----------------------------------------------------+-------------+---------+----+--------+--------------------+----------+
 ```
@@ -174,7 +174,7 @@ Given the our state looks like :
 +------+--------+------------------+----------------------------------------------------+--------+---------+----+--------+--------------------+----------+
 | 2337 | cscli  | Range:2.2.3.0/24 | manual 'ban' from                                  | ban    |         |    |      1 | 2h55m26.05271136s  |     1164 |
 |      |        |                  | '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA' |        |         |    |        |                    |          |
-| 2336 | cscli  | Ip:1.2.3.4       | manual 'ban' from                                  | ban    |         |    |      1 | 2h55m19.052706441s |     1163 |
+| 2336 | cscli  | Ip:192.168.1.1       | manual 'ban' from                                  | ban    |         |    |      1 | 2h55m19.052706441s |     1163 |
 |      |        |                  | '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA' |        |         |    |        |                    |          |
 +------+--------+------------------+----------------------------------------------------+--------+---------+----+--------+--------------------+----------+
 

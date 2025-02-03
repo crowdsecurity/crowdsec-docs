@@ -18,7 +18,7 @@ This can be done with a single line, with a given logfile, or via a full `dsn` :
 
 ```bash
 cscli explain --file ./myfile.log --type nginx 
-cscli explain --log "Sep 19 18:33:22 scw-d95986 sshd[24347]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=1.2.3.4" --type syslog
+cscli explain --log "Sep 19 18:33:22 scw-d95986 sshd[24347]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=192.168.1.1" --type syslog
 cscli explain --dsn "file://myfile.log" --type nginx
 ```
 
