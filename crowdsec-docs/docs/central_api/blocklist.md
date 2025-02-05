@@ -39,7 +39,7 @@ Free users that are not actively contributing to the network or that have been f
 
 This Blocklist is capped at 3 thousand IPs.
 
-## Why is my Security Engine on the Lite Blocklist?
+### Why is my Security Engine on the Lite Blocklist?
 
 This can vary from engine to engine, but the most common reasons are:
 
