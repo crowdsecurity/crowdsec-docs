@@ -18,7 +18,7 @@ The rules are different for free and paying users:
 
 Regardless of the blocklist "tier" you have access to (`Lite`, `Community`, `Premium`), each Security Engine gets a tailored blocklist based on the kind of behavior you're trying to detect.
 
-# Community Blocklist
+## Community Blocklist
 
 Free users that are actively contributing to the network (sending signal on a regular basis) have their Security Engines automatically subscribed to the *Community Blocklist*.
 
@@ -26,14 +26,14 @@ The content of the blocklist is unique to each Security Engine, as it mirrors th
 
 The *Community Blocklist* contains 15 thousand malicious IP's based on your reported scenarios.
 
-# Community Blocklist (Premium)
+## Community Blocklist (Premium)
 
 Paying users' Security Engine are automatically subscribed to the *Community Blocklist (Premium)*, which contains IPs that mirror their installed scenarios.
 Paying users' do not need to contribute to the network to be eligible to the blocklist.
 
 The *Community Blocklist (Premium)* blocklist content has no size limit, unlike free users.
 
-# Community Blocklist (Lite)
+## Community Blocklist (Lite)
 
 Free users that are not actively contributing to the network or that have been flagged as cheating/abusing the system will receive the *Community Blocklist (Lite)*.
 
