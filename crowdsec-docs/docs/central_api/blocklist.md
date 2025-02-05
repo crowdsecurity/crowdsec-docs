@@ -41,20 +41,24 @@ This Blocklist is capped at 3 thousand IPs.
 
 ### Why is my Security Engine on the Lite Blocklist?
 
-This can vary from engine to engine, but the most common reasons are:
+Your Security Engine may be placed on the Lite Blocklist for various reasons, such as:
 
-1. Your services are designed for self-hosting (videos, pictures, etc.) and are intended to be accessed only by a small group of people.
+1. Low Visibility Services
 
-In this case, your services may not be well known to the internet at large, so you may see less malicious traffic than a more public service such as a blog or ecommerce site.
+Your services are self-hosted (e.g., for private video or image hosting) and primarily accessed by a small group. As a result, your Security Engine detects less malicious activity compared to public-facing services like blogs or e-commerce sites.
 
-2. You already have a comprehensive security setup that reduces the need for the Community Blocklist. These measures can include:
-    - Geoblocking (restricting access to specific countries or your country of origin)
-    - IP whitelisting with a default deny-all policy
-    - VPN-only access
-    - Requiring authentication via an OAuth provider (e.g., Authentik, Authelia, Keycloak)
+2. Comprehensive Security Setup
+
+Your existing security measures reduce reliance on the Community Blocklist. These may include:
+- Geoblocking (restricting access to certain countries)
+- IP whitelisting with a default deny-all policy
+- VPN-only access
+- OAuth authentication (e.g., Authentik, Authelia, Keycloak)
 
 This simply a result of your security model and access requirements, its neither an issue with your setup nor a limitation on our end.
 
-3. Your CrowdSec installation may not be configured to monitor all your services.
+3. Incomplete CrowdSec Configuration
+
+Your Security Engine may not be monitoring all your services.
 
 If you suspect this might be the case, refer to our [post-installation guide](/u/getting_started/next_steps) to ensure full coverage.
