@@ -17,9 +17,14 @@ cscli appsec-rules list [item... | -a] [flags]
 ### Examples
 
 ```
+# List enabled (installed) appsec-rules.
 cscli appsec-rules list
+
+# List all available appsec-rules (installed or not).
 cscli appsec-rules list -a
-cscli appsec-rules list crowdsecurity/crs
+
+# List specific appsec-rules (installed or not).
+cscli appsec-rules list crowdsecurity/crs crowdsecurity/vpatch-git-config
 ```
 
 ### Options

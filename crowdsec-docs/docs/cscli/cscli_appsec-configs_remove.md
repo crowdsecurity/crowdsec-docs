@@ -17,16 +17,35 @@ cscli appsec-configs remove [item]... [flags]
 ### Examples
 
 ```
-cscli appsec-configs remove crowdsecurity/vpatch
+# Uninstall some appsec-configs.
+cscli appsec-configs remove crowdsecurity/virtual-patching
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli appsec-configs remove crowdsecurity/virtual-patching --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli appsec-configs remove crowdsecurity/virtual-patching --dry-run -o raw
+
+# Uninstall and also remove the downloaded files.
+cscli appsec-configs remove crowdsecurity/virtual-patching --purge
+
+# Remove tainted items.
+cscli appsec-configs remove crowdsecurity/virtual-patching --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli appsec-configs remove crowdsecurity/virtual-patching -i
+cscli appsec-configs remove crowdsecurity/virtual-patching --interactive
 ```
 
 ### Options
 
 ```
-      --all     Remove all the appsec-configs
-      --force   Force remove: remove tainted and outdated files
-  -h, --help    help for remove
-      --purge   Delete source file too
+      --all           Remove all the appsec-configs
+      --dry-run       Don't install or remove anything; print the execution plan
+      --force         Force remove: remove tainted and outdated files
+  -h, --help          help for remove
+  -i, --interactive   Ask for confirmation before proceeding
+      --purge         Delete source file too
 ```
 
 ### Options inherited from parent commands

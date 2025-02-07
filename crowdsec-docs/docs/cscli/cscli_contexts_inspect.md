@@ -17,7 +17,14 @@ cscli contexts inspect [item]... [flags]
 ### Examples
 
 ```
-cscli contexts inspect crowdsecurity/yyy crowdsecurity/zzz
+# Display metadata, state and ancestor collections of contexts (installed or not).
+cscli contexts inspect crowdsecurity/bf_base crowdsecurity/fortinet
+
+# Display difference between a tainted item and the latest one.
+cscli contexts inspect crowdsecurity/bf_base --diff
+
+# Reverse the above diff
+cscli contexts inspect crowdsecurity/bf_base --diff --rev
 ```
 
 ### Options

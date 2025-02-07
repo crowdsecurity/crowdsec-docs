@@ -17,16 +17,35 @@ cscli scenarios install [item]... [flags]
 ### Examples
 
 ```
+# Install some scenarios.
 cscli scenarios install crowdsecurity/ssh-bf crowdsecurity/http-probing
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli scenarios install crowdsecurity/ssh-bf crowdsecurity/http-probing --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli scenarios install crowdsecurity/ssh-bf crowdsecurity/http-probing --dry-run -o raw
+
+# Download only, to be installed later.
+cscli scenarios install crowdsecurity/ssh-bf crowdsecurity/http-probing --download-only
+
+# Install over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
+cscli scenarios install crowdsecurity/ssh-bf crowdsecurity/http-probing --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli scenarios install crowdsecurity/ssh-bf crowdsecurity/http-probing -i
+cscli scenarios install crowdsecurity/ssh-bf crowdsecurity/http-probing --interactive
 ```
 
 ### Options
 
 ```
   -d, --download-only   Only download packages, don't enable
+      --dry-run         Don't install or remove anything; print the execution plan
       --force           Force install: overwrite tainted and outdated files
   -h, --help            help for install
       --ignore          Ignore errors when installing multiple scenarios
+  -i, --interactive     Ask for confirmation before proceeding
 ```
 
 ### Options inherited from parent commands

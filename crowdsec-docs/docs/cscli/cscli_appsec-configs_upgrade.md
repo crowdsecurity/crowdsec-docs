@@ -17,15 +17,31 @@ cscli appsec-configs upgrade [item]... [flags]
 ### Examples
 
 ```
-cscli appsec-configs upgrade crowdsecurity/vpatch
+# Upgrade some appsec-configs. If they are not currently installed, they are downloaded but not installed.
+cscli appsec-configs upgrade crowdsecurity/virtual-patching
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli appsec-configs upgrade crowdsecurity/virtual-patching --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli appsec-configs upgrade crowdsecurity/virtual-patching --dry-run -o raw
+
+# Upgrade over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
+cscli appsec-configs upgrade crowdsecurity/virtual-patching --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli appsec-configs upgrade crowdsecurity/virtual-patching -i
+cscli appsec-configs upgrade crowdsecurity/virtual-patching --interactive
 ```
 
 ### Options
 
 ```
-  -a, --all     Upgrade all the appsec-configs
-      --force   Force upgrade: overwrite tainted and outdated files
-  -h, --help    help for upgrade
+  -a, --all           Upgrade all the appsec-configs
+      --dry-run       Don't install or remove anything; print the execution plan
+      --force         Force upgrade: overwrite tainted and outdated files
+  -h, --help          help for upgrade
+  -i, --interactive   Ask for confirmation before proceeding
 ```
 
 ### Options inherited from parent commands

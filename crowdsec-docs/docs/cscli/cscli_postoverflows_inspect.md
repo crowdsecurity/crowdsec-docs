@@ -17,7 +17,14 @@ cscli postoverflows inspect [item]... [flags]
 ### Examples
 
 ```
-cscli postoverflows inspect crowdsecurity/cdn-whitelist crowdsecurity/rdns
+# Display metadata, state and ancestor collections of postoverflows (installed or not).
+cscli postoverflows inspect crowdsecurity/cdn-whitelist
+
+# Display difference between a tainted item and the latest one.
+cscli postoverflows inspect crowdsecurity/cdn-whitelist --diff
+
+# Reverse the above diff
+cscli postoverflows inspect crowdsecurity/cdn-whitelist --diff --rev
 ```
 
 ### Options
