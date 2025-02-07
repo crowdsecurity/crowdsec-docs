@@ -17,15 +17,31 @@ cscli appsec-rules upgrade [item]... [flags]
 ### Examples
 
 ```
+# Upgrade some appsec-rules. If they are not currently installed, they are downloaded but not installed.
 cscli appsec-rules upgrade crowdsecurity/crs
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli appsec-rules upgrade crowdsecurity/crs --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli appsec-rules upgrade crowdsecurity/crs --dry-run -o raw
+
+# Upgrade over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
+cscli appsec-rules upgrade crowdsecurity/crs --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli appsec-rules upgrade crowdsecurity/crs -i
+cscli appsec-rules upgrade crowdsecurity/crs --interactive
 ```
 
 ### Options
 
 ```
-  -a, --all     Upgrade all the appsec-rules
-      --force   Force upgrade: overwrite tainted and outdated files
-  -h, --help    help for upgrade
+  -a, --all           Upgrade all the appsec-rules
+      --dry-run       Don't install or remove anything; print the execution plan
+      --force         Force upgrade: overwrite tainted and outdated files
+  -h, --help          help for upgrade
+  -i, --interactive   Ask for confirmation before proceeding
 ```
 
 ### Options inherited from parent commands

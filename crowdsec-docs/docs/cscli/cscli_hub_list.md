@@ -13,7 +13,7 @@ cscli hub list [-a] [flags]
 ### Options
 
 ```
-  -a, --all    List disabled items as well
+  -a, --all    List all available items, including those not installed
   -h, --help   help for list
 ```
 

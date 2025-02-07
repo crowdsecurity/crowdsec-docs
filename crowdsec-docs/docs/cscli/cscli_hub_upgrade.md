@@ -16,11 +16,27 @@ Upgrade all configs installed from Crowdsec Hub. Run 'sudo cscli hub update' if 
 cscli hub upgrade [flags]
 ```
 
+### Examples
+
+```
+# Upgrade all the collections, scenarios etc. to the latest version in the downloaded index. Update data files too.
+cscli hub upgrade
+
+# Upgrade tainted items as well; force re-download of data files.
+cscli hub upgrade --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli hub upgrade --interactive
+cscli hub upgrade -i
+```
+
 ### Options
 
 ```
-      --force   Force upgrade: overwrite tainted and outdated files
-  -h, --help    help for upgrade
+      --dry-run       Don't install or remove anything; print the execution plan
+      --force         Force upgrade: overwrite tainted and outdated items; always update data files
+  -h, --help          help for upgrade
+  -i, --interactive   Ask for confirmation before proceeding
 ```
 
 ### Options inherited from parent commands

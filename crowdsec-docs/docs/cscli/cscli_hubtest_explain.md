@@ -13,7 +13,9 @@ cscli hubtest explain [flags]
 ### Options
 
 ```
-  -h, --help   help for explain
+      --failures   Only show failed lines
+  -h, --help       help for explain
+  -v, --verbose    Display individual changes
 ```
 
 ### Options inherited from parent commands
