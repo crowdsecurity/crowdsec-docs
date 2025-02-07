@@ -455,9 +455,7 @@ module.exports = {
                 id: "cscli/cscli_config",
             },
             items: [
-                "cscli/cscli_config_backup",
                 "cscli/cscli_config_feature-flags",
-                "cscli/cscli_config_restore",
                 "cscli/cscli_config_show",
             ],
         },
