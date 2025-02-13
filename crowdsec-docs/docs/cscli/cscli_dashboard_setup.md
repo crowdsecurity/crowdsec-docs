@@ -28,6 +28,7 @@ cscli dashboard setup -l 0.0.0.0 -p 443 --password <password>
 
 ```
   -d, --dir string              Shared directory with metabase container
+  -e, --env strings             Additional environment variables to pass to the metabase container
   -f, --force                   Force setup : override existing files
   -h, --help                    help for setup
   -l, --listen string           Listen address of container (default "127.0.0.1")

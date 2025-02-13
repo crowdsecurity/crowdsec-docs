@@ -102,7 +102,7 @@ inband_rules:
  - crowdsecurity/base-config
  - crowdsecurity/vpatch-*
 pre_eval:
- - filter: IsInBand == true && req.RemoteAddr == "42.42.42.42"
+ - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
    apply:
     - RemoveInBandRuleByName("my_rule")
 ```
@@ -188,7 +188,7 @@ inband_rules:
  - crowdsecurity/base-config
  - crowdsecurity/vpatch-*
 post_eval:
- - filter: IsInBand == true && req.RemoteAddr == "42.42.42.42"
+ - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
    apply:
     - CancelAlert()
     - CancelEvent()

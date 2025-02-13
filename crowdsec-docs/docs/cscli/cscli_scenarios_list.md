@@ -17,11 +17,14 @@ cscli scenarios list [item... | -a] [flags]
 ### Examples
 
 ```
+# List enabled (installed) scenarios.
 cscli scenarios list
-cscli scenarios list -a
-cscli scenarios list crowdsecurity/ssh-bf crowdsecurity/http-probing
 
-List only enabled scenarios unless "-a" or names are specified.
+# List all available scenarios (installed or not).
+cscli scenarios list -a
+
+# List specific scenarios (installed or not).
+cscli scenarios list crowdsecurity/ssh-bf crowdsecurity/http-probing
 ```
 
 ### Options

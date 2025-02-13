@@ -150,7 +150,7 @@ prometheus:
 
 ```
 
-`cache_retention_duration` : The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. If a decision is identical to some decision already present in the cache, then the custom script is not invoked. The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `1.2.3.4`,  `CH` etc).
+`cache_retention_duration` : The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. If a decision is identical to some decision already present in the cache, then the custom script is not invoked. The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `192.168.1.1`,  `CH` etc).
 
 You can then start the service:
 
@@ -197,8 +197,8 @@ Remember to set execution permissions for your binary or script. If it's a scrip
 ## Examples
 
 ```text
-custom_binary.sh add 1.2.3.4/32 3600 "test blacklist" <json_object>
-custom_binary.sh del 1.2.3.4/32 3600 "test blacklist" <json_object>
+custom_binary.sh add 192.168.1.1/32 3600 "test blacklist" <json_object>
+custom_binary.sh del 192.168.1.1/32 3600 "test blacklist" <json_object>
 ```
 
 
@@ -267,7 +267,7 @@ origins: ["cscli", "crowdsec"]
 
 The component keeps track of all custom script invocations from the last `cache_retention_duration` interval. 
 If a decision is identical to some decision already present in the cache, then the custom script is not invoked. 
-The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `1.2.3.4`,  `CH` etc).
+The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `192.168.1.1`,  `CH` etc).
 
 ### `piddir`
 > string

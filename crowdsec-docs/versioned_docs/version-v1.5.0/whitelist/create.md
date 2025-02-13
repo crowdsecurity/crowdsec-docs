@@ -191,7 +191,7 @@ We recommend to use a file like `/etc/crowdsec/capi_whitelists.yaml` and the con
 
 ```yaml
 ips:
- - 1.2.3.4
+ - 192.168.1.1
  - 2.3.4.5
 cidrs:
  - 1.2.3.0/24

@@ -116,7 +116,7 @@ sudo cscli decisions list
 +-----+-----------+-------------+------------------------------------+--------+---------+----+--------+--------------------+----------+
 | 802 | cscli     | Ip:1.2.3.5  | manual 'ban' from                  | ban    |         |    |      1 | 3h50m58.10039043s  |     802  |
 |     |           |             | 'b76cc7b1bbdc489e93909d2043031de8' |        |         |    |        |                    |          |
-| 801 | crowdsec  | Ip:1.2.3.4  | crowdsecurity/ssh-bf               | ban    |         |    |      6 | 3h59m45.100387557s |     801  |
+| 801 | crowdsec  | Ip:192.168.1.1  | crowdsecurity/ssh-bf               | ban    |         |    |      6 | 3h59m45.100387557s |     801  |
 +-----+-----------+-------------+------------------------------------+--------+---------+----+--------+--------------------+----------+
 ```
 </details>
@@ -130,11 +130,11 @@ There are different decisions `SOURCE`:
 ## Add/Remove decisions
 
 ```bash
-cscli decisions add -i 1.2.3.4
-cscli decisions delete -i 1.2.3.4
+cscli decisions add -i 192.168.1.1
+cscli decisions delete -i 192.168.1.1
 ```
 
-Those commands will respectively add a manual decision for ip `1.2.3.4` (with default parameters such as duration and such), and remove all active decisions for ip `1.2.3.4`.
+Those commands will respectively add a manual decision for ip `192.168.1.1` (with default parameters such as duration and such), and remove all active decisions for ip `192.168.1.1`.
 
 
 

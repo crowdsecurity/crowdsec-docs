@@ -17,11 +17,14 @@ cscli collections list [item... | -a] [flags]
 ### Examples
 
 ```
+# List enabled (installed) collections.
 cscli collections list
-cscli collections list -a
-cscli collections list crowdsecurity/http-cve crowdsecurity/iptables
 
-List only enabled collections unless "-a" or names are specified.
+# List all available collections (installed or not).
+cscli collections list -a
+
+# List specific collections (installed or not).
+cscli collections list crowdsecurity/http-cve crowdsecurity/iptables
 ```
 
 ### Options
