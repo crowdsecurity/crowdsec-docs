@@ -150,9 +150,9 @@ Behavior can be overriden in any location.
 > fail|block|allow
 
 How to respond if the Crowdsec API is not available:
- - `fail` (**default**) returns a 500 Internal Server Error. 
+ - `fail`  returns a 500 Internal Server Error.
  - `block` returns a 302 Redirect (or 429 Too Many Requests if CrowdsecLocation is unset).
- - `allow` will allow the request through.
+ - `allow` (**default**) will allow the request through.
 
 ### `CrowdsecBlockedHTTPCode`
 
