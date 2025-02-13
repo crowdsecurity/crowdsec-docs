@@ -17,7 +17,17 @@ cscli collections inspect [item]... [flags]
 ### Examples
 
 ```
+# Display metadata, state, metrics and dependencies of collections (installed or not).
 cscli collections inspect crowdsecurity/http-cve crowdsecurity/iptables
+
+# Don't collect metrics (avoid error if crowdsec is not running).
+cscli collections inspect crowdsecurity/http-cve crowdsecurity/iptables --no-metrics
+
+# Display difference between a tainted item and the latest one, or the reason for the taint if it's a dependency.
+cscli collections inspect crowdsecurity/http-cve --diff
+
+# Reverse the above diff
+cscli collections inspect crowdsecurity/http-cve --diff --rev
 ```
 
 ### Options

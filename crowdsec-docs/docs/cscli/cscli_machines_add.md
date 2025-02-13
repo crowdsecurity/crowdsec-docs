@@ -28,9 +28,9 @@ cscli machines add -f- --auto > /tmp/mycreds.yaml
 ```
   -a, --auto              automatically generate password (and username if not provided)
   -f, --file string       output file destination (defaults to /etc/crowdsec/local_api_credentials.yaml)
-      --force             will force add the machine if it already exist
+      --force             will force add the machine if it already exists
   -h, --help              help for add
-  -i, --interactive       interfactive mode to enter the password
+  -i, --interactive       interactive mode to enter the password
   -p, --password string   machine password to login to the API
   -u, --url string        URL of the local API
 ```

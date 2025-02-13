@@ -17,11 +17,14 @@ cscli parsers list [item... | -a] [flags]
 ### Examples
 
 ```
+# List enabled (installed) parsers.
 cscli parsers list
-cscli parsers list -a
-cscli parsers list crowdsecurity/caddy-logs crowdsecurity/sshd-logs
 
-List only enabled parsers unless "-a" or names are specified.
+# List all available parsers (installed or not).
+cscli parsers list -a
+
+# List specific parsers (installed or not).
+cscli parsers list crowdsecurity/caddy-logs crowdsecurity/sshd-logs
 ```
 
 ### Options

@@ -17,15 +17,31 @@ cscli postoverflows upgrade [item]... [flags]
 ### Examples
 
 ```
-cscli postoverflows upgrade crowdsecurity/cdn-whitelist crowdsecurity/rdns
+# Upgrade some postoverflows. If they are not currently installed, they are downloaded but not installed.
+cscli postoverflows upgrade crowdsecurity/cdn-whitelist crowdsecurity/rdnss
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli postoverflows upgrade crowdsecurity/cdn-whitelist crowdsecurity/rdnss --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli postoverflows upgrade crowdsecurity/cdn-whitelist crowdsecurity/rdnss --dry-run -o raw
+
+# Upgrade over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
+cscli postoverflows upgrade crowdsecurity/cdn-whitelist crowdsecurity/rdnss --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli postoverflows upgrade crowdsecurity/cdn-whitelist crowdsecurity/rdnss -i
+cscli postoverflows upgrade crowdsecurity/cdn-whitelist crowdsecurity/rdnss --interactive
 ```
 
 ### Options
 
 ```
-  -a, --all     Upgrade all the postoverflows
-      --force   Force upgrade: overwrite tainted and outdated files
-  -h, --help    help for upgrade
+  -a, --all           Upgrade all the postoverflows
+      --dry-run       Don't install or remove anything; print the execution plan
+      --force         Force upgrade: overwrite tainted and outdated files
+  -h, --help          help for upgrade
+  -i, --interactive   Ask for confirmation before proceeding
 ```
 
 ### Options inherited from parent commands

@@ -17,16 +17,35 @@ cscli collections install [item]... [flags]
 ### Examples
 
 ```
+# Install some collections.
 cscli collections install crowdsecurity/http-cve crowdsecurity/iptables
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli collections install crowdsecurity/http-cve crowdsecurity/iptables --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli collections install crowdsecurity/http-cve crowdsecurity/iptables --dry-run -o raw
+
+# Download only, to be installed later.
+cscli collections install crowdsecurity/http-cve crowdsecurity/iptables --download-only
+
+# Install over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
+cscli collections install crowdsecurity/http-cve crowdsecurity/iptables --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli collections install crowdsecurity/http-cve crowdsecurity/iptables -i
+cscli collections install crowdsecurity/http-cve crowdsecurity/iptables --interactive
 ```
 
 ### Options
 
 ```
   -d, --download-only   Only download packages, don't enable
+      --dry-run         Don't install or remove anything; print the execution plan
       --force           Force install: overwrite tainted and outdated files
   -h, --help            help for install
       --ignore          Ignore errors when installing multiple collections
+  -i, --interactive     Ask for confirmation before proceeding
 ```
 
 ### Options inherited from parent commands

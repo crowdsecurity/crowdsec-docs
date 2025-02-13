@@ -10,9 +10,13 @@ Welcome to the documentation section dedicated to CrowdSec's Blocklists. This se
 
 ## What are CrowdSec Blocklists?
 
-Blocklists are lists of IP addresses that are known to be malicious. These lists are curated by CrowdSec and empower you to block malicious IP addresses from accessing your systems with zero false positives. We outlined in our [CrowdSec Data](https://www.crowdsec.net/our-data) page how we collect and curate these IP addresses to ensure that the data is fresh and free from false positives.
+Blocklists are lists of IP addresses that are known to be malicious. These lists are curated by CrowdSec and empower you to block malicious IP addresses from accessing your systems with [zero false positives](#zero-false-positives). We outlined in our [CrowdSec Data](https://www.crowdsec.net/our-data) page how we collect and curate these IP addresses to ensure that the data is fresh and free from false positives.
 
 In most cases you will use these lists to block malicious IP addresses from accessing your systems. However, since it is a feed of IP addresses that are known to be malicious, you can also use it to enrich your SIEM, threat intelligence platform, or any other security tool that you use.
+
+## Zero False Positives
+
+Whilst we check for [Safe Classifications](/cti_api/taxonomy/false_positives.mdx) within **all** blocklist we provide (Third Party, CrowdSec Premium and CrowdSec Platinum), we cannot guarantee that **Third Party** blocklists are free from false positives as the data is not curated by CrowdSec. 
 
 ## How do CrowdSec Blocklists work?
 

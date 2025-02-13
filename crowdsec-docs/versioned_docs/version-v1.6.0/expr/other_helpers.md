@@ -34,7 +34,7 @@ An empty string if the key doesn't exist (or has been evicted), and error is rai
 
 Returns true if it's a valid IPv4.
 
-> `IsIPV4("1.2.3.4")`
+> `IsIPV4("192.168.1.1")`
 
 > `IsIPV4(Alert.GetValue())`
 
@@ -44,7 +44,7 @@ Returns true if it's a valid IP (v4 or v6).
 
 > `IsIP("2001:0db8:85a3:0000:0000:8a2e:0370:7334")`
 
-> `IsIP("1.2.3.4")`
+> `IsIP("192.168.1.1")`
 
 > `IsIP(Alert.GetValue())`
 

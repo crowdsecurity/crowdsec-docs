@@ -160,7 +160,7 @@ Please keep this key since you will not be able to retrieve it!
 2. Emit a legitimate request to the AppSec Component:
 
 ```bash
-curl -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-host: foobar.com' -H 'x-crowdsec-appsec-verb: POST' -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password'
+curl -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-ip: 192.168.1.1' -H 'x-crowdsec-appsec-host: foobar.com' -H 'x-crowdsec-appsec-verb: POST' -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password'
 ```
 
 Which will give us an answer such as:
@@ -181,7 +181,7 @@ We're trying to access a `.env` file, a [common way to get access to some creden
 :::
 
 ```bash
-curl -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-uri: /.env' -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-host: foobar.com' -H 'x-crowdsec-appsec-verb: POST' -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password'
+curl -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-uri: /.env' -H 'x-crowdsec-appsec-ip: 192.168.1.1' -H 'x-crowdsec-appsec-host: foobar.com' -H 'x-crowdsec-appsec-verb: POST' -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password'
 
 ```
 
