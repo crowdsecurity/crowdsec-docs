@@ -17,16 +17,35 @@ cscli appsec-rules remove [item]... [flags]
 ### Examples
 
 ```
+# Uninstall some appsec-rules.
 cscli appsec-rules remove crowdsecurity/crs
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli appsec-rules remove crowdsecurity/crs --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli appsec-rules remove crowdsecurity/crs --dry-run -o raw
+
+# Uninstall and also remove the downloaded files.
+cscli appsec-rules remove crowdsecurity/crs --purge
+
+# Remove tainted items.
+cscli appsec-rules remove crowdsecurity/crs --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli appsec-rules remove crowdsecurity/crs -i
+cscli appsec-rules remove crowdsecurity/crs --interactive
 ```
 
 ### Options
 
 ```
-      --all     Remove all the appsec-rules
-      --force   Force remove: remove tainted and outdated files
-  -h, --help    help for remove
-      --purge   Delete source file too
+      --all           Remove all the appsec-rules
+      --dry-run       Don't install or remove anything; print the execution plan
+      --force         Force remove: remove tainted and outdated files
+  -h, --help          help for remove
+  -i, --interactive   Ask for confirmation before proceeding
+      --purge         Delete source file too
 ```
 
 ### Options inherited from parent commands

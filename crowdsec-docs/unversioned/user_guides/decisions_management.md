@@ -68,7 +68,7 @@ sudo cscli decisions list --origin cscli-import
 > Ban an IP address
 
 ```bash
-sudo cscli decisions add -i 1.2.3.4
+sudo cscli decisions add -i 192.168.1.1
 ```
 
 :::info
@@ -78,10 +78,10 @@ sudo cscli decisions add -i 1.2.3.4
 
 :::
 
-> Add a decision (ban) on the IP address `1.2.3.4` for 24 hours, with reason 'web bruteforce'
+> Add a decision (ban) on the IP address `192.168.1.1` for 24 hours, with reason 'web bruteforce'
 
 ```bash
-sudo cscli decisions add --ip 1.2.3.4 --duration 24h --reason "web bruteforce"
+sudo cscli decisions add --ip 192.168.1.1 --duration 24h --reason "web bruteforce"
 ```
 
 > Add a decision (ban) on the IP range  `1.2.3.0/24` for 4 hours (the default duration), with reason 'web bruteforce'
@@ -91,18 +91,18 @@ sudo cscli decisions add --range 1.2.3.0/24 --reason "web bruteforce"
 ```
 
 
-> Add a decision (captcha) the on IP address `1.2.3.4` for 4 hours, with reason 'web bruteforce'
+> Add a decision (captcha) the on IP address `192.168.1.1` for 4 hours, with reason 'web bruteforce'
 
 ```bash
-sudo cscli decisions add --ip 1.2.3.4 --reason "web bruteforce" --type captcha
+sudo cscli decisions add --ip 192.168.1.1 --reason "web bruteforce" --type captcha
 ```
 
 ## Delete a decision
 
-> delete the decision on IP address `1.2.3.4`
+> delete the decision on IP address `192.168.1.1`
 
 ```bash
-sudo cscli decisions delete --ip 1.2.3.4
+sudo cscli decisions delete --ip 192.168.1.1
 ```
 
 > delete the decision on IP range 1.2.3.0/24
@@ -163,7 +163,7 @@ sudo cscli decisions import -i foo.csv
 
 ```csv title="Example CSV file"
 duration,scope,value
-24h,ip,1.2.3.4
+24h,ip,192.168.1.1
 ```
 
 ### JSON File

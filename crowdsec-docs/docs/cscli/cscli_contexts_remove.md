@@ -17,16 +17,35 @@ cscli contexts remove [item]... [flags]
 ### Examples
 
 ```
-cscli contexts remove crowdsecurity/yyy crowdsecurity/zzz
+# Uninstall some contexts.
+cscli contexts remove crowdsecurity/bf_base crowdsecurity/fortinet
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli contexts remove crowdsecurity/bf_base crowdsecurity/fortinet --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli contexts remove crowdsecurity/bf_base crowdsecurity/fortinet --dry-run -o raw
+
+# Uninstall and also remove the downloaded files.
+cscli contexts remove crowdsecurity/bf_base crowdsecurity/fortinet --purge
+
+# Remove tainted items.
+cscli contexts remove crowdsecurity/bf_base crowdsecurity/fortinet --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli contexts remove crowdsecurity/bf_base crowdsecurity/fortinet -i
+cscli contexts remove crowdsecurity/bf_base crowdsecurity/fortinet --interactive
 ```
 
 ### Options
 
 ```
-      --all     Remove all the contexts
-      --force   Force remove: remove tainted and outdated files
-  -h, --help    help for remove
-      --purge   Delete source file too
+      --all           Remove all the contexts
+      --dry-run       Don't install or remove anything; print the execution plan
+      --force         Force remove: remove tainted and outdated files
+  -h, --help          help for remove
+  -i, --interactive   Ask for confirmation before proceeding
+      --purge         Delete source file too
 ```
 
 ### Options inherited from parent commands

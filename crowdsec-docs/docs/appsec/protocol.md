@@ -41,7 +41,7 @@ All requests forwarded by the remediation component must be sent via a `GET` req
 
 For this example:
 
-- A `POST` HTTP request has been made by the IP `1.2.3.4` to a website on `example.com`.
+- A `POST` HTTP request has been made by the IP `192.168.1.1` to a website on `example.com`.
 - The Application Security Component listen on `http://localhost:4241/`.
 
 <details>
@@ -71,7 +71,7 @@ username=admin' OR '1'='1' -- &password=password
 ```
 POST / HTTP/1.1
 Host: localhost:4241
-X-Crowdsec-Appsec-ip: 1.2.3.4
+X-Crowdsec-Appsec-ip: 192.168.1.1
 X-Crowdsec-Appsec-Uri: /login
 X-Crowdsec-Appsec-Host: example.com
 X-Crowdsec-Appsec-Verb: POST

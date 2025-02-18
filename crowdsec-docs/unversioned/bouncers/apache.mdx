@@ -47,32 +47,44 @@ At the back, this component uses `mod_proxy`, `mod_ssl` for requests to LAPI, an
 
 :::warning
 
-There is not yet publicly available packages or this Remediation Component.
+Packages are only available for debian and ubuntu systems.
 
-We are providing ways to build your own while we're working on packaging.
+The module can be built and installed on other platform as well.
+
+Please keep in mind that this bouncer only supports live mode.
 
 :::
 
-Clone or download directly [from our GitHub repository](https://github.com/crowdsecurity/cs-apache2-bouncer).
-
-
 <Tabs
-  defaultValue="nginx_debian"
+  defaultValue="apache_debian"
   values={[
-    { label: 'Debian/Ubuntu', value: 'nginx_debian' ,},
+    { label: 'Debian/Ubuntu', value: 'apache_debian' ,},
     { label: 'Others (build from source)', value: 'others' ,},
   ]
 }>
-<TabItem value="nginx_debian">
+<TabItem value="apache_debian">
+
+### Repository configuration
+
+:::warning
+Please note that the repository for this package is not the same as the one holding CrowdSec's binary packages,
+:::
 
 ```bash
-dpkg-buildpackage -us -uc
-sudo dpkg -i ../crowdsec-apache2-bouncer_1.0.0_amd64.deb
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-apache/script.deb.sh | sudo bash
+```
+
+### Installation
+
+```bash
+sudo apt-get install crowdsec-apache2-bouncer
 ```
 
 </TabItem>
 
 <TabItem value="others">
+
+Clone or download directly [from our GitHub repository](https://github.com/crowdsecurity/cs-apache2-bouncer).
 
 ```bash
 aclocal
@@ -86,10 +98,6 @@ sudo cp config/mod_crowdsec.* /etc/apache2/mods-available/
 sudo mkdir  -p /etc/crowdsec/bouncers/
 sudo cp ./config/crowdsec-apache2-bouncer.conf  /etc/crowdsec/bouncers/
 ```
-
-</TabItem>
-
-</Tabs>
 
 ### Initial Configuration
 
@@ -110,7 +118,6 @@ Remediation Component config's is located in `/etc/crowdsec/bouncers/crowdsec-ap
 ```bash
 ## Replace the API key with the newly generated one [1]
 CrowdsecAPIKey this_is_a_bad_password
-...
 ```
 
 :::info
@@ -121,7 +128,13 @@ If needed, edit `CrowdsecURL` (and other parameters)
 sudo systemctl restart apache2
 ```
 
+</TabItem>
+</Tabs>
+
+
 ## Configuration directives
+
+The configuration file is stored in `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf` by default.
 
 ### `Crowdsec`
 
@@ -138,9 +151,9 @@ Behavior can be overriden in any location.
 > fail|block|allow
 
 How to respond if the Crowdsec API is not available:
- - `fail` (**default**) returns a 500 Internal Server Error. 
+ - `fail`  returns a 500 Internal Server Error.
  - `block` returns a 302 Redirect (or 429 Too Many Requests if CrowdsecLocation is unset).
- - `allow` will allow the request through.
+ - `allow` (**default**) will allow the request through.
 
 ### `CrowdsecBlockedHTTPCode`
 

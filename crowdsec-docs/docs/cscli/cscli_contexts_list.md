@@ -17,11 +17,14 @@ cscli contexts list [item... | -a] [flags]
 ### Examples
 
 ```
+# List enabled (installed) contexts.
 cscli contexts list
-cscli contexts list -a
-cscli contexts list crowdsecurity/yyy crowdsecurity/zzz
 
-List only enabled contexts unless "-a" or names are specified.
+# List all available contexts (installed or not).
+cscli contexts list -a
+
+# List specific contexts (installed or not).
+cscli contexts list crowdsecurity/bf_base crowdsecurity/fortinet
 ```
 
 ### Options
