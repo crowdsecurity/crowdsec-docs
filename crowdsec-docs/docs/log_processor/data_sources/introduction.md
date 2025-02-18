@@ -23,6 +23,7 @@ Name | Type | Stream | One-shot
 [Kafka](/log_processor/data_sources/kafka.md)| read logs from kafka topic | yes | no
 [Kubernetes Audit](/log_processor/data_sources/kubernetes_audit.md) | expose a webhook to receive audit logs from a Kubernetes cluster  | yes | no
 [Loki](/log_processor/data_sources/loki.md) | read logs from loki | yes | yes
+[VictoriaLogs](/log_processor/data_sources/victorialogs.md) | read logs from VictoriaLogs | yes | yes
 [syslog service](/log_processor/data_sources/syslog_service.md) | read logs received via syslog protocol | yes | no
 [Windows Event](/log_processor/data_sources/windows_event_log.md)| read logs from windows event log | yes | yes
 
