@@ -176,7 +176,8 @@ Here, you can choose to use `cURL` requests instead. Beware that in this case, y
 
 By default, the maximum allowed time to perform a Local API request is 120 seconds. You can change this setting here. If you set a negative value, request timeout will be unlimited.
 
-<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-bouncing.jpg')} alt="Connection details" title="Connection details" />
+<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-bouncing.png')} alt="Connection details" 
+title="Connection details" />
 
 ***
 
@@ -191,9 +192,13 @@ With the `Flex mode`, it is impossible to accidentally block access to your site
 
 `Bouncing → Public website only`
 
-If enabled, the admin view is not bounced.
+If enabled, Admin related requests are not protected.
 
-This is not recommended in production.
+**Important notes**:
+We recommend to leave this setting to OFF in order to apply protection to your WordPress admin:
+
+- WordPress admin is a frequent target of cyber attacks.
+- Also, some critical public endpoints are considered "admin" and would be unprotected If this setting was ON.
 
 ***
 
