@@ -76,23 +76,23 @@ controller:
       - name: SITE_KEY
         value: "<your-captcha-site-key>" # If you want captcha support otherwise remove this ENV VAR
       - name: BAN_TEMPLATE_PATH
-        value: /etc/nginx/lua/plugins/crowdsec/templates/ban.html
+        value: "/etc/nginx/lua/plugins/crowdsec/templates/ban.html"
       - name: CAPTCHA_TEMPLATE_PATH
-        value: /etc/nginx/lua/plugins/crowdsec/templates/captcha.html
+        value: "/etc/nginx/lua/plugins/crowdsec/templates/captcha.html"
       ## Appsec configuration, optional.
       ## Remove this section if not using appsec
       - name: APPSEC_URL
-        value: "http://appsec-service.crowdsec.svc.cluster.local:7422" # if using our helm chart, and running the appsec in the "crowdsec" namespace
+        value: "http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422" # if using our helm chart with "crowdsec" release name, and running the appsec in the "crowdsec" namespace
       - name: APPSEC_FAILURE_ACTION
-        value: passthrough # What to do if the appsec is down, optional
+        value: "passthrough" # What to do if the appsec is down, optional
       - name: APPSEC_CONNECT_TIMEOUT # connection timeout to the appsec, in ms, optionial
-        value: 100
+        value: "100"
       - name: APPSEC_SEND_TIMEOUT # write timeout to the appsec, in ms, optional
-        value: 100
+        value: "100"
       - name: APPSEC_PROCESS_TIMEOUT # max processing duration of the request, in ms, optional
-        value: 1000
+        value: "1000"
       - name: ALWAYS_SEND_TO_APPSEC
-        value: false # always send requests to the appsec, even if there's a decision against the IP, optional
+        value: "false" # always send requests to the appsec, even if there's a decision against the IP, optional
     command: ['sh', '-c', "sh /docker_start.sh; mkdir -p /lua_plugins/crowdsec/; cp -R /crowdsec/* /lua_plugins/crowdsec/"]
     volumeMounts:
     - name: crowdsec-bouncer-plugin
@@ -369,7 +369,7 @@ APPSEC_URL=http://<ip>:<port>
 
 If set, enable appsec mode and forward the request to this endpoint for analysis.
 
-Use `http://appsec-service.crowdsec.svc.cluster.local:7422` if you are using our helm chart to deploy crowdsec in the `crowdsec` namespace
+Use `http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422` if using our helm chart with `crowdsec` release name, and running the appsec in the `crowdsec` namespace.
 
 ### `APPSEC_FAILURE_ACTION`
 > passthrough | deny
