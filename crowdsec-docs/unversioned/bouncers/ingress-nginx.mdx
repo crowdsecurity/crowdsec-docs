@@ -82,7 +82,7 @@ controller:
       ## Appsec configuration, optional.
       ## Remove this section if not using appsec
       - name: APPSEC_URL
-        value: "http://appsec-service.crowdsec.svc.cluster.local:7422" # if using our helm chart, and running the appsec in the "crowdsec" namespace
+        value: "http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422" # if using our helm chart with "crowdsec" release name, and running the appsec in the "crowdsec" namespace
       - name: APPSEC_FAILURE_ACTION
         value: passthrough # What to do if the appsec is down, optional
       - name: APPSEC_CONNECT_TIMEOUT # connection timeout to the appsec, in ms, optionial
@@ -369,7 +369,7 @@ APPSEC_URL=http://<ip>:<port>
 
 If set, enable appsec mode and forward the request to this endpoint for analysis.
 
-Use `http://appsec-service.crowdsec.svc.cluster.local:7422` if you are using our helm chart to deploy crowdsec in the `crowdsec` namespace
+Use `http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422` if using our helm chart with `crowdsec` release name, and running the appsec in the `crowdsec` namespace.
 
 ### `APPSEC_FAILURE_ACTION`
 > passthrough | deny
