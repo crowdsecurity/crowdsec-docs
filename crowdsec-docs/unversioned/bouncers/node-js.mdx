@@ -1,0 +1,61 @@
+---
+id: node-js
+title: Node.js
+sidebar_position: 1
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/crowdsecurity/nodejs-cs-bouncer/main/docs/assets/app-sec.webp" width="400px" align="center" alt="Crowdsec Bouncer logo" />
+</p>
+
+## Overview
+This bouncer allows you to protect your Node.js application from IPs that have been detected by CrowdSec. Depending on the decision taken by CrowdSec, user will either get denied (403) or have to fill a captcha (401).
+
+It supports ban and captcha remediation, and all decisions with Ip or Range scope.
+
+## Requirements
+
+-   `Node.js >= 20`
+
+## Installation
+
+```bash
+npm install @crowdsec/nodejs-bouncer
+```
+
+## Features 
+
+- CrowdSec Local API support
+
+    - Handle `ip` and `range` scoped decisions
+    - `Live mode` or `Stream mode`
+
+- Support IpV4 and Ipv6 (Ipv6 range decisions are yet only supported in `Live mode`)
+
+## Usage
+
+When a user is suspected by CrowdSec to be malevolent, the bouncer would either display a captcha to resolve or
+simply a page notifying that access is denied. If the user is considered as a clean user, the page will be accessible
+as normal.
+
+A ban wall could look like:
+
+<img src={useBaseUrl('/img/bouncer/nodejs/screenshots/ban-wall.png')} alt="Ban wall" title="Ban wall" />
+
+A captcha wall could look like:
+
+<img src={useBaseUrl('/img/bouncer/nodejs/screenshots/captcha-wall.png')} alt="Captcha wall" title="Captcha wall" />
+
+With the provided bouncer, it is possible to customize all the colors of these pages so that they integrate
+best with your design.
+
+On the other hand, all texts are also fully customizable. This will allow you, for example, to present translated pages
+in your users' language.
+
+## Resources
+
+- [GitHub Repository](https://github.com/crowdsecurity/nodejs-cs-bouncer)
+- [Complete User Guide](https://github.com/crowdsecurity/nodejs-cs-bouncer/blob/main/docs/USER_GUIDE.md)
+- [Developer Guide](https://github.com/crowdsecurity/nodejs-cs-bouncer/blob/main/docs/DEVELOPER.md)
