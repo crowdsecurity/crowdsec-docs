@@ -17,15 +17,31 @@ cscli contexts upgrade [item]... [flags]
 ### Examples
 
 ```
-cscli contexts upgrade crowdsecurity/yyy crowdsecurity/zzz
+# Upgrade some contexts. If they are not currently installed, they are downloaded but not installed.
+cscli contexts upgrade crowdsecurity/bf_base crowdsecurity/fortinet
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli contexts upgrade crowdsecurity/bf_base crowdsecurity/fortinet --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli contexts upgrade crowdsecurity/bf_base crowdsecurity/fortinet --dry-run -o raw
+
+# Upgrade over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
+cscli contexts upgrade crowdsecurity/bf_base crowdsecurity/fortinet --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli contexts upgrade crowdsecurity/bf_base crowdsecurity/fortinet -i
+cscli contexts upgrade crowdsecurity/bf_base crowdsecurity/fortinet --interactive
 ```
 
 ### Options
 
 ```
-  -a, --all     Upgrade all the contexts
-      --force   Force upgrade: overwrite tainted and outdated files
-  -h, --help    help for upgrade
+  -a, --all           Upgrade all the contexts
+      --dry-run       Don't install or remove anything; print the execution plan
+      --force         Force upgrade: overwrite tainted and outdated files
+  -h, --help          help for upgrade
+  -i, --interactive   Ask for confirmation before proceeding
 ```
 
 ### Options inherited from parent commands

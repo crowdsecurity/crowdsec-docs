@@ -33,10 +33,10 @@ docker compose up
 With your current working directory being in the cloned repo. Run the following command to point the settings to your instance's IP
 
 ```
-sed -i "s/my_ip/1.2.3.4/g" transforms.csv
+sed -i "s/my_ip/192.168.1.1/g" transforms.csv
 ```
 
-Replace **1.2.3.4** with your instance's IP
+Replace **192.168.1.1** with your instance's IP
 
 
 #### Registering at pTDS

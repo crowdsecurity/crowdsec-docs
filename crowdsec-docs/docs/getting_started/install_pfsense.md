@@ -33,11 +33,23 @@ for inclusion in the official repository which should smooth out these issues.
 
 ## Installing the package
 
- * Choose [the release you want to install](https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases),
-   click `Assets` for the list of packages to install.
+ * Choose [the release you want to install](https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases)
 
- * Open an ssh connection to your pfSense box and run the following commands in the right order. Do not activate or run the services,
-   because pfSense will take care of it.
+ * Open an ssh connection to your pfSense box
+
+ * Download the `install-crowdsec.sh` script: 
+```console
+fetch https://raw.githubusercontent.com/crowdsecurity/pfSense-pkg-crowdsec/refs/heads/main/install-crowdsec.sh
+```
+ * Run it:
+```console
+sh install-crowdsec.sh --release vx.y.z-X.Y.Z
+```
+
+* Do not activate or run the services, because pfSense will take care of it.
+
+
+ * Alternatively, you can download the packages to install in the `Assets` part of the release, and run the following commands in the right order.
 
 ```console
 # setenv IGNORE_OSVERSION yes
@@ -54,14 +66,26 @@ of FreeBSD, you will find .tar files in the release assets containing the packag
 
 ## Configuration
 
-Once the package and its dependencies are installed, go to `Service/CrowdSec`. The options *Remediation Component*,
+Once the package and its dependencies are installed, go to `Services/CrowdSec`. The options *Remediation Component*,
 *Log Processor* and *Local API* should be enabled. Click Save.
 
-With the size analogy, the default is a "Large", autonomous installation. For a "Medium", disable *Local API* and fill the fields in the *Remote LAPI* section. For a "Small", disable *Log Processor* too.
+![Config part 1](/img/pfsense/config-1.png)
+
+With the size analogy, the default is a "Large", autonomous installation. 
+
+For a "Medium", disable *Local API* and fill the fields in the *Remote LAPI* section. 
+
+![Config part 2](/img/pfsense/config-2-remote.png)
+
+For a "Small", disable *Log Processor* too.
 
 CrowdSec on pfSense is fully functional from the command line but the web interface is read-only, with the exception of decision revocation (unban).
 Most other actions require the shell or the [CrowdSec Console](https://app.crowdsec.net).
 For simple things, `Diagnostics/Command Prompt` works as well as ssh.
+
+![Command Prompt](/img/pfsense/command-prompt.png)
+
+
 You are free to edit the files in `/usr/local/etc/crowdsec`, although some setting may be overwritten by the pfSense package if they are mandatory.
 
 :::caution
@@ -76,9 +100,20 @@ need to connect them to a remote CrowdSec instance.
 
 In the page `Status/CrowdSec` you can see
 
- - registered log processors and bouncers
+ - registered log processors and remediation components
+
+![Remediation components](/img/pfsense/status-remediation-components.png)
+
+
  - installed hub items (collections, scenarios, parsers, postoverflows)
+
+![Hub collections](/img/pfsense/status-hub-collections.png)
+
+
  - alerts and local decisions
+   
+![Alerts](/img/pfsense/status-alerts.png)
+
 
 All tables are read-only with an exception: you can delete decisions one by one, to unban an IP for example.
 An IP may have been banned for several reasons, which counts as separate decisions.
@@ -123,8 +158,19 @@ Make sure to reload or restart CrowdSec when you add new data sources.
 
 ## Diagnostics
 
-Under `Diagnostics/CrowdSec` you can check if the logs are acquired and the
-events are triggered correctly. For real monitoring, you can fetch the same metrics with
+Under `Diagnostics/CrowdSec Metrics` you can check if the logs are acquired and the
+events are triggered correctly. 
+
+
+![Diagnostics acquisition](/img/pfsense/diagnostic-metrics-acquisition.png)
+
+
+
+![Diagnostics local api](/img/pfsense/diagnostic-metrics-local-api.png)
+
+
+
+For real monitoring, you can fetch the same metrics with
 [Prometheus](https://docs.crowdsec.net/docs/observability/prometheus/) (Grafana dashboard included)
 Telegraf or your favorite solution.
 
@@ -135,6 +181,9 @@ If you are not running a LAPI or a Log Processor, some metrics are always empty.
 
 You can see the Security Engine logs in `Status/System Logs/Packages/crowdsec`.
 
+
+![Logs](/img/pfsense/logs.png)
+
 Other logs not shown in the UI are in `/var/log/crowdsec/crowdsec_api.log`
 and `crowdsec-firewall-bouncer.log`.
 
@@ -142,11 +191,20 @@ and `crowdsec-firewall-bouncer.log`.
 ## Service Management
 
 Both services, Security Engine (crowdsec) and Remediation (crowdsec-firewall-bouncer) can be controlled from `Status/Services`.
+
+![Services](/img/pfsense/status-services.png)
+
+
 The equivalent shell commands are `service crowdsec.sh start/stop/restart` and `service crowdsec_firewall.sh start/stop/restart`. Note the ending **.sh**!
 
 ## Viewing blocked IPs
 
-You can see the tables of the blocked IPs in Diagnostics/Tables or from the shell, with the commands
+You can see the tables of the blocked IPs in `Diagnostics/Tables`
+
+![Blocked IPs](/img/pfsense/blocked-ips.png)
+
+
+Or from the shell, with the commands
 `pfctl -T show -t crowdsec_blacklists` (IPv4) and `pfctl -T show -t crowdsec6_blacklists` (IPv6).
 
 To show the same data with more context, use `cscli decisions list -a`.

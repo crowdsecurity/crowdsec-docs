@@ -75,7 +75,7 @@ cscli bouncers add appsec_test -k this_is_a_bad_password
 > Emit a request to the AppSec Component
 
 ```bash
-curl -I -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password' -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET' 
+curl -I -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password' -H 'x-crowdsec-appsec-ip: 192.168.1.1' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET' 
 HTTP/1.1 200 OK
 Date: Tue, 05 Dec 2023 19:37:56 GMT
 Content-Length: 18
@@ -85,7 +85,7 @@ Content-Type: text/plain; charset=utf-8
 If you receive a `200 OK`, you can authenticate to the AppSec Component. If the component is misconfigured or your API key is invalid, you will receive a `401 Unauthorized`:
 
 ```bash
-curl -I -X POST localhost:7422/ -i  -H 'x-crowdsec-appsec-api-key: meeh' -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET'          
+curl -I -X POST localhost:7422/ -i  -H 'x-crowdsec-appsec-api-key: meeh' -H 'x-crowdsec-appsec-ip: 192.168.1.1' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET'          
 HTTP/1.1 401 Unauthorized
 Date: Tue, 05 Dec 2023 19:38:51 GMT
 Content-Length: 0
@@ -212,7 +212,7 @@ cscli bouncers add appsec_test -k this_is_a_bad_password
 We can now query our AppSec Component (we're assuming here that it runs on the default `127.0.0.1:7422`, see the `listen_addr` parameter of the acquisition config):
 
 ```bash
-▶ curl -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-ip: 42.42.42.42' -H 'x-crowdsec-appsec-uri: /rpc2' -H 'x-crowdsec-appsec-host: google.com' -H 'x-crowdsec-appsec-verb: POST' -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password'
+▶ curl -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-ip: 192.168.1.1' -H 'x-crowdsec-appsec-uri: /rpc2' -H 'x-crowdsec-appsec-host: google.com' -H 'x-crowdsec-appsec-verb: POST' -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password'
 HTTP/1.1 403 Forbidden
 Date: Tue, 05 Dec 2023 11:17:51 GMT
 Content-Length: 16
@@ -225,7 +225,7 @@ And we see the alert appearing in `crowdsec.log` :
 
 ```
 ...
-INFO[2023-12-05 12:17:52] (test) alert : crowdsecurity/vpatch-CVE-2023-42793 by ip 42.42.42.42
+INFO[2023-12-05 12:17:52] (test) alert : crowdsecurity/vpatch-CVE-2023-42793 by ip 192.168.1.1
 ...
 ```
 
@@ -235,7 +235,7 @@ And in `cscli alerts list` :
 ╭────┬────────────────┬─────────────────────────────────────┬─────────┬────┬───────────┬───────────────────────────────╮
 │ ID │     value      │               reason                │ country │ as │ decisions │          created_at           │
 ├────┼────────────────┼─────────────────────────────────────┼─────────┼────┼───────────┼───────────────────────────────┤
-│ 1  │ Ip:42.42.42.42 │ crowdsecurity/vpatch-CVE-2023-42793 │         │    │           │ 2023-12-05 11:17:51 +0000 UTC │
+│ 1  │ Ip:192.168.1.1 │ crowdsecurity/vpatch-CVE-2023-42793 │         │    │           │ 2023-12-05 11:17:51 +0000 UTC │
 ╰────┴────────────────┴─────────────────────────────────────┴─────────┴────┴───────────┴───────────────────────────────╯
 
 ```

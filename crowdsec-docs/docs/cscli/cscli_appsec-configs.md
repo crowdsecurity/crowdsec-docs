@@ -10,10 +10,10 @@ Manage hub appsec-configs
 
 ```
 cscli appsec-configs list -a
-cscli appsec-configs install crowdsecurity/vpatch
-cscli appsec-configs inspect crowdsecurity/vpatch
-cscli appsec-configs upgrade crowdsecurity/vpatch
-cscli appsec-configs remove crowdsecurity/vpatch
+cscli appsec-configs install crowdsecurity/virtual-patching
+cscli appsec-configs inspect crowdsecurity/virtual-patching
+cscli appsec-configs upgrade crowdsecurity/virtual-patching
+cscli appsec-configs remove crowdsecurity/virtual-patching
 
 ```
 

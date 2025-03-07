@@ -122,6 +122,7 @@ module.exports = {
                         "log_processor/data_sources/kafka",
                         "log_processor/data_sources/kubernetes_audit",
                         "log_processor/data_sources/loki",
+                        "log_processor/data_sources/victorialogs",
                         "log_processor/data_sources/syslog",
                         "log_processor/data_sources/windows_evt_log",
                         "log_processor/data_sources/troubleshoot",
@@ -455,9 +456,7 @@ module.exports = {
                 id: "cscli/cscli_config",
             },
             items: [
-                "cscli/cscli_config_backup",
                 "cscli/cscli_config_feature-flags",
-                "cscli/cscli_config_restore",
                 "cscli/cscli_config_show",
             ],
         },

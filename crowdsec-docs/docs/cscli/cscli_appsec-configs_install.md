@@ -17,16 +17,35 @@ cscli appsec-configs install [item]... [flags]
 ### Examples
 
 ```
-cscli appsec-configs install crowdsecurity/vpatch
+# Install some appsec-configs.
+cscli appsec-configs install crowdsecurity/virtual-patching
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli appsec-configs install crowdsecurity/virtual-patching --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli appsec-configs install crowdsecurity/virtual-patching --dry-run -o raw
+
+# Download only, to be installed later.
+cscli appsec-configs install crowdsecurity/virtual-patching --download-only
+
+# Install over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
+cscli appsec-configs install crowdsecurity/virtual-patching --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli appsec-configs install crowdsecurity/virtual-patching -i
+cscli appsec-configs install crowdsecurity/virtual-patching --interactive
 ```
 
 ### Options
 
 ```
   -d, --download-only   Only download packages, don't enable
+      --dry-run         Don't install or remove anything; print the execution plan
       --force           Force install: overwrite tainted and outdated files
   -h, --help            help for install
       --ignore          Ignore errors when installing multiple appsec-configs
+  -i, --interactive     Ask for confirmation before proceeding
 ```
 
 ### Options inherited from parent commands

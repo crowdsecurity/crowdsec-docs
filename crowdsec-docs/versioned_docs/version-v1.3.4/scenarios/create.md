@@ -19,12 +19,12 @@ The creation of said functional testing will guide our process and will make it 
 We're going to create a scenario for an imaginary service "myservice" from the following logs of failed authentication :
 
 ```
-Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
 ```
 
 ## Pre-requisites
@@ -133,17 +133,17 @@ INFO[01-10-2021 12:41:21 PM] Running test 'myservice-bf'
 WARN[01-10-2021 12:41:24 PM] Assert file '/home/dev/github/hub/.tests/myservice-bf/scenario.assert' is empty, generating assertion: 
 
 len(results) == 1
-"1.2.3.4" in results[0].Overflow.GetSources()
-results[0].Overflow.Sources["1.2.3.4"].IP == "1.2.3.4"
-results[0].Overflow.Sources["1.2.3.4"].Range == ""
-results[0].Overflow.Sources["1.2.3.4"].GetScope() == "Ip"
-results[0].Overflow.Sources["1.2.3.4"].GetValue() == "1.2.3.4"
+"192.168.1.1" in results[0].Overflow.GetSources()
+results[0].Overflow.Sources["192.168.1.1"].IP == "192.168.1.1"
+results[0].Overflow.Sources["192.168.1.1"].Range == ""
+results[0].Overflow.Sources["192.168.1.1"].GetScope() == "Ip"
+results[0].Overflow.Sources["192.168.1.1"].GetValue() == "192.168.1.1"
 results[0].Overflow.Alert.Events[0].GetMeta("datasource_path") == "myservice-bf.log"
 results[0].Overflow.Alert.Events[0].GetMeta("datasource_type") == "file"
 results[0].Overflow.Alert.Events[0].GetMeta("log_subtype") == "myservice_bad_user"
 results[0].Overflow.Alert.Events[0].GetMeta("log_type") == "myservice_failed_auth"
 results[0].Overflow.Alert.Events[0].GetMeta("service") == "myservice"
-results[0].Overflow.Alert.Events[0].GetMeta("source_ip") == "1.2.3.4"
+results[0].Overflow.Alert.Events[0].GetMeta("source_ip") == "192.168.1.1"
 results[0].Overflow.Alert.Events[0].GetMeta("username") == "toto"
 ....
 results[0].Overflow.Alert.GetScenario() == "crowdsecurity/myservice-bf"
@@ -167,7 +167,7 @@ We can again understand more of what is going on thanks to `cscli hubtest explai
 
 ```bash
 ▶ cscli hubtest explain myservice-bf
-line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	├ s01-parse
@@ -178,7 +178,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3
 	├ Scenarios
 		└ 🟢 crowdsecurity/myservice-bf
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	├ s01-parse
@@ -189,7 +189,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' f
 	├ Scenarios
 		└ 🟢 crowdsecurity/myservice-bf
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	├ s01-parse
@@ -200,7 +200,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' f
 	├ Scenarios
 		└ 🟢 crowdsecurity/myservice-bf
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	├ s01-parse
@@ -211,7 +211,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' f
 	├ Scenarios
 		└ 🟢 crowdsecurity/myservice-bf
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	├ s01-parse
@@ -222,7 +222,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' f
 	├ Scenarios
 		└ 🟢 crowdsecurity/myservice-bf
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	├ s01-parse

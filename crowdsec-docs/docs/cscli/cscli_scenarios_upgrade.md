@@ -17,15 +17,31 @@ cscli scenarios upgrade [item]... [flags]
 ### Examples
 
 ```
+# Upgrade some scenarios. If they are not currently installed, they are downloaded but not installed.
 cscli scenarios upgrade crowdsecurity/ssh-bf crowdsecurity/http-probing
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli scenarios upgrade crowdsecurity/ssh-bf crowdsecurity/http-probing --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli scenarios upgrade crowdsecurity/ssh-bf crowdsecurity/http-probing --dry-run -o raw
+
+# Upgrade over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
+cscli scenarios upgrade crowdsecurity/ssh-bf crowdsecurity/http-probing --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli scenarios upgrade crowdsecurity/ssh-bf crowdsecurity/http-probing -i
+cscli scenarios upgrade crowdsecurity/ssh-bf crowdsecurity/http-probing --interactive
 ```
 
 ### Options
 
 ```
-  -a, --all     Upgrade all the scenarios
-      --force   Force upgrade: overwrite tainted and outdated files
-  -h, --help    help for upgrade
+  -a, --all           Upgrade all the scenarios
+      --dry-run       Don't install or remove anything; print the execution plan
+      --force         Force upgrade: overwrite tainted and outdated files
+  -h, --help          help for upgrade
+  -i, --interactive   Ask for confirmation before proceeding
 ```
 
 ### Options inherited from parent commands

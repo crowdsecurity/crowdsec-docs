@@ -399,7 +399,7 @@ The action to be applied for a decision, if the decision's action is not support
 Consider your zone config supports the actions `managed_challenge` and `js_challenge`. Your `default_action` is `managed_action`. If you create the following decision:
 
 ```
-sudo cscli decisions add --ip 1.2.3.4 --type ban
+sudo cscli decisions add --ip 192.168.1.1 --type ban
 ```
 
 Since the zone doesn't support `ban` decision type, it'll be inserted into the IP list given by `default_action`. In this case it'll be the list for `managed_challenge`.

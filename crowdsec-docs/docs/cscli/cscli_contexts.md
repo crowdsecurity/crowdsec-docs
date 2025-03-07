@@ -10,10 +10,10 @@ Manage hub contexts
 
 ```
 cscli contexts list -a
-cscli contexts install crowdsecurity/yyy crowdsecurity/zzz
-cscli contexts inspect crowdsecurity/yyy crowdsecurity/zzz
-cscli contexts upgrade crowdsecurity/yyy crowdsecurity/zzz
-cscli contexts remove crowdsecurity/yyy crowdsecurity/zzz
+cscli contexts install crowdsecurity/bf_base crowdsecurity/fortinet
+cscli contexts inspect crowdsecurity/bf_base crowdsecurity/fortinet
+cscli contexts upgrade crowdsecurity/bf_base crowdsecurity/fortinet
+cscli contexts remove crowdsecurity/bf_base crowdsecurity/fortinet
 
 ```
 
