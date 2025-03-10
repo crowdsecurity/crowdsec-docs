@@ -11,8 +11,9 @@ At CrowdSec, we're committed to providing a range of cybersecurity solutions tai
 
 Our Community Plan is designed as an entry point for users beginning to explore the vast cybersecurity landscape. With this plan, users are entitled to:
 
-- **500 Alert Quota**: Receive up to 500 alerts, allowing organizations to stay informed about potential threats to your network.
-- **7 Days of Retention**: Access alerts for up to a week, giving you ample time to review and act on them.
+- **500 first alerts of the month**: Receive up to 500 alerts per month, with the quota resetting on the 1st of every month. This allows organizations to stay informed about potential threats to their network.
+- **2 Months of Retention**: Access alerts from the last two months, within the 500-alert limit per months. This ensures you can review and act on recent alerts while staying within your quota.
+  
   This plan is ideal for individual users or small teams looking for essential monitoring tools without the need for extensive historical data retention or a high volume of alerts.
 
 ### Why Upgrade to Premium? 🏅
