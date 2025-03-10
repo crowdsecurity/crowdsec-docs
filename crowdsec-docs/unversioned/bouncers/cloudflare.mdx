@@ -23,14 +23,17 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
+:::danger
+
+This bouncer isn't actively supported anymore, due to changes to Cloudflare's API rate limitations.
+
+You should instead look at the Cloudflare Workers Bouncer.
+
+:::
 
 A Remediation Component that syncs the decisions made by CrowdSec with CloudFlare's firewall. Manages multi user, multi account, multi zone setup. Supports IP, Country and AS scoped decisions.
 
-:::warning
-Currently use of this component is discouraged if you are on free plan with Cloudflare due to rate limitations. We are working to resolve this with Cloudflare support.
 
-If you are on a premium plan with Cloudflare contact thier support to ask about increasing your rate limit.
-:::
 
 ## Installation
 
