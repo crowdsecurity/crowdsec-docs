@@ -4,22 +4,12 @@ title: Allowlists
 sidebar_position: 7
 ---
 
+# AllowLists
 
-:::info
+The AllowLists feature in CrowdSec lets users manage IP-based allowlists at the LAPI level, affecting both local decisions and blocklist pulls. [Paying customers can also control AllowLists directly from the console for added convenience](/u/console/allowlists). This ensures greater flexibility in managing trusted IPs while maintaining CrowdSec’s robust security measures.
 
-Paid plan users can manage allowlists directly from the [console](/u/console/allowlists).
 
-Allowlists managed through the console are *not* editable with `cscli`.
-
-In case of conflict, console managed allowlists override cscli managed allowlists.
-
-Allowlists managed with `cscli` will not be shown in the console.
-
-:::
-
-# Allowlists
-
-LAPI supports IP/Range based allowlists that applies to various scopes:
+The AllowLists affect local decision and blocklist pulls in different ways:
 
 | Area | Action | Real Time |
 |-------|------|------| 
@@ -29,8 +19,8 @@ LAPI supports IP/Range based allowlists that applies to various scopes:
 | cscli | Decision is blocked unless special flag is provided | ✅ |
 
 
+AllowLists are limited to IP/Range based rules. If you need rules that rely on log elements such as URL and so on, [Parser Whitelists](/log_processor/whitelist/introduction.md) or [Profile Rules](/local_api/profiles/format.md) might more relevant.
 
-<!-- @TKO : Explain that parser based whitelist and profile based whitelists -->
 
 ### Creating an allowlist
 
