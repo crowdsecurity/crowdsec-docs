@@ -3,6 +3,13 @@ id: create_capi
 title: CAPI
 ---
 
+:::warning
+
+This option is deprecated.
+You should use [centralized allowlists](local_api/allowlists.md) instead.
+
+:::
+
 ## Whitelists from CAPI (Central API) community blocklist or third party blocklist
 
 From version 1.5.0 a user can specify a list of IP's or IP ranges to be whitelisted from a community blocklist or third party blocklist. You will have to specify a path to the file within `config.yaml` as by default there is no file specified.

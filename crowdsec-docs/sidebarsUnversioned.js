@@ -221,6 +221,15 @@ module.exports = {
         },
         {
             type: "category",
+            label: "Centralized Allowlists 🏅",
+            link: {
+                type: "doc",
+                id: "console/allowlists",
+            },
+            items: [],
+        },
+        {
+            type: "category",
             label: "Threat Forecast 🏅",
             link: {
                 type: "doc",
