@@ -20,10 +20,19 @@ Allowlists are checked in real-time against the database when handling local ale
 In the case of the appsec, allowlists are refreshed every minute: this means it can take up to a minute for an allowlist to be effective for the appsec.
 
 
-### Differences with existing allowlisting systems
+### Comparaison with existing allowlisting systems
+
+#### Parser allowlists
+
+#### Postoverflows
 
 #### `capi_whitelists_path`
 
+The new allowlisting system deprecates the config option `capi_whitelists_path`.
+
+We recommend everyone to migrate their allowlist: it offers the same features, and allows to add an optional expiration for each allowlist entry.
+
+#### Profiles
 
 
 
@@ -31,7 +40,7 @@ In the case of the appsec, allowlists are refreshed every minute: this means it 
 
 :::info
 
-If you are on a paid plan on the Crowdsec Console, you can configure allowlists directly from the console. Please refer to this [documentation](FIXME).
+If you are on a paid plan on the Crowdsec Console, you can configure allowlists directly from the console. Please refer to this [documentation](/u/console/allowlists).
 
 Allowlists managed through the console are *not* editable with `cscli`.
 
