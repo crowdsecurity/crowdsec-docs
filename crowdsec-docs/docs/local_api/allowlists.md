@@ -4,52 +4,33 @@ title: Allowlists
 sidebar_position: 7
 ---
 
-# Allowlists
-
-LAPI supports simple allowlists (based on IP or range) and automatically applies them to:
- - Local alerts
- - Decisions pulled from CAPI (community blocklist, 3rd party blocklists, private blocklists)
- - Appsec
-
-The allowlists have specific behaviors depending on where they are applied:
- - For local alerts, the alert will be dropped by LAPI, and the action will be logged.
- - For CAPI decisions (blocklists), decisions matching an allowlist will be removed before the insertion in the database
- - For the appsec, allowlists will be checked only if a rule has matched, the match will be logged, but no event or alert will be generated.
-
-Allowlists are checked in real-time against the database when handling local alerts and blocklists.
-In the case of the appsec, allowlists are refreshed every minute: this means it can take up to a minute for an allowlist to be effective for the appsec.
-
-
-### Comparaison with existing allowlisting systems
-
-#### Parser allowlists
-
-#### Postoverflows
-
-#### `capi_whitelists_path`
-
-The new allowlisting system deprecates the config option `capi_whitelists_path`.
-
-We recommend everyone to migrate their allowlist: it offers the same features, and allows to add an optional expiration for each allowlist entry.
-
-#### Profiles
-
-
-
-## Configuration
 
 :::info
 
-If you are on a paid plan on the Crowdsec Console, you can configure allowlists directly from the console. Please refer to this [documentation](/u/console/allowlists).
+Paid plan users can manage allowlists directly from the [console](/u/console/allowlists).
 
 Allowlists managed through the console are *not* editable with `cscli`.
 
-If a console allowlist has the same name as a local allowlist, the content will be replace with the one from the console.
+In case of conflict, console managed allowlists override cscli managed allowlists.
 
 Allowlists managed with `cscli` will not be shown in the console.
 
 :::
 
+# Allowlists
+
+LAPI supports IP/Range based allowlists that applies to various scopes:
+
+| Area | Action | Real Time |
+|-------|------|------| 
+| Local alerts | Alert is dropped, action logged. | ✅ |
+| Blocklists | IP is removed before database insertion | ✅ |
+| WAF (AppSec) | Request not blocked, action logged. | Refreshed every minute |
+| cscli | Decision is blocked unless special flag is provided | ✅ |
+
+
+
+<!-- @TKO : Explain that parser based whitelist and profile based whitelists -->
 
 ### Creating an allowlist
 
