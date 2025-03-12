@@ -50,6 +50,11 @@ Once the integration is generated you will be presented with a credentials scree
 
 ## Mikrotik Configuration
 
+To configure the Mikrotik router, we will :
+
+1. Create a script that will fetch the blocklist from the CrowdSec API and import it into the Mikrotik firewall.
+2. Create a scheduler that will run the script every 10 minutes.
+
 First you need to create a script.
 
 ![](/img/mikrotik_1.gif)
@@ -82,8 +87,6 @@ You need to replace `<integration_id>`, `<username>` and `<password>` with the v
 :::warning
 Do not change `list="crowdsec-integration"` in the script, as it is used by the data you fetch from the CrowdSec API.
 :::
-
-Basically, this script will fetch the blocklist from the CrowdSec API (from the URL provided in the console) and import it into the Mikrotik firewall.
 
 ![](/img/mikrotik_2.gif)
 
