@@ -1,0 +1,119 @@
+---
+id: mikrotik
+title: Mikrotik
+---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+The CrowdSec Mikrotik integration allows you to block malicious IPs in your Mikrotik router. This guide will walk you through the steps to integrate CrowdSec blocklists with your Mikrotik router.
+
+### Prerequisites
+
+Before you begin, please ensure your Mikrotik device supports ingesting blocklists. If you are unsure, please refer to the Mikrotik documentation or contact Mikrotik support.
+
+### Steps
+
+We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
+
+Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
+
+Once the page has loaded, you can click the "Connect" button under the Mikrotik logo.
+
+<ThemedImage
+    alt="Mikrotik Integration Card"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_mikrotik_card_light.png"),
+        dark: useBaseUrl("/img/console_integrations_mikrotik_card_dark.png"),
+    }}
+/>
+
+Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
+
+<ThemedImage
+    alt="Mikrotik Integration Creation Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_creation_light.png"),
+        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
+    }}
+/>
+
+Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your Mikrotik Router Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
+
+<ThemedImage
+    alt="Mikrotik Integration Credentials Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_checkpoint_credentials_light.png"),
+        dark: useBaseUrl("/img/console_integrations_checkpoint_credentials_dark.png"),
+    }}
+/>
+
+## Mikrotik Configuration
+
+First you need to create a script.
+
+![](/img/mikrotik_1.gif)
+
+Then you need to add the following script:
+
+```bash
+:local name "[crowdsec]"
+:local url "https://admin.api.crowdsec.net/v1/integrations/<integration_id>/content"
+:local fileName "blocklist.rsc"
+:log info "$name fetch blocklist from $url"
+/tool fetch url="$url" mode=https dst-path=$fileName http-auth-scheme=basic user="<username>" password="<password>" idle-timeout="30s"
+:if ([:len [/file find name=$fileName]] > 0) do={
+    :log info "removing old ipv4 blocklist"
+     /ip/firewall/address-list/remove [ find where list="crowdsec-integration" ];
+    :log info "removing old ipv6 blocklist"
+     /ipv6/firewall/address-list/remove [ find where list="crowdsec-integration" ];
+    :log info "$name import;start"
+    /import file-name=$fileName
+    :log info "$name import:done"
+} else={
+    :log error "$name failed to fetch the blocklist"
+}
+```
+
+:::info
+You need to replace `<integration_id>`, `<username>` and `<password>` with the values provided in the console.
+:::
+
+:::warning
+Do not change `list="crowdsec-integration"` in the script, as it is used by the data you fetch from the CrowdSec API.
+:::
+
+Basically, this script will fetch the blocklist from the CrowdSec API (from the URL provided in the console) and import it into the Mikrotik firewall.
+
+![](/img/mikrotik_2.gif)
+
+When you click on "OK", the script will be created. You can now run the script and check the logs to see if it is working.
+
+![](/img/mikrotik_3.gif)
+
+The script is now running and the blocklist is being imported into the Mikrotik firewall. To automate this process, you can create a scheduler that will run the script every 10 minutes.
+
+![](/img/mikrotik_4.gif)
+
+:::warning
+Please be careful with the frequency of the scheduler and the blocklists size your subscribe to your integration, as it may cause performance issues on your Mikrotik device.
+:::
+
+## Format example
+
+The CrowdSec blocklist will be in checkpoint format, with formatted data per line. Here is an example of how the blocklist will look:
+
+```
+
+/ip firewall address-list add list=crowdsec-integration address=1.2.3.4 comment="crowdsec/mikrotik" timeout=48h;
+/ip6 firewall address-list add list=crowdsec-integration address=2001:0db8:85a3::/128 comment="crowdsec/mikrotik" timeout=48h;
+```
+
+## Contribute to this documentation
+
+Since CrowdSec is a community-driven project, we welcome contributions to this documentation. If you have any instructions or tips that you would like to share with the community, please feel free to open a pull request on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs)
+
+## Next Steps
+
+Now that you have integrated CrowdSec integration with your Checkpoint Firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
+
