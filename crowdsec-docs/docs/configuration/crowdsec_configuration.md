@@ -114,6 +114,7 @@ common:
   log_max_age: <max_age_of_log_file>
   log_max_files: <number_of_log_files_to_keep>
   compress_logs: (true|false)
+  log_format: "(text|json)"
 config_paths:
   config_dir: "<path_to_crowdsec_config_folder>"
   data_dir: "<path_to_crowdsec_data_folder>"
@@ -223,6 +224,7 @@ common:
   log_max_age: <max_age_of_log_file>
   log_max_files: <number_of_log_files_to_keep>
   compress_logs: (true|false)
+  log_format: "(text|json)"
 ```
 
 #### `daemonize`
@@ -278,6 +280,11 @@ Maximum number of old log files to retain.  The default is to retain 3 old log f
 > bool
 
 Whether to compress the log file after rotation or not.
+
+#### `log_format`
+> string
+
+Format of crowdsec log. Can be `text` (default) or `json`
 
 ### `config_paths`
 
