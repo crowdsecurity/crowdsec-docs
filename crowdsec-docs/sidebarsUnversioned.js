@@ -221,19 +221,26 @@ module.exports = {
         },
         {
             type: "category",
+            label : "Enterprise plan 🏅",
+            items: [
+                {
+                    type: "doc",
+                    label: "Enterprise support 🏅",
+                    id: "console/enterprise_plan/enterprise_support",
+                },
+                {
+                    type: "doc",
+                    label: "Invoices 🏅",
+                    id: "console/enterprise_plan/enterprise_invoices",
+                },
+            ],
+        },
+        {
+            type: "category",
             label: "Threat Forecast 🏅",
             link: {
                 type: "doc",
                 id: "console/threat_forecast",
-            },
-            items: [],
-        },
-        {
-            type: "category",
-            label: "Enterprise support 🏅",
-            link: {
-                type: "doc",
-                id: "console/enterprise_support",
             },
             items: [],
         },
