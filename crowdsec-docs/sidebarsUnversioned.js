@@ -402,10 +402,12 @@ module.exports = {
             items: [
                 "integrations/cisco",
                 "integrations/checkpoint",
+                "integrations/mikrotik",
                 "integrations/f5",
                 "integrations/fortinet",
                 "integrations/paloalto",
                 "integrations/sophos",
+                "integrations/juniper",
                 "integrations/genericfirewall",
                 "integrations/remediationcomponent",
             ],
