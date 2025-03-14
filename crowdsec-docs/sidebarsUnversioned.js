@@ -400,6 +400,7 @@ module.exports = {
                 "integrations/fortinet",
                 "integrations/paloalto",
                 "integrations/sophos",
+                "integrations/juniper",
                 "integrations/genericfirewall",
                 "integrations/remediationcomponent",
             ],
