@@ -48,7 +48,56 @@ Once the integration is generated you will be presented with a credentials scree
     }}
 />
 
-[Juniper Documentation JunOS](https://www.juniper.net/documentation/us/en/software/junos/cli-reference/topics/ref/statement/security-utm-custom-objects-url-feed.html)
+[Juniper Documentation JunOS](https://www.juniper.net/documentation/us/en/software/junos/cli-reference/topics/ref/statement/edit-security-dynamic-address.html)
+
+## Configuration Example
+
+### define the feed server
+
+```
+set security dynamic-address feed-server crowdsec-feed description "CrowdSec Feed"
+set security dynamic-address feed-server crowdsec-feed url https://<USERNAME>:<PASSWORD>@admin.api.crowdsec.net
+```
+
+### define the threat feed and the update interval
+
+```
+set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed description "CrowdSec Feed"
+set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed path /v1/integrations/<integration_id>/content
+set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed update-interval 120 hold-interval 43200
+```
+
+### Define AddressName-to-ThreatFeed mapping
+
+```
+set security dynamic-address address-name crowdsec-feed address-name crowdsec-feed feed-name crowdsec-feed
+```
+
+### Review and commit the configuration
+
+```
+show security dynamic-address
+```
+
+The output should look like this:
+
+```
+feed-server crowdsec-feed {
+    description "CrowdSec Feed";
+    url https://<USERNAME>:<PASSWORD>@admin.api.crowdsec.net;
+    feed-name crowdsec-feed {
+        description CrowdSec Feed;
+        path /v1/integrations/<integration_id>/content;
+        update-interval 120;
+        hold-interval 43200;
+    }
+}
+address-name crowdsec-feed {
+    profile {
+        feed-name crowdsec-feed;
+    }
+}
+```
 
 ## Format example
 
