@@ -1,0 +1,86 @@
+---
+id: pfsense
+title: pfSense
+---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+The CrowdSec pfSense integration allows you to block malicious IPs in your pfSense firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your pfSense firewall.
+
+### Prerequisites
+
+Before you begin, please ensure your pfSense software version supports ingesting blocklists (URL aliases). If you are unsure, please refer to the pfSense documentation or contact pfSense support.
+
+### Steps
+
+We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
+
+Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
+
+Once the page has loaded, you can click the "Connect" button under the pfSense logo.
+
+<ThemedImage
+    alt="pfSense Integration Card"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_pfsense_card_light.png"),
+        dark: useBaseUrl("/img/console_integrations_pfsense_card_dark.png"),
+    }}
+/>
+
+Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
+
+<ThemedImage
+    alt="pfSense Integration Creation Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_creation_light.png"),
+        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
+    }}
+/>
+
+Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your Mikrotik Router Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
+
+<ThemedImage
+    alt="pfSense Integration Credentials Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_checkpoint_credentials_light.png"),
+        dark: useBaseUrl("/img/console_integrations_checkpoint_credentials_dark.png"),
+    }}
+/>
+
+## pfSense Configuration
+
+To configure the pfSense firewall, we will :
+
+1. Create a URL alias.
+:::info
+You need to put the username and password provided by the console in the "URL" so it can use basic authentication:
+
+```
+https://<username>:<password>@admin.api.crowdsec.net/v1/integrations/<integration_id>/content
+```
+:::
+
+2. Check the URL alias is working.
+3. Create a firewall rule to block the malicious IPs.
+
+![](/img/pfsense.gif)
+
+
+## Format example
+
+The CrowdSec blocklist will be in plain text format, with one IP address per line. Here is an example of how the blocklist will look:
+
+```
+192.168.38.187
+192.168.38.186
+```
+
+## Contribute to this documentation
+
+Since CrowdSec is a community-driven project, we welcome contributions to this documentation. If you have any instructions or tips that you would like to share with the community, please feel free to open a pull request on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs)
+
+## Next Steps
+
+Now that you have integrated CrowdSec integration with your Mikrotik router, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
+

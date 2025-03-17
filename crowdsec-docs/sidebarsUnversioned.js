@@ -403,6 +403,7 @@ module.exports = {
                 "integrations/juniper",
                 "integrations/genericfirewall",
                 "integrations/remediationcomponent",
+                "integrations/pfsense",
             ],
         },
     ],
