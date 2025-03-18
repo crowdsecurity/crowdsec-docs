@@ -26,7 +26,7 @@ const RemediationSupportBadge = ({ title, description, support }: { title: strin
                 <TooltipTrigger asChild>
                     <div className='tw-border tw-rounded-full tw-flex tw-text-black'>
                         <span className='tw-bg-slate-400 tw-px-2 tw-rounded-l-lg'>{title}</span>
-                        <span className={clsx('tw-rounded-r-lg tw-px-2', {colorClass})>{support}</span>
+                        <span className={clsx('tw-rounded-r-lg tw-px-2', colorClass)}>{support}</span>
                     </div>
                 </TooltipTrigger>
                 <TooltipContent>
