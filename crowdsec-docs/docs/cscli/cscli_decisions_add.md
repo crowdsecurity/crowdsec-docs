@@ -23,14 +23,15 @@ cscli decisions add --scope username --value foobar
 ### Options
 
 ```
-  -i, --ip string         Source ip (shorthand for --scope ip --value <IP>)
-  -r, --range string      Range source ip (shorthand for --scope range --value <RANGE>)
-  -d, --duration string   Decision duration (ie. 1h,4h,30m) (default "4h")
-  -v, --value string      The value (ie. --scope username --value foobar)
-      --scope string      Decision scope (ie. ip,range,username) (default "Ip")
-  -R, --reason string     Decision reason (ie. scenario-name)
-  -t, --type string       Decision type (ie. ban,captcha,throttle) (default "ban")
-  -h, --help              help for add
+  -i, --ip string          Source ip (shorthand for --scope ip --value <IP>)
+  -r, --range string       Range source ip (shorthand for --scope range --value <RANGE>)
+  -d, --duration string    Decision duration (ie. 1h,4h,30m) (default "4h")
+  -v, --value string       The value (ie. --scope username --value foobar)
+      --scope string       Decision scope (ie. ip,range,username) (default "Ip")
+  -R, --reason string      Decision reason (ie. scenario-name)
+  -t, --type string        Decision type (ie. ban,captcha,throttle) (default "ban")
+  -B, --bypass-allowlist   Add decision even if value is in allowlist
+  -h, --help               help for add
 ```
 
 ### Options inherited from parent commands

@@ -1,31 +1,26 @@
 ---
-id: cscli_console_enable
-title: cscli console enable
+id: cscli_allowlists_create
+title: cscli allowlists create
 ---
-## cscli console enable
+## cscli allowlists create
 
-Enable a console option
-
-### Synopsis
-
-
-Enable given information push to the central API. Allows to empower the console
+Create a new allowlist
 
 ```
-cscli console enable [option]... [flags]
+cscli allowlists create [allowlist_name] [flags]
 ```
 
 ### Examples
 
 ```
-sudo cscli console enable tainted
+cscli allowlists create my_allowlist -d 'my allowlist description'
 ```
 
 ### Options
 
 ```
-  -a, --all    Enable all console options
-  -h, --help   help for enable
+  -d, --description string   description of the allowlist
+  -h, --help                 help for create
 ```
 
 ### Options inherited from parent commands
@@ -43,5 +38,5 @@ sudo cscli console enable tainted
 
 ### SEE ALSO
 
-* [cscli console](/cscli/cscli_console.md)	 - Manage interaction with Crowdsec console (https://app.crowdsec.net)
+* [cscli allowlists](/cscli/cscli_allowlists.md)	 - Manage centralized allowlists
 

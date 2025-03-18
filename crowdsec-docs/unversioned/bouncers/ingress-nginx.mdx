@@ -71,7 +71,7 @@ controller:
       - name: API_URL
         value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080" # crowdsec lapi service-name
       - name: API_KEY
-        value: "<API KEY>" # generated with `cscli bouncers add -n <bouncer_name>
+        value: "<API KEY>" # generated with `cscli bouncers add <bouncer_name>
       - name: BOUNCER_CONFIG
         value: "/crowdsec/crowdsec-bouncer.conf"
       - name: CAPTCHA_PROVIDER
