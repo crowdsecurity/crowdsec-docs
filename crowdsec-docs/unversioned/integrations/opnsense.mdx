@@ -1,16 +1,16 @@
 ---
-id: pfsense
-title: pfSense
+id: opnsense
+title: OPNsense
 ---
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
-The CrowdSec pfSense integration allows you to block malicious IPs in your pfSense firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your pfSense firewall.
+The CrowdSec OPNsense integration allows you to block malicious IPs in your OPNsense firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your OPNsense firewall.
 
 ### Prerequisites
 
-Before you begin, please ensure your pfSense software version supports ingesting blocklists (URL aliases). If you are unsure, please refer to the pfSense documentation or contact pfSense support.
+Before you begin, please ensure your OPNsense software version supports ingesting blocklists (URL aliases). If you are unsure, please refer to the OPNsense documentation or contact OPNsense support.
 
 ### Steps
 
@@ -18,41 +18,41 @@ We will presume you followed the [Getting Started](integrations/intro.mdx) guide
 
 Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
 
-Once the page has loaded, you can click the "Connect" button under the pfSense logo.
+Once the page has loaded, you can click the "Connect" button under the OPNsense logo.
 
 <ThemedImage
-    alt="pfSense Integration Card"
+    alt="OPNsense Integration Card"
     sources={{
-        light: useBaseUrl("/img/console_integrations_pfsense_card_light.png"),
-        dark: useBaseUrl("/img/console_integrations_pfsense_card_dark.png"),
+        light: useBaseUrl("/img/console_integrations_opnsense_card_light.png"),
+        dark: useBaseUrl("/img/console_integrations_opnsense_card_dark.png"),
     }}
 />
 
 Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
 
 <ThemedImage
-    alt="pfSense Integration Creation Screen"
+    alt="OPNsense Integration Creation Screen"
     sources={{
         light: useBaseUrl("/img/console_integrations_creation_light.png"),
         dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
     }}
 />
 
-Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your pfSense Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
+Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your OPNsense Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
 
 <ThemedImage
-    alt="pfSense Integration Credentials Screen"
+    alt="OPNsense Integration Credentials Screen"
     sources={{
         light: useBaseUrl("/img/console_integrations_generic_credentials_light.png"),
         dark: useBaseUrl("/img/console_integrations_generic_credentials_dark.png"),
     }}
 />
 
-## pfSense Configuration
+## OPNsense Configuration
 
-To configure the pfSense firewall, we will :
+To configure the OPNsense firewall, we will :
 
-1. Create a URL alias and choose 1 day as the update frequency.
+1. Create a URL alias and choose the update frequency.
 :::info
 You need to put the username and password provided by the console in the "URL" so it can use basic authentication:
 
@@ -61,12 +61,12 @@ https://<username>:<password>@admin.api.crowdsec.net/v1/integrations/<integratio
 ```
 :::
 
-2. Check the URL alias is working.
-3. Create a firewall rule to block the malicious IPs.
+2. Create a firewall rule to block the malicious IPs from the CrowdSec feed alias.
+3. Check the alias is containing your subscribed blocklists.
 
-Here is a tutorial on how to configure the pfSense firewall with the CrowdSec Integration:
+Here is a tutorial on how to configure the OPNsense firewall with the CrowdSec Integration:
 
-![](/img/pfsense.gif)
+![](/img/opnsense.gif)
 
 
 ## Format example
@@ -84,5 +84,5 @@ Since CrowdSec is a community-driven project, we welcome contributions to this d
 
 ## Next Steps
 
-Now that you have integrated CrowdSec integration with your pfSense firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
+Now that you have integrated CrowdSec integration with your OPNsense firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
 

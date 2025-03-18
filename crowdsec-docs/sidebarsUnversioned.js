@@ -400,6 +400,7 @@ module.exports = {
                 "integrations/genericfirewall",
                 "integrations/juniper",
                 "integrations/mikrotik",
+                "integrations/opnsense",
                 "integrations/paloalto",
                 "integrations/pfsense",
                 "integrations/remediationcomponent",
