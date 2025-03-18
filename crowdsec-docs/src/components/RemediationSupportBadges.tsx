@@ -18,13 +18,15 @@ type RemediationSupportBadgesProps = {
 }
 
 const RemediationSupportBadge = ({ title, description, support }: { title: string, description: string, support: string }) => {
+    //ugly, for test
+    const colorClass = support === 'Unsupported' ? 'tw-bg-red-400' : 'tw-bg-green-400';    
     return (
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger asChild>
                     <div className='tw-border tw-rounded-full tw-flex tw-text-black'>
                         <span className='tw-bg-slate-400 tw-px-2 tw-rounded-l-lg'>{title}</span>
-                        <span className={clsx('tw-rounded-r-lg tw-px-2', { 'tw-bg-green-400': supported, 'tw-bg-red-400': !supported })}>{support}</span>
+                        <span className={clsx('tw-rounded-r-lg tw-px-2', {colorClass})>{support}</span>
                     </div>
                 </TooltipTrigger>
                 <TooltipContent>
