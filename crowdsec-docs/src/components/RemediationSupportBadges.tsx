@@ -22,7 +22,7 @@ const RemediationSupportBadge = ({ title, description, supported }: { title: str
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <div className='tw-border tw-rounded-full tw-flex tw-text-black'>
+                    <div className='tw-border tw-rounded-full tw-flex tw-text-black tw-select-none'>
                         <span className='tw-bg-slate-400 tw-px-2 tw-rounded-l-lg'>{title}</span>
                         <span className={clsx('tw-rounded-r-lg tw-px-2', { 'tw-bg-green-400': supported, 'tw-bg-red-400': !supported })}>{supported ? 'Supported' : 'Unsupported'}</span>
                     </div>
