@@ -249,7 +249,7 @@ If on the other hand you upgrade from a version before 1.6.3, you need to instal
 ## Uninstalling
 
 In most cases, just remove the `crowdsec` package from
-`System/Package Manager/Installed Packages`.
+`System/Package Manager/Installed Packages`, or run the installation script with the --uninstall option.
 This won't remove the database or configuration files, just in case
 you want to reinstall CrowdSec later.
 
