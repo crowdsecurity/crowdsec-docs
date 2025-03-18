@@ -33,21 +33,17 @@ for inclusion in the official repository which should smooth out these issues.
 
 ## Installing the package
 
- * Choose [the release you want to install](https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases)
-
  * Open an ssh connection to your pfSense box
 
- * Download the `install-crowdsec.sh` script: 
+ * Download the install script and run it: 
 ```console
-fetch https://raw.githubusercontent.com/crowdsecurity/pfSense-pkg-crowdsec/refs/heads/main/install-crowdsec.sh
-```
- * Run it:
-```console
-sh install-crowdsec.sh --release vx.y.z-X.Y.Z
+# fetch https://raw.githubusercontent.com/crowdsecurity/pfSense-pkg-crowdsec/refs/heads/main/install-crowdsec.sh
+# sh install-crowdsec.sh
 ```
 
-* Do not activate or run the services, because pfSense will take care of it.
+* Do not activate or run the services yourself, because pfSense will take care of it.
 
+If you want to install a beta or an older version, please refer to [the release page](https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases) of the repository and provide the --release option to the install script.
 
  * Alternatively, you can download the packages to install in the `Assets` part of the release, and run the following commands in the right order.
 
