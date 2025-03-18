@@ -13,6 +13,7 @@ cscli hubtest clean [flags]
 ### Options
 
 ```
+      --all    Run all tests
   -h, --help   help for clean
 ```
 
