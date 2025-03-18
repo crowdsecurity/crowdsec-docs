@@ -17,14 +17,14 @@ type RemediationSupportBadgesProps = {
     Appsec?: boolean; // Appsec is a boolean that controls the color of the AppSec bubble
 }
 
-const RemediationSupportBadge = ({ title, description, supported }: { title: string, description: string, supported: boolean }) => {
+const RemediationSupportBadge = ({ title, description, support }: { title: string, description: string, support: string }) => {
     return (
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <div className='tw-border tw-rounded-full tw-flex tw-text-black tw-select-none'>
+                    <div className='tw-border tw-rounded-full tw-flex tw-text-black'>
                         <span className='tw-bg-slate-400 tw-px-2 tw-rounded-l-lg'>{title}</span>
-                        <span className={clsx('tw-rounded-r-lg tw-px-2', { 'tw-bg-green-400': supported, 'tw-bg-red-400': !supported })}>{supported ? 'Supported' : 'Unsupported'}</span>
+                        <span className={clsx('tw-rounded-r-lg tw-px-2', { 'tw-bg-green-400': supported, 'tw-bg-red-400': !supported })}>{support}</span>
                     </div>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -37,15 +37,21 @@ const RemediationSupportBadge = ({ title, description, supported }: { title: str
 }
 
 export default function RemediationSupportBadges({ MTLS, Metrics, Prometheus, Mode, Appsec }: RemediationSupportBadgesProps): React.JSX.Element {
+    const mtlsSupport = MTLS ? 'Supported' : 'Unsupported';
+    const metricsSupport = Metrics ? 'Supported' : 'Unsupported';
+    const prometheusSupport = Prometheus ? 'Supported' : 'Unsupported';
+    const modeSupport = Mode ? 'Live & Stream' : 'Live only';
+    const appsecSupport = (Appsec !== undefined && Appsec) ? 'Supported' : 'Unsupported';
+
     return (
         <div className='tw-flex tw-justify-center tw-flex-wrap tw-mb-4 tw-gap-2'>
             {Appsec !== undefined && (
-                <RemediationSupportBadge title='AppSec' description='Can forward HTTP requests to the AppSec Component' supported={Appsec} />
+                <RemediationSupportBadge title='AppSec' description='Can forward HTTP requests to the AppSec Component' support={appsecSupport} />
             )}
-            <RemediationSupportBadge title='Mode' description='Can be configured in different modes, typically live or stream' supported={Mode} />
-            <RemediationSupportBadge title='Metrics' description='Can send detailed metrics to LAPI' supported={Metrics} />
-            <RemediationSupportBadge title='MTLS' description='Can do mutual TLS authentication to LAPI' supported={MTLS} />
-            <RemediationSupportBadge title='Prometheus' description='Can expose metrics to Prometheus' supported={Prometheus} />
+            <RemediationSupportBadge title='Mode' description='Can be configured in different modes, typically live or stream' support={modeSupport} />
+            <RemediationSupportBadge title='Metrics' description='Can send detailed metrics to LAPI' support={metricsSupport} />
+            <RemediationSupportBadge title='MTLS' description='Can do mutual TLS authentication to LAPI' support={mtlsSupport} />
+            <RemediationSupportBadge title='Prometheus' description='Can expose metrics to Prometheus' support={prometheusSupport} />
         </div>
     );
 }
