@@ -1,31 +1,25 @@
 ---
-id: cscli_console_enable
-title: cscli console enable
+id: cscli_allowlists_delete
+title: cscli allowlists delete
 ---
-## cscli console enable
+## cscli allowlists delete
 
-Enable a console option
-
-### Synopsis
-
-
-Enable given information push to the central API. Allows to empower the console
+Delete an allowlist
 
 ```
-cscli console enable [option]... [flags]
+cscli allowlists delete [allowlist_name] [flags]
 ```
 
 ### Examples
 
 ```
-sudo cscli console enable tainted
+cscli allowlists delete my_allowlist
 ```
 
 ### Options
 
 ```
-  -a, --all    Enable all console options
-  -h, --help   help for enable
+  -h, --help   help for delete
 ```
 
 ### Options inherited from parent commands
@@ -43,5 +37,5 @@ sudo cscli console enable tainted
 
 ### SEE ALSO
 
-* [cscli console](/cscli/cscli_console.md)	 - Manage interaction with Crowdsec console (https://app.crowdsec.net)
+* [cscli allowlists](/cscli/cscli_allowlists.md)	 - Manage centralized allowlists
 

@@ -24,7 +24,8 @@ cscli console enroll [enroll-key] [flags]
 cscli console enroll YOUR-ENROLL-KEY
 		cscli console enroll --name [instance_name] YOUR-ENROLL-KEY
 		cscli console enroll --name [instance_name] --tags [tag_1] --tags [tag_2] YOUR-ENROLL-KEY
-		cscli console enroll --enable context,manual YOUR-ENROLL-KEY
+		cscli console enroll --enable console_management YOUR-ENROLL-KEY
+		cscli console enroll --disable context YOUR-ENROLL-KEY
 
 		valid options are : custom,manual,tainted,context,console_management,all (see 'cscli console status' for details)
 ```
@@ -32,11 +33,12 @@ cscli console enroll YOUR-ENROLL-KEY
 ### Options
 
 ```
-  -e, --enable strings   Enable console options
-  -h, --help             help for enroll
-  -n, --name string      Name to display in the console
-      --overwrite        Force enroll the instance
-  -t, --tags strings     Tags to display in the console
+  -d, --disable strings   Disable console options
+  -e, --enable strings    Enable console options
+  -h, --help              help for enroll
+  -n, --name string       Name to display in the console
+      --overwrite         Force enroll the instance
+  -t, --tags strings      Tags to display in the console
 ```
 
 ### Options inherited from parent commands
