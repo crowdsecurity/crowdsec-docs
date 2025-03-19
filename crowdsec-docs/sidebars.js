@@ -377,6 +377,22 @@ module.exports = {
         },
         {
             type: "category",
+            label: "cscli allowlists",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_allowlists",
+            },
+            items: [
+                "cscli/cscli_allowlists_add",
+                "cscli/cscli_allowlists_create",
+                "cscli/cscli_allowlists_delete",
+                "cscli/cscli_allowlists_inspect",
+                "cscli/cscli_allowlists_list",
+                "cscli/cscli_allowlists_remove",
+            ],
+        },
+        {
+            type: "category",
             label: "cscli appsec-configs",
             link: {
                 type: "doc",
