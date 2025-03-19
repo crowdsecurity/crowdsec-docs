@@ -13,12 +13,14 @@ cscli hubtest run [flags]
 ### Options
 
 ```
-      --all             Run all tests
-      --clean           Clean runtime environment if test fail
-  -h, --help            help for run
-      --host string     Address to expose AppSec for hubtest (default "127.0.0.1:4241")
-      --no-clean        Don't clean runtime environment if test succeed
-      --target string   Target for AppSec Test (default "http://127.0.0.1:7822/")
+      --all              Run all tests
+      --clean            Clean runtime environment if test fail
+  -h, --help             help for run
+      --host string      Address to expose AppSec for hubtest (default "127.0.0.1:4241")
+      --max-jobs uint    Max number of concurrent tests (does not apply to appsec) (default 8)
+      --no-clean         Don't clean runtime environment if test succeed
+      --report-success   Report successful tests too (implied with json output)
+      --target string    Target for AppSec Test (default "http://127.0.0.1:7822/")
 ```
 
 ### Options inherited from parent commands

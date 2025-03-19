@@ -114,6 +114,7 @@ common:
   log_max_age: <max_age_of_log_file>
   log_max_files: <number_of_log_files_to_keep>
   compress_logs: (true|false)
+  log_format: "(text|json)"
 config_paths:
   config_dir: "<path_to_crowdsec_config_folder>"
   data_dir: "<path_to_crowdsec_data_folder>"
@@ -145,6 +146,9 @@ db_config:
   host:     "<db_host_ip>"   # for mysql/pgsql
   port:     "<db_host_port>" # for mysql/pgsql
   sslmode:  "<require/disable>" # for pgsql
+  ssl_ca_cert: "<path_to_ca_cert_file>" # for mysql/pgsql
+  ssl_client_cert: "<path_to_client_cert_file>" # for mysql/pgsql
+  ssl_client_key: "<path_to_client_key_file>" # for mysql/pgsql
   use_wal:  "true|false" # for sqlite
   max_open_conns: "<max_number_of_conns_to_db>"
   flush:
@@ -223,6 +227,7 @@ common:
   log_max_age: <max_age_of_log_file>
   log_max_files: <number_of_log_files_to_keep>
   compress_logs: (true|false)
+  log_format: "(text|json)"
 ```
 
 #### `daemonize`
@@ -278,6 +283,11 @@ Maximum number of old log files to retain.  The default is to retain 3 old log f
 > bool
 
 Whether to compress the log file after rotation or not.
+
+#### `log_format`
+> string
+
+Format of crowdsec log. Can be `text` (default) or `json`
 
 ### `config_paths`
 
@@ -452,6 +462,9 @@ db_config:
   host:     "<db_host_ip>"   # for mysql/postgresql/pgx # must be omitted if using socket file
   port:     "<db_host_port>" # for mysql/postgresql/pgx # must be omitted if using socket file
   sslmode:  "<require/disable>" # for postgresql/pgx
+  ssl_ca_cert: "<path_to_ca_cert_file>" # for mysql/pgsql
+  ssl_client_cert: "<path_to_client_cert_file>" # for mysql/pgsql
+  ssl_client_key: "<path_to_client_key_file>" # for mysql/pgsql
   max_open_conns: "<max_number_of_conns_to_db>"
   decision_bulk_size: "<decision_bulk_size>"
   flush:
@@ -549,13 +562,48 @@ db_config:
 The port to connect to (only if the type of database is `mysql` or `postgresql`). Must be omitted if using socket file.
 
 
+#### `sslmode`
+
 ```yaml
 db_config:
   type: postgresql
 
   sslmode: require
 ```
-Require or disable ssl connection to database (only if the type of database is `postgresql`). See [PostgreSQL SSL modes](https://www.postgresql.org/docs/current/libpq-ssl.html#LIBPQ-SSL-SSLMODE-STATEMENTS) for possible values.
+Require or disable ssl connection to database (only if the type of database is `mysql` or `postgresql` or `pgx`).
+
+See [PostgreSQL SSL modes](https://www.postgresql.org/docs/current/libpq-ssl.html#LIBPQ-SSL-SSLMODE-STATEMENTS) for possible values.
+See [MySQL SSL modes](https://dev.mysql.com/doc/refman/8.0/en/using-encrypted-connections.html) for possible values within the `Client-Side` configuration.
+
+#### `ssl_ca_cert`
+
+```yaml
+db_config:
+  type: mysql|postgresql|pgx
+
+  ssl_ca_cert: /path/to/ca.crt
+```
+Path to the CA certificate file (only if the type of database is `mysql` or `postgresql` or `pgx`)
+
+#### `ssl_client_cert`
+
+```yaml
+db_config:
+  type: mysql|postgresql|pgx
+
+  ssl_client_cert: /path/to/client.crt
+```
+Path to the client certificate file when using mTLS (only if the type of database is `mysql` or `postgresql` or `pgx`)
+
+#### `ssl_client_key`
+
+```yaml
+db_config:
+  type: mysql|postgresql|pgx
+
+  ssl_client_key: /path/to/client.key
+```
+Path to the client key file when using mTLS (only if the type of database is `mysql` or `postgresql` or `pgx`)
 
 #### `max_open_conns`
 

@@ -28,6 +28,7 @@ It is meant to allow you to manage bans, parsers/scenarios/etc, api and generall
 ### SEE ALSO
 
 * [cscli alerts](/cscli/cscli_alerts.md)	 - Manage alerts
+* [cscli allowlists](/cscli/cscli_allowlists.md)	 - Manage centralized allowlists
 * [cscli appsec-configs](/cscli/cscli_appsec-configs.md)	 - Manage hub appsec-configs
 * [cscli appsec-rules](/cscli/cscli_appsec-rules.md)	 - Manage hub appsec-rules
 * [cscli bouncers](/cscli/cscli_bouncers.md)	 - Manage bouncers [requires local API]
