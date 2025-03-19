@@ -912,6 +912,13 @@ This option will disable the registration of remote agents using `cscli lapi reg
 ##### `capi_whitelists_path`
 > string
 
+:::warning
+
+This option is deprecated.
+You should use [centralized allowlists](local_api/allowlists.md) instead.
+
+:::
+
 The path to whitelists file for community and 3rd party blocklists.
 Those IPs/CIDR whitelists apply on all the IPs received from community blocklist or 3rd party lists subscriptions.
 

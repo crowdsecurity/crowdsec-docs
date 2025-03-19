@@ -263,6 +263,7 @@ module.exports = {
                 "local_api/configuration",
                 "local_api/authentication",
                 "local_api/tls_auth",
+                "local_api/centralized_allowlists",
                 {
                     type: "link",
                     label: "Swagger",
