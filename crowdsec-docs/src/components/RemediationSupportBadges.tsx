@@ -42,7 +42,7 @@ export default function RemediationSupportBadges({ MTLS, Metrics, Prometheus, Mo
     const mtlsSupport = MTLS ? 'Supported' : 'Unsupported';
     const metricsSupport = Metrics ? 'Supported' : 'Unsupported';
     const prometheusSupport = Prometheus ? 'Supported' : 'Unsupported';
-    const modeSupport = Mode ? 'Live & Stream' : 'Live only';
+    const modeSupport = Mode ? 'Live & Stream' : 'Stream only';
     const appsecSupport = (Appsec !== undefined && Appsec) ? 'Supported' : 'Unsupported';
 
     return (
