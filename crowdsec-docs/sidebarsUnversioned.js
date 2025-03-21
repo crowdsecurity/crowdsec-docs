@@ -213,11 +213,13 @@ module.exports = {
                 type: "doc",
                 id: "console/decisions/decisions_intro",
             },
-            items: [{
-                type: "doc",
-                id: "console/decisions/decisions_management",
-                label: "Decisions Management 🏅"
-            }],
+            items: [
+                {
+                    type: "doc",
+                    id: "console/decisions/decisions_management",
+                    label: "Decisions Management 🏅",
+                },
+            ],
         },
         {
             type: "category",
@@ -328,6 +330,11 @@ module.exports = {
             type: "doc",
             label: "Nginx",
             id: "bouncers/nginx",
+        },
+        {
+            type: "doc",
+            label: "Node.js",
+            id: "bouncers/node-js",
         },
         {
             type: "doc",
