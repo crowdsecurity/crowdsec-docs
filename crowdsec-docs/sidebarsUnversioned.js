@@ -176,6 +176,11 @@ module.exports = {
             ],
         },
         {
+            type: "doc",
+            label: "Remediation Metrics",
+            id: "console/remediation_metrics",
+        },
+        {
             type: "category",
             label: "CTI",
             items: [
@@ -213,11 +218,13 @@ module.exports = {
                 type: "doc",
                 id: "console/decisions/decisions_intro",
             },
-            items: [{
-                type: "doc",
-                id: "console/decisions/decisions_management",
-                label: "Decisions Management 🏅"
-            }],
+            items: [
+                {
+                    type: "doc",
+                    id: "console/decisions/decisions_management",
+                    label: "Decisions Management 🏅",
+                },
+            ],
         },
         {
             type: "category",
@@ -230,7 +237,7 @@ module.exports = {
         },
         {
             type: "category",
-            label : "Enterprise plan 🏅",
+            label: "Enterprise plan 🏅",
             items: [
                 {
                     type: "doc",

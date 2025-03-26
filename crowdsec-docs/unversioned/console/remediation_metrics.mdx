@@ -1,0 +1,67 @@
+---
+id: remediation_metrics
+title: Remediation Metrics
+---
+
+:::info
+For your Security Engine to collect and send metrics, make sure you’re using CrowdSec v1.6.3 or higher.
+**Note:** Not all Remediation Components report metrics to the CrowdSec Console. For details, refer to the [official documentation](https://docs.crowdsec.net/u/bouncers/intro).
+:::
+
+## Introduction
+
+The **Remediation Metrics** page offers a clear and comprehensive view of the malicious activity that CrowdSec has detected and remediated on your infrastructure.  
+It provides key insights into:
+- The number and types of attacks
+- The impact of remediation measures
+- The estimated resources saved by stopping these threats
+- The blocklist that contribute to remediate malicious traffic
+
+The page is divided into three main sections:
+- **Malicious Intents** – A breakdown of attack types associated over time and the total number of attacks prevented.
+- **Malicious Traffic Dropped/Discarded** – Raw and estimated data showing how much malicious traffic has been dropped by your remediation components.
+- **Projected Resources Saved** – An estimate of the resources preserved thanks to traffic being dropped (e.g., storage, bandwidth, log volume).
+
+---
+
+## Malicious Intents
+
+At the top of the page, you'll see the **Total Prevented Attacks** for the selected time period. This gives you an immediate overview of how many threats CrowdSec has detected and remediated.
+
+![Total Prevented Attacks](/img/console/remediation_metrics/rc-metrics-total-prevented-attacks.png)
+
+The **Malicious Intents** section provides a detailed breakdown of the types of attacks that were prevented. These are based on the behavior and typology of IPs remediated by your remediation components, including blocklists and security engines.
+
+![Malicious Intents Breakdown](/img/console/remediation_metrics/rc-metrics-malicious-intents.png)
+
+---
+
+
+## Malicious Traffic Discarded
+
+This section highlights the amount of malicious traffic that has been remediate by your bouncers. It includes both raw and estimated data on discarded requests, packets, and bytes.
+
+- **Raw data** represents actual traffic dropped by your remediation components (bouncers), powered by blocklists and security engines.
+- **Estimated data** is calculated by applying a coefficient to the raw metrics to provide a projected view of saved resources.
+
+![Traffic Discarded](/img/console/remediation_metrics/rc-metrics-traffic-discarded.png)
+
+Below the graph, you’ll find a **blocklist breakdown**, ordered by the amount of traffic each list helped block.  
+To enhance your protection and block even more threats, explore the full set of [CrowdSec Blocklists](https://app.crowdsec.net/blocklists/search).
+
+---
+
+## Projected Resources Saved
+
+CrowdSec not only protects you from attacks but also helps you optimize your infrastructure by reducing resource usage.
+
+This section estimates the **resources saved** as a result of blocking malicious traffic, including:
+
+- **Outgoing Traffic** – Bandwidth saved by stopping outgoing traffic, also known as egress traffic, from malicious sources.
+- **Log Lines** – Fewer events logged means reduced storage and processing.
+- **Storage Space** – Space saved by avoiding unnecessary log generation.
+
+![Projected Resources Saved](/img/console/remediation_metrics/rc-metrics-projected-ressources.png)
+
+Just like the **Malicious Traffic Discarded** section, this view includes a blocklist breakdown showing which lists contributed most to resource savings.  
+To block more threats and save even more resources, consider using additional [CrowdSec Blocklists](https://app.crowdsec.net/blocklists/search).
