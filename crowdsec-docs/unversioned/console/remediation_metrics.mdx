@@ -44,6 +44,11 @@ This section highlights the amount of malicious traffic that has been remediate 
 - **Raw data** represents actual traffic dropped by your remediation components (bouncers), powered by blocklists and security engines.
 - **Estimated data** is calculated by applying a coefficient to the raw metrics to provide a projected view of saved resources.
 
+The data estimate is based on the following considerations:
+* For OSI L4 (firewall level) bouncers: 7 blocked packets make up about 1 blocked attack attempt (due to tcp-syn retries)
+* For OSI L7 (application level) bouncers: 1 blocked request makes up about 1 blocked attack attempt
+* 1 blocked attack attempt would result in 10 actual attacks if the attacker wasn't blocked, as most attackers will try a sequence of exploits in rapid succession.
+
 ![Traffic Discarded](/img/console/remediation_metrics/rc-metrics-traffic-discarded.png)
 
 Below the graph, you’ll find a **blocklist breakdown**, ordered by the amount of traffic each list helped block.  
