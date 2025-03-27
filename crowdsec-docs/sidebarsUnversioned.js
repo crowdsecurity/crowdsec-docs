@@ -459,6 +459,8 @@ module.exports = {
                 "service_api/quickstart/authentication",
                 "service_api/quickstart/blocklists",
                 "service_api/quickstart/integrations",
+                "service_api/quickstart/allowlists",
+                "service_api/quickstart/metrics",
             ],
         },
         {
