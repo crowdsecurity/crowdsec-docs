@@ -1,0 +1,474 @@
+---
+id: allowlists
+title: Allowlists
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+:::info
+ - We're assuming your API key is set in the environment variable `$KEY` with the necessary permissions.
+:::
+
+### Create an allowlist
+
+> Create a new allowlist named `my_test_allowlist`
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/allowlists \
+-d '{ "name":"my_test_allowlist", "description": "testing allowlists feature" }' 
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Allowlists,
+    Server,
+    ApiKeyAuth,
+)
+from crowdsec_service_api.models import AllowlistCreateRequest
+
+auth = ApiKeyAuth(api_key=KEY)
+client = Allowlists(base_url=Server.production_server.value, auth=auth)
+request = AllowlistCreateRequest(
+    name="test_allowlist_1",
+    description="my test allowlist",
+)
+response = allowlists_client.create_allowlist(request=request)
+print(response.model_dump_json())
+```
+
+</TabItem>
+</Tabs>
+
+ - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Allowlists/createAllowlist)
+
+:::info
+The `id` element of the response payload is going to be used as the future identifier operations targeting this allowlist.
+:::
+
+<details>
+  <summary>answer on success</summary>
+
+```json
+{
+  "id": "1234MYALLOWLISTID",
+  "organization_id": "MY-ORG-ID-abcdef1234",
+  "name": "test_allowlist_1",
+  "description": "my test allowlist",
+  "created_at": "2025-03-26T14:55:24.582124Z",
+  "updated_at": null,
+  "from_cti_query": null,
+  "since": null,
+  "total_items": 0
+}
+```
+
+</details>
+
+
+### List all allowlists
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}"  -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/allowlists
+```
+
+</TabItem>
+
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Allowlists,
+    Server,
+    ApiKeyAuth,
+)
+
+auth = ApiKeyAuth(api_key=KEY)
+client = Allowlists(base_url=Server.production_server.value, auth=auth)
+response = client.get_allowlists()
+print(response.model_dump_json())
+```
+
+</TabItem>
+
+</Tabs>
+
+ - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Allowlists/listAllowlists)
+
+<details>
+  <summary>answer on success</summary>
+
+```json
+{
+    "items": [
+        {
+            "id": "1234MYALLOWLISTID",
+            "organization_id": "MY-ORG-ID-abcdef1234",
+            "name": "test_allowlist_1",
+            "description": "",
+            "created_at": "2025-03-26T14:55:24.582124Z",
+            "updated_at": null,
+            "from_cti_query": null,
+            "since": null,
+            "total_items": 2,
+            "subscribers": []
+        }
+    ],
+    "total": 1,
+    "page": 1,
+    "size": 50,
+    "pages": 1,
+    "links": {
+        "first": "/v1/allowlists?size=50&page=1",
+        "last": "/v1/allowlists?size=50&page=1",
+        "self": "/v1/allowlists?page=1&size=50",
+        "next": null,
+        "prev": null
+    }
+}
+```
+
+</details>
+
+### Add some IPs to the allowlist
+
+> Add IPs `1.2.3.4` and `5.6.7.8` to allowlist
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/allowlists/1234MYALLOWLISTID/items \
+-d '{ "items": ["1.2.3.4", "5.6.7.8"], "description": "allow my office ips"}'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+from datetime import datetime, UTC, timedelta
+
+KEY = os.getenv('KEY')
+EXPIRATION = datetime.now(UTC) + timedelta(days=1)
+
+from crowdsec_service_api import (
+    Allowlists,
+    Server,
+    ApiKeyAuth,
+)
+from crowdsec_service_api.models import AllowlistItemsCreateRequest
+
+auth = ApiKeyAuth(api_key=KEY)
+client = Allowlists(base_url=Server.production_server.value, auth=auth)
+request = AllowlistItemsCreateRequest(
+    items=[
+        "1.2.3.4",
+        "5.6.7.8",
+    ],
+    description="allow my office ips",
+)
+response = client.create_allowlist_items(
+    allowlist_id="1234MYALLOWLISTID", request=request
+)
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
+ - [Swagger method link](https://admin.api.dev.crowdsec.net/v1/docs#/Allowlists/createAllowlistItems)
+
+
+:::note
+The `expiration` field is optional and indicates when the IP should be deleted from the allowlist. An IP can stand in the allowlist for ever without expiration.
+:::
+
+
+### List all items in the allowlist
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+```bash
+curl -i -H "x-api-key: ${KEY}"  -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/allowlists/1234MYALLOWLISTID/items
+```
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Allowlists,
+    Server,
+    ApiKeyAuth,
+)
+
+auth = ApiKeyAuth(api_key=KEY)
+client = Allowlists(base_url=Server.production_server.value, auth=auth)
+response = client.get_allowlist_items(
+    allowlist_id='1234MYALLOWLISTID',
+)
+print(response.model_dump_json())
+```
+
+</TabItem>
+</Tabs>
+
+ - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Allowlists/getAllowlistItems)
+
+<details>
+  <summary>answer on success</summary>
+
+```json
+{
+    "items": [
+        {
+            "id": "67e418019f43fb6d0b985e26",
+            "allowlist_id": "67e4155c52f3aa0a4f6c8d93",
+            "description": "allow my office ips",
+            "scope": "ip",
+            "value": "1.2.3.4",
+            "created_at": "2025-03-26T15:06:41.719000Z",
+            "updated_at": null,
+            "created_by": {
+                "source_type": "apikey",
+                "identifier": "test-key-for-monitoring"
+            },
+            "updated_by": null,
+            "expiration": null
+        },
+        {
+            "id": "67e418019f43fb6d0b985e27",
+            "allowlist_id": "67e4155c52f3aa0a4f6c8d93",
+            "description": "allow my office ips",
+            "scope": "ip",
+            "value": "5.6.7.8",
+            "created_at": "2025-03-26T15:06:41.719000Z",
+            "updated_at": null,
+            "created_by": {
+                "source_type": "apikey",
+                "identifier": "test-key-for-monitoring"
+            },
+            "updated_by": null,
+            "expiration": null
+        }
+    ],
+    "total": 2,
+    "page": 1,
+    "size": 50,
+    "pages": 1,
+    "links": {
+        "first": "/v1/allowlists/67e4155c52f3aa0a4f6c8d93/items?size=50&page=1",
+        "last": "/v1/allowlists/67e4155c52f3aa0a4f6c8d93/items?size=50&page=1",
+        "self": "/v1/allowlists/67e4155c52f3aa0a4f6c8d93/items?page=1&size=50",
+        "next": null,
+        "prev": null
+    }
+}
+```
+
+</details>
+
+
+### Update an item in the allowlist
+
+> can be used to update the description or add an expiration date to the item
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}"  -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/allowlists/1234MYALLOWLISTID/items/67e418019f43fb6d0b985e26 \
+-X PATCH -d '{ "description": "allow my office ips for 1 day", "expiration": "2025-03-27T16:45:53" }'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+import datetime
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Allowlists,
+    Server,
+    ApiKeyAuth,
+)
+from crowdsec_service_api.models import AllowlistItemUpdateRequest
+
+auth = ApiKeyAuth(api_key=KEY)
+client = Allowlists(base_url=Server.production_server.value, auth=auth)
+request = AllowlistItemUpdateRequest(
+    description="allow my office ips for 1 day",
+    expiration=datetime.datetime.now() + datetime.timedelta(days=1),
+)
+
+response = client.update_allowlist_item(
+    allowlist_id='1234MYALLOWLISTID',
+    item_id='67e418019f43fb6d0b985e26',
+    request=request,
+)
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
+ - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Allowlists/updateAllowlistItem)
+
+<details>
+  <summary>answer on success</summary>
+```json
+{
+    "id": "67e418019f43fb6d0b985e26",
+    "allowlist_id": "1234MYALLOWLISTID",
+    "description": "allow my office ips for 1 day",
+    "scope": "ip",
+    "value": "1.2.3.4",
+    "created_at": "2025-03-26T15:06:41.719000Z",
+    "updated_at": "2025-03-26T15:45:53.373141Z",
+    "created_by": {
+        "source_type": "apikey",
+        "identifier": "test-key-for-monitoring"
+    },
+    "updated_by": {
+        "source_type": "apikey",
+        "identifier": "test-key-for-monitoring"
+    },
+    "expiration": "2025-03-27T16:45:53.238842"
+}
+```
+</details>
+
+
+### Subscribe to an allowlist
+
+#### Allowlist subscription mechanism
+
+When [subscribing to allowlists](https://admin.api.crowdsec.net/v1/docs#/Allowlists/subscribeAllowlist), you can use various `entity_type` :
+
+ - A [Security Engine](https://doc.crowdsec.net/docs/next/intro) (entity_type `engine`). [Remediation Components (Bouncers)](https://doc.crowdsec.net/u/bouncers/intro) connected to it will benefit of the allowlist.
+ - A [Firewall Integration](https://doc.crowdsec.net/u/console/blocklists/integrations/firewall) (entity_type `firewall_integration`). This allows to use benefit from allowlists directly on your existing Firewall Appliances (CISCO, F5, Palo Alto etc.) without having to install a Security Engine or "Bouncer".
+ - A [Remediation Component](https://doc.crowdsec.net/u/bouncers/intro) (entity_type `remediation_component_integration`). This allows to use a "Bouncer" directly without having to deploy a Security Engine.
+ - You can as well subscribe via a `tag` (entity_type `tag`). This means that future Security Engines <!-- or Integrations  @hes --> associated to this tag will **automatically** be subscribed to the allowlist.
+ - You can also subscribe via an `org` directly. This means that future Security Engines <!-- and Integrations @hes --> enrolled in this org will **automatically** be subscribed to the allowlist.
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/allowlists/1234MYBLOCKLISTID/subscribers \
+-d '{ "ids": ["SECENGINEID5678"], "entity_type": "engine" }'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Allowlists,
+    Server,
+    ApiKeyAuth,
+)
+from crowdsec_service_api.models import AllowlistSubscriptionRequest
+
+auth = ApiKeyAuth(api_key=KEY)
+client = Allowlists(base_url=Server.production_server.value, auth=auth)
+request = AllowlistSubscriptionRequest(
+    ids=['SECENGINEID5678'],
+    entity_type='engine',
+)
+response = client.subscribe_allowlist(
+    request=request,
+    allowlist_id='1234MYALLOWLISTID',
+)
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
+ - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Allowlists/subscribeAllowlist)
+
+<details>
+  <summary>answer on success</summary>
+```json
+{"updated":["SECENGINEID5678"],"errors":[]}
+```
+</details>
+
