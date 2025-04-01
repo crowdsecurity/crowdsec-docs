@@ -314,8 +314,8 @@ And restart Nginx.
 Nginx package for Ubuntu 22.xx did not include `lua` module for some issues with other modules.  
 It's fixed and the module is back in the following version of Ubuntu. 
 What to do to resolve the issue?
-* Of course, most logicalwould be to upgrade to Ubuntu >=24.04
-* You could also use openresty instead of nginx, it includes lua module and is compatible with the component.
+* If you can, upgrade to Ubuntu >=24.04
+* You could also use OpenResty instead of NGINX, it includes lua module and is compatible with the component
     * It changes some paths as the service is different, but the configuration is the same as NGINX as it's a "fork" of it.
 * You could also compile the lua module yourself but it involves more manual work
 
