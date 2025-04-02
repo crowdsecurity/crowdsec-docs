@@ -308,16 +308,26 @@ resolver 8.8.8.8 ipv6=off;
 lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
 ```
 And restart Nginx.
+Absolutely! Here's a cleaned-up and more polished version for public-facing documentation:
+
 
 ### Ubuntu 22.xx getting lua error
 
-Nginx package for Ubuntu 22.xx did not include `lua` module for some issues with other modules.  
-It's fixed and the module is back in the following version of Ubuntu. 
-What to do to resolve the issue?
-* If you can, upgrade to Ubuntu >=24.04
-* You could also use OpenResty instead of NGINX, it includes lua module and is compatible with the component
-    * It changes some paths as the service is different, but the configuration is the same as NGINX as it's a "fork" of it.
-* You could also compile the lua module yourself but it involves more manual work
+On Ubuntu 22.xx, the default NGINX package does not include the `lua` module due to compatibility issues with other modules. This has been resolved in later versions of Ubuntu.
+
+#### How to fix it
+
+You have a few options to resolve this issue:
+
+- **Upgrade to Ubuntu 24.04 or later**  
+  The `lua` module is included again in newer Ubuntu releases.
+
+- **Use OpenResty instead of NGINX**  
+  OpenResty is a drop-in replacement for NGINX that includes the `lua` module by default.  
+  > Note: OpenResty uses slightly different service names and paths, but configuration remains compatible with standard NGINX.
+
+- **Manually compile the lua module**  
+  This is a more advanced approach and requires manual steps to build and install the module yourself.
 
 ## Configuration Reference
 
