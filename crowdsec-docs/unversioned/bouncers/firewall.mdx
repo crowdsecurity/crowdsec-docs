@@ -41,7 +41,14 @@ Supported firewalls:
 
 ## Installation
 
-Packages for crowdsec-firewall-bouncer [are available on our repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories). You need to pick the package according to your firewall system :
+Packages for crowdsec-firewall-bouncer [are available on our repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories). You need to pick the package according to your firewall system :  
+
+:::info
+To know if your system is using iptables or nftables, you can run the following command:
+
+iptables -V
+If you see the mention of 'nt_tables' in the output, you are using nftables.
+:::
 
 ### IPTables
 
