@@ -19,25 +19,7 @@ Currently, only 4 orders are available:
 
 ## Enable console management
 
-:::info
-These steps are only needed if you are using CrowdSec version below `1.6.0`. We advise to update to the latest version of CrowdSec to benefit from the latest features and security patches.
-:::
-
-There are two ways to enable this feature flag:
- - Create or edit `/etc/crowdsec/feature.yaml` with the following flag
-
-```yaml
-- papi_client
-```
- - Add this environement variable to the crowdsec service file with `sudo systemctl edit crowdsec.service`:
-```
-[Service]
-Environment=CROWDSEC_FEATURE_PAPI_CLIENT=true
-```
-
-And then reload the systemctl daemon with `sudo systemctl daemon-reload`
-
-Now that the feature flag is enabled, we need to enable the option on the LAPI side:
+We need to enable the option on the LAPI side:
 ```bash
 sudo cscli console enable console_management
 sudo systemctl restart crowdsec

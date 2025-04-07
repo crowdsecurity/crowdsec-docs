@@ -31,6 +31,7 @@ import RemediationSupportBadges from '@site/src/components/RemediationSupportBad
 <RemediationSupportBadges
   Mode
   Appsec
+  Metrics
 />
 
 A lua Remediation Component for nginx.
@@ -60,6 +61,11 @@ Install the following packages:
 ```bash
 sudo apt install nginx lua5.1 libnginx-mod-http-lua luarocks gettext-base lua-cjson
 ```
+
+::::warning
+If you have Unbuntu 22.xx, you may have an issue with `lua` module in nginx.  
+Look at [FAQ for more information](#ubuntu-22xx-getting-lua-error).
+::::
 
 ### Using packages
 
@@ -302,8 +308,25 @@ Here is a config example, but you can change values:
 resolver 8.8.8.8 ipv6=off;
 lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
 ```
-
 And restart Nginx.
+
+### Ubuntu 22.xx getting lua error
+
+On Ubuntu 22.xx, the default NGINX package does not include the `lua` module due to compatibility issues with other modules. This has been resolved in later versions of Ubuntu.
+
+#### How to fix it
+
+You have a few options to resolve this issue:
+
+- **Upgrade to Ubuntu 24.04 or later**  
+  The `lua` module is included again in newer Ubuntu releases.
+
+- **Use OpenResty instead of NGINX**  
+  OpenResty is a drop-in replacement for NGINX that includes the `lua` module by default.  
+  > Note: OpenResty uses slightly different service names and paths, but configuration remains compatible with standard NGINX.
+
+- **Manually compile the lua module**  
+  This is a more advanced approach and requires manual steps to build and install the module yourself.
 
 ## Configuration Reference
 
