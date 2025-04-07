@@ -70,8 +70,7 @@ You can follow our quick start guides depending on your web server:
 Or consider learning more about the AppSec capabilities:
 
 -   **Rules**: [How to read, write and debug rules](/appsec/rules_syntax.md)
- <!-- TODO -->
--   **Scenarios**: How to create scenarios that leverage the AppSec Component events
--   **Hooks**: [For advanced use let's talk about possible Hooks](/appsec/hooks.md)
+-   **Scenarios**: [How to create scenarios that leverage the AppSec Component events](/appsec/alerts_and_scenarios.md)
+-   **Hooks**: [To customise behavior of the AppSec at runtime](/appsec/hooks.md)
 -   **Troubleshoot**: [How to troubleshoot the behavior of the AppSec Component](/appsec/troubleshooting.md)
 -   **AppSec Protocol**: [if you're maintaining or creating a remedation component and want to add the AppSec capabilities](/appsec/protocol.md)

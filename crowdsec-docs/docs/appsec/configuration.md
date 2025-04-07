@@ -58,6 +58,45 @@ inband_rules:
 #...
 ```
 
+## Disabling rules at runtime
+
+Even though we try to provide rules without false positives, sometimes a virtual patching rule can block legitimate requests on a website.
+
+You can disable rules at runtime, either globally (for all requests) or based on specific conditions (source IP, URI, ...).
+
+To disable a rule, we'll first create a new `appsec-config` to avoid tainting the configuration from the hub (if you are already using a custom configuration, you can update this one instead).
+
+```yaml title="/etc/crowdsec/appsec-configs/my_config.yaml"
+name: custom/my_config
+on_load:
+ - apply:
+    - RemoveInBandRuleByName("crowdsecurity/vpatch-env-access")
+pre_eval:
+ - filter: IsInBand == true && req.URL.Path startsWith "/bar/"
+   apply:
+    - RemoveInBandRuleByName("generic-wordpress-uploads-php")
+```
+
+We are using the [hooks](/docs/appsec/hooks.md) provided by the appsec to modify the configuration in 2 places:
+ - `on_load`: Expressions here will be applied when crowdsec loads the configuration, effectively disabling the rule `crowdsecurity/vpatch-env-access` globally.
+ - `pre_eval`: Expressions here will be applied only if the provided filter matches. In this example, we are disabling the rule `crowdsecurity/generic-wordpress-uploads-php` only if the request URI starts with `/blog/` and if we are currently processing in-band rules.
+
+You can also disable native (seclang) rules by providing their ID with the `RemoveInBandRuleByID` helper. See the [hooks](/docs/appsec/hooks.md) documentation for a list of available helpers.
+
+Also note that we are not loading any rules in our custom config: the rules are loaded by the `crowdsecurity/appsec-default` config, and we are just modifying the runtime behavior with this config.
+
+Finally, we need to tell crowdsec to load our new config:
+
+```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
+appsec_configs:
+ - crowdsecurity/appsec-default
+ - custom/my_config
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+```
+
 ## Appsec configuration
 
 The AppSec configuration is referenced by the acquisition configuration (`appsec_config`, `appsec_configs` or `appsec_config_path`):
