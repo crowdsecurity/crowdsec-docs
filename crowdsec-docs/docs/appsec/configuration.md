@@ -119,11 +119,11 @@ pre_eval:
 
 ### Disable appsec for a specific FQDN
 
-If your reverse-proxy forwards all requests to crowdsec, regardless of the FQDN, you can disable the appsec for specific domain with a custom appsec-config:
+If your reverse-proxy forwards all requests to crowdsec, regardless of the FQDN, you can disable the appsec for specific domain with a custom appsec-config (ie, the request will be always allowed):
 
 ```yaml title="/etc/crowdsec/appsec-configs/my_config.yaml"
 name: custom/my_config
-pre_eval:
+on_match:
  - filter: req.URL.Host == "foo.com"
    apply:
     - CancelEvent()
@@ -131,7 +131,7 @@ pre_eval:
     - SetRemediation("allow")
 ```
 
-With this config, the rules will still be evaluated, but no alert or event will be generated, and if a rule matches, the remediation will be set to `allow`(ie, instruct the bouncer to let the request through).
+With this config, the rules will still be evaluated, but if a rule matches no alert or event will be generated, and the remediation will be set to `allow`(ie, instruct the bouncer to let the request through).
 
 ## Appsec configuration
 
