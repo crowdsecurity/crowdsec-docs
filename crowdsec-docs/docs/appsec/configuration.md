@@ -97,6 +97,42 @@ listen_addr: 127.0.0.1:7422
 source: appsec
 ```
 
+## Allowlisting
+
+### Fully allow a specific IP or range
+
+If you want to ignore all rule matches for a specific IP or range, you can use a [centralized allowlist](local_api/allowlists.md).
+
+Rules will be processed as usual, but the request will not be blocked even if a rule matches.
+
+### Disable specific rules for a specific IP/range
+
+If you want to disable rule(s) for a specific IP (or range), you will need to use the `pre_eval` hook (refer to the section above for more details):
+
+```yaml title="/etc/crowdsec/appsec-configs/my_config.yaml"
+name: custom/my_config
+pre_eval:
+ - filter: req.RemoteAddr == "1.2.3.4"
+   apply:
+    - RemoveInBandRuleByName("generic-wordpress-uploads-php")
+```
+
+### Disable appsec for a specific FQDN
+
+If your reverse-proxy forwards all requests to crowdsec, regardless of the FQDN, you can disable the appsec for specific domain with a custom appsec-config:
+
+```yaml title="/etc/crowdsec/appsec-configs/my_config.yaml"
+name: custom/my_config
+pre_eval:
+ - filter: req.URL.Host == "foo.com"
+   apply:
+    - CancelEvent()
+    - CancelAlert()
+    - SetRemediation("allow")
+```
+
+With this config, the rules will still be evaluated, but no alert or event will be generated, and if a rule matches, the remediation will be set to `allow`(ie, instruct the bouncer to let the request through).
+
 ## Appsec configuration
 
 The AppSec configuration is referenced by the acquisition configuration (`appsec_config`, `appsec_configs` or `appsec_config_path`):
