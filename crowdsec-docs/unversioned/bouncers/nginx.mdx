@@ -163,6 +163,8 @@ MODE=stream
 REQUEST_TIMEOUT=1000
 # exclude the bouncing on those location
 EXCLUDE_LOCATION=
+# process internal request (eg, rewrite)
+ENABLE_INTERNAL=false
 # Cache expiration in live mode, in second
 CACHE_EXPIRATION=1
 # Update frequency in stream mode, in second
@@ -405,6 +407,18 @@ EXCLUDE_LOCATION=/<path1>,/<path2>
 The locations to exclude while bouncing. It is a list of location, separated by commas.
 
 :warning: It is not recommended to put `EXCLUDE_LOCATION=/`.
+
+### `ENABLE_INTERNAL`
+> bool
+
+```bash
+ENABLE_INTERNAL=true
+```
+
+Whether to process internal requests or not (after a rewrite for example).
+
+Disabled by default.
+
 
 ### `CACHE_EXPIRATION`
 > int
