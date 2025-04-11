@@ -527,6 +527,17 @@ CAPTCHA_EXPIRATION=3600
 
 The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IPs address will get a captcha again.
 
+### `CAPTCHA_RET_CODE`
+> int
+
+> This option is only for the `captcha` remediation.
+
+```bash
+CAPTCHA_RET_CODE=200
+```
+
+Specifies the HTTP status code that should be returned to the client when a CAPTCHA challenge is required. This is especially useful when your traffic is routed through a CDN (like Cloudflare), where you may want to avoid triggering caching based on non-200 status codes. By default if no value is provided it will use 200 status code.
+
 ### `APPSEC_URL`
 > string
 
