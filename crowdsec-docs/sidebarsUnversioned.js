@@ -265,6 +265,27 @@ module.exports = {
             label: "Service API 🏅",
             href: "/u/service_api/getting_started",
         },
+        {
+            type: "category",
+            label: "Notification integrations 🏅",
+            items: [
+                {
+                    type: "doc",
+                    label: "Overview",
+                    id: "console/notification_integrations/overview",
+                },
+                {
+                    type: "doc",
+                    label: "Notification Rule",
+                    id: "console/notification_integrations/rule",
+                },
+                {
+                    type: "doc",
+                    label: "Slack",
+                    id: "console/notification_integrations/slack",
+                },
+            ],
+        },
     ],
     remediationSideBar: [
         {
