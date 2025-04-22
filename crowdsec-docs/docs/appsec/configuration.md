@@ -64,6 +64,13 @@ Even though we try to provide rules without false positives, sometimes a virtual
 
 You can disable rules at runtime, either globally (for all requests) or based on specific conditions (source IP, URI, ...).
 
+You can can disable rules by:
+ - Name with `RemoveInBandRuleByName`: Intended for disabling rules provided by crowdsec (the name is the name of the appsec-rule as seen in `cscli appsec-rules list`).
+ - ID with `RemoveInBandRuleByID`: Intended for disabling seclang rules
+ - Tag with `RemoveInBandRuleByTag`: Intended for disabling seclang rules
+
+The same functions exist for out-of-band rules, prefixed with `RemovedOutBandRuleBy...`
+
 To disable a rule, we'll first create a new `appsec-config` to avoid tainting the configuration from the hub (if you are already using a custom configuration, you can update this one instead).
 
 ```yaml title="/etc/crowdsec/appsec-configs/my_config.yaml"
@@ -74,14 +81,14 @@ on_load:
 pre_eval:
  - filter: IsInBand == true && req.URL.Path startsWith "/bar/"
    apply:
-    - RemoveInBandRuleByName("generic-wordpress-uploads-php")
+    - RemoveInBandRuleByName("crowdsecurity/generic-wordpress-uploads-php")
 ```
 
 We are using the [hooks](/docs/appsec/hooks.md) provided by the appsec to modify the configuration in 2 places:
  - `on_load`: Expressions here will be applied when crowdsec loads the configuration, effectively disabling the rule `crowdsecurity/vpatch-env-access` globally.
  - `pre_eval`: Expressions here will be applied only if the provided filter matches. In this example, we are disabling the rule `crowdsecurity/generic-wordpress-uploads-php` only if the request URI starts with `/blog/` and if we are currently processing in-band rules.
 
-You can also disable native (seclang) rules by providing their ID with the `RemoveInBandRuleByID` helper. See the [hooks](/docs/appsec/hooks.md) documentation for a list of available helpers.
+You can also disable native (seclang) rules by providing their ID with the `RemoveInBandRuleByID` helper. See the [hooks](appsec/hooks.md) documentation for a list of available helpers.
 
 Also note that we are not loading any rules in our custom config: the rules are loaded by the `crowdsecurity/appsec-default` config, and we are just modifying the runtime behavior with this config.
 
@@ -114,7 +121,7 @@ name: custom/my_config
 pre_eval:
  - filter: req.RemoteAddr == "1.2.3.4"
    apply:
-    - RemoveInBandRuleByName("generic-wordpress-uploads-php")
+    - RemoveInBandRuleByName("crowdsecurity/generic-wordpress-uploads-php")
 ```
 
 ### Disable appsec for a specific FQDN
