@@ -23,7 +23,34 @@ export const exclude = ["scanner:"]
 
 <GithubIconRender url={classificationsURL}></GithubIconRender>
 
-This classification page provides a taxonomy of IP addresses that exhibit potentially suspicious behaviors. These classifications are designed to help you identify and respond to various threat actors and malicious activities.
+Classification of Threat Intelligence follows the format “cateogry:name”, where category is a broad type of of classification encapsulating different elements.
+A summary of the main classification category is provided below, and you can use the search bar in the table to filter the classification you are looking for.
+
+## Hosts Malware
+Hosts identified as hosting live payloads associated with known malware families.
+Botnet
+Hosts associated with known botnets, based on the exploited CVE(s) and the payload they spread (e.g. Mirai).
+## Profile
+A type of classification that relates to the exposed services on the machine. Examples:
+`profile:insecure_services`: IP exposing dangerous services (e.g. Telnet, RDP, etc.)
+`profile:fake_rdns`: IP reverse DNS doesn't resolve to the IP address
+
+## AI Crawler
+
+AI Company using crawlers to index the data used to train Large Language Models. Such companies are heavy consumers of the internet bandwidth and result in a large amount of traffic. The main companies categorized are Anthropic, OpenAI, Bitdance … They can be directly consumed inside a specialized blocklist available here
+AI Search
+AI Search engines that are used by users to search the internet. They are coming from an AI agent, and are not used directly to train the AI models compared to the AI crawlers category. But the results is the same in terms of traffic load, as they can be part of an automation workflow
+
+#### Notes: They can be directly consumed inside a specialized blocklist available here
+## Device
+## Proxy
+Hosts identified as proxies based on the services they expose and/or their behaviour.
+
+They can be directly consumed inside a specialized blocklist available here
+## Cohorts [Experimental]
+Cohorts are groups of machines seen attacking in a coordinated fashion. IPs belonging to the same cohort or cluster have been seen to exhibit a new behaviour in a synchronised manner, such as starting to exploit a known vulnerability at the same time. You can explore the IPs of a cluster using the CTI search query and the classifications.classifications.label field, such as classifications.classifications.label:"Attacker Group: vigilant silver pelican"
+The names of the clusters are auto-generated and do not imply any form of attribution.
+They are used by CTI teams to perform further investigation.
 
 <TableRender
     columns={columns}
