@@ -23,7 +23,7 @@ export const exclude = ["scanner:"]
 
 <GithubIconRender url={classificationsURL}></GithubIconRender>
 
-Classification of Threat Intelligence follows the format “cateogry:name”, where category is a broad type of of classification encapsulating different elements.
+Classification of Threat Intelligence follows the format “cateogry:name”, where category is a broad type of classification encapsulating different elements.
 A summary of the main classification category is provided below, and you can use the search bar in the table to filter the classification you are looking for.
 
 ## Hosts Malware
@@ -39,18 +39,16 @@ A type of classification that relates to the exposed services on the machine. Ex
 ## AI Crawler
 
 AI Company using crawlers to index the data used to train Large Language Models. Such companies (OpenAPI, ByteDance, Anthropic ... ) are heavy consumers of the internet bandwidth and result in a large amount of traffic. 
-They can be directly consumed inside a specialized blocklist available [here](https://app.crowdsec.net/blocklists/67b3524151bbde7a12b60be0)
+They can be directly consumed inside a specialized blocklist available [here](https://app.crowdsec.net/blocklists/67b3524151bbde7a12b60be0).
 ## AI Search
 AI Search engines that are used by users to search the internet. They are coming from an AI agent, and are not used directly to train the AI models compared to the AI crawlers category. But the results is the same in terms of traffic load, as they can be part of an automation workflow
+IPs can be directly consumed inside a specialized blocklist available [here](https://app.crowdsec.net/blocklists/67b3524151bbde7a12b60be0).
 
-#### Notes: They can be directly consumed inside a specialized blocklist available [here](https://app.crowdsec.net/blocklists/67b3524151bbde7a12b60be0)
 ## Device
 The IP is associated with a device having known security weaknesses.
 
 ## Proxy
-Hosts identified as proxies based on the services they expose and/or their behaviour.
-
-They can be directly consumed inside a specialized blocklist available [here](https://app.crowdsec.net/blocklists/65a56839ec04bcd4f51670be)
+Hosts identified as proxies based on the services they expose and/or their behaviour. IPs be directly consumed inside a specialized blocklist available [here](https://app.crowdsec.net/blocklists/65a56839ec04bcd4f51670be)
 ## Cohorts [Experimental]
 Cohorts are groups of machines seen attacking in a coordinated fashion. IPs belonging to the same cohort or cluster have been seen to exhibit a new behaviour in a synchronised manner, such as starting to exploit a known vulnerability at the same time.
 You can explore the IPs of a cluster using the CTI search query and the `classifications.classifications.label` : [query example](https://app.crowdsec.net/cti?q=classifications.classifications.label%3A%22Attacker+Group%3A+Bold+Peachpuff+Euphonia%22&page=1).
