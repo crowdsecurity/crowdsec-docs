@@ -84,6 +84,7 @@ On Systemd devices you have to set the proxy variable in the environment section
 [Service]
 Environment=HTTP_PROXY=http://myawesomeproxy.com:8080
 Environment=HTTPS_PROXY=https://myawesomeproxy.com:443
+Environment=NO_PROXY=127.0.0.1,localhost,0.0.0.0
 ```
 
 After this change you need to reload the systemd daemon using:
@@ -106,7 +107,7 @@ You can configure `cscli` and `crowdsec` to use [tor](https://www.torproject.org
 
 All (http) requests made to the central API to go through the [tor network](https://www.torproject.org/).
 
-With tor installed, setting `HTTP_PROXY` and `HTTPS_PROXY` environment variables to your socks5 proxy will do the trick.
+With tor installed, setting `HTTP_PROXY` and `HTTPS_PROXY` environment variables to your socks5 proxy, as well as setting `NO_PROXY` to local addresses to prevent LAPI errors, will do the trick.
 
 #### Edit crowdsec systemd unit to push/pull via tor
 
@@ -114,12 +115,13 @@ With tor installed, setting `HTTP_PROXY` and `HTTPS_PROXY` environment variables
 [Service]
 Environment="HTTPS_PROXY=socks5://127.0.0.1:9050"
 Environment="HTTP_PROXY=socks5://127.0.0.1:9050"
+Environment="NO_PROXY=127.0.0.1,localhost,0.0.0.0"
 ```
 
 #### Running the wizard with tor
 
 ```bash
-$ sudo HTTPS_PROXY=socks5://127.0.0.1:9050 HTTP_PROXY=socks5://127.0.0.1:9050  ./wizard.sh --bininstall
+$ sudo HTTPS_PROXY=socks5://127.0.0.1:9050 HTTP_PROXY=socks5://127.0.0.1:9050 NO_PROXY=127.0.0.1,localhost,0.0.0.0  ./wizard.sh --bininstall
 ```
 
 :::caution
@@ -131,7 +133,7 @@ Do not use the wizard in interactive (`-i`) mode if you're concerned, as it will
 #### cscli
 
 ```bash
-$ sudo HTTP_PROXY=socks5://127.0.0.1:9050 HTTPS_PROXY=socks5://127.0.0.1:9050 cscli capi register
+$ sudo HTTP_PROXY=socks5://127.0.0.1:9050 HTTPS_PROXY=socks5://127.0.0.1:9050 NO_PROXY=127.0.0.1,localhost,0.0.0.0 cscli capi register
 ```
 
 ### How to report a bug
