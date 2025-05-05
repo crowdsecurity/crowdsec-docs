@@ -4,6 +4,11 @@ title: Decisions Management
 sidebar_position: 1
 ---
 
+:::info
+This feature needs the *console_management* feature activated on your Security Engine
+If your Security Engine was in version >=1.6.9 it should have been done automatically
+Check the instructions to activate it [HERE](/u/console/decisions/decisions_intro)
+:::
 ## Console Management
 
 CrowdSec Local API is able to receive or delete local decisions from the Console.
