@@ -127,7 +127,7 @@ module.exports = {
                         {
                             type: "docsVersion",
                             to: "/docs/next/appsec/intro",
-                            label: "Web Application Firewall",
+                            label: "Web Application Firewall (AppSec)",
                         },
                         {
                             type: "doc",
