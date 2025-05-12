@@ -290,6 +290,11 @@ module.exports = {
                     label: "Slack",
                     id: "console/notification_integrations/slack",
                 },
+                {
+                    type: "doc",
+                    label: "Webhook",
+                    id: "console/notification_integrations/webhook",
+                },
             ],
         },
     ],
