@@ -1,12 +1,12 @@
 ---
 id: integration_ipdex
 title: IPDEX
-sidebar_position: 12
+sidebar_position: 1
 ---
 
 `ipdex` is a simple CLI tool developed by CrowdSec to gather insight about a list of IPs or an IP using the CrowdSec CTI (Cyber Threat Intelligence) API.
 
-[Official IPDEX Repo](https://github.com/crowdsecurity/ipdex)
+[Official IPDEX Repository](https://github.com/crowdsecurity/ipdex)
 
 ## Installation
 

@@ -37,6 +37,7 @@ module.exports = {
                 id: "cti_api/integration_intro",
             },
             items: [
+                "cti_api/integration_ipdex",
                 "cti_api/integration_chrome",
                 "cti_api/integration_gigasheet",
                 "cti_api/integration_intelowl",
