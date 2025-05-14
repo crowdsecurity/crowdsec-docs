@@ -99,7 +99,7 @@ Cannot be used with `group_id`.
 ### `timeout`
 
 Maximum time to wait for new messages before returning an empty read.
-Type: integer (seconds).
+
 Default: 5
 
 ### `tls.insecure_skip_verify`
