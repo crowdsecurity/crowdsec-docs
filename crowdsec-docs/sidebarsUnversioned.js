@@ -101,12 +101,17 @@ module.exports = {
                 },
                 {
                     type: "doc",
-                    label: "Transfer an Engine",
+                    label: "Transferring an Engine",
                     id: "console/security_engines/transfer_engine",
                 },
                 {
                     type: "doc",
-                    label: "Remove an Engine",
+                    label: "Archiving an Engine",
+                    id: "console/security_engines/archive_engine",
+                },
+                {
+                    type: "doc",
+                    label: "Removing an Engine",
                     id: "console/security_engines/remove_engine",
                 },
                 {
