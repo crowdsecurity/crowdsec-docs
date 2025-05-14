@@ -1,5 +1,5 @@
 ---
-title: Remove Engine
+title: Removing a Security Engine
 description: Remove Security Engines from an organization
 ---
 

@@ -19,9 +19,10 @@ At the top of the page, the essential information regarding the Security Engine 
 
 Quick actions are available from the summary to apply changes to your Security Engine.
 
--   [Update name or tags](/console/security_engines/name_and_tags.md)
--   [Transfer an Engine](/console/security_engines/transfer_engine.md)
--   [Remove an Engine](/console/security_engines/remove_engine.md)
+-   [Updating name or tags](/console/security_engines/name_and_tags.md)
+-   [Transferring an Engine](/console/security_engines/transfer_engine.md)
+-   [Archiving an Engine](/console/security_engines/archive_engine.md)
+-   [Removing an Engine](/console/security_engines/remove_engine.md)
 
 ![Security Engine details page](/img/console/security_engines/details-page-actions.png)
 
