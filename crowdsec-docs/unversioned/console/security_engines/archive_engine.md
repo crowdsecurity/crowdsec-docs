@@ -42,7 +42,11 @@ This feature helps maintain an organized workspace by automatically managing Sec
 To see your archived Security Engines locate and check the option labeled _Show only archived_.
 Archived engines will appear in a greyed-out, read-only state.
 
-> Please note that the Console will no longer be synchronized with archived Security Engines. This means that blocklists, scenarios and remediation components counters will always be 0.
+:::info
+the Console features will no longer be synchronized with archived Security Engines.
+
+This means that blocklists, scenarios and remediation components counters will always be 0.
+:::
 
 ![Show archived Engine](/img/console/security_engines/archived-option.png)
 
@@ -50,7 +54,9 @@ Archived engines will appear in a greyed-out, read-only state.
 
 If you wish to restore an archived Security Engine, simply re-enroll the Security Engine by executing the enrollment command again from your server.
 
-**IMPORTANT**: Add the `--overwrite` flag to the enrollment command in order to replace the current status in the Console.
+:::warning
+Add the `--overwrite` flag to the enrollment command in order to replace the current status in the Console.
+:::
 
 ## Permanently Deleting an Archived Security Engine
 
