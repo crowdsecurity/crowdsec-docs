@@ -157,6 +157,7 @@ http:
     crowdsec:
       plugin:
         bouncer:
+          enabled: true
           crowdsecAppsecEnabled: true
           crowdsecAppsecHost: crowdsec:7422
           crowdsecAppsecFailureBlock: true
@@ -168,6 +169,7 @@ Instead if you define the configuration using labels on the containers you can a
 
 ```yaml
   labels:
+      - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.enabled=true"
       - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecAppsecEnabled=true"
       - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecAppsecHost=crowdsec:7422"
       - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecLapiKey=privateKey-foo"

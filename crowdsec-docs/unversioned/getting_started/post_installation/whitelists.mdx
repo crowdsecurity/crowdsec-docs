@@ -21,9 +21,10 @@ We use "event" as a term to describe a log line that is currently being processe
 
 ## Whitelist Types
 
-There are two different types of whitelists in CrowdSec:
+There are three different types of whitelists in CrowdSec:
 - Parser (at enrich stage)
 - Postoverflow
+- AllowLists
 
 Its important to note where these whitelists are applied in the pipeline, as this will affect the behavior and the context of the whitelists.
 
@@ -51,11 +52,30 @@ typically these files are located in the following locations depending on your O
 
 *Postoverflow whitelist folders do not exist by default so you **MUST** manually create them*
 
+### AllowLists
+
+:::info
+Allowlist were added in version `1.6.8` please ensure you are on this version to follow these Steps
+:::
+
+AllowLists are a new feature that lets you centrally manage whitelisted IP addresses and CIDR ranges using `cscli`. This is the preferred method for allowlisting, as AllowLists are integrated with all major components of CrowdSec, including:
+
+- AppSec component  
+- `cscli`  
+- Scenario overflows
+- Console Blocklists
+
+
 ### Which one should I use?
 
-If you know which IP or event pattern you want to whitelist (for example a URI), then you should use a Parser whitelist. If you want to do a more complex whitelist, such as a DNS/rDNS lookup, then you should use the Postoverflow Whitelist.
+If you already know the IP address or CIDR range you want to whitelist, use the `cscli` AllowLists feature. This ensures the IP is excluded across all CrowdSec components.
 
-In short, enricher whitelists are applied to **every** event (log line), whereas postoverflow whitelists are only applied to **triggered** scenarios.
+If you're looking to whitelist based on a specific event pattern (such as a URI), use a **Parser whitelist**. For more advanced logic—like DNS or reverse DNS lookups—use a **Postoverflow whitelist**.
+
+To summarize:
+- Use **AllowLists** for IP and CIDR ranges.
+- **Enricher whitelists** apply to **every** event (each log line).
+- **Postoverflow whitelists** apply only to **triggered** scenarios.
 
 ## Should I create a whitelist?
 
@@ -85,6 +105,62 @@ The example location shown is for Linux, you will need to adjust the path based 
 
 ### Static IP address
 
+#### AllowLists
+
+You can create a new AllowList using `cscli`:
+
+```bash
+cscli allowlist create my_allowlist -d 'created from the docs'
+```
+
+This command creates an empty AllowList named `my_allowlist`. You can then add IP addresses and CIDR ranges to it. There's no need to specify the type—AllowLists support both. The `-d` flag lets you add a description, which is useful when managing multiple AllowLists to help identify their purpose.
+
+To add entries to the AllowList, provide the name and the value you want to allow:
+
+Single IP:
+
+```bash
+cscli allowlist add my_allowlist 192.168.1.1
+```
+
+CIDR range:
+
+```bash
+cscli allowlist add my_allowlist 192.168.1.0/24
+```
+
+A key benefit of using AllowLists is that changes take effect immediately—no need to restart CrowdSec.
+
+To view the contents of an AllowList, run:
+
+```bash
+cscli allowlist inspect my_allowlist
+```
+
+Example output:
+
+```
+──────────────────────────────────────────────
+ Allowlist: my_allowlist
+──────────────────────────────────────────────
+ Name                my_allowlist
+ Description         created from the docs
+ Created at          2025-05-13T14:10:12.668Z
+ Updated at          2025-05-13T14:12:30.177Z
+ Managed by Console  no
+──────────────────────────────────────────────
+
+───────────────────────────────────────────────────────────────
+ Value           Comment  Expiration  Created at
+───────────────────────────────────────────────────────────────
+ 192.168.1.0/24           never       2025-05-13T14:10:12.668Z
+───────────────────────────────────────────────────────────────
+```
+
+You can see the full list of `allowlist` command via `cscli` [here](/docs/next/cscli/cscli_allowlists). 
+
+#### Enricher file
+
 If you want to whitelist a specific IP address for example `192.168.1.1`, you can create a file in the Enricher folder with the following content:
 
 ```yaml title="/etc/crowdsec/parsers/s02-enrich/01-my-whitelist.yaml"
@@ -101,8 +177,6 @@ Once you have created the file you will need to restart the CrowdSec service for
 ```bash title="Restart CrowdSec"
 sudo systemctl restart crowdsec
 ```
-
-### IP Range
 
 If you want to whitelist a range of IP addresses, for example `192.168.1.0/24` you can create a file in the Enricher folder with the following content:
 
