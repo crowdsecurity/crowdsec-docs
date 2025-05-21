@@ -181,9 +181,9 @@ Once the repository is added, you can install the Security Engine via:
     Then add the following content:
 
     ```
-    Package: crowdsec
-    Pin: origin packagecloud.io
-    Pin-Priority: 600
+    Package: *
+    Pin: release o=packagecloud.io/crowdsec/crowdsec,a=any,n=any,c=main
+    Pin-Priority: 1001
     ```
 
     After saving the file, refresh your local package cache:
