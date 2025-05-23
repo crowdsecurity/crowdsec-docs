@@ -37,6 +37,7 @@ module.exports = {
                 id: "cti_api/integration_intro",
             },
             items: [
+                "cti_api/integration_ipdex",
                 "cti_api/integration_chrome",
                 "cti_api/integration_gigasheet",
                 "cti_api/integration_intelowl",
@@ -100,12 +101,17 @@ module.exports = {
                 },
                 {
                     type: "doc",
-                    label: "Transfer an Engine",
+                    label: "Transferring an Engine",
                     id: "console/security_engines/transfer_engine",
                 },
                 {
                     type: "doc",
-                    label: "Remove an Engine",
+                    label: "Archiving an Engine",
+                    id: "console/security_engines/archive_engine",
+                },
+                {
+                    type: "doc",
+                    label: "Removing an Engine",
                     id: "console/security_engines/remove_engine",
                 },
                 {
