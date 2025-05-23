@@ -46,14 +46,17 @@ If you're an existing CrowdSec user, include your *organisation ID* to manage th
 ### Setup Instructions:
 #### A. Direct Integration (Without CrowdSec Console):
 - **1**. Install the CrowdSec WordPress plugin. 
-  - From the WordPress admin panel, navigate to `Plugins` > `Add New`, search for "CrowdSec", and click `Install Now`.
+  - From the WordPress admin panel
+    - Navigate to `Plugins` > `Add Plugin`
+    - Search Plugins for "CrowdSec"
+    - Click `Install Now`.
   - Alternatively it's avalable [here](https://wordpress.org/plugins/crowdsec/)
 - **2**. Subscribe to the blocklist
   - In CrowdSec Plugin Settings main page click on the "Instant WordPress Blocklist"
   - Or directly via [**this link**](https://buy.stripe.com/00g3cIcu59JVfewaES).  
   - Fill in the form with your *email* and *WordPress URL*.
 - **3**. You'll receive the access link to the blocklist in your email *within 24 hours*.
-- **4**. Go back to the plugin settings and paste the access link in the fields like so:
+- **4**. Go back to the plugin settings and paste the access link in the fields like so:  
 ![Fill the fields like so](/img/bouncer/wordpress/screenshots/plugin-blaas-fields.png) 
 
 ### B. Instant WordPress Blocklist connected to your CrowdSec console
@@ -77,11 +80,11 @@ As an existing CrowdSec's console user you can send the blocklists you already h
 - Subscribe to the blocklists of your choice as indicated in [these instructions](/u/console/blocklists/subscription).
 
 #### Step 2: Configure the plugin
-- Enter the endpoint URL and API Key provided during setup:
+- Enter the endpoint URL and API Key provided during setup:  
 ![Fill the fields like so](/img/bouncer/wordpress/screenshots/plugin-blaas-fields.png) 
 
 ### Important Configuration Notes:
-- Enable Stream mode in advanced settings for direct blocklist integrations.
+- Enable Stream mode in advanced settings for direct blocklist integrations.  
 ![Plugin Stream mode](/img/bouncer/wordpress/screenshots/plugin-stream-mode.png)  
 - Usage Metrics appear locally but are not sent to the CrowdSec console.
 - AppSec features are unavailable in this mode.
