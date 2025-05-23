@@ -1,6 +1,6 @@
 ---
 id: wordpress
-title: WordPress
+title: WordPress Plugin
 ---
 
 
@@ -20,7 +20,43 @@ import RemediationSupportBadges from '@site/src/components/RemediationSupportBad
   Metrics
 />
 
-## Usage
+## WordPress Plugin
+The CrowdSec plugin can both be used to directly use CrowdSec Blocklists within WordPress as well as coupled with the CrowdSec Security Engine detecting malicious bots and attacks.
+In this Documentation we will explain 3 use cases:
+- **Instant WordPress Blocklist**: Block known WordPress attackers in just a few clicks!
+- **Plug the CrowdSec Blocklist as a Service**: For existing CrowdSec console users, you can plug your custom Blocklist Integration into the plugin too.
+- **CrowdSec Bouncer**: Connect your Security Engine to WordPress and block malicious bots and attacks detected on your server in real time
+
+## Instant WordPress Blocklist
+This feature, exclusive to the WP plugin gives you access to CrowdSec's WordPress Blocklist in just a few clicks.
+This blocklist contains the 10k most aggressive IPs currently attacking WordPress sites.
+Using it will help you block those attackers before they even try funny business on your site. (Doesn't dispense of the need to keep your WordPress and plugins up to date!)
+
+Simply subscribe to this blocklist <a class="button tw-bg-primary tw-text-white hover:tw-text-white/80 hover:tw-bg-primary/80 active:tw-bg-primary/90" href="https://buy.stripe.com/00g3cIcu59JVfewaES">via this link</a>, or the one found in the plugin, and you'll receive access to it within 24hours.
+The subscription form only asks you for your email (to receive the access link) and your WordPress site URL (to ensure you are a real WordPress site).
+Optionnaly, If you are already a CrowdSec user, indicate your **organisation id** so we can give you access to the blocklist in your CrowdSec console.
+
+Follow the instructions bellow based on your use case:
+### 1. Instant WordPress Blocklist directly connected in the plugin
+- **Step 1**: Install the CrowdSec WordPress plugin
+- **Step 2**: Go to the plugin settings and click on the "Instant WordPress Blocklist" <a class="button tw-bg-primary tw-text-white hover:tw-text-white/80 hover:tw-bg-primary/80 active:tw-bg-primary/90" href="https://buy.stripe.com/00g3cIcu59JVfewaES">via this link</a>
+- **Step 3**: Fill in the form with your email and WordPress URL
+- **Step 4**: You'll receive the access link to the blocklist in your email within 24 hours
+- **Step 5**: Go back to the plugin settings and paste the access link in the fields like so:
+[Fill the fields like so](!/img/bouncer/wordpress/screenshots/plugin-blaas-fields.png) 
+
+### 2. Instant WordPress Blocklist connected to your CrowdSec console
+- **Step 1**: We assume you already have the plugin installed and configured to connect to your CrowdSec Security Engine
+- **Step 2**: Go to the plugin settings and click on the "Instant WordPress Blocklist" or <a class="button tw-bg-primary tw-text-white hover:tw-text-white/80 hover:tw-bg-primary/80 active:tw-bg-primary/90" href="https://buy.stripe.com/00g3cIcu59JVfewaES">via this link</a>
+- **Step 3**: Fill in the form with your email and WordPress URL and mention the **organisation id** of your CrowdSec console (you can find it in the settings section or the console
+- **Step 4**: You'll receive the access confirmation in your email within 24 hours
+- **Step 5**: Your organisation will now benefit from the wordpress blocklist access and your security engines will already be subscribed to it.
+              You can check the status of your subscription in the [console's blocklist/subscriptions section](https://app.crowdsec.net/blocklists/subscriptions).
+
+## Plug CrowdSec Blocklist as a Service
+...
+
+## CrowdSec WordPress Bouncer Plugin - User Guide
 
 ### Description
 
