@@ -24,8 +24,9 @@ import RemediationSupportBadges from '@site/src/components/RemediationSupportBad
 The CrowdSec plugin can both be used to directly use CrowdSec Blocklists within WordPress as well as coupled with the CrowdSec Security Engine detecting malicious bots and attacks.
 In this Documentation we will explain 3 use cases:
 - **Instant WordPress Blocklist**: Block known WordPress attackers in just a few clicks!
-- **Plug the CrowdSec Blocklist as a Service**: For existing CrowdSec console users, you can plug your custom Blocklist Integration into the plugin too.
-- **CrowdSec Bouncer**: Connect your Security Engine to WordPress and block malicious bots and attacks detected on your server in real time
+- **Plug the CrowdSec Blocklist as a Service**: For existing CrowdSec console users, you can plug your custom [Blocklist Integration](#plug-crowdsec-blocklist-as-a-service) into the plugin too.
+- **CrowdSec Bouncer**: Connect your Security Engine to WordPress and block malicious bots and attacks detected on your server in real time.
+    Follow the [full user guide](#crowdsec-wordpress-bouncer-plugin---user-guide) to understand how the plugin interracts with the CrowdSec Security Engine and how to configure it.
 
 ## Instant WordPress Blocklist
 This feature, exclusive to the WP plugin gives you access to CrowdSec's WordPress Blocklist in just a few clicks.
@@ -54,7 +55,24 @@ Follow the instructions bellow based on your use case:
               You can check the status of your subscription in the [console's blocklist/subscriptions section](https://app.crowdsec.net/blocklists/subscriptions).
 
 ## Plug CrowdSec Blocklist as a Service
-...
+If you want to send blocklists directly from the CrowdSec console to your WordPress site, without using a security engine you can do so in two easy steps:
+
+### Step 1: Create a Blocklist as a Service endpoint of type Remediation Component Integration
+- Follow [this guide](/u/integrations/remediationcomponent) to create
+- Subscribe to the blocklsits of your choice as indicated in [these instructions](/u/console/blocklists/subscription)
+
+### Step 2: Configure the plugin
+- Use the URL and API-Key/Token provided on creation of your integration endpoint
+[Fill the fields like so](!/img/bouncer/wordpress/screenshots/plugin-blaas-fields.png) 
+
+### Specific WP plugin configurations when using a direct Blocklist as a Service integration
+As the plugin won't be interacting with a security engine some features of the plugin become useless and some need to be set right:
+1. Use Stream mode !
+  - Go to Crowdsec Advanced settings and enable Stream mode
+  - This is the only mode that will work with a direct Blocklist as a Service integration.
+[Plugin Stream mode](!/img/bouncer/wordpress/screenshots/plugin-stream-mode.png)  
+2. Usage Metrics will appear in the plugin, but won't be sent to the console
+3. AppSec won't be available
 
 ## CrowdSec WordPress Bouncer Plugin - User Guide
 
