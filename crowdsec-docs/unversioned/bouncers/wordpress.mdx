@@ -1,8 +1,7 @@
 ---
 id: wordpress
-title: WordPress
+title: WordPress Plugin
 ---
-
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -20,31 +19,98 @@ import RemediationSupportBadges from '@site/src/components/RemediationSupportBad
   Metrics
 />
 
-## Usage
+## What can you do with this plugin?
+The CrowdSec WordPress plugin enables you to protect your WordPress site against malicious traffic using CrowdSec's advanced threat detection and blocklist capabilities.
+In this documentation, you'll find detailed instructions for these main use cases:  
+- [**Instant WordPress Blocklist**](#instant-wordpress-blocklist): Quickly block known WordPress attackers with minimal configuration on your side.
+- [**Blocklist as a Service Integration**](#blocklist-as-a-service-integration): Existing CrowdSec users, use your selected blocklists directly in WordPress.
+- **CrowdSec Bouncer**: Real-time protection by connecting your Security Engine to WordPress.  
+  - Refer to the [full user guide](#crowdsec-wordpress-bouncer-plugin---user-guide) for comprehensive configuration and usage details.
+
+***
+
+## Instant WordPress Blocklist
+The Instant WordPress Blocklist is an exclusive feature available through the CrowdSec plugin, offering immediate protection against the most aggressive attackers targeting WordPress sites.  
+Key Benefits:
+- Protect your site from 10,000 of the most active malicious IPs
+- Easy subscription and setup within 24 hours
+- No technical knowledge required
+
+### Subscribe to Instant WordPress Blocklist
+
+Subscribe through the plugin or directly via [**this link**](https://buy.stripe.com/00g3cIcu59JVfewaES).  
+You only need to provide your *email* (to receive access) and your *WordPress URL* (to verify site legitimacy).  
+  
+If you're an existing CrowdSec user, include your *organisation ID* to manage the subscription via your **CrowdSec console**.
+
+### Setup Instructions:
+#### A. Direct Integration (Without CrowdSec Console):
+- **1**. Install the CrowdSec WordPress plugin. 
+  - From the WordPress admin panel
+    - Navigate to `Plugins` > `Add Plugin`
+    - Search Plugins for "CrowdSec"
+    - Click `Install Now`.
+  - Alternatively it's available [here](https://wordpress.org/plugins/crowdsec/)
+- **2**. Subscribe to the blocklist
+  - In CrowdSec Plugin Settings main page click on the "Instant WordPress Blocklist"
+  - Or directly via [**this link**](https://buy.stripe.com/00g3cIcu59JVfewaES).  
+  - Fill in the form with your *email* and *WordPress URL*.
+- **3**. You'll receive the access link to the blocklist in your email *within 24 hours*.
+- **4**. Go back to the plugin settings and paste the access link in the fields like so:  
+![Fill the fields like so](/img/bouncer/wordpress/screenshots/plugin-blaas-fields.png) 
+
+### B. Instant WordPress Blocklist connected to your CrowdSec console
+- **1**. Ensure the plugin is installed and configured to connect with your CrowdSec Security Engine.
+- **2**. Subscribe to the blocklist and provide your *organisation ID*.
+  - In CrowdSec Plugin Settings main page click on the "Instant WordPress Blocklist"
+  - Or directly via [**this link**](https://buy.stripe.com/00g3cIcu59JVfewaES).  
+  - Fill in the form with your *email* and *WordPress URL* and don't forget your *organisation ID* (you can find it in the settings section or the console).
+- **3**. Receive confirmation by email *within 24 hours*.
+- **4**. Your console will automatically activate the subscription. 
+  - Check status in the console's subscription section. [console's blocklist/subscriptions section](https://app.crowdsec.net/blocklists/subscriptions).
+
+***
+
+## Blocklist as a Service Integration
+As an existing CrowdSec's console user you can send the blocklists you already have access to directly to your WordPress site without using a Security Engine:
+
+### Step-by-step Setup:
+#### Step 1: Create a Blocklist Integration
+- Follow [this guide](/u/integrations/remediationcomponent) to create.
+- Subscribe to the blocklists of your choice as indicated in [these instructions](/u/console/blocklists/subscription).
+
+#### Step 2: Configure the plugin
+- Enter the endpoint URL and API Key provided during setup:  
+![Fill the fields like so](/img/bouncer/wordpress/screenshots/plugin-blaas-fields.png) 
+
+### Important Configuration Notes:
+- Enable Stream mode in advanced settings for direct blocklist integrations.
+![Plugin Stream mode](/img/bouncer/wordpress/screenshots/plugin-stream-mode.png)  
+- Remediation Metrics appear locally but are not sent to the CrowdSec console.
+- AppSec features are unavailable in this mode.
+
+***
+
+## CrowdSec WordPress Bouncer Plugin - User Guide
 
 ### Description
 
-The `CrowdSec Bouncer` plugin for WordPress has been designed to protect WordPress websites from various malicious 
-activities by using [CrowdSec](https://www.crowdsec.net/) technology.
+The `CrowdSec Bouncer` plugin for WordPress has been designed to protect WordPress websites from various malicious activities by using [CrowdSec](https://www.crowdsec.net/) technology.
 
 **N.B.:**
 it's important to understand the scope and limitations of this bouncer, as described in the [Understanding the limitations of the bouncer](#understanding-the-limitations-of-the-bouncer) section.
-
 
 ### Prerequisites
 
 To be able to use this Remediation component, the first step is to install [CrowdSec v1](https://doc.crowdsec.net/docs/getting_started/install_crowdsec/).
 
-CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a remediation to 
-"apply" decisions.
+CrowdSec is only in charge of the "detection", and won't block anything on its own. You need to deploy a remediation to "apply" decisions.
 
 Please note that first and foremost CrowdSec must be installed on a server that is accessible via the WordPress site.
 
 ### Features
 
-When a user is suspected by CrowdSec to be malevolent, this component will either send him/her a captcha to resolve or
-simply a page notifying that access is denied. If the user is considered as a clean user, he will access the page as normal.
-
+When a user is suspected by CrowdSec to be malevolent, this component will either send him/her a captcha to resolve or simply a page notifying that access is denied. If the user is considered as a clean user, he will access the page as normal.  
 By default, the ban wall is displayed as below:
 
 <img src={useBaseUrl('/img/bouncer/wordpress/screenshots/front-ban.jpg')} alt="Ban wall" title="Ban wall" />
@@ -53,9 +119,8 @@ By default, the captcha wall is displayed as below:
 
 <img src={useBaseUrl('/img/bouncer/wordpress/screenshots/front-captcha.jpg')} alt="Captcha wall" title="Captcha wall" />
 
-Please note that it is possible to customize all the colors of these pages in a few clicks so that they integrate best with your design.
-
-On the other hand, all texts are also fully customizable. This will allow you, for example, to present translated pages in your users’ language.
+Please note that it is possible to customize all the colors of these pages in a few clicks so that they integrate best with your design.  
+On the other hand, all texts are also fully customizable. This will allow you, for example, to present translated pages in your users’ language.  
 
 #### Understanding the limitations of the bouncer
 
@@ -70,15 +135,15 @@ there are inherent limitations to this approach. These limitations can create po
 
 2. Requests to Non-PHP Files (e.g. `.env` or other static files)
 
-   Requests for non-PHP files, such as `.env` or other static files, are not handled by this plugin.
-   As this limitation is tied to the nature of PHP itself, you may need to implement additional server-level protections (e.g., strict file permissions or blocking access to sensitive files through server configuration) to secure such files.
-   For example, you can deny access to hidden files, using the Nginx directive
+  Requests for non-PHP files, such as `.env` or other static files, are not handled by this plugin.
+  As this limitation is tied to the nature of PHP itself, you may need to implement additional server-level protections (e.g., strict file permissions or blocking access to sensitive files through server configuration) to secure such files.
+  For example, you can deny access to hidden files, using the Nginx directive
    ```nginx
    location ~ /\. {
        deny all;
    }
    ```
-   or the Apache one:
+  or the Apache one:
    ```htaccess
    <FilesMatch "^\.">
        Require all denied
@@ -275,7 +340,7 @@ Choose the cache technology that will use your CrowdSec Local API.
 
 The File system cache is faster than calling Local API. Redis or Memcached is faster than the File System cache.
 
-**N.B**. : There are also a `Clear now` button fo all cache technologies and a `Prune now` button dedicated to the file system cache.
+**N.B**. : There are also a `Clear now` button for all cache technologies and a `Prune now` button dedicated to the file system cache.
 
 ***
 
@@ -291,7 +356,7 @@ Minimum 1 second.  Note that this setting can not be apply in stream mode.
 
 The duration between re-asking Local API about an already checked bad IP.
 
-Minimum 1 second.  Note that this setting can not be apply in stream mode.
+Minimum 1 second.  Note that this setting can not be used in stream mode.
 
 
 ***
@@ -331,7 +396,7 @@ Example of DSN: memcached://localhost:11211.
 
 Enable if you want to ask the AppSec component for a remediation based on the current request, in case the initial LAPI remediation is a bypass.
 
-Not available if you use TLS certficates as authentication type.
+Not available if you use TLS certificates as authentication type.
 
 For more information on the AppSec component, please refer to the [documentation](https://docs.crowdsec.net/docs/appsec/intro/).
 
