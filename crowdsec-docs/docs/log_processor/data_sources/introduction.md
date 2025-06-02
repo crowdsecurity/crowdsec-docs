@@ -56,6 +56,15 @@ The expression must return:
 
 If the expression returns an error or an invalid type, the event will not be modified before sending it to the parsers.
 
+### `use_time_machine`
+
+By default, when reading logs in real-time, crowdsec will use the time at which the log was read as the log timestamp instead of extracting it from the log itself.
+
+Setting this option to `true` will force crowdsec to use the timestamp from the log as the time of the event.
+
+It is mandatory to set this if your application buffers logs before writting them (for example, IIS when writing to a log file, or logs written to S3 from almost any AWS service).<br/>
+If not set, then crowdsec will think all logs happened at once, which can lead to some false positive detections.
+
 ### `labels`
 
 A map of labels to add to the event.
