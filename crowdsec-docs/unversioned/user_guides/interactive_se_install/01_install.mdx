@@ -1,0 +1,276 @@
+---
+id: i_se_install_01
+title: Security Engine Installation
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+import testmdximport from './01_import_test.mdx';
+
+# Interractive Security Engine Installation Guide
+
+Welcome! This interactive guide will help you set up your CrowdSec Security Engine and validate each step to ensure proper operation.
+We'll guide you through detecting and remediating malicious behavior in your services' logs, regardless of your chosen implementation (on host, Docker, Kubernetes)
+
+:::info
+Note that to go further later you'll be able to enable Application Security and benefit from our ever growing collection of Virtual Patching rules.  We'll mention the appropriate dependencies as we go along.
+Lastly, note that we'll cover a setup that focuses on an autonomous security engine parsing the logs of any services from local or remote servers. 
+In appendix we'll cover the possibility to have distributed security engines on each servers, centralizing their alerts on a central security engine.
+:::
+
+## Install CrowdSec
+
+The first step is to install the CrowdSec Security Engine somewhere you'll have access to the logs of services you want to protect.
+You can choose to install it directly on the host, in a Docker container, or in a Kubernetes cluster.  
+
+For a first experience, we recommend installing it on a host machine, as it will allow you to easily access the logs of your services and test the remediation capabilities.
+But if you're comfortable with Docker it also is a great way to get started and run CrowdSec in a containerized environment.  
+
+### Instructions
+
+/* We'll have to see how precise and embeded we want the various guides to be with this page
+    If we want full guides in here we'd better be able to embed files or pieces of files rather than copy paste
+    */
+<Tabs
+  defaultValue="host"
+  groupId="install-implementation"
+  values={[
+    {label: 'Host', value: 'host'},
+    {label: 'Docker', value: 'docker'},
+    {label: 'Kubernetes', value: 'kubernetes'},
+  ]}
+>
+    <TabItem value="host">
+        <p>Here are the various hosts you can install CrowdSec on:</p>
+        // mention guide for linux, Windows, macOS, FreeBSD, pfSense, OPNSense with links to the existing docs
+        <ul>
+        <li><a href="/u/getting_started/installation/linux.md">Linux</a></li>
+        <li><a href="/u/getting_started/installation/windows.md">Windows</a></li>
+        <li><a href="/u/getting_started/installation/macos.md">macOS</a></li>
+        <li><a href="/u/getting_started/installation/freebsd.md">FreeBSD</a></li>
+        <li><a href="/u/getting_started/installation/pfsense.md">pfSense</a></li>
+        <li><a href="/u/getting_started/installation/opnsense.md">OPNSense</a></li>
+        </ul>
+    </TabItem>
+    <TabItem value="docker">
+        // mention the current guide u/getting_started/installation/docker and this page having all the env variable https://hub.docker.com/r/crowdsecurity/crowdsec
+        <p>To install CrowdSec in a Docker container, you can follow the instructions in our <a href="/u/getting_started/installation/docker.md">Docker Installation Guide</a>.</p>
+        <p>For more information on the available environment variables, you can refer to the <a href="https://hub.docker.com/r/crowdsecurity/crowdsec">Docker Hub page</a>.</p>
+    </TabItem>
+    <TabItem value="kubernetes">
+        // mention the current guide u/getting_started/installation/kubernetes and this page having all the env variable https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
+        <p>To install CrowdSec in a Kubernetes cluster, you can follow the instructions in our <a href="/u/getting_started/installation/kubernetes.md">Kubernetes Installation Guide</a>.</p>
+        <p>For more information on the available environment variables, you can refer to the <a href="https://artifacthub.io/packages/helm/crowdsec/crowdsec">Artifact Hub page</a>.</p>
+    </TabItem>
+</Tabs>
+
+### Verification
+
+// dump the content of the testmdximport mdx file here
+// this is a test to see if the mdx import works properly
+// if it does not work, we can remove this part and just have the testmdximport in the next section
+<testmdximport />
+
+### Troubleshooting
+
+
+
+
+## Repository Installation
+
+The CrowdSec repository contains the latest stable version of CrowdSec and is the recommended way to install our packages.
+
+
+
+```bash
+curl -s https://install.crowdsec.net | sudo sh
+```
+
+### Manual Repository Installation
+
+If you prefer to manually add the repository, you can do so by following the instructions below.
+
+<details>
+
+<summary>Manual Repository Installation</summary>
+
+<Tabs
+  defaultValue="debian"
+  groupId="manual-repo-install"
+  values={[
+    {label: 'Deb', value: 'debian'},
+    {label: 'RPM', value: 'rpm'},
+  ]}
+>
+  <TabItem value="debian">
+  <>
+    <p>Begin by refreshing your package cache by running</p>
+    <CodeBlock className="language-bash">sudo apt update</CodeBlock>
+    <p>If you are running Debian, install debian-archive-keyring so that official Debian repositories will be verified (Ubuntu users can skip this)</p>
+    <CodeBlock className="language-bash">sudo apt install debian-archive-keyring</CodeBlock>
+    <p>Ensure the required tools (curl, gpg, apt-transport-https) are installed before proceeding:</p>
+    <CodeBlock className="language-bash">sudo apt install -y curl gnupg apt-transport-https</CodeBlock>
+    <p>In order to install a deb repo, first you need to install the GPG key that used to sign repository metadata. This will change depending on whether or not your apt version is >= v.1.1. You can check this by running:</p>
+    <CodeBlock className="language-bash">apt -v</CodeBlock>
+    <p>For apt version >= v1.1:</p>
+    <p>(Equivalent to or later than Debian/Raspbian Stretch, Ubuntu Xenial, Linux Mint Sarah, Elementary OS Loki)</p>
+    > Create the directory to import the GPG key:
+    >From apt v2.4.0, `/etc/apt/keyrings/` is the designated directory for administrator imported keys. We will be using that for the following instructions, but you can replace `/etc/apt/keyrings/` with any path of your choosing. If you need to create the directory, run:
+    >
+    > <CodeBlock className="language-bash">mkdir -p /etc/apt/keyrings/</CodeBlock>
+    > Then add the GPG key:
+    >
+    > <CodeBlock className="language-bash">curl -fsSL https://packagecloud.io/crowdsec/crowdsec/gpgkey | gpg --dearmor > /etc/apt/keyrings/crowdsec_crowdsec-archive-keyring.gpg</CodeBlock>
+    > Create a file named `/etc/apt/sources.list.d/crowdsec_crowdsec.list` that contains the repository configuration below.
+    >
+    > <CodeBlock className="language-bash">deb [signed-by=/etc/apt/keyrings/crowdsec_crowdsec-archive-keyring.gpg] https://packagecloud.io/crowdsec/crowdsec/any any main
+    deb-src [signed-by=/etc/apt/keyrings/crowdsec_crowdsec-archive-keyring.gpg] https://packagecloud.io/crowdsec/crowdsec/any any main </CodeBlock>
+
+    <p>For apt version < v1.1:</p>
+    <p>(Equivalent to or older than Debian/Raspbian Jessie, Ubuntu Wily, Linux Mint Rosa, Elementary OS Freya)</p>
+    > Add the GPG key:
+    >
+    > <CodeBlock className="language-bash">curl -fsSL https://packagecloud.io/crowdsec/crowdsec/gpgkey | gpg --dearmor > /etc/apt/trusted.gpg.d/crowdsec_crowdsec.gpg</CodeBlock>
+    > Create a file named `/etc/apt/sources.list.d/crowdsec_crowdsec.list` that contains the repository configuration below.
+    >
+    > <CodeBlock className="language-bash">deb https://packagecloud.io/crowdsec/crowdsec/any any main
+    deb-src https://packagecloud.io/crowdsec/crowdsec/any any main</CodeBlock>
+
+    <p>Run this command update your local APT cache:</p>
+    <CodeBlock className="language-bash">sudo apt update</CodeBlock>
+    <p>You can now install packages from your repository.</p>
+  </>
+  </TabItem>
+  <TabItem value="rpm">
+    <>
+      <p>Install pygpgme, a package which allows yum to handle gpg signatures, and a package called yum-utils which contains the tools you need for installing source RPMs.</p>
+      <CodeBlock className="language-bash">sudo yum install pygpgme yum-utils</CodeBlock>
+      <p>You may need to install the EPEL repository for your system to install these packages. If you do not install pygpgme, GPG verification will not work.</p>
+      <p>Create a file named /etc/yum.repos.d/crowdsec_crowdsec.repo that contains the repository configuration below.</p>
+      <p>Make sure to replace `el` and `6` in the config below with your Linux distribution and version:</p>
+      <CodeBlock className="language-bash">
+      [crowdsec_crowdsec]
+      name=crowdsec_crowdsec
+      baseurl=https://packagecloud.io/crowdsec/crowdsec/el/6/$basearch
+      repo_gpgcheck=1
+      gpgcheck=1
+      enabled=1
+      gpgkey=https://packagecloud.io/crowdsec/crowdsec/gpgkey
+            https://packagecloud.io/crowdsec/crowdsec/gpgkey/crowdsec-crowdsec-EDE2C695EC9A5A5C.pub.gpg
+            https://packagecloud.io/crowdsec/crowdsec/gpgkey/crowdsec-crowdsec-C822EDD6B39954A1.pub.gpg
+            https://packagecloud.io/crowdsec/crowdsec/gpgkey/crowdsec-crowdsec-FED78314A2468CCF.pub.gpg
+      sslverify=1
+      sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+      metadata_expire=3600
+
+      [crowdsec_crowdsec-source]
+      name=crowdsec_crowdsec-source
+      baseurl=https://packagecloud.io/crowdsec/crowdsec/el/6/SRPMS
+      repo_gpgcheck=1
+      gpgcheck=1
+      enabled=1
+      gpgkey=https://packagecloud.io/crowdsec/crowdsec/gpgkey
+            https://packagecloud.io/crowdsec/crowdsec/gpgkey/crowdsec-crowdsec-EDE2C695EC9A5A5C.pub.gpg
+            https://packagecloud.io/crowdsec/crowdsec/gpgkey/crowdsec-crowdsec-C822EDD6B39954A1.pub.gpg
+            https://packagecloud.io/crowdsec/crowdsec/gpgkey/crowdsec-crowdsec-FED78314A2468CCF.pub.gpg
+      sslverify=1
+      sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+      metadata_expire=3600
+      </CodeBlock>
+      <p>Update your local yum cache by running</p>
+      <CodeBlock className="language-bash">sudo yum -q makecache -y --disablerepo='*' --enablerepo='crowdsec_crowdsec'</CodeBlock>
+      <p>You can now install packages from your repository.</p>
+    </>
+  </TabItem>
+</Tabs>
+
+</details>
+
+### Install Security Engine
+
+Once the repository is added, you can install the Security Engine via:
+
+<Tabs
+  defaultValue="debian"
+  groupId="operating-systems"
+  values={[
+    {label: 'Debian/Ubuntu', value: 'debian'},
+    {label: 'EL/Centos7/Amzn Linux 2', value: 'centos7'},
+    {label: 'EL/Centos Stream 8', value: 'centos8'},
+    {label: 'SUSE Linux', value: 'suselinux'},
+    {label: 'OpenWRT', value: 'openwrt'},
+    {label: 'CloudLinux', value: 'cloudlinux'},
+  ]}>
+  <TabItem value="debian">
+    <CodeBlock className="language-bash">apt install crowdsec</CodeBlock>
+  </TabItem>
+  
+  <TabItem value="centos7">
+    <CodeBlock className="language-bash">yum install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="centos8">
+    <CodeBlock className="language-bash">dnf install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="suselinux">
+    <CodeBlock className="language-bash">zypper install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="openwrt">
+    <CodeBlock className="language-bash">opkg install crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="cloudlinux">
+    <CodeBlock className="language-bash">yum install crowdsec</CodeBlock>
+  </TabItem>
+</Tabs>
+
+
+### Install Remediation Component
+
+:::warning
+Security Engine by itself is a detection engine, it will not block anything. You need to install a [Remediation Component](/bouncers/intro.md) to enforce decisions
+:::
+
+For the quick start guide we will be installing the [iptables](https://en.wikipedia.org/wiki/Iptables) firewall [Remediation Component](/bouncers/intro.md). (This may not be optimal for your environment, please refer to the [Remediation Documentation](/bouncers/intro.md) for more information)
+
+#### IPTables
+
+<Tabs
+  defaultValue="iptables_debian"
+  values={[
+    { label: 'Debian/Ubuntu', value: 'iptables_debian' ,},
+    { label: 'RHEL/Centos/Fedora', value: 'iptables_rhel', },
+    { label: 'SUSE Linux', value: 'iptables_suse', },
+  ]
+}>
+<TabItem value="iptables_debian">
+
+```bash
+sudo apt install crowdsec-firewall-bouncer-iptables
+```
+
+</TabItem>
+<TabItem value="iptables_rhel">
+
+```bash
+sudo yum install crowdsec-firewall-bouncer-iptables
+```
+
+</TabItem>
+
+<TabItem value="iptables_suse">
+
+```bash
+sudo zypper install crowdsec-firewall-bouncer-iptables
+```
+
+</TabItem>
+</Tabs>
+
+## Next Steps?
+
+Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.md) you will find the next steps to configure and optimize your installation.
