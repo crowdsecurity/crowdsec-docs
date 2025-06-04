@@ -37,19 +37,20 @@ module(load="imudp")
 input(type="imudp" port="514")
 
 # Create a template for the logs
-template(name="RemoteLogs" type="string" string="/var/log/remote-logs/%HOSTNAME%/%programname%.log")
-
-# Use the template
-*.* ?RemoteLogs
+template(name="NginxLogs" type="string" string="/var/log/remote-logs/%HOSTNAME%/nginx.log")
+template(name="AuthLogs" type="string" string="/var/log/remote-logs/%HOSTNAME%/auth.log")
 
 # Both access logs and error logs will be written to the same file for simplicity
 # You can split them by using a custom program name on nginx side
-if ($programname == 'nginx') then /var/log/remote-logs/%HOSTNAME%/nginx.log
+if ($inputname == 'imudp' and $programname == 'nginx') then ?NginxLogs
 & stop
 
 # Write SSH logs to auth.log
-if ($programname == 'sshd') then /var/log/remote-logs/%HOSTNAME%/auth.log
+if ($inputname == 'imudp' and $programname == 'sshd') then ?AuthLogs
 & stop
+
+# Drop everything else, we are not interested in them
+if ($inputname == 'imudp') then stop
 ```
 
 Then, we need to create the `/var/log/remote-logs/` directory in which the logs will be stored:
@@ -243,3 +244,5 @@ $ sudo cscli decisions list
 │ 30011 │ crowdsec │ Ip:X.X.X.X │ crowdsecurity/http-crawl-non_statics │ ban    │ FR      │ 12322 Free SAS │ 43     │ 3h57m29s   │ 14       │
 ╰───────┴──────────┴──────────────────┴──────────────────────────────────────┴────────┴─────────┴────────────────┴────────┴────────────┴──────────╯
 ```
+
+You can delete the decision with `cscli decision delete` to gain back access to the web servers.
