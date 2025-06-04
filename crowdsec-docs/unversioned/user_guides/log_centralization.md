@@ -1,0 +1,245 @@
+---
+id: log_centralization
+title: Log Centralization
+sidebar_position: 10
+---
+
+## Introduction
+
+Our goal is to centralize 2 types of logs:
+ - Nginx logs
+ - SSH auth logs
+
+We'll configure nginx to directly forward the access logs to our central rsyslog server.<br/>
+For the auth logs, we'll configure a local rsyslog on each web server to forward them to our central server.
+
+On the central server, a rsyslog server will receive those logs and write them to files.<br/>
+On this same server, the Security Engine will analyze those logs to detect malicious behaviors in them.<br/>
+Finally, we will have a Firewall Remediation Component running on each of our web server to block the malicious IPs.
+
+
+Our infrastructure will look like this:
+
+
+
+## Rsyslog Server Setup
+
+Let's start by setting up our central rsyslog.
+
+If rsyslog is not installed, you can install it with `apt install rsyslog` (assuming a debian-like distribution).
+
+First step is to configure rsyslog with an UDP listener and a template to write the received logs to disk.
+
+Create the file `/etc/rsyslog.d/10_remote.conf` with the following content:
+```
+# Load the UDP receiver
+module(load="imudp")
+input(type="imudp" port="514")
+
+# Create a template for the logs
+template(name="RemoteLogs" type="string" string="/var/log/remote-logs/%HOSTNAME%/%programname%.log")
+
+# Use the template
+*.* ?RemoteLogs
+
+# Both access logs and error logs will be written to the same file for simplicity
+# You can split them by using a custom program name on nginx side
+if ($programname == 'nginx') then /var/log/remote-logs/%HOSTNAME%/nginx.log
+& stop
+
+# Write SSH logs to auth.log
+if ($programname == 'sshd') then /var/log/remote-logs/%HOSTNAME%/auth.log
+& stop
+```
+
+Then, we need to create the `/var/log/remote-logs/` directory in which the logs will be stored:
+```bash
+$ sudo mkdir /var/log/remote-logs/ && sudo chown syslog:syslog /var/log/remote-logs/
+```
+
+You will also need to edit `/etc/rsyslog.conf` to make sure `$RepeatedMsgReduction` is set to `off` (some distributions set it to `on` by defautl, but this is rarely recommended, especially when consuming potentially a high volume of logs)
+
+Finally, restart rsyslog to use the new configuration:
+```bash
+systemctl restart rsyslog
+```
+
+
+## Rsyslog Client Setup
+
+### Nginx logs
+
+Update your nginx configuration to send the access and error logs over syslog to our central server:
+```
+access_log syslog:server=<central-server-ip>;
+error_log syslog:server=<central-server-ip>;
+```
+
+### Auth logs
+
+Create a file `/etc/rsyslog.d/99-auth-forward.conf` with the following content:
+```
+auth,authpriv.* @<central-server-ip>:514
+```
+
+Restart the rsyslog client:
+```bash
+$ systemctl restart rsyslog
+```
+
+## Crowdsec Setup
+
+### Central Server
+
+Back on the central server, let's install crowdsec.
+
+First, we need to add the crowdsec repository:
+```bash
+$ curl https://install.crowdsec.net | sudo bash
+```
+
+Next, we install crowdsec:
+```bash
+$ sudo apt install crowdsec
+```
+
+Crowdsec will automatically detect we are running on a linux server, and install the base linux collection.
+
+But because our logs are not in a standard location, we need to configure the acquisition to tell crowdsec where our logs are.
+
+Create a file in `/etc/crowdsec/acquis.d/nginx.yaml` with the following content:
+```
+filenames:
+ - /var/log/remote-logs/*/nginx.log
+labels:
+ type: syslog
+```
+
+We now need to do the same thing for the auth logs, create a file `/etc/crowdsec/acquis.d/ssh.yaml` with the following content:
+```
+filenames:
+ - /var/log/remote-logs/*/auth.log
+labels:
+ type: syslog
+```
+
+:::warning
+
+Due to a [current limitation](https://github.com/crowdsecurity/crowdsec/issues/1173) in crowdsec, if a new server starts sending logs to the central syslog server, crowdsec will need to be restarted before being able to process them
+
+:::
+
+
+Note that we are setting the type label to `syslog`. This will instruct crowdsec to use the `syslog` parser to extract the actual type from the log itself.
+
+Then, we need to install the nginx collection for crowdsec to be able to detect attacks:
+```bash
+$ sudo cscli collections install crowdsecurity/nginx
+```
+
+Lastly, we will also need to make crowdsec on all interfaces to make sure our web servers can contact LAPI.<br/>
+Edit the file `/etc/crowdsec/config.yaml`, and set `api.server.listen_uri` to `0.0.0.0:8080`:
+```yaml
+api:
+  server:
+    listen_uri: 0.0.0.0:8080
+```
+
+Finally, restart crowdsec:
+```bash
+$ sudo systemctl restart crowdsec
+```
+
+### Remediation components setup
+
+Crowdsec by itself will only detect bad behaviors and take decisions against IPs, but will not block them.
+
+In order to block an IP, you need to install a [remediation component](/unversioned/bouncers/intro.md).
+
+For the purpose of this guide, we'll be using the [firewall remediation component](/unversioned/bouncers/firewall.mdx) that will add local firewall rules to block malicious IPs.
+
+On your web servers, add the crowdsec repository:
+```bash
+$  curl https://install.crowdsec.net/ | bash
+```
+
+Then, install the firewall remediation component:
+```bash
+$ sudo apt install crowdsec-firewall-bouncer-nftables
+```
+
+We now need to create API keys for both our remediation components.
+On the central server, run the commands:
+```bash
+$ sudo cscli bouncers add fw-bouncer-web-1
+API key for 'fw-bouncer-web-1':
+
+   v3G2V//B4IAEFUkON3zWq5yz331UGZDQlQercn3n5T8
+
+Please keep this key since you will not be able to retrieve it!
+$ sudo cscli bouncers add fw-bouncer-web-2
+API key for 'fw-bouncer-web-2':
+
+   Nda9MreJsUBt/EEmz3TI0Jr6p1a9U2XSx5CEeVfkNRw
+
+Please keep this key since you will not be able to retrieve it!
+```
+
+Now, on each web server, edit the file `/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml` and update the `api_url` options with the IP on the central server, and paste the API key in `api_key`:
+
+```yaml
+api_url: http://<central-server-ip>:8080/
+api_key: <API_KEY>
+```
+
+Finally, restart the remediation component:
+```bash
+$ sudo systemctl restart crowdsec-firewall-bouncer
+```
+
+## Test
+
+Now that everything is setup, it's time to test !
+
+We'll scan one of our web servers, and because both of them are querying the same crowdsec instance, if one of them is attacked, the attacker will also be blocked on the other.
+
+```bash
+$ nikto -h 52.50.157.217
+```
+
+After the scan is done, try to access the 2 servers with curl:
+
+```bash
+$ curl --connect-timeout 2 52.50.157.217
+curl: (28) Connection timed out after 2002 milliseconds
+$ curl --connect-timeout 2 3.254.76.247
+curl: (28) Connection timed out after 2002 milliseconds
+```
+
+You can also check on the central server that everything is working properly:
+
+```bash
+$ sudo cscli metrics
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Acquisition Metrics                                                                                                                           │
+├─────────────────────────────────────────────────────┬────────────┬──────────────┬────────────────┬────────────────────────┬───────────────────┤
+│ Source                                              │ Lines read │ Lines parsed │ Lines unparsed │ Lines poured to bucket │ Lines whitelisted │
+├─────────────────────────────────────────────────────┼────────────┼──────────────┼────────────────┼────────────────────────┼───────────────────┤
+│ file:/var/log/remote-logs/ip-172-31-11-52/auth.log  │ 5          │ -            │ 5              │ -                      │ -                 │
+│ file:/var/log/remote-logs/ip-172-31-11-52/nginx.log │ 1          │ 1            │ -              │ 1                      │ -                 │
+│ file:/var/log/remote-logs/ip-172-31-3-141/auth.log  │ 3          │ -            │ 3              │ -                      │ -                 │
+│ file:/var/log/remote-logs/ip-172-31-3-141/nginx.log │ 99         │ 99           │ -              │ 195                    │ -                 │
+│ file:/var/log/syslog                                │ 3          │ -            │ 3              │ -                      │ -                 │
+╰─────────────────────────────────────────────────────┴────────────┴──────────────┴────────────────┴────────────────────────┴───────────────────╯
+```
+
+And view the current decisions:
+
+```bash
+$ sudo cscli decisions list
+╭───────┬──────────┬──────────────────┬──────────────────────────────────────┬────────┬─────────┬────────────────┬────────┬────────────┬──────────╮
+│   ID  │  Source  │    Scope:Value   │                Reason                │ Action │ Country │       AS       │ Events │ expiration │ Alert ID │
+├───────┼──────────┼──────────────────┼──────────────────────────────────────┼────────┼─────────┼────────────────┼────────┼────────────┼──────────┤
+│ 30011 │ crowdsec │ Ip:X.X.X.X │ crowdsecurity/http-crawl-non_statics │ ban    │ FR      │ 12322 Free SAS │ 43     │ 3h57m29s   │ 14       │
+╰───────┴──────────┴──────────────────┴──────────────────────────────────────┴────────┴─────────┴────────────────┴────────┴────────────┴──────────╯
+```
