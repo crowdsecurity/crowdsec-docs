@@ -37,8 +37,8 @@ module(load="imudp")
 input(type="imudp" port="514")
 
 # Create a template for the logs
-template(name="NginxLogs" type="string" string="/var/log/remote-logs/%HOSTNAME%/nginx.log")
-template(name="AuthLogs" type="string" string="/var/log/remote-logs/%HOSTNAME%/auth.log")
+template(name="NginxLogs" type="string" string="/var/log/remote-logs/nginx/%HOSTNAME%.log")
+template(name="AuthLogs" type="string" string="/var/log/remote-logs/auth/%HOSTNAME%.log")
 
 # Both access logs and error logs will be written to the same file for simplicity
 # You can split them by using a custom program name on nginx side
@@ -111,7 +111,7 @@ But because our logs are not in a standard location, we need to configure the ac
 Create a file in `/etc/crowdsec/acquis.d/nginx.yaml` with the following content:
 ```
 filenames:
- - /var/log/remote-logs/*/nginx.log
+ - /var/log/remote-logs/nginx/*.log
 labels:
  type: syslog
 ```
@@ -119,16 +119,11 @@ labels:
 We now need to do the same thing for the auth logs, create a file `/etc/crowdsec/acquis.d/ssh.yaml` with the following content:
 ```
 filenames:
- - /var/log/remote-logs/*/auth.log
+ - /var/log/remote-logs/auth/*.log
 labels:
  type: syslog
 ```
 
-:::warning
-
-Due to a [current limitation](https://github.com/crowdsecurity/crowdsec/issues/1173) in crowdsec, if a new server starts sending logs to the central syslog server, crowdsec will need to be restarted before being able to process them
-
-:::
 
 
 Note that we are setting the type label to `syslog`. This will instruct crowdsec to use the `syslog` parser to extract the actual type from the log itself.
