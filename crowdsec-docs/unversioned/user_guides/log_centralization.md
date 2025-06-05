@@ -6,7 +6,11 @@ sidebar_position: 10
 
 ## Introduction
 
-Our goal is to centralize 2 types of logs:
+If you expose services on the internet from multiple servers, setting up crowdsec on all of them might make the overall setup more complex.
+
+In order to keep things simpler, you can use a central server that will receive all your logs, and only run a single instance of crowdsec on this server
+
+In this guide, our goal is to centralize 2 types of logs:
  - Nginx logs
  - SSH auth logs
 
@@ -20,7 +24,11 @@ Finally, we will have a Firewall Remediation Component running on each of our we
 
 Our infrastructure will look like this:
 
+![target-infra](/img/user_guide_log_centralization.svg)
 
+Before diving into the setup, a few key points:
+ - If you have a firewall, you will need to allow communication on 514/UDP (syslog) and 8080/TCP (crowdsec LAPI) from the web servers to the central server
+ - By default, rsyslog is a clear-text protocol. If you all the machines interact over LAN, this is probably not an issue, but they are communication over internet, you will probably want to setup TLS on the syslog server.
 
 ## Rsyslog Server Setup
 
