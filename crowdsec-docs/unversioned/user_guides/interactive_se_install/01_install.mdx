@@ -1,13 +1,12 @@
 ---
-id: i_se_install_01
+id: se_install_01
 title: Security Engine Installation
+pagination_next: /u/user_guides/interactive_se_install/se_install_02
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-
-import testmdximport from './01_import_test.mdx';
 
 # Interractive Security Engine Installation Guide
 
@@ -68,12 +67,81 @@ But if you're comfortable with Docker it also is a great way to get started and 
 
 ### Verification
 
-// dump the content of the testmdximport mdx file here
-// this is a test to see if the mdx import works properly
-// if it does not work, we can remove this part and just have the testmdximport in the next section
-<testmdximport />
+Let's check that CrowdSec is running and able to retrieve the community blocklist !
+
+#### CrowdSec installation health
+
+[]  Check that the CrowdSec service is running
+```bash
+systemctl status crowdsec
+```
+- You should see the service status as "active (running)".
+- The port configuration can be setup in config.yaml file or by setting the environment variables depending on your implementation
+
+[] Check that your Local API (LAPI) is properly running: 
+```bash
+sudo cscli machines list
+```
+- You should see a list of machines, including the one you just installed CrowdSec on.
+- For an autonomous install the Security Engine is running and connecting to it's own LAPI
+- You should see a recent last heartbeat and a checkmark in status.
+
+[] Check the metrics can be queried (optionnal for cscli metrics and prometheus):
+```bash
+sudo cscli metrics
+```
+- CrowdSec serves the metrics via a prometheus endpoint, check that it's able to run properly
+- You should see various tables, most still empty except the Local API Machines Metrics
+
+[] Setup hub-update // ?@seb case we need this ?
+- ...
+
+#### CrowdSec connectivity health
+
+[] Check your security engine can connect to the Central API
+```bash
+sudo cscli capi status
+```
+- You should see: "You can successfully interact with Central API (CAPI)"
+- Optionally additional status
+    - Sharing signals is enabled //+link to doc where to turn this on/off ?
+    - Pulling community blocklist is enabled //+link to doc where to turn this on/off ?
+    - Pulling blocklists from the console is enabled //+link to doc where to turn this on/off ?
+
+#### Enroll your Security Engine into CrowdSec Console 
+For advanced monitoring and trouble shooting the CrowdSec Console is a great tool to visualize your Security Engine's activity and alerts.
+
+[] Enroll into the console 
+- [link to doc]
+- You'll see a confirmation pop up in the console for enrollment if not you might have conectivity issue to the central API [link to troubleshooting section]
+- You'll see the last heartbeat and the status of your Security Engine in the console
+- You'll be able to check various configurations for the upcoming steps of the installation
+- You'll be warned when a new version of CrowdSec is available
 
 ### Troubleshooting
-
-
-
+<details>
+    <summary>There could be ports conflicts with other services</summary>
+    
+    The Local API is running on port 8080 by default, and the Metrics server is running on port 6060 by default.  
+    If you have other services running on these ports, you can change the ports in the configuration file `/etc/crowdsec/config.yaml` or by setting the environment variables `CROWDSEC_API_PORT` and `CROWDSEC_METRICS_PORT` when running CrowdSec in a container.
+</details>
+<details>
+    <summary>No connectivity to Central API</summary>
+    
+    Check that you have access to internet at least api.crowdsec.net
+    Check that your online api credentials exist /etc/crowdsec/config/online_api_credentials.yaml (default path)
+        Eventually reset them with the following command sudo cscli capi register
+</details>
+<details>
+    <summary>Enrollment in Console not working</summary>
+    
+    Make sure you are looking in the proper organization in the console: the enrollment key is linked to your organization.  
+      If you have multiple organizations, you can switch using the organization selector in the top left corner of the console.
+    If you already checked that there are no connectivity issues, you can try to re-enroll using the --overwrite flag, effectively forcing the engine to link to your organization.
+</details>
+<details>
+    <summary>Can't see the latest version of the package</summary>
+    
+   Update your repository and install again.
+    If latest version not available, Might depend on the plateform you're installing it on (be patient, it will come) 
+</details>
