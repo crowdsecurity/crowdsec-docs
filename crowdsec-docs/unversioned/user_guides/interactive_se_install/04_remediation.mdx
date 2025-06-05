@@ -10,27 +10,44 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Remediation
 
-blabla
+Now that the detection is setup, lets remediate those bad IPs. You can apply a remediation in many places. 
+The job of a remediation component (aka RC or bouncer) is to keep the list of IPs up to date within the context you want to use: from the firewall of your host iptables/nftables to your edge appliances by exposing the list of IPs to it (mirror bouncer) through AWS WAF or Cloudflare... See full list of remediation components here[link]
+This list of IPs will be comprised of decisions taken by the security engine (based on scenarios), IPs from blocklists your Security Engine is subscribed to (by default the community blocklist), and manual additions you may do via various methods.
 
 ## Choosing and testing a remediation component
 
+// Explain various ways and advantages (push to be able to appsec and has metrics)
+
 ### Instructions
 ...
+
+//Help connect to SE
+A remediation component can get its information from the security engine via a URL+TOKEN (some support Mutual TLS authentication)
+If installed on a host with a running security engine, they usually automatically pair (you can check with cscli bouncers list) to change the pairing, follow the steps described in the documentation
 
 ### Verification
 
 Let's check ...
 
-#### CrowdSec installation health
-
-> [ ]  Check ...
-
+#### Bouncer connectivity
+> [ ]  Check that the bouncer is connected to the Security Engine
+Check that the bouncer is registered properly and active (in cscli and in the console)
 ```bash
-...
+cscli bouncers list
 ```
-- You should see ...
-- ...
+- You should see the bouncer you just installed in the list, with a recent heartbeat and a valid tick mark
 
-
+> [ ]  Check that the bouncing is effective
+- Have them add a decision for the IP of our canary automate (or use a free blocklist we use for the guide with 10 most aggressive IPs and one IP of our test automate canary)
+- Have them provide a URL that supposedly is protected
+- Have the canary try to reach and return a response
+- ??? How do we do this if we don't have a canary? without asking them to ban themselves
+// find an alternative while we don't have a canary system @thib @seb @laurence
 
 ### Troubleshooting
+
+<details>
+    <summary>Docker communication with bouncer</summary>
+    
+   Docker bouncer: warning docker chain for example with firewall bouncer for docker user chain... ask  for more precise phrasing @laurence
+</details>
