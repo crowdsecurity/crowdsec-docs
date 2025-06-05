@@ -71,9 +71,7 @@ Let's check that CrowdSec is running and able to retrieve the community blocklis
 
 #### CrowdSec installation health
 
-:::info
-[ ]  Check that the CrowdSec service is running
-:::
+> [ ]  Check that the CrowdSec service is running
 
 ```bash
 systemctl status crowdsec
@@ -81,9 +79,8 @@ systemctl status crowdsec
 - You should see the service status as "active (running)".
 - The port configuration can be setup in config.yaml file or by setting the environment variables depending on your implementation
 
-:::info
-[ ] Check that your Local API (LAPI) is properly running: 
-:::
+> [ ] Check that your Local API (LAPI) is properly running: 
+
 ```bash
 sudo cscli machines list
 ```
@@ -91,9 +88,7 @@ sudo cscli machines list
 - For an autonomous install the Security Engine is running and connecting to it's own LAPI
 - You should see a recent last heartbeat and a checkmark in status.
 
-:::info
-[ ] Check the metrics can be queried (optionnal for cscli metrics and prometheus):
-:::
+> [ ] Check the metrics can be queried (optionnal for cscli metrics and prometheus):
 
 ```bash
 sudo cscli metrics
@@ -101,17 +96,13 @@ sudo cscli metrics
 - CrowdSec serves the metrics via a prometheus endpoint, check that it's able to run properly
 - You should see various tables, most still empty except the Local API Machines Metrics
 
-:::info
-[ ] Setup hub-update // ?@seb case we need this ?
-:::
+> [ ] Setup hub-update // ?@seb case we need this ?
 
 - ...
 
 #### CrowdSec connectivity health
 
-:::info
-[ ] Check your security engine can connect to the Central API
-:::
+> [ ] Check your security engine can connect to the Central API
 
 ```bash
 sudo cscli capi status
@@ -125,9 +116,8 @@ sudo cscli capi status
 #### Enroll your Security Engine into CrowdSec Console 
 For advanced monitoring and trouble shooting the CrowdSec Console is a great tool to visualize your Security Engine's activity and alerts.
 
-:::info
-[ ] Enroll into the console 
-:::
+> [ ] Enroll into the console 
+
 - [link to doc]
 - You'll see a confirmation pop up in the console for enrollment if not you might have conectivity issue to the central API [link to troubleshooting section]
 - You'll see the last heartbeat and the status of your Security Engine in the console
