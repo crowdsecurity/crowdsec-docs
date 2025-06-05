@@ -71,14 +71,19 @@ Let's check that CrowdSec is running and able to retrieve the community blocklis
 
 #### CrowdSec installation health
 
-[]  Check that the CrowdSec service is running
+:::info
+[ ]  Check that the CrowdSec service is running
+:::
+
 ```bash
 systemctl status crowdsec
 ```
 - You should see the service status as "active (running)".
 - The port configuration can be setup in config.yaml file or by setting the environment variables depending on your implementation
 
-[] Check that your Local API (LAPI) is properly running: 
+:::info
+[ ] Check that your Local API (LAPI) is properly running: 
+:::
 ```bash
 sudo cscli machines list
 ```
@@ -86,19 +91,28 @@ sudo cscli machines list
 - For an autonomous install the Security Engine is running and connecting to it's own LAPI
 - You should see a recent last heartbeat and a checkmark in status.
 
-[] Check the metrics can be queried (optionnal for cscli metrics and prometheus):
+:::info
+[ ] Check the metrics can be queried (optionnal for cscli metrics and prometheus):
+:::
+
 ```bash
 sudo cscli metrics
 ```
 - CrowdSec serves the metrics via a prometheus endpoint, check that it's able to run properly
 - You should see various tables, most still empty except the Local API Machines Metrics
 
-[] Setup hub-update // ?@seb case we need this ?
+:::info
+[ ] Setup hub-update // ?@seb case we need this ?
+:::
+
 - ...
 
 #### CrowdSec connectivity health
 
-[] Check your security engine can connect to the Central API
+:::info
+[ ] Check your security engine can connect to the Central API
+:::
+
 ```bash
 sudo cscli capi status
 ```
@@ -111,7 +125,9 @@ sudo cscli capi status
 #### Enroll your Security Engine into CrowdSec Console 
 For advanced monitoring and trouble shooting the CrowdSec Console is a great tool to visualize your Security Engine's activity and alerts.
 
-[] Enroll into the console 
+:::info
+[ ] Enroll into the console 
+:::
 - [link to doc]
 - You'll see a confirmation pop up in the console for enrollment if not you might have conectivity issue to the central API [link to troubleshooting section]
 - You'll see the last heartbeat and the status of your Security Engine in the console
