@@ -65,6 +65,23 @@ Finally, restart rsyslog to use the new configuration:
 systemctl restart rsyslog
 ```
 
+We will also setup logrotate to avoid filling our disk with the logs. Create a file `/etc/logrotate.d/remote-logs` with the following content:
+```
+/var/log/remote-logs/*/*.log {
+    daily
+    rotate 7
+    compress
+    missingok
+    notifempty
+    create 0640 syslog adm
+    sharedscripts
+    postrotate
+        /bin/systemctl reload rsyslog.service > /dev/null 2>&1 || true
+    endscript
+}
+```
+
+This will keep 7 days of compressed logs. 
 
 ## Rsyslog Client Setup
 
@@ -75,6 +92,8 @@ Update your nginx configuration to send the access and error logs over syslog to
 access_log syslog:server=<central-server-ip>;
 error_log syslog:server=<central-server-ip>;
 ```
+
+As nginx supports multiple `access_log` and `error_log` directives, you can keep the existing directives to still have a local copy of the logs. 
 
 ### Auth logs
 
@@ -123,8 +142,6 @@ filenames:
 labels:
  type: syslog
 ```
-
-
 
 Note that we are setting the type label to `syslog`. This will instruct crowdsec to use the `syslog` parser to extract the actual type from the log itself.
 
