@@ -8,18 +8,18 @@ sidebar_position: 10
 
 If you expose services on the internet from multiple servers, setting up crowdsec on all of them might make the overall setup more complex.
 
-In order to keep things simpler, you can use a central server that will receive all your logs, and only run a single instance of crowdsec on this server
+To simplify things, you can use a central server to receive all your logs and only run a single instance of crowdsec on this server.
 
-In this guide, our goal is to centralize 2 types of logs:
+In this guide, our goal is to centralize two types of logs:
  - Nginx logs
  - SSH auth logs
 
-We'll configure nginx to directly forward the access logs to our central rsyslog server.<br/>
-For the auth logs, we'll configure a local rsyslog on each web server to forward them to our central server.
+We'll configure nginx to forward the access logs to our central rsyslog server.<br/>
+We'll configure a local rsyslog for the auth logs on each web server and forward them to our central server.
 
-On the central server, a rsyslog server will receive those logs and write them to files.<br/>
-On this same server, the Security Engine will analyze those logs to detect malicious behaviors in them.<br/>
-Finally, we will have a Firewall Remediation Component running on each of our web server to block the malicious IPs.
+On the central server, a rsyslog server will receive those logs and write them into files.<br/>
+The Security Engine will analyze those logs on this same server to detect malicious behaviours.<br/>
+Finally, we will have a Firewall Remediation Component running on each web server to block the malicious IPs.
 
 
 Our infrastructure will look like this:
@@ -27,8 +27,8 @@ Our infrastructure will look like this:
 ![target-infra](/img/user_guide_log_centralization.svg)
 
 Before diving into the setup, a few key points:
- - If you have a firewall, you will need to allow communication on 514/UDP (syslog) and 8080/TCP (crowdsec LAPI) from the web servers to the central server
- - By default, rsyslog is a clear-text protocol. If you all the machines interact over LAN, this is probably not an issue, but they are communication over internet, you will probably want to setup TLS on the syslog server.
+ - If you have a firewall, you will need to allow communication on 514/UDP (Syslog) and 8080/TCP (crowdsec LAPI) from the web servers to the central server
+ - By default, rsyslog is a clear-text protocol. If all the machines interact over LAN, this is probably not an issue, but if they communicate over the internet, you will probably want to set up TLS on the syslog server.
 
 ## Rsyslog Server Setup
 
@@ -36,7 +36,7 @@ Let's start by setting up our central rsyslog.
 
 If rsyslog is not installed, you can install it with `apt install rsyslog` (assuming a debian-like distribution).
 
-First step is to configure rsyslog with an UDP listener and a template to write the received logs to disk.
+The first step is to configure rsyslog with a UDP listener and a template to write the received logs to disk.
 
 Create the file `/etc/rsyslog.d/10_remote.conf` with the following content:
 ```
@@ -48,8 +48,8 @@ input(type="imudp" port="514")
 template(name="NginxLogs" type="string" string="/var/log/remote-logs/nginx/%HOSTNAME%.log")
 template(name="AuthLogs" type="string" string="/var/log/remote-logs/auth/%HOSTNAME%.log")
 
-# Both access logs and error logs will be written to the same file for simplicity
-# You can split them by using a custom program name on nginx side
+# Rsyslog will write both access logs and error logs to the same file
+# You can split them by using a custom program name on the nginx side
 if ($inputname == 'imudp' and $programname == 'nginx') then ?NginxLogs
 & stop
 
@@ -57,23 +57,23 @@ if ($inputname == 'imudp' and $programname == 'nginx') then ?NginxLogs
 if ($inputname == 'imudp' and $programname == 'sshd') then ?AuthLogs
 & stop
 
-# Drop everything else, we are not interested in them
+# Drop everything else; we are not interested in them
 if ($inputname == 'imudp') then stop
 ```
 
-Then, we need to create the `/var/log/remote-logs/` directory in which the logs will be stored:
+Then, we need to create the `/var/log/remote-logs/` to store logs:
 ```bash
 $ sudo mkdir /var/log/remote-logs/ && sudo chown syslog:syslog /var/log/remote-logs/
 ```
 
-You will also need to edit `/etc/rsyslog.conf` to make sure `$RepeatedMsgReduction` is set to `off` (some distributions set it to `on` by defautl, but this is rarely recommended, especially when consuming potentially a high volume of logs)
+You will also need to edit `/etc/rsyslog.conf` to make sure `$RepeatedMsgReduction` is set to `off` (some distributions set it to `on` by default, but this is rarely recommended, especially when consuming potentially a high volume of logs)
 
 Finally, restart rsyslog to use the new configuration:
 ```bash
 systemctl restart rsyslog
 ```
 
-We will also setup logrotate to avoid filling our disk with the logs. Create a file `/etc/logrotate.d/remote-logs` with the following content:
+We will also set up Logrotate to avoid filling our disk with the logs. Create a file `/etc/logrotate.d/remote-logs` with the following content:
 ```
 /var/log/remote-logs/*/*.log {
     daily
@@ -89,7 +89,7 @@ We will also setup logrotate to avoid filling our disk with the logs. Create a f
 }
 ```
 
-This will keep 7 days of compressed logs. 
+This configuration will keep 7 days of compressed logs. 
 
 ## Rsyslog Client Setup
 
@@ -101,7 +101,7 @@ access_log syslog:server=<central-server-ip>;
 error_log syslog:server=<central-server-ip>;
 ```
 
-As nginx supports multiple `access_log` and `error_log` directives, you can keep the existing directives to still have a local copy of the logs. 
+As nginx supports multiple `access_log` and `error_log` directives, you can keep the existing directives to keep a local copy of the logs. 
 
 ### Auth logs
 
@@ -115,7 +115,7 @@ Restart the rsyslog client:
 $ systemctl restart rsyslog
 ```
 
-## Crowdsec Setup
+## CrowdSec Setup
 
 ### Central Server
 
@@ -131,7 +131,7 @@ Next, we install crowdsec:
 $ sudo apt install crowdsec
 ```
 
-Crowdsec will automatically detect we are running on a linux server, and install the base linux collection.
+CrowdSec will automatically detect we are running on a Linux server and install the base Linux collection.
 
 But because our logs are not in a standard location, we need to configure the acquisition to tell crowdsec where our logs are.
 
@@ -143,7 +143,7 @@ labels:
  type: syslog
 ```
 
-We now need to do the same thing for the auth logs, create a file `/etc/crowdsec/acquis.d/ssh.yaml` with the following content:
+Repeat for auth logs, create a file `/etc/crowdsec/acquis.d/ssh.yaml` with the following content:
 ```
 filenames:
  - /var/log/remote-logs/auth/*.log
@@ -151,7 +151,7 @@ labels:
  type: syslog
 ```
 
-Note that we are setting the type label to `syslog`. This will instruct crowdsec to use the `syslog` parser to extract the actual type from the log itself.
+Note that we are setting the type label to `syslog`, instructing crowdsec to use the `syslog` parser to extract the actual type from the log itself.
 
 Then, we need to install the nginx collection for crowdsec to be able to detect attacks:
 ```bash
@@ -173,11 +173,11 @@ $ sudo systemctl restart crowdsec
 
 ### Remediation components setup
 
-Crowdsec by itself will only detect bad behaviors and take decisions against IPs, but will not block them.
+CrowdSec, by itself, will only detect bad behaviors and make decisions about IPs; it will not block them.
 
-In order to block an IP, you need to install a [remediation component](/unversioned/bouncers/intro.md).
+To block an IP, you need to install a [remediation component](/unversioned/bouncers/intro.md).
 
-For the purpose of this guide, we'll be using the [firewall remediation component](/unversioned/bouncers/firewall.mdx) that will add local firewall rules to block malicious IPs.
+For this guide, we'll be using the [firewall remediation component](/unversioned/bouncers/firewall.mdx) that will add local firewall rules to block malicious IPs.
 
 On your web servers, add the crowdsec repository:
 ```bash
@@ -222,13 +222,13 @@ $ sudo systemctl restart crowdsec-firewall-bouncer
 
 Now that everything is setup, it's time to test !
 
-We'll scan one of our web servers, and because both of them are querying the same crowdsec instance, if one of them is attacked, the attacker will also be blocked on the other.
+We'll scan one of our web servers, and because both of them are querying the same crowdsec instance if one detects the attack, the other server will also block the attacker.
 
 ```bash
 $ nikto -h 52.50.157.217
 ```
 
-After the scan is done, try to access the 2 servers with curl:
+After the scan is done, try to access the two servers with curl:
 
 ```bash
 $ curl --connect-timeout 2 52.50.157.217
@@ -237,7 +237,7 @@ $ curl --connect-timeout 2 3.254.76.247
 curl: (28) Connection timed out after 2002 milliseconds
 ```
 
-You can also check on the central server that everything is working properly:
+You can also check on the central server that everything is working correctly:
 
 ```bash
 $ sudo cscli metrics
@@ -265,4 +265,4 @@ $ sudo cscli decisions list
 ╰───────┴──────────┴──────────────────┴──────────────────────────────────────┴────────┴─────────┴────────────────┴────────┴────────────┴──────────╯
 ```
 
-You can delete the decision with `cscli decision delete` to gain back access to the web servers.
+You can delete the decision with `cscli decision delete` to regain access to the web servers.
