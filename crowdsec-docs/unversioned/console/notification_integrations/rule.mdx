@@ -1,0 +1,48 @@
+---
+id: rule
+title: Notification rule
+---
+
+> 🌟 Premium feature.
+
+Notification rules allow you to customize the alerts and notifications you receive from your CrowdSec Console.
+By setting up specific rules, you can ensure that you are only notified about events that are relevant to your organization.
+This guide will walk you through the process of creating a notification rule for your linked integration.
+
+> You need at least one integration linked to your CrowdSec Console to create a notification rule.
+> If you haven't linked an integration yet, please refer to the [Integrations Overview](/u/console/notification_integrations/overview) for more information on how to do so.
+
+## Create a notification rule
+
+1. In the [CrowdSec Console](https://app.crowdsec.net), navigate to **Settings > Notifications** or **Settings > Integrations > (integration of your choice)** and click on add rule.
+
+![](/img/console/notification_integrations/notification-rule-list.png)
+
+2. Select the events you want to be notified about. You can only select one of the three category at the time (Threat Hunting, Stack or Admin). Each of these categories contains a list of [events](/notification_integrations/overview.mdx) that you can choose from. (Threat hunting category let you select only one event due to its conditions variance).
+
+![](/img/console/notification_integrations/events-selection.png)
+
+3. (Optional) Select a conditions. **Stack** category allows you to filter on Security Engine(s). **Threat Hunting > Alert trigger event** allows you to select specific scenarios.
+
+**Engine condition:**
+
+![](/img/console/notification_integrations/engine-condition-selection.png)
+
+**Installed scenarios:**
+
+{/* ![](/img/console/notification_integrations/scenario-condition-selection.png) */}
+
+4. Select destination, which is the integration you want to use for this rule. You can select multiple destination for one rule. Destination input varies depending on the integration you selected. For example, Slack integration let you select a channel, while Webhook integration let you select a URL.
+
+![](/img/console/notification_integrations/slack-destination-selection.png)
+
+5. Name and describe your rule.
+
+![](/img/console/notification_integrations/rule-information.png)
+
+6. Click on **Create** to save your rule.
+
+7. Your rule will now appear in the list of notification rules for your integration. You can edit or delete it at any time.
+
+![](/img/console/notification_integrations/notification-rule-list.png)
+
