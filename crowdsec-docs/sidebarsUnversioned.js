@@ -523,7 +523,7 @@ module.exports = {
         "user_guides/multiserver_setup",
         "user_guides/consuming_fastly_logs",
         "user_guides/alert_context",
-        "user_guides/appsec_tuto",
+        "user_guides/log_centralization",
     ],
     gettingStarted: [
         "getting_started/intro",
