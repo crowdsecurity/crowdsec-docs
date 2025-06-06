@@ -224,16 +224,22 @@ Now that everything is setup, it's time to test !
 
 We'll scan one of our web servers, and because both of them are querying the same crowdsec instance if one detects the attack, the other server will also block the attacker.
 
+:::info
+
+Replace the placeholders with the actual IP of your servers
+
+:::
+
 ```bash
-$ nikto -h 52.50.157.217
+$ nikto -h <server_1>
 ```
 
 After the scan is done, try to access the two servers with curl:
 
 ```bash
-$ curl --connect-timeout 2 52.50.157.217
+$ curl --connect-timeout 2 <server_1>
 curl: (28) Connection timed out after 2002 milliseconds
-$ curl --connect-timeout 2 3.254.76.247
+$ curl --connect-timeout 2 <server_2>
 curl: (28) Connection timed out after 2002 milliseconds
 ```
 
