@@ -86,7 +86,7 @@ As an existing CrowdSec's console user you can send the blocklists you already h
 ### Important Configuration Notes:
 - Enable Stream mode in advanced settings for direct blocklist integrations.
 ![Plugin Stream mode](/img/bouncer/wordpress/screenshots/plugin-stream-mode.png)  
-- Remediation Metrics appear locally but are not sent to the CrowdSec console.
+- [Remediation Metrics](#config-remediation-metrics) appear locally but are not sent to the CrowdSec console.
 - AppSec features are unavailable in this mode.
 
 ***
@@ -327,6 +327,26 @@ But you can also activate the `stream mode`. This mode allows you to constantly 
 With the stream mode, every decision is retrieved in an asynchronous way. Here you can define the frequency of this cache refresh.
 
 **N.B** : There is also a refresh button if you want to refresh the cache manually.
+
+
+<div id="config-remediation-metrics" />
+
+***
+
+<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-usage-metrics.png')} alt="Cache" title="Cache" />
+
+***
+
+
+`Remediation Metrics → Enable the Remediation Metrics`
+
+Enable remediation metrics to gain visibility: monitor incoming traffic and blocked threats for better security insights.
+
+If this option is enabled, a cron job will push remediation metrics to the Local API every 15 minutes.
+
+For more information about remediation metrics, please refer to the <a href="https://doc.crowdsec.net/docs/next/observability/usage_metrics/" target="_blank">documentation</a>.
+
+**N.B** : There is also a push button if you want to push remediation metrics manually.
 
 ***
 
