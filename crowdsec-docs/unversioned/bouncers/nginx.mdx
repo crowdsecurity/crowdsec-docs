@@ -197,6 +197,10 @@ SSL_VERIFY=true
 ################
 ```
 
+Any `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf.local` content will take
+precedence over `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`. All fields
+don't have to be present in this `.local.` file.
+
 ### NGINX Configuration
 
 The Remediation Component NGINX configuration is located in `/etc/nginx/conf.d/crowdsec_nginx.conf` :
@@ -615,3 +619,10 @@ APPSEC_PROCESS_TIMEOUT=500  # default
 ```
 
 The timeout to process the request from the Remediation Component to the AppSec Component.
+
+### Nginx variables
+
+Nginx variables can be used to adapt behaviour and or more flexible configurations:
+* ngx.var.cs_disable_bouncer: set to 1, it will disable the bouncer
+* ngx.var.enable_appsec: set to 1, it will enable the appsec even if it's disabled by configuration or if bouncer is disabled
+* ngx.var.disable_appsec: set to 1, it will disable the appsec
