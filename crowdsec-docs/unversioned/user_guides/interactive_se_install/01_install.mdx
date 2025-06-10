@@ -7,7 +7,7 @@ pagination_next: user_guides/interactive_se_install/se_install_02
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import { InteractiveCheckbox } from '@site/src/components/InteractiveCheckbox.js';
+import { CheckboxProvider, InteractiveCheckbox } from '@site/src/components/InteractiveCheckbox.js';
 
 # Interactive Security Engine Installation Guide
 
@@ -72,7 +72,7 @@ Let's check that CrowdSec is running and able to retrieve the community blocklis
 
 #### Enroll your Security Engine into CrowdSec Console 
 For advanced monitoring and trouble shooting the CrowdSec Console is a great tool to visualize your Security Engine's activity and alerts.
-
+<CheckboxProvider>
 <InteractiveCheckbox id="ConsoleEnroll" label=" Enroll into the console " />
 
 - [link to doc]
@@ -84,7 +84,7 @@ For advanced monitoring and trouble shooting the CrowdSec Console is a great too
 #### CrowdSec installation health
 
 <InteractiveCheckbox id="CrowdsecRunning" label="Check that the CrowdSec service is running"  references={["ConsoleEnroll"]} />
-
+</CheckboxProvider>
 ```bash
 systemctl status crowdsec
 ```

@@ -80,23 +80,53 @@ export const InteractiveCheckbox = ({
   label = '', 
   className = '' 
 }) => {
+  const context = useContext(CheckboxContext);
+  
+  // Fallback if context is not available (useful for development/SSR)
+  if (!context) {
+    console.warn('InteractiveCheckbox must be used within a CheckboxProvider');
+    return (
+      <div className={`inline-flex items-center gap-2 ${className}`}>
+        <div
+          style={{
+            width: '20px',
+            height: '20px',
+            border: '2px solid #d1d5db',
+            borderRadius: '3px',
+            backgroundColor: 'transparent',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.2s ease'
+          }}
+        />
+        {label && <span>{label}</span>}
+      </div>
+    );
+  }
+  
   const { 
     checkboxStates, 
     manualChecks, 
     updateCheckbox, 
     registerCheckbox, 
     isCheckboxChecked 
-  } = useContext(CheckboxContext);
+  } = context;
 
   useEffect(() => {
-    registerCheckbox(id, references);
-  }, [id, references]);
+    if (registerCheckbox) {
+      registerCheckbox(id, references);
+    }
+  }, [id, references, registerCheckbox]);
 
   const handleClick = () => {
-    updateCheckbox(id, !manualChecks[id]);
+    if (updateCheckbox) {
+      updateCheckbox(id, !manualChecks[id]);
+    }
   };
 
-  const checkboxState = isCheckboxChecked(id, references);
+  const checkboxState = isCheckboxChecked ? isCheckboxChecked(id, references) : { checked: false, type: 'none' };
   const isChecked = checkboxState.checked;
   const checkType = checkboxState.type;
 
