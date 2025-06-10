@@ -7,8 +7,9 @@ pagination_next: user_guides/interactive_se_install/se_install_02
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import { InteractiveCheckbox } from '@site/src/components/InteractiveCheckbox.js';
 
-# Interractive Security Engine Installation Guide
+# Interactive Security Engine Installation Guide
 
 Welcome! This interactive guide will help you set up your CrowdSec Security Engine and validate each step to ensure proper operation.
 We'll guide you through detecting and remediating malicious behavior in your services' logs, regardless of your chosen implementation (on host, Docker, Kubernetes)
@@ -69,9 +70,20 @@ But if you're comfortable with Docker it also is a great way to get started and 
 
 Let's check that CrowdSec is running and able to retrieve the community blocklist !
 
+#### Enroll your Security Engine into CrowdSec Console 
+For advanced monitoring and trouble shooting the CrowdSec Console is a great tool to visualize your Security Engine's activity and alerts.
+
+<InteractiveCheckbox id="ConsoleEnroll" label=" Enroll into the console " />
+
+- [link to doc]
+- You'll see a confirmation pop up in the console for enrollment if not you might have conectivity issue to the central API [link to troubleshooting section]
+- You'll see the last heartbeat and the status of your Security Engine in the console
+- You'll be able to check various configurations for the upcoming steps of the installation
+- You'll be warned when a new version of CrowdSec is available
+
 #### CrowdSec installation health
 
-> [ ]  Check that the CrowdSec service is running
+<InteractiveCheckbox id="CrowdsecRunning" label="Check that the CrowdSec service is running"  references={["ConsoleEnroll"]} />
 
 ```bash
 systemctl status crowdsec
@@ -113,18 +125,7 @@ sudo cscli capi status
     - Pulling community blocklist is enabled //+link to doc where to turn this on/off ?
     - Pulling blocklists from the console is enabled //+link to doc where to turn this on/off ?
 
-#### Enroll your Security Engine into CrowdSec Console 
-For advanced monitoring and trouble shooting the CrowdSec Console is a great tool to visualize your Security Engine's activity and alerts.
-
-> [ ] Enroll into the console 
-
-- [link to doc]
-- You'll see a confirmation pop up in the console for enrollment if not you might have conectivity issue to the central API [link to troubleshooting section]
-- You'll see the last heartbeat and the status of your Security Engine in the console
-- You'll be able to check various configurations for the upcoming steps of the installation
-- You'll be warned when a new version of CrowdSec is available
-
-### Troubleshooting
+### 🚨 Troubleshooting
 <details>
     <summary>There could be ports conflicts with other services</summary>
     
