@@ -3,8 +3,8 @@ import React, { useState, useEffect, createContext, useContext } from 'react';
 // Global context to manage checkbox states across all instances
 const CheckboxContext = createContext();
 
-// Provider component to wrap your MDX content
-export const CheckboxProvider = ({ children }) => {
+// Hook to create a standalone checkbox manager
+export const useCheckboxManager = () => {
   const [checkboxStates, setCheckboxStates] = useState({});
   const [manualChecks, setManualChecks] = useState({});
 
@@ -60,14 +60,21 @@ export const CheckboxProvider = ({ children }) => {
     }));
   };
 
+  return {
+    checkboxStates,
+    manualChecks,
+    updateCheckbox,
+    registerCheckbox,
+    isCheckboxChecked
+  };
+};
+
+// Provider component to wrap your MDX content (optional)
+export const CheckboxProvider = ({ children }) => {
+  const checkboxManager = useCheckboxManager();
+
   return (
-    <CheckboxContext.Provider value={{
-      checkboxStates,
-      manualChecks,
-      updateCheckbox,
-      registerCheckbox,
-      isCheckboxChecked
-    }}>
+    <CheckboxContext.Provider value={checkboxManager}>
       {children}
     </CheckboxContext.Provider>
   );
@@ -78,13 +85,17 @@ export const InteractiveCheckbox = ({
   id, 
   references = [], 
   label = '', 
-  className = '' 
+  className = '',
+  manager = null // Accept a manager prop
 }) => {
-  const context = useContext(CheckboxContext);
+  const contextManager = useContext(CheckboxContext);
   
-  // Fallback if context is not available (useful for development/SSR)
-  if (!context) {
-    console.warn('InteractiveCheckbox must be used within a CheckboxProvider');
+  // Use the passed manager or fall back to context, then to a warning fallback
+  const checkboxManager = manager || contextManager;
+  
+  // Fallback if no manager is available
+  if (!checkboxManager) {
+    console.warn('InteractiveCheckbox must either be used within a CheckboxProvider or have a manager prop passed to it');
     return (
       <div className={`inline-flex items-center gap-2 ${className}`}>
         <div
@@ -112,7 +123,7 @@ export const InteractiveCheckbox = ({
     updateCheckbox, 
     registerCheckbox, 
     isCheckboxChecked 
-  } = context;
+  } = checkboxManager;
 
   useEffect(() => {
     if (registerCheckbox) {
@@ -143,7 +154,10 @@ export const InteractiveCheckbox = ({
   };
 
   return (
-    <div className={`inline-flex items-center gap-2 ${className}`}>
+    <div 
+      className={`inline-flex items-center gap-2 ${className}`}
+      style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+    >
       <div
         onClick={handleClick}
         style={{
@@ -156,7 +170,8 @@ export const InteractiveCheckbox = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          transition: 'all 0.2s ease'
+          transition: 'all 0.2s ease',
+          flexShrink: 0
         }}
       >
         {isChecked && (
@@ -177,7 +192,14 @@ export const InteractiveCheckbox = ({
       {label && (
         <label
           onClick={handleClick}
-          style={{ cursor: 'pointer', userSelect: 'none' }}
+          style={{ 
+            cursor: 'pointer', 
+            userSelect: 'none',
+            margin: 0,
+            padding: 0,
+            display: 'inline',
+            lineHeight: '1.2'
+          }}
         >
           {label}
         </label>
