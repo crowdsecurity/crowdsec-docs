@@ -8,9 +8,7 @@ const HierarchicalList = ({ data = [] }) => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Hierarchical List Example</h2>
-      
+    <div className="p-6 max-w-4xl mx-auto">      
       {/* Main list */}
       <div className="flex items-center flex-wrap gap-2 mb-4">
         {data.map((item, index) => (
