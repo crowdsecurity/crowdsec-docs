@@ -143,7 +143,7 @@ export const InteractiveCheckbox = ({
   };
 
   return (
-    <div className={`inline-flex items-center gap-2 ${className}`}>
+    <div style="display: flex; align-items: center; gap: 8px;" className={className}>
       <div
         onClick={handleClick}
         style={{
@@ -178,9 +178,7 @@ export const InteractiveCheckbox = ({
         <label
           onClick={handleClick}
           style={{ cursor: 'pointer', userSelect: 'none' }}
-        >
-          {label}
-        </label>
+        >{label}</label>
       )}
     </div>
   );
