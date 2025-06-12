@@ -27,6 +27,8 @@ docker run -d \
   --volume /etc/crowdsec:/etc/crowdsec \
   --volume /var/lib/crowdsec/data/:/var/lib/crowdsec/data/ \
   --volume /var/log:/var/log:ro \
+  --environment COLLECTIONS="crowdsecurity/linux" \
+  -p 127.0.0.1:8080:8080 \
   crowdsecurity/crowdsec:latest
 ```
 
@@ -42,6 +44,8 @@ Here is a snippet:
 crowdsec:
   image: crowdsecurity/crowdsec
   restart: always
+  ports:
+    - 127.0.0.1:8080:8080
   environment:
     COLLECTIONS: "crowdsecurity/nginx"
     GID: "${GID-1000}"
@@ -55,7 +59,7 @@ crowdsec:
 ```
 
 :::info
-`Compose` snippet was taken from our [example-docker-compose repository](https://github.com/crowdsecurity/example-docker-compose/blob/57d55e5cd4d08ef5843bd1a32becde3c35e45507/basic/docker-compose.yml#L33-L47) which contains many examples of how CrowdSec container can be used in different setups. 
+`Compose` snippet was taken from our [example-docker-compose repository](https://github.com/crowdsecurity/example-docker-compose) which contains many examples of how CrowdSec container can be used in different setups. 
 :::
 
 #### Compose key aspects
@@ -93,6 +97,30 @@ Depends on directive allows Docker to bring up the compose stack in "order", the
 depends_on:
   - 'reverse-proxy'
 ```
+
+## Environment Variables
+
+You can find a full list of available environment variables on our [Docker Hub image page](https://hub.docker.com/r/crowdsecurity/crowdsec).
+
+Here are the most common environment variables for customizing CrowdSec in Docker:
+
+| Variable            | Default                     | Description |
+|---------------------|-----------------------------|-------------|
+| `COLLECTIONS`       | *(none)*                    | Space-separated list of CrowdSec collections to install (e.g., `crowdsecurity/nginx`). |
+| `TZ`                | UTC                         | Timezone for logs (e.g., `Europe/London`). |
+| `CONFIG_FILE`       | `/etc/crowdsec/config.yaml` | Path to the main config file. Useful if mounting a single file instead of a full directory. |
+| `LOCAL_API_URL`     | `http://0.0.0.0:8080`        | Where the Local API listens. Normally doesn't need to be changed unless you're running in agent mode. |
+| `DISABLE_LOCAL_API` | `false`                     | Set to `true` to disable LAPI and use this instance as an log processor only. |
+| `DISABLE_AGENT` | `false`                     | Set to `true` to disable the log processor and use this instance as an LAPI only. |
+| `AGENT_USERNAME`    | *(none)*                    | Required only if `DISABLE_LOCAL_API` is true. Username for connecting to central LAPI. |
+| `AGENT_PASSWORD`    | *(none)*                    | Password for authenticating the agent. |
+| `BOUNCER_KEY_<name>`| *(none)*                    | Seed value as API key for remediation under `<name>` |
+
+:::tip
+Use a `.env` file or Docker secrets to avoid hardcoding sensitive variables like passwords or API keys.
+:::
+
+---
 
 
 ## Next Steps?
