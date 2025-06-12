@@ -27,7 +27,7 @@ docker run -d \
   --volume /etc/crowdsec:/etc/crowdsec \
   --volume /var/lib/crowdsec/data/:/var/lib/crowdsec/data/ \
   --volume /var/log:/var/log:ro \
-  --environment COLLECTIONS="crowdsecurity/linux" \
+  --env COLLECTIONS="crowdsecurity/linux" \
   -p 127.0.0.1:8080:8080 \
   crowdsecurity/crowdsec:latest
 ```
