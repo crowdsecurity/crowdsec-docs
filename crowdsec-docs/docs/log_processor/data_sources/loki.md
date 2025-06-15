@@ -70,6 +70,14 @@ The retry interval at startup before giving on loki.
 
 Defaults to `10 seconds`.
 
+### `no_ready_check`
+
+> note : When using Loki hosted in Grafana Cloud, the `/ready` endpoint does not exist, preventing CrowdSec from starting.
+
+To bypass the readiness check. 
+
+Defaults to `false`.
+
 ### `auth`
 
 Login/password authentication for loki, in the format:
