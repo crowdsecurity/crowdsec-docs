@@ -1,0 +1,64 @@
+---
+id: overview
+title: Overview
+---
+
+Discover all the available notification integrations in CrowdSec. Each integration is designed to help you receive alerts and notifications to various platforms, ensuring you stay informed about security events and incidents. Available [here](https://app.crowdsec.net/settings/integrations).
+
+> 🌟 Premium feature. CrowdSec let you be linked to any notification integration. However, you need to be a ⭐ Premium organization to unlock the full potential of the notification integrations.
+
+## Available Integrations
+
+- [Slack](/u/console/notification_integrations/slack)
+- [Webhook](/u/console/notification_integrations/webhook)
+- Coming soon: Discord
+- Coming soon: Microsoft Teams
+
+## How to use notification integrations
+
+1. **Link your integration**: Navigate to the **Settings > Integrations** section in the CrowdSec Console and select the integration you want to link. Follow the instructions provided for each integration.
+2. [**Create a notification rule**](/u/console/notification_integrations/rule): Once your integration is linked, navigate to the **Rules** tab of the integration page. Here, you can create notification rules based on specific events or conditions. ([See the documentation](/u/console/notification_integrations/rule) for more details on creating rules.)
+
+## Available Events
+
+The following events are available for notification integrations:
+
+**Threat Hunting**
+
+| Name | Description |
+|------|-------------|  
+Is Attacked | Your organization is being attacked. | 
+Alert Triggered | An alert has been triggered. |
+
+
+
+**Stack - Management**
+
+| Name | Description |
+|------|-------------|
+Security Engine Enrolled | A new Security Engine has been enrolled. |
+Security Engine Unenrolled | A Security Engine has been unenrolled. |
+Security Engine Long Pending Enroll | A Security Engine has been pending for a long time. |
+
+**Stack - Monitoring**
+
+| Name | Description |
+|------|-------------|
+Firewall Integration Offline | A firewall integration is offline. |
+Log Processor No Alert | A log processor has not sent any alerts for 48h. |
+Log Processor Offline | A log processor is offline. |
+Remediation Component Integration Offline | A remediation component integration is offline. |
+Remediation Component Offline | A remediation component is offline. |
+CrowdSec Stack Component Outdated | A CrowdSec stack component is outdated (Security Engine, Log Processor, Remediation component). |
+Security Engine No Alerts | A Security Engine has not sent any alerts for 48h. |
+Security Engine Offline | A Security Engine is offline. |
+
+**Admin**
+
+| Name | Description |
+|------|-------------|
+API Key Expired | An API key has expired. |
+Payment Failed | A payment has failed. |
+
+
+## Examples
