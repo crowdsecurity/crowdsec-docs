@@ -5,7 +5,7 @@ sidebar_position: 1
 ---
 
 :::info
-This feature needs the *console_management* feature activated on your Security Engine.  
+If running a version before v1.6.9, this feature needs the *console_management* feature activated on your Security Engine.  
 Activate it to make sure actions from the **decision management** are applied **immediately**.  
 Check the instructions to activate it [HERE](/u/console/decisions/decisions_intro).
 :::

@@ -19,6 +19,14 @@ Currently, only 4 orders are available:
 
 ## Enable console management
 
+:::info
+
+Since CrowdSec v1.6.9, this flag is no longer required. CrowdSec will automatically detect the console plan in use and enable this option if needed.
+
+It may take up to 30 minutes for CrowdSec to detect a plan upgrade or downgrade.
+
+:::
+
 We need to enable the option on the LAPI side:
 ```bash
 sudo cscli console enable console_management
