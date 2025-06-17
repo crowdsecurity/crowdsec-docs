@@ -171,6 +171,7 @@ api:
   client:
     insecure_skip_verify: "(true|false)"
     credentials_path: "<path_to_local_api_client_credential_file>"
+    unregister_on_exit: "(true|false)"
   server:
     enable: <true|false> # enable or disable local API
     log_level: "(error|info|debug|trace>")"
@@ -741,6 +742,7 @@ api:
   client:
     insecure_skip_verify: "(true|false)"
     credentials_path: "<path_to_local_api_client_credential_file>"
+    unregister_on_exit: "(true|false)"
   server:
     enable: <true|false>
     log_level: "(error|info|debug|trace>"
@@ -830,6 +832,7 @@ The client subsection is used by `crowdsec` and `cscli` to read and write decisi
 client:
   insecure_skip_verify: "(true|false)"
   credentials_path: "<path_to_local_api_client_credential_file>"
+  unregister_on_exit: "(true|false)"
 ```
 
 ##### `insecure_skip_verify`
@@ -841,6 +844,13 @@ Allows the use of https with self-signed certificates.
 >string
 
 Path to the credential files (contains API url + login/password).
+
+##### `unregister_on_exit`
+>bool
+
+If set to `true`, the log processor will remove delete itself from LAPI when stopping.
+
+Intended for use in dynamic environment such as Kubernetes.
 
 #### `server`
 
