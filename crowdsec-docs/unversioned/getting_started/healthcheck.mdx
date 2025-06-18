@@ -10,117 +10,150 @@ import { CheckboxProvider, InteractiveCheckbox } from '@site/src/components/Inte
 import HierarchicalList from '@site/src/components/HierarchicalList.js';
 
 Welcome to the interactive health check of your CrowdSec setup. We'll have a Top-Down approach:  
-First, check the proper functioning of the Security Engine's finality: **Detecting** AND **Protecting** against attacks.  
-Then, eventually, diving into troubleshooting any issue you may encounter.  
+First, check the proper functioning of the Security Engine's finality: 
+- **📡 Detecting** behaviors on your services.
+- **🔗 Connectivity** with CrowdSec network to retrieve threats lists.
+- **🛡️ Protecting** your services by remediating alerts automatically with bouncers.
+
+If the initial checks are not conclusive, we'll dive into a comprehensive troubleshooting for each section.
 
 ## 📡 Detection checks
 
-*Trigger CrowdSec's test scenarios*  
+### *Trigger CrowdSec's test scenarios*  
 
 :::info
 Check that your Security Engine properly reads and parses the logs of the services you protect.  
-The HTTP collection and the Linux collection contain test scenarios allowing you to prove your Security Engine works as intended, without having to do penetration tests, risking getting you banned from your own server.
+The HTTP collection and the Linux collection contain **dummy scenarios** allowing you to prove your Security Engine works as intended, without having to do penetration tests, risking getting you banned from your own server.
 :::
 
-### Test HTTP detection
+<details>
+    <summary>☑️ Test <b>HTTP</b> detection</summary>
+Let's trigger the `crowdsecurity/http-generic-test` dummy scenario by calling a *probe path* on your web server.
 
-For this test, you'll add the following path to a URL of a website you're protecting: `/CRODWSEC/TEST`  
-_*// Any issue possible with .htaccess that would rewrite before this path reaches the log? – **Yes, this is a valid concern. Add a note: "Important: Ensure your web server configuration (e.g., .htaccess) does not rewrite or block this specific URL path `/CRODWSEC/TEST`."***_  
-Looking at your alerts for the specific scenario **crowdsec/test-http**, you should see a line related to your test.  
-Note that this scenario has a delay of 1 minute before it can re-trigger _(blackhole parameter of the scenario)_.  You can use the "-a" flag to list all alerts.  
+1️⃣ Request your service URL with the following path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
+<CodeBlock className="language-bash">curl -I http://your-service-url/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl</CodeBlock>
 
-<CodeBlock className="language-bash">sudo cscli alerts list -s crowdsec/test-http -a</CodeBlock>
+2️⃣ You should see an alert for the scenario `crowdsecurity/http-generic-test`
 
-### Test SSH detection
+<CodeBlock className="language-bash">sudo cscli alerts list -s crowdsecurity/http-generic-test</CodeBlock>
 
-Try to authenticate to your server via SSH using the following user: `ABCDEFGH123456`.  
-Looking at your alerts for the specific scenario **crowdsec/test-ssh**, you should see a line related to your test.  
-Note that this scenario has a delay of 5 minute before it can re-trigger _(blackhole parameter of the scenario)_.  You can use the "-a" flag to list all alerts.  
+Note that this scenario has a delay of 5 minutes before it can re-trigger _(blackhole parameter of the scenario)_. 
+</details>
 
-<CodeBlock className="language-bash">sudo cscli alerts list -s crowdsec/test-ssh -a</CodeBlock>
+<details>
+    <summary>☑️ Test <b>SSH</b> detection</summary>
+Let's trigger the `crowdsecurity/ssh-generic-test` dummy scenario by logging in to your server via SSH with a specific user.
 
-### Test AppSec detection
+1️⃣ Try to authenticate to your server via SSH using the following user: `crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`.
+<CodeBlock className="language-bash">ssh crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl@\<your-ip\></CodeBlock>
 
-If you are using an AppSec-capable bouncer and have configured CrowdSec WAF, you can test it by [insert specific instructions based on typical AppSec setup; see notes below].  
-_[**Important Notes for AppSec Test:** The specific test and instructions here are heavily dependent on the WAF/bouncer being used (nginx-bouncer, cloudflare-bouncer, etc.) and the specific AppSec rules enabled.  You need a generic but useful example. Suggestions:*  
-- *If possible, install a VERY basic "test XSS" AppSec rule as part of a starter collection.* The test could be adding `<script>alert('XSS')</script>` as a query parameter value in your web application.
-- *If targeting a specific bouncer/WAF, provide instructions for a known trigger for a common rule.* For example, if using the Cloudflare bouncer, provide a query that triggers a known SQL injection or XSS rule.]
+2️⃣ You should see an alert for the scenario `crowdsecurity/ssh-generic-test`
+
+<CodeBlock className="language-bash">sudo cscli alerts list -s crowdsecurity/ssh-generic-test</CodeBlock>
+
+Note that this scenario has a delay of 5 minute before it can re-trigger _(blackhole parameter of the scenario)_. 
+</details>
+
+<details>
+    <summary>☑️ Test CrowdSec WAF with an <b>AppSec</b> detection</summary>
+If you are using an AppSec-capable bouncer and have configured CrowdSec WAF, you can test the detection of an AppSec scenario.
+It's similar to the HTTP detection test, but it will trigger `crowdsecurity/appsec-generic-test`.
+
+Here is how to trigger the `crowdsecurity/appsec-generic-test` dummy scenario by calling a *probe path* on your web server.
+
+1️⃣ Request your service URL with the following path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
+<CodeBlock className="language-bash">curl -I http://your-service-url/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl</CodeBlock>
+
+2️⃣ You should see an alert for the scenario `crowdsecurity/appsec-generic-test`
+
+<CodeBlock className="language-bash">sudo cscli alerts list -s crowdsecurity/appsec-generic-test</CodeBlock>
+
+Note that this scenario has a delay of **1** minute before it can re-trigger _(blackhole parameter of the scenario)_. 
+</details>
 
 * * *
 
-## Ready for next phase ?
+### Were all the tests successful ?
 
 Were all the tests related to your setup successful ?
 If so, you can proceed to the next phase of the health check: [**Connectivity checks**](#crowdsec-connectivity-checks).  
 
 If not, check the troubleshooting section below
 
-## 🚨 Detection Troubleshooting
-*No alerts triggered? Let's investigate: Here are some tests to identify where the issue might be.*  
-
 <details>
-    <summary>Acquisition and Metrics check: are your logs read and parsed?</summary>
+    <summary>🚨 Detection Troubleshooting</summary>
 
-blabla...small description of what acquisition and parser should do + link to docs pages (docs pages to clean up probably soon)  
+  *No alerts triggered? Let's investigate: Here are some tests to identify where the issue might be.*  
+  If you installed CrowdSec Security Engine on the same host as the service you want to protect, the install wizards should have automatically detected the service and installed the appropriate parsers and scenarios.
+  If you have non-default paths or format for your logs, or if you chose other installation methods (docker, kubernetes..), you may need to manually install the parsers and scenarios.
+  
+  **This troubleshooting section will help you identify the issue and guide you through the necessary steps to fix it.**
 
-Let's check the specific metrics section:  
+  <details>
+      <summary>Acquisition metrics check: are your logs read and parsed?</summary>
 
-<CodeBlock className="language-bash">sudo cscli metrics show acquisition parsers</CodeBlock>
+  The acquisition and parsing aspect of CrowdSec is crucial, as it tells The Security Engine which logs to read and how to parse them.  
+  You can setup multiple datasources (files, syslog, etc.), for more details you can refer to the [datasources documentation](https://doc.crowdsec.net/docs/next/log_processor/data_sources/intro).  
 
-- You should see the names of the log files/stream configured in the acquisition files, and the number of lines parsed for each of them.  
-- The number of "Lines parsed" should be non-zero for each of the files you configured in the acquisition section. 
-- The parsers metrics show you what parsers were successfully used. Look for the name of the parsers installed for the logs you're reading
+  Let's do a Top Down check using the `cscli metrics` command to see if your logs are being read and parsed correctly.
 
-<div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
-  🚨 If this command fails, check the [**CrowdSec Service Troubleshooting section**](#crowdsec_service_troubleshooting)
-</div>
-<div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
-  🚨 If you don't see the log names supposed to be parsed, check the [**Acquisition Troubleshooting section**](#acquisition_troubleshooting)
-</div>
-<div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
-  🚨 If you don't see parsed lines, check the [**Collection Troubleshooting section****](#collection_troubleshooting)
-</div>
+  <CodeBlock className="language-bash">sudo cscli metrics show acquisition parsers</CodeBlock>
 
-</details>
+  - You should see the names of the log files/stream configured in the acquisition files, and the number of lines parsed for each of them.  
+  - The number of "Lines parsed" should be non-zero for each of the files you configured in the acquisition section. 
+  - The parsers metrics show you what parsers were successfully used. Look for the name of the parsers installed for the logs you're reading
 
-<details>
-    <summary>Acquisition Troubleshooting: are your logs properly declared as datasources</summary>
+  <div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
+    🚨 If this command fails, check the [**CrowdSec Service Troubleshooting section**](#crowdsec_service_troubleshooting)
+  </div>
+  <div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
+    🚨 If you don't see the log names supposed to be parsed, check the [**Acquisition Troubleshooting section**](#acquisition_troubleshooting)
+  </div>
+  <div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
+    🚨 If you don't see parsed lines, check the [**Collection Troubleshooting section****](#collection_troubleshooting)
+  </div>
 
-Your acquisition configuration is located in `/etc/crowdsec/acquis.yaml` or in `/etc/crowdsec/acquis.d/anyName.yaml`.
-- Check that the datasource is properly setup: file path or correct port for syslog server...
-- Ensure that the type declared matches the parser expected to be used: nginx, apache, syslog, etc.
-- for more information, check the [documentation for the various datasources](https://doc.crowdsec.net/docs/next/log_processor/data_sources/intro)
+  </details>
 
-</details>
+  <details>
+      <summary>Acquisition Troubleshooting: are your logs properly declared as datasources</summary>
 
-<details>
-    <summary>Collection Troubleshooting: are the parsers and scenarios installed?</summary>
+  Your acquisition configuration is located in `/etc/crowdsec/acquis.yaml` or in `/etc/crowdsec/acquis.d/anyName.yaml`.
+  - Check that the datasource is properly setup: file path or correct port for syslog server...
+  - Ensure that the type declared matches the parser expected to be used: nginx, apache, syslog, etc.
+  - for more information, check the [documentation for the various datasources](https://doc.crowdsec.net/docs/next/log_processor/data_sources/intro)
 
-#### Collection installation
-- On host installations your existing service should have been detected and appropriate collections (containing parsers and scenarios) installed automatically.
-- How ever on other kind of installations, or in case of failed detection, you may need to install the collections manually.
+  </details>
 
-Check the installed collections with the command:
-<CodeBlock className="language-bash">sudo cscli collections list</CodeBlock>
-You can also list individual parsers and scenarios with:
-<CodeBlock className="language-bash">sudo cscli parsers list</CodeBlock>
-<CodeBlock className="language-bash">sudo cscli scenarios list</CodeBlock>
-- If you see the parsers and scenarios related to your service, then you're good to go.
+  <details>
+      <summary>Collection Troubleshooting: are the parsers and scenarios installed?</summary>
 
-- To install new collection, check the [CrowdSec Hub](https://hub.crowdsec.net/) for a collection named after your service (e.g., [nginx](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx), [apache](https://app.crowdsec.net/hub/author/crowdsecurity/collections/apache), [linux](https://app.crowdsec.net/hub/author/crowdsecurity/collections/linux), etc.).
-- If you find the collection, install it using the command shown on the hub page and follow the instructions provided for the acquisition file.
+  #### Collection installation
+  - On host installations your existing service should have been detected and appropriate collections (containing parsers and scenarios) installed automatically.
+  - How ever on other kind of installations, or in case of failed detection, you may need to install the collections manually.
 
-#### Log format mismatch
-- If your logs are in a custom format, you may need to create your own parsers or modify the existing ones to match your log format.
-- You can find more information on how to create your own parsers in the [CrowdSec documentation](https://doc.crowdsec.net/docs/next/log_processor/parsers/format).
+  Check the installed collections with the command:
+  <CodeBlock className="language-bash">sudo cscli collections list</CodeBlock>
+  You can also list individual parsers and scenarios with:
+  <CodeBlock className="language-bash">sudo cscli parsers list</CodeBlock>
+  <CodeBlock className="language-bash">sudo cscli scenarios list</CodeBlock>
+  - If you see the parsers and scenarios related to your service, then you're good to go.
 
-</details>
+  - To install new collection, check the [CrowdSec Hub](https://hub.crowdsec.net/) for a collection named after your service (e.g., [nginx](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx), [apache](https://app.crowdsec.net/hub/author/crowdsecurity/collections/apache), [linux](https://app.crowdsec.net/hub/author/crowdsecurity/collections/linux), etc.).
+  - If you find the collection, install it using the command shown on the hub page and follow the instructions provided for the acquisition file.
 
-<details>
-    <summary>CrowdSec Service Troubleshooting: is the CrowdSec service running?</summary>
+  #### Log format mismatch
+  - If your logs are in a custom format, you may need to create your own parsers or modify the existing ones to match your log format.
+  - You can find more information on how to create your own parsers in the [CrowdSec documentation](https://doc.crowdsec.net/docs/next/log_processor/parsers/format).
+
+  </details>
+
+  <details>
+      <summary>CrowdSec Service Troubleshooting: is the CrowdSec service running?</summary>
 
 
 
+  </details>
 </details>
 
 ## CrowdSec Connectivity checks
