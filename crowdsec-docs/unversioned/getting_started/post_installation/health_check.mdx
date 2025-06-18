@@ -251,7 +251,7 @@ Were all the tests related to your setup successful?
   - Missing `online_api_credentials.yaml` in your CrowdSec config directory
     - If they don't exist, you can create them by running the command:
       <CodeBlock className="language-bash">sudo cscli capi register</CodeBlock>
-  - Firewall rules blocking outbound connections to the CrowdSec Central API (*api.crowdsec.net*)
+  - Firewall rules blocking outbound connections to the CrowdSec Central API (api.crowdsec.net)
   - DNS resolution issues.
   - Proxy server configuration.
   - Connectivity issues within Docker containers.
@@ -262,32 +262,33 @@ Were all the tests related to your setup successful?
 
 ### *Validate Blocks or Captchas* 
 
-Now that we've confirmed that the Security Engine can detect threats, let's verify that your bouncers are correctly applying decisions and blocking malicious IPs.
+Now that detection and connectivity are working, let’s verify that your bouncers are correctly applying remediation on malicious IPs.  
 
-::info A note on future improvements
-In the future, this health-check will include an option to trigger a remote test from the CrowdSec Console, which will safely probe your defenses from an external IP.
-For now, we will perform a manual test by temporarily banning your own IP address. Please read the following warning carefully before proceeding.
-:::
+**Prerequisite:**  
+To apply remediation with CrowdSec, you’ll need a bouncer — available for firewalls, web servers (like Nginx), reverse proxies, CDNs, cloud WAFs, edge appliances, [and more](https://doc.crowdsec.net/u/bouncers/intro).  
 
 <details>
   <summary>✋🏻 Bouncer Remediation test</summary>
 
-This test involves manually creating a ban decision against your own public IP address for a very short period (1 minute).  
+This test involves manually creating a **decision** against a public IP of one of your devices for a very short period (1 minute).  
 
-::danger BE CAREFUL: Risk of Self-Lockout
+:::danger 
+BE CAREFUL -- Risk of Self-Lockout  
 This procedure will temporarily block your access to the services protected by your bouncer.  
-Make sure to properly set the TTL to a low expiration time (1 minute). OR do it from a device with a different public IP address than the client you're using to setup CrowdSec.
-::
+Make sure to properly follow the instructions to set the TTL to a low expiration time (1 minute). 
+OR do it from a device with a different public IP address than the client you're using to setup CrowdSec.
+:::
 
-1️⃣ Find out you public address by using the following command:
+1️⃣ Find your public IP:
 <CodeBlock className="language-bash">curl api.ipify.org</CodeBlock>
 or
 <CodeBlock className="language-bash">curl curl ipinfo.io/ip</CodeBlock>
 
-2️⃣ Create a ban decision for your public IP address with a TTL of 1 minute:
+2️⃣ Add a ban decision for your IP (valid for 1 minute):
 <CodeBlock className="language-bash">sudo cscli decisions add ban --ip \<your-public-ip\> --duration 1m --reason "CrowdSec remediation test"</CodeBlock>
 
-3️⃣ Try to access your service (website, api ...) from the same public IP address. \> You should be blocked by the bouncer.
+3️⃣ Try accessing your service (e.g. website, API). from the same public IP address. 
+  ➡️ You should be blocked by the bouncer. returning a forbidden response (HTTP 403) or a captcha challenge.
 
 4️⃣ Wait for 1 minute, then check the decisions list to see if the decision has been removed
 
@@ -299,12 +300,12 @@ If you were successfully blocked, congratulations! Your remediation setup is wor
 
 You might want to continue to the next recommended steps:
 - Enroll your Security Engine to the [CrowdSec Console](/u/getting_started/post_installation/console/)
-- Then subscribe to more blocklists to benefit from additionnl proactive prevention
+- Then subscribe to more blocklists to benefit from additional proactive prevention
 
 <details>
     <summary>🐞 **Remediation Troubleshooting**</summary>
 
-  ...
+  Before diving into troubleshooting, remember that a bouncer is a separate component that connects to the Security Engine and regularly pulls decisions (like bans or captchas) to apply them at its level (firewall, web server, etc.). If remediation isn’t working, it’s often due to issues in this communication loop.  
 
   <details>
       <summary>Bouncer Configuration Troubleshooting</summary>
@@ -327,6 +328,8 @@ You might want to continue to the next recommended steps:
   </details>
 </details>
 
-## Your feedback is important!
+## 💬 Your feedback is important!
 
-If you have any suggestions or improvements for this health check, please let us know by opening an issue on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs/issues/new) or on our [discord](https://discord.gg/wGN7ShmEE8)
+Help us improve this health check guide!  
+[📨 Open an issue on GitHub](https://github.com/crowdsecurity/crowdsec-docs/issues/new) or  
+🗣️ Join the conversation on [Discord](https://discord.gg/wGN7ShmEE8)
