@@ -167,24 +167,35 @@ If not, check the troubleshooting section below
 
 ## 🔌 CrowdSec Connectivity checks
 
-Check that your Security Engine can communicate with the CrowdSec Central API and receive the community blocklist and additional ones.
-
-// Do we make them check console enroll here? or just cscli capi status? - *Recommend console enrollment here; the previous checks establish core functionality.  Enrollment becomes the next logical step.*
-
-```bash
-sudo cscli capi status
-```
-- Should show: "You can successfully interact with Central API (CAPI)"
-- If this test fail, try to enrol to the console to check what's going on.
+Let's check that your Security Engine can communicate with the CrowdSec Central API (CAPI). This connection is essential for participating in the community and protecting your setup with the collective intelligence of the network.  
+The CAPI allows your instance to receive a curated blocklist of malicious IP addresses identified and verified by the entire CrowdSec network. This proactive defense, known as the Community Blocklist, protects you from aggressors before they even target your services. It also allows your Security Engine to report the malicious IPs it detects, contributing to the strength of the community.
 
 <details>
-    <summary>Network Connectivity Troubleshooting</summary>
+  <summary>🔌 CrowdSec Central API connectivity</summary>
 
-* online api credentials exist in `/etc/crowdsec/config/online_api_credentials.yaml` (default path)
-*   Firewall rules blocking outbound connections to the CrowdSec Central API.
-*   DNS resolution issues.
-*   Proxy server configuration.
-*   Connectivity issues within Docker containers.
+  The most direct way to verify connectivity is to see if your instance has already received decisions from the community blocklist.
+
+  1️⃣ List decisions coming from CAPI
+  
+  <CodeBlock className="language-bash">sudo cscli decisions list --origin CAPI </CodeBlock>
+
+  2️⃣ If you see decisions listed, it means your Security Engine is successfully connected to the CAPI and receiving decisions.
+</details>
+
+<details>
+    <summary>🚨 Connectivity Troubleshooting</summary>
+
+  Check CAPI status with the command:
+  <CodeBlock className="language-bash">sudo cscli capi status</CodeBlock>
+  - Should show: "You can successfully interact with Central API (CAPI)"
+  - If this test fail, try to enrol to the console to check what's going on.
+
+  Other common issues that can prevent your Security Engine from connecting to the CAPI include:
+  - online api credentials exist in `/etc/crowdsec/config/online_api_credentials.yaml` (default path)
+  - Firewall rules blocking outbound connections to the CrowdSec Central API.
+  - DNS resolution issues.
+  - Proxy server configuration.
+  - Connectivity issues within Docker containers.
 
 </details>
 
