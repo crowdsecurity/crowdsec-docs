@@ -577,6 +577,7 @@ module.exports = {
                 id: "getting_started/next_steps",
             },
             items: [
+                "getting_started/post_installation/healthcheck",
                 {
                     type: "category",
                     label: "CrowdSec Console",

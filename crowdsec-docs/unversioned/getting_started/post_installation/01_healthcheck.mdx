@@ -11,7 +11,7 @@ import HierarchicalList from '@site/src/components/HierarchicalList.js';
 
 Welcome to the interactive health check of your CrowdSec setup. We'll have a Top-Down approach:  
 First, check the proper functioning of the Security Engine's finality: 
-- **📡 Detecting** behaviors on your services.
+- [**📡 Detecting**](#-detection-checks) behaviors on your services.
 - **🔗 Connectivity** with CrowdSec network to retrieve threats lists.
 - **🛡️ Protecting** your services by remediating alerts automatically with bouncers.
 
@@ -27,7 +27,7 @@ The HTTP collection and the Linux collection contain **dummy scenarios** allowin
 :::
 
 <details>
-  <summary>☑️ Test **HTTP** detection</summary>
+  <summary>🌐 **HTTP** detection test</summary>
   
 Let's trigger the `crowdsecurity/http-generic-test` dummy scenario by calling a *probe path* on your web server.
 
@@ -45,7 +45,7 @@ Notes:
 </details>
 
 <details>
-    <summary>☑️ Test **SSH** detection</summary>
+    <summary>🔐 **SSH** detection test</summary>
 
 Let's trigger the `crowdsecurity/ssh-generic-test` dummy scenario by logging in to your server via SSH with a specific user.
 
@@ -60,7 +60,7 @@ Note that this scenario has a delay of 5 minute before it can re-trigger _(black
 </details>
 
 <details>
-    <summary>☑️ Test CrowdSec WAF with an **AppSec** detection</summary>
+    <summary>🛡️ **AppSec** detection test - CrowdSec WAF </summary>
 
 If you are using an AppSec-capable bouncer and have configured CrowdSec WAF, you can test the detection of an AppSec scenario.
 It's similar to the HTTP detection test, but it will trigger `crowdsecurity/appsec-generic-test`.
@@ -111,18 +111,18 @@ If not, check the troubleshooting section below
   - The parsers metrics show you what parsers were successfully used. Look for the name of the parsers installed for the logs you're reading
 
   <div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
-    🚨 If this command fails, check the [**CrowdSec Service Troubleshooting section**](#crowdsec_service_troubleshooting)
+    🚨 If this command fails, check the [**CrowdSec Service Troubleshooting section**](#troubleshooting_service)
   </div>
   <div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
-    🚨 If you don't see the log names supposed to be parsed, check the [**Acquisition Troubleshooting section**](#acquisition_troubleshooting)
+    🚨 If you don't see the log names supposed to be parsed, check the [**Acquisition Troubleshooting section**](#troubleshooting_acquisition)
   </div>
   <div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
-    🚨 If you don't see parsed lines, check the [**Collection Troubleshooting section****](#collection_troubleshooting)
+    🚨 If you don't see parsed lines, check the [**Collection Troubleshooting section****](#troubleshooting_collection)
   </div>
 
   </details>
 
-  <details>
+  <details id="troubleshooting_acquisition">
       <summary>Acquisition Troubleshooting: are your logs properly declared as datasources</summary>
 
   Your acquisition configuration is located in the `crowdsec` directory under `acquis.yaml` or `acquis.d/anyName.yaml`.  
@@ -134,7 +134,7 @@ If not, check the troubleshooting section below
   - for more information, check the [documentation for the various datasources](https://doc.crowdsec.net/docs/next/log_processor/data_sources/intro)
   </details>
 
-  <details>
+  <details id="troubleshooting_collection">
       <summary>Collection Troubleshooting: are the parsers and scenarios installed?</summary>
 
   #### Collection installation
@@ -157,7 +157,7 @@ If not, check the troubleshooting section below
 
   </details>
 
-  <details>
+  <details id="troubleshooting_service">
       <summary>CrowdSec Service Troubleshooting: is the CrowdSec service running?</summary>
 
 
