@@ -159,6 +159,22 @@ If not, check the troubleshooting section below
 
   <details id="troubleshooting_service">
       <summary>CrowdSec Service Troubleshooting: is the CrowdSec service running?</summary>
+  Make sure the CrowdSec service is running properly. You can check the status of the service with the following command:
+  <CodeBlock className="language-bash">sudo systemctl status crowdsec</CodeBlock> 
+  - You should see the service status as "active (running)".
+
+  If the service is not running, you can start it with the following command:
+  <CodeBlock className="language-bash">sudo systemctl start crowdsec</CodeBlock>
+
+  If the service fails to start, you can check the logs for more information:
+  <CodeBlock className="language-bash">sudo journalctl -u crowdsec</CodeBlock>
+
+  Reasons for the service not running can include:
+  - Misconfiguration in the `config.yaml` file.
+    - Port conflicts with other services. By default, CrowdSec uses port 8080 for the Local API (LAPI) and port 6060 for the Local API metrics.
+    - The port configuration can be setup in `config.yaml` file or by setting the environment variables depending on your implementation
+  - Insufficient permissions to access the log files or directories.
+  - Acquisition files format errors.
 
   </details>
 </details>
@@ -193,7 +209,10 @@ The CAPI allows your instance to receive a curated blocklist of malicious IP add
   - If this test fail, try to enrol to the console to check what's going on.
 
   Other common issues that can prevent your Security Engine from connecting to the CAPI include:
-  - online api credentials exist in `/etc/crowdsec/config/online_api_credentials.yaml` (default path)
+  - Check that the online api credentials `online_api_credentials.yaml` exist in your crowdsec config directory
+    - If they don't exist, you can create them by running the command:
+      <CodeBlock className="language-bash">sudo cscli capi register</CodeBlock>
+  - Check that the `crowdsec` service is running and properly configured to connect to the CAPI.
   - Firewall rules blocking outbound connections to the CrowdSec Central API.
   - DNS resolution issues.
   - Proxy server configuration.
@@ -214,7 +233,7 @@ For now, we will perform a manual test by temporarily banning your own IP addres
 
 <details>
   <summary>✋🏻 Bouncer Remediation test</summary>
-  
+
 This test involves manually creating a ban decision against your own public IP address for a very short period (1 minute).  
 
 ::danger BE CAREFUL: Risk of Self-Lockout
