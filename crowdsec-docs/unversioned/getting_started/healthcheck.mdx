@@ -27,7 +27,7 @@ The HTTP collection and the Linux collection contain **dummy scenarios** allowin
 :::
 
 <details>
-    <summary>Test **HTTP** detection</summary>
+  <summary>Test HTTP detection</summary>
 Let's trigger the `crowdsecurity/http-generic-test` dummy scenario by calling a *probe path* on your web server.
 
 1️⃣ Request your service URL with the following path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
@@ -41,7 +41,7 @@ Note that this scenario has a delay of 5 minutes before it can re-trigger _(blac
 </details>
 
 <details>
-    <summary>☑️ Test **SSH** detection</summary>
+    <summary>Test SSH detection</summary>
 Let's trigger the `crowdsecurity/ssh-generic-test` dummy scenario by logging in to your server via SSH with a specific user.
 
 1️⃣ Try to authenticate to your server via SSH using the following user: `crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`.
@@ -55,7 +55,7 @@ Note that this scenario has a delay of 5 minute before it can re-trigger _(black
 </details>
 
 <details>
-    <summary>☑️ Test CrowdSec WAF with an AppSec detection</summary>
+    <summary>Test CrowdSec WAF with an AppSec detection</summary>
 If you are using an AppSec-capable bouncer and have configured CrowdSec WAF, you can test the detection of an AppSec scenario.
 It's similar to the HTTP detection test, but it will trigger `crowdsecurity/appsec-generic-test`.
 
@@ -84,7 +84,9 @@ If not, check the troubleshooting section below
     <summary>🚨 Detection Troubleshooting</summary>
 
   *No alerts triggered? Let's investigate: Here are some tests to identify where the issue might be.*  
-  If you installed CrowdSec Security Engine on the same host as the service you want to protect, the install wizards should have automatically detected the service and installed the appropriate parsers and scenarios.
+
+  If you installed **CrowdSec Security Engine** on the same **Host** as the service you want to protect, the install wizards should have automatically detected the service and installed the appropriate parsers and scenarios.  
+
   If you have non-default paths or format for your logs, or if you chose other installation methods (docker, kubernetes..), you may need to manually install the parsers and scenarios.
   
   **This troubleshooting section will help you identify the issue and guide you through the necessary steps to fix it.**
@@ -92,14 +94,13 @@ If not, check the troubleshooting section below
   <details>
       <summary>Acquisition metrics check: are your logs read and parsed?</summary>
 
-  The acquisition and parsing aspect of CrowdSec is crucial, as it tells The Security Engine which logs to read and how to parse them.  
-  You can setup multiple datasources (files, syslog, etc.), for more details you can refer to the [datasources documentation](https://doc.crowdsec.net/docs/next/log_processor/data_sources/intro).  
+  The acquisition and parsing aspect of CrowdSec is crucial, as it tells The Security Engine which logs to read and how to parse them. You can setup multiple datasources (files, syslog, etc.), for more details you can refer to the [datasources documentation](https://doc.crowdsec.net/docs/next/log_processor/data_sources/intro).  
 
   Let's do a Top Down check using the `cscli metrics` command to see if your logs are being read and parsed correctly.
 
   <CodeBlock className="language-bash">sudo cscli metrics show acquisition parsers</CodeBlock>
 
-  - You should see the names of the log files/stream configured in the acquisition files, and the number of lines parsed for each of them.  
+  - You should see the **names of the log files/stream** configured in the acquisition files, and the number of lines parsed for each of them.  
   - The number of "Lines parsed" should be non-zero for each of the files you configured in the acquisition section. 
   - The parsers metrics show you what parsers were successfully used. Look for the name of the parsers installed for the logs you're reading
 
@@ -118,11 +119,13 @@ If not, check the troubleshooting section below
   <details>
       <summary>Acquisition Troubleshooting: are your logs properly declared as datasources</summary>
 
-  Your acquisition configuration is located in `/etc/crowdsec/acquis.yaml` or in `/etc/crowdsec/acquis.d/anyName.yaml`.
+  Your acquisition configuration is located in the `crowdsec` directory under `acquis.yaml` or `acquis.d/anyName.yaml`.  
+  The crowdsec directory changes depending on your OS and installation method, for example, on Debian like OS it is usually located in `/etc/crowdsec/`.  
+
+  You may want to check your current acquisition configuration or [add a new acquisition file](https://doc.crowdsec.net/u/getting_started/post_installation/acquisition_new).
   - Check that the datasource is properly setup: file path or correct port for syslog server...
   - Ensure that the type declared matches the parser expected to be used: nginx, apache, syslog, etc.
   - for more information, check the [documentation for the various datasources](https://doc.crowdsec.net/docs/next/log_processor/data_sources/intro)
-
   </details>
 
   <details>
