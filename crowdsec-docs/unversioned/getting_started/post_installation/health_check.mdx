@@ -160,12 +160,12 @@ If not, check the troubleshooting section below
   <details id="troubleshooting_service">
       <summary>CrowdSec Service Troubleshooting: is the CrowdSec service running?</summary>
 
-
-
   </details>
 </details>
 
 ## 🔌 CrowdSec Connectivity checks
+
+### *List the community-blocked IPs*  
 
 Let's check that your Security Engine can communicate with the CrowdSec Central API (CAPI). This connection is essential for participating in the community and protecting your setup with the collective intelligence of the network.  
 The CAPI allows your instance to receive a curated blocklist of malicious IP addresses identified and verified by the entire CrowdSec network. This proactive defense, known as the Community Blocklist, protects you from aggressors before they even target your services. It also allows your Security Engine to report the malicious IPs it detects, contributing to the strength of the community.
@@ -181,6 +181,8 @@ The CAPI allows your instance to receive a curated blocklist of malicious IP add
 
   2️⃣ If you see decisions listed, it means your Security Engine is successfully connected to the CAPI and receiving decisions.
 </details>
+
+### Were all the tests successful ?
 
 <details>
     <summary>🚨 Connectivity Troubleshooting</summary>
@@ -200,6 +202,8 @@ The CAPI allows your instance to receive a curated blocklist of malicious IP add
 </details>
 
 ## ✋🏻 Remediation checks
+
+### *Validate Blocks or Captchas* 
 
 Now that we've confirmed that the Security Engine can detect threats, let's verify that your bouncers are correctly applying decisions and blocking malicious IPs.
 
@@ -235,6 +239,7 @@ or
 ### Were all the tests successful ?
 
 If you were successfully blocked, congratulations! Your remediation setup is working correctly. 🎉  
+
 You might want to continue to the next recommended steps:
 - Enroll your Security Engine to the [CrowdSec Console](/u/getting_started/post_installation/console/)
 - Then subscribe to more blocklists to benefit from additionnl proactive prevention
