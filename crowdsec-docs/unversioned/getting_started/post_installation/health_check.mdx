@@ -9,7 +9,7 @@ import CodeBlock from '@theme/CodeBlock';
 import { CheckboxProvider, InteractiveCheckbox } from '@site/src/components/InteractiveCheckbox.js';
 import HierarchicalList from '@site/src/components/HierarchicalList.js';
 
-<small className="health-check-version" style="position: relative;top: -32px;">Health Check Version: 0.1.0</small>
+<small className="health-check-version" style={{position: 'relative', top: '-30px'}}>Health Check Version: 0.1.0</small>
 
 Welcome to the interactive Health-Check of your CrowdSec setup.  
 We'll guide you through a series of tests to ensure that your Security Stack is fully functional and ready to protect your services:  
@@ -103,7 +103,7 @@ Were all the tests related to your setup successful?
  **This section will help you pinpoint the issue and walk you through how to fix it.**  
 
   <details>
-      <summary>Are your logs being properly read and parsed?</summary>
+      <summary>📄 Are your logs being properly read and parsed?</summary>
 
   CrowdSec needs to know what logs to read and how to interpret them.  
   This is handled by the acquisition configuration (log sources) and parsing (how to read them).
@@ -121,66 +121,83 @@ Were all the tests related to your setup successful?
   
   Under The **Parsers Metrics** you have the details of the parsers used.
 
+  🚨 If this check fails, don’t worry -- the results will point you to the right area to troubleshoot:  
+  
   <div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
-    🐞 If this command fails, check the [**CrowdSec Service Troubleshooting section**](#troubleshooting_service)
+    🐞 If this command fails entirely, go to the [**CrowdSec Service Troubleshooting section**](#troubleshooting_service)
   </div>
   <div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
-    🐞 If you don't see the log names supposed to be parsed, check the [**Acquisition Troubleshooting section**](#troubleshooting_acquisition)
+    🐞 If your acquisition sources don't appear, check the [**Acquisition Troubleshooting section**](#troubleshooting_acquisition)
   </div>
   <div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
-    🐞 If you don't see parsed lines, check the [**Collection Troubleshooting section****](#troubleshooting_collection)
+    🐞 If parsing fails, check the [**Collection Troubleshooting section****](#troubleshooting_collection)
   </div>
 
   </details>
 
   <details id="troubleshooting_acquisition">
-      <summary>Acquisition Troubleshooting: are your logs properly declared as datasources</summary>
+      <summary>📥 Acquisition Troubleshooting -- Are your logs properly declared as datasources</summary>
 
-  Your acquisition configuration is located in the `crowdsec` directory under `acquis.yaml` or `acquis.d/anyName.yaml`.  
-  The CrowdSec directory changes depending on your OS and installation method, for example, on Debian like OS it is usually located in `/etc/crowdsec/`.  
+  CrowdSec needs to know where to **read your logs**. This is handled by the **acquisition configuration**, usually found in `acquis.yaml` or in files under `acquis.d/` inside the CrowdSec config directory.  
+  On Debian like OS it is typically located in `/etc/crowdsec/`.  
 
-  You may want to check your current acquisition configuration or [add a new acquisition file](https://doc.crowdsec.net/u/getting_started/post_installation/acquisition_new).
-  - Check that the datasource is properly setup: file path or correct port for syslog server...
-  - Ensure that the type declared matches the parser expected to be used: nginx, apache, syslog, etc.
-  - for more information, check the [documentation for the various datasources](https://doc.crowdsec.net/docs/next/log_processor/data_sources/intro)
+  To troubleshoot:
+  - The detailed doc about the acquisition configuration can be found [here](https://doc.crowdsec.net/docs/next/log_processor/acquisition/intro).
+  - Check your acquisition files exist and that the datasources are properly setup.
+  - 💡 Hint: 
+    - The hub page of the collection you installed provides an example of the acquisition configuration file to create.
+    - For example:
+      - The [NGINX collection hub page](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx) 
+      - Or the [SSHD collection hub page](https://app.crowdsec.net/hub/author/crowdsecurity/collections/sshd) (that is contained in the Linux Collection).
+  - Make sure that the **type** declared in the matches the **parser** expected to be used: nginx, apache, syslog, etc.
   </details>
 
   <details id="troubleshooting_collection">
-      <summary>Collection Troubleshooting: are the parsers and scenarios installed?</summary>
+      <summary>📦 Collection Troubleshooting -- Are the right parsers and scenarios installed?</summary>
 
-  #### Collection installation
-  - On host installations your existing service should have been detected and appropriate collections (containing parsers and scenarios) installed automatically.
-  - How ever on other kind of installations, or in case of failed detection, you may need to install the collections manually.
+  CrowdSec, via its [**Hub**](https://app.crowdsec.net/hub/collections) uses collections to package correct parsers and detection scenarios for your services.
+  - On regular **host** installations, CrowdSec usually detects your services (like nginx or ssh) and installs the appropriate collections automatically.
+  - On **Docker**, **Kubernetes**, or **custom setups**, you may need to install them manually.
 
-  Check the installed collections with the command:
+  #### 🔍 To check what's currently installed:
   <CodeBlock className="language-bash">sudo cscli collections list</CodeBlock>
+
   You can also list individual parsers and scenarios with:
   <CodeBlock className="language-bash">sudo cscli parsers list</CodeBlock>
   <CodeBlock className="language-bash">sudo cscli scenarios list</CodeBlock>
-  - If you see the parsers and scenarios related to your service, then you're good to go.
+  
+  - Look for entries related to your service (e.g., nginx, apache, ssh).
+  - If they’re listed, the right collection is likely installed.
 
-  - To install new collection, check the [CrowdSec Hub](https://hub.crowdsec.net/) for a collection named after your service (e.g., [nginx](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx), [apache](https://app.crowdsec.net/hub/author/crowdsecurity/collections/apache), [linux](https://app.crowdsec.net/hub/author/crowdsecurity/collections/linux), etc.).
-  - If you find the collection, install it using the command shown on the hub page and follow the instructions provided for the acquisition file.
+  #### 📥 Install missing collections
+  1. Visit the [CrowdSec Hub](https://hub.crowdsec.net/) and search for a collection matching your service, like:
+    - [nginx](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx)
+    - [apache](https://app.crowdsec.net/hub/author/crowdsecurity/collections/apache)
+    - [linux](https://app.crowdsec.net/hub/author/crowdsecurity/collections/linux)
+    - etc...
+  2. Follow the installation instructions on the collection’s page, including any required acquisition setup.
 
-  #### Log format mismatch
-  - If your logs are in a custom format, you may need to create your own parsers or modify the existing ones to match your log format.
+  #### ⚠️ Log format mismatch
+  - If your logs don’t follow the expected format (e.g., they’ve been customized), CrowdSec might not parse them properly.
   - You can find more information on how to create your own parsers in the [CrowdSec documentation](https://doc.crowdsec.net/docs/next/log_processor/parsers/format).
 
   </details>
 
   <details id="troubleshooting_service">
-      <summary>CrowdSec Service Troubleshooting: is the CrowdSec service running?</summary>
-  Make sure the CrowdSec service is running properly. You can check the status of the service with the following command:
-  <CodeBlock className="language-bash">sudo systemctl status crowdsec</CodeBlock> 
-  - You should see the service status as "active (running)".
+      <summary>⚙️ CrowdSec Service Troubleshooting -- is the CrowdSec service running?</summary>
 
-  If the service is not running, you can start it with the following command:
+  Let’s check if the CrowdSec service is active:
+  <CodeBlock className="language-bash">sudo systemctl status crowdsec</CodeBlock> 
+  - ☑️ You should see: "**active (running)**"
+
+  If the service is not running, you can start it manually:
   <CodeBlock className="language-bash">sudo systemctl start crowdsec</CodeBlock>
+  - 💡 make sure it will be up after restart, activate the service
 
   If the service fails to start, you can check the logs for more information:
   <CodeBlock className="language-bash">sudo journalctl -u crowdsec</CodeBlock>
 
-  Reasons for the service not running can include:
+  Common reasons the service might fail::
   - Misconfiguration in the `config.yaml` file.
     - Port conflicts with other services. By default, CrowdSec uses port 8080 for the Local API (LAPI) and port 6060 for the Local API metrics.
     - The port configuration can be setup in `config.yaml` file or by setting the environment variables depending on your implementation
