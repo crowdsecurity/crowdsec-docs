@@ -577,7 +577,11 @@ module.exports = {
                 id: "getting_started/next_steps",
             },
             items: [
-                "getting_started/post_installation/health_check",
+                {
+                    type: "doc",
+                    id: "getting_started/post_installation/health_check",
+                    label: "Stack Health-Check",
+                },               
                 {
                     type: "category",
                     label: "CrowdSec Console",

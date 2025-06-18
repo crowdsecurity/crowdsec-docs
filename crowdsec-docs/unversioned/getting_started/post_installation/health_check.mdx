@@ -9,18 +9,19 @@ import CodeBlock from '@theme/CodeBlock';
 import { CheckboxProvider, InteractiveCheckbox } from '@site/src/components/InteractiveCheckbox.js';
 import HierarchicalList from '@site/src/components/HierarchicalList.js';
 
-<small className="health-check-version">Health Check Version: 0.1.0</small>
+<small className="health-check-version" style="position: relative;top: -32px;">Health Check Version: 0.1.0</small>
 
-Welcome to the interactive health check of your CrowdSec setup.  
-We'll guide you through a series of tests to ensure that your Security Stack is fully functional and ready to protect your services: **Detecting**, **Threat Sharing** and **Remediating**.  
-This guide covers cases of protecting common services such as web servers (HTTP) and SSH.  
+Welcome to the interactive Health-Check of your CrowdSec setup.  
+We'll guide you through a series of tests to ensure that your Security Stack is fully functional and ready to protect your services:  
+**Detecting**, **Threat Sharing** and **Remediating**.  
+*This guide covers cases of protecting common services such as web servers (HTTP) and SSH.*   
 
-Via a **top-down approach** we'll test the end goal of components, and then dive into detailed troubleshooting if needed.
+We'll first test the final functionality of each component (top-down approach) before diving into detailed troubleshooting if issues arise.
 
 This health check is divided into three main sections:
-- [**📡 Detecting**](#-detection-checks) behaviors on your services.
-- [**🔗 Connectivity**](#-crowdsec-connectivity-checks) with CrowdSec network to retrieve the community blocklist.
-- [**🛡️ Protecting**](#-remediation-checks) your services by remediating alerts automatically with bouncers.
+- [**📡 Detection**](#-detection-checks): Ensuring CrowdSec properly detects threats targeting your services.
+- [**🔗 Connectivity**](#-crowdsec-connectivity-checks): Verifying communication with the CrowdSec network to receive the community blocklist.
+- [**🛡️ Protection**](#-remediation-checks): Confirming that your bouncers automatically block threats detected by CrowdSec
 
 * * *
 
@@ -28,103 +29,106 @@ This health check is divided into three main sections:
 
 ### *Trigger CrowdSec's test scenarios*  
 
-:::info
-Check that your Security Engine properly reads and parses the logs of the services you protect.  
-The HTTP collection and the Linux collection contain **dummy scenarios** allowing you to prove your Security Engine works as intended, without having to do penetration tests, risking getting you banned from your own server.
-:::
+Let's use CrowdSec's built-in **dummy scenarios** (HTTP and Linux) to safely verify your Security Engine detects threats, without risking accidental self-blocking.
 
 <details>
   <summary>🌐 **HTTP** detection test</summary>
   
-Let's trigger the `crowdsecurity/http-generic-test` dummy scenario by calling a *probe path* on your web server.
+We'll trigger the dummy scenario `crowdsecurity/http-generic-test` by accessing a **probe path** on your web server.
 
-1️⃣ Request your service URL with the following path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
+1️⃣ Access your service URL with this path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
 <CodeBlock className="language-bash">curl -I https://\<your-service-url\>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl</CodeBlock>
 
-2️⃣ You should see an alert for the scenario `crowdsecurity/http-generic-test`
-
+2️⃣ Confirm the alert has triggered for the scenario `crowdsecurity/http-generic-test`
 <CodeBlock className="language-bash">sudo cscli alerts list -s crowdsecurity/http-generic-test</CodeBlock>
 
-Notes:
-- If it's done from a private IP the alert won't appear as private IPs are whitelisted by default.
-  - You can call the test url via a browser if you prefer, it might make it easier to test from an other device.
-- This scenario has a delay of 5 minutes before it can re-trigger _(blackhole parameter of the scenario)_. 
+**Notes:**  
+- Requests from private IP addresses won't trigger alerts (private IPs are whitelisted by default).
+  - You can also test via a browser if easier, especially from another device.
+- This scenario can be triggered again only after a 5-minutes delay.
 </details>
 
 <details>
     <summary>🔐 **SSH** detection test</summary>
 
-Let's trigger the `crowdsecurity/ssh-generic-test` dummy scenario by logging in to your server via SSH with a specific user.
+We'll trigger the dummy scenario `crowdsecurity/ssh-generic-test` by attempting an SSH login with a specific username.
 
-1️⃣ Try to authenticate to your server via SSH using the following user: `crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`.
+1️⃣ Attempt SSH login using this username: `crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`.
 <CodeBlock className="language-bash">ssh crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl@\<your-server-ip\></CodeBlock>
 
-2️⃣ You should see an alert for the scenario `crowdsecurity/ssh-generic-test`
-
+2️⃣ Confirm the alert has triggered for the scenario `crowdsecurity/ssh-generic-test`
 <CodeBlock className="language-bash">sudo cscli alerts list -s crowdsecurity/ssh-generic-test</CodeBlock>
 
-Note that this scenario has a delay of 5 minute before it can re-trigger _(blackhole parameter of the scenario)_. 
+**Notes:** 
+- This scenario can only be triggered again after a 5-minutes delay. 
 </details>
 
 <details>
     <summary>🛡️ **AppSec** detection test - CrowdSec WAF </summary>
 
-If you are using an AppSec-capable bouncer and have configured CrowdSec WAF, you can test the detection of an AppSec scenario.
-It's similar to the HTTP detection test, but it will trigger `crowdsecurity/appsec-generic-test`.
+If you've enabled an AppSec-capable bouncer with CrowdSec WAF, you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.  
+It would have triggered along with the HTTP detection test, but it is worth mentioning here as well.  
 
 Here is how to trigger the `crowdsecurity/appsec-generic-test` dummy scenario by calling a *probe path* on your web server.
 
-1️⃣ Request your service URL with the following path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
-<CodeBlock className="language-bash">curl -I http://your-service-url/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl</CodeBlock>
+We'll trigger the dummy scenario `crowdsecurity/appsec-generic-test` by accessing a **probe path** on your web server.
 
-2️⃣ You should see an alert for the scenario `crowdsecurity/appsec-generic-test`
+1️⃣ Access your service URL with this path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
+<CodeBlock className="language-bash">curl -I https://\<your-service-url\>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl</CodeBlock>
 
+2️⃣ Confirm the alert has triggered for the scenario `crowdsecurity/appsec-generic-test`
 <CodeBlock className="language-bash">sudo cscli alerts list -s crowdsecurity/appsec-generic-test</CodeBlock>
 
-Note that this scenario has a delay of **1** minute before it can re-trigger _(blackhole parameter of the scenario)_. 
+**Notes:**
+- This scenario can only be triggered again after a 1-minute delay. 
 </details>
 
 * * *
 
 ### Were all the tests successful ?
 
-Were all the tests related to your setup successful ?
-If so, you can proceed to the next phase of the health check: [**Connectivity checks**](#crowdsec-connectivity-checks).  
+Were all the tests related to your setup successful? 
+👍 If so, you can proceed to the next phase of the health check: [**Connectivity checks**](#-crowdsec-connectivity-checks).  
 
-If not, check the troubleshooting section below
+🛠️ If not, check the troubleshooting section below.
 
 <details>
-    <summary>🚨 **Detection Troubleshooting**</summary>
+    <summary>🐞 **Detection Troubleshooting**</summary>
 
-  *No alerts triggered? Let's investigate: Here are some tests to identify where the issue might be.*  
+  **No alert triggered? Let's find out why.**   
 
-  If you installed **CrowdSec Security Engine** on the same **Host** as the service you want to protect, the install wizards should have automatically detected the service and installed the appropriate parsers and scenarios.  
-
-  If you have non-default paths or format for your logs, or if you chose other installation methods (docker, kubernetes..), you may need to manually install the parsers and scenarios.
+  If you installed CrowdSec on the same **host** as the service you're protecting, it should have auto-detected it and installed the right collections of parsers and scenarios.
+  However, if you're using *custom log paths*, *unusual log formats*, or running in *Docker/Kubernetes*, you might need to configure some things manually.  
   
-  **This troubleshooting section will help you identify the issue and guide you through the necessary steps to fix it.**
+ **This section will help you pinpoint the issue and walk you through how to fix it.**  
 
   <details>
       <summary>Are your logs being properly read and parsed?</summary>
 
-  The acquisition and parsing aspect of CrowdSec is crucial, as it tells The Security Engine which logs to read and how to parse them. You can setup multiple datasources (files, syslog, etc.), for more details you can refer to the [datasources documentation](https://doc.crowdsec.net/docs/next/log_processor/data_sources/intro).  
+  CrowdSec needs to know what logs to read and how to interpret them.  
+  This is handled by the acquisition configuration (log sources) and parsing (how to read them).
+  Multiple log sources can be defined in the acquisition(s) configuration files and they support diverse datasources (files, syslog, etc.).
+  For more details you can refer to the [datasources documentation](https://doc.crowdsec.net/docs/next/log_processor/data_sources/intro).  
 
-  Let's do a Top Down check using the `cscli metrics` command to see if your logs are being read and parsed correctly.
-
+  We'll look at the security engine **metrics** to see if logs are **being read** and if what's read is **parsed correctly**.  
+  We'll do that using the `cscli metrics` command:
   <CodeBlock className="language-bash">sudo cscli metrics show acquisition parsers</CodeBlock>
 
-  - You should see the **names of the log files/stream** configured in the acquisition files, and the number of lines parsed for each of them.  
-  - The number of "Lines parsed" should be non-zero for each of the files you configured in the acquisition section. 
-  - The parsers metrics show you what parsers were successfully used. Look for the name of the parsers installed for the logs you're reading
+  Under **Acquisition Metrics** you should see:
+  - The source name of the log files or streams that have been read and the number of lines read and parsed for each of them.
+    - If you don't see any sources or some you have configured are missing, it means that the acquisition configuration is not properly set up. 
+    - A non zero number of "Lines parsed" is expected for each source, proving that the appropriate parser was found and used.
+  
+  Under The **Parsers Metrics** you have the details of the parsers used.
 
   <div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
-    🚨 If this command fails, check the [**CrowdSec Service Troubleshooting section**](#troubleshooting_service)
+    🐞 If this command fails, check the [**CrowdSec Service Troubleshooting section**](#troubleshooting_service)
   </div>
   <div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
-    🚨 If you don't see the log names supposed to be parsed, check the [**Acquisition Troubleshooting section**](#troubleshooting_acquisition)
+    🐞 If you don't see the log names supposed to be parsed, check the [**Acquisition Troubleshooting section**](#troubleshooting_acquisition)
   </div>
   <div style={{ backgroundColor: '#FFE5B4', borderRadius: '5px' }}>
-    🚨 If you don't see parsed lines, check the [**Collection Troubleshooting section****](#troubleshooting_collection)
+    🐞 If you don't see parsed lines, check the [**Collection Troubleshooting section****](#troubleshooting_collection)
   </div>
 
   </details>
@@ -208,7 +212,7 @@ The CAPI allows your instance to receive a curated blocklist of malicious IP add
 ### Were all the tests successful ?
 
 <details>
-    <summary>🚨 Connectivity Troubleshooting</summary>
+    <summary>🐞 Connectivity Troubleshooting</summary>
 
   Check CAPI status with the command:
   <CodeBlock className="language-bash">sudo cscli capi status</CodeBlock>
@@ -271,7 +275,7 @@ You might want to continue to the next recommended steps:
 - Then subscribe to more blocklists to benefit from additionnl proactive prevention
 
 <details>
-    <summary>🚨 **Remediation Troubleshooting**</summary>
+    <summary>🐞 **Remediation Troubleshooting**</summary>
 
   ...
 
