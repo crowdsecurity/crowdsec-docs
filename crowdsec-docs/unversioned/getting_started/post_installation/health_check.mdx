@@ -207,39 +207,51 @@ Were all the tests related to your setup successful?
 
 ## 🔌 CrowdSec Connectivity checks
 
-### *List the community-blocked IPs*  
+### Is your Security Engine receiving community blocklists?
 
-Let's check that your Security Engine can communicate with the CrowdSec Central API (CAPI). This connection is essential for participating in the community and protecting your setup with the collective intelligence of the network.  
-The CAPI allows your instance to receive a curated blocklist of malicious IP addresses identified and verified by the entire CrowdSec network. This proactive defense, known as the Community Blocklist, protects you from aggressors before they even target your services. It also allows your Security Engine to report the malicious IPs it detects, contributing to the strength of the community.
+Let’s confirm that your Security Engine can communicate with the CrowdSec Central API (CAPI).
+This connection allows you to:
+- Receive **Community Blocklists** -- curated IPs flagged as malicious by the global CrowdSec network.
+- Receive additional Blocklists of your choice among the ones available to you.
+- Contribute back -- sharing detected Malicious IPs triggering installed scenarios.
 
 <details>
   <summary>🔌 CrowdSec Central API connectivity</summary>
 
-  The most direct way to verify connectivity is to see if your instance has already received decisions from the community blocklist.
+  The most direct way to verify connectivity is to see if your instance has already received decisions from the Community Blocklist.
 
   1️⃣ List decisions coming from CAPI
-  
   <CodeBlock className="language-bash">sudo cscli decisions list --origin CAPI </CodeBlock>
 
-  2️⃣ If you see decisions listed, it means your Security Engine is successfully connected to the CAPI and receiving decisions.
+  ☑️ If you see decisions, you're connected and receiving threat intel.
+
+  **Notes:**
+  - On a fresh install, it might take a few minutes before any decisions appear.
 </details>
 
 ### Were all the tests successful ?
 
+Were all the tests related to your setup successful? 
+👍 If so, you can proceed to the next phase of the health check: [Remediation Check](#-remediation-checks)
+
+🛠️ If not, check the troubleshooting section below.
+
 <details>
     <summary>🐞 Connectivity Troubleshooting</summary>
 
-  Check CAPI status with the command:
-  <CodeBlock className="language-bash">sudo cscli capi status</CodeBlock>
-  - Should show: "You can successfully interact with Central API (CAPI)"
-  - If this test fail, try to enrol to the console to check what's going on.
+  Let’s verify your CAPI connection step-by-step.  
 
-  Other common issues that can prevent your Security Engine from connecting to the CAPI include:
-  - Check that the online api credentials `online_api_credentials.yaml` exist in your crowdsec config directory
+  Check CAPI status:
+  <CodeBlock className="language-bash">sudo cscli capi status</CodeBlock>
+  - Should show: 
+    - `INFO You can successfully interact with Central API (CAPI)`
+    - Along with information about the connectivity config file path and if your Security engine is enrolled in CrowdSec console.
+
+  Common issues include:
+  - Missing `online_api_credentials.yaml` in your CrowdSec config directory
     - If they don't exist, you can create them by running the command:
       <CodeBlock className="language-bash">sudo cscli capi register</CodeBlock>
-  - Check that the `crowdsec` service is running and properly configured to connect to the CAPI.
-  - Firewall rules blocking outbound connections to the CrowdSec Central API.
+  - Firewall rules blocking outbound connections to the CrowdSec Central API (*api.crowdsec.net*)
   - DNS resolution issues.
   - Proxy server configuration.
   - Connectivity issues within Docker containers.
