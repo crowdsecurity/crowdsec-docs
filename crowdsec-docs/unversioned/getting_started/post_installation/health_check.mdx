@@ -165,7 +165,7 @@ If not, check the troubleshooting section below
   </details>
 </details>
 
-## CrowdSec Connectivity checks
+## 🔌 CrowdSec Connectivity checks
 
 Check that your Security Engine can communicate with the CrowdSec Central API and receive the community blocklist and additional ones.
 
@@ -188,28 +188,68 @@ sudo cscli capi status
 
 </details>
 
-## Remediation checks
+## ✋🏻 Remediation checks
 
-*   Canary tester
+Now that we've confirmed that the Security Engine can detect threats, let's verify that your bouncers are correctly applying decisions and blocking malicious IPs.
 
-(This section requires a robust, safe, and automated canary tester solution. The biggest challenge is preventing users from accidentally banning themselves.  This section can be skipped on V0, as you mentioned, and focused on later. For V1, It could be a URL to a third party machine for testing, or a private machine dedicated to running a canary test)
+::info A note on future improvements
+In the future, this health-check will include an option to trigger a remote test from the CrowdSec Console, which will safely probe your defenses from an external IP.
+For now, we will perform a manual test by temporarily banning your own IP address. Please read the following warning carefully before proceeding.
+:::
 
 <details>
-    <summary>Bouncer Troubleshooting</summary>
-    
-*   Verifying that the bouncer is registered and active.
-*   Checking bouncer logs for errors.
-*   Troubleshooting communication issues between the bouncer and the CrowdSec LAPI.
-*   Firewall configuration for the bouncer.
-*   Specific troubleshooting steps for common bouncers (firewall-bouncer, nginx-bouncer, etc.).)
+  <summary>✋🏻 Bouncer Remediation test</summary>
+  
+This test involves manually creating a ban decision against your own public IP address for a very short period (1 minute).  
+
+::danger BE CAREFUL: Risk of Self-Lockout
+This procedure will temporarily block your access to the services protected by your bouncer.  
+Make sure to properly set the TTL to a low expiration time (1 minute). OR do it from a device with a different public IP address than the client you're using to setup CrowdSec.
+::
+
+1️⃣ Find out you public address by using the following command:
+<CodeBlock className="language-bash">curl api.ipify.org</CodeBlock>
+or
+<CodeBlock className="language-bash">curl curl ipinfo.io/ip</CodeBlock>
+
+2️⃣ Create a ban decision for your public IP address with a TTL of 1 minute:
+<CodeBlock className="language-bash">sudo cscli decisions add ban --ip \<your-public-ip\> --duration 1m --reason "CrowdSec remediation test"</CodeBlock>
+
+3️⃣ Try to access your service from the same public IP address. You should be blocked by the bouncer.
+
+4️⃣ Wait for 1 minute, then check the decisions list to see if the decision has been removed
 
 </details>
 
+### Were all the tests successful ?
+
+If you were successfully blocked, congratulations! Your remediation setup is working correctly. 🎉  
+You might want to continue to the next recommended steps:
+- Enroll your Security Engine to the [CrowdSec Console](/u/getting_started/post_installation/console/)
+- Then subscribe to more blocklists to benefit from additionnl proactive prevention
+
 <details>
-    <summary>Profile Troubleshooting: Steps</summary>
+    <summary>🚨 **Remediation Troubleshooting**</summary>
 
-*   Verifying profile configuration.
-*   Troubleshooting errors related to profile application.
-*   Understanding the impact of profiles on detection and remediation.)
+  ...
 
+  <details>
+      <summary>Bouncer Configuration Troubleshooting</summary>
+      
+  *   Verifying that the bouncer is registered and active.
+  *   Checking bouncer logs for errors.
+  *   Troubleshooting communication issues between the bouncer and the CrowdSec LAPI.
+  *   Firewall configuration for the bouncer.
+  *   Specific troubleshooting steps for common bouncers (firewall-bouncer, nginx-bouncer, etc.).)
+
+  </details>
+
+  <details>
+      <summary>Profile Troubleshooting</summary>
+
+  *   Verifying profile configuration.
+  *   Troubleshooting errors related to profile application.
+  *   Understanding the impact of profiles on detection and remediation.)
+
+  </details>
 </details>
