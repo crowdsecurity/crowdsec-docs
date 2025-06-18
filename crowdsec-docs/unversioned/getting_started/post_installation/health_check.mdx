@@ -9,13 +9,20 @@ import CodeBlock from '@theme/CodeBlock';
 import { CheckboxProvider, InteractiveCheckbox } from '@site/src/components/InteractiveCheckbox.js';
 import HierarchicalList from '@site/src/components/HierarchicalList.js';
 
-Welcome to the interactive health check of your CrowdSec setup. We'll have a Top-Down approach:  
-First, check the proper functioning of the Security Engine's finality: 
-- [**📡 Detecting**](#-detection-checks) behaviors on your services.
-- **🔗 Connectivity** with CrowdSec network to retrieve threats lists.
-- **🛡️ Protecting** your services by remediating alerts automatically with bouncers.
+<small className="health-check-version">Health Check Version: 0.1.0</small>
 
-If the initial checks are not conclusive, we'll dive into a comprehensive troubleshooting for each section.
+Welcome to the interactive health check of your CrowdSec setup.  
+We'll guide you through a series of tests to ensure that your Security Stack is fully functional and ready to protect your services: **Detecting**, **Threat Sharing** and **Remediating**.  
+This guide covers cases of protecting common services such as web servers (HTTP) and SSH.  
+
+Via a **top-down approach** we'll test the end goal of components, and then dive into detailed troubleshooting if needed.
+
+This health check is divided into three main sections:
+- [**📡 Detecting**](#-detection-checks) behaviors on your services.
+- [**🔗 Connectivity**](#-crowdsec-connectivity-checks) with CrowdSec network to retrieve the community blocklist.
+- [**🛡️ Protecting**](#-remediation-checks) your services by remediating alerts automatically with bouncers.
+
+* * *
 
 ## 📡 Detection checks
 
@@ -50,7 +57,7 @@ Notes:
 Let's trigger the `crowdsecurity/ssh-generic-test` dummy scenario by logging in to your server via SSH with a specific user.
 
 1️⃣ Try to authenticate to your server via SSH using the following user: `crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`.
-<CodeBlock className="language-bash">ssh crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl@\<your-ip\></CodeBlock>
+<CodeBlock className="language-bash">ssh crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl@\<your-server-ip\></CodeBlock>
 
 2️⃣ You should see an alert for the scenario `crowdsecurity/ssh-generic-test`
 
@@ -98,7 +105,7 @@ If not, check the troubleshooting section below
   **This troubleshooting section will help you identify the issue and guide you through the necessary steps to fix it.**
 
   <details>
-      <summary>Acquisition metrics check: are your logs read and parsed?</summary>
+      <summary>Are your logs being properly read and parsed?</summary>
 
   The acquisition and parsing aspect of CrowdSec is crucial, as it tells The Security Engine which logs to read and how to parse them. You can setup multiple datasources (files, syslog, etc.), for more details you can refer to the [datasources documentation](https://doc.crowdsec.net/docs/next/log_processor/data_sources/intro).  
 
@@ -126,7 +133,7 @@ If not, check the troubleshooting section below
       <summary>Acquisition Troubleshooting: are your logs properly declared as datasources</summary>
 
   Your acquisition configuration is located in the `crowdsec` directory under `acquis.yaml` or `acquis.d/anyName.yaml`.  
-  The crowdsec directory changes depending on your OS and installation method, for example, on Debian like OS it is usually located in `/etc/crowdsec/`.  
+  The CrowdSec directory changes depending on your OS and installation method, for example, on Debian like OS it is usually located in `/etc/crowdsec/`.  
 
   You may want to check your current acquisition configuration or [add a new acquisition file](https://doc.crowdsec.net/u/getting_started/post_installation/acquisition_new).
   - Check that the datasource is properly setup: file path or correct port for syslog server...
@@ -249,7 +256,7 @@ or
 2️⃣ Create a ban decision for your public IP address with a TTL of 1 minute:
 <CodeBlock className="language-bash">sudo cscli decisions add ban --ip \<your-public-ip\> --duration 1m --reason "CrowdSec remediation test"</CodeBlock>
 
-3️⃣ Try to access your service from the same public IP address. You should be blocked by the bouncer.
+3️⃣ Try to access your service (website, api ...) from the same public IP address. \> You should be blocked by the bouncer.
 
 4️⃣ Wait for 1 minute, then check the decisions list to see if the decision has been removed
 
@@ -288,3 +295,7 @@ You might want to continue to the next recommended steps:
 
   </details>
 </details>
+
+## Your feedback is important!
+
+If you have any suggestions or improvements for this health check, please let us know by opening an issue on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs/issues/new) or on our [discord](https://discord.gg/wGN7ShmEE8)
