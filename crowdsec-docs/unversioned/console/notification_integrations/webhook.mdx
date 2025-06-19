@@ -31,7 +31,9 @@ For the authentication part, the webhook integration supports the following meth
 
 #### Bearer (HTTP Header) 
 
-You can provide a specific header name with a specific header value for the webhook integration to authenticate against your webhook URL typically we would expect users to use [`Authorization`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization) header using the [`Bearer`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Authentication#bearer) scheme.
+You can provide a specific header name with a specific header value for the webhook integration to authenticate against your webhook URL.
+
+Typically we would expect users to use [`Authorization`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization) header using the [`Bearer`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Authentication#bearer) scheme.
 
 However, you can send any header and any value.
 
@@ -42,7 +44,7 @@ You can use [`basic auth`](https://en.wikipedia.org/wiki/Basic_access_authentica
 ### Configuration
 
 :::warning
-Ping testing is only available during initial creation of the webhook once saved this option is no longer available to prevent abuse
+Ping testing is only available during initial creation of the webhook once saved this option is no longer available to prevent abuse.
 :::
 
 You can configure your custom Webhook URL and authentication by adding a new destination in your notification rule:
@@ -1598,6 +1600,9 @@ A CrowdSec Stack Component is outdated.
 
 This can happen for these scenarios:
 - A new version of CrowdSec has been released.
+- A new version of a Hub listed Remediation Component has been released**.
+
+**The remediation component must send the semantic version to the Security Engine via the UserAgent header, note that all first party remediation components do this.
 
 ```json
 {
