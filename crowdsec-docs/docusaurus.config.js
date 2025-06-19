@@ -47,7 +47,10 @@ const backportRedirect = (s) => {
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
     future: {
-        v4: true,
+        v4: {
+            removeLegacyPostBuildHeadAttribute: true,
+        },
+        experimental_faster: true,
     },
     title: "CrowdSec",
     tagline:
