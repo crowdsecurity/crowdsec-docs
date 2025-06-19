@@ -6,7 +6,7 @@ import {useColorMode} from '@docusaurus/theme-common';
 
 
 const TableRender = ({ columns, url, include=[], exclude=[] }) => {
-    const [jsonContent, setJsonContent] = useState()
+    const [jsonContent, setJsonContent] = useState([])
     const {colorMode} = useColorMode();
 
     const theme = useMemo(() => {
