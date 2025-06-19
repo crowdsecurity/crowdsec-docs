@@ -6,7 +6,7 @@ title: Webhook
 
 ## Install the webhook integration
 
-Installing the webhook integration allow you to configure any webhook URL when configuring your notification rule.
+Installing the webhook integration allows you to configure any webhook URL when configuring your notification rule.
 
 1. In the [CrowdSec Console](https://app.crowdsec.net), navigate to **Settings > Integrations** and then select **Activate** in the Webhook row.
 
@@ -27,7 +27,7 @@ Installing the webhook integration allow you to configure any webhook URL when c
 
 ### Authentication
 
-For the authentication part, the webhook integration support the following methods:
+For the authentication part, the webhook integration supports the following methods:
 
 #### Bearer (HTTP Header) 
 
@@ -42,13 +42,13 @@ You can use [`basic auth`](https://en.wikipedia.org/wiki/Basic_access_authentica
 ### Configuration
 
 :::warning
-Ping testing is only available during initial creation of the webhook onced saved this option is no longer available to prevent abuse
+Ping testing is only available during initial creation of the webhook once saved this option is no longer available to prevent abuse
 :::
 
 You can configure your custom Webhook URL and authentication by adding a new destination in your notification rule:
 
 :::info
-If you are using a self signed certificate or a non trusted root certificate authority, you can disable SSL verification otherwise known as TLS verification.
+If you are using a self-signed certificate or a non-trusted root certificate authority, you can disable SSL verification otherwise known as TLS verification.
 :::
 
 :::info
@@ -68,9 +68,9 @@ The webhook integration will retry in the following scenarios:
 - Non-200 HTTP status codes returned from the webhook endpoint
 - Network connectivity issues:
   - DNS resolution failures
-  - Connection timeouts (30 seconds to recieve a response)
+  - Connection timeouts (30 seconds to receive a response)
   - Connection refused errors
-  - TLS/SSL handshake failures (Disable SSL verification if self signed or non trusted root CA)
+  - TLS/SSL handshake failures (Disable SSL verification if self-signed or non-trusted root CA)
 - Webhook endpoint is temporarily unavailable
 
 ## Events Category
@@ -888,7 +888,7 @@ Security engine has been removed from your organization or personal account
 
 This can happen under these scenarios:
 - User has manually removed the engine
-- Automatic removal has occured due to `Settings > Security Engines > Inactive Policy`
+- Automatic removal has occurred due to `Settings > Security Engines > Inactive Policy`
 
 ```json
 {
@@ -1202,9 +1202,9 @@ This can happen under these scenarios:
 
 #### `Firewall Integration Offline`
 
-A [Firewall Integration](integrations/intro.mdx) has been classfied as offline.
+A [Firewall Integration](integrations/intro.mdx) has been classified as offline.
 
-This can happen for these sceanrios:
+This can happen for these scenarios:
 - Firewall has not actively pulled the contents for over 24 hours.
 
 ```json
@@ -1596,7 +1596,7 @@ A Log Processor has not pushed any alerts for over 48 hours.
 
 A CrowdSec Stack Component is outdated.
 
-This can happen for these sceanrios:
+This can happen for these scenarios:
 - A new version of CrowdSec has been released.
 
 ```json
