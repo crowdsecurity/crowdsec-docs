@@ -1,9 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
 
 /* stylelint-disable docusaurus/copyright-header */
 /**
@@ -258,9 +256,18 @@ html[data-theme="dark"] .footer, html[data-theme="dark"] .navbar, html[data-them
   color: rgb(var(--color-gray-300));
 }
 
+
 /** Patch some colors **/
-svg[class^='lightToggleIcon'], .navbar__toggle > svg, .navbar-sidebar__back {
-  color: #fff;
+button[class*='toggleButton']:hover {
+  background-color: transparent;
+}
+
+svg[class*='toggleIcon'][class*='lightToggleIcon'] {
+  color: #fff !important;
+}
+
+svg[class*='toggleIcon'][class*='ToggleIcon']:hover {
+  color: var(--ifm-color-primary) !important;
 }
 
 
