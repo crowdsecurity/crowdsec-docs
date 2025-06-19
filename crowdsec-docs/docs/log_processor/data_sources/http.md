@@ -94,7 +94,13 @@ Look at the `configuration parameters` to view all supported options.
 
 The address to listen on (e.g., `127.0.0.1:8088`).
 
-Required.
+At least one of `listen_addr` or `listen_socket` is required.
+
+### `listen_socket`
+
+Unix socket to listen on (e.g., `/var/run/crowdsec_http.sock`).
+
+At least one of `listen_addr` or `listen_socket` is required.
 
 ### `path`
 

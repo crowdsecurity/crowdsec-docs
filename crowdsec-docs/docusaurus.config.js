@@ -47,6 +47,9 @@ const backportRedirect = (s) => {
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
     future: {
+        v4: {
+            removeLegacyPostBuildHeadAttribute: true,
+        },
         experimental_faster: true,
     },
     title: "CrowdSec",
@@ -127,7 +130,7 @@ module.exports = {
                         {
                             type: "docsVersion",
                             to: "/docs/next/appsec/intro",
-                            label: "Application Security Component",
+                            label: "Web Application Firewall (AppSec)",
                         },
                         {
                             type: "doc",

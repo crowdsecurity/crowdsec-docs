@@ -7,6 +7,7 @@ sidebar_position: 1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import RemediationSupportBadges from '@site/src/components/RemediationSupportBadges.tsx';
 
 
 <p align="center">
@@ -22,6 +23,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
+<RemediationSupportBadges
+  MTLS
+  Prometheus
+  Metrics
+/>
 
 CrowdSec Remediation Component written in golang for firewalls.
 
@@ -35,7 +41,14 @@ Supported firewalls:
 
 ## Installation
 
-Packages for crowdsec-firewall-bouncer [are available on our repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories). You need to pick the package according to your firewall system :
+Packages for crowdsec-firewall-bouncer [are available on our repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories). You need to pick the package according to your firewall system :  
+
+:::info
+To know if your system is using iptables or nftables, you can run the following command:
+
+iptables -V
+If you see the mention of 'nt_tables' in the output, you are using nftables.
+:::
 
 ### IPTables
 

@@ -263,6 +263,7 @@ module.exports = {
                 "local_api/configuration",
                 "local_api/authentication",
                 "local_api/tls_auth",
+                "local_api/centralized_allowlists",
                 {
                     type: "link",
                     label: "Swagger",
@@ -372,6 +373,22 @@ module.exports = {
                 "cscli/cscli_alerts_flush",
                 "cscli/cscli_alerts_inspect",
                 "cscli/cscli_alerts_list",
+            ],
+        },
+        {
+            type: "category",
+            label: "cscli allowlists",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_allowlists",
+            },
+            items: [
+                "cscli/cscli_allowlists_add",
+                "cscli/cscli_allowlists_create",
+                "cscli/cscli_allowlists_delete",
+                "cscli/cscli_allowlists_inspect",
+                "cscli/cscli_allowlists_list",
+                "cscli/cscli_allowlists_remove",
             ],
         },
         {

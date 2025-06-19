@@ -38,13 +38,14 @@ After obtaining an API key, you can authenticate requests to the Service API by 
 import os
 from crowdsec_service_api import (
     Server,
+    Info
     ApiKeyAuth,
 )
 
 KEY = os.getenv('KEY')
 
 auth = ApiKeyAuth(api_key=KEY)
-client = Blocklists(base_url=Server.production_server.value, auth=auth)
+client = Info(base_url=Server.production_server.value, auth=auth)
 # Get info about the user
 response = client.get_info()
 print(response)
@@ -91,6 +92,7 @@ from crowdsec_service_api import (
     Server,
     ApiKeyAuth,
 )
+from httpx import HTTPStatusError
 
 KEY = os.getenv('KEY')
 
@@ -104,8 +106,15 @@ try:
         size=50,
     )
     print(response)
+except HTTPStatusError as e:
+    if e.response.status_code == 401:
+        print("Unauthorized: Invalid API key")
+    elif e.response.status_code == 409:
+        print("Conflict", e.response.json())
+    else:
+        print(f"An error occurred: {e}")
 except Exception as e:
-    print(f"An error occurred: {e}")
+    print(f"Another error occurred: {e}")
 ```
 
 ### Support

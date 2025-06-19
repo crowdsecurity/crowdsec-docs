@@ -7,6 +7,7 @@ sidebar_position: 1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import RemediationSupportBadges from '@site/src/components/RemediationSupportBadges.tsx';
 
 <p align="center">
 <img src={useBaseUrl('/img/crowdsec_nginx.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
@@ -21,6 +22,10 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
+<RemediationSupportBadges
+  Mode
+  Appsec 
+/>
 
 A lua Remediation Component for Ingress Nginx Controller.
 
@@ -66,7 +71,7 @@ controller:
       - name: API_URL
         value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080" # crowdsec lapi service-name
       - name: API_KEY
-        value: "<API KEY>" # generated with `cscli bouncers add -n <bouncer_name>
+        value: "<API KEY>" # generated with `cscli bouncers add <bouncer_name>
       - name: BOUNCER_CONFIG
         value: "/crowdsec/crowdsec-bouncer.conf"
       - name: CAPTCHA_PROVIDER

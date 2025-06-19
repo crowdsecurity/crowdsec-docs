@@ -37,6 +37,7 @@ module.exports = {
                 id: "cti_api/integration_intro",
             },
             items: [
+                "cti_api/integration_ipdex",
                 "cti_api/integration_chrome",
                 "cti_api/integration_gigasheet",
                 "cti_api/integration_intelowl",
@@ -100,12 +101,17 @@ module.exports = {
                 },
                 {
                     type: "doc",
-                    label: "Transfer an Engine",
+                    label: "Transferring an Engine",
                     id: "console/security_engines/transfer_engine",
                 },
                 {
                     type: "doc",
-                    label: "Remove an Engine",
+                    label: "Archiving an Engine",
+                    id: "console/security_engines/archive_engine",
+                },
+                {
+                    type: "doc",
+                    label: "Removing an Engine",
                     id: "console/security_engines/remove_engine",
                 },
                 {
@@ -176,6 +182,11 @@ module.exports = {
             ],
         },
         {
+            type: "doc",
+            label: "Remediation Metrics",
+            id: "console/remediation_metrics",
+        },
+        {
             type: "category",
             label: "CTI",
             items: [
@@ -213,11 +224,38 @@ module.exports = {
                 type: "doc",
                 id: "console/decisions/decisions_intro",
             },
-            items: [{
+            items: [
+                {
+                    type: "doc",
+                    id: "console/decisions/decisions_management",
+                    label: "Decisions Management 🏅",
+                },
+            ],
+        },
+        {
+            type: "category",
+            label: "Centralized Allowlists 🏅",
+            link: {
                 type: "doc",
-                id: "console/decisions/decisions_management",
-                label: "Decisions Management 🏅"
-            }],
+                id: "console/allowlists",
+            },
+            items: [],
+        },
+        {
+            type: "category",
+            label: "Enterprise plan 🏅",
+            items: [
+                {
+                    type: "doc",
+                    label: "Enterprise support 🏅",
+                    id: "console/enterprise_plan/enterprise_support",
+                },
+                {
+                    type: "doc",
+                    label: "Invoices 🏅",
+                    id: "console/enterprise_plan/enterprise_invoices",
+                },
+            ],
         },
         {
             type: "category",
@@ -229,18 +267,35 @@ module.exports = {
             items: [],
         },
         {
-            type: "category",
-            label: "Enterprise support 🏅",
-            link: {
-                type: "doc",
-                id: "console/enterprise_support",
-            },
-            items: [],
-        },
-        {
             type: "link",
             label: "Service API 🏅",
             href: "/u/service_api/getting_started",
+        },
+        {
+            type: "category",
+            label: "Notification integrations 🏅",
+            items: [
+                {
+                    type: "doc",
+                    label: "Overview",
+                    id: "console/notification_integrations/overview",
+                },
+                {
+                    type: "doc",
+                    label: "Notification Rule",
+                    id: "console/notification_integrations/rule",
+                },
+                {
+                    type: "doc",
+                    label: "Slack",
+                    id: "console/notification_integrations/slack",
+                },
+                {
+                    type: "doc",
+                    label: "Webhook",
+                    id: "console/notification_integrations/webhook",
+                },
+            ],
         },
     ],
     remediationSideBar: [
@@ -393,14 +448,18 @@ module.exports = {
             },
             label: "Integrations",
             items: [
-                "integrations/cisco",
                 "integrations/checkpoint",
+                "integrations/cisco",
                 "integrations/f5",
                 "integrations/fortinet",
-                "integrations/paloalto",
-                "integrations/sophos",
                 "integrations/genericfirewall",
+                "integrations/juniper",
+                "integrations/mikrotik",
+                "integrations/opnsense",
+                "integrations/paloalto",
+                "integrations/pfsense",
                 "integrations/remediationcomponent",
+                "integrations/sophos",
             ],
         },
     ],
@@ -439,6 +498,8 @@ module.exports = {
                 "service_api/quickstart/authentication",
                 "service_api/quickstart/blocklists",
                 "service_api/quickstart/integrations",
+                "service_api/quickstart/allowlists",
+                "service_api/quickstart/metrics",
             ],
         },
         {
@@ -488,7 +549,7 @@ module.exports = {
         "user_guides/multiserver_setup",
         "user_guides/consuming_fastly_logs",
         "user_guides/alert_context",
-        "user_guides/appsec_tuto",
+        "user_guides/log_centralization",
     ],
     gettingStarted: [
         "getting_started/intro",
