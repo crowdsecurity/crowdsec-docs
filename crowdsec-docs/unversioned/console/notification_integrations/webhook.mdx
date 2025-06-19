@@ -29,1746 +29,63 @@ Installing the webhook integration allow you to configure any webhook URL when c
 
 For the authentication part, the webhook integration support the following methods:
 
- - `HTTP Header name` / `HTTP Header value` : You can provide a specific header name with a specific header value for the webhook integration to authenticate against your webhook URL
- - [`Basic auth`](https://en.wikipedia.org/wiki/Basic_access_authentication) : You can use [`basic auth`](https://en.wikipedia.org/wiki/Basic_access_authentication) (user/password) for the webhook integration to authenticate against your webhook URL
+#### Bearer (HTTP Header) 
 
+You can provide a specific header name with a specific header value for the webhook integration to authenticate against your webhook URL typically we would expect users to use [`Authorization`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization) header using the [`Bearer`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Authentication#bearer) scheme.
+
+However, you can send any header and any value.
+
+#### Basic Authentication
+
+You can use [`basic auth`](https://en.wikipedia.org/wiki/Basic_access_authentication) (user/password) for the webhook integration to authenticate against your webhook URL
 
 ### Configuration
 
 :::warning
-
-You can’t ping the webhook URL while in edit mode.
-
+Ping testing is only available during initial creation of the webhook onced saved this option is no longer available to prevent abuse
 :::
 
 You can configure your custom Webhook URL and authentication by adding a new destination in your notification rule:
 
 :::info
-
-If the HTTPs endpoint certificate is not valid, you can choose to disable SSL verification.
-
+If you are using a self signed certificate or a non trusted root certificate authority, you can disable SSL verification otherwise known as TLS verification.
 :::
 
 :::info
-
-The webhook integration is doing POST request to the destination endpoint.
-
+All requests sent to your URL are `POST` requests
 :::
 
 ![Webhook destination](/img/console/notification_integrations/webhook-destination.png)
-
 
 ### Retry
 
 If a notification fails to be sent through the webhook integration, the system will automatically retry sending it. It will try up to 5 times, with a longer wait between each attempt.
 
+#### Retry Scenarios
 
-## Events
+The webhook integration will retry in the following scenarios:
 
-### `security_engine_long_pending_enroll`
+- Non-200 HTTP status codes returned from the webhook endpoint
+- Network connectivity issues:
+  - DNS resolution failures
+  - Connection timeouts (30 seconds to recieve a response)
+  - Connection refused errors
+  - TLS/SSL handshake failures (Disable SSL verification if self signed or non trusted root CA)
+- Webhook endpoint is temporarily unavailable
 
-```json
-{
-  "metadata": {
-    "version": 1,
-    "issuer": "crowdsec.net"
-  },
-  "details": {
-    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
-    "organization_id": "12345678-1234-1234-1234-123456789012",
-    "event_timestamp": "2021-07-29T12:00:00+00:00",
-    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
-    "version": "v1.6.3-rc4",
-    "os" : {"name" : "ubuntu", "version": "22.04"},
-    "event_type": "security_engine_long_pending_enroll"
-  }
-}
-```
-<details>
-<summary>JSON Schema</summary>
-```json
-{
-  "$defs": {
-    "OperatingSystem": {
-      "properties": {
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "version": {
-          "title": "Version",
-          "type": "string"
-        }
-      },
-      "required": [
-        "name",
-        "version"
-      ],
-      "title": "OperatingSystem",
-      "type": "object"
-    }
-  },
-  "type": "object",
-  "properties": {
-    "metadata": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "integer",
-          "const": 1
-        },
-        "issuer": {
-          "type": "string",
-          "const": "crowdsec.net"
-        }
-      },
-      "required": [
-        "version",
-        "issuer"
-      ]
-    },
-    "details": {
-      "properties": {
-        "event_id": {
-          "description": "ID of the source event",
-          "examples": [
-            "c6d468d4f1084ebca84165c33f97fbc4"
-          ],
-          "title": "Event Id",
-          "type": "string"
-        },
-        "organization_id": {
-          "description": "Organization ID of the source event",
-          "examples": [
-            "12345678-1234-1234-1234-123456789012"
-          ],
-          "title": "Organization Id",
-          "type": "string"
-        },
-        "event_timestamp": {
-          "description": "Timestamp of the source event",
-          "examples": [
-            "2021-07-29T12:00:00+00:00"
-          ],
-          "format": "date-time",
-          "title": "Event Timestamp",
-          "type": "string"
-        },
-        "id": {
-          "description": "ID of the security engine",
-          "examples": [
-            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
-          ],
-          "title": "Id",
-          "type": "string"
-        },
-        "version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Version of the security engine",
-          "examples": [
-            "v1.6.3-rc4"
-          ],
-          "title": "Version"
-        },
-        "os": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/OperatingSystem"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Operating System of the security engine",
-          "examples": [
-            "Linux"
-          ]
-        },
-        "event_type": {
-          "const": "security_engine_long_pending_enroll",
-          "default": "security_engine_long_pending_enroll",
-          "title": "Event Type",
-          "type": "string"
-        }
-      },
-      "required": [
-        "event_id",
-        "organization_id",
-        "event_timestamp",
-        "id",
-        "version",
-        "os",
-        "event_type"
-      ],
-      "title": "LongPendingEnroll",
-      "type": "object"
-    }
-  },
-  "required": [
-    "metadata",
-    "details"
-  ]
-}
-```
-</details>
+## Events Category
 
-### `security_engine_enrolled`
+### Threat Hunting
 
-```json
-{
-  "metadata": {
-    "version": 1,
-    "issuer": "crowdsec.net"
-  },
-  "details": {
-    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
-    "organization_id": "12345678-1234-1234-1234-123456789012",
-    "event_timestamp": "2021-07-29T12:00:00+00:00",
-    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
-    "version": "v1.6.3-rc4",
-    "os" : {"name" : "ubuntu", "version": "22.04"},
-    "event_type": "security_engine_enrolled"
-  }
-}
-```
-<details>
-<summary>JSON Schema</summary>
-```json
-{
-  "$defs": {
-    "OperatingSystem": {
-      "properties": {
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "version": {
-          "title": "Version",
-          "type": "string"
-        }
-      },
-      "required": [
-        "name",
-        "version"
-      ],
-      "title": "OperatingSystem",
-      "type": "object"
-    }
-  },
-  "type": "object",
-  "properties": {
-    "metadata": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "integer",
-          "const": 1
-        },
-        "issuer": {
-          "type": "string",
-          "const": "crowdsec.net"
-        }
-      },
-      "required": [
-        "version",
-        "issuer"
-      ]
-    },
-    "details": {
-      "properties": {
-        "event_id": {
-          "description": "ID of the source event",
-          "examples": [
-            "c6d468d4f1084ebca84165c33f97fbc4"
-          ],
-          "title": "Event Id",
-          "type": "string"
-        },
-        "organization_id": {
-          "description": "Organization ID of the source event",
-          "examples": [
-            "12345678-1234-1234-1234-123456789012"
-          ],
-          "title": "Organization Id",
-          "type": "string"
-        },
-        "event_timestamp": {
-          "description": "Timestamp of the source event",
-          "examples": [
-            "2021-07-29T12:00:00+00:00"
-          ],
-          "format": "date-time",
-          "title": "Event Timestamp",
-          "type": "string"
-        },
-        "id": {
-          "description": "ID of the security engine",
-          "examples": [
-            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
-          ],
-          "title": "Id",
-          "type": "string"
-        },
-        "version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Version of the security engine",
-          "examples": [
-            "v1.6.3-rc4"
-          ],
-          "title": "Version"
-        },
-        "os": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/OperatingSystem"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Operating System of the security engine",
-          "examples": [
-            "Linux"
-          ]
-        },
-        "event_type": {
-          "const": "security_engine_enrolled",
-          "default": "security_engine_enrolled",
-          "title": "Event Type",
-          "type": "string"
-        }
-      },
-      "required": [
-        "event_id",
-        "organization_id",
-        "event_timestamp",
-        "id",
-        "version",
-        "os",
-        "event_type"
-      ],
-      "title": "SecurityEngineEnrolled",
-      "type": "object"
-    }
-  },
-  "required": [
-    "metadata",
-    "details"
-  ]
-}
-```
-</details>
+![Threat Hunting](/img/console/notification_integrations/threat-hunting.png)
 
-### `security_engine_unenrolled`
+:::info
+Only one option may be checked under this category
+:::
 
-```json
-{
-  "metadata": {
-    "version": 1,
-    "issuer": "crowdsec.net"
-  },
-  "details": {
-    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
-    "organization_id": "12345678-1234-1234-1234-123456789012",
-    "event_timestamp": "2021-07-29T12:00:00+00:00",
-    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
-    "version": "v1.6.3-rc4",
-    "os" : {"name" : "ubuntu", "version": "22.04"},
-    "event_type": "security_engine_unenrolled"
-  }
-}
-```
-<details>
-<summary>JSON Schema</summary>
-```json
-{
-  "$defs": {
-    "OperatingSystem": {
-      "properties": {
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "version": {
-          "title": "Version",
-          "type": "string"
-        }
-      },
-      "required": [
-        "name",
-        "version"
-      ],
-      "title": "OperatingSystem",
-      "type": "object"
-    }
-  },
-  "type": "object",
-  "properties": {
-    "metadata": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "integer",
-          "const": 1
-        },
-        "issuer": {
-          "type": "string",
-          "const": "crowdsec.net"
-        }
-      },
-      "required": [
-        "version",
-        "issuer"
-      ]
-    },
-    "details": {
-      "properties": {
-        "event_id": {
-          "description": "ID of the source event",
-          "examples": [
-            "c6d468d4f1084ebca84165c33f97fbc4"
-          ],
-          "title": "Event Id",
-          "type": "string"
-        },
-        "organization_id": {
-          "description": "Organization ID of the source event",
-          "examples": [
-            "12345678-1234-1234-1234-123456789012"
-          ],
-          "title": "Organization Id",
-          "type": "string"
-        },
-        "event_timestamp": {
-          "description": "Timestamp of the source event",
-          "examples": [
-            "2021-07-29T12:00:00+00:00"
-          ],
-          "format": "date-time",
-          "title": "Event Timestamp",
-          "type": "string"
-        },
-        "id": {
-          "description": "ID of the security engine",
-          "examples": [
-            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
-          ],
-          "title": "Id",
-          "type": "string"
-        },
-        "version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Version of the security engine",
-          "examples": [
-            "v1.6.3-rc4"
-          ],
-          "title": "Version"
-        },
-        "os": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/OperatingSystem"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Operating System of the security engine",
-          "examples": [
-            "Linux"
-          ]
-        },
-        "event_type": {
-          "const": "security_engine_unenrolled",
-          "default": "security_engine_unenrolled",
-          "title": "Event Type",
-          "type": "string"
-        }
-      },
-      "required": [
-        "event_id",
-        "organization_id",
-        "event_timestamp",
-        "id",
-        "version",
-        "os",
-        "event_type"
-      ],
-      "title": "SecurityEngineUnenrolled",
-      "type": "object"
-    }
-  },
-  "required": [
-    "metadata",
-    "details"
-  ]
-}
-```
-</details>
+#### `Is Attacked`
 
-### `component_outdated`
-
-```json
-{
-  "metadata": {
-    "version": 1,
-    "issuer": "crowdsec.net"
-  },
-  "details": {
-    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
-    "organization_id": "12345678-1234-1234-1234-123456789012",
-    "event_timestamp": "2021-07-29T12:00:00+00:00",
-    "event_type": "component_outdated",
-    "nb_remediation_component": 10,
-    "nb_log_processor": 10,
-    "nb_security_engine": 10
-  }
-}
-```
-<details>
-<summary>JSON Schema</summary>
-```json
-{
-  "$defs": {},
-  "type": "object",
-  "properties": {
-    "metadata": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "integer",
-          "const": 1
-        },
-        "issuer": {
-          "type": "string",
-          "const": "crowdsec.net"
-        }
-      },
-      "required": [
-        "version",
-        "issuer"
-      ]
-    },
-    "details": {
-      "properties": {
-        "event_id": {
-          "description": "ID of the source event",
-          "examples": [
-            "c6d468d4f1084ebca84165c33f97fbc4"
-          ],
-          "title": "Event Id",
-          "type": "string"
-        },
-        "organization_id": {
-          "description": "Organization ID of the source event",
-          "examples": [
-            "12345678-1234-1234-1234-123456789012"
-          ],
-          "title": "Organization Id",
-          "type": "string"
-        },
-        "event_timestamp": {
-          "description": "Timestamp of the source event",
-          "examples": [
-            "2021-07-29T12:00:00+00:00"
-          ],
-          "format": "date-time",
-          "title": "Event Timestamp",
-          "type": "string"
-        },
-        "event_type": {
-          "const": "component_outdated",
-          "default": "component_outdated",
-          "title": "Event Type",
-          "type": "string"
-        },
-        "nb_remediation_component": {
-          "description": "Number of remediation component",
-          "examples": [
-            10
-          ],
-          "title": "Nb Remediation Component",
-          "type": "integer"
-        },
-        "nb_log_processor": {
-          "description": "Number of log processor",
-          "examples": [
-            10
-          ],
-          "title": "Nb Log Processor",
-          "type": "integer"
-        },
-        "nb_security_engine": {
-          "description": "Number of security engine",
-          "examples": [
-            10
-          ],
-          "title": "Nb Security Engine",
-          "type": "integer"
-        }
-      },
-      "required": [
-        "event_id",
-        "organization_id",
-        "event_timestamp",
-        "event_type",
-        "nb_remediation_component",
-        "nb_log_processor",
-        "nb_security_engine"
-      ],
-      "title": "ComponentOutdated",
-      "type": "object"
-    }
-  },
-  "required": [
-    "metadata",
-    "details"
-  ]
-}
-```
-</details>
-
-### `security_engine_offline`
-
-```json
-{
-  "metadata": {
-    "version": 1,
-    "issuer": "crowdsec.net"
-  },
-  "details": {
-    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
-    "organization_id": "12345678-1234-1234-1234-123456789012",
-    "event_timestamp": "2021-07-29T12:00:00+00:00",
-    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
-    "version": "v1.6.3-rc4",
-    "os" : {"name" : "ubuntu", "version": "22.04"},
-    "event_type": "security_engine_offline",
-    "last_login": "2024-09-17T07:06:21",
-    "name": "MySecurityEngine"
-  }
-}
-```
-<details>
-<summary>JSON Schema</summary>
-```json
-{
-  "$defs": {
-    "OperatingSystem": {
-      "properties": {
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "version": {
-          "title": "Version",
-          "type": "string"
-        }
-      },
-      "required": [
-        "name",
-        "version"
-      ],
-      "title": "OperatingSystem",
-      "type": "object"
-    }
-  },
-  "type": "object",
-  "properties": {
-    "metadata": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "integer",
-          "const": 1
-        },
-        "issuer": {
-          "type": "string",
-          "const": "crowdsec.net"
-        }
-      },
-      "required": [
-        "version",
-        "issuer"
-      ]
-    },
-    "details": {
-      "properties": {
-        "event_id": {
-          "description": "ID of the source event",
-          "examples": [
-            "c6d468d4f1084ebca84165c33f97fbc4"
-          ],
-          "title": "Event Id",
-          "type": "string"
-        },
-        "organization_id": {
-          "description": "Organization ID of the source event",
-          "examples": [
-            "12345678-1234-1234-1234-123456789012"
-          ],
-          "title": "Organization Id",
-          "type": "string"
-        },
-        "event_timestamp": {
-          "description": "Timestamp of the source event",
-          "examples": [
-            "2021-07-29T12:00:00+00:00"
-          ],
-          "format": "date-time",
-          "title": "Event Timestamp",
-          "type": "string"
-        },
-        "id": {
-          "description": "ID of the security engine",
-          "examples": [
-            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
-          ],
-          "title": "Id",
-          "type": "string"
-        },
-        "version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Version of the security engine",
-          "examples": [
-            "v1.6.3-rc4"
-          ],
-          "title": "Version"
-        },
-        "os": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/OperatingSystem"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Operating System of the security engine",
-          "examples": [
-            "Linux"
-          ]
-        },
-        "last_login": {
-          "title": "Last Login",
-          "type": "string"
-        },
-        "event_type": {
-          "const": "security_engine_offline",
-          "default": "security_engine_offline",
-          "title": "Event Type",
-          "type": "string"
-        },
-        "name": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Name of the security engine",
-          "examples": [
-            "MySecurityEngine"
-          ],
-          "title": "Name"
-        }
-      },
-      "required": [
-        "event_id",
-        "organization_id",
-        "event_timestamp",
-        "id",
-        "version",
-        "os",
-        "last_login",
-        "event_type",
-        "name"
-      ],
-      "title": "SecurityEngineOffline",
-      "type": "object"
-    }
-  },
-  "required": [
-    "metadata",
-    "details"
-  ]
-}
-```
-</details>
-
-
-### `security_engine_no_alerts`
-
-```json
-{
-  "metadata": {
-    "version": 1,
-    "issuer": "crowdsec.net"
-  },
-  "details": {
-    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
-    "organization_id": "12345678-1234-1234-1234-123456789012",
-    "event_timestamp": "2021-07-29T12:00:00+00:00",
-    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
-    "version": "v1.6.3-rc4",
-    "os" : {"name" : "ubuntu", "version": "22.04"},
-    "last_push": "2024-09-17T07:06:21",
-    "event_type": "security_engine_no_alerts",
-    "name": "MySecurityEngine"
-  }
-}
-```
-<details>
-<summary>JSON Schema</summary>
-```json
-{
-  "$defs": {
-    "OperatingSystem": {
-      "properties": {
-        "name": {
-          "title": "Name",
-          "type": "string"
-        },
-        "version": {
-          "title": "Version",
-          "type": "string"
-        }
-      },
-      "required": [
-        "name",
-        "version"
-      ],
-      "title": "OperatingSystem",
-      "type": "object"
-    }
-  },
-  "type": "object",
-  "properties": {
-    "metadata": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "integer",
-          "const": 1
-        },
-        "issuer": {
-          "type": "string",
-          "const": "crowdsec.net"
-        }
-      },
-      "required": [
-        "version",
-        "issuer"
-      ]
-    },
-    "details": {
-      "properties": {
-        "event_id": {
-          "description": "ID of the source event",
-          "examples": [
-            "c6d468d4f1084ebca84165c33f97fbc4"
-          ],
-          "title": "Event Id",
-          "type": "string"
-        },
-        "organization_id": {
-          "description": "Organization ID of the source event",
-          "examples": [
-            "12345678-1234-1234-1234-123456789012"
-          ],
-          "title": "Organization Id",
-          "type": "string"
-        },
-        "event_timestamp": {
-          "description": "Timestamp of the source event",
-          "examples": [
-            "2021-07-29T12:00:00+00:00"
-          ],
-          "format": "date-time",
-          "title": "Event Timestamp",
-          "type": "string"
-        },
-        "id": {
-          "description": "ID of the security engine",
-          "examples": [
-            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
-          ],
-          "title": "Id",
-          "type": "string"
-        },
-        "version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Version of the security engine",
-          "examples": [
-            "v1.6.3-rc4"
-          ],
-          "title": "Version"
-        },
-        "os": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/OperatingSystem"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Operating System of the security engine",
-          "examples": [
-            "Linux"
-          ]
-        },
-        "last_push": {
-          "description": "Last time the security engine pushed",
-          "examples": [
-            "2024-09-17T07:06:21"
-          ],
-          "title": "Last Push",
-          "type": "string"
-        },
-        "event_type": {
-          "const": "security_engine_no_alerts",
-          "default": "security_engine_no_alerts",
-          "title": "Event Type",
-          "type": "string"
-        },
-        "name": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Name of the security engine",
-          "examples": [
-            "MySecurityEngine"
-          ],
-          "title": "Name"
-        }
-      },
-      "required": [
-        "event_id",
-        "organization_id",
-        "event_timestamp",
-        "id",
-        "version",
-        "os",
-        "last_push",
-        "event_type",
-        "name"
-      ],
-      "title": "SecurityEngineNoAlerts",
-      "type": "object"
-    }
-  },
-  "required": [
-    "metadata",
-    "details"
-  ]
-}
-```
-</details>
-
-### `remediation_component_offline`
-
-```json
-{
-  "metadata": {
-    "version": 1,
-    "issuer": "crowdsec.net"
-  },
-  "details": {
-    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
-    "organization_id": "12345678-1234-1234-1234-123456789012",
-    "event_timestamp": "2021-07-29T12:00:00+00:00",
-    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
-    "name": "MyRemediationComponent",
-    "version": "v0.22",
-    "event_type": "remediation_component_offline",
-    "last_pull": "2024-09-17T07:06:21"
-  }
-}
-```
-<details>
-<summary>JSON Schema</summary>
-```json
-{
-  "$defs": {},
-  "type": "object",
-  "properties": {
-    "metadata": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "integer",
-          "const": 1
-        },
-        "issuer": {
-          "type": "string",
-          "const": "crowdsec.net"
-        }
-      },
-      "required": [
-        "version",
-        "issuer"
-      ]
-    },
-    "details": {
-      "properties": {
-        "event_id": {
-          "description": "ID of the source event",
-          "examples": [
-            "c6d468d4f1084ebca84165c33f97fbc4"
-          ],
-          "title": "Event Id",
-          "type": "string"
-        },
-        "organization_id": {
-          "description": "Organization ID of the source event",
-          "examples": [
-            "12345678-1234-1234-1234-123456789012"
-          ],
-          "title": "Organization Id",
-          "type": "string"
-        },
-        "event_timestamp": {
-          "description": "Timestamp of the source event",
-          "examples": [
-            "2021-07-29T12:00:00+00:00"
-          ],
-          "format": "date-time",
-          "title": "Event Timestamp",
-          "type": "string"
-        },
-        "id": {
-          "description": "ID of the remediation component",
-          "examples": [
-            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
-          ],
-          "title": "Id",
-          "type": "string"
-        },
-        "name": {
-          "description": "Name of the remediation component",
-          "examples": [
-            "MyBlocklistIntegration"
-          ],
-          "title": "Name",
-          "type": "string"
-        },
-        "version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Version of the remediation component",
-          "examples": [
-            "v0.22"
-          ],
-          "title": "Version"
-        },
-        "last_pull": {
-          "title": "Last Pull",
-          "type": "string"
-        },
-        "event_type": {
-          "const": "remediation_component_offline",
-          "default": "remediation_component_offline",
-          "title": "Event Type",
-          "type": "string"
-        }
-      },
-      "required": [
-        "event_id",
-        "organization_id",
-        "event_timestamp",
-        "id",
-        "name",
-        "version",
-        "last_pull",
-        "event_type"
-      ],
-      "title": "RemediationComponentOffline",
-      "type": "object"
-    }
-  },
-  "required": [
-    "metadata",
-    "details"
-  ]
-}
-```
-</details>
-
-
-### `log_processor_offline`
-
-```json
-{
-  "metadata": {
-    "version": 1,
-    "issuer": "crowdsec.net"
-  },
-  "details": {
-    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
-    "organization_id": "12345678-1234-1234-1234-123456789012",
-    "event_timestamp": "2021-07-29T12:00:00+00:00",
-    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
-    "name": "MyLogProcessor",
-    "version": "v1.6.3-rc4",
-    "last_update": "2024-09-17T07:06:21",
-    "event_type": "log_processor_offline"
-  }
-}
-```
-<details>
-<summary>JSON Schema</summary>
-```json
-{
-  "$defs": {},
-  "type": "object",
-  "properties": {
-    "metadata": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "integer",
-          "const": 1
-        },
-        "issuer": {
-          "type": "string",
-          "const": "crowdsec.net"
-        }
-      },
-      "required": [
-        "version",
-        "issuer"
-      ]
-    },
-    "details": {
-      "properties": {
-        "event_id": {
-          "description": "ID of the source event",
-          "examples": [
-            "c6d468d4f1084ebca84165c33f97fbc4"
-          ],
-          "title": "Event Id",
-          "type": "string"
-        },
-        "organization_id": {
-          "description": "Organization ID of the source event",
-          "examples": [
-            "12345678-1234-1234-1234-123456789012"
-          ],
-          "title": "Organization Id",
-          "type": "string"
-        },
-        "event_timestamp": {
-          "description": "Timestamp of the source event",
-          "examples": [
-            "2021-07-29T12:00:00+00:00"
-          ],
-          "format": "date-time",
-          "title": "Event Timestamp",
-          "type": "string"
-        },
-        "id": {
-          "description": "ID of the Log Processor",
-          "examples": [
-            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
-          ],
-          "title": "Id",
-          "type": "string"
-        },
-        "name": {
-          "description": "Name of the Log Processor",
-          "examples": [
-            "MyLogProcessor"
-          ],
-          "title": "Name",
-          "type": "string"
-        },
-        "version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Version of the Log Processor",
-          "examples": [
-            "v1.6.3-rc4"
-          ],
-          "title": "Version"
-        },
-        "last_update": {
-          "description": "Last time the Log Processor updated",
-          "examples": [
-            "2024-09-17T07:06:21"
-          ],
-          "title": "Last Update",
-          "type": "string"
-        },
-        "event_type": {
-          "const": "log_processor_offline",
-          "default": "log_processor_offline",
-          "title": "Event Type",
-          "type": "string"
-        }
-      },
-      "required": [
-        "event_id",
-        "organization_id",
-        "event_timestamp",
-        "id",
-        "name",
-        "version",
-        "last_update",
-        "event_type"
-      ],
-      "title": "LogProcessorOffline",
-      "type": "object"
-    }
-  },
-  "required": [
-    "metadata",
-    "details"
-  ]
-}
-```
-</details>
-
-
-### `log_processor_no_alerts`
-
-```json
-{
-  "metadata": {
-    "version": 1,
-    "issuer": "crowdsec.net"
-  },
-  "details": {
-    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
-    "organization_id": "12345678-1234-1234-1234-123456789012",
-    "event_timestamp": "2021-07-29T12:00:00+00:00",
-    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
-    "name": "MyLogProcessor",
-    "version": "v1.6.3-rc4",
-    "event_type": "log_processor_no_alerts",
-    "last_push": "2025-05-17T07:06:21"
-  }
-}
-```
-<details>
-<summary>JSON Schema</summary>
-```json
-{
-  "$defs": {},
-  "type": "object",
-  "properties": {
-    "metadata": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "integer",
-          "const": 1
-        },
-        "issuer": {
-          "type": "string",
-          "const": "crowdsec.net"
-        }
-      },
-      "required": [
-        "version",
-        "issuer"
-      ]
-    },
-    "details": {
-      "properties": {
-        "event_id": {
-          "description": "ID of the source event",
-          "examples": [
-            "c6d468d4f1084ebca84165c33f97fbc4"
-          ],
-          "title": "Event Id",
-          "type": "string"
-        },
-        "organization_id": {
-          "description": "Organization ID of the source event",
-          "examples": [
-            "12345678-1234-1234-1234-123456789012"
-          ],
-          "title": "Organization Id",
-          "type": "string"
-        },
-        "event_timestamp": {
-          "description": "Timestamp of the source event",
-          "examples": [
-            "2021-07-29T12:00:00+00:00"
-          ],
-          "format": "date-time",
-          "title": "Event Timestamp",
-          "type": "string"
-        },
-        "id": {
-          "description": "ID of the Log Processor",
-          "examples": [
-            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
-          ],
-          "title": "Id",
-          "type": "string"
-        },
-        "name": {
-          "description": "Name of the Log Processor",
-          "examples": [
-            "MyLogProcessor"
-          ],
-          "title": "Name",
-          "type": "string"
-        },
-        "version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Version of the Log Processor",
-          "examples": [
-            "v1.6.3-rc4"
-          ],
-          "title": "Version"
-        },
-        "last_push": {
-          "title": "Last Push",
-          "type": "string"
-        },
-        "event_type": {
-          "const": "log_processor_no_alerts",
-          "default": "log_processor_no_alerts",
-          "title": "Event Type",
-          "type": "string"
-        }
-      },
-      "required": [
-        "event_id",
-        "organization_id",
-        "event_timestamp",
-        "id",
-        "name",
-        "version",
-        "last_push",
-        "event_type"
-      ],
-      "title": "LogProcessorNoAlerts",
-      "type": "object"
-    }
-  },
-  "required": [
-    "metadata",
-    "details"
-  ]
-}
-```
-</details>
-
-### `firewall_integration_offline`
-
-```json
-{
-  "metadata": {
-    "version": 1,
-    "issuer": "crowdsec.net"
-  },
-  "details": {
-    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
-    "organization_id": "12345678-1234-1234-1234-123456789012",
-    "event_timestamp": "2021-07-29T12:00:00+00:00",
-    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
-    "name": "MyBlocklistIntegration",
-    "last_pull": "2024-09-17T07:06:21",
-    "event_type": "firewall_integration_offline"
-  }
-}
-```
-<details>
-<summary>JSON Schema</summary>
-```json
-{
-  "$defs": {},
-  "type": "object",
-  "properties": {
-    "metadata": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "integer",
-          "const": 1
-        },
-        "issuer": {
-          "type": "string",
-          "const": "crowdsec.net"
-        }
-      },
-      "required": [
-        "version",
-        "issuer"
-      ]
-    },
-    "details": {
-      "properties": {
-        "event_id": {
-          "description": "ID of the source event",
-          "examples": [
-            "c6d468d4f1084ebca84165c33f97fbc4"
-          ],
-          "title": "Event Id",
-          "type": "string"
-        },
-        "organization_id": {
-          "description": "Organization ID of the source event",
-          "examples": [
-            "12345678-1234-1234-1234-123456789012"
-          ],
-          "title": "Organization Id",
-          "type": "string"
-        },
-        "event_timestamp": {
-          "description": "Timestamp of the source event",
-          "examples": [
-            "2021-07-29T12:00:00+00:00"
-          ],
-          "format": "date-time",
-          "title": "Event Timestamp",
-          "type": "string"
-        },
-        "id": {
-          "description": "ID of the blocklist integration",
-          "examples": [
-            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
-          ],
-          "title": "Id",
-          "type": "string"
-        },
-        "name": {
-          "description": "Name of the blocklist integration",
-          "examples": [
-            "MyBlocklistIntegration"
-          ],
-          "title": "Name",
-          "type": "string"
-        },
-        "last_pull": {
-          "description": "Last time the blocklist integration pulled",
-          "examples": [
-            "2024-09-17T07:06:21"
-          ],
-          "title": "Last Pull",
-          "type": "string"
-        },
-        "event_type": {
-          "const": "firewall_integration_offline",
-          "default": "firewall_integration_offline",
-          "title": "Event Type",
-          "type": "string"
-        }
-      },
-      "required": [
-        "event_id",
-        "organization_id",
-        "event_timestamp",
-        "id",
-        "name",
-        "last_pull",
-        "event_type"
-      ],
-      "title": "FirewallIntegrationOffline",
-      "type": "object"
-    }
-  },
-  "required": [
-    "metadata",
-    "details"
-  ]
-}
-```
-</details>
-
-### `remediation_component_integration_offline`
-
-```json
-{
-  "metadata": {
-    "version": 1,
-    "issuer": "crowdsec.net"
-  },
-  "details": {
-    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
-    "organization_id": "12345678-1234-1234-1234-123456789012",
-    "event_timestamp": "2021-07-29T12:00:00+00:00",
-    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
-    "name": "MyBlocklistIntegration",
-    "last_pull": "2024-09-17T07:06:21",
-    "event_type": "remediation_component_integration_offline"
-  }
-}
-```
-<details>
-<summary>JSON Schema</summary>
-```json
-{
-  "$defs": {},
-  "type": "object",
-  "properties": {
-    "metadata": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "integer",
-          "const": 1
-        },
-        "issuer": {
-          "type": "string",
-          "const": "crowdsec.net"
-        }
-      },
-      "required": [
-        "version",
-        "issuer"
-      ]
-    },
-    "details": {
-      "properties": {
-        "event_id": {
-          "description": "ID of the source event",
-          "examples": [
-            "c6d468d4f1084ebca84165c33f97fbc4"
-          ],
-          "title": "Event Id",
-          "type": "string"
-        },
-        "organization_id": {
-          "description": "Organization ID of the source event",
-          "examples": [
-            "12345678-1234-1234-1234-123456789012"
-          ],
-          "title": "Organization Id",
-          "type": "string"
-        },
-        "event_timestamp": {
-          "description": "Timestamp of the source event",
-          "examples": [
-            "2021-07-29T12:00:00+00:00"
-          ],
-          "format": "date-time",
-          "title": "Event Timestamp",
-          "type": "string"
-        },
-        "id": {
-          "description": "ID of the blocklist integration",
-          "examples": [
-            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
-          ],
-          "title": "Id",
-          "type": "string"
-        },
-        "name": {
-          "description": "Name of the blocklist integration",
-          "examples": [
-            "MyBlocklistIntegration"
-          ],
-          "title": "Name",
-          "type": "string"
-        },
-        "last_pull": {
-          "description": "Last time the blocklist integration pulled",
-          "examples": [
-            "2024-09-17T07:06:21"
-          ],
-          "title": "Last Pull",
-          "type": "string"
-        },
-        "event_type": {
-          "const": "remediation_component_integration_offline",
-          "default": "remediation_component_integration_offline",
-          "title": "Event Type",
-          "type": "string"
-        }
-      },
-      "required": [
-        "event_id",
-        "organization_id",
-        "event_timestamp",
-        "id",
-        "name",
-        "last_pull",
-        "event_type"
-      ],
-      "title": "RemediationComponentIntegrationOffline",
-      "type": "object"
-    }
-  },
-  "required": [
-    "metadata",
-    "details"
-  ]
-}
-```
-</details>
-
-### `payment_failed`
-
-```json
-{
-  "metadata": {
-    "version": 1,
-    "issuer": "crowdsec.net"
-  },
-  "details": {
-    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
-    "organization_id": "12345678-1234-1234-1234-123456789012",
-    "event_timestamp": "2021-07-29T12:00:00+00:00",
-    "event_type": "payment_failed"
-  }
-}
-```
-<details>
-<summary>JSON Schema</summary>
-```json
-{
-  "$defs": {},
-  "type": "object",
-  "properties": {
-    "metadata": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "integer",
-          "const": 1
-        },
-        "issuer": {
-          "type": "string",
-          "const": "crowdsec.net"
-        }
-      },
-      "required": [
-        "version",
-        "issuer"
-      ]
-    },
-    "details": {
-      "properties": {
-        "event_id": {
-          "description": "ID of the source event",
-          "examples": [
-            "c6d468d4f1084ebca84165c33f97fbc4"
-          ],
-          "title": "Event Id",
-          "type": "string"
-        },
-        "organization_id": {
-          "description": "Organization ID of the source event",
-          "examples": [
-            "12345678-1234-1234-1234-123456789012"
-          ],
-          "title": "Organization Id",
-          "type": "string"
-        },
-        "event_timestamp": {
-          "description": "Timestamp of the source event",
-          "examples": [
-            "2021-07-29T12:00:00+00:00"
-          ],
-          "format": "date-time",
-          "title": "Event Timestamp",
-          "type": "string"
-        },
-        "event_type": {
-          "const": "payment_failed",
-          "default": "payment_failed",
-          "title": "Event Type",
-          "type": "string"
-        }
-      },
-      "required": [
-        "event_id",
-        "organization_id",
-        "event_timestamp",
-        "event_type"
-      ],
-      "title": "PremiumPaymentFailed",
-      "type": "object"
-    }
-  },
-  "required": [
-    "metadata",
-    "details"
-  ]
-}
-```
-</details>
-
-### `am_i_under_attack`
+Your organization is under attack, known as the `am I under attack` feature [documentation](console/security_engines/am_i_under_attack.md)
 
 ```json
 {
@@ -2017,7 +334,9 @@ If a notification fails to be sent through the webhook integration, the system w
 ```
 </details>
 
-### `alert_triggered`
+#### `Alert Triggered`
+
+Your enrolled engines have detected malicious activity and the payload of the webhook contains information surrounding the alert.
 
 ```json
 {
@@ -2397,6 +716,1757 @@ If a notification fails to be sent through the webhook integration, the system w
 ```
 </details>
 
+### Stack
+
+![Stack](/img/console/notification_integrations/stack.png)
+
+:::info
+Multiple options can be selected in this category
+:::
+
+#### `Security Engine Enrolled`
+
+A engine has been accepted to be enrolled within your organization or personal account
+
+```json
+{
+  "metadata": {
+    "version": 1,
+    "issuer": "crowdsec.net"
+  },
+  "details": {
+    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+    "organization_id": "12345678-1234-1234-1234-123456789012",
+    "event_timestamp": "2021-07-29T12:00:00+00:00",
+    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
+    "version": "v1.6.3-rc4",
+    "os" : {"name" : "ubuntu", "version": "22.04"},
+    "event_type": "security_engine_enrolled"
+  }
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+  "$defs": {
+    "OperatingSystem": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "OperatingSystem",
+      "type": "object"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "issuer": {
+          "type": "string",
+          "const": "crowdsec.net"
+        }
+      },
+      "required": [
+        "version",
+        "issuer"
+      ]
+    },
+    "details": {
+      "properties": {
+        "event_id": {
+          "description": "ID of the source event",
+          "examples": [
+            "c6d468d4f1084ebca84165c33f97fbc4"
+          ],
+          "title": "Event Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Organization ID of the source event",
+          "examples": [
+            "12345678-1234-1234-1234-123456789012"
+          ],
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "event_timestamp": {
+          "description": "Timestamp of the source event",
+          "examples": [
+            "2021-07-29T12:00:00+00:00"
+          ],
+          "format": "date-time",
+          "title": "Event Timestamp",
+          "type": "string"
+        },
+        "id": {
+          "description": "ID of the security engine",
+          "examples": [
+            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Version of the security engine",
+          "examples": [
+            "v1.6.3-rc4"
+          ],
+          "title": "Version"
+        },
+        "os": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OperatingSystem"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Operating System of the security engine",
+          "examples": [
+            "Linux"
+          ]
+        },
+        "event_type": {
+          "const": "security_engine_enrolled",
+          "default": "security_engine_enrolled",
+          "title": "Event Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "organization_id",
+        "event_timestamp",
+        "id",
+        "version",
+        "os",
+        "event_type"
+      ],
+      "title": "SecurityEngineEnrolled",
+      "type": "object"
+    }
+  },
+  "required": [
+    "metadata",
+    "details"
+  ]
+}
+```
+</details>
+
+#### `Security Engine Unenrolled`
+
+Security engine has been removed from your organization or personal account
+
+This can happen under these scenarios:
+- User has manually removed the engine
+- Automatic removal has occured due to `Settings > Security Engines > Inactive Policy`
+
+```json
+{
+  "metadata": {
+    "version": 1,
+    "issuer": "crowdsec.net"
+  },
+  "details": {
+    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+    "organization_id": "12345678-1234-1234-1234-123456789012",
+    "event_timestamp": "2021-07-29T12:00:00+00:00",
+    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
+    "version": "v1.6.3-rc4",
+    "os" : {"name" : "ubuntu", "version": "22.04"},
+    "event_type": "security_engine_unenrolled"
+  }
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+  "$defs": {
+    "OperatingSystem": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "OperatingSystem",
+      "type": "object"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "issuer": {
+          "type": "string",
+          "const": "crowdsec.net"
+        }
+      },
+      "required": [
+        "version",
+        "issuer"
+      ]
+    },
+    "details": {
+      "properties": {
+        "event_id": {
+          "description": "ID of the source event",
+          "examples": [
+            "c6d468d4f1084ebca84165c33f97fbc4"
+          ],
+          "title": "Event Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Organization ID of the source event",
+          "examples": [
+            "12345678-1234-1234-1234-123456789012"
+          ],
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "event_timestamp": {
+          "description": "Timestamp of the source event",
+          "examples": [
+            "2021-07-29T12:00:00+00:00"
+          ],
+          "format": "date-time",
+          "title": "Event Timestamp",
+          "type": "string"
+        },
+        "id": {
+          "description": "ID of the security engine",
+          "examples": [
+            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Version of the security engine",
+          "examples": [
+            "v1.6.3-rc4"
+          ],
+          "title": "Version"
+        },
+        "os": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OperatingSystem"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Operating System of the security engine",
+          "examples": [
+            "Linux"
+          ]
+        },
+        "event_type": {
+          "const": "security_engine_unenrolled",
+          "default": "security_engine_unenrolled",
+          "title": "Event Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "organization_id",
+        "event_timestamp",
+        "id",
+        "version",
+        "os",
+        "event_type"
+      ],
+      "title": "SecurityEngineUnenrolled",
+      "type": "object"
+    }
+  },
+  "required": [
+    "metadata",
+    "details"
+  ]
+}
+```
+</details>
+
+#### `Security Engine Long Pending Enroll`
+
+```json
+{
+  "metadata": {
+    "version": 1,
+    "issuer": "crowdsec.net"
+  },
+  "details": {
+    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+    "organization_id": "12345678-1234-1234-1234-123456789012",
+    "event_timestamp": "2021-07-29T12:00:00+00:00",
+    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
+    "version": "v1.6.3-rc4",
+    "os" : {"name" : "ubuntu", "version": "22.04"},
+    "event_type": "security_engine_long_pending_enroll"
+  }
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+  "$defs": {
+    "OperatingSystem": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "OperatingSystem",
+      "type": "object"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "issuer": {
+          "type": "string",
+          "const": "crowdsec.net"
+        }
+      },
+      "required": [
+        "version",
+        "issuer"
+      ]
+    },
+    "details": {
+      "properties": {
+        "event_id": {
+          "description": "ID of the source event",
+          "examples": [
+            "c6d468d4f1084ebca84165c33f97fbc4"
+          ],
+          "title": "Event Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Organization ID of the source event",
+          "examples": [
+            "12345678-1234-1234-1234-123456789012"
+          ],
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "event_timestamp": {
+          "description": "Timestamp of the source event",
+          "examples": [
+            "2021-07-29T12:00:00+00:00"
+          ],
+          "format": "date-time",
+          "title": "Event Timestamp",
+          "type": "string"
+        },
+        "id": {
+          "description": "ID of the security engine",
+          "examples": [
+            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Version of the security engine",
+          "examples": [
+            "v1.6.3-rc4"
+          ],
+          "title": "Version"
+        },
+        "os": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OperatingSystem"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Operating System of the security engine",
+          "examples": [
+            "Linux"
+          ]
+        },
+        "event_type": {
+          "const": "security_engine_long_pending_enroll",
+          "default": "security_engine_long_pending_enroll",
+          "title": "Event Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "organization_id",
+        "event_timestamp",
+        "id",
+        "version",
+        "os",
+        "event_type"
+      ],
+      "title": "LongPendingEnroll",
+      "type": "object"
+    }
+  },
+  "required": [
+    "metadata",
+    "details"
+  ]
+}
+```
+</details>
+
+#### `Firewall Integration Offline`
+
+A [Firewall Integration](integrations/intro.mdx) has been classfied as offline.
+
+This can happen for these sceanrios:
+- Firewall has not actively pulled the contents for over 24 hours.
+
+```json
+{
+  "metadata": {
+    "version": 1,
+    "issuer": "crowdsec.net"
+  },
+  "details": {
+    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+    "organization_id": "12345678-1234-1234-1234-123456789012",
+    "event_timestamp": "2021-07-29T12:00:00+00:00",
+    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
+    "name": "MyBlocklistIntegration",
+    "last_pull": "2024-09-17T07:06:21",
+    "event_type": "firewall_integration_offline"
+  }
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+  "$defs": {},
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "issuer": {
+          "type": "string",
+          "const": "crowdsec.net"
+        }
+      },
+      "required": [
+        "version",
+        "issuer"
+      ]
+    },
+    "details": {
+      "properties": {
+        "event_id": {
+          "description": "ID of the source event",
+          "examples": [
+            "c6d468d4f1084ebca84165c33f97fbc4"
+          ],
+          "title": "Event Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Organization ID of the source event",
+          "examples": [
+            "12345678-1234-1234-1234-123456789012"
+          ],
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "event_timestamp": {
+          "description": "Timestamp of the source event",
+          "examples": [
+            "2021-07-29T12:00:00+00:00"
+          ],
+          "format": "date-time",
+          "title": "Event Timestamp",
+          "type": "string"
+        },
+        "id": {
+          "description": "ID of the blocklist integration",
+          "examples": [
+            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the blocklist integration",
+          "examples": [
+            "MyBlocklistIntegration"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "last_pull": {
+          "description": "Last time the blocklist integration pulled",
+          "examples": [
+            "2024-09-17T07:06:21"
+          ],
+          "title": "Last Pull",
+          "type": "string"
+        },
+        "event_type": {
+          "const": "firewall_integration_offline",
+          "default": "firewall_integration_offline",
+          "title": "Event Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "organization_id",
+        "event_timestamp",
+        "id",
+        "name",
+        "last_pull",
+        "event_type"
+      ],
+      "title": "FirewallIntegrationOffline",
+      "type": "object"
+    }
+  },
+  "required": [
+    "metadata",
+    "details"
+  ]
+}
+```
+</details>
+
+#### `Remediation Component Integration Offline`
+
+A [Remediation Component Integration](integrations/remediationcomponent.mdx) has been classified as offline.
+
+This can happen for these scenarios:
+- Remediation Component has not actively pulled the contents for over 24 hours.
+
+```json
+{
+  "metadata": {
+    "version": 1,
+    "issuer": "crowdsec.net"
+  },
+  "details": {
+    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+    "organization_id": "12345678-1234-1234-1234-123456789012",
+    "event_timestamp": "2021-07-29T12:00:00+00:00",
+    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
+    "name": "MyBlocklistIntegration",
+    "last_pull": "2024-09-17T07:06:21",
+    "event_type": "remediation_component_integration_offline"
+  }
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+  "$defs": {},
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "issuer": {
+          "type": "string",
+          "const": "crowdsec.net"
+        }
+      },
+      "required": [
+        "version",
+        "issuer"
+      ]
+    },
+    "details": {
+      "properties": {
+        "event_id": {
+          "description": "ID of the source event",
+          "examples": [
+            "c6d468d4f1084ebca84165c33f97fbc4"
+          ],
+          "title": "Event Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Organization ID of the source event",
+          "examples": [
+            "12345678-1234-1234-1234-123456789012"
+          ],
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "event_timestamp": {
+          "description": "Timestamp of the source event",
+          "examples": [
+            "2021-07-29T12:00:00+00:00"
+          ],
+          "format": "date-time",
+          "title": "Event Timestamp",
+          "type": "string"
+        },
+        "id": {
+          "description": "ID of the blocklist integration",
+          "examples": [
+            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the blocklist integration",
+          "examples": [
+            "MyBlocklistIntegration"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "last_pull": {
+          "description": "Last time the blocklist integration pulled",
+          "examples": [
+            "2024-09-17T07:06:21"
+          ],
+          "title": "Last Pull",
+          "type": "string"
+        },
+        "event_type": {
+          "const": "remediation_component_integration_offline",
+          "default": "remediation_component_integration_offline",
+          "title": "Event Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "organization_id",
+        "event_timestamp",
+        "id",
+        "name",
+        "last_pull",
+        "event_type"
+      ],
+      "title": "RemediationComponentIntegrationOffline",
+      "type": "object"
+    }
+  },
+  "required": [
+    "metadata",
+    "details"
+  ]
+}
+```
+</details>
+
+#### `Log Processor No Alerts`
+
+A Log Processor has not pushed any alerts for over 48 hours.
+
+```json
+{
+  "metadata": {
+    "version": 1,
+    "issuer": "crowdsec.net"
+  },
+  "details": {
+    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+    "organization_id": "12345678-1234-1234-1234-123456789012",
+    "event_timestamp": "2021-07-29T12:00:00+00:00",
+    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
+    "name": "MyLogProcessor",
+    "version": "v1.6.3-rc4",
+    "event_type": "log_processor_no_alerts",
+    "last_push": "2025-05-17T07:06:21"
+  }
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+  "$defs": {},
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "issuer": {
+          "type": "string",
+          "const": "crowdsec.net"
+        }
+      },
+      "required": [
+        "version",
+        "issuer"
+      ]
+    },
+    "details": {
+      "properties": {
+        "event_id": {
+          "description": "ID of the source event",
+          "examples": [
+            "c6d468d4f1084ebca84165c33f97fbc4"
+          ],
+          "title": "Event Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Organization ID of the source event",
+          "examples": [
+            "12345678-1234-1234-1234-123456789012"
+          ],
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "event_timestamp": {
+          "description": "Timestamp of the source event",
+          "examples": [
+            "2021-07-29T12:00:00+00:00"
+          ],
+          "format": "date-time",
+          "title": "Event Timestamp",
+          "type": "string"
+        },
+        "id": {
+          "description": "ID of the Log Processor",
+          "examples": [
+            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the Log Processor",
+          "examples": [
+            "MyLogProcessor"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Version of the Log Processor",
+          "examples": [
+            "v1.6.3-rc4"
+          ],
+          "title": "Version"
+        },
+        "last_push": {
+          "title": "Last Push",
+          "type": "string"
+        },
+        "event_type": {
+          "const": "log_processor_no_alerts",
+          "default": "log_processor_no_alerts",
+          "title": "Event Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "organization_id",
+        "event_timestamp",
+        "id",
+        "name",
+        "version",
+        "last_push",
+        "event_type"
+      ],
+      "title": "LogProcessorNoAlerts",
+      "type": "object"
+    }
+  },
+  "required": [
+    "metadata",
+    "details"
+  ]
+}
+```
+</details>
+
+#### `CrowdSec Stack Component Outdated`
+
+A CrowdSec Stack Component is outdated.
+
+This can happen for these sceanrios:
+- A new version of CrowdSec has been released.
+
+```json
+{
+  "metadata": {
+    "version": 1,
+    "issuer": "crowdsec.net"
+  },
+  "details": {
+    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+    "organization_id": "12345678-1234-1234-1234-123456789012",
+    "event_timestamp": "2021-07-29T12:00:00+00:00",
+    "event_type": "component_outdated",
+    "nb_remediation_component": 10,
+    "nb_log_processor": 10,
+    "nb_security_engine": 10
+  }
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+  "$defs": {},
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "issuer": {
+          "type": "string",
+          "const": "crowdsec.net"
+        }
+      },
+      "required": [
+        "version",
+        "issuer"
+      ]
+    },
+    "details": {
+      "properties": {
+        "event_id": {
+          "description": "ID of the source event",
+          "examples": [
+            "c6d468d4f1084ebca84165c33f97fbc4"
+          ],
+          "title": "Event Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Organization ID of the source event",
+          "examples": [
+            "12345678-1234-1234-1234-123456789012"
+          ],
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "event_timestamp": {
+          "description": "Timestamp of the source event",
+          "examples": [
+            "2021-07-29T12:00:00+00:00"
+          ],
+          "format": "date-time",
+          "title": "Event Timestamp",
+          "type": "string"
+        },
+        "event_type": {
+          "const": "component_outdated",
+          "default": "component_outdated",
+          "title": "Event Type",
+          "type": "string"
+        },
+        "nb_remediation_component": {
+          "description": "Number of remediation component",
+          "examples": [
+            10
+          ],
+          "title": "Nb Remediation Component",
+          "type": "integer"
+        },
+        "nb_log_processor": {
+          "description": "Number of log processor",
+          "examples": [
+            10
+          ],
+          "title": "Nb Log Processor",
+          "type": "integer"
+        },
+        "nb_security_engine": {
+          "description": "Number of security engine",
+          "examples": [
+            10
+          ],
+          "title": "Nb Security Engine",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "event_id",
+        "organization_id",
+        "event_timestamp",
+        "event_type",
+        "nb_remediation_component",
+        "nb_log_processor",
+        "nb_security_engine"
+      ],
+      "title": "ComponentOutdated",
+      "type": "object"
+    }
+  },
+  "required": [
+    "metadata",
+    "details"
+  ]
+}
+```
+</details>
+
+#### `Log Processor Offline`
+
+A Log Processor has been offline for more than 24 hours.
+
+```json
+{
+  "metadata": {
+    "version": 1,
+    "issuer": "crowdsec.net"
+  },
+  "details": {
+    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+    "organization_id": "12345678-1234-1234-1234-123456789012",
+    "event_timestamp": "2021-07-29T12:00:00+00:00",
+    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
+    "name": "MyLogProcessor",
+    "version": "v1.6.3-rc4",
+    "last_update": "2024-09-17T07:06:21",
+    "event_type": "log_processor_offline"
+  }
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+  "$defs": {},
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "issuer": {
+          "type": "string",
+          "const": "crowdsec.net"
+        }
+      },
+      "required": [
+        "version",
+        "issuer"
+      ]
+    },
+    "details": {
+      "properties": {
+        "event_id": {
+          "description": "ID of the source event",
+          "examples": [
+            "c6d468d4f1084ebca84165c33f97fbc4"
+          ],
+          "title": "Event Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Organization ID of the source event",
+          "examples": [
+            "12345678-1234-1234-1234-123456789012"
+          ],
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "event_timestamp": {
+          "description": "Timestamp of the source event",
+          "examples": [
+            "2021-07-29T12:00:00+00:00"
+          ],
+          "format": "date-time",
+          "title": "Event Timestamp",
+          "type": "string"
+        },
+        "id": {
+          "description": "ID of the Log Processor",
+          "examples": [
+            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the Log Processor",
+          "examples": [
+            "MyLogProcessor"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Version of the Log Processor",
+          "examples": [
+            "v1.6.3-rc4"
+          ],
+          "title": "Version"
+        },
+        "last_update": {
+          "description": "Last time the Log Processor updated",
+          "examples": [
+            "2024-09-17T07:06:21"
+          ],
+          "title": "Last Update",
+          "type": "string"
+        },
+        "event_type": {
+          "const": "log_processor_offline",
+          "default": "log_processor_offline",
+          "title": "Event Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "organization_id",
+        "event_timestamp",
+        "id",
+        "name",
+        "version",
+        "last_update",
+        "event_type"
+      ],
+      "title": "LogProcessorOffline",
+      "type": "object"
+    }
+  },
+  "required": [
+    "metadata",
+    "details"
+  ]
+}
+```
+</details>
+
+#### `Remediation Component Offline`
+
+A Remediation Component has not pulled from the Security Engine in over 24 hours.
+
+```json
+{
+  "metadata": {
+    "version": 1,
+    "issuer": "crowdsec.net"
+  },
+  "details": {
+    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+    "organization_id": "12345678-1234-1234-1234-123456789012",
+    "event_timestamp": "2021-07-29T12:00:00+00:00",
+    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
+    "name": "MyRemediationComponent",
+    "version": "v0.22",
+    "event_type": "remediation_component_offline",
+    "last_pull": "2024-09-17T07:06:21"
+  }
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+  "$defs": {},
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "issuer": {
+          "type": "string",
+          "const": "crowdsec.net"
+        }
+      },
+      "required": [
+        "version",
+        "issuer"
+      ]
+    },
+    "details": {
+      "properties": {
+        "event_id": {
+          "description": "ID of the source event",
+          "examples": [
+            "c6d468d4f1084ebca84165c33f97fbc4"
+          ],
+          "title": "Event Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Organization ID of the source event",
+          "examples": [
+            "12345678-1234-1234-1234-123456789012"
+          ],
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "event_timestamp": {
+          "description": "Timestamp of the source event",
+          "examples": [
+            "2021-07-29T12:00:00+00:00"
+          ],
+          "format": "date-time",
+          "title": "Event Timestamp",
+          "type": "string"
+        },
+        "id": {
+          "description": "ID of the remediation component",
+          "examples": [
+            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the remediation component",
+          "examples": [
+            "MyBlocklistIntegration"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Version of the remediation component",
+          "examples": [
+            "v0.22"
+          ],
+          "title": "Version"
+        },
+        "last_pull": {
+          "title": "Last Pull",
+          "type": "string"
+        },
+        "event_type": {
+          "const": "remediation_component_offline",
+          "default": "remediation_component_offline",
+          "title": "Event Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "organization_id",
+        "event_timestamp",
+        "id",
+        "name",
+        "version",
+        "last_pull",
+        "event_type"
+      ],
+      "title": "RemediationComponentOffline",
+      "type": "object"
+    }
+  },
+  "required": [
+    "metadata",
+    "details"
+  ]
+}
+```
+</details>
+
+#### `Security Engine No Alerts`
+
+A Security Engine has not pushed any alerts for over 48 hours.
+
+```json
+{
+  "metadata": {
+    "version": 1,
+    "issuer": "crowdsec.net"
+  },
+  "details": {
+    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+    "organization_id": "12345678-1234-1234-1234-123456789012",
+    "event_timestamp": "2021-07-29T12:00:00+00:00",
+    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
+    "version": "v1.6.3-rc4",
+    "os" : {"name" : "ubuntu", "version": "22.04"},
+    "last_push": "2024-09-17T07:06:21",
+    "event_type": "security_engine_no_alerts",
+    "name": "MySecurityEngine"
+  }
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+  "$defs": {
+    "OperatingSystem": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "OperatingSystem",
+      "type": "object"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "issuer": {
+          "type": "string",
+          "const": "crowdsec.net"
+        }
+      },
+      "required": [
+        "version",
+        "issuer"
+      ]
+    },
+    "details": {
+      "properties": {
+        "event_id": {
+          "description": "ID of the source event",
+          "examples": [
+            "c6d468d4f1084ebca84165c33f97fbc4"
+          ],
+          "title": "Event Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Organization ID of the source event",
+          "examples": [
+            "12345678-1234-1234-1234-123456789012"
+          ],
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "event_timestamp": {
+          "description": "Timestamp of the source event",
+          "examples": [
+            "2021-07-29T12:00:00+00:00"
+          ],
+          "format": "date-time",
+          "title": "Event Timestamp",
+          "type": "string"
+        },
+        "id": {
+          "description": "ID of the security engine",
+          "examples": [
+            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Version of the security engine",
+          "examples": [
+            "v1.6.3-rc4"
+          ],
+          "title": "Version"
+        },
+        "os": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OperatingSystem"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Operating System of the security engine",
+          "examples": [
+            "Linux"
+          ]
+        },
+        "last_push": {
+          "description": "Last time the security engine pushed",
+          "examples": [
+            "2024-09-17T07:06:21"
+          ],
+          "title": "Last Push",
+          "type": "string"
+        },
+        "event_type": {
+          "const": "security_engine_no_alerts",
+          "default": "security_engine_no_alerts",
+          "title": "Event Type",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Name of the security engine",
+          "examples": [
+            "MySecurityEngine"
+          ],
+          "title": "Name"
+        }
+      },
+      "required": [
+        "event_id",
+        "organization_id",
+        "event_timestamp",
+        "id",
+        "version",
+        "os",
+        "last_push",
+        "event_type",
+        "name"
+      ],
+      "title": "SecurityEngineNoAlerts",
+      "type": "object"
+    }
+  },
+  "required": [
+    "metadata",
+    "details"
+  ]
+}
+```
+</details>
+
+#### `Security Engine Offline`
+
+A Security Engine has been offline for more than 48 hours.
+
+```json
+{
+  "metadata": {
+    "version": 1,
+    "issuer": "crowdsec.net"
+  },
+  "details": {
+    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+    "organization_id": "12345678-1234-1234-1234-123456789012",
+    "event_timestamp": "2021-07-29T12:00:00+00:00",
+    "id": "12345677732339c3d12345164a8426sbnk6ll4iaazda1234",
+    "version": "v1.6.3-rc4",
+    "os" : {"name" : "ubuntu", "version": "22.04"},
+    "event_type": "security_engine_offline",
+    "last_login": "2024-09-17T07:06:21",
+    "name": "MySecurityEngine"
+  }
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+  "$defs": {
+    "OperatingSystem": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "OperatingSystem",
+      "type": "object"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "issuer": {
+          "type": "string",
+          "const": "crowdsec.net"
+        }
+      },
+      "required": [
+        "version",
+        "issuer"
+      ]
+    },
+    "details": {
+      "properties": {
+        "event_id": {
+          "description": "ID of the source event",
+          "examples": [
+            "c6d468d4f1084ebca84165c33f97fbc4"
+          ],
+          "title": "Event Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Organization ID of the source event",
+          "examples": [
+            "12345678-1234-1234-1234-123456789012"
+          ],
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "event_timestamp": {
+          "description": "Timestamp of the source event",
+          "examples": [
+            "2021-07-29T12:00:00+00:00"
+          ],
+          "format": "date-time",
+          "title": "Event Timestamp",
+          "type": "string"
+        },
+        "id": {
+          "description": "ID of the security engine",
+          "examples": [
+            "12345677732339c3d12345164a8426sbnk6ll4iaazda1234"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Version of the security engine",
+          "examples": [
+            "v1.6.3-rc4"
+          ],
+          "title": "Version"
+        },
+        "os": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OperatingSystem"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Operating System of the security engine",
+          "examples": [
+            "Linux"
+          ]
+        },
+        "last_login": {
+          "title": "Last Login",
+          "type": "string"
+        },
+        "event_type": {
+          "const": "security_engine_offline",
+          "default": "security_engine_offline",
+          "title": "Event Type",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Name of the security engine",
+          "examples": [
+            "MySecurityEngine"
+          ],
+          "title": "Name"
+        }
+      },
+      "required": [
+        "event_id",
+        "organization_id",
+        "event_timestamp",
+        "id",
+        "version",
+        "os",
+        "last_login",
+        "event_type",
+        "name"
+      ],
+      "title": "SecurityEngineOffline",
+      "type": "object"
+    }
+  },
+  "required": [
+    "metadata",
+    "details"
+  ]
+}
+```
+
+</details>
+
+### Admin
+
+![Admin](/img/console/notification_integrations/admin.png)
+
+#### `Payment Failed`
+
+A payment attempt for your enterprise subscription failed.
+
+This can happen for these scenarios:
+- Payment needs additional approval from your bank.
+- You have insufficient funds to complete the transaction.
+
+```json
+{
+  "metadata": {
+    "version": 1,
+    "issuer": "crowdsec.net"
+  },
+  "details": {
+    "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+    "organization_id": "12345678-1234-1234-1234-123456789012",
+    "event_timestamp": "2021-07-29T12:00:00+00:00",
+    "event_type": "payment_failed"
+  }
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+  "$defs": {},
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "issuer": {
+          "type": "string",
+          "const": "crowdsec.net"
+        }
+      },
+      "required": [
+        "version",
+        "issuer"
+      ]
+    },
+    "details": {
+      "properties": {
+        "event_id": {
+          "description": "ID of the source event",
+          "examples": [
+            "c6d468d4f1084ebca84165c33f97fbc4"
+          ],
+          "title": "Event Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Organization ID of the source event",
+          "examples": [
+            "12345678-1234-1234-1234-123456789012"
+          ],
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "event_timestamp": {
+          "description": "Timestamp of the source event",
+          "examples": [
+            "2021-07-29T12:00:00+00:00"
+          ],
+          "format": "date-time",
+          "title": "Event Timestamp",
+          "type": "string"
+        },
+        "event_type": {
+          "const": "payment_failed",
+          "default": "payment_failed",
+          "title": "Event Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "organization_id",
+        "event_timestamp",
+        "event_type"
+      ],
+      "title": "PremiumPaymentFailed",
+      "type": "object"
+    }
+  },
+  "required": [
+    "metadata",
+    "details"
+  ]
+}
+```
+</details>
 
 ## Troubleshooting
 
