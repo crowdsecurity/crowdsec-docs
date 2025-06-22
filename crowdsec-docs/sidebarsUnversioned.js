@@ -592,7 +592,7 @@ module.exports = {
             items: [              
                 {
                     type: "category",
-                    label: "CrowdSec Console",
+                    label: "CrowdSec Console ⭐",
                     link: {
                         type: "doc",
                         id: "getting_started/post_installation/console",
@@ -601,15 +601,18 @@ module.exports = {
                         "getting_started/post_installation/console_blocklists",
                         "getting_started/post_installation/console_hub",
                     ],
+                    className: "sideBarItemRecommended" // to display tag
                 },
                 {
                     type: "doc",
                     id: "getting_started/post_installation/whitelists",
                     label: "Whitelisting IPs ⭐",
+                    className: "sideBarItemRecommended"
                 }, 
                 {
                     type: "category",
                     label: "Acquisition ⚙️",
+                    className: "sideBarItemOptional",
                     link: {
                         type: "doc",
                         id: "getting_started/post_installation/acquisition",
@@ -631,11 +634,13 @@ module.exports = {
                     type: "doc",
                     id:   "getting_started/post_installation/profiles",
                     label: "Profiles ⚙️",
+                    className: "sideBarItemOptional"
                 },
                 {
                     type: "doc",
                     id:   "getting_started/post_installation/metrics",
                     label: "Metrics ⚙️",
+                    className: "sideBarItemOptional"
                 }, 
                 {
                     type: "doc",
