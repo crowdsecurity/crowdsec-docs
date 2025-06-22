@@ -592,7 +592,7 @@ module.exports = {
             items: [              
                 {
                     type: "category",
-                    label: "CrowdSec Console ⭐",
+                    label: "CrowdSec Console",
                     link: {
                         type: "doc",
                         id: "getting_started/post_installation/console",
@@ -606,12 +606,12 @@ module.exports = {
                 {
                     type: "doc",
                     id: "getting_started/post_installation/whitelists",
-                    label: "Whitelisting IPs ⭐",
+                    label: "Whitelisting IPs",
                     className: "sideBarItemRecommended"
                 }, 
                 {
                     type: "category",
-                    label: "Acquisition ⚙️",
+                    label: "Acquisition",
                     className: "sideBarItemOptional",
                     link: {
                         type: "doc",
@@ -621,25 +621,25 @@ module.exports = {
                         {
                             type: "doc",
                             id: "getting_started/post_installation/acquisition_new",
-                            label: "Adding a new Acquisition ⚙️",
+                            label: "Adding a new Acquisition",
                         },
                         {
                             type: "doc",
                             id: "getting_started/post_installation/acquisition_troubleshoot",
-                            label: "🚨 Acquisition issues",
+                            label: "Acquisition issues 🚨",
                         },
                     ],
                 },
                 {
                     type: "doc",
                     id:   "getting_started/post_installation/profiles",
-                    label: "Profiles ⚙️",
+                    label: "Profiles",
                     className: "sideBarItemOptional"
                 },
                 {
                     type: "doc",
                     id:   "getting_started/post_installation/metrics",
-                    label: "Metrics ⚙️",
+                    label: "Metrics",
                     className: "sideBarItemOptional"
                 }, 
                 {
