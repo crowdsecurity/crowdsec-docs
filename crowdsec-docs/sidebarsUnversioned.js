@@ -570,18 +570,18 @@ module.exports = {
             ],
         },
         {
+            type: "doc",
+            id: "getting_started/health_check",
+            label: "🩺 Stack Health-Check",
+        }, 
+        {
             type: "category",
             label: "Post Installation Steps",
             link: {
                 type: "doc",
                 id: "getting_started/next_steps",
             },
-            items: [
-                {
-                    type: "doc",
-                    id: "getting_started/post_installation/health_check",
-                    label: "Stack Health-Check",
-                },               
+            items: [              
                 {
                     type: "category",
                     label: "CrowdSec Console",
