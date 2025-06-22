@@ -483,8 +483,8 @@ div[class^='announcementBar'] {
   border: 0!important;
 }
 
-/* Quick guide specific CSS */
-.sideBarItemRecommended::after {
+/* Quick guide specific CSS /u/getting_started/... */
+.sideBarItemRecommended a::after {
   content: "Rec.";
   display: inline-block;
   margin-left: 0.5em;
@@ -494,9 +494,10 @@ div[class^='announcementBar'] {
   border-radius: 999px;
   font-size: 0.6em;
   vertical-align: middle;
+  transform: rotate(0deg); /* force reset to counter act UL accordion transform */
 }
 
-.sideBarItemOptional::after {
+.sideBarItemOptional a::after {
   content: "Opt.";
   display: inline-block;
   margin-left: 0.5em;
@@ -506,4 +507,5 @@ div[class^='announcementBar'] {
   border-radius: 999px;
   font-size: 0.6em;
   vertical-align: middle;
+  transform: rotate(0deg); /* force reset to counter act UL accordion transform */
 }
