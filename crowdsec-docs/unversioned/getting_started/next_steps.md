@@ -4,7 +4,7 @@ title: Post Installation Steps
 ---
 
 Now that your CrowdSec installation is up and running, here are some post-installation steps to help you continue your journey.  
-Some steps are **recommended** <span class={{sideBarItemRecommended}}><a href=""></a> for most users, while others are **optional** <span class={{sideBarItemOptional}}><a href=""></a> and offer additional customization or advanced capabilities.  
+Some steps are **recommended** <span class={{sideBarItemRecommended}}><a href=""></a></span> for most users, while others are **optional** <span class={{sideBarItemRecommended}}><a href=""></a></span> and offer additional customization or advanced capabilities.  
 
 To make sure your installation is properly setup run a [🩺 Health Check](/getting_started/health_check) if you haven't already done so.  
 For general errors whilst installing you can follow our [🚨 troubleshooting guide](/getting_started/post_installation/troubleshoot.mdx).
