@@ -494,7 +494,7 @@ div[class^='announcementBar'] {
   border-radius: 999px;
   font-size: 0.6em;
   vertical-align: middle;
-  transform: rotate(0deg); /* force reset to counter act UL accordion transform */
+  transform: rotate(0deg) !important; /* force reset to counter act UL accordion transform */
 }
 
 .sideBarItemOptional a::after {
@@ -507,5 +507,5 @@ div[class^='announcementBar'] {
   border-radius: 999px;
   font-size: 0.6em;
   vertical-align: middle;
-  transform: rotate(0deg); /* force reset to counter act UL accordion transform */
+  transform: rotate(0deg) !important; /* force reset to counter act UL accordion transform */
 }
