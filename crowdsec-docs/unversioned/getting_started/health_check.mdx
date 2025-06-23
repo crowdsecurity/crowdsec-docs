@@ -183,7 +183,7 @@ Were all the tests related to your setup successful?
 
   <details id="troubleshooting_service">
       <summary>⚙️ CrowdSec Service Troubleshooting -- is the CrowdSec service running?</summary>
-
+  
   Let’s check if the CrowdSec service is active:
   <CodeBlock className="language-bash">sudo systemctl status crowdsec</CodeBlock> 
   - ☑️ You should see: "**active (running)**"
@@ -196,12 +196,17 @@ Were all the tests related to your setup successful?
   For linux systems, the logs are typically located in `/var/log/crowdsec.log`.
   <CodeBlock className="language-bash">less /var/log/crowdsec.log</CodeBlock>
 
-  Common reasons the service might fail::
+  If you got an error trying to run the `cscli` or trying to start `crowdsec`.
+  Common reasons the service might fail:
   - Misconfiguration in the `config.yaml` file.
     - Port conflicts with other services. By default, CrowdSec uses port 8080 for the Local API (LAPI) and port 6060 for the Local API metrics.
     - The port configuration can be setup in `config.yaml` file or by setting the environment variables depending on your implementation
   - Insufficient permissions to access the log files or directories.
   - Acquisition files format errors.
+  
+  Other more low level reasons might be:
+  - `cscli` doesn't exist in your $PATH hence can't be called from anywhere.  
+  - You might not have `sudo` permissions to run the command or privileges on the config.yaml file used when running `cscli` or `crowdsec`.   
 
   </details>
 </details>
