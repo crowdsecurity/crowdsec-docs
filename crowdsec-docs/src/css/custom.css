@@ -483,4 +483,29 @@ div[class^='announcementBar'] {
   border: 0!important;
 }
 
+/* Quick guide specific CSS /u/getting_started/... */
+.sideBarItemRecommended a::after {
+  content: "Rec.";
+  display: inline-block;
+  margin-left: 0.5em;
+  padding: 0.1em 0.5em;
+  background-color: #007bff;
+  color: white;
+  border-radius: 999px;
+  font-size: 0.6em;
+  vertical-align: middle;
+  transform: rotate(0deg) !important; /* force reset to counter act UL accordion transform */
+}
 
+.sideBarItemOptional a::after {
+  content: "Opt.";
+  display: inline-block;
+  margin-left: 0.5em;
+  padding: 0.1em 0.5em;
+  background-color: #ffc107;
+  color: black;
+  border-radius: 999px;
+  font-size: 0.6em;
+  vertical-align: middle;
+  transform: rotate(0deg) !important; /* force reset to counter act UL accordion transform */
+}
