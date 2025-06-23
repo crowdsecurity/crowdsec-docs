@@ -1,0 +1,236 @@
+---
+id: haproxy_spoa
+title: HAProxy SPOA
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import RemediationSupportBadges from '@site/src/components/RemediationSupportBadges.tsx';
+
+<p align="center">
+<img src={useBaseUrl('/img/crowdsec_haproxy.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
+</p>
+<p align="center">
+<img src="https://img.shields.io/badge/build-pass-green" />
+<img src="https://img.shields.io/badge/tests-pass-green" />
+</p>
+<p align="center">
+&#x1F4DA; <a href="#installation/">Documentation</a>
+&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+</p>
+
+<RemediationSupportBadges
+  Appsec={false}
+  Metrics
+  Prometheus
+/>
+
+
+# A Remediation Component for haproxy.
+
+
+## How does it work ?
+
+The `cs-haproxy-spoa-bouncer` allows CrowdSec to enforce blocking, CAPTCHA, or
+allow actions directly within HAProxy using the [SPOE
+protocol](https://www.haproxy.com/blog/introduction-to-the-stream-processing-offload-engine-spoe/).
+
+It supports IP-based decisions, CAPTCHA challenges, GeoIP-based headers, and
+integrates cleanly with CrowdSec’s LAPI using the stream bouncer protocol.
+
+Supported features:
+
+ - Stream mode (pull the local API for new/old decisions every X seconds)
+ - Ban remediation (can ban an IP address by redirecting him or returning a custom HTML page)
+ - Captcha remediation (can return a captcha)
+ - Works with IPv4/IPv6
+ - Support IP ranges (can apply a remediation on an IP range)
+
+
+## Installation
+
+### Using packages
+
+First, [setup crowdsec repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories).
+
+<Tabs
+  defaultValue="haproxy_debian"
+  values={[
+    { label: 'Debian/Ubuntu', value: 'haproxy_debian' ,},
+    { label: 'RHEL/Centos/Fedora', value: 'haproxy_rhel' ,},
+  ]
+}>
+<TabItem value="haproxy_debian">
+
+```bash
+sudo apt install crowdsec-haproxy-bouncer
+```
+
+</TabItem>
+
+<TabItem value="haproxy_rhel">
+
+```bash
+sudo dnf install crowdsec-haproxy-spoa-bouncer
+```
+
+</TabItem>
+
+</Tabs>
+
+
+
+### Manual installation
+
+TODO
+
+
+## Configuration
+
+Create or edit the configuration file at /etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml:
+```yaml
+log_mode: file
+log_dir: /var/log/
+log_level: info
+
+update_frequency: 10s
+api_url: http://127.0.0.1:8080/
+api_key: ${API_KEY}
+insecure_skip_verify: false
+
+workers:
+  - name: spoa1
+    listen_addr: 0.0.0.0:9000
+    listen_socket: /run/crowdsec-spoa/spoa-1.sock
+
+worker_user: crowdsec-spoa
+worker_group: crowdsec-spoa
+
+asn_database_path: /var/lib/crowdsec/data/GeoLite2-ASN.mmdb
+city_database_path: /var/lib/crowdsec/data/GeoLite2-City.mmdb
+
+admin_socket: /run/crowdsec-spoa-admin.sock
+
+prometheus:
+  enabled: true
+  listen_addr: 127.0.0.1
+  listen_port: 60601
+```
+
+If you installed this bouncer through package, you should already have a working
+configuration file.
+
+If not you can get an API key with cscli:
+```bash
+sudo cscli bouncers add mybouncer
+API key for 'bouncertest':
+
+   JdVa7DKBM35gPDAR014pH/55l38fxLGt02NPPnZgLQI
+
+Please keep this key since you will not be able to retrieve it!
+```
+
+## HAProxy Configuration
+
+### SPOE Filter
+
+Add a SPOE agent configuration to /etc/haproxy/crowdsec.cfg:
+
+```
+spoe-agent crowdsec-agent
+    messages    crowdsec-ip crowdsec-http
+    option      var-prefix      crowdsec
+    option      set-on-error    error
+    timeout     hello           100ms
+    timeout     idle            30s
+    timeout     processing      500ms
+    use-backend crowdsec-spoa
+    log         global
+
+spoe-message crowdsec-ip
+    args id=unique-id src-ip=src src-port=src_port
+    event on-client-session
+
+spoe-message crowdsec-http
+    args remediation=var(txn.crowdsec.remediation) \
+         crowdsec_captcha_cookie=req.cook(crowdsec_captcha_cookie) \
+         id=unique-id host=hdr(Host) method=method path=path query=query \
+         version=req.ver headers=req.hdrs body=req.body url=url ssl=ssl_fc
+    event on-frontend-http-request
+```
+
+If you installed the haproxy spoe bouncer through package, you will find this
+configuration file in `/usr/share/docs/crowdsec-haproxy-spoa-bouncer/examples`
+
+This crowdsec spoe agent configuration is then referenced in the main haproxy configuration file.
+
+```
+frontend http-in
+    bind *:80
+    filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
+    http-request set-header X-CrowdSec-Remediation %[var(txn.crowdsec.remediation)]
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m found }
+
+backend crowdsec-spoa
+    mode tcp
+    balance roundrobin
+    server s1 127.0.0.1:9000
+```
+This snippet can also be found in `/usr/share/docs/crowdsec-haproxy-spoa-bouncer/examples/haproxy.cfg`.
+
+### Specific features
+
+#### To enable CAPTCHA for a domain:
+
+```
+hosts:
+  - host: "example.com"
+    captcha:
+      site_key: "<your-site-key>"
+      secret_key: "<your-secret-key>"
+      provider: "hcaptcha"
+```
+
+The following captcha providers are supported:
+```
+hcaptcha
+recaptcha
+turnstile
+```
+
+### Prometheus Metrics
+
+Enable and expose metrics:
+
+```
+prometheus:
+  enabled: true
+  listen_addr: 127.0.0.1
+  listen_port: 60601
+```
+
+Access them at http://127.0.0.1:60601/metrics.
+
+### Admin Socket (to be tested)
+
+You can query the bouncer runtime state using the admin socket:
+
+socat - UNIX-CONNECT:/run/crowdsec-spoa-admin.sock
+
+Commands:
+
+    get hosts
+
+    get host <host> session <uuid> <key>
+
+    set host <host> session <uuid> <key> <value>
+
+    get ip <ip>
+
+    val host <host> cookie <cookie>
+
+    val host <host> captcha <response>
+
+
