@@ -44,7 +44,7 @@ integrates cleanly with CrowdSec’s LAPI using the stream bouncer protocol.
 Supported features:
 
  - Stream mode (pull the local API for new/old decisions every X seconds)
- - Ban remediation (can ban an IP address by redirecting him or returning a custom HTML page)
+ - Ban remediation (can ban an IP address by redirecting or returning a custom HTML page)
  - Captcha remediation (can return a captcha)
  - Works with IPv4/IPv6
  - Support IP ranges (can apply a remediation on an IP range)
@@ -54,7 +54,8 @@ Supported features:
 
 ### Using packages
 
-First, [setup crowdsec repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories).
+You will have to setup crowdsec repositories first [setup crowdsec
+repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories).
 
 <Tabs
   defaultValue="haproxy_debian"
@@ -66,7 +67,7 @@ First, [setup crowdsec repositories](/docs/next/getting_started/install_crowdsec
 <TabItem value="haproxy_debian">
 
 ```bash
-sudo apt install crowdsec-haproxy-bouncer
+sudo apt install crowdsec-haproxy-spoa-bouncer
 ```
 
 </TabItem>
