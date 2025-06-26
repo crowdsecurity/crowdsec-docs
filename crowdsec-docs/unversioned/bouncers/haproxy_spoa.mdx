@@ -141,8 +141,10 @@ Please keep this key since you will not be able to retrieve it!
 Add a SPOE agent configuration to /etc/haproxy/crowdsec.cfg:
 
 ```
+[crowdsec]
 spoe-agent crowdsec-agent
     messages    crowdsec-ip crowdsec-http
+
     option      var-prefix      crowdsec
     option      set-on-error    error
     timeout     hello           100ms
@@ -151,16 +153,15 @@ spoe-agent crowdsec-agent
     use-backend crowdsec-spoa
     log         global
 
+## This message is used to customise the remediation from crowdsec-ip based on the host header
+spoe-message crowdsec-http
+    args remediation=var(txn.crowdsec.remediation) crowdsec_captcha_cookie=req.cook(crowdsec_captcha_cookie) id=unique-id host=hdr(Host) method=method path=path query=query version=req.ver headers=req.hdrs body=req.body url=url ssl=ssl_fc
+    event on-frontend-http-request
+
+## This message should be the first to trigger in the chain
 spoe-message crowdsec-ip
     args id=unique-id src-ip=src src-port=src_port
     event on-client-session
-
-spoe-message crowdsec-http
-    args remediation=var(txn.crowdsec.remediation) \
-         crowdsec_captcha_cookie=req.cook(crowdsec_captcha_cookie) \
-         id=unique-id host=hdr(Host) method=method path=path query=query \
-         version=req.ver headers=req.hdrs body=req.body url=url ssl=ssl_fc
-    event on-frontend-http-request
 ```
 
 If you installed the haproxy spoe bouncer through package, you will find this
@@ -174,6 +175,7 @@ frontend http-in
     filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
     http-request set-header X-CrowdSec-Remediation %[var(txn.crowdsec.remediation)]
     http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m found }
+    use_backend <whatever>
 
 backend crowdsec-spoa
     mode tcp
