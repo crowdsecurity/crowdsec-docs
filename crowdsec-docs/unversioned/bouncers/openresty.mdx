@@ -25,6 +25,7 @@ import RemediationSupportBadges from '@site/src/components/RemediationSupportBad
 <RemediationSupportBadges
   Mode
   Appsec
+  Metrics
 />
 
 A lua Remediation Component for OpenResty.
@@ -41,6 +42,7 @@ Supported features:
  - Captcha remediation (can return a captcha)
  - Works with IPv4/IPv6
  - Support IP ranges (can apply a remediation on an IP range)
+ - Application Security Component (forward request to CrowdSec Application Security Engine and block is necessary)
 
 At the back, this component uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
@@ -128,6 +130,8 @@ If you are on a mono-machine setup, the `crowdsec-openresty-bouncer` install scr
 
 ### Component configuration
 
+
+
 ```bash title="/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf"
 API_URL=<CROWDSEC_LAPI_URL>
 API_KEY=<CROWDSEC_LAPI_KEY>
@@ -159,6 +163,7 @@ SITE_KEY=
 CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
 CAPTCHA_EXPIRATION=3600
 
+
 ## Application Security Component Configuration
 APPSEC_URL=
 #### default ###
@@ -171,6 +176,10 @@ SSL_VERIFY=true
 ################
 ```
 
+Any `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf.local` content will take
+precedence over `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`. All fields
+don't have to be present in this `.local.` file.
+
 ### OpenResty Configuration
 
 The component OpenResty configuration is located in `/usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf` :
@@ -178,23 +187,50 @@ The component OpenResty configuration is located in `/usr/local/openresty/nginx/
 ```bash title="/usr/local/openresty/nginx/conf/conf.d/crowdsec_openresty.conf"
 lua_package_path '$prefix/../lualib/plugins/crowdsec/?.lua;;';
 lua_shared_dict crowdsec_cache 50m;
-resolver local=on ipv6=off;
 lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+
 init_by_lua_block {
         cs = require "crowdsec"
-        local ok, err = cs.init("/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf", "crowdsec-openresty-bouncer/v0.0.7")
+        local ok, err = cs.init("/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf", "crowdsec-openresty-bouncer/v1.1.0")
         if ok == nil then
                 ngx.log(ngx.ERR, "[Crowdsec] " .. err)
                 error()
         end
-        ngx.log(ngx.ALERT, "[Crowdsec] Initialisation done")
+        if ok == "Disabled" then
+                ngx.log(ngx.ALERT, "[Crowdsec] Bouncer Disabled")
+        else
+                ngx.log(ngx.ALERT, "[Crowdsec] Initialisation done")
+        end
+}
+
+map $server_addr $unix {
+        default       0;
+        "~unix:" 1;
 }
 
 access_by_lua_block {
         local cs = require "crowdsec"
-        cs.Allow(ngx.var.remote_addr)        
+        if ngx.var.unix == "1" then
+                ngx.log(ngx.DEBUG, "[Crowdsec] Unix socket request ignoring...")
+        else
+                cs.Allow(ngx.var.remote_addr)
+        end
 }
-```
+
+
+init_worker_by_lua_block {
+        cs = require "crowdsec"
+        local mode = cs.get_mode()
+        if string.lower(mode) == "stream" then
+           ngx.log(ngx.INFO, "Initializing stream mode for worker " .. tostring(ngx.worker.id()))
+           cs.SetupStream()
+        end
+
+        if ngx.worker.id() == 0 then
+           ngx.log(ngx.INFO, "Initializing metrics for worker " .. tostring(ngx.worker.id()))
+           cs.SetupMetrics()
+        end
+}```
 
 
 The component uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict) to share cache between all workers.
@@ -254,7 +290,7 @@ If you want to use captcha with your OpenResty, you must provide a Site key and 
 Edit `etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf` and configure the following options:
 
 ```bash
-CAPTCHA_PROVDER=
+CAPTCHA_PROVIDER=
 SECRET_KEY=
 SITE_KEY=
 CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
@@ -291,7 +327,7 @@ And restart OpenResty.
 
 ### Migrate from v0 to v1
 
-The best way to migrate from the crowdsec-openresty-bouncer v0.* to v1 is to reinstall the bouncer. Indeed, many new configurations options are now available and some has been removed.
+The best way to migrate from the crowdsec-openresty-bouncer v0.* to v1 is to reinstall the bouncer. Indeed, many new configurations options are now available and some have been removed.
 
 - Backup your CrowdSec Local API key from your configuration file (`/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`)
 - Remove the old component:
@@ -570,3 +606,9 @@ APPSEC_PROCESS_TIMEOUT=500  # default
 ```
 
 The timeout to process the request from the Remediation Component to the AppSec Component.
+
+### Nginx variables
+Nginx variables can be used to adapt behaviour and or more flexible configurations:
+* ngx.var.cs_disable_bouncer: set to 1, it will disable the bouncer
+* ngx.var.enable_appsec: set to 1, it will enable the appsec even if it's disabled by configuration or if bouncer is disabled
+* ngx.var.disable_appsec: set to 1, it will disable the appsec
