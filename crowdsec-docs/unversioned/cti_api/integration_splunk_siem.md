@@ -17,6 +17,8 @@ The Splunk SIEM App is available in Splunkbase. You can download it from [here](
 
 - Complete the App setup by providing your API Key 
 
+**N.B**: If you wish to change your key at a later date, you can do so on this same page.
+
 ![Setup View](/img/splunk_siem/splunk_siem_api_key_setup.png)
 
 
