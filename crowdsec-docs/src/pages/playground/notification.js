@@ -1,6 +1,6 @@
 import Playground from "@site/src/components/Playground";
-import CodeMirror from "@uiw/react-codemirror";
-import { useState, useEffect } from "react";
+import CodeMirror, { EditorView } from "@uiw/react-codemirror";
+import { useState, useEffect, useRef } from "react";
 import { json } from "@codemirror/lang-json";
 import { go } from "@codemirror/lang-go";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@site/src/ui/tooltip";
@@ -59,6 +59,8 @@ This alert was triggered by suspicious activity from {{.Source.Value}}.
 
     const [output, setOutput] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const timeoutRef = useRef(null);
 
     // Check for template query parameter on component mount
     useEffect(() => {
@@ -99,30 +101,44 @@ This alert was triggered by suspicious activity from {{.Source.Value}}.
     };
 
     const formatAlert = () => {
-        try {
-            setError("");
-            // Call WASM function
-            if (window.formatAlert) {
-                const result = window.formatAlert(alert, template);
+        // Clear any existing timeout
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
 
-                // Handle WASM function result structure
-                if (result && result.error) {
-                    setError(`WASM Error: ${result.error}`);
-                    setOutput("");
-                } else if (result && result.out) {
-                    setOutput(String(result.out));
+        setLoading(true);
+        setError("");
+        setOutput("");
+
+        // Add a delay for better UX
+        timeoutRef.current = setTimeout(() => {
+            try {
+                // Call WASM function
+                if (window.formatAlert) {
+                    const result = window.formatAlert(alert, template);
+
+                    // Handle WASM function result structure
+                    if (result && result.error) {
+                        setError(`WASM Error: ${result.error}`);
+                        setOutput("");
+                    } else if (result && result.out) {
+                        setOutput(String(result.out));
+                        setError("");
+                    } else {
+                        setError("Unexpected result format from WASM function");
+                        setOutput("");
+                    }
                 } else {
-                    setError("Unexpected result format from WASM function");
+                    setError("WASM function formatAlert not available");
                     setOutput("");
                 }
-            } else {
-                setError("WASM function formatAlert not available");
+            } catch (err) {
+                setError(`Error: ${err.message}`);
                 setOutput("");
+            } finally {
+                setLoading(false);
             }
-        } catch (err) {
-            setError(`Error: ${err.message}`);
-            setOutput("");
-        }
+        }, 800); // 800ms delay for better UX
     };
 
     // Auto-format when inputs change
@@ -130,174 +146,206 @@ This alert was triggered by suspicious activity from {{.Source.Value}}.
         if (alert && template) {
             formatAlert();
         }
+
+        // Cleanup timeout on unmount
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
     }, [alert, template]);
+
+    // Loading spinner component
+    const LoadingSpinner = () => (
+        <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-h-full tw-space-y-3 tw-bg-gray-50 dark:tw-bg-gray-800">
+            <div className="tw-animate-spin tw-rounded-full tw-h-8 tw-w-8 tw-border-2 tw-border-gray-300 dark:tw-border-gray-600 tw-border-t-blue-600 dark:tw-border-t-blue-400"></div>
+            <p className="tw-text-sm tw-text-gray-600 dark:tw-text-gray-400">Generating notification...</p>
+        </div>
+    );
 
     return (
         <div className="tw-space-y-4">
-            {/* Input Section */}
-            <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-4">
-                {/* Alert JSON Input */}
-                <div className="tw-space-y-2">
-                    <div className="tw-flex tw-items-center tw-justify-between">
-                        <div className="tw-flex tw-items-center tw-gap-2">
-                            <label className="tw-text-sm tw-font-medium tw-text-gray-700 dark:tw-text-gray-300">
-                                Alert JSON
-                            </label>
-                            <TooltipProvider>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <button className="tw-w-4 tw-h-4 tw-rounded-full tw-bg-gray-200 dark:tw-bg-gray-700 tw-text-gray-600 dark:tw-text-gray-400 tw-text-xs tw-font-medium hover:tw-bg-gray-300 dark:hover:tw-bg-gray-600 tw-transition-colors tw-flex tw-items-center tw-justify-center">
-                                            ?
-                                        </button>
-                                    </TooltipTrigger>
-                                    <TooltipContent side="bottom" className="tw-max-w-xs">
-                                        <div className="tw-space-y-2">
-                                            <p className="tw-font-medium">How to get your own alert:</p>
-                                            <div className="tw-text-xs tw-space-y-1">
-                                                <p>• Use <code className="tw-bg-gray-100 dark:tw-bg-gray-800 tw-px-1 tw-rounded">cscli alerts list</code> to find an alert ID</p>
-                                                <p>• Use <code className="tw-bg-gray-100 dark:tw-bg-gray-800 tw-px-1 tw-rounded">cscli alerts inspect &lt;alert_id&gt; -o json</code> to get the alert details in JSON</p>
-                                                <p>• Pipe the output to <code className="tw-bg-gray-100 dark:tw-bg-gray-800 tw-px-1 tw-rounded">jq -c</code> to compact the output</p>
-                                                <p>• Paste the alert details - it will be auto-wrapped in an array</p>
+            {/* Main Layout with 3 columns */}
+            <div className="tw-flex tw-gap-6 tw-h-full">
+                {/* Left Column - Inputs */}
+                <div className="tw-w-1/2 tw-flex-shrink-0 tw-space-y-4">
+                    {/* Alert JSON Input */}
+                    <div className="tw-space-y-2">
+                        <div className="tw-flex tw-items-center tw-justify-between">
+                            <div className="tw-flex tw-items-center tw-gap-2">
+                                <label className="tw-text-sm tw-font-medium tw-text-gray-700 dark:tw-text-gray-300">
+                                    Alert JSON
+                                </label>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <button className="tw-w-4 tw-h-4 tw-rounded-full tw-bg-gray-200 dark:tw-bg-gray-700 tw-text-gray-600 dark:tw-text-gray-400 tw-text-xs tw-font-medium hover:tw-bg-gray-300 dark:hover:tw-bg-gray-600 tw-transition-colors tw-flex tw-items-center tw-justify-center">
+                                                ?
+                                            </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="bottom" className="tw-max-w-xs">
+                                            <div className="tw-space-y-2">
+                                                <p className="tw-font-medium">How to get your own alert:</p>
+                                                <div className="tw-text-xs tw-space-y-1">
+                                                    <p>• Use <code className="tw-bg-gray-100 dark:tw-bg-gray-800 tw-px-1 tw-rounded">cscli alerts list</code> to find an alert ID</p>
+                                                    <p>• Use <code className="tw-bg-gray-100 dark:tw-bg-gray-800 tw-px-1 tw-rounded">cscli alerts inspect &lt;alert_id&gt; -o json</code> to get the alert details in JSON</p>
+                                                    <p>• Pipe the output to <code className="tw-bg-gray-100 dark:tw-bg-gray-800 tw-px-1 tw-rounded">jq -c</code> to compact the output</p>
+                                                    <p>• Paste the alert details - it will be auto-wrapped in an array</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                        </div>
-                        <span className="tw-text-xs tw-text-gray-500">
-                            {alert.split('\n').length} lines
-                        </span>
-                    </div>
-                    <div className="tw-border tw-border-gray-300 dark:tw-border-gray-600 tw-rounded-md tw-overflow-hidden">
-                        <CodeMirror
-                            value={alert}
-                            onChange={handleAlertChange}
-                            extensions={[json()]}
-                            theme="dark"
-                            basicSetup={{
-                                lineNumbers: true,
-                                foldGutter: true,
-                                searchKeymap: false
-                            }}
-                            className="tw-text-sm"
-                            maxHeight="300px"
-                        />
-                    </div>
-                </div>
-
-                {/* Template Input */}
-                <div className="tw-space-y-2">
-                    <div className="tw-flex tw-items-center tw-justify-between">
-                        <div className="tw-flex tw-items-center tw-gap-2">
-                            <label className="tw-text-sm tw-font-medium tw-text-gray-700 dark:tw-text-gray-300">
-                                Go Template
-                            </label>
-                            <TooltipProvider>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <button className="tw-w-4 tw-h-4 tw-rounded-full tw-bg-gray-200 dark:tw-bg-gray-700 tw-text-gray-600 dark:tw-text-gray-400 tw-text-xs tw-font-medium hover:tw-bg-gray-300 dark:hover:tw-bg-gray-600 tw-transition-colors tw-flex tw-items-center tw-justify-center">
-                                            ?
-                                        </button>
-                                    </TooltipTrigger>
-                                    <TooltipContent side="bottom" className="tw-max-w-xs">
-                                        <div className="tw-text-center">
-                                            <a 
-                                                href="https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert" 
-                                                target="_blank" 
-                                                rel="noopener noreferrer" 
-                                                className="tw-text-sm tw-font-medium tw-text-blue-600 dark:tw-text-blue-400 hover:tw-text-blue-700 dark:hover:tw-text-blue-300 hover:tw-underline tw-transition-colors"
-                                            >
-                                                View Alert Model Documentation →
-                                            </a>
-                                        </div>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                        </div>
-                        <div className="tw-flex tw-items-center tw-gap-2">
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
                             <span className="tw-text-xs tw-text-gray-500">
-                                {template.split('\n').length} lines
+                                {alert.split('\n').length} lines
                             </span>
-                            <button
-                                onClick={() => navigator.clipboard.writeText(template)}
-                                className="tw-text-xs tw-text-blue-600 hover:tw-text-blue-700 tw-font-medium tw-cursor-pointer"
-                            >
-                                Copy
-                            </button>
-                            <button
-                                onClick={() => {
-                                    try {
-                                        const encodedTemplate = btoa(template);
-                                        const url = new URL(window.location);
-                                        url.searchParams.set('template', encodedTemplate);
-                                        navigator.clipboard.writeText(url.toString());
-                                    } catch (err) {
-                                        console.error('Failed to create shareable URL:', err);
-                                    }
+                        </div>
+                        <div className="tw-border tw-border-gray-300 dark:tw-border-gray-600 tw-rounded-md tw-overflow-hidden">
+                            <CodeMirror
+                                value={alert}
+                                onChange={handleAlertChange}
+                                extensions={[json()]}
+                                theme="dark"
+                                basicSetup={{
+                                    lineNumbers: true,
+                                    foldGutter: true,
+                                    searchKeymap: false
                                 }}
-                                className="tw-text-xs tw-text-green-600 hover:tw-text-green-700 tw-font-medium tw-cursor-pointer"
-                                title="Copy a shareable URL with this template encoded as a query parameter"
-                            >
-                                Share
-                            </button>
+                                className="tw-text-sm"
+                                height="280px"
+                            />
                         </div>
                     </div>
-                    <div className="tw-border tw-border-gray-300 dark:tw-border-gray-600 tw-rounded-md tw-overflow-hidden">
-                        <CodeMirror
-                            value={template}
-                            onChange={setTemplate}
-                            extensions={[go()]}
-                            theme="dark"
-                            basicSetup={{
-                                lineNumbers: true,
-                                foldGutter: true,
-                                searchKeymap: false
-                            }}
-                            className="tw-text-sm"
-                            maxHeight="300px"
-                        />
+
+                    {/* Template Input */}
+                    <div className="tw-space-y-2">
+                        <div className="tw-flex tw-items-center tw-justify-between">
+                            <div className="tw-flex tw-items-center tw-gap-2">
+                                <label className="tw-text-sm tw-font-medium tw-text-gray-700 dark:tw-text-gray-300">
+                                    Go Template
+                                </label>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <button className="tw-w-4 tw-h-4 tw-rounded-full tw-bg-gray-200 dark:tw-bg-gray-700 tw-text-gray-600 dark:tw-text-gray-400 tw-text-xs tw-font-medium hover:tw-bg-gray-300 dark:hover:tw-bg-gray-600 tw-transition-colors tw-flex tw-items-center tw-justify-center">
+                                                ?
+                                            </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="bottom" className="tw-max-w-xs">
+                                            <div className="tw-text-center">
+                                                <a 
+                                                    href="https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert" 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer" 
+                                                    className="tw-text-sm tw-font-medium tw-text-blue-600 dark:tw-text-blue-400 hover:tw-text-blue-700 dark:hover:tw-text-blue-300 hover:tw-underline tw-transition-colors"
+                                                >
+                                                    View Alert Model Documentation →
+                                                </a>
+                                            </div>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+                            <div className="tw-flex tw-items-center tw-gap-2">
+                                <span className="tw-text-xs tw-text-gray-500">
+                                    {template.split('\n').length} lines
+                                </span>
+                                <button
+                                    onClick={() => navigator.clipboard.writeText(template)}
+                                    className="tw-text-xs tw-text-blue-600 hover:tw-text-blue-700 tw-font-medium tw-cursor-pointer"
+                                >
+                                    Copy
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        try {
+                                            const encodedTemplate = btoa(template);
+                                            const url = new URL(window.location);
+                                            url.searchParams.set('template', encodedTemplate);
+                                            navigator.clipboard.writeText(url.toString());
+                                        } catch (err) {
+                                            console.error('Failed to create shareable URL:', err);
+                                        }
+                                    }}
+                                    className="tw-text-xs tw-text-green-600 hover:tw-text-green-700 tw-font-medium tw-cursor-pointer"
+                                    title="Copy a shareable URL with this template encoded as a query parameter"
+                                >
+                                    Share
+                                </button>
+                            </div>
+                        </div>
+                        <div className="tw-border tw-border-gray-300 dark:tw-border-gray-600 tw-rounded-md tw-overflow-hidden">
+                            <CodeMirror
+                                value={template}
+                                onChange={setTemplate}
+                                extensions={[go()]}
+                                theme="dark"
+                                basicSetup={{
+                                    lineNumbers: true,
+                                    foldGutter: true,
+                                    searchKeymap: false
+                                }}
+                                className="tw-text-sm"
+                                height="280px"
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Format Button */}
-            <div className="tw-flex tw-justify-center">
-                <button
-                    onClick={formatAlert}
-                    className="tw-px-4 tw-py-2 tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-white tw-text-sm tw-font-medium tw-rounded-md tw-transition-colors tw-duration-200 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-ring-offset-2"
-                >
-                    Format Alert
-                </button>
-            </div>
-
-            {/* Output Section */}
-            <div className="tw-space-y-2">
-                <div className="tw-flex tw-items-center tw-justify-between">
-                    <label className="tw-text-sm tw-font-medium tw-text-gray-700 dark:tw-text-gray-300">
-                        Output
-                    </label>
+                {/* Middle Column - Arrow */}
+                <div className="tw-w-12 tw-flex tw-items-center tw-justify-center tw-flex-shrink-0">
+                    <div className="tw-flex tw-flex-col tw-items-center tw-gap-2">
+                        <svg 
+                            className="tw-w-6 tw-h-6 tw-text-gray-700 dark:tw-text-gray-300" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                        >
+                            <path 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                strokeWidth={2} 
+                                d="M13 7l5 5m0 0l-5 5m5-5H6" 
+                            />
+                        </svg>
+                    </div>
                 </div>
 
-                {error ? (
-                    <div className="tw-p-3 tw-bg-red-50 dark:tw-bg-red-900/20 tw-border tw-border-red-200 dark:tw-border-red-800 tw-rounded-md">
-                        <p className="tw-text-sm tw-text-red-700 dark:tw-text-red-400">{error}</p>
+                {/* Right Column - Output */}
+                <div className="tw-flex-1 tw-flex tw-flex-col tw-space-y-2">
+                    <div className="tw-flex tw-items-center tw-justify-between">
+                        <label className="tw-text-sm tw-font-medium tw-text-gray-700 dark:tw-text-gray-300">
+                            Output
+                        </label>
                     </div>
-                ) : (
-                    <div className="tw-border tw-border-gray-300 dark:tw-border-gray-600 tw-rounded-md tw-overflow-hidden">
-                        <CodeMirror
-                            value={output || ""}
-                            editable={false}
-                            theme="dark"
-                            basicSetup={{
-                                lineNumbers: false,
-                                foldGutter: false,
-                                searchKeymap: false
-                            }}
-                            className="tw-text-sm tw-bg-gray-50 dark:tw-bg-gray-800"
-                            maxHeight="200px"
-                        />
-                    </div>
-                )}
+
+                    {loading ? (
+                        <div className="tw-border tw-border-gray-300 dark:tw-border-gray-600 tw-rounded-md tw-flex-1 tw-overflow-hidden">
+                            <LoadingSpinner />
+                        </div>
+                    ) : error ? (
+                        <div className="tw-p-3 tw-bg-red-50 dark:tw-bg-red-900/20 tw-border tw-border-red-200 dark:tw-border-red-800 tw-rounded-md tw-flex-1 tw-flex tw-items-center tw-justify-center">
+                            <p className="tw-text-sm tw-text-red-700 dark:tw-text-red-400 tw-text-center">{error}</p>
+                        </div>
+                    ) : (
+                        <div className="tw-border tw-border-gray-300 dark:tw-border-gray-600 tw-rounded-md tw-flex-1">
+                            <CodeMirror
+                                value={output || ""}
+                                editable={false}
+                                theme="dark"
+                                basicSetup={{
+                                    lineNumbers: false,
+                                    foldGutter: false,
+                                    searchKeymap: false,
+                                }}
+                                extensions={ EditorView.lineWrapping }
+                                className="tw-text-sm tw-bg-gray-50 dark:tw-bg-gray-800"
+                                height="610px"
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
