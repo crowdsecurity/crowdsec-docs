@@ -558,11 +558,6 @@ module.exports = {
             label: "🧭 Introduction",
         }, 
         {
-            type: "doc",
-            id:  "getting_started/pre_requisites",
-            label: "📋 Prerequisites",
-        }, 
-        {
             type: "category",
             label: "📦 Installation",
             items: [
