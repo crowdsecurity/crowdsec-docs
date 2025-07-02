@@ -1,13 +1,13 @@
-import React from "react";
-import ThemedImage from "@theme/ThemedImage";
-import useBaseUrl from "@docusaurus/useBaseUrl";
+import React from "react"
+import ThemedImage from "@theme/ThemedImage"
+import useBaseUrl from "@docusaurus/useBaseUrl"
 
 const SIGNUP_LINK = `https://app.crowdsec.net/signup${
     process.env.NODE_ENV === "production"
         ? "?mtm_campaign=Console&mtm_source=docs&mtm_medium=tocAd&mtm_content=Console"
         : ""
-}`;
-export default function ConsoleAd() {
+}`
+const ConsoleAd = (): React.JSX.Element => {
     return (
         <a href={SIGNUP_LINK} target="_blank">
             <ThemedImage
@@ -19,5 +19,7 @@ export default function ConsoleAd() {
                 width="100%"
             />
         </a>
-    );
+    )
 }
+
+export default ConsoleAd

@@ -1,6 +1,14 @@
+import React from "react"
 import Link from "@docusaurus/Link"
 
-const staticData = [
+type StaticData = {
+    icon: React.FC<React.HTMLAttributes<HTMLSpanElement>>
+    title: string
+    description: string
+    link: string
+}
+
+const staticData: StaticData[] = [
     {
         icon: () => (
             <img
@@ -76,7 +84,7 @@ const staticData = [
     },
 ]
 
-export default function GetToKnowUs() {
+const GetToKnowUs = (): React.JSX.Element => {
     return (
         <section>
             <h2 className="tw-text-left tw-text-white">Get to know us!</h2>
@@ -84,7 +92,7 @@ export default function GetToKnowUs() {
             <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
                 {staticData.map((props, index) => (
                     <Link
-                        key={props.text}
+                        key={props.title}
                         href={props.link}
                         className={
                             "tw-border-0 hover:tw-no-underline " +
@@ -119,3 +127,5 @@ export default function GetToKnowUs() {
         </section>
     )
 }
+
+export default GetToKnowUs

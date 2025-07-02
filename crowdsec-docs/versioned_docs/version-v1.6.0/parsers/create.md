@@ -4,7 +4,7 @@ title: Creating parsers
 sidebar_position: 4
 ---
 
-import AcademyPromo from '@site/src/components/AcademyPromo';
+import AcademyPromo from '@site/src/components/academy-promo';
 
 ## Foreword
 
@@ -51,9 +51,7 @@ The error message can be useful when one wants to understand why the parser file
 
 ![Possible integration](/img/parser_creation/error_message.png)
 
-
 ## Pre-requisites
-
 
 1. [Create a local test environment](https://doc.crowdsec.net/docs/contributing/contributing_test_env)
 
@@ -62,7 +60,6 @@ The error message can be useful when one wants to understand why the parser file
 ```bash
 git clone https://github.com/crowdsecurity/hub.git
 ```
-
 
 ## Create our test
 
@@ -81,23 +78,20 @@ From the root of the hub repository :
 
 ## Configure our test
 
-
 Let's add our parser to the test configuration (`.tests/myservice-logs/config.yaml`). He specify that we need syslog-logs parser (because myservice logs are shipped via syslog), and then our custom parser.
 
 ```yaml
 parsers:
-- crowdsecurity/syslog-logs
-- ./parsers/s01-parse/crowdsecurity/myservice-logs.yaml
+    - crowdsecurity/syslog-logs
+    - ./parsers/s01-parse/crowdsecurity/myservice-logs.yaml
 scenarios:
 postoverflows:
 log_file: myservice-logs.log
 log_type: syslog
 ignore_parsers: false
-
 ```
 
-__note: as our custom parser isn't yet part of the hub, we specify its path relative to the root of the hub directory__
-
+**note: as our custom parser isn't yet part of the hub, we specify its path relative to the root of the hub directory**
 
 ## Parser creation : skeleton
 
@@ -110,29 +104,28 @@ onsuccess: next_stage
 name: crowdsecurity/myservice-logs
 description: "Parse myservice logs"
 grok:
-#our grok pattern : capture .*
-  pattern: ^%{DATA:some_data}$
-#the field to which we apply the grok pattern : the log message itself
-  apply_on: message
+    #our grok pattern : capture .*
+    pattern: ^%{DATA:some_data}$
+    #the field to which we apply the grok pattern : the log message itself
+    apply_on: message
 statics:
-  - parsed: is_my_service
-    value: yes
+    - parsed: is_my_service
+      value: yes
 ```
 
- - a [filter](/parsers/format.md#filter) : if the expression is `true`, the event will enter the parser, otherwise, it won't
- - a [onsuccess](/parsers/format.md#onsuccess) : defines what happens when the event was successfully parsed : shall we continue ? shall we move to next stage ? etc.
- - a `name` & a `description`
- - some [statics](/parsers/format.md#statics) that will modify the event
- - a `debug` flag that allows to enable local debugging information
- - a `grok` pattern to capture some data in logs
-
+-   a [filter](/parsers/format.md#filter) : if the expression is `true`, the event will enter the parser, otherwise, it won't
+-   a [onsuccess](/parsers/format.md#onsuccess) : defines what happens when the event was successfully parsed : shall we continue ? shall we move to next stage ? etc.
+-   a `name` & a `description`
+-   some [statics](/parsers/format.md#statics) that will modify the event
+-   a `debug` flag that allows to enable local debugging information
+-   a `grok` pattern to capture some data in logs
 
 We can then "test" our parser like this :
 
 ```bash
 ▶ cscli hubtest run myservice-logs
-INFO[01-10-2021 12:41:21 PM] Running test 'myservice-logs'                
-WARN[01-10-2021 12:41:24 PM] Assert file '/home/dev/github/hub/.tests/myservice-logs/parser.assert' is empty, generating assertion: 
+INFO[01-10-2021 12:41:21 PM] Running test 'myservice-logs'
+WARN[01-10-2021 12:41:24 PM] Assert file '/home/dev/github/hub/.tests/myservice-logs/parser.assert' is empty, generating assertion:
 
 len(results) == 2
 len(results["s00-raw"]["crowdsecurity/syslog-logs"]) == 3
@@ -153,9 +146,10 @@ Please fill your assert file(s) for test 'myservice-logs', exiting
 
 ```
 
-What happened here ? 
- - Our logs have been processed by syslog-logs parser and our custom parser
- - As we have no existing assertion(s), `cscli hubtest` kindly generated some for us
+What happened here ?
+
+-   Our logs have been processed by syslog-logs parser and our custom parser
+-   As we have no existing assertion(s), `cscli hubtest` kindly generated some for us
 
 This mostly allows us to ensure that our logs have been processed by our parser, even if it's useless in its current state.
 Further inspection can be seen with `cscli hubtest explain` :
@@ -184,9 +178,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 't
 
 We can see that our log lines were successfully parsed by both syslog-logs and myservice-logs parsers.
 
-
 ## Parser creation : actual parser
-
 
 Let's modify our parser, `./parsers/s01-parse/crowdsecurity/myservice-logs.yaml` :
 
@@ -197,26 +189,26 @@ name: crowdsecurity/myservice-logs
 description: "Parse myservice logs"
 #for clarity, we create our pattern syntax beforehand
 pattern_syntax:
-  MYSERVICE_BADPASSWORD: bad password for user '%{USERNAME:user}' from '%{IP:source_ip}' #[1]
-  MYSERVICE_BADUSER: unknown user '%{USERNAME:user}' from '%{IP:source_ip}' #[1]
+    MYSERVICE_BADPASSWORD: bad password for user '%{USERNAME:user}' from '%{IP:source_ip}' #[1]
+    MYSERVICE_BADUSER: unknown user '%{USERNAME:user}' from '%{IP:source_ip}' #[1]
 nodes:
-#and we use them to parse our two type of logs
-  - grok:
-      name: "MYSERVICE_BADPASSWORD" #[2]
-      apply_on: message
-      statics:
-        - meta: log_type #[3]
-          value: myservice_failed_auth
-        - meta: log_subtype
-          value: myservice_bad_password
-  - grok:
-      name: "MYSERVICE_BADUSER" #[2]
-      apply_on: message
-      statics:
-        - meta: log_type #[3]
-          value: myservice_failed_auth
-        - meta: log_subtype
-          value: myservice_bad_user
+    #and we use them to parse our two type of logs
+    - grok:
+          name: "MYSERVICE_BADPASSWORD" #[2]
+          apply_on: message
+          statics:
+              - meta: log_type #[3]
+                value: myservice_failed_auth
+              - meta: log_subtype
+                value: myservice_bad_password
+    - grok:
+          name: "MYSERVICE_BADUSER" #[2]
+          apply_on: message
+          statics:
+              - meta: log_type #[3]
+                value: myservice_failed_auth
+              - meta: log_subtype
+                value: myservice_bad_user
 statics:
     - meta: service #[3]
       value: myservice
@@ -227,19 +219,18 @@ statics:
 ```
 
 Various changes have been made here :
- - We created to patterns to capture the two relevant type of log lines, Using an [online grok debugger](https://grokdebug.herokuapp.com/) or an [online regex debugger](https://www.debuggex.com/) [2]
-)
- - We keep track of the username and the source_ip (Please note that setting the source_ip in `evt.Meta.source_ip` and `evt.Parsed.source_ip` is important [1])
- - We setup various [statics](/parsers/format.md#statics) information to classify the log type [3]
 
-
+-   We created to patterns to capture the two relevant type of log lines, Using an [online grok debugger](https://grokdebug.herokuapp.com/) or an [online regex debugger](https://www.debuggex.com/) [2]
+    )
+-   We keep track of the username and the source_ip (Please note that setting the source_ip in `evt.Meta.source_ip` and `evt.Parsed.source_ip` is important [1])
+-   We setup various [statics](/parsers/format.md#statics) information to classify the log type [3]
 
 Let's run out tests again :
 
 ```bash {13-20}
-▶ cscli hubtest run myservice-logs                    
-INFO[01-10-2021 12:49:56 PM] Running test 'myservice-logs'                
-WARN[01-10-2021 12:49:59 PM] Assert file '/home/dev/github/hub/.tests/myservice-logs/parser.assert' is empty, generating assertion: 
+▶ cscli hubtest run myservice-logs
+INFO[01-10-2021 12:49:56 PM] Running test 'myservice-logs'
+WARN[01-10-2021 12:49:59 PM] Assert file '/home/dev/github/hub/.tests/myservice-logs/parser.assert' is empty, generating assertion:
 
 len(results) == 2
 len(results["s00-raw"]["crowdsecurity/syslog-logs"]) == 3
@@ -291,8 +282,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 't
 		└ 🔴 crowdsecurity/myservice-logs
 ```
 
-__note: we can see that our log line `accepted connection for user 'toto' from '192.168.1.1'` wasn't parsed by `crowdsecurity/myservice-logs` as we have no pattern for it__
-
+**note: we can see that our log line `accepted connection for user 'toto' from '192.168.1.1'` wasn't parsed by `crowdsecurity/myservice-logs` as we have no pattern for it**
 
 ## Closing word
 
