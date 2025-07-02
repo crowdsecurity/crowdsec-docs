@@ -1,4 +1,4 @@
-import CIcon from "@coreui/icons-react"
+import React from "react"
 import cibLinux from "@site/static/img/logo/linux-colored.svg"
 import cibDocker from "@site/static/img/logo/docker-colored.svg"
 import cibWindows from "@site/static/img/logo/windows-colored.svg"
@@ -8,8 +8,8 @@ import opnsenseLogo from "@site/static/img/logo-opnsense.svg"
 import pfSenseLogo from "@site/static/img/logo-pfsense.svg"
 import cibKubernetes from "@site/static/img/logo/kubernetes-colored.svg"
 import whmLogo from "@site/static/img/logo-whm.svg"
-import cloudwaysLogo from "@site/static/img/logo-cloudways.svg"
 import Link from "@docusaurus/Link"
+import CIcon from "@coreui/icons-react"
 
 const staticData = [
     {
@@ -65,7 +65,7 @@ const staticData = [
     // },
 ]
 
-export default function QuickStart() {
+const QuickStart = (): React.JSX.Element => {
     return (
         <section>
             <div className="tw-text-left">
@@ -93,7 +93,9 @@ export default function QuickStart() {
                             <span className="tw-border-2 tw-border-gray-700 tw-bg-alpa-primary tw-w-12 tw-h-12 tw-rounded-lg tw-inline-flex tw-items-center tw-justify-center">
                                 {(!Array.isArray(props.icon) && (
                                     <props.icon className="icon icon-xl" />
-                                )) || <CIcon icon={props.icon} size="xl" />}
+                                )) || (
+                                    <CIcon icon={props.icon as any} size="xl" />
+                                )}
                             </span>
 
                             <span
@@ -115,3 +117,5 @@ export default function QuickStart() {
         </section>
     )
 }
+
+export default QuickStart

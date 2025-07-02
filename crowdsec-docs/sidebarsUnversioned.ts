@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
     ctiApiSidebar: [
         {
             type: "doc",
@@ -554,14 +554,14 @@ module.exports = {
     gettingStarted: [
         {
             type: "doc",
-            id:   "getting_started/intro",
+            id: "getting_started/intro",
             label: "🧭 Introduction",
-        }, 
+        },
         {
             type: "doc",
-            id:  "getting_started/pre_requisites",
+            id: "getting_started/pre_requisites",
             label: "📋 Prerequisites",
-        }, 
+        },
         {
             type: "category",
             label: "📦 Installation",
@@ -581,7 +581,7 @@ module.exports = {
             type: "doc",
             id: "getting_started/health_check",
             label: "🩺 Stack Health-Check",
-        }, 
+        },
         {
             type: "category",
             label: "💡 Post Installation Steps",
@@ -589,7 +589,7 @@ module.exports = {
                 type: "doc",
                 id: "getting_started/next_steps",
             },
-            items: [              
+            items: [
                 {
                     type: "category",
                     label: "CrowdSec Console",
@@ -601,14 +601,14 @@ module.exports = {
                         "getting_started/post_installation/console_blocklists",
                         "getting_started/post_installation/console_hub",
                     ],
-                    className: "sideBarItemRecommended" // to display tag
+                    className: "sideBarItemRecommended", // to display tag
                 },
                 {
                     type: "doc",
                     id: "getting_started/post_installation/whitelists",
                     label: "Whitelisting IPs",
-                    className: "sideBarItemRecommended"
-                }, 
+                    className: "sideBarItemRecommended",
+                },
                 {
                     type: "category",
                     label: "Acquisition",
@@ -632,21 +632,21 @@ module.exports = {
                 },
                 {
                     type: "doc",
-                    id:   "getting_started/post_installation/profiles",
+                    id: "getting_started/post_installation/profiles",
                     label: "Profiles",
-                    className: "sideBarItemOptional"
+                    className: "sideBarItemOptional",
                 },
                 {
                     type: "doc",
-                    id:   "getting_started/post_installation/metrics",
+                    id: "getting_started/post_installation/metrics",
                     label: "Metrics",
-                    className: "sideBarItemOptional"
-                }, 
+                    className: "sideBarItemOptional",
+                },
                 {
                     type: "doc",
-                    id:    "getting_started/post_installation/troubleshoot",
+                    id: "getting_started/post_installation/troubleshoot",
                     label: "General Troubleshooting 🚨",
-                },               
+                },
             ],
         },
         {
@@ -656,3 +656,14 @@ module.exports = {
         },
     ],
 }
+
+export default config
+
+export const ctiApiSidebar = config.ctiApiSidebar
+export const consoleSidebar = config.consoleSidebar
+export const remediationSideBar = config.remediationSideBar
+export const blocklistsSideBar = config.blocklistsSideBar
+export const troubleshootingSideBar = config.troubleshootingSideBar
+export const serviceApiSideBar = config.serviceApiSideBar
+export const guidesSideBar = config.guidesSideBar
+export const gettingStarted = config.gettingStarted

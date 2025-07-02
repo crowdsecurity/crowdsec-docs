@@ -1,16 +1,18 @@
+import React from "react"
 import useBaseUrl from "@docusaurus/useBaseUrl"
 import Link from "@docusaurus/Link"
 
-export default function ConsolePromo({ ...props }) {
+const ConsolePromo = ({ ...props }): React.JSX.Element => {
+    const url = useBaseUrl("/img/" + props.image)
     return (
         <div className="tw-flex-row tw-flex tw-bg-alpa-primary tw-p-4 tw-rounded-xl tw-items-center">
             <div className="tw-flex-col tw-flex tw-py-1 tw-pr-4 tw-text-white tw-flex-1 tw-h-full">
-                {!!props.title ? (
+                {Boolean(props.title) ? (
                     <h3 className="tw-text-center tw-text-xl sm:tw-text-2xl lg:tw-text-left lg:tw-text-3xl">
                         {props.title}
                     </h3>
                 ) : null}
-                {!!props.description ? (
+                {Boolean(props.description) ? (
                     <p className="md:tw-px-4">{props.description}</p>
                 ) : null}
                 <Link
@@ -20,9 +22,9 @@ export default function ConsolePromo({ ...props }) {
                     {props.text ?? "Get Started"}
                 </Link>
             </div>
-            {!!props.image ? (
+            {Boolean(props.image) ? (
                 <img
-                    src={useBaseUrl("/img/" + props.image)}
+                    src={url}
                     alt={props.title}
                     className="tw-h-1/2 tw-w-1/2 tw-hidden md:tw-flex"
                 />
@@ -30,3 +32,5 @@ export default function ConsolePromo({ ...props }) {
         </div>
     )
 }
+
+export default ConsolePromo

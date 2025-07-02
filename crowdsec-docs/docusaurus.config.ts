@@ -1,11 +1,14 @@
-const { themes } = require("prism-react-renderer")
+import { Config } from "@docusaurus/types"
+import type * as Preset from "@docusaurus/preset-classic"
+import { themes } from "prism-react-renderer"
 
-const {
+import {
     remediationSideBar,
     ctiApiSidebar,
     guidesSideBar,
-} = require("./sidebarsUnversioned.js")
-const tailwindConfig = require("./tailwind.config.js")
+} from "./sidebarsUnversioned"
+
+import tailwindPlugin from "./plugins/tailwind-config"
 
 const generateCurrentAndNextRedirects = (s) => [
     {
@@ -25,7 +28,7 @@ const backportRedirect = (s) => {
         if (id) {
             arr.push(...generateCurrentAndNextRedirects(id))
         }
-        if (link && link.id) {
+        if (link?.id) {
             arr.push(...generateCurrentAndNextRedirects(link.id))
         }
         if (items) {
@@ -44,8 +47,7 @@ const backportRedirect = (s) => {
     return arr
 }
 
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
-module.exports = {
+const config: Config = {
     future: {
         v4: {
             removeLegacyPostBuildHeadAttribute: true,
@@ -97,9 +99,6 @@ module.exports = {
                 light: "rgba(101,108,133,0.8)",
                 dark: "rgba(9,10,17,0.8)",
             },
-        },
-        navbar: {
-            items: [],
         },
         navbar: {
             title: "",
@@ -255,7 +254,7 @@ module.exports = {
             theme: themes.shadesOfPurple,
             additionalLanguages: ["bash", "yaml", "json"],
         },
-    },
+    } satisfies Preset.ThemeConfig,
     presets: [
         [
             "@docusaurus/preset-classic",
@@ -299,7 +298,7 @@ module.exports = {
                 sidebarPath: require.resolve("./sidebarsUnversioned.js"),
             },
         ],
-        ["./plugins/gtag/index.js", { trackingID: "G-0TFBMNTDFQ" }],
+        ["./plugins/gtag/index.ts", { trackingID: "G-0TFBMNTDFQ" }],
         [
             "@docusaurus/plugin-client-redirects",
             {
@@ -329,6 +328,8 @@ module.exports = {
                 ],
             },
         ],
-        "./plugins/tailwind-config.js",
+        tailwindPlugin,
     ],
 }
+
+export default config
