@@ -157,9 +157,8 @@ This alert was triggered by suspicious activity from {{.Source.Value}}.
 
     // Loading spinner component
     const LoadingSpinner = () => (
-        <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-h-full tw-space-y-3 tw-bg-gray-50 dark:tw-bg-gray-800">
-            <div className="tw-animate-spin tw-rounded-full tw-h-8 tw-w-8 tw-border-2 tw-border-gray-300 dark:tw-border-gray-600 tw-border-t-blue-600 dark:tw-border-t-blue-400"></div>
-            <p className="tw-text-sm tw-text-gray-600 dark:tw-text-gray-400">Generating notification...</p>
+        <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-h-full tw-space-y-3 tw-bg-gray-800">
+            <p className="tw-text-sm tw-text-gray-400">Generating notification...</p>
         </div>
     );
 
@@ -340,7 +339,7 @@ This alert was triggered by suspicious activity from {{.Source.Value}}.
                                     searchKeymap: false,
                                 }}
                                 extensions={ EditorView.lineWrapping }
-                                className="tw-text-sm tw-bg-gray-50 dark:tw-bg-gray-800"
+                                className="tw-text-sm tw-bg-gray-100 dark:tw-bg-gray-800"
                                 height="610px"
                             />
                         </div>
@@ -358,6 +357,7 @@ export default function PlaygroundNotifications() {
                 component={Notifications}
                 componentProps={{}}
                 title="Notifications"
+                subtitle="This playground allows you to see how the notification template will look like for a given alert."
                 loadingTitle="Loading Notifications..."
             />
         </Layout>

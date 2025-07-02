@@ -87,7 +87,8 @@ export default function Playground({
     component: Component, 
     componentProps = {},
     title = "Playground",
-    loadingTitle = "Loading..."
+    loadingTitle = "Loading...",
+    subtitle = ""
 }) {
     const { isLoading, error, isLoaded } = useWasm();
 
@@ -111,6 +112,9 @@ export default function Playground({
     return (
         <div className='tw-p-4 tw-h-full'>
             <h1 className='tw-text-2xl tw-font-bold tw-mb-4'>{title}</h1>
+            <p className='tw-text-sm tw-text-gray-700 dark:tw-text-gray-300 tw-mb-4'>
+                {subtitle}
+            </p>
             {isLoaded && (
                 <div>
                     {/* Render either a specific component or children */}
