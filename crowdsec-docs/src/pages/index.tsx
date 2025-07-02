@@ -3,10 +3,10 @@ import clsx from "clsx"
 import Layout from "@theme/Layout"
 import Link from "@docusaurus/Link"
 import styles from "./index.module.css"
-import QuickStart from "../components/QuickStart"
-import GetToKnowUs from "../components/GetToKnowUs"
+import QuickStart from "../components/quick-start"
+import GetToKnowUs from "../components/get-to-know-us"
 
-function HomepageHeader() {
+const HomePageHeader = (): JSX.Element => {
     return (
         <section
             className={clsx(
@@ -47,13 +47,12 @@ function HomepageHeader() {
                         >
                             Explore the Console
                         </Link>
-			<Link
+                        <Link
                             className="button tw-text-white hover:tw-text-white hover:tw-bg-white/10 active:tw-bg-white/20"
                             to="https://killercoda.com/iiamloz/scenario/crowdsec-setup"
                         >
                             Online Sandbox
                         </Link>
-
                     </div>
                 </div>
 
@@ -65,13 +64,15 @@ function HomepageHeader() {
     )
 }
 
-export default function Home() {
+const HomePage = () => {
     return (
         <Layout
             title={`Documentation`}
             description="CrowdSec, the open-source & participative IPS"
         >
-            <HomepageHeader />
+            <HomePageHeader />
         </Layout>
     )
 }
+
+export default HomePage

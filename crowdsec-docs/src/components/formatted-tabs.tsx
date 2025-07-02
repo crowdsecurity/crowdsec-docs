@@ -1,3 +1,4 @@
+import React from "react"
 import Tabs from "@theme/Tabs"
 import TabItem from "@theme/TabItem"
 import CodeBlock from "@theme/CodeBlock"
@@ -18,7 +19,7 @@ import {
  * The powershell prop is used to display the code snippet for Windows Powershell.
  * The cmd prop is used to display the code snippet for Windows Command Prompt.
  */
-export default function FormattedTabs({ ...props }) {
+const FormattedTabs = ({ ...props }): React.JSX.Element => {
     const values = []
     let defaultValue = ""
 
@@ -32,7 +33,7 @@ export default function FormattedTabs({ ...props }) {
         }
         values.push({ label: "Windows", value: "windows", icon: cibWindows })
     }
-    
+
     if (props.docker !== undefined || props.dockerCompose !== undefined) {
         if (defaultValue === "") {
             defaultValue = "docker"
@@ -106,8 +107,9 @@ export default function FormattedTabs({ ...props }) {
                         {props.docker}
                     </CodeBlock>
                 ) : null}
-                
-                {props.dockerCompose !== undefined && props.docker === undefined ? (
+
+                {props.dockerCompose !== undefined &&
+                props.docker === undefined ? (
                     <CodeBlock language="yaml">{props.dockerCompose}</CodeBlock>
                 ) : null}
 
@@ -153,3 +155,5 @@ export default function FormattedTabs({ ...props }) {
         </Tabs>
     )
 }
+
+export default FormattedTabs

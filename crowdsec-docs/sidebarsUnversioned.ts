@@ -1,4 +1,8 @@
-module.exports = {
+import { SidebarsConfig } from "@docusaurus/plugin-content-docs"
+
+type SidebarConfig = SidebarsConfig[string]
+
+const sidebarsUnversionedConfig: SidebarConfig = {
     ctiApiSidebar: [
         {
             type: "doc",
@@ -554,9 +558,9 @@ module.exports = {
     gettingStarted: [
         {
             type: "doc",
-            id:   "getting_started/intro",
+            id: "getting_started/intro",
             label: "🧭 Introduction",
-        }, 
+        },
         {
             type: "category",
             label: "📦 Installation",
@@ -576,7 +580,7 @@ module.exports = {
             type: "doc",
             id: "getting_started/health_check",
             label: "🩺 Stack Health-Check",
-        }, 
+        },
         {
             type: "category",
             label: "💡 Post Installation Steps",
@@ -584,7 +588,7 @@ module.exports = {
                 type: "doc",
                 id: "getting_started/next_steps",
             },
-            items: [              
+            items: [
                 {
                     type: "category",
                     label: "CrowdSec Console",
@@ -596,14 +600,14 @@ module.exports = {
                         "getting_started/post_installation/console_blocklists",
                         "getting_started/post_installation/console_hub",
                     ],
-                    className: "sideBarItemRecommended" // to display tag
+                    className: "sideBarItemRecommended", // to display tag
                 },
                 {
                     type: "doc",
                     id: "getting_started/post_installation/whitelists",
                     label: "Whitelisting IPs",
-                    className: "sideBarItemRecommended"
-                }, 
+                    className: "sideBarItemRecommended",
+                },
                 {
                     type: "category",
                     label: "Acquisition",
@@ -627,21 +631,21 @@ module.exports = {
                 },
                 {
                     type: "doc",
-                    id:   "getting_started/post_installation/profiles",
+                    id: "getting_started/post_installation/profiles",
                     label: "Profiles",
-                    className: "sideBarItemOptional"
+                    className: "sideBarItemOptional",
                 },
                 {
                     type: "doc",
-                    id:   "getting_started/post_installation/metrics",
+                    id: "getting_started/post_installation/metrics",
                     label: "Metrics",
-                    className: "sideBarItemOptional"
-                }, 
+                    className: "sideBarItemOptional",
+                },
                 {
                     type: "doc",
-                    id:    "getting_started/post_installation/troubleshoot",
+                    id: "getting_started/post_installation/troubleshoot",
                     label: "General Troubleshooting 🚨",
-                },               
+                },
             ],
         },
         {
@@ -651,3 +655,16 @@ module.exports = {
         },
     ],
 }
+
+export default sidebarsUnversionedConfig
+
+export const {
+    ctiApiSidebar,
+    consoleSidebar,
+    remediationSideBar,
+    blocklistsSideBar,
+    troubleshootingSideBar,
+    serviceApiSideBar,
+    guidesSideBar,
+    gettingStarted,
+} = sidebarsUnversionedConfig
