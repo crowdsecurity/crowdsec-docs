@@ -175,12 +175,12 @@ This alert was triggered by suspicious activity from {{.Source.Value}}.
                                 <label className="tw-text-sm tw-font-medium tw-text-gray-700 dark:tw-text-gray-300">
                                     Alert JSON
                                 </label>
-                                <TooltipProvider>
+                                <TooltipProvider delayDuration={0}>
                                     <Tooltip>
                                         <TooltipTrigger asChild>
-                                            <button className="tw-w-4 tw-h-4 tw-rounded-full tw-bg-gray-200 dark:tw-bg-gray-700 tw-text-gray-600 dark:tw-text-gray-400 tw-text-xs tw-font-medium hover:tw-bg-gray-300 dark:hover:tw-bg-gray-600 tw-transition-colors tw-flex tw-items-center tw-justify-center">
+                                            <div className="tw-shadow-md tw-select-none tw-w-4 tw-h-4 tw-rounded-full tw-bg-gray-200 dark:tw-bg-gray-700 tw-text-gray-600 dark:tw-text-gray-400 tw-text-xs tw-font-medium hover:tw-bg-gray-300 dark:hover:tw-bg-gray-600 tw-transition-colors tw-flex tw-items-center tw-justify-center">
                                                 ?
-                                            </button>
+                                            </div>
                                         </TooltipTrigger>
                                         <TooltipContent side="bottom" className="tw-max-w-xs">
                                             <div className="tw-space-y-2">
@@ -224,12 +224,12 @@ This alert was triggered by suspicious activity from {{.Source.Value}}.
                                 <label className="tw-text-sm tw-font-medium tw-text-gray-700 dark:tw-text-gray-300">
                                     Go Template
                                 </label>
-                                <TooltipProvider>
+                                <TooltipProvider delayDuration={0}>
                                     <Tooltip>
                                         <TooltipTrigger asChild>
-                                            <button className="tw-w-4 tw-h-4 tw-rounded-full tw-bg-gray-200 dark:tw-bg-gray-700 tw-text-gray-600 dark:tw-text-gray-400 tw-text-xs tw-font-medium hover:tw-bg-gray-300 dark:hover:tw-bg-gray-600 tw-transition-colors tw-flex tw-items-center tw-justify-center">
+                                            <div className="tw-select-none tw-w-4 tw-h-4 tw-rounded-full tw-bg-gray-200 dark:tw-bg-gray-700 tw-text-gray-600 dark:tw-text-gray-400 tw-text-xs tw-font-medium hover:tw-bg-gray-300 dark:hover:tw-bg-gray-600 tw-transition-colors tw-flex tw-items-center tw-justify-center">
                                                 ?
-                                            </button>
+                                            </div>
                                         </TooltipTrigger>
                                         <TooltipContent side="bottom" className="tw-max-w-xs">
                                             <div className="tw-text-center">
