@@ -69,7 +69,7 @@ function TabList({className, block, selectedValue, selectValue, tabValues}) {
             'tabs__item--active': selectedValue === value,
           })}>
 	      <span className='tw-flex tw-gap-2 tw-items-center'>
-	  	{!!icon && <CIcon icon={icon} size='l' />} {label ?? value}
+	  	{!!icon && <CIcon icon={icon} size='lg' />} {label ?? value}
 	      </span>
         </li>
       ))}

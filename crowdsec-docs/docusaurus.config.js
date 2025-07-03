@@ -47,7 +47,10 @@ const backportRedirect = (s) => {
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
     future: {
-	experimental_faster: true,
+        v4: {
+            removeLegacyPostBuildHeadAttribute: true,
+        },
+        experimental_faster: true,
     },
     title: "CrowdSec",
     tagline:
@@ -88,11 +91,11 @@ module.exports = {
             contextualSearch: true,
         },
         zooming: {
-	    selector: '.markdown :not(a) > img',
+            selector: ".markdown :not(a) > img",
             delay: 500,
             background: {
-            	light: 'rgba(101,108,133,0.8)',
-            	dark: 'rgba(9,10,17,0.8)'
+                light: "rgba(101,108,133,0.8)",
+                dark: "rgba(9,10,17,0.8)",
             },
         },
         navbar: {
@@ -127,7 +130,7 @@ module.exports = {
                         {
                             type: "docsVersion",
                             to: "/docs/next/appsec/intro",
-                            label: "Application Security Component",
+                            label: "Web Application Firewall (AppSec)",
                         },
                         {
                             type: "doc",
@@ -266,12 +269,12 @@ module.exports = {
                     versions: {
                         "v1.6.0": {
                             banner: "none",
-                            path: "/"
+                            path: "/",
                         },
                         current: {
-                            path: "/next"
-                        }
-                    }
+                            path: "/next",
+                        },
+                    },
                 },
                 blog: {
                     showReadingTime: true,

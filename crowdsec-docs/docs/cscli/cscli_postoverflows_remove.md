@@ -17,16 +17,35 @@ cscli postoverflows remove [item]... [flags]
 ### Examples
 
 ```
+# Uninstall some postoverflows.
 cscli postoverflows remove crowdsecurity/cdn-whitelist crowdsecurity/rdns
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli postoverflows remove crowdsecurity/cdn-whitelist crowdsecurity/rdns --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli postoverflows remove crowdsecurity/cdn-whitelist crowdsecurity/rdns --dry-run -o raw
+
+# Uninstall and also remove the downloaded files.
+cscli postoverflows remove crowdsecurity/cdn-whitelist crowdsecurity/rdns --purge
+
+# Remove tainted items.
+cscli postoverflows remove crowdsecurity/cdn-whitelist crowdsecurity/rdns --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli postoverflows remove crowdsecurity/cdn-whitelist crowdsecurity/rdns -i
+cscli postoverflows remove crowdsecurity/cdn-whitelist crowdsecurity/rdns --interactive
 ```
 
 ### Options
 
 ```
-      --all     Remove all the postoverflows
-      --force   Force remove: remove tainted and outdated files
-  -h, --help    help for remove
-      --purge   Delete source file too
+      --all           Remove all the postoverflows
+      --dry-run       Don't install or remove anything; print the execution plan
+      --force         Force remove: remove tainted and outdated files
+  -h, --help          help for remove
+  -i, --interactive   Ask for confirmation before proceeding
+      --purge         Delete source file too
 ```
 
 ### Options inherited from parent commands

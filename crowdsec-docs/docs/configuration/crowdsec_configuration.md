@@ -97,7 +97,7 @@ always replaced.
 - `bouncers/crowdsec-blocklist-mirror.yaml`
 
 In the case of `profiles.yaml`, the files are read as a whole (as if they were
-attached) instead of merged. See [profiles - introduction](/profiles/intro.md).
+attached) instead of merged. See [profiles - introduction](/local_api/profiles/intro.md).
 
 
 ## Configuration directives
@@ -114,6 +114,7 @@ common:
   log_max_age: <max_age_of_log_file>
   log_max_files: <number_of_log_files_to_keep>
   compress_logs: (true|false)
+  log_format: "(text|json)"
 config_paths:
   config_dir: "<path_to_crowdsec_config_folder>"
   data_dir: "<path_to_crowdsec_data_folder>"
@@ -145,6 +146,9 @@ db_config:
   host:     "<db_host_ip>"   # for mysql/pgsql
   port:     "<db_host_port>" # for mysql/pgsql
   sslmode:  "<require/disable>" # for pgsql
+  ssl_ca_cert: "<path_to_ca_cert_file>" # for mysql/pgsql
+  ssl_client_cert: "<path_to_client_cert_file>" # for mysql/pgsql
+  ssl_client_key: "<path_to_client_key_file>" # for mysql/pgsql
   use_wal:  "true|false" # for sqlite
   max_open_conns: "<max_number_of_conns_to_db>"
   flush:
@@ -167,6 +171,7 @@ api:
   client:
     insecure_skip_verify: "(true|false)"
     credentials_path: "<path_to_local_api_client_credential_file>"
+    unregister_on_exit: "(true|false)"
   server:
     enable: <true|false> # enable or disable local API
     log_level: "(error|info|debug|trace>")"
@@ -175,6 +180,10 @@ api:
     use_forwarded_for_headers: "<true|false>"
     console_path: <path_to_console_file>
     online_client:
+      sharing: "(true|false)"
+      pull:
+        community: "(true|false)"
+        blocklists: "(true|false)"
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     disable_remote_lapi_registration: (true|false)
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
@@ -219,6 +228,7 @@ common:
   log_max_age: <max_age_of_log_file>
   log_max_files: <number_of_log_files_to_keep>
   compress_logs: (true|false)
+  log_format: "(text|json)"
 ```
 
 #### `daemonize`
@@ -274,6 +284,11 @@ Maximum number of old log files to retain.  The default is to retain 3 old log f
 > bool
 
 Whether to compress the log file after rotation or not.
+
+#### `log_format`
+> string
+
+Format of crowdsec log. Can be `text` (default) or `json`
 
 ### `config_paths`
 
@@ -448,6 +463,9 @@ db_config:
   host:     "<db_host_ip>"   # for mysql/postgresql/pgx # must be omitted if using socket file
   port:     "<db_host_port>" # for mysql/postgresql/pgx # must be omitted if using socket file
   sslmode:  "<require/disable>" # for postgresql/pgx
+  ssl_ca_cert: "<path_to_ca_cert_file>" # for mysql/pgsql
+  ssl_client_cert: "<path_to_client_cert_file>" # for mysql/pgsql
+  ssl_client_key: "<path_to_client_key_file>" # for mysql/pgsql
   max_open_conns: "<max_number_of_conns_to_db>"
   decision_bulk_size: "<decision_bulk_size>"
   flush:
@@ -545,13 +563,48 @@ db_config:
 The port to connect to (only if the type of database is `mysql` or `postgresql`). Must be omitted if using socket file.
 
 
+#### `sslmode`
+
 ```yaml
 db_config:
   type: postgresql
 
   sslmode: require
 ```
-Require or disable ssl connection to database (only if the type of database is `postgresql`). See [PostgreSQL SSL modes](https://www.postgresql.org/docs/current/libpq-ssl.html#LIBPQ-SSL-SSLMODE-STATEMENTS) for possible values.
+Require or disable ssl connection to database (only if the type of database is `mysql` or `postgresql` or `pgx`).
+
+See [PostgreSQL SSL modes](https://www.postgresql.org/docs/current/libpq-ssl.html#LIBPQ-SSL-SSLMODE-STATEMENTS) for possible values.
+See [MySQL SSL modes](https://dev.mysql.com/doc/refman/8.0/en/using-encrypted-connections.html) for possible values within the `Client-Side` configuration.
+
+#### `ssl_ca_cert`
+
+```yaml
+db_config:
+  type: mysql|postgresql|pgx
+
+  ssl_ca_cert: /path/to/ca.crt
+```
+Path to the CA certificate file (only if the type of database is `mysql` or `postgresql` or `pgx`)
+
+#### `ssl_client_cert`
+
+```yaml
+db_config:
+  type: mysql|postgresql|pgx
+
+  ssl_client_cert: /path/to/client.crt
+```
+Path to the client certificate file when using mTLS (only if the type of database is `mysql` or `postgresql` or `pgx`)
+
+#### `ssl_client_key`
+
+```yaml
+db_config:
+  type: mysql|postgresql|pgx
+
+  ssl_client_key: /path/to/client.key
+```
+Path to the client key file when using mTLS (only if the type of database is `mysql` or `postgresql` or `pgx`)
 
 #### `max_open_conns`
 
@@ -689,6 +742,7 @@ api:
   client:
     insecure_skip_verify: "(true|false)"
     credentials_path: "<path_to_local_api_client_credential_file>"
+    unregister_on_exit: "(true|false)"
   server:
     enable: <true|false>
     log_level: "(error|info|debug|trace>"
@@ -697,6 +751,10 @@ api:
     use_forwarded_for_headers: "(true|false)"
     console_path: <path_to_console_file>
     online_client:
+      sharing: "(true|false)"
+      pull:
+        community: "(true|false)"
+        blocklists: "(true|false)"
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     disable_remote_lapi_registration: (true|false)
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
@@ -774,6 +832,7 @@ The client subsection is used by `crowdsec` and `cscli` to read and write decisi
 client:
   insecure_skip_verify: "(true|false)"
   credentials_path: "<path_to_local_api_client_credential_file>"
+  unregister_on_exit: "(true|false)"
 ```
 
 ##### `insecure_skip_verify`
@@ -785,6 +844,13 @@ Allows the use of https with self-signed certificates.
 >string
 
 Path to the credential files (contains API url + login/password).
+
+##### `unregister_on_exit`
+>bool
+
+If set to `true`, the log processor will remove delete itself from LAPI when stopping.
+
+Intended for use in dynamic environment such as Kubernetes.
 
 #### `server`
 
@@ -803,6 +869,10 @@ server:
     #- 10.0.0.0/24
   console_path: <path_to_console_file>
   online_client:
+    sharing: "(true|false)"
+    pull:
+      community: "(true|false)"
+      blocklists: "(true|false)"
     credentials_path: <path_to_crowdsec_api_client_credential_file>
   disable_remote_lapi_registration: (true|false)
   capi_whitelists_path: "<path_to_capi_whitelists_file>"
@@ -852,6 +922,13 @@ This option will disable the registration of remote agents using `cscli lapi reg
 ##### `capi_whitelists_path`
 > string
 
+:::warning
+
+This option is deprecated.
+You should use [centralized allowlists](local_api/allowlists.md) instead.
+
+:::
+
 The path to whitelists file for community and 3rd party blocklists.
 Those IPs/CIDR whitelists apply on all the IPs received from community blocklist or 3rd party lists subscriptions.
 
@@ -876,8 +953,35 @@ Configuration to push signals and receive bad IPs from Crowdsec API.
 
 ```yaml
 online_client:
+  sharing: "(true|false)"
+  pull:
+    community: "(true|false)"
+    blocklists: "(true|false)"
   credentials_path: "<path_to_crowdsec_api_client_credential_file>"
 ```
+
+###### `sharing`
+> bool
+
+Whether you want to share signals with Central API, please note as outlined in the [Community blocklists](central_api/blocklist.md) section, enabling or disabling based on your plan type will affect how many IP's are downloaded from the community blocklists.
+
+###### `pull`
+
+```yaml
+pull:
+  community: "(true|false)"
+  blocklists: "(true|false)"
+```
+
+###### `community`
+> bool
+
+Whether to pull signals from the community blocklists. Useful when you want to share your signals with the community but don't want to receive signals from the community.
+
+###### `blocklists`
+> bool
+
+Whether to pull signals from the CrowdSec blocklists. Useful when you want to share your signals with the community but don't want to receive signals from 3rd party or first party blocklists.
 
 ###### `credentials_path`
 > string

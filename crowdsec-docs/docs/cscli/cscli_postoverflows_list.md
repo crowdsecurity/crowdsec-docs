@@ -17,11 +17,14 @@ cscli postoverflows list [item... | -a] [flags]
 ### Examples
 
 ```
+# List enabled (installed) postoverflows.
 cscli postoverflows list
-cscli postoverflows list -a
-cscli postoverflows list crowdsecurity/cdn-whitelist crowdsecurity/rdns
 
-List only enabled postoverflows unless "-a" or names are specified.
+# List all available postoverflows (installed or not).
+cscli postoverflows list -a
+
+# List specific postoverflows (installed or not).
+cscli postoverflows list crowdsecurity/cdn-whitelists crowdsecurity/rdns
 ```
 
 ### Options

@@ -117,10 +117,12 @@ module.exports = {
                         "log_processor/data_sources/s3",
                         "log_processor/data_sources/docker",
                         "log_processor/data_sources/file",
+                        "log_processor/data_sources/http",
                         "log_processor/data_sources/journald",
                         "log_processor/data_sources/kafka",
                         "log_processor/data_sources/kubernetes_audit",
                         "log_processor/data_sources/loki",
+                        "log_processor/data_sources/victorialogs",
                         "log_processor/data_sources/syslog",
                         "log_processor/data_sources/windows_evt_log",
                         "log_processor/data_sources/troubleshoot",
@@ -261,6 +263,7 @@ module.exports = {
                 "local_api/configuration",
                 "local_api/authentication",
                 "local_api/tls_auth",
+                "local_api/centralized_allowlists",
                 {
                     type: "link",
                     label: "Swagger",
@@ -374,6 +377,22 @@ module.exports = {
         },
         {
             type: "category",
+            label: "cscli allowlists",
+            link: {
+                type: "doc",
+                id: "cscli/cscli_allowlists",
+            },
+            items: [
+                "cscli/cscli_allowlists_add",
+                "cscli/cscli_allowlists_create",
+                "cscli/cscli_allowlists_delete",
+                "cscli/cscli_allowlists_inspect",
+                "cscli/cscli_allowlists_list",
+                "cscli/cscli_allowlists_remove",
+            ],
+        },
+        {
+            type: "category",
             label: "cscli appsec-configs",
             link: {
                 type: "doc",
@@ -454,9 +473,7 @@ module.exports = {
                 id: "cscli/cscli_config",
             },
             items: [
-                "cscli/cscli_config_backup",
                 "cscli/cscli_config_feature-flags",
-                "cscli/cscli_config_restore",
                 "cscli/cscli_config_show",
             ],
         },

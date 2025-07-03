@@ -16,6 +16,16 @@ Fetches the .index.json file from the hub, containing the list of available conf
 cscli hub update [flags]
 ```
 
+### Examples
+
+```
+# Download the last version of the index file.
+cscli hub update
+
+# Download a 4x bigger version with all item contents (effectively pre-caching item downloads, but not data files).
+cscli hub update --with-content
+```
+
 ### Options
 
 ```

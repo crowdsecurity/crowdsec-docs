@@ -47,6 +47,14 @@ Once the integration is generated you will be presented with a credentials scree
     }}
 />
 
+The username and password provided follows a *Basic Authentication* mechanism that you can use with any HTTP client such as `curl`
+
+```
+curl -u 'username:password' https://admin.api.crowdsec.net/v1/integrations/${content_id}/content
+```
+
+In case you lost your credentials you can regenerate them by clicking `Configure -> Regenerate Credentials` button at the top right corner of the integration.
+
 ## Format example
 
 The CrowdSec blocklist will be in plain text format, with one IP address per line. Here is an example of how the blocklist will look:

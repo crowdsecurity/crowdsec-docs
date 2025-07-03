@@ -5,7 +5,7 @@ title: Postoverflow
 
 ## Whitelist in PostOverflows
 
-Whitelists in PostOverflows are applied _after_ the bucket overflow happens. Please see [introduction](/whitelist/introduction.md) for your OS specific paths.
+Whitelists in PostOverflows are applied _after_ the bucket overflow happens. Please see [introduction](/log_processor/whitelist/introduction.md) for your OS specific paths.
 
 :::warning
 
@@ -21,7 +21,7 @@ A good example is the [crowdsecurity/whitelist-good-actors](https://hub.crowdsec
 
 First of all, install the [crowdsecurity/rdns postoverflow](https://hub.crowdsec.net/author/crowdsecurity/configurations/rdns) : it will be in charge of enriching overflows with reverse dns information of the offending IP address.
 
-Let's create `mywhitelist.yaml` again but remember this is a postoverflow whitelist so the paths will be different to `Parsing whitelists` please see [introduction](/whitelist/introduction.md) for your OS specific path.
+Let's create `mywhitelist.yaml` again but remember this is a postoverflow whitelist so the paths will be different to `Parsing whitelists` please see [introduction](/log_processor/whitelist/introduction.md) for your OS specific path.
 
 ```yaml
 name: "my/po_whitelist" ## Must be unique

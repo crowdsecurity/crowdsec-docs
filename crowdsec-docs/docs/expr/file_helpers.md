@@ -5,7 +5,7 @@ sidebar_position: 3
 ---
 
 :::info
-File helpers do not load the file into memory, but rather use a cache on initial startup to avoid loading the same file multiple times. Please see [the data property](/scenarios/format.md#data) on how to configure the Security Engine to load the file.
+File helpers do not load the file into memory, but rather use a cache on initial startup to avoid loading the same file multiple times. Please see [the data property](/log_processor/scenarios/format.md#data) on how to configure the Security Engine to load the file.
 :::
 
 ### `File(FileName) []string`

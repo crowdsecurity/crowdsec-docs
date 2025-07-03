@@ -14,9 +14,9 @@ The creation of said functional testing will guide our process and will make it 
 We're going to create a parser for the imaginary service "myservice" that produce three types of logs via syslog :
 
 ```
-Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '1.2.3.4'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '192.168.1.1'
 ```
 
 As we are going to parse those logs to further detect bruteforce and user-enumeration attacks, we're simply going to "discard" the last type of logs.
@@ -119,10 +119,10 @@ statics:
     value: yes
 ```
 
- - a [filter](/parsers/format.md#filter) : if the expression is `true`, the event will enter the parser, otherwise, it won't
- - a [onsuccess](/parsers/format.md#onsuccess) : defines what happens when the event was successfully parsed : shall we continue ? shall we move to next stage ? etc.
+ - a [filter](/log_processor/parsers/format.md#filter) : if the expression is `true`, the event will enter the parser, otherwise, it won't
+ - a [onsuccess](/log_processor/parsers/format.md#onsuccess) : defines what happens when the event was successfully parsed : shall we continue ? shall we move to next stage ? etc.
  - a `name` & a `description`
- - some [statics](/parsers/format.md#statics) that will modify the event
+ - some [statics](/log_processor/parsers/format.md#statics) that will modify the event
  - a `debug` flag that allows to enable local debugging information
  - a `grok` pattern to capture some data in logs
 
@@ -144,8 +144,8 @@ results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["program"] ==
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["timestamp"] == "Dec  8 06:28:43"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["is_my_service"] == "yes"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["logsource"] == "syslog"
-results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["message"] == "bad password for user 'toto' from '1.2.3.4'"
-results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["some_data"] == "bad password for user 'toto' from '1.2.3.4'"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["message"] == "bad password for user 'toto' from '192.168.1.1'"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["some_data"] == "bad password for user 'toto' from '192.168.1.1'"
 ...
 
 
@@ -162,19 +162,19 @@ Further inspection can be seen with `cscli hubtest explain` :
 
 ```bash
 ▶ cscli hubtest explain myservice-logs
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	└ s01-parse
 		└ 🟢 crowdsecurity/myservice-logs
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	└ s01-parse
 		└ 🟢 crowdsecurity/myservice-logs
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	└ s01-parse
@@ -230,7 +230,7 @@ Various changes have been made here :
  - We created to patterns to capture the two relevant type of log lines, Using an [online grok debugger](https://grokdebug.herokuapp.com/) or an [online regex debugger](https://www.debuggex.com/) [2]
 )
  - We keep track of the username and the source_ip (Please note that setting the source_ip in `evt.Meta.source_ip` and `evt.Parsed.source_ip` is important [1])
- - We setup various [statics](/parsers/format.md#statics) information to classify the log type [3]
+ - We setup various [statics](/log_processor/parsers/format.md#statics) information to classify the log type [3]
 
 
 
@@ -250,12 +250,12 @@ results["s01-parse"]["crowdsecurity/myservice-logs"][0].Success == true
 ...
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["timestamp"] == "Dec  8 06:28:43"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["program"] == "myservice"
-results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["source_ip"] == "1.2.3.4"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["source_ip"] == "192.168.1.1"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Parsed["user"] == "toto"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["log_subtype"] == "myservice_bad_password"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["log_type"] == "myservice_failed_auth"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["service"] == "myservice"
-results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["source_ip"] == "1.2.3.4"
+results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["source_ip"] == "192.168.1.1"
 results["s01-parse"]["crowdsecurity/myservice-logs"][0].Evt.Meta["username"] == "toto"
 ...
 results["s01-parse"]["crowdsecurity/myservice-logs"][1].Evt.Meta["log_subtype"] == "myservice_bad_user"
@@ -272,26 +272,26 @@ Again, further inspection with `cscli hubtest explain` will show us more about w
 
 ```bash
 ▶ cscli hubtest explain myservice-logs
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	└ s01-parse
 		└ 🟢 crowdsecurity/myservice-logs
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	└ s01-parse
 		└ 🟢 crowdsecurity/myservice-logs
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	└ s01-parse
 		└ 🔴 crowdsecurity/myservice-logs
 ```
 
-__note: we can see that our log line `accepted connection for user 'toto' from '1.2.3.4'` wasn't parsed by `crowdsecurity/myservice-logs` as we have no pattern for it__
+__note: we can see that our log line `accepted connection for user 'toto' from '192.168.1.1'` wasn't parsed by `crowdsecurity/myservice-logs` as we have no pattern for it__
 
 
 ## Closing word
@@ -299,7 +299,7 @@ __note: we can see that our log line `accepted connection for user 'toto' from '
 We have now a fully functional parser for myservice logs !
 We can either deploy it to our production systems to do stuff, or even better, contribute to the hub !
 
-If you want to know more about directives and possibilities, take a look at [the parser reference documentation](/parsers/format.md) !
+If you want to know more about directives and possibilities, take a look at [the parser reference documentation](/log_processor/parsers/format.md) !
 
 See as well [this blog article](https://crowdsec.net/blog/how-to-write-crowdsec-parsers-and-scenarios) on the topic.
 

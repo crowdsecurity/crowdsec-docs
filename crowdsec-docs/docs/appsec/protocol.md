@@ -22,14 +22,15 @@ This documentation can be useful in case you want to write your own remediation 
 
 To work with the CrowdSec application security component, some HTTP headers are require, in addition to the other HTTP headers and the body of the original request.
 
-| Header Name                 | Description                                                                |
-| --------------------------- | -------------------------------------------------------------------------- |
-| `X-Crowdsec-Appsec-Ip`      | The Real IP address of the original HTTP request                           |
-| `X-Crowdsec-Appsec-Uri`     | The URI of the original HTTP request                                       |
-| `X-Crowdsec-Appsec-Host`    | The Host of the original HTTP request                                      |
-| `X-Crowdsec-Appsec-Verb`    | The Method of the original HTTP request                                    |
-| `X-Crowdsec-Appsec-Api-Key` | The API Key to communicate with the CrowdSec application security component |
-| `X-Crowdsec-Appsec-User-Agent`| The User-Agent of the original HTTP request                              |
+| Header Name                      | Description                                                                           |
+| -------------------------------- | ------------------------------------------------------------------------------------- |
+| `X-Crowdsec-Appsec-Ip`           | The Real IP address of the original HTTP request                                      |
+| `X-Crowdsec-Appsec-Uri`          | The URI of the original HTTP request                                                  |
+| `X-Crowdsec-Appsec-Host`         | The Host of the original HTTP request                                                 |
+| `X-Crowdsec-Appsec-Verb`         | The Method of the original HTTP request                                               |
+| `X-Crowdsec-Appsec-Api-Key`      | The API Key to communicate with the CrowdSec application security component           |
+| `X-Crowdsec-Appsec-User-Agent`   | The User-Agent of the original HTTP request                                           |
+| `X-Crowdsec-Appsec-Http-Version` | The HTTP version used by the original HTTP request (in integer form `10`, `11`, ...) |
 
 :::note
 
@@ -41,7 +42,7 @@ All requests forwarded by the remediation component must be sent via a `GET` req
 
 For this example:
 
-- A `POST` HTTP request has been made by the IP `1.2.3.4` to a website on `example.com`.
+- A `POST` HTTP request has been made by the IP `192.168.1.1` to a website on `example.com`.
 - The Application Security Component listen on `http://localhost:4241/`.
 
 <details>
@@ -71,7 +72,7 @@ username=admin' OR '1'='1' -- &password=password
 ```
 POST / HTTP/1.1
 Host: localhost:4241
-X-Crowdsec-Appsec-ip: 1.2.3.4
+X-Crowdsec-Appsec-ip: 192.168.1.1
 X-Crowdsec-Appsec-Uri: /login
 X-Crowdsec-Appsec-Host: example.com
 X-Crowdsec-Appsec-Verb: POST
@@ -96,11 +97,11 @@ username=admin' OR '1'='1' -- &password=password
 
 According to the result of the processing of the HTTP request, the application security component will respond with a different HTTP code and body.
 
-| HTTP Code | Description                                                                                                                                          | Body                                             |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| `200`     | The HTTP request is allowed                                                                                                                          | `{"action" : "allow"}`                           |
-| `403`     | The HTTP request triggered one or more application security component rules                                                                           | `{"action" : "ban", "http_status": 403}` or `{"action" : "captcha", "http_status": 403}` |
-| `500`     | An error occurred in the application security component. The remediation component must support a `APPSEC_FAILURE_ACTION` parameter to handle this case | `null`                                           |
-| `401`     | The remediation component is not authenticated. It must use the same API Key that was generated to pull the local API request                        | `null`                                           |
+| HTTP Code | Description                                                                                                                                             | Body                                                                                     |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `200`     | The HTTP request is allowed                                                                                                                             | `{"action" : "allow"}`                                                                   |
+| `403`     | The HTTP request triggered one or more application security component rules                                                                             | `{"action" : "ban", "http_status": 403}` or `{"action" : "captcha", "http_status": 403}` |
+| `500`     | An error occurred in the application security component. The remediation component must support a `APPSEC_FAILURE_ACTION` parameter to handle this case | `null`                                                                                   |
+| `401`     | The remediation component is not authenticated. It must use the same API Key that was generated to pull the local API request                           | `null`                                                                                   |
 
 In case of a `403` response, the body will contain the action to take and the HTTP status code to return to the client.

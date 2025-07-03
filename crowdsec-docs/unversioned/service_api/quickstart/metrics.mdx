@@ -1,0 +1,123 @@
+---
+id: metrics
+title: Metrics
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+:::info
+ - We're assuming your API key is set in the environment variable `$KEY` with the necessary permissions.
+:::
+
+### Get Remediation Metrics
+
+:::info
+ - Before you begin, to understand the metrics, please refer to the [Metrics definitions](#metrics-definitions) section.
+:::
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X GET -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/metrics/remediation?start_date=2025-03-19T00:00:00Z&end_date=2025-03-27T00:00:00Z 
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Metrics,
+    Server,
+    ApiKeyAuth,
+)
+
+auth = ApiKeyAuth(api_key=KEY)
+
+client = Metrics(base_url=Server.production_server.value, auth=auth)
+# Get remediation metrics
+response = metrics_client.get_metrics_remediation(
+    start_date=datetime.datetime.now() - datetime.timedelta(days=1),
+    end_date=datetime.datetime.now(),
+)
+print(response.model_dump_json())
+```
+
+</TabItem>
+</Tabs>
+
+ - [Swagger method link](https://admin.api.crowdsec.net/v1/docs#/Metrics/getMetricsRemediation)
+
+<details>
+  <summary>answer on success</summary>
+
+```json
+{
+    "raw": {
+        "dropped": [],
+        "processed": []
+    },
+    "computed": {
+        "saved": {
+            "log_lines": [],
+            "storage": [],
+            "egress_traffic": []
+        },
+        "dropped": [],
+        "prevented": []
+    }
+}
+```
+
+</details>
+
+### Metrics definitions
+
+- `raw`: Raw metrics are the metrics that are directly collected from the crowdsec engine.
+- `computed`: Computed metrics are the metrics that are derived from the raw metrics (we compute them based on the raw metrics).
+
+#### Raw metrics
+
+- `dropped`: The traffic that was discarded by your remediation components (bouncers) and Blocklists. Its represent the data received from differents remediation components, so it can be :
+    - `requests` : the number of requests that were dropped.
+    - `bytes` : the number of bytes that were dropped.
+    - `packets` : the number of packets that were dropped.
+- `processed`: The traffic that was processed by by your remediation components (bouncers) and Blocklists. Its represent the data received from differents remediation components, so it can be :
+    - `requests` : the number of requests that were processed.
+    - `bytes` : the number of bytes that were processed.
+    - `packets` : the number of packets that were processed.
+
+#### Computed metrics
+
+The computed metrics are estimations based on the raw metrics. They are calculated by appliying a coefficient to remediation components (bouncers) metrics that approximates the saved resources.
+The coefficient is calculated based on the remediation components (bouncers) configuration and the raw metrics.
+
+:::note
+As most bouncers operate below the application layer, a single blocked attempt prevents the attacker from follow-up attacks.
+We can convert the raw metrics into estimates more representative of the difference in traffic and attack volume compared to when Crowdsec is not running.
+
+Your infrastructure's exact true usage may vary, but the computed metrics are a good approximation of the resources saved by using Crowdsec.
+:::
+
+[Understand how we compute data](https://www.crowdsec.net/blog/value-of-preemptive-blocking)
+
+- `saved`:
+    - `log_lines`: The number of log lines that were saved. It's the number of log lines that would have been generated if the traffic was not dropped.
+    - `storage`: The amount of storage that was saved. It's the amount of storage that would have been used by your logs if the traffic were not dropped.
+    - `egress_traffic`: The amount of egress traffic that was saved. It's is the amount of egress traffic that would have been spent to serve responses if the requests were not dropped.
+- `dropped`: The traffic that was dropped by your remediation components (bouncers) and Blocklists. 
+- `prevented`: The attacks that were prevented by your remediation components (bouncers) and Blocklists.

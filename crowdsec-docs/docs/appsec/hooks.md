@@ -102,7 +102,7 @@ inband_rules:
  - crowdsecurity/base-config
  - crowdsecurity/vpatch-*
 pre_eval:
- - filter: IsInBand == true && req.RemoteAddr == "42.42.42.42"
+ - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
    apply:
     - RemoveInBandRuleByName("my_rule")
 ```
@@ -188,13 +188,13 @@ inband_rules:
  - crowdsecurity/base-config
  - crowdsecurity/vpatch-*
 post_eval:
- - filter: IsInBand == true && req.RemoteAddr == "42.42.42.42"
+ - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
    apply:
     - CancelAlert()
     - CancelEvent()
   - filter: |
       any( evt.Appsec.MatchedRules, #.name == "crowdsecurity/vpatch-env-access") and
-      req.RemoteAddr = "42.42.42.42"
+      req.RemoteAddr = "192.168.1.1"
     apply:
     - SetRemediation("allow")
   - filter: evt.Appsec.MatchedRules.GetURI() contains "/foobar/"
@@ -211,4 +211,14 @@ Any other values (including `ban` and `captcha`) are transmitted as-is to the re
 
 
 
+### `req` object
 
+The `pre_eval`, `on_match` and `post_eval` hooks have access to a `req` variable that represents the HTTP request that was forwarded to the appsec.
+
+It's a Go [http.Request](https://pkg.go.dev/net/http#Request) object, so you can directly access all the details about the request.
+
+For example:
+ - To get the requested URI: `req.URL.Path`
+ - To get the client IP: `req.RemoteAddr`
+ - To get the HTTP method: `req.Method`
+ - To get the FQDN: `req.URL.Host`

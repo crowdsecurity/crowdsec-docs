@@ -17,7 +17,17 @@ cscli appsec-configs inspect [item]... [flags]
 ### Examples
 
 ```
-cscli appsec-configs inspect crowdsecurity/vpatch
+# Display metadata, state, metrics and ancestor collections of appsec-configs (installed or not).
+cscli appsec-configs inspect crowdsecurity/virtual-patching
+
+# Don't collect metrics (avoid error if crowdsec is not running).
+cscli appsec-configs inspect crowdsecurity/virtual-patching --no-metrics
+
+# Display difference between a tainted item and the latest one.
+cscli appsec-configs inspect crowdsecurity/virtual-patching --diff
+
+# Reverse the above diff
+cscli appsec-configs inspect crowdsecurity/virtual-patching --diff --rev
 ```
 
 ### Options

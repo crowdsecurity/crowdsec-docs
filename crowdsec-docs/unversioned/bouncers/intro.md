@@ -44,6 +44,16 @@ This command must be run on the server where the local API is installed (or at l
 
 If you wish to create your own Remediation Component, look at [this section](/docs/next/local_api/bouncers) of the local API documentation.
 
+## Remediation Component Badges
 
+As CrowdSec has evolved over the years we have added support for various technologies and services. The following badges indicate the level of support for each remediation component.
+
+| Badge | Description |
+| --- | --- |
+| AppSec | Can forward HTTP requests to the AppSec Component [more information](/docs/next/appsec/intro) |
+| Mode | Can be configured into different modes, typically live (send a request to LAPI for each remediation check) or stream (downloads all current decisions to a local cache and checks periodically for new / deleted ones) <br/><br/>**note these are the naming schemes live/stream are used by first party remediation components** |
+| Metrics | Can send detailed metrics to the LAPI [more information](/docs/next/observability/usage_metrics) |
+| MTLS | Supports Mutual TLS authentication to the LAPI [more information](/docs/next/local_api/tls_auth) |
+| Prometheus | Can expose Prometheus metrics |
 
 

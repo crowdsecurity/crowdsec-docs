@@ -5,7 +5,7 @@ title: Expression
 
 Let's whitelist a **specific** user-agent (of course, it's just an example, don't do this in production !). 
 
-Since we are using data that is present from the parsing stage we can do this within `Parsing Whitelist` level. Please see [introduction](/whitelist/introduction.md) for your OS specific paths.
+Since we are using data that is present from the parsing stage we can do this within `Parsing Whitelist` level. Please see [introduction](/log_processor/whitelist/introduction.md) for your OS specific paths.
 
 ```yaml
 name: "my/whitelist" ## Must be unique

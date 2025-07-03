@@ -7,6 +7,7 @@ sidebar_position: 5
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import RemediationSupportBadges from '@site/src/components/RemediationSupportBadges.tsx';
 
 
 <p align="center">
@@ -22,6 +23,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
+<RemediationSupportBadges
+  Prometheus
+/>
 
 CrowdSec Remediation Component written to invoke custom scripts.
 
@@ -150,7 +154,7 @@ prometheus:
 
 ```
 
-`cache_retention_duration` : The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. If a decision is identical to some decision already present in the cache, then the custom script is not invoked. The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `1.2.3.4`,  `CH` etc).
+`cache_retention_duration` : The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. If a decision is identical to some decision already present in the cache, then the custom script is not invoked. The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `192.168.1.1`,  `CH` etc).
 
 You can then start the service:
 
@@ -177,6 +181,16 @@ The above will ensure you get values from LAPI to the script, however, you shoul
 
 ## Usage
 
+:::warning
+Remember to set execution permissions for your binary or script. If it's a script, include a shebang on the first line (e.g., `#!/bin/sh`).
+:::
+
+### Invoke mode
+
+:::warning
+While the default mode, it is not recommended to use it, as calling a binary for each decision can be very costly when a lot are present.
+:::
+
 The custom binary will be called with the following arguments :
 
 ```text
@@ -187,19 +201,46 @@ The custom binary will be called with the following arguments :
 - `value` : The value will be the decision scope value (eg `192.168.1.1` for IP)
 - `duration`: duration of the remediation in seconds
 - `reason` : reason of the decision
-- `json_object`: the serialized decision
+- `json_object`: the serialized decision (see the next section for more details)
 
-
-:::warning
-Remember to set execution permissions for your binary or script. If it's a script, include a shebang on the first line (e.g., `#!/bin/sh`).
-:::
-
-## Examples
+#### Examples
 
 ```text
-custom_binary.sh add 1.2.3.4/32 3600 "test blacklist" <json_object>
-custom_binary.sh del 1.2.3.4/32 3600 "test blacklist" <json_object>
+custom_binary.sh add 192.168.1.1/32 3600 "test blacklist" <json_object>
+custom_binary.sh del 192.168.1.1/32 3600 "test blacklist" <json_object>
 ```
+
+
+### Stdin mode
+
+In this mode, the custom binary will be executed when the bouncer starts and is expected to read data from stdin.
+
+If the binary exits for any reason, it will be reinvoked up to `max_retries` times. If the maximum number of retries is exhausted, the bouncer will quit.
+
+For each decision, the custom binary will be fed the serialized JSON object on stdin, one object per line.
+
+The JSON object is:
+```json
+{
+  "duration": "143h58m15s",
+  "origin": "CAPI",
+  "scenario": "ssh:bruteforce",
+  "scope": "Ip",
+  "type": "ban",
+  "value": "160.187.109.6",
+  "id": 83676344,
+  "action": "add"
+}
+```
+
+ - `duration`: duration of the decision, in the [go time.Duration format](https://pkg.go.dev/time#Duration). Can be negative for delete decisions.
+ - `origin`: origin the decision. Can be `crowdsec`, `cscli`, `cscli-import`, `CAPI`, `lists`.
+ - `scenario`: scenario that triggered the decision.
+ - `scope`: Scope of the decision. Most likely `Ip` or `Range` with the default config, but can be any value set in your scenarios.
+ - `type`: Type of the decision. Most likely `ban` or `captcha` with the default config, but can be any value set in your profiles.
+ - `value`: Target of the decision.
+ - `id`: id of the decision in the crowdsec database.
+ - `action`: Either `add` or `del`. 
 
 
 ## Configuration Reference
@@ -212,7 +253,9 @@ Absolute path to the binary that will be invoked
 ### `bin_args`
 > [ ]string
 
-Array of argument to give to the script that will be invoked
+Array of argument to give to the script that will be invoked.
+
+This option is only supported if `feed_via_stdin` is set to `true`.
 
 ### `feed_via_stdin`
 > boolean
@@ -267,7 +310,7 @@ origins: ["cscli", "crowdsec"]
 
 The component keeps track of all custom script invocations from the last `cache_retention_duration` interval. 
 If a decision is identical to some decision already present in the cache, then the custom script is not invoked. 
-The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `1.2.3.4`,  `CH` etc).
+The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `192.168.1.1`,  `CH` etc).
 
 ### `piddir`
 > string

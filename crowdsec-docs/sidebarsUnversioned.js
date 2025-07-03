@@ -37,6 +37,7 @@ module.exports = {
                 id: "cti_api/integration_intro",
             },
             items: [
+                "cti_api/integration_ipdex",
                 "cti_api/integration_chrome",
                 "cti_api/integration_gigasheet",
                 "cti_api/integration_intelowl",
@@ -100,12 +101,17 @@ module.exports = {
                 },
                 {
                     type: "doc",
-                    label: "Transfer an Engine",
+                    label: "Transferring an Engine",
                     id: "console/security_engines/transfer_engine",
                 },
                 {
                     type: "doc",
-                    label: "Remove an Engine",
+                    label: "Archiving an Engine",
+                    id: "console/security_engines/archive_engine",
+                },
+                {
+                    type: "doc",
+                    label: "Removing an Engine",
                     id: "console/security_engines/remove_engine",
                 },
                 {
@@ -176,6 +182,11 @@ module.exports = {
             ],
         },
         {
+            type: "doc",
+            label: "Remediation Metrics",
+            id: "console/remediation_metrics",
+        },
+        {
             type: "category",
             label: "CTI",
             items: [
@@ -213,18 +224,45 @@ module.exports = {
                 type: "doc",
                 id: "console/decisions/decisions_intro",
             },
-            items: [{
-                type: "doc",
-                id: "console/decisions/decisions_management",
-                label: "Decisions Management 🏅"
-            }],
+            items: [
+                {
+                    type: "doc",
+                    id: "console/decisions/decisions_management",
+                    label: "Decisions Management 🏅",
+                },
+            ],
         },
         {
             type: "category",
-            label: "Enterprise support 🏅",
+            label: "Centralized Allowlists 🏅",
             link: {
                 type: "doc",
-                id: "console/enterprise_support",
+                id: "console/allowlists",
+            },
+            items: [],
+        },
+        {
+            type: "category",
+            label: "Enterprise plan 🏅",
+            items: [
+                {
+                    type: "doc",
+                    label: "Enterprise support 🏅",
+                    id: "console/enterprise_plan/enterprise_support",
+                },
+                {
+                    type: "doc",
+                    label: "Invoices 🏅",
+                    id: "console/enterprise_plan/enterprise_invoices",
+                },
+            ],
+        },
+        {
+            type: "category",
+            label: "Threat Forecast 🏅",
+            link: {
+                type: "doc",
+                id: "console/threat_forecast",
             },
             items: [],
         },
@@ -232,6 +270,32 @@ module.exports = {
             type: "link",
             label: "Service API 🏅",
             href: "/u/service_api/getting_started",
+        },
+        {
+            type: "category",
+            label: "Notification integrations 🏅",
+            items: [
+                {
+                    type: "doc",
+                    label: "Overview",
+                    id: "console/notification_integrations/overview",
+                },
+                {
+                    type: "doc",
+                    label: "Notification Rule",
+                    id: "console/notification_integrations/rule",
+                },
+                {
+                    type: "doc",
+                    label: "Slack",
+                    id: "console/notification_integrations/slack",
+                },
+                {
+                    type: "doc",
+                    label: "Webhook",
+                    id: "console/notification_integrations/webhook",
+                },
+            ],
         },
     ],
     remediationSideBar: [
@@ -353,6 +417,11 @@ module.exports = {
         },
         {
             type: "doc",
+            label: "Featured",
+            id: "console/blocklists/featured",
+        },
+        {
+            type: "doc",
             label: "Catalog",
             id: "console/blocklists/catalog",
         },
@@ -379,14 +448,18 @@ module.exports = {
             },
             label: "Integrations",
             items: [
-                "integrations/cisco",
                 "integrations/checkpoint",
+                "integrations/cisco",
                 "integrations/f5",
                 "integrations/fortinet",
-                "integrations/paloalto",
-                "integrations/sophos",
                 "integrations/genericfirewall",
+                "integrations/juniper",
+                "integrations/mikrotik",
+                "integrations/opnsense",
+                "integrations/paloalto",
+                "integrations/pfsense",
                 "integrations/remediationcomponent",
+                "integrations/sophos",
             ],
         },
     ],
@@ -425,6 +498,8 @@ module.exports = {
                 "service_api/quickstart/authentication",
                 "service_api/quickstart/blocklists",
                 "service_api/quickstart/integrations",
+                "service_api/quickstart/allowlists",
+                "service_api/quickstart/metrics",
             ],
         },
         {
@@ -474,14 +549,22 @@ module.exports = {
         "user_guides/multiserver_setup",
         "user_guides/consuming_fastly_logs",
         "user_guides/alert_context",
-        "user_guides/appsec_tuto",
+        "user_guides/log_centralization",
     ],
     gettingStarted: [
-        "getting_started/intro",
-        "getting_started/pre_requisites",
+        {
+            type: "doc",
+            id:   "getting_started/intro",
+            label: "🧭 Introduction",
+        }, 
+        {
+            type: "doc",
+            id:  "getting_started/pre_requisites",
+            label: "📋 Prerequisites",
+        }, 
         {
             type: "category",
-            label: "Installation",
+            label: "📦 Installation",
             items: [
                 "getting_started/installation/linux",
                 "getting_started/installation/freebsd",
@@ -495,13 +578,18 @@ module.exports = {
             ],
         },
         {
+            type: "doc",
+            id: "getting_started/health_check",
+            label: "🩺 Stack Health-Check",
+        }, 
+        {
             type: "category",
-            label: "Post Installation Steps",
+            label: "💡 Post Installation Steps",
             link: {
                 type: "doc",
                 id: "getting_started/next_steps",
             },
-            items: [
+            items: [              
                 {
                     type: "category",
                     label: "CrowdSec Console",
@@ -513,28 +601,57 @@ module.exports = {
                         "getting_started/post_installation/console_blocklists",
                         "getting_started/post_installation/console_hub",
                     ],
+                    className: "sideBarItemRecommended" // to display tag
                 },
-                "getting_started/post_installation/whitelists",
+                {
+                    type: "doc",
+                    id: "getting_started/post_installation/whitelists",
+                    label: "Whitelisting IPs",
+                    className: "sideBarItemRecommended"
+                }, 
                 {
                     type: "category",
                     label: "Acquisition",
+                    className: "sideBarItemOptional",
                     link: {
                         type: "doc",
                         id: "getting_started/post_installation/acquisition",
                     },
                     items: [
-                        "getting_started/post_installation/acquisition_new",
-                        "getting_started/post_installation/acquisition_troubleshoot",
+                        {
+                            type: "doc",
+                            id: "getting_started/post_installation/acquisition_new",
+                            label: "Adding a new Acquisition",
+                        },
+                        {
+                            type: "doc",
+                            id: "getting_started/post_installation/acquisition_troubleshoot",
+                            label: "Acquisition issues 🚨",
+                        },
                     ],
                 },
-                "getting_started/post_installation/profiles",
-                "getting_started/post_installation/metrics",
-                "getting_started/post_installation/troubleshoot",
+                {
+                    type: "doc",
+                    id:   "getting_started/post_installation/profiles",
+                    label: "Profiles",
+                    className: "sideBarItemOptional"
+                },
+                {
+                    type: "doc",
+                    id:   "getting_started/post_installation/metrics",
+                    label: "Metrics",
+                    className: "sideBarItemOptional"
+                }, 
+                {
+                    type: "doc",
+                    id:    "getting_started/post_installation/troubleshoot",
+                    label: "General Troubleshooting 🚨",
+                },               
             ],
         },
         {
             type: "link",
-            label: "Technical Documentation",
+            label: "🛠️ Technical Documentation",
             href: "/docs/next/intro",
         },
     ],

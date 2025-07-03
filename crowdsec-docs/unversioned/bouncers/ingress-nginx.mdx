@@ -7,6 +7,7 @@ sidebar_position: 1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import RemediationSupportBadges from '@site/src/components/RemediationSupportBadges.tsx';
 
 <p align="center">
 <img src={useBaseUrl('/img/crowdsec_nginx.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
@@ -21,8 +22,16 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
+<RemediationSupportBadges
+  Mode
+  Appsec 
+/>
 
 A lua Remediation Component for Ingress Nginx Controller.
+
+:::warning
+Ingress Nginx Version **1.12** or higher currently is not supported due to removal of Lua plugins support see [this issue](https://github.com/crowdsecurity/cs-openresty-bouncer/issues/60) for latest news.
+:::
 
 ## How does it work ?
 
@@ -62,7 +71,7 @@ controller:
       - name: API_URL
         value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080" # crowdsec lapi service-name
       - name: API_KEY
-        value: "<API KEY>" # generated with `cscli bouncers add -n <bouncer_name>
+        value: "<API KEY>" # generated with `cscli bouncers add <bouncer_name>
       - name: BOUNCER_CONFIG
         value: "/crowdsec/crowdsec-bouncer.conf"
       - name: CAPTCHA_PROVIDER
@@ -72,9 +81,23 @@ controller:
       - name: SITE_KEY
         value: "<your-captcha-site-key>" # If you want captcha support otherwise remove this ENV VAR
       - name: BAN_TEMPLATE_PATH
-        value: /etc/nginx/lua/plugins/crowdsec/templates/ban.html
+        value: "/etc/nginx/lua/plugins/crowdsec/templates/ban.html"
       - name: CAPTCHA_TEMPLATE_PATH
-        value: /etc/nginx/lua/plugins/crowdsec/templates/captcha.html
+        value: "/etc/nginx/lua/plugins/crowdsec/templates/captcha.html"
+      ## Appsec configuration, optional.
+      ## Remove this section if not using appsec
+      - name: APPSEC_URL
+        value: "http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422" # if using our helm chart with "crowdsec" release name, and running the appsec in the "crowdsec" namespace
+      - name: APPSEC_FAILURE_ACTION
+        value: "passthrough" # What to do if the appsec is down, optional
+      - name: APPSEC_CONNECT_TIMEOUT # connection timeout to the appsec, in ms, optionial
+        value: "100"
+      - name: APPSEC_SEND_TIMEOUT # write timeout to the appsec, in ms, optional
+        value: "100"
+      - name: APPSEC_PROCESS_TIMEOUT # max processing duration of the request, in ms, optional
+        value: "1000"
+      - name: ALWAYS_SEND_TO_APPSEC
+        value: "false" # always send requests to the appsec, even if there's a decision against the IP, optional
     command: ['sh', '-c', "sh /docker_start.sh; mkdir -p /lua_plugins/crowdsec/; cp -R /crowdsec/* /lua_plugins/crowdsec/"]
     volumeMounts:
     - name: crowdsec-bouncer-plugin
@@ -341,3 +364,69 @@ CAPTCHA_EXPIRATION=3600
 ```
 
 The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IPs address will get a captcha again.
+
+### `APPSEC_URL`
+> string
+
+```bash
+APPSEC_URL=http://<ip>:<port>
+```
+
+If set, enable appsec mode and forward the request to this endpoint for analysis.
+
+Use `http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422` if using our helm chart with `crowdsec` release name, and running the appsec in the `crowdsec` namespace.
+
+### `APPSEC_FAILURE_ACTION`
+> passthrough | deny
+
+```bash
+APPSEC_FAILURE_ACTION=passthrough  # default
+```
+
+Behavior when the AppSec Component return a 500. Can let the request passthrough or deny it.
+
+### `ALWAYS_SEND_TO_APPSEC`
+> boolean
+
+```bash
+ALWAYS_SEND_TO_APPSEC=false  # default
+```
+
+Send the request to the AppSec Component even if there is a decision for the IP.
+
+### `SSL_VERIFY`
+> boolean
+
+```bash
+SSL_VERIFY=false  # default
+```
+
+Verify the AppSec Component SSL certificate validity.
+
+### `APPSEC_CONNECT_TIMEOUT`
+> int (milliseconds)
+
+```bash
+APPSEC_CONNECT_TIMEOUT=100  # default
+```
+
+The timeout of the connection between the Remediation Component and AppSec Component.
+
+
+### `APPSEC_SEND_TIMEOUT`
+> int (milliseconds)
+
+```bash
+APPSEC_SEND_TIMEOUT=100  # default
+```
+
+The timeout to send data from the Remediation Component to the AppSec Component.
+
+### `APPSEC_PROCESS_TIMEOUT`
+> int (milliseconds)
+
+```bash
+APPSEC_PROCESS_TIMEOUT=500  # default
+```
+
+The timeout to process the request from the Remediation Component to the AppSec Component.

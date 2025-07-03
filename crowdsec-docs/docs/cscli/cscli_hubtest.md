@@ -39,7 +39,7 @@ Run functional tests on hub configurations (parsers, scenarios, collections...)
 * [cscli hubtest clean](/cscli/cscli_hubtest_clean.md)	 - clean [test_name]
 * [cscli hubtest coverage](/cscli/cscli_hubtest_coverage.md)	 - coverage
 * [cscli hubtest create](/cscli/cscli_hubtest_create.md)	 - create [test_name]
-* [cscli hubtest eval](/cscli/cscli_hubtest_eval.md)	 - eval [test_name]
+* [cscli hubtest eval](/cscli/cscli_hubtest_eval.md)	 - eval [test_name]...
 * [cscli hubtest explain](/cscli/cscli_hubtest_explain.md)	 - explain [test_name]
 * [cscli hubtest info](/cscli/cscli_hubtest_info.md)	 - info [test_name]
 * [cscli hubtest list](/cscli/cscli_hubtest_list.md)	 - list

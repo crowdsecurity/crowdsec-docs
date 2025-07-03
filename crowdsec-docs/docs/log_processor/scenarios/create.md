@@ -20,12 +20,12 @@ The creation of said functional testing will guide our process and will make it 
 We're going to create a scenario for an imaginary service "myservice" from the following logs of failed authentication :
 
 ```
-Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
-Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
+Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
 ```
 
 There's a [yaml schema
@@ -126,16 +126,16 @@ We filter on `evt.Meta.log_type == 'myservice_failed_auth'` because in the parse
 
 We have the following fields:
 
-- a [type](/scenarios/format.md#type): the type of bucket to use (trigger or leaky).
-- a [name](/scenarios/format.md#name)
-- a [description](/scenarios/format.md#description)
-- a [filter](/scenarios/format.md#type): the filter to apply on events to be filled in this bucket.
-- a [leakspeed](/scenarios/format.md#leakspeed)
-- a [capacity](/scenarios/format.md#capacity): the number of events in the bucket before it overflows.
-- a [groupby](/scenarios/format.md#groupby): a field from the event to partition the bucket. It is often the `source_ip` of the event.
-- a [blackhole](/scenarios/format.md#blackhole): the number of minute to not retrigger this scenario for the same `groupby` field.
-- a [reprocess](/scenarios/format.md#reprocess): ingest the alert in crowdsec for further processing.
-- some [labels](/scenarios/format.md#labels): Some labels are mandatory and the scenario will not be validated by the Hub if they are missing. Don't forget to set `remediation: true` if you want the IP to be blocked by bouncers.
+- a [type](/log_processor/scenarios/format.md#type): the type of bucket to use (trigger or leaky).
+- a [name](/log_processor/scenarios/format.md#name)
+- a [description](/log_processor/scenarios/format.md#description)
+- a [filter](/log_processor/scenarios/format.md#type): the filter to apply on events to be filled in this bucket.
+- a [leakspeed](/log_processor/scenarios/format.md#leakspeed)
+- a [capacity](/log_processor/scenarios/format.md#capacity): the number of events in the bucket before it overflows.
+- a [groupby](/log_processor/scenarios/format.md#groupby): a field from the event to partition the bucket. It is often the `source_ip` of the event.
+- a [blackhole](/log_processor/scenarios/format.md#blackhole): the number of minute to not retrigger this scenario for the same `groupby` field.
+- a [reprocess](/log_processor/scenarios/format.md#reprocess): ingest the alert in crowdsec for further processing.
+- some [labels](/log_processor/scenarios/format.md#labels): Some labels are mandatory and the scenario will not be validated by the Hub if they are missing. Don't forget to set `remediation: true` if you want the IP to be blocked by bouncers.
 
 We can then "test" our scenario like this :
 
@@ -145,17 +145,17 @@ INFO[01-10-2021 12:41:21 PM] Running test 'myservice-bf'
 WARN[01-10-2021 12:41:24 PM] Assert file '/home/dev/github/hub/.tests/myservice-bf/scenario.assert' is empty, generating assertion:
 
 len(results) == 1
-"1.2.3.4" in results[0].Overflow.GetSources()
-results[0].Overflow.Sources["1.2.3.4"].IP == "1.2.3.4"
-results[0].Overflow.Sources["1.2.3.4"].Range == ""
-results[0].Overflow.Sources["1.2.3.4"].GetScope() == "Ip"
-results[0].Overflow.Sources["1.2.3.4"].GetValue() == "1.2.3.4"
+"192.168.1.1" in results[0].Overflow.GetSources()
+results[0].Overflow.Sources["192.168.1.1"].IP == "192.168.1.1"
+results[0].Overflow.Sources["192.168.1.1"].Range == ""
+results[0].Overflow.Sources["192.168.1.1"].GetScope() == "Ip"
+results[0].Overflow.Sources["192.168.1.1"].GetValue() == "192.168.1.1"
 results[0].Overflow.Alert.Events[0].GetMeta("datasource_path") == "myservice-bf.log"
 results[0].Overflow.Alert.Events[0].GetMeta("datasource_type") == "file"
 results[0].Overflow.Alert.Events[0].GetMeta("log_subtype") == "myservice_bad_user"
 results[0].Overflow.Alert.Events[0].GetMeta("log_type") == "myservice_failed_auth"
 results[0].Overflow.Alert.Events[0].GetMeta("service") == "myservice"
-results[0].Overflow.Alert.Events[0].GetMeta("source_ip") == "1.2.3.4"
+results[0].Overflow.Alert.Events[0].GetMeta("source_ip") == "192.168.1.1"
 results[0].Overflow.Alert.Events[0].GetMeta("username") == "toto"
 ....
 results[0].Overflow.Alert.GetScenario() == "crowdsecurity/myservice-bf"
@@ -178,7 +178,7 @@ We can again understand more of what is going on thanks to `cscli hubtest explai
 
 ```bash
 ▶ cscli hubtest explain myservice-bf
-line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	├ s01-parse
@@ -189,7 +189,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: unknown user 'toto' from '1.2.3
 	├ Scenarios
 		└ 🟢 crowdsecurity/myservice-bf
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	├ s01-parse
@@ -200,7 +200,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' f
 	├ Scenarios
 		└ 🟢 crowdsecurity/myservice-bf
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	├ s01-parse
@@ -211,7 +211,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' f
 	├ Scenarios
 		└ 🟢 crowdsecurity/myservice-bf
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	├ s01-parse
@@ -222,7 +222,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' f
 	├ Scenarios
 		└ 🟢 crowdsecurity/myservice-bf
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	├ s01-parse
@@ -233,7 +233,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' f
 	├ Scenarios
 		└ 🟢 crowdsecurity/myservice-bf
 
-line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '1.2.3.4'
+line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' from '192.168.1.1'
 	├ s00-raw
 	|	└ 🟢 crowdsecurity/syslog-logs
 	├ s01-parse
@@ -252,7 +252,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' f
 We have now a fully functional scenario for myservice to detect brute forces!
 We can either deploy it to our production systems to do stuff, or even better, contribute to the hub !
 
-If you want to know more about directives and possibilities, take a look at [the scenario reference documentation](/scenarios/format.md) !
+If you want to know more about directives and possibilities, take a look at [the scenario reference documentation](/log_processor/scenarios/format.md) !
 
 See as well [this blog article](https://crowdsec.net/blog/how-to-write-crowdsec-parsers-and-scenarios) on the topic.
 

@@ -6,6 +6,8 @@ title: CrowdSec Cloudflare Worker
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import RemediationSupportBadges from '@site/src/components/RemediationSupportBadges.tsx';
+
 
 
 <p align="center">
@@ -22,6 +24,12 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
 &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
+
+<RemediationSupportBadges
+  MTLS
+  Prometheus
+  Metrics
+/>
 
 This **Remediation Component** (aka Bouncer) deploys a **Cloudflare Worker** in front of a **Cloudflare Zone/Website**, which checks if incoming request's IP address/Country/AS is present in a KV store and takes necessary remedial actions.   
 It also periodically updates the KV store with IPs coming from your **CrowdSec Security Engine** OR a **Blocklist as a Service Integration**for Remediation components.
@@ -217,6 +225,10 @@ prometheus:
 
 For obtaining the `token`:
 
+:::warning
+Ensure the `token` you are generating is a **user** API token these are found via clicking "my profile" and `API Tokens`. If you are in the `Account API Tokens` section then this is the incorrect place and these tokens have different rate limits which may cause issues whilst operating this Remediation Component.
+:::
+
 1. Sign in as a user who has access to the desired account.
 
 Then click [this link](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%2C%20%7B%22key%22%3A%20%22dns%22%2C%20%22type%22%3A%22read%22%7D%2C%20%7B%22key%22%3A%22d1%22%2C%20%22type%22%3A%22edit%22%7D%5D&name=) and create the token. 
@@ -352,7 +364,7 @@ crowdsec_config:
 3. *Failmode Configuration*: It's crucial to [configure the failmode properly](#setting-up-the-worker-route-fail-mode) to ensure your service remains operational even when request quotas are reached.
 4. *Testing with manual decisions*: Verify the functionality by adding decisions manually, which should be promptly reflected in KV storage and enforced by the Remediation Component.
   ```bash
-    sudo cscli decisions add --ip 1.2.3.4 --type captcha
+    sudo cscli decisions add --ip 192.168.1.1 --type captcha
   ```
   check your decisions has been added using:
 ```bash

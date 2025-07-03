@@ -41,7 +41,7 @@ In other cases, having a parser for `SpecificWebServer` access logs would justif
 
 ### Scenarios
 
-When you create a scenario, you must fill some fields in the [`labels`](/scenarios/format.md#labels), else the CI won't accept the contribution.
+When you create a scenario, you must fill some fields in the [`labels`](/log_processor/scenarios/format.md#labels), else the CI won't accept the contribution.
 Those `labels` are:
  - `classification`: this array contains the CVE ID and the [Mitre Techniques](https://attack.mitre.org/techniques/enterprise/) related to the scenario (when applicable)
  - `spoofable`: between 0 and 3, is the chance that the attacker behind the attack can spoof its origin
@@ -50,7 +50,7 @@ Those `labels` are:
  - `label` : a human readable name for the scenario
  - `cti` : (optional) true or false, used to specify that a scenario is mainly used for audit rather than detecting a threat 
 
-[Here](/scenarios/format.md#labels) is the `labels` documentation for more information.
+[Here](/log_processor/scenarios/format.md#labels) is the `labels` documentation for more information.
 
 Here is an example:
 

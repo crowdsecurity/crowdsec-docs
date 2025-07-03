@@ -12,6 +12,7 @@ Whitelists are special parsers that allow you to "discard" events, and can exist
     - Freebsd: `/usr/local/etc/crowdsec/parsers/s02-enrich/`
     - Windows: `c:/programdata/crowdsec/config/parsers/s02-enrich/`
 
+ - *LAPI AllowLists* : Centralized at the LAPI level, those allowlists allow to discard the decision and alert while still generating a log entry. They can be IP/Range (CIDR) based. See [LAPI AllowLists](/local_api/allowlists.md)
 
  - *PostOverflow whitelists* : Those are whitelists that are checked *after* the overflow happens. It is usually best for whitelisting process that can be expensive (such as performing reverse DNS on an IP address, or performing a `whois` of an IP address).
     - Linux: `/etc/crowdsec/postoverflows/s01-whitelist/`
@@ -20,7 +21,9 @@ Whitelists are special parsers that allow you to "discard" events, and can exist
 
 *Postoverflow whitelist folders do not exist by default so you **MUST** manually create them*
 
-The whitelist can be based on several criteria:
+**Parser Whitelists** and **PostOverflow Whitelists** offer more flexibility, but are harder to manage. If you  stick to IP-based whitelists, [**Centralized AllowLists**](/local_api/allowlists.md) is  the way to go.
+
+Otherwise, whitelist can be based on several criteria:
 
  - specific IP address : if the event/overflow IP is the same, event is whitelisted
  - IP ranges : if the event/overflow IP address belongs to this range, event is whitelisted

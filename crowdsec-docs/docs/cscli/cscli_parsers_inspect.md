@@ -17,7 +17,17 @@ cscli parsers inspect [item]... [flags]
 ### Examples
 
 ```
+# Display metadata, state, metrics and ancestor collections of parsers (installed or not).
 cscli parsers inspect crowdsecurity/httpd-logs crowdsecurity/sshd-logs
+
+# Don't collect metrics (avoid error if crowdsec is not running).
+cscli parsers inspect crowdsecurity/httpd-logs --no-metrics
+
+# Display difference between a tainted item and the latest one.
+cscli parsers inspect crowdsecurity/httpd-logs --diff
+
+# Reverse the above diff
+cscli parsers inspect crowdsecurity/httpd-logs --diff --rev
 ```
 
 ### Options

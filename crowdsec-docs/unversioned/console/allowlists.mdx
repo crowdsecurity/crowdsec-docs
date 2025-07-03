@@ -1,0 +1,40 @@
+# Centralized allowlists
+
+> 🌟 Premium feature
+
+Centralized allowlists is a powerful feature that allows you to manage allowlists across all your security engines and integrations from a single location. For free, you can still use [allowlist](next/local_api/centralized_allowlists) locally.
+
+## How do allowlists work?
+
+Allowlists are a list of IP addresses or IP ranges that you trust and want to bypass your security rules. When an IP address is in the allowlist, it will not be blocked by your security engine. This is useful when you have services that you know are safe and don't want to be blocked. When integrations are subscribed to allowlists, we will remove the allowlisted IP addresses from the list before sending them to the integration.
+
+
+## Getting started
+
+Proceed to the `Blocklist` tab located on the top menu bar. From there, you can select the Allowlists sub-menu
+
+![](/img/console/allowlists/allowlists-menu.png)
+
+The first step is to create an allowlist. Click on the "Add an Allowlist" button and fill out the form with the details of the allowlist.
+
+![](/img/console/allowlists/allowlists-create.png)
+
+Congratulations! You have created your first allowlist. You can now see it in the list of allowlists with some basic information like the number of items (IP addresses, IP ranges) in the allowlist, the number of subscribers, and the date it was created. You can delete or click on the allowlist to view it more closely.
+
+![](/img/console/allowlists/allowlists-list.png)
+
+
+## Add IPs or IP ranges to an allowlist
+
+To add IPs or IP ranges to an allowlist, click on the allowlist to which you want to add items. You will be redirected to the allowlist details page. Click on the "Add IP" button and fill in the form with the IP or IP range details you want to add. You can add multiple items by writing one by line in the corresponding field. 
+The description field in the form is mandatory and will help you identify the item later.
+Expiration allows you to set a date when the item will be automatically removed from the allowlist. This is useful when allowing an IP for a limited time. We suggest predefined expiration times like 1 week, 30 days... but you can also define your expiration date.
+
+![](/img/console/allowlists/allowlists-add-items.png)
+
+
+## Subscribe to an allowlist
+
+Click on the "Subscribe" button and select the integration for which you want to subscribe to the allowlist. You can subscribe to multiple integrations, security engines, or the whole organization to the same allowlist. At the top of the subscription windows, you can choose between the different types of subscriptions and then select the subscribers you want to add.
+
+![](/img/console/allowlists/allowlists-subscription.png)

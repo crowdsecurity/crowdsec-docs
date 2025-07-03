@@ -4,7 +4,7 @@ title: cscli hubtest eval
 ---
 ## cscli hubtest eval
 
-eval [test_name]
+eval [test_name]...
 
 ```
 cscli hubtest eval [flags]

@@ -23,6 +23,7 @@ Name | Type | Stream | One-shot
 [Kafka](/log_processor/data_sources/kafka.md)| read logs from kafka topic | yes | no
 [Kubernetes Audit](/log_processor/data_sources/kubernetes_audit.md) | expose a webhook to receive audit logs from a Kubernetes cluster  | yes | no
 [Loki](/log_processor/data_sources/loki.md) | read logs from loki | yes | yes
+[VictoriaLogs](/log_processor/data_sources/victorialogs.md) | read logs from VictoriaLogs | yes | yes
 [syslog service](/log_processor/data_sources/syslog_service.md) | read logs received via syslog protocol | yes | no
 [Windows Event](/log_processor/data_sources/windows_event_log.md)| read logs from windows event log | yes | yes
 
@@ -54,6 +55,15 @@ The expression must return:
  - A list of strings: One new event will be generated based on the source event per element in the list. Each element will replace the `evt.Line.Raw` from the source event.
 
 If the expression returns an error or an invalid type, the event will not be modified before sending it to the parsers.
+
+### `use_time_machine`
+
+By default, when reading logs in real-time, crowdsec will use the time at which the log was read as the log timestamp instead of extracting it from the log itself.
+
+Setting this option to `true` will force crowdsec to use the timestamp from the log as the time of the event.
+
+It is mandatory to set this if your application buffers logs before writting them (for example, IIS when writing to a log file, or logs written to S3 from almost any AWS service).<br/>
+If not set, then crowdsec will think all logs happened at once, which can lead to some false positive detections.
 
 ### `labels`
 

@@ -12,7 +12,7 @@ Enable a console option
 Enable given information push to the central API. Allows to empower the console
 
 ```
-cscli console enable [option] [flags]
+cscli console enable [option]... [flags]
 ```
 
 ### Examples

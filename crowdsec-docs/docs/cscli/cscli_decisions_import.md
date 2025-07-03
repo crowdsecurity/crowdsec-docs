@@ -10,7 +10,7 @@ Import decisions from a file or pipe
 
 expected format:
 csv  : any of duration,reason,scope,type,value, with a header line
-json :`{"duration" : "24h", "reason" : "my_scenario", "scope" : "ip", "type" : "ban", "value" : "x.y.z.z"}`
+json :`{"duration": "24h", "reason": "my_scenario", "scope": "ip", "type": "ban", "value": "x.y.z.z"}`
 
 ```
 cscli decisions import [options] [flags]
@@ -26,7 +26,7 @@ duration,scope,value
 $ cscli decisions import -i decisions.csv
 
 decisions.json:
-[{"duration" : "4h", "scope" : "ip", "type" : "ban", "value" : "1.2.3.4"}]
+[{"duration": "4h", "scope": "ip", "type": "ban", "value": "1.2.3.4"}]
 
 The file format is detected from the extension, but can be forced with the --format option
 which is required when reading from standard input.

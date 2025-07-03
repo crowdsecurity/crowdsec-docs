@@ -3,8 +3,8 @@ id: paloalto
 title: Palo Alto
 ---
 
-import ThemedImage from "@theme/ThemedImage";
-import useBaseUrl from "@docusaurus/useBaseUrl";
+import ThemedImage from "@theme/ThemedImage"
+import useBaseUrl from "@docusaurus/useBaseUrl"
 
 The CrowdSec Palo Alto integration allows you to block malicious IPs in your Palo Alto firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Palo Alto firewall.
 
@@ -43,12 +43,60 @@ Once the integration is generated you will be presented with a credentials scree
 <ThemedImage
     alt="Palo Alto Integration Credentials Screen"
     sources={{
-        light: useBaseUrl("/img/console_integrations_paloalto_credentials_light.png"),
-        dark: useBaseUrl("/img/console_integrations_paloalto_credentials_dark.png"),
+        light: useBaseUrl(
+            "/img/console_integrations_paloalto_credentials_light.png"
+        ),
+        dark: useBaseUrl(
+            "/img/console_integrations_paloalto_credentials_dark.png"
+        ),
     }}
 />
 
+## Palo Alto Configuration
+
+To configure the paloalto firewall, we will:
+
+1. Create External dynamic list and choose your update frequency.
+
+Go to Objects > External Dynamic Lists > Add
+
+![](/img/paloalto_step1.png)
+
+:::info
+You need to put the username and password provided by the console in the "URL" so it can use basic authentication:
+
+```
+https://<username>:<password>@admin.api.crowdsec.net/v1/integrations/<integration_id>/content
+```
+
+:::
+
+![](/img/paloalto_step2.png)
+
+2. Create a security policy with this dynamic list
+
+Go to Policies > Security > Add
+
+![](/img/paloalto_step3.png)
+
+In General tab, add the general info about the policy.
+
+![](/img/paloalto_step4.png)
+
+In Source tab, select your source zone then the dynamic list created in the source address.
+
+![](/img/paloalto_step5.png)
+
+In Actions tab, select the action ‘Drop‘ and log the action (recommended).
+
+![](/img/paloalto_step6.png)
+
+You should have your policy created, don't forget to click on ‘commit‘.
+
+![](/img/paloalto_step7.png)
+
 [Palo Alto Documentation](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/policy/use-an-external-dynamic-list-in-policy/external-dynamic-list#idf36cb80a-77f1-4d17-9c4b-7efe9fe426af)
+[Video Tutorial](https://www.youtube.com/watch?v=QFVI4sOFoaI)
 
 ## Format example
 
@@ -65,4 +113,4 @@ Since CrowdSec is a community-driven project, we welcome contributions to this d
 
 ## Next Steps
 
-Now that you have integrated CrowdSec integration with your Palo Alto Firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
+Now that you have integrated CrowdSec integration with your Palo Alto Firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too.

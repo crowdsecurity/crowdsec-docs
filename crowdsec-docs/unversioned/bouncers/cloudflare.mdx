@@ -6,6 +6,7 @@ title: Cloudflare
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import RemediationSupportBadges from '@site/src/components/RemediationSupportBadges.tsx';
 
 
 <p align="center">
@@ -23,14 +24,22 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
+<RemediationSupportBadges
+  MTLS
+  Prometheus
+/>
+
+:::danger
+
+This bouncer isn't actively supported anymore, due to changes to Cloudflare's API rate limitations.
+
+You should instead look at the [Cloudflare Workers Bouncer](/u/bouncers/cloudflare-workers).
+
+:::
 
 A Remediation Component that syncs the decisions made by CrowdSec with CloudFlare's firewall. Manages multi user, multi account, multi zone setup. Supports IP, Country and AS scoped decisions.
 
-:::warning
-Currently use of this component is discouraged if you are on free plan with Cloudflare due to rate limitations. We are working to resolve this with Cloudflare support.
 
-If you are on a premium plan with Cloudflare contact thier support to ask about increasing your rate limit.
-:::
 
 ## Installation
 
@@ -399,7 +408,7 @@ The action to be applied for a decision, if the decision's action is not support
 Consider your zone config supports the actions `managed_challenge` and `js_challenge`. Your `default_action` is `managed_action`. If you create the following decision:
 
 ```
-sudo cscli decisions add --ip 1.2.3.4 --type ban
+sudo cscli decisions add --ip 192.168.1.1 --type ban
 ```
 
 Since the zone doesn't support `ban` decision type, it'll be inserted into the IP list given by `default_action`. In this case it'll be the list for `managed_challenge`.

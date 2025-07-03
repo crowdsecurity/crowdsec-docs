@@ -13,7 +13,7 @@ Plugins are defined and used at the LAPI level, so if you are running a multi-se
 
 By default all plugins are shipped with CrowdSec are within the install package, and can trivially be enabled without further need to install additional packages.
 
-Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`.md).
+Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/local_api/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`.md).
 
 Plugin binaries are present in `config_paths.plugin_dir` (defaults to `/var/lib/crowdsec/plugins/`), and their individual configuration are present in `config_paths.notification_dir` (defaults to `/etc/crowdsec/notifications/`)
 
@@ -26,6 +26,22 @@ CrowdSec rejects the plugins binaries if one of the following is true :
 ### Environment variables
 
 It is possible to set configuration values based on environment variables.
+
+However, depending on which key is using the environment variable, the syntax is different.
+
+#### Format
+
+The `format` key is a string that uses the [go template](https://pkg.go.dev/text/template) syntax. To use an environment variable in the `format` key, you can use the `env` function provided by [sprig](https://masterminds.github.io/sprig/).
+
+```yaml
+format: |
+    Received {{ len . }} alerts
+    Environment variable value: {{env "ENV_VAR"}}
+```
+
+#### Other keys
+
+All other keys than `format` can use the typical `${ENV_VAR}` or `$ENV_VAR` syntax.
 
 For example, if you don't want to store your SMTP host password in the configuration file, you can do this:
 
@@ -40,6 +56,21 @@ sender_email: email@gmail.com
 email_subject: "CrowdSec Notification"
 ```
 
+:::warning
+Please note that `cscli notifications inspect` command does not interpolate environment variables and will always show the raw value of the key.
+:::
+
+If you wish to use `cscli notifications test` command, you must provide the environment variables in the command line or within your shell environment.
+
+For example, if you have a `SMTP_PASSWORD` environment variable, you can test the `email_default` plugin with the following command:
+
+:::warning
+Some shells may hold this information in history, so please consult your shell documentation to ensure that the password or other sensitive data is not stored in clear text.
+:::
+
+```bash 
+SMTP_PASSWORD=your_password cscli notifications test email_default
+```
 
 ### Registering plugin to profile
 

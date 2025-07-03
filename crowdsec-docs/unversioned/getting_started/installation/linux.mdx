@@ -2,7 +2,7 @@
 id: linux
 title: Linux
 pagination_prev: getting_started/pre_requisites
-pagination_next: getting_started/next_steps
+pagination_next: getting_started/health_check
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,7 +11,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Installation Linux
 
-Before getting started it is advised to read the [prerequisites](/unversioned/getting_started/prerequisites.md) page to understand the requirements for running CrowdSec.
+Before getting started it is advised to read the [prerequisites](/unversioned/getting_started/prerequisites.mdx) page to understand the requirements for running CrowdSec.
 
 ## Repository Installation
 
@@ -143,6 +143,70 @@ Once the repository is added, you can install the Security Engine via:
   ]}>
   <TabItem value="debian">
     <CodeBlock className="language-bash">apt install crowdsec</CodeBlock>
+    :::warning
+    If you are using ESM/Pro Ubuntu you will need to alter the package weights to get the latest version see below
+    :::
+    <details>
+
+    <summary> ESM/Pro Ubuntu </summary>
+
+    #### Check the current package policy
+
+    To see which version of CrowdSec is currently available via APT:
+
+    ```bash
+    apt-cache policy crowdsec
+    ```
+
+    You may see output like the following:
+
+    ```
+    crowdsec:
+      Installed: (none)
+      Candidate: 1.4.6-6ubuntu0.24.04.1+esm1
+      Version table:
+      ....
+    ```
+
+    If the `Candidate` version shown is `1.4.6`, this means the default priority favors the Ubuntu-provided package. To ensure we retrieve the latest version from our repository, we need to adjust the package pinning.
+
+    #### Set CrowdSec repository priority
+
+    Open the preferences file with:
+
+    ```bash
+    sudo vim /etc/apt/preferences.d/crowdsec
+    ```
+
+    Then add the following content:
+
+    ```
+    Package: *
+    Pin: release o=packagecloud.io/crowdsec/crowdsec,a=any,n=any,c=main
+    Pin-Priority: 1001
+    ```
+
+    After saving the file, refresh your local package cache:
+
+    ```bash
+    sudo apt update
+    ```
+
+    Once the cache has been updated, check the policy again to confirm that the latest version is now selected:
+
+    ```bash
+    apt-cache policy crowdsec
+    ```
+
+    ```
+    crowdsec:
+      Installed: 1.6.X
+      Candidate: 1.6.X
+      Version table:
+      ...
+    ```
+
+    </details>
   </TabItem>
   
   <TabItem value="centos7">
@@ -165,7 +229,6 @@ Once the repository is added, you can install the Security Engine via:
     <CodeBlock className="language-bash">yum install crowdsec</CodeBlock>
   </TabItem>
 </Tabs>
-
 
 ### Install Remediation Component
 

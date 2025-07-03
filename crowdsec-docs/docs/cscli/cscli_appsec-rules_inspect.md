@@ -17,7 +17,17 @@ cscli appsec-rules inspect [item]... [flags]
 ### Examples
 
 ```
+# Display metadata, state, metrics and ancestor collections of appsec-rules (installed or not).
 cscli appsec-rules inspect crowdsecurity/crs
+
+# Don't collect metrics (avoid error if crowdsec is not running).
+cscli appsec-configs inspect crowdsecurity/crs --no-metrics
+
+# Display difference between a tainted item and the latest one.
+cscli appsec-rules inspect crowdsecurity/crs --diff
+
+# Reverse the above diff
+cscli appsec-rules inspect crowdsecurity/crs --diff --rev
 ```
 
 ### Options

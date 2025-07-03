@@ -25,7 +25,7 @@ Parses unix timestamp string and returns RFC3339 formatted time
 ### `GetFromStash(cache string, key string)`
 
 `GetFromStash` retrieves the value for `key` in the named `cache`.
-The cache are usually populated by [parser's stash section](/parsers/format.md#stash).
+The cache are usually populated by [parser's stash section](/log_processor/parsers/format.md#stash).
 An empty string if the key doesn't exist (or has been evicted), and error is raised if the `cache` doesn't exist.
 
 ## Others
@@ -34,7 +34,7 @@ An empty string if the key doesn't exist (or has been evicted), and error is rai
 
 Returns true if it's a valid IPv4.
 
-> `IsIPV4("1.2.3.4")`
+> `IsIPV4("192.168.1.1")`
 
 > `IsIPV4(Alert.GetValue())`
 
@@ -44,7 +44,7 @@ Returns true if it's a valid IP (v4 or v6).
 
 > `IsIP("2001:0db8:85a3:0000:0000:8a2e:0370:7334")`
 
-> `IsIP("1.2.3.4")`
+> `IsIP("192.168.1.1")`
 
 > `IsIP(Alert.GetValue())`
 

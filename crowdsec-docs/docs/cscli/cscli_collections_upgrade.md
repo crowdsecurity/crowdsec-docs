@@ -17,15 +17,31 @@ cscli collections upgrade [item]... [flags]
 ### Examples
 
 ```
+# Upgrade some collections. If they are not currently installed, they are downloaded but not installed.
 cscli collections upgrade crowdsecurity/http-cve crowdsecurity/iptables
+
+# Show the execution plan without changing anything - compact output sorted by type and name.
+cscli collections upgrade crowdsecurity/http-cve crowdsecurity/iptables --dry-run
+
+# Show the execution plan without changing anything - verbose output sorted by execution order.
+cscli collections upgrade crowdsecurity/http-cve crowdsecurity/iptables --dry-run -o raw
+
+# Upgrade over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
+cscli collections upgrade crowdsecurity/http-cve crowdsecurity/iptables --force
+
+# Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
+cscli collections upgrade crowdsecurity/http-cve crowdsecurity/iptables -i
+cscli collections upgrade crowdsecurity/http-cve crowdsecurity/iptables --interactive
 ```
 
 ### Options
 
 ```
-  -a, --all     Upgrade all the collections
-      --force   Force upgrade: overwrite tainted and outdated files
-  -h, --help    help for upgrade
+  -a, --all           Upgrade all the collections
+      --dry-run       Don't install or remove anything; print the execution plan
+      --force         Force upgrade: overwrite tainted and outdated files
+  -h, --help          help for upgrade
+  -i, --interactive   Ask for confirmation before proceeding
 ```
 
 ### Options inherited from parent commands
