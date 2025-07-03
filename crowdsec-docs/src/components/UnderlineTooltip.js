@@ -1,19 +1,19 @@
 import React from 'react';
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@site/src/ui/tooltip';
+import { TouchProvider, HybridTooltip, HybridTooltipTrigger, HybridTooltipContent } from '@site/src/ui/hybridtooltip';
 
 export default function UnderlineTooltip({ children, tooltip }) {
     return (
-        <TooltipProvider delayDuration={300}>
-            <Tooltip>
-                <TooltipTrigger asChild>
+        <TouchProvider>
+            <HybridTooltip delayDuration={300}>
+                <HybridTooltipTrigger asChild>
                     <span className="tw-underline tw-decoration-dashed tw-decoration-1 tw-decoration-gray-700 tw-cursor-help hover:tw-decoration-gray-900 dark:tw-decoration-gray-300 dark:hover:tw-decoration-gray-100 tw-underline-offset-2">
                         {children}
                     </span>
-                </TooltipTrigger>
-                <TooltipContent>
+                </HybridTooltipTrigger>
+                <HybridTooltipContent>
                     <p>{tooltip}</p>
-                </TooltipContent>
-            </Tooltip>
-        </TooltipProvider>
+                </HybridTooltipContent>
+            </HybridTooltip>
+        </TouchProvider>
     );
 }
