@@ -3,7 +3,7 @@ id: getting_started
 title: Getting Started
 ---
 
-import AcademyPromo from '@site/src/components/AcademyPromo';
+import AcademyPromo from '@site/src/components/academy-promo';
 
 Welcome to CrowdSec!
 
@@ -15,8 +15,7 @@ To embark on your CrowdSec journey, the optimal starting point is to set up a co
 
 The CrowdSec console serves as a web-based interface enabling you to conveniently monitor all your CrowdSec instances from a centralized hub. To get started, simply [sign up here](https://app.crowdsec.net/signup).
 
-
-## Deploy 
+## Deploy
 
 ### Walkthrough
 
@@ -43,8 +42,9 @@ In our updated documentation, we now refer to CrowdSec as the "Security Engine" 
 #### Prerequisites
 
 The Security Engine by default uses the following ports:
-  - 8080/tcp for the API
-  - 6060/tcp for the Prometheus metrics / Debugging
+
+-   8080/tcp for the API
+-   6060/tcp for the Prometheus metrics / Debugging
 
 If these ports are not available on your system, you can change them in the configuration file post installation. See [Configuration](/configuration/crowdsec_configuration.md) for more information.
 
@@ -55,9 +55,10 @@ Please note that the API is mandatory for your security engine, do not remove it
 For the most straightforward installation of the Security Engine, utilize the official repository, guaranteeing you'll constantly have the latest version.
 
 Please see the relevant documentation for your OS:
-- [Linux](/getting_started/install.mdx)
-- [FreeBSD](/getting_started/install_freebsd.md)
-- [Windows](/getting_started/getting_started_on_windows.md)
+
+-   [Linux](/getting_started/install.mdx)
+-   [FreeBSD](/getting_started/install_freebsd.md)
+-   [Windows](/getting_started/getting_started_on_windows.md)
 
 #### Installing from source
 
