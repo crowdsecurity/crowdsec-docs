@@ -1,16 +1,14 @@
-import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
+import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment"
 
 const clientModule = {
     onRouteDidUpdate({ location, previousLocation }) {
         if (!ExecutionEnvironment.canUseDOM) {
-            return null;
+            return null
         }
-        const cookieConsentResponse = JSON.parse(
-            localStorage.getItem("docusaurus.cookieConsent") ?? "null"
-        );
+        const cookieConsentResponse = JSON.parse(localStorage.getItem("docusaurus.cookieConsent") ?? "null")
         if (!cookieConsentResponse) {
-            window["ga-disable-MEASUREMENT_ID"] = true;
-            return;
+            window["ga-disable-MEASUREMENT_ID"] = true
+            return
         }
         if (
             previousLocation &&
@@ -26,15 +24,11 @@ const clientModule = {
             setTimeout(() => {
                 // Always refer to the variable on window in case it gets overridden
                 // elsewhere.
-                window.gtag(
-                    "set",
-                    "page_path",
-                    location.pathname + location.search + location.hash
-                );
-                window.gtag("event", "page_view");
-            });
+                window.gtag("set", "page_path", location.pathname + location.search + location.hash)
+                window.gtag("event", "page_view")
+            })
         }
     },
-};
+}
 
-export default clientModule;
+export default clientModule

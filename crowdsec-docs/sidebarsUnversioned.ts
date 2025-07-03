@@ -1,4 +1,4 @@
-import { SidebarsConfig } from "@docusaurus/plugin-content-docs"
+import type { SidebarsConfig } from "@docusaurus/plugin-content-docs"
 
 type SidebarConfig = SidebarsConfig[string]
 
@@ -659,12 +659,12 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 export default sidebarsUnversionedConfig
 
 export const {
-    ctiApiSidebar,
-    consoleSidebar,
-    remediationSideBar,
-    blocklistsSideBar,
-    troubleshootingSideBar,
-    serviceApiSideBar,
-    guidesSideBar,
-    gettingStarted,
+	ctiApiSidebar,
+	consoleSidebar,
+	remediationSideBar,
+	blocklistsSideBar,
+	troubleshootingSideBar,
+	serviceApiSideBar,
+	guidesSideBar,
+	gettingStarted,
 } = sidebarsUnversionedConfig

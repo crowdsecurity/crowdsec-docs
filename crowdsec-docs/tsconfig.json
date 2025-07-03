@@ -1,11 +1,14 @@
 {
     "compilerOptions": {
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
       "esModuleInterop": true,
       "jsx": "react",
       "baseUrl": ".",
       "paths": {
         "@site/*": ["./*"],
-      }
+      },
+
     }
   }
   

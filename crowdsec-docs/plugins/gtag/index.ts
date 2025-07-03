@@ -1,7 +1,5 @@
 const createConfigSnippet = ({ trackingID, anonymizeIP }) =>
-    `gtag('config', '${trackingID}', { ${
-        anonymizeIP ? "'anonymize_ip': true" : ""
-    } });`
+    `gtag('config', '${trackingID}', { ${anonymizeIP ? "'anonymize_ip': true" : ""} });`
 
 export default function pluginGoogleGtag(_, options) {
     const isProd = process.env.NODE_ENV === "production"
@@ -65,4 +63,4 @@ export default function pluginGoogleGtag(_, options) {
     }
 }
 
-export { validateThemeConfig, validateOptions } from "./validate.js"
+export { validateOptions, validateThemeConfig } from "./validate.js"
