@@ -19,7 +19,7 @@ What makes CrowdSec unique is its <UnderlineTooltip tooltip="Users who detect ma
 
 ## What is a Remediation Component?
 
-Remediation Components are software modules that connect to the <UnderlineTooltip tooltip="The Local API (LAPI) is exposed by the Security Engine and acts as the interface for retrieving and managing decisions.">Local API</UnderlineTooltip> (LAPI) and enforce <UnderlineTooltip tooltip="Decisions are remediation actions such as bans or alerts taken by the Security Engine in response to detected threats.">decisions</UnderlineTooltip> made by the Security Engine.
+Remediation Components are software packages that connect to the <UnderlineTooltip tooltip="The Local API (LAPI) is exposed by the Security Engine and acts as the interface for retrieving and managing decisions.">Local API</UnderlineTooltip> (LAPI) and enforce <UnderlineTooltip tooltip="Decisions are remediation actions such as bans or alerts taken by the Security Engine in response to detected threats.">decisions</UnderlineTooltip> made by the Security Engine.
 
 Previously referred to as *bouncers*, these components can operate independently, such as the [Firewall Remediation](bouncers/firewall.mdx), which integrates with <UnderlineTooltip tooltip="A widely used packet filtering and firewall system for Linux.">iptables</UnderlineTooltip>, <UnderlineTooltip tooltip="The modern replacement for iptables, offering improved performance and a more consistent syntax.">nftables</UnderlineTooltip>, or <UnderlineTooltip tooltip="The built-in firewall system used on BSD-based systems like FreeBSD, OpenBSD, and macOS.">pf</UnderlineTooltip>. They can also be embedded directly into existing applications, such as [Nginx](bouncers/nginx.mdx), where <UnderlineTooltip tooltip="A lightweight scripting language embedded into software like Nginx to enable custom behavior, including dynamic security enforcement.">Lua</UnderlineTooltip> is used to enforce decisions at runtime.
 
@@ -66,14 +66,18 @@ We support the following operating systems:
 * [Linux](/getting_started/installation/linux.mdx)
 * [FreeBSD](/getting_started/installation/freebsd.mdx)
 * [Windows](/getting_started/installation/windows.mdx)
-* [MacOS](/getting_started/installation/macos.mdx) (through Docker)
+* [MacOS](/getting_started/installation/macos.mdx)
+* [Docker](/getting_started/installation/docker.mdx)
 * [Kubernetes](/getting_started/installation/kubernetes.mdx)
+* [OPNsense](/getting_started/installation/opnsense.mdx)
+* [pfSense](/getting_started/installation/pfsense.mdx)
+* [WHM](/getting_started/installation/whm.mdx)
 
 [See version matrix for detailed breakdown](/docs/next/getting_started/versions_matrix)
 
 ### Ports
 
-CrowdSec Security Engine uses the following default ports these can be altered after installation:
+CrowdSec Security Engine uses the following default ports (bound to localhost/loopback by default) - these can be altered after installation:
 
 * 6060/tcp: Prometheus metrics port
 * 8080/tcp: API port
