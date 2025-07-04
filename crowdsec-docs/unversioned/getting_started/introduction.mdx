@@ -25,6 +25,18 @@ These components can operate independently, such as the [Firewall Remediation](b
 
 This is often referred to as the <UnderlineTooltip tooltip="An Intrusion Prevention System actively blocks or mitigates detected threats, often based on decisions made by an Intrusion Detection System.">Intrusion Prevention System</UnderlineTooltip> (IPS) layer that complements the <UnderlineTooltip tooltip="An Intrusion Detection System monitors logs or traffic to detect and report suspicious or malicious behavior, such as scans, brute-force attempts, or exploits.">Intrusion Detection System</UnderlineTooltip> (IDS) role of the Security Engine. They do not make decisions on their own; instead, they act based on what the Security Engine instructs.
 
+## Architecture Diagram
+
+<div style={{ display: "flex" }}>
+    <div style={{ textAlign: "center", flex: "1" }}>
+        <img
+            width="auto"
+            height="auto"
+            src={useBaseUrl("/img/simplified_SE_overview.svg")}
+        />
+    </div>
+</div>
+
 ## Prerequisites
 
 We recommend that you understand the following prerequisites before installing CrowdSec:
@@ -65,12 +77,6 @@ CrowdSec Security Engine uses the following default ports these can be altered a
 
 * 6060/tcp: Prometheus metrics port
 * 8080/tcp: API port
-
-<div style={{ display: "flex" }}>
-    <div style={{ textAlign: "center", flex: "1" }}>
-        <img src={useBaseUrl("/img/simplified_SE_underthehood.svg")}></img>
-    </div>
-</div>
 
 
 

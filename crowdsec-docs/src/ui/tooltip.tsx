@@ -19,7 +19,7 @@ const TooltipContent = React.forwardRef<
     ref={ref}
     sideOffset={sideOffset}
     className={cn(
-      "tw-z-50 tw-overflow-hidden tw-rounded-md tw-border tw-border-neutral-200 tw-bg-white tw-px-3 tw-py-1.5 tw-text-sm tw-text-neutral-950 tw-shadow-md tw-animate-in tw-fade-in-0 tw-zoom-in-95 data-[state=closed]:tw-animate-out data-[state=closed]:tw-fade-out-0 data-[state=closed]:tw-zoom-out-95 data-[side=bottom]:tw-slide-in-from-top-2 data-[side=left]:tw-slide-in-from-right-2 data-[side=right]:tw-slide-in-from-left-2 data-[side=top]:tw-slide-in-from-bottom-2 dark:tw-border-neutral-800 dark:tw-bg-neutral-950 dark:tw-text-neutral-50",
+      "tw-z-50 tw-overflow-hidden tw-rounded-md tw-border tw-border-neutral-200 tw-bg-neutral-100 tw-px-3 tw-py-1.5 tw-text-sm tw-text-neutral-950 tw-shadow-md tw-animate-in tw-fade-in-0 tw-zoom-in-95 data-[state=closed]:tw-animate-out data-[state=closed]:tw-fade-out-0 data-[state=closed]:tw-zoom-out-95 data-[side=bottom]:tw-slide-in-from-top-2 data-[side=left]:tw-slide-in-from-right-2 data-[side=right]:tw-slide-in-from-left-2 data-[side=top]:tw-slide-in-from-bottom-2 dark:tw-border-neutral-800 dark:tw-bg-neutral-950 dark:tw-text-neutral-50",
       className
     )}
     {...props}
