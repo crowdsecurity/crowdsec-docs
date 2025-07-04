@@ -28,6 +28,7 @@
         "@mui/icons-material": "^5.11.16",
         "@mui/material": "^5.13.4",
         "@mui/x-date-pickers": "^6.18.0",
+        "@radix-ui/react-popover": "^1.1.14",
         "@radix-ui/react-tooltip": "^1.1.2",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
