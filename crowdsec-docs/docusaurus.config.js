@@ -168,6 +168,16 @@ module.exports = {
                     label: "Console",
                 },
                 {
+                    label: "Playground",
+                    position: "left",
+                    items: [
+                        {
+                            label: "Notifications",
+                            to: "/playground/notification",
+                        },
+                    ],
+                },
+                {
                     to: `https://academy.crowdsec.net/courses?${
                         process.env.NODE_ENV === "production"
                             ? "utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs"
