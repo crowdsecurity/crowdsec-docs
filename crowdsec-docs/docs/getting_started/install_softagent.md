@@ -4,7 +4,7 @@ title: Soft Agent
 sidebar_position: 1
 ---
 
-# Using our SDK
+# Using our PHP SDK
 
 With the help of our SDK, If you are developing security software that detects misbehaviors and does remediation on IPs, you can send signals about your detections and benefit from the community blocklist.
 

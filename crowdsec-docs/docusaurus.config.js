@@ -138,8 +138,9 @@ module.exports = {
                             label: "Cscli",
                         },
                         {
-                            to: "/u/user_guides/intro",
-                            label: "Guides",
+                            type: "doc",
+                            label: "SDK",
+                            docId: "getting_started/sdk_intro",
                         },
                     ],
                 },
@@ -168,13 +169,22 @@ module.exports = {
                     label: "Console",
                 },
                 {
-                    to: `https://academy.crowdsec.net/courses?${
-                        process.env.NODE_ENV === "production"
-                            ? "utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs"
-                            : ""
-                    }`,
-                    label: "Academy",
+                    label: "Resources",
                     position: "left",
+                    items: [
+                        {
+                            to: "/u/user_guides/intro",
+                            label: "Guides",
+                        },
+                        {
+                            to: `https://academy.crowdsec.net/courses?${
+                                process.env.NODE_ENV === "production"
+                                    ? "utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs"
+                                    : ""
+                            }`,
+                            label: "Academy",
+                        },
+                    ],
                 },
                 {
                     to: "/u/troubleshooting/intro",
@@ -325,6 +335,14 @@ module.exports = {
                     {
                         from: "/docs/next/faq",
                         to: "/u/troubleshooting/intro",
+                    },
+                    {
+                        from: "/docs/next/getting_started/install_crowdsec",
+                        to: "/u/getting_started/installation/linux",
+                    },
+                    {
+                        from: "/docs/next/getting_started/install_crowdsec_freebsd",
+                        to: "/u/getting_started/installation/freebsd",
                     },
                 ],
             },
