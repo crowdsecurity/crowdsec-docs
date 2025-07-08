@@ -11,10 +11,10 @@ const TouchContext = createContext<boolean | undefined>(undefined);
 const useTouch = () => useContext(TouchContext);
 
 export const TouchProvider = (props: PropsWithChildren): React.JSX.Element => {
-	const [isTouch, setTouch] = useState<boolean>();
+	const [isTouch, setIsTouch] = useState<boolean>();
 
 	useEffect(() => {
-		setTouch(window.matchMedia("(pointer: coarse)").matches);
+		setIsTouch(window.matchMedia("(pointer: coarse)").matches);
 	}, []);
 
 	// Conditionally provide the appropriate provider

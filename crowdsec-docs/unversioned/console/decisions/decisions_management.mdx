@@ -4,30 +4,36 @@ title: Decisions Management
 sidebar_position: 1
 ---
 
+import { Badge } from "@site/src/ui/badge";
+
+<div className="mb-4">
+    <Badge variant="premium">CrowdSec Premium Feature</Badge>
+</div>
+
+
 :::info
-If running a version before v1.6.9, this feature needs the *console_management* feature activated on your Security Engine.  
+If running a version before v1.6.9, this feature needs the _console_management_ feature activated on your Security Engine.  
 Activate it to make sure actions from the **decision management** are applied **immediately**.  
 Check the instructions to activate it [HERE](/u/console/decisions/decisions_intro).
 :::
+
 ## Console Management
 
 CrowdSec Local API is able to receive or delete local decisions from the Console.
 
-> 🌟 Premium feature
 
 ### Adding decision
 
 From the Console, it is possible to add a decision for your whole organization, for instances that belong to a tag or to one or more instances.
 
- - Click on the "Add a decision" button in the "Decisions" tab:
+- Click on the "Add a decision" button in the "Decisions" tab:
 
 ![Add decision button](/img/add_decision_button.png)
 
- - Then enter the IP address you want to ban, the remediation type, the duration, a reason and select the target of this decision:
->In this example, we are adding a __ban__ decision on __192.168.1.1__ for __4h__ because it is a __Bad IP__, to my two instances. 
+- Then enter the IP address you want to ban, the remediation type, the duration, a reason and select the target of this decision:
+  > In this example, we are adding a **ban** decision on **192.168.1.1** for **4h** because it is a **Bad IP**, to my two instances.
 
 ![Add decision](/img/add_decision_to_machines.png)
-
 
 And we can see in the CrowdSec Local API logs that we received this new decision:
 
@@ -46,14 +52,13 @@ sudo cscli decisions list
 │ 51093289 │ console  │ ip:192.168.1.1         │ Bad IP                              │ ban    │         │                                                         │ 0      │ 3h55m45.776620725s │ 13404    │
 ```
 
-
 ### Deleting decision
 
- - Go to the decision you want to delete. You can then choose if you want to delete the decision on all the machines, or only on the specified machine:
+- Go to the decision you want to delete. You can then choose if you want to delete the decision on all the machines, or only on the specified machine:
 
 ![Delete decision](/img/delete_decision.png)
 
- - And confirm that you want to delete it:
+- And confirm that you want to delete it:
 
 ![Delete decision confirm](/img/delete_decision_confirm.png)
 

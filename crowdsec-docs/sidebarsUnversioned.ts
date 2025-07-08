@@ -120,13 +120,16 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "doc",
-					label: "Troubleshooting Hints 🏅",
+					label: "Troubleshooting Hints",
 					id: "console/security_engines/troubleshooting",
 				},
 				{
 					type: "doc",
-					label: "Am I Under Attack 🏅",
+					label: "Am I Under Attack",
 					id: "console/security_engines/am_i_under_attack",
+					customProps: {
+						tag: "premium",
+					},
 				},
 				{
 					type: "doc",
@@ -175,8 +178,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "doc",
-					label: "Background Noise 🏅",
+					label: "Background Noise",
 					id: "console/alerts/background_noise",
+					customProps: {
+						tag: "premium",
+					},
 				},
 				{
 					type: "doc",
@@ -232,62 +238,84 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				{
 					type: "doc",
 					id: "console/decisions/decisions_management",
-					label: "Decisions Management 🏅",
+					label: "Management",
+					customProps: {
+						tag: "premium",
+					},
 				},
 			],
 		},
 		{
-			type: "category",
-			label: "Centralized Allowlists 🏅",
-			link: {
-				type: "doc",
-				id: "console/allowlists",
+			id: "console/allowlists",
+			type: "doc",
+			label: "Centralized Allowlists",
+			customProps: {
+				tag: "premium",
 			},
-			items: [],
 		},
 		{
 			type: "category",
-			label: "Enterprise plan 🏅",
+			label: "Enterprise plan",
+			customProps: {
+				tag: "premium",
+			},
 			items: [
 				{
 					type: "doc",
-					label: "Enterprise support 🏅",
+					label: "Enterprise support",
 					id: "console/enterprise_plan/enterprise_support",
+					customProps: {
+						tag: "premium",
+					},
 				},
 				{
 					type: "doc",
-					label: "Invoices 🏅",
+					label: "Invoices",
 					id: "console/enterprise_plan/enterprise_invoices",
+					customProps: {
+						tag: "premium",
+					},
 				},
 			],
 		},
 		{
-			type: "category",
-			label: "Threat Forecast 🏅",
-			link: {
-				type: "doc",
-				id: "console/threat_forecast",
+			id: "console/threat_forecast",
+			type: "doc",
+			label: "Threat Forecast",
+			customProps: {
+				tag: "premium",
 			},
-			items: [],
 		},
 		{
 			type: "link",
-			label: "Service API 🏅",
+			label: "Service API",
 			href: "/u/service_api/getting_started",
+			customProps: {
+				tag: "premium",
+			},
 		},
 		{
 			type: "category",
-			label: "Notification integrations 🏅",
+			label: "Notification integrations",
+			customProps: {
+				tag: "premium",
+			},
 			items: [
 				{
 					type: "doc",
 					label: "Overview",
 					id: "console/notification_integrations/overview",
+					customProps: {
+						tag: "premium",
+					},
 				},
 				{
 					type: "doc",
 					label: "Notification Rule",
 					id: "console/notification_integrations/rule",
+					customProps: {
+						tag: "premium",
+					},
 				},
 				{
 					type: "doc",

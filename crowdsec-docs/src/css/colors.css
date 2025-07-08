@@ -184,3 +184,16 @@ html[data-theme="dark"],
 	/* Algolia global search colors */
 	--docsearch-searchbox-background: rgb(var(--input));
 }
+
+.platinum-tag-gradient {
+	background: rgba(213 176 80 / 100%);
+	/* biome-ignore lint/suspicious/noDuplicateProperties: This is intentional */
+	background: linear-gradient(
+		90deg,
+		rgba(213 176 80 / 100%) 0%,
+		rgba(203 161 53 / 100%) 25%,
+		rgba(255 222 138 / 100%) 50%,
+		rgba(203 161 53 / 100%) 75%,
+		rgba(213 176 80 / 100%) 100%
+	);
+}

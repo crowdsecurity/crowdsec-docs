@@ -14,20 +14,18 @@ const RemediationSupportBadge = ({ title, description, support }: { title: strin
 	//ugly, for test
 	const colorClass = support === "Unsupported" ? "bg-red-400" : "bg-green-400";
 	return (
-		<TooltipProvider>
-			<Tooltip>
-				<TooltipTrigger asChild>
-					<div className="border rounded-full flex text-black">
-						<span className="bg-slate-400 px-2 rounded-l-lg">{title}</span>
-						<span className={clsx("rounded-r-lg px-2", colorClass)}>{support}</span>
-					</div>
-				</TooltipTrigger>
-				<TooltipContent>
-					<p>{description}</p>
-					<ToolTipArrow className="dark:fill-white" />
-				</TooltipContent>
-			</Tooltip>
-		</TooltipProvider>
+		<Tooltip>
+			<TooltipTrigger asChild>
+				<div className="border rounded-full flex text-black">
+					<span className="bg-slate-400 px-2 rounded-l-lg">{title}</span>
+					<span className={clsx("rounded-r-lg px-2", colorClass)}>{support}</span>
+				</div>
+			</TooltipTrigger>
+			<TooltipContent>
+				<p>{description}</p>
+				<ToolTipArrow className="dark:fill-white" />
+			</TooltipContent>
+		</Tooltip>
 	);
 };
 
