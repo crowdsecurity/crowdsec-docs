@@ -1,6 +1,6 @@
-import type { SidebarsConfig } from "@docusaurus/plugin-content-docs"
+import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
-type SidebarConfig = SidebarsConfig[string]
+type SidebarConfig = SidebarsConfig[string];
 
 const sidebarsUnversionedConfig: SidebarConfig = {
     ctiApiSidebar: [
@@ -656,7 +656,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
     ],
 }
 
-export default sidebarsUnversionedConfig
+export default sidebarsUnversionedConfig;
 
 export const {
 	ctiApiSidebar,
@@ -667,4 +667,4 @@ export const {
 	serviceApiSideBar,
 	guidesSideBar,
 	gettingStarted,
-} = sidebarsUnversionedConfig
+} = sidebarsUnversionedConfig;

@@ -1,8 +1,8 @@
-import { cibDocker, cibKubernetes, cibLinux, cibPowershell, cibWindows, cilDollar, cilShortText } from "@coreui/icons"
-import CodeBlock from "@theme/CodeBlock"
-import TabItem from "@theme/TabItem"
-import Tabs from "@theme/Tabs"
-import React from "react"
+import { cibDocker, cibKubernetes, cibLinux, cibPowershell, cibWindows, cilDollar, cilShortText } from "@coreui/icons";
+import CodeBlock from "@theme/CodeBlock";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import React from "react";
 
 /*
  * This component is used to display code snippets for both Unix and Windows operating systems.
@@ -13,36 +13,36 @@ import React from "react"
  * The cmd prop is used to display the code snippet for Windows Command Prompt.
  */
 const FormattedTabs = ({ ...props }): React.JSX.Element => {
-	const values = []
-	let defaultValue = ""
+	const values = [];
+	let defaultValue = "";
 
 	if (props.bash !== undefined) {
-		defaultValue = "nix"
-		values.push({ label: "Linux/Freebsd", value: "nix", icon: cibLinux })
+		defaultValue = "nix";
+		values.push({ label: "Linux/Freebsd", value: "nix", icon: cibLinux });
 	}
 	if (props.powershell !== undefined) {
 		if (defaultValue === "") {
-			defaultValue = "windows"
+			defaultValue = "windows";
 		}
-		values.push({ label: "Windows", value: "windows", icon: cibWindows })
+		values.push({ label: "Windows", value: "windows", icon: cibWindows });
 	}
 
 	if (props.docker !== undefined || props.dockerCompose !== undefined) {
 		if (defaultValue === "") {
-			defaultValue = "docker"
+			defaultValue = "docker";
 		}
-		values.push({ label: "Docker", value: "docker", icon: cibDocker })
+		values.push({ label: "Docker", value: "docker", icon: cibDocker });
 	}
 
 	if (props.k8s !== undefined || props.yaml !== undefined) {
 		if (defaultValue === "") {
-			defaultValue = "kubernetes"
+			defaultValue = "kubernetes";
 		}
 		values.push({
 			label: "Kubernetes",
 			value: "kubernetes",
 			icon: cibKubernetes,
-		})
+		});
 	}
 
 	return (
@@ -123,7 +123,7 @@ const FormattedTabs = ({ ...props }): React.JSX.Element => {
 				{props.k8s !== undefined ? <CodeBlock className="language-bash">{props.k8s}</CodeBlock> : null}
 			</TabItem>
 		</Tabs>
-	)
-}
+	);
+};
 
-export default FormattedTabs
+export default FormattedTabs;

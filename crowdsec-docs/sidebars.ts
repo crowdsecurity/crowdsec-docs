@@ -1,6 +1,6 @@
-import type { SidebarsConfig } from "@docusaurus/plugin-content-docs"
+import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
-type SidebarConfig = SidebarsConfig[string]
+type SidebarConfig = SidebarsConfig[string];
 
 const sidebarsConfig: SidebarConfig = {
 	// By default, Docusaurus generates a sidebar from the docs folder structure
@@ -767,6 +767,6 @@ const sidebarsConfig: SidebarConfig = {
 		{ type: "doc", id: "appsec/benchmark", label: "Benchmark" },
 		{ type: "doc", id: "appsec/troubleshooting" },
 	],
-}
+};
 
-export default sidebarsConfig
+export default sidebarsConfig;

@@ -3,7 +3,14 @@
 	"vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
 	"files": {
 		"ignoreUnknown": false,
-		"includes": ["crowdsec-docs/**/*.ts", "crowdsec-docs/**/*.tsx", "!**/node_modules/**", "!crowdsec-docs/plugins/**"]
+		"includes": [
+			"crowdsec-docs/**/*.ts",
+			"crowdsec-docs/**/*.tsx",
+			"crowdsec-docs/**/*.css",
+			"!**/node_modules/**",
+			"!crowdsec-docs/plugins/**",
+			"!crowdsec-docs/build/**"
+		]
 	},
 	"formatter": {
 		"enabled": true,
@@ -32,7 +39,7 @@
 			"jsxQuoteStyle": "double",
 			"quoteProperties": "asNeeded",
 			"trailingCommas": "es5",
-			"semicolons": "asNeeded",
+			"semicolons": "always",
 			"arrowParentheses": "always",
 			"bracketSameLine": false,
 			"quoteStyle": "double",
@@ -41,6 +48,15 @@
 		}
 	},
 	"html": { "formatter": { "selfCloseVoidElements": "always" } },
+	"css": {
+		"formatter": {
+			"enabled": true,
+			"indentStyle": "tab",
+			"indentWidth": 4,
+			"lineEnding": "lf",
+			"lineWidth": 140
+		}
+	},
 	"assist": {
 		"enabled": true,
 		"actions": { "source": { "organizeImports": "on" } }

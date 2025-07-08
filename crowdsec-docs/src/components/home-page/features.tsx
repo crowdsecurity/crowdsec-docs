@@ -1,6 +1,4 @@
-import clsx from "clsx"
-import React from "react"
-import styles from "./HomepageFeatures.module.css"
+import React from "react";
 
 const FEATURES_LIST = [
 	{
@@ -59,27 +57,27 @@ const FEATURES_LIST = [
 	//open-source
 	//detect here apply there
 	//block anything, not just ips
-]
+];
 
 const Feature = ({ Svg, title, description, link }): React.JSX.Element => {
 	return (
-		<div className={clsx("col col--4")}>
-			<div className="text--center">
+		<div className="col col-4">
+			<div className="text-center">
 				<a href={link}>
 					{" "}
-					<Svg className={styles.featureSvg} alt={title} style={{ width: "27.5%" }} />
+					<Svg className="h-52 w-52" alt={title} style={{ width: "27.5%" }} />
 				</a>
 			</div>
-			<div className="text--center padding-horiz--md">
+			<div className="text-center padding-horiz--md">
 				<h3>{title}</h3>
 				<p style={{ textAlign: "justify" }}>{description}</p>
 			</div>
 		</div>
-	)
-}
+	);
+};
 
 const HomepageFeatures = () => (
-	<section className={styles.features}>
+	<section className="flex items-center py-8 w-full bg-primary text-foreground">
 		<div className="container">
 			<div className="row">
 				{FEATURES_LIST.map((props) => (
@@ -88,6 +86,6 @@ const HomepageFeatures = () => (
 			</div>
 		</div>
 	</section>
-)
+);
 
-export default HomepageFeatures
+export default HomepageFeatures;

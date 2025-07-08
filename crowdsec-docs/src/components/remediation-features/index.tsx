@@ -1,18 +1,17 @@
-import useBaseUrl from "@docusaurus/useBaseUrl"
-import React from "react"
-import styles from "./RemediationFeatures.module.css"
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import React from "react";
 
 const RemediationFeatures = (): React.JSX.Element => {
 	return (
-		<section className={styles.remediations}>
+		<section className="flex items-center py-8 w-full bg-primary text-center justify-center">
 			<div className="container">
 				<h1 className="remediationTitle"> Examples of detected behaviors </h1>
-				<div style={{ justifyContent: "center", paddingTop: "10px" }} className="row">
+				<div style={{ justifyContent: "center", paddingTop: "10px" }} className="justify-center">
 					<img alt="Remediation Features" src={useBaseUrl("/img/remediations.png")} width="75%" height="75%" />
 				</div>
 			</div>
 		</section>
-	)
-}
+	);
+};
 
-export default RemediationFeatures
+export default RemediationFeatures;

@@ -1,15 +1,15 @@
-import BrowserOnly from "@docusaurus/BrowserOnly"
-import { useColorMode } from "@docusaurus/theme-common"
-import { createTheme, ThemeProvider } from "@mui/material"
-import { MaterialReactTable } from "material-react-table"
-import React, { useEffect, useMemo, useState } from "react"
+import BrowserOnly from "@docusaurus/BrowserOnly";
+import { useColorMode } from "@docusaurus/theme-common";
+import { createTheme, ThemeProvider } from "@mui/material";
+import { MaterialReactTable } from "material-react-table";
+import React, { useEffect, useMemo, useState } from "react";
 
 const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.Element => {
-	const [jsonContent, setJsonContent] = useState([])
-	const { colorMode } = useColorMode()
+	const [jsonContent, setJsonContent] = useState([]);
+	const { colorMode } = useColorMode();
 
 	const theme = useMemo(() => {
-		const isLight = colorMode === "light"
+		const isLight = colorMode === "light";
 
 		return createTheme({
 			palette: {
@@ -18,35 +18,35 @@ const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.El
 					default: isLight ? "rgb(255,255,255)" : "#1b1b1d",
 				},
 			},
-		})
-	}, [colorMode])
+		});
+	}, [colorMode]);
 
 	useEffect(() => {
 		fetch(url)
 			.then((res) => res.json())
 			.then((data) => {
-				const updatedData = []
-				const names = []
+				const updatedData = [];
+				const names = [];
 
 				Object.keys(data).forEach((key) => {
 					// filter duplicate names
-					const item = data[key]
-					const name = item.name
+					const item = data[key];
+					const name = item.name;
 					for (const element of exclude) {
 						if (name.includes(element)) {
-							return
+							return;
 						}
 					}
 					for (const element of include) {
 						if (!name.includes(element)) {
-							return
+							return;
 						}
 					}
 					if (names.includes(name)) {
-						return
+						return;
 					}
 
-					names.push(name)
+					names.push(name);
 					updatedData.push({
 						...item,
 						// flattening list of strings into CSV strings allow global filtering on them
@@ -54,16 +54,16 @@ const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.El
 						...(item.behaviors ? { behaviors: item.behaviors.join("\n") } : {}),
 						...(item.mitre_attacks ? { mitre_attacks: item.mitre_attacks.join("\n") } : {}),
 						...(item.cves ? { cves: item.cves.join("\n") } : {}),
-					})
-				})
+					});
+				});
 
-				setJsonContent(updatedData)
-			})
+				setJsonContent(updatedData);
+			});
 		// execute this fetch only once (on mount)
-	}, [include, exclude, url])
+	}, [include, exclude, url]);
 
 	if (!columns || !jsonContent) {
-		return null
+		return null;
 	}
 
 	return (
@@ -85,7 +85,7 @@ const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.El
 				</ThemeProvider>
 			)}
 		</BrowserOnly>
-	)
-}
+	);
+};
 
-export default TableRender
+export default TableRender;

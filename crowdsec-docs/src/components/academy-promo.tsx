@@ -1,11 +1,11 @@
-import React from "react"
+import React from "react";
 
 const AcademyPromo = ({ ...props }): React.JSX.Element => {
-	const LINK = `https://academy.crowdsec.net/course/${props.course}${process.env.NODE_ENV === "production" ? props.utm : " "}`
+	const LINK = `https://academy.crowdsec.net/course/${props.course}${process.env.NODE_ENV === "production" ? props.utm : " "}`;
 	return (
 		<div>
 			<hr />
-			<section className="tw-w-4/5 tw-m-auto">
+			<section className="w-4/5 m-auto">
 				{!!props.title && <h2>{props.title}</h2>}
 				<div className="row">
 					<div className="col">
@@ -27,7 +27,7 @@ const AcademyPromo = ({ ...props }): React.JSX.Element => {
 			</section>
 			<hr />
 		</div>
-	)
-}
+	);
+};
 
-export default AcademyPromo
+export default AcademyPromo;

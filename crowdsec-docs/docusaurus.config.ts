@@ -1,10 +1,10 @@
-import type * as Preset from "@docusaurus/preset-classic"
-import type { NavbarItem } from "@docusaurus/theme-common"
-import type { Config } from "@docusaurus/types"
-import { themes } from "prism-react-renderer"
+import type * as Preset from "@docusaurus/preset-classic";
+import type { NavbarItem } from "@docusaurus/theme-common";
+import type { Config } from "@docusaurus/types";
+import { themes } from "prism-react-renderer";
 
-import tailwindPlugin from "./plugins/tailwind-config"
-import { ctiApiSidebar, guidesSideBar, remediationSideBar } from "./sidebarsUnversioned"
+import tailwindPlugin from "./plugins/tailwind-config";
+import { ctiApiSidebar, guidesSideBar, remediationSideBar } from "./sidebarsUnversioned";
 
 const generateCurrentAndNextRedirects = (s) => [
 	{
@@ -15,44 +15,44 @@ const generateCurrentAndNextRedirects = (s) => [
 		from: `/docs/next/${s}`,
 		to: `/u/${s}`,
 	},
-]
+];
 
 function handleSidebarItems(items) {
-	const arr = []
+	const arr = [];
 	for (const item of items) {
 		if (typeof item === "string") {
-			arr.push(...generateCurrentAndNextRedirects(item))
+			arr.push(...generateCurrentAndNextRedirects(item));
 		} else if (typeof item === "object") {
-			arr.push(...backportRedirect(item))
+			arr.push(...backportRedirect(item));
 		}
 	}
-	return arr
+	return arr;
 }
 
 const backportRedirect = (s) => {
-	const arr = []
+	const arr = [];
 	if (typeof s === "string") {
-		arr.push(...generateCurrentAndNextRedirects(s))
-		return arr
+		arr.push(...generateCurrentAndNextRedirects(s));
+		return arr;
 	}
-	const { id, link, items } = s
+	const { id, link, items } = s;
 	if (id) {
-		arr.push(...generateCurrentAndNextRedirects(id))
+		arr.push(...generateCurrentAndNextRedirects(id));
 	}
 	if (link?.id) {
-		arr.push(...generateCurrentAndNextRedirects(link.id))
+		arr.push(...generateCurrentAndNextRedirects(link.id));
 	}
 	if (items) {
-		arr.push(...handleSidebarItems(items))
+		arr.push(...handleSidebarItems(items));
 	}
-	return arr
-}
+	return arr;
+};
 
-const currentYear = new Date().getFullYear()
+const currentYear = new Date().getFullYear();
 
 const ACADEMY_URL = `https://academy.crowdsec.net/courses?${
 	process.env.NODE_ENV === "production" ? "utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs" : ""
-}`
+}`;
 
 const NAVBAR_ITEMS: NavbarItem[] = [
 	{
@@ -116,7 +116,7 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 		position: "right",
 		className: "header-hub-link",
 	},
-]
+];
 
 const FOOTER_LINKS = [
 	{
@@ -143,7 +143,7 @@ const FOOTER_LINKS = [
 			},
 		],
 	},
-]
+];
 
 const redirects = [
 	...[
@@ -155,7 +155,7 @@ const redirects = [
 	{ from: "/docs/next/troubleshooting", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/faq", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/next/faq", to: "/u/troubleshooting/intro" },
-]
+];
 
 const config: Config = {
 	future: {
@@ -250,7 +250,7 @@ const config: Config = {
 					editUrl: "https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/",
 				},
 				theme: {
-					customCss: require.resolve("./src/css/custom.css"),
+					customCss: "./src/css/custom.css",
 				},
 			} satisfies Preset.Options,
 		],
@@ -270,6 +270,6 @@ const config: Config = {
 		["@docusaurus/plugin-client-redirects", { redirects }],
 		tailwindPlugin,
 	],
-}
+};
 
-export default config
+export default config;
