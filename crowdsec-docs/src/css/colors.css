@@ -1,0 +1,186 @@
+/* COLORS */
+@layer base {
+	/* // Zeplin https://app.zeplin.io/project/655e038b64d81b7bd89cdadb/screen/65a7e811a2ae29e2fbb62a17 */
+	:root {
+		/* Gray */
+		--color-gray-50: 248 250 252;
+		--color-gray-100: 241 245 249;
+		--color-gray-200: 226 232 240;
+		--color-gray-300: 203 213 225;
+		--color-gray-400: 148 163 184;
+		--color-gray-500: 100 116 139;
+		--color-gray-600: 71 85 105;
+		--color-gray-700: 46 59 77;
+		--color-gray-800: 22 30 47;
+		--color-gray-900: 16 24 39;
+		--color-gray-950: 4 4 31;
+
+		/* Complementary */
+		--color-red: 227 13 20;
+		--color-green: 31 168 81;
+		--color-orange: 240 111 5;
+		--color-yellow: 168 143 16;
+		--color-premium: 248 171 19;
+		--color-platinum: 251 217 131;
+
+		/* Shadcn colors */
+		--background: 252 253 253;
+		--foreground: 52 52 59;
+		--card: 255 255 255;
+		--card-foreground: 52 52 59;
+		--popover: 255 255 255;
+		--popover-foreground: 52 52 59;
+		--primary: 82 71 179;
+		--primary-foreground: 251 251 251;
+		--secondary: 159 107 4;
+		--secondary-foreground: 52 52 59;
+		--premium: 248 171 19;
+		--info: 224 178 90;
+		--info-foreground: 52 52 59;
+		--muted: 247 247 247;
+		--muted-foreground: 142 142 142;
+		--accent: 247 247 247;
+		--accent-foreground: 52 52 59;
+		--destructive: 220 38 38;
+		--destructive-foreground: 220 38 38;
+		--border: 171 177 184;
+		--input: 255 255 255;
+		--ring: 180 180 180;
+		--chart-1: 255 159 64;
+		--chart-2: 75 192 192;
+		--chart-3: 54 162 235;
+		--chart-4: 153 102 255;
+		--chart-5: 255 99 132;
+		--radius: 0.625rem;
+		--sidebar: 251 251 251;
+		--sidebar-foreground: 52 52 59;
+		--sidebar-primary: 120 102 201;
+		--sidebar-primary-foreground: 251 251 251;
+		--sidebar-accent: 247 247 247;
+		--sidebar-accent-foreground: 52 52 59;
+		--sidebar-border: 235 235 235;
+		--sidebar-ring: 180 180 180;
+	}
+
+	html[data-theme="dark"] {
+		/* Gray */
+		--color-gray-50: 4 4 31;
+		--color-gray-100: 16 24 39;
+		--color-gray-200: 22 30 47;
+		--color-gray-300: 46 59 77;
+		--color-gray-400: 71 85 105;
+		--color-gray-500: 100 116 139;
+		--color-gray-600: 148 163 184;
+		--color-gray-700: 203 213 225;
+		--color-gray-800: 226 232 240;
+		--color-gray-900: 241 245 249;
+		--colors-gray-950: 248 250 252;
+
+		/* Complementary */
+		--color-red: 245 91 96;
+		--color-green: 113 229 155;
+		--color-orange: 252 168 100;
+		--color-yellow: 227 195 95;
+		--color-premium: 248 171 19;
+		--color-platinum: 251 217 131;
+	}
+}
+
+html[data-theme="dark"],
+.dark {
+	/* Shadcn */
+	--background: 16 24 39;
+	--foreground: 250 251 251;
+	--card: 22 33 47;
+	--card-foreground: 250 251 251;
+	--popover: 40 44 80;
+	--popover-foreground: 250 251 251;
+	--primary: 133 149 208;
+	--primary-foreground: 52 52 52;
+	--secondary: 224 178 90;
+	--secondary-foreground: 250 251 251;
+	--premium: 248 171 19;
+	--info: 224 178 90;
+	--info-foreground: 250 251 251;
+	--muted: 69 69 69;
+	--muted-foreground: 180 180 180;
+	--accent: 69 69 69;
+	--accent-foreground: 250 251 251;
+	--destructive: 133 72 60;
+	--destructive-foreground: 191 107 95;
+	--border: 46 59 77;
+	--input: 33 36 66;
+	--ring: 112 112 112;
+	--chart-1: 90 93 175;
+	--chart-2: 123 212 156;
+	--chart-3: 227 181 95;
+	--chart-4: 180 99 179;
+	--chart-5: 189 122 86;
+	--sidebar: 52 52 52;
+	--sidebar-foreground: 250 251 251;
+	--sidebar-primary: 133 149 208;
+	--sidebar-primary-foreground: 250 251 251;
+	--sidebar-accent: 69 69 69;
+	--sidebar-accent-foreground: 250 251 251;
+	--sidebar-border: 56 63 98;
+	--sidebar-ring: 112 112 112;
+}
+
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-info: var(--info);
+	--color-info-foreground: var(--info-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* You can override the default Infima variables here. */
+:root {
+	/* Docusaurus global colors */
+	--docusaurus-announcement-bar-height: 2.5rem !important;
+	--docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+	/* IFM Theme color overrides */
+	--ifm-color-primary: rgb(var(--primary));
+	--ifm-global-shadow-md: 0px;
+	--ifm-code-font-size: 95%;
+	--ifm-font-family-base: "Instrument Sans", sans-serif; /* For body text */
+	--ifm-font-family-monospace: "Courier New", monospace; /* For code blocks */
+	--ifm-dropdown-background-color: rgb(var(--card));
+
+	/* Algolia global search colors */
+	--docsearch-searchbox-background: rgb(var(--input));
+}
