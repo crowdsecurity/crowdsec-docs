@@ -99,22 +99,22 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 	{
 		href: "https://github.com/crowdsecurity/crowdsec",
 		position: "right",
-		className: "header-github-link header-icon-link",
+		className: "header-github-link header-icon-link invert dark:invert-0",
 	},
 	{
 		href: "https://discord.gg/wGN7ShmEE8",
 		position: "right",
-		className: "header-discord-link",
+		className: "header-discord-link invert dark:invert-0",
 	},
 	{
 		href: "https://discourse.crowdsec.net",
 		position: "right",
-		className: "header-discourse-link",
+		className: "header-discourse-link invert dark:invert-0",
 	},
 	{
 		href: "https://hub.crowdsec.net/",
 		position: "right",
-		className: "header-hub-link",
+		className: "header-hub-link dark:invert",
 	},
 ];
 
@@ -187,10 +187,15 @@ const config: Config = {
 	],
 	themeConfig: {
 		image: "img/crowdsec_og_image.png",
+		colorMode: {
+			defaultMode: "dark",
+			disableSwitch: false,
+			respectPrefersColorScheme: true,
+		},
 		announcementBar: {
 			id: "banner_docs",
 			content:
-				'<a target="_blank" href="https://doc.crowdsec.net/docs/next/appsec/intro">Learn how to guard your webserver in real-time with the CrowdSec WAF</a>',
+				'<a target="_blank" href="https://doc.crowdsec.net/docs/next/appsec/intro" rel="noopener">Learn how to guard your webserver in real-time with the CrowdSec WAF</a>',
 			backgroundColor: "#F8AB13",
 			textColor: "#131132",
 			isCloseable: true,

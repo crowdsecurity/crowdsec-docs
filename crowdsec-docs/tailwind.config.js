@@ -38,7 +38,6 @@ module.exports = {
         background: `rgb(var(--background) / <alpha-value>)`,
         foreground: `rgb(var(--foreground) / <alpha-value>)`,
         success: `rgb(var(--color-green) / <alpha-value>)`,
-        premium: `rgb(var(--color-premium) / <alpha-value>)`,
         platinum: `rgb(var(--color-platinum) / <alpha-value>)`,
         card: `rgb(var(--card) / <alpha-value>)`,
         "card-foreground": `rgb(var(--card-foreground) / <alpha-value>)`,
@@ -52,6 +51,12 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    {
+      pattern: /invert(-0)?/,
+      variants: ["dark", "light", "before"],
+    },
+  ],
   plugins: [require("tailwindcss-animate")],
   prefix: "", // This is the prefix for the tailwind classes to not clash with docusarus classes
 };

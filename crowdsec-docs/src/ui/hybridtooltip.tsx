@@ -2,6 +2,7 @@
 
 import { PopoverContentProps, PopoverProps, PopoverTriggerProps } from "@radix-ui/react-popover";
 import { TooltipContentProps, TooltipProps, TooltipTriggerProps } from "@radix-ui/react-tooltip";
+import clsx from "clsx";
 import React, { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
@@ -45,5 +46,10 @@ export const HybridTooltipTrigger = (props: TooltipTriggerProps & PopoverTrigger
 export const HybridTooltipContent = (props: TooltipContentProps & PopoverContentProps) => {
 	const isTouch = useTouch();
 
-	return isTouch ? <PopoverContent {...props} /> : <TooltipContent {...props} />;
+	const newClassName = clsx(
+		props.className,
+		"bg-background dark:bg-gray-50 border border-border/40 dark:border-border border-solid rounded-md px-2 text-sm dark:font-medium"
+	);
+
+	return isTouch ? <PopoverContent {...props} className={newClassName} /> : <TooltipContent {...props} className={newClassName} />;
 };
