@@ -288,8 +288,16 @@ const sidebarsConfig: SidebarConfig = {
                         id: "contributing/contributing_bouncers",
                     },
                     items: [
-                        "contributing/specs/bouncer_appsec_specs",
-                        "contributing/specs/bouncer_metrics_specs",
+                        {
+                            type: "doc",
+                            id: "contributing/specs/bouncer_appsec_specs",
+                            label: "Bouncer&AppSec",
+                        },
+                        {
+                            type: "doc",
+                            id: "contributing/specs/bouncer_metrics_specs",
+                            label: "Metrics",
+                        },
                     ]
                 },
 				"contributing/contributing_test_env",
