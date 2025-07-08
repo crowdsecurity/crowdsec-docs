@@ -1,0 +1,371 @@
+---
+id: bouncer_metrics_specs
+title: Remediation Component Metrics
+sidebar_position: 5
+---
+
+# Remediation Metrics Implementation Guide
+
+## Overview
+
+This document provides a comprehensive guide for developers to implement the "[Remediation Metrics](https://docs.crowdsec.net/docs/next/observability/usage_metrics)" feature in a remediation component. The remediation metrics feature allows remediation components to report [raw metrics](https://docs.crowdsec.net/u/service_api/quickstart/metrics/#raw-metrics) about their activity to the Local API (LAPI), which can then be forwarded to the Central API (CAPI) for monitoring and analytics purposes. 
+
+The remediation component should send the following data: 
+
+- "**dropped**" metrics: the total number of units (`byte`, `packet` or `request`) for which a remediation (`ban`, `captcha`, etc.) has been applied.
+  For this metrics, data should be split into origin/remediation pairs.
+- "**processed**" metrics: the total number of units that has been processed by the remediation component.
+  It must also include the number of "bypass" (i.e. when no decision were applied).
+- "**active_decisions**" metrics: it represents the number of decisions currently known by the remediation component.
+
+Additionally,  some relevant time values must be sent: 
+
+- "**window_size_seconds**": The time interval between metric reports (typically 1800 seconds / 30 minutes).
+  We recommend a minimum delay of 15 minutes between each transmission.
+- "**utc_startup_timestamp**": When the remediation component started. This can vary depending on implementation:
+  - For daemon bouncers: timestamp when the daemon process started
+  - For "on-demand" bouncer like the PHP one: timestamp of the first LAPI call/pull
+
+
+As an example, here is the kind of expected payload that you will have to build and send:
+
+### Metrics Payload example
+
+```json
+{
+    "remediation_components": [{
+        "name": "my-bouncer",
+        "type": "crowdsec-custom-bouncer",
+        "version": "1.0.0",
+        "feature_flags": [],
+        "utc_startup_timestamp": 1704067200,
+        "os": {
+            "name": "linux",
+            "version": "5.4.0"
+        },
+        "metrics": {
+            "meta": {
+                "window_size_seconds": 1800,
+                "utc_now_timestamp": 1704069000
+            },
+            "items": [
+                {
+                    "name": "dropped",
+                    "value": 150,
+                    "unit": "request",
+                    "labels": {
+                        "origin": "CAPI",
+                        "remediation": "ban"
+                    }
+                },
+                {
+                    "name": "dropped",
+                    "value": 25,
+                    "unit": "request", 
+                    "labels": {
+                        "origin": "cscli",
+                        "remediation": "ban"
+                    }
+                },
+                {
+                    "name": "dropped",
+                    "value": 12,
+                    "unit": "request", 
+                    "labels": {
+                        "origin": "cscli",
+                        "remediation": "captcha"
+                    }
+                },
+                {
+                    "name": "processed",
+                    "value": 1175,
+                    "unit": "request"
+                },
+                {
+                    "name": "active_decisions",
+                    "value": 342010
+                }
+            ]
+        }
+    }]
+}
+```
+
+
+For more details on valid payloads, please refer to the [API specification](https://crowdsecurity.github.io/api_doc/index.html?urls.primaryName=LAPI#/Remediation%20component/usage-metrics).
+
+
+
+## Architecture Overview
+
+### Key Features
+
+Implementing remediation metrics involves several capabilities:
+
+1. **Metrics Storage**: 
+   - Store "remediation by origin" counters  and relevant time values in a persistent storage.
+   - Update or delete stored values
+2. **Metrics Building**:
+   - Retrieve metrics in storage
+   - Format metrics according to the API specification
+3. **Metrics Transmission**: 
+   - Send metrics to LAPI `usage-metrics` endpoint
+   - Update metrics items so that next push will only send fresh metrics
+
+### Core Concepts
+
+- **Origins**: The source of a remediation (e.g., `CAPI`,  `lists:***`, `cscli`, etc).
+
+  As we want to track the total number of processed items, we also need to be able to count the number of "bypass". That's why you may use a  `clean` and `clean_appsec` origins to track bypass remediations for regular and AppSec traffic respectively. 
+
+- **Remediations**: The final action effectively applied by the remediation component (e.g., "ban", "captcha", "bypass")
+
+  The remediation stored in metrics **must be the final remediation effectively applied by the bouncer**, not the original decision from CrowdSec. Examples:
+
+  - **Captcha Resolution**: If the original decision was "captcha" but the user has already solved the captcha and can access the page, store "bypass" as the final remediation.
+
+  - **Remediation Transformation**: If the original decision was "ban" but the bouncer configuration transforms it to "captcha" (and the user hasn't solved it yet), store "captcha" as the final remediation.
+
+  - **Fallback Scenarios**: If a timeout occurs and the bouncer applies a fallback remediation, store the fallback remediation, not the original intended one.
+
+
+## Implementation Guide
+
+### 1. Storage
+
+#### 1.1 Cached Items
+
+Every time the remediation component is involved, storage should be used to persist data: 
+
+- origin and remediation
+- time values
+
+For example, you could have the following cached items:
+
+```
+TIME_VALUES = {
+    "utc_startup_timestamp": <timestamp>,      // When the bouncer was started or used for the first time
+    "last_metrics_sent": <timestamp>,    // Last successful metrics transmission
+}
+
+ORIGINS_COUNT = {
+    "<origin>": {
+        "<remediation>": <count>
+    }
+}
+```
+
+Storing a `last_metrics_sent` value makes it easy to compute the  `window_size_seconds` value.
+
+#### 1.1 Metrics Tracking
+
+Once you know the final remediation that has been applied, you should increment the count of the related "origin/remediation" pair.
+
+Below are a few lines of pseudo-code to help you visualize what the final implementation might look like.
+
+```pseudocode
+function updateMetricsOriginsCount(origin: string, remediation: string, delta: int = 1): int
+    // Get current count from cache
+    currentCount = getFromCache("ORIGINS_COUNT[origin][remediation]") ?? 0
+    
+    // Update count (delta can be negative for decrementing)
+    newCount = max(0, currentCount + delta)
+    
+    // Store updated count in cache
+    storeInCache("ORIGINS_COUNT[origin][remediation]", newCount)
+    
+    return newCount
+```
+
+### 2. Metrics Building Process
+
+In order to send metrics, you will have to retrieved cached values and build the required payload.
+
+#### 2.1 Build Metrics Items
+
+The main information belongs to the metrics items:
+
+```pseudocode
+function buildMetricsItems(originsCount: object): object
+    metricsItems = []
+    processedTotal = 0
+    originsToDecrement = {}
+    
+    for each origin in originsCount:
+        for each remediation, count in origin:
+            if count <= 0:
+                continue
+                
+            // Track total processed requests
+            processedTotal += count
+            
+            // Prepare for decrementing after successful send
+            originsToDecrement[origin][remediation] = -count
+            
+            // Skip bypass remediations in "dropped" metrics
+            if remediation == "bypass":
+                continue
+                
+            // Create "dropped" metric for blocked requests
+            metricsItems.append({
+                "name": "dropped",
+                "value": count,
+                "unit": getMetricUnit(), // "request", "packet", or other relevant unit
+                "labels": {
+                    "origin": origin,
+                    "remediation": remediation
+                }
+            })
+    
+    // Add total processed metric
+    if processedTotal > 0:
+        metricsItems.append({
+            "name": "processed",
+            "value": processedTotal,
+            "unit": getMetricUnit() // "request", "packet", or other relevant unit
+        })
+    
+    // Add active_decisions metric (if supported)
+    activeDecisions = getActiveDecisionsCount()
+    if activeDecisions > 0:
+        metricsItems.append({
+            "name": "active_decisions",
+            "value": activeDecisions,
+        })
+    
+    return {
+        "items": metricsItems,
+        "originsToDecrement": originsToDecrement
+    }
+```
+
+Note that it's important to record the number sent for each origin/remediation in order to reset the respective counter after the push.
+
+#### 2.2 Build Complete Metrics Payload
+
+In addition to the metrics items, payload requires properties and meta attributes: 
+
+
+```pseudocode
+function buildUsageMetrics(properties: object, meta: object, items: array): object
+    // Prepare bouncer properties
+    bouncerProperties = {
+        "name": properties.name,
+        "type": properties.type,
+        "version": properties.version,
+        "feature_flags": properties.feature_flags ?? [],
+        "utc_startup_timestamp": properties.utc_startup_timestamp
+    }
+    
+    // Add optional OS information
+    if properties.os:
+        bouncerProperties["os"] = {
+            "name": properties.os.name,
+            "version": properties.os.version
+        }
+    
+    // Prepare metadata
+    metricsMetadata = {
+        "window_size_seconds": meta.window_size_seconds,
+        "utc_now_timestamp": meta.utc_now_timestamp
+    }
+    
+    // Build final payload
+    return {
+        "remediation_components": [{
+            ...bouncerProperties,
+            "metrics": {
+                "meta": metricsMetadata,
+                "items": items
+            }
+        }]
+    }
+```
+
+### 3. Complete Push Metrics Implementation
+
+```pseudocode
+function pushUsageMetrics(bouncerName: string, bouncerVersion: string, bouncerType: string): array
+    // Get timing information
+    startupTime = getStartUp()
+    currentTime = getCurrentTimestamp()
+    lastSent = getFromCache("CONFIG.last_metrics_sent") ?? startupTime
+    
+    // Get current metrics
+    originsCount = getOriginsCount()
+    metricsData = buildMetricsItems(originsCount)
+    
+    // Return early if no metrics to send
+    if metricsData.items.isEmpty():
+        log("No metrics to send")
+        return []
+    
+    // Prepare properties and metadata
+    properties = {
+        "name": bouncerName,
+        "type": bouncerType,
+        "version": bouncerVersion,
+        "utc_startup_timestamp": startupTime,
+        "os": getOsInformation()
+    }
+    
+    meta = {
+        "window_size_seconds": max(0, currentTime - lastSent),
+        "utc_now_timestamp": currentTime
+    }
+    
+    // Build and send metrics
+    metricsPayload = buildUsageMetrics(properties, meta, metricsData.items)
+    
+    // Send to LAPI/CAPI
+    sendMetricsToAPI(metricsPayload)
+    
+    // Decrement counters after successful send
+    for origin, remediationCounts in metricsData.originsToDecrement:
+        for remediation, deltaCount in remediationCounts:
+            updateMetricsOriginsCount(origin, remediation, deltaCount)
+    
+    // Update last sent timestamp
+    storeMetricsLastSent(currentTime)
+    
+    return metricsPayload
+```
+
+## Integration Points
+
+### When to Update Metrics
+
+Call `updateMetricsOriginsCount()` after each remediation decision is **effectively applied**:
+
+```pseudocode
+// After determining and applying the final remediation
+initialRemediation = getRemediationForIP(clientIP)
+origin = initialRemediation.origin
+finalAction = applyBouncerLogic(initialRemediation.action)
+
+// Increment the counter with the final action
+updateMetricsOriginsCount(origin, finalAction, 1)
+```
+
+### When to Push Metrics
+
+Typically push metrics on a scheduled interval (e.g., every 30 minutes):
+
+```pseudocode
+// In your scheduled metrics push job
+try:
+    sentMetrics = pushUsageMetrics("my-bouncer", "1.0.0", "crowdsec-custom-bouncer")
+    if sentMetrics.isEmpty():
+        log("No metrics were sent")
+    else:
+        log("Successfully sent metrics", sentMetrics)
+catch Exception as e:
+    log("Failed to send metrics", e)
+```
+
+### Existing Implementations
+
+Remediation metrics have already been implemented in various languages and frameworks. You can use it as inspiration for your own implementation: 
+
+- The [LUA library](https://github.com/crowdsecurity/lua-cs-bouncer/) used by the [NGINX remediation component](https://docs.crowdsec.net/u/bouncers/nginx/)
+- The [PHP library](https://github.com/crowdsecurity/php-remediation-engine) used by the [WordPress remediation component](https://docs.crowdsec.net/u/bouncers/wordpress).

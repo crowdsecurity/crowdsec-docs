@@ -280,7 +280,18 @@ const sidebarsConfig: SidebarConfig = {
 			items: [
 				"contributing/contributing_doc",
 				"contributing/contributing_hub",
-				"contributing/contributing_bouncers",
+				{
+                    type: "category",
+                    label: "Remediation Components",
+                    link: {
+                        type: "doc",
+                        id: "contributing/contributing_bouncers",
+                    },
+                    items: [
+                        "contributing/specs/bouncer_appsec_specs",
+                        "contributing/specs/bouncer_metrics_specs",
+                    ]
+                },
 				"contributing/contributing_test_env",
 				"contributing/contributing_crowdsec",
 			],
