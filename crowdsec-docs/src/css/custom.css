@@ -42,10 +42,11 @@
 		--card-foreground: 52 52 59;
 		--popover: 255 255 255;
 		--popover-foreground: 52 52 59;
-		--primary: 120 102 201;
+		--primary: 82 71 179;
 		--primary-foreground: 251 251 251;
-		--secondary: 247 247 247;
+		--secondary: 159 107 4;
 		--secondary-foreground: 52 52 59;
+		--premium: 248 171 19;
 		--info: 224 178 90;
 		--info-foreground: 52 52 59;
 		--muted: 247 247 247;
@@ -110,6 +111,7 @@ html[data-theme="dark"],
 	--primary-foreground: 52 52 52;
 	--secondary: 224 178 90;
 	--secondary-foreground: 250 251 251;
+	--premium: 248 171 19;
 	--info: 224 178 90;
 	--info-foreground: 250 251 251;
 	--muted: 69 69 69;
@@ -536,4 +538,73 @@ div[class^="announcementBar"] {
 	font-size: 0.6em;
 	vertical-align: middle;
 	transform: rotate(0deg) !important; /* force reset to counter act UL accordion transform */
+}
+
+/* 🚩 Alert component */
+
+.alert {
+	@apply bg-background dark:bg-gray-100 text-foreground dark:text-foreground border border-solid border-border rounded-lg p-4 mb-4 text-sm;
+}
+
+.alert p {
+	@apply mb-1;
+}
+
+.alert svg {
+	@apply !w-5 !h-5 mb-0;
+}
+
+.alert--info {
+	@apply bg-cyan-50 dark:bg-cyan-900/10 text-cyan-900 dark:text-cyan-100 border-cyan-200 dark:border-cyan-700;
+}
+
+.alert--info svg {
+	@apply !fill-cyan-500 dark:fill-cyan-200;
+}
+
+.alert--warning {
+	@apply bg-amber-100 dark:bg-amber-900/10 text-amber-900 dark:text-amber-100 border-amber-200 dark:border-amber-700;
+}
+
+.alert--warning svg {
+	@apply fill-amber-400 dark:fill-amber-200;
+}
+
+.alert--success {
+	@apply bg-emerald-100 dark:bg-emerald-900/10 text-emerald-900 dark:text-emerald-100 border-emerald-200 dark:border-emerald-700;
+}
+
+.alert--success svg {
+	@apply fill-emerald-400 dark:fill-emerald-200;
+}
+
+.alert--danger {
+	@apply bg-red-100 dark:bg-red-900/10 text-red-900 dark:text-red-100 border-red-200 dark:border-red-700;
+}
+
+.alert--danger svg {
+	@apply fill-red-400 dark:fill-red-200;
+}
+
+/* 💻 Code blocks */
+
+.prism-code {
+	@apply !bg-primary dark:!bg-gray-50 text-gray-900 dark:text-gray-100 p-4 mb-4 overflow-x-auto rounded-lg border border-solid border-border;
+}
+
+pre {
+	@apply rounded-lg font-semibold;
+}
+
+.prism-code .token.plain {
+	@apply text-white dark:text-foreground;
+}
+
+.prism-code .token.function,
+.prism-code .assign-left.variable {
+	@apply !text-premium dark:!text-secondary;
+}
+
+code:not(.prism-code code) {
+	@apply bg-gray-100 dark:bg-gray-50 border-primary/20 border-solid border text-primary px-1 py-0.5 rounded-md font-semibold;
 }

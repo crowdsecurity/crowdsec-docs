@@ -18,6 +18,7 @@ module.exports = {
         "secondary-foreground": `rgb(var(--secondary-foreground) / <alpha-value>)`,
         info: `rgb(var(--info) / <alpha-value>)`,
         "info-foreground": `rgb(var(--info-foreground) / <alpha-value>)`,
+        premium: `rgb(var(--premium) / <alpha-value>)`,
         gray: {
           50: `rgb(var(--color-gray-50) / <alpha-value>)`,
           100: `rgb(var(--color-gray-100) / <alpha-value>)`,

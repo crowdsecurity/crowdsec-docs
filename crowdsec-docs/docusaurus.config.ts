@@ -224,6 +224,7 @@ const config: Config = {
 		},
 		prism: {
 			theme: themes.shadesOfPurple,
+			darkTheme: themes.vsDark,
 			additionalLanguages: ["bash", "yaml", "json"],
 		},
 	} satisfies Preset.ThemeConfig,
