@@ -7,7 +7,7 @@ import useBaseUrl from "@docusaurus/useBaseUrl"
 
 ## Context
 
-A **Remediation Component** *(aka **Bouncer**)* is enforcing **decisions** made by **CrowdSec Security Engine** based on detected malicious behaviors [\[See figure 1\]](#bookmark=id.1m5bs6wbkfr7), or Directly with CrowdSec SaaS endpoint channeling public, crowdsec or user made blocklsits.
+A **Remediation Component** *(aka **Bouncer**)* is enforcing **decisions** made by **CrowdSec Security Engine** based on detected malicious behaviors [\[See figure 1\]](#crowdsec-security-engine-diagram), or Directly with CrowdSec SaaS endpoint channeling public, crowdsec or user made blocklsits.
 
 A **decision** dictates what action should be applied on incoming traffic from a specific **IP** or **IP-Range**. *(It could also be on the user scope or any other, but these specifications will focus on the IP and Range scopes)*
 
@@ -20,7 +20,7 @@ The Bouncer applies the appropriate remediation *(we’ll only focus on ban/bloc
   * Communication with the Local API (aka LAPI) or its SaaS counterpart  
   * Decisions retrieval and storage  
   * Remediation  
-* [Request Forwarding](#appsec-capability-\(request-forwarding\)) (for AppSec capabilities)  
+* [Request Forwarding](#appsec-capability-request-forwarding) (for AppSec capabilities)  
   * Communication with the AppSec endpoint  
   * Forwarding protocol  
 * [Config and support requirements](#extra-details-and-requirements)
@@ -28,7 +28,7 @@ The Bouncer applies the appropriate remediation *(we’ll only focus on ban/bloc
 Here is an existing remediation components *(bouncers)* for Nginx and its lua dependency  
 [*cs-nginx-bouncer*](https://github.com/crowdsecurity/cs-nginx-bouncer) *\+  [lua-cs-bouncer](https://github.com/crowdsecurity/lua-cs-bouncer/)* (dependency)
 
-And the yet unreviewed but functional [NGINX NJS version](https://github.com/crowdsecurity/cs-nginx-njs-bouncer/pull/1/files) (doesn’t have appsec capabilities yet)
+And the yet prototyped but functional [NGINX NJS version](https://github.com/crowdsecurity/cs-nginx-njs-bouncer/pull/1/files) (doesn’t have appsec capabilities yet)
 
 ⚠️ **Your bouncer must always delete/clean it’s resources on shutdown**
 
@@ -40,20 +40,20 @@ The remediation can be blocking or displaying a captcha.
 
 Fields in purple and/or with the mention (configurable) must appear in the config file, the case of the parameters names can be UPPER or LOWER depending on the type of config file, match the appropriate standard for the bouncer you’re implementing. Try to group them in a logical way in the config file template.
 
-Details about the config file in the [Installation chapter](#installation-/-documentation)
+Details about the config file in the [Installation chapter](#installation--documentation)
 
 ### Connecting to the Local API (LAPI) 
 
-You can find the swagger here [https://crowdsecurity.github.io/api\_doc/lapi/](https://crowdsecurity.github.io/api_doc/lapi/)  
-Details about the endpoints parameters can be found [in the appendix](#bookmark=id.h7yz6lpk4af7)
+You can find the swagger here [https://crowdsecurity.github.io/api_doc/lapi/](https://crowdsecurity.github.io/api_doc/lapi/)  
+Details about the endpoints parameters can be found [in the appendix](#appendix)
 
-* URL to Local API endpoint: configurable field **api\_url**  
-  * Default value likely to be: http://121.0.0.1:8080  
-  * Security Engine Config : /etc/crowdsec/config.yaml // api.server.listen\_url  
+* URL to Local API endpoint: configurable field **api_url**  
+  * Default value likely to be: `http://121.0.0.1:8080`
+  * Security Engine Config : /etc/crowdsec/config.yaml // api.server.listen_url  
   * For now we only have a v1 of LAPI, bouncer states the version he’s using  
 * Authentication  
-  * Either by API key passed in the header **X-Api-Key:** configurable field **api\_key**  
-  * Or via certificate configurable fields **tls.cert\_file \+ tls.key\_file**	
+  * Either by API key passed in the header **X-Api-Key:** configurable field **api_key**  
+  * Or via certificate configurable fields **tls.cert_file \+ tls.key_file**	
 
 ### Retrieving decisions 
 
@@ -81,15 +81,15 @@ The live mode endpoint is **/decisions**
     * No need to make this configurable  
 * Caching  
   * To avoid consecutive calls for decisions about an IP we’ll cache the decisions per IP  
-  * default **1s** configurable field cache\_expiration  
+  * default **1s** configurable field cache_expiration  
 * Timeout   
   * If LAPI doesn’t respond   
-  * Default **200ms** configurable field lapi\_timeout  
+  * Default **200ms** configurable field lapi_timeout  
   * **Fallback**:   
     * Fallback in case of timeout  
     * By default passthrough : let him pass  
     * Possible values: passthrough, ban, captcha  
-    * configurable field lapi\_failure\_action
+    * configurable field lapi_failure_action
 
 #### Stream Mode (by default) 
 
@@ -100,7 +100,7 @@ Allows to pull all decisions from LAPI and then periodically get a delta
   * ⚠️ To retrieve the initial full list, use the **startup \= true** parameter  
     * This is necessary if you don’t have the decision list in memory  
     * Following calls need to have startup \= false  
-  * Recommended pull period **10s** configurable field stream\_update\_frequency  
+  * Recommended pull period **10s** configurable field stream_update_frequency  
   * Parameters
 
   *Only the following fields are to be considered for a basic bouncer implementation*
@@ -110,10 +110,10 @@ Allows to pull all decisions from LAPI and then periodically get a delta
       *  empty by default mean all origins are considered  
       * editable by the user to look in a specific origin: configurable field origins (same field as for live)  
       * Origins are comma separated strings (e.g. crowdsec,capi,cscli)  
-    * **scenarios\_containing** and **scenarios\_not\_containing**  
+    * **scenarios_containing** and **scenarios_not_containing**  
       * Means that the decisions are linked (or not) to alerts triggered by such or such scenario  
       * The check done by LAPI is a string.contains(...)  
-      * Default as empty configurable fields scenarios\_containing && scenarios\_not\_containing    
+      * Default as empty configurable fields scenarios_containing && scenarios_not_containing    
 * Storing decisions  
   * ℹ️ The number of decisions you can expect is:  
     * 30-70k ips from Fire (nominal case)  
@@ -121,7 +121,7 @@ Allows to pull all decisions from LAPI and then periodically get a delta
     * Have the code be able to handle 100k to be safe for the nominal case  
     * Storing in memory is ideal, we recommend to convert IPs to integers  
   * The decisions format is the following:  
-    * See [decisions example in appendix](#bookmark=id.6hv12rnhk5iz)  
+    * See [decisions example in appendix](#appendix)  
     * There can be multiple decisions per IP  
     * Store each decisions independently as they have their own remediation action and TTL  
     * Ranges are stored too  
@@ -137,17 +137,17 @@ If a remediation is found and for the LAPI timeout fallback here are the remedia
 * Remediation type  
   * Remediation property will be “ban”, “captcha” or potentially any custom string  
   * **ban** (block)  
-    * Return a 403: configurable field ban\_return\_code  
+    * Return a 403: configurable field ban_return_code  
     * Accompanied by an HTML body  
-      * Default page model [provided (single HTML file)](#bookmark=id.rcfrhly566w8)  
-      * Page path configurable: configurable field ban\_template\_path  
+      * Default page model [provided (single HTML file)](#ban-template-page)  
+      * Page path configurable: configurable field ban_template_path  
   * **captcha**  
     * Various type of captcha must be supported  
     * configurable fields:  
-      * captcha \_provider  
-      * captcha\_secret\_key  
-      * captcha\_site\_key  
-      * captcha\_template\_path  
+      * captcha _provider  
+      * captcha_secret_key  
+      * captcha_site_key  
+      * captcha_template_path  
     * Type to support  
       * RE-captcha  
       * Turnstile  
@@ -155,9 +155,9 @@ If a remediation is found and for the LAPI timeout fallback here are the remedia
     * onFails  
       * Re-present the captcha  
     * ⚠️ Cache: in order not to repeat the captcha too often  
-      * **1h** cache **per IP** after successful captcha configurable field cache\_expiration  
+      * **1h** cache **per IP** after successful captcha configurable field cache_expiration  
   * **Custom remediation**  
-    * Defaults to ignore/ban/captcha configurable field **remediation\_fallback**  
+    * Defaults to ignore/ban/captcha configurable field **remediation_fallback**  
     * If ignored, you don’t even need to store the decision  
 * Remediation priority  
   * There is a priority in the remediation to take in account if an IP has multiple  
@@ -197,23 +197,23 @@ An additional activatable capability of the bouncer is to forward the request to
 
 The request forwarding is a blocking process, when the AppSec capability is activated the bouncer should wait for a response at each request forwarding to process with the request handling.
 
-AppSec is disabled by default and activable if url exists configurable field appsec\_url
+AppSec is disabled by default and activable if url exists configurable field appsec_url
 
 * Connect to AppSec endpoint  
   * The security engine should have activated the AppSec and a listen address should be present in the SecurityEngine acquisition  
-  * Default endpoint http://127.0.0.1:7422  
+  * Default endpoint `http://127.0.0.1:7422`
   * Auth by API key passed in the header **X-Api-Key:** same param as LAPI apikey  
 * Request forwarding  
-  * You can find information about the forwarding protocol on this doc page [https://docs.crowdsec.net/docs/next/appsec/protocol/](https://docs.crowdsec.net/docs/next/appsec/protocol/)  
+  * You can find information about the forwarding protocol on this doc page: [https://docs.crowdsec.net/docs/next/appsec/protocol/](https://docs.crowdsec.net/docs/next/appsec/protocol/)  
   * When forwarding the query to the AppSec endpoint, the security engine will evaluate the actions to do and return the appropriate response code that the remediation component should display.   
     * ⚠️ At the exception of codes **500** and **401** which mean that the forwarding or authentication to the endpoint failed. For those response codes you should trigger the fallback described there after..  
   * ⚠️ As stated earlier this is a blocking process  
-  * **Timeout** 200ms configurable field appsec\_timeout  
+  * **Timeout** 200ms configurable field appsec_timeout  
   * **Fallback**:   
     * Fallback in case of timeout or response failure (500,401…)  
     * By default passthrough : let him pass  
     * Possible values: passthrough, ban, captcha  
-    * configurable field appsec\_failure\_action
+    * configurable field appsec_failure_action
 
 ## Extra Details and Requirements 
 
@@ -299,6 +299,7 @@ You can refer to the AppSec documentation to test request forwarding.
 
 ## Appendix 
 
+### CrowdSec Security Engine diagram
 **Figure 1** : Interactions around **CrowdSec Security Engine**   
 <div style={{ display: "flex" }}>
     <div style={{ textAlign: "center", flex: "1" }}>
@@ -310,14 +311,15 @@ You can refer to the AppSec documentation to test request forwarding.
     </div>
 </div>
 
-**Details about LAPI endpoints parameters**  
+### Details about LAPI endpoints parameters
+
 **GET /decisions/stream**
 
 * **startup:** set it to **TRUE** for the **initial call** to get all decisions *(when False you’ll get the delta from your last call)*  
 * **scopes: “**ip,range” is the only relevant values when remediating on IPs  
-* **origins:** Leave blank to allow all origins, test your configurable origins with [those tests](#bookmark=id.qso6jljxlov9)  
-* **scenarios\_containing:** leave blank by default, allow change in config  
-* **scenarios\_not\_containing:** leave blank by default, allow change in config
+* **origins:** Leave blank to allow all origins, test your configurable origins with [those tests](#decision-example)  
+* **scenarios_containing:** leave blank by default, allow change in config  
+* **scenarios_not_containing:** leave blank by default, allow change in config
 
 **GET /decisions**
 
@@ -327,11 +329,11 @@ You can refer to the AppSec documentation to test request forwarding.
 * **ip:** ignore/leave blank: shortcut for scope:ip \+ value  
 * **range:** ignore/leave blank: shortcut for scope:range \+ value  
 * **contains:** leave blank by default, configurable by user  
-* **origins:** Leave blank to allow all origins, test your configurable origins with [those tests](#bookmark=id.qso6jljxlov9)  
-* **scenarios\_containing:** leave blank by default, allow change in config  
-* **scenarios\_not\_containing:** leave blank by default, allow change in config
+* **origins:** Leave blank to allow all origins, test your configurable origins with [those tests](#decision-example)  
+* **scenarios_containing:** leave blank by default, allow change in config  
+* **scenarios_not_containing:** leave blank by default, allow change in config
 
-**Decision example**
+### Decision example
 
 ```javascript
 {
@@ -361,7 +363,7 @@ You can refer to the AppSec documentation to test request forwarding.
 
 ```
 
-**Ban template page**
+### Ban template page
 
 ```javascript
 <!DOCTYPE html>
@@ -479,7 +481,9 @@ You can refer to the AppSec documentation to test request forwarding.
 
 ```
 
-**Metrics payload**
+### Metrics payload
+
+More details about metrics in [Metrics specs](/contributing/specs/bouncer_metrics_specs/)
 
 ```
 { 
