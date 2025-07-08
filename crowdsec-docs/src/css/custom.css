@@ -264,7 +264,6 @@ blockquote {
 	--ifm-navbar-link-hover-color: rgb(var(--primary));
 }
 
-.footer,
 .navbar,
 .navbar-sidebar {
 	@apply bg-card text-foreground border-border/80;
@@ -273,19 +272,7 @@ blockquote {
 }
 
 .navbar {
-	@apply border border-b  border-solid;
-}
-
-.footer {
-	@apply border-0 border-t border-solid;
-}
-
-.footer__copyright {
-	@apply text-foreground/80 text-sm;
-}
-
-.footer a {
-	@apply text-foreground hover:text-primary;
+	@apply border border-b border-solid;
 }
 
 /** Patch some colors **/
