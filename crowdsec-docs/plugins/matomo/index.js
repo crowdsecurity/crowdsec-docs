@@ -1,30 +1,29 @@
-
-var path = require("path");
+var path = require("path")
 
 module.exports = function (context) {
-  const {siteConfig} = context;
-  const {themeConfig} = siteConfig;
-  const {matomo} = themeConfig || {};
+    const { siteConfig } = context
+    const { themeConfig } = siteConfig
+    const { matomo } = themeConfig || {}
 
-  //const isProd = process.env.NODE_ENV === 'production';
-  isProd = true;
-  return {
-    name: 'docusaurus-plugin-matomo',
-    getClientModules() {
-        return isProd ? [path.resolve(__dirname, './track')] : [];
-      },
-    injectHtmlTags() {
-      return {
-        headTags: [
-        {
-            tagName: 'script',
-            attributes: {
-                src: '/plugins/matomo/tarteaucitron.js-1.9.7/tarteaucitron.js',
-            },
+    //const isProd = process.env.NODE_ENV === 'production';
+    isProd = true
+    return {
+        name: "docusaurus-plugin-matomo",
+        getClientModules() {
+            return isProd ? [path.resolve(__dirname, "./track")] : []
         },
-        {
-            tagName: 'script',
-            innerHTML: `tarteaucitron.init({
+        injectHtmlTags() {
+            return {
+                headTags: [
+                    {
+                        tagName: "script",
+                        attributes: {
+                            src: "/plugins/matomo/tarteaucitron.js-1.9.7/tarteaucitron.js",
+                        },
+                    },
+                    {
+                        tagName: "script",
+                        innerHTML: `tarteaucitron.init({
                 "privacyUrl": "", /* Privacy policy url */
                 "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
       
@@ -66,16 +65,16 @@ module.exports = function (context) {
                 "mandatory": true, /* Show a message about mandatory cookies */
                 "mandatoryCta": true /* Show the disabled accept button when mandatory on */
               });`,
-          },
-          {
-            tagName: 'script',
-            innerHTML:`
+                    },
+                    {
+                        tagName: "script",
+                        innerHTML: `
             tarteaucitron.user.matomoId = '5';
             tarteaucitron.user.matomoHost = 'https://crowdsec.matomo.cloud/';
             (tarteaucitron.job = tarteaucitron.job || []).push('matomocloud');`,
-          }   
-        ],
-      };
-    },
-  };
-};
+                    },
+                ],
+            }
+        },
+    }
+}

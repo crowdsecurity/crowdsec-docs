@@ -4,7 +4,7 @@ title: Creating scenarios
 sidebar_position: 4
 ---
 
-import AcademyPromo from '@site/src/components/AcademyPromo';
+import AcademyPromo from '@site/src/components/academy-promo';
 
 :::caution
 
@@ -77,13 +77,13 @@ Let's add our parser and scenario to the test configuration (`.tests/myservice-b
 
 ```yaml
 parsers:
-  - crowdsecurity/syslog-logs
-  - crowdsecurity/dateparse-enrich
-  - ./parsers/s01-parse/crowdsecurity/myservice-logs.yaml
+    - crowdsecurity/syslog-logs
+    - crowdsecurity/dateparse-enrich
+    - ./parsers/s01-parse/crowdsecurity/myservice-logs.yaml
 scenarios:
-  - ./scenarios/crowdsecurity/myservice-bf.yaml
+    - ./scenarios/crowdsecurity/myservice-bf.yaml
 postoverflows:
-  - ""
+    - ""
 log_file: myservice-bf.log
 log_type: syslog
 ignore_parsers: true
@@ -126,16 +126,16 @@ We filter on `evt.Meta.log_type == 'myservice_failed_auth'` because in the parse
 
 We have the following fields:
 
-- a [type](/scenarios/format.md#type): the type of bucket to use (trigger or leaky).
-- a [name](/scenarios/format.md#name)
-- a [description](/scenarios/format.md#description)
-- a [filter](/scenarios/format.md#type): the filter to apply on events to be filled in this bucket.
-- a [leakspeed](/scenarios/format.md#leakspeed)
-- a [capacity](/scenarios/format.md#capacity): the number of events in the bucket before it overflows.
-- a [groupby](/scenarios/format.md#groupby): a field from the event to partition the bucket. It is often the `source_ip` of the event.
-- a [blackhole](/scenarios/format.md#blackhole): the number of minute to not retrigger this scenario for the same `groupby` field.
-- a [reprocess](/scenarios/format.md#reprocess): ingest the alert in crowdsec for further processing.
-- some [labels](/scenarios/format.md#labels): Some labels are mandatory and the scenario will not be validated by the Hub if they are missing. Don't forget to set `remediation: true` if you want the IP to be blocked by bouncers.
+-   a [type](/scenarios/format.md#type): the type of bucket to use (trigger or leaky).
+-   a [name](/scenarios/format.md#name)
+-   a [description](/scenarios/format.md#description)
+-   a [filter](/scenarios/format.md#type): the filter to apply on events to be filled in this bucket.
+-   a [leakspeed](/scenarios/format.md#leakspeed)
+-   a [capacity](/scenarios/format.md#capacity): the number of events in the bucket before it overflows.
+-   a [groupby](/scenarios/format.md#groupby): a field from the event to partition the bucket. It is often the `source_ip` of the event.
+-   a [blackhole](/scenarios/format.md#blackhole): the number of minute to not retrigger this scenario for the same `groupby` field.
+-   a [reprocess](/scenarios/format.md#reprocess): ingest the alert in crowdsec for further processing.
+-   some [labels](/scenarios/format.md#labels): Some labels are mandatory and the scenario will not be validated by the Hub if they are missing. Don't forget to set `remediation: true` if you want the IP to be blocked by bouncers.
 
 We can then "test" our scenario like this :
 
@@ -171,8 +171,8 @@ Please fill your assert file(s) for test 'myservice-bf', exiting
 
 What happened here ?
 
-- The scenario has been triggered and is generating some assertion (for functional test)
-- In production environment, an alert would have been send to the CrowdSec Local API.
+-   The scenario has been triggered and is generating some assertion (for functional test)
+-   In production environment, an alert would have been send to the CrowdSec Local API.
 
 We can again understand more of what is going on thanks to `cscli hubtest explain` :
 
