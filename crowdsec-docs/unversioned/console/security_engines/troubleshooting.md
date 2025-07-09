@@ -3,8 +3,6 @@ title: Troubleshooting Hints
 description: Troubleshooting Security Engines
 ---
 
-## Introduction
-
 This feature simplifies cybersecurity management by providing a quick, comprehensive view of Security Engines requiring immediate action. It's designed for efficiency, enabling you to identify critical issues such as outdated or inactive components with just one click. This functionality ensures streamlined, focused security maintenance, ideal for teams with many servers to monitor simultaneously.
 
 This feature will detect the following behaviors needing your remediation attention:

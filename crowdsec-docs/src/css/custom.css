@@ -21,7 +21,11 @@
 
 body,
 #__docusaurus {
-	@apply bg-background text-foreground;
+	@apply bg-neutral-950 text-foreground;
+}
+
+.theme-doc-sidebar-container {
+	@apply bg-neutral-900;
 }
 
 html[data-theme="light"] .menu__link--active {

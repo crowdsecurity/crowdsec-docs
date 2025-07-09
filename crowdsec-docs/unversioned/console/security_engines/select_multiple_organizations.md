@@ -3,8 +3,6 @@ title: Select multiple organizations 🧪
 description: Learn how to select multiple organizations to all their Security Engines in the CrowdSec Console
 ---
 
-## Introduction
-
 > 🧪 Beta users only
 
 The Multi-organization selection feature allows monitoring engines across multiple organizations. This centralization simplifies the oversight of numerous security systems, making maintaining a high level of security effectiveness easier. This feature ensures you can promptly address the most pressing security concerns without navigating multiple systems or interfaces.
