@@ -90,7 +90,12 @@ sudo dnf install crowdsec-haproxy-spoa-bouncer
 
 ## Configuration
 
-Create or edit the configuration file at `/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml`:
+If you are using packages, and have a lapi on the same server the following
+configuration file `/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml` should
+already be in a working state.
+
+You can always edit the configuration file at `/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml`:
+
 ```yaml
 log_mode: file
 log_dir: /var/log/
@@ -124,9 +129,6 @@ prometheus:
   listen_port: 60601
 ```
 
-If you installed this bouncer through package, you should already have a working
-configuration file.
-
 You can get a workable configuration by using the yaml above and getting and api key by:
 ```bash
 sudo cscli bouncers add mybouncer
@@ -138,6 +140,9 @@ Please keep this key since you will not be able to retrieve it!
 ```
 
 ## HAProxy Configuration
+
+If you are using packages, you will find the haproxy configuration snippets in
+`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`.
 
 ### SPOE Filter
 
