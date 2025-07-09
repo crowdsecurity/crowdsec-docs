@@ -471,7 +471,13 @@ const sidebarsConfig: SidebarConfig = {
 				type: "doc",
 				id: "cscli/cscli_hub",
 			},
-			items: ["cscli/cscli_hub_list", "cscli/cscli_hub_update", "cscli/cscli_hub_upgrade", "cscli/cscli_hub_types", "cscli/cscli_hub_branch"],
+			items: [
+				"cscli/cscli_hub_list",
+				"cscli/cscli_hub_update",
+				"cscli/cscli_hub_upgrade",
+				"cscli/cscli_hub_types",
+				"cscli/cscli_hub_branch"
+			],
 		},
 		{
 			type: "doc",
