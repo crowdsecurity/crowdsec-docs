@@ -4,8 +4,8 @@ import { isActiveSidebarItem } from "@docusaurus/plugin-content-docs/client";
 import { ThemeClassNames } from "@docusaurus/theme-common";
 import { Badge } from "@site/src/ui/badge";
 import type { Props } from "@theme/DocSidebarItem/Link";
-import IconExternalLink from "@theme/Icon/ExternalLink";
 import clsx from "clsx";
+import { ExternalLinkIcon } from "lucide-react";
 import React from "react";
 
 export default function DocSidebarItemLink({ item, onItemClick, activePath, level, index, ...props }: Readonly<Props>): React.JSX.Element {
@@ -13,8 +13,6 @@ export default function DocSidebarItemLink({ item, onItemClick, activePath, leve
 	const isActive = isActiveSidebarItem(item, activePath);
 	const isInternalLink = isInternalUrl(href);
 	const tag = customProps?.tag;
-
-	console.log(label, tag);
 
 	return (
 		<li
@@ -49,7 +47,7 @@ export default function DocSidebarItemLink({ item, onItemClick, activePath, leve
 						Premium
 					</Badge>
 				)}
-				{!isInternalLink && <IconExternalLink />}
+				{!isInternalLink && <ExternalLinkIcon className="ml-1 h-4 text-foreground/80" />}
 			</Link>
 		</li>
 	);
