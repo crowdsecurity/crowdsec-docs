@@ -104,9 +104,7 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 				label: "Guides",
 			},
 			{
-				to: `https://academy.crowdsec.net/courses?${
-					process.env.NODE_ENV === "production" ? "utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs" : ""
-				}`,
+				to: ACADEMY_URL,
 				label: "Academy",
 			},
 		],
