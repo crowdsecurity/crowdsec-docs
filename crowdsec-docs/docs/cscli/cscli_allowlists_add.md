@@ -19,9 +19,9 @@ cscli allowlists add my_allowlist 1.2.3.4 2.3.4.5 -e 1h -d "my comment"
 ### Options
 
 ```
-  -d, --comment string      comment for the value
-  -e, --expiration string   expiration duration
-  -h, --help                help for add
+  -d, --comment string        comment for the value
+  -e, --expiration duration   expiration duration (default 0s)
+  -h, --help                  help for add
 ```
 
 ### Options inherited from parent commands

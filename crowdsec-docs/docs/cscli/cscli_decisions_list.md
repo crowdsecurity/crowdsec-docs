@@ -24,8 +24,8 @@ cscli decisions list --origin lists --scenario list_name
 
 ```
   -a, --all               Include decisions from Central API
-      --since string      restrict to alerts newer than since (ie. 4h, 30d)
-      --until string      restrict to alerts older than until (ie. 4h, 30d)
+      --since duration    restrict to alerts newer than since (ie. 4h, 30d) (default 0s)
+      --until duration    restrict to alerts older than until (ie. 4h, 30d) (default 0s)
   -t, --type string       restrict to this decision type (ie. ban,captcha)
       --scope string      restrict to this scope (ie. ip,range,session)
       --origin string     the value to match for the specified origin (cscli,crowdsec,console,cscli-import,lists,CAPI ...)

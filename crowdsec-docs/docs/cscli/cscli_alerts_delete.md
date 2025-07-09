@@ -5,7 +5,7 @@ title: cscli alerts delete
 ## cscli alerts delete
 
 Delete alerts
-/!\ This command can be use only on the same machine than the local API.
+/!\ This command can be used only on the same machine than the local API.
 
 ```
 cscli alerts delete [filters] [--all] [flags]

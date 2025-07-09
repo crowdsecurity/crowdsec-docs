@@ -1,28 +1,24 @@
 ---
-id: cscli_alerts_flush
-title: cscli alerts flush
+id: cscli_hub_branch
+title: cscli hub branch
 ---
-## cscli alerts flush
+## cscli hub branch
 
-Flush alerts
-/!\ This command can be used only on the same machine than the local API
+Show selected hub branch
 
-```
-cscli alerts flush [flags]
-```
+### Synopsis
 
-### Examples
+Display the hub branch to be used, depending on configuration and crowdsec version
 
 ```
-cscli alerts flush --max-items 1000 --max-age 7d
+cscli hub branch [flags]
 ```
 
 ### Options
 
 ```
-      --max-items int      Maximum number of alert items to keep in the database (default 5000)
-      --max-age duration   Maximum age of alert items to keep in the database (default 168h0m0s)
-  -h, --help               help for flush
+  -a, --all    List all available items, including those not installed
+  -h, --help   help for branch
 ```
 
 ### Options inherited from parent commands
@@ -40,5 +36,5 @@ cscli alerts flush --max-items 1000 --max-age 7d
 
 ### SEE ALSO
 
-* [cscli alerts](/cscli/cscli_alerts.md)	 - Manage alerts
+* [cscli hub](/cscli/cscli_hub.md)	 - Manage hub index
 

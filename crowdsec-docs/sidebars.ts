@@ -317,6 +317,7 @@ const sidebarsConfig: SidebarConfig = {
 				"cscli/cscli_allowlists_add",
 				"cscli/cscli_allowlists_create",
 				"cscli/cscli_allowlists_delete",
+				"cscli/cscli_allowlists_check",
 				"cscli/cscli_allowlists_inspect",
 				"cscli/cscli_allowlists_list",
 				"cscli/cscli_allowlists_remove",
@@ -470,7 +471,7 @@ const sidebarsConfig: SidebarConfig = {
 				type: "doc",
 				id: "cscli/cscli_hub",
 			},
-			items: ["cscli/cscli_hub_list", "cscli/cscli_hub_update", "cscli/cscli_hub_upgrade", "cscli/cscli_hub_types"],
+			items: ["cscli/cscli_hub_list", "cscli/cscli_hub_update", "cscli/cscli_hub_upgrade", "cscli/cscli_hub_types", "cscli/cscli_hub_branch"],
 		},
 		{
 			type: "doc",
