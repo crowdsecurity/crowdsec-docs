@@ -74,6 +74,11 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 			},
 			{ type: "doc", docId: "cscli/cscli", label: "Cscli" },
 			{ to: "/u/user_guides/intro", label: "Guides" },
+			{
+				type: "doc",
+				label: "SDK",
+				docId: "getting_started/sdk_intro",
+			},
 		],
 	},
 	{
@@ -90,7 +95,20 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 		],
 	},
 	{ to: "/u/console/intro", position: "left", label: "Console" },
-	{ to: ACADEMY_URL, label: "Academy", position: "left" },
+	{
+		label: "Resources",
+		position: "left",
+		items: [
+			{
+				to: "/u/user_guides/intro",
+				label: "Guides",
+			},
+			{
+				to: ACADEMY_URL,
+				label: "Academy",
+			},
+		],
+	},
 	{
 		to: "/u/troubleshooting/intro",
 		position: "left",
@@ -155,6 +173,22 @@ const redirects = [
 	{ from: "/docs/next/troubleshooting", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/faq", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/next/faq", to: "/u/troubleshooting/intro" },
+	{
+		from: "/docs/next/getting_started/install_crowdsec",
+		to: "/u/getting_started/installation/linux",
+	},
+	{
+		from: "/docs/next/getting_started/install_crowdsec_freebsd",
+		to: "/u/getting_started/installation/freebsd",
+	},
+	{
+		from: "/docs/next/getting_started/install_crowdsec",
+		to: "/u/getting_started/installation/linux",
+	},
+	{
+		from: "/docs/next/getting_started/install_crowdsec_freebsd",
+		to: "/u/getting_started/installation/freebsd",
+	},
 ];
 
 const config: Config = {
