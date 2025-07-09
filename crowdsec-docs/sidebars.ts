@@ -476,7 +476,7 @@ const sidebarsConfig: SidebarConfig = {
 				"cscli/cscli_hub_update",
 				"cscli/cscli_hub_upgrade",
 				"cscli/cscli_hub_types",
-				"cscli/cscli_hub_branch"
+				"cscli/cscli_hub_branch",
 			],
 		},
 		{
