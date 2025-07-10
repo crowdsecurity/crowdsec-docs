@@ -1,28 +1,25 @@
 ---
-id: cscli_alerts_flush
-title: cscli alerts flush
+id: cscli_allowlists_check
+title: cscli allowlists check
 ---
-## cscli alerts flush
+## cscli allowlists check
 
-Flush alerts
-/!\ This command can be used only on the same machine than the local API
+Check if a value is in an allowlist
 
 ```
-cscli alerts flush [flags]
+cscli allowlists check [value...] [flags]
 ```
 
 ### Examples
 
 ```
-cscli alerts flush --max-items 1000 --max-age 7d
+cscli allowlists check 1.2.3.4
 ```
 
 ### Options
 
 ```
-      --max-items int      Maximum number of alert items to keep in the database (default 5000)
-      --max-age duration   Maximum age of alert items to keep in the database (default 168h0m0s)
-  -h, --help               help for flush
+  -h, --help   help for check
 ```
 
 ### Options inherited from parent commands
@@ -40,5 +37,5 @@ cscli alerts flush --max-items 1000 --max-age 7d
 
 ### SEE ALSO
 
-* [cscli alerts](/cscli/cscli_alerts.md)	 - Manage alerts
+* [cscli allowlists](/cscli/cscli_allowlists.md)	 - Manage centralized allowlists
 
