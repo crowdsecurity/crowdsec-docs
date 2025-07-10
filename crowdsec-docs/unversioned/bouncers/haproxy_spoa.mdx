@@ -236,7 +236,7 @@ prometheus:
 
 Access them at http://127.0.0.1:60601/metrics.
 
-### Admin Socket (to be tested)
+### Admin Socket
 
 You can query the bouncer runtime state using the admin socket:
 
@@ -374,13 +374,6 @@ Edit `/etc/systemd/system/haproxy.service` and add:
 [Service]
 Environment=CROWDSEC_BAN_TEMPLATE_PATH=/var/lib/crowdsec/lua/haproxy/templates/ban.html
 Environment=CROWDSEC_CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/haproxy/templates/captcha.html
-```
-
-Then reload systemd:
-
-```bash
-sudo systemctl daemon-reexec
-sudo systemctl daemon-reload
 ```
 
 Then reload systemd:
