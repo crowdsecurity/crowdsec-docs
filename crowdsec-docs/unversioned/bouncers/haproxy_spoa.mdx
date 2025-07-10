@@ -191,7 +191,17 @@ backend crowdsec-spoa
     server s1 127.0.0.1:9000
 
 ```
-This snippet can also be found in `/usr/share/docs/crowdsec-haproxy-spoa-bouncer/examples/haproxy.cfg`.
+
+In the `global` section of your `haproxy.cfg`, lua path configuration is also mandatory:
+
+```haproxy
+global
+    lua-load /usr/lib/crowdsec-haproxy-spoa-bouncer/lua/crowdsec.lua
+
+```
+
+An example that includes this snippet can also be found in
+`/usr/share/docs/crowdsec-haproxy-spoa-bouncer/examples/haproxy.cfg`.
 
 ### Specific features
 
@@ -242,7 +252,7 @@ Commands:
     val host <host> captcha <response>
 ```
 
-### Manual installation
+### Manual installation and advanced configuration
 
 We strongly encourage the use of our packages.
 
