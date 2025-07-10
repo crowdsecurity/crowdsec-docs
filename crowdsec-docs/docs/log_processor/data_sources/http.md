@@ -67,7 +67,7 @@ Look at the `Parameters` section to view all supported options.
 
 ## Body format
 
-The datasource expect to receive one or multiple JSON objects.
+The datasource expects to receive one or multiple JSON objects.
 
 The datasource will also automatically decompress any request body in `gzip` format, as long as the `Content-Encoding` header is set to `gzip`.
 
