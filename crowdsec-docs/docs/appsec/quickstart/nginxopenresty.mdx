@@ -7,6 +7,7 @@ title: Nginx / OpenResty
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
 
 # CrowdSec WAF QuickStart for Nginx/OpenResty
 
@@ -42,7 +43,7 @@ To begin setting up the AppSec Component, the initial step is to install a relev
 
 We will utilize the [`crowdsecurity/appsec-virtual-patching`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) collection, which offers a wide range of rules aimed at identifying and preventing the exploitation of known vulnerabilities.
 
-This [collection](/concepts.md#collections) is regularly updated to include protection against newly discovered vulnerabilities. Upon installation, it receives automatic daily updates to ensure your protection is always current.
+This <UnderlineTooltip tooltip="Collections are bundle of parsers, scenarios, postoverflows that form a coherent package.">collection</UnderlineTooltip> is regularly updated to include protection against newly discovered vulnerabilities. Upon installation, it receives automatic daily updates to ensure your protection is always current.
 Furthermore we also install the [`crowdsecurity/appsec-generic-rules`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) collection. This collection contains detection scenarios for generic attack vectors. It provides some protection in cases where specific scenarios for vulnerabilities do not exist (yet).
 
 On the machine where the Security Engine is installed, just execute the following command:
@@ -59,11 +60,11 @@ Executing this command will install the following items:
 
 - The [*AppSec Rules*](/appsec/rules_syntax.md) contain the definition of malevolent requests to be matched and stopped
 - The [*AppSec Configuration*](/appsec/configuration.md#appsec-configuration) links together a set of rules to provide a coherent set
-- The [*CrowdSec Parser*](/concepts.md#parsers) and [*CrowdSec Scenario(s)*](/concepts.md#scenarios) bans for a longer duration repeating offenders
+- The <UnderlineTooltip tooltip="YAML files that extract relevant data from logs, such as IP addresses, timestamps, or request paths.">CrowdSec Parser</UnderlineTooltip> and <UnderlineTooltip tooltip="Behavioral rules written in a domain-specific language that define what malicious activity looks like, such as multiple failed logins in a short time.">CrowdSec Scenario(s)</UnderlineTooltip> bans for a longer duration repeating offenders
 
 ### Setup the Acquisition
 
-Having installed the required components, it's time to configure the CrowdSec [Acquisition](/concepts.md#acquisition) to expose the Application Security Component to our web server. This configuration allows our Nginx/OpenResty server to send requests to the AppSec Component for evaluation and decision-making.
+Having installed the required components, it's time to configure the CrowdSec <UnderlineTooltip tooltip="Acquisition files tell CrowdSec where to find logs and which application they belong to.">Acquisition</UnderlineTooltip> to expose the Application Security Component to our web server. This configuration allows our Nginx/OpenResty server to send requests to the AppSec Component for evaluation and decision-making.
 
 Steps:
     1. Create the `/etc/crowdsec/acquis.d/` directory (if it doesn't exist on your machine)
@@ -81,7 +82,7 @@ Steps:
 
 The two important directives in this configuration file are:
 
- - `appsec_config` is the name of the [*AppSec Configuration*](appsec/configuration.md#appsec-configuration) that was included in the [Collection](/concepts.md#collections) we just installed.
+ - `appsec_config` is the name of the [*AppSec Configuration*](appsec/configuration.md#appsec-configuration) that was included in the <UnderlineTooltip tooltip="Collections are bundle of parsers, scenarios, postoverflows that form a coherent package.">Collection</UnderlineTooltip> we just installed.
  - the `listen_addr` is the IP and port the AppSec Component will listen to.
 
 :::warning

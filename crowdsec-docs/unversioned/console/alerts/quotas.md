@@ -3,8 +3,6 @@ title: Quotas
 description: Understanding alerts quotas in the CrowdSec Console`
 ---
 
-## Introduction
-
 At CrowdSec, we're committed to providing a range of cybersecurity solutions tailored to meet the needs of diverse users, from individual enthusiasts to large organizations. Our pricing plans, including the Community and Premium options, are designed to scale with your requirements, ensuring you have the tools and capabilities to monitor and respond to threats effectively.
 
 ### Community Plan: Starting Point for Cybersecurity Monitoring
@@ -13,7 +11,7 @@ Our Community Plan is designed as an entry point for users beginning to explore 
 
 - **500 first alerts of the month**: Receive up to 500 alerts per month, with the quota resetting on the 1st of every month. This allows organizations to stay informed about potential threats to their network.
 - **2 Months of Retention**: Access alerts from the last two months, within the 500-alert limit per months. This ensures you can review and act on recent alerts while staying within your quota.
-  
+
   This plan is ideal for individual users or small teams looking for essential monitoring tools without the need for extensive historical data retention or a high volume of alerts.
 
 ### Why Upgrade to Premium? 🏅

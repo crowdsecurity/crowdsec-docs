@@ -3,8 +3,6 @@ title: Details page
 description: Learn how to view the details of a Security Engine in the CrowdSec Console its purpose and how to use it
 ---
 
-## Introduction
-
 This page will reference information about a specific Security Engine. This page is your one-stop resource for understanding everything related to the Security Engine you're interested in.
 
 ![Security Engine details page](/img/console/security_engines/details-page.jpeg)
@@ -19,10 +17,10 @@ At the top of the page, the essential information regarding the Security Engine 
 
 Quick actions are available from the summary to apply changes to your Security Engine.
 
--   [Updating name or tags](/console/security_engines/name_and_tags.md)
--   [Transferring an Engine](/console/security_engines/transfer_engine.md)
--   [Archiving an Engine](/console/security_engines/archive_engine.md)
--   [Removing an Engine](/console/security_engines/remove_engine.md)
+- [Updating name or tags](/console/security_engines/name_and_tags.md)
+- [Transferring an Engine](/console/security_engines/transfer_engine.md)
+- [Archiving an Engine](/console/security_engines/archive_engine.md)
+- [Removing an Engine](/console/security_engines/remove_engine.md)
 
 ![Security Engine details page](/img/console/security_engines/details-page-actions.png)
 

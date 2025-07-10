@@ -3,8 +3,6 @@ title: Pending Security Engines
 description: Accept or decline Security Engines waiting for enrollment
 ---
 
-## Introduction
-
 For security reasons, Engines are not enrolled without user verification. A table at the top of your Engines list will display all the waiting requests.
 However, you can streamline this process using the "Auto-enroll" feature to automatically enroll your Security Engines.
 

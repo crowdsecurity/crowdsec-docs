@@ -3,8 +3,6 @@ title: Transfer Engine
 description: Transfer Security Engines to another organization
 ---
 
-## Introduction
-
 For members of multiple organizations, transferring Security Engines between them can streamline the organization. This feature is accessible via the Engine menu. It is important to note that transferring Security Engines requires having **Editor-level permissions** or higher in both organizations.
 
 ## Usage

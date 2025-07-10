@@ -3,8 +3,6 @@ title: Alerts Context
 description: Understanding the alerts context in the CrowdSec Console
 ---
 
-## Introduction
-
 In specific scenarios, there might be a lack of context in alerts due to centralizing logs on one server. CrowdSec does not store raw log information after processing is completed. Additional data can be included within an alert using the alert context feature. Configuration can be done using the provided [documentation](/user_guides/alert_context.md).
 
 ## Usage

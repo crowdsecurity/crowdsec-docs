@@ -3,8 +3,6 @@ title: Dashboard
 description: Security Engines Dashboard page
 ---
 
-# Introduction
-
 This section displays all the CrowdSec Security Engines available in an Organization. This feature provides a quick overview of the organization's security status and allows the management of all the Security Engines remotely.
 
 If you haven't signed up for Security Engines, check out the ["Getting Started"](/getting_started/post_installation/console.mdx) guide.

@@ -3,14 +3,18 @@ id: rule
 title: Notification rule
 ---
 
-> 🌟 Premium feature.
+import { Badge } from "@site/src/ui/badge";
+
+<div className="mb-4">
+    <Badge variant="premium">CrowdSec Premium Feature</Badge>
+</div>
 
 Notification rules allow you to customize the alerts and notifications you receive from your CrowdSec Console.
 By setting up specific rules, you can ensure that you are only notified about events that are relevant to your organization.
 This guide will walk you through the process of creating a notification rule for your linked integration.
 
 > You need at least one integration linked to your CrowdSec Console to create a notification rule.
-> If you haven't linked an integration yet, please refer to the [Integrations Overview](/u/console/notification_integrations/overview) for more information on how to do so.
+> If you haven't linked an integration yet, please refer to the [Integrations Overview](overview.mdx) for more information on how to do so.
 
 ## Create a notification rule
 
@@ -18,7 +22,7 @@ This guide will walk you through the process of creating a notification rule for
 
 ![](/img/console/notification_integrations/notification-rule-list.png)
 
-2. Select the events you want to be notified about. You can only select one of the three category at the time (Threat Hunting, Stack or Admin). Each of these categories contains a list of [events](/notification_integrations/overview.mdx) that you can choose from. (Threat hunting category let you select only one event due to its conditions variance).
+2. Select the events you want to be notified about. You can only select one of the three category at the time (Threat Hunting, Stack or Admin). Each of these categories contains a list of [events](overview.mdx) that you can choose from. (Threat hunting category let you select only one event due to its conditions variance).
 
 ![](/img/console/notification_integrations/events-selection.png)
 

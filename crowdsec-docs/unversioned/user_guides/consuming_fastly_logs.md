@@ -57,7 +57,7 @@ We configure rsyslog to ignore local syslogs and keep only remote syslog. Then w
 
 ## Install crowdsec with fastly collection
 
-On the same machine, install crowdsec following as mentioned [here](/getting_started/introduction.md)
+On the same machine, install crowdsec following as mentioned [here](/getting_started/introduction.mdx)
 
 ### Setup  acquisition
 

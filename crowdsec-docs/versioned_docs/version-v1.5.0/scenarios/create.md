@@ -4,14 +4,13 @@ title: Creating scenarios
 sidebar_position: 4
 ---
 
-import AcademyPromo from '@site/src/components/AcademyPromo';
+import AcademyPromo from '@site/src/components/academy-promo';
 
 :::caution
 
 All the examples assume that you have read the [Creating parsers](/docs/next/parsers/create) documentation.
 
 :::
-
 
 ## Foreword
 
@@ -47,7 +46,6 @@ has to be `.yaml`.
 
 ## Pre-requisites
 
-
 1. [Create a local test environment](https://doc.crowdsec.net/docs/contributing/contributing_test_env)
 
 2. Clone the hub
@@ -55,7 +53,6 @@ has to be `.yaml`.
 ```bash
 git clone https://github.com/crowdsecurity/hub.git
 ```
-
 
 ## Create our test
 
@@ -72,31 +69,27 @@ From the root of the hub repository :
   Configuration File          :  /home/dev/github/hub/.tests/myservice-bf/config.yaml (please fill it with parsers, scenarios...)
 ```
 
-__note: we specify the `--ignore-parsers` flag because we don't want to test the parsers, only the scenarios.__
-
+**note: we specify the `--ignore-parsers` flag because we don't want to test the parsers, only the scenarios.**
 
 ## Configure our test
-
 
 Let's add our parser and scenario to the test configuration (`.tests/myservice-bf/config.yaml`) file.
 
 ```yaml
 parsers:
-- crowdsecurity/syslog-logs
-- crowdsecurity/dateparse-enrich
-- ./parsers/s01-parse/crowdsecurity/myservice-logs.yaml
+    - crowdsecurity/syslog-logs
+    - crowdsecurity/dateparse-enrich
+    - ./parsers/s01-parse/crowdsecurity/myservice-logs.yaml
 scenarios:
-- ./scenarios/crowdsecurity/myservice-bf.yaml
+    - ./scenarios/crowdsecurity/myservice-bf.yaml
 postoverflows:
-- ""
+    - ""
 log_file: myservice-bf.log
 log_type: syslog
 ignore_parsers: true
-
 ```
 
-__note: as our custom parser and scenario are not yet part of the hub, we specify their path relative to the root of the hub directory.__
-
+**note: as our custom parser and scenario are not yet part of the hub, we specify their path relative to the root of the hub directory.**
 
 ## Scenario creation
 
@@ -114,11 +107,10 @@ groupby: evt.Meta.source_ip
 blackhole: 1m
 reprocess: true
 labels:
- service: myservice
- type: bruteforce
- remediation: true
+    service: myservice
+    type: bruteforce
+    remediation: true
 ```
-
 
 :::note
 
@@ -126,29 +118,25 @@ We filter on `evt.Meta.log_type == 'myservice_failed_auth'` because in the parse
 
 :::
 
-
 We have the following fields:
 
- - a [type](/scenarios/format.md#type): the type of bucket to use (trigger or leaky).
- - a [name](/scenarios/format.md#name)
- - a [description](/scenarios/format.md#description)
- - a [filter](/scenarios/format.md#type): the filter to apply on events to be filled in this bucket. 
- - a [leakspeed](/scenarios/format.md#leakspeed)
- - a [capacity](/scenarios/format.md#capacity): the number of events in the bucket before it overflows.
- - a [groupby](/scenarios/format.md#groupby): a field from the event to partition the bucket. It is often the `source_ip` of the event.
- - a [blackhole](/scenarios/format.md#blackhole): the number of minute to not retrigger this scenario for the same `groupby` field.
- - a [reprocess](/scenarios/format.md#reprocess): ingest the alert in crowdsec for further processing.
- - some [labels](/scenarios/format.md#labels): some labels to apply on the trigger event. Don't forget to set `remediation: true` if you want the IP to be blocked by bouncers.
-
-
-
+-   a [type](/scenarios/format.md#type): the type of bucket to use (trigger or leaky).
+-   a [name](/scenarios/format.md#name)
+-   a [description](/scenarios/format.md#description)
+-   a [filter](/scenarios/format.md#type): the filter to apply on events to be filled in this bucket.
+-   a [leakspeed](/scenarios/format.md#leakspeed)
+-   a [capacity](/scenarios/format.md#capacity): the number of events in the bucket before it overflows.
+-   a [groupby](/scenarios/format.md#groupby): a field from the event to partition the bucket. It is often the `source_ip` of the event.
+-   a [blackhole](/scenarios/format.md#blackhole): the number of minute to not retrigger this scenario for the same `groupby` field.
+-   a [reprocess](/scenarios/format.md#reprocess): ingest the alert in crowdsec for further processing.
+-   some [labels](/scenarios/format.md#labels): some labels to apply on the trigger event. Don't forget to set `remediation: true` if you want the IP to be blocked by bouncers.
 
 We can then "test" our scenario like this :
 
 ```bash
 ▶ cscli hubtest run myservice-bf
-INFO[01-10-2021 12:41:21 PM] Running test 'myservice-bf'                
-WARN[01-10-2021 12:41:24 PM] Assert file '/home/dev/github/hub/.tests/myservice-bf/scenario.assert' is empty, generating assertion: 
+INFO[01-10-2021 12:41:21 PM] Running test 'myservice-bf'
+WARN[01-10-2021 12:41:24 PM] Assert file '/home/dev/github/hub/.tests/myservice-bf/scenario.assert' is empty, generating assertion:
 
 len(results) == 1
 "192.168.1.1" in results[0].Overflow.GetSources()
@@ -175,11 +163,10 @@ Please fill your assert file(s) for test 'myservice-bf', exiting
 
 ```
 
-What happened here ? 
+What happened here ?
 
-- The scenario has been triggered and is generating some assertion (for functional test) 
-- In production environment, an alert would have been send to the CrowdSec Local API.
-
+-   The scenario has been triggered and is generating some assertion (for functional test)
+-   In production environment, an alert would have been send to the CrowdSec Local API.
 
 We can again understand more of what is going on thanks to `cscli hubtest explain` :
 
