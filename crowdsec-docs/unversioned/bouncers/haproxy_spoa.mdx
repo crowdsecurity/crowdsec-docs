@@ -88,11 +88,12 @@ sudo dnf install crowdsec-haproxy-spoa-bouncer
 </Tabs>
 
 
-## Configuration
+## Bouncer configuration
 
 If you are using packages, and have a lapi on the same server the following
 configuration file `/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml` should
-already be in a working state.
+already be in a working state, and can skip this section and begin with HAProxy
+Configuration.
 
 You can always edit the configuration file at `/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml`:
 
@@ -139,10 +140,44 @@ API key for 'bouncertest':
 Please keep this key since you will not be able to retrieve it!
 ```
 
+You can check that the bouncer is correctly installed with cscli:
+
+```bash
+❯ sudo cscli bouncers list
+──────────────────────────────────────────────────────────────────────────────────────────
+ Name                        IP Address  Valid  Last API pull  Type
+──────────────────────────────────────────────────────────────────────────────────────────
+ cs-spoa-bouncer-1752052534  127.0.0.1   ✔️                    crowdsec-spoa-bouncer
+──────────────────────────────────────────────────────────────────────────────────────────
+❯ sudo cscli bouncers inspect cs-spoa-bouncer-1752052534
+──────────────────────────────────────────────────────────────────────────────────────────
+ Bouncer: cs-spoa-bouncer-1752052534
+──────────────────────────────────────────────────────────────────────────────────────────
+ Created At    2025-07-09 09:15:34.685444393 +0000 UTC
+ Last Update   2025-07-09 12:42:18.92023029 +0000 UTC
+ Revoked?      false
+ IP Address    127.0.0.1
+ Type          crowdsec-spoa-bouncer
+ Version       v0.0.3-beta29-rpm-pragmatic-arm64-db7065289a0f5ce1c92f34807c9a98b23c07dc90
+ Last Pull
+ Auth type     api-key
+ OS            ?
+ Auto Created  false
+──────────────────────────────────────────────────────────────────────────────────────────
+
+```
+
 ## HAProxy Configuration
 
-If you are using packages, you will find the haproxy configuration snippets in
-`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`.
+HAProxy requires two configuration files for integration with the bouncer. The
+primary file is /etc/haproxy/haproxy.cfg, which must be modified to enable
+communication with the SPOE engine—our documentation will guide you through
+this. The second file is /etc/haproxy/crowdsec.cfg, which contains the SPOE
+agent configuration. This file is automatically installed along with the bouncer
+package on the condition that `/etc/haproxy` exists.
+
+If you are using packages, you will find the haproxy configuration
+snippets in `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`.
 
 ### SPOE Filter
 
@@ -176,7 +211,8 @@ spoe-message crowdsec-ip
 If you installed the haproxy spoe bouncer through package, you will find this
 configuration file in `/usr/share/docs/crowdsec-haproxy-spoa-bouncer/examples`
 
-This crowdsec spoe agent configuration is then referenced in the main haproxy configuration file.
+This crowdsec spoe agent configuration is then referenced in the main haproxy
+configuration file `/etc/haproxy/haproxy.cfg`.
 
 ```
 frontend http-in
