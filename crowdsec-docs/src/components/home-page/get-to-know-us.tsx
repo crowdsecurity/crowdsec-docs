@@ -54,10 +54,16 @@ const staticData: StaticData[] = [
 		link: "/u/cti_api/intro",
 	},
 	{
-		icon: () => <ThemedImage sources={{
-			light: useBaseUrl("/img/icons/OpenAI-black-monoblossom.svg"),
-			dark: useBaseUrl("/img/icons/OpenAI-white-monoblossom.svg"),
-		}} className="h-10 w-10" alt="OpenAI logo" />,
+		icon: () => (
+			<ThemedImage
+				sources={{
+					light: useBaseUrl("/img/icons/OpenAI-black-monoblossom.svg"),
+					dark: useBaseUrl("/img/icons/OpenAI-white-monoblossom.svg"),
+				}}
+				className="h-10 w-10"
+				alt="OpenAI logo"
+			/>
+		),
 		title: "Custom GPT",
 		description: "Get help from our custom documentation GPT.",
 		link: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation",

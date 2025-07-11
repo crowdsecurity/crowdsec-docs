@@ -162,7 +162,7 @@ const FOOTER_LINKS = [
 				href: "https://crowdsec.net/blog/category/tutorial/",
 			},
 			{ label: "Academy", href: "https://academy.crowdsec.net/" },
-			{ label: "Custom GPT", href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation"}
+			{ label: "Custom GPT", href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation" },
 		],
 	},
 ];
