@@ -147,6 +147,8 @@ const FOOTER_LINKS = [
 			{ label: "Discourse", href: "https://discourse.crowdsec.net/" },
 			{ label: "Discord", href: "https://discord.gg/crowdsec" },
 			{ label: "Twitter", href: "https://twitter.com/crowd_security" },
+			{ label: "LinkedIn", href: "https://www.linkedin.com/company/crowdsec/" },
+			{ label: "YouTube", href: "https://www.youtube.com/@crowdsec" },
 		],
 	},
 	{
@@ -159,6 +161,8 @@ const FOOTER_LINKS = [
 				label: "Tutorial",
 				href: "https://crowdsec.net/blog/category/tutorial/",
 			},
+			{ label: "Academy", href: "https://academy.crowdsec.net/" },
+			{ label: "Custom GPT", href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation"}
 		],
 	},
 ];
