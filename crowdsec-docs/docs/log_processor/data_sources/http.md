@@ -63,29 +63,61 @@ labels:
   type: mytype
 ```
 
-:::info
-If most of cases when the logs are sent in JSON format, you can use the [`transform`](https://docs.crowdsec.net/docs/next/data_sources/intro/#transform) expression to parse the logs.
-:::
+Look at the `Parameters` section to view all supported options.
 
-For example, if the logs are sent in the following format:
+## Body format
+
+The datasource expects to receive one or multiple JSON objects.
+
+The datasource will also automatically decompress any request body in `gzip` format, as long as the `Content-Encoding` header is set to `gzip`.
+
+The JSON object can be any format, crowdsec will pass it as-is to the parsers.
+
+If you are sending multiple JSON object in the same request, they must be separated by a newline (NDJSON format):
+```json
+{"log": "log line 1", "timestamp": "2021-01-01T00:00:00Z"}
+{"log": "log line 2", "timestamp": "2021-01-01T00:00:01Z"}
+```
+
+The objects will be processed by the parsers one-by-one.
+
+If you send multiple log lines in a single JSON object, you can use a [transform](/docs/log_processor/data_sources/introduction.md#transform) expression to generate multiple events:
+
 ```json
 {
   "Records": [
     {
       "message": "test",
       "timestamp": "2021-01-01T00:00:00Z"
+    },
+    {
+      "message": "test2",
+      "timestamp": "2021-01-01T00:00:01Z"
     }
   ]
 }
 ```
 
-the `transform` expression can be:
+Using the following `transform` expression will make the datasource generate one event per entry in the array:
 ```yaml
-transform: map(JsonExtractSlice(evt.Line.Raw, "Records"), ToJsonString(#))
+transform: |
+  map(JsonExtractSlice(evt.Line.Raw, "Records"), ToJsonString(#))
 ```
 
 
-Look at the `configuration parameters` to view all supported options.
+## Status code and supported methods
+
+The HTTP datasource expects to receive logs in a `POST` request, and will return a `200 OK`.
+
+If an invalid body is received (invalid JSON), a `400 Bad Request` code will be returned.
+
+The datasource will return a `200 OK` to `GET` and `HEAD` requests if the credentials provided in the request are valid.
+
+A `405 Method Not Allowed` code will be returned for any other methods.
+
+If the credentials provided are invalid, a `401 Unauthorized` code will be returned.
+
+If the body size is bigger than the configured limit, a `413 Request Entity Too Large` code will be returned.
 
 ## Parameters
 
@@ -105,10 +137,6 @@ At least one of `listen_addr` or `listen_socket` is required.
 ### `path`
 
 The endpoint path to listen on.
-
-:::info
-The request method is always `POST`.
-:::
 
 Optional, default is `/`.
 

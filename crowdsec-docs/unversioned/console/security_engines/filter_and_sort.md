@@ -1,9 +1,7 @@
 ---
-title: Dashboard
+title: Filter and Sort
 description: Security Engines Dashboard page
 ---
-
-## Introduction
 
 This document offers guidance on utilizing the system's filtering feature for Security Engines. Users can refine their search and swiftly locate engines by applying name, IP, tags, and activity filters.
 

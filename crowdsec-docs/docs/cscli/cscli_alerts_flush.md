@@ -20,9 +20,9 @@ cscli alerts flush --max-items 1000 --max-age 7d
 ### Options
 
 ```
-      --max-items int    Maximum number of alert items to keep in the database (default 5000)
-      --max-age string   Maximum age of alert items to keep in the database (default "7d")
-  -h, --help             help for flush
+      --max-items int      Maximum number of alert items to keep in the database (default 5000)
+      --max-age duration   Maximum age of alert items to keep in the database (default 168h0m0s)
+  -h, --help               help for flush
 ```
 
 ### Options inherited from parent commands

@@ -28,7 +28,7 @@ CrowdSec Blocklists are available in three tiers:
 
 - Community:
     - Limited number of Blocklists (Third-party and Free).
-    - You are limited to 3 Blocklists across [Integrations](integrations/intro.mdx) and [Security Engines](getting_started/introduction.md).
+    - You are limited to 3 Blocklists across [Integrations](integrations/intro.mdx) and [Security Engines](getting_started/introduction.mdx).
 - Premium (Included in paid plans):
     - Includes free tier
     - Removes the limit on the number of Blocklists you can use.

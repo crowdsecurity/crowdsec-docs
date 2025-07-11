@@ -29,6 +29,7 @@ Manage centralized allowlists
 
 * [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
 * [cscli allowlists add](/cscli/cscli_allowlists_add.md)	 - Add content to an allowlist
+* [cscli allowlists check](/cscli/cscli_allowlists_check.md)	 - Check if a value is in an allowlist
 * [cscli allowlists create](/cscli/cscli_allowlists_create.md)	 - Create a new allowlist
 * [cscli allowlists delete](/cscli/cscli_allowlists_delete.md)	 - Delete an allowlist
 * [cscli allowlists inspect](/cscli/cscli_allowlists_inspect.md)	 - Inspect an allowlist

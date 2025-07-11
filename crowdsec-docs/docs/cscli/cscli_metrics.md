@@ -17,7 +17,7 @@ cscli metrics [flags]
 ### Examples
 
 ```
-# Show all Metrics, skip empty tables (same as "cecli metrics show")
+# Show all Metrics, skip empty tables (same as "cscli metrics show")
 cscli metrics
 
 # Show only some metrics, connect to a different url

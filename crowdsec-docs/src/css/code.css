@@ -1,0 +1,22 @@
+/* 💻 Code blocks */
+
+.prism-code {
+	@apply !bg-primary dark:!bg-gray-50 text-gray-900 dark:text-gray-100 p-4 mb-4 overflow-x-auto rounded-lg border border-solid border-border/80;
+}
+
+pre {
+	@apply rounded-lg font-semibold;
+}
+
+.prism-code .token.plain {
+	@apply text-white dark:text-foreground;
+}
+
+.prism-code .token.function,
+.prism-code .assign-left.variable {
+	@apply !text-premium dark:!text-secondary;
+}
+
+code:not(.prism-code code) {
+	@apply bg-gray-100 dark:bg-gray-50 border-primary/20 border-solid border text-primary px-1 py-0.5 rounded-md font-semibold;
+}

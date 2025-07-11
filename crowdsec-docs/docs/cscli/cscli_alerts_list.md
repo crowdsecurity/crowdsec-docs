@@ -29,8 +29,8 @@ cscli alerts list --type ban
 
 ```
   -a, --all               Include decisions from Central API
-      --until string      restrict to alerts older than until (ie. 4h, 30d)
-      --since string      restrict to alerts newer than since (ie. 4h, 30d)
+      --until duration    restrict to alerts older than until (ie. 4h, 30d) (default 0s)
+      --since duration    restrict to alerts newer than since (ie. 4h, 30d) (default 0s)
   -i, --ip string         restrict to alerts from this source ip (shorthand for --scope ip --value <IP>)
   -s, --scenario string   the scenario (ie. crowdsecurity/ssh-bf)
   -r, --range string      restrict to alerts from this range (shorthand for --scope range --value <RANGE/X>)

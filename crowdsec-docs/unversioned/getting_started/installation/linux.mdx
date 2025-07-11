@@ -1,7 +1,7 @@
 ---
 id: linux
 title: Linux
-pagination_prev: getting_started/pre_requisites
+pagination_prev: getting_started/intro
 pagination_next: getting_started/health_check
 ---
 
@@ -11,16 +11,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Installation Linux
 
-Before getting started it is advised to read the [prerequisites](/unversioned/getting_started/prerequisites.mdx) page to understand the requirements for running CrowdSec.
+Before getting started, it is advised to read the [introduction](/unversioned/getting_started/introduction.mdx) page to understand the prerequisites and concepts for running CrowdSec.
 
 ## Repository Installation
 
 The CrowdSec repository contains the latest stable version of CrowdSec and is the recommended way to install our packages.
-
-:::info
-We are using [packagecloud.io service](https://packagecloud.io/crowdsec/crowdsec/).
-While `curl | sudo shell` can be convenient for some, [alternative installation methods are available](#manual-repository-installation).
-:::
 
 ```bash
 curl -s https://install.crowdsec.net | sudo sh
@@ -274,4 +269,4 @@ sudo zypper install crowdsec-firewall-bouncer-iptables
 
 ## Next Steps?
 
-Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.md) you will find the next steps to configure and optimize your installation.
+Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.mdx) you will find the next steps to configure and optimize your installation.

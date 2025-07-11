@@ -22,12 +22,12 @@ cscli console enroll [enroll-key] [flags]
 
 ```
 cscli console enroll YOUR-ENROLL-KEY
-		cscli console enroll --name [instance_name] YOUR-ENROLL-KEY
-		cscli console enroll --name [instance_name] --tags [tag_1] --tags [tag_2] YOUR-ENROLL-KEY
-		cscli console enroll --enable console_management YOUR-ENROLL-KEY
-		cscli console enroll --disable context YOUR-ENROLL-KEY
+cscli console enroll --name [instance_name] YOUR-ENROLL-KEY
+cscli console enroll --name [instance_name] --tags [tag_1] --tags [tag_2] YOUR-ENROLL-KEY
+cscli console enroll --enable console_management YOUR-ENROLL-KEY
+cscli console enroll --disable context YOUR-ENROLL-KEY
 
-		valid options are : custom,manual,tainted,context,console_management,all (see 'cscli console status' for details)
+valid options are : custom,manual,tainted,context,console_management,all (see 'cscli console status' for details)
 ```
 
 ### Options

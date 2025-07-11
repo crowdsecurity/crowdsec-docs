@@ -43,6 +43,7 @@ cscli hub upgrade
 ### SEE ALSO
 
 * [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli hub branch](/cscli/cscli_hub_branch.md)	 - Show selected hub branch
 * [cscli hub list](/cscli/cscli_hub_list.md)	 - List all installed configurations
 * [cscli hub types](/cscli/cscli_hub_types.md)	 - List supported item types
 * [cscli hub update](/cscli/cscli_hub_update.md)	 - Download the latest index (catalog of available configurations)

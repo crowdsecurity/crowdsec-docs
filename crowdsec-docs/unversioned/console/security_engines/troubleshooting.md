@@ -1,19 +1,15 @@
 ---
-title: Troubleshooting Hints 🏅
+title: Troubleshooting Hints
 description: Troubleshooting Security Engines
 ---
-
-## Introduction
-
-> 🏅 **Premium Feature**
 
 This feature simplifies cybersecurity management by providing a quick, comprehensive view of Security Engines requiring immediate action. It's designed for efficiency, enabling you to identify critical issues such as outdated or inactive components with just one click. This functionality ensures streamlined, focused security maintenance, ideal for teams with many servers to monitor simultaneously.
 
 This feature will detect the following behaviors needing your remediation attention:
 
--   **Inactive Remediation component**: Inactive Remediation Components detected. Affected Security Engines may be unprotected. Please review for possible Engine or machine configuration issues.
--   **No alerts received within the last 24 hours**: Security Engines have not shared alerts during the previous 24 hours. This could indicate an issue with your machine or monitoring setup. Please validate your setup.
--   **Security Engines to update**: Security Engines are out of date. This may compromise your security. Please update to the latest version as soon as possible.
+- **Inactive Remediation component**: Inactive Remediation Components detected. Affected Security Engines may be unprotected. Please review for possible Engine or machine configuration issues.
+- **No alerts received within the last 24 hours**: Security Engines have not shared alerts during the previous 24 hours. This could indicate an issue with your machine or monitoring setup. Please validate your setup.
+- **Security Engines to update**: Security Engines are out of date. This may compromise your security. Please update to the latest version as soon as possible.
 
 ## Usage
 

@@ -17,10 +17,11 @@ cscli scenarios inspect [item]... [flags]
 ### Examples
 
 ```
-# Display metadata, state, metrics and ancestor collections of scenarios (installed or not).
+# Display metadata, state and ancestor collections of scenarios (installed or not).
 cscli scenarios inspect crowdsecurity/ssh-bf crowdsecurity/http-probing
 
-# Don't collect metrics (avoid error if crowdsec is not running).
+# If the scenario is installed, its metrics are collected and shown as well (with an error if crowdsec is not running).
+# To avoid this, use --no-metrics.
 cscli scenarios inspect crowdsecurity/ssh-bf --no-metrics
 
 # Display difference between a tainted item and the latest one.

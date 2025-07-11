@@ -5,7 +5,7 @@ pagination_prev: getting_started/next_steps
 pagination_next: getting_started/next_steps
 ---
 
-import FormattedTabs from '@site/src/components/FormattedTabs';
+import FormattedTabs from '@site/src/components/formatted-tabs';
 
 # Troubleshoot
 
@@ -47,7 +47,7 @@ Please update the above commands to match your log location if it is different.
 level=fatal msg="while serving local API: listen tcp 127.0.0.1:8080: bind: address already in use"
 ```
 
-By default as outlined in the [prerequisites](/unversioned/getting_started/prerequisites.md) page, CrowdSec uses ports `6060` and `8080`. If you have another service using these ports you will need to alter CrowdSec configuration to use different ports.
+By default as outlined in the [prerequisites](/unversioned/getting_started/introduction.mdx) page, CrowdSec uses ports `6060` and `8080`. If you have another service using these ports you will need to alter CrowdSec configuration to use different ports.
 
 This can be achieved by modifying two configuration files here are the locations of the files:
 
@@ -91,4 +91,4 @@ After you have made the changes you will need to restart the CrowdSec service.
 
 If the above hasn't resolved the issue you are facing, you can find more detailed troubleshooting documentation [here](/troubleshooting/intro.md).
 
-If you have resolved the issue you can continue with the [post installation steps](/getting_started/next_steps.md#1-crowdsec-console).
+If you have resolved the issue you can continue with the [post installation steps](/getting_started/next_steps.mdx#1-crowdsec-console).

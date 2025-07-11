@@ -1,0 +1,49 @@
+/* 🚩 Alert Components */
+
+.alert {
+	@apply bg-background dark:bg-gray-100 text-foreground dark:text-foreground border border-solid border-border rounded-lg p-4 mb-4 text-sm;
+}
+
+.alert p:last-of-type {
+	@apply mb-2;
+}
+
+.alert summary:before {
+	top: 0.2rem !important;
+}
+
+.alert svg {
+	@apply !w-5 !h-5 mb-0;
+}
+
+.alert--info {
+	@apply bg-cyan-50 dark:bg-cyan-900/10 text-cyan-900 dark:text-cyan-100 border-cyan-200 dark:border-cyan-700;
+}
+
+.alert--info svg {
+	@apply !fill-cyan-500 dark:!fill-cyan-200;
+}
+
+.alert--warning {
+	@apply bg-amber-50 dark:bg-amber-900/10 text-amber-900 dark:text-amber-100 border-amber-200 dark:border-amber-700;
+}
+
+.alert--warning svg {
+	@apply !fill-amber-500 dark:!fill-amber-200;
+}
+
+.alert--success {
+	@apply bg-emerald-50 dark:bg-emerald-900/10 text-emerald-900 dark:text-emerald-100 border-emerald-200 dark:border-emerald-700;
+}
+
+.alert--success svg {
+	@apply !fill-emerald-500 dark:!fill-emerald-200;
+}
+
+.alert--danger {
+	@apply bg-red-50 dark:bg-red-900/10 text-red-900 dark:text-red-100 border-red-200 dark:border-red-700;
+}
+
+.alert--danger svg {
+	@apply !fill-red-500 dark:!fill-red-200;
+}
