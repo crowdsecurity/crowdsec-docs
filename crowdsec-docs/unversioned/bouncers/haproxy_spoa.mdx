@@ -97,6 +97,10 @@ Configuration.
 
 You can always edit the configuration file at `/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml`:
 
+<details>
+
+<summary>`/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml`</summary>
+
 ```yaml
 log_mode: file
 log_dir: /var/log/
@@ -129,6 +133,7 @@ prometheus:
   listen_addr: 127.0.0.1
   listen_port: 60601
 ```
+</details>
 
 You can get a workable configuration by using the yaml above and getting and api key by:
 ```bash
@@ -183,6 +188,10 @@ snippets in `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`.
 
 Add a SPOE agent configuration to /etc/haproxy/crowdsec.cfg:
 
+<details>
+
+<summary>`/etc/haproxy/crowdsec.cfg`</summary>
+
 ```
 [crowdsec]
 spoe-agent crowdsec-agent
@@ -207,14 +216,23 @@ spoe-message crowdsec-ip
     event on-client-session
 
 ```
+</details>
 
 If you installed the haproxy spoe bouncer through package, you will find this
 configuration file in `/usr/share/docs/crowdsec-haproxy-spoa-bouncer/examples`
 
 This crowdsec spoe agent configuration is then referenced in the main haproxy
-configuration file `/etc/haproxy/haproxy.cfg`.
+configuration file `/etc/haproxy/haproxy.cfg` and may be added at the bottom of
+the haproxy configuration file.
+
+
+<details>
+
+<summary>`/etc/haproxy/haproxy.cfg`</summary>
 
 ```
+[...]
+
 frontend http-in
     bind *:80
     filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
@@ -232,12 +250,15 @@ In the `global` section of your `haproxy.cfg`, lua path configuration is also ma
 
 ```haproxy
 global
+    [...]
     lua-load /usr/lib/crowdsec-haproxy-spoa-bouncer/lua/crowdsec.lua
 
 ```
 
 An example that includes this snippet can also be found in
 `/usr/share/docs/crowdsec-haproxy-spoa-bouncer/examples/haproxy.cfg`.
+
+</details>
 
 ### Specific features
 
@@ -373,6 +394,8 @@ frontend test
 Create `/etc/haproxy/crowdsec.cfg`:
 
 
+<details>
+<summary>/etc/haproxy/crowdsec.cfg</summary>
 ```haproxy
 spoe-agent crowdsec-agent
     messages    crowdsec-ip crowdsec-http
@@ -392,6 +415,7 @@ spoe-message crowdsec-http
 q.body url=url ssl=ssl_fc
     event on-frontend-http-request
 ```
+</details>
 
 ##### Add SPOE Backend
 
