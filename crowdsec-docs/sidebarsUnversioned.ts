@@ -382,6 +382,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
+			label: "HAProxy",
+			id: "bouncers/haproxy_spoa",
+		},
+		{
+			type: "doc",
 			label: "Ingress Nginx",
 			id: "bouncers/ingress-nginx",
 		},
