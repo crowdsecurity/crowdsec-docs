@@ -1,7 +1,7 @@
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import ThemedImage from "@theme/ThemedImage";
 import React from "react";
 import { HomePageItem } from "./home-item";
-import ThemedImage from "@theme/ThemedImage";
-import useBaseUrl from "@docusaurus/useBaseUrl";
 
 type StaticData = {
 	icon: React.FC<React.HTMLAttributes<HTMLSpanElement>>;
