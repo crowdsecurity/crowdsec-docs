@@ -382,7 +382,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "HAProxy",
+			label: "HAProxy SPOA",
 			id: "bouncers/haproxy_spoa",
 		},
 		{
