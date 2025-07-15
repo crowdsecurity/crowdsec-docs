@@ -8,8 +8,11 @@ sidebar_position: 3
 
 The "Community Blocklist" is a curated list of IP addresses identified as malicious by CrowdSec. CrowdSec proactively block the IP addresses of this blocklist, preventing malevolent IPs from reaching your systems.
 
-
 # Community Blocklist Variation and Eligibility
+
+:::info
+The Community Blocklist is **only** available when using the Security Engine. To gain access, follow the steps in the [Getting Started Guide](/u/getting_started/intro).
+:::
 
 The rules are different for free and paying users:
  - Free users that **do not regularly** contribute get the `Community Blocklist (Lite)`
