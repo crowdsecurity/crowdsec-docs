@@ -319,9 +319,15 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "doc",
+					label: "Discord",
+					id: "console/notification_integrations/discord",
+				},
+				{
+					type: "doc",
 					label: "Slack",
 					id: "console/notification_integrations/slack",
 				},
+
 				{
 					type: "doc",
 					label: "Webhook",
