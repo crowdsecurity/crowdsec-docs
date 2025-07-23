@@ -46,7 +46,7 @@ Console specific flags to enable/disable manual decisions management, alert cont
 
 ### `/etc/crowdsec/contexts/*.yaml`
 
-Enabled alert context for Local API and Log Processor.
+Enabled alert context for Local API and Log Processor. This is where you should add custom data to be sent in alert context.
 
 ### `/etc/crowdsec/hub/`
 
