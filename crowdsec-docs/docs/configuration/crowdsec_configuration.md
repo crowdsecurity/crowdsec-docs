@@ -42,7 +42,13 @@ Collections currently installed on the Log Processor.
 
 ### `/etc/crowdsec/console.yaml`
 
-Console specific flags to enable/disable manual decisions management, alert context sharing.
+Console specific flags:
+ - enable/disable decisions management from the console
+ - enable/disable sharing of manual decisions with the console
+ - enable/disable sharing of custom/tainted scenarios related decisions with the console
+ - enable/disable sharing of alert context data with the console.
+
+ to enable/disable manual decisions management, alert context sharing.
 
 ### `/etc/crowdsec/contexts/*.yaml`
 
@@ -50,7 +56,7 @@ Enabled alert context for Local API and Log Processor. This is where you should 
 
 ### `/etc/crowdsec/hub/`
 
-Local Hub Mirror. Not itended to be modified by the user. Do not put custom scenarios/parsers here.
+Local Hub Mirror. Not intended to be modified by the user. Do not put custom scenarios/parsers here.
 
 ### `/etc/crowdsec/local_api_credentials.yaml` and `/etc/crowdsec/online_api_credentials.yaml`
 
