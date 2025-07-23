@@ -48,8 +48,6 @@ Console specific flags:
  - enable/disable sharing of custom/tainted scenarios related decisions with the console
  - enable/disable sharing of alert context data with the console.
 
- to enable/disable manual decisions management, alert context sharing.
-
 ### `/etc/crowdsec/contexts/*.yaml`
 
 Enabled alert context for Local API and Log Processor. This is where you should add custom data to be sent in alert context.
