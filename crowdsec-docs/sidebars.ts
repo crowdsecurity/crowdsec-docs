@@ -281,25 +281,25 @@ const sidebarsConfig: SidebarConfig = {
 				"contributing/contributing_doc",
 				"contributing/contributing_hub",
 				{
-                    type: "category",
-                    label: "Remediation Components",
-                    link: {
-                        type: "doc",
-                        id: "contributing/contributing_bouncers",
-                    },
-                    items: [
-                        {
-                            type: "doc",
-                            id: "contributing/specs/bouncer_appsec_specs",
-                            label: "Bouncer&AppSec",
-                        },
-                        {
-                            type: "doc",
-                            id: "contributing/specs/bouncer_metrics_specs",
-                            label: "Metrics",
-                        },
-                    ]
-                },
+					type: "category",
+					label: "Remediation Components",
+					link: {
+						type: "doc",
+						id: "contributing/contributing_bouncers",
+					},
+					items: [
+						{
+							type: "doc",
+							id: "contributing/specs/bouncer_appsec_specs",
+							label: "Bouncer&AppSec",
+						},
+						{
+							type: "doc",
+							id: "contributing/specs/bouncer_metrics_specs",
+							label: "Metrics",
+						},
+					],
+				},
 				"contributing/contributing_test_env",
 				"contributing/contributing_crowdsec",
 			],
