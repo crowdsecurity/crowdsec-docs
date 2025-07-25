@@ -4,8 +4,6 @@ title: Quickstart
 sidebar_position: 2
 ---
 
-## Objectives
-
 The goal of this quickstart is to set up the [AppSec Component](appsec/intro.md#introduction) to safeguard web applications running on [Nginx](https://nginx.com). We'll deploy a [set of rules](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) designed to block [well-known attacks](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) and [currently exploited vulnerabilities](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching). Additionally, we'll show how to monitor these alerts through the [console](https://app.crowdsec.net/).
 
 ## Pre-requisites
@@ -36,16 +34,16 @@ sudo cscli collections install crowdsecurity/appsec-generic-rules
 
 Executing this command will install the following items:
 
-- The [*AppSec Rules*](/appsec/rules_syntax.md) contain the definition of malevolent requests to be matched and stopped
-- The [*AppSec configuration*](/appsec/configuration.md#appsec-configuration) links together a set of rules to provide a coherent set
-- The [*CrowdSec Parser*](/concepts.md#parsers) and [*CrowdSec Scenario(s)*](/concepts.md#scenarios) bans for a longer duration repeating offenders
+- The [_AppSec Rules_](/appsec/rules_syntax.md) contain the definition of malevolent requests to be matched and stopped
+- The [_AppSec configuration_](/appsec/configuration.md#appsec-configuration) links together a set of rules to provide a coherent set
+- The [_CrowdSec Parser_](/concepts.md#parsers) and [_CrowdSec Scenario(s)_](/concepts.md#scenarios) bans for a longer duration repeating offenders
 
 ### Setup the acquisition
 
 Having installed the required components, it's time to configure the CrowdSec [Acquisition](/concepts.md#acquisition) to connect the Application Security Component with our Nginx web server. This configuration allows our Nginx server to send requests to the AppSec Component for evaluation and decision-making.
 
- - Create the `/etc/crowdsec/acquis.d/` directory with `mkdir -p /etc/crowdsec/acquis.d/` (if it doesn't exist on your machine)
- - Put the following content in `/etc/crowdsec/acquis.d/appsec.yaml` :
+- Create the `/etc/crowdsec/acquis.d/` directory with `mkdir -p /etc/crowdsec/acquis.d/` (if it doesn't exist on your machine)
+- Put the following content in `/etc/crowdsec/acquis.d/appsec.yaml` :
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
 appsec_config: crowdsecurity/appsec-default
@@ -57,8 +55,8 @@ source: appsec
 
 The two important directives in this configuration file are:
 
- - `appsec_config` is the name of the [*AppSec configuration*](/appsec/configuration.md#appsec-configuration) that was included in the [collection](/concepts.md#collections) we just installed.
- - the `listen_addr` is the IP and port the AppSec Component will listen to.
+- `appsec_config` is the name of the [_AppSec configuration_](/appsec/configuration.md#appsec-configuration) that was included in the [collection](/concepts.md#collections) we just installed.
+- the `listen_addr` is the IP and port the AppSec Component will listen to.
 
 :::info
 You can find more about the [supported options for the acquisition here](/data_sources/appsec.md)
@@ -133,7 +131,6 @@ sudo cscli bouncers delete test_waf
 
 </details>
 
-
 ## Remediation Component Setup
 
 With our AppSec Component active within CrowdSec, it's time to configure the remediation component to forward requests to it.
@@ -147,8 +144,6 @@ To setup forwarding of requests in the Nginx remediation component, we'll modify
 ```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
 APPSEC_URL=http://127.0.0.1:7422
 ```
-
-
 
 This instructs our Nginx plugin (the remediation component) to communicate with the AppSec Component at `http://127.0.0.1:7422`. Once configured, all incoming HTTP requests will be sent there for analysis. The snippet above assumes that the AppSec Component is running on the same machine.
 
@@ -169,8 +164,9 @@ if now try to access `http://localhost/.env` from a browser, our If you now atte
 ![appsec-denied](/img/appsec_denied.png)
 
 We can also look at the metrics from `cscli metrics`. Amongst other things, it will show:
- - the number of requests processed by the AppSec Component
- - Individual rule matches
+
+- the number of requests processed by the AppSec Component
+- Individual rule matches
 
 <details>
   <summary>cscli metrics output example</summary>
@@ -194,35 +190,36 @@ Appsec '127.0.0.1:7422/' Rules Metrics:
 ╰─────────────────────────────────┴───────────╯
 
 ```
-</details>
 
+</details>
 
 ### Explanation
 
 What happened in the test that we just did is:
 
- 1. We did a request (`localhost/.env`) to our local nginx webserver
- 2. Nginx, thanks to the Remediation Component configuration, forwarded the request to `http://127.0.0.1:7422`
- 3. Our AppSec Component, listening on `http://127.0.0.1:7422` analyzed the request
- 4. The request matches the [AppSec rule to detect .env access](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access)
- 5. The AppSec Component thus answered with [HTTP 403](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403) to Nginx, indicating that the request must be blocked
- 6. Nginx presented us with the default "request blocked" page provided by the Remediation Component 
+1.  We did a request (`localhost/.env`) to our local nginx webserver
+2.  Nginx, thanks to the Remediation Component configuration, forwarded the request to `http://127.0.0.1:7422`
+3.  Our AppSec Component, listening on `http://127.0.0.1:7422` analyzed the request
+4.  The request matches the [AppSec rule to detect .env access](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access)
+5.  The AppSec Component thus answered with [HTTP 403](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403) to Nginx, indicating that the request must be blocked
+6.  Nginx presented us with the default "request blocked" page provided by the Remediation Component
 
 ## Integration with the console
 
 <!-- fix link to this guide once done -->
+
 If you haven't yet, follow the guide about [how to enroll your Security Engine in the console](/docs/getting_started/install_crowdsec).
 
 Once done, all your alerts, including the ones generated by the AppSec Component, are going to appear in the console:
 
 ![appsec-console](/img/appsec_console.png)
 
-
 ## Next steps
 
 You are now running the AppSec Component on your Crowdsec Security Engine, congrats!
 
 As the next steps, you can:
- - [Explore the hub](https://hub.crowdsec.net) to find more rules for your use case
- - Look at the [Rules syntax](/appsec/rules_syntax.md) and [creation process](/appsec/create_rules.md) to create your own and contribute
- - Take a look at [the benchmarks](/appsec/benchmark.md)
+
+- [Explore the hub](https://hub.crowdsec.net) to find more rules for your use case
+- Look at the [Rules syntax](/appsec/rules_syntax.md) and [creation process](/appsec/create_rules.md) to create your own and contribute
+- Take a look at [the benchmarks](/appsec/benchmark.md)
