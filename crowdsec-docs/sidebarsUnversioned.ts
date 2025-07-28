@@ -10,58 +10,90 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			id: "cti_api/intro",
 		},
 		{
-			type: "doc",
-			label: "Getting Started",
-			id: "cti_api/getting_started",
-		},
-		{
 			type: "category",
-			label: "Taxonomy",
+			label: "Web UI",
 			items: [
-				"cti_api/taxonomy/intro",
-				"cti_api/taxonomy/cti_object",
-				"cti_api/taxonomy/scores",
-				"cti_api/taxonomy/scenarios",
-				"cti_api/taxonomy/behaviors",
-				"cti_api/taxonomy/classifications",
-				"cti_api/taxonomy/false_positives",
-				"cti_api/taxonomy/benign",
+				{
+					type: "doc",
+					label: "Getting Started",
+					id: "cti_api/getting_started",
+				},
+				{
+					type: "doc",
+					label: "IP Report",
+					id: "cti_api/ip_report",
+				},
+				{
+					type: "doc",
+					label: "Advanced Search",
+					id: "cti_api/advanced_search",
+				},
+				{
+					type: "doc",
+					label: "Search Queries",
+					id: "cti_api/search_queries",
+				},
 			],
 		},
 		{
-			type: "link",
-			label: "Swagger",
-			href: "https://crowdsecurity.github.io/cti-api/",
-		},
-		{
 			type: "category",
-			label: "Integrations",
-			link: {
-				type: "doc",
-				id: "cti_api/integration_intro",
-			},
+			label: "API",
 			items: [
-				"cti_api/integration_ipdex",
-				"cti_api/integration_chrome",
-				"cti_api/integration_gigasheet",
-				"cti_api/integration_intelowl",
-				"cti_api/integration_maltego",
-				"cti_api/integration_misp",
-				"cti_api/integration_msticpy",
-				"cti_api/integration_opencti",
-				"cti_api/integration_paloalto_xsoar",
-				"cti_api/integration_qradar",
-				"cti_api/integration_securitycopilot",
-				"cti_api/integration_sekoia_xdr",
-				"cti_api/integration_splunk_siem",
-				"cti_api/integration_splunk_soar",
-				"cti_api/integration_thehive",
+				{
+					type: "doc",
+					label: "Getting Started",
+					id: "cti_api/api_getting_started",
+				},
+				{
+					type: "category",
+					label: "Integrations",
+					link: {
+						type: "doc",
+						id: "cti_api/api_integration/integration_intro",
+					},
+					items: [
+						"cti_api/api_integration/integration_ipdex",
+						"cti_api/api_integration/integration_chrome",
+						"cti_api/api_integration/integration_gigasheet",
+						"cti_api/api_integration/integration_intelowl",
+						"cti_api/api_integration/integration_maltego",
+						"cti_api/api_integration/integration_misp",
+						"cti_api/api_integration/integration_msticpy",
+						"cti_api/api_integration/integration_opencti",
+						"cti_api/api_integration/integration_paloalto_xsoar",
+						"cti_api/api_integration/integration_qradar",
+						"cti_api/api_integration/integration_securitycopilot",
+						"cti_api/api_integration/integration_sekoia_xdr",
+						"cti_api/api_integration/integration_splunk_siem",
+						"cti_api/api_integration/integration_splunk_soar",
+						"cti_api/api_integration/integration_thehive",
+					],
+				},
+				{
+					type: "category",
+					label: "Taxonomy",
+					items: [
+						"cti_api/taxonomy/intro",
+						"cti_api/taxonomy/cti_object",
+						"cti_api/taxonomy/scores",
+						"cti_api/taxonomy/scenarios",
+						"cti_api/taxonomy/behaviors",
+						"cti_api/taxonomy/classifications",
+						"cti_api/taxonomy/false_positives",
+						"cti_api/taxonomy/benign",
+					],
+				},
+				{
+					type: "link",
+					label: "Swagger",
+					href: "https://crowdsecurity.github.io/cti-api/",
+				},
 			],
 		},
 		{
 			type: "doc",
-			label: "Search Queries",
-			id: "cti_api/search_queries",
+			label: "FAQ",
+			id: "cti_api/faq",
 		},
 	],
 	consoleSidebar: [
@@ -198,37 +230,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "category",
-			label: "CTI",
-			items: [
-				{
-					type: "doc",
-					label: "Getting started",
-					id: "console/cti/getting_started",
-				},
-				{
-					type: "doc",
-					label: "CTI API Keys",
-					id: "console/cti/cti_api_keys",
-				},
-				{
-					type: "doc",
-					label: "IP report",
-					id: "console/cti/ip_report",
-				},
-				{
-					type: "doc",
-					label: "Advanced search",
-					id: "console/cti/advanced_search",
-				},
-				{
-					type: "doc",
-					label: "FAQ",
-					id: "console/cti/faq",
-				},
-			],
-		},
-		{
-			type: "category",
 			label: "Decision",
 			link: {
 				type: "doc",
@@ -287,12 +288,70 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 		},
 		{
-			type: "link",
+			type: "category",
 			label: "Service API",
-			href: "/u/service_api/getting_started",
 			customProps: {
 				tag: "premium",
 			},
+			items: [
+				{
+					type: "doc",
+					id: "console/service_api/getting_started",
+					label: "Getting Started",
+					customProps: {
+						tag: "premium",
+					},
+				},
+				{
+					type: "category",
+					label: "Quickstart",
+					customProps: {
+						tag: "premium",
+					},
+					items: [
+						"console/service_api/quickstart/authentication",
+						"console/service_api/quickstart/blocklists",
+						"console/service_api/quickstart/integrations",
+						"console/service_api/quickstart/allowlists",
+						"console/service_api/quickstart/metrics",
+					],
+				},
+				{
+					type: "category",
+					label: "SDKs",
+					customProps: {
+						tag: "premium",
+					},
+					items: [
+						{
+							type: "doc",
+							label: "Python",
+							id: "console/service_api/sdks/python",
+							customProps: {
+								tag: "premium",
+							},
+						},
+					],
+				},
+				{
+					type: "link",
+					label: "Swagger",
+					href: "https://admin.api.crowdsec.net/v1/docs#/",
+				},
+				{
+					type: "link",
+					label: "Redoc",
+					href: "https://admin.api.crowdsec.net/v1/redoc",
+				},
+				{
+					type: "doc",
+					id: "console/service_api/faq",
+					label: "FAQ",
+					customProps: {
+						tag: "premium",
+					},
+				},
+			],
 		},
 		{
 			type: "category",
@@ -517,50 +576,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			label: "CTI",
 		},
 	],
-	serviceApiSideBar: [
-		{
-			type: "doc",
-			id: "service_api/getting_started",
-			label: "Getting Started",
-		},
-		{
-			type: "category",
-			label: "Quickstart",
-			items: [
-				"service_api/quickstart/authentication",
-				"service_api/quickstart/blocklists",
-				"service_api/quickstart/integrations",
-				"service_api/quickstart/allowlists",
-				"service_api/quickstart/metrics",
-			],
-		},
-		{
-			type: "category",
-			label: "SDKs",
-			items: [
-				{
-					type: "doc",
-					label: "Python",
-					id: "service_api/sdks/python",
-				},
-			],
-		},
-		{
-			type: "link",
-			label: "Swagger",
-			href: "https://admin.api.crowdsec.net/v1/docs#/",
-		},
-		{
-			type: "link",
-			label: "Redoc",
-			href: "https://admin.api.crowdsec.net/v1/redoc",
-		},
-		{
-			type: "doc",
-			id: "service_api/faq",
-			label: "FAQ",
-		},
-	],
+
 	guidesSideBar: [
 		"user_guides/intro",
 		{
@@ -689,7 +705,6 @@ export const {
 	remediationSideBar,
 	blocklistsSideBar,
 	troubleshootingSideBar,
-	serviceApiSideBar,
 	guidesSideBar,
 	gettingStarted,
 } = sidebarsUnversionedConfig;

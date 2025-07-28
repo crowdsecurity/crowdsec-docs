@@ -86,14 +86,7 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 		position: "left",
 		label: "Blocklists",
 	},
-	{
-		label: "API(s)",
-		position: "left",
-		items: [
-			{ label: "CTI API", to: "/u/cti_api/getting_started" },
-			{ label: "Service API 🏅", to: "/u/service_api/getting_started" },
-		],
-	},
+	{ to: "/u/cti_api/intro", position: "left", label: "CTI" },
 	{ to: "/u/console/intro", position: "left", label: "Console" },
 	{
 		label: "Resources",
@@ -310,6 +303,7 @@ const config: Config = {
 				sidebarPath: "./sidebarsUnversioned.ts",
 			},
 		],
+
 		["./plugins/gtag/index.ts", { trackingID: "G-0TFBMNTDFQ" }],
 		["@docusaurus/plugin-client-redirects", { redirects }],
 		tailwindPlugin,

@@ -1,6 +1,6 @@
 ---
-id: intro
-title: Introduction
+id: api_introduction
+title: API Introduction
 sidebar_position: 1
 ---
 
@@ -31,5 +31,5 @@ When querying the CTI API about a given IP, you will get to know more about:
 
 ## How to access it
 
-See the [getting started](/cti_api/getting_started.mdx) section to see how to get your API key and start exploring data.
+See the [getting started](/cti_api/api_getting_started.mdx) section to see how to get your API key and start exploring data.
 The [console](https://app.crowdsec.net) can also show a lighter version of the CTI API data.
