@@ -123,7 +123,9 @@ If you prefer to manually add the repository, you can do so by following the ins
 
 ### Install Security Engine
 
-Once the repository is added, you can install the Security Engine via:
+#### Check Install Candidate
+
+Before installing the Security Engine, make sure the version you are about to install is the latest from our official repositories. In some cases, other package sources on your system may have a higher priority and override our repository.
 
 <Tabs
   defaultValue="debian"
@@ -137,7 +139,7 @@ Once the repository is added, you can install the Security Engine via:
     {label: 'CloudLinux', value: 'cloudlinux'},
   ]}>
   <TabItem value="debian">
-    <CodeBlock className="language-bash">apt install crowdsec</CodeBlock>
+    <CodeBlock className="language-bash">apt list crowdsec</CodeBlock>
     :::warning
     If you are using ESM/Pro Ubuntu you will need to alter the package weights to get the latest version see below
     :::
@@ -202,6 +204,51 @@ Once the repository is added, you can install the Security Engine via:
     ```
 
     </details>
+  </TabItem>
+  
+  <TabItem value="centos7">
+    <CodeBlock className="language-bash">yum list crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="centos8">
+    <CodeBlock className="language-bash">dnf list crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="suselinux">
+    <CodeBlock className="language-bash">zypper info crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="openwrt">
+    <CodeBlock className="language-bash">opkg list | grep crowdsec</CodeBlock>
+  </TabItem>
+
+  <TabItem value="cloudlinux">
+    <CodeBlock className="language-bash">yum list crowdsec</CodeBlock>
+  </TabItem>
+</Tabs>
+
+
+:::warning
+Ensure the above command outputs you are installing a version higher than **1.4.6** otherwise you are installing an old and outdated version.
+:::
+ 
+#### Install Command
+
+Once the repository is added and you have checked the install candidate, you can install the Security Engine via:
+
+<Tabs
+  defaultValue="debian"
+  groupId="operating-systems"
+  values={[
+    {label: 'Debian/Ubuntu', value: 'debian'},
+    {label: 'EL/Centos7/Amzn Linux 2', value: 'centos7'},
+    {label: 'EL/Centos Stream 8', value: 'centos8'},
+    {label: 'SUSE Linux', value: 'suselinux'},
+    {label: 'OpenWRT', value: 'openwrt'},
+    {label: 'CloudLinux', value: 'cloudlinux'},
+  ]}>
+  <TabItem value="debian">
+    <CodeBlock className="language-bash">apt install crowdsec</CodeBlock>
   </TabItem>
   
   <TabItem value="centos7">

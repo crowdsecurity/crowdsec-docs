@@ -15,6 +15,79 @@ You can find the default configurations on our GitHub repository:
 
 [Windows default configuration](https://github.com/crowdsecurity/crowdsec/blob/master/config/config_win.yaml)
 
+## Common configuration directories & paths
+
+### `/etc/crowdsec/`
+
+All CrowdSec configuration are living in this directory.
+
+### `/etc/crowdsec/config.yaml`
+
+Main configuration file for Log Processor and Local API.
+
+### `/etc/crowdsec/acquis.d` and `/etc/crowdsec/acquis.yaml`
+
+Documents which log sources and datasources are processed by the Log Processor.
+
+`/etc/crowdsec/acquis.yaml` is the historical acquisition configuration file.
+`/etc/crowdsec/acquis.d/*.yaml` is prefered when possible.
+
+### `/etc/crowdsec/bouncers/*.yaml`
+
+Individual configuration file for bouncers.
+
+### `/etc/crowdsec/collections/*.yaml`
+
+Collections currently installed on the Log Processor.
+
+### `/etc/crowdsec/console.yaml`
+
+Console specific flags:
+ - enable/disable decisions management from the console
+ - enable/disable sharing of manual decisions with the console
+ - enable/disable sharing of custom/tainted scenarios related decisions with the console
+ - enable/disable sharing of alert context data with the console.
+
+### `/etc/crowdsec/contexts/*.yaml`
+
+Enabled alert context for Local API and Log Processor. This is where you should add custom data to be sent in alert context.
+
+### `/etc/crowdsec/hub/`
+
+Local Hub Mirror. Not intended to be modified by the user. Do not put custom scenarios/parsers here.
+
+### `/etc/crowdsec/local_api_credentials.yaml` and `/etc/crowdsec/online_api_credentials.yaml`
+
+Credentials for Local API and Central API.
+
+### `/etc/crowdsec/parsers`
+
+Contains all parsers enabled on the Log Processor, including local parsers, organised in stages:
+ - `/etc/crowdsec/parsers/s00-raw/*.yaml` : parsers for based formats such as syslog.
+ - `/etc/crowdsec/parsers/s01-parse/*.yaml` : service specific parsers such as nginx or ssh.
+ - `/etc/crowdsec/parsers/s02-enrich/*.yaml` : enrichment parsers and whitelists.
+
+
+### `/etc/crowdsec/scenarios`
+
+Contains all scenarios enabled on the Log Processor, including local scenarios.
+
+### `/etc/crowdsec/profiles.yaml`
+
+Contains profiles used by Local API to eventually turn alerts into decisions or dispatch them to notification plugins.
+
+### `/etc/crowdsec/notifications/*.yaml`
+
+Contains notification plugins configuration (slack, email, splunk, etc.)
+
+### `/etc/crowdsec/appsec-configs/*.yaml`
+
+Contains AppSec (WAF) configuration indicating which rules or loaded in `inband` and `outofband` files, as well as eventual `hooks` configuration.
+
+### `/etc/crowdsec/appsec-rules/*.yaml`
+
+Contains individual AppSec (WAF) rules loaded by `appsec-configs` files.
+
 ## Environment variables
 
 It is possible to set configuration values based on environment variables.
