@@ -64,7 +64,7 @@ We strongly encourage the use of our packages.
 ### Using packages
 
 You will have to setup crowdsec repositories first [setup crowdsec
-repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories).
+repositories](/docs/next/getting_started/u/getting_started/installation/linux).
 
 <Tabs
   defaultValue="haproxy_debian"
@@ -99,82 +99,6 @@ configuration file `/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml` should
 already be in a working state, and can skip this section and begin with HAProxy
 Configuration.
 
-You can always edit the configuration file at `/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml`:
-
-<details>
-
-<summary>`/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml`</summary>
-
-```yaml
-log_mode: file
-log_dir: /var/log/
-log_level: info
-log_compression: true
-log_max_size: 100
-log_max_backups: 3
-log_max_age: 30
-
-update_frequency: 10s
-api_url: http://127.0.0.1:8080/
-api_key: ${API_KEY}
-insecure_skip_verify: false
-
-workers:
-  - name: spoa1
-    listen_addr: 0.0.0.0:9000
-    listen_socket: /run/crowdsec-spoa/spoa-1.sock
-
-worker_user: crowdsec-spoa
-worker_group: crowdsec-spoa
-
-asn_database_path: /var/lib/crowdsec/data/GeoLite2-ASN.mmdb
-city_database_path: /var/lib/crowdsec/data/GeoLite2-City.mmdb
-
-admin_socket: /run/crowdsec-spoa-admin.sock
-
-prometheus:
-  enabled: true
-  listen_addr: 127.0.0.1
-  listen_port: 60601
-```
-</details>
-
-You can get a workable configuration by using the yaml above and getting and api key by:
-```bash
-sudo cscli bouncers add mybouncer
-API key for 'bouncertest':
-
-   JdVa7DKBM35gPDAR014pH/55l38fxLGt02NPPnZgLQI
-
-Please keep this key since you will not be able to retrieve it!
-```
-
-You can check that the bouncer is correctly installed with cscli:
-
-```bash
-❯ sudo cscli bouncers list
-──────────────────────────────────────────────────────────────────────────────────────────
- Name                        IP Address  Valid  Last API pull  Type
-──────────────────────────────────────────────────────────────────────────────────────────
- cs-spoa-bouncer-1752052534  127.0.0.1   ✔️                    crowdsec-spoa-bouncer
-──────────────────────────────────────────────────────────────────────────────────────────
-❯ sudo cscli bouncers inspect cs-spoa-bouncer-1752052534
-──────────────────────────────────────────────────────────────────────────────────────────
- Bouncer: cs-spoa-bouncer-1752052534
-──────────────────────────────────────────────────────────────────────────────────────────
- Created At    2025-07-09 09:15:34.685444393 +0000 UTC
- Last Update   2025-07-09 12:42:18.92023029 +0000 UTC
- Revoked?      false
- IP Address    127.0.0.1
- Type          crowdsec-spoa-bouncer
- Version       v0.0.3-beta29-rpm-pragmatic-arm64-db7065289a0f5ce1c92f34807c9a98b23c07dc90
- Last Pull
- Auth type     api-key
- OS            ?
- Auto Created  false
-──────────────────────────────────────────────────────────────────────────────────────────
-
-```
 
 ## HAProxy Configuration
 
@@ -334,22 +258,97 @@ sudo mkdir -p /etc/crowdsec/bouncers/
 sudo cp config/crowdsec-spoa-bouncer.yaml /etc/crowdsec/bouncers/
 ```
 
-Edit `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml`:
+
+You can always edit the configuration file at `/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml`:
+
+<details>
+
+<summary>`/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml`</summary>
+
+```yaml
+log_mode: file
+log_dir: /var/log/
+log_level: info
+log_compression: true
+log_max_size: 100
+log_max_backups: 3
+log_max_age: 30
+
+update_frequency: 10s
+api_url: http://127.0.0.1:8080/
+api_key: ${API_KEY}
+insecure_skip_verify: false
+
+workers:
+  - name: spoa1
+    listen_addr: 0.0.0.0:9000
+    listen_socket: /run/crowdsec-spoa/spoa-1.sock
+
+worker_user: crowdsec-spoa
+worker_group: crowdsec-spoa
+
+asn_database_path: /var/lib/crowdsec/data/GeoLite2-ASN.mmdb
+city_database_path: /var/lib/crowdsec/data/GeoLite2-City.mmdb
+
+admin_socket: /run/crowdsec-spoa-admin.sock
+
+prometheus:
+  enabled: true
+  listen_addr: 127.0.0.1
+  listen_port: 60601
+```
+</details>
+
+You can get a workable configuration by using the yaml above and getting and api key by:
+```bash
+sudo cscli bouncers add mybouncer
+API key for 'bouncertest':
+
+   JdVa7DKBM35gPDAR014pH/55l38fxLGt02NPPnZgLQI
+
+Please keep this key since you will not be able to retrieve it!
+```
+- Paste the key into:
+  ```yaml
+  api_key: your-generated-key
+  ```
+
+
+In the `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` file the following
+keys are of some importance:
 
 - Set your **LAPI URL** to point to your CrowdSec LAPI instance:
   ```yaml
   api_url: http://127.0.0.1:8080/
   ```
 
-- Generate an API key on the server where CrowdSec is intalled:
-  ```bash
-  cscli bouncers add haproxy-spoa
-  ```
+You can check that the bouncer is correctly installed with cscli:
 
-- Paste the key into:
-  ```yaml
-  api_key: your-generated-key
-  ```
+```bash
+❯ sudo cscli bouncers list
+──────────────────────────────────────────────────────────────────────────────────────────
+ Name                        IP Address  Valid  Last API pull  Type
+──────────────────────────────────────────────────────────────────────────────────────────
+ cs-spoa-bouncer-1752052534  127.0.0.1   ✔️                    crowdsec-spoa-bouncer
+──────────────────────────────────────────────────────────────────────────────────────────
+❯ sudo cscli bouncers inspect cs-spoa-bouncer-1752052534
+──────────────────────────────────────────────────────────────────────────────────────────
+ Bouncer: cs-spoa-bouncer-1752052534
+──────────────────────────────────────────────────────────────────────────────────────────
+ Created At    2025-07-09 09:15:34.685444393 +0000 UTC
+ Last Update   2025-07-09 12:42:18.92023029 +0000 UTC
+ Revoked?      false
+ IP Address    127.0.0.1
+ Type          crowdsec-spoa-bouncer
+ Version       v0.0.3-beta29-rpm-pragmatic-arm64-db7065289a0f5ce1c92f34807c9a98b23c07dc90
+ Last Pull
+ Auth type     api-key
+ OS            ?
+ Auto Created  false
+──────────────────────────────────────────────────────────────────────────────────────────
+
+```
+
 
 Create runtime socket directory and crowdsec-spoa user:
 
@@ -358,6 +357,7 @@ sudo
 sudo mkdir -p /run/crowdsec-spoa
 sudo chown crowdsec-spoa:crowdsec-spoa /run/crowdsec-spoa
 ```
+
 
 #### Configure HAProxy
 
