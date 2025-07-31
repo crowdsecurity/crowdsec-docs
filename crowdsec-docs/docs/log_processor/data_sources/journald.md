@@ -53,6 +53,10 @@ labels:
 
 A list of journalctl filters. This is mandatory.
 
+:::info
+this list is transformed into arguments passed to the journalctl binary, so any [arguments supported by journalctl](https://www.man7.org/linux/man-pages/man1/journalctl.1.html) can be defined here
+:::
+
 ### `source`
 
 Must be `journalctl`
