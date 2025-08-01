@@ -19,9 +19,13 @@ Some users using `cscli dashboard` command did not understand what was happening
 
 ## What will happen to the `cscli dashboard` command ?
 
-The `cscli dashboard` command will be deprecated in version `1.7.0` of the CrowdSec package. However, we don't want to leave users without a solution to visualize their data. We are working on a new way to deploy the Metabase dashboard via a script that will automate the deployment of the dashboard.
+The `cscli dashboard` command will be deprecated starting from version `1.7.0` of the CrowdSec package. Moving forward, users will have the following alternatives for viewing metrics and insights:
 
-A development version of the script can be found linked [here](https://github.com/crowdsecurity/crowdsec/issues/2927)
+* CrowdSec Console (officially supported)
+* Prometheus with Grafana
+* VictoriaMetrics with Grafana
+
+Please note that **only the CrowdSec Console is officially supported by the CrowdSec team**. The other options are provided for flexibility but are community-driven and require self-management.
 
 ## What should I do now?
 
