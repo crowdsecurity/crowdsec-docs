@@ -124,7 +124,7 @@ Understand momentum at a glance.
 
 *Interactive chart* displays exploit attempts per hour/day.
 
-> **Pro tip:** Switch the drop-down (Last 24 h / Week / Month / 3 Months) to zoom in on surges.
+> **Pro tip:** Switch the drop-down (Last 24 h / 7 days / 30 days) to zoom in on surges.
 
 
 Some CVEs can also display an **Event Log** records milestones:
