@@ -35,4 +35,10 @@ Currently we recommend that you firstly check which version of Metabase that is 
 docker ps -a
 ```
 
-This will show you the running containers on your system. Look for the Metabase container and check the version of the container. If you are running a version of Metabase that is vulnerable to a CVE, we recommend that you update to latest version of CrowdSec then re run the `cscli dashboard` command to update the Metabase dashboard.
+Here’s the updated version of the sentence, including guidance for users already on `1.7.0`:
+
+---
+
+This will show you the running containers on your system. Look for the Metabase container and check its version. If you are running a version of Metabase that is vulnerable to a CVE, we recommend updating to the latest version of CrowdSec and re-running the `cscli dashboard` command to refresh the Metabase dashboard.
+
+**If you are already on version `1.7.0`, you will need to manually remove the container, as the `cscli dashboard` command is no longer available.**
