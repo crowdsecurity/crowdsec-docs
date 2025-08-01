@@ -19,9 +19,13 @@ Some users using `cscli dashboard` command did not understand what was happening
 
 ## What will happen to the `cscli dashboard` command ?
 
-The `cscli dashboard` command will be deprecated in version `1.7.0` of the CrowdSec package. However, we don't want to leave users without a solution to visualize their data. We are working on a new way to deploy the Metabase dashboard via a script that will automate the deployment of the dashboard.
+The `cscli dashboard` command will be deprecated starting from version `1.7.0` of the CrowdSec package. Moving forward, users will have the following alternatives for viewing metrics and insights:
 
-A development version of the script can be found linked [here](https://github.com/crowdsecurity/crowdsec/issues/2927)
+* CrowdSec Console (officially supported)
+* Prometheus with Grafana
+* VictoriaMetrics with Grafana
+
+Please note that **only the CrowdSec Console is officially supported by the CrowdSec team**. The other options are provided for flexibility but are community-driven and require self-management.
 
 ## What should I do now?
 
@@ -31,4 +35,6 @@ Currently we recommend that you firstly check which version of Metabase that is 
 docker ps -a
 ```
 
-This will show you the running containers on your system. Look for the Metabase container and check the version of the container. If you are running a version of Metabase that is vulnerable to a CVE, we recommend that you update to latest version of CrowdSec then re run the `cscli dashboard` command to update the Metabase dashboard.
+This will show you the running containers on your system. Look for the Metabase container and check its version. If you are running a version of Metabase that is vulnerable to a CVE, we recommend updating to the latest version of CrowdSec and re-running the `cscli dashboard` command to refresh the Metabase dashboard.
+
+**If you are already on version `1.7.0`, you will need to manually remove the container, as the `cscli dashboard` command is no longer available.**
