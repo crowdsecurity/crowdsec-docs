@@ -14,6 +14,32 @@ Sharing on the hub allows other users to find and use it. While increasing your 
 
 ### How ?
 
+#### Specs
+
+Remediation components have mandatory and optional features, they are described in the following sub pages:
+- [Specifications for Remediation Component and AppSec Capabilities](/contributing/specs/bouncer_appsec_specs)
+- [Remediation Component Metrics](/contributing/specs/bouncer_metrics_specs)
+
+*Don't hesitate to get in touch with us via discord if anything is unclear to you*
+
+Those specs describe how the Remediation component interacts with the Security Engine Local API as well as how each feature should behave.
+
+Main features are:
+- **Mode**: How the bouncer retrieves decisions
+  - **Stream**: Pulls them periodically and stores them locally (preferred for low latency remediation)
+  - **Live**: Queries the LAPI upon request reception (easier to implement)
+  - Both available ideally, but **Stream** preferred in most cases
+- **AppSec**: Ability to forward requests to the Security Engine to eval appsec rules
+  - Optional but if the remediation component has access to the request this features is a big plus
+- **Metrics**: Keep track of what was remediated
+  - Optional but very useful for the users to be able to evaluate the efficiency of the protection
+  - Ideally with details on the source of the decision (blocklist, manual block, a scenario triggering a decision 'crowdsec'...)
+
+Other optional features are:
+- **MTLS** support
+- Exposing metrics to **Prometheus**
+
+#### Publish on Github
 
 To have it published on the hub, please simply [open a new issue on the hub](https://github.com/crowdsecurity/hub/issues/new), requesting "remediation component inclusion". The remediation component will then be reviewed by the team, and published directly on the hub, for everyone to find & use it!
 
