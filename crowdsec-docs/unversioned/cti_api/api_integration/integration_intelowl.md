@@ -13,7 +13,7 @@ Intel Owl is an Open Source Intelligence, or OSINT solution to get threat intell
 
 - IntelOwl  v4.2.2+
 - CrowdSec CTI API Key. 
-  - [See this guide to get yours](https://docs.crowdsec.net/cti_api/getting_started.mdx/).
+  - [See this guide to get yours](/cti_api/api_getting_started.mdx).
 
 ## Installation
 
