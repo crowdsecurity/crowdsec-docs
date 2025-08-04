@@ -82,13 +82,14 @@ The header zone tells you, at a glance, how dangerous the vulnerability is for y
 * **Exploiting IPs** – unique IPs detected attacking with this CVE
 * **Products / Vendors** – affected software stack
 
-> **Pro tip:** The *CrowdSec score* represents the calculation of how dangerous a given vulnerability is based on the attacks seen. \
->  The computing of the value is based on:
-> - How recent the CVE is
-> - Solutions of mitigation 
-> - The trendiness of exploitation
-> - The severity 
-> - The type of attackers
+> **Pro tip:** The *CrowdSec score* represents the calculation of how dangerous a given vulnerability is based on the attacks seen by our network. It is designed to help defenders weigh how serious an alert from their security system should be treated and whether they should prioritize the vulnerability in patch management.\
+> The score is based on two key factors:
+> - Attacker Focus
+> - Vulnerability Trendiness
+> Attacker Focus scores the behaivor of the attackers that target this vulnerability. If the attackers consist mainly of automated bots that opportunistically scan the whole internet, the vulnerability gets a lower score as the attacks will be mostly noise. If a vulnerability sees mainly sophisticated targeted exploits it gets a high score, encouraging defenders to check the details of their alert to make sure its not part of a campaign against their perimeter.
+> Vulnerability Trendiness scores how the signals received by the CrowdSec network have evolved over time. Vulnerabilities that see high week-on-week growth in exploit volume are scored higher than ones where the exploit volume is on a decline. This score helps put vulnerabilities back into focus of defenders if some external factor (such as a related vulnerability) causes attacks to pick up.
+> In addition to the two factors above, an additional flat bonus is given to recently published vulnerabilities to account for uncertainties and missing data.
+
 
 ---
 
