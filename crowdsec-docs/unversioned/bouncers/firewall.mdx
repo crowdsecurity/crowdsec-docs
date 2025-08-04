@@ -342,6 +342,11 @@ Skip verification of the API certificate, typical for self-signed certificates
 
 disable interacting with ipv6 chains/sets, defaults to `false`
 
+### `disable_ipv4`
+> `true` | `false`
+
+disable interacting with ipv4 chains/sets, defaults to `false`
+
 ### `deny_action`
 > `DROP` | `REJECT`
 
@@ -362,7 +367,7 @@ if logging is true, this sets the log prefix, defaults to "crowdsec: "
 ### `iptables_chains`
 > []string
 
-specify a list of chains to insert rules
+specify a list of chains to insert rules into both ipv4 and ipv6
 
 ```yaml
 iptables_chains:
@@ -374,6 +379,27 @@ iptables_chains:
 :::info
 If you are using a dockerized application and allow remote connections to the exposed port, you need to add the `DOCKER-USER` chain to the list of chains.
 :::
+
+### `iptables_v4_chains`
+> []string
+
+Specify a list of chains to insert rules into ipv4 only
+
+```yaml
+iptables_v4_chains:
+  - INPUT
+  - DOCKER-USER
+```
+
+### `iptables_v6_chains`
+> []string
+
+Specify a list of chains to insert rules into ipv6 only
+
+```yaml
+iptables_v6_chains:
+  - INPUT
+```
 
 ### `blacklists_ipv4`
 > string
