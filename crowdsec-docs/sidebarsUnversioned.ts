@@ -33,6 +33,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 					label: "Search Queries",
 					id: "cti_api/search_queries",
 				},
+				{
+					type: "doc",
+					label: "CVE Explorer",
+					id: "cti_api/cve_explorer",
+				},
 			],
 		},
 		{
@@ -317,6 +322,16 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 					],
 				},
 				{
+					type: "doc",
+					label: "Blocklists",
+					id: "console/service_api/blocklists",
+				},
+				{
+					type: "doc",
+					label: "Integrations",
+					id: "console/service_api/integrations",
+				},
+				{
 					type: "category",
 					label: "SDKs",
 					customProps: {
@@ -378,9 +393,15 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "doc",
+					label: "Discord",
+					id: "console/notification_integrations/discord",
+				},
+				{
+					type: "doc",
 					label: "Slack",
 					id: "console/notification_integrations/slack",
 				},
+
 				{
 					type: "doc",
 					label: "Webhook",
