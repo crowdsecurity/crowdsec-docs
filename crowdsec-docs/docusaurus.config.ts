@@ -179,11 +179,11 @@ const redirects = [
 		to: "/u/getting_started/installation/freebsd",
 	},
 	{
-		from: "/docs/next/getting_started/install_crowdsec",
+		from: "/docs/getting_started/install_crowdsec",
 		to: "/u/getting_started/installation/linux",
 	},
 	{
-		from: "/docs/next/getting_started/install_crowdsec_freebsd",
+		from: "/docs/getting_started/install_crowdsec_freebsd",
 		to: "/u/getting_started/installation/freebsd",
 	},
 ];
