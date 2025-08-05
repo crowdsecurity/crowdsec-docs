@@ -293,9 +293,9 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 		},
 		{
-			type: "doc",
+			type: "link",
 			label: "CTI",
-			id: "cti_api/intro",
+			href: "/u/cti_api/intro",
 		},
 		{
 			type: "category",
