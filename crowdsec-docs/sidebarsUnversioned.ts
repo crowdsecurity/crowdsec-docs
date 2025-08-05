@@ -293,6 +293,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 		},
 		{
+			type: "doc",
+			label: "CTI",
+			id: "cti_api/intro",
+		},
+		{
 			type: "category",
 			label: "Service API",
 			customProps: {
