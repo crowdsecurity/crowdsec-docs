@@ -22,7 +22,7 @@ You will find the references for the Python SDK below.
 ### Pre-requisites
 
 - An active [CrowdSec account](https://app.crowdsec.net/)
-- An API key for the Service API (guide [here](/u/service_api/getting_started#getting-your-api-keys))
+- An API key for the Service API (guide [here](/unversioned/console/service_api/getting_started.mdx#getting-your-api-keys))
 
 ### Authentication
 

@@ -32,7 +32,7 @@ This documentation will guide you through installing and configuring the app as 
 
 ![Asset Configure Part 1](/img/splunk_soar/configure_asset.png)
 
-4. Navigate to Asset Setting pane, and enter your CrowdSec CTI API key. If you don't have [one already see this guide to obtain one](/cti_api/getting_started.mdx).
+4. Navigate to Asset Setting pane, and enter your CrowdSec CTI API key. If you don't have [one already see this guide to obtain one](/cti_api/api_getting_started.mdx).
 
 ![Asset Configure Part 2](/img/splunk_soar/configure_asset_pt2.png)
 

@@ -1,3 +1,5 @@
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import ThemedImage from "@theme/ThemedImage";
 import React from "react";
 import { HomePageItem } from "./home-item";
 
@@ -19,7 +21,7 @@ const staticData: StaticData[] = [
 		icon: () => <img src="/img/icons/radar-target.webp" className="h-6 w-6" alt="security engines" />,
 		title: "Security Engines",
 		description: "Secure yourself.",
-		link: "/docs/intro",
+		link: "/u/getting_started/intro",
 	},
 	{
 		icon: () => <span className="text-2xl">🖥️</span>,
@@ -31,13 +33,13 @@ const staticData: StaticData[] = [
 		icon: () => <span className="text-2xl">🧑🏻‍💻</span>,
 		title: "CrowdSec CLI",
 		description: "Use our command line interface.",
-		link: "/docs/cscli/",
+		link: "/docs/next/cscli/",
 	},
 	{
 		icon: () => <img src="/img/icons/waf.webp" className="h-6 w-6" alt="Web application firewall" />,
 		title: "CrowdSec WAF",
 		description: "Protect your web applications.",
-		link: "/docs/appsec/intro",
+		link: "/docs/next/appsec/intro",
 	},
 	{
 		icon: () => <img src="/img/icons/shield.webp" className="h-6 w-6" alt="blocklists" />,
@@ -51,13 +53,27 @@ const staticData: StaticData[] = [
 		description: "Integrate with your tools.",
 		link: "/u/cti_api/intro",
 	},
+	{
+		icon: () => (
+			<ThemedImage
+				sources={{
+					light: useBaseUrl("/img/icons/OpenAI-black-monoblossom.svg"),
+					dark: useBaseUrl("/img/icons/OpenAI-white-monoblossom.svg"),
+				}}
+				className="h-10 w-10"
+				alt="OpenAI logo"
+			/>
+		),
+		title: "Custom GPT",
+		description: "Get help from our custom documentation GPT.",
+		link: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation",
+	},
 ];
 
 const GetToKnowUs = (): React.JSX.Element => {
 	return (
 		<section>
-			<h2 className="text-left text-white">Get to know us!</h2>
-
+			<h2 className="text-left">Get to know us!</h2>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div className="md:col-span-2">
 					<HomePageItem
@@ -67,7 +83,7 @@ const GetToKnowUs = (): React.JSX.Element => {
 						icon={staticData[0].icon}
 					/>
 				</div>
-				{staticData.slice(1, staticData.length).map((props) => (
+				{staticData.slice(1, staticData.length - 1).map((props) => (
 					<HomePageItem
 						title={props.title}
 						description={props.description}
@@ -76,6 +92,14 @@ const GetToKnowUs = (): React.JSX.Element => {
 						key={props.title}
 					/>
 				))}
+				<div className="md:col-span-2">
+					<HomePageItem
+						title={staticData[staticData.length - 1].title}
+						description={staticData[staticData.length - 1].description}
+						link={staticData[staticData.length - 1].link}
+						icon={staticData[staticData.length - 1].icon}
+					/>
+				</div>
 			</div>
 		</section>
 	);

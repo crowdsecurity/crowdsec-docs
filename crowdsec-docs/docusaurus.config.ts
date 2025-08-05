@@ -86,14 +86,7 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 		position: "left",
 		label: "Blocklists",
 	},
-	{
-		label: "API(s)",
-		position: "left",
-		items: [
-			{ label: "CTI API", to: "/u/cti_api/getting_started" },
-			{ label: "Service API 🏅", to: "/u/service_api/getting_started" },
-		],
-	},
+	{ to: "/u/cti_api/intro", position: "left", label: "CTI" },
 	{ to: "/u/console/intro", position: "left", label: "Console" },
 	{
 		label: "Resources",
@@ -147,6 +140,8 @@ const FOOTER_LINKS = [
 			{ label: "Discourse", href: "https://discourse.crowdsec.net/" },
 			{ label: "Discord", href: "https://discord.gg/crowdsec" },
 			{ label: "Twitter", href: "https://twitter.com/crowd_security" },
+			{ label: "LinkedIn", href: "https://www.linkedin.com/company/crowdsec/" },
+			{ label: "YouTube", href: "https://www.youtube.com/@crowdsec" },
 		],
 	},
 	{
@@ -159,6 +154,8 @@ const FOOTER_LINKS = [
 				label: "Tutorial",
 				href: "https://crowdsec.net/blog/category/tutorial/",
 			},
+			{ label: "Academy", href: "https://academy.crowdsec.net/" },
+			{ label: "Custom GPT", href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation" },
 		],
 	},
 ];
@@ -182,11 +179,11 @@ const redirects = [
 		to: "/u/getting_started/installation/freebsd",
 	},
 	{
-		from: "/docs/next/getting_started/install_crowdsec",
+		from: "/docs/getting_started/install_crowdsec",
 		to: "/u/getting_started/installation/linux",
 	},
 	{
-		from: "/docs/next/getting_started/install_crowdsec_freebsd",
+		from: "/docs/getting_started/install_crowdsec_freebsd",
 		to: "/u/getting_started/installation/freebsd",
 	},
 ];
@@ -306,6 +303,7 @@ const config: Config = {
 				sidebarPath: "./sidebarsUnversioned.ts",
 			},
 		],
+
 		["./plugins/gtag/index.ts", { trackingID: "G-0TFBMNTDFQ" }],
 		["@docusaurus/plugin-client-redirects", { redirects }],
 		tailwindPlugin,

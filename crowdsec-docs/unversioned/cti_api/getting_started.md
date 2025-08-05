@@ -1,4 +1,5 @@
 ---
+id: getting_started
 title: Getting Started
 description: Get started with CrowdSec's Cyber Threat Intelligence (CTI) platform.
 ---
@@ -7,7 +8,7 @@ Welcome to **CrowdSec’s Cyber Threat Intelligence (CTI)**!
 This guide will help you navigate the **CTI Web UI** and make the most of its features, from searching for IP details to exploring real-time threat insights. Let’s get started!
 
 > You can access CrowdSec's CTI via our **Web UI** on the [**CTI Home page** ↗️](https://app.crowdsec.net/cti)
-> Or [Create a **CTI API key** and use our **CTI API**](/u/console/cti/cti_api_keys)
+> Or [Create a **CTI API key** and use our **CTI API**](/u/cti_api/api_getting_started)
 
 ## Features on the CTI Web UI
 
