@@ -222,6 +222,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "doc",
+					label: "CVE Explorer",
+					id: "console/cti/cve_explorer",
+				},
+				{
+					type: "doc",
 					label: "FAQ",
 					id: "console/cti/faq",
 				},
