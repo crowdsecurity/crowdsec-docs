@@ -1,7 +1,6 @@
 ---
 id: waf_rp_howto
 title: CrowdSec WAF Reverse Proxy 
-sidebar_position: 10
 ---
 
 ## Introduction
