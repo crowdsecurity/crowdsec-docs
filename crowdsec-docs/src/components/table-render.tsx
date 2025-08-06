@@ -22,10 +22,7 @@ const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.El
 		});
 	}, [colorMode]);
 
-	// Memoize the include and exclude arrays to prevent unnecessary re-renders
-	const memoizedInclude = useMemo(() => include, [JSON.stringify(include)]);
-	const memoizedExclude = useMemo(() => exclude, [JSON.stringify(exclude)]);
-
+	// biome-ignore lint/correctness/useExhaustiveDependencies: exclude/include are stable
 	useEffect(() => {
 		setIsLoading(true);
 		fetch(url)
@@ -37,36 +34,35 @@ const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.El
 			})
 			.then((data) => {
 				const updatedData = [];
-				const names = [];
+				const names = new Set();
 
-				Object.keys(data).forEach((key) => {
+				for (const key of Object.keys(data)) {
 					// filter duplicate names
 					const item = data[key];
 					const name = item.name;
-					for (const element of memoizedExclude) {
-						if (name.includes(element)) {
-							return;
-						}
-					}
-					for (const element of memoizedInclude) {
-						if (!name.includes(element)) {
-							return;
-						}
-					}
-					if (names.includes(name)) {
-						return;
+
+					if (names.has(name)) {
+						continue;
 					}
 
-					names.push(name);
+					if (exclude.some((excluded) => name.includes(excluded))) {
+						continue;
+					}
+
+					if (!include.every((included) => name.includes(included))) {
+						continue;
+					}
+
+					names.add(name);
 					updatedData.push({
 						...item,
-						// flattening list of strings into CSV strings allow global filtering on them
-						// /!\ it requires special handling in the rendering side (see crowdsec-docs/docs/cti_api/taxonomy) /!\
+						// flattening list of strings into CSV strings to allow global filtering on them
+						// /!\ requires special handling in the rendering side (see crowdsec-docs/docs/cti_api/taxonomy) /!\
 						...(item.behaviors ? { behaviors: item.behaviors.join("\n") } : {}),
 						...(item.mitre_attacks ? { mitre_attacks: item.mitre_attacks.join("\n") } : {}),
 						...(item.cves ? { cves: item.cves.join("\n") } : {}),
 					});
-				});
+				}
 
 				setJsonContent(updatedData);
 				setIsLoading(false);
@@ -75,8 +71,7 @@ const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.El
 				console.error("Error fetching data:", error);
 				setIsLoading(false);
 			});
-		// Only re-fetch when url, include, or exclude actually change
-	}, [url, memoizedInclude, memoizedExclude]);
+	}, [url]);
 
 	if (!columns || (!jsonContent && !isLoading)) {
 		return null;
