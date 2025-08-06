@@ -6,6 +6,7 @@ import React, { useEffect, useMemo, useState } from "react";
 
 const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.Element => {
 	const [jsonContent, setJsonContent] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 	const { colorMode } = useColorMode();
 
 	const theme = useMemo(() => {
@@ -21,9 +22,19 @@ const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.El
 		});
 	}, [colorMode]);
 
+	// Memoize the include and exclude arrays to prevent unnecessary re-renders
+	const memoizedInclude = useMemo(() => include, [JSON.stringify(include)]);
+	const memoizedExclude = useMemo(() => exclude, [JSON.stringify(exclude)]);
+
 	useEffect(() => {
+		setIsLoading(true);
 		fetch(url)
-			.then((res) => res.json())
+			.then((res) => {
+				if (!res.ok) {
+					throw new Error(`HTTP error! status: ${res.status}`);
+				}
+				return res.json();
+			})
 			.then((data) => {
 				const updatedData = [];
 				const names = [];
@@ -32,12 +43,12 @@ const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.El
 					// filter duplicate names
 					const item = data[key];
 					const name = item.name;
-					for (const element of exclude) {
+					for (const element of memoizedExclude) {
 						if (name.includes(element)) {
 							return;
 						}
 					}
-					for (const element of include) {
+					for (const element of memoizedInclude) {
 						if (!name.includes(element)) {
 							return;
 						}
@@ -58,11 +69,16 @@ const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.El
 				});
 
 				setJsonContent(updatedData);
+				setIsLoading(false);
+			})
+			.catch((error) => {
+				console.error("Error fetching data:", error);
+				setIsLoading(false);
 			});
-		// execute this fetch only once (on mount)
-	}, [include, exclude, url]);
+		// Only re-fetch when url, include, or exclude actually change
+	}, [url, memoizedInclude, memoizedExclude]);
 
-	if (!columns || !jsonContent) {
+	if (!columns || (!jsonContent && !isLoading)) {
 		return null;
 	}
 
@@ -81,6 +97,7 @@ const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.El
 						muiPaginationProps={{
 							rowsPerPageOptions: [10, 15, 25, 50, 100],
 						}}
+						state={{ isLoading }}
 					/>
 				</ThemeProvider>
 			)}
