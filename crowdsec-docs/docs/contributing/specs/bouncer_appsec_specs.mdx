@@ -25,10 +25,11 @@ The Bouncer applies the appropriate remediation *(we’ll only focus on ban/bloc
   * Forwarding protocol  
 * [Config and support requirements](#extra-details-and-requirements)
 
-Here is an existing remediation components *(bouncers)* for Nginx and its lua dependency  
+Here is an existing remediation components *(bouncers)* for Nginx and its lua dependency.
+It's one of the most complete bouncer with AppSec capabilities and Metrics. A good example to follow for your implementation.  
 [*cs-nginx-bouncer*](https://github.com/crowdsecurity/cs-nginx-bouncer) *\+  [lua-cs-bouncer](https://github.com/crowdsecurity/lua-cs-bouncer/)* (dependency)
 
-And the yet prototyped but functional [NGINX NJS version](https://github.com/crowdsecurity/cs-nginx-njs-bouncer/pull/1/files) (doesn’t have appsec capabilities yet)
+And a more recent and soon finalized [Node JS bouncer](https://github.com/crowdsecurity/nodejs-cs-bouncer) (for a different implementation, to be used in code)
 
 ⚠️ **Your bouncer must always delete/clean it’s resources on shutdown**
 
@@ -121,7 +122,7 @@ Allows to pull all decisions from LAPI and then periodically get a delta
     * Have the code be able to handle 100k to be safe for the nominal case  
     * Storing in memory is ideal, we recommend to convert IPs to integers  
   * The decisions format is the following:  
-    * See [decisions example in appendix](#appendix)  
+    * See [decisions example in appendix](#decision-example)  
     * There can be multiple decisions per IP  
     * Store each decisions independently as they have their own remediation action and TTL  
     * Ranges are stored too  
@@ -162,7 +163,7 @@ If a remediation is found and for the LAPI timeout fallback here are the remedia
 * Remediation priority  
   * There is a priority in the remediation to take in account if an IP has multiple  
   * Default priority order **Ban** then **Captcha**  
-* Metrics (TBD)
+* Metrics see below and in the [detailed metrics specs](/contributing/specs/bouncer_metrics_specs)
 
 ### Logging 
 
@@ -189,7 +190,7 @@ Each push must reset the internal counter for the metrics (i.e., we have only se
 Each metric about blocked requests must have an `origin` label whose value is the origin of the decision and a `remediation_type` label whose value is the type of remediation that was applied (e.g., `ban` or `captcha`).  
 A `processed` metric must also be present that counts the number of requests that were processed by the RC (regardless of whether they were blocked or not). This metric has no label.
 
-A full sample payload can be found in the appendix.
+A full sample payload can be found in the [appendix](#metrics-payload).
 
 ## AppSec Capability (request forwarding) 
 
@@ -485,7 +486,7 @@ You can refer to the AppSec documentation to test request forwarding.
 
 More details about metrics in [Metrics specs](/contributing/specs/bouncer_metrics_specs/)
 
-```
+```json
 { 
   "remediation_components": [{
 	"type": "my-bouncer-stat",
