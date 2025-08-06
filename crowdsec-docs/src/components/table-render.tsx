@@ -6,6 +6,7 @@ import React, { useEffect, useMemo, useState } from "react";
 
 const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.Element => {
 	const [jsonContent, setJsonContent] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 	const { colorMode } = useColorMode();
 
 	const theme = useMemo(() => {
@@ -21,48 +22,58 @@ const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.El
 		});
 	}, [colorMode]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: exclude/include are stable
 	useEffect(() => {
+		setIsLoading(true);
 		fetch(url)
-			.then((res) => res.json())
+			.then((res) => {
+				if (!res.ok) {
+					throw new Error(`HTTP error! status: ${res.status}`);
+				}
+				return res.json();
+			})
 			.then((data) => {
 				const updatedData = [];
-				const names = [];
+				const names = new Set();
 
-				Object.keys(data).forEach((key) => {
+				for (const key of Object.keys(data)) {
 					// filter duplicate names
 					const item = data[key];
 					const name = item.name;
-					for (const element of exclude) {
-						if (name.includes(element)) {
-							return;
-						}
-					}
-					for (const element of include) {
-						if (!name.includes(element)) {
-							return;
-						}
-					}
-					if (names.includes(name)) {
-						return;
+
+					if (names.has(name)) {
+						continue;
 					}
 
-					names.push(name);
+					if (exclude.some((excluded) => name.includes(excluded))) {
+						continue;
+					}
+
+					if (!include.every((included) => name.includes(included))) {
+						continue;
+					}
+
+					names.add(name);
 					updatedData.push({
 						...item,
-						// flattening list of strings into CSV strings allow global filtering on them
-						// /!\ it requires special handling in the rendering side (see crowdsec-docs/docs/cti_api/taxonomy) /!\
+						// flattening list of strings into CSV strings to allow global filtering on them
+						// /!\ requires special handling in the rendering side (see crowdsec-docs/docs/cti_api/taxonomy) /!\
 						...(item.behaviors ? { behaviors: item.behaviors.join("\n") } : {}),
 						...(item.mitre_attacks ? { mitre_attacks: item.mitre_attacks.join("\n") } : {}),
 						...(item.cves ? { cves: item.cves.join("\n") } : {}),
 					});
-				});
+				}
 
 				setJsonContent(updatedData);
+				setIsLoading(false);
+			})
+			.catch((error) => {
+				console.error("Error fetching data:", error);
+				setIsLoading(false);
 			});
-		// execute this fetch only once (on mount)
-	}, [include, exclude, url]);
+	}, [url]);
 
-	if (!columns || !jsonContent) {
+	if (!columns || (!jsonContent && !isLoading)) {
 		return null;
 	}
 
@@ -81,6 +92,7 @@ const TableRender = ({ columns, url, include = [], exclude = [] }): React.JSX.El
 						muiPaginationProps={{
 							rowsPerPageOptions: [10, 15, 25, 50, 100],
 						}}
+						state={{ isLoading }}
 					/>
 				</ThemeProvider>
 			)}
