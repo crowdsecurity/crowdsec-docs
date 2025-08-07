@@ -224,7 +224,7 @@ EOF
 ```
 :::info
 
-See [dedicated page about configuration file directives](/docs/appsec/configuration.md#default-configuration)
+See [dedicated page about configuration file directives](/docs/next/log_processor/data_sources/appsec)
 
 :::
 3) We restart CrowdSec
