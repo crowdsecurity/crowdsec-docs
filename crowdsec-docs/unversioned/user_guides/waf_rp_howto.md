@@ -222,14 +222,18 @@ listen_addr: 127.0.0.1:7422
 source: appsec
 EOF
 ```
+:::info
 
+See [dedicated page about configuration file directives](/docs/appsec/configuration.md#default-configuration)
+
+:::
 3) We restart CrowdSec
 
 ```bash
 sudo systemctl restart crowdsec
 ```
 
-4) We instruct our nginx bouncer to rely on CrowdSec for the WAF feature:
+4) We instruct our nginx bouncer/remediation component to rely on CrowdSec for the WAF feature:
 
 ```bash
 cat >> /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf << EOF
