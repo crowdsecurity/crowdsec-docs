@@ -165,7 +165,7 @@ Accept it in the console:
 
 ## Detecting is cool, blocking is better.
 
-To complete our setup, we need the ability to block bad IPs and requests before they reach Apache, our little bro. We will install the Nginx bouncer (or remediation component) for this. The bouncer can block IPs when instructed by CrowdSec. As simple as this:
+To complete our setup, we need the ability to block bad IPs and requests before they reach Apache, our backend server. We will install the Nginx bouncer (or remediation component) for this. The bouncer can block IPs when instructed by CrowdSec. As simple as this:
 
 ```bash
 sudo apt install crowdsec-nginx-bouncer
@@ -201,20 +201,20 @@ time="2025-08-06T13:06:44Z" level=info msg="(3ef52352a7e54c92b4394646a32bc095auA
 
 ## Going further - Web Application Firewall
 
-However, this approach has a limit: CrowdSec reads logs and acts based on their content, which means that you somehow react to an attack that has already happened. We want to intercept malevolent requests “on the fly” so that they never reach our little bro, Apache. This is the job of the [WAF](https://doc.crowdsec.net/docs/next/appsec/intro):
+However, this approach has a limit: CrowdSec reads logs and acts based on their content, which means that you somehow react to an attack that has already happened. We want to intercept malevolent requests “on the fly” so that they never reach our backend server, Apache. This is the job of the [WAF](https://doc.crowdsec.net/docs/next/appsec/intro):
 
-We follow [https://doc.crowdsec.net/docs/next/appsec/quickstart/nginxopenresty](https://doc.crowdsec.net/docs/next/appsec/quickstart/nginxopenresty) :
+We follow [this quickstart guide](https://doc.crowdsec.net/docs/next/appsec/quickstart/nginxopenresty) :
 
 1) We install the appsec collection. They contain the WAF rules
 
 ```bash
-$ sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
 ```
 
 2) We enable the AppSec/WAF acquisition, which allows CrowdSec to expose a service to which Nginx can post validation requests.
 
 ```bash
-# cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
+cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
 appsec_config: crowdsecurity/appsec-default
 labels:
   type: appsec
@@ -226,13 +226,13 @@ EOF
 3) We restart CrowdSec
 
 ```bash
-# systemctl restart crowdsec
+sudo systemctl restart crowdsec
 ```
 
 4) We instruct our nginx bouncer to rely on CrowdSec for the WAF feature:
 
 ```bash
-# cat >> /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf << EOF
+cat >> /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf << EOF
 APPSEC_URL=http://127.0.0.1:7422
 EOF
 ```
@@ -240,7 +240,7 @@ EOF
 5) Finally, we restart nginx
 
 ```bash
-# systemctl restart nginx
+sudo systemctl restart nginx
 ```
 
 ## Testing the WAF
