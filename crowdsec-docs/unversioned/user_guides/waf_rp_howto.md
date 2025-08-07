@@ -5,21 +5,25 @@ title: CrowdSec WAF Reverse Proxy
 
 ## Introduction
 
-In this guide, we will showcase how to deploy the CrowdSec WAF as a Nginx Reverse Proxy, easily protecting a fleet of other web applications from a single point.
+In this guide, we will showcase how to deploy the CrowdSec WAF with Nginx reverse proxy, easily protecting a fleet of other web applications from a single point.
 
-We will set up a reverse proxy (Nginx) boosted with CrowdSec in front of our web server (Apache) to block malicious traffic before it reaches our application.
+We will set up a reverse proxy (Nginx) protected with CrowdSec in front of our web server (Apache) to block malicious traffic before it reaches our application.
 
 **This article dives into the technical details of configuring CrowdSec WAF.**
 
 To achieve robust protection, we'll use two key components that work in tandem: the **Security Engine** and the **Web Application Firewall (WAF)** *– enabled by an AppSec-capable Remediation Component aka **Bouncer**, in our case, CrowdSec’s NGINX Bouncer*
 
-**The Security Engine**: excels at identifying persistent or recurring behaviours. It analyzes your web server/reverse proxy logs to identify suspicious patterns of behavior. For example, the http-probing scenario detects IPs rapidly requesting a large number of non-existent files – a common tactic used by vulnerability scanners searching known vulnerabilities, backdoors, or publicly exposed admin interfaces. While powerful and able to protect a large number service from various log sources, the Security Engine reacts **after** the suspicious event, once it’s logged by your web server.  
+**The Security Engine**: excels at identifying persistent or recurring behaviours. It analyzes your web server/reverse proxy logs to identify suspicious patterns of behavior. For example, the http-probing scenario detects IPs rapidly requesting a large number of non-existent files – a common tactic used by vulnerability scanners searching known vulnerabilities, backdoors, or publicly exposed admin interfaces. While powerful and able to protect a large number service from various log sources, the Security Engine reacts **after** the request have been processed by your web server.  
 
-**The Web Application Firewall (WAF):** The WAF acts as your immediate gatekeeper, blocking malicious requests before they even reach your application or backend. With the help of the bouncer relaying the requests to the AppSec engine, it will apply virtual patching rules to block requests that are, without a doubt, malevolent. A great example is the `vpatch-env-access` rule, which blocks requests attempting to access .env files (which should never be publicly accessible\!). Our vpatching collection has hundreds of rules tailored to precisely block vulnerability attempts
+**The Web Application Firewall (WAF):** The WAF acts as your immediate response, blocking malicious requests before they even reach your application or backend. With the help of the bouncer/remediation component relaying the requests to the AppSec engine, it will apply virtual patching rules to block requests that are, without a doubt, malevolent. A great example is the `vpatch-env-access` rule, which blocks requests attempting to access .env files (which should never be publicly accessible\!). Our vpatching collection has hundreds of rules tailored to precisely block vulnerability attempts.
+
+:::info
+Virtual Patching Rules focus on detecting and preventing the exploitation of a specific vulnerability, allowing very minimal risk of false positives. 
+:::
 
 **Together, these components provide layered protection, making it significantly harder for attackers to succeed.**
 
-WAFs are powerful, but no matter what WAF vendors make you believe, determined attackers can often find ways to bypass your WAF configuration. Here, the Security Engine will rely on the WAF detection to make longer-term decisions against repeating malevolent IPs. This is what the `appsec-vpatch` scenario does: it bans IPs that trigger at least two distinct WAF rules for several hours.
+WAFs are powerful, but no matter what WAF vendors make you believe, determined attackers can often find ways to bypass your WAF configuration. Here, the Security Engine will rely on the WAF detection to make longer-term decisions against repeating malevolent IPs.
 
 ## Initial Setup
 
@@ -36,8 +40,8 @@ server {
     server_name _;
 
     location / {
-        proxy_pass http://Y.Y.Y.Y:3000;  # Your backend app
-    	proxy_set_header X-Real-IP $remote_addr;
+        proxy_pass http://Y.Y.Y.Y:3000;  # Allows passing requests to the backend web server.
+    	proxy_set_header X-Real-IP $remote_addr; # Important to keep track of the original IP.
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -114,11 +118,11 @@ A.B.C.D - - [22/May/2025:08:32:50 +0000] "GET /favicon.ico HTTP/1.1" 404 438 "ht
 
 :::warning
 
-At this stage, check that the IPs appearing in your Apache's and Nginx's log are the real originating IP.
+At this stage, check that both Apache's and Nginx's logs are the real originating IP (ie. `A.B.C.D`)
 
 :::
 
-## Time to beef up our security - Security Engine
+## Time to level up our security - Security Engine
 
 As soon as our server is online, hordes of malevolent IPs will jump on it with clear bad intentions. What is currently happening is this:
 
@@ -128,16 +132,16 @@ Thus, it is time to step up our security with CrowdSec. We will deploy the Secur
 
 ![harden setup](/img/harden-setup.png)
 
-To install CrowdSec on our reverse proxy, let’s grab the crowdsec repository:
+To [install CrowdSec on our reverse proxy](https://doc.crowdsec.net/u/getting_started/installation/linux), let’s grab the crowdsec repository:
 
 ```bash
-$ curl -s https://install.crowdsec.net | sudo sh
+curl -s https://install.crowdsec.net | sudo sh
 ```
 
 And let’s install crowdsec:
 
 ```bash
-# apt install crowdsec
+sudo apt install crowdsec
 ```
 
 The relevant part of the install log is the following:
@@ -164,7 +168,7 @@ Accept it in the console:
 To complete our setup, we need the ability to block bad IPs and requests before they reach Apache, our little bro. We will install the Nginx bouncer (or remediation component) for this. The bouncer can block IPs when instructed by CrowdSec. As simple as this:
 
 ```bash
-# apt install crowdsec-nginx-bouncer
+sudo apt install crowdsec-nginx-bouncer
 ```
 
 What matters in the installation output is that:
