@@ -66,6 +66,7 @@ You can follow our quick start guides depending on your web server:
 
 -   [Nginx/OpenResty](/appsec/quickstart/nginxopenresty.mdx)
 -   [Traefik](/appsec/quickstart/traefik.mdx)
+-   [CrowdSec WAF with Nginx Reverse Proxy](/u/user_guides/waf_rp_howto)
 
 Or consider learning more about the AppSec capabilities:
 
