@@ -1,0 +1,226 @@
+---
+title: Use Cases and Quick Solutions
+id: usecases
+---
+
+# Use Cases and Quick Solutions
+
+This page provides quick recommendations for common CrowdSec implementation scenarios. Each use case includes practical implementation paths with links to relevant documentation.
+
+:::tip
+New to CrowdSec? Start with our [installation guide](/u/getting_started/installation/linux) and [health check guide](/u/getting_started/health_check).
+:::
+
+import FormattedTabs from '@site/src/components/formatted-tabs';
+
+## Block Known-Bad IPs at the Edge
+
+**What this solves:** Stop commodity scanners, botnets and repeat offenders at the network edge before they reach your services.
+
+### Firewall Integration
+
+* **Appliance Integration**
+  * [OPNsense plugin setup](/docs/next/getting_started/install_crowdsec_opnsense)
+  * [FreeBSD/pfSense installation](/docs/next/getting_started/install_crowdsec_freebsd)
+  * [Managing bouncers with cscli](/docs/next/cscli/cscli_bouncers)
+
+* **OS Firewall Integration**
+  * Configure your system firewall to consume CrowdSec decisions
+  * Use blocklist integrations for automated IP blocking
+
+### Reverse Proxy/WAF Integration
+
+* **NGINX Reverse Proxy**
+  * [WAF reverse proxy setup guide](/u/user_guides/waf_rp_howto)
+  * [AppSec configuration](/docs/next/appsec/configuration)
+  * [NGINX bouncer documentation](/u/bouncers/nginx)
+
+* **CDN/WAF Integration**
+  * Configure your CDN or WAF to consume CrowdSec blocklists
+  * Use bouncer components for real-time blocking
+
+### Security Engine Integration
+
+* **Blocklist Subscriptions**
+  * [Monitor with cscli metrics](/docs/next/cscli/cscli_metrics)
+  * [Manage decisions](/docs/next/cscli/cscli_decisions_list)
+  * [Dashboard setup](/docs/next/cscli/cscli_dashboard)
+  * Evaluate blocklist impact before full deployment
+
+---
+
+## Reduce Resource Consumption
+
+**What this solves:** Eliminate automated noise, 404 probes, and malicious traffic to reduce server load and log volumes.
+
+### Implementation Options
+
+* Use any of the edge blocking methods described above
+* [Enable monitoring dashboards](/docs/next/cscli/cscli_dashboard) to measure impact
+* Track metrics with [cscli metrics](/docs/next/cscli/cscli_metrics) to quantify resource savings
+
+---
+
+## Multi-Tenant Protection
+
+**What this solves:** Apply different security policies per customer, application, or environment without policy conflicts.
+
+### Implementation Approaches
+
+* **Custom Lists per Tenant**
+  * [Configure centralized allowlists](/docs/next/local_api/centralized_allowlists)
+  * [Filter decisions by origin or scenario](/docs/next/cscli/cscli_decisions_delete)
+  * Use separate integration URLs for different tenant policies
+
+* **Environment Isolation**
+  * [Manage contexts with cscli](/docs/next/cscli/cscli_contexts)
+  * [Configure collections per environment](/docs/next/cscli/cscli_collections)
+  * Separate AppSec rule sets by tenant requirements
+
+---
+
+## SIEM/SOAR Integration
+
+**What this solves:** Enrich existing security tools with CrowdSec's threat intelligence and IOC streams.
+
+### IOC Management
+
+* **Import Custom IOCs**
+  * [Import decisions from CSV/JSON](/docs/next/cscli/cscli_decisions_import)
+  * Support for ban, captcha, and throttle actions
+  * Tag with custom origins for tracking
+
+* **Alert Enrichment**
+  * [Use CTI helpers in notification templates](/docs/next/notification_plugins/template_helpers)
+  * Automatically enrich alerts with threat intelligence
+  * [Configure notification plugins](/docs/next/notification_plugins/intro)
+
+* **MISP Integration** (Coming Soon)
+  * Bidirectional IOC exchange with MISP platforms
+  * Automated threat intelligence sharing
+
+---
+
+## Web Application Protection
+
+**What this solves:** Quickly protect applications from OWASP Top-10 attacks and vulnerability probing.
+
+### AppSec Deployment
+
+* **Reverse Proxy WAF**
+  * [Complete WAF setup guide](/u/user_guides/waf_rp_howto)
+  * [AppSec configuration guide](/docs/next/appsec/configuration)
+  * [Virtual patching with AppSec rules](/docs/next/appsec/configuration)
+
+* **Quick Deployment**
+  * Install Security Engine on your reverse proxy
+  * Enable AppSec collections for common attack patterns
+  * Configure bouncer for real-time blocking
+
+---
+
+## Bot and Scraper Management
+
+**What this solves:** Control aggressive crawlers and scraping tools while preserving legitimate user access.
+
+### Management Strategies
+
+* **Rate Limiting**
+  * [Import throttle decisions](/docs/next/cscli/cscli_decisions_import)
+  * Use `throttle` action type for rate limiting
+  * Configure graduated responses (throttle → ban)
+
+* **Blocking Approaches**
+  * Edge blocking via firewall or WAF integration
+  * Behavioral detection with custom scenarios
+  * IP reputation-based filtering
+
+---
+
+## Legacy Application Protection
+
+**What this solves:** Add modern security controls to applications that cannot be modified directly.
+
+### Protection Strategies
+
+* **Transparent Proxy Protection**
+  * [Deploy WAF at reverse proxy level](/u/user_guides/waf_rp_howto)
+  * [Configure virtual patching rules](/docs/next/appsec/configuration)
+  * Block exploits without application changes
+
+* **Custom Rule Development**
+  * Adapt AppSec rules for legacy application patterns
+  * Create custom scenarios for specific vulnerabilities
+  * Test thoroughly to avoid breaking application functionality
+
+---
+
+## Custom Behavior Protection
+
+**What this solves:** Create targeted protections for specific abuse patterns like spam, credential stuffing, or scalping attacks.
+
+### Custom Detection Development
+
+* **Scenario Customization**
+  * [Manage scenarios with cscli](/docs/next/cscli/cscli_scenarios_install)
+  * [Create custom scenarios](/docs/next/scenarios/create)
+  * [Test scenarios with explain mode](/docs/next/cscli/cscli_explain)
+
+* **AppSec Rule Development**
+  * [Configure custom AppSec rules](/docs/next/appsec/configuration)
+  * Create pattern-matching rules for specific behaviors
+  * Test rules in simulation mode before deployment
+
+---
+
+## Alert Enhancement and Triage
+
+**What this solves:** Accelerate incident response with contextual threat intelligence and automated routing.
+
+### Enhancement Options
+
+* **Notification Enrichment**
+  * [Configure notification plugins](/docs/next/notification_plugins/intro)
+  * [Use CTI helpers in templates](/docs/next/notification_plugins/template_helpers)
+  * Send enriched alerts to Slack, email, or SIEM
+
+* **Operational Dashboards**
+  * [Set up monitoring dashboards](/docs/next/cscli/cscli_dashboard)
+  * [Track metrics with cscli](/docs/next/cscli/cscli_metrics)
+  * Provide SOC teams with actionable context
+
+---
+
+## Threat Hunting and Intelligence
+
+**What this solves:** Enable proactive threat hunting with global intelligence correlation and local threat mirroring.
+
+### Hunting Capabilities
+
+* **Console Integration**
+  * [Enroll in CrowdSec Console](/docs/next/cscli/cscli_console_enroll)
+  * Access global CTI and CVE correlation data
+  * Use web interface for threat investigation
+
+* **Intelligence Integration**
+  * Correlate local events with global threat patterns
+  * Export threat data for integration with hunting tools
+  * Track emerging threats and vulnerabilities
+
+---
+
+## Getting Started Resources
+
+If you're new to CrowdSec, start with these foundational guides:
+
+* [Install CrowdSec Security Engine](/u/getting_started/installation/linux)
+* [Configure log data sources](/docs/next/data_sources/file)
+* [Understand bouncers and remediation](/docs/next/cscli/cscli_bouncers)
+* [Set up Local API](/docs/next/local_api/intro)
+* [Complete health check guide](/u/getting_started/health_check)
+
+## Related Documentation
+
+* [Security Engine Troubleshooting](./security_engine)
+* [Remediation Components Troubleshooting](./remediation_components)
+* [CTI Integration Guide](./cti)
