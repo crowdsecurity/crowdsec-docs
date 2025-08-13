@@ -570,11 +570,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 			label: "Integrations",
 			items: [
+				"integrations/rawiplist",
 				"integrations/checkpoint",
 				"integrations/cisco",
 				"integrations/f5",
 				"integrations/fortinet",
-				"integrations/genericfirewall",
 				"integrations/juniper",
 				"integrations/mikrotik",
 				"integrations/opnsense",
