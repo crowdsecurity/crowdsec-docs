@@ -120,7 +120,7 @@ Good option if you want to prevent illegitimate AI crawlers from visiting your s
 - Block at the edge using your firewall or CDN.  
 
 **References**
-- [Blocking at the edge section](#blocking-at-the-edge)
+- [**Blocking at the edge section**](#blocking-at-the-edge)
 - [Custom scenario creation](/docs/next/scenarios/create)
 - [AI Crawlers Blocklist ↗️](https://app.crowdsec.net/blocklists/67b3524151bbde7a12b60be0)
 - [Currated Botnet Actors ↗️](https://app.crowdsec.net/blocklists/65a56c160469607d9badb813)
@@ -163,21 +163,19 @@ Good option if you need immediate protection without the risk of modifying criti
 **How it works:**
 - Deploy CrowdSec WAF at the reverse proxy level in front of your legacy application.
 - Configure virtual patching rules to block known exploits targeting your application stack.
-- Create custom AppSec rules adapted to your legacy application's specific patterns.
-- Test protection rules in simulation mode before enabling blocking to ensure application functionality.
+- Additionally create custom AppSec rules adapted to your legacy application's specific patterns.
+- Test protection rules out of band (simulation mode) before enabling blocking to ensure application functionality.
 
 **References**
-- [Complete WAF setup guide](/u/user_guides/waf_rp_howto)
-- [AppSec configuration guide](/docs/next/appsec/configuration)
-- [Virtual patching rules](/docs/next/appsec/configuration)
-- [Custom scenario creation](/docs/next/scenarios/create)
-- [Testing with explain mode](/docs/next/cscli/cscli_explain)
+- [**Block Common web attacks fast**](#block-common-web-attacks-fast)
+- [Block right before your app code with PHP prepend](/u/bouncers/php)
+- [Add blocking capabilities in your php app](/u/bouncers/php-lib)
 
 ---
 
 ## Custom Behavior Protection
 
-Create targeted protections for specific abuse patterns like spam, credential stuffing, or scalping attacks using custom detection rules.  
+Create targeted protections for specific abuse patterns like **spam**, **credential stuffing**, or **scalping attacks**, [...] using custom detection rules or scenarios.  
 
 **Is it for me?**
 Ideal if you're facing unique attack patterns not covered by standard security solutions.
@@ -186,15 +184,15 @@ Good option if you need highly specific protection tailored to your application'
 **How it works:**
 - Analyze your specific abuse patterns to understand attacker behavior.
 - Create custom scenarios using CrowdSec's scenario framework for behavioral detection.
-- Develop AppSec rules for pattern-matching specific malicious requests.
+- Eventually develop AppSec rules for pattern-matching specific malicious requests.
 - Test custom rules thoroughly using explain mode and simulation before production deployment.
 
 **References**
-- [Custom scenario creation](/docs/next/scenarios/create)
-- [Scenario management with cscli](/docs/next/cscli/cscli_scenarios_install)
-- [Testing scenarios with explain mode](/docs/next/cscli/cscli_explain)
-- [Custom AppSec rules configuration](/docs/next/appsec/configuration)
-- [Scenario testing and validation](/docs/next/scenarios/intro)
+- [**Block Common web attacks fast**](#block-common-web-attacks-fast)
+- [Custom scenario creation](/log_processor/scenarios/create)
+- [Get help from the community ↗️](https://discord.gg/wGN7ShmEE8)
+- [Example of custom detection: Impossible traveler ↗️](https://www.crowdsec.net/blog/detect-suspicious-ip-behavior-impossible-travel)
+- [Success story: ScaleCommerce vs scalpers ↗️](https://www.crowdsec.net/blog/scalecommerce-plummets-ops-costs-and-skyrockets-efficiency)
 
 ---
 
