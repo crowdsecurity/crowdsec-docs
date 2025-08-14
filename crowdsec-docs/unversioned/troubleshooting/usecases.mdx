@@ -83,49 +83,48 @@ Good option if you need granular policy control and want to avoid cross-tenant s
 
 ---
 
-## SIEM/SOAR Integration
+## Looking for complementary IOC streams
 
-Enrich existing security tools with CrowdSec's real-time threat intelligence and IOC streams from 70,000+ global contributors.  
+Add qualified IOCs from CrowdSec's real-time IP reputation. 
 
 **Is it for me?**
-Ideal if you're using SIEM/SOAR tools and want to enhance them with fresh, crowd-sourced threat intelligence.
-Good option if you need automated IOC management and want to reduce false positives in security alerts.
+Ideal if you want to complement your IOC insights with exclusive CrowdSec IP reputation data.
+Quickly choose among qualified malicious actors regrouped by industry, behaviors...
 
 **How it works:**
-- Import custom IOCs from your existing tools using CSV/JSON format.
-- Configure notification plugins to automatically enrich alerts with contextual threat data.
-- Use CTI helpers in templates to add global intelligence context to security events.
-- Set up bidirectional data exchange with platforms like MISP for comprehensive threat sharing.
+- Stream CrowdSec IP Lists into your security tools.
+- Integrate directly in your security tools thanks to our integrations or easy to use CTI API.
+- 🏅 Get custom IOC streams made for your needs.([contact us ↗️](https://www.crowdsec.net/business-requests?interest=CTI%20subscription))
+- Next step: Enrich IPs via CrowdSec CTI API.
+
 
 **References**
-- [Import decisions from CSV/JSON](/docs/next/cscli/cscli_decisions_import)
-- [Notification plugins configuration](/docs/next/notification_plugins/intro)
-- [CTI helpers in templates](/docs/next/notification_plugins/template_helpers)
-- [Console enrollment for CTI access](/docs/next/cscli/cscli_console_enroll)
-- 🏅 [MISP Integration documentation](/docs/next/integrations/misp) (Coming Soon)
+- [IP reputation lists / Blocklists Catalog doc ↗️](https://app.crowdsec.net/blocklists/search)
+- [Retrieving merged lists via HTTPS endpoints](/u/integrations/intro)
+- [Retrieving Blocklists via API](/u/console/service_api/quickstart/blocklists#download-blocklist-content)
+- [MISP Feed from Security Engine's alerts](https://doc.crowdsec.net/u/bouncers/misp-feed-generator)
+- [Upcoming CrowdSec MISP Feeds ↗️](https://roadmap.crowdsec.net/c/48-misp-feed)
 
 ---
 
 ## Web Application Protection
 
-Quickly protect web applications from OWASP Top-10 attacks and zero-day vulnerability probing with behavior-driven detection.  
+Quickly protect web applications from the latest CVEs and generic vulnerability exploits using CrowdSec WAF.
 
 **Is it for me?**
-Ideal if you need immediate protection for web applications against common attack patterns.
-Good option if you want virtual patching capabilities and real-time threat blocking without modifying application code.
+Ideal if you want a modern OpenSource WAF solution.  
+Benefit from CrowdSec's Virtual patching catalog while being able to use your existing ModSecurity rules as is.
 
 **How it works:**
 - Deploy CrowdSec Security Engine with AppSec module on your reverse proxy or web server.
-- Enable pre-built AppSec collections targeting OWASP Top-10 attack patterns.
-- Configure bouncers for real-time blocking of detected threats.
-- Implement virtual patching rules to protect against specific vulnerabilities.
+- Get CrowdSec Virtual patching collection.
+- Easily scale and identify behaviors accross multiple servers over time.
+- Go further by using your existing appsec rules.
+- Even test CRS rules out of band on your production traffic to easily adapt them to you needs.
+
 
 **References**
-- [Complete WAF setup guide](/u/user_guides/waf_rp_howto)
-- [AppSec configuration guide](/docs/next/appsec/configuration)
-- [Virtual patching with AppSec rules](/docs/next/appsec/configuration)
-- [Bouncer configuration](/docs/next/cscli/cscli_bouncers)
-- [Security Engine installation](/u/getting_started/installation/linux)
+- ...
 
 ---
 
