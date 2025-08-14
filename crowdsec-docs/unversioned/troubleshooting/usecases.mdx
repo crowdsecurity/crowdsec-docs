@@ -45,163 +45,210 @@ Good option if you are not using a Security Engine and want your CDN or WAF to b
 
 ---
 
-## Reduce Resource Consumption
+## Reduce Noise to save Resources address alert fatigue 
 
-**What this solves:** Eliminate automated noise, 404 probes, and malicious traffic to reduce server load and log volumes.
+Eliminate automated noise from unwanted probes, spam and malicious traffic to reduce server load and log volumes by up to 80%.
 
-### Implementation Options
+**Is it for me?**
+Ideal if you're experiencing high server load from automated traffic or want to reduce infrastructure costs.
+Good option if you need to optimize server performance and reduce log storage requirements.
 
-* Use any of the edge blocking methods described above
-* [Enable monitoring dashboards](/docs/next/cscli/cscli_dashboard) to measure impact
-* Track metrics with [cscli metrics](/docs/next/cscli/cscli_metrics) to quantify resource savings
+**How it works:**
+- Use CrowdSec blocklists to preemptively block crowd validated noise.
+- Go further by deploying CrowdSec Security Engine to detect malicious patterns in your traffic.
+- Use an AppSec enabled Remediation Component to use CrowdSec WAF.
+- Track quantified savings through metrics and performance monitoring.
+
+**References**
+- [Blocklist Catalog doc](/u/console/blocklists/catalog)
+- [Blocklist Catalog ↗️](https://app.crowdsec.net/blocklists/search)
+- [Security Engine installation](/u/getting_started/intro)
+- [CrowdSec WAF](/appsec/intro)
+- [Remediation Metrics](/u/console/remediation_metrics)
 
 ---
 
 ## Multi-Tenant Protection
 
-**What this solves:** Apply different security policies per customer, application, or environment without policy conflicts.
+Apply different security policies per customer, application, or environment without policy conflicts using flexible context management.  
 
-### Implementation Approaches
+**Is it for me?**
+Ideal if you're managing multiple customers, applications, or environments with different security requirements.
+Good option if you need granular policy control and want to avoid cross-tenant security policy interference.
 
-* **Custom Lists per Tenant**
-  * [Configure centralized allowlists](/docs/next/local_api/centralized_allowlists)
-  * [Filter decisions by origin or scenario](/docs/next/cscli/cscli_decisions_delete)
-  * Use separate integration URLs for different tenant policies
+**How it works:**
+- Configure separate contexts for each tenant using cscli context management.
+- Set up centralized allowlists with tenant-specific filtering rules.
+- Create distinct integration endpoints for different tenant policies.
+- Deploy separate AppSec rule sets tailored to each tenant's requirements.
 
-* **Environment Isolation**
-  * [Manage contexts with cscli](/docs/next/cscli/cscli_contexts)
-  * [Configure collections per environment](/docs/next/cscli/cscli_collections)
-  * Separate AppSec rule sets by tenant requirements
+**References**
+- [Context management with cscli](/docs/next/cscli/cscli_contexts)
+- [Centralized allowlists configuration](/docs/next/local_api/centralized_allowlists)
+- [Decision filtering by origin](/docs/next/cscli/cscli_decisions_delete)
+- [Collections per environment](/docs/next/cscli/cscli_collections)
+- [AppSec configuration guide](/docs/next/appsec/configuration)
 
 ---
 
 ## SIEM/SOAR Integration
 
-**What this solves:** Enrich existing security tools with CrowdSec's threat intelligence and IOC streams.
+Enrich existing security tools with CrowdSec's real-time threat intelligence and IOC streams from 70,000+ global contributors.  
 
-### IOC Management
+**Is it for me?**
+Ideal if you're using SIEM/SOAR tools and want to enhance them with fresh, crowd-sourced threat intelligence.
+Good option if you need automated IOC management and want to reduce false positives in security alerts.
 
-* **Import Custom IOCs**
-  * [Import decisions from CSV/JSON](/docs/next/cscli/cscli_decisions_import)
-  * Support for ban, captcha, and throttle actions
-  * Tag with custom origins for tracking
+**How it works:**
+- Import custom IOCs from your existing tools using CSV/JSON format.
+- Configure notification plugins to automatically enrich alerts with contextual threat data.
+- Use CTI helpers in templates to add global intelligence context to security events.
+- Set up bidirectional data exchange with platforms like MISP for comprehensive threat sharing.
 
-* **Alert Enrichment**
-  * [Use CTI helpers in notification templates](/docs/next/notification_plugins/template_helpers)
-  * Automatically enrich alerts with threat intelligence
-  * [Configure notification plugins](/docs/next/notification_plugins/intro)
-
-* **MISP Integration** (Coming Soon)
-  * Bidirectional IOC exchange with MISP platforms
-  * Automated threat intelligence sharing
+**References**
+- [Import decisions from CSV/JSON](/docs/next/cscli/cscli_decisions_import)
+- [Notification plugins configuration](/docs/next/notification_plugins/intro)
+- [CTI helpers in templates](/docs/next/notification_plugins/template_helpers)
+- [Console enrollment for CTI access](/docs/next/cscli/cscli_console_enroll)
+- 🏅 [MISP Integration documentation](/docs/next/integrations/misp) (Coming Soon)
 
 ---
 
 ## Web Application Protection
 
-**What this solves:** Quickly protect applications from OWASP Top-10 attacks and vulnerability probing.
+Quickly protect web applications from OWASP Top-10 attacks and zero-day vulnerability probing with behavior-driven detection.  
 
-### AppSec Deployment
+**Is it for me?**
+Ideal if you need immediate protection for web applications against common attack patterns.
+Good option if you want virtual patching capabilities and real-time threat blocking without modifying application code.
 
-* **Reverse Proxy WAF**
-  * [Complete WAF setup guide](/u/user_guides/waf_rp_howto)
-  * [AppSec configuration guide](/docs/next/appsec/configuration)
-  * [Virtual patching with AppSec rules](/docs/next/appsec/configuration)
+**How it works:**
+- Deploy CrowdSec Security Engine with AppSec module on your reverse proxy or web server.
+- Enable pre-built AppSec collections targeting OWASP Top-10 attack patterns.
+- Configure bouncers for real-time blocking of detected threats.
+- Implement virtual patching rules to protect against specific vulnerabilities.
 
-* **Quick Deployment**
-  * Install Security Engine on your reverse proxy
-  * Enable AppSec collections for common attack patterns
-  * Configure bouncer for real-time blocking
+**References**
+- [Complete WAF setup guide](/u/user_guides/waf_rp_howto)
+- [AppSec configuration guide](/docs/next/appsec/configuration)
+- [Virtual patching with AppSec rules](/docs/next/appsec/configuration)
+- [Bouncer configuration](/docs/next/cscli/cscli_bouncers)
+- [Security Engine installation](/u/getting_started/installation/linux)
 
 ---
 
 ## Bot and Scraper Management
 
-**What this solves:** Control aggressive crawlers and scraping tools while preserving legitimate user access.
+Control aggressive crawlers and scraping tools while preserving legitimate user access using graduated response strategies.  
 
-### Management Strategies
+**Is it for me?**
+Ideal if you're dealing with aggressive bots or scrapers that impact your site performance.
+Good option if you need granular control over automated traffic without blocking legitimate users or search engines.
 
-* **Rate Limiting**
-  * [Import throttle decisions](/docs/next/cscli/cscli_decisions_import)
-  * Use `throttle` action type for rate limiting
-  * Configure graduated responses (throttle → ban)
+**How it works:**
+- Configure behavioral detection scenarios to identify suspicious crawling patterns.
+- Implement graduated responses starting with throttling, escalating to temporary bans.
+- Use specialized AI Crawlers Blocklist to block known malicious crawling IPs.
+- Deploy edge blocking through firewall or CDN integration for immediate protection.
 
-* **Blocking Approaches**
-  * Edge blocking via firewall or WAF integration
-  * Behavioral detection with custom scenarios
-  * IP reputation-based filtering
+**References**
+- [Import throttle decisions](/docs/next/cscli/cscli_decisions_import)
+- [Custom scenario creation](/docs/next/scenarios/create)
+- [AI Crawlers Blocklist subscription](/u/console/blocklists/subscription/)
+- [Edge integration options](/u/integrations/intro)
+- [Behavioral detection configuration](/docs/next/scenarios/introduction)
 
 ---
 
 ## Legacy Application Protection
 
-**What this solves:** Add modern security controls to applications that cannot be modified directly.
+Add modern security controls to legacy applications that cannot be modified directly using transparent proxy protection.  
 
-### Protection Strategies
+**Is it for me?**
+Ideal if you're running legacy applications that lack built-in security features.
+Good option if you need immediate protection without the risk of modifying critical legacy code.
 
-* **Transparent Proxy Protection**
-  * [Deploy WAF at reverse proxy level](/u/user_guides/waf_rp_howto)
-  * [Configure virtual patching rules](/docs/next/appsec/configuration)
-  * Block exploits without application changes
+**How it works:**
+- Deploy CrowdSec WAF at the reverse proxy level in front of your legacy application.
+- Configure virtual patching rules to block known exploits targeting your application stack.
+- Create custom AppSec rules adapted to your legacy application's specific patterns.
+- Test protection rules in simulation mode before enabling blocking to ensure application functionality.
 
-* **Custom Rule Development**
-  * Adapt AppSec rules for legacy application patterns
-  * Create custom scenarios for specific vulnerabilities
-  * Test thoroughly to avoid breaking application functionality
+**References**
+- [Complete WAF setup guide](/u/user_guides/waf_rp_howto)
+- [AppSec configuration guide](/docs/next/appsec/configuration)
+- [Virtual patching rules](/docs/next/appsec/configuration)
+- [Custom scenario creation](/docs/next/scenarios/create)
+- [Testing with explain mode](/docs/next/cscli/cscli_explain)
 
 ---
 
 ## Custom Behavior Protection
 
-**What this solves:** Create targeted protections for specific abuse patterns like spam, credential stuffing, or scalping attacks.
+Create targeted protections for specific abuse patterns like spam, credential stuffing, or scalping attacks using custom detection rules.  
 
-### Custom Detection Development
+**Is it for me?**
+Ideal if you're facing unique attack patterns not covered by standard security solutions.
+Good option if you need highly specific protection tailored to your application's business logic and user patterns.
 
-* **Scenario Customization**
-  * [Manage scenarios with cscli](/docs/next/cscli/cscli_scenarios_install)
-  * [Create custom scenarios](/docs/next/scenarios/create)
-  * [Test scenarios with explain mode](/docs/next/cscli/cscli_explain)
+**How it works:**
+- Analyze your specific abuse patterns to understand attacker behavior.
+- Create custom scenarios using CrowdSec's scenario framework for behavioral detection.
+- Develop AppSec rules for pattern-matching specific malicious requests.
+- Test custom rules thoroughly using explain mode and simulation before production deployment.
 
-* **AppSec Rule Development**
-  * [Configure custom AppSec rules](/docs/next/appsec/configuration)
-  * Create pattern-matching rules for specific behaviors
-  * Test rules in simulation mode before deployment
+**References**
+- [Custom scenario creation](/docs/next/scenarios/create)
+- [Scenario management with cscli](/docs/next/cscli/cscli_scenarios_install)
+- [Testing scenarios with explain mode](/docs/next/cscli/cscli_explain)
+- [Custom AppSec rules configuration](/docs/next/appsec/configuration)
+- [Scenario testing and validation](/docs/next/scenarios/intro)
 
 ---
 
 ## Alert Enhancement and Triage
 
-**What this solves:** Accelerate incident response with contextual threat intelligence and automated routing.
+Accelerate incident response with contextual threat intelligence and automated routing to reduce alert volume by up to 80%.  
 
-### Enhancement Options
+**Is it for me?**
+Ideal if your SOC team is overwhelmed with security alerts and needs better context for prioritization.
+Good option if you want to automate alert enrichment and reduce time-to-response for security incidents.
 
-* **Notification Enrichment**
-  * [Configure notification plugins](/docs/next/notification_plugins/intro)
-  * [Use CTI helpers in templates](/docs/next/notification_plugins/template_helpers)
-  * Send enriched alerts to Slack, email, or SIEM
+**How it works:**
+- Configure notification plugins to automatically enrich alerts with global threat intelligence context.
+- Set up CTI helpers in templates to add reputation data, attack patterns, and geographic context.
+- Deploy operational dashboards for SOC teams to visualize threats and track security metrics.
+- Integrate with existing SIEM/SOAR tools to enhance existing alert workflows.
 
-* **Operational Dashboards**
-  * [Set up monitoring dashboards](/docs/next/cscli/cscli_dashboard)
-  * [Track metrics with cscli](/docs/next/cscli/cscli_metrics)
-  * Provide SOC teams with actionable context
+**References**
+- [Notification plugins configuration](/docs/next/notification_plugins/intro)
+- [CTI helpers in templates](/docs/next/notification_plugins/template_helpers)
+- [Monitoring dashboards setup](/docs/next/cscli/cscli_dashboard)
+- [Metrics tracking with cscli](/docs/next/cscli/cscli_metrics)
+- [Console enrollment for CTI access](/docs/next/cscli/cscli_console_enroll)
 
 ---
 
 ## Threat Hunting and Intelligence
 
-**What this solves:** Enable proactive threat hunting with global intelligence correlation and local threat mirroring.
+Enable proactive threat hunting with access to global intelligence from 190+ countries, often 7-60 days ahead of other vendors.  
 
-### Hunting Capabilities
+**Is it for me?**
+Ideal if you have a threat hunting team that needs fresh, contextual intelligence for proactive security investigations.
+Good option if you want to correlate local events with global attack patterns and emerging threats.
 
-* **Console Integration**
-  * [Enroll in CrowdSec Console](/docs/next/cscli/cscli_console_enroll)
-  * Access global CTI and CVE correlation data
-  * Use web interface for threat investigation
+**How it works:**
+- Enroll your Security Engine in CrowdSec Console to access global CTI and CVE correlation data.
+- Use the web interface to investigate threat patterns and analyze attack trends.
+- Correlate your local security events with global crowd-sourced intelligence.
+- Export enriched threat data for integration with your existing threat hunting tools and workflows.
 
-* **Intelligence Integration**
-  * Correlate local events with global threat patterns
-  * Export threat data for integration with hunting tools
-  * Track emerging threats and vulnerabilities
+**References**
+- [Console enrollment guide](/docs/next/cscli/cscli_console_enroll)
+- [CTI integration documentation](/u/console/blocklists/subscription/)
+- [Global threat intelligence access](/u/integrations/intro)
+- [VulnTracking Reports](https://www.crowdsec.net/blog) (Monthly CVE analysis)
+- [Threat investigation workflows](/docs/next/cscli/cscli_decisions)
 
 ---
 
