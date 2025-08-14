@@ -107,7 +107,28 @@ Quickly choose among qualified malicious actors regrouped by industry, behaviors
 
 ---
 
-## Web Application Protection
+## Bot and Scraper Management
+
+Control aggressive crawlers and scraping tools while preserving legitimate user access using graduated response strategies.  
+
+**Is it for me?**
+Ideal if you're dealing with aggressive bots or scrapers that impact your site performance.
+Good option if you want to prevent illegitimate AI crawlers from visiting your site.
+
+**How it works:**
+- Retrieve AI Crawlers and/or Botnets IPs from CrowdSec Blocklist integrations
+- Block at the edge using your firewall or CDN.  
+
+**References**
+- [Blocking at the edge section](#blocking-at-the-edge)
+- [Custom scenario creation](/docs/next/scenarios/create)
+- [AI Crawlers Blocklist ↗️](https://app.crowdsec.net/blocklists/67b3524151bbde7a12b60be0)
+- [Currated Botnet Actors ↗️](https://app.crowdsec.net/blocklists/65a56c160469607d9badb813)
+- [Public Internet Scanners ↗️](https://app.crowdsec.net/blocklists/65f972eb807e06de7a0e3e65)
+
+---
+
+## Block Common web attacks fast
 
 Quickly protect web applications from the latest CVEs and generic vulnerability exploits using CrowdSec WAF.
 
@@ -124,30 +145,10 @@ Benefit from CrowdSec's Virtual patching catalog while being able to use your ex
 
 
 **References**
-- ...
-
----
-
-## Bot and Scraper Management
-
-Control aggressive crawlers and scraping tools while preserving legitimate user access using graduated response strategies.  
-
-**Is it for me?**
-Ideal if you're dealing with aggressive bots or scrapers that impact your site performance.
-Good option if you need granular control over automated traffic without blocking legitimate users or search engines.
-
-**How it works:**
-- Configure behavioral detection scenarios to identify suspicious crawling patterns.
-- Implement graduated responses starting with throttling, escalating to temporary bans.
-- Use specialized AI Crawlers Blocklist to block known malicious crawling IPs.
-- Deploy edge blocking through firewall or CDN integration for immediate protection.
-
-**References**
-- [Import throttle decisions](/docs/next/cscli/cscli_decisions_import)
-- [Custom scenario creation](/docs/next/scenarios/create)
-- [AI Crawlers Blocklist subscription](/u/console/blocklists/subscription/)
-- [Edge integration options](/u/integrations/intro)
-- [Behavioral detection configuration](/docs/next/scenarios/introduction)
+- [Security Engine installation](/u/getting_started/intro)
+- [CrowdSec WAF presentation](/appsec/intro)
+- [Virtual Patching collection ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching)
+- [CrowdSec WAF article ↗️](https://www.crowdsec.net/blog/crowdsec-waf-the-collaborative-future-of-web-application-security)
 
 ---
 
