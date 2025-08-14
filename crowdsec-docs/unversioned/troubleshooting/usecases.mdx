@@ -4,6 +4,8 @@ title: Use Cases and Quick Solutions
 id: usecases
 ---
 
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
+
 # Use Cases and Quick Solutions
 
 This page provides quick recommendations for common CrowdSec implementation scenarios. Each use case includes practical implementation paths with links to relevant documentation.
@@ -14,39 +16,32 @@ New to CrowdSec? Start with our [installation guide](/u/getting_started/installa
 
 import FormattedTabs from '@site/src/components/formatted-tabs';
 
+TODO: use <UnderlineTooltip tooltip="..."></UnderlineTooltip> on key words to help the user understand
+
 ## Block Known-Bad IPs at the Edge
 
-**What this solves:** Stop commodity scanners, botnets and repeat offenders at the network edge before they reach your services.
+Pull up-to-date IP lists from CrowdSec **Blocklist as a Service** endpoints into your edge protection.  
 
-### Firewall Integration
+**Is it for me?**
+Ideal if you want direct integration into your firewalls.
+Good option if you are not using a Security Engine and want your CDN or WAF to benefit from CrowdSec's blocklists.
 
-* **Appliance Integration**
-  * [OPNsense plugin setup](/docs/next/getting_started/install_crowdsec_opnsense)
-  * [FreeBSD/pfSense installation](/docs/next/getting_started/install_crowdsec_freebsd)
-  * [Managing bouncers with cscli](/docs/next/cscli/cscli_bouncers)
+**How it works:**
+- Create a blocklist integration in your console account.
+- Select blocklists you want to be served by this endpoints.
+- Use the endpoint's URL and credentials to retrieve the merged and up-to-date list.
 
-* **OS Firewall Integration**
-  * Configure your system firewall to consume CrowdSec decisions
-  * Use blocklist integrations for automated IP blocking
 
-### Reverse Proxy/WAF Integration
-
-* **NGINX Reverse Proxy**
-  * [WAF reverse proxy setup guide](/u/user_guides/waf_rp_howto)
-  * [AppSec configuration](/docs/next/appsec/configuration)
-  * [NGINX bouncer documentation](/u/bouncers/nginx)
-
-* **CDN/WAF Integration**
-  * Configure your CDN or WAF to consume CrowdSec blocklists
-  * Use bouncer components for real-time blocking
-
-### Security Engine Integration
-
-* **Blocklist Subscriptions**
-  * [Monitor with cscli metrics](/docs/next/cscli/cscli_metrics)
-  * [Manage decisions](/docs/next/cscli/cscli_decisions_list)
-  * [Dashboard setup](/docs/next/cscli/cscli_dashboard)
-  * Evaluate blocklist impact before full deployment
+**References**
+- [Blocklist integration Getting started guide](/u/integrations/intro)
+- [Subscribing to blocklists](/u/console/blocklists/subscription/)
+- [List of integrations format](/u/integrations/intro#current-integrations)
+- 🏅 [API management & creating your own blocklists](/u/console/service_api/quickstart/blocklists)
+- *Variation: *Integration into CDN/WAF via a **remediation component**:
+  - [Remediation Component BLaaS integration](/u/integrations/remediationcomponent)
+  - [AWF WAF remediation component](/u/bouncers/aws_waf)
+  - [Cloudflare Workers remediation component](/u/bouncers/cloudflare-workers)
+  - [Fastly remediation component](/u/bouncers/fastly)
 
 ---
 
