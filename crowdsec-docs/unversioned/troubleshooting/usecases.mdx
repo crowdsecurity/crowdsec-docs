@@ -4,8 +4,6 @@ title: Use Cases and Quick Solutions
 id: usecases
 ---
 
-import UnderlineTooltip from '@site/src/components/underline-tooltip';
-
 # Use Cases and Quick Solutions
 
 This page provides quick recommendations for common CrowdSec implementation scenarios. Each use case includes practical implementation paths with links to relevant documentation.
@@ -13,10 +11,6 @@ This page provides quick recommendations for common CrowdSec implementation scen
 :::tip
 New to CrowdSec? Start with our [installation guide](/u/getting_started/installation/linux) and [health check guide](/u/getting_started/health_check).
 :::
-
-import FormattedTabs from '@site/src/components/formatted-tabs';
-
-TODO: use <UnderlineTooltip tooltip="..."></UnderlineTooltip> on key words to help the user understand
 
 ## Block Known-Bad IPs at the Edge
 
@@ -70,24 +64,22 @@ Good option if you need to optimize server performance and reduce log storage re
 
 ## Multi-Tenant Protection
 
-Apply different security policies per customer, application, or environment without policy conflicts using flexible context management.  
+Apply different security policies per customer, application, tier, [...] retrieving contextualized IP Lists.
 
 **Is it for me?**
 Ideal if you're managing multiple customers, applications, or environments with different security requirements.
 Good option if you need granular policy control and want to avoid cross-tenant security policy interference.
 
 **How it works:**
-- Configure separate contexts for each tenant using cscli context management.
-- Set up centralized allowlists with tenant-specific filtering rules.
-- Create distinct integration endpoints for different tenant policies.
-- Deploy separate AppSec rule sets tailored to each tenant's requirements.
+- Configure separate blocklist integrations for each context.
+- Assign context-specific blocklist AND allowlists.
+- Go further by creating custom lists based on detections made on your infrastructure.
 
 **References**
-- [Context management with cscli](/docs/next/cscli/cscli_contexts)
-- [Centralized allowlists configuration](/docs/next/local_api/centralized_allowlists)
-- [Decision filtering by origin](/docs/next/cscli/cscli_decisions_delete)
-- [Collections per environment](/docs/next/cscli/cscli_collections)
-- [AppSec configuration guide](/docs/next/appsec/configuration)
+- [Blocklist integration Getting started guide](/u/integrations/intro)
+- [Blocklist Catalog doc](/u/console/blocklists/catalog)
+- [Blocklist Catalog ↗️](https://app.crowdsec.net/blocklists/search)
+- [Custom blocklists from the decisions of your Security engine ↗️](https://github.com/crowdsecurity/custom-bouncer-to-blocklist)
 
 ---
 
