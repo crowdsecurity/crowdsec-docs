@@ -80,18 +80,17 @@ crowdsec-agent-kf9fr 1/1 Running 0 34s
 crowdsec-lapi-777c469947-jbk9q 1/1 Running 0 34s
 ```
 
-### Install Remediation Component
+### A Word About Remediation Component
 
-:::info
-Depends which ingress controller you are using, you can install the remediation component.
-:::
-
-First you need to already have an ingress controller installed in your cluster (we consider that you installed it using helm).
+Installing the CrowdSec Engine as a local API and log processors is very useful
+to detect aggressive behaviors, but no remediation action will be taken upon it.
+To get remediation actions, one has to install remediation component. As of now
+remediation can only happen at ingress level.
 
 For now, we support:
 
-* Traefik
-* Nginx
+* [Ingress Nginx](u/bouncers/ingress-nginx/)
+* [Traefik Kubernetes Ingress (Third party development)](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin)
 
 Before installing the remediation component, you need to generate API key to communicate with the LAPI.
 
@@ -102,7 +101,8 @@ If you **have persistentVolumes enabled** in `values.yaml`, you can generate the
 kubectl -n crowdsec exec -it crowdsec-lapi-<pod-id> -- cscli bouncers add my-bouncer-name
 ```
 
-Else you **don't have persistentVolumes enabled**, you need to specify your key in the `values.yaml` file:
+Else you **don't have persistentVolumes enabled**, you need to specify your key
+in the crowdsec helm `values.yaml` file:
 
 ```yaml
 lapi:
@@ -119,18 +119,9 @@ lapi:
 ```
 :::
 
-Then, you can install the remediation component with the following command:
-
-
-
-
-Once we have this patch we can upgrade the ingress-nginx chart
-
-```bash
-helm -n ingress-nginx upgrade -f ingress-nginx-values.yaml -f crowdsec-ingress-bouncer.yaml ingress-nginx ingress-nginx/ingress-nginx
-```
-
 
 ## Next Steps?
 
-Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.mdx) you will find the next steps to configure and optimize your installation.
+Great, you now have CrowdSec installed on your system. Within the [post
+installation steps](/getting_started/next_steps.mdx) you will find the next
+steps to configure and optimize your installation.
