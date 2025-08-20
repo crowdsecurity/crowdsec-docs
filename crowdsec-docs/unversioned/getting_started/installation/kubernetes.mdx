@@ -121,6 +121,28 @@ lapi:
 ```
 :::
 
+### A word about databases
+
+By default, CrowdSec uses a SQLite database, which does not support replication.
+In a Kubernetes environment, this limitation prevents the Local API from being
+replicated.
+
+For production deployments on Kubernetes, we recommend using a database engine
+that can be deployed in a replicated or highly available way, such as MariaDB or
+PostgreSQL. You can leverage existing operators to manage these databases:
+* [mariadb operator](https://mariadb.com/resources/blog/get-started-with-mariadb-in-kubernetes-and-mariadb-operator/)
+* [postgresql operator](https://github.com/cloudnative-pg/cloudnative-pg)
+
+Configuration those databases is out of scope of this documentation.
+<!-- We want to create blogpost where we do it -->
+
+:::warning
+
+SQLite may be suitable for testing or low traffic clusters, but it is not
+recommended for Kubernetes production deployments. Besides the lack of
+replication, SQLite can also become a performance bottleneck under heavy load.
+
+:::
 
 ## Next Steps?
 
