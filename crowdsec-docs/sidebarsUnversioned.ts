@@ -515,11 +515,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			label: "Wordpress",
 			id: "bouncers/wordpress",
 		},
-        {
-            type: "doc",
-            label: "Traefik",
-            id: "bouncers/traefik",
-        },
+		{
+			type: "doc",
+			label: "Traefik",
+			id: "bouncers/traefik",
+		},
 		{
 			type: "link",
 			label: "Third Party",
