@@ -1,11 +1,11 @@
 ---
-id: genericfirewall
-title: Generic Firewall (Raw IP-list)
+id: rawiplist
+title: Raw IP List
 ---
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
-The CrowdSec Raw IP List (or Generic Firewall) integration allows you to block malicious IPs in your Firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Firewall.
+The CrowdSec **Raw IP List** integration allows you to block malicious IPs in your Firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Firewall.
 
 ### Prerequisites
 
@@ -17,10 +17,10 @@ We will presume you followed the [Getting Started](integrations/intro.mdx) guide
 
 Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
 
-Once the page has loaded, you can click the "Connect" button under the Raw IP List (or Generic Firewall) logo.
+Once the page has loaded, you can click the "Connect" button under the **Raw IP List** logo.
 
 <ThemedImage
-    alt="Generic Firewall Integration Card"
+    alt="Raw IP List Integration Card"
     sources={{
         light: useBaseUrl("/img/console_integrations_generic_card_light.png"),
         dark: useBaseUrl("/img/console_integrations_generic_card_dark.png"),
@@ -30,7 +30,7 @@ Once the page has loaded, you can click the "Connect" button under the Raw IP Li
 Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
 
 <ThemedImage
-    alt="Generic Firewall Integration Creation Screen"
+    alt="Raw IP List Integration Creation Screen"
     sources={{
         light: useBaseUrl("/img/console_integrations_creation_light.png"),
         dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
@@ -40,7 +40,7 @@ Doing so will prompt you to name this integration, you can name it anything you 
 Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
 
 <ThemedImage
-    alt="Generic Firewall Integration Credentials Screen"
+    alt="Raw IP ListIntegration Credentials Screen"
     sources={{
         light: useBaseUrl("/img/console_integrations_generic_credentials_light.png"),
         dark: useBaseUrl("/img/console_integrations_generic_credentials_dark.png"),
@@ -70,4 +70,4 @@ Since CrowdSec is a community-driven project, we welcome contributions to this d
 
 ## Next Steps
 
-Now that you have integrated CrowdSec integration with your Generic Firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
+Now that you have integrated CrowdSec integration in your asset, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too.

@@ -22,10 +22,16 @@ jobs:
         run: npm ci
         working-directory: ./crowdsec-docs/
 
+      - name: Get Biome version from package.json
+        id: biome-version
+        run: |
+          VERSION=$(node -p "require('./crowdsec-docs/package.json').devDependencies['@biomejs/biome']")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Setup Biome
         uses: biomejs/setup-biome@v2
         with:
-          version: latest
+          version: ${{ steps.biome-version.outputs.version }}
 
       - name: Run Biome
         run: biome ci .

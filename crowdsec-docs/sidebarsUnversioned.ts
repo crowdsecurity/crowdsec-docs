@@ -570,11 +570,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 			label: "Integrations",
 			items: [
+				"integrations/rawiplist",
 				"integrations/checkpoint",
 				"integrations/cisco",
 				"integrations/f5",
 				"integrations/fortinet",
-				"integrations/genericfirewall",
 				"integrations/juniper",
 				"integrations/mikrotik",
 				"integrations/opnsense",
@@ -629,6 +629,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		"user_guides/consuming_fastly_logs",
 		"user_guides/alert_context",
 		"user_guides/log_centralization",
+		"user_guides/waf_rp_howto",
 	],
 	gettingStarted: [
 		{

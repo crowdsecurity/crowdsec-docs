@@ -57,7 +57,7 @@ html[data-theme="dark"] {
 }
 
 /* IMAGE STYLES FOR PAGES*/
-.container img {
+main .container img:not(a img) {
 	@apply border border-solid border-gray-300/80 dark:border-gray-300/80 rounded-lg p-2;
 }
 
