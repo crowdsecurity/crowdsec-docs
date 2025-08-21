@@ -593,6 +593,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
+			id: "troubleshooting/usecases",
+			label: "Use Cases",
+		},
+		{
+			type: "doc",
 			id: "troubleshooting/security_engine",
 			label: "Security Engine",
 		},
