@@ -516,6 +516,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			id: "bouncers/wordpress",
 		},
 		{
+			type: "doc",
+			label: "Traefik",
+			id: "bouncers/traefik",
+		},
+		{
 			type: "link",
 			label: "Third Party",
 			href: "https://hub.crowdsec.net/browse/#bouncers",
