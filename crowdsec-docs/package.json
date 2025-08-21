@@ -12,6 +12,7 @@
         "serve": "docusaurus serve",
         "lint": "biome check",
         "format": "biome format",
+        "migrate": "biome migrate --write",
         "write-translations": "docusaurus write-translations",
         "write-heading-ids": "docusaurus write-heading-ids"
     },
@@ -46,7 +47,7 @@
         "tailwindcss-animate": "^1.0.7"
     },
     "devDependencies": {
-        "@biomejs/biome": "2.0.6",
+        "@biomejs/biome": "2.2.0",
         "@docusaurus/module-type-aliases": "^3.8.1",
         "@docusaurus/tsconfig": "^3.8.1",
         "@docusaurus/types": "^3.8.1",
