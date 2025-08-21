@@ -68,7 +68,7 @@ program so CrowdSec knows which parser should handle them. For example, if you
 set program: nginx, the nginx parser will pick them up. CrowdSec will
 automatically attach to the right pods and feed the logs into the right parsers.
 
-<detail>
+<details>
     <summary>Why `program` and not `type` ?</summary>
 In standard standalone setups documentation states that the labels should be
 name `type` with the type being the parsed log program (eg nginx, traefik). A
@@ -76,7 +76,7 @@ transformation from `type` to `program` is done by the first stage parser
 `crowdsecurity/syslog-logs` which is not relevant in a Kubernetes context.
 </details>
 
-<detail>
+<details>
     <summary>How collection fit in kubernetes environment?</summary>
 
 Collections are "recipes" for understanding logs; they don’t find pods on their
