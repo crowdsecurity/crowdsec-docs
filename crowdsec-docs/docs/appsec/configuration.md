@@ -146,7 +146,7 @@ default_remediation: ban      # or "allow", "captcha", etc.
 ```
 
 :::info
-When loading multiple AppSec configs, _hooks_ and _appsec rules_ are appended, and for conflicting options (e.g., `default_remediation`), the last one takes precedence.
+When using multiple AppSec configs the last declared one takes precedence for this property
 :::
 
 #### `default_pass_action` (optional, default: "allow")
@@ -155,6 +155,10 @@ Action for requests that don't match any rules or match rules with pass action.
 ```yaml
 default_pass_action: allow    # or any custom value
 ```
+
+:::info
+When using multiple AppSec configs the last declared one takes precedence for this property
+:::
 
 ### HTTP Response Codes
 
@@ -362,9 +366,17 @@ An optional list of rules to be loaded in in-band phase. In band rules are block
 
 An optional remediation for in-band rules, defaults to `ban`. If set to `allow`, remediation component won't block the request (even if it matched rules). Any other value (including `captcha`) is passed as-is back to the remediation component.
 
+:::info
+When using multiple AppSec configs the last declared one takes precedence for this property
+:::
+
 ### `default_pass_action`
 
 An optional remediation for requests that didn't match any rules (or rules with a pass action). Defaults to `allow`. Any other value will be passed as-is to the remediation component.
+
+:::info
+When using multiple AppSec configs the last declared one takes precedence for this property
+:::
 
 ### `blocked_http_code`
 
