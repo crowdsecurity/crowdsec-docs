@@ -1,12 +1,12 @@
 ---
 id: configuration
-title: AppSec Component Configuration Files
+title: How To Setup AppSec Components
 sidebar_position: 6
 ---
 
 ## Overview
 
-This section covers the detailed configuration options for the CrowdSec AppSec Component. 
+This page explains the interraction between various files involved in AppSec configuration and the details about the processing pipeline AppSec request processing.
 
 **Prerequisites**: 
 - Familiarity with [AppSec concepts](/appsec/intro.md)
@@ -18,11 +18,23 @@ The AppSec Component configuration consists of three main parts:
  - **AppSec configurations**: Define which rules are loaded and how they behave, along with [hooks](/appsec/hooks.md) for runtime customization
  - **[AppSec rules](/appsec/rules_syntax.md)**: The actual detection signatures that identify and block malicious requests
 
-## Acquisition Configuration
+## AppSec Acquisition
 
-### Multiple AppSec Configurations
+The goals of the acquisition file are:
+- To specify the **address** and **port** where the AppSec-enabled Remediation Component(s) will forward the requests to.
+- And specify one or more [AppSec configuration files](#appsec-configuration) to use as definition of what rules to apply and how. 
 
-Use `appsec_configs` to load multiple configurations that work together:
+Details can be found in the [AppSec Datasource page](/log_processor/data_sources/apps).
+
+### Defining Multiple AppSec Configurations
+
+Often you will want to activate multiple AppSec configuration defining groups of rules that will be handled the same way.  
+
+Use the `appsec_configs` *(with an S)* parameter to load multiple configurations that work together.  
+
+In the following example we have two configurations:
+- One with [CrowdSec default AppSec rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-configurations/appsec-default) running in inband mode 
+- The other for the [CRS rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs) that by default run in out of band mode.
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
 appsec_configs:
@@ -35,13 +47,18 @@ source: appsec
 ```
 
 :::info
-Do not forget to `sudo cscli collections install crowdsecurity/appsec-crs`.
+CrowdSec AppSec collections are available on [CrowdSec Hub ↗️](https://app.crowdsec.net/hub/collections?filters=search%3Dappsec) and kept up to date.  
+
+For example the CRS collection: `sudo cscli collections install crowdsecurity/appsec-crs`.
 This collection installs OWASP CRS in out-of-band and adds a scenario to ban IPs triggering multiple rules.
 :::
 
-### Creating Custom Configurations
+### Using Custom Configurations
 
-Create new configuration files instead of modifying existing hub configurations. Modifying hub configurations will make them *tainted* and prevent automatic updates.
+If you want to alter the default configuration files we recommend creating a new configuration files instead of modifying existing hub configurations.  
+Modifying hub configurations will make them *tainted* and prevent automatic updates.
+
+For example, if you want to change the default vpatch rules config, create your own and use it instead in the acquisition file.  
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
 appsec_configs:
@@ -53,7 +70,7 @@ listen_addr: 127.0.0.1:7422
 source: appsec
 ```
 
-Create your custom configuration:
+A custom configuration file could look like this:
 
 ```yaml title="/etc/crowdsec/appsec-configs/my_vpatch_rules.yaml"
 name: custom/my_vpatch_rules
@@ -63,11 +80,17 @@ inband_rules:
 # Add custom hooks as needed
 ```
 
+## AppSec Configuration Files
+
+AppSec configuration files declare **which rules to load** in the **in-band** *(blocking)* and/or **out-of-band** *(non-blocking)*, define how matches are handled (e.g., default remediation), and let you tweak processing via hooks like `on_load`, `pre_eval`, `post_eval`, and `on_match`.
+
+For details, jump to the [Configuration properties list](#appendix-appsec-configuration-properties)
+
 :::info
 When loading multiple AppSec configs, _hooks_ and _appsec rules_ are appended, and for conflicting options (e.g., `default_remediation`), the last one takes precedence.
 :::
 
-## Configuration Processing Order
+### Configuration Processing Order
 
 When multiple AppSec configurations are loaded, they are processed in the order specified in the `appsec_configs` list. For details on how in-band and out-of-band rules work, see the [AppSec Introduction](/appsec/intro.md#inband-rules-and-out-of-band-rules).
 
@@ -80,7 +103,10 @@ When multiple AppSec configurations are loaded, they are processed in the order 
 
 ## AppSec Configuration Reference
 
-Each AppSec configuration file defines how rules are loaded and processed. Here's the complete reference of available directives:
+Each AppSec configuration file defines how rules are loaded and processed.
+You can create custom configuration files in the following folder: `/etc/crowdsec/appsec-configs/`  
+
+Here's the complete reference of available directives:
 
 ### Core Configuration Directives
 
@@ -118,6 +144,10 @@ Default action for in-band rules that match. Special value `allow` prevents bloc
 ```yaml
 default_remediation: ban      # or "allow", "captcha", etc.
 ```
+
+:::info
+When loading multiple AppSec configs, _hooks_ and _appsec rules_ are appended, and for conflicting options (e.g., `default_remediation`), the last one takes precedence.
+:::
 
 #### `default_pass_action` (optional, default: "allow")
 Action for requests that don't match any rules or match rules with pass action.
@@ -300,7 +330,7 @@ on_match:
 
 With this config, the rules will still be evaluated, but if a rule matches no alert or event will be generated, and the remediation will be set to `allow`(ie, instruct the bouncer to let the request through).
 
-## Appsec configuration
+## Appendix: Appsec configuration properties
 
 The AppSec configuration is referenced by the acquisition configuration (`appsec_config`, `appsec_configs` or `appsec_config_path`):
 
