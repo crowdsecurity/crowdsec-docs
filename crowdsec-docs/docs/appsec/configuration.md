@@ -1,6 +1,6 @@
 ---
 id: configuration
-title: How To Setup AppSec Components
+title: AppSec Configuration Files
 sidebar_position: 6
 ---
 
