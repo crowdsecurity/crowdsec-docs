@@ -14,7 +14,7 @@ This section covers the detailed configuration options for the CrowdSec AppSec C
 
 The AppSec Component configuration consists of three main parts:
 
- - **[Acquisition configuration](/log_processor/data_sources/appsec.md)**: Defines which port the AppSec Component listens on and which AppSec configurations to load <!-- Fix linked page to ie. speak about appsec_configs-->
+ - **[Acquisition configuration](/log_processor/data_sources/appsec.md)**: Defines which port the AppSec Component listens on and which AppSec configurations files to load <!-- Fix linked page to ie. speak about appsec_configs-->
  - **AppSec configurations**: Define which rules are loaded and how they behave, along with [hooks](/appsec/hooks.md) for runtime customization
  - **[AppSec rules](/appsec/rules_syntax.md)**: The actual detection signatures that identify and block malicious requests
 
