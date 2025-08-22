@@ -49,6 +49,77 @@ spec:
       crowdsecLapiKey: mysecretkey12345
 ```
 
+Now, you can install the remediation component:
+
+```bash
+kubectl apply -f bouncer-middleware.yaml
+```
+
+### Traefik with WAF(appsec) on kubernetes
+
+We supposed you already have working crowdsec values configuration, basically here is the important configuration to put in crowdsec values :
+
+```yaml
+config:
+  config.yaml.local: |
+    api:
+      server:
+        auto_registration:
+          enabled: true
+          token: "${REGISTRATION_TOKEN}" # /!\ Do not modify this variable (auto-generated and handled by the chart)
+          allowed_ranges:
+            - "127.0.0.1/32"
+            - "192.168.0.0/16"
+            - "10.0.0.0/8"
+            - "172.16.0.0/12"
+appsec:
+  enabled: true
+  acquisitions:
+    - source: appsec
+      listen_addr: "0.0.0.0:7422"
+      path: /
+      appsec_configs:
+        - crowdsecurity/appsec-default
+        - crowdsecurity/crs
+      labels:
+        type: appsec
+  env:
+    - name: COLLECTIONS
+      value: "crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-crs crowdsecurity/appsec-generic-rules"
+lapi:
+  env:
+    - name: BOUNCER_KEY_traefik
+      value: <YOUR-BOUNCER-KEY>
+```
+
+If you add this config to crowdsec values, don't forget to `helm upgrade`
+
+Then the configuration for the middleware (bouncer-middleware.yaml) :
+
+```yaml
+kind: Middleware
+apiVersion: traefik.io/v1alpha1
+metadata:
+  name: bouncer
+  namespace: traefik
+spec:
+  plugin:
+    bouncer:
+      enabled: true
+      crowdsecMode: stream
+      crowdsecLapiScheme: http
+      crowdsecLapiHost: crowdsec-service.default.svc.cluster.local:8080
+      crowdsecAppsecEnabled: true
+      crowdsecAppsecHost: crowdsec-appsec-service.default.svc.cluster.local:7422
+      crowdsecAppsecPath: "/"
+      crowdsecAppsecFailureBlock: true
+      crowdsecAppsecUnreachableBlock: true
+      crowdsecAppsecBodyLimit: 10485760
+      crowdsecLapiKey: <YOUR-BOUNCER-KEY>
+      crowdsecLapiPath: "/"
+      crowdsecLapiTLSInsecureVerify: true
+```
+
 You can see all the configuration options in the [bouncer documentation](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin).
 You can also refer to a [full traefik and CrowdSec stack on kubernetes](https://raw.githubusercontent.com/maxlerebourg/crowdsec-bouncer-traefik-plugin/main/examples/kubernetes/README.md)
 
