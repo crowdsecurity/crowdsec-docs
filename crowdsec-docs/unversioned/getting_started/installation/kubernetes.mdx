@@ -12,12 +12,16 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Kubernetes Deployment
 
-Before getting started, it is advised to read the [introduction](/unversioned/getting_started/introduction.mdx) page to understand the prerequisites and concepts for running CrowdSec.
+Before getting started, it is advised to read the
+[introduction](/unversioned/getting_started/introduction.mdx) page to understand
+the prerequisites and concepts for running CrowdSec.
 
 ## Requirements
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [Helm](https://helm.sh/docs/intro/install/)
+
+Even if an installation could be possible without Helm, it's not documented for now.
 
 ## Helm Repository Installation
 
@@ -58,7 +62,33 @@ lapi:
       value: "k8s linux test"
 ```
 
-If you want more information about the configuration, you can check the default [values.yaml](https://artifacthub.io/packages/helm/crowdsec/crowdsec#values)
+Acquisition is done by reading logs directly from pods. You select which pods to
+watch thanks to `namespace` and `podName`, and you have to tag the logs with a
+program so CrowdSec knows which parser should handle them. For example, if you
+set program: nginx, the nginx parser will pick them up. CrowdSec will
+automatically attach to the right pods and feed the logs into the right parsers.
+
+<details>
+    <summary>Why `program` and not `type` ?</summary>
+
+In standard standalone setups, documentation states that the labels should be
+name `type` with the type being the parsed log program (eg nginx, traefik). A
+transformation from `type` to `program` is done by the first stage parser
+`crowdsecurity/syslog-logs` which is not relevant in a Kubernetes context.
+</details>
+
+<details>
+    <summary>How collections fit in kubernetes environment?</summary>
+
+Collections are "recipes" for understanding logs; they don’t find pods on their
+own. You choose which pods to read, and you tag those logs with a program (like
+nginx or traefik). When the tag matches what a collection expects, its rules
+run; if it doesn’t, they stay idle. One log stream can match several collections
+if the tags fit.
+</details>
+
+If you want more information about the configuration, you can check the default
+[values.yaml](https://artifacthub.io/packages/helm/crowdsec/crowdsec#values)
 
 Then, you can install the Security Engine with the following command:
 
@@ -80,18 +110,33 @@ crowdsec-agent-kf9fr 1/1 Running 0 34s
 crowdsec-lapi-777c469947-jbk9q 1/1 Running 0 34s
 ```
 
-### Install Remediation Component
+### A word About Source IPs
 
-:::info
-Depends which ingress controller you are using, you can install the remediation component.
-:::
+For CrowdSec to do its job in Kubernetes, it needs to see the real client IP. If
+not, every request will just look like it’s coming from your ingress controller
+or load balancer, and CrowdSec won’t know who the actual attacker is. To fix
+this, you need to make sure the original IP gets passed through. Depending on
+your setup, that could mean turning on the proxy-protocol in your ingress,
+setting externalTrafficPolicy: Local on Services, or tweaking things like
+real_ip_header and set_real_ip_from if you’re using NGINX. The exact steps
+depend on your stack, but the main idea is simple: CrowdSec needs the real IP,
+not the proxy’s.
 
-First you need to already have an ingress controller installed in your cluster (we consider that you installed it using helm).
+### A Word About Remediation Component
+
+Installing the CrowdSec Engine as a local API and log processors is very useful
+to detect aggressive behaviors, but no remediation action will be taken upon it.
+To get remediation actions, one has to install remediation component. As of now
+remediation can only happen at ingress level.
 
 For now, we support:
 
-* Traefik
-* Nginx
+* [Ingress Nginx](/bouncers/ingress-nginx.mdx)
+* [Traefik Ingress](/bouncers/traefik.mdx)
+
+Please note that the [Traefik Kubernetes Ingress (Third party
+development)](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin))
+is maintained outside CrowdSec
 
 Before installing the remediation component, you need to generate API key to communicate with the LAPI.
 
@@ -102,7 +147,8 @@ If you **have persistentVolumes enabled** in `values.yaml`, you can generate the
 kubectl -n crowdsec exec -it crowdsec-lapi-<pod-id> -- cscli bouncers add my-bouncer-name
 ```
 
-Else you **don't have persistentVolumes enabled**, you need to specify your key in the `values.yaml` file:
+Else you **don't have persistentVolumes enabled**, you need to specify your key
+in the crowdsec helm `values.yaml` file:
 
 ```yaml
 lapi:
@@ -119,84 +165,31 @@ lapi:
 ```
 :::
 
-Then, you can install the remediation component with the following command:
+### A word about databases
 
+By default, CrowdSec uses a SQLite database, which does not support replication.
+In a Kubernetes environment, this limitation prevents the Local API from being
+replicated.
 
-#### Traefik
+For production deployments on Kubernetes, we recommend using a database engine
+that can be deployed in a replicated or highly available way, such as MariaDB or
+PostgreSQL. You can leverage existing operators to manage these databases:
+* [mariadb operator](https://mariadb.com/resources/blog/get-started-with-mariadb-in-kubernetes-and-mariadb-operator/)
+* [postgresql operator](https://github.com/cloudnative-pg/cloudnative-pg)
 
-Traefik expects a resource of "Middleware" type named "bouncer", which we will create now.
+Configuration those databases is out of scope of this documentation.
+<!-- We want to create blogpost where we do it -->
 
-Here is bouncer-middleware.yaml:
-  
-```yaml
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: bouncer
-  namespace: traefik
-spec:
-  plugin:
-    bouncer:
-      enabled: true
-      crowdsecMode: stream
-      crowdsecLapiScheme: https
-      crowdsecLapiHost: crowdsec-service.crowdsec:8080
-      crowdsecLapiKey: mysecretkey12345
-```
+:::warning
 
-You can see all the configuration options in the [bouncer documentation](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin).
+SQLite may be suitable for testing or low traffic clusters, but it is not
+recommended for Kubernetes production deployments. Besides the lack of
+replication, SQLite can also become a performance bottleneck under heavy load.
 
-Now, you can install the remediation component:
-
-```bash
-kubectl apply -f bouncer-middleware.yaml
-```
-
-#### Nginx
-
-:::info
-We supposed that you have already installed the Nginx ingress controller using this [helm chart](https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx).
 :::
-
-We need to patch ingress-nginx helm chart to add and enable [the crowdsec lua plugin](https://github.com/crowdsecurity/cs-openresty-bouncer).
-You can put this configuration example in a file `crowdsec-ingress-nginx.yaml`:
-
-```yaml
-controller:
-  extraVolumes:
-  - name: crowdsec-bouncer-plugin
-    emptyDir: {}
-  extraInitContainers:
-  - name: init-clone-crowdsec-bouncer
-    image: crowdsecurity/lua-bouncer-plugin
-    imagePullPolicy: IfNotPresent
-    env:
-      - name: API_URL
-        value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080"
-      - name: API_KEY
-        value: "mysecretkey12345"
-      - name: BOUNCER_CONFIG
-        value: "/crowdsec/crowdsec-bouncer.conf"
-    command: ['sh', '-c', "sh /docker_start.sh; mkdir -p /lua_plugins/crowdsec/; cp -R /crowdsec/* /lua_plugins/crowdsec/"]
-    volumeMounts:
-    - name: crowdsec-bouncer-plugin
-      mountPath: /lua_plugins
-  extraVolumeMounts:
-  - name: crowdsec-bouncer-plugin
-    mountPath: /etc/nginx/lua/plugins/crowdsec
-    subPath: crowdsec
-  config:
-    plugins: "crowdsec"
-    lua-shared-dicts: "crowdsec_cache: 50m"
-```
-
-Once we have this patch we can upgrade the ingress-nginx chart
-
-```bash
-helm -n ingress-nginx upgrade -f ingress-nginx-values.yaml -f crowdsec-ingress-bouncer.yaml ingress-nginx ingress-nginx/ingress-nginx
-```
-
 
 ## Next Steps?
 
-Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.mdx) you will find the next steps to configure and optimize your installation.
+Great, you now have CrowdSec installed on your system. Within the [post
+installation steps](/getting_started/next_steps.mdx) you will find the next
+steps to configure and optimize your installation.
