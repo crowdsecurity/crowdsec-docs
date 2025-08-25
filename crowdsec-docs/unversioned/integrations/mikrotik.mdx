@@ -66,7 +66,7 @@ Then you need to add the following script:
 :local url "https://admin.api.crowdsec.net/v1/integrations/<integration_id>/content"
 :local fileName "blocklist.rsc"
 :log info "$name fetch blocklist from $url"
-/tool fetch url="$url" mode=https dst-path=$fileName http-auth-scheme=basic user="<username>" password="<password>" idle-timeout="30s"
+/tool fetch url="$url" mode=https dst-path=$fileName http-auth-scheme=basic user="<username>" password="<password>" idle-timeout="30s" http-header-field="Accept-Encoding:gzip"
 :if ([:len [/file find name=$fileName]] > 0) do={
     :log info "removing old ipv4 blocklist"
      /ip/firewall/address-list/remove [ find where list="crowdsec-integration" ];
