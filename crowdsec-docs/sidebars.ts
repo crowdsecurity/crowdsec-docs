@@ -714,6 +714,7 @@ const sidebarsConfig: SidebarConfig = {
 			],
 		},
 		{ type: "doc", id: "appsec/configuration" },
+		{ type: "doc", id: "appsec/vpatch_and_crs" },
 		{
 			type: "category",
 			label: "Rules",
