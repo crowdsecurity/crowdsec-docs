@@ -134,7 +134,7 @@ kubectl apply -f bouncer-middleware.yaml
 When Traefik operates behind another proxy (such as a load balancer, CDN, etc ...), the source IP seen by Traefik may be the wrong one instead of the real client.
 To ensure Crowdsec applies decisions correctly based on the real client IP, it's crucial to properly forward and trust headers.
 
-First you configure Treafik to trust the upstream forwarded headers. Traefik has [`forwardedHeaders.trustedIPs`](https://doc.traefik.io/traefik/routing/entrypoints/?utm_source=chatgpt.com#forwarded-headers) and [`proxyProtocol.trustedIPs`](https://doc.traefik.io/traefik/routing/entrypoints/?utm_source=chatgpt.com#forwarded-headers) directives.
+First you configure Treafik to trust the upstream forwarded headers. Traefik has [`forwardedHeaders.trustedIPs`](https://doc.traefik.io/traefik/routing/entrypoints/#forwarded-headers) and [`proxyProtocol.trustedIPs`](https://doc.traefik.io/traefik/routing/entrypoints/#forwarded-headers) directives.
 
 
 Then, you need to configure the middleware to trust as well the IP:
