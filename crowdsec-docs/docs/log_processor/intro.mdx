@@ -4,13 +4,13 @@ title: Introduction
 sidebar_position: 1
 ---
 
-The Log Processor is one of the core component of the Security Engine to:
+The Log Processor is a core component of the Security Engine. It:
 
-- Read logs from [Data Sources](log_processor/data_sources/introduction.md) in the form of Acquistions.
-- Parse the logs and extract relevant information using [Parsers](log_processor/parsers/introduction.mdx).
-- Enrich the parsed information with additional context such as GEOIP, ASN using [Enrichers](log_processor/parsers/enricher.md).  
-- Monitor the logs for patterns of interest known as [Scenarios](log_processor/scenarios/introduction.mdx).
-- Push alerts to the Local API (LAPI) for alert/decisions to be stored within the database.
+- Reads logs from [Data Sources](log_processor/data_sources/introduction.md) via Acquistions.
+- Parses logs and extract relevant information using [Parsers](log_processor/parsers/introduction.mdx).
+- Enriches the parsed information with additional context such as GEOIP, ASN using [Enrichers](log_processor/parsers/enricher.md).  
+- Monitors patterns of interest via [Scenarios](log_processor/scenarios/introduction.mdx).
+- Pushes alerts to the Local API (LAPI), where alert/decisions are stored.
 
 !TODO: Add diagram of the log processor pipeline
 - Read logs from datasources
@@ -21,7 +21,7 @@ The Log Processor is one of the core component of the Security Engine to:
 
 ## Introduction
 
-The Log Processor is an internal core component of the Security Engine in charge of reading logs from Data Sources, parsing them, enriching them, and monitoring them for patterns of interest.
+The Log Processor reads logs from Data Sources, parses and enriches them, and monitors them for patterns of interest.
 
 Once a pattern of interest is detected, the Log Processor will push alerts to the Local API (LAPI) for alert/decisions to be stored within the database.
 
@@ -35,10 +35,10 @@ Data Sources are individual modules that can be loaded at runtime by the Log Pro
 
 Acquisitions are the configuration files that define how the Log Processor should read logs from a Data Source. Acquisitions are defined in YAML format and are loaded by the Log Processor at runtime.
 
-We have two ways to define Acquisitions within the [configuration directory](/u/troubleshooting/security_engine#where-is-configuration-stored) :
+We support two ways to define Acquisitions in the [configuration directory](/u/troubleshooting/security_engine#where-is-configuration-stored):
 
-- `acquis.yaml` file: This used to be only place to define Acquisitions prior to `1.5.0`. This file is still supported for backward compatibility.
-- `acquis.d` folder: This is a directory where you can define multiple Acquisitions in separate files. This is useful when you want to auto generate files using an external application such as ansible.
+- `acquis.yaml` file: the legacy, single-file configuration (still supported)
+- `acquis.d` directory: a directory of multiple acquisition files (since v1.5.0, recommended for any non-trivial setup)
 
 ```yaml title="Example Acquisition Configuration"
 ## /etc/crowdsec/acquis.d/file.yaml
@@ -50,7 +50,31 @@ labels:
  type: syslog
 ```
 
+When CrowdSec is installed via a package manager on a fresh system, the package manager may run `cscli setup` in **unattended** mode.
+It detects installed services and common log file locations, installs the related Hub collections, and generates acquisition files under `acquis.d/setup.<service>.yaml`, e.g. `setup.linux.yaml`).
+
+Generated files are meant to be managed by crowdsec; don’t edit them in place. If you need changes, delete the generated file and create your own.
+
+When upgrading or reinstalling crowdsec, it detects non-generated or modified files and won’t overwrite your custom acquisitions.
+
+:::caution
+
+Make sure the same data sources aren’t ingested more than once: duplicating inputs can artificially increase scenario sensitivity.
+
+:::
+
+Examples:
+
+ - If an application logs to both `journald` and `/var/log/*`, you usually only need one of them.
+
+ - If an application writes to `/var/log/syslog` or `/var/log/messages`, it’s already acquired by `setup.linux.yaml` (since 1.7) or `acquis.yam`. You don’t need to add a separate acquisition for the same logs.
+
+For config-managed deployments (e.g., Ansible), set the environment variable `CROWDSEC_SETUP_UNATTENDED_DISABLE` to any non-empty value to skip the automated setup.
+In that case, ensure you configure at least one data source and install the OS collection (e.g., crowdsecurity/linux).
+
 For more information on Data Sources and Acquisitions, see the [Data Sources](log_processor/data_sources/introduction.md) documentation.
+
+For more information on the automated configuration, see the command `cscli setup`.
 
 ## Collections
 
