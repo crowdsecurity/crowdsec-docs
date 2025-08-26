@@ -2,8 +2,6 @@
 id: cscli_appsec-configs_install
 title: cscli appsec-configs install
 ---
-## cscli appsec-configs install
-
 Install given appsec-config(s)
 
 ### Synopsis

@@ -2,8 +2,6 @@
 id: cscli_support_dump
 title: cscli support dump
 ---
-## cscli support dump
-
 Dump all your configuration to a zip file for easier support
 
 ### Synopsis

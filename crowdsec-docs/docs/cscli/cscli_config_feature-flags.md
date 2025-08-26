@@ -2,8 +2,6 @@
 id: cscli_config_feature-flags
 title: cscli config feature-flags
 ---
-## cscli config feature-flags
-
 Displays feature flag status
 
 ### Synopsis

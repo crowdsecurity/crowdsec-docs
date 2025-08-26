@@ -2,8 +2,6 @@
 id: cscli_appsec-rules_inspect
 title: cscli appsec-rules inspect
 ---
-## cscli appsec-rules inspect
-
 Inspect given appsec-rule(s)
 
 ### Synopsis

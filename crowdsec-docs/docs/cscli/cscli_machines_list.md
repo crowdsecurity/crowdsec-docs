@@ -2,8 +2,6 @@
 id: cscli_machines_list
 title: cscli machines list
 ---
-## cscli machines list
-
 list all machines in the database
 
 ### Synopsis

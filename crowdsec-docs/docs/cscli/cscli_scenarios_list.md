@@ -2,8 +2,6 @@
 id: cscli_scenarios_list
 title: cscli scenarios list
 ---
-## cscli scenarios list
-
 List scenario(s)
 
 ### Synopsis

@@ -2,8 +2,6 @@
 id: cscli_setup
 title: cscli setup
 ---
-## cscli setup
-
 Tools to configure crowdsec
 
 ### Synopsis

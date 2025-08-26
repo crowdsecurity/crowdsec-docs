@@ -2,8 +2,6 @@
 id: cscli_lapi_register
 title: cscli lapi register
 ---
-## cscli lapi register
-
 Register a machine to Local API (LAPI)
 
 ### Synopsis

@@ -2,8 +2,6 @@
 id: cscli_appsec-rules_remove
 title: cscli appsec-rules remove
 ---
-## cscli appsec-rules remove
-
 Remove given appsec-rule(s)
 
 ### Synopsis

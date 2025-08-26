@@ -2,8 +2,6 @@
 id: cscli_setup_validate
 title: cscli setup validate
 ---
-## cscli setup validate
-
 Validate a setup file
 
 ### Synopsis

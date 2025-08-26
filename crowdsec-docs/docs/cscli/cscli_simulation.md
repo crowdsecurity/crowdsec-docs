@@ -2,8 +2,6 @@
 id: cscli_simulation
 title: cscli simulation
 ---
-## cscli simulation
-
 Manage simulation status of scenarios
 
 ### Examples

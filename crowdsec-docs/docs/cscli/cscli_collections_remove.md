@@ -2,8 +2,6 @@
 id: cscli_collections_remove
 title: cscli collections remove
 ---
-## cscli collections remove
-
 Remove given collection(s)
 
 ### Synopsis

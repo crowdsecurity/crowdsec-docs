@@ -2,8 +2,6 @@
 id: cscli_appsec-configs_upgrade
 title: cscli appsec-configs upgrade
 ---
-## cscli appsec-configs upgrade
-
 Upgrade given appsec-config(s)
 
 ### Synopsis

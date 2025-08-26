@@ -2,8 +2,6 @@
 id: cscli_decisions_list
 title: cscli decisions list
 ---
-## cscli decisions list
-
 List decisions from LAPI
 
 ```

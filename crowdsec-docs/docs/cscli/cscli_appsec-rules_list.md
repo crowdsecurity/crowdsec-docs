@@ -2,8 +2,6 @@
 id: cscli_appsec-rules_list
 title: cscli appsec-rules list
 ---
-## cscli appsec-rules list
-
 List appsec-rule(s)
 
 ### Synopsis

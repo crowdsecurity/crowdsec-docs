@@ -2,8 +2,6 @@
 id: cscli_setup_interactive
 title: cscli setup interactive
 ---
-## cscli setup interactive
-
 Interactive setup
 
 ### Synopsis

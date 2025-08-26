@@ -2,8 +2,6 @@
 id: cscli_hub_branch
 title: cscli hub branch
 ---
-## cscli hub branch
-
 Show selected hub branch
 
 ### Synopsis

@@ -2,8 +2,6 @@
 id: cscli_alerts_inspect
 title: cscli alerts inspect
 ---
-## cscli alerts inspect
-
 Show info about an alert
 
 ```

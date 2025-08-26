@@ -2,8 +2,6 @@
 id: cscli_lapi_context_add
 title: cscli lapi context add
 ---
-## cscli lapi context add
-
 Add context to send with alerts. You must specify the output key with the expr value you want
 
 ```

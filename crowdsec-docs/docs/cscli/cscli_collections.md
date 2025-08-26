@@ -2,8 +2,6 @@
 id: cscli_collections
 title: cscli collections
 ---
-## cscli collections
-
 Manage hub collections
 
 ### Examples

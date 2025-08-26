@@ -2,8 +2,6 @@
 id: cscli_hub
 title: cscli hub
 ---
-## cscli hub
-
 Manage hub index
 
 ### Synopsis

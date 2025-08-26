@@ -2,8 +2,6 @@
 id: cscli_hubtest_explain
 title: cscli hubtest explain
 ---
-## cscli hubtest explain
-
 explain [test_name]
 
 ```

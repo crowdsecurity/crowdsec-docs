@@ -2,8 +2,6 @@
 id: cscli_bouncers_add
 title: cscli bouncers add
 ---
-## cscli bouncers add
-
 add a single bouncer to the database
 
 ```

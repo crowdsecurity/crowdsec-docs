@@ -2,8 +2,6 @@
 id: cscli
 title: cscli
 ---
-## cscli
-
 cscli allows you to manage crowdsec
 
 ### Synopsis
