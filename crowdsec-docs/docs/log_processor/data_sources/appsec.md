@@ -35,13 +35,17 @@ Defaults to `127.0.0.1:7442`.
 The path the Application Security Component will respond to.
 Defaults to `/`.
 
-### `appsec_config`
+### `appsec_configs`
 
 The name of the appsec-config to use (as seen in `cscli appsec-configs list`).
 
+### `appsec_config`
+
+**Deprecated**, use [`appsec_configs`](#appsec_configs)
+
 ### `appsec_config_path`
 
-The path to the appsec-config to use (as seen in `cscli appsec-configs list`).
+**Deprecated**, use [`appsec_configs`](#appsec_configs)
 
 ### `routines`
 
