@@ -135,7 +135,7 @@ The description allows for many other rules to be specified (blackhole, distinct
 See [Hub](https://hub.crowdsec.net/browse/#configurations) to explore scenarios and their capabilities, or see below some examples:
 
  - [ssh brute-force detection](https://github.com/crowdsecurity/hub/blob/master/scenarios/crowdsecurity/ssh-bf.yaml)
- - [distinct http-404 scan](https://github.com/crowdsecurity/hub/blob/master/scenarios/crowdsecurity/http-scan-uniques_404.yaml)
+ - [http-admin-interface-probing](https://github.com/crowdsecurity/hub/blob/master/scenarios/crowdsecurity/http-admin-interface-probing.yaml)
  - [iptables port scan](https://github.com/crowdsecurity/hub/blob/master/scenarios/crowdsecurity/iptables-scan-multi_ports.yaml)
 
 You can as well [write your own](/scenarios/create.md)!
