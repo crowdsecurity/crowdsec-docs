@@ -711,6 +711,7 @@ const sidebarsConfig: SidebarConfig = {
 			items: [
 				{ type: "doc", id: "appsec/quickstart/nginxopenresty" },
 				{ type: "doc", id: "appsec/quickstart/traefik" },
+				{ type: "doc", id: "appsec/quickstart/wordpress" },
 			],
 		},
 		{ type: "doc", id: "appsec/configuration" },
