@@ -1,6 +1,6 @@
 ---
 id: protocol
-title: AppSec Component Communication Protocol
+title: WAF / Bouncer Communication Protocol
 sidebar_position: 5
 ---
 
