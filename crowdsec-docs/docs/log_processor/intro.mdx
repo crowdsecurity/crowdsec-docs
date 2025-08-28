@@ -50,31 +50,7 @@ labels:
  type: syslog
 ```
 
-When CrowdSec is installed via a package manager on a fresh system, the package manager may run `cscli setup` in **unattended** mode.
-It detects installed services and common log file locations, installs the related Hub collections, and generates acquisition files under `acquis.d/setup.<service>.yaml`, e.g. `setup.linux.yaml`).
-
-Generated files are meant to be managed by crowdsec; don’t edit them in place. If you need changes, delete the generated file and create your own.
-
-When upgrading or reinstalling crowdsec, it detects non-generated or modified files and won’t overwrite your custom acquisitions.
-
-:::caution
-
-Make sure the same data sources aren’t ingested more than once: duplicating inputs can artificially increase scenario sensitivity.
-
-:::
-
-Examples:
-
- - If an application logs to both `journald` and `/var/log/*`, you usually only need one of them.
-
- - If an application writes to `/var/log/syslog` or `/var/log/messages`, it’s already acquired by `setup.linux.yaml` (since 1.7) or `acquis.yam`. You don’t need to add a separate acquisition for the same logs.
-
-For config-managed deployments (e.g., Ansible), set the environment variable `CROWDSEC_SETUP_UNATTENDED_DISABLE` to any non-empty value to skip the automated setup.
-In that case, ensure you configure at least one data source and install the OS collection (e.g., crowdsecurity/linux).
-
 For more information on Data Sources and Acquisitions, see the [Data Sources](log_processor/data_sources/introduction.md) documentation.
-
-For more information on the automated configuration, see the command `cscli setup`.
 
 ## Collections
 
