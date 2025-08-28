@@ -1,10 +1,8 @@
 ---
 id: intro
-title: Acquisition Datasources Introduction
+title: Acquisition Datasources
 sidebar_position: 1
 ---
-
-## Datasources
 
 To monitor applications, the Security Engine needs to read logs.
 DataSources define where to access them (either as files, or over the network from a centralized logging service).
@@ -33,12 +31,12 @@ When upgrading or reinstalling CrowdSec, it detects non-generated or modified fi
 
 Make sure the same data sources are not ingested more than once: duplicating inputs can artificially increase scenario sensitivity.
 
-:::
-
 Examples:
 
 - If an application logs to both `journald` and `/var/log/*`, you usually only need one of them.
 - If an application writes to `/var/log/syslog` or `/var/log/messages`, it’s already acquired by `setup.linux.yaml` (since 1.7) or `acquis.yam`. You don’t need to add a separate acquisition for the same logs.
+
+:::
 
 For config-managed deployments (e.g., Ansible), set the environment variable `CROWDSEC_SETUP_UNATTENDED_DISABLE` to any non-empty value to skip the automated setup.
 In that case, ensure you configure at least one data source and install the OS collection (e.g., crowdsecurity/linux).
