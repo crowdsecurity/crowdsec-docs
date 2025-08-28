@@ -115,7 +115,7 @@ We can now create a scenario that will trigger when a single IPs triggers this r
 type: leaky
 format: 3.0
 name: crowdsecurity/foobar-enum
-description: "Ban IPs repeateadly triggering out of band rules"
+description: "Ban IPs repeatedly triggering out of band rules"
 filter: "evt.Meta.log_type == 'appsec-info' && evt.Meta.rule_name == 'crowdsecurity/foobar-access'"
 distinct: evt.Meta.target_uri
 leakspeed: "60s"

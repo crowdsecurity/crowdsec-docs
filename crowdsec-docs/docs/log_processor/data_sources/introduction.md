@@ -34,7 +34,7 @@ Make sure the same data sources are not ingested more than once: duplicating inp
 Examples:
 
 - If an application logs to both `journald` and `/var/log/*`, you usually only need one of them.
-- If an application writes to `/var/log/syslog` or `/var/log/messages`, it’s already acquired by `setup.linux.yaml` (since 1.7) or `acquis.yam`. You don’t need to add a separate acquisition for the same logs.
+- If an application writes to `/var/log/syslog` or `/var/log/messages`, it’s already acquired by `setup.linux.yaml` (since 1.7) or `acquis.yaml`. You don’t need to add a separate acquisition for the same logs.
 
 :::
 
@@ -56,7 +56,7 @@ Name | Type | Stream | One-shot
 -----|------|--------|----------
 [Appsec](/log_processor/data_sources/appsec) | expose HTTP service for the Appsec component | yes | no
 [AWS cloudwatch](/log_processor/data_sources/cloudwatch) | single stream or log group | yes | yes
-[AWS kinesis](/log_processor/data_sources/kinesis)| read logs from a kinesis strean | yes | no
+[AWS kinesis](/log_processor/data_sources/kinesis)| read logs from a kinesis stream | yes | no
 [AWS S3](/log_processor/data_sources/s3)| read logs from a S3 bucket | yes | yes
 [docker](/log_processor/data_sources/docker) | read logs from docker containers | yes | yes
 [file](/log_processor/data_sources/file) | single files, glob expressions and .gz files | yes | yes
@@ -105,7 +105,7 @@ By default, when reading logs in real-time, crowdsec will use the time at which 
 
 Setting this option to `true` will force crowdsec to use the timestamp from the log as the time of the event.
 
-It is mandatory to set this if your application buffers logs before writting them (for example, IIS when writing to a log file, or logs written to S3 from almost any AWS service).<br/>
+It is mandatory to set this if your application buffers logs before writing them (for example, IIS when writing to a log file, or logs written to S3 from almost any AWS service).<br/>
 If not set, then crowdsec will think all logs happened at once, which can lead to some false positive detections.
 
 ### `labels`
