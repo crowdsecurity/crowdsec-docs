@@ -2,8 +2,6 @@
 id: cscli_parsers_list
 title: cscli parsers list
 ---
-## cscli parsers list
-
 List parser(s)
 
 ### Synopsis

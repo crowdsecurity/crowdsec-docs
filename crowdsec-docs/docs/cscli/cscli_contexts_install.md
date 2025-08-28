@@ -2,8 +2,6 @@
 id: cscli_contexts_install
 title: cscli contexts install
 ---
-## cscli contexts install
-
 Install given context(s)
 
 ### Synopsis

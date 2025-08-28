@@ -456,21 +456,6 @@ const sidebarsConfig: SidebarConfig = {
 		},
 		{
 			type: "category",
-			label: "cscli dashboard",
-			link: {
-				type: "doc",
-				id: "cscli/cscli_dashboard",
-			},
-			items: [
-				"cscli/cscli_dashboard_remove",
-				"cscli/cscli_dashboard_setup",
-				"cscli/cscli_dashboard_start",
-				"cscli/cscli_dashboard_stop",
-				"cscli/cscli_dashboard_show-password",
-			],
-		},
-		{
-			type: "category",
 			label: "cscli decisions",
 			link: {
 				type: "doc",
@@ -611,6 +596,23 @@ const sidebarsConfig: SidebarConfig = {
 				"cscli/cscli_scenarios_list",
 				"cscli/cscli_scenarios_remove",
 				"cscli/cscli_scenarios_upgrade",
+			],
+		},
+		{
+			type: "category",
+			label: "cscli setup",
+			link: {
+				type: "doc",
+				id: "cscli/cscli_setup",
+			},
+			items: [
+				"cscli/cscli_setup",
+				"cscli/cscli_setup_detect",
+				"cscli/cscli_setup_install-acquisition",
+				"cscli/cscli_setup_install-hub",
+				"cscli/cscli_setup_interactive",
+				"cscli/cscli_setup_unattended",
+				"cscli/cscli_setup_validate",
 			],
 		},
 		{

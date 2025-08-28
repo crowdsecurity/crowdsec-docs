@@ -2,8 +2,6 @@
 id: cscli_decisions
 title: cscli decisions
 ---
-## cscli decisions
-
 Manage decisions
 
 ### Synopsis

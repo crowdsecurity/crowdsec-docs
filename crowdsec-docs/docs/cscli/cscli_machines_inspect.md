@@ -2,8 +2,6 @@
 id: cscli_machines_inspect
 title: cscli machines inspect
 ---
-## cscli machines inspect
-
 inspect a machine by name
 
 ```

@@ -2,8 +2,6 @@
 id: cscli_postoverflows_list
 title: cscli postoverflows list
 ---
-## cscli postoverflows list
-
 List postoverflow(s)
 
 ### Synopsis

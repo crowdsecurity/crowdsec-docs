@@ -2,8 +2,6 @@
 id: cscli_allowlists_check
 title: cscli allowlists check
 ---
-## cscli allowlists check
-
 Check if a value is in an allowlist
 
 ```

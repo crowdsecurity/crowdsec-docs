@@ -2,8 +2,6 @@
 id: cscli_alerts_list
 title: cscli alerts list
 ---
-## cscli alerts list
-
 List alerts
 
 ### Synopsis

@@ -2,8 +2,6 @@
 id: cscli_alerts_flush
 title: cscli alerts flush
 ---
-## cscli alerts flush
-
 Flush alerts
 /!\ This command can be used only on the same machine than the local API
 

@@ -2,8 +2,6 @@
 id: cscli_appsec-configs_inspect
 title: cscli appsec-configs inspect
 ---
-## cscli appsec-configs inspect
-
 Inspect given appsec-config(s)
 
 ### Synopsis

@@ -2,8 +2,6 @@
 id: cscli_collections_list
 title: cscli collections list
 ---
-## cscli collections list
-
 List collection(s)
 
 ### Synopsis

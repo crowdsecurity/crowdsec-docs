@@ -2,8 +2,6 @@
 id: cscli_allowlists_create
 title: cscli allowlists create
 ---
-## cscli allowlists create
-
 Create a new allowlist
 
 ```

@@ -2,8 +2,6 @@
 id: cscli_collections_upgrade
 title: cscli collections upgrade
 ---
-## cscli collections upgrade
-
 Upgrade given collection(s)
 
 ### Synopsis

@@ -2,8 +2,6 @@
 id: cscli_machines_validate
 title: cscli machines validate
 ---
-## cscli machines validate
-
 validate a machine to access the local API
 
 ### Synopsis

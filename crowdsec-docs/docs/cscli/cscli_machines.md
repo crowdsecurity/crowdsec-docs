@@ -2,8 +2,6 @@
 id: cscli_machines
 title: cscli machines
 ---
-## cscli machines
-
 Manage local API machines [requires local API]
 
 ### Synopsis

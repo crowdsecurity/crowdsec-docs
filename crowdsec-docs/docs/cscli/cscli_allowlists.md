@@ -2,8 +2,6 @@
 id: cscli_allowlists
 title: cscli allowlists
 ---
-## cscli allowlists
-
 Manage centralized allowlists
 
 ### Options

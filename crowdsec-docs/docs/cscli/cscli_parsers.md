@@ -2,8 +2,6 @@
 id: cscli_parsers
 title: cscli parsers
 ---
-## cscli parsers
-
 Manage hub parsers
 
 ### Examples

@@ -2,8 +2,6 @@
 id: cscli_alerts_delete
 title: cscli alerts delete
 ---
-## cscli alerts delete
-
 Delete alerts
 /!\ This command can be used only on the same machine than the local API.
 

@@ -2,8 +2,6 @@
 id: cscli_decisions_add
 title: cscli decisions add
 ---
-## cscli decisions add
-
 Add decision to LAPI
 
 ```

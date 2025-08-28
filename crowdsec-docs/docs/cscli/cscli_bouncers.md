@@ -2,8 +2,6 @@
 id: cscli_bouncers
 title: cscli bouncers
 ---
-## cscli bouncers
-
 Manage bouncers [requires local API]
 
 ### Synopsis

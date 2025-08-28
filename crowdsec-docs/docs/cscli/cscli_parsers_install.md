@@ -2,8 +2,6 @@
 id: cscli_parsers_install
 title: cscli parsers install
 ---
-## cscli parsers install
-
 Install given parser(s)
 
 ### Synopsis

@@ -2,8 +2,6 @@
 id: cscli_appsec-configs
 title: cscli appsec-configs
 ---
-## cscli appsec-configs
-
 Manage hub appsec-configs
 
 ### Examples

@@ -2,8 +2,6 @@
 id: cscli_console_status
 title: cscli console status
 ---
-## cscli console status
-
 Shows status of the console options
 
 ```

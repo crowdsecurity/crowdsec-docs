@@ -2,8 +2,6 @@
 id: cscli_allowlists_add
 title: cscli allowlists add
 ---
-## cscli allowlists add
-
 Add content to an allowlist
 
 ```

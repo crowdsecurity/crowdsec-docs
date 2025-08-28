@@ -2,8 +2,6 @@
 id: cscli_hub_types
 title: cscli hub types
 ---
-## cscli hub types
-
 List supported item types
 
 ### Synopsis

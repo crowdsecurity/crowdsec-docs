@@ -2,8 +2,6 @@
 id: cscli_collections_inspect
 title: cscli collections inspect
 ---
-## cscli collections inspect
-
 Inspect given collection(s)
 
 ### Synopsis

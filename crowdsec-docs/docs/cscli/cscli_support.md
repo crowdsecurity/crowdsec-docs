@@ -2,8 +2,6 @@
 id: cscli_support
 title: cscli support
 ---
-## cscli support
-
 Provide commands to help during support
 
 ### Options

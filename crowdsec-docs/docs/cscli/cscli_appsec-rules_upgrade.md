@@ -2,8 +2,6 @@
 id: cscli_appsec-rules_upgrade
 title: cscli appsec-rules upgrade
 ---
-## cscli appsec-rules upgrade
-
 Upgrade given appsec-rule(s)
 
 ### Synopsis

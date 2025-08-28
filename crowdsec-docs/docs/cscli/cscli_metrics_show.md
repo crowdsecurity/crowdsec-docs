@@ -2,8 +2,6 @@
 id: cscli_metrics_show
 title: cscli metrics show
 ---
-## cscli metrics show
-
 Display all or part of the available metrics.
 
 ### Synopsis

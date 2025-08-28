@@ -2,8 +2,6 @@
 id: cscli_appsec-rules
 title: cscli appsec-rules
 ---
-## cscli appsec-rules
-
 Manage hub appsec-rules
 
 ### Examples

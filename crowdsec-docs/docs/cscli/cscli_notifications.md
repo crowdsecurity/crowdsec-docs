@@ -2,8 +2,6 @@
 id: cscli_notifications
 title: cscli notifications
 ---
-## cscli notifications
-
 Helper for notification plugin configuration
 
 ### Synopsis

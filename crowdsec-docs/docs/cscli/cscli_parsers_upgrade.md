@@ -2,8 +2,6 @@
 id: cscli_parsers_upgrade
 title: cscli parsers upgrade
 ---
-## cscli parsers upgrade
-
 Upgrade given parser(s)
 
 ### Synopsis

@@ -2,8 +2,6 @@
 id: cscli_scenarios_upgrade
 title: cscli scenarios upgrade
 ---
-## cscli scenarios upgrade
-
 Upgrade given scenario(s)
 
 ### Synopsis

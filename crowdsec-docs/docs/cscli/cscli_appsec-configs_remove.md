@@ -2,8 +2,6 @@
 id: cscli_appsec-configs_remove
 title: cscli appsec-configs remove
 ---
-## cscli appsec-configs remove
-
 Remove given appsec-config(s)
 
 ### Synopsis

@@ -2,8 +2,6 @@
 id: cscli_console
 title: cscli console
 ---
-## cscli console
-
 Manage interaction with Crowdsec console (https://app.crowdsec.net)
 
 ### Options
