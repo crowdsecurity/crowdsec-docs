@@ -15,7 +15,7 @@ sidebar_position: 80
 
 -->
 
-The Application Security Component benchmarks have been run on a AWS EC2 Instance `t2.medium` (2vCPU/4Go RAM).
+The Application Security Component benchmarks have been run on a AWS EC2 Instance `t2.medium` (2vCPU/4GiB RAM).
 
 All the benchmarks have been run with only one `routine` configured for the Application Security Component.
 

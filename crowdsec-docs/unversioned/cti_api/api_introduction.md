@@ -15,7 +15,7 @@ Crowdsec's CTI API presents two primary datasets :
  - **fire** dataset reflects the content of the community blocklist with more context.
  - **smoke** dataset reflects most of the IPs reported by Crowdsec users
 
-> note: The ratio of fire to smoke is around 1% at the time of writting
+> note: The ratio of fire to smoke is around 1% at the time of writing
 
 ## CTI Information
 

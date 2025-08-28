@@ -51,6 +51,6 @@ This module does not support command-line acquisition.
 
 :::warning
 This syslog datasource is currently intended for small setups, and is at risk of losing messages over a few hundreds events/second.
-To process significant amounts of logs, rely on dedicated syslog server such as [rsyslog](https://www.rsyslog.com/), with this server writting logs to files that Security Engine will read from.
+To process significant amounts of logs, rely on dedicated syslog server such as [rsyslog](https://www.rsyslog.com/), with this server writing logs to files that Security Engine will read from.
 This page will be updated with further improvements of this data source.
 :::

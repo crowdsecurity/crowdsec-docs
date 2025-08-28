@@ -250,7 +250,7 @@ Those metrics are a great way to know if your configuration is correct:
 The `Acquisition Metrics` is a great way to know if your parsers are setup correctly:
 
  - If you have 0 **LINES PARSED** for a source : You are probably *missing* a parser, or you have a custom log format that prevents the parser from understanding your logs.
- - However, it's perfectly OK to have a lot of **LINES UNPARSED** : Crowdsec is not a SIEM, and only parses the logs that are relevant to its scenarios. For example, [ssh parser](https://hub.crowdsec.net/author/crowdsecurity/configurations/sshd-logs),  only cares about failed authentication events (at the time of writting).
+ - However, it's perfectly OK to have a lot of **LINES UNPARSED** : Crowdsec is not a SIEM, and only parses the logs that are relevant to its scenarios. For example, [ssh parser](https://hub.crowdsec.net/author/crowdsecurity/configurations/sshd-logs),  only cares about failed authentication events (at the time of writing).
  - **LINES POURED TO BUCKET** tell you that your scenarios are matching your log sources : it means that some events from this log source made all their way to an actual scenario
 
 
