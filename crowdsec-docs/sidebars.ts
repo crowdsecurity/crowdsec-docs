@@ -723,7 +723,6 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/vpatch_and_crs" },
 				{ type: "doc", id: "appsec/alerts_and_scenarios" },
 			]
-
 		},
 		{
 			type: "category",
@@ -741,7 +740,7 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/protocol" },
 				{ type: "doc", id: "appsec/benchmark" },
 			],
-		},		
+		},
 		{ type: "doc", id: "appsec/troubleshooting" },
 	],
 };
