@@ -709,7 +709,7 @@ const sidebarsConfig: SidebarConfig = {
 			type: "category",
 			label: "Installation",
 			items: [
-				{ type: "doc", id: "appsec/quickstart/general_setup"},
+				{ type: "doc", id: "appsec/quickstart/general_setup" },
 				{ type: "doc", id: "appsec/quickstart/nginxopenresty" },
 				{ type: "doc", id: "appsec/quickstart/traefik" },
 				{ type: "doc", id: "appsec/quickstart/wordpress" },
@@ -739,7 +739,7 @@ const sidebarsConfig: SidebarConfig = {
 			label: "References",
 			items: [
 				{ type: "doc", id: "appsec/protocol" },
-				{ type: "doc", id: "appsec/benchmark"},
+				{ type: "doc", id: "appsec/benchmark" },
 			],
 		},		
 		{ type: "doc", id: "appsec/troubleshooting" },
