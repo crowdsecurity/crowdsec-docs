@@ -129,6 +129,20 @@ INFO[...] Starting Appsec server on 127.0.0.1:7422/
 INFO[...] Appsec Runner ready to process event
 ```
 
+
+## Next Steps
+
+Now that the AppSec Component is configured and running, you need to:
+
+1. **Configure your remediation component** to forward requests to `http://127.0.0.1:7422`
+2. **Test the setup** [by triggering a rule](/appsec/quickstart/general.mdx#testing-detection)
+3. **Monitor alerts** with `sudo cscli alerts list` or in the [CrowdSec Console](https://app.crowdsec.net)
+
+For specific remediation component configuration, see:
+- [Nginx/OpenResty Setup](/appsec/quickstart/nginxopenresty.mdx)
+- [Traefik Setup](/appsec/quickstart/traefik.mdx)
+- [WordPress Setup](/appsec/quickstart/wordpress.mdx)
+
 ### Testing Detection
 
 If you've enabled an AppSec-capable bouncer with CrowdSec WAF, you can trigger the crowdsecurity/appsec-generic-test dummy scenario.
@@ -156,19 +170,6 @@ sudo cscli alerts list | grep crowdsecurity/appsec-generic-test
 :::info
 This scenario can only be triggered again after a 1-minute delay.
 :::
-
-## Next Steps
-
-Now that the AppSec Component is configured and running, you need to:
-
-1. **Configure your remediation component** to forward requests to `http://127.0.0.1:7422`
-2. **Test the setup** [by triggering a rule](/appsec/quickstart/general.mdx#testing-detection)
-3. **Monitor alerts** with `sudo cscli alerts list` or in the [CrowdSec Console](https://app.crowdsec.net)
-
-For specific remediation component configuration, see:
-- [Nginx/OpenResty Setup](/appsec/quickstart/nginxopenresty.mdx)
-- [Traefik Setup](/appsec/quickstart/traefik.mdx)
-- [WordPress Setup](/appsec/quickstart/wordpress.mdx)
 
 ## Optional: Advanced Configuration
 
