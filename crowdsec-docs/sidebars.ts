@@ -134,8 +134,9 @@ const sidebarsConfig: SidebarConfig = {
 						id: "log_processor/service-discovery-setup/intro",
 					},
 					items: [
-					"log_processor/service-discovery-setup/detect-yaml", 
-					"log_processor/service-discovery-setup/setup-expr-helpers"],
+						"log_processor/service-discovery-setup/detect-yaml", 
+						"log_processor/service-discovery-setup/setup-expr-helpers"
+					],
 				},
 				{
 					type: "category",
