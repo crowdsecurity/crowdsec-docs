@@ -1,6 +1,6 @@
 ---
 id: alerts_and_scenarios
-title: AppSec Alerts & Scenarios
+title: Alerts & Scenarios
 sidebar_position: 5
 ---
 

@@ -706,17 +706,26 @@ const sidebarsConfig: SidebarConfig = {
 		},
 	],
 	appSecSideBar: [
-		{ type: "doc", id: "appsec/intro", label: "CrowdSec WAF" },
+		{ type: "doc", id: "appsec/intro", label: "CrowdSec WAF - Introduction" },
 		{
 			type: "category",
-			label: "Quickstart",
+			label: "Installation",
 			items: [
+				{ type: "doc", id: "appsec/quickstart/general_setup" },
 				{ type: "doc", id: "appsec/quickstart/nginxopenresty" },
 				{ type: "doc", id: "appsec/quickstart/traefik" },
+				{ type: "doc", id: "appsec/quickstart/wordpress" },
 			],
 		},
-		{ type: "doc", id: "appsec/configuration" },
-		{ type: "doc", id: "appsec/vpatch_and_crs" },
+		{
+			type: "category",
+			label: "Configuration",
+			items: [
+				{ type: "doc", id: "appsec/configuration" },
+				{ type: "doc", id: "appsec/vpatch_and_crs" },
+				{ type: "doc", id: "appsec/alerts_and_scenarios" },
+			],
+		},
 		{
 			type: "category",
 			label: "Rules",
@@ -727,13 +736,13 @@ const sidebarsConfig: SidebarConfig = {
 			],
 		},
 		{
-			type: "doc",
-			id: "appsec/alerts_and_scenarios",
-			label: "Alerts & Scenarios",
+			type: "category",
+			label: "References",
+			items: [
+				{ type: "doc", id: "appsec/protocol" },
+				{ type: "doc", id: "appsec/benchmark" },
+			],
 		},
-		{ type: "doc", id: "appsec/installation" },
-		{ type: "doc", id: "appsec/protocol", label: "Communication Protocol" },
-		{ type: "doc", id: "appsec/benchmark", label: "Benchmark" },
 		{ type: "doc", id: "appsec/troubleshooting" },
 	],
 };

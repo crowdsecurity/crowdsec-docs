@@ -6,13 +6,28 @@ sidebar_position: 5
 
 ## Overview
 
-This guide shows how to deploy both CrowdSec's virtual patching rules and OWASP Core Rule Set (CRS) together for comprehensive web application protection.
+This guide shows how to deploy both CrowdSec's virtual patching rules and [OWASP Core Rule Set (CRS)](https://coreruleset.org/) together for comprehensive web application protection. CrowdSec's Virtual Patching rules will always be configured as blocking rules, while OWASP CRS can be configured in blocking or non-blocking rules.
 
-**Prerequisites**:
-- Basic AppSec setup completed (see [Getting Started guides](/appsec/quickstart/))
-- CrowdSec Security Engine installed and running
+### OWASP Core Rule Set
 
-## Quick Setup
+The OWASP CRS is a set of generic attack detection rules that aims to protect web applications from a wide range of attacks, including the OWASP Top Ten, with a minimum of false alerts. CRS provides protection against many common attack categories, including SQL Injection, Cross Site Scripting, Local File Inclusion, etc.
+
+### CrowdSec Virtual Patching Rules
+
+CrowdSec produces virtual patching rules for new (and sometime old) vulnerabilities that we see as having traction in the wild. While Virtual Patching rules doesn't offer a generic protection (as CRS might do) they do target specific vulnerabilities and offer nearly zero false positive chance.
+
+## Objective
+
+OWASP CRS can be integrated in various fashion with CrowdSec's WAF:
+ - **Non Blocking** will not block requests that trigger CRS, however, repeating offenders will get banned.
+ - **Blocking** will block any and all requests that trigger CRS, and ban repeating offenders.
+
+:::info
+This documentation assumes that you already have a Basic WAF setup with CrowdSec Security Engine.
+:::
+
+
+## OWASP Core Rule Set - Non-Blocking
 
 ### Install Required Collections
 
