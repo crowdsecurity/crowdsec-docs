@@ -92,11 +92,7 @@ const sidebarsConfig: SidebarConfig = {
 						type: "doc",
 						id: "log_processor/scenarios/intro",
 					},
-					items: [
-						"log_processor/scenarios/format",
-						"log_processor/scenarios/simulation",
-						"log_processor/scenarios/create",
-					],
+					items: ["log_processor/scenarios/format", "log_processor/scenarios/simulation", "log_processor/scenarios/create"],
 				},
 				{
 					type: "category",
@@ -249,10 +245,7 @@ const sidebarsConfig: SidebarConfig = {
 				type: "doc",
 				id: "configuration/crowdsec_configuration",
 			},
-			items: [
-				"configuration/feature_flags",
-				"configuration/network_management",
-			],
+			items: ["configuration/feature_flags", "configuration/network_management"],
 		},
 		{
 			type: "category",
@@ -342,12 +335,7 @@ const sidebarsConfig: SidebarConfig = {
 				type: "doc",
 				id: "cscli/cscli_alerts",
 			},
-			items: [
-				"cscli/cscli_alerts_delete",
-				"cscli/cscli_alerts_flush",
-				"cscli/cscli_alerts_inspect",
-				"cscli/cscli_alerts_list",
-			],
+			items: ["cscli/cscli_alerts_delete", "cscli/cscli_alerts_flush", "cscli/cscli_alerts_inspect", "cscli/cscli_alerts_list"],
 		},
 		{
 			type: "category",
@@ -671,11 +659,7 @@ const sidebarsConfig: SidebarConfig = {
 				type: "doc",
 				id: "cscli/cscli_simulation",
 			},
-			items: [
-				"cscli/cscli_simulation_disable",
-				"cscli/cscli_simulation_enable",
-				"cscli/cscli_simulation_status",
-			],
+			items: ["cscli/cscli_simulation_disable", "cscli/cscli_simulation_enable", "cscli/cscli_simulation_status"],
 		},
 		{
 			type: "doc",
