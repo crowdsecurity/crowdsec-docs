@@ -87,3 +87,9 @@ You can see more information on Whitelists in the [documentation](log_processor/
 Alert Context is additional context that can sent with an alert to the LAPI. This context can be shown locally via `cscli` or within the [CrowdSec Console](https://app.crowdsec.net/signup) if you opt in to share context when you enroll your instance.
 
 You can read more about Alert Context in the [documentation](log_processor/alert_context/intro.md).
+
+### Service Discovery & Setup
+
+On installation, CrowdSec can automatically detect existing services, download the relevant Hub collections, and generate acquisitions based on discovered log files.
+
+You can [customize or override these steps](log_processor/service-discovery-setup/intro.md), for example when provisioning multiple systems or using configuration management tools.

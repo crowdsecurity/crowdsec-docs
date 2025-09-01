@@ -1,0 +1,91 @@
+---
+id: detect-yaml
+title: detect.yaml file format
+sidebar_position: 1
+---
+
+# File layout: `detect.yaml`
+A minimal detection file is a YAML map with a top‐level `detect:` key. Under it, each entry describes one service plan:
+
+```yaml
+# detect.yaml
+---
+detect:
+  apache2-file-apache2:
+    when:
+      - Systemd.UnitInstalled("apache2.service") or len(Path.Glob("/var/log/apache2/*.log")) > 0
+    hub_spec:
+      collections:
+        - crowdsecurity/apache2
+    acquisition_spec:
+      filename: apache2.yaml
+      datasource:
+        source: file
+        filenames:
+          - /var/log/apache2/*.log
+        labels:
+          type: apache2
+```
+
+Fields
+
+- `when`: a list of boolean expressions evaluated on the host. Examples include:
+  - `Systemd.UnitInstalled("<unit>")`, `Windows.ServiceEnabled("<name>")`
+  - `Host.OS == "linux"`, `Host.OS == "windows"`
+  - `Path.Exists("/path/file")`, `len(Path.Glob("/path/*.log")) > 0`
+  - `System.ProcessRunning("<binary>")`
+- `hub_spec`: which Hub items to install (collections/parsers/scenarios, etc.). Unknown item types are preserved and passed through.
+- `acquisition_spec`: how to generate a per‐service acquisition file:
+  - `filename`: base name (no slashes). The actual path will be `acquis.d/setup.<filename>.yaml`.
+  - `datasource`: a map validated against the selected `source` (e.g., `file`, `journalctl`, `docker`, `wineventlog`, `cloudwatch`, `kinesis`, …). Required fields vary per source; the CLI validates them for you.
+
+Examples
+
+Basic OS / Hub only:
+
+```yaml
+detect:
+  linux:
+    when:
+      - Host.OS == "linux"
+    hub_spec:
+      collections: [crowdsecurity/linux]
+```
+
+`journalctl` source with a filter:
+
+```yaml
+detect:
+  caddy-journal:
+    when:
+      - Systemd.UnitInstalled("caddy.service")
+      - len(Path.Glob("/var/log/caddy/*.log")) == 0
+    hub_spec:
+      collections: [crowdsecurity/caddy]
+    acquisition_spec:
+      filename: caddy.yaml
+      datasource:
+        source: journalctl
+        labels: {type: caddy}
+        journalctl_filter:
+          - "_SYSTEMD_UNIT=caddy.service"
+```
+
+Windows event log:
+
+```yaml
+detect:
+  windows_auth:
+    when: [ Host.OS == "windows" ]
+    hub_spec:
+      collections: [crowdsecurity/windows]
+    acquisition_spec:
+      filename: windows_auth.yaml
+      datasource:
+        source: wineventlog
+        event_channel: Security
+        event_ids: [4625, 4623]
+        event_level: information
+        labels: {type: eventlog}
+```
+
