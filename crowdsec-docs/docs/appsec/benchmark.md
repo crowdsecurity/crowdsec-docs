@@ -1,6 +1,6 @@
 ---
 id: benchmark
-title: CrowdSec WAF / AppSec Component Benchmark
+title: WAF Component Benchmark
 sidebar_position: 80
 ---
 
