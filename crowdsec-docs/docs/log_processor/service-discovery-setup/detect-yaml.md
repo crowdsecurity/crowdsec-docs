@@ -89,3 +89,32 @@ detect:
         labels: {type: eventlog}
 ```
 
+
+## Expression Helpers Reference
+
+Expressions run against an environment that exposes helpers and facts via these names:
+
+- Host — host facts from gopsutil/host.InfoStat. See https://pkg.go.dev/github.com/shirou/gopsutil/host#InfoStat
+    Example: Host.OS == "linux".
+
+- Path — filesystem helpers:
+  - Path.Exists(path) -> bool
+  - Path.Glob(pattern) -> []string
+    Example: len(Path.Glob("/var/log/nginx/*.log")) > 0.
+
+- System — process helpers:
+  - System.ProcessRunning(name) -> bool (by process name)
+
+- Systemd (Linux) — systemd unit helpers:
+  - Systemd.UnitInstalled(unit) -> bool
+  - Systemd.UnitConfig(unit, key) -> string (empty string if unit missing; error if key missing)
+  - Systemd.UnitLogsToJournal(unit) -> bool (true if stdout/stderr go to journal or journal+console)
+
+- Windows (Windows builds only):
+  - Windows.ServiceEnabled(service) -> bool (true if the service exists and is Automatic start; returns false on non-Windows builds)
+
+- Version — semantic version checks (can be used with Host.PlatformVersion):
+  - Version.Check(version, constraint) -> bool
+  - Supports operators like =, !=, <, <=, >, >=, ranges (1.1.1 - 1.3.4), AND with commas (>1, <3), and ~ compatible ranges.
+
+
