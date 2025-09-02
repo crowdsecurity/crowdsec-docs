@@ -44,7 +44,7 @@ when:
  - Systemd.UnitInstalled("<unit>")
 ```
 
-You can use any of the helper referenced [here](/log_processor/service-discovery-setup/expr).
+You can use any of the helper referenced [here](/log_processor/service-discovery-setup/expr.md).
 
 ### `hub_spec`
 
