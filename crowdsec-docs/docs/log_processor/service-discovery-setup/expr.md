@@ -46,7 +46,13 @@ Various helpers are available for use in the `detect.yaml` file to determine how
 
 &nbsp;&nbsp;&nbsp;&nbsp;Returns the family of the OS (`debian`, `rhel`, ...)
 
-> `Host.Platform == "debian"`
+> `Host.PlatformFamily == "debian"`
+
+### `Host.PlatformVersion`
+
+&nbsp;&nbsp;&nbsp;&nbsp;Returns the version of the OS or distribution (for linux, /etc/os-release)
+
+> `Host.PlatformVersion == "25.04"
 
 ### `Host.KernelVersion`
 
@@ -98,13 +104,13 @@ This object exposes helpers functions for the filesystem
 
 ### `ProcessRunning(name) bool`
 
-&nbsp;&nbsp;&nbsp;&nbsp;Returns `true` if there's any with the specified name running
+&nbsp;&nbsp;&nbsp;&nbsp;Returns `true` if there's any process with the specified name running
 
 > `System.ProcessRunning("nginx") == true`
 
 ## Systemd
 
-&nbsp;&nbsp;&nbsp;&nbsp;This object exposes helpers to get informations about systemd units.
+&nbsp;&nbsp;&nbsp;&nbsp;This object exposes helpers to get informations about Systemd units.
 
 &nbsp;&nbsp;&nbsp;&nbsp;Only available on Linux.
 
