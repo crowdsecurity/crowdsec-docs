@@ -1,0 +1,106 @@
+---
+id: crowdsec_linux
+title: Linux
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+:::warning
+Before upgrading an installation, ensure you make a backup of your configuration files you can follow our guide [here](backup_guide/)
+:::
+
+For those that prefer hands-on approach, you can as well [manual install](building.md).
+
+## Install our preview repositories
+
+Installing our **PREVIEW** repositories allows you to access the pre-release packages of our security engine and remediation components before they are merged into the stable repository.
+
+:::info
+We are using [packagecloud.io service](https://packagecloud.io/crowdsec/crowdsec-preview/).
+While `curl | sudo bash` can be convenient for some, [alternative installation methods are available](https://packagecloud.io/crowdsec/crowdsec-preview/install#manual).
+:::
+
+
+<Tabs
+  defaultValue="debian"
+  groupId="operating-systems"
+  values={[
+    {label: 'Debian/Ubuntu', value: 'debian'},
+    {label: 'EL/Centos7', value: 'centos7'},
+    {label: 'EL/Centos Stream 8', value: 'centos8'},
+    {label: 'Amzn Linux 2', value: 'amz'},
+    {label: 'CloudLinux', value: 'cloudlinux'},
+  ]}>
+  <TabItem value="debian">
+    ```bash
+    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.deb.sh | sudo bash
+    ```
+  </TabItem>
+  
+  <TabItem value="centos7">
+    ```bash
+    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.rpm.sh | sudo bash
+    ```
+  </TabItem>
+
+  <TabItem value="centos8">
+    ```bash
+    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.rpm.sh | sudo bash
+    ```
+  </TabItem>
+
+  <TabItem value="amz">
+    ```bash
+    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.rpm.sh | sudo bash
+    ```
+  </TabItem>
+
+  <TabItem value="cloudlinux">
+    ```bash
+    curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-preview/script.rpm.sh | os=el dist=7 sudo bash
+    ```
+  </TabItem>
+</Tabs>
+
+
+
+## Install Security Engine
+
+<Tabs
+  defaultValue="debian"
+  groupId="operating-systems"
+  values={[
+    {label: 'Debian/Ubuntu', value: 'debian'},
+    {label: 'EL/Centos7', value: 'centos7'},
+    {label: 'EL/Centos Stream 8', value: 'centos8'},
+    {label: 'Amzn Linux 2', value: 'amz'},
+    {label: 'CloudLinux', value: 'cloudlinux'},
+  ]}>
+  <TabItem value="debian">
+    <CodeBlock className="language-bash">apt install crowdsec=1.5.0~rc4</CodeBlock>
+  </TabItem>
+  
+  <TabItem value="centos7">
+    <CodeBlock className="language-bash">yum install crowdsec-1.5.0~rc4</CodeBlock>
+  </TabItem>
+
+  <TabItem value="centos8">
+    <CodeBlock className="language-bash">dnf install crowdse-1.5.0~rc4</CodeBlock>
+  </TabItem>
+
+  <TabItem value="amz">
+    <CodeBlock className="language-bash">yum install crowdsec-1.5.0~rc4</CodeBlock>
+  </TabItem>
+
+  <TabItem value="cloudlinux">
+    <CodeBlock className="language-bash">yum install crowdsec-1.5.0~rc4</CodeBlock>
+  </TabItem>
+</Tabs>
+
+
+## Configuration
+
+Once you've installed crowdsec, follow the [setup instruction for the preview](/preview/1-5/setup.mdx).

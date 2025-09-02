@@ -1,0 +1,547 @@
+---
+id: bouncer_appsec_specs
+title: Specifications for Remediation Component and AppSec Capabilities
+---
+
+import useBaseUrl from "@docusaurus/useBaseUrl"
+
+## Context
+
+A **Remediation Component** *(aka **Bouncer**)* is enforcing **decisions** made by **CrowdSec Security Engine** based on detected malicious behaviors [\[See figure 1\]](#crowdsec-security-engine-diagram), or Directly with CrowdSec SaaS endpoint channeling public, crowdsec or user made blocklsits.
+
+A **decision** dictates what action should be applied on incoming traffic from a specific **IP** or **IP-Range**. *(It could also be on the user scope or any other, but these specifications will focus on the IP and Range scopes)*
+
+The Bouncer communicates with the Security Engine to retrieve the decisions  
+The Bouncer applies the appropriate remediation *(we’ll only focus on ban/block and captcha)*
+
+**The following specifications cover**
+
+* [Basic Bouncer features](#basic-bouncer-features)  
+  * Communication with the Local API (aka LAPI) or its SaaS counterpart  
+  * Decisions retrieval and storage  
+  * Remediation  
+* [Request Forwarding](#appsec-capability-request-forwarding) (for AppSec capabilities)  
+  * Communication with the AppSec endpoint  
+  * Forwarding protocol  
+* [Config and support requirements](#extra-details-and-requirements)
+
+Here is an existing remediation components *(bouncers)* for Nginx and its lua dependency.
+It's one of the most complete bouncer with AppSec capabilities and Metrics. A good example to follow for your implementation.  
+[*cs-nginx-bouncer*](https://github.com/crowdsecurity/cs-nginx-bouncer) *\+  [lua-cs-bouncer](https://github.com/crowdsecurity/lua-cs-bouncer/)* (dependency)
+
+And a more recent and soon finalized [Node JS bouncer](https://github.com/crowdsecurity/nodejs-cs-bouncer) (for a different implementation, to be used in code)
+
+⚠️ **Your bouncer must always delete/clean it’s resources on shutdown**
+
+## Basic Bouncer features
+
+The bouncer connects to LAPI to retrieve the decisions.  
+It applies a remediation to incoming requests if the source IP can be found in the decisions list.  
+The remediation can be blocking or displaying a captcha.
+
+Fields in purple and/or with the mention (configurable) must appear in the config file, the case of the parameters names can be UPPER or LOWER depending on the type of config file, match the appropriate standard for the bouncer you’re implementing. Try to group them in a logical way in the config file template.
+
+Details about the config file in the [Installation chapter](#installation--documentation)
+
+### Connecting to the Local API (LAPI) 
+
+You can find the swagger here [https://crowdsecurity.github.io/api_doc/lapi/](https://crowdsecurity.github.io/api_doc/lapi/)  
+Details about the endpoints parameters can be found [in the appendix](#appendix)
+
+* URL to Local API endpoint: configurable field **api_url**  
+  * Default value likely to be: `http://121.0.0.1:8080`
+  * Security Engine Config : /etc/crowdsec/config.yaml // api.server.listen_url  
+  * For now we only have a v1 of LAPI, bouncer states the version he’s using  
+* Authentication  
+  * Either by API key passed in the header **X-Api-Key:** configurable field **api_key**  
+  * Or via certificate configurable fields **tls.cert_file \+ tls.key_file**	
+
+### Retrieving decisions 
+
+There are 2 ways for retrieving decisions: 
+
+* **Live Mode**: “Each time” a request is handled we call CrowdSec Security Engine  
+* **Stream Mode**: We store all decisions in memory and periodically call for delta update
+
+*We’ll prefer Stream Mode as it’s better for latency for a memory cost that is very acceptable.*  
+The Stream mode will be the default one in config:  configurable field mode
+
+#### Live Mode 
+
+The live mode endpoint is **/decisions**
+
+* Parameters  
+  *Only the following fields are to be considered for a basic bouncer implementation*  
+  * **scope:** value **IP** (forced for live mode)  
+  * **value:** the source IP making the request  
+  * **origins:** empty by default mean all origins are considered  
+    * editable by the user to look in a specific origin: configurable field origins  
+    * Origins are comma separated strings (e.g. crowdsec,capi,cscli)  
+  * **contains**: empty by default mean *true*   
+    * Indicates if it should check range decisions  
+    * No need to make this configurable  
+* Caching  
+  * To avoid consecutive calls for decisions about an IP we’ll cache the decisions per IP  
+  * default **1s** configurable field cache_expiration  
+* Timeout   
+  * If LAPI doesn’t respond   
+  * Default **200ms** configurable field lapi_timeout  
+  * **Fallback**:   
+    * Fallback in case of timeout  
+    * By default passthrough : let him pass  
+    * Possible values: passthrough, ban, captcha  
+    * configurable field lapi_failure_action
+
+#### Stream Mode (by default) 
+
+The stream mode endpoint is **/decisions/stream**  
+Allows to pull all decisions from LAPI and then periodically get a delta 
+
+* Get Decisions  
+  * ⚠️ To retrieve the initial full list, use the **startup \= true** parameter  
+    * This is necessary if you don’t have the decision list in memory  
+    * Following calls need to have startup \= false  
+  * Recommended pull period **10s** configurable field stream_update_frequency  
+  * Parameters
+
+  *Only the following fields are to be considered for a basic bouncer implementation*
+
+    * **scopes**: default to “ip,range” for stream mode  
+    * **origins**:   
+      *  empty by default mean all origins are considered  
+      * editable by the user to look in a specific origin: configurable field origins (same field as for live)  
+      * Origins are comma separated strings (e.g. crowdsec,capi,cscli)  
+    * **scenarios_containing** and **scenarios_not_containing**  
+      * Means that the decisions are linked (or not) to alerts triggered by such or such scenario  
+      * The check done by LAPI is a string.contains(...)  
+      * Default as empty configurable fields scenarios_containing && scenarios_not_containing    
+* Storing decisions  
+  * ℹ️ The number of decisions you can expect is:  
+    * 30-70k ips from Fire (nominal case)  
+    * Can vary a lot depending on the BL subscription of the user  
+    * Have the code be able to handle 100k to be safe for the nominal case  
+    * Storing in memory is ideal, we recommend to convert IPs to integers  
+  * The decisions format is the following:  
+    * See [decisions example in appendix](#decision-example)  
+    * There can be multiple decisions per IP  
+    * Store each decisions independently as they have their own remediation action and TTL  
+    * Ranges are stored too  
+      * ⚠️ do not transform the range into its containing IPS  
+  * Pruning  
+    * When you GET you’ll receive “deleted” decisions  
+    * Also Clean after a GET or periodically for decisions with expired TTL
+
+### Apply remediation 
+
+If a remediation is found and for the LAPI timeout fallback here are the remediations that should be supported
+
+* Remediation type  
+  * Remediation property will be “ban”, “captcha” or potentially any custom string  
+  * **ban** (block)  
+    * Return a 403: configurable field ban_return_code  
+    * Accompanied by an HTML body  
+      * Default page model [provided (single HTML file)](#ban-template-page)  
+      * Page path configurable: configurable field ban_template_path  
+  * **captcha**  
+    * Various type of captcha must be supported  
+    * configurable fields:  
+      * captcha _provider  
+      * captcha_secret_key  
+      * captcha_site_key  
+      * captcha_template_path  
+    * Type to support  
+      * RE-captcha  
+      * Turnstile  
+      * Hcaptcha  
+    * onFails  
+      * Re-present the captcha  
+    * ⚠️ Cache: in order not to repeat the captcha too often  
+      * **1h** cache **per IP** after successful captcha configurable field cache_expiration  
+  * **Custom remediation**  
+    * Defaults to ignore/ban/captcha configurable field **remediation_fallback**  
+    * If ignored, you don’t even need to store the decision  
+* Remediation priority  
+  * There is a priority in the remediation to take in account if an IP has multiple  
+  * Default priority order **Ban** then **Captcha**  
+* Metrics see below and in the [detailed metrics specs](/contributing/specs/bouncer_metrics_specs)
+
+### Logging 
+
+* When a remediation occurs, log something containing timestamp,sourceIP,remediationType 	
+
+### Metrics 
+
+Remediation component can push information and internal metrics to LAPI about their configuration and the amount of requests/packets/bytes/… that have been blocked or allowed.
+
+The data is pushed on the `/usage-metrics` endpoint of LAPI.  
+Metrics push internal should be configurable, with a default value of 30 minutes and not allow intervals smaller than 10 minutes. Setting the interval to 0 disables the push.
+
+The body will contain information about:
+
+- The remediation component type and version  
+- Name and version of the operating system the RC is running on  
+- Enabled features flags (should be empty for the vast majority of RC)  
+- Meta information about the payload itself: the push interval in seconds, the startup timestamp in UTC, the push timestamp in UTC  
+- A list of metrics:  
+  - Each metric must have a name, value, unit, and, optionally, one or more labels
+
+The metrics track the number of blocked requests per decision origin, so the RC must track internally the origin of every decision (based on the `origin` field from the decision stream).  
+Each push must reset the internal counter for the metrics (i.e., we have only sent the number of blocked requests since the last push).  
+Each metric about blocked requests must have an `origin` label whose value is the origin of the decision and a `remediation_type` label whose value is the type of remediation that was applied (e.g., `ban` or `captcha`).  
+A `processed` metric must also be present that counts the number of requests that were processed by the RC (regardless of whether they were blocked or not). This metric has no label.
+
+A full sample payload can be found in the [appendix](#metrics-payload).
+
+## AppSec Capability (request forwarding) 
+
+An additional activatable capability of the bouncer is to forward the request to the security engine allowing more advanced behavior detection.
+
+The request forwarding is a blocking process, when the AppSec capability is activated the bouncer should wait for a response at each request forwarding to process with the request handling.
+
+AppSec is disabled by default and activable if url exists configurable field appsec_url
+
+* Connect to AppSec endpoint  
+  * The security engine should have activated the AppSec and a listen address should be present in the SecurityEngine acquisition  
+  * Default endpoint `http://127.0.0.1:7422`
+  * Auth by API key passed in the header **X-Api-Key:** same param as LAPI apikey  
+* Request forwarding  
+  * You can find information about the forwarding protocol on this doc page: [https://docs.crowdsec.net/docs/next/appsec/protocol/](https://docs.crowdsec.net/docs/next/appsec/protocol/)  
+  * When forwarding the query to the AppSec endpoint, the security engine will evaluate the actions to do and return the appropriate response code that the remediation component should display.   
+    * ⚠️ At the exception of codes **500** and **401** which mean that the forwarding or authentication to the endpoint failed. For those response codes you should trigger the fallback described there after..  
+  * ⚠️ As stated earlier this is a blocking process  
+  * **Timeout** 200ms configurable field appsec_timeout  
+  * **Fallback**:   
+    * Fallback in case of timeout or response failure (500,401…)  
+    * By default passthrough : let him pass  
+    * Possible values: passthrough, ban, captcha  
+    * configurable field appsec_failure_action
+
+## Extra Details and Requirements 
+
+* The name and version of the bouncer are specified via its **user-agent** communicating with LAPI  
+  * The format is the following : *crowdsec-\<service\>-bouncer/v\<x.y|x.y.z\>*  
+  * E.g *crowdsec-firewall-bouncer/v1.42*  
+* Ideally the bouncer would work for windows versions (if any) and openBSD (if any)  
+* The bouncer should be able to handle **HTTP 1 & 2 requests**, or mention the limitations
+
+## Installation / Documentation 
+
+Usually we (at CrowdSec) will deal with **documentation**, **install scripts** and **packaging**. But any pointers from the bouncer’s developper that can help those processes is welcome on the following:
+
+Let us know what minimum version of the service is required to run the bouncer
+
+Provide a brief description of the steps necessary to install and configure the bouncer  
+⚠️Note that the bouncers configuration files must be located in ***/etc/crowdsec/bouncers/***
+
+* The bouncer config file name pattern is the following:  *crowdsec-\<service\>-bouncer.conf*  
+* Example of config file */etc/crowdsec/bouncers/crowdsec-apache-bouncer.conf*
+
+Ideally, at install or warmup of the bouncer, a check is made that the *crowdsec service* is running and the bouncer key is automatically created and added to the bouncer config. Provide advice about the best way and phase to perform those actions for this bouncer
+
+## Developing / Testing 
+
+Here are some pointers and doc to help you test/mock actions for the bouncer during development.
+
+### Init & Decisions management 
+
+First you must create a bouncer key for your bouncer to communicate with LAPI.  
+Actions on bouncers can be done via the *cscli bouncers …* commands.  
+Example:
+
+```
+$ sudo cscli bouncer add myTestBouncer
+
+API key for 'myTestBouncer':
+
+   26WsbH6MLaKUaRilA1zQ4LyYbMz3LvOsDel9bEZXv+U
+
+Please keep this key since you will not be able to retrieve it!
+
+$ sudo cscli bouncers list
+────────────────────────────────────────────────────────────────────────────────────────
+ Name            IP Address   Valid   Last API pull          Type   Version   Auth Type 
+────────────────────────────────────────────────────────────────────────────────────────
+ myTestBouncer                ✔️       2024-01-29T09:24:24Z                    api-key   
+────────────────────────────────────────────────────────────────────────────────────────
+```
+
+Note that the IP address, type and version will appear after the first connection of the bouncer
+
+### Populating decisions 
+
+You can have decisions with various origins, here are a few ways to populate them
+
+#### Local decisions & Community blocklist 
+
+If you installed your CrowdSec on a server with internet access, and it’s able to communicate with our Central API, it will periodically retrieve the community blocklist. If you are in a situation here your crowdsec shares signal you’ll get between 10 and 50k decisions from the community blocklist (decisions origin will be CAPI), if not you’ll receive a fraction of that.
+
+#### Manually populating decisions 
+
+You can add and remove decisions manually:  
+Public documentation [available here](https://doc.crowdsec.net/u/user_guides/decisions_mgmt/)
+
+* Via **cscli decisions add/delete.**   
+  * E.g. sudo cscli decisions add \-i 1.2.3.4  
+  * Those decisions origin will be “*cscli*”  
+* Via **cscli decisions import**.    
+  * E.g. sudo cscli decisions import \-i ./myBl.txt \--format values  
+  * Those decisions origin will be “*cscli-impor*t”
+
+#### Testing failures 
+
+Shutdown the *crowdsec service* to test the failure cases.
+
+#### Testing AppSec 
+
+You can refer to the AppSec documentation to test request forwarding.
+
+* AppSec [quickstart guide here](https://doc.crowdsec.net/docs/next/appsec/quickstart), [Testing example here](https://doc.crowdsec.net/docs/next/appsec/installation#making-sure-everything-works)  
+* E.g. Install virtual patching and try to query a */rpc2* or a *.env* file
+
+## Appendix 
+
+### CrowdSec Security Engine diagram
+**Figure 1** : Interactions around **CrowdSec Security Engine**   
+<div style={{ display: "flex" }}>
+    <div style={{ textAlign: "center", flex: "1" }}>
+        <img
+            width="auto"
+            height="auto"
+            src={useBaseUrl("/img/simplified_SE_overview.svg")}
+        />
+    </div>
+</div>
+
+### Details about LAPI endpoints parameters
+
+**GET /decisions/stream**
+
+* **startup:** set it to **TRUE** for the **initial call** to get all decisions *(when False you’ll get the delta from your last call)*  
+* **scopes: “**ip,range” is the only relevant values when remediating on IPs  
+* **origins:** Leave blank to allow all origins, test your configurable origins with [those tests](#decision-example)  
+* **scenarios_containing:** leave blank by default, allow change in config  
+* **scenarios_not_containing:** leave blank by default, allow change in config
+
+**GET /decisions**
+
+* **scope: “**ip” is the only relevant values when remediating on IPs  
+* **value:** the ip itself as a string  
+* **type:** filtering on type of decisions, leave blank by default to get any decisions  
+* **ip:** ignore/leave blank: shortcut for scope:ip \+ value  
+* **range:** ignore/leave blank: shortcut for scope:range \+ value  
+* **contains:** leave blank by default, configurable by user  
+* **origins:** Leave blank to allow all origins, test your configurable origins with [those tests](#decision-example)  
+* **scenarios_containing:** leave blank by default, allow change in config  
+* **scenarios_not_containing:** leave blank by default, allow change in config
+
+### Decision example
+
+```javascript
+{
+  "deleted": [
+    {
+      "duration": "-75h34m54.509128301s",
+      "id": 55873846,
+      "origin": "CAPI",
+      "scenario": "crowdsecurity/ssh-bf",
+      "scope": "Ip",
+      "type": "ban",
+      "value": "61.155.106.101"
+    },
+],
+  "new": [
+  {
+    "duration": "167h59m20.890999684s",
+    "id": 55898280,
+    "origin": "CAPI",
+    "scenario": "crowdsecurity/CVE-2022-35914",
+    "scope": "Ip",
+    "type": "ban",
+    "value": "45.95.147.236"
+  },
+]
+}
+
+```
+
+### Ban template page
+
+```javascript
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CrowdSec Ban</title>
+    <meta content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>/*! tailwindcss v3.2.7 | MIT License | https://tailwindcss.com*/*,:after,:before{border:0 solid #e5e7eb;box-sizing:border-box}:after,:before{--tw-content:""}html{-webkit-text-size-adjust:100%;font-feature-settings:normal;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4}body{line-height:inherit;margin:0}hr{border-top-width:1px;color:inherit;height:0}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:initial}sub{bottom:-.25em}sup{top:-.5em}table{border-collapse:collapse;border-color:inherit;text-indent:0}button,input,optgroup,select,textarea{color:inherit;font-family:inherit;font-size:100%;font-weight:inherit;line-height:inherit;margin:0;padding:0}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button;background-color:initial;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:initial}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{color:#9ca3af;opacity:1}input::placeholder,textarea::placeholder{color:#9ca3af;opacity:1}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{height:auto;max-width:100%}[hidden]{display:none}*,::backdrop,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:#3b82f680;--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: }.fixed{position:fixed}.right-0{right:0}.top-0{top:0}.flex{display:flex}.h-24{height:6rem}.h-3\/5{height:60%}.h-6{height:1.5rem}.h-full{height:100%}.h-screen{height:100vh}.w-24{width:6rem}.w-6{width:1.5rem}.w-full{width:100%}.w-screen{width:100vw}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-bottom:calc(.25rem*var(--tw-space-y-reverse));margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-bottom:calc(1rem*var(--tw-space-y-reverse));margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)))}.rounded-xl{border-radius:.75rem}.border-2{border-width:2px}.border-black{--tw-border-opacity:1;border-color:rgb(0 0 0/var(--tw-border-opacity))}.p-4{padding:1rem}.text-2xl{font-size:1.5rem;line-height:2rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.dark .dark\:border-white{--tw-border-opacity:1;border-color:rgb(255 255 255/var(--tw-border-opacity))}.dark .dark\:bg-slate-900{--tw-bg-opacity:1;background-color:rgb(15 23 42/var(--tw-bg-opacity))}.dark .dark\:text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity))}@media (min-width:640px){.sm\:w-2\/3{width:66.666667%}}@media (min-width:768px){.md\:h-2\/5{height:40%}.md\:flex-row{flex-direction:row}.md\:text-2xl{font-size:1.5rem;line-height:2rem}.md\:text-lg{font-size:1.125rem;line-height:1.75rem}}@media (min-width:1024px){.lg\:w-1\/2{width:50%}.lg\:text-3xl{font-size:1.875rem;line-height:2.25rem}.lg\:text-xl{font-size:1.25rem;line-height:1.75rem}}@media (min-width:1280px){.xl\:text-4xl{font-size:2.25rem;line-height:2.5rem}}</style>
+</head>
+
+  <body class="h-screen w-screen">
+      <div class="h-full w-full flex flex-col justify-center items-center dark:bg-slate-900 dark:text-white">
+        <div class="flex flex-col justify-between items-center border-2 border-black dark:border-white rounded-xl p-4 h-3/5 md:h-2/5 w-full sm:w-2/3 lg:w-1/2">
+          <div class="fixed p-4 top-0 right-0 dark-mode-toggle"></div>
+          <div class="flex flex-col items-center space-y-4">
+            <svg fill="black" class="h-24 w-24" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="exclamation-triangle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="warning">
+              <path d="M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"></path>
+            </svg>
+            <h1 class="text-xl md:text-2xl lg:text-3xl xl:text-4xl"> CrowdSec Access Forbidden</h1>
+            <p class="lg:text-xl md:text-lg"> You are unable to visit the website.</p>
+            <div class="ip-info text-sm">
+              Your IP seems to have been blocked, <a href="https://app.crowdsec.net/cti" id="ctiLink" target="blank" style="text-decoration: underline;">check our CTI info</a> about it or contact this website admin
+            </div>
+          </div>
+          <div class="flex-col md:flex-row text-sm flex items-center">
+            <p>
+              This security check has been powered by
+            </p>
+            <a href="https://crowdsec.net/" target="_blank" rel="noopener" class="flex flex-col items-center">
+              <svg
+              fill="black"
+              width="33.92"
+              height="33.76"
+              viewBox="0 0 254.4 253.2"
+            >
+              <defs>
+                <clipPath id="a">
+                  <path d="M0 52h84v201.2H0zm0 0" />
+                </clipPath>
+                <clipPath id="b">
+                  <path d="M170 52h84.4v201.2H170zm0 0" />
+                </clipPath>
+              </defs>
+              <path
+                d="M59.3 128.4c1.4 2.3 2.5 4.6 3.4 7-1-4.1-2.3-8.1-4.3-12-3.1-6-7.8-5.8-10.7 0-2 4-3.2 8-4.3 12.1 1-2.4 2-4.8 3.4-7.1 3.4-5.8 8.8-6 12.5 0M207.8 128.4a42.9 42.9 0 013.4 7c-1-4.1-2.3-8.1-4.3-12-3.2-6-7.8-5.8-10.7 0-2 4-3.3 8-4.3 12.1.9-2.4 2-4.8 3.4-7.1 3.4-5.8 8.8-6 12.5 0M134.6 92.9c2 3.5 3.6 7 4.8 10.7-1.3-5.4-3-10.6-5.6-15.7-4-7.5-9.7-7.2-13.3 0a75.4 75.4 0 00-5.6 16c1.2-3.8 2.7-7.4 4.7-11 4.1-7.2 10.6-7.5 15 0M43.8 136.8c.9 4.6 3.7 8.3 7.3 9.2 0 2.7 0 5.5.2 8.2.3 3.3.4 6.6 1 9.6.3 2.3 1 2.2 1.3 0 .5-3 .6-6.3 1-9.6l.2-8.2c3.5-1 6.4-4.6 7.2-9.2a17.8 17.8 0 01-9 2.4c-3.5 0-6.6-1-9.2-2.4M192.4 136.8c.8 4.6 3.7 8.3 7.2 9.2 0 2.7 0 5.5.3 8.2.3 3.3.4 6.6 1 9.6.3 2.3.9 2.2 1.2 0 .6-3 .7-6.3 1-9.6.2-2.7.3-5.5.2-8.2 3.6-1 6.4-4.6 7.3-9.2a17.8 17.8 0 01-9.1 2.4c-3.4 0-6.6-1-9.1-2.4M138.3 104.6c-3.1 1.9-7 3-11.3 3-4.3 0-8.2-1.1-11.3-3 1 5.8 4.5 10.3 9 11.5 0 3.4 0 6.8.3 10.2.4 4.1.5 8.2 1.2 12 .4 2.9 1.2 2.7 1.6 0 .7-3.8.8-7.9 1.2-12 .3-3.4.3-6.8.3-10.2 4.5-1.2 8-5.7 9-11.5"
+              />
+              <path
+                d="M51 146c0 2.7.1 5.5.3 8.2.3 3.3.4 6.6 1 9.6.3 2.3 1 2.2 1.3 0 .5-3 .6-6.3 1-9.6l.2-8.2c3.5-1 6.4-4.6 7.2-9.2a17.8 17.8 0 01-9 2.4c-3.5 0-6.6-1-9.2-2.4.9 4.6 3.7 8.3 7.3 9.2M143.9 105c-1.9-.4-3.5-1.2-4.9-2.3 1.4 5.6 2.5 11.3 4 17 1.2 5 2 10 2.4 15 .6 7.8-4.5 14.5-10.9 14.5h-15c-6.4 0-11.5-6.7-11-14.5.5-5 1.3-10 2.6-15 1.3-5.3 2.3-10.5 3.6-15.7-2.2 1.2-4.8 1.9-7.7 2-4.7.1-9.4-.3-14-1-4-.4-6.7-3-8-6.7-1.3-3.4-2-7-3.3-10.4-.5-1.5-1.6-2.8-2.4-4.2-.4-.6-.8-1.2-.9-1.8v-7.8a77 77 0 0124.5-3c6.1 0 12 1 17.8 3.2 4.7 1.7 9.7 1.8 14.4 0 9-3.4 18.2-3.8 27.5-3 4.9.5 9.8 1.6 14.8 2.4v8.2c0 .6-.3 1.5-.7 1.7-2 .9-2.2 2.7-2.7 4.5-.9 3.2-1.8 6.4-2.9 9.5a11 11 0 01-8.8 7.7 40.6 40.6 0 01-18.4-.2m29.4 80.6c-3.2-26.8-6.4-50-8.9-60.7a14.3 14.3 0 0014.1-14h.4a9 9 0 005.6-16.5 14.3 14.3 0 00-3.7-27.2 9 9 0 00-6.9-14.6c2.4-1.1 4.5-3 5.8-5 3.4-5.3 4-29-8-44.4-5-6.3-9.8-2.5-10 1.8-1 13.2-1.1 23-4.5 34.3a9 9 0 00-16-4.1 14.3 14.3 0 00-28.4 0 9 9 0 00-16 4.1c-3.4-11.2-3.5-21.1-4.4-34.3-.3-4.3-5.2-8-10-1.8-12 15.3-11.5 39-8.1 44.4 1.3 2 3.4 3.9 5.8 5a9 9 0 00-7 14.6 14.3 14.3 0 00-3.6 27.2A9 9 0 0075 111h.5a14.5 14.5 0 0014.3 14c-4 17.2-10 66.3-15 111.3l-1.3 13.4a1656.4 1656.4 0 01106.6 0l-1.4-12.7-5.4-51.3"
+              />
+              <g clip-path="url(#a)">
+                <path
+                  d="M83.5 136.6l-2.3.7c-5 1-9.8 1-14.8-.2-1.4-.3-2.7-1-3.8-1.9l3.1 13.7c1 4 1.7 8 2 12 .5 6.3-3.6 11.6-8.7 11.6H46.9c-5.1 0-9.2-5.3-8.7-11.6.3-4 1-8 2-12 1-4.2 1.8-8.5 2.9-12.6-1.8 1-3.9 1.5-6.3 1.6a71 71 0 01-11.1-.7 7.7 7.7 0 01-6.5-5.5c-1-2.7-1.6-5.6-2.6-8.3-.4-1.2-1.3-2.3-2-3.4-.2-.4-.6-1-.6-1.4v-6.3c6.4-2 13-2.6 19.6-2.5 4.9.1 9.6 1 14.2 2.6 3.9 1.4 7.9 1.5 11.7 0 1.8-.7 3.6-1.2 5.5-1.6a13 13 0 01-1.6-15.5A18.3 18.3 0 0159 73.1a11.5 11.5 0 00-17.4 8.1 7.2 7.2 0 00-12.9 3.3c-2.7-9-2.8-17-3.6-27.5-.2-3.4-4-6.5-8-1.4C7.5 67.8 7.9 86.9 10.6 91c1.1 1.7 2.8 3.1 4.7 4a7.2 7.2 0 00-5.6 11.7 11.5 11.5 0 00-2.9 21.9 7.2 7.2 0 004.5 13.2h.3c0 .6 0 1.1.2 1.7.9 5.4 5.6 9.5 11.3 9.5A1177.2 1177.2 0 0010 253.2c18.1-1.5 38.1-2.6 59.5-3.4.4-4.6.8-9.3 1.4-14 1.2-11.6 3.3-30.5 5.7-49.7 2.2-18 4.7-36.3 7-49.5"
+                />
+              </g>
+              <g clip-path="url(#b)">
+                <path
+                  d="M254.4 118.2c0-5.8-4.2-10.5-9.7-11.4a7.2 7.2 0 00-5.6-11.7c2-.9 3.6-2.3 4.7-4 2.7-4.2 3.1-23.3-6.5-35.5-4-5.1-7.8-2-8 1.4-.8 10.5-.9 18.5-3.6 27.5a7.2 7.2 0 00-12.8-3.3 11.5 11.5 0 00-17.8-7.9 18.4 18.4 0 01-4.5 22 13 13 0 01-1.3 15.2c2.4.5 4.8 1 7.1 2 3.8 1.3 7.8 1.4 11.6 0 7.2-2.8 14.6-3 22-2.4 4 .4 7.9 1.2 12 1.9l-.1 6.6c0 .5-.2 1.2-.5 1.3-1.7.7-1.8 2.2-2.2 3.7l-2.3 7.6a8.8 8.8 0 01-7 6.1c-5 1-10 1-14.9-.2-1.5-.3-2.8-1-3.9-1.9 1.2 4.5 2 9.1 3.2 13.7 1 4 1.6 8 2 12 .4 6.3-3.6 11.6-8.8 11.6h-12c-5.2 0-9.3-5.3-8.8-11.6.4-4 1-8 2-12 1-4.2 1.9-8.5 3-12.6-1.8 1-4 1.5-6.3 1.6-3.7 0-7.5-.3-11.2-.7a7.7 7.7 0 01-3.7-1.5c3.1 18.4 7.1 51.2 12.5 100.9l.6 5.3.8 7.9c21.4.7 41.5 1.9 59.7 3.4L243 243l-4.4-41.2a606 606 0 00-7-48.7 11.5 11.5 0 0011.2-11.2h.4a7.2 7.2 0 004.4-13.2c4-1.8 6.8-5.8 6.8-10.5"
+                />
+              </g>
+              <path
+                d="M180 249.6h.4a6946 6946 0 00-7.1-63.9l5.4 51.3 1.4 12.6M164.4 125c2.5 10.7 5.7 33.9 8.9 60.7a570.9 570.9 0 00-8.9-60.7M74.8 236.3l-1.4 13.4 1.4-13.4"
+              />
+            </svg>
+            <span>
+              CrowdSec
+            </span>
+          </a>
+        </div>
+        </div>
+      </div>
+      <script>
+        const moonSvgString = '<svg fill="black" class="h-6 w-6" viewBox="0 0 35 35" data-name="Layer 2" id="Layer_2" xmlns="http://www.w3.org/2000/svg"><path d="M18.44,34.68a18.22,18.22,0,0,1-2.94-.24,18.18,18.18,0,0,1-15-20.86A18.06,18.06,0,0,1,9.59.63,2.42,2.42,0,0,1,12.2.79a2.39,2.39,0,0,1,1,2.41L11.9,3.1l1.23.22A15.66,15.66,0,0,0,23.34,21h0a15.82,15.82,0,0,0,8.47.53A2.44,2.44,0,0,1,34.47,25,18.18,18.18,0,0,1,18.44,34.68ZM10.67,2.89a15.67,15.67,0,0,0-5,22.77A15.66,15.66,0,0,0,32.18,24a18.49,18.49,0,0,1-9.65-.64A18.18,18.18,0,0,1,10.67,2.89Z"/></svg>'
+        const sunSvgString = '<svg class="h-6 w-6" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M3 12H5M5.00006 19L7.00006 17M12 19V21M17 17L19 19M5 5L7 7M19 12H21M16.9999 7L18.9999 5M12 3V5M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        const svg = Array.from(document.querySelectorAll('svg'));
+        const button = document.querySelector('.dark-mode-toggle');
+        window.onload = () => {
+          if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('dark');
+            svg.forEach(element => {
+              element.setAttribute('fill', 'white');
+            });
+            button.innerHTML = sunSvgString;
+          } else {
+            button.innerHTML = moonSvgString;
+          }
+          button.addEventListener('click', function() {
+          document.body.classList.toggle('dark');
+          svg.forEach(element => {
+            element.getAttribute('fill') === 'black' ? element.setAttribute('fill', 'white') : element.setAttribute('fill', 'black');
+          });
+          if (document.body.classList.contains('dark')) {
+              button.innerHTML = sunSvgString;
+          } else {
+              button.innerHTML = moonSvgString;
+          }
+      });
+        };
+      </script>
+      <script>
+        // Get current IP using ipify API
+        fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+            let currentIP = data.ip;
+            // Update the link with the current IP
+            document.getElementById('ctiLink').href = `https://app.crowdsec.net/cti/${currentIP}`;
+        })
+        .catch(error => {
+            console.error("Error fetching IP: ", error);
+        });
+    </script>
+  </body>
+</html>
+
+```
+
+### Metrics payload
+
+More details about metrics in [Metrics specs](/contributing/specs/bouncer_metrics_specs/)
+
+```json
+{ 
+  "remediation_components": [{
+	"type": "my-bouncer-stat",
+	"version": "1.0.0",
+	"os": {
+		"name": "ubuntu",
+		"version": "22.04"
+	},
+	"features": [], //Always empty / invalid / ignored for bouncers
+	"meta": {
+        "window_size_seconds": 1800,
+        "utc_startup_timestamp": 123123,
+        "utc_now_timestamp": 123123123123
+      },
+	"metrics": [
+		{
+			"name": "blocked",
+			"value": 100,
+			"labels": {
+				"origin": "fire",
+                           "remediation_type": "ban"
+			},
+			"unit": "request"
+		},
+		{
+			"name": "blocked",
+			"value": 40,
+			"labels": {
+				"origin": "crowdsec",
+                           "remediation_type": "ban"
+			},
+			"unit": "request"
+		},
+		{
+			"name": "blocked",
+			"value": 60,
+			"labels": {
+				"origin": "crowdsec",
+                           "remediation_type": "captcha"
+			},
+			"unit": "request"
+		},
+		{
+			"name": "blocked",
+			"value": 100,
+			"labels": {
+				"origin": "lists:tor"
+                           "remediation_type": "ban"
+			}
+		},
+		{
+			"name": "processed",
+			"value": 500,
+			"unit": "request"
+		}
+	]
+}]}
+```

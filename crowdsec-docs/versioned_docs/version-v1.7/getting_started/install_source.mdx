@@ -1,0 +1,202 @@
+---
+id: install_source
+title: Compile from source
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+:::warning
+This is only for advanced users that wish to compile their own software. If you are not comfortable with this, please use the [official packages](/getting_started/getting_started.md)
+:::
+
+We define systems by their underlying distribution rather than a fork or modification of a distribution. For example, Ubuntu and Debian are both Debian based distributions, so they will share the same instructions as the term DEB. Centos and Fedora are both Redhat based distributions, so they will share the same instructions as the term RPM. Arch is just Arch, so it will have its own instructions.
+
+
+## Dependencies
+
+### Required
+- Golang [Check go.mod file for version needed](https://github.com/crowdsecurity/crowdsec/blob/master/go.mod)
+  - Most of the time your distribution package manager will not have the version (check with your package manager firstly if they do), you will need to install it from the official website.
+  - If your shell is bash and you have sudo access you can use this [install script](https://gist.github.com/LaurenceJJones/aacedfd4438a811780951b2c40431e3a)
+- Make
+  <Tabs
+    defaultValue="DEB"
+    groupId="build_platform"
+    values={[
+      {label: 'DEB', value: 'DEB'},
+      {label: 'RPM', value: 'RPM'},
+      {label: 'Arch', value: 'Arch'},
+    ]}>
+    <TabItem value="DEB">
+      <CodeBlock className="language-bash">apt install make</CodeBlock>
+    </TabItem>
+    
+    <TabItem value="RPM">
+        <CodeBlock className="language-bash">dnf install make</CodeBlock>
+    </TabItem>
+    <TabItem value="Arch">
+      <CodeBlock className="language-bash">pacman -S make</CodeBlock>
+    </TabItem>
+  </Tabs>
+- GCC
+  <Tabs
+    defaultValue="DEB"
+    groupId="build_platform"
+    values={[
+      {label: 'DEB', value: 'DEB'},
+      {label: 'RPM', value: 'RPM'},
+      {label: 'Arch', value: 'Arch'},
+    ]}>
+    <TabItem value="DEB">
+      <CodeBlock className="language-bash">apt install gcc</CodeBlock>
+    </TabItem>
+    
+    <TabItem value="RPM">
+        <CodeBlock className="language-bash">dnf install gcc</CodeBlock>
+    </TabItem>
+    <TabItem value="Arch">
+      <CodeBlock className="language-bash">pacman -S gcc</CodeBlock>
+    </TabItem>
+  </Tabs>
+- pkg-config
+  <Tabs
+    defaultValue="DEB"
+    groupId="build_platform"
+    values={[
+      {label: 'DEB', value: 'DEB'},
+      {label: 'RPM', value: 'RPM'},
+      {label: 'Arch', value: 'Arch'},
+    ]}>
+    <TabItem value="DEB">
+      <CodeBlock className="language-bash">apt install pkg-config</CodeBlock>
+    </TabItem>
+    
+    <TabItem value="RPM">
+        <CodeBlock className="language-bash">dnf install pkg-config</CodeBlock>
+    </TabItem>
+    <TabItem value="Arch">
+      <CodeBlock className="language-bash">pacman -S pkg-config</CodeBlock>
+    </TabItem>
+  </Tabs>
+
+### Optional
+
+- RE2
+  <Tabs
+    defaultValue="DEB"
+    groupId="build_platform"
+    values={[
+      {label: 'DEB', value: 'DEB'},
+      {label: 'RPM', value: 'RPM'},
+      {label: 'Arch', value: 'Arch'},
+    ]}>
+    <TabItem value="DEB">
+      <CodeBlock className="language-bash">apt install libre2-dev g++</CodeBlock>
+    </TabItem>
+    
+    <TabItem value="RPM">
+        <CodeBlock className="language-bash">dnf install libre2-dev g++</CodeBlock>
+    </TabItem>
+    <TabItem value="Arch">
+      <CodeBlock className="language-bash">pacman -S re2 base-devel</CodeBlock>
+    </TabItem>
+  </Tabs>
+
+## Walkthrough
+
+If you would like to see a walkthrough of compiling CrowdSec from source then you can watch the following video.
+
+<iframe width="100%" height="500" src="https://www.youtube.com/embed/-1xxkwQyI2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+### Clone
+
+```bash
+git clone https://github.com/crowdsecurity/crowdsec
+cd crowdsec
+```
+
+### Build
+
+```bash
+make [build_flags] build
+```
+
+#### Build flags
+
+##### Optional
+
+- `BUILD_VERSION=v1.2.3` - The version you want to build. This will default to the latest version, however, if you fork the project then you will need to use this flag.
+
+:::info
+Do not use a version we have already released as you will get old hub parsers. We recommend using the latest tag from the [releases page](https://github.com/crowdsecurity/crowdsec/releases/latest).
+:::
+
+- `BUILD_STATIC=1` - Build a static binary:
+  - DEB: none
+  - RPM/Arch:
+    - RPM: Enable crb repo
+    - RPM: `sudo yum install glibc-static libstdc++-static`
+    - RPM/Arch: compile RE2 from source [install script](https://gist.github.com/LaurenceJJones/d17f7839b03acbe0e4e879fd60f4b433) as the version provided by package managers does not include the static library.
+
+:::info What is a static build?
+Static builds are builds that do not require any external dependencies to run. This means a compiled binary on your system will work on any other system running your architecture and linux/windows/freebsd. As an example if I compile a static build on my Arch Linux machine, I can copy that binary to a Debian machine and it will work without any issues. 
+:::
+
+- `BUILD_RE2_WASM=1` - Build the RE2 WASM library
+:::info
+By default we try to build with RE2 library from libraries provided by OS (We define it as optional since this build flag overrides it). We recommend that you build with RE2 from libraries as it is faster and more performant than the WASM version.
+:::
+
+## Optimal build flags
+The following build flags are what we recommend you use when building CrowdSec.
+
+#### Binary will run on different machine (Built on dev machine then copied to production machine)
+
+```bash
+make BUILD_STATIC=1 release
+```
+
+Then you can copy the `crowdsec-release.tgz` file to your production machine and extract it.
+
+#### Binary will only run on your machine (Testing new features)
+
+```bash
+make build
+```
+
+If you run into any issues when compiling please join our [discord](https://discord.gg/crowdsec) and ask for help. Please provide the output of the build command and the error you are getting.
+
+## Wizard.sh
+
+We provide a wizard.sh script that will help you install, update and uninstall CrowdSec.
+
+### Installing
+
+Once the binaries have been built you can install them using the wizard.sh file in the root of the repo or release folder. This will install the binaries, systemd service files and create the required directories.
+
+```bash
+sudo ./wizard.sh -i
+```
+
+If you would like to have a hands off installation then you can provide the `-unattended` flag to the wizard.sh script.
+
+### Updating
+
+To update CrowdSec you can use the wizard.sh file in the root of the repo or release folder. This will update the binaries, systemd service files and create the required directories.
+
+```bash
+sudo ./wizard.sh --binupgrade 
+```
+
+If you have compiled CrowdSec with the same build version as the one installed then you can use the `--force` flag to force the update.
+
+### Uninstalling
+
+To uninstall CrowdSec you can use the wizard.sh file in the root of the repo or release folder. This will remove the binaries, systemd service files and delete the required directories.
+
+```bash
+sudo ./wizard.sh --uninstall
+```
