@@ -1,0 +1,268 @@
+---
+id: traefik
+title: QuickStart - Traefik
+---
+
+import FormattedTabs from '@site/src/components/formatted-tabs';
+import UnderlineTooltip from '@site/src/components/underline-tooltip'; 
+
+# CrowdSec WAF QuickStart for Traefik
+
+## Objectives
+
+The goal of this quickstart is to set up the [AppSec Component](/appsec/intro.md#introduction) to safeguard web applications running on [Traefik](https://doc.traefik.io/traefik/) reverse proxy.
+
+We'll deploy a [set of rules](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) designed to block [well-known attacks](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) and [currently exploited vulnerabilities](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching).
+
+Additionally, we'll show how to monitor these alerts through the [console](https://app.crowdsec.net/).
+
+## Pre-requisites
+
+1. If you're new to the [AppSec Component](/appsec/intro.md#introduction) or **W**eb **A**pplication **F**irewalls, start with the [Introduction](/appsec/intro.md#introduction) for a better understanding.
+
+2. It's assumed that you have already installed:
+   - **CrowdSec [Security Engine](intro.mdx)**: for installation, refer to the [QuickStart guide](/u/getting_started/installation/linux). The AppSec Component, which analyzes HTTP requests, is included within the security engine as a <UnderlineTooltip tooltip="Acquisition files tell CrowdSec where to find logs and which application they belong to.">Acquisition</UnderlineTooltip>.
+   -  Traefik Plugin **[Remediation Component](/u/bouncers/intro)**: Thanks to [maxlerebourg](https://github.com/maxlerebourg) and team they created a [Traefik Plugin](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin) that allows you to block requests directly from Traefik.
+
+:::info
+Prior to starting the guide ensure you are using the [Traefik Plugin](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin) and **NOT** the older [traefik-crowdsec-bouncer](https://app.crowdsec.net/hub/author/fbonalair/remediation-components/traefik-crowdsec-bouncer) as it hasnt recieved updates to use the new AppSec Component.
+:::
+
+:::warning
+This guide will assume you already have a working Traefik setup using the Traefik Plugin. If you need help setting up Traefik, refer to the [official documentation](https://doc.traefik.io/traefik/) and the [Traefik Plugin](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin) documentation.
+:::
+
+## AppSec Component Setup
+
+### Collection installation
+
+To begin setting up the AppSec Component, the initial step is to install a relevant set of rules.
+
+We will utilize the [crowdsecurity/appsec-virtual-patching](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) collection, which offers a wide range of rules aimed at identifying and preventing the exploitation of known vulnerabilities.
+
+This <UnderlineTooltip tooltip="Collections are bundle of parsers, scenarios, postoverflows that form a coherent package.">collection</UnderlineTooltip> is regularly updated to include protection against newly discovered vulnerabilities. Upon installation, it receives automatic daily updates to ensure your protection is always current.
+
+Furthermore we also install the [crowdsecurity/appsec-generic-rules](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) collection. This collection contains detection scenarios for generic attack vectors. It provides some protection in cases where specific scenarios for vulnerabilities do not exist (yet).
+
+On the machine where the Security Engine is installed, just execute the following command:
+
+:::info
+You can always view the content of a [collection on the hub](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching)
+:::
+
+<FormattedTabs
+    docker={`## This command should be used when you are persisting /etc/crowdsec/ on the host
+docker exec -it crowdsec cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules`}
+    dockerCompose={`services:
+  crowdsec:
+    environment
+        ## Please note the spaces between the collections names (hence why the quotes are needed)
+        - 'COLLECTIONS=crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules'`}
+/>
+
+Executing this command or updating the compose will install the following items:
+
+- The [*AppSec Rules*](/appsec/rules_syntax.md) contain the definition of malevolent requests to be matched and stopped.
+- The [*AppSec Configuration*](/appsec/configuration.md#appsec-configuration) links together a set of rules to provide a coherent set.
+- The <UnderlineTooltip tooltip="YAML files that extract relevant data from logs, such as IP addresses, timestamps, or request paths.">CrowdSec Parser</UnderlineTooltip> and <UnderlineTooltip tooltip="Behavioral rules written in a domain-specific language that define what malicious activity looks like, such as multiple failed logins in a short time.">CrowdSec Scenario(s)</UnderlineTooltip> are used to detect and remediate persistent attacks.
+
+Once you have updated your compose or installed via the command line, will we need to restart the container. However, before we do that, we need to setup the acquisition for the AppSec Component.
+
+### Setup the Acquisition
+
+Depending on how you are running the CrowdSec Security Engine, you will need to configure the acquisition for the AppSec Component.
+
+If you have a folder in which you are persisting the configuration files, you can create a `appsec.yaml` and mount it into the container.
+
+There steps will change depending on how you are running the Security Engine. If you are running via `docker run` then you should launch the container within the same directory as the `appsec.yaml` file. If you are using `docker-compose` you can use a relative file mount to mount the `appsec.yaml` file.
+
+Steps:
+    1. Change to the location where you exectued the `docker run` or `docker compose` command.
+    2. Create a `appsec.yaml` file at the base of the directory.
+    3. Add the following content to the `appsec.yaml` file.
+
+```yaml title="appsec.yaml"
+appsec_config: crowdsecurity/appsec-default
+labels:
+    type: appsec
+listen_addr: 0.0.0.0:7422
+source: appsec
+```
+:::note
+Since CrowdSec is running inside a container you must set the `listen_addr` to `0.0.0.0` instead of the typical `127.0.0.1` as the container is running in a separate network.
+:::
+
+    4. Edit the `docker run` or `docker-compose` command to include the `appsec.yaml` file.
+
+<FormattedTabs
+    docker={`# Note if you have a docker run already running you will need to stop it before running this command
+docker run -d --name crowdsec -v /path/to/orginal:/etc/crowdsec -v ./appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml crowdsecurity/crowdsec`}
+    dockerCompose={`services:
+  crowdsec:
+    volumes:
+      - /path/to/orginal:/etc/crowdsec ## or named volumes
+      - ./appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml`}
+/>
+
+Once you have created the `appsec.yaml` file and mounted it into the container, you can recreate the container.
+
+:::note
+If you are using `docker run` you can skip to the [Remediation Component Setup](#remediation-component-setup) section.
+:::
+
+Once you have updated the compose file to include the volume mount and the updated environment variable, you can restart the container.
+
+```bash
+docker compose down crowdsec
+docker compose rm crowdsec
+docker compose up -d crowdsec
+```
+
+:::note
+The previous compose commands presume the container is named `crowdsec`. If you have named the container something else, you will need to replace `crowdsec` with the name of your container.
+:::
+
+## Remediation Component Setup
+
+As stated previously this guide already presumes you have the Traefik Plugin installed. If you do not have the Traefik Plugin installed, please refer to the [official documentation](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin) for installation instructions.
+
+### Configuration
+
+Depending on how you configured the Traefik Plugin, you will need to update the configuration to include the AppSec configuration.
+
+:::warning
+Currently AppSec does not support mTLS authentication for the AppSec Component. If you have mTLS enabled, and wish to use the AppSec Component, you can define seperate middlewares for the AppSec Component.
+:::
+
+If you have defined a dynamic configuration file for Traefik, you can add the following configuration to the file.
+
+```yaml title="traefik_dynamic.yaml"
+# Dynamic configuration
+http:
+  routers:
+    my-router:
+      rule: host(`whoami.localhost`)
+      service: service-foo
+      entryPoints:
+        - web
+      middlewares:
+        - crowdsec
+
+  services:
+    service-foo:
+      loadBalancer:
+        servers:
+          - url: http://127.0.0.1:5000
+  
+  middlewares:
+    crowdsec:
+      plugin:
+        bouncer:
+          enabled: true
+          crowdsecAppsecEnabled: true
+          crowdsecAppsecHost: crowdsec:7422
+          crowdsecAppsecFailureBlock: true
+          crowdsecAppsecUnreachableBlock: true
+          crowdsecLapiKey: privateKey-foo
+```
+
+Instead if you define the configuration using labels on the containers you can add the following labels to the Traefik Plugin container.
+
+```yaml
+  labels:
+      - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.enabled=true"
+      - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecAppsecEnabled=true"
+      - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecAppsecHost=crowdsec:7422"
+      - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecLapiKey=privateKey-foo"
+```
+
+For more comprehensive documentation on the Traefik Plugin configuration, please refer to the [official documentation](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin).
+
+We can't cover all the possible configurations for Traefik in this guide, so please refer to the [official documentation](https://doc.traefik.io/traefik/) for more information.
+
+### Directives
+
+The following directives are available for the Traefik Plugin:
+
+#### `crowdsecAppsecEnabled`
+> `bool`
+
+Enable or disable the AppSec Component.
+
+#### `crowdsecAppsecHost`
+> `string`
+
+The host and port where the AppSec Component is running.
+
+#### `crowdsecAppsecFailureBlock`
+> `bool`
+
+If the AppSec Component returns `500` status code should the request be blocked.
+
+#### `crowdsecAppsecUnreachableBlock`
+> `bool`
+
+If the AppSec Component is unreachable should the request be blocked.
+
+## Testing the AppSec Component + Remediation Component
+
+:::note
+We're assuming the web server is installed on the same machine and is listening on port 80. Please adjust your testing accordingly if this is not the case.
+:::
+
+if you try to access `http://localhost/.env` from a browser, your request will be blocked, resulting in the display of the following HTML page:
+
+![appsec-denied](/img/appsec_denied.png)
+
+We can also look at the metrics from `cscli metrics show appsec` it will display:
+ - the number of requests processed by the AppSec Component
+ - Individual rule matches
+
+ <details>
+  <summary>Example Output</summary>
+
+```bash title="sudo cscli metrics show appsec"
+Appsec Metrics:
+╭─────────────────┬───────────┬─────────╮
+│  Appsec Engine  │ Processed │ Blocked │
+├─────────────────┼───────────┼─────────┤
+│ 127.0.0.1:7422/ │ 2         │ 1       │
+╰─────────────────┴───────────┴─────────╯
+
+Appsec '127.0.0.1:7422/' Rules Metrics:
+╭─────────────────────────────────┬───────────╮
+│             Rule ID             │ Triggered │
+├─────────────────────────────────┼───────────┤
+│ crowdsecurity/vpatch-env-access │ 1         │
+╰─────────────────────────────────┴───────────╯
+```
+
+</details>
+
+### Explanation
+
+What happened in the test that we just did is:
+
+ 1. We did a request (`localhost/.env`) to our local webserver
+ 2. Thanks to the Remediation Component configuration, forwarded the request to `http://127.0.0.1:7422`
+ 3. Our AppSec Component, listening on `http://127.0.0.1:7422` analyzed the request
+ 4. The request matches the [AppSec rule to detect .env access](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access)
+ 5. The AppSec Component thus answered with [HTTP 403](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403) to the Remediation Component, indicating that the request must be blocked
+ 6. The web server then presented us with the default "request blocked" page.
+
+ ## Integration with the console
+
+If you haven't yet, follow the guide about [how to enroll your Security Engine in the console](/u/getting_started/post_installation/console).
+
+Once done, all your alerts, including the ones generated by the AppSec Component, are going to appear in the console:
+
+![appsec-console](/img/appsec_console.png)
+
+## Next steps
+
+You are now running the AppSec Component on your Crowdsec Security Engine, congrats!
+
+As the next steps, you can:
+ - [Explore the hub](https://hub.crowdsec.net) to find more rules for your use case
+ - Look at the [Rules syntax](/appsec/rules_syntax.md) and [creation process](/appsec/create_rules.md) to create your own and contribute
+ - Take a look at [the benchmarks](/appsec/benchmark.md)
