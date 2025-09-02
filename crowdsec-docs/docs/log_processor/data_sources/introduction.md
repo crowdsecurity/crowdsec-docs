@@ -9,45 +9,8 @@ DataSources define where to access them (either as files, or over the network fr
 
 They can be defined:
 
-- in [Acquisition files](/configuration/crowdsec_configuration.md#acquisition_path). Each file can contain multiple DataSource definitions.
+- in [Acquisition files](/configuration/crowdsec_configuration.md#acquisition_path). Each file can contain multiple DataSource definitions. This configuration can be generated automatically, please refer to the [Service Discovery documentation](/log_processor/service-discovery-setup/intro.md)
 - for cold log analysis, you can also specify acquisitions via the command line.
-
-
-### Service detection (automated setup)
-
-When CrowdSec is installed via a package manager on a fresh system, the package may run [`cscli setup`](/cscli/cscli_setup) in **unattended** mode.
-
-The `cscli setup` command will:
-
-- detect installed services and common log file locations
-- install the related Hub collections
-- generate acquisition files under `acquis.d/` as `setup.<service>.yaml` (e.g., `setup.linux.yaml`)
-
-Generated files are meant to be managed by CrowdSec; don’t edit them in place. If you need changes, delete the generated file and create your own.
-
-When upgrading or reinstalling CrowdSec, it detects non-generated or modified files and won’t overwrite your custom acquisitions.
-
-:::caution
-
-Make sure the same data sources are not ingested more than once: duplicating inputs can artificially increase scenario sensitivity.
-
-Examples:
-
-- If an application logs to both `journald` and `/var/log/*`, you usually only need one of them.
-- If an application writes to `/var/log/syslog` or `/var/log/messages`, it’s already acquired by `setup.linux.yaml` (since 1.7) or `acquis.yaml`. You don’t need to add a separate acquisition for the same logs.
-
-:::
-
-For config-managed deployments (e.g., Ansible), set the environment variable `CROWDSEC_SETUP_UNATTENDED_DISABLE` to any non-empty value to skip the automated setup.
-In that case, ensure you configure at least one data source and install the OS collection (e.g., crowdsecurity/linux).
-
-### Assisted service detection (semi-automated setup)
-
-If you installed new applications and want to detect the service detection again, running [`cscli setup`](/cscli/cscli_setup) yourself will guide you through the
-automated setup, with confirmation prompts. You will receive a warning if you already configured some acquisition yourself but they won't be
-modified by `cscli`.
-
-Note that `cscli setup` will not remove any collection or acquisition file in `acquis.d/setup.<service>.yaml`, even if the service has been uninstalled since the file creation.
 
 
 ## Datasources modules
