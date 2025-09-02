@@ -1,6 +1,6 @@
 ---
 id: detect-yaml
-title: detect.yaml syntax
+title: Syntax
 sidebar_position: 1
 ---
 
