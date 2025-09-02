@@ -1,12 +1,12 @@
 ---
 id: detect-yaml
-title: detect.yaml file format
+title: detect.yaml syntax
 sidebar_position: 1
 ---
 
-#  `detect.yaml` syntax
+# `detect.yaml` syntax
 
-A minimal detection file is a YAML map with a top‐level `detect:` key. 
+A minimal detection file is a YAML map with a top‐level `detect:` key.
 
 Under it, each entry describes one service plan:
 
@@ -44,8 +44,7 @@ when:
  - Systemd.UnitInstalled("<unit>")
 ```
 
-You can use any of the helper referenced [here](/log_processor/service-discovery-setup/expr.md).
-)
+You can use any of the helper referenced [here](/log_processor/service-discovery-setup/expr).
 
 ### `hub_spec`
 
@@ -138,5 +137,3 @@ detect:
         labels: 
          type: eventlog
 ```
-
-
