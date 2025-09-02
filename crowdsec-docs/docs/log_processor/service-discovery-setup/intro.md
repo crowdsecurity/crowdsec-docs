@@ -6,6 +6,11 @@ sidebar_position: 1
 
 # Service Discovery
 
+The goals of service discovery are to automatically:
+ - Detect services on your machine supported by crowdsec
+ - Install related hub items
+ - Generate acquisition configuration
+
 ## Basic Usage
 
 The main way to use the service discovery is with `cscli setup interactive` or `cscli setup unattended`.
