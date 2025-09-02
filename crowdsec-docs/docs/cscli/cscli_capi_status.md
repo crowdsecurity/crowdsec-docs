@@ -2,8 +2,6 @@
 id: cscli_capi_status
 title: cscli capi status
 ---
-## cscli capi status
-
 Check status with the Central API (CAPI)
 
 ```

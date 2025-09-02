@@ -2,8 +2,6 @@
 id: cscli_hubtest_coverage
 title: cscli hubtest coverage
 ---
-## cscli hubtest coverage
-
 coverage
 
 ```

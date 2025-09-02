@@ -2,8 +2,6 @@
 id: cscli_lapi_status
 title: cscli lapi status
 ---
-## cscli lapi status
-
 Check authentication to Local API (LAPI)
 
 ```

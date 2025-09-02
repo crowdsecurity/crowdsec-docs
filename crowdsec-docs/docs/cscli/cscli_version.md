@@ -2,8 +2,6 @@
 id: cscli_version
 title: cscli version
 ---
-## cscli version
-
 Display version
 
 ```

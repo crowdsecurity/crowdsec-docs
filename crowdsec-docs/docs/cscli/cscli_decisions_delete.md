@@ -2,8 +2,6 @@
 id: cscli_decisions_delete
 title: cscli decisions delete
 ---
-## cscli decisions delete
-
 Delete decisions
 
 ```

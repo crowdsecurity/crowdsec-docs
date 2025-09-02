@@ -2,8 +2,6 @@
 id: cscli_appsec-rules_install
 title: cscli appsec-rules install
 ---
-## cscli appsec-rules install
-
 Install given appsec-rule(s)
 
 ### Synopsis

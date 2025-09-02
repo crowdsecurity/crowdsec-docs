@@ -2,8 +2,6 @@
 id: cscli_notifications_inspect
 title: cscli notifications inspect
 ---
-## cscli notifications inspect
-
 Inspect notifications plugin
 
 ### Synopsis

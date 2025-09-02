@@ -2,8 +2,6 @@
 id: cscli_simulation_enable
 title: cscli simulation enable
 ---
-## cscli simulation enable
-
 Enable the simulation, globally or on specified scenarios
 
 ```

@@ -2,8 +2,6 @@
 id: cscli_lapi_context
 title: cscli lapi context
 ---
-## cscli lapi context
-
 Manage context to send with alerts
 
 ### Options

@@ -2,8 +2,6 @@
 id: cscli_simulation_disable
 title: cscli simulation disable
 ---
-## cscli simulation disable
-
 Disable the simulation mode. Disable only specified scenarios
 
 ```

@@ -2,8 +2,6 @@
 id: cscli_scenarios
 title: cscli scenarios
 ---
-## cscli scenarios
-
 Manage hub scenarios
 
 ### Examples

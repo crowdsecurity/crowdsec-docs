@@ -2,8 +2,6 @@
 id: cscli_bouncers_list
 title: cscli bouncers list
 ---
-## cscli bouncers list
-
 list all bouncers within the database
 
 ```

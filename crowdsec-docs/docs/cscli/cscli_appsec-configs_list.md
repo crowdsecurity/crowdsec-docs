@@ -2,8 +2,6 @@
 id: cscli_appsec-configs_list
 title: cscli appsec-configs list
 ---
-## cscli appsec-configs list
-
 List appsec-config(s)
 
 ### Synopsis

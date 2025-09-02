@@ -2,8 +2,6 @@
 id: cscli_bouncers_delete
 title: cscli bouncers delete
 ---
-## cscli bouncers delete
-
 delete bouncer(s) from the database
 
 ```

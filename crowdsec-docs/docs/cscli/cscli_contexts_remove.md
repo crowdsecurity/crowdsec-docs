@@ -2,8 +2,6 @@
 id: cscli_contexts_remove
 title: cscli contexts remove
 ---
-## cscli contexts remove
-
 Remove given context(s)
 
 ### Synopsis

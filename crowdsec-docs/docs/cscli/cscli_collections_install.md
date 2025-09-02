@@ -2,8 +2,6 @@
 id: cscli_collections_install
 title: cscli collections install
 ---
-## cscli collections install
-
 Install given collection(s)
 
 ### Synopsis

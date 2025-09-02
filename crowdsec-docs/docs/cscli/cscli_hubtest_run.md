@@ -2,8 +2,6 @@
 id: cscli_hubtest_run
 title: cscli hubtest run
 ---
-## cscli hubtest run
-
 run [test_name]
 
 ```
