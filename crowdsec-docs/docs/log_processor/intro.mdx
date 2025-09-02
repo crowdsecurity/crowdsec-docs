@@ -8,16 +8,15 @@ The Log Processor is a core component of the Security Engine. It:
 
 - Reads logs from [Data Sources](log_processor/data_sources/introduction.md) via Acquistions.
 - Parses logs and extract relevant information using [Parsers](log_processor/parsers/introduction.mdx).
-- Enriches the parsed information with additional context such as GEOIP, ASN using [Enrichers](log_processor/parsers/enricher.md).  
+- Enriches the parsed information with additional context such as GEOIP, ASN using [Enrichers](log_processor/parsers/enricher.md).
 - Monitors patterns of interest via [Scenarios](log_processor/scenarios/introduction.mdx).
 - Pushes alerts to the Local API (LAPI), where alert/decisions are stored.
-
-!TODO: Add diagram of the log processor pipeline
 - Read logs from datasources
 - Parse the logs
 - Enrich the parsed information
 - Monitor the logs for patterns of interest
 
+<!-- !TODO: Add diagram of the log processor pipeline -->
 
 ## Log Processor
 
@@ -44,10 +43,10 @@ We support two ways to define Acquisitions in the [configuration directory](/u/t
 ## /etc/crowdsec/acquis.d/file.yaml
 source: file ## The Data Source module to use
 filenames:
- - /tmp/foo/*.log
- - /var/log/syslog
+  - /tmp/foo/*.log
+  - /var/log/syslog
 labels:
- type: syslog
+  type: syslog
 ```
 
 For more information on Data Sources and Acquisitions, see the [Data Sources](log_processor/data_sources/introduction.md) documentation.
