@@ -4,7 +4,7 @@ title: detect.yaml syntax
 sidebar_position: 1
 ---
 
-# `detect.yaml` syntax
+# Syntax
 
 A minimal detection file is a YAML map with a top‐level `detect:` key.
 
