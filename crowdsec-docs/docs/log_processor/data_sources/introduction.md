@@ -1,20 +1,25 @@
 ---
 id: intro
-title: Acquisition Datasources Introduction
+title: Acquisition Datasources
 sidebar_position: 1
 ---
 
-## Datasources
+To monitor applications, the Security Engine needs to read logs.
+DataSources define where to access them (either as files, or over the network from a centralized logging service).
 
-To be able to monitor applications, the Security Engine needs to access logs.
-DataSources are configured via the [acquisition](/configuration/crowdsec_configuration.md#acquisition_path) configuration, or specified via the command-line when performing cold logs analysis.
+They can be defined:
 
+- in [Acquisition files](/configuration/crowdsec_configuration.md#acquisition_path). Each file can contain multiple DataSource definitions. This configuration can be generated automatically, please refer to the [Service Discovery documentation](/log_processor/service-discovery-setup/intro.md)
+- for cold log analysis, you can also specify acquisitions via the command line.
+
+
+## Datasources modules
 
 Name | Type | Stream | One-shot
 -----|------|--------|----------
 [Appsec](/log_processor/data_sources/appsec.md) | expose HTTP service for the Appsec component | yes | no
 [AWS cloudwatch](/log_processor/data_sources/cloudwatch.md) | single stream or log group | yes | yes
-[AWS kinesis](/log_processor/data_sources/kinesis.md)| read logs from a kinesis strean | yes | no
+[AWS kinesis](/log_processor/data_sources/kinesis.md)| read logs from a kinesis stream | yes | no
 [AWS S3](/log_processor/data_sources/s3.md)| read logs from a S3 bucket | yes | yes
 [docker](/log_processor/data_sources/docker.md) | read logs from docker containers | yes | yes
 [file](/log_processor/data_sources/file.md) | single files, glob expressions and .gz files | yes | yes
@@ -46,6 +51,7 @@ An expression that will run after the acquisition has read one line, and before 
 It allows to modify an event (or generate multiple events from one line) before parsing.
 
 For example, if you acquire logs from a file containing a JSON object on each line, and each object has a `Records` array with multiple events, you can use the following to generate one event per entry in the array:
+
 ```
 map(JsonExtractSlice(evt.Line.Raw, "Records"), ToJsonString(#))
 ```
@@ -62,7 +68,7 @@ By default, when reading logs in real-time, crowdsec will use the time at which 
 
 Setting this option to `true` will force crowdsec to use the timestamp from the log as the time of the event.
 
-It is mandatory to set this if your application buffers logs before writting them (for example, IIS when writing to a log file, or logs written to S3 from almost any AWS service).<br/>
+It is mandatory to set this if your application buffers logs before writing them (for example, IIS when writing to a log file, or logs written to S3 from almost any AWS service).<br/>
 If not set, then crowdsec will think all logs happened at once, which can lead to some false positive detections.
 
 ### `labels`
@@ -70,31 +76,39 @@ If not set, then crowdsec will think all logs happened at once, which can lead t
 A map of labels to add to the event.
 The `type` label is mandatory, and used by the Security Engine to choose which parser to use.
 
-## Acquisition configuration example
+## Acquisition configuration examples
 
-```yaml title="/etc/crowdsec/acquis.yaml"
+```yaml title="/etc/crowdsec/acquis.d/nginx.yaml"
 filenames:
   - /var/log/nginx/*.log
 labels:
   type: nginx
----
+```
+
+```yaml title="/etc/crowdsec/acquis.d/linux.yaml"
 filenames:
  - /var/log/auth.log
  - /var/log/syslog
 labels:
   type: syslog
----
+```
+
+```yaml title="/etc/crowdsec/acquis.d/docker.yaml"
 source: docker
 container_name_regexp:
  - .*caddy*
 labels:
   type: caddy
 ---
-...
+source: docker
+container_name_regexp:
+ - .*nginx*
+labels:
+  type: nginx
 ```
 
 :::warning
 The `labels` and `type` fields are necessary to dispatch the log lines to the right parser.
 
-Also note between each datasource is `---` this is needed to separate multiple YAML documents (each datasource) in a single file.
+In the last example we defined multiple datasources separated by the line `---`, which is the standard YAML marker.
 :::

@@ -128,6 +128,18 @@ const sidebarsConfig: SidebarConfig = {
 				},
 				{
 					type: "category",
+					label: "Service Discovery",
+					link: {
+						type: "doc",
+						id: "log_processor/service-discovery-setup/intro",
+					},
+					items: [
+						"log_processor/service-discovery-setup/detect-yaml",
+						"log_processor/service-discovery-setup/setup-expr-helpers",
+					],
+				},
+				{
+					type: "category",
 					label: "Alert Context",
 					link: {
 						type: "doc",

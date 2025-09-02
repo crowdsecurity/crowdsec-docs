@@ -5,7 +5,7 @@ sidebar_position: 10
 ---
 
 The [prometheus](/observability/prometheus.md) instrumentation exposes metrics about acquisition and data sources.
-Those can as well be view via `cscli metrics` :
+Those can as well be viewed via `cscli metrics` :
 
 ```bash
 INFO[19-08-2021 06:33:31 PM] Acquisition Metrics:                         

@@ -4,24 +4,23 @@ title: Introduction
 sidebar_position: 1
 ---
 
-The Log Processor is one of the core component of the Security Engine to:
+The Log Processor is a core component of the Security Engine. It:
 
-- Read logs from [Data Sources](log_processor/data_sources/introduction.md) in the form of Acquistions.
-- Parse the logs and extract relevant information using [Parsers](log_processor/parsers/introduction.mdx).
-- Enrich the parsed information with additional context such as GEOIP, ASN using [Enrichers](log_processor/parsers/enricher.md).  
-- Monitor the logs for patterns of interest known as [Scenarios](log_processor/scenarios/introduction.mdx).
-- Push alerts to the Local API (LAPI) for alert/decisions to be stored within the database.
-
-!TODO: Add diagram of the log processor pipeline
+- Reads logs from [Data Sources](log_processor/data_sources/introduction.md) via Acquistions.
+- Parses logs and extract relevant information using [Parsers](log_processor/parsers/introduction.mdx).
+- Enriches the parsed information with additional context such as GEOIP, ASN using [Enrichers](log_processor/parsers/enricher.md).
+- Monitors patterns of interest via [Scenarios](log_processor/scenarios/introduction.mdx).
+- Pushes alerts to the Local API (LAPI), where alert/decisions are stored.
 - Read logs from datasources
 - Parse the logs
 - Enrich the parsed information
 - Monitor the logs for patterns of interest
 
+<!-- !TODO: Add diagram of the log processor pipeline -->
 
-## Introduction
+## Log Processor
 
-The Log Processor is an internal core component of the Security Engine in charge of reading logs from Data Sources, parsing them, enriching them, and monitoring them for patterns of interest.
+The Log Processor reads logs from Data Sources, parses and enriches them, and monitors them for patterns of interest.
 
 Once a pattern of interest is detected, the Log Processor will push alerts to the Local API (LAPI) for alert/decisions to be stored within the database.
 
@@ -35,19 +34,19 @@ Data Sources are individual modules that can be loaded at runtime by the Log Pro
 
 Acquisitions are the configuration files that define how the Log Processor should read logs from a Data Source. Acquisitions are defined in YAML format and are loaded by the Log Processor at runtime.
 
-We have two ways to define Acquisitions within the [configuration directory](/u/troubleshooting/security_engine#where-is-configuration-stored) :
+We support two ways to define Acquisitions in the [configuration directory](/u/troubleshooting/security_engine#where-is-configuration-stored):
 
-- `acquis.yaml` file: This used to be only place to define Acquisitions prior to `1.5.0`. This file is still supported for backward compatibility.
-- `acquis.d` folder: This is a directory where you can define multiple Acquisitions in separate files. This is useful when you want to auto generate files using an external application such as ansible.
+- `acquis.yaml` file: the legacy, single-file configuration (still supported)
+- `acquis.d` directory: a directory of multiple acquisition files (since v1.5.0, recommended for any non-trivial setup)
 
 ```yaml title="Example Acquisition Configuration"
 ## /etc/crowdsec/acquis.d/file.yaml
 source: file ## The Data Source module to use
 filenames:
- - /tmp/foo/*.log
- - /var/log/syslog
+  - /tmp/foo/*.log
+  - /var/log/syslog
 labels:
- type: syslog
+  type: syslog
 ```
 
 For more information on Data Sources and Acquisitions, see the [Data Sources](log_processor/data_sources/introduction.md) documentation.
@@ -87,3 +86,9 @@ You can see more information on Whitelists in the [documentation](log_processor/
 Alert Context is additional context that can sent with an alert to the LAPI. This context can be shown locally via `cscli` or within the [CrowdSec Console](https://app.crowdsec.net/signup) if you opt in to share context when you enroll your instance.
 
 You can read more about Alert Context in the [documentation](log_processor/alert_context/intro.md).
+
+### Service Discovery & Setup
+
+On installation, CrowdSec can automatically detect existing services, download the relevant Hub collections, and generate acquisitions based on discovered log files.
+
+You can [customize or override these steps](log_processor/service-discovery-setup/intro.md), for example when provisioning multiple systems or using configuration management tools.
