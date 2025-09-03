@@ -258,7 +258,6 @@ const sidebarsConfig: SidebarConfig = {
 				"observability/cscli",
 				"observability/prometheus",
 				"observability/usage_metrics",
-				"observability/dashboard",
 				"observability/pprof",
 			],
 		},
