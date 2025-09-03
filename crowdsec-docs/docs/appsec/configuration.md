@@ -22,7 +22,7 @@ The AppSec Component configuration consists of three main parts:
 
 The goals of the acquisition file are:
 - To specify the **address** and **port** where the AppSec-enabled Remediation Component(s) will forward the requests to.
-- And specify one or more [AppSec configuration files](#appsec-configuration) to use as definition of what rules to apply and how. 
+- And specify one or more [AppSec configuration files](#appsec-configuration-files) to use as definition of what rules to apply and how. 
 
 Details can be found in the [AppSec Datasource page](/log_processor/data_sources/appsec.md).
 

@@ -11,7 +11,7 @@ import useBaseUrl from "@docusaurus/useBaseUrl"
 Crowdsec's [architecture](/docs/next/intro#architecture) allows distributed setups, as most components communicate via [HTTP API](/docs/next/local_api/intro).
 
 When doing such, a few considerations must be kept in mind to understand the role of each component:
- - The log processor is in charge of [processing the logs](/docs/next/parsers/intro), matching them against [scenarios](/docs/next/scenarios/intro), and sending the resulting alerts to the [local API](/docs/next/local_api/intro)
+ - The log processor is in charge of [processing the logs](/docs/next/log_processor/parsers/intro), matching them against [scenarios](/docs/next/log_processor/scenarios/intro), and sending the resulting alerts to the [local API](/docs/next/local_api/intro)
  - The local API (LAPI from now on) receives the alerts and converts them into decisions based on your profile
  - LAPI also takes care of communication with [CAPI](/docs/next/central_api/intro) to pull blocklists and push alerts to the console.
  - The remediation component query the LAPI to receive the decisions to be applied
@@ -40,7 +40,7 @@ You can also use [TLS Authentication](/docs/next/local_api/tls_auth), which does
 
 ### LAPI
 
-Follow the [getting started guide](/docs/next/getting_started/install_crowdsec) to install Crowdsec.
+Follow the [getting started guide](/u/getting_started/installation/linux) to install Crowdsec.
 
 You will need to edit the `/etc/crowdsec/config.yaml` file to make LAPI listen on all interfaces:
 ```yaml
@@ -79,7 +79,7 @@ Note that LAPI only receives the alerts and turn them into decisions, this means
 
 ### Log processors
 
-Again, follow the [getting started guide](/docs/next/getting_started/install_crowdsec) to install Crowdsec.
+Again, follow the [getting started guide](/u/getting_started/installation/linux) to install Crowdsec.
 
 Once the installation is done, you need to edit the `/etc/crowdsec/config.yaml` to disable the LAPI running by default.
 To do so, you can remove the entire `api.server` section from the file.

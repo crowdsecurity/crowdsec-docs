@@ -17,7 +17,7 @@ id: network_management
  - Local API connects to `tcp/443` on `papi.api.crowdsec.net` (console management)
  - `cscli` connects to `tcp/443` on `hub-cdn.crowdsec.net` to fetch scenarios, parsers etc. (1)
  - `cscli` connects to `tcp/443` on `version.crowdsec.net` to check latest version available. (1)
- - [`cscli dashboard`](/cscli/cscli_dashboard.md) fetches metabase configuration from a s3 bucket (`https://crowdsec-statics-assets.s3-eu-west-1.amazonaws.com/`)
+ - Dashboard-related functionality may connect to external services for configuration
  - Installation script is hosted on `install.crowdsec.net` over HTTPS.
  - Repositories are hosted on `packagecloud.io` over HTTPS.
 

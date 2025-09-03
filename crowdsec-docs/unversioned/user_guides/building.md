@@ -65,7 +65,7 @@ This will only deploy the binaries, and some extra installation steps need to be
  - `sudo cscli machines add -a` : register crowdsec to the local API
  - `sudo cscli capi register` : register to the central API
  - `sudo cscli collections install crowdsecurity/linux` : install essential configs (syslog parser, geoip enrichment, date parsers)
- - configure your [datasources](/docs/next/data_sources/intro)
+ - configure your [datasources](/docs/next/log_processor/data_sources/intro)
 
 You can now start & enable the crowdsec service :
 
