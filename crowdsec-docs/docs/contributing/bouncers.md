@@ -17,8 +17,8 @@ Sharing on the hub allows other users to find and use it. While increasing your 
 #### Specs
 
 Remediation components have mandatory and optional features, they are described in the following sub pages:
-- [Specifications for Remediation Component and AppSec Capabilities](/contributing/specs/bouncer_appsec_specs)
-- [Remediation Component Metrics](/contributing/specs/bouncer_metrics_specs)
+- [Specifications for Remediation Component and AppSec Capabilities](/contributing/specs/bouncer_appsec_specs.mdx)
+- [Remediation Component Metrics](/contributing/specs/bouncer_metrics_specs.mdx)
 
 *Don't hesitate to get in touch with us via discord if anything is unclear to you*
 

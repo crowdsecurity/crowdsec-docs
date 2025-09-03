@@ -9,7 +9,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Scenarios are YAML files that allow to detect a specific behavior, usually an attack.
 
-Scenarios receive [events](/concepts.md#events) and can produce [alerts](/concepts.md#alerts) using the [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) algorithm.
+Scenarios receive events and can produce alerts using the [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) algorithm.
 
 <div style={{display: 'flex'}}>
     <div style={{textAlign: 'center', flex: '1'}}>
@@ -25,6 +25,6 @@ The event goes via various steps :
  - if the bucket overflows, it can be validated by an optional `overflow_filter`
 
 
-Once an overflow happens, it will go through [postoverflows](/log_processor/parsers/introduction.mdx#postoverflows) to handle last chance whitelists, before being finally turned into a potential [decision](/concepts.md#decisions) by [profiles](/local_api/profiles/intro.md).
+Once an overflow happens, it will go through [postoverflows](/log_processor/parsers/introduction.mdx#postoverflows) to handle last chance whitelists, before being finally turned into a potential decision by [profiles](/local_api/profiles/intro.md).
 
 

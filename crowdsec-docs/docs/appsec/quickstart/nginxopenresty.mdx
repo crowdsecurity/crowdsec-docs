@@ -59,7 +59,7 @@ sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecuri
 Executing this command will install the following items:
 
 - The [*AppSec Rules*](/appsec/rules_syntax.md) contain the definition of malevolent requests to be matched and stopped
-- The [*AppSec Configuration*](/appsec/configuration.md#appsec-configuration) links together a set of rules to provide a coherent set
+- The [*AppSec Configuration*](/appsec/configuration.md#appsec-configuration-files) links together a set of rules to provide a coherent set
 - The <UnderlineTooltip tooltip="YAML files that extract relevant data from logs, such as IP addresses, timestamps, or request paths.">CrowdSec Parser</UnderlineTooltip> and <UnderlineTooltip tooltip="Behavioral rules written in a domain-specific language that define what malicious activity looks like, such as multiple failed logins in a short time.">CrowdSec Scenario(s)</UnderlineTooltip> bans for a longer duration repeating offenders
 
 ### Setup the Acquisition
@@ -82,7 +82,7 @@ Steps:
 
 The two important directives in this configuration file are:
 
- - `appsec_config` is the name of the [*AppSec Configuration*](appsec/configuration.md#appsec-configuration) that was included in the <UnderlineTooltip tooltip="Collections are bundle of parsers, scenarios, postoverflows that form a coherent package.">Collection</UnderlineTooltip> we just installed.
+ - `appsec_config` is the name of the [*AppSec Configuration*](/appsec/configuration.md#appsec-configuration-files) that was included in the <UnderlineTooltip tooltip="Collections are bundle of parsers, scenarios, postoverflows that form a coherent package.">Collection</UnderlineTooltip> we just installed.
  - the `listen_addr` is the IP and port the AppSec Component will listen to.
 
 :::warning

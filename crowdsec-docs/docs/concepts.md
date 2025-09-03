@@ -12,7 +12,7 @@ sidebar_position: 1
 > The Security Engine is CrowdSec's IDS/IPS (Intrusion Detection System/Intrusion Prevention System)
 > It is a rules and behavior detection engine comprised of Log Processor and the Local API.
 
-A Security Engine can operate [independently](/intro#architecture) or in a [distributed manner](/intro#deployment-options), adapting to the specific needs and constraints of your infrastructure. For more information on CrowdSec's distributed approach, visit our documentation on collaborative operations and distributed deployments.
+A Security Engine can operate [independently](intro.mdx#architecture) or in a [distributed manner](intro.mdx#deployment-options), adapting to the specific needs and constraints of your infrastructure. For more information on CrowdSec's distributed approach, visit our documentation on collaborative operations and distributed deployments.
 
 
 # Log Processor (LP)
@@ -50,7 +50,7 @@ Remediations components leverage existing components of your infrastructure to b
 
 > The Central API (CAPI) serves as the gateway for network participants to connect and communicate with CrowdSec's network.
 
-The Central API (abreviated as `CAPI`) receives attack signals from all participating Security Engines and signal partners, then re-distribute them curated community decisions ([Community Blocklist](/central_api/community_blocklist/)).   
+The Central API (abreviated as `CAPI`) receives attack signals from all participating Security Engines and signal partners, then re-distribute them curated community decisions ([Community Blocklist](/central_api/blocklist.md)).   
 It's also at the heart of CrowdSec centralized [Blocklist services](/u/blocklists/intro).
 
 # Console
@@ -61,4 +61,4 @@ The [Console](https://app.crowdsec.net) allows you to:
  - [Manage alerts](/u/console/alerts/intro) of your security stack
  - [Manage decisions](/u/console/decisions/decisions_intro) in real-time
  - View and use [blocklists and integrations](/u/blocklists/intro)
- - Manage your API keys ([CTI API](/u/cti_api/intro), [Service API](/u/service_api/getting_started))
+ - Manage your API keys ([CTI API](/u/cti_api/intro), [Service API](/u/console/service_api/getting_started))

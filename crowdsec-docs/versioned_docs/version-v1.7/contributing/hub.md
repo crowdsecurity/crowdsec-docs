@@ -28,12 +28,12 @@ To get involved :
 
 The following explains how to create and test:
 
-- [parsers](/docs/parsers/create/)
-- [scenarios](/docs/scenarios/create/)
+- [parsers](/log_processor/parsers/create.md)
+- [scenarios](/log_processor/scenarios/create.md)
 
 ### Collections
 
-It often makes sense for a new parser or scenario to be added to an existing [collection](/docs/collections/format), or create a new one.
+It often makes sense for a new parser or scenario to be added to an existing [collection](/log_processor/collections/format.md), or create a new one.
 
 If your parsers and/or scenarios cover a new or specific service, having a dedicated collection for this service makes sense.
 In other cases, having a parser for `SpecificWebServer` access logs would justify a collection as it might also include [all the default http related scenarios](https://hub.crowdsec.net/author/crowdsecurity/collections/base-http-scenarios).
@@ -71,7 +71,7 @@ labels:
 
 Before asking for a review of your PR, please ensure you have the following:
 
-- tests: Test creation is covered in [parsers creation](/docs/parsers/create/) and [scenarios creation](/docs/scenarios/create/). Ensure that each of your parser or scenario is properly tested.
+- tests: Test creation is covered in [parsers creation](/log_processor/parsers/create.md) and [scenarios creation](/log_processor/scenarios/create.md). Ensure that each of your parser or scenario is properly tested.
 - documentation: Please provide a `.md` file with the same name as each of your parser, scenario or collection. The markdown is rendered in the [hub](https://hub.crowdsec.net).
 - documentation: If you're creating a collection targeting a specific log file, be sure to provide an acquis example as :
 
