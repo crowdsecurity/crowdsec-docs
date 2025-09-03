@@ -254,12 +254,7 @@ const sidebarsConfig: SidebarConfig = {
 				type: "doc",
 				id: "observability/intro",
 			},
-			items: [
-				"observability/cscli",
-				"observability/prometheus",
-				"observability/usage_metrics",
-				"observability/pprof",
-			],
+			items: ["observability/cscli", "observability/prometheus", "observability/usage_metrics", "observability/pprof"],
 		},
 		{
 			type: "category",
