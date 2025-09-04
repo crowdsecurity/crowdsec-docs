@@ -35,7 +35,7 @@ The crowdsec-custom-bouncer will periodically fetch new, expired and removed dec
 
 ### Repository
 
-[Setup crowdsec repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories).
+[Setup crowdsec repositories](/u/getting_started/installation/linux#repository-installation).
 
 <Tabs
   defaultValue="debian"
@@ -175,7 +175,7 @@ By default you can find the log file `/var/log/crowdsec-custom-bouncer.log`, how
 
 We recommend using the [scopes](#scopes) configuration to filter the scope your script is interested in. This will ensure you get the expected values in your script.
 
-This is only applicable if you have configured your [profiles](/docs/next/profiles/format#decisions) to make use of scopes but is general best pratice to set it to `["Ip"]` by default if that is the script aim.
+This is only applicable if you have configured your [profiles](/docs/next/local_api/profiles/format#decisions) to make use of scopes but is general best pratice to set it to `["Ip"]` by default if that is the script aim.
 
 The above will ensure you get values from LAPI to the script, however, you should double check the values in your script to ensure they are as expected.
 

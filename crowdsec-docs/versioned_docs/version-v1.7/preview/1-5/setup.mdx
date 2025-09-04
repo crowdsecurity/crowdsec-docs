@@ -1,0 +1,135 @@
+---
+id: crowdsec_preview_setup
+title: Setup
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+The 1.5 preview of crowdsec offers quite a few new features, and you will need to configure them to get the most out of it.
+
+
+## Hub
+
+First of all, if you want to use the collections that relies on new crowdsec features (such as the kubernetes collection, AWS cloudtrail collection or audit collection), you will need to switch crowdsec to a specific branch on the hub.
+
+<Tabs
+  defaultValue="Linux"
+  groupId="operating-systems"
+  values={[
+    {label: 'Linux', value: 'Linux'},
+    {label: 'Windows', value: 'Windows'},
+  ]}>
+  <TabItem value="Linux">
+	Edit <code>/etc/crowdsec/config.yaml</code> and add the following to the <code>cscli</code> section of the file:
+    <CodeBlock className="language-yaml">hub_branch: 1.5_beta</CodeBlock>
+	Next, you will need to update the hub, and then restart crowdsec:
+    <CodeBlock className="language-bash">{`sudo cscli hub update
+sudo systemctl restart crowdsec`}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="Windows">
+  	Edit <code>%PROGRAMDATA%\CrowdSec\config\config.yaml</code> and add the following to the <code>cscli</code> section of the file:
+  	<CodeBlock className="language-yaml">hub_branch: 1.5_beta</CodeBlock>
+		Next, you will need to update the hub, and then restart crowdsec. From a powershell prompt with admin rights:
+    <CodeBlock className="language-powershell">{`cscli.exe hub update
+Restart-Service crowdsec`}
+    </CodeBlock>
+  </TabItem>
+</Tabs>
+
+While not mandatory, this step ensure you will be able to use the new collections available.
+
+
+## Feature Flags
+
+Crowdsec 1.5 introduces the concept of feature flags, which allows us to release new features without breaking existing installations.
+
+With 1.5, we have 6 differents flags, all disabled by default:
+ - `chunked_decisions_stream`: Stream the decisions to the bouncers, instead of loading them all at once in memory. This can help reduce memory usage when having a lot of bouncers.
+ - `cscli_setup`: New service auto-detection mechanism for cscli. It can be configured more easily than the previous one and works on all operating systems.
+ - `disable_http_retry_backoff`: Disable the exponential backoff when retrying HTTP requests to LAPI.
+ - `papi_client`: Enable the new polling API client, allowing app.crowdsec.net to manage certain parts of crowdsec.
+ - `re2_grok_support`: Switch the regexp engine used to parse logs with GROK patterns to RE2, offering much better performance at the cost of a slightly longer startup time.
+ - `re2_regexp_in_file_support`: Switch the regexp engine used by the `RegexpInFile` helper to RE2. This can occasionnally improves performance of some scenarios.
+
+You can list all feature flags and see their status with `cscli config feature-flags`.
+
+To enable a feature flag, you have 2 options:
+ - Start crowdsec (or cscli if applicable) with an environment variable called `CROWDSEC_FEATURE_<uppercase_feature_name>` set to `true`.
+ - Edit the `feature.yaml` file (in `/etc/crowdsec/` by default on linux, `%PROGRAMDATA%\CrowdSec\config\` on windows) and add a line with `- <feature_name>`.
+
+For example, to enable the `re2_grok_support` feature flag with the env, you would start crowdsec with `CROWDSEC_FEATURE_RE2_GROK_SUPPORT=true`.
+
+To enable it with the config file, you would add the following line to the `feature.yaml` file: `- re2_grok_support`.
+
+The config file method is recommended, as it will used for both `crowdsec` and `cscli` automatically.
+
+## Enabling the Polling API
+
+The polling API allows you to control your crowdsec instance from app.crowdsec.net, and is disabled by default.
+
+You can manage the decisions (add or remove) or force a refresh from CAPI when subscribing to a new blocklist.
+
+### Enabling the feature flag
+
+:::info
+<code>feature.yaml</code> does not exist by default please create it manually.
+:::
+
+First, you'll need to enable the feature flag to enable support for the polling API:
+
+<Tabs
+  defaultValue="Linux"
+  groupId="operating-systems"
+  values={[
+    {label: 'Linux', value: 'Linux'},
+    {label: 'Windows', value: 'Windows'},
+  ]}>
+  <TabItem value="Linux">
+	Edit <code>/etc/crowdsec/feature.yaml</code> and add the following line:
+    <CodeBlock className="language-yaml">- papi_client</CodeBlock>
+  </TabItem>
+  <TabItem value="Windows">
+  	Edit <code>%PROGRAMDATA%\CrowdSec\config\feature.yaml</code> and add the following line:
+  	<CodeBlock className="language-yaml">- papi_client</CodeBlock>
+  </TabItem>
+</Tabs>
+
+### Enrolling the instance
+
+Next, you'll need to enroll your instance in the console. You can skip to the next section if the instance is already enrolled.
+
+Go to `app.crowdsec.net`, go to the `Instances` tab, and click on `Add Instance`.
+
+Run `cscli console enroll <ENROLL_KEY>` to enroll the instance. Accept the enrollment in the console.
+
+### Enabling the polling API
+
+Once your instance is enrolled, you can enable the polling API by running `cscli console enable --all`.
+
+This will enable the polling API, and automatically update the `online_api_credentials.yaml` file with the proper configuration.
+
+Next, you'll need to restart crowdsec to apply the changes.
+
+<Tabs
+  defaultValue="Linux"
+  groupId="operating-systems"
+  values={[
+    {label: 'Linux', value: 'Linux'},
+    {label: 'Windows', value: 'Windows'},
+  ]}>
+  <TabItem value="Linux">
+    <CodeBlock className="language-bash">sudo cscli hub update</CodeBlock>
+  </TabItem>
+  <TabItem value="Windows">
+    <CodeBlock className="language-powershell">Restart-Service crowdsec</CodeBlock>
+  </TabItem>
+</Tabs>
+
+### Try it !
+
+You can now try the polling API by going to the `Decisions` tab in the console, and adding or removing decisions.
+
+To add a decision, click on the `Add decision` button, fill out the form, and you should see a new decision appear in the next few seconds when running `cscli decisions list`.

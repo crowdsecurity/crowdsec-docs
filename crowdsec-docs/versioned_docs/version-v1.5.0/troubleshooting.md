@@ -107,7 +107,7 @@ Bouncers configuration files by default are located in:
 
 ## My scenario is triggered with less logs than the scenario capacity
 
-During the installation, the CrowdSec [Wizard](/u/user_guides/building#using-the-wizard) is ran, which detects the basic logs files to add in the [acquisition](/docs/concepts#acquisition) configuration.
+During the installation, the CrowdSec [Wizard](/u/user_guides/building#using-the-wizard) is ran, which detects the basic logs files to add in the [acquisition](/concepts.md#acquisition) configuration.
 If you re-run the `wizard.sh` script after the installation and you have common log files, they might be set up multiple times in your acquisition configuration. This means that CrowdSec will read each logs line as many time as you have the logs file configured in your acquisition configuration.
 
 

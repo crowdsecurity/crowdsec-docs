@@ -128,6 +128,18 @@ const sidebarsConfig: SidebarConfig = {
 				},
 				{
 					type: "category",
+					label: "Service Discovery",
+					link: {
+						type: "doc",
+						id: "log_processor/service-discovery-setup/intro",
+					},
+					items: [
+						"log_processor/service-discovery-setup/detect-yaml",
+						"log_processor/service-discovery-setup/setup-expr-helpers",
+					],
+				},
+				{
+					type: "category",
 					label: "Alert Context",
 					link: {
 						type: "doc",
@@ -242,13 +254,7 @@ const sidebarsConfig: SidebarConfig = {
 				type: "doc",
 				id: "observability/intro",
 			},
-			items: [
-				"observability/cscli",
-				"observability/prometheus",
-				"observability/usage_metrics",
-				"observability/dashboard",
-				"observability/pprof",
-			],
+			items: ["observability/cscli", "observability/prometheus", "observability/usage_metrics", "observability/pprof"],
 		},
 		{
 			type: "category",
@@ -456,21 +462,6 @@ const sidebarsConfig: SidebarConfig = {
 		},
 		{
 			type: "category",
-			label: "cscli dashboard",
-			link: {
-				type: "doc",
-				id: "cscli/cscli_dashboard",
-			},
-			items: [
-				"cscli/cscli_dashboard_remove",
-				"cscli/cscli_dashboard_setup",
-				"cscli/cscli_dashboard_start",
-				"cscli/cscli_dashboard_stop",
-				"cscli/cscli_dashboard_show-password",
-			],
-		},
-		{
-			type: "category",
 			label: "cscli decisions",
 			link: {
 				type: "doc",
@@ -615,6 +606,23 @@ const sidebarsConfig: SidebarConfig = {
 		},
 		{
 			type: "category",
+			label: "cscli setup",
+			link: {
+				type: "doc",
+				id: "cscli/cscli_setup",
+			},
+			items: [
+				"cscli/cscli_setup",
+				"cscli/cscli_setup_detect",
+				"cscli/cscli_setup_install-acquisition",
+				"cscli/cscli_setup_install-hub",
+				"cscli/cscli_setup_interactive",
+				"cscli/cscli_setup_unattended",
+				"cscli/cscli_setup_validate",
+			],
+		},
+		{
+			type: "category",
 			label: "cscli support",
 			link: {
 				type: "doc",
@@ -704,16 +712,26 @@ const sidebarsConfig: SidebarConfig = {
 		},
 	],
 	appSecSideBar: [
-		{ type: "doc", id: "appsec/intro", label: "CrowdSec WAF" },
+		{ type: "doc", id: "appsec/intro", label: "CrowdSec WAF - Introduction" },
 		{
 			type: "category",
-			label: "Quickstart",
+			label: "Installation",
 			items: [
+				{ type: "doc", id: "appsec/quickstart/general_setup" },
 				{ type: "doc", id: "appsec/quickstart/nginxopenresty" },
 				{ type: "doc", id: "appsec/quickstart/traefik" },
+				{ type: "doc", id: "appsec/quickstart/wordpress" },
 			],
 		},
-		{ type: "doc", id: "appsec/configuration" },
+		{
+			type: "category",
+			label: "Configuration",
+			items: [
+				{ type: "doc", id: "appsec/configuration" },
+				{ type: "doc", id: "appsec/vpatch_and_crs" },
+				{ type: "doc", id: "appsec/alerts_and_scenarios" },
+			],
+		},
 		{
 			type: "category",
 			label: "Rules",
@@ -724,13 +742,13 @@ const sidebarsConfig: SidebarConfig = {
 			],
 		},
 		{
-			type: "doc",
-			id: "appsec/alerts_and_scenarios",
-			label: "Alerts & Scenarios",
+			type: "category",
+			label: "References",
+			items: [
+				{ type: "doc", id: "appsec/protocol" },
+				{ type: "doc", id: "appsec/benchmark" },
+			],
 		},
-		{ type: "doc", id: "appsec/installation" },
-		{ type: "doc", id: "appsec/protocol", label: "Communication Protocol" },
-		{ type: "doc", id: "appsec/benchmark", label: "Benchmark" },
 		{ type: "doc", id: "appsec/troubleshooting" },
 	],
 };

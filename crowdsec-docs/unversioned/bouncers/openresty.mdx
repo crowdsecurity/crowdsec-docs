@@ -32,7 +32,7 @@ A lua Remediation Component for OpenResty.
 
 ## How does it work ?
 
-This component leverages OpenResty lua's API, namely `access_by_lua_block` to check e IP address against the local API.
+This component leverages OpenResty lua's API, namely `access_by_lua_block` to check the IP address against the local API.
 
 Supported features:
 
@@ -65,7 +65,7 @@ sudo apt install openresty openresty-opm gettext-base
 
 ### Using packages
 
-[Setup crowdsec repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories).
+[Setup crowdsec repositories](/u/getting_started/installation/linux#repository-installation).
 
 <Tabs
   defaultValue="openresty_debian"
@@ -355,7 +355,7 @@ API_KEY=<API_KEY>
 
 CrowdSec Local API key.
 
-Generated with [`sudo cscli bouncers add`](/docs/next/getting_started/install_crowdsec) command.
+Generated with [`sudo cscli bouncers add`](/u/getting_started/installation/linux) command.
 
 ### `API_URL`
 > string
@@ -492,7 +492,7 @@ CAPTCHA_PROVIDER=<recaptcha
 ```
 
 :::info
-For backwards compatability reasons `recaptcha` is the default if no value is set.
+For backwards compatibility reasons `recaptcha` is the default if no value is set.
 :::
 
 ### `SECRET_KEY`

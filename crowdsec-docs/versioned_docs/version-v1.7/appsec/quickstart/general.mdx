@@ -1,0 +1,206 @@
+---
+id: general_setup
+title: General Setup
+---
+
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
+
+
+# CrowdSec WAF General Setup
+
+This guide covers the core CrowdSec AppSec Component setup that applies to all web servers and reverse proxies. After completing these steps, you'll need to configure your specific remediation component (bouncer) to forward requests to the AppSec Component.
+
+## Prerequisites
+
+- **CrowdSec Security Engine** (>= 1.5.6) installed and running
+- A compatible remediation component (bouncer) for your web server or reverse proxy
+
+## AppSec Component Setup
+
+AppSec Setup is done in two simple steps:
+- Downloading rules and configuration's Collections
+- Setting AppSec as a new Acquisition datasource
+  
+The following sections will guide you through the default setup.
+
+### Collection Installation
+
+Install the essential AppSec collections that provide virtual patching rules and generic attack detection:
+
+```bash
+sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+```
+
+These collections include:
+- **Virtual Patching Rules**: Protection against known vulnerabilities (CVEs)
+- **Generic Attack Detection**: Common web attack patterns
+- **AppSec Configuration**: Default configuration linking rules together
+- **CrowdSec Parsers & Scenarios**: For processing AppSec events and creating alerts
+
+### Acquisition Configuration
+
+Configure CrowdSec to expose the AppSec Component by creating an acquisition file:
+
+1. Create the acquisition directory (if it doesn't exist):
+   ```bash
+   sudo mkdir -p /etc/crowdsec/acquis.d/
+   ```
+
+2. Create the AppSec acquisition configuration:
+   ```bash
+   sudo cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
+   appsec_config: crowdsecurity/appsec-default
+   labels:
+     type: appsec
+   listen_addr: 127.0.0.1:7422
+   source: appsec
+   name: myAppSecComponent
+   EOF
+   ```
+
+**Configuration explained:**
+- `appsec_config`: Uses the default configuration from the installed collections
+- `listen_addr`: The IP and port where the AppSec Component will listen (default: 127.0.0.1:7422)
+- `source`: Identifies this as an AppSec data source
+- `name`: A friendly name for your AppSec component
+
+:::warning Security Note
+Do not expose the AppSec Component to the internet. It should only be accessible from your web server or reverse proxy.
+:::
+
+### Start the AppSec Component
+
+Restart CrowdSec to activate the AppSec Component:
+
+```bash
+sudo systemctl restart crowdsec
+```
+
+## Testing WAF Component
+
+### Testing Configuration
+
+Check that the AppSec Component is running:
+
+<Tabs
+  defaultValue="netstat"
+  groupId="listening-ports"
+  values={[
+    {label: 'Netstat', value: 'netstat'},
+    {label: 'SS', value: 'ss'},
+  ]}>
+  
+  <TabItem value="netstat">
+    <CodeBlock className="language-bash">sudo netstat -tlpn | grep 7422</CodeBlock>
+  </TabItem>
+
+  <TabItem value="ss">
+    <CodeBlock className="language-bash">sudo ss -tlpn | grep 7422</CodeBlock>
+  </TabItem>
+</Tabs>
+
+<details>
+
+<summary>Output example</summary>
+
+```bash
+tcp        0      0 127.0.0.1:7422            0.0.0.0:*               LISTEN      12345/crowdsec
+```
+
+:::note
+The output may look differently depending on which command you used but as long as you see the port and the process `crowdsec`, it means the AppSec Component is running.
+:::
+
+</details>
+
+Check CrowdSec logs for successful startup:
+```bash
+sudo tail -f /var/log/crowdsec.log
+```
+
+Look for messages like:
+```
+INFO[...] Starting Appsec server on 127.0.0.1:7422/
+INFO[...] Appsec Runner ready to process event
+```
+
+
+## Next Steps
+
+Now that the AppSec Component is configured and running, you need to:
+
+1. **Configure your remediation component** to forward requests to `http://127.0.0.1:7422`
+2. **Test the setup** [by triggering a rule](/appsec/quickstart/general.mdx#testing-detection)
+3. **Monitor alerts** with `sudo cscli alerts list` or in the [CrowdSec Console](https://app.crowdsec.net)
+
+For specific remediation component configuration, see:
+- [Nginx/OpenResty Setup](/appsec/quickstart/nginxopenresty.mdx)
+- [Traefik Setup](/appsec/quickstart/traefik.mdx)
+- [WordPress Setup](/appsec/quickstart/wordpress.mdx)
+- [Check the hub for other remediation components supporting AppSec](https://app.crowdsec.net/hub/remediation-components)
+
+### Testing Detection
+
+If you've enabled an AppSec-capable bouncer with CrowdSec WAF, you can trigger the crowdsecurity/appsec-generic-test dummy scenario.
+This scenario will not lead to decision but is a great way to ensure that your setup is functional.
+
+We'll trigger the dummy scenario crowdsecurity/appsec-generic-test by accessing a probe path on your web server.
+
+1️⃣ Access your service URL with this path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
+
+```bash
+curl -I https://<your-service-url>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
+```
+
+2️⃣ Confirm the alert has triggered for the scenario crowdsecurity/appsec-generic-test
+
+```bash
+sudo cscli alerts list | grep crowdsecurity/appsec-generic-test
+```
+
+3️⃣ The alert will also appear in the console alerts
+
+![appsec-generic-test console view](/img/appsec-generic-test-console.png)
+
+
+:::info
+This scenario can only be triggered again after a 1-minute delay.
+:::
+
+## Optional: Advanced Configuration
+
+### Multiple AppSec Configurations
+
+You can [load multiple AppSec configurations](/appsec/vpatch_crs.md) for different rule sets:
+
+```yaml
+# /etc/crowdsec/acquis.d/appsec.yaml
+appsec_configs:
+  - crowdsecurity/appsec-default    # Virtual patching rules (in-band)
+  - crowdsecurity/crs               # OWASP CRS rules (out-of-band)
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+name: myAppSecComponent
+```
+
+### Custom Port Configuration
+
+To use a different port, update the `listen_addr` in your acquisition file and ensure your remediation component points to the same address.
+
+## Troubleshooting
+
+If the AppSec Component fails to start:
+
+1. **Check port availability**: Ensure port 7422 isn't already in use
+2. **Verify collections**: Run `sudo cscli collections list` to confirm installation
+3. **Check configuration syntax**: Validate your `appsec.yaml` file
+4. **Review logs**: Check `/var/log/crowdsec.log` for error messages
+
+For detailed troubleshooting, see the [AppSec Troubleshooting Guide](/appsec/troubleshooting.md).

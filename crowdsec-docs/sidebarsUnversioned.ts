@@ -516,6 +516,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			id: "bouncers/wordpress",
 		},
 		{
+			type: "doc",
+			label: "Traefik",
+			id: "bouncers/traefik",
+		},
+		{
 			type: "link",
 			label: "Third Party",
 			href: "https://hub.crowdsec.net/browse/#bouncers",
@@ -590,6 +595,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			type: "doc",
 			id: "troubleshooting/intro",
 			label: "Introduction",
+		},
+		{
+			type: "doc",
+			id: "troubleshooting/usecases",
+			label: "Use Cases",
 		},
 		{
 			type: "doc",

@@ -1,0 +1,89 @@
+---
+id: intro
+title: Introduction
+sidebar_position: 1
+---
+
+The Log Processor is one of the core component of the Security Engine to:
+
+- Read logs from [Data Sources](log_processor/data_sources/introduction.md) in the form of Acquistions.
+- Parse the logs and extract relevant information using [Parsers](log_processor/parsers/introduction.mdx).
+- Enrich the parsed information with additional context such as GEOIP, ASN using [Enrichers](log_processor/parsers/enricher.md).  
+- Monitor the logs for patterns of interest known as [Scenarios](log_processor/scenarios/introduction.mdx).
+- Push alerts to the Local API (LAPI) for alert/decisions to be stored within the database.
+
+!TODO: Add diagram of the log processor pipeline
+- Read logs from datasources
+- Parse the logs
+- Enrich the parsed information
+- Monitor the logs for patterns of interest
+
+
+## Introduction
+
+The Log Processor is an internal core component of the Security Engine in charge of reading logs from Data Sources, parsing them, enriching them, and monitoring them for patterns of interest.
+
+Once a pattern of interest is detected, the Log Processor will push alerts to the Local API (LAPI) for alert/decisions to be stored within the database.
+
+All subcategories below are related to the Log Processor and its functionalities. If you are utilizing a multi server architecture, you will only need to configure the functionality that you want to use on the Log Processor.
+
+## Data Sources
+
+Data Sources are individual modules that can be loaded at runtime by the Log Processor to read logs from various sources. To use a Data Source, you will need to create an acquisition configuration file.
+
+### Acquistions
+
+Acquisitions are the configuration files that define how the Log Processor should read logs from a Data Source. Acquisitions are defined in YAML format and are loaded by the Log Processor at runtime.
+
+We have two ways to define Acquisitions within the [configuration directory](/u/troubleshooting/security_engine#where-is-configuration-stored) :
+
+- `acquis.yaml` file: This used to be only place to define Acquisitions prior to `1.5.0`. This file is still supported for backward compatibility.
+- `acquis.d` folder: This is a directory where you can define multiple Acquisitions in separate files. This is useful when you want to auto generate files using an external application such as ansible.
+
+```yaml title="Example Acquisition Configuration"
+## /etc/crowdsec/acquis.d/file.yaml
+source: file ## The Data Source module to use
+filenames:
+ - /tmp/foo/*.log
+ - /var/log/syslog
+labels:
+ type: syslog
+```
+
+For more information on Data Sources and Acquisitions, see the [Data Sources](log_processor/data_sources/introduction.md) documentation.
+
+## Collections
+
+Collections are used to group together Parsers, Scenarios, and Enrichers that are related to a specific application. For example the `crowdsecurity/nginx` collection contains all the Parsers, Scenarios, and Enrichers that are needed to parse logs from an NGINX web server and detect patterns of interest.
+
+You can see all available collections on the [Hub](https://app.crowdsec.net/hub/collections).
+
+### Parsers
+
+The parsing pipeline is broken down into multiple stages:
+
+- `s00-raw` : This is the first stage which aims to normalize the logs from various [Data Sources](log_processor/data_sources/introduction.md) into a predictable format for `s01-parse` and `s02-enrich` to work on.
+- `s01-parse` : This is the second stage responsible for extracting relevant information from the normalized logs based on the application type to be used by `s02-enrich` and the [Scenarios](log_processor/scenarios/introduction.mdx).
+- `s02-enrich` : This is the third stage responsible for enriching the extracted information with additional context such as GEOIP, ASN etc.
+
+You can see more information on Parsers in the [documentation](log_processor/parsers/introduction.mdx).
+
+### Scenarios
+
+Scenarios are the patterns of interest that the Log Processor is monitoring for. When a pattern of interest is detected, the Log Processor will push alerts to the Local API (LAPI) for alert/decisions to be stored within the database.
+
+The patterns can be as simple as tracking the number of failed login attempts or as complex as tracking logging in from multiple countries within a short period of time which can be a indicator of a compromised account or VPN usage.
+
+The community provides a number of scenarios on the [Hub](https://hub.crowdsec.net/) that you can install and use. If you would like to create your own, see the [Scenarios](log_processor/scenarios/introduction.mdx) documentation.
+
+### whitelists
+
+Whitelists are used to exclude certain events from being processed by the Log Processor. For example, you may want to exclude certain IP addresses from being processed by the Log Processor.
+
+You can see more information on Whitelists in the [documentation](log_processor/whitelist/introduction.md).
+
+### Alert Context
+
+Alert Context is additional context that can sent with an alert to the LAPI. This context can be shown locally via `cscli` or within the [CrowdSec Console](https://app.crowdsec.net/signup) if you opt in to share context when you enroll your instance.
+
+You can read more about Alert Context in the [documentation](log_processor/alert_context/intro.md).
