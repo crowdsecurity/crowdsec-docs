@@ -13,9 +13,9 @@ description: "Whitelist events from my ip addresses"
 whitelist:
   reason: "my ip ranges"
   ip:
-    - "192.168.1.1"
+    - "192.168.1.1" # Replace with your WAN IP
   cidr:
-    - "192.168.1.0/24"
+    - "192.168.1.0/24" # Replace with your WAN IP range
 ```
 
 ```bash title="Reload CrowdSec"

@@ -47,7 +47,7 @@ Tail the crowdsec log
 tail -f /var/log/crowdsec.log
 ```
 
-You should be able to see the following output:
+You should be able to see the following output (note: the IP shown will be your actual WAN IP, not the example):
 
 ```
 time="07-07-2020 17:11:09" level=info msg="Ban for 192.168.1.1 whitelisted, reason [dont ban my ISP]" id=cold-sunset name=me/my_cool_whitelist stage=s01
