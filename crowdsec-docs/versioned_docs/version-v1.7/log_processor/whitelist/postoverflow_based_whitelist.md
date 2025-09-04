@@ -47,12 +47,12 @@ Tail the crowdsec log
 tail -f /var/log/crowdsec.log
 ```
 
-You should be able to see the following output:
+You should be able to see the following output (note: the IP shown will be your actual WAN IP, not the example):
 
 ```
-time="07-07-2020 17:11:09" level=info msg="Ban for 80.x.x.x whitelisted, reason [dont ban my ISP]" id=cold-sunset name=me/my_cool_whitelist stage=s01
-time="07-07-2020 17:11:09" level=info msg="node warning : no remediation" bucket_id=blue-cloud event_time="2020-07-07 17:11:09.175068053 +0200 CEST m=+2308.040825320" scenario=crowdsecurity/http-probing source_ip=80.x.x.x
-time="07-07-2020 17:11:09" level=info msg="Processing Overflow with no decisions 80.x.x.x performed 'crowdsecurity/http-probing' (11 events over 313.983994ms) at 2020-07-07 17:11:09.175068053 +0200 CEST m=+2308.040825320" bucket_id=blue-cloud event_time="2020-07-07 17:11:09.175068053 +0200 CEST m=+2308.040825320" scenario=crowdsecurity/http-probing source_ip=80.x.x.x
+time="07-07-2020 17:11:09" level=info msg="Ban for 192.168.1.1 whitelisted, reason [dont ban my ISP]" id=cold-sunset name=me/my_cool_whitelist stage=s01
+time="07-07-2020 17:11:09" level=info msg="node warning : no remediation" bucket_id=blue-cloud event_time="2020-07-07 17:11:09.175068053 +0200 CEST m=+2308.040825320" scenario=crowdsecurity/http-probing source_ip=192.168.1.1
+time="07-07-2020 17:11:09" level=info msg="Processing Overflow with no decisions 192.168.1.1 performed 'crowdsecurity/http-probing' (11 events over 313.983994ms) at 2020-07-07 17:11:09.175068053 +0200 CEST m=+2308.040825320" bucket_id=blue-cloud event_time="2020-07-07 17:11:09.175068053 +0200 CEST m=+2308.040825320" scenario=crowdsecurity/http-probing source_ip=192.168.1.1
 ```
 
 This time, we can see that logs are being produced when the event is discarded.
