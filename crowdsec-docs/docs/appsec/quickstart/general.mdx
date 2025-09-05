@@ -54,7 +54,8 @@ Configure CrowdSec to expose the AppSec Component by creating an acquisition fil
 2. Create the AppSec acquisition configuration:
    ```bash
    sudo cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
-   appsec_config: crowdsecurity/appsec-default
+   appsec_configs:
+    - crowdsecurity/appsec-default
    labels:
      type: appsec
    listen_addr: 127.0.0.1:7422
