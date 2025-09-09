@@ -37,14 +37,14 @@ CrowdSec WAF supports multiple deployment strategies that can be implemented pro
 
 ### 1. Basic Virtual Patching (Quickstart)
 **Current State**: Blocking protection against known CVEs
-- Collections: `crowdsecurity/appsec-virtual-patching`
+- Collections: [`crowdsecurity/appsec-virtual-patching`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching)
 - Mode: In-band (blocking)
 - Coverage: Known vulnerabilities only
 - False Positives: Minimal
 
 ### 2. Enhanced Detection (Out-of-band CRS)
 **Next Step**: Add comprehensive attack detection without performance impact
-- Add: `crowdsecurity/appsec-crs` (out-of-band) alongside existing virtual patching
+- Add: [`crowdsecurity/appsec-crs-inband`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs-inband) (out-of-band) alongside existing virtual patching
 - Mode: Non-blocking analysis + behavioral banning
 - Coverage: OWASP Top 10 + comprehensive attack patterns + specific CVE protection
 - Performance: No latency impact ⚡
@@ -52,7 +52,7 @@ CrowdSec WAF supports multiple deployment strategies that can be implemented pro
 
 ### 3. Maximum Protection (In-band CRS)
 **Advanced**: Full blocking protection with comprehensive coverage
-- Modify: Configure CRS for in-band (blocking) mode while keeping virtual patching
+- Modify: Use [`crowdsecurity/appsec-crs-inband`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs-inband) for blocking CRS while keeping virtual patching
 - Mode: Immediate blocking of all detected attacks (both generic and CVE-specific)
 - Coverage: Maximum protection with instant response 🛡️
 - Security: Dual-layer blocking - virtual patching handles specific vulnerabilities, CRS covers generic attack patterns
@@ -68,7 +68,7 @@ Enhance your existing virtual patching deployment by adding comprehensive attack
 sudo cscli collections install crowdsecurity/appsec-crs
 ```
 
-The `crowdsecurity/appsec-crs` collection includes:
+The [`crowdsecurity/appsec-crs`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs) collection includes:
 - **crowdsecurity/crs**: AppSec config that loads CRS rules in out-of-band mode
 - **crowdsecurity/crowdsec-appsec-outofband**: Scenario that bans IPs after 5+ out-of-band rule violations
 
@@ -76,7 +76,7 @@ Update your WAF acquisition configuration to include both rule sets:
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
 appsec_configs:
-  - crowdsecurity/virtual-patching   # Virtual patching rules (in-band blocking)
+  - crowdsecurity/appsec-default     # Virtual patching rules (in-band blocking)
   - crowdsecurity/crs                # OWASP CRS rules (out-of-band detection)
 labels:
   type: appsec
@@ -114,7 +114,7 @@ Expected result: These requests should be immediately blocked with HTTP 403 Forb
 
 **Test 2: CRS Out-of-band Detection Layer**
 
-The `crowdsecurity/crowdsec-appsec-outofband` scenario monitors for multiple attack attempts and bans IPs after 5+ out-of-band rule violations within the configured timeframe. Test with various attack patterns:
+The `crowdsecurity/crs` collection brings general detection for OWASP top10 attacks, which can be tested:
 
 ```bash
 # Replace with your application URL
@@ -122,66 +122,63 @@ TARGET="http://your-app.com"
 
 # SQL injection attempts (trigger multiple CRS rules)
 curl "$TARGET/?id=1'+OR+'1'='1"
-curl "$TARGET/?id=1+UNION+SELECT+*+FROM+users"
-curl "$TARGET/?search='+OR+1=1--"
-curl "$TARGET/?filter=admin'/**/OR/**/'1'='1"
-
-# XSS attempts
-curl "$TARGET/?q=<script>alert('xss')</script>"
-curl "$TARGET/?comment=<img src=x onerror=alert(1)>"
-
-# Command injection attempts
-curl "$TARGET/?cmd=; cat /etc/passwd"
-curl "$TARGET/?exec=|whoami"
-
-# Additional malicious patterns to reach the 5+ threshold
-curl "$TARGET/?test=../../../etc/passwd"
-curl "$TARGET/?file=....//....//etc/hosts"
-
-# Wait 10-15 seconds for the scenario to process and ban the IP
-sleep 15
-
-# Test if IP is now banned
-curl "$TARGET/" # This should now be blocked
 ```
 
-**Expected behavior:**
-1. **First 1-4 requests**: Pass through to your application (out-of-band mode)
-2. **After 5+ violations**: CrowdSec processes the violations (may take up to 10 seconds)
-3. **After ~10 seconds**: IP gets banned by the `crowdsec-appsec-outofband` scenario
-4. **Subsequent requests**: Blocked at CrowdSec level before reaching your application
+Expected results: 
 
-:::info Processing Delay
-The out-of-band scenario processes violations asynchronously, so there's typically a 5-10 second delay between reaching the violation threshold and the IP ban taking effect. This is normal behavior for out-of-band detection.
-:::
+- Detailed Alert is created (see `cscli alerts list`)
 
-**Test 3: Verify Out-of-band Alerts (Optional)**
+<details>
+  <summary>`cscli alerts list` output</summary>
 
-To see individual out-of-band rule triggers (not just the ban), add a dedicated appsec config:
-
-```yaml title="Add to /etc/crowdsec/acquis.d/appsec.yaml for detailed alerts"
-appsec_configs:
-  - crowdsecurity/virtual-patching   # Virtual patching rules (in-band blocking)
-  - crowdsecurity/crs                # OWASP CRS rules (out-of-band detection)
-  - crowdsecurity/crs-alert          # Generate alert for each CRS rule triggered
+```yaml
++-------+--------------------+--------------------------------------------------------------+---------+------------------------------+-----------+----------------------+
+|   ID  |        value       |                            reason                            | country |              as              | decisions |      created_at      |
++-------+--------------------+--------------------------------------------------------------+---------+------------------------------+-----------+----------------------+
+| 62419 | Ip:xxx.xx.xx.xx    | anomaly score out-of-band: sql_injection: 10, anomaly: 10,   | FR      | 5410 Bouygues Telecom SA     |           | 2025-09-09T14:41:07Z |
+...
 ```
+</details>
 
-This will create individual alerts for each out-of-band rule violation, providing better visibility into attack patterns.
 
-**Verification Commands:**
+- Detailed Alert is visible in console
+
+<details>
+  <summary>Alert Console view</summary>
+![timeline](/img/console-appsec-oob.png)
+</details>
+
+**Test 3: Verify Scenario Behavior**
+
+The `crowdsecurity/crowdsec-appsec-outofband` scenario will ban IPs triggering the CRS on more than 5 distinct requests on a short period, which can be tested:
 
 ```bash
-# Check for active bans
-sudo cscli decisions list
-
-# Review recent alerts (including out-of-band detections)
-sudo cscli alerts list --limit 10
-
-# Monitor real-time activity
-sudo tail -f /var/log/crowdsec.log
+for i in {1..6}; do curl "$TARGET/?id=1'+OR+'1'='1"; done
 ```
 
-<!-- ![Screenshot placeholder: CrowdSec Console showing out-of-band detection alerts and IP bans](placeholder-outofband-alerts.png) -->
+
+Expected results: 
+
+- Alerts are created for each request 
+- Decision is created by the 6th request
+
+<details>
+  <summary>`cscli alerts list` output</summary>
+
+```yaml
+───────┬────────────────────┬──────────────────────────────────────────────────────────────┬─────────┬──────────────────────────────┬───────────┬──────────────────────╮
+│   ID  │        value       │                            reason                            │ country │              as              │ decisions │      created_at      │
+├───────┼────────────────────┼──────────────────────────────────────────────────────────────┼─────────┼──────────────────────────────┼───────────┼──────────────────────┤
+│ 62427 │ Ip:xxx.xx.xx.xx    │ crowdsecurity/crowdsec-appsec-outofband                      │ FR      │ 5410 Bouygues Telecom SA     │ ban:1     │ 2025-09-09T14:51:11Z │
+│ 62426 │ Ip:xxx.xx.xx.xx    │ anomaly score out-of-band: sql_injection: 10, anomaly: 10,   │ FR      │ 5410 Bouygues Telecom SA     │           │ 2025-09-09T14:51:12Z │
+│ 62425 │ Ip:xxx.xx.xx.xx    │ anomaly score out-of-band: sql_injection: 10, anomaly: 10,   │ FR      │ 5410 Bouygues Telecom SA     │           │ 2025-09-09T14:51:11Z │
+│ 62424 │ Ip:xxx.xx.xx.xx    │ anomaly score out-of-band: sql_injection: 10, anomaly: 10,   │ FR      │ 5410 Bouygues Telecom SA     │           │ 2025-09-09T14:51:11Z │
+│ 62423 │ Ip:xxx.xx.xx.xx    │ anomaly score out-of-band: sql_injection: 10, anomaly: 10,   │ FR      │ 5410 Bouygues Telecom SA     │           │ 2025-09-09T14:51:11Z │
+│ 62422 │ Ip:xxx.xx.xx.xx    │ anomaly score out-of-band: sql_injection: 10, anomaly: 10,   │ FR      │ 5410 Bouygues Telecom SA     │           │ 2025-09-09T14:51:11Z │
+│ 62421 │ Ip:xxx.xx.xx.xx    │ anomaly score out-of-band: sql_injection: 10, anomaly: 10,   │ FR      │ 5410 Bouygues Telecom SA     │           │ 2025-09-09T14:51:11Z │
+
+```
+</details>
 
 ### Step 3: CRS In-band (Blocking Mode)
 
@@ -197,7 +194,7 @@ Modify your acquisition to use the in-band CRS configuration:
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
 appsec_configs:
-  - crowdsecurity/virtual-patching   # Virtual patching rules (in-band blocking)
+  - crowdsecurity/appsec-default     # Virtual patching rules (in-band blocking)
   - crowdsecurity/crs-inband         # OWASP CRS rules (in-band blocking)
 labels:
   type: appsec
@@ -221,7 +218,6 @@ Verify virtual patching continues to work:
 ```bash
 # These should still be immediately blocked
 curl -v "http://your-app.com/.env"
-curl -v "http://your-app.com/.git/config"
 ```
 
 Expected result: HTTP 403 Forbidden immediately.
@@ -250,21 +246,6 @@ curl -v "$TARGET/?file=../../../etc/passwd"
 - **All requests above**: Immediately blocked with HTTP 403 Forbidden
 - **No delay**: Unlike out-of-band mode, blocking is instant
 - **Dual protection**: Both virtual patching AND CRS rules provide immediate blocking
-
-**Verification Commands:**
-
-```bash
-# Check for immediate decisions (should see blocks right after requests)
-sudo cscli decisions list
-
-# Review alerts (should see both virtual patching and CRS alerts)
-sudo cscli alerts list --limit 5
-
-# Monitor real-time blocking
-sudo tail -f /var/log/crowdsec.log
-```
-
-<!-- ![Screenshot placeholder: CrowdSec Console showing immediate in-band CRS blocks](placeholder-inband-blocks.png) -->
 
 :::warning Important Considerations
 In-band CRS blocking provides maximum protection but requires:
