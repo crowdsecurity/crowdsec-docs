@@ -30,10 +30,6 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
 
 A lua Remediation Component for Ingress Nginx Controller.
 
-:::warning
-Ingress Nginx Version **1.12** or higher currently is not supported due to removal of Lua plugins support see [this issue](https://github.com/crowdsecurity/cs-openresty-bouncer/issues/60) for latest news.
-:::
-
 ## How does it work ?
 
 This component leverages OpenResty lua's API, used the ingress nginx controller as a [plugin](https://github.com/kubernetes/ingress-nginx/blob/main/rootfs/etc/nginx/lua/plugins/README.md).
@@ -59,8 +55,18 @@ The Ingress nginx controller should be installed using the [official helm chart]
 
 First you need to create new ingress-nginx chart values file (`crowdsec-ingress-bouncer.yaml`) to upgrade the ingress controller with the crowdsec plugin.
 
+:::warning It is of the uttermost importance to note that lua support has been
+removed from mainline ingress nginx in 1.12. As crowdsec remediation highly
+depends on lua support, one has to use our controller image as show an in the
+following values example :::
+
+
 ```yaml
 controller:
+  image:
+    PullPolicy: IfNotPresent
+    image: crowdsecurity/controller
+    tag: latest
   extraVolumes:
   - name: crowdsec-bouncer-plugin
     emptyDir: {}
