@@ -53,7 +53,7 @@ The Ingress nginx controller should be installed using the [official helm chart]
 
 ### Using Helm
 
-First you need to create new ingress-nginx chart values file (`crowdsec-ingress-bouncer.yaml`) to upgrade the ingress controller with the crowdsec plugin.
+First you need to create new ingress-nginx chart values file (`crowdsec-ingress-values.yaml`) to upgrade the ingress controller with the crowdsec plugin.
 
 :::warning
 
@@ -124,14 +124,34 @@ controller:
       resolver local=on ipv6=off;
 ```
 
-This values upgrade your ingress deployment to add crowdsec lua lib as a plugin and run with the ingress controller.
-It used [this docker image](https://hub.docker.com/r/crowdsecurity/lua-bouncer-plugin) to copy the crowdsec lua library.
+<details>
+    <summary>You already have a deployed ingress nginx</summary>
 
-Once you have this patch we can upgrade the ingress-nginx chart.
+This values.yaml upgrade your ingress deployment to add crowdsec lua lib as a
+plugin and run with the crowdsec maintained nginx ingress controller with lua
+support. It uses [this docker
+image](https://hub.docker.com/r/crowdsecurity/lua-bouncer-plugin) to copy the
+crowdsec lua library. You can upgrade the ingress-nginx using this `crowdsec-ingress-values.yaml`
 
 ```bash
-helm -n ingress-nginx upgrade -f ingress-nginx-values.yaml -f crowdsec-ingress-bouncer.yaml ingress-nginx ingress-nginx
+helm -n ingress-nginx upgrade -f ingress-nginx-values.yaml -f crowdsec-ingress-values.yaml ingress-nginx/ingress-nginx
 ```
+
+</details>
+
+<details>
+    <summary>You don't have a deployed ingress nginx</summary>
+
+This values.yaml install your ingress deployment to add crowdsec lua lib as a
+plugin and run with the crowdsec maintained nginx ingress controller with lua
+support. It uses [this docker
+image](https://hub.docker.com/r/crowdsecurity/lua-bouncer-plugin) to copy the
+crowdsec lua library. You can install the ingress-nginx using this `crowdsec-ingress-values.yaml`
+
+```bash
+helm -n ingress-nginx install -f crowdsec-ingress-values.yaml ingress-nginx ingress-nginx/ingress-nginx
+```
+</details>
 
 And then check if the ingress controller is running well.
 
