@@ -728,7 +728,7 @@ const sidebarsConfig: SidebarConfig = {
 			label: "Configuration",
 			items: [
 				{ type: "doc", id: "appsec/configuration" },
-				{ type: "doc", id: "appsec/vpatch_and_crs" },
+				{ type: "doc", id: "appsec/advanced_deployments" },
 				{ type: "doc", id: "appsec/alerts_and_scenarios" },
 			],
 		},
