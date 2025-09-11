@@ -69,7 +69,7 @@ controller:
     PullPolicy: IfNotPresent
     image: crowdsecurity/controller
     # Crowdsec Remediation with Ingress Nginx requires to use our controller image
-    tag: latest
+    tag: v1.13.2
   extraVolumes:
   - name: crowdsec-bouncer-plugin
     emptyDir: {}
