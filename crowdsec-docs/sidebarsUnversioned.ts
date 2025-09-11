@@ -50,24 +50,24 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 					id: "cti_api/api_getting_started",
 				},
 				{
-					type: "category",
-					label: "Taxonomy",
-					items: [
-						"cti_api/taxonomy/intro",
-						"cti_api/taxonomy/cti_object",
-						"cti_api/taxonomy/scores",
-						"cti_api/taxonomy/scenarios",
-						"cti_api/taxonomy/behaviors",
-						"cti_api/taxonomy/classifications",
-						"cti_api/taxonomy/false_positives",
-						"cti_api/taxonomy/benign",
-					],
-				},
-				{
 					type: "link",
 					label: "Swagger",
 					href: "https://crowdsecurity.github.io/cti-api/",
 				},
+			],
+		},
+		{
+			type: "category",
+			label: "Taxonomy",
+			items: [
+				"cti_api/taxonomy/intro",
+				"cti_api/taxonomy/cti_object",
+				"cti_api/taxonomy/scores",
+				"cti_api/taxonomy/scenarios",
+				"cti_api/taxonomy/behaviors",
+				"cti_api/taxonomy/classifications",
+				"cti_api/taxonomy/false_positives",
+				"cti_api/taxonomy/benign",
 			],
 		},
 		{
