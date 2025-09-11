@@ -57,10 +57,9 @@ First you need to create new ingress-nginx chart values file (`crowdsec-ingress-
 
 :::warning
 
-It is of the utmost importance to note that lua support has been removed from
-mainline ingress nginx in version 1.12. As crowdsec remediation highly depends
-on lua support, one has to use our controller image as show an in the following
-values example.
+Lua support has been removed from mainline ingress nginx in version 1.12. As
+CrowdSec remediation relies on lua, you need to use our controller image as
+shown in the following values.yaml.
 :::
 
 
