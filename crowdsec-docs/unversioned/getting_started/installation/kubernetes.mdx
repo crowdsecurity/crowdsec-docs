@@ -70,7 +70,6 @@ automatically attach to the right pods and feed the logs into the right parsers.
 
 <details>
     <summary>Why `program` and not `type` ?</summary>
-
 In standard standalone setups, documentation states that the labels should be
 name `type` with the type being the parsed log program (eg nginx, traefik). A
 transformation from `type` to `program` is done by the first stage parser
@@ -87,8 +86,22 @@ run; if it doesn’t, they stay idle. One log stream can match several collectio
 if the tags fit.
 </details>
 
+Note that the chart needs for some persistent volume. To make the
+installation work, you have to either set a default `storageClassName` or set
+it through the `values.yaml`:
+```yaml
+lapi:
+  persistentVolume:
+    data:
+      storageClassName: nfs-client
+    config:
+      storageClassName: nfs-client
+```
+
+
 If you want more information about the configuration, you can check the default
 [values.yaml](https://artifacthub.io/packages/helm/crowdsec/crowdsec#values)
+
 
 Then, you can install the Security Engine with the following command:
 
