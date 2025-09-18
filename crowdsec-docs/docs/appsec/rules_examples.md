@@ -497,11 +497,11 @@ Disable multiple rules sharing the same tag.
 ```yaml
 pre_eval:
   - apply:
-      - RemoveInBandRuleByTag('wordpress-protection')
+      - RemoveInBandRuleByTag('some-specific-tag')
 ```
 
 #### Use Case
-Disable all WordPress-specific rules when not running WordPress.
+Disable all rules with a specific tag.
 
 ### 3. Change Rule Remediation by Name
 
@@ -512,7 +512,7 @@ Modify the default remediation for specific rules.
 ```yaml
 pre_eval:
   - apply:
-      - SetRemediationByName('sql-injection-detector', 'log')
+      - SetRemediationByName('some-rule', 'log')
 ```
 
 #### Use Case
