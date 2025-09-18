@@ -482,11 +482,11 @@ Dynamically disable specific rules before evaluation.
 pre_eval:
   - filter: req.URL.Path == "/admin/upload"
     apply:
-      - RemoveInBandRuleByName('file-upload-scanner')
+      - RemoveInBandRuleByName('some-specific-rule')
 ```
 
 #### Use Case
-Disable file upload restrictions for specific admin endpoints.
+Disable existing rules on specific endpoints.
 
 ### 2. Disable Rules by Tag
 
