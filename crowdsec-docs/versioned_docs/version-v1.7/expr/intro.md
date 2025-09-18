@@ -13,7 +13,7 @@ Several places of CrowdSec's configuration use [expr](https://github.com/antonme
  - [Whitelists](/log_processor/whitelist/introduction.md) rely on `expression` directive to allow more complex whitelists filters
  - [Profiles](/local_api/profiles/intro.md) rely on `filters` directives to find matching profiles 
 
-To learn more about [expr](https://github.com/antonmedv/expr), [check the github page of the project](https://github.com/antonmedv/expr/blob/master/docs/Language-Definition.md).
+To learn more about [expr](https://github.com/expr-lang/expr) syntax, [check the official documentation of the project](https://expr-lang.org/docs/language-definition).
 
 
 When CrowdSec relies on `expr`, a context is provided to let the expression access relevant objects :
