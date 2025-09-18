@@ -116,7 +116,6 @@ For smaller MikroTik devices that cannot handle large blocklists at once, you ca
 :local user "<username>"
 :local pass "<password>"
 
-# (Optional) clear these lists up-front (matches your .rsc lines)
 :local list4 "crowdsec-integration"
 :local list6 "crowdsec-integration"
 
@@ -125,8 +124,6 @@ For smaller MikroTik devices that cannot handle large blocklists at once, you ca
 # ===============================
 
 :log info "$name start (v6, pagination, per-page import)"
-
-# Optional: start fresh
 :log info "$name clearing address-lists"
 /ip firewall address-list remove  [ find where list=$list4 ]
 /ipv6 firewall address-list remove [ find where list=$list6 ]
@@ -142,9 +139,7 @@ For smaller MikroTik devices that cannot handle large blocklists at once, you ca
         url=($baseUrl . "?page=" . $page . "&page_size=" . $pageSize) \
         mode=https dst-path=$tmpname keep-result=yes \
         http-auth-scheme=basic user=$user password=$pass \
-        idle-timeout=$fetchTimeout
-        # NOTE: You can optionally try gzip on newer v6 builds:
-        # http-header-field="Accept-Encoding:gzip"
+        idle-timeout=$fetchTimeout http-header-field="Accept-Encoding:gzip"
 
     :if ([:len [/file find where name=$tmpname]] = 0) do={
         :log error "$name fetch failed for page $page"
@@ -190,6 +185,10 @@ For smaller MikroTik devices that cannot handle large blocklists at once, you ca
 
 :::info
 You need to replace `<integration_id>`, `<username>` and `<password>` with the values provided in the console.
+:::
+
+:::info
+adjust `pageSize` to be as close as your MikroTik can handle to lower the amount of pages it has to go through
 :::
 
 :::warning
