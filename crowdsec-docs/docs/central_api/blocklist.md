@@ -35,6 +35,10 @@ For your signals to be counted toward community contribution, they must meet spe
 - **Custom scenarios you write yourself**
 - **Tainted or modified scenarios** (even small edits). We cannot reliably vet behavior once a scenario is changed, so the consensus engine ignores those signals
 
+:::info
+Modifying a parser or using a custom parser has no impact on signal validity.
+:::
+
 ### Example
 
 If you only run a honeypot with a scenario you have modified, your local alerts will still fire, but the consensus engine will not use those signals. You can then show up as "not actively contributing," even though you see activity locally.
