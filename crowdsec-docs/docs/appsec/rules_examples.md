@@ -11,7 +11,7 @@ This page showcases various WAF rule capabilities with real-world examples from 
 ## 1. Header Analysis - Missing User Agent Detection
 
 ### Description
-Header inspection with count transform.
+Header inspection with count transform. Note that empty user agent-agent field or absent user-agent field is equivalent.
 
 ### Rule Example
 ```yaml
@@ -45,6 +45,7 @@ User-Agent:
 - **Transform operations** with count() to check header existence
 - **HTTP method filtering** with regex patterns
 - **AND logic** combining multiple conditions
+
 
 ## 2. Request Body Analysis - JSON Path Extraction
 
