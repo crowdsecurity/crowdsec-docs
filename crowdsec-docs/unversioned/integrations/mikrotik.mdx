@@ -102,6 +102,116 @@ The script is now running and the blocklist is being imported into the Mikrotik 
 Please be careful with the frequency of the scheduler and the blocklists size your subscribe to your integration, as it may cause performance issues on your Mikrotik device.
 :::
 
+## Pagination Script for Smaller Devices
+
+For smaller MikroTik devices that cannot handle large blocklists at once, you can use this pagination script that fetches and imports the blocklist in smaller chunks:
+
+```bash
+# ========= CONFIG (v6) =========
+:local name "[crowdsec]"
+:local baseUrl "https://admin.api.crowdsec.net/v1/integrations/<integration_id>/content"
+:local pageSize 15000
+
+# Basic Auth (v6 uses http-auth-scheme + user/password)
+:local user "<username>"
+:local pass "<password>"
+
+# (Optional) clear these lists up-front (matches your .rsc lines)
+:local list4 "crowdsec-integration"
+:local list6 "crowdsec-integration"
+
+# Fetch timeout
+:local fetchTimeout "30s"
+# ===============================
+
+:log info "$name start (v6, pagination, per-page import)"
+
+# Optional: start fresh
+:log info "$name clearing address-lists"
+/ip firewall address-list remove  [ find where list=$list4 ]
+/ipv6 firewall address-list remove [ find where list=$list6 ]
+
+:local page 1
+:local totalLines 0
+
+:do {
+    :local tmpname ("crowdsec_page_" . $page . ".rsc")
+
+    # Fetch one page to a file (no big RAM usage)
+    /tool fetch \
+        url=($baseUrl . "?page=" . $page . "&page_size=" . $pageSize) \
+        mode=https dst-path=$tmpname keep-result=yes \
+        http-auth-scheme=basic user=$user password=$pass \
+        idle-timeout=$fetchTimeout
+        # NOTE: You can optionally try gzip on newer v6 builds:
+        # http-header-field="Accept-Encoding:gzip"
+
+    :if ([:len [/file find where name=$tmpname]] = 0) do={
+        :log error "$name fetch failed for page $page"
+        :break
+    }
+
+    # Count non-empty lines to decide final page
+    :local data [/file get $tmpname contents]
+    :local itemsThisPage 0
+    :while ([:len $data] > 0) do={
+        :local nl [:find $data "\n"]
+        :local line ""
+        :if ($nl = nil) do={ :set line $data; :set data "" } else={
+            :set line [:pick $data 0 $nl]
+            :set data [:pick $data ($nl + 1) [:len $data]]
+        }
+        # Trim CR
+        :if (([:len $line] > 0) && ([:pick $line ([:len $line]-1) [:len $line]] = "\r")) do={
+            :set line [:pick $line 0 ([:len $line]-1)]
+        }
+        :if ([:len $line] > 0) do={ :set itemsThisPage ($itemsThisPage + 1) }
+    }
+
+    :log info "$name page $page: lines=$itemsThisPage"
+
+    # Import this page immediately, then delete the temp file
+    /import file-name=$tmpname
+    /file remove $tmpname
+
+    :set totalLines ($totalLines + $itemsThisPage)
+
+    # Stop when this page is short
+    :if ($itemsThisPage < $pageSize) do={
+        :log info "$name final page reached (lines $itemsThisPage < $pageSize). Total imported: $totalLines"
+        :break
+    }
+
+    :set page ($page + 1)
+} while=true
+
+:log info "$name done"
+```
+
+:::info
+You need to replace `<integration_id>`, `<username>` and `<password>` with the values provided in the console.
+:::
+
+:::warning
+Do not change `list="crowdsec-integration"` in the script, as it is used by the data you fetch from the CrowdSec API.
+:::
+
+### Benefits of the Pagination Script
+
+- **Memory Efficient**: Fetches and imports data in smaller chunks, reducing memory usage
+- **Better for Small Devices**: Ideal for MikroTik devices with limited RAM
+- **Configurable Page Size**: Adjust the `pageSize` variable based on your device's capabilities
+- **Progress Logging**: Provides detailed logs about import progress
+- **Automatic Cleanup**: Removes temporary files after each page import
+
+### When to Use Pagination
+
+Use the pagination script when:
+- Your MikroTik device has limited RAM
+- You're experiencing memory issues with the standard script
+- You're importing large blocklists (50,000+ entries)
+- Your device frequently runs out of memory during imports
+
 ## Format example
 
 The CrowdSec blocklist will be in mikrotik format, with formatted data per line. Here is an example of how the blocklist will look:
