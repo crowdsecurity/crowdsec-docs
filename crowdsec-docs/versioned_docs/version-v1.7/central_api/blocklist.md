@@ -15,13 +15,13 @@ The Community Blocklist is **only** available when using the Security Engine. To
 :::
 
 The rules are different for free and paying users:
- - Free users that **do not regularly contribute valid signals** get the `Community Blocklist (Lite)`
- - Free users that **do regularly contribute valid signals** get access to the `Community Blocklist`
+ - Free users that **do not regularly contribute signals** get the `Community Blocklist (Lite)`
+ - Free users that **do regularly contribute signals** get access to the `Community Blocklist`
  - Paying users get access to the `Community Blocklist (Premium)`, even if they don't contribute
 
 Regardless of the blocklist "tier" you have access to (`Lite`, `Community`, `Premium`), each Security Engine gets a tailored blocklist based on the kind of behavior you're trying to detect.
 
-## What Counts as a Valid Signal?
+## What Counts as a Signal?
 
 For your signals to be counted toward community contribution, they must meet specific criteria:
 
@@ -47,7 +47,7 @@ If you only run a honeypot with a scenario you have modified, your local alerts 
 
 ## Community Blocklist
 
-Free users that are actively contributing to the network (sending valid signals on a regular basis) have their Security Engines automatically subscribed to the *Community Blocklist*.
+Free users that are actively contributing to the network (sending signals on a regular basis) have their Security Engines automatically subscribed to the *Community Blocklist*.
 
 The content of the blocklist is unique to each Security Engine, as it mirrors the behaviours they report. For example, suppose you're running the Security Engine on a web server with WordPress. In that case, you will receive IPs performing generic attacks against web servers *and* IPs engaging in wordpress-specific attacks.
 
