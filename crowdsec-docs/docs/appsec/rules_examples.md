@@ -518,11 +518,27 @@ pre_eval:
 #### Use Case
 Change a blocking rule to log-only mode for testing.
 
+### 4. Disable Rules by ID
+
+#### Description
+Disable specific rules using their unique ID during request processing.
+
+#### Hook Example
+```yaml
+pre_eval:
+  - filter: req.URL.Path == "/api/upload" && req.Method == "POST"
+    apply:
+      - RemoveInBandRuleByID('rule_id_123')
+```
+
+#### Use Case
+Disable a specific rule by its ID for certain endpoints or conditions where the rule may cause false positives.
+
 ## Post-Evaluation Phase (post_eval)
 
 Post-evaluation hooks run after rule evaluation is complete, primarily used for debugging and logging.
 
-### 4. Debug Request Dumping
+### 5. Debug Request Dumping
 
 #### Description
 Dump request details to file for debugging.
@@ -542,7 +558,7 @@ Capture full request details for forensic analysis or debugging rule behavior.
 
 On-match hooks run when a rule matches, allowing you to modify the response behavior.
 
-### 5. Change HTTP Response Code
+### 6. Change HTTP Response Code
 
 #### Description
 Modify the HTTP status code returned to users when a rule matches.
@@ -558,7 +574,7 @@ on_match:
 #### Use Case
 Return a 413 "Payload Too Large" instead of the default 403 when a rule triggers.
 
-### 6. Change Remediation Action
+### 7. Change Remediation Action
 
 #### Description
 Dynamically change the remediation action from the default.
@@ -574,7 +590,7 @@ on_match:
 #### Use Case
 Show a captcha instead of blocking the request for certain rule matches.
 
-### 7. Allow Specific IPs
+### 8. Allow Specific IPs
 
 #### Description
 Override blocking for trusted IP addresses.
@@ -590,7 +606,7 @@ on_match:
 #### Use Case
 Allow internal/admin IPs to bypass security rules while keeping protection for others.
 
-### 8. Cancel Alert Generation
+### 9. Cancel Alert Generation
 
 #### Description
 Prevent alert creation while keeping the request blocked.
@@ -606,7 +622,7 @@ on_match:
 #### Use Case
 Block suspicious requests without generating alerts for known false positives.
 
-### 9. Force Alert for Out-of-Band Rules
+### 10. Force Alert for Out-of-Band Rules
 
 #### Description
 Generate alerts for monitoring rules that normally only log.
@@ -622,7 +638,7 @@ on_match:
 #### Use Case
 Create alerts for reconnaissance attempts detected by monitoring rules.
 
-### 10. Hook Flow Control
+### 11. Hook Flow Control
 
 #### Description
 Control execution of subsequent hooks with break/continue.
