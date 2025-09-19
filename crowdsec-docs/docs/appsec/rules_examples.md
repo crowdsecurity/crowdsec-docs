@@ -528,7 +528,7 @@ Disable specific rules using their unique ID during request processing.
 pre_eval:
   - filter: req.URL.Path == "/api/upload" && req.Method == "POST"
     apply:
-      - RemoveInBandRuleByID('rule_id_123')
+      - RemoveInBandRuleByID(123)
 ```
 
 #### Use Case
