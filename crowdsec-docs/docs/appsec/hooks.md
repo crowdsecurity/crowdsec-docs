@@ -1,6 +1,6 @@
 ---
 id: hooks
-title: AppSec Component Hooks
+title: Hooks
 sidebar_position: 4
 ---
 

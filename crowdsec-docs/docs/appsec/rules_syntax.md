@@ -1,6 +1,6 @@
 ---
 id: rules_syntax
-title: Appsec rules syntax
+title: Rules syntax
 sidebar_position: 8
 ---
 

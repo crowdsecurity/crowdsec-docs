@@ -739,6 +739,7 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/rules_syntax" },
 				{ type: "doc", id: "appsec/hooks" },
 				{ type: "doc", id: "appsec/create_rules" },
+				{ type: "doc", id: "appsec/rules_examples" },
 			],
 		},
 		{
