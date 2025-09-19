@@ -115,6 +115,12 @@ The bouncer configuration is defined in a YAML file that controls all aspects of
 
 ### Root Configuration Parameters
 
+#### `acl_fast_creation`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Enables faster parallel creation of ACLs in Fastly. When set to `true`, ACLs are created in parallel, which speeds up the initial setup but results in random/unpredictable order of ACLs. When set to `false`, ACLs are created sequentially, which is slower but maintains a natural order.
+- **Example**: `true`
+
 #### `bouncer_version`
 - **Type**: String
 - **Default**: Current version of the bouncer
