@@ -526,7 +526,7 @@ Disable specific rules using their unique ID during request processing.
 #### Hook Example
 ```yaml
 pre_eval:
-  - filter: req.URL.Path == "/api/upload" && req.Method == "POST"
+  - filter: req.Method == "DELETE"
     apply:
       - RemoveInBandRuleByID(123)
 ```
