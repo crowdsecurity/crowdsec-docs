@@ -3,8 +3,6 @@ id: fastly
 title: Fastly
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
 
@@ -26,44 +24,50 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
 <RemediationSupportBadges
 />
 
-# cs-fastly-bouncer
+# Fastly bouncer
 
-A Remediation Component that syncs the decisions made by CrowdSec with Fastly's VCL. Manages multi account, multi service setup. Supports IP, Country and AS scoped decisions.
-To learn how to setup crowdsec to consume fastly logs see [this](/u/user_guides/consuming_fastly_logs)
+A Remediation Component that syncs the decisions made by CrowdSec with Fastly's VCL. Manages multi account, multi service setup. Supports IP, Range, Country and AS scoped decisions.
+To learn how to set up crowdsec to consume Fastly logs see [this](/u/user_guides/consuming_fastly_logs)
 
 
-# Installation:
+## Installation
 
-## Using pip
+### Using pip
 
 Make sure you have python3.8+ installed. Now in a virtual environment run the following:
 
 ```bash
 pip install crowdsec-fastly-bouncer
-crowdsec-fastly-bouncer -g <FASTLY_TOKEN_1>,<FASTLY_TOKEN_2> > config.yaml # generate config
+crowdsec-fastly-bouncer -g <FASTLY_TOKEN_1>,<FASTLY_TOKEN_2> -o config.yaml # generate config
 vim config.yaml # Set crowdsec LAPI key, url, recaptcha keys, logging etc
 crowdsec-fastly-bouncer -c config.yaml # Run it !
 ```
 
-See how to obtain fastly account tokens [here](https://docs.fastly.com/en/guides/using-api-tokens). The tokens must have write access for the configured services.
+For more details on the config file, see the [Settings](#settings) section below.
 
-**Note:** If your bouncer is not installed on the same machine than LAPI, don't forget to set the `lapi_url` and `lapi_key` in the configuration file /etc/crowdsec/bouncers/crowdsec-fastly-bouncer.yaml
+See how to get Fastly account tokens [here](https://docs.fastly.com/en/guides/using-api-tokens). The tokens must have write access for the configured services.
 
-**Note:** For captcha to work you must provide the `recaptcha_site_key` and `recaptcha_secret_key` for each service. Learn how [here](http://www.google.com/recaptcha/admin)
+Practically, you can create a Personal token with a Global API access scope, Engineer Role and Automation type.
+
+**Note:** If your bouncer is not installed on the same machine as LAPI, remember to set the `lapi_url` and `lapi_key` in the configuration file /etc/crowdsec/bouncers/crowdsec-fastly-bouncer.yaml
+
+**Note:** For captcha to work, you must provide the `recaptcha_site_key` and `recaptcha_secret_key` for each service. Learn how [here](http://www.google.com/recaptcha/admin)
 
 
-## Using Docker 
+### Using Docker
 
-Make sure you have docker or podman installed. In this guide we will use docker, but podman would work as a drop in replacement too.
+Make sure you have docker or podman installed. In this guide, we will use docker, but podman would work as a drop-in replacement too.
 
-### Initial Setup
+#### Initial Setup
 
 ```bash
 docker run crowdsecurity/fastly-bouncer \
- -g <FASTLY_TOKEN_1>,<FASTLY_TOKEN_2> > cfg.yaml # auto-generate fastly config for provided comma separated tokens 
+ -g <FASTLY_TOKEN_1>,<FASTLY_TOKEN_2> -o cfg.yaml # auto-generate fastly config for provided comma separated tokens
 vi cfg.yaml # review config and set `crowdsec_lapi_key`
 touch fastly-cache.json
 ```
+
+For more details on the config file, see the [Settings](#settings) section below.
 
 The `lapi_key` can be obtained by running the following:
 ```bash
@@ -72,7 +76,7 @@ sudo cscli -oraw bouncers add fastlybouncer # -oraw flag can discarded for human
 
 The `lapi_url` must be accessible from the container.
 
-### Run the component
+#### Run the component
 
 ```bash
   docker run \
@@ -81,62 +85,293 @@ The `lapi_url` must be accessible from the container.
   crowdsecurity/fastly-bouncer
 ```
 
-## Activate the new configuration:
+## Usage
 
-After starting the component, go in the fastly web UI. For each configured service review the version created by the bouncer. If everything looks good, you can activate the new configration !
+### Activate the new configuration
 
-# Configuration:
+If you have set `activate: false` for your services in the config file, the bouncer will create a new version of the service with the CrowdSec configuration but will not activate it. This is useful for testing and validation before going live.
+
+In this case, after starting the component, go to the Fastly web UI and, for each configured service, review the version created by the bouncer. If everything looks good, you can activate the new configuration.
+
+### Version workflow
+
+When the bouncer starts for the first time (i.e., when there is no local cache file), it will clone the active version of each configured service (or the version specified in `reference_version` if provided) to create a new draft version. It will then apply the CrowdSec configuration to this draft version.
+
+The bouncer will then automatically activate the new version if `activate: true` is set in the config file.
+
+
+### Maximum items and ACL capacity
+
+Bouncer will use the `max_items` parameter in the config file to determine how many decisions can be stored across all ACLs for a service and a decision type (ban or captcha).
+
+As each ACL can hold a maximum of 1000 items, it will also determine how many ACLs are needed to accommodate the `max_items` limit.
+
+For example, if `max_items` is set to 5000, the bouncer will create up to 10 ACLs in Fastly (5 for `ban`, 5 for `captcha`, each with possibly 1000 items).
+
+
+## Settings
+
+The bouncer configuration is defined in a YAML file that controls all aspects of the bouncer's behavior. Below is a detailed description of each configuration parameter.
+
+### Root Configuration Parameters
+
+#### `acl_fast_creation`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Enables faster parallel creation of ACLs in Fastly. When set to `true`, ACLs are created in parallel, which speeds up the initial setup but results in random/unpredictable order of ACLs. When set to `false`, ACLs are created sequentially, which is slower but maintains a natural order.
+- **Example**: `true`
+
+#### `bouncer_version`
+- **Type**: String
+- **Default**: Current version of the bouncer
+- **Description**: Version identifier for the bouncer configuration. This is automatically set and should match the installed bouncer version.
+- **Example**: `bouncer_version: 0.0.2`
+
+#### `cache_path`
+- **Type**: String
+- **Default**: `/var/lib/crowdsec/crowdsec-fastly-bouncer/cache/fastly-cache.json`
+- **Description**: Path to the cache file where the bouncer stores the current state of Fastly services and ACLs. This allows the bouncer to resume operations without recreating infrastructure after restarts.
+- **Example**: `cache_path: ./dev/cache/fastly-cache.json`
+
+#### `log_level`
+- **Type**: String
+- **Options**: `debug`, `info`, `warning`, `error`
+- **Default**: `info`
+- **Description**: Sets the logging verbosity level. Use `debug` for troubleshooting, `info` for normal operations.
+- **Example**: `log_level: info`
+
+#### `log_mode`
+- **Type**: String
+- **Options**: `stdout`, `stderr`, `file`
+- **Default**: `stdout`
+- **Description**: Determines where log messages are output. When set to `file`, logs are written to the path specified in `log_file`.
+- **Example**: `log_mode: stdout`
+
+#### `log_file`
+- **Type**: String
+- **Default**: `/var/log/crowdsec-fastly-bouncer.log`
+- **Description**: File path for log output when `log_mode` is set to `file`. Ensure the bouncer has write permissions to this location.
+- **Example**: `log_file: ./dev/log/crowdsec-fastly-bouncer.log`
+
+#### `update_frequency`
+- **Type**: Integer (seconds)
+- **Default**: `10`
+- **Description**: How often (in seconds) the bouncer polls the CrowdSec LAPI for new decisions and updates Fastly ACLs accordingly.
+- **Example**: `update_frequency: 30`
+
+### CrowdSec Configuration
+
+The `crowdsec_config` section configures the connection and filtering for the CrowdSec Local API (LAPI).
+
+#### `lapi_key`
+- **Type**: String (required)
+- **Description**: API key for authenticating with the CrowdSec LAPI. This key is generated when registering the bouncer with CrowdSec.
+- **Example**: `lapi_key: '1234'`
+
+#### `lapi_url`
+- **Type**: String
+- **Default**: `http://localhost:8080/`
+- **Description**: URL of the CrowdSec LAPI endpoint.
+- **Example**: `lapi_url: http://localhost:8080/`
+
+#### `include_scenarios_containing`
+- **Type**: List of strings
+- **Default**: `[]` (empty list - include all scenarios)
+- **Description**: Only process decisions from scenarios whose names contain any of these strings. Useful for filtering specific types of attacks.
+- **Example**:
+  ```yaml
+  include_scenarios_containing:
+    - "ssh"
+    - "http"
+  ```
+
+#### `exclude_scenarios_containing`
+- **Type**: List of strings
+- **Default**: `[]` (empty list - exclude no scenarios)
+- **Description**: Exclude decisions from scenarios whose names contain any of these strings. Takes precedence over `include_scenarios_containing`.
+- **Example**:
+  ```yaml
+  exclude_scenarios_containing:
+    - "whitelist"
+  ```
+
+#### `only_include_decisions_from`
+- **Type**: List of strings
+- **Default**: `["crowdsec", "cscli"]`
+- **Description**: Only process decisions that originate from these sources. Common sources include `crowdsec` (automatic detection), `cscli` (manual decisions), and `CAPI` (Community API). Let it empty to include decisions from all sources.
+- **Example**:
+  ```yaml
+  only_include_decisions_from:
+    - crowdsec
+    - cscli
+    - CAPI
+  ```
+
+#### `insecure_skip_verify`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Skip TLS certificate verification when connecting to LAPI. Only use for testing or when using self-signed certificates.
+- **Example**: `insecure_skip_verify: false`
+
+#### `key_path`
+- **Type**: String
+- **Default**: `""` (empty)
+- **Description**: Path to client TLS key file for mutual TLS authentication with LAPI.
+- **Example**: `key_path: '/path/to/client.key'`
+
+#### `cert_path`
+- **Type**: String
+- **Default**: `""` (empty)
+- **Description**: Path to client TLS certificate file for mutual TLS authentication with LAPI.
+- **Example**: `cert_path: '/path/to/client.crt'`
+
+#### `ca_cert_path`
+- **Type**: String
+- **Default**: `""` (empty)
+- **Description**: Path to custom CA certificate file for verifying LAPI server certificate.
+- **Example**: `ca_cert_path: '/path/to/ca.crt'`
+
+### Fastly Account Configuration
+
+The `fastly_account_configs`) section defines one or more Fastly accounts and their associated services. Each account requires a separate API token.
+
+#### Account Level Parameters
+
+##### `account_token`
+- **Type**: String (required)
+- **Description**: Fastly API token with appropriate permissions to manage services, ACLs, and VCL configurations.
+- **Example**: `account_token: Rhy**************************EPNb`
+
+##### `services`
+- **Type**: List of service configurations
+- **Description**: List of Fastly services to protect with CrowdSec decisions.
+
+#### Service Level Parameters
+
+##### `id`
+- **Type**: String (required)
+- **Description**: Fastly service ID to configure with CrowdSec protection.
+- **Example**: `id: jrLHbDGn9NbOHO7eSH1Xvo`
+
+##### `activate`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Whether to automatically activate new service versions with CrowdSec configurations. Set to `true` for production deployment.
+- **Example**: `activate: true`
+
+##### `max_items`
+- **Type**: Integer
+- **Default**: `20000`
+- **Description**: Maximum number of IP addresses that can be stored across all ACLs for this service. The bouncer will create multiple ACLs if needed to accommodate this limit.
+- **Example**: `max_items: 5000`
+
+##### `recaptcha_site_key`
+- **Type**: String (required)
+- **Description**: Google reCAPTCHA site key for the captcha challenge functionality.
+- **Example**: `recaptcha_site_key: 6L*****************************N`
+
+##### `recaptcha_secret_key`
+- **Type**: String (required)
+- **Description**: Google reCAPTCHA secret key for validating captcha responses.
+- **Example**: `recaptcha_secret_key: 6L***********************************g`
+
+##### `captcha_cookie_expiry_duration`
+- **Type**: String
+- **Default**: `"1800"`
+- **Description**: Duration in seconds to persist the cookie containing proof of solving a captcha challenge.
+- **Example**: `captcha_cookie_expiry_duration: '1800'`
+
+##### `reference_version`
+- **Type**: String (optional)
+- **Default**: `null` (uses active version)
+- **Description**: Specific Fastly service version to clone from instead of using the currently active version. Useful for maintaining consistent base configurations.
+- **Example**: `reference_version: 63`
+
+
+### Example Configuration
+
+Below is an example configuration file with all parameters set to their defaults or example values.
 
 ```yaml
 crowdsec_config: 
   lapi_key: ${LAPI_KEY} 
   lapi_url: "http://localhost:8080/"
+  only_include_decisions_from:
+  - crowdsec
+  - cscli
+  - CAPI
+  exclude_scenarios_containing: []
+  include_scenarios_containing: ["ssh"]
+  ca_cert_path: ''
+  cert_path: ''
+  insecure_skip_verify: false
+  key_path: ''
 
 fastly_account_configs:
-  - account_token: # Obtain this from fastly
+  - account_token: a***********************z # Get this from fastly
     services: 
-      - id: # The id of the service
-        recaptcha_site_key: # Required for captcha support
-        recaptcha_secret_key: # Required for captcha support
+      - id: a***********************z # The id of the service
+        recaptcha_site_key: a***********************z # Required for captcha support
+        recaptcha_secret_key: a***********************z # Required for captcha support
         max_items: 20000 # max_items refers to the capacity of IP/IP ranges to ban/captcha. 
-        activate: false # # Set to true, to activate the new config in production
-        reference_version: # version to clone/use
-        clone_reference_version: true # whether to clone the "reference_version".
+        activate: true # # Set to true, to activate the new config in production
         captcha_cookie_expiry_duration: '1800'  # Duration to persist the cookie containing proof of solving captcha
+        reference_version: null  # Optional: specify a specific version to clone from instead of the active version
 
-bouncer_version:
-update_frequency: 10 # Duration in seconds to poll the crowdsec API
+bouncer_version: v0.2.0
+acl_fast_creation: false # Set to true, to enable parallel creation of ACLs. This is faster but the order of ACLs is random/unpredictable.
+update_frequency: 30 # Duration in seconds to poll the crowdsec API
 log_level: info # Valid choices are either of "debug","info","warning","error"
 log_mode: stdout # Valid choices are "file" or "stdout" or "stderr"
 log_file: /var/log/crowdsec-fastly-bouncer.log # Ignore if logging to stdout or stderr
 ```
 
-# Helpers:
+## Python Helpers
 
 The component has few builtin helper features:
 
-## Auto config generator:
+### Auto config generator
 
-**Usage:**
+**Usage**
 
 ```bash
-crowdsec-fastly-bouncer -c <PATH_TO_BASE_CONFIG>\
-    -g <FASTLY_TOKEN_1>,<FASTLY_TOKEN_2> 
+crowdsec-fastly-bouncer -g <FASTLY_TOKEN_1>,<FASTLY_TOKEN_2>
 ```
 
-This will print boilerplate config with sane defaults for the provided comma separted fastly tokens.
+This will print boilerplate config with sane defaults for the provided comma separated Fastly tokens.
 Always review the generated config before proceeding further.
 
-Crowdsec config is copied from the config at `PATH_TO_BASE_CONFIG`. 
+Crowdsec config is copied from the config at `PATH_TO_BASE_CONFIG`.
 
-##  Cleaner:
+### Config editor
 
-**Usage:**
+**Usage**
 
 ```bash
-sudo crowdsec-fastly-bouncer -c <PATH_TO_BASE_CONFIG> -d
+crowdsec-fastly-bouncer -e -g <FASTLY_TOKEN_1>,<FASTLY_TOKEN_2> -c <PATH_TO_BASE_CONFIG>
+```
+This will update the config at `PATH_TO_BASE_CONFIG` with the generated config for the provided comma separated Fastly tokens.
+Always review the updated config before proceeding further.
+
+
+###  Runner
+
+**Usage**
+
+```bash
+crowdsec-fastly-bouncer -c <PATH_TO_BASE_CONFIG>
 ```
 
-This deletes the fastly resources created by the component.
-It only works if the configured service version is not locked.
-It is useful for quick iteration before activateing the new service.   
+This starts the component in normal mode using the provided config file.
+
+###  Cleaner
+
+**Usage**
+
+```bash
+crowdsec-fastly-bouncer -c <PATH_TO_BASE_CONFIG> -d
+```
+
+This deletes the Fastly resources created by the component (all resources starting with `crowdsec_` prefix).
+
+Be aware that the created configuration will be created as a draft version even if `activate: true` is set in the config file.
