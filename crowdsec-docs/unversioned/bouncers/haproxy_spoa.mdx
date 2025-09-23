@@ -219,22 +219,6 @@ recaptcha
 turnstile
 ```
 
-#### Cookie Management (New Approach)
-
-The HAProxy SPOA bouncer now supports improved cookie management for CAPTCHA handling. This new approach uses `http-after-response` directives to manage CAPTCHA cookies more efficiently:
-
-```haproxy
-## Handle captcha cookie management via HAProxy (new approach)
-## Set captcha cookie when SPOA provides captcha_status (pending or valid)
-http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_status) -m found } { var(txn.crowdsec.captcha_cookie) -m found }
-## Clear captcha cookie when cookie exists but no captcha_status (Allow decision)
-http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_cookie) -m found } !{ var(txn.crowdsec.captcha_status) -m found }
-```
-
-This approach provides:
-- Automatic cookie setting when CAPTCHA status is pending or valid
-- Automatic cookie clearing when the decision is to allow (no CAPTCHA status)
-- More reliable cookie management compared to previous methods
 
 ### Prometheus Metrics
 
