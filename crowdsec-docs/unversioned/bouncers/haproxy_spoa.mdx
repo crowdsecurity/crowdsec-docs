@@ -170,6 +170,13 @@ frontend http-in
     filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
     http-request set-header X-CrowdSec-Remediation %[var(txn.crowdsec.remediation)]
     http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m found }
+    
+    ## Handle captcha cookie management via HAProxy (new approach)
+    ## Set captcha cookie when SPOA provides captcha_status (pending or valid)
+    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_status) -m found } { var(txn.crowdsec.captcha_cookie) -m found }
+    ## Clear captcha cookie when cookie exists but no captcha_status (Allow decision)
+    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_cookie) -m found } !{ var(txn.crowdsec.captcha_status) -m found }
+    
     use_backend <whatever>
 
 backend crowdsec-spoa
@@ -211,6 +218,23 @@ hcaptcha
 recaptcha
 turnstile
 ```
+
+#### Cookie Management (New Approach)
+
+The HAProxy SPOA bouncer now supports improved cookie management for CAPTCHA handling. This new approach uses `http-after-response` directives to manage CAPTCHA cookies more efficiently:
+
+```haproxy
+## Handle captcha cookie management via HAProxy (new approach)
+## Set captcha cookie when SPOA provides captcha_status (pending or valid)
+http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_status) -m found } { var(txn.crowdsec.captcha_cookie) -m found }
+## Clear captcha cookie when cookie exists but no captcha_status (Allow decision)
+http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_cookie) -m found } !{ var(txn.crowdsec.captcha_status) -m found }
+```
+
+This approach provides:
+- Automatic cookie setting when CAPTCHA status is pending or valid
+- Automatic cookie clearing when the decision is to allow (no CAPTCHA status)
+- More reliable cookie management compared to previous methods
 
 ### Prometheus Metrics
 
@@ -392,6 +416,12 @@ frontend test
     http-request set-header X-CrowdSec-Remediation %[var(txn.crowdsec.remediation)] if { var(txn.crowdsec.remediation) -m found }
     http-request set-header X-CrowdSec-IsoCode %[var(txn.crowdsec.isocode)] if { var(txn.crowdsec.isocode) -m found }
     http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m found }
+
+    ## Handle captcha cookie management via HAProxy (new approach)
+    ## Set captcha cookie when SPOA provides captcha_status (pending or valid)
+    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_status) -m found } { var(txn.crowdsec.captcha_cookie) -m found }
+    ## Clear captcha cookie when cookie exists but no captcha_status (Allow decision)
+    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_cookie) -m found } !{ var(txn.crowdsec.captcha_status) -m found }
 
     use_backend test_backend
 ```
