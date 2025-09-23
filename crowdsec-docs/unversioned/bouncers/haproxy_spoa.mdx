@@ -169,7 +169,14 @@ frontend http-in
     bind *:80
     filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
     http-request set-header X-CrowdSec-Remediation %[var(txn.crowdsec.remediation)]
-    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m found }
+    
+    ## Handle 302 redirect for successful captcha validation (native HAProxy redirect)
+    http-request redirect code 302 location %[var(txn.crowdsec.redirect)] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
+    
+    ## Call lua script only for ban and captcha remediations (performance optimization)
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "captcha" }
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "ban" }
+    
     use_backend <whatever>
 
 backend crowdsec-spoa
@@ -211,6 +218,25 @@ hcaptcha
 recaptcha
 turnstile
 ```
+
+#### Native HAProxy Redirect (Performance Optimization)
+
+The HAProxy SPOA bouncer now supports native HAProxy redirects for successful CAPTCHA validation, providing better performance and reduced Lua overhead:
+
+```haproxy
+## Handle 302 redirect for successful captcha validation (native HAProxy redirect)
+http-request redirect code 302 location %[var(txn.crowdsec.redirect)] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
+
+## Call lua script only for ban and captcha remediations (performance optimization)
+http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "captcha" }
+http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "ban" }
+```
+
+This approach provides:
+- **Native 302 redirects**: Uses HAProxy's built-in redirect functionality instead of Lua
+- **Performance optimization**: Lua script is only called for `ban` and `captcha` remediations
+- **Reduced overhead**: Eliminates unnecessary Lua processing for `allow` decisions
+- **Better scalability**: Native HAProxy operations are more efficient than Lua-based solutions
 
 ### Prometheus Metrics
 
@@ -391,7 +417,13 @@ frontend test
 
     http-request set-header X-CrowdSec-Remediation %[var(txn.crowdsec.remediation)] if { var(txn.crowdsec.remediation) -m found }
     http-request set-header X-CrowdSec-IsoCode %[var(txn.crowdsec.isocode)] if { var(txn.crowdsec.isocode) -m found }
-    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m found }
+    
+    ## Handle 302 redirect for successful captcha validation (native HAProxy redirect)
+    http-request redirect code 302 location %[var(txn.crowdsec.redirect)] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
+    
+    ## Call lua script only for ban and captcha remediations (performance optimization)
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "captcha" }
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "ban" }
 
     use_backend test_backend
 ```
