@@ -321,6 +321,36 @@ Good option if you need highly specific protection tailored to your application'
 
 ---
 
+## Protecting a Managed Hosting Platform
+
+Deploy CrowdSec protection on managed hosting or cloud platforms where you have limited system access but need security protection.
+
+**Is it for me?**  
+
+If you have have an SSH access to your managed hosts with some write access in dedicated folders (eg. for PHP applications) or if you can deploy cloud-native components, ability to run a service in user-mode and read access on some of your services logs.
+
+**How it works:**
+- "Manually" install CrowdSec from it's latest release (example scripts in references)
+- Connect to CrowdSec Console for alert monitoring and centralized management and blocklist access.
+- Block in you CDN or WAF (or any other blocklist able api you have access to) with the help of our specialized remediation components
+
+<details>
+<summary>🔗 **References**</summary>
+
+<Tabs>
+<TabItem value="documentation-resources" label="Documentation & Resources">
+
+// TODO: link to cloudways page  
+// TODO: link to upsun project report
+
+
+</TabItem>
+</Tabs>
+
+</details>
+
+---
+
 ## Looking for complementary IOC streams
 
 Add qualified IOCs from CrowdSec's real-time IP reputation. 
@@ -433,7 +463,7 @@ Good option if you want to correlate local events with global attack patterns an
 <Tabs>
 <TabItem value="documentation-resources" label="Documentation & Resources">
 
-- [⬆️ CTI related refs from **Alert Enhancement and Triage**](#alert-enhancement-and-triage)
+- [⬆️ *CTI related refs from* **Alert Enhancement and Triage**](#alert-enhancement-and-triage)
 - [CVE explorer](/u/cti_api/cve_explorer/)
 - [Follow our weekly vuln report on LinkedIn  ↗️](https://www.linkedin.com/company/crowdsec/posts/?feedView=all)
 
