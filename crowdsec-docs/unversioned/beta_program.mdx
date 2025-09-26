@@ -42,38 +42,6 @@ This is a closed beta program. If you're interested in participating, reply to o
 - BLaaS endpoints are updated to include the synchronized decisions
 - Provides unified protection across your entire infrastructure
 
-### CrowdSec Threat Forecast Blocklist - Beta starts 2024-10-25 
-
-#### What is it and what to expect?
-
-The **Threat Forecast Blocklist** is a dynamic, adaptive blocklist customized to your organization's signals.  
-By identifying attacks on similar profiles, it predicts threats that will likely target your organization in the coming days.  
-It will update every 24 hours, and the signals of all your Security Engines will be considered to build the prediction.  
-
-It's tailored to your organization; hence, we expect that it should allow preemptive remediation, resulting in a **drop in the number of alerts**.   
-Optionally, if you have an iptables of nftables remediation component, you'll be able to see some [metrics about this blocklist's efficiency](https://docs.crowdsec.net/docs/next/observability/usage_metrics)
-
-#### Who will have access to it?
-
-If you have at least one enrolled security engine with an average of more than 100 alerts a week (total for your organization) you have a chance to be invited.  
-You'll receive an email on Friday, October the 25th, 2024.
-
-**Important note**: You will have 15 days to start using the Threat Forecast Blocklist and 30 days in total starting today to test it out. If you do not use it within 15 days, your access will be reallocated to someone else.
-
-#### How to subscribe to this blocklist
-
-- Log into your console account
-- Go to the blocklist catalog and search "forecast": https://app.crowdsec.net/blocklists?page=1&q=forecast
-  - If you're part of the this beta, you should see the **Threat Forecast Blocklist**
-  - Click on it
-- You should have landed in the details page for this blocklist
-- Click on subscribe to open the subscription popup and follow its instructions to subscribe to the blocklist. 
-  - We recommend subscribing your organization to the list as this will make sure that newly added security engines automatically benefit from the blocklist as well. 
-  -- If you want to have more finegrained controll, you can also select only specific engines to subscribe to the list.
-- Click confirm subscription
-
-Note that you must have a [remediation component](https://doc.crowdsec.net/u/bouncers/intro) on those engines to effectively block the IPs.
-
 ## Past Beta Programs
 
 ### Console Notifications - Beta completed June 10, 2025
@@ -84,7 +52,7 @@ The **Console Notifications** feature allows you to set up custom notification r
 - Targeted notifications for different types of security events
 - Direct management from the CrowdSec Console
 
-**Now available:** Navigate to your [Console Settings](/u/console/notification_integrations/overview) to configure notifications. [Learn more about Console Notifications](/u/console/notification_integrations/overview)
+**Now available:** Navigate to your [Console Settings](/u/console/notification_integrations/overview) to configure notifications.
 
 ### Centralized Allow Lists - Beta completed March 31, 2025
 
@@ -100,7 +68,7 @@ The **Centralized Allow Lists** feature enables you to manage allowlists across 
 
 The **Threat Forecast Blocklist** was a dynamic, adaptive blocklist customized to organizations' signals, predicting threats that would likely target similar infrastructure profiles.
 
-**Now available:** This feature has been integrated into our standard blocklist offerings.
+**Now available:** This feature has been integrated into our premium blocklist offerings via the Enterprise plan.
 Learn more about the [Threat Forecast Blocklist](/u/console/threat_forecast).
 ## Your feedback is key
 
