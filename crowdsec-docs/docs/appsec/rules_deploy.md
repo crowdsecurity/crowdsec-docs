@@ -71,7 +71,6 @@ inband_rules:
 Key points:
 - `name` is how you will reference this configuration from the acquisition file and in logs.
 - `inband_rules` (and/or `outofband_rules`) accept glob patterns, so you can load multiple rules with a single entry such as `custom/block-*`.
-- Keep file permissions restrictive (`640`) so only the `crowdsec` user can read the file.
 - During the reload step CrowdSec validates the syntax; if anything is off, the reload fails and the service logs the parsing error.
 
 ## Step 3 — Reference the Configuration in the Acquisition File
