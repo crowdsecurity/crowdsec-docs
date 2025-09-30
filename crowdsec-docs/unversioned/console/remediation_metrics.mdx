@@ -30,7 +30,9 @@ At the top of the page, you'll see the **Total Prevented Attacks** for the selec
 
 ![Total Prevented Attacks](/img/console/remediation_metrics/rc-metrics-total-prevented-attacks.png)
 
-The **Malicious Intents** section provides a detailed breakdown of the typical behaviour associated with the blocked IPs. It shows the behaviour and typology of IPs remediated by your remediation components, including blocklists and security engines. The displayed intent might differ from the behaviours observed from this IP in your context, as it reflects the most commonly observed attacks by the CrowdSec network for a given IP.
+The **Malicious Intents** section summarizes what a blocked IP was *likely* attempting (for example spam, scanning, or brute-force), based on behaviour patterns observed across the CrowdSec network. Because these IPs are blocked, we may not have direct evidence of what they tried in **your** environment. Treat the intent as an informed estimate derived from community data rather than a record of actions on your system.
+
+> **Note:** We cannot determine the exact action an IP took against your service. The displayed intent is an estimate inferred from broader network observations.
 
 ![Malicious Intents Breakdown](/img/console/remediation_metrics/rc-metrics-malicious-intents.png)
 
