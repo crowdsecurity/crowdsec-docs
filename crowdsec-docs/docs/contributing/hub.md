@@ -137,13 +137,6 @@ The hub repository uses GitHub Actions for automated testing:
 - Tests include syntax validation, pattern matching, and integration tests
 - Make sure all tests pass before requesting review
 
-### Test Coverage
-
-Check test coverage for your contributions:
-
-```bash
-cscli hubtest coverage
-```
 
 ## Git Workflow / Branch Management
 
@@ -236,17 +229,6 @@ nodes:
         value: user_enumeration
 ```
 
-#### Benefits of Using Statics
-
-Yes, we understand that using YAML anchors makes the YAML DRY but it can introduce complexity.
-
-- **Better maintainability**: Static values are clearly defined at the top level
-- **Automatic key handling**: If a static returns empty data, the key will not be set (as you mentioned)
-- **Cleaner structure**: Avoids YAML complexity and improves readability
-- **Consistent patterns**: Follows established CrowdSec conventions
-- **Proper targeting**: Statics can target `meta`, `parsed`, or `enriched` fields directly
-- **Expression support**: Can use expressions to derive values dynamically
-
 ### AI-Assisted Generation
 
 We do allow AI-assisted generation of parsers, scenarios, and collections, but with important requirements:
@@ -291,7 +273,7 @@ Collections group related parsers, scenarios, and postoverflows together. It oft
 
 #### When to add to existing collections:
 
-- Adding a parser for `SpecificWebServer` access logs that would benefit from [all the default http related scenarios](https://hub.crowdsec.net/author/crowdsecurity/collections/base-http-scenarios)
+- Adding a parser for a specific web server's access logs that would benefit from existing HTTP-related scenarios
 - Your contribution enhances an existing service's detection capabilities
 - Your scenario complements existing parsers in a collection
 
@@ -391,16 +373,7 @@ Everything is all set, you can now open a PR that will be reviewed and merged!
 
 ### PR Checklist
 
-Before opening your PR, ensure you can check all items in the [PR template](https://github.com/crowdsecurity/hub/blob/master/.github/pull_request_template.md):
-
-- [ ] I have read the [contributing guide](https://docs.crowdsec.net/docs/next/contributing/contributing_hub)
-- [ ] I have tested my changes locally
-- [ ] For new parsers or scenarios, tests have been added 
-- [ ] I have run the hub linter and no issues were reported (see contributing guide)
-- [ ] Automated tests are passing
-- [ ] AI was used to generate any/all content of this PR (if applicable)
-
-#### Additional Requirements
+Before opening your PR, ensure you can check all items in the [PR template](https://github.com/crowdsecurity/hub/blob/master/.github/pull_request_template.md). Additional requirements:
 
 - [ ] Documentation is complete and accurate
 - [ ] Code follows the project's style guidelines
@@ -423,7 +396,6 @@ Before opening your PR, ensure you can check all items in the [PR template](http
 
 - **Grok patterns not matching**: Use online grok testers to validate patterns
 - **Missing fields**: Ensure all required fields are extracted
-- **Performance**: Optimize grok patterns for better performance
 
 #### Scenario Issues
 
