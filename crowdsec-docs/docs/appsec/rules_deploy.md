@@ -102,7 +102,6 @@ If your init system does not support reload, perform a restart instead. Then ver
 ```bash
 sudo cscli appsec-rules list | grep block-nonnumeric-user-id
 sudo cscli appsec-configs list | grep block-nonnumeric-user-id
-sudo journalctl -u crowdsec --since "5 minutes ago" | grep appsec
 ```
 
 The rule should appear as `enabled`, and the configuration should show up in the list. CrowdSec logs confirm the configuration was loaded without errors.
@@ -118,7 +117,7 @@ curl -i 'http://127.0.0.1/profile?user_id=abc123'
 A successful block returns an HTTP status such as `403 Forbidden`, and CrowdSec logs a matching alert:
 
 ```bash
-sudo journalctl -u crowdsec -n 20 | grep "block-nonnumeric-user-id"
+sudo cscli alerts list -s custom/block-nonnumeric-user-id
 ```
 
 If the request is not blocked, double-check that the rule `name` matches the pattern in your AppSec configuration, that the acquisition file lists your configuration, and that the CrowdSec service picked up the changes.
