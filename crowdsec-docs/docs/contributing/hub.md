@@ -17,7 +17,6 @@ The main communication channels for hub contributions are:
 - [Discord](https://discord.gg/crowdsec): Best for live interactions and quick questions about hub development
 - [Discourse](https://discourse.crowdsec.net/): Great for discussing ideas, suggesting improvements, or asking detailed questions
 - [GitHub Issues](https://github.com/crowdsecurity/hub/issues): Use for bug reports and feature requests
-- [GitHub Discussions](https://github.com/crowdsecurity/hub/discussions): For general questions and community discussions
 
 ## Getting Started
 
