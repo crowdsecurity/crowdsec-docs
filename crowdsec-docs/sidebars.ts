@@ -9,7 +9,7 @@ const sidebarsConfig: SidebarConfig = {
 	sdkSideBar: [
 		{
 			type: "doc",
-			label: "Introduction",
+			label: "SDK Introduction",
 			id: "getting_started/sdk_intro",
 		},
 		{
@@ -20,7 +20,12 @@ const sidebarsConfig: SidebarConfig = {
 		{
 			type: "doc",
 			label: "PHP",
-			id: "getting_started/install_softagent",
+			id: "getting_started/install_php_softagent",
+		},
+		{
+			type: "doc",
+			label: "Drupal Plugin",
+			id: "getting_started/install_drupal_plugin",
 		},
 	],
 	tutorialSidebar: [
