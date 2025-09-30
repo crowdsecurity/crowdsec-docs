@@ -1,6 +1,6 @@
 ---
 id: rules_deploy
-title: Rules deployment
+title: Deployment
 sidebar_position: 81
 ---
 
