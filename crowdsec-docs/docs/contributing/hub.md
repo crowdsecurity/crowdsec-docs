@@ -37,8 +37,8 @@ Here are some things you can do today to start contributing:
 
 The hub repository has beginner-friendly issues that are a great place to get started:
 
-- Look for issues labeled \`good first issue\` - these don't require high-level CrowdSec knowledge
-- Issues labeled \`help wanted\` indicate that community help is particularly welcome
+- Look for issues labeled `good first issue` - these don't require high-level CrowdSec knowledge
+- Issues labeled `help wanted` indicate that community help is particularly welcome
 
 ### Prerequisites
 
@@ -82,7 +82,7 @@ cscli hubtest create my-test --parsers crowdsecurity/nginx --scenarios crowdsecu
 
 #### 2. Configure your test
 
-Edit the generated configuration file (\`.tests/&lt;test-name&gt;/config.yaml\`):
+Edit the generated configuration file (`.tests/<test-name>/config.yaml`):
 
 ```yaml
 parsers:
@@ -98,11 +98,11 @@ ignore_parsers: false
 
 #### 3. Add test data and assertions
 
-- **Log file**: Add sample logs to \`.tests/&lt;test-name&gt;/&lt;test-name&gt;.log\`
-- **Parser assertions**: Define expected parsed fields in \`parser.assert\`
-- **Scenario assertions**: Define expected alerts in \`scenario.assert\`
+- **Log file**: Add sample logs to `.tests/<test-name>/<test-name>.log`
+- **Parser assertions**: Define expected parsed fields in `parser.assert`
+- **Scenario assertions**: Define expected alerts in `scenario.assert`
 
-**Note**: When you first run \`cscli hubtest run\`, it will output the generated assertions that you need to fill out in \`parser.assert\` or \`scenario.assert\` files. You can find examples of assertion files in the hub repository at \`.tests/&lt;existing-test&gt;/parser.assert\` and \`.tests/&lt;existing-test&gt;/scenario.assert\`.
+**Note**: When you first run `cscli hubtest run`, it will output the generated assertions that you need to fill out in `parser.assert` or `scenario.assert` files. You can find examples of assertion files in the hub repository at `.tests/<existing-test>/parser.assert` and `.tests/<existing-test>/scenario.assert`.
 
 #### 4. Run your test
 
@@ -148,7 +148,7 @@ cscli hubtest coverage
 
 ## Git Workflow / Branch Management
 
-We receive contributions on the \`master\` branch. To contribute:
+We receive contributions on the `master` branch. To contribute:
 
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
@@ -165,14 +165,14 @@ We receive contributions on the \`master\` branch. To contribute:
    ```bash
    git push origin feature/your-feature-name
    ```
-6. **Open a Pull Request** targeting the \`master\` branch
+6. **Open a Pull Request** targeting the `master` branch
 
 ### Branch Naming Convention
 
 Use descriptive branch names that indicate the type of contribution:
-- \`feature/parser-nginx-access-logs\`
-- \`fix/scenario-ssh-bruteforce-labels\`
-- \`docs/collection-apache-examples\`
+- `feature/parser-nginx-access-logs`
+- `fix/scenario-ssh-bruteforce-labels`
+- `docs/collection-apache-examples`
 
 ### Commit Messages
 
@@ -245,7 +245,7 @@ Yes, we understand that using YAML anchors makes the YAML DRY but it can introdu
 - **Automatic key handling**: If a static returns empty data, the key will not be set (as you mentioned)
 - **Cleaner structure**: Avoids YAML complexity and improves readability
 - **Consistent patterns**: Follows established CrowdSec conventions
-- **Proper targeting**: Statics can target \`meta\`, \`parsed\`, or \`enriched\` fields directly
+- **Proper targeting**: Statics can target `meta`, `parsed`, or `enriched` fields directly
 - **Expression support**: Can use expressions to derive values dynamically
 
 ### AI-Assisted Generation
@@ -265,7 +265,7 @@ We do allow AI-assisted generation of parsers, scenarios, and collections, but w
 
 #### What We Expect
 
-- Test coverage using \`cscli hubtest\`
+- Test coverage using `cscli hubtest`
 - Proper error handling and edge cases
 - Clear documentation and examples
 - Adherence to CrowdSec patterns and conventions
@@ -292,7 +292,7 @@ Collections group related parsers, scenarios, and postoverflows together. It oft
 
 #### When to add to existing collections:
 
-- Adding a parser for \`SpecificWebServer\` access logs that would benefit from [all the default http related scenarios](https://hub.crowdsec.net/author/crowdsecurity/collections/base-http-scenarios)
+- Adding a parser for `SpecificWebServer` access logs that would benefit from [all the default http related scenarios](https://hub.crowdsec.net/author/crowdsecurity/collections/base-http-scenarios)
 - Your contribution enhances an existing service's detection capabilities
 - Your scenario complements existing parsers in a collection
 
@@ -308,19 +308,19 @@ Each collection should include:
 
 ### Scenarios
 
-Scenarios define the logic for detecting attacks and suspicious behavior. When you create a scenario, you must fill some fields in the [\`labels\`](/log_processor/scenarios/format.md#labels), else the CI won't accept the contribution.
+Scenarios define the logic for detecting attacks and suspicious behavior. When you create a scenario, you must fill some fields in the [`labels`](/log_processor/scenarios/format.md#labels), else the CI won't accept the contribution.
 
 #### Required Labels
 
-Those \`labels\` are:
- - \`classification\`: this array contains the CVE ID and the [Mitre Techniques](https://attack.mitre.org/techniques/enterprise/) related to the scenario (when applicable)
- - \`spoofable\`: between 0 and 3, is the chance that the attacker behind the attack can spoof its origin
- - \`confidence\`: between 0 and 3, is the confidence that the scenario will not trigger false positive
- - \`behaviors\`: an existing behavior in [this file](https://github.com/crowdsecurity/hub/blob/scenario_taxonomy/taxonomy/behaviors.json)
- - \`label\` : a human readable name for the scenario
- - \`cti\` : (optional) true or false, used to specify that a scenario is mainly used for audit rather than detecting a threat 
+Those `labels` are:
+ - `classification`: this array contains the CVE ID and the [Mitre Techniques](https://attack.mitre.org/techniques/enterprise/) related to the scenario (when applicable)
+ - `spoofable`: between 0 and 3, is the chance that the attacker behind the attack can spoof its origin
+ - `confidence`: between 0 and 3, is the confidence that the scenario will not trigger false positive
+ - `behaviors`: an existing behavior in [this file](https://github.com/crowdsecurity/hub/blob/scenario_taxonomy/taxonomy/behaviors.json)
+ - `label` : a human readable name for the scenario
+ - `cti` : (optional) true or false, used to specify that a scenario is mainly used for audit rather than detecting a threat 
 
-[Here](/log_processor/scenarios/format.md#labels) is the \`labels\` documentation for more information.
+[Here](/log_processor/scenarios/format.md#labels) is the `labels` documentation for more information.
 
 #### Example Scenario Labels
 
@@ -435,9 +435,9 @@ Before opening your PR, ensure you can check all items in the [PR template](http
 #### Testing Issues
 
 - **Hubtest creation fails**: Ensure you're in the hub repository root directory
-- **Test configuration errors**: Check YAML syntax in \`.tests/&lt;test-name&gt;/config.yaml\`
-- **Parser assertions failing**: Use \`cscli hubtest explain &lt;test-name&gt;\` to debug parser output
-- **Scenario assertions failing**: Verify scenario logic and thresholds with \`cscli hubtest explain &lt;test-name&gt;\`
+- **Test configuration errors**: Check YAML syntax in `.tests/<test-name>/config.yaml`
+- **Parser assertions failing**: Use `cscli hubtest explain <test-name>` to debug parser output
+- **Scenario assertions failing**: Verify scenario logic and thresholds with `cscli hubtest explain <test-name>`
 - **Missing test data**: Provide comprehensive log samples and assertion files
 - **CI tests failing**: Review the GitHub Actions logs for specific errors
 
