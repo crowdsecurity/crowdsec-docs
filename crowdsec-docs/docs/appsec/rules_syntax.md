@@ -1,6 +1,6 @@
 ---
 id: rules_syntax
-title: Rules syntax
+title: Syntax
 sidebar_position: 8
 ---
 
