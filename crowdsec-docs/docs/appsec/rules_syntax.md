@@ -135,6 +135,7 @@ Match provides the pattern to match the target against, including optional trans
   - `trim` : remove leading and trailing spaces
   - `normalizepath` : normalize the path (remove double slashes, etc)
   - `htmlEntitydecode` : decode HTML entities
+  - `count` : number of times the _target_ appear
 
 ```yaml
 # we want the query parameter foo to be equal to 'toto'
