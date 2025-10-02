@@ -229,6 +229,14 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
+			id: "console/remediation_sync",
+			type: "doc",
+			label: "Remediation Sync",
+			customProps: {
+				tag: "premium",
+			},
+		},
+		{
 			type: "doc",
 			label: "Remediation Metrics",
 			id: "console/remediation_metrics",
