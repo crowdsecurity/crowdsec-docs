@@ -40,7 +40,18 @@ We'll trigger the dummy scenario `crowdsecurity/http-generic-test` by accessing 
 <CodeBlock className="language-bash">curl -I https://\<your-service-url\>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl</CodeBlock>
 
 2️⃣ Confirm the alert has triggered for the scenario `crowdsecurity/http-generic-test`
-<CodeBlock className="language-bash">sudo cscli alerts list | grep crowdsecurity/http-generic-test</CodeBlock>
+
+<Tabs groupId="deployment">
+  <TabItem value="host" label="On Host" default>
+    <CodeBlock className="language-bash">sudo cscli alerts list | grep crowdsecurity/http-generic-test</CodeBlock>
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+    <CodeBlock className="language-bash">docker exec crowdsec cscli alerts list | grep crowdsecurity/http-generic-test</CodeBlock>
+  </TabItem>
+  <TabItem value="kubernetes" label="Kubernetes">
+    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list | grep crowdsecurity/http-generic-test</CodeBlock>
+  </TabItem>
+</Tabs>
 
 **Notes:**  
 - Requests from private IP addresses won't trigger alerts (private IPs are whitelisted by default).
@@ -57,7 +68,18 @@ We'll trigger the dummy scenario `crowdsecurity/ssh-generic-test` by attempting 
 <CodeBlock className="language-bash">ssh crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl@\<your-server-ip\></CodeBlock>
 
 2️⃣ Confirm the alert has triggered for the scenario `crowdsecurity/ssh-generic-test`
-<CodeBlock className="language-bash">sudo cscli alerts list | grep crowdsecurity/ssh-generic-test</CodeBlock>
+
+<Tabs groupId="deployment">
+  <TabItem value="host" label="On Host" default>
+    <CodeBlock className="language-bash">sudo cscli alerts list | grep crowdsecurity/ssh-generic-test</CodeBlock>
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+    <CodeBlock className="language-bash">docker exec crowdsec cscli alerts list | grep crowdsecurity/ssh-generic-test</CodeBlock>
+  </TabItem>
+  <TabItem value="kubernetes" label="Kubernetes">
+    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list | grep crowdsecurity/ssh-generic-test</CodeBlock>
+  </TabItem>
+</Tabs>
 
 **Notes:** 
 - This scenario can only be triggered again after a 5-minutes delay. 
@@ -75,7 +97,18 @@ We'll trigger the dummy scenario `crowdsecurity/appsec-generic-test` by accessin
 <CodeBlock className="language-bash">curl -I https://\<your-service-url\>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl</CodeBlock>
 
 2️⃣ Confirm the alert has triggered for the scenario `crowdsecurity/appsec-generic-test`
-<CodeBlock className="language-bash">sudo cscli alerts list | grep crowdsecurity/appsec-generic-test</CodeBlock>
+
+<Tabs groupId="deployment">
+  <TabItem value="host" label="On Host" default>
+    <CodeBlock className="language-bash">sudo cscli alerts list | grep crowdsecurity/appsec-generic-test</CodeBlock>
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+    <CodeBlock className="language-bash">docker exec crowdsec cscli alerts list | grep crowdsecurity/appsec-generic-test</CodeBlock>
+  </TabItem>
+  <TabItem value="kubernetes" label="Kubernetes">
+    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list | grep crowdsecurity/appsec-generic-test</CodeBlock>
+  </TabItem>
+</Tabs>
 
 **Notes:**
 - This scenario can only be triggered again after a 1-minute delay. 
@@ -108,9 +141,24 @@ Were all the tests related to your setup successful?
   Multiple log sources can be defined in the acquisition(s) configuration files and they support diverse datasources (files, syslog, etc.).
   For more details you can refer to the [datasources documentation](https://doc.crowdsec.net/docs/next/log_processor/data_sources/intro).  
 
-  We'll look at the security engine **metrics** to see if logs are **being read** and if what's read is **parsed correctly**.  
+  We'll look at the security engine **metrics** to see if logs are **being read** and if what's read is **parsed correctly**.
   We'll do that using the `cscli metrics` command:
-  <CodeBlock className="language-bash">sudo cscli metrics show acquisition parsers</CodeBlock>
+
+<Tabs groupId="deployment">
+  <TabItem value="host" label="On Host" default>
+    <CodeBlock className="language-bash">sudo cscli metrics show acquisition parsers</CodeBlock>
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+    <CodeBlock className="language-bash">docker exec crowdsec cscli metrics show acquisition parsers</CodeBlock>
+  </TabItem>
+  <TabItem value="kubernetes" label="Kubernetes">
+    <CodeBlock className="language-bash">{`# For LAPI pod
+kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli metrics show acquisition parsers
+
+# For all agent pods
+for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli metrics show acquisition parsers; done`}</CodeBlock>
+  </TabItem>
+</Tabs>
 
   Under **Acquisition Metrics** you should see:
   - The source name of the log files or streams that have been read and the number of lines read and parsed for each of them.
@@ -136,77 +184,294 @@ Were all the tests related to your setup successful?
   <details id="troubleshooting_acquisition">
       <summary>📥 Acquisition Troubleshooting -- Are your logs properly declared as datasources</summary>
 
-  CrowdSec needs to know where to **read your logs**. This is handled by the **acquisition configuration**, usually found in `acquis.yaml` or in files under `acquis.d/` inside the CrowdSec config directory.  
-  On Debian like OS it is typically located in `/etc/crowdsec/`.  
+  CrowdSec needs to know where to **read your logs**. The configuration varies by deployment method:
 
-  To troubleshoot:
+<Tabs groupId="deployment">
+  <TabItem value="host" label="On Host" default>
+
+  The **acquisition configuration** is usually found in `acquis.yaml` or in files under `acquis.d/` inside the CrowdSec config directory.
+  On Debian-like OS it is typically located in `/etc/crowdsec/`.
+
+  **To troubleshoot:**
   - The detailed doc about the acquisition configuration can be found [here](https://doc.crowdsec.net/docs/next/log_processor/acquisition/intro).
   - Check your acquisition files exist and that the datasources are properly setup.
-  - 💡 Hint: 
+  - 💡 Hint:
     - The hub page of the collection you installed provides an example of the acquisition configuration file to create.
     - For example:
-      - The [NGINX collection hub page ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx) 
+      - The [NGINX collection hub page ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx)
       - Or the [SSHD collection hub page ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/sshd) (that is contained in the Linux Collection).
-  - Make sure that the **type** declared in the matches the **parser** expected to be used: nginx, apache, syslog, etc.
+  - Make sure that the **type** declared matches the **parser** expected to be used: nginx, apache, syslog, etc.
+
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+
+  In Docker, logs must be accessible to the container through volumes.
+
+  **Common issues:**
+  - **Missing volume mounts**: Ensure log directories are mounted in your container.
+    ```yaml
+    volumes:
+      - /var/log:/var/log:ro  # Mount logs as read-only
+    ```
+  - **Acquisition configuration**: Your `acquis.yaml` should reference paths inside the container.
+  - **Log file permissions**: CrowdSec container user must have read access to log files.
+  - **Shared log volumes**: For multi-container setups, ensure logs are written to a shared named volume:
+    ```yaml
+    volumes:
+      - logs:/var/log/nginx  # Shared volume for logs
+    ```
+
+  **To check your acquisition config:**
+  ```bash
+  docker exec crowdsec cat /etc/crowdsec/acquis.yaml
+  ```
+
+  </TabItem>
+  <TabItem value="kubernetes" label="Kubernetes">
+
+  In Kubernetes, CrowdSec reads logs directly from pods using the Kubernetes API.
+
+  **Configuration is done in your Helm values file:**
+  ```yaml
+  agent:
+    acquisition:
+      - namespace: your-namespace
+        podName: your-pod-*
+        program: nginx  # Must match parser name
+  ```
+
+  **Common issues:**
+  - **Wrong namespace or pod names**: Verify pods exist with `kubectl get pods -n <namespace>`
+  - **Incorrect program name**: The `program` field must match an available parser (nginx, traefik, apache, etc.)
+  - **Container runtime mismatch**: Set `container_runtime: containerd` or `container_runtime: docker` in values.yaml
+  - **RBAC permissions**: CrowdSec needs permissions to read pod logs. Check with:
+    ```bash
+    kubectl auth can-i list pods --as=system:serviceaccount:crowdsec:crowdsec-agent
+    kubectl auth can-i get pods/log --as=system:serviceaccount:crowdsec:crowdsec-agent
+    ```
+
+  **Note:** Unlike standalone deployments, you use `program:` instead of `type:` in Kubernetes acquisitions.
+
+  </TabItem>
+</Tabs>
+
   </details>
 
   <details id="troubleshooting_collection">
       <summary>📦 Collection Troubleshooting -- Are the right parsers and scenarios installed?</summary>
 
   CrowdSec, via its [**Hub** ↗️](https://app.crowdsec.net/hub/collections) uses collections to package correct parsers and detection scenarios for your services.
-  - On regular **host** installations, CrowdSec usually detects your services (like nginx or ssh) and installs the appropriate collections automatically.
-  - On **Docker**, **Kubernetes**, or **custom setups**, you may need to install them manually.
 
-  #### 🔍 To check what's currently installed:
-  <CodeBlock className="language-bash">sudo cscli collections list</CodeBlock>
+<Tabs groupId="deployment">
+  <TabItem value="host" label="On Host" default>
+
+  On regular **host** installations, CrowdSec usually detects your services (like nginx or ssh) and installs the appropriate collections automatically.
+
+  **🔍 To check what's currently installed:**
+  ```bash
+  sudo cscli collections list
+  ```
 
   You can also list individual parsers and scenarios with:
-  <CodeBlock className="language-bash">sudo cscli parsers list</CodeBlock>
-  <CodeBlock className="language-bash">sudo cscli scenarios list</CodeBlock>
-  
+  ```bash
+  sudo cscli parsers list
+  sudo cscli scenarios list
+  ```
+
   - Look for entries related to your service (e.g., nginx, apache, ssh).
-  - If they’re listed, the right collection is likely installed.
+  - If they're listed, the right collection is likely installed.
 
-  #### 📥 Install missing collections
-  1. Visit the [CrowdSec Hub ↗️](https://hub.crowdsec.net/) and search for a collection matching your service, like:
-    - [nginx ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx)
-    - [apache ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/apache)
-    - [linux ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/linux)
-    - etc...
-  2. Follow the installation instructions on the collection’s page, including any required acquisition setup.
+  **📥 Install missing collections:**
+  1. Visit the [CrowdSec Hub ↗️](https://hub.crowdsec.net/) and search for a collection matching your service
+  2. Install with:
+     ```bash
+     sudo cscli collections install crowdsecurity/nginx
+     sudo systemctl reload crowdsec
+     ```
 
-  #### ⚠️ Log format mismatch
-  - If your logs don’t follow the expected format (e.g., they’ve been customized), CrowdSec might not parse them properly.
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+
+  In Docker, collections must be installed via the `COLLECTIONS` environment variable or manually.
+
+  **🔍 To check what's currently installed:**
+  ```bash
+  docker exec crowdsec cscli collections list
+  ```
+
+  **📥 Install collections:**
+
+  **Method 1: Environment variable (recommended)**
+  ```yaml
+  environment:
+    COLLECTIONS: "crowdsecurity/nginx crowdsecurity/linux"
+  ```
+  Then restart the container.
+
+  **Method 2: Manual installation**
+  ```bash
+  docker exec crowdsec cscli collections install crowdsecurity/nginx
+  docker restart crowdsec
+  ```
+
+  **Common issues:**
+  - Collections not persisting: Ensure `/etc/crowdsec/` is mounted as a volume
+  - Collections installed but not working: Restart the container after installation
+
+  </TabItem>
+  <TabItem value="kubernetes" label="Kubernetes">
+
+  In Kubernetes, collections must be specified in your Helm values file.
+
+  **🔍 To check what's currently installed:**
+  ```bash
+  kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli collections list
+  ```
+
+  **📥 Install collections:**
+
+  Add to your `values.yaml`:
+  ```yaml
+  agent:
+    env:
+      - name: COLLECTIONS
+        value: "crowdsecurity/traefik crowdsecurity/nginx"
+  ```
+
+  Then upgrade your Helm release:
+  ```bash
+  helm upgrade crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml
+  ```
+
+  **Common issues:**
+  - Collections must match your acquisition `program:` field
+  - Each agent pod processes different logs, verify on the right pod
+  - LAPI doesn't need collections, only agents do
+
+  </TabItem>
+</Tabs>
+
+  **⚠️ Log format mismatch:**
+  - If your logs don't follow the expected format (e.g., they've been customized), CrowdSec might not parse them properly.
   - You can find more information on how to create your own parsers in the [CrowdSec documentation](https://doc.crowdsec.net/docs/next/log_processor/parsers/format).
 
   </details>
 
   <details id="troubleshooting_service">
       <summary>⚙️ CrowdSec Service Troubleshooting -- is the CrowdSec service running?</summary>
-  
-  Let’s check if the CrowdSec service is active:
-  <CodeBlock className="language-bash">sudo systemctl status crowdsec</CodeBlock> 
+
+<Tabs groupId="deployment">
+  <TabItem value="host" label="On Host" default>
+
+  Let's check if the CrowdSec service is active:
+  ```bash
+  sudo systemctl status crowdsec
+  ```
   - ☑️ You should see: "**active (running)**"
 
-  If the service is not running, you can start it manually:
-  <CodeBlock className="language-bash">sudo systemctl start crowdsec</CodeBlock>
-  - 💡 make sure it will be up after restart, activate the service
+  **If the service is not running:**
+  ```bash
+  sudo systemctl start crowdsec
+  sudo systemctl enable crowdsec  # Ensure it starts on boot
+  ```
 
-  If the service fails to start, you can check the logs for more information:
-  For linux systems, the logs are typically located in `/var/log/crowdsec.log`.
-  <CodeBlock className="language-bash">less /var/log/crowdsec.log</CodeBlock>
+  **Check logs for errors:**
+  ```bash
+  # View service logs
+  sudo journalctl -u crowdsec -n 50
 
-  If you got an error trying to run the `cscli` or trying to start `crowdsec`.
-  Common reasons the service might fail:
-  - Misconfiguration in the `config.yaml` file.
-    - Port conflicts with other services. By default, CrowdSec uses port 8080 for the Local API (LAPI) and port 6060 for the Local API metrics.
-    - The port configuration can be setup in `config.yaml` file or by setting the environment variables depending on your implementation
-  - Insufficient permissions to access the log files or directories.
-  - Acquisition files format errors.
-  
-  Other more low level reasons might be:
-  - `cscli` doesn't exist in your $PATH hence can't be called from anywhere.  
-  - You might not have `sudo` permissions to run the command or privileges on the config.yaml file used when running `cscli` or `crowdsec`.   
+  # Or check log file
+  less /var/log/crowdsec.log
+  ```
+
+  **Common issues:**
+  - Misconfiguration in `/etc/crowdsec/config.yaml`
+  - Port conflicts (default: 8080 for LAPI, 6060 for metrics)
+  - Insufficient permissions to access log files
+  - Acquisition files format errors
+
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+
+  Check if the container is running:
+  ```bash
+  docker ps | grep crowdsec
+  ```
+
+  **If not running, check container logs:**
+  ```bash
+  docker logs crowdsec
+  ```
+
+  **Start/restart the container:**
+  ```bash
+  docker start crowdsec
+  # Or restart
+  docker restart crowdsec
+  ```
+
+  **Common issues:**
+  - **Volume mount errors**: Ensure `/etc/crowdsec/` and `/var/lib/crowdsec/data/` are properly mounted
+  - **Missing data volume**: Since v1.7.0, `/var/lib/crowdsec/data/` must be persisted
+  - **Port conflicts**: Check if 8080 is available on host
+  - **Log access**: Ensure log volumes are correctly mounted and readable
+  - **Environment variables**: Verify `COLLECTIONS` and other env vars are set correctly
+
+  **Check container status:**
+  ```bash
+  docker inspect crowdsec
+  ```
+
+  </TabItem>
+  <TabItem value="kubernetes" label="Kubernetes">
+
+  Check if pods are running:
+  ```bash
+  kubectl get pods -n crowdsec
+  ```
+
+  You should see LAPI and agent pods in `Running` status.
+
+  **Check pod logs:**
+  ```bash
+  # LAPI logs
+  kubectl logs -n crowdsec -l k8s-app=crowdsec -l type=lapi
+
+  # Agent logs
+  kubectl logs -n crowdsec -l k8s-app=crowdsec -l type=agent
+  ```
+
+  **Describe pod for more details:**
+  ```bash
+  kubectl describe pod -n crowdsec <pod-name>
+  ```
+
+  **Common issues:**
+  - **Image pull errors**: Check if the CrowdSec image is accessible
+  - **RBAC permissions**: Agents need permissions to read pod logs
+    ```bash
+    kubectl get clusterrole crowdsec-agent
+    kubectl get clusterrolebinding crowdsec-agent
+    ```
+  - **PVC issues**: If using persistent volumes, ensure PVCs are bound
+    ```bash
+    kubectl get pvc -n crowdsec
+    ```
+  - **ConfigMap errors**: Verify configuration is valid
+    ```bash
+    kubectl get configmap -n crowdsec
+    ```
+  - **Network policies**: Ensure pods can communicate with each other
+  - **Resource limits**: Check if pods have sufficient CPU/memory
+
+  **Restart pods:**
+  ```bash
+  kubectl rollout restart deployment/crowdsec-lapi -n crowdsec
+  kubectl rollout restart daemonset/crowdsec-agent -n crowdsec
+  ```
+
+  </TabItem>
+</Tabs>
 
   </details>
 </details>
@@ -227,7 +492,18 @@ This connection allows you to:
   The most direct way to verify connectivity is to see if your instance has already received decisions from the Community Blocklist.
 
   1️⃣ List decisions coming from CAPI
-  <CodeBlock className="language-bash">sudo cscli decisions list --origin CAPI </CodeBlock>
+
+<Tabs groupId="deployment">
+  <TabItem value="host" label="On Host" default>
+    <CodeBlock className="language-bash">sudo cscli decisions list --origin CAPI</CodeBlock>
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+    <CodeBlock className="language-bash">docker exec crowdsec cscli decisions list --origin CAPI</CodeBlock>
+  </TabItem>
+  <TabItem value="kubernetes" label="Kubernetes">
+    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli decisions list --origin CAPI</CodeBlock>
+  </TabItem>
+</Tabs>
 
   ☑️ If you see decisions, you're connected and receiving threat intel.
 
@@ -246,23 +522,92 @@ Were all the tests related to your setup successful?
 <details>
   <summary>🐞 Connectivity Troubleshooting</summary>
 
-  Let’s verify your CAPI connection step-by-step.  
+  Let's verify your CAPI connection step-by-step.
 
-  Check CAPI status:
-  <CodeBlock className="language-bash">sudo cscli capi status</CodeBlock>
+<Tabs groupId="deployment">
+  <TabItem value="host" label="On Host" default>
 
-  **Should show:**   
+  **Check CAPI status:**
+  ```bash
+  sudo cscli capi status
+  ```
+
+  **Should show:**
   - `INFO You can successfully interact with Central API (CAPI)`
-  - Along with information about the connectivity config file path and if your Security engine is enrolled in CrowdSec console.
+  - Information about the connectivity config file path
+  - Enrollment status with CrowdSec Console
 
-  **Common issues include:**
-  - Missing `online_api_credentials.yaml` in your CrowdSec config directory
-    - If they don't exist, you can create them by running the command:
-    <CodeBlock className="language-bash">sudo cscli capi register</CodeBlock>
-  - Firewall rules blocking outbound connections to the CrowdSec Central API (api.crowdsec.net)
-  - DNS resolution issues.
-  - Proxy server configuration.
-  - Connectivity issues within Docker containers.
+  **Common issues:**
+  - **Missing credentials**: If `online_api_credentials.yaml` is missing:
+    ```bash
+    sudo cscli capi register
+    sudo systemctl reload crowdsec
+    ```
+  - **Firewall blocking**: Ensure outbound access to `api.crowdsec.net` (HTTPS/443)
+  - **DNS issues**: Verify DNS resolution works:
+    ```bash
+    nslookup api.crowdsec.net
+    ```
+  - **Proxy configuration**: If behind a proxy, configure in `/etc/crowdsec/config.yaml`
+
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+
+  **Check CAPI status:**
+  ```bash
+  docker exec crowdsec cscli capi status
+  ```
+
+  **Should show:**
+  - `INFO You can successfully interact with Central API (CAPI)`
+
+  **Common issues:**
+  - **No internet from container**: Ensure container can reach external networks
+    ```bash
+    docker exec crowdsec ping -c 3 api.crowdsec.net
+    ```
+  - **Missing credentials**: Register if credentials are missing:
+    ```bash
+    docker exec crowdsec cscli capi register
+    docker restart crowdsec
+    ```
+  - **Volume not persisted**: Ensure `/etc/crowdsec/` volume persists the credentials file
+  - **Network mode**: If using custom networks, verify routing and DNS
+  - **Proxy issues**: Set `HTTP_PROXY` and `HTTPS_PROXY` environment variables if needed
+
+  </TabItem>
+  <TabItem value="kubernetes" label="Kubernetes">
+
+  **Check CAPI status:**
+  ```bash
+  kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli capi status
+  ```
+
+  **Should show:**
+  - `INFO You can successfully interact with Central API (CAPI)`
+  - Enrollment information if configured
+
+  **Common issues:**
+  - **No external connectivity**: Test from pod:
+    ```bash
+    kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- ping -c 3 api.crowdsec.net
+    ```
+  - **NetworkPolicy blocking**: Check if NetworkPolicies allow egress to api.crowdsec.net
+  - **DNS issues**: Verify CoreDNS is working correctly
+  - **Proxy configuration**: Configure proxy via environment variables in values.yaml:
+    ```yaml
+    lapi:
+      env:
+        - name: HTTP_PROXY
+          value: "http://proxy:8080"
+        - name: HTTPS_PROXY
+          value: "http://proxy:8080"
+    ```
+  - **PVC not bound**: If credentials aren't persisting, check PVC status
+  - **Enrollment key**: If using console enrollment, verify `ENROLL_KEY` is set correctly in values.yaml
+
+  </TabItem>
+</Tabs>
 
 </details>
 
@@ -291,7 +636,18 @@ OR do it from a device with a different public IP address than the client you're
 <CodeBlock className="language-bash">curl api.ipify.org</CodeBlock>
 
 2️⃣ Add a ban decision for your IP (valid for 1 minute):
-<CodeBlock className="language-bash">sudo cscli decisions add --ip \<your-public-ip\> --duration 1m --reason "CrowdSec remediation test"</CodeBlock>
+
+<Tabs groupId="deployment">
+  <TabItem value="host" label="On Host" default>
+    <CodeBlock className="language-bash">sudo cscli decisions add --ip \<your-public-ip\> --duration 1m --reason "CrowdSec remediation test"</CodeBlock>
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+    <CodeBlock className="language-bash">docker exec crowdsec cscli decisions add --ip \<your-public-ip\> --duration 1m --reason "CrowdSec remediation test"</CodeBlock>
+  </TabItem>
+  <TabItem value="kubernetes" label="Kubernetes">
+    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli decisions add --ip \<your-public-ip\> --duration 1m --reason "CrowdSec remediation test"</CodeBlock>
+  </TabItem>
+</Tabs>
 
 ⏳ *Wait a few seconds to ensure the decision is processed by the bouncer.*  
 3️⃣ Try accessing your service (e.g. website, API). from the same public IP address.
@@ -318,23 +674,89 @@ You might want to continue to the next recommended steps:
 
   <details>
     <summary>Is your Bouncer Installed and Connected to your Security engine</summary>
-  
-  - Check bouncers linked to your Security Engine:
-  <CodeBlock className="language-bash">sudo cscli bouncers list</CodeBlock>
-  You should see:
-  - The bouncer name
-  - A tick in the valid column indicating that the bouncer is properly registered and connected to your Security Engine.
-  - a recent `Last API pull` datasources
-  
-  - If your bouncer is not valid or not pulling it might be an issue with the bouncer configuration authentication in its configuration file.
-  - If you don't see your bouncer listed, you should add it
-  - You can try to re-register your bouncer with the command:
-  <CodeBlock className="language-bash">sudo cscli bouncers add</CodeBlock>
-    - Copy the provided token and paste it in your bouncer configuration file.
-    - Then restart the bouncer service. 
 
-  - If your bouncer is on a different machine, ensure it can reach the Security Engine Local API. 
-  - If you are using a bouncer in a container, ensure that the container can reach the Security Engine Local API.
+<Tabs groupId="deployment">
+  <TabItem value="host" label="On Host" default>
+
+  **Check bouncers linked to your Security Engine:**
+  ```bash
+  sudo cscli bouncers list
+  ```
+
+  **You should see:**
+  - The bouncer name
+  - A ✓ in the valid column indicating proper registration
+  - A recent `Last API pull` timestamp
+
+  **Common issues:**
+  - **Bouncer not valid or not pulling**: Check authentication in bouncer config file
+  - **Bouncer not listed**: Register it:
+    ```bash
+    sudo cscli bouncers add my-bouncer-name
+    ```
+    Copy the token and add it to your bouncer's configuration, then restart the bouncer service.
+
+  - **Bouncer on different machine**: Ensure it can reach the LAPI endpoint (default: `http://crowdsec-server:8080`)
+  - **Firewall blocking**: Verify port 8080 is accessible from bouncer machine
+
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+
+  **Check bouncers linked to your Security Engine:**
+  ```bash
+  docker exec crowdsec cscli bouncers list
+  ```
+
+  **Common issues:**
+  - **Bouncer in separate container**: Ensure containers are on the same Docker network
+  - **LAPI URL**: Bouncer config should point to `http://crowdsec:8080` (using container name)
+  - **Register bouncer**: You can pre-create bouncer keys using environment variables:
+    ```yaml
+    environment:
+      BOUNCER_KEY_mybouncer: "my-secret-api-key"
+    ```
+  - **Network connectivity**: Test from bouncer container:
+    ```bash
+    docker exec my-bouncer ping crowdsec
+    ```
+
+  </TabItem>
+  <TabItem value="kubernetes" label="Kubernetes">
+
+  **Check bouncers linked to your Security Engine:**
+  ```bash
+  kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli bouncers list
+  ```
+
+  **Common issues:**
+  - **Service discovery**: Bouncer should connect to `http://crowdsec-lapi.crowdsec.svc.cluster.local:8080`
+  - **Register bouncer**: For Kubernetes remediation components (Ingress-Nginx, Traefik):
+    ```bash
+    # Generate API key
+    kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli bouncers add k8s-bouncer
+
+    # Or pre-configure in values.yaml
+    lapi:
+      env:
+        - name: BOUNCER_KEY_k8s
+          value: "your-api-key-here"
+    ```
+  - **Network policies**: Ensure bouncer namespace can reach crowdsec namespace
+  - **Service accessibility**: Verify the crowdsec-lapi service is accessible:
+    ```bash
+    kubectl get svc -n crowdsec crowdsec-lapi
+    ```
+
+  **For Ingress Nginx bouncer:**
+  - Ensure the bouncer has the correct LAPI URL in its ConfigMap
+  - Check bouncer logs for connection errors:
+    ```bash
+    kubectl logs -n ingress-nginx -l app.kubernetes.io/component=controller
+    ```
+
+  </TabItem>
+</Tabs>
+
   </details>
 </details>
 
