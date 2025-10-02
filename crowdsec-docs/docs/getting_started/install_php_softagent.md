@@ -1,6 +1,6 @@
 ---
-id: install_softagent
-title: Soft Agent
+id: install_php_softagent
+title: PHP Soft Agent
 sidebar_position: 1
 ---
 
