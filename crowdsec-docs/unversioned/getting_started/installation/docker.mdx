@@ -129,6 +129,103 @@ Here are the most common environment variables for customizing CrowdSec in Docke
 Use a `.env` file or Docker secrets to avoid hardcoding sensitive variables like passwords or API keys.
 :::
 
+## Automatic Hub Updates
+
+To keep your CrowdSec installation up to date with the latest parsers, scenarios, and collections from the hub, you can set up an automated cron job that will check for updates and restart the container when needed.
+
+### Docker Run Setup
+
+For containers started with `docker run`, create this script:
+
+```bash
+#!/bin/bash
+# /usr/local/bin/crowdsec-update.sh
+
+CONTAINER_NAME="crowdsec"  # Adjust to your container name
+DOCKER_BIN="/usr/bin/docker"  # Adjust path if needed
+
+# Check if container is running
+if ! $DOCKER_BIN ps --format "table {{.Names}}" | grep -q "^${CONTAINER_NAME}$"; then
+    echo "Container ${CONTAINER_NAME} is not running"
+    exit 1
+fi
+
+# Update and check for upgrades
+$DOCKER_BIN exec ${CONTAINER_NAME} cscli --error hub update >/dev/null
+upgraded="$($DOCKER_BIN exec ${CONTAINER_NAME} cscli --error hub upgrade)"
+
+if [ -n "$upgraded" ]; then
+    echo "Hub updates detected, restarting container..."
+    $DOCKER_BIN restart ${CONTAINER_NAME}
+    echo "Container restarted successfully"
+else
+    echo "No hub updates available"
+fi
+```
+
+### Docker Compose Setup
+
+For Docker Compose deployments, use this script instead:
+
+```bash
+#!/bin/bash
+# /usr/local/bin/crowdsec-update.sh
+
+cd /path/to/your/docker-compose/directory  # Adjust path
+DOCKER_BIN="/usr/bin/docker"  # Adjust path if needed
+
+# Check if service is running
+if ! $DOCKER_BIN compose ps crowdsec | grep -q "Up"; then
+    echo "CrowdSec service is not running"
+    exit 1
+fi
+
+# Update and check for upgrades
+$DOCKER_BIN compose exec crowdsec cscli --error hub update >/dev/null
+upgraded="$($DOCKER_BIN compose exec crowdsec cscli --error hub upgrade)"
+
+if [ -n "$upgraded" ]; then
+    echo "Hub updates detected, restarting service..."
+    $DOCKER_BIN compose restart crowdsec
+    echo "Service restarted successfully"
+else
+    echo "No hub updates available"
+fi
+```
+
+### Setup Instructions
+
+1. **Choose the appropriate script** based on your deployment method
+2. **Make it executable:**
+   ```bash
+   sudo chmod +x /usr/local/bin/crowdsec-update.sh
+   ```
+3. **Add to crontab** (daily at 2 AM):
+   ```bash
+   sudo crontab -e
+   # Add: 0 2 * * * /usr/local/bin/crowdsec-update.sh
+   ```
+
+:::tip
+**Docker Compose is recommended** as it doesn't require knowing the exact container name and works with the service name from your `docker-compose.yml`.
+
+**Finding Docker binary path:**
+```bash
+# Find docker binary (includes compose subcommand)
+which docker
+# Common paths: /usr/bin/docker, /usr/local/bin/docker
+```
+
+**Cron schedule examples:**
+- `0 */6 * * *` - Every 6 hours
+- `0 2 * * 0` - Every Sunday at 2 AM
+- `0 2 1 * *` - First day of every month at 2 AM
+:::
+
+:::warning
+Test your script manually before setting up the cron job to ensure it works with your specific setup.
+:::
+
 ---
 
 ## Next Steps?
