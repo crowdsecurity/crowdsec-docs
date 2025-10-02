@@ -143,9 +143,10 @@ For containers started with `docker run`, create this script:
 
 CONTAINER_NAME="crowdsec"  # Adjust to your container name
 DOCKER_BIN="/usr/bin/docker"  # Adjust path if needed
+GREP_BIN="/usr/bin/grep"  # Adjust path if needed
 
 # Check if container is running
-if ! $DOCKER_BIN ps --format "table {{.Names}}" | grep -q "^${CONTAINER_NAME}$"; then
+if ! $DOCKER_BIN ps --format "table {{.Names}}" | $GREP_BIN -q "^${CONTAINER_NAME}$"; then
     echo "Container ${CONTAINER_NAME} is not running"
     exit 1
 fi
@@ -173,9 +174,10 @@ For Docker Compose deployments, use this script instead:
 
 cd /path/to/your/docker-compose/directory  # Adjust path
 DOCKER_BIN="/usr/bin/docker"  # Adjust path if needed
+GREP_BIN="/usr/bin/grep"  # Adjust path if needed
 
 # Check if service is running
-if ! $DOCKER_BIN compose ps crowdsec | grep -q "Up"; then
+if ! $DOCKER_BIN compose ps crowdsec | $GREP_BIN -q "Up"; then
     echo "CrowdSec service is not running"
     exit 1
 fi
@@ -209,11 +211,15 @@ fi
 :::tip
 **Docker Compose is recommended** as it doesn't require knowing the exact container name and works with the service name from your `docker-compose.yml`.
 
-**Finding Docker binary path:**
+**Finding binary paths:**
 ```bash
 # Find docker binary (includes compose subcommand)
 which docker
 # Common paths: /usr/bin/docker, /usr/local/bin/docker
+
+# Find grep binary
+which grep
+# Common paths: /usr/bin/grep, /bin/grep
 ```
 
 **Cron schedule examples:**
