@@ -4,18 +4,21 @@ id: intro
 ---
 
 :::info
-You may see CrowdSec referred to as "Security Engine" and Bouncers referred to as "Remediation Components" within new documentation. This is to better reflect the role of each component within the CrowdSec ecosystem.
+You may see the **IDPS/WAF of CrowdSec** referred to as **"Security Engine"** and **Bouncers** referred to as **"Remediation Components"** within new documentation.  
+This is to better reflect the role of each component within the CrowdSec ecosystem.
 :::
 
 # Troubleshooting
 
-We have extended our troubleshooting documentation to cover more common issues and questions. If you have any suggestions for this please open an [issue here](https://github.com/crowdsecurity/crowdsec-docs).
+We have extended our troubleshooting documentation to cover more common issues and questions.  
+If you have any suggestions for this please open an [issue here](https://github.com/crowdsecurity/crowdsec-docs).  
 
-### [Security Engine Troubleshooting](/troubleshooting/security_engine.mdx)
+Also, checkout our 🩺 [**Stack Health-Check page**](/u/getting_started/health_check) to make sure your **Detection**, **Community Sharing** and **Remediation** are working properly
 
-### [Remediation Components Troubleshooting](/troubleshooting/remediation_components.mdx)
-
-### [CTI Troubleshooting](/troubleshooting/cti.mdx)
+Here you'll also find Troubleshooting by topic:
+* [Security Engine Troubleshooting](/troubleshooting/security_engine.mdx)
+* [Remediation Components Troubleshooting](/troubleshooting/remediation_components.mdx)
+* [CTI Troubleshooting](/troubleshooting/cti.mdx)
 
 ## Community support
 
