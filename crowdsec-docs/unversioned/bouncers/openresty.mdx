@@ -230,7 +230,8 @@ init_worker_by_lua_block {
            ngx.log(ngx.INFO, "Initializing metrics for worker " .. tostring(ngx.worker.id()))
            cs.SetupMetrics()
         end
-}```
+}
+```
 
 
 The component uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict) to share cache between all workers.
