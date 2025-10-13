@@ -229,7 +229,7 @@ for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o nam
   </TabItem>
   <TabItem value="kubernetes" label="Kubernetes">
 
-  In Kubernetes, CrowdSec reads logs directly from pods using the Kubernetes API.
+  In Kubernetes, CrowdSec reads logs from `/var/log/containers` which is mounted into pods by the helm chart.
 
   **Configuration is done in your Helm values file:**
   ```yaml
@@ -237,12 +237,12 @@ for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o nam
     acquisition:
       - namespace: your-namespace
         podName: your-pod-*
-        program: nginx  # Must match parser name
+        program: nginx  # Reference used by the FILTER function of your installed parsers
   ```
 
   **Common issues:**
   - **Wrong namespace or pod names**: Verify pods exist with `kubectl get pods -n <namespace>`
-  - **Incorrect program name**: The `program` field must match an available parser (nginx, traefik, apache, etc.)
+  - **Incorrect program name**: The `program` field must match the FILTER of your installed parser (nginx, traefik, apache, etc.)
   - **Container runtime mismatch**: Set `container_runtime: containerd` or `container_runtime: docker` in values.yaml
   - **RBAC permissions**: CrowdSec needs permissions to read pod logs. Check with:
     ```bash
@@ -377,11 +377,11 @@ for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o nam
 
   **Check logs for errors:**
   ```bash
-  # View service logs
-  sudo journalctl -u crowdsec -n 50
-
-  # Or check log file
+  # Start by checking crowdsec logs
   less /var/log/crowdsec.log
+
+  # Eventually check systemd journal logs
+  sudo journalctl -u crowdsec -n 50
   ```
 
   **Common issues:**
@@ -543,7 +543,7 @@ Were all the tests related to your setup successful?
     sudo cscli capi register
     sudo systemctl reload crowdsec
     ```
-  - **Firewall blocking**: Ensure outbound access to `api.crowdsec.net` (HTTPS/443)
+  - **Firewall blocking**: Ensure outbound network access (API endpoints, blocklists, etc.). See [Network Management](https://docs.crowdsec.net/docs/next/configuration/network_management/) for full requirements
   - **DNS issues**: Verify DNS resolution works:
     ```bash
     nslookup api.crowdsec.net
