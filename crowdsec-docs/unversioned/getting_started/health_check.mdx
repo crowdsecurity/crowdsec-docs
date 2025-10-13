@@ -77,6 +77,7 @@ We'll trigger the dummy scenario `crowdsecurity/ssh-generic-test` by attempting 
     <CodeBlock className="language-bash">docker exec crowdsec cscli alerts list | grep crowdsecurity/ssh-generic-test</CodeBlock>
   </TabItem>
   <TabItem value="kubernetes" label="Kubernetes">
+    It's uncommon to have to deal with this scenario in Kubernetes, but if you do:
     <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list | grep crowdsecurity/ssh-generic-test</CodeBlock>
   </TabItem>
 </Tabs>
@@ -88,7 +89,7 @@ We'll trigger the dummy scenario `crowdsecurity/ssh-generic-test` by attempting 
 <details>
     <summary>🛡️ **AppSec** detection test - CrowdSec WAF </summary>
 
-If you've enabled an AppSec-capable bouncer with CrowdSec WAF, you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.  
+If you've enabled an AppSec-capable bouncer with CrowdSec WAF with the [Virtual Patching collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching), you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.  
 It would have triggered along with the HTTP detection test, but it is worth mentioning here as well.  
 
 We'll trigger the dummy scenario `crowdsecurity/appsec-generic-test` by accessing a **probe path** on your web server.
@@ -152,11 +153,9 @@ Were all the tests related to your setup successful?
     <CodeBlock className="language-bash">docker exec crowdsec cscli metrics show acquisition parsers</CodeBlock>
   </TabItem>
   <TabItem value="kubernetes" label="Kubernetes">
-    <CodeBlock className="language-bash">{`# For LAPI pod
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli metrics show acquisition parsers
-
-# For all agent pods
-for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli metrics show acquisition parsers; done`}</CodeBlock>
+    <CodeBlock className="language-bash">
+     for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli metrics show acquisition parsers; done
+    </CodeBlock>
   </TabItem>
 </Tabs>
 
@@ -208,22 +207,19 @@ for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o nam
   In Docker, logs must be accessible to the container through volumes.
 
   **Common issues:**
-  - **Missing volume mounts**: Ensure log directories are mounted in your container.
+  - **Missing volume mounts** & **Shared log volumes**: Ensure log directories are mounted in your container and available in multi-container setup.  
+  Example if your service logs are in `/var/log` on the host or in a `logs` shared volume:
     ```yaml
     volumes:
-      - /var/log:/var/log:ro  # Mount logs as read-only
+      - /var/log:/var/log:ro  # Example for mounting logs as read-only
+      - logs:/logs:ro   # Example for shared log volume between containers
     ```
-  - **Acquisition configuration**: Your `acquis.yaml` should reference paths inside the container.
+  - **Acquisition configuration**: Your `acquis.yaml` or `acquis.d/*.yaml` files should reference paths inside the container.
   - **Log file permissions**: CrowdSec container user must have read access to log files.
-  - **Shared log volumes**: For multi-container setups, ensure logs are written to a shared named volume:
-    ```yaml
-    volumes:
-      - logs:/var/log/nginx  # Shared volume for logs
-    ```
 
   **To check your acquisition config:**
   ```bash
-  docker exec crowdsec cat /etc/crowdsec/acquis.yaml
+  docker exec crowdsec cat /etc/crowdsec/acquis.yaml # or acquis.d/*.yaml
   ```
 
   </TabItem>
@@ -244,11 +240,6 @@ for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o nam
   - **Wrong namespace or pod names**: Verify pods exist with `kubectl get pods -n <namespace>`
   - **Incorrect program name**: The `program` field must match the FILTER of your installed parser (nginx, traefik, apache, etc.)
   - **Container runtime mismatch**: Set `container_runtime: containerd` or `container_runtime: docker` in values.yaml
-  - **RBAC permissions**: CrowdSec needs permissions to read pod logs. Check with:
-    ```bash
-    kubectl auth can-i list pods --as=system:serviceaccount:crowdsec:crowdsec-agent
-    kubectl auth can-i get pods/log --as=system:serviceaccount:crowdsec:crowdsec-agent
-    ```
 
   **Note:** Unlike standalone deployments, you use `program:` instead of `type:` in Kubernetes acquisitions.
 
@@ -292,7 +283,7 @@ for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o nam
   </TabItem>
   <TabItem value="docker" label="Docker">
 
-  In Docker, collections must be installed via the `COLLECTIONS` environment variable or manually.
+  In Docker, collections must be installed via the `COLLECTIONS` environment variable.
 
   **🔍 To check what's currently installed:**
   ```bash
@@ -301,22 +292,11 @@ for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o nam
 
   **📥 Install collections:**
 
-  **Method 1: Environment variable (recommended)**
   ```yaml
   environment:
     COLLECTIONS: "crowdsecurity/nginx crowdsecurity/linux"
   ```
-  Then restart the container.
-
-  **Method 2: Manual installation**
-  ```bash
-  docker exec crowdsec cscli collections install crowdsecurity/nginx
-  docker restart crowdsec
-  ```
-
-  **Common issues:**
-  - Collections not persisting: Ensure `/etc/crowdsec/` is mounted as a volume
-  - Collections installed but not working: Restart the container after installation
+  Then **restart the container**.
 
   </TabItem>
   <TabItem value="kubernetes" label="Kubernetes">
@@ -325,7 +305,7 @@ for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o nam
 
   **🔍 To check what's currently installed:**
   ```bash
-  kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli collections list
+  for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli collections list; done
   ```
 
   **📥 Install collections:**
@@ -342,11 +322,6 @@ for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o nam
   ```bash
   helm upgrade crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml
   ```
-
-  **Common issues:**
-  - Collections must match your acquisition `program:` field
-  - Each agent pod processes different logs, verify on the right pod
-  - LAPI doesn't need collections, only agents do
 
   </TabItem>
 </Tabs>
@@ -403,12 +378,7 @@ for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o nam
   docker logs crowdsec
   ```
 
-  **Start/restart the container:**
-  ```bash
-  docker start crowdsec
-  # Or restart
-  docker restart crowdsec
-  ```
+  **Make sure your container starts without error**
 
   **Common issues:**
   - **Volume mount errors**: Ensure `/etc/crowdsec/` and `/var/lib/crowdsec/data/` are properly mounted
@@ -447,27 +417,21 @@ for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o nam
   ```
 
   **Common issues:**
-  - **Image pull errors**: Check if the CrowdSec image is accessible
-  - **RBAC permissions**: Agents need permissions to read pod logs
-    ```bash
-    kubectl get clusterrole crowdsec-agent
-    kubectl get clusterrolebinding crowdsec-agent
-    ```
-  - **PVC issues**: If using persistent volumes, ensure PVCs are bound
-    ```bash
-    kubectl get pvc -n crowdsec
-    ```
   - **ConfigMap errors**: Verify configuration is valid
     ```bash
     kubectl get configmap -n crowdsec
     ```
-  - **Network policies**: Ensure pods can communicate with each other
   - **Resource limits**: Check if pods have sufficient CPU/memory
+  - **Network policies**: Ensure pods can communicate with each other
+  - **PVC issues**: If using persistent volumes, ensure PVCs are bound
+    ```bash
+    kubectl get pvc -n crowdsec
+    ```
+  - **Image pull errors**: Check if the CrowdSec image is accessible, could happen if you have registry conflicts
 
-  **Restart pods:**
+  **Upgrade your Helm**
   ```bash
-  kubectl rollout restart deployment/crowdsec-lapi -n crowdsec
-  kubectl rollout restart daemonset/crowdsec-agent -n crowdsec
+  helm upgrade crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml
   ```
 
   </TabItem>
