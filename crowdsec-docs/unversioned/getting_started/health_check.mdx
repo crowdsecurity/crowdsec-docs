@@ -11,10 +11,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 <small className="health-check-version" style={{position: 'relative', top: '-30px'}}>Health Check Version: 0.2.0</small>
 
-Welcome to the interactive Health-Check of your CrowdSec setup.  
-We'll guide you through a series of tests to ensure that your Security Stack is fully functional and ready to protect your services:  
-**Detecting**, **Threat Sharing** and **Remediating**.  
-*This guide covers cases of protecting common services such as web servers (HTTP) and SSH.*   
+Welcome to the interactive Health-Check of your CrowdSec setup.
+We'll guide you through a series of tests to ensure that your Security Stack is fully functional and ready to protect your services:
+**Detecting**, **Threat Sharing** and **Remediating**.
+*This guide covers cases of protecting common services such as web servers (HTTP) and SSH.*
 
 We'll first test the final functionality of each component (top-down approach) before diving into detailed troubleshooting if issues arise.
 
@@ -22,6 +22,10 @@ This health check is divided into three main sections:
 - [**📡 Detection**](#-detection-checks): Ensuring CrowdSec properly detects threats targeting your services.
 - [**🔗 Connectivity**](#-crowdsec-connectivity-checks): Verifying communication with the CrowdSec network to receive the community blocklist.
 - [**🛡️ Protection**](#-remediation-checks): Confirming that your bouncers automatically block threats detected by CrowdSec
+
+:::tip Your feedback matters!
+Help us improve this health check guide by sharing your experience: [📝 **Health Check Feedback Form** ↗️](https://forms.gle/DJboC7oisjmA8qt78)
+:::
 
 * * *
 
@@ -53,9 +57,10 @@ We'll trigger the dummy scenario `crowdsecurity/http-generic-test` by accessing 
   </TabItem>
 </Tabs>
 
-**Notes:**  
-- Requests from private IP addresses won't trigger alerts (private IPs are whitelisted by default).
-  - You can also test via a browser if easier, especially from another device.
+**Notes:**
+- ⚠️ **Important**: Requests from **private IP addresses won't trigger alerts** (private IPs are whitelisted by default).
+  - If testing from localhost or your internal network (192.168.x.x, 10.x.x.x, 172.16.x.x), the test will fail.
+  - **Solution**: Test from an external device with a public IP address, or test via a browser from your phone using mobile data.
 - This scenario can be triggered again only after a 5-minutes delay.
 </details>
 
@@ -328,7 +333,16 @@ Were all the tests related to your setup successful?
 
   **⚠️ Log format mismatch:**
   - If your logs don't follow the expected format (e.g., they've been customized), CrowdSec might not parse them properly.
-  - You can find more information on how to create your own parsers in the [CrowdSec documentation](https://doc.crowdsec.net/docs/next/log_processor/parsers/format).
+  - **Check which log format the Hub parser expects:**
+    - Each parser on the Hub documents the expected log format. For example:
+      - [**NGINX parser** ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/log-parsers/nginx-logs) expects the default combined log format
+      - [**Apache parser** ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/log-parsers/apache2-logs) expects the standard combined format
+    - Compare your actual log format with the expected format to identify mismatches
+  - **For custom log formats:**
+    - **Example**: If you use a custom NGINX log format like `log_format custom '$remote_addr - $request - $status';`, you'll need a custom parser
+    - Use the [**CrowdSec Playground** ↗️](https://playground.crowdsec.net/) to test and develop your parsers interactively
+    - The playground lets you test GROK patterns, parsers, and scenarios in real-time before deploying them
+    - Full guide on creating parsers: [CrowdSec Parser Documentation](https://doc.crowdsec.net/docs/next/log_processor/parsers/format)
 
   </details>
 
@@ -694,10 +708,8 @@ You might want to continue to the next recommended steps:
   </details>
 </details>
 
-## 💬 Your feedback is important!
+## 💬 Get Help & Give Feedback
 
-Help us improve this health check guide!  
-Give us feedback via this form: [📝 Health Check Feedback Form ↗️](https://forms.gle/DJboC7oisjmA8qt78)  
-
-[📨 Open an issue on GitHub ↗️](https://github.com/crowdsecurity/crowdsec-docs/issues/new) or  
-🗣️ Join the conversation on [Discord ↗️](https://discord.gg/wGN7ShmEE8)
+- 📝 [Health Check Feedback Form ↗️](https://forms.gle/DJboC7oisjmA8qt78)
+- 📨 [Open an issue on GitHub ↗️](https://github.com/crowdsecurity/crowdsec-docs/issues/new)
+- 🗣️ [Join us on Discord ↗️](https://discord.gg/wGN7ShmEE8)
