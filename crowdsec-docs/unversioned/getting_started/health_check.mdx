@@ -442,38 +442,36 @@ Were all the tests related to your setup successful?
 
 ## 🔌 CrowdSec Connectivity checks
 
-### Is your Security Engine receiving community blocklists?
+### *Check CAPI status*
 
-Let’s confirm that your Security Engine can communicate with the CrowdSec Central API (CAPI).
+Let's confirm that your Security Engine can communicate with the CrowdSec Central API (CAPI).
 This connection allows you to:
 - Receive **Community Blocklists** -- curated IPs flagged as malicious by the global CrowdSec network.
 - Receive additional Blocklists of your choice among the ones available to you.
 - Contribute back -- sharing detected Malicious IPs triggering installed scenarios.
 
 <details>
-  <summary>🔌 CrowdSec Central API connectivity</summary>
+  <summary>🔌 CrowdSec Central API connectivity test</summary>
 
-  The most direct way to verify connectivity is to see if your instance has already received decisions from the Community Blocklist.
-
-  1️⃣ List decisions coming from CAPI
+  Check your CAPI connection status:
 
 <Tabs groupId="deployment">
   <TabItem value="host" label="On Host" default>
-    <CodeBlock className="language-bash">sudo cscli decisions list --origin CAPI</CodeBlock>
+    <CodeBlock className="language-bash">sudo cscli capi status</CodeBlock>
   </TabItem>
   <TabItem value="docker" label="Docker">
-    <CodeBlock className="language-bash">docker exec crowdsec cscli decisions list --origin CAPI</CodeBlock>
+    <CodeBlock className="language-bash">docker exec crowdsec cscli capi status</CodeBlock>
   </TabItem>
   <TabItem value="kubernetes" label="Kubernetes">
-    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli decisions list --origin CAPI</CodeBlock>
+    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli capi status</CodeBlock>
   </TabItem>
 </Tabs>
 
-  ☑️ If you see decisions, you're connected and receiving threat intel.
+  ☑️ You should see: `INFO You can successfully interact with Central API (CAPI)`
 
   **Notes:**
-  - On a fresh install, it might take a few minutes before any decisions appear.
-  - Restarting the CrowdSec service will force it to perform a first pull.
+  - On a fresh install, credentials might need to be registered (see troubleshooting below).
+  - The output also shows information about the connectivity config file path and enrollment status with CrowdSec Console.
 </details>
 
 ### Were all the tests successful ?
@@ -486,20 +484,10 @@ Were all the tests related to your setup successful?
 <details>
   <summary>🐞 Connectivity Troubleshooting</summary>
 
-  Let's verify your CAPI connection step-by-step.
+  If the CAPI status check fails, here are the most common issues and solutions:
 
 <Tabs groupId="deployment">
   <TabItem value="host" label="On Host" default>
-
-  **Check CAPI status:**
-  ```bash
-  sudo cscli capi status
-  ```
-
-  **Should show:**
-  - `INFO You can successfully interact with Central API (CAPI)`
-  - Information about the connectivity config file path
-  - Enrollment status with CrowdSec Console
 
   **Common issues:**
   - **Missing credentials**: If `online_api_credentials.yaml` is missing:
@@ -517,14 +505,6 @@ Were all the tests related to your setup successful?
   </TabItem>
   <TabItem value="docker" label="Docker">
 
-  **Check CAPI status:**
-  ```bash
-  docker exec crowdsec cscli capi status
-  ```
-
-  **Should show:**
-  - `INFO You can successfully interact with Central API (CAPI)`
-
   **Common issues:**
   - **No internet from container**: Ensure container can reach external networks
     ```bash
@@ -541,15 +521,6 @@ Were all the tests related to your setup successful?
 
   </TabItem>
   <TabItem value="kubernetes" label="Kubernetes">
-
-  **Check CAPI status:**
-  ```bash
-  kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli capi status
-  ```
-
-  **Should show:**
-  - `INFO You can successfully interact with Central API (CAPI)`
-  - Enrollment information if configured
 
   **Common issues:**
   - **No external connectivity**: Test from pod:
@@ -693,22 +664,21 @@ You might want to continue to the next recommended steps:
   ```
 
   **Common issues:**
-  - **Service discovery**: Bouncer should connect to `http://crowdsec-lapi.crowdsec.svc.cluster.local:8080`
-  - **Register bouncer**: For Kubernetes remediation components (Ingress-Nginx, Traefik):
+  - **Service discovery**: Bouncer should connect to `http://crowdsec-service.crowdsec.svc.cluster.local:8080`
+  - **Register bouncer**:
     ```bash
-    # Generate API key
-    kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli bouncers add k8s-bouncer
-
-    # Or pre-configure in values.yaml
+    # Generate API key with a tool of your choice
+    # Then fill the values.yaml accordingly to dictates the bouncer name and api key use for this communication with LAPI
+    # values.yaml
     lapi:
       env:
-        - name: BOUNCER_KEY_k8s
-          value: "your-api-key-here"
+        - name: BOUNCER_KEY_<bouncer-name>
+          value: "api-key-you-want-this-bouncer-to-use"
     ```
   - **Network policies**: Ensure bouncer namespace can reach crowdsec namespace
-  - **Service accessibility**: Verify the crowdsec-lapi service is accessible:
+  - **Service accessibility**: Verify the LAPI, named `crowdsec-service` is accessible:
     ```bash
-    kubectl get svc -n crowdsec crowdsec-lapi
+    kubectl get svc -n crowdsec crowdsec-service
     ```
 
   **For Ingress Nginx bouncer:**
