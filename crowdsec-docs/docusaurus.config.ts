@@ -134,6 +134,7 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 	{
 		href: "https://hub.crowdsec.net/",
 		position: "right",
+		title: "CrowdSec Hub",
 		className: "header-hub-link dark:invert",
 	},
 ];
