@@ -169,7 +169,13 @@ frontend http-in
     bind *:80
     filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
     http-request set-header X-CrowdSec-Remediation %[var(txn.crowdsec.remediation)]
-    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m found }
+    
+    ## Handle 302 redirect for successful captcha validation (native HAProxy redirect)
+    http-request redirect code 302 location %[var(txn.crowdsec.redirect)] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
+    
+    ## Call lua script only for ban and captcha remediations (performance optimization)
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "captcha" }
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "ban" }
     
     ## Handle captcha cookie management via HAProxy (new approach)
     ## Set captcha cookie when SPOA provides captcha_status (pending or valid)
@@ -399,7 +405,13 @@ frontend test
 
     http-request set-header X-CrowdSec-Remediation %[var(txn.crowdsec.remediation)] if { var(txn.crowdsec.remediation) -m found }
     http-request set-header X-CrowdSec-IsoCode %[var(txn.crowdsec.isocode)] if { var(txn.crowdsec.isocode) -m found }
-    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m found }
+    
+    ## Handle 302 redirect for successful captcha validation (native HAProxy redirect)
+    http-request redirect code 302 location %[var(txn.crowdsec.redirect)] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
+    
+    ## Call lua script only for ban and captcha remediations (performance optimization)
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "captcha" }
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "ban" }
 
     ## Handle captcha cookie management via HAProxy (new approach)
     ## Set captcha cookie when SPOA provides captcha_status (pending or valid)
