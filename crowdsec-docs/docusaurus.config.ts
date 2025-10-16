@@ -108,18 +108,27 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 		label: "FAQ/Troubleshooting",
 	},
 	{
+		href: "https://roadmap.crowdsec.net",
+		position: "right",
+		title: "Features Roadmap",
+		className: "header-roadmap-link header-icon-link invert dark:invert-0",
+	},
+	{
 		href: "https://github.com/crowdsecurity/crowdsec",
 		position: "right",
+		title: "GitHub CrowdSecurity",
 		className: "header-github-link header-icon-link invert dark:invert-0",
 	},
 	{
 		href: "https://discord.gg/wGN7ShmEE8",
 		position: "right",
+		title: "Discord Community",
 		className: "header-discord-link invert dark:invert-0",
 	},
 	{
 		href: "https://discourse.crowdsec.net",
 		position: "right",
+		title: "Discourse Community",
 		className: "header-discourse-link invert dark:invert-0",
 	},
 	{

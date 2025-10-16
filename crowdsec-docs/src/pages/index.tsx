@@ -24,18 +24,23 @@ const HomePageHeader = (): React.JSX.Element => {
 					<div className="flex flex-col md:flex-row items-start gap-2">
 						<Link to="/u/getting_started/intro" className="w-full md:w-auto">
 							<Button color="primary" className="w-full md:w-auto">
-								Get started
+								🚀 Quick Guides
 							</Button>
 						</Link>
 						<div className="flex flex-row gap-2 w-full md:w-auto">
 							<Link to="https://app.crowdsec.net/" className="flex-1 md:flex-none">
 								<Button variant="secondary" className="w-full md:w-auto">
-									Explore the Console
+									👨‍💻 Explore the Console
 								</Button>
 							</Link>
 							<Link to="https://killercoda.com/iiamloz/scenario/crowdsec-setup" className="flex-1 md:flex-none">
 								<Button variant="secondary" className="w-full md:w-auto">
-									Online Sandbox
+									🛠️ Online Sandbox
+								</Button>
+							</Link>
+							<Link to="https://start.crowdsec.net/" className="flex-1 md:flex-none">
+								<Button variant="secondary" className="w-full md:w-auto">
+									💡 Not sure where to start?
 								</Button>
 							</Link>
 						</div>
