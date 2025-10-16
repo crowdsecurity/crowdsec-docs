@@ -285,6 +285,7 @@ The `fastly_account_configs`) section defines one or more Fastly accounts and th
 - **Type**: String (optional)
 - **Default**: `null` (uses active version)
 - **Description**: Specific Fastly service version to clone from instead of using the currently active version. Useful for maintaining consistent base configurations.
+If no version is specified, the bouncer will clone the currently active version of the service (or last updated version if no active version exists)
 - **Example**: `reference_version: 63`
 
 
@@ -363,6 +364,17 @@ crowdsec-fastly-bouncer -c <PATH_TO_BASE_CONFIG>
 ```
 
 This starts the component in normal mode using the provided config file.
+
+###  Local cache refresher
+
+**Usage**
+
+```bash
+crowdsec-fastly-bouncer -r -c <PATH_TO_BASE_CONFIG>
+```
+
+This refreshes the local cache file from Fastly without making any changes to the Fastly services.
+For each services in the config file, it fetches the current ACLs and their contents for the current active version (or last updated version if no active version exists).
 
 ###  Cleaner
 

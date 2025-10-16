@@ -1,6 +1,6 @@
 ---
 id: create_rules
-title: Rules Creation & Testing
+title: Creation & Testing
 sidebar_position: 3
 ---
 

@@ -9,7 +9,7 @@ const sidebarsConfig: SidebarConfig = {
 	sdkSideBar: [
 		{
 			type: "doc",
-			label: "Introduction",
+			label: "SDK Introduction",
 			id: "getting_started/sdk_intro",
 		},
 		{
@@ -20,7 +20,12 @@ const sidebarsConfig: SidebarConfig = {
 		{
 			type: "doc",
 			label: "PHP",
-			id: "getting_started/install_softagent",
+			id: "getting_started/install_php_softagent",
+		},
+		{
+			type: "doc",
+			label: "Drupal Plugin",
+			id: "getting_started/install_drupal_plugin",
 		},
 	],
 	tutorialSidebar: [
@@ -737,8 +742,9 @@ const sidebarsConfig: SidebarConfig = {
 			label: "Rules",
 			items: [
 				{ type: "doc", id: "appsec/rules_syntax" },
-				{ type: "doc", id: "appsec/hooks" },
 				{ type: "doc", id: "appsec/create_rules" },
+				{ type: "doc", id: "appsec/rules_deploy" },
+				{ type: "doc", id: "appsec/hooks" },
 				{ type: "doc", id: "appsec/rules_examples" },
 			],
 		},
