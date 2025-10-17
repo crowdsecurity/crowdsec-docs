@@ -47,13 +47,13 @@ We'll trigger the dummy scenario `crowdsecurity/http-generic-test` by accessing 
 
 <Tabs groupId="deployment">
   <TabItem value="host" label="On Host" default>
-    <CodeBlock className="language-bash">sudo cscli alerts list | grep crowdsecurity/http-generic-test</CodeBlock>
+    <CodeBlock className="language-bash">sudo cscli alerts list -s crowdsecurity/http-generic-test</CodeBlock>ss
   </TabItem>
   <TabItem value="docker" label="Docker">
-    <CodeBlock className="language-bash">docker exec crowdsec cscli alerts list | grep crowdsecurity/http-generic-test</CodeBlock>
+    <CodeBlock className="language-bash">docker exec crowdsec cscli alerts list -s crowdsecurity/http-generic-test</CodeBlock>
   </TabItem>
   <TabItem value="kubernetes" label="Kubernetes">
-    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list | grep crowdsecurity/http-generic-test</CodeBlock>
+    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list -s crowdsecurity/http-generic-test</CodeBlock>
   </TabItem>
 </Tabs>
 
@@ -76,14 +76,14 @@ We'll trigger the dummy scenario `crowdsecurity/ssh-generic-test` by attempting 
 
 <Tabs groupId="deployment">
   <TabItem value="host" label="On Host" default>
-    <CodeBlock className="language-bash">sudo cscli alerts list | grep crowdsecurity/ssh-generic-test</CodeBlock>
+    <CodeBlock className="language-bash">sudo cscli alerts list -s crowdsecurity/ssh-generic-test</CodeBlock>
   </TabItem>
   <TabItem value="docker" label="Docker">
-    <CodeBlock className="language-bash">docker exec crowdsec cscli alerts list | grep crowdsecurity/ssh-generic-test</CodeBlock>
+    <CodeBlock className="language-bash">docker exec crowdsec cscli alerts list -s crowdsecurity/ssh-generic-test</CodeBlock>
   </TabItem>
   <TabItem value="kubernetes" label="Kubernetes">
     It's uncommon to have to deal with this scenario in Kubernetes, but if you do:
-    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list | grep crowdsecurity/ssh-generic-test</CodeBlock>
+    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list -s crowdsecurity/ssh-generic-test</CodeBlock>
   </TabItem>
 </Tabs>
 
@@ -106,13 +106,13 @@ We'll trigger the dummy scenario `crowdsecurity/appsec-generic-test` by accessin
 
 <Tabs groupId="deployment">
   <TabItem value="host" label="On Host" default>
-    <CodeBlock className="language-bash">sudo cscli alerts list | grep crowdsecurity/appsec-generic-test</CodeBlock>
+    <CodeBlock className="language-bash">sudo cscli alerts list -s crowdsecurity/appsec-generic-test</CodeBlock>
   </TabItem>
   <TabItem value="docker" label="Docker">
-    <CodeBlock className="language-bash">docker exec crowdsec cscli alerts list | grep crowdsecurity/appsec-generic-test</CodeBlock>
+    <CodeBlock className="language-bash">docker exec crowdsec cscli alerts list -s crowdsecurity/appsec-generic-test</CodeBlock>
   </TabItem>
   <TabItem value="kubernetes" label="Kubernetes">
-    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list | grep crowdsecurity/appsec-generic-test</CodeBlock>
+    <CodeBlock className="language-bash">kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list -s crowdsecurity/appsec-generic-test</CodeBlock>
   </TabItem>
 </Tabs>
 
