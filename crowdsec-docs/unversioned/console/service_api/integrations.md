@@ -19,11 +19,54 @@ For some constructors, the integrations can generate vendor-specific format, see
 
 For all the other providers, the `plain_text` format consists of one ip per line, and should be supported by most devices. If a specific format is missing, reach out to us and we'll help you support it!
 
-## Dealing with blocklist size limits
+## Managing integrations size limits with pagination
 
-Some providers have technical limits on the number of IPs they can pull at once. That's why we recommand to monitor the number of IPS returned by the integration and use the pagination feature if needed. For this, you can use the page and page_size query parameters in the URL.
+Some firewalls or security devices impose strict limits on how many IP addresses can be imported or processed from an external blocklist. When a blocklist exceeds these limits, it can lead to incomplete imports or failures during updates. To address this, CrowdSec integrations support pagination, allowing you to fetch IPs in manageable chunks.
 
-https://admin.api.crowdsec.net/v1/integrations/123/content?page=1&page_size=1500
+### Why pagination matters
 
-You can then use the page parameter to get the next page of IPs.
+Pagination ensures that large blocklists are retrieved and processed efficiently by splitting them into smaller segments. This helps:
 
+* Avoid exceeding the maximum number of entries a firewall can handle per list.
+* Maintain reliable updates without API timeouts.
+* Improve performance when synchronizing IPs from CrowdSec.
+
+### How pagination works
+
+You can control pagination using two query parameters in the integration API URL:
+
+* `page`: The current page number (starting from 1).
+* `page_size`: The number of IP addresses to include per page.
+
+Example request:
+
+```
+GET https://admin.api.crowdsec.net/v1/integrations/123/content?page=1&page_size=1500
+```
+
+* The above request retrieves the first 1,500 IPs in the list.
+* To fetch the next batch, increment the page parameter:
+
+```
+GET https://admin.api.crowdsec.net/v1/integrations/123/content?page=2&page_size=1500
+```
+
+Repeat this process until no new results are returned.
+
+### Example use case (Palo Alto firewall)
+
+A Palo Alto firewall may limit external dynamic lists between 50,000 and 150,000 entries depending on the model. If your CrowdSec blocklist exceeds this limit, you can set `page_size` to 50,000 and iterate through pages until all IPs are retrieved.
+
+1. Start with `page=1` and `page_size=50000`.
+2. Add the dynamic list to the firewall.
+3. Increment the `page` parameter and add the new dynamic list.
+4. Repeat until all IPs are processed.
+
+
+### Pro Tip
+
+When you know the maximum number of entries your device can handle, and you want to calculate the number of pages needed, you will also need to know the total number of IPs in your integration. You can get this information from the [integration details page](https://app.crowdsec.net/blocklists/integrations), where you can find the "Total IPs" count. Then, use the following formula:
+
+```
+number_of_pages = ceil(total_ips / page_size)
+```
