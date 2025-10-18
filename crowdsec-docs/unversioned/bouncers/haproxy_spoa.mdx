@@ -225,6 +225,137 @@ recaptcha
 turnstile
 ```
 
+#### HAProxy Behind a CDN
+
+When HAProxy is deployed behind an upstream Content Delivery Network (CDN), the source IP seen by HAProxy will be the CDN's edge server IP, not the real client IP. To properly evaluate and apply security rules based on the actual client IP, you need to configure the SPOA to extract the real IP from the CDN-provided header.
+
+:::info
+
+Most CDNs add an `X-Real-IP` or `X-Forwarded-For` header to the request to pass the original client IP. Ensure your CDN is configured to add this header, and adjust the examples below if your CDN uses a different header name.
+
+:::
+
+##### Configuration Changes
+
+When HAProxy is behind a CDN, modify your `/etc/haproxy/crowdsec.cfg` to:
+
+1. **Use only the `crowdsec-http` message** (the `crowdsec-ip` message will capture the CDN edge IP, which is not useful)
+2. **Extract the real client IP** from the CDN header using `req.hdr_ip()` to convert it to HAProxy's IP type
+3. **Pass the real IP to the bouncer** via the SPOE message
+
+<details>
+
+<summary>`/etc/haproxy/crowdsec.cfg` (CDN Configuration)</summary>
+
+```haproxy
+# /etc/haproxy/spoe/crowdsec.cfg
+# SPOE section for CDN deployments
+# - Uses a single message: crowdsec-http
+# - Extracts real client IP from X-Real-IP header (adjust if needed)
+# - Falls back to IP remediation if 'remediation' var is not set
+
+[crowdsec]
+
+spoe-agent crowdsec-agent
+    messages    crowdsec-http
+    option      var-prefix      crowdsec
+    option      set-on-error    error
+    timeout     hello           100ms
+    timeout     idle            30s
+    timeout     processing      500ms
+    use-backend crowdsec-spoa
+    log         global
+
+# This message extracts the real IP via X-Real-IP and includes all arguments.
+# IMPORTANT: req.hdr_ip() returns an IP type (required by SPOE protocol).
+# If 'remediation' isn't provided by HAProxy, the bouncer will check IP remediation.
+spoe-message crowdsec-http
+    args remediation=var(txn.crowdsec.remediation) \
+         crowdsec_captcha_cookie=req.cook(crowdsec_captcha_cookie) \
+         id=unique-id host=hdr(Host) method=method path=path query=query \
+         version=req.ver headers=req.hdrs body=req.body url=url ssl=ssl_fc \
+         src-ip=req.hdr_ip(x-real-ip) src-port=src_port
+    event on-frontend-http-request
+```
+
+</details>
+
+##### Key Changes Explained
+
+- **Single message**: Only `crowdsec-http` is used. The `crowdsec-ip` message would run at `on-client-session` and capture the CDN's IP, not the real client IP, so it's omitted.
+- **IP extraction**: The `req.hdr_ip(x-real-ip)` function extracts the IP from the `X-Real-IP` header and converts it to HAProxy's IP type, which is required by the SPOE protocol.
+- **Header name**: If your CDN uses a different header (e.g., `X-Forwarded-For`, `CF-Connecting-IP` for Cloudflare), adjust the header name accordingly. For Cloudflare specifically, use `req.hdr_ip(cf-connecting-ip)`.
+
+:::warning Firewall Rules for Trusted Proxies
+
+Since your SPOA bouncer now relies on the `X-Real-IP` header to determine the client IP, **it is critical to ensure that only your trusted upstream CDN proxy can connect to your HAProxy server**. 
+
+If you do not properly firewall your HAProxy port, an attacker could connect directly and spoof the `X-Real-IP` header, bypassing your security rules.
+
+**Ensure your firewall is configured to only allow connections to your HAProxy port (typically 80/443) from your upstream CDN provider's IP ranges.** Always verify your CDN provider's current IP ranges and keep your firewall rules up to date.
+
+:::
+
+##### HAProxy Configuration
+
+Your `/etc/haproxy/haproxy.cfg` frontend configuration remains mostly the same, but ensure the CDN header is being passed through:
+
+```haproxy
+frontend http-in
+    bind *:80
+    
+    # Ensure the CDN header is preserved (may already be done by your CDN)
+    # You can optionally add debugging with set-header
+    # http-request set-header X-Real-IP %[req.hdr(X-Real-IP)]
+    
+    filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
+    http-request set-header X-CrowdSec-Remediation %[var(txn.crowdsec.remediation)]
+    
+    ## Handle 302 redirect for successful captcha validation (native HAProxy redirect)
+    http-request redirect code 302 location %[var(txn.crowdsec.redirect)] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
+    
+    ## Call lua script only for ban and captcha remediations (performance optimization)
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "captcha" }
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "ban" }
+    
+    ## Handle captcha cookie management via HAProxy (new approach)
+    ## Set captcha cookie when SPOA provides captcha_status (pending or valid)
+    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_status) -m found } { var(txn.crowdsec.captcha_cookie) -m found }
+    ## Clear captcha cookie when cookie exists but no captcha_status (Allow decision)
+    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_cookie) -m found } !{ var(txn.crowdsec.captcha_status) -m found }
+    
+    use_backend <whatever>
+
+backend crowdsec-spoa
+    mode tcp
+    server s1 127.0.0.1:9000
+```
+
+##### Common CDN Headers
+
+| CDN Provider | Header Name | HAProxy Function |
+|--------------|------------|------------------|
+| Generic / Most CDNs | `X-Real-IP` | `req.hdr_ip(x-real-ip)` |
+| Cloudflare | `CF-Connecting-IP` | `req.hdr_ip(cf-connecting-ip)` |
+| AWS CloudFront | `CloudFront-Viewer-Address` | `req.hdr_ip(cloudfront-viewer-address)` |
+| Akamai | `True-Client-IP` | `req.hdr_ip(true-client-ip)` |
+| Azure CDN | `X-Forwarded-For` | `req.hdr_ip(x-forwarded-for)` |
+
+:::tip
+
+If your CDN uses `X-Forwarded-For` with multiple IPs (comma-separated), you'll need to extract the correct IP. For example:
+
+```haproxy
+src-ip=req.hdr_ip(x-forwarded-for,1)
+```
+
+This tells HAProxy to use the first IP from the comma-separated list. If your CDN appends IPs from right to left (instead of left to right), you can use `-1` to extract the rightmost IP:
+
+```haproxy
+src-ip=req.hdr_ip(x-forwarded-for,-1)
+```
+
+:::
 
 ### Prometheus Metrics
 
