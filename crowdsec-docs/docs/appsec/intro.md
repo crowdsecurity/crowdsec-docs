@@ -75,7 +75,7 @@ The AppSec Component works seamlessly with modern web servers and reverse proxie
 */}
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
-<img src="/img/WordPress-logotype-wmark-white.png" alt="WordPress" style={{height: '50px', objectFit: 'contain'}} />
+<img src="/img/WordPress-logotype-wmark.png" alt="WordPress" style={{height: '50px', objectFit: 'contain'}} />
 <strong>WordPress</strong>
 <a href="/appsec/quickstart/wordpress.mdx">Quick Start Guide →</a>
 </div>
