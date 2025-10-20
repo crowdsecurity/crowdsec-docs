@@ -4,9 +4,20 @@ title: AppSec Component - CrowdSec WAF
 sidebar_position: 1
 ---
 
-## Introduction
+## What is CrowdSec?
 
-<!-- xx : fix crowdsec version -->
+If you're new to CrowdSec, here's a quick overview:
+
+**CrowdSec** is an open-source, collaborative security solution that:
+- Detects and blocks malicious actors threatening your infrastructure and applications
+- Provides real-time threat intelligence through a participative community
+- Offers both **Infrastructure Protection** (IP reputation, DDoS mitigation) and **Application Security** (WAF capabilities)
+
+:::tip New to CrowdSec?
+For a more detailed introduction, check out our [Getting Started Guide](/u/getting_started/intro).
+:::
+
+## Introduction
 
 Meet the Crowdsec **Application Security Component** (AKA : **AppSec Component**), a new capability for advanced application security turning your CrowdSec install into a full fledged **WAF**.
 
@@ -23,10 +34,55 @@ This component capitalizes on existing remediation functions in web servers (suc
 
 ![appsec-global](/img/appsec-global.svg)
 
+### How it works
+
 1. The Web Server receives the HTTP request
-2. The HTTP Request is intercepted and passed to the CrowdSec Security Engine via [the HTTP API](appsec/protocol.md)
-3. The Security Engine answers to the Web Server once the Appsec inband rules have been processed.
-4. Based on the [Security Engine answer](appsec/protocol.md#response-code), the Web Server either blocks the HTTP Request or processes it as usual
+2. The HTTP Request is forwarded to the CrowdSec Security Engine via a local HTTP interface
+3. The Security Engine analyzes the request against AppSec rules (inband rules for immediate blocking)
+4. Based on the analysis, the Web Server either blocks the HTTP Request or processes it as usual
+
+## Supported Web Servers & Reverse Proxies
+
+The AppSec Component works seamlessly with modern web servers and reverse proxies:
+
+<div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '30px'}}>
+
+<div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
+<img src="/img/nginx.svg" alt="Nginx" style={{height: '50px', objectFit: 'contain'}} />
+<strong>Nginx</strong>
+<a href="/appsec/quickstart/nginxopenresty.mdx">Quick Start Guide →</a>
+</div>
+
+<div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
+<img src="/img/openresty.png" alt="OpenResty" style={{height: '50px', objectFit: 'contain'}} />
+<strong>OpenResty</strong>
+<a href="/appsec/quickstart/nginxopenresty.mdx">Quick Start Guide →</a>
+</div>
+
+<div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
+<img src="/img/traefik.logo.png" alt="Traefik" style={{height: '50px', objectFit: 'contain'}} />
+<strong>Traefik</strong>
+<a href="/appsec/quickstart/traefik.mdx">Quick Start Guide →</a>
+</div>
+
+{/* HAProxy support coming soon - uncomment when feature is released */}
+{/*
+<div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
+<img src="/img/haproxy-logo.png" alt="HAProxy" style={{height: '50px', objectFit: 'contain'}} />
+<strong>HAProxy</strong>
+<a href="https://hub.crowdsec.net/browse/#remediation-components">Hub Component →</a>
+</div>
+*/}
+
+<div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
+<img src="/img/WordPress-logotype-wmark.png" alt="WordPress" style={{height: '50px', objectFit: 'contain'}} />
+<strong>WordPress</strong>
+<a href="/appsec/quickstart/wordpress.mdx">Quick Start Guide →</a>
+</div>
+
+</div>
+
+**Looking for other integrations?** Check out the [full list of remediation components](https://hub.crowdsec.net/browse/#remediation-components) on the CrowdSec Hub. We're constantly adding new integrations!
 
 ## Inband Rules and Out-Of-Band Rules
 
@@ -75,4 +131,4 @@ Or consider learning more about the AppSec capabilities:
 -   **Scenarios**: [How to create scenarios that leverage the AppSec Component events](/appsec/alerts_and_scenarios.md)
 -   **Hooks**: [To customise behavior of the AppSec at runtime](/appsec/hooks.md)
 -   **Troubleshoot**: [How to troubleshoot the behavior of the AppSec Component](/appsec/troubleshooting.md)
--   **AppSec Protocol**: [if you're maintaining or creating a remedation component and want to add the AppSec capabilities](/appsec/protocol.md)
+-   **AppSec Technical Details**: [For developers integrating with the AppSec Component](/appsec/protocol.md)
