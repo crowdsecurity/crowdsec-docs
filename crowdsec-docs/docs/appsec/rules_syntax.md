@@ -67,6 +67,8 @@ The target allows to specify which part of the requests needs to be inspected. Y
   - `ARGS_NAMES`: Name of the query string parameters
   - `BODY_ARGS`: Body args
   - `BODY_ARGS_NAMES`: Name of the body args
+  - `COOKIES`: Cookies sent in the request
+  - `COOKIES_NAMES`: Names of the cookies sent in the request
   - `HEADERS`: HTTP headers sent in the request
   - `HEADERS_NAMES`: Name of the HTTP headers sent in the request
   - `METHOD`: HTTP method of the request
@@ -75,6 +77,7 @@ The target allows to specify which part of the requests needs to be inspected. Y
   - `URI_FULL`: The full URL of the request including the query string
   - `RAW_BODY`: The entire body of the request
   - `FILENAMES`: The name of the files sent in the request
+  - `FILES_TOTAL_SIZE`: Total size of the uploaded files in the request,
 - _(optional)_ `variables` containing one or more variable names to restrict the matching operation to (only relevant for `ARGS`, `BODY_ARGS` and `HEADERS`)
 
 ```yaml
@@ -94,11 +97,12 @@ The target allows to specify which part of the requests needs to be inspected. Y
 :::info
 
 The default config `crowdsecurity/base-config` enables specific decoders when the following content-types are set:
- - **application/x-www-form-urlencoded**
- - **multipart/form-data**
- - **application/xml**
- - **application/json** : when used, all the variable names are prefixed with `json.`
- - **text/xml**
+
+- **application/x-www-form-urlencoded**
+- **multipart/form-data**
+- **application/xml**
+- **application/json** : when used, all the variable names are prefixed with `json.`
+- **text/xml**
 
 :::
 
@@ -157,7 +161,6 @@ Match provides the pattern to match the target against, including optional trans
     value: BLAH
 ```
 
-
 ### Seclang Support
 
 In order to support your existing/legacy rules set, CrowdSec's AppSec Component is also able to load rules in the **seclang** format (**ModSecurity** rules).
@@ -176,7 +179,6 @@ The default paths for the data directory per OS:
 - Linux: `/var/lib/crowdsec/data`
 - Freebsd: `/var/db/crowdsec/data`
 - Windows: `C:\programdata\crowdsec\data`
-
 
 > Example
 
