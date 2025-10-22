@@ -58,7 +58,7 @@ Parses an URI into a map of string list.
 
 `ExtractQueryParam` extract the `param` parameter value from the URL query `query` and returns the list of values.
 
-> `any(ExtractQueryParam(uri, "id"), { # == "1" })` is any of the `id` parameter value from `uri` URI equal to `1`
+> `any(ExtractQueryParam(uri, "id"), { # == "1" })` returns true fs any of the `id` parameter value from `uri` URI equals to `1`
 
 ### `Sprintf(format string, a ...interface{}) string`
 
