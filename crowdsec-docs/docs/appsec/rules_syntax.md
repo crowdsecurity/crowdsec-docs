@@ -76,7 +76,7 @@ The target allows to specify which part of the requests needs to be inspected. Y
   - `URI`: The URI of the request
   - `URI_FULL`: The full URL of the request including the query string
   - `RAW_BODY`: The entire body of the request
-  - `FILENAMES` The name of the files sent in the request
+  - `FILENAMES`: The name of the files sent in the request
   - `FILES_TOTAL_SIZE`: Total size of the uploaded files in the request,
 - _(optional)_ `variables` containing one or more variable names to restrict the matching operation to (only relevant for `ARGS`, `BODY_ARGS` and `HEADERS`)
 
