@@ -54,6 +54,12 @@ Parses an URI into a map of string list.
 
 `QueryEscape` escapes the string so it can be safely placed inside a URL query.
 
+### `ExtractQueryParam(query string, param string) []string`
+
+`ExtractQueryParam` extract the `param` parameter value from the URL query `query` and returns the list of values.
+
+> `any(ExtractQueryParam(uri, "id"), { # == "1" })` is any of the `id` parameter value from `uri` URI equal to `1`
+
 ### `Sprintf(format string, a ...interface{}) string`
 
 [Official doc](https://pkg.go.dev/fmt#Sprintf) : Sprintf formats according to a format specifier and returns the resulting string.
