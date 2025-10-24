@@ -19,26 +19,31 @@ const HomePageHeader = (): React.JSX.Element => {
 								infrastructure and application security.
 							</p>
 						</div>
-						<img alt="CrowdSec Logo" src="/img/crowdsec_logo.png" className="h-20 w-28 md:h-24 md:w-auto" />
+						<img alt="CrowdSec Logo" src="/img/crowdsec_logo.png" className="h-20 w-28 md:h-24 md:w-auto flex-shrink-0" />
 					</div>
-					<div className="flex flex-col md:flex-row items-start gap-2">
+					<div className="flex flex-col md:flex-row items-start gap-2 flex-wrap">
 						<Link to="/u/getting_started/intro" className="w-full md:w-auto">
-							<Button color="primary" className="w-full md:w-auto">
-								Get started
+							<Button size="lg" color="primary" className="w-full md:w-auto">
+								🚀 Quick Guides
 							</Button>
 						</Link>
 						<div className="flex flex-row gap-2 w-full md:w-auto">
-							<Link to="https://app.crowdsec.net/" className="flex-1 md:flex-none">
-								<Button variant="secondary" className="w-full md:w-auto">
-									Explore the Console
+							<Link to="https://app.crowdsec.net/" className="flex-1 min-w-0">
+								<Button size="lg" variant="secondary" className="w-full">
+									👨‍💻 Explore the Console
 								</Button>
 							</Link>
-							<Link to="https://killercoda.com/iiamloz/scenario/crowdsec-setup" className="flex-1 md:flex-none">
-								<Button variant="secondary" className="w-full md:w-auto">
-									Online Sandbox
+							<Link to="https://killercoda.com/iiamloz/scenario/crowdsec-setup" className="flex-1 min-w-0">
+								<Button size="lg" variant="secondary" className="w-full">
+									🛠️ Online Sandbox
 								</Button>
 							</Link>
 						</div>
+						<Link to="https://start.crowdsec.net/" className="w-full md:w-auto">
+							<Button size="lg" variant="secondary" className="w-full md:w-auto">
+								💡 Not sure where to start?
+							</Button>
+						</Link>
 					</div>
 				</div>
 
