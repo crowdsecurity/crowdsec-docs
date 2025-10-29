@@ -723,6 +723,7 @@ const sidebarsConfig: SidebarConfig = {
 			label: "Installation",
 			items: [
 				{ type: "doc", id: "appsec/quickstart/general_setup" },
+				{ type: "doc", id: "appsec/quickstart/nginx-ingress" },
 				{ type: "doc", id: "appsec/quickstart/nginxopenresty" },
 				{ type: "doc", id: "appsec/quickstart/traefik" },
 				{ type: "doc", id: "appsec/quickstart/wordpress" },
