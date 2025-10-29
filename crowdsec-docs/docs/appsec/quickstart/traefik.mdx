@@ -178,6 +178,7 @@ In the directory where you persist configuration files, create an `appsec.yaml` 
 
 **Steps**
 
+<<<<<<< HEAD
 Create a file named `appsec.yaml` with the following content  
 
 ```yaml title="appsec.yaml"
@@ -217,28 +218,76 @@ In the directory where you store CrowdSec configuration files (for example,
 `./crowdsec/acquis.d`, if you’re following the [recommended directory
 structure](/u/getting_started/installation/docker#compose), create a file named
 appsec.yaml and mount it into the container.
+=======
+1. Change to the directory where you ran the `docker run` or `docker compose` command.  
+2. Create a file named `appsec.yaml` in this directory.  
+3. Add the following content:
+>>>>>>> 24c582de (add traefik for kubernetes)
 
 ```yaml title="appsec.yaml"
-appsec_config: crowdsecurity/appsec-default
+appsec_config: crowdsecurity/appsec-desfault
 labels:
   type: appsec
 listen_addr: 0.0.0.0:7422
 source: appsec
 ```
 
+<<<<<<< HEAD
 Since CrowdSec runs inside a container, make sure to set listen_addr to 0.0.0.0
 (instead of 127.0.0.1) so it listens on the container’s network interface.
 
 Then, update your Docker Compose service to mount the file:
+=======
+Because CrowdSec runs inside a container, set listen_addr to 0.0.0.0 instead of
+127.0.0.1 so it can accept connections from outside the container.
+
+Edit your docker run command to mount the file:
+
+If a crowdsec container is already running, stop/remove it before re-running with the updated mounts.
+
+```bash
+docker run -d --name crowdsec \
+  -v /path/to/original:/etc/crowdsec \
+  -v ./appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml \
+  crowdsecurity/crowdsec
+```
+
+</TabItem>
+
+<TabItem value="dockerCompose">
+
+In the directory where you persist configuration files, create an appsec.yaml file and mount it into the container.
+
+**Steps**
+
+1. Change to the directory where you ran the docker compose (or docker run) command.
+2. Create a file named appsec.yaml in this directory.
+3. Add the following content to the `appsec.yaml`
+
+appsec_config: crowdsecurity/appsec-default
+labels:
+  type: appsec
+listen_addr: 0.0.0.0:7422
+source: appsec
+
+Because CrowdSec runs in a container, set listen_addr to 0.0.0.0 (not 127.0.0.1) so it listens on the container’s network interface.
+
+Mount the file in your Compose service:
+>>>>>>> 24c582de (add traefik for kubernetes)
 ``` 
 services:
   crowdsec:
     volumes:
+<<<<<<< HEAD
     - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
     - logs:/var/log/nginx
     - crowdsec-db:/var/lib/crowdsec/data/
     - crowdsec-config:/etc/crowdsec/
     - ./crowdsec/acquis.d/appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml
+=======
+      - /path/to/original:/etc/crowdsec   # or a named volume
+      - ./appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml
+>>>>>>> 24c582de (add traefik for kubernetes)
 ```
 
 Once you have updated the compose file to include the volume mount and the updated environment variable, you can restart the container.
@@ -359,11 +408,32 @@ spec:
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
       crowdsecLapiKey: <shadowed>
       htttTimeoutSeconds: 60
+<<<<<<< HEAD
+=======
+      forwardedheaderstrustedips:
+        - 10.0.0.0/8
+        - 192.168.0.0/16
+        - 134.209.137.94
+        - 2a03:b0c0:2:f0::f557:a001
+>>>>>>> 24c582de (add traefik for kubernetes)
       crowdsecAppsecEnabled: false
       crowdsecAppsecHost: crowdsec:7422
       crowdsecAppsecFailureBlock: true
       crowdsecAppsecUnreachableBlock: true
 ```
+<<<<<<< HEAD
+=======
+
+You can still add some route configuration through
+[IngressRoute](https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/crd/http/ingressroute/?utm_source=chatgpt.com)
+and attach the middleware to those routes.
+</TabItem>
+</Tabs>
+
+For more comprehensive documentation on the Traefik Plugin configuration, please
+refer to the [official
+documentation](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin).
+>>>>>>> 24c582de (add traefik for kubernetes)
 
 You can still add some route configuration through
 [IngressRoute](https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/crd/http/ingressroute)
