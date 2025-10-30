@@ -97,7 +97,7 @@ const sidebarsConfig: SidebarConfig = {
 						type: "doc",
 						id: "log_processor/scenarios/intro",
 					},
-					items: ["log_processor/scenarios/format", "log_processor/scenarios/simulation", "log_processor/scenarios/create"],
+					items: ["log_processor/scenarios/format", "log_processor/scenarios/simulation", "log_processor/scenarios/create", "log_processor/scenarios/deploy"],
 				},
 				{
 					type: "category",
