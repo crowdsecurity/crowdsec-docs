@@ -101,7 +101,7 @@ const sidebarsConfig: SidebarConfig = {
 						"log_processor/scenarios/format",
 						"log_processor/scenarios/simulation",
 						"log_processor/scenarios/create",
-						"log_processor/scenarios/deploy"
+						"log_processor/scenarios/deploy",
 					],
 				},
 				{
