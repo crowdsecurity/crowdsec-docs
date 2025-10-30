@@ -27,6 +27,44 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
   Prometheus
 />
 
+### Enable the CrowdSec plugin
+
+Before you create the middleware, Traefik must load the CrowdSec plugin from its experimental plugins catalog. Pick one of the following approaches and ensure the plugin name (`bouncer`) matches the key used later in the middleware examples.
+
+#### Direct configuration
+
+Add the plugin to the static configuration that Traefik reads at startup:
+
+```yaml
+experimental:
+  plugins:
+    bouncer:
+      moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+      version: v1.5.4
+```
+
+Restart Traefik after updating the static configuration. To enable the plugin through arguments instead, pass the matching flags (or their environment variable counterparts) when starting Traefik:
+
+```bash
+traefik \
+  --experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin \
+  --experimental.plugins.bouncer.version=v1.5.4
+```
+
+#### Helm chart values
+
+When you deploy Traefik with the official Helm chart, define the plugin under `experimental.plugins`:
+
+```yaml
+experimental:
+  plugins:
+    bouncer:
+      moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+      version: v1.5.4
+```
+
+Apply the updated values (for example with `helm upgrade`) so Traefik restarts with the plugin enabled. Check the plugin page for the latest available version to pin here.
+
 ### Traefik on kubernetes
 
 Traefik expects a resource of "Middleware" type named "bouncer", which we will create now.
