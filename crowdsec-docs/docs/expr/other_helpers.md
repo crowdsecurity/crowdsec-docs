@@ -20,6 +20,72 @@ ParseUnix("notatimestamp") -> ""
 ```
 Parses unix timestamp string and returns RFC3339 formatted time
 
+### `AverageInterval(timestamps []time.Time) time.Duration`
+
+Calculates the average interval (time duration) between consecutive timestamps in a slice.
+
+**Use case:** Detecting consistent timing patterns over time, such as slow brute-force attacks or rate anomalies.
+
+**Example:**
+
+```yaml
+type: conditional
+name: me/slow-http
+debug: true
+description: "Detect slow HTTP requests returning 404"
+filter: "evt.Meta.log_type in ['http_access-log', 'http_error-log'] && evt.Parsed.static_ressource == 'false' && evt.Parsed.verb in ['GET', 'HEAD']"
+groupby: "evt.Meta.source_ip + '/' + evt.Parsed.target_fqdn"
+capacity: -1
+condition: |
+    len(queue.Queue) >= 3 &&
+    AverageInterval(map(queue.Queue[-3:], { #.Time })) > duration("5m") &&
+    all(queue.Queue, #.Meta.http_status == '404')
+leakspeed: 1h
+labels:
+  remediation: true
+```
+
+In this example, we check if the queue has at least 3 items, compute the average interval between the last 3 requests, and trigger if the average time between requests exceeds 5 minutes and all responses are 404s (indicating a slow scan).
+
+**Notes:**
+- Timestamps are automatically sorted internally for correctness
+- Requires at least two timestamps
+- Useful for detecting consistent behavior patterns over time
+
+### `MedianInterval(timestamps []time.Time) time.Duration`
+
+Calculates the median interval (time duration) between consecutive timestamps in a slice.
+
+**Use case:** Detecting typical timing patterns when intervals vary widely. The median is more robust against outliers than the average, making it ideal for identifying timing anomalies in irregular patterns.
+
+**Example:**
+
+```yaml
+type: conditional
+name: me/slow-http-median
+debug: true
+description: "Detect slow HTTP requests returning 404"
+filter: "evt.Meta.log_type in ['http_access-log', 'http_error-log'] && evt.Parsed.static_ressource == 'false' && evt.Parsed.verb in ['GET', 'HEAD']"
+groupby: "evt.Meta.source_ip + '/' + evt.Parsed.target_fqdn"
+capacity: -1
+condition: |
+    len(queue.Queue) >= 5 &&
+    MedianInterval(map(queue.Queue[-5:], { #.Time })) > duration("10m") &&
+    all(queue.Queue, #.Meta.http_status == '404')
+leakspeed: 1h
+labels:
+  remediation: true
+```
+
+In this example, we check if there are at least 5 events in the queue, calculate the median interval between the last 5 requests, and trigger if the median interval exceeds 10 minutes and all responses are 404s.
+
+**Notes:**
+- Timestamps are automatically sorted internally for correctness
+- Handles both even and odd numbers of intervals correctly
+- Requires at least two timestamps
+- More robust against outliers compared to `AverageInterval`
+- Useful for capturing typical timing patterns in skewed data
+
 ## Stash Helpers
 
 ### `GetFromStash(cache string, key string)`
