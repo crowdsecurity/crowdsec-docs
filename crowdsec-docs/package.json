@@ -38,7 +38,7 @@
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "docusaurus-plugin-zooming": "^1.0.0",
-        "lucide-react": "^0.441.0",
+        "lucide-react": "^0.552.0",
         "material-react-table": "^2.0.2",
         "prism-react-renderer": "^2.4.0",
         "react": "^18.3.1",
