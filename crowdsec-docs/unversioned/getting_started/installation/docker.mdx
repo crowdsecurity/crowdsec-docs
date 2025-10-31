@@ -1,8 +1,8 @@
 ---
 id: docker
 title: Docker
-pagination_prev: getting_started/pre_requisites
-pagination_next: getting_started/next_steps
+pagination_prev: getting_started/intro
+pagination_next: getting_started/health_check
 ---
 
 # Docker / Podman Deployment
@@ -11,7 +11,16 @@ pagination_next: getting_started/next_steps
 Prerequisites are written for bare metal installations. Please keep in mind the containerization layer may make some of these items unnecessary.
 :::
 
-Before getting started it is advised to read the [prerequisites](/unversioned/getting_started/prerequisites.mdx) page to understand the requirements for running CrowdSec.
+:::warning
+Since CrowdSec 1.7.0, it is mandatory to persist the `/var/lib/crowdsec/data` directory in a volume.
+
+If you use the examples provided in this page, they will be.
+
+If you choose to write your own compose file, make sure create a volume for it.
+
+:::
+
+Before getting started, it is advised to read the [introduction](/unversioned/getting_started/introduction.mdx) page to understand the prerequisites and concepts for running CrowdSec.
 
 ## Docker
 
@@ -50,7 +59,7 @@ crowdsec:
     COLLECTIONS: "crowdsecurity/nginx"
     GID: "${GID-1000}"
   depends_on:
-    - 'reverse-proxy'
+    - "reverse-proxy"
   volumes:
     - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
     - logs:/var/log/nginx
@@ -59,12 +68,12 @@ crowdsec:
 ```
 
 :::info
-`Compose` snippet was taken from our [example-docker-compose repository](https://github.com/crowdsecurity/example-docker-compose) which contains many examples of how CrowdSec container can be used in different setups. 
+`Compose` snippet was taken from our [example-docker-compose repository](https://github.com/crowdsecurity/example-docker-compose) which contains many examples of how CrowdSec container can be used in different setups.
 :::
 
 #### Compose key aspects
 
-If you dont find an example that fits your needs, you can create your own `docker-compose.yml` file. Here are the key aspects:
+If you don't find an example that fits your needs, you can create your own `docker-compose.yml` file. Here are the key aspects:
 
 ##### Provide Access To Logs
 
@@ -77,7 +86,7 @@ volumes:
 
 ##### Persistent Data Directories
 
-We recommend persisting the following directories:
+The following directories _must_ be persisted, otherwise the container will refuse to start:
 
 ```yaml
 volumes:
@@ -91,11 +100,11 @@ If you haven't used named volumes within Docker before you can read their [docum
 
 ##### Depends On
 
-Depends on directive allows Docker to bring up the compose stack in "order", the reason we use it within the snippet the container `reverse-proxy` creates the log files on startup and we want to make sure CrowdSec finds these files to monitor. 
+Depends on directive allows Docker to bring up the compose stack in "order", the reason we use it within the snippet the container `reverse-proxy` creates the log files on startup and we want to make sure CrowdSec finds these files to monitor.
 
 ```yaml
 depends_on:
-  - 'reverse-proxy'
+  - "reverse-proxy"
 ```
 
 ## Environment Variables
@@ -104,17 +113,17 @@ You can find a full list of available environment variables on our [Docker Hub i
 
 Here are the most common environment variables for customizing CrowdSec in Docker:
 
-| Variable            | Default                     | Description |
-|---------------------|-----------------------------|-------------|
-| `COLLECTIONS`       | *(none)*                    | Space-separated list of CrowdSec collections to install (e.g., `crowdsecurity/nginx`). |
-| `TZ`                | UTC                         | Timezone for logs (e.g., `Europe/London`). |
-| `CONFIG_FILE`       | `/etc/crowdsec/config.yaml` | Path to the main config file. Useful if mounting a single file instead of a full directory. |
-| `LOCAL_API_URL`     | `http://0.0.0.0:8080`        | Where the Local API listens. Normally doesn't need to be changed unless you're running in agent mode. |
-| `DISABLE_LOCAL_API` | `false`                     | Set to `true` to disable LAPI and use this instance as an log processor only. |
-| `DISABLE_AGENT` | `false`                     | Set to `true` to disable the log processor and use this instance as an LAPI only. |
-| `AGENT_USERNAME`    | *(none)*                    | Required only if `DISABLE_LOCAL_API` is true. Username for connecting to central LAPI. |
-| `AGENT_PASSWORD`    | *(none)*                    | Password for authenticating the agent. |
-| `BOUNCER_KEY_<name>`| *(none)*                    | Seed value as API key for remediation under `<name>` |
+| Variable             | Default                     | Description                                                                                           |
+| -------------------- | --------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `COLLECTIONS`        | _(none)_                    | Space-separated list of CrowdSec collections to install (e.g., `crowdsecurity/nginx`).                |
+| `TZ`                 | UTC                         | Timezone for logs (e.g., `Europe/London`).                                                            |
+| `CONFIG_FILE`        | `/etc/crowdsec/config.yaml` | Path to the main config file. Useful if mounting a single file instead of a full directory.           |
+| `LOCAL_API_URL`      | `http://0.0.0.0:8080`       | Where the Local API listens. Normally doesn't need to be changed unless you're running in agent mode. |
+| `DISABLE_LOCAL_API`  | `false`                     | Set to `true` to disable LAPI and use this instance as an log processor only.                         |
+| `DISABLE_AGENT`      | `false`                     | Set to `true` to disable the log processor and use this instance as an LAPI only.                     |
+| `AGENT_USERNAME`     | _(none)_                    | Required only if `DISABLE_LOCAL_API` is true. Username for connecting to central LAPI.                |
+| `AGENT_PASSWORD`     | _(none)_                    | Password for authenticating the agent.                                                                |
+| `BOUNCER_KEY_<name>` | _(none)_                    | Seed value as API key for remediation under `<name>`                                                  |
 
 :::tip
 Use a `.env` file or Docker secrets to avoid hardcoding sensitive variables like passwords or API keys.
@@ -122,7 +131,6 @@ Use a `.env` file or Docker secrets to avoid hardcoding sensitive variables like
 
 ---
 
-
 ## Next Steps?
 
-Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.md) you will find the next steps to configure and optimize your installation.
+Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.mdx) you will find the next steps to configure and optimize your installation.

@@ -71,7 +71,7 @@ You need to put the username and password provided by the console in the "Feed U
 https://<username>:<password>@admin.api.crowdsec.net/v1/integrations/<integration_id>/content
 ```
 
-In this example, we used "Generic Firewall Format", but you can use checkpoint format and select the data column "1".
+In this example, we used "Raw IP List Format", but you can use checkpoint format and select the data column "1".
 
 ![](/img/checkpoint_step4.png)
 
@@ -97,6 +97,10 @@ Accessobserv2,192.168.38.188,IP,high,high,AB,C&C server IP
 :::info
 The format is as follows: UNIQ-NAME , VALUE , TYPE , CONFIDENCE , SEVERITY , PRODUCT , COMMENT
 :::
+
+## Manage integration size limits with pagination
+
+If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
 
 ## Contribute to this documentation
 

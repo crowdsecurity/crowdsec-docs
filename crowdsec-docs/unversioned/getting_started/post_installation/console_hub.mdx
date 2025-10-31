@@ -26,7 +26,7 @@ The [Hub](https://hub.crowdsec.net/) is divided into many sections, each of whic
 
 ### Collections Tab
 
-[Collections](/docs/next/collections/intro) refers to a set of configurations intended to operate in unison. For instance, the [crowdsecurity/sshd collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/sshd) includes settings aimed at overseeing attacks towards a SSH server.
+[Collections](/docs/next/log_processor/collections/intro) refers to a set of configurations intended to operate in unison. For instance, the [crowdsecurity/sshd collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/sshd) includes settings aimed at overseeing attacks towards a SSH server.
 
 <ThemedImage
     alt="CrowdSec sshd collection"
@@ -36,7 +36,7 @@ The [Hub](https://hub.crowdsec.net/) is divided into many sections, each of whic
     }}
 />
 
-You can see the contents of the [collection](/docs/next/collections/intro) by viewing the `Content` section.
+You can see the contents of the [collection](/docs/next/log_processor/collections/intro) by viewing the `Content` section.
 
 <ThemedImage
     alt="CrowdSec sshd collection content"
@@ -46,7 +46,7 @@ You can see the contents of the [collection](/docs/next/collections/intro) by vi
     }}
 />
 
-As illustrated above, the `sshd` collection encompasses a [parser](/docs/next/parsers/intro) along with [scenarios](/docs/next/scenarios/intro) focused on `brute force` attacks.
+As illustrated above, the `sshd` collection encompasses a [parser](/docs/next/log_processor/parsers/intro) along with [scenarios](/docs/next/log_processor/scenarios/intro) focused on `brute force` attacks.
 
 ### Configurations Tab
 
@@ -92,7 +92,7 @@ The term `Bouncers` has been updated to `Remediation Components` in the [Taxonom
 However, legacy items might still use the term `bouncers` just know that they are the same thing.
 :::
 
-This tab contains [Remediation Components](/bouncers/intro.md) that can be used to enforce decisions made by CrowdSec [Security Engine](/docs/next/getting_started/security_engine_intro).
+This tab contains [Remediation Components](/bouncers/intro.md) that can be used to enforce decisions made by CrowdSec [Security Engine](/docs/next/intro#architecture).
 
 <ThemedImage
     alt="CrowdSec bouncers"
@@ -140,4 +140,4 @@ These rules are defined and loaded by [AppSec Configurations](/docs/next/appsec/
 
 ## Next Steps?
 
-Now that you have viewed the CrowdSec Hub, you can head back to the [post installation steps](/getting_started/next_steps.md#1-crowdsec-console) to follow the rest of the steps.
+Now that you have viewed the CrowdSec Hub, you can head back to the [post installation steps](/getting_started/next_steps.mdx#1-crowdsec-console-) to follow the rest of the steps.

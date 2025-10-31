@@ -3,15 +3,22 @@ id: overview
 title: Overview
 ---
 
+import { Badge } from "@site/src/ui/badge";
+
+<div className="mb-4">
+    <Badge variant="premium">CrowdSec Premium Feature</Badge>
+</div>
+
+
 Discover all the available notification integrations in CrowdSec. Each integration is designed to help you receive alerts and notifications to various platforms, ensuring you stay informed about security events and incidents. Available [here](https://app.crowdsec.net/settings/integrations).
 
-> 🌟 Premium feature. CrowdSec allows you to be linked to any notification integration. However, you need to be a ⭐ Premium organization to unlock the full potential of the notification integrations.
+> CrowdSec allows you to be linked to any notification integration. However, you need to be a ⭐ Premium organization to unlock the full potential of the notification integrations.
 
 ## Available Integrations
 
+- [Discord](/u/console/notification_integrations/discord)
 - [Slack](/u/console/notification_integrations/slack)
 - [Webhook](/u/console/notification_integrations/webhook)
-- Coming soon: Discord
 - Coming soon: Microsoft Teams
 
 ## How to use notification integrations
@@ -52,6 +59,7 @@ Remediation Component Offline | A remediation component is offline. |
 CrowdSec Stack Component Outdated | A CrowdSec stack component is outdated (Security Engine, Log Processor, Remediation component). |
 Security Engine No Alerts | A Security Engine has not sent any alerts for 48h. |
 Security Engine Offline | A Security Engine is offline. |
+Blocking Known Safe IP | A known safe or legitimate IP address was blocked (false positive). |
 
 **Admin**
 

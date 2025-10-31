@@ -3,7 +3,7 @@ title: Troubleshooting Remediation Components
 id: remediation_components
 ---
 
-import FormattedTabs from '@site/src/components/FormattedTabs';
+import FormattedTabs from '@site/src/components/formatted-tabs';
 
 ## Community support
 
@@ -59,7 +59,7 @@ You can use the os related commands to filter the logs to only show errors.
 
 **Please make sure the log location matches your distribution.**
 
-## My Remediaton Component is not showing any error messages within its log file but its failing to start/work
+## My Remediation Component is not showing any error messages within its log file but its failing to start/work
 
 Most likely means the bouncer is failing to decode the configuration file provided. To find which line is causing the issue, you can use systemd/journalctl to get the error message:
 

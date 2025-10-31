@@ -6,7 +6,7 @@ title: HAProxy
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/RemediationSupportBadges.tsx';
+import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
 
 <p align="center">
 <img src={useBaseUrl('/img/crowdsec_haproxy.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
@@ -26,6 +26,14 @@ import RemediationSupportBadges from '@site/src/components/RemediationSupportBad
   Appsec={false}
 />
 
+:::danger
+
+This bouncer isn't actively supported anymore.
+
+We strongly suggest, you use the [Haproxy SPOA Bouncer](/u/bouncers/haproxy_spoa).
+
+:::
+
 
 A lua Remediation Component for haproxy.
 
@@ -35,7 +43,7 @@ This component is compatible with HAProxy version 2.5 and higher.
 
 ## How does it work ?
 
-This component leverages haproxy lua's API to check e IP address against the local API.
+This component leverages haproxy lua's API to check the IP address against the local API.
 
 Supported features:
 
@@ -50,7 +58,7 @@ Supported features:
 
 ### Using packages
 
-First, [setup crowdsec repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories).
+First, [setup crowdsec repositories](/u/getting_started/installation/linux#repository-installation).
 
 <Tabs
   defaultValue="haproxy_debian"
@@ -287,7 +295,7 @@ API_KEY=<API_KEY>
 
 CrowdSec Local API key.
 
-Generated with [`sudo cscli bouncers add`](/docs/next/getting_started/install_crowdsec) command.
+Generated with [`sudo cscli bouncers add`](/u/getting_started/installation/linux) command.
 
 ### `BOUNCING_ON_TYPE`
 > all | ban | captcha

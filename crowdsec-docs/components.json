@@ -3,18 +3,19 @@
     "tailwind": {
       "config": "tailwind.config.js",
       "css": "src/css/custom.css",
-      "baseColor": "neutral",
-      "prefix": "tw-",
-      "cssVariables": false
+      "baseColor": "gray",
+      "prefix": "",
+      "cssVariables": true
     },
     "rsc": true,
     "aliases": {
-        "utils": "@/src/utils",
-        "components": "@/src/components",
-        "ui": "@/src/ui",
-        "hooks": "@/src/hooks",
-        "lib": "@/src/lib"
+        "utils": "@site/src/utils",
+        "components": "@site/src/components",
+        "ui": "@site/src/ui",
+        "hooks": "@site/src/hooks",
+        "lib": "@site/src/lib"
     },
-    "style": "default"
+    "style": "default",
+    "iconLibrary": "lucide"
   }
   

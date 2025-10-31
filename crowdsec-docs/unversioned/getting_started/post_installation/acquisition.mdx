@@ -5,13 +5,14 @@ title: Acquisition
 
 # Acquisition
 
-By default when CrowdSec is installed it will attempt to detect the running services and acquire the appropriate log sources and [Collections](https://docs.crowdsec.net/docs/next/collections/intro).
+By default when CrowdSec is installed it will attempt to [detect the running services](https://docs.crowdsec.net/next/log_processor/service-discovery-setup/intro) (for CrowdSec >= 1.7.0) and acquire the appropriate log sources and [Collections](https://docs.crowdsec.net/docs/next/collections/intro).
 
-However, we should check that this detection worked or you may want to manually acquire additional [Collections](https://docs.crowdsec.net/docs/next/collections/intro) for other services that are not detected.
+However, we should check that this detection worked and the log locations are correct.
+You may want to manually acquire additional [Collections](https://docs.crowdsec.net/docs/next/collections/intro) for the services that were not detected.
 
 ## What log sources are already detected?
 
-To find what log sources are already detected, you can use the `cscli` command line tool.
+To find out which log sources are providing data to crowdsec, you can query the CrowdSec metrics with the `cscli` command line tool.
 
 ```bash
 cscli metrics show acquisition
@@ -60,7 +61,7 @@ Collections are a group of [Parsers](https://docs.crowdsec.net/docs/next/parsers
 
 ## Next steps?
 
-If you already see all services you want covered by the then you can [head back to the post installation steps.](/getting_started/next_steps.md#3-acquisitions)
+If you already see all services you want covered by the then you can [head back to the post installation steps.](/u/getting_started/next_steps#3-acquisitions-%EF%B8%8F)
 
 Follow the [how to setup a new acquisition](/getting_started/post_installation/acquisition_new.mdx) section if you see some log sources are not being monitored.
 

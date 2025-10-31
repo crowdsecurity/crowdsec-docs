@@ -13,7 +13,7 @@ By default CrowdSec will whitelist private LAN IP addresses via [this parser](ht
 
 In this guide we will cover how to create some whitelists and how to apply them to your CrowdSec instance.
 
-However, we can't cover every possible use case, so if you have a specific one that isn't covered here, please refer to [detailed whitelist documentation](/docs/next/whitelist/intro)
+However, we can't cover every possible use case, so if you have a specific one that isn't covered here, please refer to [detailed whitelist documentation](/docs/next/log_processor/whitelist/intro)
 
 :::info
 We use "event" as a term to describe a log line that is currently being processed by CrowdSec. An "event" can be a log line from a log file, or an "overflow" from a scenario.
@@ -91,7 +91,7 @@ If you are unsure if you need a whitelist, you can monitor the logs and see if t
 
 However, please note if you should get a decision made agaisnt your IP address and using remediation components such as `iptables` or `nftables` then this will prevent you from accessing **ANY** service on the server.
 
-Within our enterprise offering we have a feature called [Decision Management](console/decisions/decisions_management.md) that allows you to manage decisions via the [console](https://app.crowdsec.net/).
+Within our enterprise offering we have a feature called [Decision Management](console/decisions/decisions_management.mdx) that allows you to manage decisions via the [console](https://app.crowdsec.net/).
 
 ## Creating your first whitelist.
 
@@ -219,7 +219,7 @@ Once you have created the file you will need to restart the CrowdSec service for
 sudo systemctl restart crowdsec
 ```
 
-Expression whitelists are very powerful and can be used to whitelist based on any field in the event. You can find a more detailed version of the [expression guide here](/docs/next/whitelist/create_expr) which will showcase how you can find which fields are available to you based on the log line you are processing.
+Expression whitelists are very powerful and can be used to whitelist based on any field in the event. You can find a more detailed version of the [expression guide here](/docs/next/log_processor/whitelist/create_expr) which will showcase how you can find which fields are available to you based on the log line you are processing.
 
 ### Dynamic IP address
 
@@ -296,6 +296,6 @@ sudo cscli decisions delete --ip 192.168.1.1
 
 ## Next Steps?
 
-If you are still looking for examples on how to create a whitelist, you can find more detailed documentation [here](/docs/next/whitelist/intro).
+If you are still looking for examples on how to create a whitelist, you can find more detailed documentation [here](/docs/next/log_processor/whitelist/intro).
 
-If you have created your first whitelist, tested it and happy to continue then [click here](getting_started/next_steps.md#2-whitelists).
+If you have created your first whitelist, tested it and happy to continue then [click here](/getting_started/next_steps.mdx#2-whitelists-).

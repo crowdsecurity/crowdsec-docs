@@ -7,7 +7,7 @@ sidebar_position: 1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/RemediationSupportBadges.tsx';
+import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
 
 <p align="center">
 <img src={useBaseUrl('/img/aws-waf-bouncer-logo.png')} alt="CrowdSec" title="CrowdSec" width="300" height="300" />
@@ -48,7 +48,7 @@ If you do not have an existing AWS WAF configuration, you can refer to the [offi
 
 ### Using packages
 
-Packages for crowdsec-aws-waf-bouncer [are available on our repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories). You need to pick the package accord to your firewall system :
+Packages for crowdsec-aws-waf-bouncer [are available on our repositories](/u/getting_started/installation/linux#repository-installation). You need to pick the package accord to your firewall system :
 
 <Tabs
   defaultValue="debian"
@@ -346,6 +346,9 @@ Here is the set of required permissions:
                 "arn:aws:wafv2:*:*:global/webacl/*/*",
                 "arn:aws:wafv2:*:*:global/rulegroup/*/*",
                 "arn:aws:wafv2:*:*:global/managedruleset/*/*",
+                "arn:aws:wafv2:*:*:regional/webacl/*/*",
+                "arn:aws:wafv2:*:*:regional/rulegroup/*/*",
+                "arn:aws:wafv2:*:*:regional/managedruleset/*/*",
                 "arn:aws:wafv2:*:*:*/ipset/*/*"
             ],
             "Sid": "WAF1"

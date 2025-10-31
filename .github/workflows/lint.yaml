@@ -1,0 +1,37 @@
+name: Code quality
+
+on:
+  pull_request: 
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: crowdsec-docs/package-lock.json
+        
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./crowdsec-docs/
+
+      - name: Get Biome version from package.json
+        id: biome-version
+        run: |
+          VERSION=$(node -p "require('./crowdsec-docs/package.json').devDependencies['@biomejs/biome']")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: ${{ steps.biome-version.outputs.version }}
+
+      - name: Run Biome
+        run: biome ci .

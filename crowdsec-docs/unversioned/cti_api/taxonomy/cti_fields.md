@@ -504,11 +504,13 @@ Human-friendly description of the behavior.
       "description" : "False Positive description"
     }
   ],
-  "classifications" : {
-    "name" : "classification",
-    "label" : "Classification",
-    "description" : "Classification description"
-  }
+  "classifications" : [
+    {
+      "name" : "classification",
+      "label" : "Classification",
+      "description" : "Classification description"
+    }
+  ]
 }
 ```
 

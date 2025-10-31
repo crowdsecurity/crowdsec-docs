@@ -87,7 +87,7 @@ Only one option may be checked under this category
 
 #### `Is Attacked`
 
-Your organization is under attack, known as the `am I under attack` feature [documentation](console/security_engines/am_i_under_attack.md)
+Your organization is under attack, known as the `am I under attack` feature [documentation](console/security_engines/am_i_under_attack.mdx)
 
 ```json
 {
@@ -2370,6 +2370,398 @@ A Security Engine has been offline for more than 48 hours.
 ```
 
 </details>
+
+#### `Blocking Known Safe IP`
+
+A known safe or legitimate IP address was blocked (false positive)
+
+```json
+{
+  "event_id": "c6d468d4f1084ebca84165c33f97fbc4",
+  "organization_id": "12345678-1234-1234-1234-123456789012",
+  "event_timestamp": "2025-07-10T09:11:33.359703Z",
+  "event_type": "blocking_safe_ip",
+  "uuid": "alert-uuid-1234",
+  "message": "Suspicious SSH behavior detected",
+  "scenario": "ssh-brute-force",
+  "behaviors": [
+    {
+      "name": "Brute Force",
+      "description": "Multiple failed SSH login attempts detected in short time",
+      "label": "SSH Brute Force"
+    },
+    {
+      "name": "Port Scan",
+      "description": "Scanning activity detected on multiple ports",
+      "label": "Scan"
+    }
+  ],
+  "start_at": "2025-07-10T09:11:26.584612Z",
+  "stop_at": "2025-07-10T09:11:26.584612Z",
+  "target": {
+    "ip": "192.168.1.10",
+    "id": "machine-01",
+    "name": "internal-server-01"
+  },
+  "source": {
+    "scope": "ip",
+    "value": "203.0.113.25",
+    "as_name": "ExampleISP",
+    "as_number": 64512,
+    "country": "US",
+    "city": "San Francisco",
+    "latitude": 37.7749,
+    "longitude": -122.4194,
+    "rdns": "25.113.0.203.example.com"
+  },
+  "is_manual_decision": false,
+  "scenario_confidence": 0,
+  "false_positives": [
+    {
+      "name": "cdn:example_exit_node",
+      "description": "IP is an Example CDN exit IP and should not be flagged as a threat.",
+      "label": "Example CDN"
+    }
+  ]
+}
+```
+<details>
+<summary>JSON Schema</summary>
+```json
+{
+    "$defs": {
+        "AlertBehavior": {
+            "properties": {
+                "description": {
+                    "description": "The attack behavior description",
+                    "title": "Description",
+                    "type": "string"
+                },
+                "label": {
+                    "description": "The attack behavior label",
+                    "title": "Label",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The attack behavior name",
+                    "title": "Name",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "description",
+                "label"
+            ],
+            "title": "AlertBehavior",
+            "type": "object"
+        },
+        "AlertSource": {
+            "properties": {
+                "as_name": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The AS name of the source",
+                    "title": "As Name"
+                },
+                "as_number": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The AS number of the source",
+                    "title": "As Number"
+                },
+                "city": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The city of the source",
+                    "title": "City"
+                },
+                "country": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The country of the source",
+                    "title": "Country"
+                },
+                "latitude": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The latitude of the source",
+                    "title": "Latitude"
+                },
+                "longitude": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The longitude of the source",
+                    "title": "Longitude"
+                },
+                "rdns": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The rDNS of the source",
+                    "title": "Rdns"
+                },
+                "scope": {
+                    "description": "The scope of the value",
+                    "title": "Scope",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "The value of the source",
+                    "title": "Value",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "scope",
+                "value"
+            ],
+            "title": "AlertSource",
+            "type": "object"
+        },
+        "AlertTarget": {
+            "properties": {
+                "id": {
+                    "description": "The id of the machine targeted by the attack",
+                    "title": "Id",
+                    "type": "string"
+                },
+                "ip": {
+                    "description": "The IP targeted by the attack",
+                    "title": "Ip",
+                    "type": "string"
+                },
+                "name": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The name of the machine targeted by the attack",
+                    "title": "Name"
+                }
+            },
+            "required": [
+                "ip",
+                "id"
+            ],
+            "title": "AlertTarget",
+            "type": "object"
+        },
+        "FalsePositive": {
+            "properties": {
+                "description": {
+                    "description": "The description of the false positive",
+                    "title": "Description",
+                    "type": "string"
+                },
+                "label": {
+                    "description": "The label of the false positive",
+                    "title": "Label",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The name of the false positive",
+                    "title": "Name",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "description",
+                "label"
+            ],
+            "title": "FalsePositive",
+            "type": "object"
+        }
+    },
+    "properties": {
+        "behaviors": {
+            "default": [],
+            "description": "The attack behaviors",
+            "items": {
+                "$ref": "#/$defs/AlertBehavior"
+            },
+            "title": "Behaviors",
+            "type": "array"
+        },
+        "event_id": {
+            "description": "ID of the source event",
+            "examples": [
+                "c6d468d4f1084ebca84165c33f97fbc4"
+            ],
+            "title": "Event Id",
+            "type": "string"
+        },
+        "event_timestamp": {
+            "description": "Timestamp of the source event",
+            "examples": [
+                "2021-07-29T12:00:00+00:00"
+            ],
+            "format": "date-time",
+            "title": "Event Timestamp",
+            "type": "string"
+        },
+        "event_type": {
+            "const": "blocking_safe_ip",
+            "default": "blocking_safe_ip",
+            "title": "Event Type",
+            "type": "string"
+        },
+        "false_positives": {
+            "anyOf": [
+                {
+                    "items": {
+                        "$ref": "#/$defs/FalsePositive"
+                    },
+                    "type": "array"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "description": "List of false positive identifiers",
+            "title": "False Positives"
+        },
+        "is_manual_decision": {
+            "default": false,
+            "description": "Whether the decision was created manually",
+            "title": "Is Manual Decision",
+            "type": "boolean"
+        },
+        "message": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "The alert message",
+            "title": "Message"
+        },
+        "organization_id": {
+            "description": "Organization ID of the source event",
+            "examples": [
+                "12345678-1234-1234-1234-123456789012"
+            ],
+            "title": "Organization Id",
+            "type": "string"
+        },
+        "scenario": {
+            "description": "The attack scenario",
+            "title": "Scenario",
+            "type": "string"
+        },
+        "scenario_confidence": {
+            "default": 0,
+            "description": "The confidence of the scenario",
+            "title": "Scenario Confidence",
+            "type": "integer"
+        },
+        "source": {
+            "$ref": "#/$defs/AlertSource",
+            "description": "The source of the attack"
+        },
+        "start_at": {
+            "description": "The attack start time",
+            "format": "date-time",
+            "title": "Start At",
+            "type": "string"
+        },
+        "stop_at": {
+            "description": "The attack stop time",
+            "format": "date-time",
+            "title": "Stop At",
+            "type": "string"
+        },
+        "target": {
+            "$ref": "#/$defs/AlertTarget",
+            "description": "The target of the attack"
+        },
+        "uuid": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "The alert UUID",
+            "title": "Uuid"
+        }
+    },
+    "required": [
+        "organization_id",
+        "scenario",
+        "start_at",
+        "stop_at",
+        "target",
+        "source",
+        "false_positives"
+    ],
+    "title": "BlockingSafeIP",
+    "type": "object"
+}
+```
+</details>
+
 
 ### Admin
 

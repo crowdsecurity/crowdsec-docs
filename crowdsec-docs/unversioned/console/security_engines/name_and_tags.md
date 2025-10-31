@@ -3,8 +3,6 @@ title: Name and Tags
 description: Security Engines Name and Tags (edition)
 ---
 
-## Introduction
-
 Effective management of Security Engines allows for modifying information, such as the name and tags associated with the Engines.
 
 - The name must be unique and can be changed at any given time.

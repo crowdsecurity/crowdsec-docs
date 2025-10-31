@@ -1,0 +1,459 @@
+---
+toc_max_heading_level: 2
+title: Use Cases and Quick Solutions
+id: usecases
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Use Cases and Quick Solutions
+
+This page provides quick recommendations for common CrowdSec implementation scenarios. Each use case includes practical implementation paths with links to relevant documentation.
+
+:::tip
+New to CrowdSec? Start with our [installation guide](/u/getting_started/installation/linux) and [health check guide](/u/getting_started/health_check).
+:::
+
+## Block Known-Bad IPs at the Edge
+
+Pull up-to-date IP lists from CrowdSec **Blocklist as a Service** endpoints into your edge protection.  
+
+**Is it for me?**  
+
+Ideal if you want direct integration into your firewalls.
+Good option if you are not using a Security Engine and want your CDN or WAF to benefit from CrowdSec's blocklists.
+
+**How it works:**
+- Create a blocklist integration in your console account.
+- Select blocklists you want to be served by this endpoints.
+- Use the endpoint's URL and credentials to retrieve the merged and up-to-date list.
+
+
+<details>
+<summary>🔗 **References**</summary>
+
+<Tabs>
+<TabItem value="documentation-resources" label="Documentation & Resources">
+
+- [Blocklist integration Getting started guide](/u/integrations/intro)
+- [Subscribing to blocklists](/u/console/blocklists/subscription/)
+- [List of integrations format](/u/integrations/intro#current-integrations)
+- [API management & creating your own blocklists](/u/console/service_api/quickstart/blocklists)
+- [Remediation Component BLaaS integration](/u/integrations/remediationcomponent)
+  - [AWS WAF remediation component](/u/bouncers/aws_waf)
+  - [Cloudflare Workers remediation component](/u/bouncers/cloudflare-workers)
+  - [Fastly remediation component](/u/bouncers/fastly)
+
+</TabItem>
+<TabItem value="academy-videos" label="Courses & Videos">
+
+- [🎓 Leveraging Blocklists for Optimized Protection](https://academy.crowdsec.net/course/leveraging-blocklists-for-optimized-protection)
+
+</TabItem>
+<TabItem value="articles" label="Articles">
+
+- [Introducing CrowdSec Education and Public Sector Blocklists ↗️](https://www.crowdsec.net/blog/introducing-crowdsec-education-and-public-sector-blocklists)
+- [Breaking 5 Misconceptions of Threat Intelligence Blocklists](https://www.crowdsec.net/blog/5-misconceptions-of-threat-intelligence-blocklists)
+- [The Real Value of Preemptively Blocking a Cyber Attack ↗️](https://www.crowdsec.net/blog/value-of-preemptive-blocking)
+
+</TabItem>
+</Tabs>
+
+</details>
+
+---
+
+## Reduce Noise, Save Resources, Address Alert Fatigue
+
+Eliminate automated noise from unwanted probes, spam and malicious traffic to reduce server load and log volumes by up to 80%.
+
+**Is it for me?**  
+
+Ideal if you're experiencing high server load from automated traffic or want to reduce infrastructure costs.
+Good option if you need to optimize server performance and reduce log storage requirements.
+
+**How it works:**
+- Use CrowdSec blocklists to preemptively block crowd validated noise.
+- Go further by deploying CrowdSec Security Engine to detect malicious patterns in your traffic.
+- Use an AppSec enabled Remediation Component to use CrowdSec WAF.
+- Track quantified savings through metrics and performance monitoring.
+
+<details>
+<summary>🔗 **References**</summary>
+
+<Tabs>
+<TabItem value="documentation-resources" label="Documentation & Resources">
+
+- [Blocklist Catalog doc](/u/console/blocklists/catalog)
+- [Blocklist Catalog ↗️](https://app.crowdsec.net/blocklists/search)
+- [Security Engine installation](/u/getting_started/intro)
+- [CrowdSec WAF](/docs/next/appsec/intro)
+- [Remediation Metrics](/u/console/remediation_metrics)
+
+</TabItem>
+<TabItem value="academy-videos" label="Courses & Videos">
+
+- [🎓 CrowdSec Cyber Threat Intelligence](https://academy.crowdsec.net/course/crowdsec-cyber-threat-intelligence)
+
+</TabItem>
+<TabItem value="articles" label="Articles">
+
+- [The Real Value of Preemptively Blocking a Cyber Attack ↗️](https://www.crowdsec.net/blog/value-of-preemptive-blocking)
+
+</TabItem>
+</Tabs>
+
+</details>
+
+---
+
+## Multi-Tenant Protection
+
+Apply different security policies per customer, application, tier, [...] retrieving contextualized IP Lists.
+
+**Is it for me?**  
+
+Ideal if you're managing multiple customers, applications, or environments with different security requirements.
+Good option if you need granular policy control and want to avoid cross-tenant security policy interference.
+
+**How it works:**
+- Configure separate blocklist integrations for each context.
+- Assign context-specific blocklist AND allowlists.
+- Go further by creating custom lists based on detections made on your infrastructure.
+
+<details>
+<summary>🔗 **References**</summary>
+
+<Tabs>
+<TabItem value="documentation-resources" label="Documentation & Resources">
+
+- [Blocklist integration Getting started guide](/u/integrations/intro)
+- [Blocklist Catalog doc](/u/console/blocklists/catalog)
+- [Blocklist Catalog ↗️](https://app.crowdsec.net/blocklists/search)
+- [Custom blocklists from the decisions of your Security engine ↗️](https://github.com/crowdsecurity/custom-bouncer-to-blocklist)
+
+</TabItem>
+<TabItem value="academy-videos" label="Courses & Videos">
+
+- [🎓 CrowdSec Academy](https://academy.crowdsec.net/courses)
+
+</TabItem>
+<TabItem value="articles" label="Articles">
+
+- [CrowdSec's Notification Center: Seamless Integrations and Custom Alerts ↗️](https://www.crowdsec.net/blog/crowdsec-launches-notification-center-slack)
+- [Deeptree Leverages CrowdSec to Protect Their Clients and Infrastructure ↗️](https://www.crowdsec.net/blog/deeptree-protects-clients-infrustructure-with-crowdsec)
+
+</TabItem>
+</Tabs>
+
+</details>
+
+---
+
+## Bot and Scraper Management
+
+Control aggressive crawlers and scraping tools while preserving legitimate user access using graduated response strategies.  
+
+**Is it for me?**  
+
+Ideal if you're dealing with aggressive bots or scrapers that impact your site performance.
+Good option if you want to prevent illegitimate AI crawlers from visiting your site.
+
+**How it works:**
+- Retrieve AI Crawlers and/or Botnets IPs from CrowdSec Blocklist integrations
+- Block at the edge using your firewall or CDN.  
+
+<details>
+<summary>🔗 **References**</summary>
+
+<Tabs>
+<TabItem value="documentation-resources" label="Documentation & Resources">
+
+- [⬆️ **Blocking at the edge section**](#blocking-at-the-edge)
+- [Custom scenario creation](/docs/next/scenarios/create)
+- [AI Crawlers Blocklist ↗️](https://app.crowdsec.net/blocklists/67b3524151bbde7a12b60be0)
+- [Currated Botnet Actors ↗️](https://app.crowdsec.net/blocklists/65a56c160469607d9badb813)
+- [Public Internet Scanners ↗️](https://app.crowdsec.net/blocklists/65f972eb807e06de7a0e3e65)
+
+</TabItem>
+<TabItem value="academy-videos" label="Courses & Videos">
+
+- [🎓 CrowdSec Academy](https://academy.crowdsec.net/courses)
+
+</TabItem>
+<TabItem value="articles" label="Articles">
+
+- [Protect Your Digital Assets Against AI Crawlers ↗️](https://www.crowdsec.net/blog/protect-against-ai-crawlers)
+- [The Real Value of Preemptively Blocking a Cyber Attack ↗️](https://www.crowdsec.net/blog/value-of-preemptive-blocking)
+
+</TabItem>
+</Tabs>
+
+</details>
+
+---
+
+## Block Common web attacks fast
+
+Quickly protect web applications from the latest CVEs and generic vulnerability exploits using CrowdSec WAF.
+
+**Is it for me?**  
+
+Ideal if you want a modern OpenSource WAF solution.  
+Benefit from CrowdSec's Virtual patching catalog while being able to use your existing ModSecurity rules as is.
+
+**How it works:**
+- Deploy CrowdSec Security Engine with AppSec module on your reverse proxy or web server.
+- Get CrowdSec Virtual patching collection.
+- Easily scale and identify behaviors accross multiple servers over time.
+- Go further by using your existing appsec rules.
+- Even test CRS rules out of band on your production traffic to easily adapt them to you needs.
+
+
+<details>
+<summary>🔗 **References**</summary>
+
+<Tabs>
+<TabItem value="documentation-resources" label="Documentation & Resources">
+
+- [Security Engine installation](/u/getting_started/intro)
+- [CrowdSec WAF presentation](/docs/next/appsec/intro)
+- [Virtual Patching collection ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching)
+
+</TabItem>
+<TabItem value="academy-videos" label="Courses & Videos">
+
+- [🎓 Deploying CrowdSec in Kubernetes](https://academy.crowdsec.net/course/deploying-crowdsec-in-kubernetes)
+
+</TabItem>
+<TabItem value="articles" label="Articles">
+
+- [Strengthen Security and Protection with CrowdSec's Open Source Web Application Firewall ↗️](https://www.crowdsec.net/blog/strengthen-security-with-crowdsec-open-source-waf)
+- [What Our Community Built with CrowdSec WAF: Real Stories, Real Security ↗️](https://www.crowdsec.net/blog/crowdsec-waf-in-action-real-world-use-cases)
+- [CrowdSec WAF: The Collaborative Future of Web Application Security ↗️](https://www.crowdsec.net/blog/crowdsec-waf-the-collaborative-future-of-web-application-security)
+- [Secure Caddy with CrowdSec: Remediation and WAF Guide ↗️](https://www.crowdsec.net/blog/secure-caddy-crowdsec-remediation-waf-guide)
+- [Implementing the CrowdSec WAF for Advanced Web Application Security ↗️](https://www.crowdsec.net/blog/web-application-security-crowdsec-waf)
+- [Enhance Kubernetes Security with the CrowdSec WAF ↗️](https://www.crowdsec.net/blog/kubernetes-security-with-crowdsec-waf)
+- [Waste Attacker Resources and Protect Your Applications in One Go ↗️](https://www.crowdsec.net/blog/waste-attacker-resources)
+
+</TabItem>
+</Tabs>
+
+</details>
+
+---
+
+## Legacy Application Protection
+
+Add modern security controls to legacy applications that cannot be modified directly using transparent proxy protection.  
+
+**Is it for me?**  
+
+Ideal if you're running legacy applications that lack built-in security features.
+Good option if you need immediate protection without the risk of modifying critical legacy code.
+
+**How it works:**
+- Deploy CrowdSec WAF at the reverse proxy level in front of your legacy application.
+- Configure virtual patching rules to block known exploits targeting your application stack.
+- Additionally create custom AppSec rules adapted to your legacy application's specific patterns.
+- Test protection rules out of band (simulation mode) before enabling blocking to ensure application functionality.
+
+<details>
+<summary>🔗 **References**</summary>
+
+<Tabs>
+<TabItem value="documentation-resources" label="Documentation & Resources">
+
+- [⬆️ **Block Common web attacks fast**](#block-common-web-attacks-fast)
+- [Block right before your app code with PHP prepend](/u/bouncers/php)
+- [Add blocking capabilities in your php app](/u/bouncers/php-lib)
+
+</TabItem>
+</Tabs>
+
+</details>
+
+---
+
+## Custom Behavior Protection
+
+Create targeted protections for specific abuse patterns like **spam**, **credential stuffing**, or **scalping attacks**, [...] using custom detection rules or scenarios.  
+
+**Is it for me?**  
+
+Ideal if you're facing unique attack patterns not covered by standard security solutions.
+Good option if you need highly specific protection tailored to your application's business logic and user patterns.
+
+**How it works:**
+- Analyze your specific abuse patterns to understand attacker behavior.
+- Create custom scenarios using CrowdSec's scenario framework for behavioral detection.
+- Eventually develop AppSec rules for pattern-matching specific malicious requests.
+- Test custom rules thoroughly using explain mode and simulation before production deployment.
+
+<details>
+<summary>🔗 **References**</summary>
+
+<Tabs>
+<TabItem value="documentation-resources" label="Documentation & Resources">
+
+- [⬆️ **Block Common web attacks fast**](#block-common-web-attacks-fast)
+- [Custom scenario creation](/docs/next/log_processor/scenarios/create)
+- [Get help from the community ↗️](https://discord.gg/wGN7ShmEE8)
+
+</TabItem>
+<TabItem value="academy-videos" label="Courses & Videos">
+
+- [🎓 CrowdSec Academy](https://academy.crowdsec.net/courses)
+
+</TabItem>
+<TabItem value="articles" label="Articles">
+
+- [Example of custom detection: Impossible traveler ↗️](https://www.crowdsec.net/blog/detect-suspicious-ip-behavior-impossible-travel)
+- [Success story: ScaleCommerce vs scalpers ↗️](https://www.crowdsec.net/blog/scalecommerce-plummets-ops-costs-and-skyrockets-efficiency)
+- [Waste Attacker Resources and Protect Your Applications in One Go ↗️](https://www.crowdsec.net/blog/waste-attacker-resources)
+
+</TabItem>
+</Tabs>
+
+</details>
+
+---
+
+## Looking for complementary IOC streams
+
+Add qualified IOCs from CrowdSec's real-time IP reputation. 
+
+**Is it for me?**  
+
+Ideal if you want to complement your IOC insights with exclusive CrowdSec IP reputation data.
+Quickly choose among qualified malicious actors regrouped by industry, behaviors...
+
+**How it works:**
+- Stream CrowdSec IP Lists into your security tools.
+- Integrate directly in your security tools thanks to our integrations or easy to use CTI API.
+- 🏅 Get custom IOC streams made for your needs.
+- Next step: Enrich IPs via CrowdSec CTI API.
+
+
+<details>
+<summary>🔗 **References**</summary>
+
+<Tabs>
+<TabItem value="documentation-resources" label="Documentation & Resources">
+
+- [IP reputation lists / Blocklists Catalog doc ↗️](https://app.crowdsec.net/blocklists/search)
+- [Retrieving merged lists via HTTPS endpoints](/u/integrations/intro)
+- [Retrieving Blocklists via API](/u/console/service_api/quickstart/blocklists#download-blocklist-content)
+- [MISP Feed from Security Engine's alerts](https://doc.crowdsec.net/u/bouncers/misp-feed-generator)
+- [Upcoming CrowdSec MISP Feeds ↗️](https://roadmap.crowdsec.net/c/48-misp-feed)
+- [Contact Us for custom requests ↗️](https://www.crowdsec.net/business-requests?interest=CTI%20subscription))
+
+</TabItem>
+<TabItem value="academy-videos" label="Courses & Videos">
+
+- [🎓 CrowdSec Cyber Threat Intelligence](https://academy.crowdsec.net/course/crowdsec-cyber-threat-intelligence)
+
+</TabItem>
+<TabItem value="articles" label="Articles">
+
+- [CrowdSec and Filigran Partner to Deliver Real-Time, Intelligence-Driven Cyber Defense ↗️](https://www.crowdsec.net/blog/crowdsec-and-filigran-partnership)
+- [The Real Value of Preemptively Blocking a Cyber Attack ↗️](https://www.crowdsec.net/blog/value-of-preemptive-blocking)
+
+</TabItem>
+</Tabs>
+
+</details>
+
+---
+
+## Alert Enhancement and Triage
+
+Accelerate incident response with contextual threat intelligence and automated routing to reduce alert volume by up to 80%.  
+
+**Is it for me?**  
+
+Ideal if your SOC team is overwhelmed with security alerts and needs better context for prioritization.
+Add exclusive context to your alerts and automate incident response with up to 30+ IP reputation enrichment dimensions.
+
+**How it works:**
+- Consult CrowdSec CTI: per IP queries, advanced search on behavior, classifications or performed CVEs- Configure notification plugins to automatically enrich alerts with global threat intelligence context.
+- Obtain your CTI API key from your CrowdSec Console account or a contact with CrowdSec team for higher quotas.
+- Integrate it in your tools with out existing integrations or via simple calls to the API.
+- 🏅 Advanced usages: API search, Offline replication, ...
+
+<details>
+<summary>🔗 **References**</summary>
+
+<Tabs>
+<TabItem value="documentation-resources" label="Documentation & Resources">
+
+- [Explore CrowdSec CTI within the console](/u/cti_api/getting_started)
+- [Create a test API key](/u/cti_api/api_getting_started)
+- [IP reputation enrichment glossary](/u/cti_api/taxonomy/cti_object)
+- [Evaluate your IPs using our **IPDEX** tool](/u/cti_api/api_integration/integration_ipdex/)
+- [Contact Us for 🏅 advanced usage ↗️](https://www.crowdsec.net/business-requests?interest=CTI%20subscription)
+
+</TabItem>
+<TabItem value="academy-videos" label="Courses & Videos">
+
+- [🎓 CrowdSec Cyber Threat Intelligence](https://academy.crowdsec.net/course/crowdsec-cyber-threat-intelligence)
+
+</TabItem>
+<TabItem value="articles" label="Articles">
+
+- [CrowdSec and Filigran Partner to Deliver Real-Time, Intelligence-Driven Cyber Defense ↗️](https://www.crowdsec.net/blog/crowdsec-and-filigran-partnership)
+- [The Real Value of Preemptively Blocking a Cyber Attack ↗️](https://www.crowdsec.net/blog/value-of-preemptive-blocking)
+
+</TabItem>
+</Tabs>
+
+</details>
+
+---
+
+## Threat Hunting and Intelligence
+
+Enable proactive threat hunting with access to global intelligence from 190+ countries, often 7-60 days ahead of other vendors.  
+
+**Is it for me?**  
+
+Ideal if you have a threat hunting team that needs fresh, contextual intelligence for proactive security investigations.
+Good option if you want to correlate local events with global attack patterns and emerging threats.
+
+**How it works:**
+- Explore our CTI and CVE explorer
+- Leverage advanced search capabilities to identify relevant threats and vulnerabilities.
+- Go further using our CTI API to integrate threat intelligence into your existing workflows.
+
+<details>
+<summary>🔗 **References**</summary>
+
+<Tabs>
+<TabItem value="documentation-resources" label="Documentation & Resources">
+
+- [⬆️ *CTI related refs from* **Alert Enhancement and Triage**](#alert-enhancement-and-triage)
+- [CVE explorer](/u/cti_api/cve_explorer/)
+- [Follow our weekly vuln report on LinkedIn  ↗️](https://www.linkedin.com/company/crowdsec/posts/?feedView=all)
+
+</TabItem>
+<TabItem value="academy-videos" label="Courses & Videos">
+
+- [🎓 CrowdSec Cyber Threat Intelligence](https://academy.crowdsec.net/course/crowdsec-cyber-threat-intelligence)
+
+</TabItem>
+<TabItem value="articles" label="Articles">
+
+- [IPDEX presentation article ↗️](https://www.crowdsec.net/blog/introducing-crowdsec-ipdex)
+- [Explore and Prioritize Vulnerabilities with the CrowdSec CVE Explorer ↗️](https://www.crowdsec.net/blog/cve-explorer)
+
+</TabItem>
+</Tabs>
+
+</details>
+
+---
+
+## Useful Links
+- [CrowdSec Public Roadmap ↗️](https://roadmap.crowdsec.net/tabs/3-planned)
+- [CrowdSecurity GitHub Repositories ↗️](https://github.com/crowdsecurity/)

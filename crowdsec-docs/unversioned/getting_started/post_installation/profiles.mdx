@@ -3,7 +3,7 @@ id: profiles
 title: Profiles
 ---
 
-import FormattedTabs from '@site/src/components/FormattedTabs';
+import FormattedTabs from '@site/src/components/formatted-tabs';
 
 # Profiles
 
@@ -35,7 +35,7 @@ decisions:
 on_success: break
 ```
 
-We won't delve into the file's specifics in this section, but further information is available in the [profiles.yaml reference](/docs/next/profiles/format#profile-directives).
+We won't delve into the file's specifics in this section, but further information is available in the [profiles.yaml reference](/docs/next/local_api/profiles/format#profile-directives).
 
 ## Example Modifications
 
@@ -53,7 +53,7 @@ This adjustment can be made by configuring the plugin files located under:
 - **Freebsd** `/usr/local/etc/crowdsec/notifications/`
 - **Windows** `C:\ProgramData\CrowdSec\config\notifications\`
 
-We wont be covering the configuration as you can find [extensive documentation](/docs/next/notification_plugins/intro) on the files. Once this is done you can start by removing the comment (`#`) from the [`notifications`](/docs/next/profiles/format#notifications) lines. This will enable notifications for the specified components.
+We wont be covering the configuration as you can find [extensive documentation](/docs/next/local_api/notification_plugins/intro) on the files. Once this is done you can start by removing the comment (`#`) from the [`notifications`](/docs/next/local_api/profiles/format#notifications) lines. This will enable notifications for the specified components.
 
 <details>
 
@@ -85,7 +85,7 @@ on_success: break
 duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
 ```
 
-This adjustment can be made by removing the comment (`#`) from the [`duration_expr`](/docs/next/profiles/format#duration_expr) line. The default formula utilizes [`GetDecisionsCount`](/docs/next/expr/other_helpers#getdecisionscountvalue-string-int) to determine how many times the specific value has been identified. We always add 1 to the count to ensure that the first ban is always 4 hours.
+This adjustment can be made by removing the comment (`#`) from the [`duration_expr`](/docs/next/local_api/profiles/format#duration_expr) line. The default formula utilizes [`GetDecisionsCount`](/docs/next/expr/other_helpers#getdecisionscountvalue-string-int) to determine how many times the specific value has been identified. We always add 1 to the count to ensure that the first ban is always 4 hours.
 
 The resulting duration is calculated by multiplying this count by 4, then the [`Sprintf`](/docs/next/expr/strings_helpers/#sprintfformat-string-a-interface-string) function formats the result into a string with the `h` suffix. The `h` suffix is used to denote hours within [Go's time package](https://pkg.go.dev/time#ParseDuration).
 

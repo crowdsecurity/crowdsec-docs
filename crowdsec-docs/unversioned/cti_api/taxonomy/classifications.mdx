@@ -4,8 +4,8 @@ title: Classifications
 sidebar_position: 5
 ---
 
-import TableRender from "@site/src/components/tableRender"
-import GithubIconRender from "@site/src/components/githubIconRender"
+import TableRender from "@site/src/components/table-render"
+import GithubIconRender from "@site/src/components/github-icon-renderer"
 
 export const classificationsURL =
     "https://hub-cdn.crowdsec.net/master/taxonomy/classifications.json"
@@ -36,6 +36,8 @@ A summary of the main classification category is provided below, and you can use
 * `device:*`: The IP is associated with a device having known security weaknesses.
 * `proxy:*`: Hosts identified as proxies based on the services they expose and/or their behaviour. IPs be directly consumed inside a specialized blocklist available [here](https://app.crowdsec.net/blocklists/65a56839ec04bcd4f51670be).
 * `group:*`: Cohort of machines seen attacking in a coordinated fashion. IPs belonging to the same cohort or cluster have been seen to exhibit a new behaviour in a synchronised manner, such as starting to exploit a known vulnerability at the same time (experimental feature).
+* `bot:*`: IPs associated with known bots, such as web scrapers, scanners, or other automated tools.
+* `connection-type:*`: IPs associated with a specific connection type : data center or residential.
 
 <TableRender
     columns={columns}

@@ -3,8 +3,6 @@ title: Removing a Security Engine
 description: Remove Security Engines from an organization
 ---
 
-## Introduction
-
 It is possible to remove an Engine quickly from an organization. This action un-enrolls the chosen Engines from the Console without affecting their operational status or shutting them down.
 
 ## Usage

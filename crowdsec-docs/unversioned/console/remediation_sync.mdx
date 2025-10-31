@@ -1,0 +1,39 @@
+---
+id: remediation_sync
+title: Remediation Sync
+---
+
+import { Badge } from "@site/src/ui/badge";
+
+<div className="mb-4">
+    <Badge variant="premium">CrowdSec Premium Feature</Badge>
+</div>
+
+:::info Beta Feature
+This feature is currently in beta (v0.1).  It can be enabled from the Settings page under the Security Engines section for all Beta participants.
+:::
+
+## Introduction
+
+Remediation Sync automatically synchronizes security decisions across your entire organization, ensuring consistent threat protection everywhere.  
+All decisions from one Security Engine are automatically synced to all other Security Engines and your Blocklists-as-a-Service (BLaaS) endpoints, allowing for simple, consistent edge enforcement.
+
+## How It Works
+
+When one Security Engine detects and creates a decision about a threat, that decision is immediately propagated to:
+- All other Security Engines in your organization
+- Your Blocklists-as-a-Service (BLaaS) endpoints
+
+This ensures that once a threat is identified anywhere in your infrastructure, it's blocked everywhere.
+
+> In the current version, Remediation Sync shares across the whole organization.  
+> Future versions will allow more granular control over which Security Engines share decisions to what other Security Engines or BLaaS endpoints.
+
+## Enabling Remediation Sync
+
+To enable this feature:
+
+1. Navigate to **Settings** in your CrowdSec Console
+2. Go to the **Security Engines** section
+3. Toggle the **Remediation Sync** option to **ON**
+

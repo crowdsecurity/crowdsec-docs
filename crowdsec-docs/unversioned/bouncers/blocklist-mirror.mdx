@@ -7,7 +7,7 @@ sidebar_position: 7
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/RemediationSupportBadges.tsx';
+import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
 
 
 <p align="center">
@@ -37,7 +37,7 @@ This Remediation Component exposes CrowdSec's active decisions via provided HTTP
 
 ## Installation from repositories
 
-[Setup crowdsec repositories](/docs/next/getting_started/install_crowdsec#install-our-repositories).
+[Setup crowdsec repositories](/u/getting_started/installation/linux#repository-installation).
 
 <Tabs
   defaultValue="debian"
@@ -204,8 +204,9 @@ List of blocklists to serve. Each blocklist has the following configuration.
 Format of the blocklist, the following are supported:
 
  - `plain_text` : One IP per line
- - `mikrotik` : Lines for mikrotik, format is `/ip|/ipv6 firewall address-list add list={list_name} address={ip} comment="{scenario} for {duration}"`
- - `F5` : Lines for f5 appliances, format is `{ip|range},{netmask},bl,{scenario}`
+ - `mikrotik` : Generates a mikrotik script
+ - `F5` : Lines for f5 appliances
+ - `juniper`: One entry per line using CIDR notation
 
 #### `endpoint`
 > string
@@ -311,27 +312,43 @@ Example:
 
 ### mikrotik
 
-If your mikrotik router does not support ipv6, then you can use the global query parameters to only return ipv4 addresses.
+Generates a MikroTik Script that the device can execute to populate the specified firewall address list.
 
-Example:
+#### MikroTik query parameters
 
-```text
-/ip firewall address-list remove [find list=CrowdSec]
-/ipv6 firewall address-list remove [find list=CrowdSec]
-/ip firewall address-list add list=CrowdSec address=192.168.1.1 comment="crowdsecurity/ssh-bf for 152h40m24.308868973s"
-/ip firewall address-list add list=CrowdSec address=192.168.1.2 comment="crowdsecurity/postfix-spam for 166h40m25.280338424s"/ipv6 firewall address-list add list=CrowdSec address=2001:470:1:c84::17 comment="crowdsecurity/ssh-bf for 165h13m42.405449876s"
+| Parameter      | Description                                                              |
+|----------------|--------------------------------------------------------------------------|
+| `listname=foo` | Set the list name to `foo`. By default, `listname` is set to `CrowdSec`. |
+
+Example output:
+```bash
+/ip/firewall/address-list/remove [ find where list="foo" ];
+:global CrowdSecAddIP;
+:set CrowdSecAddIP do={
+    :do { /ip/firewall/address-list/add list=foo address=$1 comment="$2" timeout=$3; } on-error={ }
+}
+$CrowdSecAddIP 1.2.3.4 "ssh-bf" 152h40m24s
+$CrowdSecAddIP 4.3.2.1 "postfix-spam" 166h40m25s
+$CrowdSecAddIP 2001:470:1:c84::17 "ssh-bf" 165h13m42s
 ```
 
-#### mikrotik query parameters
+#### Example: MikroTik import script
 
-`?listname=foo` - Set the list name to `foo`, by default `listname` is set to `CrowdSec`
+Using on device [MikroTik scripting](https://help.mikrotik.com/docs/display/ROS/Scripting) following is a starting point to download and import the blocklist. Ensure to adjust the [global query parameters](#global-runtime-query-parameters) according to your needs! 
 
-example output:
-```text
-/ip firewall address-list remove [find list=foo]
-/ipv6 firewall address-list remove [find list=foo]
-/ip firewall address-list add list=foo address=192.168.1.1 comment="crowdsecurity/ssh-bf for 152h40m24.308868973s"
-/ip firewall address-list add list=foo address=192.168.1.2 comment="crowdsecurity/postfix-spam for 166h40m25.280338424s"/ipv6 firewall address-list add list=foo address=2001:470:1:c84::17 comment="crowdsecurity/ssh-bf for 165h13m42.405449876s"
+```bash
+:local name "[crowdsec]"
+:local url "http://<IP>:41412/security/blocklist?ipv4only&nosort"
+:local fileName "blocklist.rsc"
+:log info "$name fetch blocklist from $url"
+/tool fetch url="$url" mode=http dst-path=$fileName
+:if ([:len [/file find name=$fileName]] > 0) do={
+    :log info "$name import;start"
+    /import file-name=$fileName
+    :log info "$name import:done"
+} else={
+    :log error "$name failed to fetch the blocklist"
+}
 ```
 
 ### F5
@@ -341,4 +358,75 @@ Example:
 ```text
 192.168.1.1,32,bl,ssh-slow-bf
 192.168.1.2,32,bl,ssh-slow-bf
+```
+
+### Juniper
+
+Generates a .txt file with all IP addresses (single host and subnets) in the CIDR notation format supported by the Juniper Networks SRX firewall platform.
+
+Example:
+```text
+1.2.3.4/32
+4.3.2.1/32
+```
+
+#### SRX Dynamic Address configuration sample
+
+Using the blocklist on a Juniper SRX requires that the published url ends in .txt. This can be acieved by altering the endpoint config in `cfg.yaml` as follows:
+
+Sample `cfg.yaml`
+```yaml
+####
+blocklists:
+  - format: juniper # Supported formats are either of "plain_text", "mikrotik", "juniper"
+    endpoint: /security/blocklist.txt #Must have .txt for juniper formatter.
+    authentication:
+      type: none # Supported types are either of "none", "ip_based", "basic"
+      user:
+      password:
+      trusted_ips: # IP ranges, or IPs which don't require auth to access this blocklist
+        - 127.0.0.1
+        - ::1
+####
+```
+
+This can then be configured on the SRX firewall as follows:
+
+Sample SRX config:
+```test
+user@srx> show configuration security dynamic-address | display set
+
+set security dynamic-address feed-server crowdsec url http://192.168.1.2:41412
+set security dynamic-address feed-server crowdsec update-interval 30
+set security dynamic-address feed-server crowdsec feed-name crowdsec path /security/blocklist.txt
+set security dynamic-address address-name crowdsec-blocklist profile feed-name crowdsec
+```
+
+[Further information here](https://www.juniper.net/documentation/us/en/software/junos/cli-reference/topics/ref/statement/dynamic-address.html)
+
+A successful configuration should return a similar result when queried:
+
+```text
+user@srx> show security dynamic-address summary
+
+
+Dynamic-address session scan status            : Disable
+Hold-interval for dynamic-address session scan : 10 seconds
+
+
+  Server Name                 : crowdsec
+    Hostname/IP               : http://192.168.1.2:41412
+    Update interval           : 30
+    Hold   interval           : 86400
+    TLS Profile Name          : ---
+    User        Name          : ---
+
+
+    Feed Name                             : crowdsec
+        Mapped dynamic address name       : crowdsec-blocklist
+        URL                               : http://192.168.1.2:41412/security/blocklist.txt
+        Feed update interval              : 30       Feed hold interval :86400
+        Total update                      : 16310
+        Total IPv4 entries                : 16240
+        Total IPv6 entries                : 0
 ```
