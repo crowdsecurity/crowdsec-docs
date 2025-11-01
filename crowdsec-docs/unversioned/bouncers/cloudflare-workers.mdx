@@ -32,7 +32,7 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
 />
 
 This **Remediation Component** (aka Bouncer) deploys a **Cloudflare Worker** in front of a **Cloudflare Zone/Website**, which checks if incoming request's IP address/Country/AS is present in a KV store and takes necessary remedial actions.   
-It also periodically updates the KV store with IPs coming from your **CrowdSec Security Engine** OR a **Blocklist as a Service Integration**for Remediation components.
+It also periodically updates the KV store with IPs coming from your **CrowdSec Security Engine** OR a **Blocklist as a Service Integration** for Remediation components.
 
 Useful links:
 * **Register** this **remediation component** into your **Security engine**: [Here](/u/bouncers/intro).
@@ -53,6 +53,12 @@ After configuring and starting the Remediation Component, please see the [settin
 
 
 ## Installation
+
+### Prerequisites
+
+Before installing the CrowdSec Cloudflare Worker Remediation Component, you need a **Cloudflare API token** with the required permissions to create and manage Workers, KV stores, and other Cloudflare resources
+
+For instructions on generating a Cloudflare API token with the correct permissions, see [Generating a Cloudflare API Token](#generating-a-cloudflare-api-token).
 
 ### Using packages
 
@@ -84,12 +90,34 @@ sudo yum install crowdsec-cloudflare-worker-bouncer
 
 Then run the following commands to setup your Remediation Component:
 
+<Tabs
+  defaultValue="daemon"
+  values={[
+    { label: 'Daemon Mode', value: 'daemon' ,},
+    { label: 'Autonomous Mode', value: 'autonomous', },
+  ]
+}>
+<TabItem value="daemon">
 
 ```bash
-sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens 
+sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens
 sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't alread
 sudo systemctl start crowdsec-cloudflare-worker-bouncer # the Remediation Component now syncs the crowdsec decisions with cloudflare components.
 ```
+
+</TabItem>
+<TabItem value="autonomous">
+
+```bash
+sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't alread
+sudo crowdsec-cloudflare-worker-bouncer -S -c /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # deploy in autonomous mode - no daemon needed
+```
+
+In autonomous mode, the Go process deploys the configuration to Cloudflare and exits. All decision synchronization is handled by Cloudflare scheduled workers. No systemd service is required.
+
+</TabItem>
+</Tabs>
 
 :::warning
 
@@ -105,7 +133,7 @@ If your Remediation Component is not installed on the same machine than LAPI, do
 
 :::note
 
-You need to run `sudo crowdsec-cloudflare-worker-bouncer -d` to cleanup exisiting cloudflare components created by Remediation Component before editing the config files.
+You need to run `sudo crowdsec-cloudflare-worker-bouncer -d` to cleanup existing cloudflare components created by Remediation Component before editing the config files.
 
 :::
 
@@ -121,28 +149,77 @@ You can run `sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLO
 
 Download the [latest release](https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer/releases).
 
+<Tabs
+  defaultValue="daemon"
+  values={[
+    { label: 'Daemon Mode', value: 'daemon' ,},
+    { label: 'Autonomous Mode', value: 'autonomous', },
+  ]
+}>
+<TabItem value="daemon">
+
 ```bash
 tar xzvf crowdsec-cloudflare-worker-bouncer.tgz
 cd crowdsec-cloudflare-worker-bouncer/
 sudo ./install.sh
-sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided tokens 
+sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided tokens
 sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't already
 sudo systemctl start crowdsec-cloudflare-worker-bouncer # the Remediation Component now syncs the crowdsec decisions with cloudflare components.
 ```
+
+</TabItem>
+<TabItem value="autonomous">
+
+```bash
+tar xzvf crowdsec-cloudflare-worker-bouncer.tgz
+cd crowdsec-cloudflare-worker-bouncer/
+sudo ./install.sh
+sudo crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided tokens
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't already
+sudo crowdsec-cloudflare-worker-bouncer -S -c /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # deploy in autonomous mode - no daemon needed
+```
+
+</TabItem>
+</Tabs>
 
 #### From source
 
 :warning: requires go >= 1.23
 
+<Tabs
+  defaultValue="daemon"
+  values={[
+    { label: 'Daemon Mode', value: 'daemon' ,},
+    { label: 'Autonomous Mode', value: 'autonomous', },
+  ]
+}>
+<TabItem value="daemon">
+
 ```bash
 git clone https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer
 cd cs-cloudflare-worker-bouncer
 make release
-cd cd crowdsec-cloudflare-worker-bouncer-*
+cd crowdsec-cloudflare-worker-bouncer-*
 ./crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens
 sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't already
 sudo systemctl start crowdsec-cloudflare-worker-bouncer
 ```
+
+</TabItem>
+<TabItem value="autonomous">
+
+```bash
+git clone https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer
+cd cs-cloudflare-worker-bouncer
+make release
+cd crowdsec-cloudflare-worker-bouncer-*
+./crowdsec-cloudflare-worker-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review config and set `crowdsec.lapi_key` if haven't already
+./crowdsec-cloudflare-worker-bouncer -S -c /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # deploy in autonomous mode - no daemon needed
+```
+
+</TabItem>
+</Tabs>
 
 
 ## How it works
@@ -151,20 +228,43 @@ sudo systemctl start crowdsec-cloudflare-worker-bouncer
 
 ![Architecture](/img/bouncer/cloudflare-worker/cfworkerarch.png)
 
+The Remediation Component can operate in two modes:
+
+### Daemon Mode (default)
+
 The Remediation Component does the following:
 
 1. Create a Cloudflare Worker and a Worker KV per configured account.
 2. Create a Worker Route(s) per configured zone. Any request matching the route would be handled by the worker.
 3. For every matching incoming request, the worker checks whether it's IP, Country and AS have a decision against. It checks for this in it's KV store. If found it performs the corresponding remediation.
-4. The Remediation Component also periodically updates the KV store with the latest decisions from CrowdSec's **Security Engine** OR **Blocklist Integration**.
+4. The Remediation Component runs as a daemon and periodically updates the KV store with the latest decisions from CrowdSec's **Security Engine** OR **Blocklist Integration**.
 
-If your Cloudflare token has permission on D1, the remediation component will also automatically create a database to track:
+### Autonomous Mode
+
+In autonomous mode (enabled with the `-S` flag), the Remediation Component functions without requiring a continuously running Go daemon process. Instead:
+
+1. Two Cloudflare Workers are deployed:
+   - `crowdsec-cloudflare-worker-bouncer` - applies cached decisions to incoming requests (same as daemon mode)
+   - `decisions-sync-worker` - periodically fetches and caches security decisions using Cloudflare scheduled tasks
+2. The Go process only needs to run once for initial setup and configuration deployment
+3. All decision synchronization is handled automatically by the `decisions-sync-worker` using Cloudflare's scheduled tasks
+4. This mode reduces infrastructure requirements as no persistent daemon is needed
+
+### Metrics
+
+If your Cloudflare token has permission on D1, the remediation component will automatically create a database to track:
  - Number of requests processed
  - Number of requests blocked
 
-Those metrics are exposed through the prometheus endpoint and automatically sent to crowdsec for visualisation with `cscli`.
+Metrics are stored in a D1 database. If your token does not have access to D1, a warning will be logged and metrics will be disabled.
 
-Metrics are stored in a D1 database to allow for easy retrieval by the remediation component. If your token does not have access to D1, a warning will be logged and metrics will be disabled.
+**In Daemon Mode**, the running process:
+- Exposes metrics through the Prometheus endpoint
+- Automatically pushes metrics to CrowdSec for visualization with `cscli`
+
+**In Autonomous Mode**, since there is no running daemon process:
+- Metrics are collected and stored in the D1 database
+- Metrics are **NOT pushed to CrowdSec**
 
 ## Configuration
 
@@ -194,7 +294,7 @@ cloudflare_config:
               turnstile:
                 enabled: true
                 rotate_secret_key: true
-                rotate_secret_key_every: 168h0m0s 
+                rotate_secret_key_every: 168h0m0s
                 mode: managed # Supported Modes "managed"|"invisible"|"non-interactive"
           token: <CLOUDFLARE_ACCOUNT_TOKEN>
           account_name: owner@example.com
@@ -205,6 +305,8 @@ cloudflare_config:
       tags: []
       compatibility_date: ""
       compatibility_flags: []
+    decisions_sync_worker: # Configuration for autonomous decisions sync worker
+        cron: '*/5 * * * *' # Cron schedule for syncing decisions (e.g., "*/5 * * * *" for every 5 minutes)
 
 log_level: info
 log_media: "stdout"
@@ -222,6 +324,7 @@ prometheus:
 
 **Background:** In Cloudflare, each user can have access to multiple accounts. Each account can own/access multiple zones. In this context a zone can be considered as a domain. Each domain registered with cloudflare gets a distinct `zone_id`.
 
+### Generating a Cloudflare API Token
 
 For obtaining the `token`:
 
@@ -536,6 +639,24 @@ Default to no value
 See https://developers.cloudflare.com/workers/configuration/compatibility-flags/.
 
 Default to no value.
+
+#### `decisions_sync_worker.cron`
+> string
+
+Cron expression that defines how often the decisions sync worker runs in autonomous mode. This controls the frequency at which the worker fetches the latest decisions from CrowdSec LAPI and updates the KV store.
+
+The cron expression follows standard cron syntax with 5 fields: `minute hour day month day_of_week`
+
+Example values:
+- `*/1 * * * *` - Every minute (default)
+- `*/5 * * * *` - Every 5 minutes
+- `*/10 * * * *` - Every 10 minutes
+
+:::note
+This setting only applies to autonomous mode (when using the `-S` flag). In daemon mode, the `update_frequency` setting is used instead.
+:::
+
+Default to `*/5 * * * *` (every 5 minutes).
 
 #### `ban_template_path`
 > string
