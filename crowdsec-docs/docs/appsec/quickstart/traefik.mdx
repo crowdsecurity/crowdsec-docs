@@ -178,9 +178,7 @@ In the directory where you persist configuration files, create an `appsec.yaml` 
 
 **Steps**
 
-1. Change to the directory where you ran the `docker run` or `docker compose` command.  
-2. Create a file named `appsec.yaml` in this directory.  
-3. Add the following content:
+Create a file named `appsec.yaml` with the following content  
 
 ```yaml title="appsec.yaml"
 appsec_config: crowdsecurity/appsec-desfault
@@ -190,37 +188,43 @@ listen_addr: 0.0.0.0:7422
 source: appsec
 ```
 
-Because CrowdSec runs inside a container, set listen_addr to 0.0.0.0 instead of
-127.0.0.1 so it can accept connections from outside the container.
-
-Edit your docker run command to mount the file:
-
-If a crowdsec container is already running, stop/remove it before re-running with the updated mounts.
+Either you create with file in `/etc/crowdsec/acquis.d` following this
+[directory hierarchy](u/getting_started/installation/docker/#docker) and the run
+command doesn't change or you create this file some where else and mount it like
+this:
 
 ```bash
 docker run -d --name crowdsec \
-  -v /path/to/original:/etc/crowdsec \
-  -v ./appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml \
+  -v /etc/crowdsec:/etc/crowdsec \
+  -v /etc/crowdsec/acquis.d/appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml \
   crowdsecurity/crowdsec
 ```
+
+
+Because CrowdSec runs inside a container, set listen_addr to 0.0.0.0 instead of
+127.0.0.1 so it can accept connections from outside the container.
+
+If a crowdsec container is already running, stop/remove it before re-running
+with the updated acquisition.
+
 
 </TabItem>
 
 <TabItem value="dockerCompose">
 
-In the directory where you persist configuration files, create an appsec.yaml file and mount it into the container.
+In the directory where you persist configuration files `./crowdsec` (when
+following this [directory
+hierarchy](u/getting_started/installation/docker/#compose) create an appsec.yaml
+file and mount it into the container.
 
-**Steps**
 
-1. Change to the directory where you ran the docker compose (or docker run) command.
-2. Create a file named appsec.yaml in this directory.
-3. Add the following content to the `appsec.yaml`
-
+```yaml title="appsec.yaml"
 appsec_config: crowdsecurity/appsec-default
 labels:
   type: appsec
 listen_addr: 0.0.0.0:7422
 source: appsec
+```
 
 Because CrowdSec runs in a container, set listen_addr to 0.0.0.0 (not 127.0.0.1) so it listens on the container’s network interface.
 
@@ -229,8 +233,11 @@ Mount the file in your Compose service:
 services:
   crowdsec:
     volumes:
-      - /path/to/original:/etc/crowdsec   # or a named volume
-      - ./appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml
+    - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
+    - logs:/var/log/nginx
+    - crowdsec-db:/var/lib/crowdsec/data/
+    - crowdsec-config:/etc/crowdsec/
+    - ./crowdsec/acquis.d/appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml
 ```
 
 Once you have updated the compose file to include the volume mount and the updated environment variable, you can restart the container.
