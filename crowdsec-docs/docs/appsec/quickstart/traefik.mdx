@@ -188,15 +188,16 @@ listen_addr: 0.0.0.0:7422
 source: appsec
 ```
 
-Either you create with file in `/etc/crowdsec/acquis.d` following this
-[directory hierarchy](/u/getting_started/installation/docker#docker) and the run
-command doesn't change or you create this file some where else and mount it like
-this:
+You can either create the file under /etc/crowdsec/acquis.d, following [the
+existing directory structure](/u/getting_started/installation/docker#docker) in
+which case the run command remains unchanged, or you can create the file
+elsewhere and mount it using the following method:
+
 
 ```bash
 docker run -d --name crowdsec \
   -v /etc/crowdsec:/etc/crowdsec \
-  -v /etc/crowdsec/acquis.d/appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml \
+  -v /elsewhere/appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml \
   crowdsecurity/crowdsec
 ```
 
@@ -212,11 +213,10 @@ with the updated acquisition.
 
 <TabItem value="dockerCompose">
 
-In the directory where you persist configuration files `./crowdsec` (when
-following this [directory
-hierarchy](/u/getting_started/installation/docker/#compose) create an appsec.yaml
-file and mount it into the container.
-
+In the directory where you store CrowdSec configuration files (for example,
+`./crowdsec/acquis.d`, if you’re following the [recommended directory
+structure](/u/getting_started/installation/docker#compose), create a file named
+appsec.yaml and mount it into the container.
 
 ```yaml title="appsec.yaml"
 appsec_config: crowdsecurity/appsec-default
@@ -226,9 +226,10 @@ listen_addr: 0.0.0.0:7422
 source: appsec
 ```
 
-Because CrowdSec runs in a container, set listen_addr to 0.0.0.0 (not 127.0.0.1) so it listens on the container’s network interface.
+Since CrowdSec runs inside a container, make sure to set listen_addr to 0.0.0.0
+(instead of 127.0.0.1) so it listens on the container’s network interface.
 
-Mount the file in your Compose service:
+Then, update your Docker Compose service to mount the file:
 ``` 
 services:
   crowdsec:
