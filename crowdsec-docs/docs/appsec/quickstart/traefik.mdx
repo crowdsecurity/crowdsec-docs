@@ -359,11 +359,6 @@ spec:
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
       crowdsecLapiKey: <shadowed>
       htttTimeoutSeconds: 60
-      forwardedheaderstrustedips:
-        - 10.0.0.0/8
-        - 192.168.0.0/16
-        - 134.209.137.94
-        - 2a03:b0c0:2:f0::f557:a001
       crowdsecAppsecEnabled: false
       crowdsecAppsecHost: crowdsec:7422
       crowdsecAppsecFailureBlock: true
@@ -371,7 +366,7 @@ spec:
 ```
 
 You can still add some route configuration through
-[IngressRoute](https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/crd/http/ingressroute/?utm_source=chatgpt.com)
+[IngressRoute](https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/crd/http/ingressroute)
 and attach the middleware to those routes.
 </TabItem>
 </Tabs>
