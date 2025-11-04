@@ -368,12 +368,59 @@ spec:
 You can still add some route configuration through
 [IngressRoute](https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/crd/http/ingressroute)
 and attach the middleware to those routes.
+
 </TabItem>
 </Tabs>
 
 For more comprehensive documentation on the Traefik Plugin configuration, please
 refer to the [official
 documentation](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin).
+
+<details>
+  <summary>The traefik configuration has been done with the following values.yaml</summary>
+```yaml title="values.yaml"
+deployment:
+  kind: DaemonSet  # run on each node so a sidecar crowdsec can tail Traefik logs
+
+service:
+  type: LoadBalancer  # expose Traefik entrypoints through your cloud LB
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"  # forward client IPs via DigitalOcean proxy protocol
+  spec:
+    externalTrafficPolicy: Local  # keep original source IPs for CrowdSec decisions
+
+# Make Traefik actually write a file that can be parsed
+logs:
+  access:
+    enabled: true  # ensure access logs are produced
+    format: json  # structured logs expected by the bouncer parser
+    fields:
+      defaultMode: keep
+      names:
+        ServiceName: keep  # keep service name for troubleshooting
+  general:
+    level: INFO  # avoid noisy debug output in production 
+    format: json  # align general logs with access log format
+
+# Proxy Protocol needs “enabled”, not only trustedIPs
+additionalArguments:
+  - --accesslog=true  # double-check logging stays on even if values drift
+  - --accesslog.format=json  # enforce JSON formatting at the CLI level
+  - --entrypoints.web.proxyProtocol=true  # enable Proxy Protocol on the HTTP entrypoint
+  - --entrypoints.websecure.proxyProtocol=true  # enable Proxy Protocol on the HTTPS entrypoint
+  - --entrypoints.web.proxyProtocol.trustedIPs=10.0.0.0/8,192.168.0.0/16  # trust proxy headers from your internal ranges
+  - --entrypoints.websecure.proxyProtocol.trustedIPs=10.0.0.0/8,192.168.0.0/16  # same trust list for HTTPS
+  - --providers.kubernetesingress  # watch standard Ingress resources
+  - --providers.kubernetescrd  # watch Traefik CRD resources
+
+# Traefik middleware configuration 
+experimental:
+  plugins:
+    crowdsec-bouncer-traefik-plugin:
+      moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+      version: "v1.4.5"  # pin plugin release for deterministic behaviour
+```
+</details>
 
 We can't cover all the possible configurations for Traefik in this guide, so please refer to the [official documentation](https://doc.traefik.io/traefik/) for more information.
 
