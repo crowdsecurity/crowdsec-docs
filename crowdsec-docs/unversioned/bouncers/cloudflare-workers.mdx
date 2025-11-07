@@ -250,6 +250,13 @@ In autonomous mode (enabled with the `-S` flag), the Remediation Component funct
 3. All decision synchronization is handled automatically by the `decisions-sync-worker` using Cloudflare's scheduled tasks
 4. This mode reduces infrastructure requirements as no persistent daemon is needed
 
+#### Reset all decisions from Cloudflare KV store
+
+In autonomous mode, you can reset all decisions without redeploying all the infrastructure (with the `-S` flag).
+In order to do so, add a `RESET` key (with a `true` value) to the KV store.
+The next time the sync worker runs, it will clear all existing decisions and repopulate them from CrowdSec LAPI.
+
+
 ### Metrics
 
 If your Cloudflare token has permission on D1, the remediation component will automatically create a database to track:
@@ -307,6 +314,7 @@ cloudflare_config:
       compatibility_flags: []
     decisions_sync_worker: # Configuration for autonomous decisions sync worker
         cron: '*/5 * * * *' # Cron schedule for syncing decisions (e.g., "*/5 * * * *" for every 5 minutes)
+    ignore_binding_errors_on_deploy: false # If true, worker route binding errors during deployment will only log warnings instead of failing
 
 log_level: info
 log_media: "stdout"
@@ -477,7 +485,7 @@ crowdsec_config:
 
 ## Configuration Reference
 
-### `crowdsec`
+### `crowdsec_config`
 
 Used to nest the configuration related to crowdsec.
 
@@ -658,24 +666,12 @@ This setting only applies to autonomous mode (when using the `-S` flag). In daem
 
 Default to `*/5 * * * *` (every 5 minutes).
 
-#### `ban_template_path`
-> string
+#### `ignore_binding_errors_on_deploy`
+> boolean
 
-Path to the ban template file. If not provided, the default template is used. This HTML would be rendered to requests when they are banned.
+If true, worker route binding errors during deployment will only log warnings instead of failing.
+Default to `false`.
 
-#### `log_level`
-> `info` | `debug` | `error` | `warning` | `trace`
-
-Log level of the Remediation Component.
-
-#### `log_mode`
-> `stdout` | `file`
-
-Where the log contents are written (With `file` it will be written to `log_dir` with the name `crowdsec-cloudflare-worker-bouncer.log`)
-
-#### `log_dir`
-
-Relevant if `log_mode` is `file`. This determines where to create log file.
 
 ### `prometheus`
 
@@ -695,6 +691,28 @@ Address to listen for Prometheus metrics. Example value `127.0.0.1`
 > string
 
 Port to listen for Prometheus metrics. Example value `2112`
+
+### Others
+
+#### `ban_template_path`
+> string
+
+Path to the ban template file. If not provided, the default template is used. This HTML would be rendered to requests when they are banned.
+
+#### `log_level`
+> `info` | `debug` | `error` | `warning` | `trace`
+
+Log level of the Remediation Component.
+
+#### `log_mode`
+> `stdout` | `file`
+
+Where the log contents are written (With `file` it will be written to `log_dir` with the name `crowdsec-cloudflare-worker-bouncer.log`)
+
+#### `log_dir`
+
+Relevant if `log_mode` is `file`. This determines where to create log file.
+
 
 ## Troubleshooting
  - Metrics can be seen at http://localhost:2112/metrics
