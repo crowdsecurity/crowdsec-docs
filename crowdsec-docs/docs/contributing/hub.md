@@ -297,7 +297,7 @@ Those `labels` are:
  - `classification`: this array contains the CVE ID and the [Mitre Techniques](https://attack.mitre.org/techniques/enterprise/) related to the scenario (when applicable)
  - `spoofable`: between 0 and 3, is the chance that the attacker behind the attack can spoof its origin
  - `confidence`: between 0 and 3, is the confidence that the scenario will not trigger false positive
- - `behaviors`: an existing behavior in [this file](https://github.com/crowdsecurity/hub/blob/scenario_taxonomy/taxonomy/behaviors.json)
+ - `behaviors`: an existing behavior in [this file](https://github.com/crowdsecurity/hub/blob/master/taxonomy/behaviors.json)
  - `label` : a human readable name for the scenario
  - `cti` : (optional) true or false, used to specify that a scenario is mainly used for audit rather than detecting a threat 
 
