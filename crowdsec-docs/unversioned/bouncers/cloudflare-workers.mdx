@@ -224,10 +224,6 @@ sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml # review 
 
 ## How it works
 
-*Note that in the following Schema, a Blocklist as a Service Integration can be substituted to the Security Engine.*
-
-![Architecture](/img/bouncer/cloudflare-worker/cfworkerarch.png)
-
 The Remediation Component can operate in two modes:
 
 ### Daemon Mode (default)
@@ -239,16 +235,33 @@ The Remediation Component does the following:
 3. For every matching incoming request, the worker checks whether it's IP, Country and AS have a decision against. It checks for this in it's KV store. If found it performs the corresponding remediation.
 4. The Remediation Component runs as a daemon and periodically updates the KV store with the latest decisions from CrowdSec's **Security Engine** OR **Blocklist Integration**.
 
+*Note that in the following Schema, a Blocklist as a Service Integration can be substituted to the Security Engine.*
+
+![Architecture](/img/bouncer/cloudflare-worker/cfworkerarch.png)
+
+
+
 ### Autonomous Mode
 
 In autonomous mode (enabled with the `-S` flag), the Remediation Component functions without requiring a continuously running Go daemon process. Instead:
 
 1. Two Cloudflare Workers are deployed:
-   - `crowdsec-cloudflare-worker-bouncer` - applies cached decisions to incoming requests (same as daemon mode)
-   - `decisions-sync-worker` - periodically fetches and caches security decisions using Cloudflare scheduled tasks
+   - `crowdsec-cloudflare-worker-bouncer` (Remediation Worker) - applies cached decisions to incoming requests (same as daemon mode)
+   - `decisions-sync-worker` (Blocklist updater Worker) - periodically fetches and caches security decisions using Cloudflare scheduled tasks
+
+![Architecture](/img/bouncer/cloudflare-worker/cf-autonomous-init.png)
+
+
 2. The Go process only needs to run once for initial setup and configuration deployment
-3. All decision synchronization is handled automatically by the `decisions-sync-worker` using Cloudflare's scheduled tasks
+
+3. All decision synchronization is handled automatically by the Blocklist updater Worker using Cloudflare's scheduled tasks
+
+![Architecture](/img/bouncer/cloudflare-worker/cf-autonomous-sync.png)
+
 4. This mode reduces infrastructure requirements as no persistent daemon is needed
+
+![Architecture](/img/bouncer/cloudflare-worker/cf-autonomous-architecture.png)
+
 
 #### Reset all decisions from Cloudflare KV store
 
