@@ -95,13 +95,12 @@ sudo dnf install crowdsec-haproxy-spoa-bouncer
 ## Bouncer configuration
 
 If you are using packages, and have a lapi on the same server the following
-configuration file `/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml` should
-already be in a working state, and can skip this section and begin with HAProxy
+configuration file `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` should
+already be in a working state, and you can skip this section and begin with HAProxy
 Configuration.
 
-If your CrowdSec Engine is installed on an other server, you'll have to [update
-the `/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml`
-file](/u/bouncers/haproxy_spoa#configure-the-bouncer).
+If your CrowdSec Engine is installed on another server, you'll need to update
+the `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` file.
 
 
 ## HAProxy Configuration
@@ -138,8 +137,9 @@ spoe-agent crowdsec-agent
     log         global
 
 ## This message is used to customise the remediation from crowdsec-ip based on the host header
+## src-ip is included as fallback in case crowdsec-ip message didn't fire
 spoe-message crowdsec-http
-    args remediation=var(txn.crowdsec.remediation) crowdsec_captcha_cookie=req.cook(crowdsec_captcha_cookie) id=unique-id host=hdr(Host) method=method path=path query=query version=req.ver headers=req.hdrs body=req.body url=url ssl=ssl_fc
+    args remediation=var(txn.crowdsec.remediation) crowdsec_captcha_cookie=req.cook(crowdsec_captcha_cookie) id=unique-id host=hdr(Host) method=method path=path query=query version=req.ver headers=req.hdrs body=req.body url=url ssl=ssl_fc src-ip=src src-port=src_port
     event on-frontend-http-request
 
 ## This message should be the first to trigger in the chain
@@ -151,7 +151,7 @@ spoe-message crowdsec-ip
 </details>
 
 If you installed the haproxy spoe bouncer through package, you will find this
-configuration file in `/usr/share/docs/crowdsec-haproxy-spoa-bouncer/examples`
+configuration file in `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`
 
 This crowdsec spoe agent configuration is then referenced in the main haproxy
 configuration file `/etc/haproxy/haproxy.cfg` and may be added at the bottom of
@@ -168,7 +168,7 @@ the haproxy configuration file.
 frontend http-in
     bind *:80
     filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
-    http-request set-header X-CrowdSec-Remediation %[var(txn.crowdsec.remediation)]
+    http-request set-header X-Crowdsec-Remediation %[var(txn.crowdsec.remediation)]
     
     ## Handle 302 redirect for successful captcha validation (native HAProxy redirect)
     http-request redirect code 302 location %[var(txn.crowdsec.redirect)] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
@@ -196,12 +196,14 @@ In the `global` section of your `haproxy.cfg`, lua path configuration is also ma
 ```haproxy
 global
     [...]
+    lua-prepend-path /usr/lib/crowdsec-haproxy-spoa-bouncer/lua/?.lua
     lua-load /usr/lib/crowdsec-haproxy-spoa-bouncer/lua/crowdsec.lua
-
+    setenv CROWDSEC_BAN_TEMPLATE_PATH /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban.html
+    setenv CROWDSEC_CAPTCHA_TEMPLATE_PATH /var/lib/crowdsec-haproxy-spoa-bouncer/html/captcha.html
 ```
 
 An example that includes this snippet can also be found in
-`/usr/share/docs/crowdsec-haproxy-spoa-bouncer/examples/haproxy.cfg`.
+`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples/haproxy.cfg`.
 
 </details>
 
@@ -309,7 +311,7 @@ frontend http-in
     # http-request set-header X-Real-IP %[req.hdr(X-Real-IP)]
     
     filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
-    http-request set-header X-CrowdSec-Remediation %[var(txn.crowdsec.remediation)]
+    http-request set-header X-Crowdsec-Remediation %[var(txn.crowdsec.remediation)]
     
     ## Handle 302 redirect for successful captcha validation (native HAProxy redirect)
     http-request redirect code 302 location %[var(txn.crowdsec.redirect)] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
@@ -370,21 +372,213 @@ prometheus:
 
 Access them at http://127.0.0.1:60601/metrics.
 
-### Admin Socket
+## Configuration Reference
 
-You can query the bouncer runtime state using the admin socket:
+You can find a default configuration hosted on the [Github Repository](https://github.com/crowdsecurity/crowdsec-spoa-bouncer/blob/main/config/crowdsec-spoa-bouncer.yaml) this is provided with the installation package.
 
-socat - UNIX-CONNECT:/run/crowdsec-spoa-admin.sock
+### `log_mode`
+> `file` | `stdout`
 
-Commands:
-```
-    get hosts
-    get host <host> session <uuid> <key>
-    set host <host> session <uuid> <key> <value>
-    get ip <ip>
-    val host <host> cookie <cookie>
-    val host <host> captcha <response>
-```
+Where the log contents are written (With `file` it will be written to `log_dir` with the name `crowdsec-spoa-bouncer.log`)
+
+### `log_dir`
+> string
+
+Log directory path that will contain the log file. By default, this should be set to `/var/log/crowdsec-spoa/` as this directory is automatically created by the systemd service.
+
+### `log_level`
+> `trace` | `debug` | `info` | `warn` | `error`
+
+Log level (default: `info`)
+
+### `log_compression`
+> `true` | `false`
+
+Compress log files on rotation (default: `true`)
+
+### `log_max_size`
+> int (in MB)
+
+Max size of log files before rotation (default: `500`)
+
+### `log_max_backups`
+> int
+
+How many backup log files to keep before deletion (can happen before `log_max_age` is reached) (default: `3`)
+
+### `log_max_age`
+> int (in days)
+
+Max age of backup files before deletion (can happen before `log_max_backups` is reached) (default: `30`)
+
+### `update_frequency`
+> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+
+Frequency to contact the API for new/deleted decisions (default: `10s`)
+
+### `api_url`
+> string
+
+URL of the local API EG: `http://127.0.0.1:8080`
+
+### `api_key`
+> string
+
+API key to authenticate with the local API
+
+### `insecure_skip_verify`
+> `true` | `false`
+
+Skip verification of the API certificate, typical for self-signed certificates
+
+### `listen_tcp`
+> string
+
+TCP address and port to listen on for SPOE connections. Format: `ip:port` or `:port`
+
+:::info
+At least one of `listen_tcp` or `listen_unix` must be configured.
+:::
+
+### `listen_unix`
+> string
+
+Unix socket path to listen on for SPOE connections
+
+:::info
+At least one of `listen_tcp` or `listen_unix` must be configured.
+:::
+
+### `hosts`
+> []object
+
+List of host configurations for domain-specific settings
+
+#### `host`
+> string
+
+Hostname pattern to match (supports wildcards).
+Note: The list of host objects is automatically sorted from longest to shortest pattern, including wildcards. For example, `*.example.com` (matching all subdomains) will be evaluated before `example.com`, and the wildcard `*` (which matches any host) will always be at the bottom of the list. This ensures that more specific patterns take precedence over more general ones.
+
+#### `captcha`
+> object
+
+CAPTCHA configuration for this host
+
+##### `provider`
+> `hcaptcha` | `recaptcha` | `turnstile`
+
+CAPTCHA provider to use
+
+##### `site_key`
+> string
+
+CAPTCHA site key
+
+##### `secret_key`
+> string
+
+CAPTCHA secret key
+
+##### `fallback_remediation`
+> string `ban` | `allow`
+
+If captcha is not configured which remediation to use as a fallback. Can be configured to `allow` to pass on captcha remediations (default: `ban`)
+
+##### `timeout`
+> int (in seconds)
+
+HTTP client timeout in seconds, maximum 300 (default: `5`)
+
+##### `cookie`
+> object
+
+Cookie generation configuration
+
+###### `sign_cookies`
+> `true` | `false`
+
+Sign the cookie value (default: `true`)
+
+###### `secure`
+> `auto` | `always` | `never`
+
+Set the secure flag on the cookie. `auto` relies on the `ssl_fc` flag from HAProxy (default: `auto`)
+
+###### `http_only`
+> `true` | `false`
+
+Set the HttpOnly flag on the cookie (default: `true`)
+
+###### `secret`
+> string
+
+Secret used for signed/encrypted cookies (default: uses the secret key of the captcha provider)
+
+##### `session_idle_timeout`
+> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+
+Session idle timeout duration (default: `1h`)
+
+##### `session_max_time`
+> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+
+Maximum session lifetime duration (default: `12h`)
+
+##### `session_garbage_seconds`
+> int (in seconds)
+
+Interval in seconds for garbage collection of expired sessions (default: `60`)
+
+#### `ban`
+> object
+
+Ban remediation configuration for this host
+
+##### `contact_us_url`
+> string
+
+URL to display in ban templates for users to contact support this value is passed to an anchor tag href value
+
+#### `log_level`
+> `trace` | `debug` | `info` | `warn` | `error`
+
+Log level for this specific host (overrides the global `log_level` setting)
+
+### `hosts_dir`
+> string
+
+A directory containing `.yaml` files, each representing a [host](#host) YAML struct. Each file should define all fields required by the host configuration structure.
+
+### `asn_database_path`
+> string
+
+Path to the GeoIP2 ASN database file (optional)
+
+### `city_database_path`
+> string
+
+Path to the GeoIP2 City database file (optional)
+
+### `prometheus`
+> object
+
+Prometheus metrics configuration
+
+#### `enabled`
+> `true` | `false`
+
+Enable Prometheus metrics endpoint
+
+#### `listen_addr`
+> string
+
+Address to listen on for Prometheus metrics endpoint
+
+#### `listen_port`
+> int
+
+Port to listen on for Prometheus metrics endpoint
 
 ### Manual installation and advanced configuration
 
@@ -408,15 +602,11 @@ sudo cp config/crowdsec-spoa-bouncer.yaml /etc/crowdsec/bouncers/
 ```
 
 
-You can always edit the configuration file at `/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml`:
-
-<details>
-
-<summary>`/etc/crowdsec/bouncer/crowdsec-spoa-bouncer.yaml`</summary>
+The configuration file is located at `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml`:
 
 ```yaml
 log_mode: file
-log_dir: /var/log/
+log_dir: /var/log/crowdsec-spoa/
 log_level: info
 log_compression: true
 log_max_size: 100
@@ -428,48 +618,22 @@ api_url: http://127.0.0.1:8080/
 api_key: ${API_KEY}
 insecure_skip_verify: false
 
-workers:
-  - name: spoa1
-    listen_addr: 0.0.0.0:9000
-    listen_socket: /run/crowdsec-spoa/spoa-1.sock
-
-worker_user: crowdsec-spoa
-worker_group: crowdsec-spoa
-
-asn_database_path: /var/lib/crowdsec/data/GeoLite2-ASN.mmdb
-city_database_path: /var/lib/crowdsec/data/GeoLite2-City.mmdb
-
-admin_socket: /run/crowdsec-spoa-admin.sock
+listen_tcp: 0.0.0.0:9000
+listen_unix: /run/crowdsec-spoa/spoa.sock
 
 prometheus:
-  enabled: true
+  enabled: false
   listen_addr: 127.0.0.1
   listen_port: 60601
 ```
-</details>
 
-You can get a workable configuration by using the yaml above and getting and api key by:
+Generate an API key:
+
 ```bash
 sudo cscli bouncers add mybouncer
-API key for 'bouncertest':
-
-   JdVa7DKBM35gPDAR014pH/55l38fxLGt02NPPnZgLQI
-
-Please keep this key since you will not be able to retrieve it!
 ```
-- Paste the key into:
-  ```yaml
-  api_key: your-generated-key
-  ```
 
-
-In the `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` file the following
-keys are of some importance:
-
-- Set your **LAPI URL** to point to your CrowdSec LAPI instance:
-  ```yaml
-  api_url: http://127.0.0.1:8080/
-  ```
+Then update the `api_key` field in the configuration file.
 
 You can check that the bouncer is correctly installed with cscli:
 
@@ -499,13 +663,18 @@ You can check that the bouncer is correctly installed with cscli:
 ```
 
 
-Create runtime socket directory and crowdsec-spoa user:
+:::warning File Permissions
+
+The service runs as the `crowdsec-spoa` user. Ensure configuration files are readable by this user:
 
 ```bash
-sudo
-sudo mkdir -p /run/crowdsec-spoa
-sudo chown crowdsec-spoa:crowdsec-spoa /run/crowdsec-spoa
+sudo chown root:crowdsec-spoa /etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml
+sudo chmod 640 /etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml
 ```
+
+If you have created `.local` variants of configuration files, apply the same permissions to those files as well.
+
+:::
 
 
 #### Configure HAProxy
@@ -519,8 +688,8 @@ global
     lua-prepend-path /usr/lib/crowdsec-haproxy-spoa-bouncer/lua/?.lua
     lua-load /usr/lib/crowdsec-haproxy-spoa-bouncer/lua/crowdsec.lua
 
-    setenv CROWDSEC_BAN_TEMPLATE_PATH /var/lib/crowdsec/lua/haproxy/templates/ban.html
-    setenv CROWDSEC_CAPTCHA_TEMPLATE_PATH /var/lib/crowdsec/lua/haproxy/templates/captcha.html
+    setenv CROWDSEC_BAN_TEMPLATE_PATH /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban.html
+    setenv CROWDSEC_CAPTCHA_TEMPLATE_PATH /var/lib/crowdsec-haproxy-spoa-bouncer/html/captcha.html
 ```
 
 > These variables are used by the Lua module to render proper HTML responses for banned or captcha-validated users.
@@ -534,8 +703,8 @@ frontend test
 
     filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
 
-    http-request set-header X-CrowdSec-Remediation %[var(txn.crowdsec.remediation)] if { var(txn.crowdsec.remediation) -m found }
-    http-request set-header X-CrowdSec-IsoCode %[var(txn.crowdsec.isocode)] if { var(txn.crowdsec.isocode) -m found }
+    http-request set-header X-Crowdsec-Remediation %[var(txn.crowdsec.remediation)] if { var(txn.crowdsec.remediation) -m found }
+    http-request set-header X-Crowdsec-IsoCode %[var(txn.crowdsec.isocode)] if { var(txn.crowdsec.isocode) -m found }
     
     ## Handle 302 redirect for successful captcha validation (native HAProxy redirect)
     http-request redirect code 302 location %[var(txn.crowdsec.redirect)] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
@@ -576,8 +745,7 @@ spoe-message crowdsec-ip
     event on-client-session
 
 spoe-message crowdsec-http
-    args remediation=var(txn.crowdsec.remediation) crowdsec_captcha_cookie=req.cook(crowdsec_captcha_cookie) id=unique-id host=hdr(Host) method=method path=path query=query version=req.ver headers=req.hdrs body=re
-q.body url=url ssl=ssl_fc
+    args remediation=var(txn.crowdsec.remediation) crowdsec_captcha_cookie=req.cook(crowdsec_captcha_cookie) id=unique-id host=hdr(Host) method=method path=path query=query version=req.ver headers=req.hdrs body=req.body url=url ssl=ssl_fc src-ip=src src-port=src_port
     event on-frontend-http-request
 ```
 </details>
@@ -591,22 +759,6 @@ backend crowdsec-spoa
     server s1 127.0.0.1:9000
 ```
 
-#### Modify HAProxy systemd Unit (Optional)
-
-Edit `/etc/systemd/system/haproxy.service` and add:
-
-```ini
-[Service]
-Environment=CROWDSEC_BAN_TEMPLATE_PATH=/var/lib/crowdsec/lua/haproxy/templates/ban.html
-Environment=CROWDSEC_CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/haproxy/templates/captcha.html
-```
-
-Then reload systemd:
-
-```bash
-sudo systemctl daemon-reexec
-sudo systemctl daemon-reload
-```
 
 #### Start the Bouncer
 
