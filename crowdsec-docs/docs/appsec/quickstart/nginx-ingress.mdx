@@ -168,7 +168,7 @@ helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
 
 ::: note
 After the rollout, you can optionally check that the right container is deployed
-
+:::
 
 ```bash
 kubectl -n ingress-nginx exec -ti <ingress-pod-name> -- find /etc/nginx/lua/plugins/crowdsec
