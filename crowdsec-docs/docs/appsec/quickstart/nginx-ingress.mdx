@@ -40,9 +40,9 @@ values below). Note that the standard upstream controller removed Lua support in
 version 1.12.
 :::
 
-## Step 1 – Deploy CrowdSec with AppSec enabled
+## Deploy CrowdSec with AppSec enabled
 
-1. Add or update the CrowdSec Helm repository:
+### Add or update the CrowdSec Helm repository:
 
 ```bash
 helm repo add crowdsec https://crowdsecurity.github.io/helm-charts
@@ -53,7 +53,7 @@ helm repo update
 If CrowdSec is already deployed with Helm in this cluster, the repository entry is already present—you only need `helm repo update`.
 :::
 
-2. Add this to the CrowdSec `values.yaml` with the AppSec configuration:
+### Add this to the CrowdSec `values.yaml` with the AppSec configuration:
 
 ```yaml title="values.yaml"
 appsec
@@ -76,13 +76,13 @@ This yaml configuration snippet exposes those important configuration items:
      * The chart bootstraps a bouncer named `nginx_ingress_waf` using the key you export locally.
 
 
-3. Upgrade the CrowdSec release:
+### Upgrade the CrowdSec release:
 
 ```bash
 helm upgrade --install crowdsec crowdsec/crowdsec --namespace crowdsec --create-namespace -f crowdsec-appsec-values.yaml
    ```
 
-4. Confirm the pods are healthy:
+### Confirm the pods are healthy:
 
 ```bash
 kubectl -n crowdsec get pods
@@ -90,7 +90,7 @@ kubectl -n crowdsec get pods
 
 You should see both the `crowdsec` pod and the `crowdsec-appsec` pod in `Running` state.
 
-## Step 2 – Enable the CrowdSec Lua plugin on NGINX Ingress
+## Enable the CrowdSec Lua plugin on NGINX Ingress
 
 Create `ingress-values.yaml` is still defined) to extend the ingress controller with the CrowdSec plugin and point it to the AppSec API:
 
@@ -147,7 +147,8 @@ controller:
     server-snippet: |
       lua_ssl_trusted_certificate "/etc/ssl/certs/ca-certificates.crt"
       resolver local=on ipv6=off;
-``` 
+```
+
 
 - `API_URL` targets the Local API service exposed by the Helm chart.
 - `API_KEY` defines the key for the bouncer to be able to connect to CrowdSec LAPI
