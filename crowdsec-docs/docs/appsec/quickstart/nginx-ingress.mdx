@@ -42,7 +42,9 @@ version 1.12.
 
 ## Deploy CrowdSec with AppSec enabled
 
-### Add or update the CrowdSec Helm repository:
+### Helm repository
+
+Add or update the CrowdSec Helm repository:
 
 ```bash
 helm repo add crowdsec https://crowdsecurity.github.io/helm-charts
@@ -53,7 +55,9 @@ helm repo update
 If CrowdSec is already deployed with Helm in this cluster, the repository entry is already present—you only need `helm repo update`.
 :::
 
-### Add this to the CrowdSec `values.yaml` with the AppSec configuration:
+### Update CrowdSec configuration
+
+Add this to the CrowdSec `values.yaml` with the AppSec configuration:
 
 ```yaml title="values.yaml"
 appsec
@@ -75,12 +79,11 @@ This yaml configuration snippet exposes those important configuration items:
      * The two collections provide virtual patching and generic rule coverage.
      * The chart bootstraps a bouncer named `nginx_ingress_waf` using the key you export locally.
 
-
-### Upgrade the CrowdSec release:
+And now we apply the new configuration with:
 
 ```bash
 helm upgrade --install crowdsec crowdsec/crowdsec --namespace crowdsec --create-namespace -f crowdsec-appsec-values.yaml
-   ```
+```
 
 ### Confirm the pods are healthy:
 
@@ -88,7 +91,7 @@ helm upgrade --install crowdsec crowdsec/crowdsec --namespace crowdsec --create-
 kubectl -n crowdsec get pods
 ```
 
-You should see both the `crowdsec` pod and the `crowdsec-appsec` pod in `Running` state.
+You should see `crowdsec-agent` pods, the `crowdsec-lapi` pod and the `crowdsec-appsec` pod in `Running` state.
 
 ## Enable the CrowdSec Lua plugin on NGINX Ingress
 
