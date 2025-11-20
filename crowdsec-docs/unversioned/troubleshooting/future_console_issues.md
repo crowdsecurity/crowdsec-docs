@@ -22,7 +22,7 @@ This page documents **17 future issues** across four main categories:
 
 ### No Security Engine or Blocklist Integration Configured
 
-- **Criticality**: Recommended
+- **Criticality**: 💡 Recommended
 - **Trigger**: Organization has neither Security Engines (LAPI) nor Blocklist-as-a-Service (BLaaS) integrations configured
 - **Description**: Account is set up but has no active detection or blocklist infrastructure
 - **Impact**: No threat detection or proactive blocking capabilities
@@ -30,7 +30,7 @@ This page documents **17 future issues** across four main categories:
 
 ### No Scenarios Installed
 
-- **Criticality**: Critical
+- **Criticality**: 🔥 Critical
 - **Trigger**: Security Engine has zero scenarios installed
 - **Description**: No detection rules configured to identify threats
 - **Impact**: Even if logs are parsed, no alerts can be generated
@@ -38,7 +38,7 @@ This page documents **17 future issues** across four main categories:
 
 ### No Notification Channels Configured
 
-- **Criticality**: Recommended (bonus for Premium users)
+- **Criticality**: 💡 Recommended (bonus for Premium users)
 - **Trigger**: No notification integrations configured for Console alerts
 - **Description**: User won't receive proactive notifications about stack health issues
 - **Impact**: Delayed response to critical problems
@@ -47,7 +47,7 @@ This page documents **17 future issues** across four main categories:
 
 ### Alert Context Not Activated
 
-- **Criticality**: Recommended
+- **Criticality**: 💡 Recommended
 - **Trigger**: Alert context enrichment is disabled in Console settings
 - **Description**: Missing valuable CTI context data for alert analysis
 - **Impact**: Reduced threat intelligence and harder troubleshooting
@@ -57,7 +57,7 @@ This page documents **17 future issues** across four main categories:
 
 ### Security Engine Version Outdated
 
-- **Criticality**: Recommended
+- **Criticality**: 💡 Recommended
 - **Trigger**: Security Engine running an older version when a new stable release is available
 - **Description**: Missing bug fixes, performance improvements, security patches, and new features
 - **Impact**: Potential vulnerabilities, reduced performance, or missing functionality
@@ -67,7 +67,7 @@ This page documents **17 future issues** across four main categories:
 
 ### Remediation Component Version Outdated
 
-- **Criticality**: Recommended
+- **Criticality**: 💡 Recommended
 - **Trigger**: Active remediation components (bouncers) running outdated versions
 - **Description**: Remediation components missing features, bug fixes, or security patches from newer releases
 - **Impact**: Reduced remediation effectiveness, potential vulnerabilities, or missing compatibility
@@ -76,7 +76,7 @@ This page documents **17 future issues** across four main categories:
 
 ### Collection Version Outdated
 
-- **Criticality**: Recommended
+- **Criticality**: 💡 Recommended
 - **Trigger**: Installed collections have newer versions available on the Hub
 - **Description**: Using outdated detection rules and parsers, potentially missing scenarios from updated collections
 - **Impact**: Missing newer attack patterns, parser improvements, and additional scenarios added to collection
@@ -86,7 +86,7 @@ This page documents **17 future issues** across four main categories:
 
 ### Incomplete Scenario Installation from Collection
 
-- **Criticality**: High
+- **Criticality**: ⚠️ High
 - **Trigger**: Scenarios installed but not representing the complete collection (missing scenarios compared to Hub collection definition)
 - **Description**: Partial collection installation leaves detection gaps
 - **Impact**: Reduced detection coverage for specific attack types within the collection scope
@@ -97,7 +97,7 @@ This page documents **17 future issues** across four main categories:
 
 ### Acquisition and Collection Mismatch
 
-- **Criticality**: Recommended
+- **Criticality**: 💡 Recommended
 - **Trigger**: Collection installed (e.g., nginx) but no corresponding acquisition configuration for that log type
 - **Description**: Detection rules installed but no logs being collected to trigger them
 - **Impact**: Wasted resources, collection cannot function as intended
@@ -106,7 +106,7 @@ This page documents **17 future issues** across four main categories:
 
 ### Long-Duration Decisions
 
-- **Criticality**: Bonus (informational)
+- **Criticality**: 🌟 Bonus (informational)
 - **Trigger**: Active decisions with TTL exceeding threshold (e.g., 30+ days)
 - **Description**: Very long bans may indicate manual decisions that should be reviewed
 - **Impact**: No direct functional impact but may need periodic review
@@ -115,7 +115,7 @@ This page documents **17 future issues** across four main categories:
 
 ### Decisions Against Legitimate IPs
 
-- **Criticality**: High
+- **Criticality**: ⚠️ High
 - **Trigger**: Active decisions against known legitimate IP ranges (Let's Encrypt, CDN providers, cloud services, etc.)
 - **Description**: Potentially blocking legitimate service traffic
 - **Impact**: Service disruption (e.g., SSL certificate renewal failures, CDN issues, API connectivity problems)
@@ -126,25 +126,25 @@ This page documents **17 future issues** across four main categories:
 
 ### Alert Volume Over Free Quota
 
-- **Criticality**: Bonus (informational/upsell opportunity)
+- **Criticality**: 🌟 Bonus (informational/upgrade opportunity)
 - **Trigger**: Alert volume approaching or exceeding free tier limits
 - **Description**: High alert activity may benefit from Premium tier features
 - **Impact**: Opportunity to upgrade for enhanced capabilities
 - **Notes**: Informational nudge toward Premium upgrade for heavy users
-- **Category**: Upsell Opportunity
+- **Category**: Upgrade Opportunity
 
 ### Notification Overload - Premium Recommended
 
-- **Criticality**: Recommended
+- **Criticality**: 💡 Recommended
 - **Trigger**: Community user with multiple Security Engines OR high alert/activity volume
 - **Description**: Complex setup would benefit from notification channels to track issues across infrastructure
 - **Impact**: Missing visibility across distributed deployment or high-activity environment
 - **Notes**: Highlight Premium notification features for managing complex deployments
-- **Category**: Enhancement - Upsell Opportunity
+- **Category**: Enhancement - Upgrade Opportunity
 
 ### AIUA Not Activated (Premium User)
 
-- **Criticality**: Recommended
+- **Criticality**: 💡 Recommended
 - **Trigger**: Premium tier user without "Am I Under Attack" (AIUA) feature enabled
 - **Description**: Premium feature not utilized despite availability
 - **Impact**: Not leveraging paid feature for automated attack detection and response
@@ -153,16 +153,16 @@ This page documents **17 future issues** across four main categories:
 
 ### AIUA Not Activated (Community User)
 
-- **Criticality**: Bonus (informational)
+- **Criticality**: 🌟 Bonus (informational)
 - **Trigger**: Community tier user without AIUA enabled
 - **Description**: Missing automated attack detection available in Premium tiers
 - **Impact**: Manual attack detection vs automated Premium feature
-- **Notes**: Gentle upsell to Premium for automated attack detection
-- **Category**: Enhancement - Upsell Opportunity
+- **Notes**: Possible upgrade to Premium for automated attack detection
+- **Category**: Enhancement - Upgrade Opportunity
 
 ### High-Value Blocklist Available (Same Tier - >30%)
 
-- **Criticality**: Recommended
+- **Criticality**: 💡 Recommended
 - **Trigger**: Blocklist with >30% protection prediction (Alakazam score) available for user's current tier but not subscribed
 - **Description**: High-impact blocklist available at current subscription level could significantly improve protection
 - **Impact**: Missing substantial proactive threat blocking opportunity
@@ -172,14 +172,14 @@ This page documents **17 future issues** across four main categories:
 
 ### High-Value Blocklist Available (Upper Tier - >30%)
 
-- **Criticality**: Bonus (informational/upsell opportunity)
+- **Criticality**: 🌟 Bonus (informational/upgrade opportunity)
 - **Trigger**: Premium/Platinum blocklist with >30% protection prediction available in higher tier
 - **Description**: Significant protection improvement available through tier upgrade
 - **Impact**: Major reduction in attack surface through proactive blocking
 - **Requirements**: Alakazam efficiency prediction showing concrete benefit of upgrade
 - **Example**: Community user could block 35% of threats with Premium BL, or Premium user could block 40% with Platinum BL
-- **Notes**: Data-driven upsell showing measurable security benefit of upgrading
-- **Category**: Enhancement - Upsell Opportunity
+- **Notes**: Data-driven upgrade showing measurable security benefit of upgrading
+- **Category**: Enhancement - Upgrade Opportunity
 
 ## Criticality Levels Explained
 
@@ -208,7 +208,7 @@ The **Alakazam scoring system** analyzes your specific threat profile (alerts, a
 - **>30% threshold**: Significant protection improvement recommended
 - **Personalized**: Based on your actual threat landscape, not generic statistics
 - **Tier-aware**: Shows both same-tier optimizations and upgrade opportunities
-- **Data-driven upsell**: Concrete, measurable benefit (e.g., "Block 35% of your threats preemptively")
+- **Data-driven upgrade**: Concrete, measurable benefit (e.g., "Block 35% of your threats preemptively")
 
 ### Smart Collection Management
 
