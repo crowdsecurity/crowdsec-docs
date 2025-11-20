@@ -88,6 +88,16 @@ Some issues are related and share common root causes:
 
 Understanding these dependencies helps you troubleshoot more efficiently by addressing root causes first.
 
+## Future Enhancements
+
+The CrowdSec Console will continue to evolve with additional health checks and recommendations. See the [Future Console Health Check Issues](/u/troubleshooting/future_console_issues) page for planned features including:
+
+- Enhanced configuration validation
+- Blocklist optimization recommendations
+- Collection update notifications
+- False positive prevention checks
+- Premium feature upsell opportunities based on detected benefit
+
 ## Getting Help
 
 If you've followed the troubleshooting guides and still need assistance:
