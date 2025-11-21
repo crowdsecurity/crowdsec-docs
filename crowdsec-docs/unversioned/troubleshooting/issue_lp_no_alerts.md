@@ -13,12 +13,18 @@ The **LP No Alerts** issue appears when a specific Log Processor (agent) is runn
 
 ## Common Root Causes
 
-- **No logs being read by this agent**: The acquisition configuration on this specific Log Processor may be missing, disabled, or pointing to empty sources.
-- **No logs being parsed successfully**: Logs are being read but parsers can't process them due to format mismatches or missing collections.
 - **Scenarios in simulation mode**: Detection scenarios are installed but running in simulation mode on this agent.
 - **Low-activity monitored service**: The service monitored by this Log Processor may genuinely have no malicious activity.
 
+<a name="otherIssues"></a>
+
+**Other Issues**
+- 🔗 **[No logs being read](/u/troubleshooting/issue_lp_no_logs_read)**: The acquisition configuration on this specific Log Processor may be missing, disabled, or pointing to empty sources.
+- 🔗 **[No logs being parsed](/u/troubleshooting/issue_lp_no_logs_parsed)**: Logs are being read but parsers can't process them due to format mismatches or missing collections.
+
 ## How to Diagnose
+
+If it's not due to [other issues](#otherIssues), here are the diagnosis and resolutions for other root causes.
 
 ### Identify the affected Log Processor
 

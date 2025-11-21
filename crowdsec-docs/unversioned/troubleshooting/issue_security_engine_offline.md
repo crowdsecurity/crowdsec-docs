@@ -5,7 +5,14 @@ id: issue_security_engine_offline
 
 The **Security Engine Offline** alert appears in the Console and notification integrations when an enrolled engine has not reported or logged in to CrowdSec for more than 48 hours. This usually means the core `crowdsec` service (Log Processor + Local API) has stopped working or communicating with our infrastructure.
 
-## Common Root Causes & Diagnostics
+## Common Root Causes
+
+- **Host or service down**: The crowdsec service has stopped or the host itself is unreachable.
+- **Enrollment revoked or pending**: Engine enrollment was removed from the Console or is awaiting approval.
+- **Console connectivity issues**: Network, firewall, or proxy blocking HTTPS calls to Console endpoints, or TLS validation failures.
+- **Local API unavailable**: The Local API component has stopped and cannot gather or forward alerts to the Console.
+
+## Diagnostics
 
 ### Host or service down
 
