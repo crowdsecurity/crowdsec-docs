@@ -199,6 +199,7 @@ an initContainer and mounted into the main controller.
 
 #### InitContainer: Plugin Fetch and Configuration
 
+```yaml
 extraInitContainers:
   - name: init-clone-crowdsec-bouncer
     image: crowdsecurity/lua-bouncer-plugin:latest
@@ -231,6 +232,7 @@ extraInitContainers:
     volumeMounts:
       - name: crowdsec-bouncer-plugin
         mountPath: /lua_plugins
+```
 
 The initContainer generates the plugin configuration (crowdsec-bouncer.conf)
 from environment variables and copies the Lua plugin files into the shared
