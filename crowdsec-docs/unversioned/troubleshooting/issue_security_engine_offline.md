@@ -1,6 +1,6 @@
 ---
 title: Security Engine Offline
-id: security_engine_offline
+id: issue_security_engine_offline
 ---
 
 The **Security Engine Offline** alert appears in the Console and notification integrations when an enrolled engine has not reported or logged in to CrowdSec for more than 48 hours. This usually means the core `crowdsec` service (Log Processor + Local API) has stopped working or communicating with our infrastructure.

@@ -1,6 +1,6 @@
 ---
 title: LP No Alerts
-id: lp_no_alerts
+id: issue_lp_no_alerts
 ---
 
 The **LP No Alerts** issue appears when a specific Log Processor (agent) is running and communicating with the Local API but hasn't generated any alerts in the last 48 hours. This is similar to [Engine No Alerts](/u/troubleshooting/engine_no_alerts) but applies to individual Log Processor instances in distributed setups.
@@ -13,17 +13,10 @@ The **LP No Alerts** issue appears when a specific Log Processor (agent) is runn
 
 ## Common Root Causes
 
-### No logs being read by this agent
-The acquisition configuration on this specific Log Processor may be missing, disabled, or pointing to empty sources.
-
-### No logs being parsed successfully
-Logs are being read but parsers can't process them due to format mismatches or missing collections.
-
-### Scenarios in simulation mode
-Detection scenarios are installed but running in simulation mode on this agent.
-
-### Low-activity monitored service
-The service monitored by this Log Processor may genuinely have no malicious activity.
+- **No logs being read by this agent**: The acquisition configuration on this specific Log Processor may be missing, disabled, or pointing to empty sources.
+- **No logs being parsed successfully**: Logs are being read but parsers can't process them due to format mismatches or missing collections.
+- **Scenarios in simulation mode**: Detection scenarios are installed but running in simulation mode on this agent.
+- **Low-activity monitored service**: The service monitored by this Log Processor may genuinely have no malicious activity.
 
 ## How to Diagnose
 

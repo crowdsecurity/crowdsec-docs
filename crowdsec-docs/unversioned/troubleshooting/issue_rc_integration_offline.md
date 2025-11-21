@@ -1,6 +1,6 @@
 ---
 title: RC Integration Offline
-id: rc_integration_offline
+id: issue_rc_integration_offline
 ---
 
 The **RC Integration Offline** (Remediation Component Integration Offline) issue appears when a non-firewall remediation component (bouncer) has not pulled decisions from the Local API for more than 24 hours. This means your web server, reverse proxy, CDN, or other integration is not receiving block/captcha decisions.
@@ -22,23 +22,12 @@ This issue applies to bouncers such as:
 
 ## Common Root Causes
 
-### Bouncer service or process stopped
-The bouncer daemon, module, or plugin is not running.
-
-### Authentication failure
-API key is invalid, expired, or the bouncer was removed from the Security Engine.
-
-### Network connectivity issues
-The bouncer cannot reach the Local API endpoint.
-
-### Configuration errors
-Incorrect API URL, missing configuration file, or malformed settings.
-
-### Integration not loaded
-Module/plugin is installed but not enabled in the web server or application.
-
-### Log rotation or restart issues
-Bouncer lost connection after service restart and didn't reconnect.
+- **Bouncer service or process stopped**: The bouncer daemon, module, or plugin is not running.
+- **Authentication failure**: API key is invalid, expired, or the bouncer was removed from the Security Engine.
+- **Network connectivity issues**: The bouncer cannot reach the Local API endpoint.
+- **Configuration errors**: Incorrect API URL, missing configuration file, or malformed settings.
+- **Integration not loaded**: Module/plugin is installed but not enabled in the web server or application.
+- **Log rotation or restart issues**: Bouncer lost connection after service restart and didn't reconnect.
 
 ## How to Diagnose
 

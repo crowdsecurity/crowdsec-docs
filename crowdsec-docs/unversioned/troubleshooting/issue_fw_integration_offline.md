@@ -1,6 +1,6 @@
 ---
 title: Firewall Integration Offline
-id: fw_integration_offline
+id: issue_fw_integration_offline
 ---
 
 The **Firewall Integration Offline** issue appears when a firewall-based remediation component (bouncer) has not pulled decisions from the Local API for more than 24 hours. This means blocked IPs are not being enforced at the firewall level.
@@ -13,20 +13,11 @@ The **Firewall Integration Offline** issue appears when a firewall-based remedia
 
 ## Common Root Causes
 
-### Bouncer service stopped
-The firewall bouncer systemd service or process is not running.
-
-### Authentication failure
-API key is invalid, expired, or the bouncer was removed from the Security Engine.
-
-### Network connectivity issues
-The bouncer cannot reach the Local API endpoint (different host, port closed, etc.).
-
-### Configuration errors
-Incorrect API URL, missing configuration file, or malformed settings.
-
-### Bouncer installation issue
-The bouncer may not be properly installed or registered.
+- **Bouncer service stopped**: The firewall bouncer systemd service or process is not running.
+- **Authentication failure**: API key is invalid, expired, or the bouncer was removed from the Security Engine.
+- **Network connectivity issues**: The bouncer cannot reach the Local API endpoint (different host, port closed, etc.).
+- **Configuration errors**: Incorrect API URL, missing configuration file, or malformed settings.
+- **Bouncer installation issue**: The bouncer may not be properly installed or registered.
 
 ## How to Diagnose
 

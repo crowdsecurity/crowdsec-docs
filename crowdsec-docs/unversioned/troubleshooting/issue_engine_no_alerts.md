@@ -1,6 +1,6 @@
 ---
 title: Engine No Alerts
-id: engine_no_alerts
+id: issue_engine_no_alerts
 ---
 
 The **Engine No Alerts** issue appears when your Security Engine has been running but hasn't generated any alerts in the last **48 hours**. This usually indicates that logs aren't being processed properly or scenarios aren't matching any threats.
@@ -13,17 +13,10 @@ The **Engine No Alerts** issue appears when your Security Engine has been runnin
 
 ## Common Root Causes
 
-### No logs being read
-The acquisition configuration may be missing, disabled, or pointing to empty log sources.
-
-### No logs being parsed
-Logs are being read but parsers can't process them due to format mismatches or missing collections.
-
-### Scenarios in simulation mode
-Detection scenarios are installed but set to simulation mode, preventing actual alerts.
-
-### Legitimate low-activity environment
-In some cases, truly clean environments with no malicious activity may not trigger alerts.
+- **No logs being read**: The acquisition configuration may be missing, disabled, or pointing to empty log sources.
+- **No logs being parsed**: Logs are being read but parsers can't process them due to format mismatches or missing collections.
+- **Scenarios in simulation mode**: Detection scenarios are installed but set to simulation mode, preventing actual alerts.
+- **Legitimate low-activity environment**: In some cases, truly clean environments with no malicious activity may not trigger alerts.
 
 ## How to Diagnose
 

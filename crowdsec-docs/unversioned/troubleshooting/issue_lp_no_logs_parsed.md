@@ -1,6 +1,6 @@
 ---
 title: LP No Logs Parsed
-id: lp_no_logs_parsed
+id: issue_lp_no_logs_parsed
 ---
 
 The **LP No Logs Parsed** issue appears when logs are being successfully read by the Log Processor but none are being parsed correctly in the last 48 hours. This means the acquisition is working, but parsers can't interpret the log format.
@@ -13,20 +13,11 @@ The **LP No Logs Parsed** issue appears when logs are being successfully read by
 
 ## Common Root Causes
 
-### Missing collection or parsers
-The required parser collection for your log format isn't installed.
-
-### Acquisition type mismatch
-The `type:` or `program:` label in acquisition doesn't match any installed parser's FILTER.
-
-### Custom or unexpected log format
-Logs don't match the format expected by the parser (custom format, version mismatch, etc.).
-
-### Parser FILTER not matching
-Parser exists but its FILTER clause doesn't match the acquisition label.
-
-### Grok pattern mismatch
-Log structure has changed and the parser's grok patterns no longer match.
+- **Missing collection or parsers**: The required parser collection for your log format isn't installed.
+- **Acquisition type mismatch**: The `type:` or `program:` label in acquisition doesn't match any installed parser's FILTER.
+- **Custom or unexpected log format**: Logs don't match the format expected by the parser (custom format, version mismatch, etc.).
+- **Parser FILTER not matching**: Parser exists but its FILTER clause doesn't match the acquisition label.
+- **Grok pattern mismatch**: Log structure has changed and the parser's grok patterns no longer match.
 
 ## How to Diagnose
 

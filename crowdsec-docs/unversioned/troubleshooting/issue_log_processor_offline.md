@@ -1,6 +1,6 @@
 ---
 title: Log Processor Offline
-id: log_processor_offline
+id: issue_log_processor_offline
 ---
 
 When the Console or a notification rule reports **Log Processor Offline**, the local agent has not checked in with the Local API (LAPI) for more than 24 hours. The alert is different from **Log Processor No Alert**, which only means logs were parsed but no scenarios fired. Use the sections below to identify why the heartbeat stopped and how to bring the agent back online.
