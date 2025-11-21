@@ -173,4 +173,3 @@ If you need assistance analyzing alert patterns:
 
 - Share anonymized alert samples on [Discourse](https://discourse.crowdsec.net/)
 - Ask on [Discord](https://discord.gg/crowdsec) with your `cscli metrics show scenarios` output
-- Use the [CrowdSec Playground](https://playground.crowdsec.net/) to test scenario behavior

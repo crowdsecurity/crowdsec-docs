@@ -3,55 +3,65 @@ title: RC Integration Offline
 id: issue_rc_integration_offline
 ---
 
-The **RC Integration Offline** (Remediation Component Integration Offline) issue appears when a non-firewall remediation component (bouncer) has not pulled decisions from the Local API for more than 24 hours. This means your web server, reverse proxy, CDN, or other integration is not receiving block/captcha decisions.
+The **RC Integration Offline** (Remediation Component Integration Offline) refers to a Blocklist-Integration of type Remediation Component has not pulled from its endpoint for more than 24 hours.
+
+This issue applies to Remediation Component (aka bouncers) directly connected to a Blocklist integration endpoint (aka Blocklist as a Service).
 
 ## What Triggers This Issue
 
-- **Trigger condition**: No decision pulls for 24 hours
+- **Trigger condition**: No pull for 24 hours
 - **Criticality**: Critical
-- **Impact**: Application-level remediation is not working - threats are not being blocked or challenged
-
-## Common Remediation Components
-
-This issue applies to bouncers such as:
-- **Web servers**: NGINX, Apache, IIS
-- **Reverse proxies**: Traefik, HAProxy, Caddy
-- **Application frameworks**: PHP, Wordpress plugins
-- **Cloud services**: Cloudflare, Akamai connectors
-- **Custom integrations**: Using CrowdSec API
+- **Impact**: blocklist update not retrieved and potential malfunction of the remediation component.
 
 ## Common Root Causes
 
 - **Bouncer service or process stopped**: The bouncer daemon, module, or plugin is not running.
-- **Authentication failure**: API key is invalid, expired, or the bouncer was removed from the Security Engine.
-- **Network connectivity issues**: The bouncer cannot reach the Local API endpoint.
-- **Configuration errors**: Incorrect API URL, missing configuration file, or malformed settings.
-- **Integration not loaded**: Module/plugin is installed but not enabled in the web server or application.
-- **Log rotation or restart issues**: Bouncer lost connection after service restart and didn't reconnect.
+- **Configuration errors**: Incorrect or missing API URL or API Key in bouncer's configuration file, or malformed settings.
+- **Network connectivity issues**: The bouncer cannot reach the endpoint.
+- **Bouncer not loaded**: Bouncer Module/plugin is installed but not enabled or started.
 
 ## How to Diagnose
 
-### Check bouncer status in Security Engine
+Depending on the type of bouncer, you'll need to check its installation status, configuration, and running status.
 
-From the Security Engine (or LAPI host):
+**Types of remediation components:**
+- **Web server modules**: NGINX, Apache plugins
+- **Reverse proxy integrations**: Traefik, HAProxy, Caddy middlewares
+- **Application frameworks**: PHP libraries, WordPress plugins
+- **Cloud service workers**: Cloudflare Workers, Fastly Compute, autonomous update daemons
+- **Custom integrations**: Using the Bouncer SDK
 
+### Check bouncer configuration has proper parameters
+
+For Blocklist-as-a-Service (BLaaS) connectivity, verify the bouncer configuration contains:
+
+1. **api_url**: Must point to your BLaaS endpoint (e.g., `https://admin.api.crowdsec.net/v1/decisions/stream`)
+2. **api_key**: Your BLaaS API key (found in the Console under your Blocklist integration)
+
+**Common configuration file locations:**
+- **NGINX**: `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`
+- **Traefik**: `/etc/crowdsec/bouncers/crowdsec-traefik-bouncer.yaml`
+- **HAProxy**: `/etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf`
+- **Cloudflare**: `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
+- **WordPress**: Admin panel → CrowdSec Settings
+
+Check the configuration file:
 ```bash
-# On host
-sudo cscli bouncers list
+# Example for NGINX bouncer
+sudo cat /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
 
-# Docker
-docker exec crowdsec cscli bouncers list
-
-# Kubernetes
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli bouncers list
+# Look for:
+# API_URL=https://admin.api.crowdsec.net/v1/decisions/stream
+# API_KEY=<your-blaas-api-key>
 ```
 
-**What to look for:**
-- Is your bouncer listed?
-- Check "Last API Pull" timestamp - is it older than 24 hours?
-- Is the bouncer marked as "✓" (valid)?
-
 ### Check bouncer service status
+
+Verify the bouncer is running and hasn't encountered errors.
+
+#### For host-based processes
+
+Check if the bouncer process or service is running:
 
 Depending on your bouncer type:
 
@@ -86,38 +96,41 @@ sudo systemctl status crowdsec-cloudflare-bouncer
 
 ### Check bouncer logs
 
-Log locations vary by bouncer type:
+Bouncer logs locations vary by type:
 
-```bash
-# Web server logs
-sudo tail -50 /var/log/nginx/error.log
-sudo tail -50 /var/log/apache2/error.log
+**Standalone daemon bouncers:**
+- **Systemd services**: `sudo journalctl -u crowdsec-<bouncer-name> -n 50`
+- **Traefik/HAProxy/Cloudflare**: `/var/log/crowdsec-<bouncer-name>.log`
 
-# Standalone bouncer logs
-sudo tail -50 /var/log/crowdsec-<bouncer-name>.log
-sudo journalctl -u crowdsec-<bouncer-name> -n 50
+**Web server module bouncers:**
+- **NGINX**: Check main NGINX error log (`/var/log/nginx/error.log`)
+- **Apache**: Check Apache error log (`/var/log/apache2/error.log`)
 
-# Docker/Kubernetes
-docker logs <bouncer-container>
-kubectl logs <bouncer-pod> -n <namespace>
-```
+**Application framework bouncers:**
+- **WordPress**: WordPress debug log or plugin settings page
+- **PHP**: Application logs or web server error logs
+
+**Cloud service workers:**
+- **Cloudflare Workers**: Cloudflare dashboard → Workers → Logs
+- **Fastly Compute**: Fastly dashboard → Real-time logs
 
 **Look for errors like:**
-- `connection refused` - API unreachable
-- `401 Unauthorized` or `403 Forbidden` - Authentication failed
-- `module not loaded` - Integration not enabled
-- `invalid configuration` - Config file issues
+- `connection refused` or `timeout` - API endpoint unreachable
+- `401 Unauthorized` or `403 Forbidden` - API key invalid or missing
+- `module not loaded` - Integration not enabled in web server
+- `invalid configuration` - Config file syntax or parameter errors
+- `rate limit exceeded` - Cloud service plan limits reached
 
-### Test connectivity to Local API
+### Test connectivity to the endpoint
 
 From the bouncer host:
 
 ```bash
 # Test network connectivity
-curl -I http://<lapi-host>:8080/
+curl -I https://<endpoint_url>/
 
 # Test with API key
-curl -H "X-Api-Key: <your-api-key>" http://<lapi-host>:8080/v1/decisions
+curl -H "X-Api-Key: <endpoint_url>" https://<endpoint_url> 
 ```
 
 ## How to Resolve
@@ -132,9 +145,6 @@ sudo systemctl restart nginx
 
 # Apache
 sudo systemctl restart apache2
-
-# IIS (Windows)
-iisreset
 ```
 
 #### For standalone daemons
@@ -144,69 +154,63 @@ sudo systemctl restart crowdsec-<bouncer-name>
 sudo systemctl enable crowdsec-<bouncer-name>
 ```
 
-### Re-register the bouncer
+### Update bouncer configuration
 
-If the API key is invalid:
+If the API URL or API key is incorrect, update the bouncer's configuration file:
 
-#### Generate new API key on Security Engine
-
+**NGINX bouncer** (`/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`):
 ```bash
-# On LAPI host
-sudo cscli bouncers add my-nginx-bouncer
-
-# Copy the generated API key
+API_URL=https://admin.api.crowdsec.net/v1/decisions/stream
+API_KEY=<your-blaas-api-key>
+UPDATE_FREQUENCY=10s
 ```
 
-#### Update bouncer configuration
-
-Configuration file locations vary:
-
-**NGINX bouncer:**
-```bash
-# Edit config
-sudo nano /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
-
-# Update api_key line
-API_KEY=<paste-new-key>
+**Traefik bouncer** (`/etc/crowdsec/bouncers/crowdsec-traefik-bouncer.yaml`):
+```yaml
+crowdsec_url: https://admin.api.crowdsec.net/v1/decisions/stream
+crowdsec_api_key: <your-blaas-api-key>
+update_frequency: 10s
 ```
 
-**Traefik bouncer:**
+**HAProxy bouncer** (`/etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf`):
 ```bash
-# Edit config
-sudo nano /etc/crowdsec/bouncers/crowdsec-traefik-bouncer.yaml
-
-# Update api_key field
-crowdsec_lapi_key: <paste-new-key>
+CROWDSEC_URL=https://admin.api.crowdsec.net/v1/decisions/stream
+CROWDSEC_API_KEY=<your-blaas-api-key>
 ```
 
-**Cloudflare bouncer:**
-```bash
-# Edit config
-sudo nano /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml
-
-# Update api_key
-crowdsec_lapi_key: <paste-new-key>
-```
-
-#### Restart after updating config
-
-```bash
-sudo systemctl restart <bouncer-service>
-```
+After updating, restart the bouncer service.
 
 ### Fix connectivity issues
 
-If bouncer is on a different host:
+If the bouncer cannot reach the BLaaS endpoint:
 
-```bash
-# Test connectivity
-nc -zv <lapi-host> 8080
+1. **Test network connectivity:**
+   ```bash
+   curl -I https://admin.api.crowdsec.net/
+   ```
 
-# Check API URL in bouncer config
-# Should be: http://<lapi-ip>:8080/
+2. **Check firewall rules:**
+   ```bash
+   # Ensure outbound HTTPS (443) is allowed
+   sudo ufw status
+   # or
+   sudo firewall-cmd --list-all
+   ```
 
-# Update bouncer config with correct URL
-```
+3. **Test with API key:**
+   ```bash
+   curl -H "X-Api-Key: <your-api-key>" \
+     https://admin.api.crowdsec.net/v1/decisions/stream
+   ```
+
+   Should return `{"new":null,"deleted":null}` or similar if authenticated.
+
+4. **Check proxy settings** if using a corporate proxy - configure in bouncer's environment or config file.
+
+5. **For cloud workers (Cloudflare/Fastly):**
+   - Verify the worker is deployed and running
+   - Check if you've hit rate limits on your plan
+   - Review worker logs for errors
 
 ### Enable the module/plugin
 
@@ -222,7 +226,7 @@ load_module modules/ngx_http_crowdsec_module.so;
 http {
     # CrowdSec configuration
     crowdsec_enabled on;
-    crowdsec_api_url http://127.0.0.1:8080;
+    crowdsec_api_url https://<endpoint_url>;
     # ...
 }
 ```
@@ -241,80 +245,31 @@ sudo a2enmod crowdsec
 sudo systemctl restart apache2
 ```
 
-#### WordPress
-
-Activate the plugin via WordPress admin panel or:
-```bash
-wp plugin activate crowdsec  # if using WP-CLI
-```
-
-### Fix configuration errors
-
-Validate configuration syntax:
-
-```bash
-# Web servers
-sudo nginx -t
-sudo apache2ctl -t
-
-# YAML-based bouncers
-sudo cat /etc/crowdsec/bouncers/<bouncer-config>.yaml
-# Check for YAML syntax errors
-```
-
-**Common config issues:**
-- Missing or incorrect `api_url` / `api_key`
-- Wrong file permissions (must be readable by web server user)
-- Incorrect YAML indentation
-- Missing trailing `/` in API URL
-
-### Check file permissions
-
-Bouncer config files must be readable:
-
-```bash
-# Check permissions
-ls -la /etc/crowdsec/bouncers/
-
-# Fix if needed
-sudo chmod 640 /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
-sudo chown root:www-data /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
-```
-
 ## Verify Resolution
 
 After making changes:
 
-1. **Check bouncer service:**
+1. **Wait 1-2 minutes** for the bouncer to attempt its next pull from the endpoint
+
+2. **Check in the Console:**
+   - Navigate to your Blocklist integration
+   - Look at the integration tile
+   - Verify the "Last Pull" timestamp has updated to a recent time (within last few minutes)
+   - The offline alert should clear automatically
+
+3. **Verify bouncer is pulling decisions:**
    ```bash
-   sudo systemctl status <bouncer-service>
-   # or for web servers
-   sudo systemctl status nginx
+   # For standalone daemons, check logs
+   sudo journalctl -u crowdsec-<bouncer-name> -n 20
+
+   # Look for successful pull messages like:
+   # "Successfully pulled X decisions"
+   # "Decisions updated"
    ```
 
-2. **Verify API pulls are resuming:**
-   ```bash
-   sudo cscli bouncers list
-   ```
-   "Last API Pull" should update within seconds/minutes
-
-3. **Check bouncer logs for success:**
-   ```bash
-   sudo tail -20 /var/log/<bouncer>.log
-   ```
-   Should see successful API connection messages
-
-4. **Test remediation:**
-   Add a test decision:
-   ```bash
-   sudo cscli decisions add --ip 192.0.2.1 --duration 5m --reason "test"
-   ```
-
-   Try accessing your service from that IP (or simulate):
-   ```bash
-   curl -H "X-Forwarded-For: 192.0.2.1" http://your-service/
-   ```
-   Should receive 403 Forbidden or a captcha challenge
+4. **Test that blocking is working** (optional but recommended):
+   - Check bouncer-specific documentation for test procedures
+   - For web servers, you can test by temporarily adding a test decision
 
 ## Bouncer-Specific Documentation
 
@@ -324,26 +279,6 @@ After making changes:
 - [Cloudflare Bouncer](/u/bouncers/cloudflare)
 - [WordPress Plugin](/u/bouncers/wordpress)
 - [All Bouncers](/u/bouncers/intro)
-
-## Kubernetes-Specific Notes
-
-For Kubernetes ingress controllers:
-
-```bash
-# Check ingress controller is running
-kubectl get pods -n ingress-nginx
-
-# Check CrowdSec integration in ingress
-kubectl describe ingress <your-ingress> -n <namespace>
-
-# Check controller logs
-kubectl logs -n ingress-nginx <controller-pod> --tail=50
-```
-
-Ensure the bouncer is registered and pulling decisions:
-```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli bouncers list
-```
 
 ## Related Issues
 

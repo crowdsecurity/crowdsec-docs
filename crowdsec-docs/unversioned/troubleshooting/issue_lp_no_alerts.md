@@ -165,4 +165,3 @@ If you've verified logs are being read and parsed but still see no alerts:
 
 - Share your setup details on [Discourse](https://discourse.crowdsec.net/)
 - Ask on [Discord](https://discord.gg/crowdsec) with `cscli metrics` output
-- Test your log samples with [CrowdSec Playground](https://playground.crowdsec.net/)

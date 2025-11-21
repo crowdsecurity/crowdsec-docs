@@ -104,3 +104,10 @@ After restarting, re-run `sudo cscli console status` to ensure the heartbeat is 
 - Investigate persistent database or authentication errors using `sudo cscli support dump`, then consult the [Security Engine troubleshooting guide](/u/troubleshooting/security_engine) if issues remain.
 
 Once the engine resumes contact, the Console clears the **Security Engine Offline** alert during the next poll. Consider enabling the **Security Engine Offline** notification in your preferred integration so future outages are caught quickly.
+
+## Getting Help
+
+If you still don't manage to resume your Security Engine hearthbeat towards CrowdSec Console:
+
+- Check [Discourse](https://discourse.crowdsec.net/) for similar cases
+- Ask on [Discord](https://discord.gg/crowdsec) with your `sudo cscli support dump` output

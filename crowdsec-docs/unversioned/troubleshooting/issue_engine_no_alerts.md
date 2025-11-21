@@ -179,4 +179,3 @@ If you've verified logs are being read and parsed correctly but still see no ale
 
 - Check [Discourse](https://discourse.crowdsec.net/) for similar cases
 - Ask on [Discord](https://discord.gg/crowdsec) with your `cscli metrics` output
-- Review your scenarios and log samples using [CrowdSec Playground](https://playground.crowdsec.net/)
