@@ -166,6 +166,113 @@ helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
   -f crowdsec-ingress-values.yaml
 ```
 
+<details>
+<summary>CrowdSec Ingress-NGINX Remediation Configuration Explained</summary>
+
+This `values.yaml` snippet integrates the CrowdSec remediation (Lua bouncer)
+into the `ingress-nginx` controller by injecting the Lua plugin, generating its
+configuration, and enabling it inside NGINX.
+
+### Controller Image Override
+```yaml
+controller:
+  image:
+    registry: docker.io
+    image: crowdsecurity/controller
+    tag: v1.13.2
+    digest: sha256:...
+```
+
+The controller image is replaced with a CrowdSec-enabled build that includes the
+required Lua integration points.
+
+### Shared Volume for the Plugin
+
+```yaml
+extraVolumes:
+  - name: crowdsec-bouncer-plugin
+    emptyDir: {}
+```
+
+An emptyDir volume is used to hold the Lua bouncer plugin. It will be filled by
+an initContainer and mounted into the main controller.
+
+### InitContainer: Plugin Fetch and Configuration
+
+extraInitContainers:
+  - name: init-clone-crowdsec-bouncer
+    image: crowdsecurity/lua-bouncer-plugin:latest
+    env:
+      - name: API_URL
+        value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080"
+      - name: API_KEY
+        value: privateKey-foo
+      - name: BOUNCER_CONFIG
+        value: "/crowdsec/crowdsec-bouncer.conf"
+      - name: APPSEC_URL
+        value: "http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422"
+      - name: APPSEC_FAILURE_ACTION
+        value: "ban"
+      - name: APPSEC_CONNECT_TIMEOUT
+        value: "100"
+      - name: APPSEC_SEND_TIMEOUT
+        value: "100"
+      - name: APPSEC_PROCESS_TIMEOUT
+        value: "1000"
+      - name: ALWAYS_SEND_TO_APPSEC
+        value: "false"
+    command:
+      - sh
+      - -c
+      - |
+        sh /docker_start.sh
+        mkdir -p /lua_plugins/crowdsec/
+        cp -R /crowdsec/* /lua_plugins/crowdsec/
+    volumeMounts:
+      - name: crowdsec-bouncer-plugin
+        mountPath: /lua_plugins
+
+The initContainer generates the plugin configuration (crowdsec-bouncer.conf)
+from environment variables and copies the Lua plugin files into the shared
+volume so the main controller can load them.
+
+### Mounting the Plugin in NGINX
+
+```yaml
+extraVolumeMounts:
+  - name: crowdsec-bouncer-plugin
+    mountPath: /etc/nginx/lua/plugins/crowdsec
+    subPath: crowdsec
+```
+
+This mounts the plugin files inside the directory where ingress-nginx expects
+Lua plugins.
+
+### NGINX Configuration to Enable the Plugin
+
+```
+config:
+  plugins: "crowdsec"
+  lua-shared-dicts: "crowdsec_cache: 50m"
+  server-snippet: |
+    lua_ssl_trusted_certificate "/etc/ssl/certs/ca-certificates.crt"
+    resolver local=on ipv6=off;
+```
+
+This snippet enables the crowdsec Lua plugin, aAllocates shared memory for
+caching LAPI/AppSec results and ensures Lua HTTPS validation and DNS resolution
+work properly.
+
+### Summary
+
+This configuration:
+* Injects the CrowdSec Lua bouncer plugin into ingress-nginx.
+* Generates its configuration via an initContainer.
+* Mounts it into NGINX so it is executed during request processing.
+* Enables both LAPI enforcement and optional AppSec forwarding depending on settings.
+</details> 
+
+
 ::: note
 After the rollout, you can optionally check that the right container is deployed
 :::
@@ -175,7 +282,7 @@ kubectl -n ingress-nginx exec -ti <ingress-pod-name> -- find /etc/nginx/lua/plug
 ```
 This should give you a bunch of crowdsec lua files.
 
-:::
+
 ## Next steps
 
 - Add the [OWASP CRS](/appsec/advanced_deployments.mdx) to extend detection coverage.
