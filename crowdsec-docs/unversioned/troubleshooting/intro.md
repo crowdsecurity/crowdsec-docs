@@ -93,6 +93,5 @@ When using `cscli` to list your parsers, scenarios and collections, some might a
 See [CAPI documentation](/docs/next/central_api/intro).
 
 ### stack Health issues list
-YEP:  
 
-<div data-extract-copy="stackhealth_issues_list"></div>
+<div data-extract-copy="console_issues:stackhealth_issues_list"></div>

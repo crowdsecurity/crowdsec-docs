@@ -6,7 +6,7 @@ import { themes } from "prism-react-renderer";
 import tailwindPlugin from "./plugins/tailwind-config";
 import { ctiApiSidebar, guidesSideBar, remediationSideBar } from "./sidebarsUnversioned";
 
-const extractPlugin = require('./plugins/remark-extract/extract-plugin'); 
+const extractPreprocessor = require("./plugins/extract-preprocessor");
 
 const generateCurrentAndNextRedirects = (s) => [
 	{
@@ -222,6 +222,7 @@ const config: Config = {
 			admonitions: true,
 			headingIds: true,
 		},
+		preprocessor:extractPreprocessor
 	},
 	stylesheets: [
 		{
@@ -292,10 +293,7 @@ const config: Config = {
 						current: {
 							path: "/next",
 						},
-					},
-					remarkPlugins: [
-						[extractPlugin, {paths: ['./unversioned']}],
-					]
+					}
 				},
 				blog: {
 					showReadingTime: true,
