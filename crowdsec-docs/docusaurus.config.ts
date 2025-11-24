@@ -6,6 +6,8 @@ import { themes } from "prism-react-renderer";
 import tailwindPlugin from "./plugins/tailwind-config";
 import { ctiApiSidebar, guidesSideBar, remediationSideBar } from "./sidebarsUnversioned";
 
+const extractPreprocessor = require("./plugins/extract-preprocessor");
+
 const generateCurrentAndNextRedirects = (s) => [
 	{
 		from: `/docs/${s}`,
@@ -220,6 +222,7 @@ const config: Config = {
 			admonitions: true,
 			headingIds: true,
 		},
+		preprocessor:extractPreprocessor
 	},
 	stylesheets: [
 		{
@@ -290,7 +293,7 @@ const config: Config = {
 						current: {
 							path: "/next",
 						},
-					},
+					}
 				},
 				blog: {
 					showReadingTime: true,
@@ -317,7 +320,7 @@ const config: Config = {
 		["./plugins/gtag/index.ts", { trackingID: "G-0TFBMNTDFQ" }],
 		["@docusaurus/plugin-client-redirects", { redirects }],
 		tailwindPlugin,
-	],
+	]
 };
 
 export default config;

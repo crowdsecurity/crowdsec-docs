@@ -21,23 +21,23 @@ If you received a health check alert from the CrowdSec Console, check out the [*
 
 ## Troubleshooting by Topic
 
-* [Security Engine Troubleshooting](/u/troubleshooting/security_engine.mdx)
-* [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components.mdx)
-* [CTI Troubleshooting](/u/troubleshooting/cti.mdx)
+* [Security Engine Troubleshooting](/u/troubleshooting/security_engine)
+* [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components)
+* [CTI Troubleshooting](/u/troubleshooting/cti)
 
 ## Troubleshooting by Issue
 
 Individual troubleshooting guides for specific Console alerts:
 
-* [Security Engine Offline](/u/troubleshooting/security_engine_offline) - Security Engine not reporting to Console
-* [Engine No Alerts](/u/troubleshooting/engine_no_alerts) - No alerts generated in 48 hours
-* [Engine Too Many Alerts](/u/troubleshooting/engine_too_many_alerts) - Abnormally high alert volume
-* [Log Processor Offline](/u/troubleshooting/log_processor_offline) - Log Processor not checking in
-* [LP No Alerts](/u/troubleshooting/lp_no_alerts) - Log Processor not generating alerts
-* [LP No Logs Read](/u/troubleshooting/lp_no_logs_read) - No logs being acquired
-* [LP No Logs Parsed](/u/troubleshooting/lp_no_logs_parsed) - Logs read but not parsed
-* [Firewall Integration Offline](/u/troubleshooting/fw_integration_offline) - Firewall bouncer not pulling decisions
-* [RC Integration Offline](/u/troubleshooting/rc_integration_offline) - Remediation component not pulling decisions
+* [Security Engine Offline](/u/troubleshooting/issue_security_engine_offline) - Security Engine not reporting to Console
+* [Engine No Alerts](/u/troubleshooting/issue_engine_no_alerts) - No alerts generated in 48 hours
+* [Engine Too Many Alerts](/u/troubleshooting/issue_engine_too_many_alerts) - Abnormally high alert volume
+* [Log Processor Offline](/u/troubleshooting/issue_log_processor_offline) - Log Processor not checking in
+* [LP No Alerts](/u/troubleshooting/issue_lp_no_alerts) - Log Processor not generating alerts
+* [LP No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - No logs being acquired
+* [LP No Logs Parsed](/u/troubleshooting/issue_lp_no_logs_parsed) - Logs read but not parsed
+* [Firewall Integration Offline](/u/troubleshooting/issue_fw_integration_offline) - Firewall bouncer not pulling decisions
+* [RC Integration Offline](/u/troubleshooting/issue_rc_integration_offline) - Remediation component not pulling decisions
 
 ## Community support
 
@@ -91,3 +91,7 @@ When using `cscli` to list your parsers, scenarios and collections, some might a
 ### Which information is sent to your services ?
 
 See [CAPI documentation](/docs/next/central_api/intro).
+
+### stack Health issues list
+
+<div data-extract-copy="console_issues:stackhealth_issues_list"></div>

@@ -14,6 +14,7 @@ This page lists all possible health check issues, their trigger conditions, and 
 - 🌟 **Bonus** : Optimization advises and upper tier recommendation with great return on value *(comming in next iterations of Stack Health)*
 
 ## Health Check Issues Overview
+<div data-extract="stackhealth_issues_list">
 
 | Issue | Criticality | Summary | Resolution |
 |-------|-------------|---------|------------|
@@ -27,9 +28,10 @@ This page lists all possible health check issues, their trigger conditions, and 
 | **Firewall Integration Offline** | 🔥 Critical | Firewall has not pulled from BLaaS endpoint for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_fw_integration_offline) |
 | **RC Integration Offline** | 🔥 Critical | Remediation Component has not pulled from endpoint for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_rc_integration_offline) |
 
+</div>
 ## Issue Dependencies
 
-Some issues are related and share common root causes:
+Some issues are related and share common root causes: 
 
 - **Engine No Alerts** may be caused by:
   - LP No Logs Read
