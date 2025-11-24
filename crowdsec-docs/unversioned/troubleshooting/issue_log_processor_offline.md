@@ -217,6 +217,8 @@ To identify and clean up stale machines:
 To prevent accumulation of stale machines in Kubernetes, consider using [auto-registration tokens](/u/user_guides/machines_mgmt#machine-auto-validation) which handle pod lifecycle automatically.
 :::
 
+Once pruned, the issues concerning those pruned LPs will disappear on next SE info update *(within 30minutes)*.
+
 ### If the central LAPI is unreachable from the agent
 
 Open the required port on firewalls or security groups:

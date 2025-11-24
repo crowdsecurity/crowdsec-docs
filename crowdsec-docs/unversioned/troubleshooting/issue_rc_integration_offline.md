@@ -273,6 +273,8 @@ After making changes:
    - Check bouncer-specific documentation for test procedures
    - For web servers, you can test by temporarily adding a test decision
 
+Once fixed, the issues concerning those RC will disappear on next SE info update *(within 30minutes)*.
+
 ## Bouncer-Specific Documentation
 
 - [NGINX Bouncer](/u/bouncers/nginx)
