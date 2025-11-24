@@ -3,20 +3,20 @@ title: Log Processor Offline
 id: issue_log_processor_offline
 ---
 
-When the Console or a notification rule reports **Log Processor Offline**, the local agent has not checked in with the Local API (LAPI) for more than 24 hours. The alert is different from **Log Processor No Alert**, which only means logs were parsed but no scenarios fired. Use the sections below to identify why the heartbeat stopped and how to bring the agent back online.
+When a Log Processor (Security Engine used to read log in a distributed setup) has not checked in with the Local API (LAPI) of the central Security Engine for more than 24 hours.
 
 ## What Triggers This Issue
 
 - **Trigger condition**: Log Processor has not checked in with Local API for more than 24 hours
 - **Criticality**: 🔥 Critical
-- **Impact**: The agent is not communicating with the Local API - no alerts from this agent will reach the Console
+- **Impact**: Services supposed to be watched by this LP are not anymore - potential threats undetected
 
 ## Common Root Causes
 
-- **Service stopped or stuck**: The crowdsec service has crashed, hung, or was manually stopped on the agent host.
-- **Machine not validated or credentials revoked**: The agent's credentials are pending validation, were removed from the LAPI, or the credentials file is missing/corrupt.
+- **Service stopped or stuck**: The crowdsec service of this LP has crashed, hung, or was manually stopped on the agent host.
+- **Machine not validated or credentials revoked**: The agent's credentials are pending validation, were removed from the central LAPI, or the credentials file is missing/corrupt.
 - **Local API unreachable from agent**: Network issues, firewall rules, or configuration errors prevent the agent from connecting to the LAPI endpoint.
-- **Local API service unavailable**: The LAPI service itself is down or not responding, affecting all agents trying to connect.
+- **Local API service unavailable**: The central LAPI service itself is down or not responding, affecting all agents trying to connect *(would have triggered an other issue)*.
 
 ## How to Diagnose
 
@@ -217,7 +217,7 @@ To identify and clean up stale machines:
 To prevent accumulation of stale machines in Kubernetes, consider using [auto-registration tokens](/u/user_guides/machines_mgmt#machine-auto-validation) which handle pod lifecycle automatically.
 :::
 
-### If the Local API is unreachable from the agent
+### If the central LAPI is unreachable from the agent
 
 Open the required port on firewalls or security groups:
 

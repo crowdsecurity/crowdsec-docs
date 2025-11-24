@@ -14,9 +14,10 @@ The **LP No Logs Read** issue appears when a Log Processor is running but hasn't
 ## Common Root Causes
 
 - **Missing acquisition configuration**: No acquisition files exist, or they're empty.
-- **Incorrect log file paths**: Acquisition configuration points to paths that don't exist or have moved.
+- **Incorrect Acquisition file configuration**: Acquisition configuration points to paths that don't exist or have moved.
 - **File permission issues**: CrowdSec doesn't have read access to the log files.
 - **Log files are empty or not being written**: The services being monitored aren't generating logs.
+- **Incorrect Acquisition endpoint configuration**: Error in endpoint config, for acquisition types listening for incoming data (httpLogs, syslog,...)
 - **Acquisition type mismatch**: Wrong datasource type configured (e.g., using `file` instead of `journald`).
 - **Container/Kubernetes volume issues**: In containerized deployments, logs aren't mounted or accessible to the CrowdSec container.
 

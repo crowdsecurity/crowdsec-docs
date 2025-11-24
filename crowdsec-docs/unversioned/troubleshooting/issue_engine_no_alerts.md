@@ -3,7 +3,7 @@ title: Engine No Alerts
 id: issue_engine_no_alerts
 ---
 
-The **Engine No Alerts** issue appears when your Security Engine has been running but hasn't generated any alerts in the last **48 hours**. This usually indicates that logs aren't being processed properly or scenarios aren't matching any threats.
+The **Engine No Alerts** issue appears when your Security Engine has been running but hasn't generated any alerts in the last **48 hours**.
 
 ## What Triggers This Issue
 

@@ -3,20 +3,20 @@ title: Engine Too Many Alerts
 id: issue_engine_too_many_alerts
 ---
 
-The **Engine Too Many Alerts** issue appears when your Security Engine generates an abnormally high volume of alerts—more than 250,000 in a 6-hour period. This usually indicates a misconfigured scenario, false positives, or an ongoing large-scale attack.
+The **Engine Too Many Alerts** issue appears when your Security Engine generates an abnormally high volume of alerts (more than 250,000 in a 6-hour period). This usually indicates a misconfigured scenario, false positives, or an ongoing large-scale attack.
 
 ## What Triggers This Issue
 
 - **Trigger condition**: More than 250,000 alerts in 6 hours
 - **Criticality**: High
-- **Impact**: May indicate false positives, performance issues, or a real attack
+- **Impact**: May indicate misconfiguration, performance issues, or a real large scale attack.
 
 ## Common Root Causes
 
 - **Misconfigured or overly sensitive scenario**: A scenario with thresholds set too low or matching too broadly can trigger excessive alerts.
 - **Log duplication**: The same log file is being read multiple times due to acquisition misconfiguration.
-- **Actual large-scale attack**: A genuine distributed attack (DDoS, brute force campaign) targeting your infrastructure.
 - **Parser creating duplicate events**: A parser issue causing the same log line to generate multiple events.
+- **Actual large-scale attack**: A genuine distributed attack (DDoS, brute force campaign) targeting your infrastructure.
 
 ## How to Diagnose
 
