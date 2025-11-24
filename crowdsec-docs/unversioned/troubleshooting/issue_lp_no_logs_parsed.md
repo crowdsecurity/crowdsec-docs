@@ -14,10 +14,11 @@ The **LP No Logs Parsed** issue appears when logs are being successfully read by
 ## Common Root Causes
 
 - **Missing collection or parsers**: The required parser collection for your log format isn't installed.
-- **Acquisition type mismatch**: The `type:` or `program:` label in acquisition doesn't match any installed parser's FILTER.
 - **Custom or unexpected log format**: Logs don't match the format expected by the parser (custom format, version mismatch, etc.).
+
+For more advanced cases (often for custom made parsers):
+- **Acquisition type mismatch**: The `type:` or `program:` label in acquisition doesn't match any installed parser's FILTER.
 - **Parser FILTER not matching**: Parser exists but its FILTER clause doesn't match the acquisition label.
-- **Grok pattern mismatch**: Log structure has changed and the parser's grok patterns no longer match.
 
 ## How to Diagnose
 
@@ -153,7 +154,7 @@ sudo systemctl restart crowdsec
 
 ### Handle custom log formats
 
-If you use a custom log format that doesn't match standard parsers:
+If you are using non-default log formats for your services or if they are relayed by a 3rd party service they may be changed by this proxy service.
 
 #### Option 1: Adjust log format to match parser
 **NGINX example:**
@@ -166,10 +167,8 @@ access_log /var/log/nginx/access.log combined;
 ```
 
 #### Option 2: Create a custom parser
-1. Use the [CrowdSec Playground](https://playground.crowdsec.net/) to develop and test your parser
-2. Create a custom parser in `/etc/crowdsec/parsers/s01-parse/custom-parser.yaml`
-3. Use grok patterns to match your format
-4. See [Parser Documentation](/docs/log_processor/parsers/format) for details
+1. Follow the [Create parsers doc](/log_processor/parsers/create) to develop and test your parser
+2. Get help from our [Discord](https://discord.gg/crowdsec) community is you hit roadblocks.
 
 **Simple custom parser example:**
 ```yaml

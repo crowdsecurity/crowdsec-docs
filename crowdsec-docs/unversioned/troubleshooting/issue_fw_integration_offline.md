@@ -3,295 +3,206 @@ title: Firewall Integration Offline
 id: issue_fw_integration_offline
 ---
 
-The **Firewall Integration Offline** issue appears when a firewall-based remediation component (bouncer) has not pulled decisions from the Local API for more than 24 hours. This means blocked IPs are not being enforced at the firewall level.
+The **Firewall Integration Offline** issue appears when a firewall that is configured to pull blocklists directly from CrowdSec's Blocklist-as-a-Service (BLaaS) endpoint has not pulled the list for more than 24 hours. This means your firewall is no longer receiving the latest threat intelligence and blocked IPs.
 
 ## What Triggers This Issue
 
-- **Trigger condition**: No decision pulls for 24 hours
-- **Criticality**: Critical
-- **Impact**: Firewall-based blocking is not working - detected threats are not being blocked
+- **Trigger condition**: No pull from BLaaS endpoint for 24 hours
+- **Criticality**: 🔥 Critical
+- **Impact**: Firewall blocklist is not being updated - new threats are not being blocked - Firewall potentially malfunctioning.
 
 ## Common Root Causes
 
-- **Bouncer service stopped**: The firewall bouncer systemd service or process is not running.
-- **Authentication failure**: API key is invalid, expired, or the bouncer was removed from the Security Engine.
-- **Network connectivity issues**: The bouncer cannot reach the Local API endpoint (different host, port closed, etc.).
-- **Configuration errors**: Incorrect API URL, missing configuration file, or malformed settings.
-- **Bouncer installation issue**: The bouncer may not be properly installed or registered.
+- **Firewall rule disabled or removed**: The firewall rule that pulls from external blocklists no longer exists or has been disabled.
+- **BLaaS credentials invalid**: The basic auth credentials configured in the firewall for accessing the BLaaS endpoint is incorrect, expired, or has been regenerated.
+- **Network connectivity issues**: The firewall cannot reach the BLaaS endpoint due to network problems, DNS issues, or routing failures.
+- **Firewall offline**: The firewall itself is powered off, unreachable, or not processing rules.
 
 ## How to Diagnose
 
-### Check bouncer status in Security Engine
+### Check if the firewall is running and has access to BLaaS endpoint
 
-From the Security Engine (or LAPI host):
+// a few lines describe generic ways for them to check their firewall is workin and can ping https://admin.api.crowdsec.net
 
-```bash
-# On host
-sudo cscli bouncers list
+### Check if the firewall rule for external blocklist still exists
 
-# Docker
-docker exec crowdsec cscli bouncers list
+Access your firewall's management interface and verify:
 
-# Kubernetes
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli bouncers list
-```
+1. **Navigate to the external blocklist configuration section** (varies by vendor):
+   - FortiGate: Security Fabric → External Connectors → Threat Feeds
+   - Palo Alto: Objects → External Dynamic Lists
+   - ...
 
-**What to look for:**
-- Is your firewall bouncer listed?
-- Check the "Last API Pull" timestamp - is it older than 24 hours?
-- Is the bouncer marked as "✓" (valid)?
+2. **Verify the rule exists and is valid:**
+   - Is the CrowdSec blocklist rule present?
+   - Is it enabled/active?
+   - Check the URL configured - should point to `https://admin.api.crowdsec.net/...`
+   - Some firewalls have a "test" function for external feeds access
 
-### Check bouncer service status
+### Check BLaaS endpoint credentials
 
-On the host where the firewall bouncer is installed:
+Verify the basic auth credentials configured in your firewall matches the one from the Console:
 
-```bash
-# For systemd-based bouncers
-sudo systemctl status crowdsec-firewall-bouncer
+**Get the correct basic auth credentials from CrowdSec Console:**
+If you lost the credentials you can regenerate them:
+   - Navigate to **Blocklists** → **Integrations**: select your firewall integration
+   - Click **Configuration** → **Refresh Credentials** if you suspect the key is wrong (this will generate a new one)
+   - Copy the displayed API key or authentication header
+**Check authentication method:**
+   - Some firewalls use HTTP headers (`X-Api-Key: <key>`)
+   - Others may use URL parameters (`?api_key=<key>`)
+   - Some may offer basic auth forms that are not functional *(Checkpoint among other)*, you can put the credentials directly into the URL: `https://<username>:<password>@https://admin.api.crowdsec.net/...`
 
-# Or for other firewall bouncers
-sudo systemctl status cs-firewall-bouncer
-```
+### Test connectivity to BLaaS endpoint
 
-**Common firewall bouncers:**
-- `crowdsec-firewall-bouncer` - iptables/nftables bouncer
-- `cs-firewall-bouncer` - (legacy name)
-- Platform-specific: check your installation method
-
-### Check bouncer logs
-
-```bash
-# Linux
-sudo tail -50 /var/log/crowdsec-firewall-bouncer.log
-
-# Or check journald
-sudo journalctl -u crowdsec-firewall-bouncer -n 50
-
-# FreeBSD (OPNsense/pfSense)
-sudo tail -50 /var/log/crowdsec/crowdsec-firewall-bouncer.log
-```
-
-**Look for errors like:**
-- `connection refused` - API is unreachable
-- `401 Unauthorized` or `403 Forbidden` - Authentication failed
-- `invalid configuration` - Config file issues
-- `cannot bind` or `permission denied` - Firewall permission issues
-
-### Test connectivity to Local API
-
-From the bouncer host:
+From a host on the same network as your firewall (or from the firewall's CLI if available):
 
 ```bash
 # Test network connectivity
-curl -I http://<lapi-host>:8080/
+curl -I https://admin.api.crowdsec.net/
 
-# Test with API key
-curl -H "X-Api-Key: <your-api-key>" http://<lapi-host>:8080/v1/decisions
+# Test with Credentials
+curl -I https://<username>:<password>admin.api.crowdsec.net/v1/integrations/<yourIntegId>/content
+
+# Expected response: JSON with decisions or empty list
+# Should NOT return 401 Unauthorized or 403 Forbidden
 ```
+
+If you get connection errors:
+- DNS resolution failures - check DNS configuration
+- Connection timeouts - firewall outbound rules may be blocking
+- SSL/TLS errors - firewall may need updated root certificates
+
+### Check firewall logs
+
+Review your firewall's logs for errors related to external blocklist updates:
+
+**Common log locations by vendor:**
+*Path to logs may vary depending on your firewall version, check your documentation.*
+- **FortiGate**: Log & Report → System Events → filter for "Threat Feed"
+- **Palo Alto**: Monitor → System Logs → filter for "External Dynamic List"
+- **pfSense**: Status → System Logs → Firewall
+- **OPNsense**: System → Log Files → Firewall
+
+**Look for error messages like:**
+- `failed to download` - connectivity issue
+- `authentication failed` or `401` - API key invalid
+- `SSL certificate verification failed` - certificate trust issue
+- `timeout` - network connectivity or endpoint unreachable
+- `invalid format` - blocklist format mismatch
 
 ## How to Resolve
 
-### Restart the bouncer service
+### If the firewall rule is disabled or missing
 
-```bash
-# Restart the service
-sudo systemctl restart crowdsec-firewall-bouncer
+Re-enable or recreate the external blocklist rule:
 
-# Enable it to start on boot
-sudo systemctl enable crowdsec-firewall-bouncer
+### If BLaaS credentials are invalid
 
-# Check status
-sudo systemctl status crowdsec-firewall-bouncer
-```
+Update the API key in your firewall configuration:
 
-### Re-register the bouncer
+1. **Regenerate API key in Console** (if needed):
+   - Navigate to **Integrations** → **Blocklists** → select firewall integration
+   - Click **Refresh Credentials**
+   - Copy the new API key
 
-If the API key is invalid or missing:
+2. **Update firewall configuration** with the new API key:
+   - Edit the external blocklist rule
+   - Update the authentication header or API key field
+   - Save and apply changes
 
-#### Generate a new API key on the Security Engine
+3. **Trigger manual update** to test:
+   - Most firewalls have a "Refresh Now" or "Update" button
+   - Click it to force an immediate pull from BLaaS
+   - Check logs for success or errors
 
-```bash
-# On Security Engine / LAPI host
-sudo cscli bouncers add firewall-bouncer-01
+### If network connectivity is failing
 
-# Copy the generated API key
-```
+Fix network issues preventing firewall from reaching BLaaS:
 
-#### Update bouncer configuration
+1. **Check firewall outbound rules:**
+   - Ensure firewall allows outbound HTTPS (port 443) to `admin.api.crowdsec.net`
+   - Verify no egress filtering is blocking the connection
+   - Check if firewall's management interface has internet access
 
-Edit the bouncer configuration file (usually `/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml`):
+2. **Verify DNS resolution:**
+   ```bash
+   # From firewall CLI or nearby host
+   nslookup admin.api.crowdsec.net
+   dig admin.api.crowdsec.net
+   ```
 
-```yaml
-api_url: http://<lapi-host>:8080/
-api_key: <paste-new-api-key-here>
-```
+   If DNS fails, configure firewall to use public DNS (8.8.8.8, 1.1.1.1) temporarily
 
-#### Restart the bouncer
+3. **Check proxy settings:**
+   - If firewall uses a proxy for outbound connections, verify proxy configuration
+   - Ensure proxy allows HTTPS connections to CrowdSec endpoints
+   - Test proxy with: `curl -x <proxy-host>:<port> https://admin.api.crowdsec.net/`
 
-```bash
-sudo systemctl restart crowdsec-firewall-bouncer
-```
+4. **Test from firewall CLI:**
+   - If firewall has CLI access, test connectivity directly:
+     ```bash
+     # Example for pfSense/OPNsense
+     curl -I https://admin.api.crowdsec.net/
 
-### Fix connectivity issues
+     # Example for FortiGate
+     execute ping admin.api.crowdsec.net
+     execute telnet admin.api.crowdsec.net 443
+     ```
 
-If the bouncer is on a different host than the Security Engine:
+5. **Check SSL/TLS certificate trust:**
+   - Ensure firewall trusts public CA certificates
+   - Update firewall's certificate store if needed
+   - Temporarily disable certificate verification for testing (then fix properly)
 
-#### Check firewall rules allow access
+### If the firewall is offline
 
-```bash
-# Test from bouncer host
-nc -zv <lapi-host> 8080
-```
+Restore firewall connectivity:
 
-If connection fails:
-- Open port 8080 on the Security Engine host firewall
-- Check network security groups / iptables rules
-- Verify no proxy is blocking the connection
+1. **Physical/Virtual access:**
+   - Check if firewall hardware is powered on
+   - For virtual firewalls, verify VM is running
+   - Check network cables and interfaces
 
-#### Verify API URL in bouncer config
+2. **Management access:**
+   - Connect via console/KVM if network management is down
+   - Verify management interface IP configuration
+   - Check firewall's default gateway
 
-Edit `/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml`:
-
-```yaml
-# For local LAPI
-api_url: http://127.0.0.1:8080/
-
-# For remote LAPI
-api_url: http://<lapi-server-ip>:8080/
-
-# For HTTPS
-api_url: https://<lapi-server>:8080/
-```
-
-**Important:** Don't forget the trailing `/`
-
-### Fix configuration errors
-
-If bouncer logs show configuration errors:
-
-```bash
-# Validate YAML syntax
-sudo cat /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
-
-# Check for common issues:
-# - Incorrect indentation (YAML is whitespace-sensitive)
-# - Missing api_key or api_url
-# - Incorrect mode (iptables vs nftables)
-```
-
-**Example minimal configuration:**
-```yaml
-mode: iptables  # or nftables
-pid_dir: /var/run/
-update_frequency: 10s
-daemonize: true
-log_mode: file
-log_dir: /var/log/
-log_level: info
-api_url: http://127.0.0.1:8080/
-api_key: <your-api-key>
-deny_action: DROP
-deny_log: false
-```
-
-### Fix firewall permission issues
-
-Some firewall bouncers need specific permissions:
-
-```bash
-# For iptables
-sudo setcap cap_net_admin+ep /usr/bin/crowdsec-firewall-bouncer
-
-# Verify iptables rules are being applied
-sudo iptables -L crowdsec-chain -n -v
-
-# For nftables
-sudo nft list ruleset | grep crowdsec
-```
-
-### Reinstall the bouncer (if needed)
-
-If the bouncer is corrupted or not properly installed:
-
-```bash
-# Remove old installation
-sudo apt remove crowdsec-firewall-bouncer  # Debian/Ubuntu
-sudo yum remove crowdsec-firewall-bouncer  # RHEL/CentOS
-
-# Reinstall
-sudo apt install crowdsec-firewall-bouncer
-# Or follow installation instructions for your platform
-
-# Re-register with new API key
-sudo cscli bouncers add firewall-bouncer-new
-# Update config with the new key
-# Restart service
-```
+3. **After restoring connectivity:**
+   - Trigger manual blocklist update
+   - Verify last pull timestamp updates in Console
+   - Monitor firewall logs for successful updates
 
 ## Verify Resolution
 
 After making changes:
 
-1. **Check bouncer status:**
-   ```bash
-   sudo systemctl status crowdsec-firewall-bouncer
-   ```
-   Should show "active (running)"
+1. **Trigger manual update on firewall:**
+   - Use the firewall's "Refresh" or "Update Now" function
+   - Wait 30-60 seconds for the pull to complete
 
-2. **Verify API pulls on Security Engine:**
-   ```bash
-   sudo cscli bouncers list
-   ```
-   "Last API Pull" should update to a recent timestamp (within seconds)
+2. **Check in CrowdSec Console:**
+   - Navigate to **Integrations** → **Blocklists**
+   - Verify the "Last Pull" timestamp has updated to a recent time (within last few minutes)
+   - The offline alert should clear automatically during next polling cycle
 
-3. **Check firewall rules are applied:**
-   ```bash
-   # iptables
-   sudo iptables -L crowdsec-chain -n -v
-
-   # nftables
-   sudo nft list table inet crowdsec
-   ```
-
-4. **Test blocking:**
-   Add a test decision and verify it appears in firewall rules:
-   ```bash
-   sudo cscli decisions add --ip 192.0.2.1 --duration 5m --reason "test"
-
-   # Wait 10-15 seconds for bouncer to pull
-   sudo iptables -L crowdsec-chain -n -v | grep 192.0.2.1
-   ```
-
-## Platform-Specific Notes
-
-### OPNsense / pfSense
-- Bouncer name: `crowdsec-firewall-bouncer` or `os-crowdsec`
-- Config: `/usr/local/etc/crowdsec/bouncers/`
-- Logs: `/var/log/crowdsec/`
-- Service: Check via OPNsense/pfSense GUI or `service crowdsec-firewall-bouncer status`
-
-### Docker
-If running the bouncer in Docker, ensure:
-- Container is running: `docker ps | grep bouncer`
-- Network connectivity to LAPI container/host
-- Proper capabilities: `--cap-add=NET_ADMIN --cap-add=NET_RAW`
-
-### Kubernetes
-For Kubernetes network policies or firewall controllers:
-- Check pod status: `kubectl get pods -n <bouncer-namespace>`
-- Check logs: `kubectl logs -n <bouncer-namespace> <bouncer-pod>`
-- Verify service connectivity to LAPI
+3. **Verify blocklist is populated:**
+   - Check your firewall shows IP addresses in the blocklist
+   - Number of entries should match your subscription tier and decisions
+   - Example: FortiGate → System → External Resources → view entries
 
 ## Related Issues
 
-- [RC Integration Offline](/u/troubleshooting/rc_integration_offline) - Similar issue for non-firewall bouncers
-- [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components) - General bouncer issues
+- [RC Integration Offline](/u/troubleshooting/issue_rc_integration_offline) - Similar issue for remediation components (bouncers)
+- [Security Engine Offline](/u/troubleshooting/issue_security_engine_offline) - If using agent-based deployment
+- [Blocklist Integration Setup](/u/integrations/blocklists/intro) - Initial setup guide
 
 ## Getting Help
 
-If your firewall bouncer still doesn't work:
+If your firewall integration still shows as offline:
 
-- Share bouncer logs on [Discourse](https://discourse.crowdsec.net/)
-- Ask on [Discord](https://discord.gg/crowdsec) with `cscli bouncers list` output
-- Check firewall bouncer documentation: [Firewall Bouncer Docs](/u/bouncers/firewall)
-- Report bugs: [GitHub Issues](https://github.com/crowdsecurity/cs-firewall-bouncer/issues)
+- Check firewall vendor's documentation for external blocklist configuration
+- Share firewall logs on [Discourse](https://discourse.crowdsec.net/)
+- Ask on [Discord](https://discord.gg/crowdsec) with firewall model and error messages
+- Contact CrowdSec support via Console if BLaaS endpoint issues persist

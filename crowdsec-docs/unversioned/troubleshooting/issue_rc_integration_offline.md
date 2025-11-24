@@ -5,13 +5,13 @@ id: issue_rc_integration_offline
 
 The **RC Integration Offline** (Remediation Component Integration Offline) refers to a Blocklist-Integration of type Remediation Component has not pulled from its endpoint for more than 24 hours.
 
-This issue applies to Remediation Component (aka bouncers) directly connected to a Blocklist integration endpoint (aka Blocklist as a Service).
+This issue applies to Remediation Component (aka bouncers) directly connected to a Blocklist integration endpoint (aka Blocklist as a Service / BLaaS).
 
 ## What Triggers This Issue
 
 - **Trigger condition**: No pull for 24 hours
 - **Criticality**: Critical
-- **Impact**: blocklist update not retrieved and potential malfunction of the remediation component.
+- **Impact**: Latest blocklist updates not retrieved and potential malfunction of the remediation component.
 
 ## Common Root Causes
 
@@ -33,17 +33,19 @@ Depending on the type of bouncer, you'll need to check its installation status, 
 
 ### Check bouncer configuration has proper parameters
 
-For Blocklist-as-a-Service (BLaaS) connectivity, verify the bouncer configuration contains:
+For Blocklist-as-a-Service (BLaaS) connectivity, verify the bouncer configuration has proper api url and key 
+:::info
+Properties name may vary: *api_url, api_key or lapi_url_lapi_key* ... Check your [bouncer's doc](/u/bouncers/intro)
+:::
+
 
 1. **api_url**: Must point to your BLaaS endpoint (e.g., `https://admin.api.crowdsec.net/v1/decisions/stream`)
-2. **api_key**: Your BLaaS API key (found in the Console under your Blocklist integration)
+2. **api_key**: Your BLaaS API key *(Found in the Console in your Blocklist integration section, on creation or on "Refresh Credentials")*
 
 **Common configuration file locations:**
-- **NGINX**: `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`
-- **Traefik**: `/etc/crowdsec/bouncers/crowdsec-traefik-bouncer.yaml`
-- **HAProxy**: `/etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf`
-- **Cloudflare**: `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
-- **WordPress**: Admin panel → CrowdSec Settings
+- **On host**: `/etc/crowdsec/bouncers/crowdsec-<name>-bouncer.conf`
+- ie: **NGINX**: `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`
+- **WordPress**: Admin panel → CrowdSec → **Connection details** Section
 
 Check the configuration file:
 ```bash
