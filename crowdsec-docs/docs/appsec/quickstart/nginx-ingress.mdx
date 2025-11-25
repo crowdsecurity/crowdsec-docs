@@ -92,7 +92,9 @@ You should see `crowdsec-agent` pods, the `crowdsec-lapi` pod and the `crowdsec-
 
 ## Enable the CrowdSec Lua plugin on NGINX Ingress
 
-Create `ingress-values.yaml` is still defined) to extend the ingress controller with the CrowdSec plugin and point it to the AppSec API:
+To extend the ingress controller with the CrowdSec plugin and point it to the
+AppSec API, create the file named `ingress-values.yaml`. You can read the entire
+file at `crowdsec-docs/crowdsec-docs/docs/appsec/quickstart/nginx-ingress.mdx`.
 
 ```yaml title="ingress-values.yaml"
 controller:
@@ -281,6 +283,42 @@ This should give you a bunch of crowdsec lua files.
 
 :::
 
+## Testing the AppSec Component + Remediation Component
+
+:::note
+We're assuming the web server is installed on the same machine and is listening on port 80. Please adjust your testing accordingly if this is not the case.
+:::
+
+if you try to access `http://localhost/.env` from a browser, your request will be blocked, resulting in the display of the following HTML page:
+
+![appsec-denied](/img/appsec_denied.png)
+
+We can also look at the metrics from `cscli metrics show appsec` it will display:
+ - the number of requests processed by the AppSec Component
+ - Individual rule matches
+
+ <details>
+  <summary>Example Output</summary>
+
+```bash title="kubectl exec -n crowdsec -ti crowdsec-appsec-<pod-name> -- cscli metrics show appsec"
+Appsec Metrics:
+╭─────────────────┬───────────┬─────────╮
+│  Appsec Engine  │ Processed │ Blocked │
+├─────────────────┼───────────┼─────────┤
+│ 127.0.0.1:7422/ │ 2         │ 1       │
+╰─────────────────┴───────────┴─────────╯
+
+Appsec '127.0.0.1:7422/' Rules Metrics:
+╭─────────────────────────────────┬───────────╮
+│             Rule ID             │ Triggered │
+├─────────────────────────────────┼───────────┤
+│ crowdsecurity/vpatch-env-access │ 1         │
+╰─────────────────────────────────┴───────────╯
+```
+
+You can test and investigate further with [Stack
+Health-Check](/u/getting_started/health_check) and [Appsec Troubleshooting
+guide](/docs/next/appsec/troubleshooting)
 
 ## Integration with the console
 
