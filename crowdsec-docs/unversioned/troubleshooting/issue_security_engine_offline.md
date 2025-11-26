@@ -1,11 +1,18 @@
 ---
 title: Security Engine Offline
-id: security_engine_offline
+id: issue_security_engine_offline
 ---
 
 The **Security Engine Offline** alert appears in the Console and notification integrations when an enrolled engine has not reported or logged in to CrowdSec for more than 48 hours. This usually means the core `crowdsec` service (Log Processor + Local API) has stopped working or communicating with our infrastructure.
 
-## Common Root Causes & Diagnostics
+## Common Root Causes
+
+- **Host or service down**: The crowdsec service has stopped or the host itself is unreachable.
+- **Enrollment revoked or pending**: Engine enrollment was removed from the Console or is awaiting approval.
+- **Console connectivity issues**: Network, firewall, or proxy blocking HTTPS calls to Console endpoints, or TLS validation failures.
+- **Local API unavailable**: The Local API component has stopped and cannot gather or forward alerts to the Console.
+
+## Diagnostics
 
 ### Host or service down
 
@@ -46,7 +53,7 @@ kubectl get pods -n crowdsec
   sudo cscli metrics show engine
   ```
 
-- Errors in `/var/log/crowdsec/local_api.log` regarding database connectivity or TLS indicate the Local API is not processing alerts, which will in turn stop console updates. Refer to [Security Engine troubleshooting](/u/troubleshooting/security_engine) and [Log Processor Offline](/u/troubleshooting/log_processor_offline) if needed.
+- Errors in `/var/log/crowdsec/local_api.log` regarding database connectivity or TLS indicate the Local API is not processing alerts, which will in turn stop console updates. Refer to [Security Engine troubleshooting](/u/troubleshooting/security_engine) and [Log Processor Offline](/u/troubleshooting/issue_log_processor_offline) if needed.
 
 ## Recovery Actions
 
@@ -97,3 +104,10 @@ After restarting, re-run `sudo cscli console status` to ensure the heartbeat is 
 - Investigate persistent database or authentication errors using `sudo cscli support dump`, then consult the [Security Engine troubleshooting guide](/u/troubleshooting/security_engine) if issues remain.
 
 Once the engine resumes contact, the Console clears the **Security Engine Offline** alert during the next poll. Consider enabling the **Security Engine Offline** notification in your preferred integration so future outages are caught quickly.
+
+## Getting Help
+
+If you still don't manage to resume your Security Engine hearthbeat towards CrowdSec Console:
+
+- Check [Discourse](https://discourse.crowdsec.net/) for similar cases
+- Ask on [Discord](https://discord.gg/crowdsec) with your `sudo cscli support dump` output
