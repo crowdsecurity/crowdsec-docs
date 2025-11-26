@@ -1,6 +1,7 @@
 ---
 id: cloudflare-workers
 title: CrowdSec Cloudflare Worker
+toc_max_heading_level: 3
 ---
 
 import Tabs from '@theme/Tabs';
@@ -31,28 +32,75 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
   Metrics
 />
 
-This **Remediation Component** (aka Bouncer) deploys a **Cloudflare Worker** in front of a **Cloudflare Zone/Website**, which checks if incoming request's IP address/Country/AS is present in a KV store and takes necessary remedial actions.   
-It also periodically updates the KV store with IPs coming from your **CrowdSec Security Engine** OR a **Blocklist as a Service Integration** for Remediation components.
+## Overview
+This **Remediation Component** (aka Bouncer) uses **Cloudflare Workers** to `block` or `challenge` incoming requests.  
+- It uses decisions taken by your **CrowdSec Security Engine** and/or **Blocklists** you subscribed to.  
+- It can be directly plugged to **CrowdSec Blocklists** via a CrowdSec **Blocklist as a Service Integration**.  
 
-Useful links:
+The bouncer uses **Cloudflare Workers** in combination with **Cloudflare Workers KV** (KeyValue store).
+
+#### Useful links
+
 * **Register** this **remediation component** into your **Security engine**: [Here](/u/bouncers/intro).
-* To setup a **Blocklist as a Service** endpoint for a **remediation component**: [Here](/u/integrations/remediationcomponent).
+* OR setup a **Blocklist as a Service** endpoint for a **remediation component**: [Here](/u/integrations/remediationcomponent).
 
-The following documentation dives into the installation, configuration, and troubleshooting of the **CrowdSec Cloudflare Worker** Remediation Component.
+:::warning
+This Remediation Component heavily relies on Cloudflare Workers and KV store.  
+It works best on a paid Workers subscription.
+More explanation in the chapter [Test with Cloudflare free plan](#appendix-test-with-cloudflare-free-plan)
+:::
+
+## Operational modes
+
+This Remediation Component can operate in two modes: 
+ - [**Daemon Mode**](#daemon-mode): A Go process runs continuously on a host/vm, periodically syncing decisions from your CrowdSec Security Engine to Cloudflare.
+ - [**Autonomous Mode**](#autonomous-mode): A Go process creates/delete an autonomous Cloudflare Worker that periodically syncs decisions within Cloudflare itself.
+
+### Daemon Mode
+
+This mode is recommended if you are using a **Security Engine** and want to relay all/part of the decisions (and subscribed blocklists) to Cloudflare.  
+It provides more **control** and **flexibility** over the decision synchronization process.  
+It requires the Bouncer (Go process) to run continuously on a host/VM, usually alongside your CrowdSec Security Engine.
+
+:::info
+The Workers and KV created by the bouncer will be cleaned up from Cloudflare upon launch error OR bouncer stoppage.
+:::
 
 ![cloudflare-worker remediation component global view](/img/bouncer/cloudflare-worker/cfworker_global_schema.png)
 
-:::warning
-This Remediation Component heavily relies on Cloudflare Workers and KV store. It works best on a paid Workers subscription.
-More explanation in the chapter [Test with Cloudflare free plan](#appendix-test-with-cloudflare-free-plan)
-:::
+### Autonomous Mode
+
+This mode is recommended if you want a **minimal footprint** deployment, without having the bouncer process running on your host/VM.  
+💡 It is ideal if you want to directly plug a **Blocklist integrations** into Cloudflare.  
+
+*It can also be plugged to a Security Engine, but woould require an open connection from Cloudflare to your LAPI. We recommend using [Daemon mode](#daemon-mode) in a usecase where a Security Engine is involved.*
+
+#### ⚙️ Init / Removal on CloudFlare
+
+Creation of necessary **Cloudflare Workers** and **KV stores** is done once at init time.  
+And can be cleaned up by running the bouncer with the appropriate instruction* (more details int the installation section).*
+
+The init phase create two workers and one KV store.:
+ - The **remediation worker**, which applies the decisions to incoming requests:
+   - It uses the **KV store** to lookup decisions.
+   - It is bound to **worker routes** to protect your selected zones.
+ - The **decisions sync worker**, which periodically fetches and caches decisions and updates the **KV store**.
+
+The cleanup phase deletes all the created components.
+
+<img src={useBaseUrl('/img/bouncer/cloudflare-worker/cf-autonomous-init.png')} width="50%" alt="cloudflare-worker remediation component autonomous init view"/>
+
+#### ⚙️ Periodic decision sync within Cloudflare
+
+Once initialized, the decisions sync worker runs periodically based on a cron schedule defined in the configuration.
+
+<img src={useBaseUrl('/img/bouncer/cloudflare-worker/cf-autonomous-sync.png')} width="50%" alt="cloudflare-worker remediation component autonomous sync view"/>
+
+## Installation
 
 :::warning
 After configuring and starting the Remediation Component, please see the [setting up worker fail mode](#setting-up-the-worker-route-fail-mode) section.  
 :::
-
-
-## Installation
 
 ### Prerequisites
 
@@ -60,7 +108,7 @@ Before installing the CrowdSec Cloudflare Worker Remediation Component, you need
 
 For instructions on generating a Cloudflare API token with the correct permissions, see [Generating a Cloudflare API Token](#generating-a-cloudflare-api-token).
 
-### Using packages
+### Packages Installation
 
 Packages for crowdsec-cloudflare-worker-bouncer [are available on our repositories](/u/getting_started/installation/linux#repository-installation). You need to pick the package accord to your firewall system :
 
@@ -243,24 +291,28 @@ The Remediation Component does the following:
 
 ### Autonomous Mode
 
+:::info
+Autonomous mode is ideal for users who prefer not to run a continuous process on their host/VM.  
+Combined with [Blocklist as a Service (BLaaS)](/u/integrations/remediationcomponent), this provides the minimal footprint deployment—only running setup/cleanup commands when needed.
+:::
+
 In autonomous mode (enabled with the `-S` flag), the Remediation Component functions without requiring a continuously running Go daemon process. Instead:
 
 1. Two Cloudflare Workers are deployed:
    - `crowdsec-cloudflare-worker-bouncer` (Remediation Worker) - applies cached decisions to incoming requests (same as daemon mode)
    - `decisions-sync-worker` (Blocklist updater Worker) - periodically fetches and caches security decisions using Cloudflare scheduled tasks
 
-![Architecture](/img/bouncer/cloudflare-worker/cf-autonomous-init.png)
-
+<img src={useBaseUrl('/img/bouncer/cloudflare-worker/cf-autonomous-init.png')} width="50%" alt="INIT Architecture"/>
 
 2. The Go process only needs to run once for initial setup and configuration deployment
 
 3. All decision synchronization is handled automatically by the Blocklist updater Worker using Cloudflare's scheduled tasks
 
-![Architecture](/img/bouncer/cloudflare-worker/cf-autonomous-sync.png)
+<img src={useBaseUrl('/img/bouncer/cloudflare-worker/cf-autonomous-sync.png')} width="50%" alt="SYNC Architecture"/>
 
 4. This mode reduces infrastructure requirements as no persistent daemon is needed
 
-![Architecture](/img/bouncer/cloudflare-worker/cf-autonomous-architecture.png)
+<img src={useBaseUrl('/img/bouncer/cloudflare-worker/cf-autonomous-architecture.png')} width="100%" alt="Autonomous Architecture"/>
 
 
 #### Reset all decisions from Cloudflare KV store
@@ -286,8 +338,7 @@ Metrics are stored in a D1 database. If your token does not have access to D1, a
 - Metrics are collected and stored in the D1 database
 - Metrics are **NOT pushed to CrowdSec**
 
-## Configuration
-
+## Configuration explained
 
 ```yaml
 crowdsec_config:
