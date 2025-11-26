@@ -1,9 +1,9 @@
 ---
-title: LP No Logs Parsed
+title: Log Processor No Logs Parsed
 id: issue_lp_no_logs_parsed
 ---
 
-The **LP No Logs Parsed** issue appears when logs are being successfully read by the Log Processor but none are being parsed correctly in the last 48 hours. This means the acquisition is working, but parsers can't interpret the log format.
+The **Log Processor No Logs Parsed** issue appears when logs are being successfully read by the Log Processor but none are being parsed correctly in the last 48 hours. This means the acquisition is working, but parsers can't interpret the log format.
 
 ## What Triggers This Issue
 
@@ -246,9 +246,9 @@ After making changes:
 
 ## Related Issues
 
-- [LP No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If logs aren't being read at all
-- [LP No Alerts](/u/troubleshooting/issue_lp_no_alerts) - If logs are parsed but scenarios don't trigger
-- [Engine No Alerts](/u/troubleshooting/issue_engine_no_alerts) - Similar issue at the Security Engine level
+- [Log Processor No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If logs aren't being read at all
+- [Log Processor No Alerts](/u/troubleshooting/issue_lp_no_alerts) - If logs are parsed but scenarios don't trigger
+- [Engine No Alerts](/u/troubleshooting/issue_se_no_alerts) - Similar issue at the Security Engine level
 
 ## Getting Help
 

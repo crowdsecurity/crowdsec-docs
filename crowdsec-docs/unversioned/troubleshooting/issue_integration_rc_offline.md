@@ -1,9 +1,9 @@
 ---
-title: RC Integration Offline
-id: issue_rc_integration_offline
+title: Remediation Component Integration Offline
+id: issue_integration_rc_offline
 ---
 
-The **RC Integration Offline** (Remediation Component Integration Offline) refers to a Blocklist-Integration of type Remediation Component has not pulled from its endpoint for more than 24 hours.
+The **Remediation Component Integration Offline** refers to a Blocklist-Integration of type Remediation Component has not pulled from its endpoint for more than 24 hours.
 
 This issue applies to Remediation Component (aka bouncers) directly connected to a Blocklist integration endpoint (aka Blocklist as a Service / BLaaS).
 
@@ -286,7 +286,7 @@ Once fixed, the issues concerning those RC will disappear on next SE info update
 
 ## Related Issues
 
-- [Firewall Integration Offline](/u/troubleshooting/issue_fw_integration_offline) - Similar issue for firewall bouncers
+- [Firewall Integration Offline](/u/troubleshooting/issue_integration_fw_offline) - Similar issue for firewall bouncers
 - [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components) - General bouncer issues
 
 ## Getting Help

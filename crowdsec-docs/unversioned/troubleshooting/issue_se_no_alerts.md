@@ -1,6 +1,6 @@
 ---
-title: Engine No Alerts
-id: issue_engine_no_alerts
+title: Security Engine No Alerts
+id: issue_se_no_alerts
 ---
 
 The **Engine No Alerts** issue appears when your Security Engine has been running but hasn't generated any alerts in the last **48 hours**.
@@ -169,8 +169,8 @@ This is actually a **positive outcome** - your blocklists and bouncers are preve
 
 ## Related Issues
 
-- [LP No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If acquisition is not working
-- [LP No Logs Parsed](/u/troubleshooting/issue_lp_no_logs_parsed) - If parsing is failing
+- [Log Processor No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If acquisition is not working
+- [Log Processor No Logs Parsed](/u/troubleshooting/issue_lp_no_logs_parsed) - If parsing is failing
 - [Security Engine Troubleshooting](/u/troubleshooting/security_engine) - General Security Engine issues
 
 ## Getting Help

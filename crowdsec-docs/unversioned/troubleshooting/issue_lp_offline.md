@@ -1,6 +1,6 @@
 ---
 title: Log Processor Offline
-id: issue_log_processor_offline
+id: issue_lp_offline
 ---
 
 When a Log Processor (Security Engine used to read log in a distributed setup) has not checked in with the Local API (LAPI) of the central Security Engine for more than 24 hours.
@@ -281,8 +281,8 @@ After making changes:
 
 ## Related Issues
 
-- [Engine No Alerts](/u/troubleshooting/issue_engine_no_alerts) - If the agent is online but not generating alerts
-- [LP No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If acquisition is not working
+- [Engine No Alerts](/u/troubleshooting/issue_se_no_alerts) - If the agent is online but not generating alerts
+- [Log Processor No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If acquisition is not working
 - [Security Engine Troubleshooting](/u/troubleshooting/security_engine) - General Security Engine issues
 
 ## Getting Help

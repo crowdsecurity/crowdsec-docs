@@ -17,15 +17,15 @@ This page lists all possible health check issues, their trigger conditions, and 
 
 | Issue | Criticality | Summary | Resolution |
 |-------|-------------|---------|------------|
-| **Security Engine Offline** | 🔥 Critical | Security Engine has not reported to Console for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_security_engine_offline) |
-| **Engine No Alerts** | ⚠️ High | No alerts generated in the last 48 hours | [Troubleshooting](/u/troubleshooting/issue_engine_no_alerts) |
-| **Engine Too Many Alerts** | ⚠️ High | More than 250,000 alerts in 6 hours | [Troubleshooting](/u/troubleshooting/issue_engine_too_many_alerts) |
-| **Log Processor Offline** | 🔥 Critical | Log Processor has not checked in with LAPI for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_log_processor_offline) |
-| **LP No Alerts** | ⚠️ High | Log Processor has not generated alerts in 48 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_alerts) |
-| **LP No Logs Read** | 🔥 Critical | No logs acquired in the last 24 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_logs_read) |
-| **LP No Logs Parsed** | 🔥 Critical | Logs read but none parsed in the last 48 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_logs_parsed) |
-| **Firewall Integration Offline** | 🔥 Critical | Firewall has not pulled from BLaaS endpoint for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_fw_integration_offline) |
-| **RC Integration Offline** | 🔥 Critical | Remediation Component has not pulled from endpoint for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_rc_integration_offline) |
+| **Security Engine Offline** | 🔥 Critical | Security Engine has not reported to Console for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_se_offline) |
+| **Security Engine No Alerts** | ⚠️ High | No alerts generated in the last 48 hours | [Troubleshooting](/u/troubleshooting/issue_se_no_alerts) |
+| **Security Engine Too Many Alerts** | ⚠️ High | More than 250,000 alerts in 6 hours | [Troubleshooting](/u/troubleshooting/issue_se_too_many_alerts) |
+| **Log Processor Offline** | 🔥 Critical | Log Processor has not checked in with LAPI for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_lp_offline) |
+| **Log Processor No Alerts** | ⚠️ High | Log Processor has not generated alerts in 48 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_alerts) |
+| **Log Processor No Logs Read** | 🔥 Critical | No logs acquired in the last 24 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_logs_read) |
+| **Log Processor No Logs Parsed** | 🔥 Critical | Logs read but none parsed in the last 48 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_logs_parsed) |
+| **Integration for Firewall Offline** | 🔥 Critical | Firewall has not pulled from BLaaS endpoint for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_integration_fw_offline) |
+| **Integration for RC Offline** | 🔥 Critical | Remediation Component has not pulled from endpoint for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_integration_rc_offline) |
 
 ## Issue Dependencies
 

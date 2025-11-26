@@ -1,6 +1,6 @@
 ---
 title: Security Engine Offline
-id: issue_security_engine_offline
+id: issue_se_offline
 ---
 
 The **Security Engine Offline** alert appears in the Console and notification integrations when an enrolled engine has not reported or logged in to CrowdSec for more than 48 hours. This usually means the core `crowdsec` service (Log Processor + Local API) has stopped working or communicating with our infrastructure.
@@ -53,7 +53,7 @@ kubectl get pods -n crowdsec
   sudo cscli metrics show engine
   ```
 
-- Errors in `/var/log/crowdsec/local_api.log` regarding database connectivity or TLS indicate the Local API is not processing alerts, which will in turn stop console updates. Refer to [Security Engine troubleshooting](/u/troubleshooting/security_engine) and [Log Processor Offline](/u/troubleshooting/issue_log_processor_offline) if needed.
+- Errors in `/var/log/crowdsec/local_api.log` regarding database connectivity or TLS indicate the Local API is not processing alerts, which will in turn stop console updates. Refer to [Security Engine troubleshooting](/u/troubleshooting/security_engine) and [Log Processor Offline](/u/troubleshooting/issue_lp_offline) if needed.
 
 ## Recovery Actions
 
