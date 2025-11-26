@@ -1,6 +1,6 @@
 ---
-title: Engine No Alerts
-id: issue_engine_no_alerts
+title: Security Engine No Alerts
+id: issue_se_no_alerts
 ---
 
 The **Engine No Alerts** issue appears when your Security Engine has been running but hasn't generated any alerts in the last **48 hours**.

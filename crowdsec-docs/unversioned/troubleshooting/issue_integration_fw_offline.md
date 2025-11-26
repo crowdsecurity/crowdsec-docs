@@ -1,6 +1,6 @@
 ---
 title: Firewall Integration Offline
-id: issue_fw_integration_offline
+id: issue_integration_fw_offline
 ---
 
 The **Firewall Integration Offline** issue appears when a firewall that is configured to pull blocklists directly from CrowdSec's Blocklist-as-a-Service (BLaaS) endpoint has not pulled the list for more than 24 hours. This means your firewall is no longer receiving the latest threat intelligence and blocked IPs.
@@ -194,8 +194,8 @@ After making changes:
 
 ## Related Issues
 
-- [RC Integration Offline](/u/troubleshooting/issue_rc_integration_offline) - Similar issue for remediation components (bouncers)
-- [Security Engine Offline](/u/troubleshooting/issue_security_engine_offline) - If using agent-based deployment
+- [RC Integration Offline](/u/troubleshooting/issue_integration_rc_offline) - Similar issue for remediation components (bouncers)
+- [Security Engine Offline](/u/troubleshooting/issue_se_offline) - If using agent-based deployment
 - [Blocklist Integration Setup](/u/integrations/blocklists/intro) - Initial setup guide
 
 ## Getting Help

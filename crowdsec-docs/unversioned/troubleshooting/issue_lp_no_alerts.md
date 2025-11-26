@@ -3,7 +3,7 @@ title: LP No Alerts
 id: issue_lp_no_alerts
 ---
 
-The **LP No Alerts** issue appears when a specific Log Processor (agent) is running and communicating with the Local API but hasn't generated any alerts in the last 48 hours. This is similar to [Engine No Alerts](/u/troubleshooting/issue_engine_no_alerts) but applies to individual Log Processor instances in distributed setups.
+The **LP No Alerts** issue appears when a specific Log Processor (agent) is running and communicating with the Local API but hasn't generated any alerts in the last 48 hours. This is similar to [Engine No Alerts](/u/troubleshooting/issue_se_no_alerts) but applies to individual Log Processor instances in distributed setups.
 
 ## What Triggers This Issue
 
@@ -152,10 +152,10 @@ If multiple agents show no alerts, review:
 
 ## Related Issues
 
-- [Engine No Alerts](/u/troubleshooting/issue_engine_no_alerts) - Similar issue at the Security Engine level
+- [Engine No Alerts](/u/troubleshooting/issue_se_no_alerts) - Similar issue at the Security Engine level
 - [LP No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If acquisition is not working
 - [LP No Logs Parsed](/u/troubleshooting/issue_lp_no_logs_parsed) - If parsing is failing
-- [Log Processor Offline](/u/troubleshooting/issue_log_processor_offline) - If the agent is not communicating at all
+- [Log Processor Offline](/u/troubleshooting/issue_lp_offline) - If the agent is not communicating at all
 
 ## Getting Help
 

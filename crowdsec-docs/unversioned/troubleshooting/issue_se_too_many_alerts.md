@@ -1,6 +1,6 @@
 ---
-title: Engine Too Many Alerts
-id: issue_engine_too_many_alerts
+title: Security Engine Too Many Alerts
+id: issue_se_too_many_alerts
 ---
 
 The **Engine Too Many Alerts** issue appears when your Security Engine generates an abnormally high volume of alerts (more than 250,000 in a 6-hour period). This usually indicates a misconfigured scenario, false positives, or an ongoing large-scale attack.

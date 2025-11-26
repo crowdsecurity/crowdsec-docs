@@ -248,7 +248,7 @@ After making changes:
 
 - [LP No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If logs aren't being read at all
 - [LP No Alerts](/u/troubleshooting/issue_lp_no_alerts) - If logs are parsed but scenarios don't trigger
-- [Engine No Alerts](/u/troubleshooting/issue_engine_no_alerts) - Similar issue at the Security Engine level
+- [Engine No Alerts](/u/troubleshooting/issue_se_no_alerts) - Similar issue at the Security Engine level
 
 ## Getting Help
 
