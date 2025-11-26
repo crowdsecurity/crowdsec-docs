@@ -25,20 +25,6 @@ If you received a health check alert from the CrowdSec Console, check out the [*
 * [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components.mdx)
 * [CTI Troubleshooting](/u/troubleshooting/cti.mdx)
 
-## Troubleshooting by Issue
-
-Individual troubleshooting guides for specific Console alerts:
-
-* [Security Engine Offline](/u/troubleshooting/security_engine_offline) - Security Engine not reporting to Console
-* [Engine No Alerts](/u/troubleshooting/engine_no_alerts) - No alerts generated in 48 hours
-* [Engine Too Many Alerts](/u/troubleshooting/engine_too_many_alerts) - Abnormally high alert volume
-* [Log Processor Offline](/u/troubleshooting/log_processor_offline) - Log Processor not checking in
-* [LP No Alerts](/u/troubleshooting/lp_no_alerts) - Log Processor not generating alerts
-* [LP No Logs Read](/u/troubleshooting/lp_no_logs_read) - No logs being acquired
-* [LP No Logs Parsed](/u/troubleshooting/lp_no_logs_parsed) - Logs read but not parsed
-* [Firewall Integration Offline](/u/troubleshooting/fw_integration_offline) - Firewall bouncer not pulling decisions
-* [RC Integration Offline](/u/troubleshooting/rc_integration_offline) - Remediation component not pulling decisions
-
 ## Community support
 
 Please try to resolve your issue by reading the documentation. If you're unable to find a solution, don't hesitate to seek assistance in:

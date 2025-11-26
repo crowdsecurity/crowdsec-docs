@@ -272,9 +272,9 @@ For more information on acquisition configuration:
 
 ## Related Issues
 
-- [LP No Logs Parsed](/u/troubleshooting/lp_no_logs_parsed) - Next step if logs are read but not parsed
-- [LP No Alerts](/u/troubleshooting/lp_no_alerts) - If logs are read and parsed but scenarios don't trigger
-- [Engine No Alerts](/u/troubleshooting/engine_no_alerts) - Similar issue at the Security Engine level
+- [LP No Logs Parsed](/u/troubleshooting/issue_lp_no_logs_parsed) - Next step if logs are read but not parsed
+- [LP No Alerts](/u/troubleshooting/issue_lp_no_alerts) - If logs are read and parsed but scenarios don't trigger
+- [Engine No Alerts](/u/troubleshooting/issue_engine_no_alerts) - Similar issue at the Security Engine level
 
 ## Getting Help
 

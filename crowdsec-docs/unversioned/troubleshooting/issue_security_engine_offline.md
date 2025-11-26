@@ -53,7 +53,7 @@ kubectl get pods -n crowdsec
   sudo cscli metrics show engine
   ```
 
-- Errors in `/var/log/crowdsec/local_api.log` regarding database connectivity or TLS indicate the Local API is not processing alerts, which will in turn stop console updates. Refer to [Security Engine troubleshooting](/u/troubleshooting/security_engine) and [Log Processor Offline](/u/troubleshooting/log_processor_offline) if needed.
+- Errors in `/var/log/crowdsec/local_api.log` regarding database connectivity or TLS indicate the Local API is not processing alerts, which will in turn stop console updates. Refer to [Security Engine troubleshooting](/u/troubleshooting/security_engine) and [Log Processor Offline](/u/troubleshooting/issue_log_processor_offline) if needed.
 
 ## Recovery Actions
 

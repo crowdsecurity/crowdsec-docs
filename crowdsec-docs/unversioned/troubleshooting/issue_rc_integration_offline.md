@@ -286,7 +286,7 @@ Once fixed, the issues concerning those RC will disappear on next SE info update
 
 ## Related Issues
 
-- [Firewall Integration Offline](/u/troubleshooting/fw_integration_offline) - Similar issue for firewall bouncers
+- [Firewall Integration Offline](/u/troubleshooting/issue_fw_integration_offline) - Similar issue for firewall bouncers
 - [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components) - General bouncer issues
 
 ## Getting Help

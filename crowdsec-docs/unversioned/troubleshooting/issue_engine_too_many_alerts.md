@@ -165,7 +165,7 @@ If performance is degraded, consider:
 ## Related Issues
 
 - [Security Engine Troubleshooting](/u/troubleshooting/security_engine) - General Security Engine issues
-- [LP No Logs Parsed](/u/troubleshooting/lp_no_logs_parsed) - If parsing is creating unusual events
+- [LP No Logs Parsed](/u/troubleshooting/issue_lp_no_logs_parsed) - If parsing is creating unusual events
 
 ## Getting Help
 
