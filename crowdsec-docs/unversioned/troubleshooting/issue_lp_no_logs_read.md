@@ -1,9 +1,9 @@
 ---
-title: LP No Logs Read
+title: Log Processor No Logs Read
 id: issue_lp_no_logs_read
 ---
 
-The **LP No Logs Read** issue appears when a Log Processor is running but hasn't acquired any log lines in the last 24 hours. This is the first step in the detection pipeline and must work for CrowdSec to function.
+The **Log Processor No Logs Read** issue appears when a Log Processor is running but hasn't acquired any log lines in the last 24 hours. This is the first step in the detection pipeline and must work for CrowdSec to function.
 
 ## What Triggers This Issue
 
@@ -272,8 +272,8 @@ For more information on acquisition configuration:
 
 ## Related Issues
 
-- [LP No Logs Parsed](/u/troubleshooting/issue_lp_no_logs_parsed) - Next step if logs are read but not parsed
-- [LP No Alerts](/u/troubleshooting/issue_lp_no_alerts) - If logs are read and parsed but scenarios don't trigger
+- [Log Processor No Logs Parsed](/u/troubleshooting/issue_lp_no_logs_parsed) - Next step if logs are read but not parsed
+- [Log Processor No Alerts](/u/troubleshooting/issue_lp_no_alerts) - If logs are read and parsed but scenarios don't trigger
 - [Engine No Alerts](/u/troubleshooting/issue_se_no_alerts) - Similar issue at the Security Engine level
 
 ## Getting Help

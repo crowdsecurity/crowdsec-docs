@@ -194,7 +194,7 @@ After making changes:
 
 ## Related Issues
 
-- [RC Integration Offline](/u/troubleshooting/issue_integration_rc_offline) - Similar issue for remediation components (bouncers)
+- [Remediation Component Integration Offline](/u/troubleshooting/issue_integration_rc_offline) - Similar issue for remediation components (bouncers)
 - [Security Engine Offline](/u/troubleshooting/issue_se_offline) - If using agent-based deployment
 - [Blocklist Integration Setup](/u/integrations/blocklists/intro) - Initial setup guide
 

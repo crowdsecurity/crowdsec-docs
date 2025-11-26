@@ -169,8 +169,8 @@ This is actually a **positive outcome** - your blocklists and bouncers are preve
 
 ## Related Issues
 
-- [LP No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If acquisition is not working
-- [LP No Logs Parsed](/u/troubleshooting/issue_lp_no_logs_parsed) - If parsing is failing
+- [Log Processor No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If acquisition is not working
+- [Log Processor No Logs Parsed](/u/troubleshooting/issue_lp_no_logs_parsed) - If parsing is failing
 - [Security Engine Troubleshooting](/u/troubleshooting/security_engine) - General Security Engine issues
 
 ## Getting Help

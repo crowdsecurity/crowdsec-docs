@@ -282,7 +282,7 @@ After making changes:
 ## Related Issues
 
 - [Engine No Alerts](/u/troubleshooting/issue_se_no_alerts) - If the agent is online but not generating alerts
-- [LP No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If acquisition is not working
+- [Log Processor No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If acquisition is not working
 - [Security Engine Troubleshooting](/u/troubleshooting/security_engine) - General Security Engine issues
 
 ## Getting Help
