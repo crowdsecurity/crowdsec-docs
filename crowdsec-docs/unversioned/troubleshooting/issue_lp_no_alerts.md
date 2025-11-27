@@ -8,7 +8,7 @@ The **Log Processor No Alerts** issue appears when a specific Log Processor (age
 ## What Triggers This Issue
 
 - **Trigger condition**: Log Processor online but no alerts for 48 hours
-- **Criticality**: High
+- **Criticality**: ⚠️ High
 - **Impact**: Detection may not be working on this specific agent
 
 ## Common Root Causes

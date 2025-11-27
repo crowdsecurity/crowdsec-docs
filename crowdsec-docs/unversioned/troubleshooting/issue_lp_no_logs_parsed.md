@@ -8,7 +8,7 @@ The **Log Processor No Logs Parsed** issue appears when logs are being successfu
 ## What Triggers This Issue
 
 - **Trigger condition**: Logs read but no successful parsing for 48 hours
-- **Criticality**: Critical
+- **Criticality**: 🔥 Critical
 - **Impact**: No events generated means no detection or alerts possible
 
 ## Common Root Causes
