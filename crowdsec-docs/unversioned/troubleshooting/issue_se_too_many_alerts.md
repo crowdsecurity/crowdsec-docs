@@ -3,26 +3,113 @@ title: Security Engine Too Many Alerts
 id: issue_se_too_many_alerts
 ---
 
-The **Engine Too Many Alerts** issue appears when your Security Engine generates an abnormally high volume of alerts (more than 250,000 in a 6-hour period). This usually indicates a misconfigured scenario, false positives, or an ongoing large-scale attack.
+The **Engine Too Many Alerts** issue appears when your Security Engine generates an abnormally high volume of alerts. This usually indicates a misconfigured scenario or an ongoing large-scale attack.
 
 ## What Triggers This Issue
 
 - **Trigger condition**: More than 250,000 alerts in 6 hours
-- **Criticality**: High
+- **Criticality**: ⚠️ High
 - **Impact**: May indicate misconfiguration, performance issues, or a real large scale attack.
 
 ## Common Root Causes
 
-- **Misconfigured or overly sensitive scenario**: A scenario with thresholds set too low or matching too broadly can trigger excessive alerts.
-- **Log duplication**: The same log file is being read multiple times due to acquisition misconfiguration.
+- [**Misconfigured or overly sensitive scenario**](#misconfigured-or-overly-sensitive-scenario): A scenario with thresholds set too low or matching too broadly can trigger excessive alerts.
 - **Parser creating duplicate events**: A parser issue causing the same log line to generate multiple events.
 - **Actual large-scale attack**: A genuine distributed attack (DDoS, brute force campaign) targeting your infrastructure.
+- **Custom scenario misconfigured *blackhole***: A custom scenario without proper [*`blackhole`*](https://doc.crowdsec.net/docs/next/log_processor/scenarios/format/#blackhole) param may result in alert spam.
 
-## How to Diagnose
+## Diagnosis & Resolution
 
-### Check alert volume by scenario
+### Misconfigured or Overly Sensitive Scenario
 
-Identify which scenarios are generating the most alerts:
+CrowdSec scenarios are likely not misconfigured. Here we're talking about custom or third party scenarios or scenarios you altered yourself.  
+
+If you don't have any non default scenarios you can still investigate but the issue will more likely be upstream (acquisition, profile or logging).
+
+#### 🔎 Identify problematic scenarios
+
+1. Identify which scenarios are generating the most alerts:
+
+```bash
+sudo cscli alerts list -l 100
+```
+
+<details>
+   <summary>Run this command for Docker or Kubernetes</summary>
+
+Docker
+```bash
+docker exec crowdsec cscli alerts list -l 100
+```
+Kubernetes
+```bash
+kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli alerts list -l 100
+```
+</details>
+
+2. Look for patterns:
+
+- Is one scenario dominating the alert count?
+- Are the same IPs repeatedly triggering alerts?
+- Are alerts legitimate threats or false positives?
+
+3. Check metrics for scenario overflow:
+
+```bash
+sudo cscli metrics show scenarios
+```
+
+<details>
+   <summary>Run this command for Docker or Kubernetes</summary>
+Docker
+```bash
+docker exec crowdsec cscli metrics show scenarios
+```
+
+Kubernetes
+```bash
+kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli metrics show scenarios
+```
+</details>
+
+Look for scenarios with extremely high "Overflow" counts or "Current count" numbers.
+
+#### 🛠️ Tuning or Disabling the scenario
+
+If you identify that the scenario is the reason you can try the folllowing
+
+##### Tuning the scenario threshold
+
+If the scenario is triggering too easily, you can create a custom version with adjusted thresholds. See the [scenario documentation](/docs/scenarios/intro) for details on customizing scenarios.
+
+##### Disabling the scenario temporarily
+
+You have multiple ways to do this, among which the following 2:
+
+* Removing the scenario
+* Whitelisting it in [postoverflow](/log_processor/whitelist/create_postoverflow/#allow-event-for-a-specific-scenario)
+
+### Parser Creating Duplicate Events
+
+#### 🔎 Test parsing with sample log lines
+
+Use `cscli explain` to test parsing:
+
+```bash
+sudo cscli explain --log "<sample log line>" --type <type>
+```
+
+Check if the log line generates multiple events incorrectly.
+
+#### 🛠️ Review parser configuration or report issue
+
+Review parser configuration or report the issue to the [CrowdSec Hub](https://github.com/crowdsecurity/hub/issues).
+
+### Legitimate Large-Scale Attack
+
+#### 🔎 Review alert patterns to confirm genuine attack
+
+Review alert patterns to confirm a genuine attack:
 
 ```bash
 # On host
@@ -35,89 +122,13 @@ docker exec crowdsec cscli alerts list -l 100
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli alerts list -l 100
 ```
 
-Look for patterns:
-- Is one scenario dominating the alert count?
-- Are the same IPs repeatedly triggering alerts?
-- Are alerts legitimate threats or false positives?
+Look for:
 
-### Check metrics for scenario overflow
+- Multiple different source IPs targeting the same services
+- Realistic attack patterns (brute force, scanning, etc.)
+- Alerts matching known attack signatures
 
-```bash
-# On host
-sudo cscli metrics show scenarios
-
-# Docker
-docker exec crowdsec cscli metrics show scenarios
-
-# Kubernetes
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli metrics show scenarios
-```
-
-Look for scenarios with extremely high "Overflow" counts or "Current count" numbers.
-
-### Check for log duplication
-
-Review acquisition configuration to ensure log files aren't listed multiple times:
-
-```bash
-# On host
-sudo cat /etc/crowdsec/acquis.yaml
-sudo ls -la /etc/crowdsec/acquis.d/
-
-# Docker
-docker exec crowdsec cat /etc/crowdsec/acquis.yaml
-
-# Kubernetes
-kubectl get configmap -n crowdsec crowdsec-config -o yaml | grep -A 20 acquis
-```
-
-Also check metrics for duplicate acquisition sources:
-
-```bash
-sudo cscli metrics show acquisition
-```
-
-## How to Resolve
-
-### For misconfigured scenarios
-
-#### Put the problematic scenario in simulation mode
-
-This allows you to investigate without generating alerts:
-
-```bash
-# On host
-sudo cscli simulation enable crowdsecurity/scenario-name
-
-# Docker
-docker exec crowdsec cscli simulation enable crowdsecurity/scenario-name
-
-# Kubernetes
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli simulation enable crowdsecurity/scenario-name
-```
-
-Then reload:
-```bash
-sudo systemctl reload crowdsec
-```
-
-#### Tune the scenario threshold
-
-If the scenario is triggering too easily, you can create a custom version with adjusted thresholds. See the [scenario documentation](/docs/scenarios/intro) for details on customizing scenarios.
-
-#### Use whitelists
-
-If specific IPs or patterns are causing false positives, create a whitelist. See [Parser Whitelists](/docs/log_processor/whitelist/intro) or [Profiles](/docs/local_api/profiles/intro).
-
-### For log duplication
-
-Remove duplicate entries from your acquisition configuration:
-
-1. Edit acquisition files: `/etc/crowdsec/acquis.yaml` or files in `/etc/crowdsec/acquis.d/`
-2. Ensure each log source appears only once
-3. Restart CrowdSec: `sudo systemctl restart crowdsec`
-
-### For legitimate large-scale attacks
+#### 🛠️ Verify remediation is blocking attackers
 
 If you're experiencing a real attack:
 
@@ -127,16 +138,39 @@ If you're experiencing a real attack:
 4. **Subscribe to Community Blocklist** for proactive blocking of known malicious IPs
 5. **Monitor your infrastructure** for the attack's impact
 
-### For parser issues
+### Custom scenario missing blackhole param
 
-If a parser is creating duplicate events:
+#### 🔎 Check scenario bucket configuration
 
-1. Use `cscli explain` to test parsing:
-   ```bash
-   sudo cscli explain --log "<sample log line>" --type <type>
-   ```
-2. Check if the log line generates multiple events incorrectly
-3. Review parser configuration or report the issue to the [CrowdSec Hub](https://github.com/crowdsecurity/hub/issues)
+If you have custom scenarios, verify they have proper bucket lifecycle settings (blackhole parameter) to prevent unlimited bucket accumulation:
+
+```bash
+# Check custom scenarios
+sudo cscli scenarios list | grep -i local
+
+# Inspect scenario configuration
+sudo cat /etc/crowdsec/scenarios/my-custom-scenario.yaml
+```
+
+Look for the `blackhole` parameter in the scenario configuration. This parameter sets how long a bucket should live after not receiving events.
+
+#### 🛠️ Add blackhole parameter to your custom scenarios
+
+If your custom scenario is missing the `blackhole` parameter, add it to prevent unlimited bucket accumulation:
+
+```yaml
+type: leaky
+name: my-org/my-custom-scenario
+description: "Custom scenario description"
+filter: "evt.Meta.service == 'my-service'"
+leakspeed: "10s"
+capacity: 5
+blackhole: 5m  # Add this: buckets expire 5 minutes after last event
+labels:
+  remediation: true
+```
+
+The `blackhole` parameter defines how long a bucket persists after no longer receiving events. Without it, buckets can accumulate indefinitely, consuming memory and generating excessive alerts.
 
 ## Verify Resolution
 
