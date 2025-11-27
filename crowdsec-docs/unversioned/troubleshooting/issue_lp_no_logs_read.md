@@ -21,26 +21,11 @@ The **Log Processor No Logs Read** issue appears when a Log Processor is running
 - **Acquisition type mismatch**: Wrong datasource type configured (e.g., using `file` instead of `journald`).
 - **Container/Kubernetes volume issues**: In containerized deployments, logs aren't mounted or accessible to the CrowdSec container.
 
-## How to Diagnose
+## Diagnosis & Resolution
 
-### Check acquisition metrics
+### Missing Acquisition Configuration
 
-```bash
-# On host
-sudo cscli metrics show acquisition
-
-# Docker
-docker exec crowdsec cscli metrics show acquisition
-
-# Kubernetes
-kubectl exec -n crowdsec -it <agent-pod> -- cscli metrics show acquisition
-```
-
-**What to look for:**
-- If the output is empty or shows 0 "Lines read", acquisition is not working
-- If sources are listed but "Lines read" is 0, the source exists but isn't reading data
-
-### Verify acquisition configuration exists
+#### Check if acquisition configuration exists
 
 ```bash
 # On host
@@ -57,32 +42,24 @@ kubectl get configmap -n crowdsec -o yaml
 
 If these files are empty or missing, you need to create acquisition configuration.
 
-### Check log files exist and have content
+Also check acquisition metrics:
 
 ```bash
-# Verify log file exists
-ls -la /var/log/nginx/access.log
+# On host
+sudo cscli metrics show acquisition
 
-# Check if it has recent content
-tail -10 /var/log/nginx/access.log
+# Docker
+docker exec crowdsec cscli metrics show acquisition
 
-# Check last modification time
-stat /var/log/nginx/access.log
+# Kubernetes
+kubectl exec -n crowdsec -it <agent-pod> -- cscli metrics show acquisition
 ```
 
-### Check file permissions
+**What to look for:**
+- If the output is empty or shows 0 "Lines read", acquisition is not working
+- If sources are listed but "Lines read" is 0, the source exists but isn't reading data
 
-```bash
-# Check if CrowdSec user can read the log file
-sudo -u crowdsec cat /var/log/nginx/access.log | head -5
-
-# Check directory permissions
-ls -la /var/log/nginx/
-```
-
-## How to Resolve
-
-### Create or fix acquisition configuration
+#### Create acquisition configuration for your deployment
 
 The acquisition configuration tells CrowdSec which logs to read. Configuration varies by deployment:
 
@@ -91,6 +68,7 @@ The acquisition configuration tells CrowdSec which logs to read. Configuration v
 Create or edit `/etc/crowdsec/acquis.yaml` or add files to `/etc/crowdsec/acquis.d/`:
 
 **Example for NGINX:**
+
 ```yaml
 filenames:
   - /var/log/nginx/access.log
@@ -101,6 +79,7 @@ labels:
 ```
 
 **Example for SSH (via syslog):**
+
 ```yaml
 filenames:
   - /var/log/auth.log
@@ -110,6 +89,7 @@ labels:
 ```
 
 **Example for journald:**
+
 ```yaml
 source: journalctl
 journalctl_filter:
@@ -120,6 +100,7 @@ labels:
 ```
 
 After creating the configuration:
+
 ```bash
 sudo systemctl restart crowdsec
 ```
@@ -129,6 +110,7 @@ sudo systemctl restart crowdsec
 Ensure log volumes are mounted and acquisition is configured:
 
 **docker-compose.yml example:**
+
 ```yaml
 services:
   crowdsec:
@@ -141,6 +123,7 @@ services:
 ```
 
 **acquis.yaml for Docker:**
+
 ```yaml
 filenames:
   - /var/log/nginx/access.log
@@ -149,6 +132,7 @@ labels:
 ```
 
 Restart the container:
+
 ```bash
 docker-compose restart crowdsec
 ```
@@ -158,6 +142,7 @@ docker-compose restart crowdsec
 Configure acquisition in your Helm values:
 
 **values.yaml:**
+
 ```yaml
 agent:
   acquisition:
@@ -172,49 +157,80 @@ agent:
 **Note:** In Kubernetes, use `program:` (not `type:`). The `program` field must match the FILTER in your parsers.
 
 Apply changes:
+
 ```bash
 helm upgrade crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml
 ```
 
-### Fix file permissions
+### File Permission Issues
+
+#### Test if CrowdSec can read log files
+
+```bash
+# Check if CrowdSec user can read the log file
+sudo -u crowdsec cat /var/log/nginx/access.log | head -5
+
+# Check directory permissions
+ls -la /var/log/nginx/
+```
+
+#### Grant CrowdSec read access to log files
 
 If CrowdSec can't read log files:
 
 ```bash
-# Add CrowdSec user to the log group (e.g., adm)
-sudo usermod -aG adm crowdsec
-
-# Or adjust log file permissions (less secure)
+# Or adjust log file permissions or find files you have read access to
 sudo chmod 644 /var/log/nginx/access.log
 
 # Restart CrowdSec to pick up group membership
 sudo systemctl restart crowdsec
 ```
 
-### Verify log files are being written
+### Log Files Empty or Not Being Written
+
+#### Verify log files exist and have recent content
+
+```bash
+# Verify log file exists
+ls -la /var/log/nginx/access.log
+
+# Check if it has recent content
+tail -10 /var/log/nginx/access.log
+
+# Check last modification time
+stat /var/log/nginx/access.log
+```
+
+#### Fix service logging configuration
 
 If log files are empty:
 
 1. **Check the monitored service is running:**
-   ```bash
-   sudo systemctl status nginx
-   ```
+
+```bash
+sudo systemctl status nginx
+```
 
 2. **Generate some log activity:**
-   ```bash
-   curl http://localhost/
-   tail /var/log/nginx/access.log
-   ```
+
+```bash
+curl http://localhost/
+tail /var/log/nginx/access.log
+```
 
 3. **Check service logging configuration:**
    - For NGINX: verify `access_log` directives in nginx.conf
    - For Apache: verify `CustomLog` directives
    - For systemd services: verify they're logging to journald or files
 
-### Fix container/Kubernetes volume issues
+### Container/Kubernetes Volume Issues
 
-#### Docker
-Ensure volumes are correctly mounted:
+#### Check if log volumes are mounted correctly
+
+**Docker:**
+
+Check mounts inside container:
+
 ```bash
 # Check mounts inside container
 docker exec crowdsec ls -la /var/log/nginx/
@@ -222,7 +238,8 @@ docker exec crowdsec ls -la /var/log/nginx/
 # If empty, verify docker-compose.yml volumes section
 ```
 
-#### Kubernetes
+**Kubernetes:**
+
 Kubernetes agents read from `/var/log/containers` by default (mounted by helm chart). If logs aren't there:
 
 ```bash
@@ -233,34 +250,47 @@ kubectl logs -n production nginx-pod-name
 kubectl debug node/your-node -it --image=busybox -- ls -la /var/log/containers/
 ```
 
+#### Fix volume mounts in container configuration
+
+**Docker:**
+
+Ensure volumes are correctly mounted in your docker-compose.yml volumes section. Refer to the resolution in the "Missing Acquisition Configuration" section above for a proper docker-compose.yml example.
+
+**Kubernetes:**
+
+Ensure your Helm chart is properly configured to mount the logs. The default configuration should mount `/var/log/containers` automatically. If using custom configurations, verify the volume mounts are correct.
+
 ## Verify Resolution
 
 After making changes:
 
 1. **Restart CrowdSec:**
-   ```bash
-   sudo systemctl restart crowdsec
-   # or docker restart crowdsec
-   # or kubectl rollout restart deployment/crowdsec-agent -n crowdsec
-   ```
+
+```bash
+sudo systemctl restart crowdsec
+# or docker restart crowdsec
+# or kubectl rollout restart deployment/crowdsec-agent -n crowdsec
+```
 
 2. **Wait 1-2 minutes for acquisition to start**
 
 3. **Check metrics again:**
-   ```bash
-   sudo cscli metrics show acquisition
-   ```
+
+```bash
+sudo cscli metrics show acquisition
+```
 
 4. **Verify "Lines read" is increasing:**
    - Run metrics command twice with a delay
    - Numbers should increase if logs are being actively generated
 
 5. **Check CrowdSec logs for errors:**
-   ```bash
-   sudo tail -50 /var/log/crowdsec.log
-   # or docker logs crowdsec
-   # or kubectl logs -n crowdsec <pod-name>
-   ```
+
+```bash
+sudo tail -50 /var/log/crowdsec.log
+# or docker logs crowdsec
+# or kubectl logs -n crowdsec <pod-name>
+```
 
 ## Detailed Acquisition Documentation
 

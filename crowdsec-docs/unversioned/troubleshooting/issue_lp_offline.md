@@ -18,27 +18,55 @@ When a Log Processor (Security Engine used to read log in a distributed setup) h
 - **Local API unreachable from agent**: Network issues, firewall rules, or configuration errors prevent the agent from connecting to the LAPI endpoint.
 - **Local API service unavailable**: The central LAPI service itself is down or not responding, affecting all agents trying to connect *(would have triggered an other issue)*.
 
-## How to Diagnose
+## Diagnosis & Resolution
 
-### Check if the service is stopped or stuck
+### Service Stopped or Stuck
 
-- Confirm the service state on the host:
+#### Check Log Processor service status
+
+Confirm the service state on the host:
 
 ```bash
 sudo systemctl status crowdsec
 sudo journalctl -u crowdsec -n 50
 ```
 
-- For containerised deployments, verify the workload is still running:
+For containerised deployments, verify the workload is still running:
 
 ```bash
 docker ps --filter name=crowdsec
 kubectl get pods -n crowdsec
 ```
 
-- On the LAPI node, run `sudo cscli machines list` and check whether the `Last Update` column is older than 24 hours for the affected machine.
+On the LAPI node, run `sudo cscli machines list` and check whether the `Last Update` column is older than 24 hours for the affected machine.
 
-### Check if machine credentials are valid
+#### Restart Log Processor service and verify check-in
+
+Restart the Log Processor service:
+
+```bash
+# On host (systemd)
+sudo systemctl restart crowdsec
+
+# Docker
+docker restart crowdsec
+
+# Kubernetes
+kubectl rollout restart deployment/crowdsec -n crowdsec
+```
+
+After the restart, verify the agent is checking in:
+
+```bash
+# On LAPI host
+sudo cscli machines list
+```
+
+Check that the `Last Update` timestamp is recent (within last few minutes).
+
+### Machine Credentials Need Validation
+
+#### Check machine status on LAPI
 
 From the LAPI host:
 
@@ -57,7 +85,95 @@ kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name
 - On the agent host, ensure `/etc/crowdsec/local_api_credentials.yaml` exists and contains valid login and password
 - If you recently reinstalled or renamed the machine, it must be re-validated
 
-### Check if the Local API is reachable from the agent
+#### Regenerate credentials for single machine setups
+
+:::info
+More suitable for single machine setups.
+:::
+
+To regenerate credentials directly on the LAPI host when the agent runs locally:
+
+```bash
+sudo cscli machines add -a
+```
+
+#### Validate or re-register machines in distributed setups
+
+:::info
+Registration system is more suitable for distributed setups.
+:::
+
+Approve pending machines on the LAPI:
+
+```bash
+sudo cscli machines list
+sudo cscli machines validate <machine_name>
+```
+
+If credentials were removed or the agent was rebuilt, re-register it against the LAPI:
+
+```bash
+sudo cscli lapi register --url http://<lapi_host>:8080 --machine <machine_name>
+sudo systemctl restart crowdsec
+```
+
+Update the `--url` to match your deployment. Auto-registration tokens are covered in [Machines management](/u/user_guides/machines_mgmt#machine-auto-validation).
+
+#### Clean up stale Kubernetes pod machines
+
+In Kubernetes environments, pod restarts and scaling events create new pod identities. Old Log Processor entries may remain in the LAPI's machine list even after pods are deleted, causing the Console to show offline agents that no longer exist.
+
+To identify and clean up stale machines:
+
+1. List all registered machines and note their last update times:
+
+```bash
+# On LAPI host
+sudo cscli machines list
+
+# In Kubernetes
+kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli machines list
+```
+
+2. Identify machines that haven't checked in for 24+ hours and verify they correspond to deleted pods:
+
+```bash
+# Check current running pods
+kubectl get pods -n crowdsec -l app=crowdsec-agent -o wide
+```
+
+3. Prune stale machines:
+
+```bash
+# Delete specific stale machine
+sudo cscli machines delete <stale_machine_name>
+
+# Or prune all machines not seen in 24+ hours (use with caution)
+sudo cscli machines prune
+```
+
+4. After pruning, you may need to restart the agent deployment to regenerate credentials for current pods:
+
+```bash
+kubectl rollout restart deployment/crowdsec-agent -n crowdsec
+```
+
+5. Verify new pods register successfully:
+
+```bash
+# Wait 1-2 minutes then check
+kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli machines list
+```
+
+:::tip
+To prevent accumulation of stale machines in Kubernetes, consider using [auto-registration tokens](/u/user_guides/machines_mgmt#machine-auto-validation) which handle pod lifecycle automatically.
+:::
+
+Once pruned, the issues concerning those pruned LPs will disappear on next SE info update *(within 30minutes)*.
+
+### Central LAPI Unreachable from Agent
+
+#### Test LAPI connectivity from agent
 
 From the agent host, test connectivity to the LAPI:
 
@@ -88,138 +204,7 @@ Test network connectivity:
 nc -zv <lapi_host> 8080
 ```
 
-### Check if the Local API service is available
-
-If several agents show as offline simultaneously, the LAPI service itself might be down.
-
-On the LAPI machine:
-
-```bash
-# On host
-sudo systemctl status crowdsec
-sudo journalctl -u crowdsec -n 50
-
-# Docker
-docker ps --filter name=crowdsec-lapi
-docker logs crowdsec-lapi --tail 50
-
-# Kubernetes
-kubectl get pods -n crowdsec -l type=lapi
-kubectl logs -n crowdsec -l type=lapi --tail 50
-```
-
-Check `sudo cscli metrics show engine` on the LAPI to confirm it is processing events from other agents.
-
-## How to Resolve
-
-### If the service is stopped or stuck
-
-Restart the Log Processor service:
-
-```bash
-# On host (systemd)
-sudo systemctl restart crowdsec
-
-# Docker
-docker restart crowdsec
-
-# Kubernetes
-kubectl rollout restart deployment/crowdsec -n crowdsec
-```
-
-After the restart, verify the agent is checking in:
-
-```bash
-# On LAPI host
-sudo cscli machines list
-```
-
-Check that the `Last Update` timestamp is recent (within last few minutes).
-
-### If machine credentials need validation
-
-#### Using credentials (single machine setups)
-
-:::info
-More suitable for single machine setups.
-:::
-
-To regenerate credentials directly on the LAPI host when the agent runs locally:
-
-```bash
-sudo cscli machines add -a
-```
-
-#### Using registration system (distributed setups)
-
-:::info
-Registration system is more suitable for distributed setups.
-:::
-
-Approve pending machines on the LAPI:
-
-```bash
-sudo cscli machines list
-sudo cscli machines validate <machine_name>
-```
-
-If credentials were removed or the agent was rebuilt, re-register it against the LAPI:
-
-```bash
-sudo cscli lapi register --url http://<lapi_host>:8080 --machine <machine_name>
-sudo systemctl restart crowdsec
-```
-
-Update the `--url` to match your deployment. Auto-registration tokens are covered in [Machines management](/u/user_guides/machines_mgmt#machine-auto-validation).
-
-#### Kubernetes pod rotation (stale machines)
-
-In Kubernetes environments, pod restarts and scaling events create new pod identities. Old Log Processor entries may remain in the LAPI's machine list even after pods are deleted, causing the Console to show offline agents that no longer exist.
-
-To identify and clean up stale machines:
-
-1. List all registered machines and note their last update times:
-   ```bash
-   # On LAPI host
-   sudo cscli machines list
-
-   # In Kubernetes
-   kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli machines list
-   ```
-
-2. Identify machines that haven't checked in for 24+ hours and verify they correspond to deleted pods:
-   ```bash
-   # Check current running pods
-   kubectl get pods -n crowdsec -l app=crowdsec-agent -o wide
-   ```
-
-3. Prune stale machines:
-   ```bash
-   # Delete specific stale machine
-   sudo cscli machines delete <stale_machine_name>
-
-   # Or prune all machines not seen in 24+ hours (use with caution)
-   sudo cscli machines prune
-   ```
-
-4. After pruning, you may need to restart the agent deployment to regenerate credentials for current pods:
-   ```bash
-   kubectl rollout restart deployment/crowdsec-agent -n crowdsec
-   ```
-
-5. Verify new pods register successfully:
-   ```bash
-   # Wait 1-2 minutes then check
-   kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli machines list
-   ```
-
-:::tip
-To prevent accumulation of stale machines in Kubernetes, consider using [auto-registration tokens](/u/user_guides/machines_mgmt#machine-auto-validation) which handle pod lifecycle automatically.
-:::
-
-Once pruned, the issues concerning those pruned LPs will disappear on next SE info update *(within 30minutes)*.
-
-### If the central LAPI is unreachable from the agent
+#### Fix network connectivity and firewall rules
 
 Open the required port on firewalls or security groups:
 
@@ -244,7 +229,31 @@ If using proxies or load balancers:
 - Verify TLS passthrough or termination is configured properly
 - Check that the LAPI endpoint is accessible through the proxy
 
-### If the Local API service is unavailable
+### Local API Service Unavailable
+
+#### Check if Local API service is down
+
+If several agents show as offline simultaneously, the LAPI service itself might be down.
+
+On the LAPI machine:
+
+```bash
+# On host
+sudo systemctl status crowdsec
+sudo journalctl -u crowdsec -n 50
+
+# Docker
+docker ps --filter name=crowdsec-lapi
+docker logs crowdsec-lapi --tail 50
+
+# Kubernetes
+kubectl get pods -n crowdsec -l type=lapi
+kubectl logs -n crowdsec -l type=lapi --tail 50
+```
+
+Check `sudo cscli metrics show engine` on the LAPI to confirm it is processing events from other agents.
+
+#### Restart Local API service and investigate issues
 
 Restart the LAPI service:
 
@@ -259,9 +268,10 @@ kubectl rollout restart deployment/crowdsec-lapi -n crowdsec
 If the LAPI repeatedly crashes or loses database access:
 
 1. Collect diagnostics:
-   ```bash
-   sudo cscli support dump
-   ```
+
+```bash
+sudo cscli support dump
+```
 
 2. Review `/var/log/crowdsec/` (or container logs) for errors
 3. Check database connectivity and credentials
@@ -273,9 +283,11 @@ After making changes:
 
 1. Wait 1-2 minutes for the agent to check in
 2. Verify on the LAPI host:
-   ```bash
-   sudo cscli machines list
-   ```
+
+```bash
+sudo cscli machines list
+```
+
 3. Check that `Last Update` timestamp is recent (within last few minutes)
 4. The Console alert will clear automatically during the next polling cycle
 

@@ -20,12 +20,14 @@ For more advanced cases (often for custom made parsers):
 - **Acquisition type mismatch**: The `type:` or `program:` label in acquisition doesn't match any installed parser's FILTER.
 - **Parser FILTER not matching**: Parser exists but its FILTER clause doesn't match the acquisition label.
 
-## How to Diagnose
+## Diagnosis & Resolution
 
-### Check parsing metrics
+### Missing Collection or Parsers
+
+#### Check parsing metrics and installed collections
 
 ```bash
-# On host
+# Check parsing metrics
 sudo cscli metrics show acquisition parsers
 
 # Docker
@@ -40,7 +42,57 @@ kubectl exec -n crowdsec -it <agent-pod> -- cscli metrics show acquisition parse
 - **Parsers**: "Lines parsed" should be > 0 (currently 0 means parsing is failing)
 - **Unparsed lines**: Check if there's a high "unparsed" count
 
-### Use cscli explain to test parsing
+Check installed collections and parsers:
+
+```bash
+# List installed collections
+sudo cscli collections list
+
+# List installed parsers
+sudo cscli parsers list
+
+# Check specific parser details
+sudo cscli parsers inspect crowdsecurity/nginx-logs
+```
+
+#### Install required collections for your log formats
+
+Most services have a collection that includes parsers and scenarios:
+
+```bash
+# Search for collections
+sudo cscli collections search nginx //this doesn't exist
+
+# Install the collection
+sudo cscli collections install crowdsecurity/nginx
+
+# Restart CrowdSec
+sudo systemctl restart crowdsec
+```
+
+**Docker:**
+
+```yaml
+environment:
+  COLLECTIONS: "crowdsecurity/nginx crowdsecurity/linux"
+```
+
+Then restart the container.
+
+**Kubernetes:**
+
+```yaml
+agent:
+  env:
+    - name: COLLECTIONS
+      value: "crowdsecurity/nginx crowdsecurity/traefik"
+```
+
+Then: `helm upgrade crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml`
+
+### Custom or Unexpected Log Format
+
+#### Test log parsing with sample lines
 
 Take a sample log line and test it:
 
@@ -57,107 +109,14 @@ sudo cscli explain --file /var/log/nginx/access.log --type nginx
 - 🟢 (green) means the parser succeeded
 - If all parsers show 🔴, the log format isn't being recognized
 
-### Check installed collections and parsers
-
-```bash
-# List installed collections
-sudo cscli collections list
-
-# List installed parsers
-sudo cscli parsers list
-
-# Check specific parser details
-sudo cscli parsers inspect crowdsecurity/nginx-logs
-```
-
-### Verify acquisition type/program label
-
-```bash
-# Check your acquisition configuration
-sudo cat /etc/crowdsec/acquis.yaml
-sudo cat /etc/crowdsec/acquis.d/*.yaml
-```
-
-Compare the `type:` (or `program:` in Kubernetes) with installed parser names.
-
-## How to Resolve
-
-### Install missing collection
-
-Most services have a collection that includes parsers and scenarios:
-
-```bash
-# Search for collections
-sudo cscli collections search nginx
-
-# Install the collection
-sudo cscli collections install crowdsecurity/nginx
-
-# Restart CrowdSec
-sudo systemctl restart crowdsec
-```
-
-**Docker:**
-```yaml
-environment:
-  COLLECTIONS: "crowdsecurity/nginx crowdsecurity/linux"
-```
-Then restart the container.
-
-**Kubernetes:**
-```yaml
-agent:
-  env:
-    - name: COLLECTIONS
-      value: "crowdsecurity/nginx crowdsecurity/traefik"
-```
-Then: `helm upgrade crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml`
-
-### Fix acquisition type/program mismatch
-
-The acquisition label must match a parser's FILTER:
-
-#### On Host or Docker
-
-Check your `acquis.yaml`:
-```yaml
-filenames:
-  - /var/log/nginx/access.log
-labels:
-  type: nginx  # This must match a parser FILTER
-```
-
-Common types:
-- `nginx` - for NGINX logs
-- `apache2` - for Apache logs
-- `syslog` - for syslog-formatted logs (SSH, etc.)
-- `mysql` - for MySQL logs
-- `postgres` - for PostgreSQL logs
-
-#### Kubernetes
-
-In Kubernetes, use `program:` instead of `type:`:
-```yaml
-agent:
-  acquisition:
-    - namespace: production
-      podName: nginx-*
-      program: nginx  # This must match parser FILTER
-```
-
-**After changing configuration:**
-```bash
-sudo systemctl restart crowdsec
-# or docker restart crowdsec
-# or helm upgrade (for Kubernetes)
-```
-
-### Handle custom log formats
+#### Adjust log format or create custom parser // try to put your hands on the defualt log format OR create your parse
 
 If you are using non-default log formats for your services or if they are relayed by a 3rd party service they may be changed by this proxy service.
 
-#### Option 1: Adjust log format to match parser
+**Option 1: Adjust log format to match parser**
+
 **NGINX example:**
+
 ```nginx
 # In nginx.conf, use the combined format
 log_format combined '$remote_addr - $remote_user [$time_local] '
@@ -166,11 +125,13 @@ log_format combined '$remote_addr - $remote_user [$time_local] '
 access_log /var/log/nginx/access.log combined;
 ```
 
-#### Option 2: Create a custom parser
+**Option 2: Create a custom parser**
+
 1. Follow the [Create parsers doc](/log_processor/parsers/create) to develop and test your parser
 2. Get help from our [Discord](https://discord.gg/crowdsec) community is you hit roadblocks.
 
 **Simple custom parser example:**
+
 ```yaml
 onsuccess: next_stage
 debug: false
@@ -187,10 +148,67 @@ statics:
     value: http
 ```
 
-#### Option 3: Use a different parser
+**Option 3: Use a different parser**
+
 Some services have multiple parser options. Check the [Hub](https://app.crowdsec.net/hub/parsers) for alternatives.
 
-### Debug parser FILTER issues
+### Acquisition Type/Program Mismatch
+
+#### Check acquisition labels match parser filters
+
+```bash
+# Check your acquisition configuration
+sudo cat /etc/crowdsec/acquis.yaml
+sudo cat /etc/crowdsec/acquis.d/*.yaml
+```
+
+Compare the `type:` (or `program:` in Kubernetes) with installed parser names.
+
+#### Fix acquisition labels to match parser FILTER
+
+The acquisition label must match a parser's FILTER:
+
+**On Host or Docker:**
+
+Check your `acquis.yaml`:
+
+```yaml
+filenames:
+  - /var/log/nginx/access.log
+labels:
+  type: nginx  # This must match a parser FILTER
+```
+
+Common types:
+- `nginx` - for NGINX logs
+- `apache2` - for Apache logs
+- `syslog` - for syslog-formatted logs (SSH, etc.)
+- `mysql` - for MySQL logs
+- `postgres` - for PostgreSQL logs
+
+**Kubernetes:**
+
+In Kubernetes, use `program:` instead of `type:`:
+
+```yaml
+agent:
+  acquisition:
+    - namespace: production
+      podName: nginx-*
+      program: nginx  # This must match parser FILTER
+```
+
+**After changing configuration:**
+
+```bash
+sudo systemctl restart crowdsec
+# or docker restart crowdsec
+# or helm upgrade (for Kubernetes)
+```
+
+### Parser FILTER Not Matching
+
+#### Inspect parser FILTER requirements
 
 If a parser is installed but not matching, check its FILTER:
 
@@ -204,35 +222,43 @@ sudo cscli parsers inspect crowdsecurity/nginx-logs
 
 The FILTER must match your acquisition label. If your label is `type: nginx`, the parser FILTER should check `evt.Line.Labels.type == "nginx"` or `evt.Parsed.program == "nginx"`.
 
+#### Update acquisition configuration to match FILTER
+
+Ensure your acquisition configuration uses labels that match the parser's FILTER. Refer to the "Acquisition Type/Program Mismatch" section above for examples.
+
 ## Verify Resolution
 
 After making changes:
 
 1. **Restart CrowdSec:**
-   ```bash
-   sudo systemctl restart crowdsec
-   ```
+
+```bash
+sudo systemctl restart crowdsec
+```
 
 2. **Wait 1-2 minutes for log processing**
 
 3. **Check metrics again:**
-   ```bash
-   sudo cscli metrics show parsers
-   ```
 
-   **"Lines parsed" should now be > 0**
+```bash
+sudo cscli metrics show parsers
+```
+
+**"Lines parsed" should now be > 0**
 
 4. **Test with cscli explain:**
-   ```bash
-   sudo cscli explain --log "<your sample log>" --type <your-type>
-   ```
 
-   **Parsers should show 🟢 (green) indicators**
+```bash
+sudo cscli explain --log "<your sample log>" --type <your-type>
+```
+
+**Parsers should show 🟢 (green) indicators**
 
 5. **Verify events are reaching scenarios:**
-   ```bash
-   sudo cscli metrics show scenarios
-   ```
+
+```bash
+sudo cscli metrics show scenarios
+```
 
 ## Common Parser FILTER Values
 

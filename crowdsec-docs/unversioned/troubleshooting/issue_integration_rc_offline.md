@@ -20,7 +20,7 @@ This issue applies to Remediation Component (aka bouncers) directly connected to
 - **Network connectivity issues**: The bouncer cannot reach the endpoint.
 - **Bouncer not loaded**: Bouncer Module/plugin is installed but not enabled or started.
 
-## How to Diagnose
+## Diagnosis & Resolution
 
 Depending on the type of bouncer, you'll need to check its installation status, configuration, and running status.
 
@@ -31,13 +31,15 @@ Depending on the type of bouncer, you'll need to check its installation status, 
 - **Cloud service workers**: Cloudflare Workers, Fastly Compute, autonomous update daemons
 - **Custom integrations**: Using the Bouncer SDK
 
-### Check bouncer configuration has proper parameters
+### Configuration errors
 
-For Blocklist-as-a-Service (BLaaS) connectivity, verify the bouncer configuration has proper api url and key 
+#### Verify bouncer configuration has correct API URL and key
+
+For Blocklist-as-a-Service (BLaaS) connectivity, verify the bouncer configuration has proper api url and key:
+
 :::info
 Properties name may vary: *api_url, api_key or lapi_url_lapi_key* ... Check your [bouncer's doc](/u/bouncers/intro)
 :::
-
 
 1. **api_url**: Must point to your BLaaS endpoint (e.g., `https://admin.api.crowdsec.net/v1/decisions/stream`)
 2. **api_key**: Your BLaaS API key *(Found in the Console in your Blocklist integration section, on creation or on "Refresh Credentials")*
@@ -57,17 +59,39 @@ sudo cat /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
 # API_KEY=<your-blaas-api-key>
 ```
 
-### Check bouncer service status
+#### Update bouncer configuration and restart service
+
+Update the bouncer configuration file with the correct API URL and API key:
+
+**NGINX bouncer** (`/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`):
+```bash
+API_URL=https://admin.api.crowdsec.net/v1/decisions/stream
+API_KEY=<your-blaas-api-key>
+UPDATE_FREQUENCY=10s
+```
+
+**Traefik bouncer** (`/etc/crowdsec/bouncers/crowdsec-traefik-bouncer.yaml`):
+```yaml
+crowdsec_url: https://admin.api.crowdsec.net/v1/decisions/stream
+crowdsec_api_key: <your-blaas-api-key>
+update_frequency: 10s
+```
+
+**HAProxy bouncer** (`/etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf`):
+```bash
+CROWDSEC_URL=https://admin.api.crowdsec.net/v1/decisions/stream
+CROWDSEC_API_KEY=<your-blaas-api-key>
+```
+
+After updating, restart the bouncer service.
+
+### Bouncer service or process stopped
+
+#### Verify bouncer service status
 
 Verify the bouncer is running and hasn't encountered errors.
 
-#### For host-based processes
-
-Check if the bouncer process or service is running:
-
-Depending on your bouncer type:
-
-#### Web server module bouncers
+**For web server module bouncers:**
 
 ```bash
 # NGINX
@@ -83,7 +107,7 @@ sudo apache2ctl -t  # Test configuration
 # Apache: check mods-enabled/crowdsec.conf
 ```
 
-#### Standalone bouncer daemons
+**For standalone bouncer daemons:**
 
 ```bash
 # Traefik bouncer
@@ -96,7 +120,7 @@ sudo systemctl status crowdsec-haproxy-bouncer
 sudo systemctl status crowdsec-cloudflare-bouncer
 ```
 
-### Check bouncer logs
+#### Check bouncer logs for errors
 
 Bouncer logs locations vary by type:
 
@@ -123,23 +147,9 @@ Bouncer logs locations vary by type:
 - `invalid configuration` - Config file syntax or parameter errors
 - `rate limit exceeded` - Cloud service plan limits reached
 
-### Test connectivity to the endpoint
+#### Restart the bouncer service
 
-From the bouncer host:
-
-```bash
-# Test network connectivity
-curl -I https://<endpoint_url>/
-
-# Test with API key
-curl -H "X-Api-Key: <endpoint_url>" https://<endpoint_url> 
-```
-
-## How to Resolve
-
-### Restart the bouncer
-
-#### For web server modules
+**For web server modules:**
 
 ```bash
 # NGINX
@@ -149,40 +159,28 @@ sudo systemctl restart nginx
 sudo systemctl restart apache2
 ```
 
-#### For standalone daemons
+**For standalone daemons:**
 
 ```bash
 sudo systemctl restart crowdsec-<bouncer-name>
 sudo systemctl enable crowdsec-<bouncer-name>
 ```
 
-### Update bouncer configuration
+### Network connectivity issues
 
-If the API URL or API key is incorrect, update the bouncer's configuration file:
+#### Test connectivity to BLaaS endpoint
 
-**NGINX bouncer** (`/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`):
+From the bouncer host:
+
 ```bash
-API_URL=https://admin.api.crowdsec.net/v1/decisions/stream
-API_KEY=<your-blaas-api-key>
-UPDATE_FREQUENCY=10s
+# Test network connectivity
+curl -I https://<endpoint_url>/
+
+# Test with API key
+curl -H "X-Api-Key: <endpoint_url>" https://<endpoint_url>
 ```
 
-**Traefik bouncer** (`/etc/crowdsec/bouncers/crowdsec-traefik-bouncer.yaml`):
-```yaml
-crowdsec_url: https://admin.api.crowdsec.net/v1/decisions/stream
-crowdsec_api_key: <your-blaas-api-key>
-update_frequency: 10s
-```
-
-**HAProxy bouncer** (`/etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf`):
-```bash
-CROWDSEC_URL=https://admin.api.crowdsec.net/v1/decisions/stream
-CROWDSEC_API_KEY=<your-blaas-api-key>
-```
-
-After updating, restart the bouncer service.
-
-### Fix connectivity issues
+#### Fix network connectivity issues
 
 If the bouncer cannot reach the BLaaS endpoint:
 
@@ -214,11 +212,13 @@ If the bouncer cannot reach the BLaaS endpoint:
    - Check if you've hit rate limits on your plan
    - Review worker logs for errors
 
-### Enable the module/plugin
+### Bouncer not loaded
 
-Some bouncers require explicit enabling:
+#### Check if bouncer module is loaded
 
-#### NGINX
+Some bouncers require explicit enabling. Check if the module is loaded:
+
+**NGINX:**
 
 Check `/etc/nginx/nginx.conf` includes the CrowdSec module:
 
@@ -233,13 +233,29 @@ http {
 }
 ```
 
-Test and reload:
+Test configuration:
+```bash
+sudo nginx -t
+```
+
+**Apache:**
+
+Check if module is enabled:
+```bash
+sudo apache2ctl -M | grep crowdsec
+```
+
+#### Enable the bouncer module
+
+**NGINX:**
+
+Add the module to your configuration if missing, then:
 ```bash
 sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-#### Apache
+**Apache:**
 
 Enable the module:
 ```bash
