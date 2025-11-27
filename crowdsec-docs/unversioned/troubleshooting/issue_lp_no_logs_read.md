@@ -8,7 +8,7 @@ The **Log Processor No Logs Read** issue appears when a Log Processor is running
 ## What Triggers This Issue
 
 - **Trigger condition**: No logs acquired for 24 hours
-- **Criticality**: Critical
+- **Criticality**: 🔥 Critical
 - **Impact**: Complete detection failure - no logs means no alerts
 
 ## Common Root Causes

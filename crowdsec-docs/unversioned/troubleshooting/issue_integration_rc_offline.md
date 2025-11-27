@@ -10,7 +10,7 @@ This issue applies to Remediation Component (aka bouncers) directly connected to
 ## What Triggers This Issue
 
 - **Trigger condition**: No pull for 24 hours
-- **Criticality**: Critical
+- **Criticality**: 🔥 Critical
 - **Impact**: Latest blocklist updates not retrieved and potential malfunction of the remediation component.
 
 ## Common Root Causes
