@@ -14,9 +14,9 @@ The **Engine Too Many Alerts** issue appears when your Security Engine generates
 ## Common Root Causes
 
 - [**Misconfigured or overly sensitive scenario**](#misconfigured-or-overly-sensitive-scenario): A scenario with thresholds set too low or matching too broadly can trigger excessive alerts.
-- **Parser creating duplicate events**: A parser issue causing the same log line to generate multiple events.
-- **Actual large-scale attack**: A genuine distributed attack (DDoS, brute force campaign) targeting your infrastructure.
-- **Custom scenario misconfigured *blackhole***: A custom scenario without proper [*`blackhole`*](https://doc.crowdsec.net/docs/next/log_processor/scenarios/format/#blackhole) param may result in alert spam.
+- [**Parser creating duplicate events**](#parser-creating-duplicate-events): A parser issue causing the same log line to generate multiple events.
+- [**Actual large-scale attack**](#legitimate-large-scale-attack): A genuine distributed attack (DDoS, brute force campaign) targeting your infrastructure.
+- [**Custom scenario misconfigured *blackhole***](#custom-scenario-missing-blackhole-param): A custom scenario without proper [*`blackhole`*](https://doc.crowdsec.net/docs/next/log_processor/scenarios/format/#blackhole) param may result in alert spam.
 
 ## Diagnosis & Resolution
 
