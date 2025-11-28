@@ -14,8 +14,8 @@ This usually means the core `crowdsec` service has stopped working or communicat
 
 ## Common Root Causes
 
-- **Host or service down**: The CrowdSec service has stopped or the host itself is unreachable.
-- **Console connectivity issues**: Network, firewall, or proxy blocking HTTPS calls to Console endpoints, or TLS validation failures.
+- [**Host or service down**](#host-or-service-down): The CrowdSec service has stopped or the host itself is unreachable.
+- [**Console connectivity issues**](#console-connectivity-issues): Network, firewall, or proxy blocking HTTPS calls to Console endpoints, or TLS validation failures.
 
 ## Diagnosis & Resolution
 
