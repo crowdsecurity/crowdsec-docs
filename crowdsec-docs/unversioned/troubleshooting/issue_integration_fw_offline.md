@@ -18,88 +18,61 @@ The **Firewall Integration Offline** issue appears when a firewall that is confi
 - **Network connectivity issues**: The firewall cannot reach the BLaaS endpoint due to network problems, DNS issues, or routing failures.
 - **Firewall offline**: The firewall itself is powered off, unreachable, or not processing rules.
 
-## How to Diagnose
+## Diagnosis & Resolution
 
-### Check if the firewall is running and has access to BLaaS endpoint
+### Firewall rule disabled or removed
 
-// a few lines describe generic ways for them to check their firewall is workin and can ping https://admin.api.crowdsec.net
+#### Navigate to firewall's external blocklist configuration
 
-### Check if the firewall rule for external blocklist still exists
-
-Access your firewall's management interface and verify:
-
-1. **Navigate to the external blocklist configuration section** (varies by vendor):
+Access your firewall's management interface and navigate to the external blocklist configuration section (varies by vendor):
    - FortiGate: Security Fabric → External Connectors → Threat Feeds
    - Palo Alto: Objects → External Dynamic Lists
-   - ...
+   - pfSense: Firewall → Aliases → URLs
+   - OPNsense: Firewall → Aliases
 
-2. **Verify the rule exists and is valid:**
+#### Verify the CrowdSec blocklist rule exists and is enabled
+
+Check the following:
    - Is the CrowdSec blocklist rule present?
    - Is it enabled/active?
    - Check the URL configured - should point to `https://admin.api.crowdsec.net/...`
    - Some firewalls have a "test" function for external feeds access
 
-### Check BLaaS endpoint credentials
+#### Re-enable or recreate the external blocklist rule
 
-Verify the basic auth credentials configured in your firewall matches the one from the Console:
+1. **If the rule is disabled**: Simply re-enable it in your firewall's configuration interface
+2. **If the rule is missing**: Recreate the external blocklist integration following your firewall's documentation
+3. **Trigger manual update** to test:
+   - Most firewalls have a "Refresh Now" or "Update" button
+   - Click it to force an immediate pull from BLaaS
+   - Check logs for success or errors
 
-**Get the correct basic auth credentials from CrowdSec Console:**
+### BLaaS credentials invalid
+
+#### Get and verify basic auth credentials from CrowdSec Console
+
 If you lost the credentials you can regenerate them:
    - Navigate to **Blocklists** → **Integrations**: select your firewall integration
    - Click **Configuration** → **Refresh Credentials** if you suspect the key is wrong (this will generate a new one)
    - Copy the displayed API key or authentication header
-**Check authentication method:**
+
+#### Check firewall's authentication method
+
    - Some firewalls use HTTP headers (`X-Api-Key: <key>`)
    - Others may use URL parameters (`?api_key=<key>`)
-   - Some may offer basic auth forms that are not functional *(Checkpoint among other)*, you can put the credentials directly into the URL: `https://<username>:<password>@https://admin.api.crowdsec.net/...`
+   - Some may offer basic auth forms that are not functional *(Checkpoint among other)*, you can put the credentials directly into the URL: `https://<username>:<password>@admin.api.crowdsec.net/...`
 
-### Test connectivity to BLaaS endpoint
-
-From a host on the same network as your firewall (or from the firewall's CLI if available):
+#### Test connectivity with credentials
 
 ```bash
-# Test network connectivity
-curl -I https://admin.api.crowdsec.net/
+# Test with Credentials from a host on the same network
+curl -I https://<username>:<password>@admin.api.crowdsec.net/v1/integrations/<yourIntegId>/content
 
-# Test with Credentials
-curl -I https://<username>:<password>admin.api.crowdsec.net/v1/integrations/<yourIntegId>/content
-
-# Expected response: JSON with decisions or empty list
+# Expected response: HTTP 200 with JSON
 # Should NOT return 401 Unauthorized or 403 Forbidden
 ```
 
-If you get connection errors:
-- DNS resolution failures - check DNS configuration
-- Connection timeouts - firewall outbound rules may be blocking
-- SSL/TLS errors - firewall may need updated root certificates
-
-### Check firewall logs
-
-Review your firewall's logs for errors related to external blocklist updates:
-
-**Common log locations by vendor:**
-*Path to logs may vary depending on your firewall version, check your documentation.*
-- **FortiGate**: Log & Report → System Events → filter for "Threat Feed"
-- **Palo Alto**: Monitor → System Logs → filter for "External Dynamic List"
-- **pfSense**: Status → System Logs → Firewall
-- **OPNsense**: System → Log Files → Firewall
-
-**Look for error messages like:**
-- `failed to download` - connectivity issue
-- `authentication failed` or `401` - API key invalid
-- `SSL certificate verification failed` - certificate trust issue
-- `timeout` - network connectivity or endpoint unreachable
-- `invalid format` - blocklist format mismatch
-
-## How to Resolve
-
-### If the firewall rule is disabled or missing
-
-Re-enable or recreate the external blocklist rule:
-
-### If BLaaS credentials are invalid
-
-Update the API key in your firewall configuration:
+#### Update firewall credentials and test
 
 1. **Regenerate API key in Console** (if needed):
    - Navigate to **Integrations** → **Blocklists** → select firewall integration
@@ -116,9 +89,47 @@ Update the API key in your firewall configuration:
    - Click it to force an immediate pull from BLaaS
    - Check logs for success or errors
 
-### If network connectivity is failing
+### Network connectivity issues
 
-Fix network issues preventing firewall from reaching BLaaS:
+#### Test network connectivity to BLaaS endpoint
+
+From a host on the same network as your firewall (or from the firewall's CLI if available):
+
+```bash
+# Test network connectivity
+curl -I https://admin.api.crowdsec.net/
+
+# Test DNS resolution
+nslookup admin.api.crowdsec.net
+dig admin.api.crowdsec.net
+```
+
+**If you get connection errors:**
+
+- DNS resolution failures - check DNS configuration
+- Connection timeouts - firewall outbound rules may be blocking
+- SSL/TLS errors - firewall may need updated root certificates
+
+#### Review firewall logs for external blocklist errors
+
+Review your firewall's logs for errors related to external blocklist updates:
+
+**Common log locations by vendor:**
+*Path to logs may vary depending on your firewall version, check your documentation.*
+- **FortiGate**: Log & Report → System Events → filter for "Threat Feed"
+- **Palo Alto**: Monitor → System Logs → filter for "External Dynamic List"
+- **pfSense**: Status → System Logs → Firewall
+- **OPNsense**: System → Log Files → Firewall
+
+**Look for error messages like:**
+
+- `failed to download` - connectivity issue
+- `authentication failed` or `401` - API key invalid
+- `SSL certificate verification failed` - certificate trust issue
+- `timeout` - network connectivity or endpoint unreachable
+- `invalid format` - blocklist format mismatch
+
+#### Fix network connectivity issues
 
 1. **Check firewall outbound rules:**
    - Ensure firewall allows outbound HTTPS (port 443) to `admin.api.crowdsec.net`
@@ -155,9 +166,17 @@ Fix network issues preventing firewall from reaching BLaaS:
    - Update firewall's certificate store if needed
    - Temporarily disable certificate verification for testing (then fix properly)
 
-### If the firewall is offline
+### Firewall offline
 
-Restore firewall connectivity:
+#### Check if firewall is accessible and running
+
+Check if the firewall is running and has access to the BLaaS endpoint:
+
+- Can you access the firewall's management interface?
+- Is the firewall responding to ping requests?
+- Are firewall services running normally?
+
+#### Restore firewall connectivity and test
 
 1. **Physical/Virtual access:**
    - Check if firewall hardware is powered on
