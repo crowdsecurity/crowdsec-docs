@@ -293,12 +293,12 @@ if you try to access `http://localhost/.env` from a browser, your request will b
 
 ![appsec-denied](/img/appsec_denied.png)
 
-We can also look at the metrics from `cscli metrics show appsec` it will display:
+We can also look at the metrics from `cscli metrics show appsec` on the appsec pod it will display:
  - the number of requests processed by the AppSec Component
  - Individual rule matches
 
  <details>
-  <summary>Example Output</summary>
+     <summary>Example Output</summary>
 
 ```bash title="kubectl exec -n crowdsec -ti crowdsec-appsec-<pod-name> -- cscli metrics show appsec"
 Appsec Metrics:
@@ -315,6 +315,7 @@ Appsec '127.0.0.1:7422/' Rules Metrics:
 │ crowdsecurity/vpatch-env-access │ 1         │
 ╰─────────────────────────────────┴───────────╯
 ```
+</details>
 
 You can test and investigate further with [Stack
 Health-Check](/u/getting_started/health_check#trigger-crowdsecs-test-scenarios) and [Appsec Troubleshooting
