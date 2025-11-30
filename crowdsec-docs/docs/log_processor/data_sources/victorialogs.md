@@ -14,6 +14,7 @@ mode: tail
 log_level: info
 url: http://localhost:9428/
 limit: 1000
+since: 1m
 query: |
   app:nginx
 auth:
@@ -22,10 +23,6 @@ auth:
 labels:
  type: nginx
 ```
-
-:::info
-The reader will always start at "now" for `tail` mode.
-:::
 
 Look at the `configuration parameters` to view all supported options.
 
@@ -96,6 +93,10 @@ The maximum duration VictoriaLogs is allowed to be unavailable (once startup is 
 
 Default to `30 seconds`.
 
+### `since`
+
+Defines an offset duration to apply to the "start" time of VictoriaLogs query.
+This is useful in order to avoid missing logs when restarting crowdsec. Note that it is possible to have logs processed multiple times when using this parameter.
 
 ## DSN and command-line
 
