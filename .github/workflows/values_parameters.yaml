@@ -28,10 +28,9 @@ jobs:
         run: |
           find . 
           readme-generator \
-            --values helm-charts/charts/crowdsec/values.yaml \
-            --readme crowdsec-docs/docs/configuration/values_parameters.md" \
+            --values "helm-charts/charts/crowdsec/values.yaml" \
+            --readme "crowdsec-docs/docs/configuration/values_parameters.md" \
             --schema "/tmp/schema.json"
-
       - name: Commit bump
         uses: EndBug/add-and-commit@v9
         with:
