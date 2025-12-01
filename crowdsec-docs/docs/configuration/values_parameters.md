@@ -1,6 +1,6 @@
 ---
-title: Values.yaml parameters
-id: values_parameter's
+title: values.yaml's parameters
+id: values_parameters
 ---
 
 # Values parameters reference

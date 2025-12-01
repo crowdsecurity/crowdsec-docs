@@ -255,7 +255,7 @@ const sidebarsConfig: SidebarConfig = {
 				type: "doc",
 				id: "configuration/crowdsec_configuration",
 			},
-			items: ["configuration/feature_flags", "configuration/network_management"],
+			items: ["configuration/feature_flags", "configuration/network_management", "configuration/values_parameters" ],
 		},
 		{
 			type: "category",
