@@ -1,5 +1,5 @@
 ---
-title: Parameters available in Helm's values.yaml
+title: Helm's Parameters
 id: values_parameters
 ---
 
