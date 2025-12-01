@@ -19,9 +19,9 @@ This page lists all possible health check issues, their trigger conditions, and 
 |-------|-------------|---------|------------|
 | **Integration for Firewall Offline** | 🔥 Critical | Firewall has not pulled from BLaaS endpoint for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_integration_fw_offline) |
 | **Integration for RC Offline** | 🔥 Critical | Remediation Component has not pulled from endpoint for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_integration_rc_offline) |
+| **Log Processor No Alerts** | ⚠️ High | Log Processor has not generated alerts in 48 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_alerts) |
 | **Log Processor No Logs Parsed** | 🔥 Critical | Logs read but none parsed in the last 48 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_logs_parsed) |
 | **Log Processor No Logs Read** | 🔥 Critical | No logs acquired in the last 24 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_logs_read) |
-| **Log Processor No Alerts** | ⚠️ High | Log Processor has not generated alerts in 48 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_alerts) |
 | **Log Processor Offline** | 🔥 Critical | Log Processor has not checked in with LAPI for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_lp_offline) |
 | **Security Engine No Alerts** | ⚠️ High | No alerts generated in the last 48 hours | [Troubleshooting](/u/troubleshooting/issue_se_no_alerts) |
 | **Security Engine Offline** | 🔥 Critical | Security Engine has not reported to Console for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_se_offline) |

@@ -17,10 +17,9 @@ When a Log Processor has not checked in with the Local API (LAPI) of the central
 
 ## Common Root Causes
 
-- **Service stopped or stuck**: The crowdsec service of this LP has crashed, hung, or was manually stopped on the agent host.
-- **Machine not validated or credentials revoked**: The agent's credentials are pending validation, were removed from the central LAPI, or the credentials file is missing/corrupt.
-- **Local API unreachable from agent**: Network issues, firewall rules, or configuration errors prevent the agent from connecting to the LAPI endpoint.
-- **Local API service unavailable**: The central LAPI service itself is down or not responding, affecting all agents trying to connect *(would have triggered an other issue)*.
+- [**Service stopped or stuck**](#service-stopped-or-stuck): The crowdsec service of this LP has crashed, hung, or was manually stopped on the agent host.
+- [**Machine not validated or credentials revoked**](#machine-credentials-need-validation): The agent's credentials are pending validation, were removed from the central LAPI, or the credentials file is missing/corrupt.
+- [**Local API unreachable from agent**](#central-lapi-unreachable-from-agent): Network issues, firewall rules, or configuration errors prevent the agent from connecting to the LAPI endpoint.
 
 ## Diagnosis & Resolution
 
