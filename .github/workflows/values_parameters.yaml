@@ -1,0 +1,37 @@
+name: Generate values parameters
+
+on:
+  push:
+    branches:
+      - values/parameters
+
+jobs:
+  update_values_parameters:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          repository: crowdsecurity/helm-charts
+          path: helm-chart
+      - name: Set up Node.js (readme-generator requires Node 22.x)
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install readme-generator-for-helm
+        run: npm i -g @bitnami/readme-generator-for-helm@2.7.2
+
+      - name: Generate README.md & values.schema.json
+        run: |
+          readme-generator \
+            --values helm-chart/charts/crowdsec/values.yaml \
+            --readme crowdsec-docs/docs/configuration/values_parameters.md" \
+            --schema "/tmp/schema.json"
+
+      - name: Commit bump
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "chore(charts): regenerate values parameters"
