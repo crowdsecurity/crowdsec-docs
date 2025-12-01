@@ -3,7 +3,9 @@ title: Log Processor No Alerts
 id: issue_lp_no_alerts
 ---
 
-The **Log Processor No Alerts** issue appears when a specific Log Processor (agent) is running and communicating with the Local API but hasn't generated any alerts in the last 48 hours. This is similar to [Engine No Alerts](/u/troubleshooting/issue_se_no_alerts) but applies to individual Log Processor instances in distributed setups.
+The **Log Processor No Alerts** issue appears when a specific Log Processor is running and communicating with the Local API but hasn't generated any alerts in the last 48 hours.   
+
+This is similar to [Security Engine No Alerts](/u/troubleshooting/issue_se_no_alerts) but applies to individual Log Processor instances in distributed setups.
 
 ## What Triggers This Issue
 
@@ -25,149 +27,7 @@ If it's not due to other issues above, continue with the diagnosis and resolutio
 
 ## Diagnosis & Resolution
 
-### Scenarios in Simulation Mode
-
-#### Check if scenarios are in simulation mode
-
-Connect to the specific Log Processor host and check its metrics:
-
-```bash
-# On the Log Processor host
-sudo cscli metrics show acquisition parsers scenarios
-
-# Docker
-docker exec crowdsec-agent cscli metrics show acquisition parsers scenarios
-
-# Kubernetes - for specific agent pod
-kubectl exec -n crowdsec -it <agent-pod-name> -- cscli metrics show acquisition parsers scenarios
-```
-
-Look for:
-- **Acquisition Metrics**: Are log lines being read? (non-zero "Lines read")
-- **Parser Metrics**: Are logs being parsed? (non-zero "Lines parsed")
-- **Scenario Metrics**: Are scenarios evaluating events?
-
-Check simulation status:
-
-```bash
-# Check simulation status
-sudo cscli simulation status
-```
-
-Check which machine is not generating alerts:
-
-```bash
-# On LAPI host
-sudo cscli machines list
-```
-
-Look for the Last Update timestamp and verify which machine corresponds to the alert.
-
-Check recent alerts from this agent:
-
-```bash
-# On the Log Processor host
-sudo cscli alerts list
-
-# Or filter by origin on LAPI
-sudo cscli alerts list --origin <machine-name>
-```
-
-#### Disable simulation mode on the affected agent
-
-```bash
-# Check simulation status
-sudo cscli simulation status
-
-# Disable for all scenarios
-sudo cscli simulation disable --all
-sudo systemctl reload crowdsec
-
-# Or for specific scenarios
-sudo cscli simulation disable crowdsecurity/ssh-bf
-sudo systemctl reload crowdsec
-```
-
-### Low-Activity Service
-
-#### Check if service has low legitimate activity
-
-If logs are being read and parsed, and scenarios are not in simulation mode, the service may genuinely have no malicious activity.
-
-Connect to the specific Log Processor host and check its metrics:
-
-```bash
-# On the Log Processor host
-sudo cscli metrics show acquisition parsers scenarios
-
-# Docker
-docker exec crowdsec-agent cscli metrics show acquisition parsers scenarios
-
-# Kubernetes - for specific agent pod
-kubectl exec -n crowdsec -it <agent-pod-name> -- cscli metrics show acquisition parsers scenarios
-```
-
-Look for:
-- **Acquisition Metrics**: Are log lines being read? (non-zero "Lines read")
-- **Parser Metrics**: Are logs being parsed? (non-zero "Lines parsed")
-- **Scenario Metrics**: Are scenarios evaluating events?
-
-#### Accept or test the low alert rate
-
-For legitimately clean services:
-
-1. **Test with dummy scenarios** using the [Health Check guide](/u/getting_started/health_check) to verify the detection pipeline works
-2. **Verify the agent is processing logs** with `cscli metrics show acquisition`
-3. **Accept the low alert rate** if the service truly has no malicious traffic
-
-### No Logs Being Read
-
-#### Verify acquisition configuration and log access
-
-```bash
-# Verify acquisition configuration
-sudo cat /etc/crowdsec/acquis.yaml
-sudo ls -la /etc/crowdsec/acquis.d/
-
-# Check log file existence and permissions
-ls -la /var/log/nginx/  # or your specific log path
-
-# Verify CrowdSec can access logs
-sudo -u crowdsec cat /var/log/nginx/access.log | head -5
-```
-
-#### Fix acquisition configuration
-
-Follow the [Log Processor No Logs Read troubleshooting guide](/u/troubleshooting/issue_lp_no_logs_read) for detailed steps.
-
-### No Logs Being Parsed
-
-#### Check installed collections and test parsing
-
-```bash
-# Check installed collections
-sudo cscli collections list
-
-# Test parsing with a sample log line
-sudo cscli explain --log "<sample log line>" --type <type>
-
-# Example for nginx
-sudo cscli explain --log '192.168.1.1 - - [01/Jan/2024:12:00:00 +0000] "GET / HTTP/1.1" 200 1234' --type nginx
-```
-
-#### Install required collections or fix parser configuration
-
-Follow the [Log Processor No Logs Parsed troubleshooting guide](/u/troubleshooting/issue_lp_no_logs_parsed) for detailed steps.
-
-## Verify Resolution
-
-After making changes on the affected Log Processor:
-
-1. Restart the agent: `sudo systemctl restart crowdsec`
-2. Wait a few minutes for processing
-3. Check metrics: `sudo cscli metrics show scenarios`
-4. Trigger a test alert: [Health Check detection tests](/u/getting_started/health_check#-detection-checks)
-5. Verify alert appears: `sudo cscli alerts list`
+Refer to the [Security Engine No Alerts](/u/troubleshooting/issue_se_no_alerts#diagnosis--resolution) section.
 
 ## Distributed Setup Considerations
 
