@@ -3,7 +3,7 @@ title: Log Processor No Logs Read
 id: issue_lp_no_logs_read
 ---
 
-The **Log Processor No Logs Read** issue appears when a Log Processor is running but hasn't acquired any log lines in the last 24 hours.   
+The **Log Processor No Logs Read** means the LP is running but hasn't acquired any log lines in the last 24 hours.   
 This is the first step in the detection pipeline and must work for CrowdSec to function.
 
 ## What Triggers This Issue
