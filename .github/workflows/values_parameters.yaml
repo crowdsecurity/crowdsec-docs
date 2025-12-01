@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: crowdsecurity/helm-charts
-          path: helm-chart
+          path: helm-charts
       - name: Set up Node.js (readme-generator requires Node 22.x)
         uses: actions/setup-node@v6
         with:
@@ -26,8 +26,9 @@ jobs:
 
       - name: Generate README.md & values.schema.json
         run: |
+          find . 
           readme-generator \
-            --values helm-chart/charts/crowdsec/values.yaml \
+            --values helm-charts/charts/crowdsec/values.yaml \
             --readme crowdsec-docs/docs/configuration/values_parameters.md" \
             --schema "/tmp/schema.json"
 
