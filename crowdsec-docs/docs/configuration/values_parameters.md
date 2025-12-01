@@ -1,5 +1,5 @@
 ---
-title: values.yaml's parameters
+title: Parameters available in Helm's values.yaml
 id: values_parameters
 ---
 
@@ -12,9 +12,9 @@ configuration values, their defaults, and their purpose.
 
 ### Global
 
-| Name                | Description                                                   | Value    |
-| ------------------- | ------------------------------------------------------------- | -------- |
-| `container_runtime` | [string] for raw logs format: json or cri (docker|containerd) | `docker` |
+| Name                | Description                                       | Value       |
+| ------------------- | ------------------------------------------------- | ----------- | -------- |
+| `container_runtime` | [string] for raw logs format: json or cri (docker | containerd) | `docker` |
 
 ### Image
 
