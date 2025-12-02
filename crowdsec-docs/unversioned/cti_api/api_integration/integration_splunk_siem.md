@@ -17,7 +17,10 @@ The Splunk SIEM App is available in Splunkbase. You can download it from [here](
 
 - Complete the App setup by providing your API Key 
 
-**N.B**: If you wish to change your key at a later date, you can do so on this same page.
+:::info
+The batching option cannot be used with free CTI API keys. Batching allows to query up to 100 IPs at a time and is needed for any larger scale enrichments.
+:::
+
 
 ![Setup View](/img/splunk_siem/splunk_siem_api_key_setup.png)
 
@@ -26,7 +29,23 @@ The Splunk SIEM App is available in Splunkbase. You can download it from [here](
 
 ![Example Output](/img/splunk_siem/splunk_siem_example.png)
 
+
+## Fields filtering
+
+`cssmoke` supports a `fields` argument to restrict outputed fields, separated by commas.
+
+```
+cssmoke ipfield="ip" fields="confidence,reputation,cves"
+```
+
 ![Example Output (2)](/img/splunk_siem/splunk_siem_example_2.png)
+
+## Multiple IP fields
+
+All output fields have the prefix `crowdsec_{field}_`. For event with multiple IPs (ie. `ipsrc`, `ipdst`), the outputs will be in `crowdsec_ipsrc_reputation`, `crowdsec_ipdst_reputation` etc.
+
+![Example Output (3)](/img/splunk_siem/splunk_siem_multiple_ips.png)
+
 
 ## Enriched Data
 
@@ -34,79 +53,83 @@ The following fields are automatically enriched using **CrowdSec** intelligence:
 
 (Please refer to the [CrowdSec CTI API documentation](https://docs.crowdsec.net/u/cti_api/taxonomy/cti_object/) for more details on each field.)
 
+:::info
+
+All output fields are prefixed with `crowdsec_{field}_`.
+:::
 
 ### Reputation & Classification
 
-* `crowdsec_reputation`: IP reputation
-* `crowdsec_confidence`: Confidence level
-* `crowdsec_ip_range_score`: The malevolence score of the IP range the IP belongs to
-* `crowdsec_ip`: Original IP address
-* `crowdsec_ip_range`: IP range
-* `crowdsec_ip_range_24`: /24 range of the IP address
-* `crowdsec_ip_range_24_reputation`: Reputation of the range
-* `crowdsec_ip_range_24_score`: Score for the range
-* `crowdsec_as_name`: Autonomous system (AS) name
-* `crowdsec_as_num`: Autonomous system (AS) number
-* `crowdsec_false_positives`: Historical false positives
-* `crowdsec_classifications`: Classifications associated with the IP
+* `reputation`: IP reputation
+* `confidence`: Confidence level
+* `ip_range_score`: The malevolence score of the IP range the IP belongs to
+* `ip`: Original IP address
+* `ip_range`: IP range
+* `ip_range_24`: /24 range of the IP address
+* `ip_range_24_reputation`: Reputation of the range
+* `ip_range_24_score`: Score for the range
+* `as_name`: Autonomous system (AS) name
+* `as_num`: Autonomous system (AS) number
+* `false_positives`: Historical false positives
+* `classifications`: Classifications associated with the IP
 
 ### Geolocation
 
-* `crowdsec_country`: Country
-* `crowdsec_city`: City
-* `crowdsec_latitude`: Latitude
-* `crowdsec_longitude`: Longitude
-* `crowdsec_reverse_dns`: Reverse DNS result
+* `country`: Country
+* `city`: City
+* `latitude`: Latitude
+* `longitude`: Longitude
+* `reverse_dns`: Reverse DNS result
 
 ### Behavioral & Threat Intelligence
 
-* `crowdsec_behaviors`: A list of the attack categories for which the IP was reported
-* `crowdsec_mitre_techniques`: A list of Mitre techniques associated with the IP
-* `crowdsec_cves`: A list of CVEs for which the IP has been reported for
-* `crowdsec_attack_details`: A more exhaustive list of the scenarios for which a given IP was reported
-* `crowdsec_target_countries`: The top 10 countries targeted by the IP
-* `crowdsec_background_noise`: The level of background noise of an IP address is an indicator of its internet activity intensity
-* `crowdsec_background_noise_score`: CrowdSec intelligence calculated score
-* `crowdsec_references`: A list of the CrowdSec Blockists the IP belongs to
+* `behaviors`: A list of the attack categories for which the IP was reported
+* `mitre_techniques`: A list of Mitre techniques associated with the IP
+* `cves`: A list of CVEs for which the IP has been reported for
+* `attack_details`: A more exhaustive list of the scenarios for which a given IP was reported
+* `target_countries`: The top 10 countries targeted by the IP
+* `background_noise`: The level of background noise of an IP address is an indicator of its internet activity intensity
+* `background_noise_score`: CrowdSec intelligence calculated score
+* `references`: A list of the CrowdSec Blockists the IP belongs to
 
 ### Activity History
 
-* `crowdsec_first_seen`: Date of the first time this IP was reported
-* `crowdsec_last_seen`: Date of the last time this IP was reported
-* `crowdsec_full_age`: Delta in days between first seen and today
-* `crowdsec_days_age`: Delta in days between first and last seen timestamps
+* `first_seen`: Date of the first time this IP was reported
+* `last_seen`: Date of the last time this IP was reported
+* `full_age`: Delta in days between first seen and today
+* `days_age`: Delta in days between first and last seen timestamps
 
 ### Threat Scores Over Time
 
 #### Overall
 
-* `crowdsec_overall_aggressiveness`
-* `crowdsec_overall_threat`
-* `crowdsec_overall_trust`
-* `crowdsec_overall_anomaly`
-* `crowdsec_overall_total`
+* `overall_aggressiveness`
+* `overall_threat`
+* `overall_trust`
+* `overall_anomaly`
+* `overall_total`
 
 #### Last Day
 
-* `crowdsec_last_day_aggressiveness`
-* `crowdsec_last_day_threat`
-* `crowdsec_last_day_trust`
-* `crowdsec_last_day_anomaly`
-* `crowdsec_last_day_total`
+* `last_day_aggressiveness`
+* `last_day_threat`
+* `last_day_trust`
+* `last_day_anomaly`
+* `last_day_total`
 
 #### Last Week
 
-* `crowdsec_last_week_aggressiveness`
-* `crowdsec_last_week_threat`
-* `crowdsec_last_week_trust`
-* `crowdsec_last_week_anomaly`
-* `crowdsec_last_week_total`
+* `last_week_aggressiveness`
+* `last_week_threat`
+* `last_week_trust`
+* `last_week_anomaly`
+* `last_week_total`
 
 #### Last Month
 
-* `crowdsec_last_month_aggressiveness`
-* `crowdsec_last_month_threat`
-* `crowdsec_last_month_trust`
-* `crowdsec_last_month_anomaly`
-* `crowdsec_last_month_total`
+* `last_month_aggressiveness`
+* `last_month_threat`
+* `last_month_trust`
+* `last_month_anomaly`
+* `last_month_total`
 
