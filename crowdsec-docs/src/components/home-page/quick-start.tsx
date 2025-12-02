@@ -115,7 +115,7 @@ const QuickStart = (): React.JSX.Element => {
 					link="/u/getting_started/health_check"
 					icon={MonitorHeartIcon}
 					key="Installation Heathcheck"
-                />
+				/>
 			</div>
 			<p className="text-xs mt-1 mb-4 text-foreground/70 text-right">
 				*Logos and trademarks, such as the logos above, are the property of their respective owners and are used here for
