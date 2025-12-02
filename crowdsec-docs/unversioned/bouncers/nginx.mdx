@@ -645,6 +645,14 @@ The timeout to process the request from the Remediation Component to the AppSec 
 ### Nginx variables
 
 Nginx variables can be used to adapt behaviour and or more flexible configurations:
-* ngx.var.cs_disable_bouncer: set to 1, it will disable the bouncer
-* ngx.var.enable_appsec: set to 1, it will enable the appsec even if it's disabled by configuration or if bouncer is disabled
-* ngx.var.disable_appsec: set to 1, it will disable the appsec
+* `ngx.var.crowdsec_disable_bouncer`: set to 1, it will disable the bouncer
+* `ngx.var.crowdsec_enable_bouncer`: set to 1, it will disable the bouncer
+* `ngx.var.crowdsec_enable_appsec`: set to 1, it will enable the appsec even if it's disabled by configuration or if bouncer is disabled
+* `ngx.var.crowdsec_disable_appsec`: set to 1, it will disable the appsec
+* `ngx.var.crowdsec_always_send_to_appsec`: set 1, it will always send the request to appsec, even if a decision already exist for the ip requesting
+
+If both `ngx.var.crowdsec_disable_bouncer` and
+`ngx.var.crowdsec_enable_bouncer`, or both `ngx.var.crowdsec_disable_appsec` and
+`ngx.var.crowdsec_enable_appsec` are set to 1, it's the disable configuration
+that prevails.
+
