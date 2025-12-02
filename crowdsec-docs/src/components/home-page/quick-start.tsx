@@ -1,6 +1,6 @@
 import ForwardIcon from "@mui/icons-material/Forward";
-import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import HubIcon from "@mui/icons-material/Hub";
+import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import cibApple from "@site/static/img/logo/apple-colored.svg";
 import cibDocker from "@site/static/img/logo/docker-colored.svg";
 import cibFreebsd from "@site/static/img/logo/freebsd-colored.svg";
