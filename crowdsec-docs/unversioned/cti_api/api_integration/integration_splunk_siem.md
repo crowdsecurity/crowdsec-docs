@@ -47,6 +47,10 @@ All output fields have the prefix `crowdsec_{field}_`. For event with multiple I
 ![Example Output (3)](/img/splunk_siem/splunk_siem_multiple_ips.png)
 
 
+:::info
+Fields containing multiple IP values aren't supported.
+:::
+
 ## Enriched Data
 
 The following fields are automatically enriched using **CrowdSec** intelligence:
