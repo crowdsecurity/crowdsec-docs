@@ -1,5 +1,6 @@
 import ForwardIcon from "@mui/icons-material/Forward";
 import HubIcon from "@mui/icons-material/Hub";
+import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import cibApple from "@site/static/img/logo/apple-colored.svg";
 import cibDocker from "@site/static/img/logo/docker-colored.svg";
 import cibFreebsd from "@site/static/img/logo/freebsd-colored.svg";
@@ -106,6 +107,15 @@ const QuickStart = (): React.JSX.Element => {
 				{singleServerSetup.map((props) => (
 					<HomePageItem title={props.text} description="" link={props.link} icon={props.icon} key={props.text} />
 				))}
+			</div>
+			<div className="grid grid-cols-1 gap-4 mt-4">
+				<HomePageItem
+					title="Installation Heathcheck"
+					description=""
+					link="/u/getting_started/health_check"
+					icon={MonitorHeartIcon}
+					key="Installation Heathcheck"
+				/>
 			</div>
 			<p className="text-xs mt-1 mb-4 text-foreground/70 text-right">
 				*Logos and trademarks, such as the logos above, are the property of their respective owners and are used here for
