@@ -1,6 +1,6 @@
 ---
 id: traefik
-title: Traefik
+title: Traefik (Kubernetes)
 sidebar_position: 5
 ---
 
@@ -43,9 +43,12 @@ proper forwarding and trust of client IP information is required for CrowdSec to
 apply decisions accurately.
 
 Traefik must first be configured to trust the upstream IP ranges. This is done
-using the forwardedHeaders.trustedIPs and proxyProtocol.trustedIPs entrypoint
-settings, depending on whether the environment relies on forwarded headers or
-the PROXY protocol.
+using the
+[forwardedHeaders.trustedIPs](https://doc.traefik.io/traefik/v3.2/routing/entrypoints/#forwarded-headers)
+and
+[proxyProtocol.trustedIPs](https://doc.traefik.io/traefik/v3.2/routing/entrypoints/#proxyprotocol)
+entrypoint settings, depending on whether the environment relies on forwarded
+headers or the PROXY protocol.
 
 The CrowdSec bouncer middleware then also needs to trust these same ranges:
 
@@ -56,8 +59,8 @@ spec:
       forwardedHeadersTrustedIps: <trusted-cidr>
 ```
 
-If Traefik is using proxyProtocol.trustedIPs, it will rewrite X-Real-Ip. In that
-case, the middleware can be instructed to read that header explicitly:
+In case the header in which the ip is set is not `X-Forwarded-For`, it can be
+set with:
 
 ```yaml
 spec:
@@ -69,6 +72,22 @@ spec:
 Correctly forwarding and trusting these headers ensures that both Traefik and
 CrowdSec operate on the real client IP, which is required for IP-based
 remediation.
+
+<Details>
+<summary>Side note about source ip with CrowdSec and Kubernetes</summary> 
+
+Source IP addresses are essential in a CrowdSec deployment for two reasons.
+First, the log processor must know which IPs are responsible for triggering
+scenarios. Second, the remediation component needs to identify the originating
+IP of incoming requests in order to apply the appropriate action.
+
+In a Kubernetes environment, this requires disabling source NAT on nodes so that
+the CrowdSec-monitored service pods receive the real client IP. As a
+consequence, the Service’s externalTrafficPolicy must be set to Local, and the
+workload (Traefik or any ingress/controller) must run either as a DaemonSet or
+as a Deployment ensuring one pod per node. This guarantees that no traffic — and
+therefore no security events — is missed.
+</Details>
 
 #### Traefik Custom Resources Definition
 
@@ -101,13 +120,24 @@ You can deploy Traefik CRDs without helm as well following [https://doc.traefik.
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.6/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
 ```
+
+
 </TabItem>
 </Tabs>
 
-###
+####  Experimental plugin loading ability
 
-Experimental plugin loading to enable the CrowdSec Bouncer Traefik Plugin, which
-cannot be activated via CLI flags alone
+CrowdSec Bouncer Traefik Plugin can't be enabled via CLI flags alone, one has to
+enable the experimental plugin load. This can be done by adding this snippet to
+helm's values.
+
+```yaml values.yaml
+experimental:
+  plugins:
+    crowdsec-bouncer-traefik-plugin:
+      moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+      version: "v1.4.5"
+```
 
 ### Middleware
 
@@ -203,7 +233,7 @@ spec:
 You can see all the configuration options in the [bouncer documentation](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin).
 You can also refer to a [full traefik and CrowdSec stack on kubernetes](https://raw.githubusercontent.com/maxlerebourg/crowdsec-bouncer-traefik-plugin/main/examples/kubernetes/README.md)
 
-Now, you can install the remediation component:
+Now, you can install or update the remediation component:
 
 ```bash
 kubectl apply -f bouncer-middleware.yaml
