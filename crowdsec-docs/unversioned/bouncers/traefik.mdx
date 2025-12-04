@@ -53,10 +53,11 @@ The CrowdSec bouncer middleware then also needs to trust these same ranges:
 spec:
   plugin:
     bouncer:
-      forwardedheaderstrustedips: <trusted-cidr>
+      forwardedHeadersTrustedIps: <trusted-cidr>
 ```
 
-If Traefik is using proxyProtocol.trustedIPs, it will rewrite X-Real-Ip. In that case, the middleware can be instructed to read that header explicitly:
+If Traefik is using proxyProtocol.trustedIPs, it will rewrite X-Real-Ip. In that
+case, the middleware can be instructed to read that header explicitly:
 
 ```yaml
 spec:
@@ -79,10 +80,10 @@ Traefik is unable to apply CrowdSec decisions.
 
 <Tabs
   groupId="crowdsec-appsec-acquisition"
-  defaultValue="docker"
+  defaultValue="helm"
   values={[
     { label: 'Helm', value: 'helm' },
-    { label: 'Kubectl', value: Kubectl },
+    { label: 'Kubectl', value: 'kubectl' },
   ]}
 >
 <TabItem value="helm">
