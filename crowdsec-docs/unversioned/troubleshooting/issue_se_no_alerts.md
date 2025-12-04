@@ -37,12 +37,15 @@ sudo cscli collections list
 ```
 <details>
    <summary>Run this command for Docker or Kubernetes</summary>
+
 ```bash
 docker exec crowdsec cscli collections list
 ```
+
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli collections list
 ```
+
 </details>
 
 Compare your installed collections against your actual services (nginx, apache, ssh, etc.). Missing collections means no detection rules for those services.
@@ -76,6 +79,7 @@ sudo systemctl reload crowdsec
 ```bash
 docker exec crowdsec cscli collections install crowdsecurity/nginx
 ```
+
 ```bash
 docker restart crowdsec
 ```
@@ -84,9 +88,11 @@ docker restart crowdsec
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli collections install crowdsecurity/nginx
 ```
+
 ```bash
 kubectl rollout restart deployment/crowdsec -n crowdsec
 ```
+
 </details>
 
 ### Events massively whitelisted
@@ -107,10 +113,12 @@ sudo cscli metrics show acquisition
 ```bash
 docker exec crowdsec cscli metrics show scenarios
 ```
+
 **Kubernetes**
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli metrics show scenarios
 ```
+
 </details>
 
 **Look at the Lines whitelisted column**
@@ -157,6 +165,7 @@ docker exec crowdsec cscli simulation status
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli simulation status
 ```
+
 </details>
 
 If scenarios are listed, they're in simulation mode and won't be sent to CrowdSec console (they should however still appear in `cscli alerts list`).
@@ -176,6 +185,7 @@ sudo systemctl reload crowdsec
 ```bash
 docker exec crowdsec cscli simulation disable --all
 ```
+
 ```bash
 docker restart crowdsec
 ``
@@ -184,9 +194,11 @@ docker restart crowdsec
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli simulation disable --all
 ```
+
 ```bash
 kubectl rollout restart deployment/crowdsec -n crowdsec
 ```
+
 </details>
 
 You can also disable simulation for specific scenarios only:
@@ -219,10 +231,12 @@ sudo cscli metrics show acquisition parsers
 ```bash
 docker exec crowdsec cscli metrics show acquisition parsers
 ```
+
 **Kubernetes**
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli metrics show acquisition parsers
 ```
+
 </details>
 
 Look at "Lines parsed" - if this number is very low (dozens or hundreds per day), you may simply have insufficient traffic volume for malicious activity to appear.
@@ -245,6 +259,7 @@ sudo cscli metrics show bouncers
 ```bash
 docker exec crowdsec cscli decisions list
 ```
+
 ```bash
 docker exec crowdsec cscli metrics show bouncers
 ```
@@ -253,9 +268,11 @@ docker exec crowdsec cscli metrics show bouncers
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli decisions list
 ```
+
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli metrics show bouncers
 ```
+
 </details>
 
 High numbers of active decisions or bouncer blocks may indicate your proactive defenses are effectively blocking all malicious actors. However lets make sure no other issues

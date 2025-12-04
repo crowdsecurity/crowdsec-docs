@@ -41,10 +41,12 @@ Docker
 ```bash
 docker exec crowdsec cscli alerts list -l 100
 ```
+
 Kubernetes
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli alerts list -l 100
 ```
+
 </details>
 
 2. Look for patterns:
@@ -61,15 +63,15 @@ sudo cscli metrics show scenarios
 
 <details>
    <summary>Run this command for Docker or Kubernetes</summary>
-Docker
+
 ```bash
 docker exec crowdsec cscli metrics show scenarios
 ```
 
-Kubernetes
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli metrics show scenarios
 ```
+
 </details>
 
 Look for scenarios with extremely high "Overflow" counts or "Current count" numbers.

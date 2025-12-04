@@ -34,10 +34,12 @@ sudo journalctl -u crowdsec -n 50
 
 <details>
    <summary>Run this command for Docker or Kubernetes</summary>
+
 ```bash
 docker ps --filter name=crowdsec
 kubectl get pods -n crowdsec
 ```
+
 </details>
 
 If the host itself is unreachable (hypervisor, VM, or cloud instance down), the Console cannot receive a heartbeat and marks the engine offline.
@@ -52,6 +54,7 @@ sudo systemctl restart crowdsec
 
 <details>
    <summary>For Docker or Kubernetes</summary>
+
 **Docker:**
 ```bash
 docker restart crowdsec
@@ -61,6 +64,7 @@ docker restart crowdsec
 ```bash
 kubectl rollout restart deployment/crowdsec -n crowdsec
 ```
+
 </details>
 
 After restarting, re-run `sudo cscli console status` to ensure the heartbeat is restored.
