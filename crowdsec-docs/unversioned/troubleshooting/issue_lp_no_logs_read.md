@@ -62,9 +62,11 @@ sudo cscli metrics show acquisition
 ```bash
 docker exec crowdsec cscli metrics show acquisition
 ```
+
 ```bash
 kubectl exec -n crowdsec -it <agent-pod> -- cscli metrics show acquisition
 ```
+
 </details>
 
 **What to look for:**

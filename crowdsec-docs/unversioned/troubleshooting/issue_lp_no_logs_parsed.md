@@ -33,6 +33,7 @@ sudo cscli metrics show acquisition parsers
 ```bash
 docker exec crowdsec cscli metrics show acquisition parsers
 ```
+
 ```bash
 kubectl exec -n crowdsec -it <agent-pod> -- cscli metrics show acquisition parsers
 ```

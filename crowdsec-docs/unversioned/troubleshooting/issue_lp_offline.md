@@ -40,9 +40,11 @@ Or [check the logs](/u/troubleshooting/security_engine#where-are-the-logs-stored
 ```bash
 docker ps --filter name=crowdsec
 ```
+
 ```bash
 kubectl get pods -n crowdsec
 ```
+
 </details>
 
 On the LAPI node, run `sudo cscli machines list` and check whether the `Last Update` column is older than 24 hours for the affected machine.
@@ -61,9 +63,11 @@ sudo systemctl restart crowdsec
 ```bash
 docker restart crowdsec
 ```
+
 ```bash
 kubectl rollout restart deployment/crowdsec -n crowdsec
 ```
+
 </details>
 
 After the restart, verify the agent is checking in:
@@ -100,9 +104,11 @@ sudo cscli machines list
 ```bash
 docker exec crowdsec cscli machines list
 ```
+
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli machines list
 ```
+
 </details>
 
 - If the machine shows in `PENDING` state or is missing entirely, credentials need validation
