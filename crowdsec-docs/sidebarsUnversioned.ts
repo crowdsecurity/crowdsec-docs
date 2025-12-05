@@ -422,6 +422,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 			],
 		},
+		{
+			type: "doc",
+			label: "🏅 Premium Upgrade",
+			id: "console/premium_upgrade",
+		},
 	],
 	remediationSideBar: [
 		{
