@@ -427,6 +427,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			label: "🩺 Stack Health",
 			id: "console/stackhealth",
 		},
+		{
+			type: "doc",
+			label: "🏅 Premium Upgrade",
+			id: "console/premium_upgrade",
+		},
 	],
 	remediationSideBar: [
 		{
