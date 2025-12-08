@@ -422,6 +422,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 			],
 		},
+		{
+			type: "doc",
+			label: "🩺 Stack Health",
+			id: "console/stackhealth",
+		},
 	],
 	remediationSideBar: [
 		{
