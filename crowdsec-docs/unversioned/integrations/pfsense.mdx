@@ -12,6 +12,10 @@ The CrowdSec pfSense integration allows you to block malicious IPs in your pfSen
 
 Before you begin, please ensure your pfSense software version supports ingesting blocklists (URL aliases). If you are unsure, please refer to the pfSense documentation or contact pfSense support.
 
+:::warning
+Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::
+
 ### Steps
 
 We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
