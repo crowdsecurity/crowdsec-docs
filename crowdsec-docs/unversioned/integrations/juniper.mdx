@@ -68,7 +68,7 @@ set security dynamic-address feed-server crowdsec-feed url https://<USERNAME>:<P
 ```
 set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed description "CrowdSec Feed"
 set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed path /v1/integrations/<integration_id>/content
-set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed update-interval 120 hold-interval 43200
+set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed update-interval 1440 hold-interval 43200
 ```
 
 ### Define AddressName-to-ThreatFeed mapping
