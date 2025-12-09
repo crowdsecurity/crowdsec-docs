@@ -16,13 +16,13 @@ Premium features bring the following benefits:
 - **Scalability**:
     - Extra centralization and synchronization features
     - Extended data retention
-    - Automatization and API access for large-scale deployments
-- **Advanced Threat Detection & qualification**:
+    - Automation and API access for large-scale deployments
+- **Advanced Threat Detection & Qualification**:
     - Attack surge detection
-    - Premium proactive blocking with AI powered blocklists
+    - Premium proactive blocking with AI-powered blocklists
     - Background noise filtering
 
-Features comparison can be found in our [pricing page](https://app.crowdsec.net/pricing).
+A features comparison can be found on our [pricing page](https://app.crowdsec.net/pricing).
 
 ## Optimal Premium Upgrade Setup
 
@@ -32,17 +32,17 @@ When upgrading to a Premium plan, you may not want to upgrade every single Secur
 
 Because the Premium Upgrade applies to an entire **Organization**, the optimal strategy is to separate your Security Engines into different contexts before subscribing.
 
-When you first a Console account your workspace is your "Personal Account".  
-As a community account you can create one extra organization for free.  
+When you first create a Console account, your workspace is your "Personal Account".
+As a community account, you can create one extra organization for free.  
 
 We recommend the following setup:
 - If you have not already, create a new organization for your **Production** environment.
-- Have your **Dev / Test / Staging** Security Engines remain in your **Personal Account**
-- Have your **Production** Security Engines in the new **Production** organization.
+- Keep your **Dev / Test / Staging** Security Engines in your **Personal Account**.
+- Move your **Production** Security Engines to the new **Production** organization.
 - Upgrade the **Production** organization to **Premium**.
 
-To split your Security Engines into different organizations use either:
+To split your Security Engines into different organizations, use either:
 - The [Transfer feature](/u/console/security_engines/transfer_engine) from the Security Engine page.
-- Or via `cscsli`, re-enroll your Security Engines in the desired organization with the `--overwrite` flag to force moving it to the new organization.
+- Or via `cscli`, re-enroll your Security Engines in the desired organization with the `--overwrite` flag to force moving them to the new organization.
 
-After the transfer, the alerts will be reappearing in the new organization after a few minutes.
+After the transfer, the alerts will reappear in the new organization after a few minutes.
