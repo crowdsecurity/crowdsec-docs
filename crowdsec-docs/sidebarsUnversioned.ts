@@ -557,7 +557,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "Traefik",
+			label: "Traefik (Kubernetes)",
 			id: "bouncers/traefik",
 		},
 		{
