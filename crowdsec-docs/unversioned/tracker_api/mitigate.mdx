@@ -1,0 +1,227 @@
+---
+id: mitigate
+title: Mitigate
+---
+
+The **Mitigate** features allow you to take action on the threat intelligence you've gathered. You can create integrations with your security infrastructure (like firewalls) and subscribe them to receive updates about specific CVEs.
+
+## Manage Integrations
+
+Integrations are the bridge between CrowdSec's data and your security systems. You can create integrations that output data in various formats suitable for different firewalls and remediation components.
+
+### Create an Integration
+
+To create an integration, you need to specify its name, type, and output format.
+
+```python
+import os
+from crowdsec_tracker_api import (
+    Integrations,
+    IntegrationCreateRequest,
+    IntegrationType,
+    OutputFormat,
+    Server,
+    ApiKeyAuth,
+)
+from httpx import HTTPStatusError
+
+KEY = os.getenv("KEY")
+
+# Configure Authentication
+auth = ApiKeyAuth(api_key=KEY)
+
+# Initialize the Integrations service
+integrations_service = Integrations(base_url=Server.production_server.value, auth=auth)
+
+# Create the request
+request = IntegrationCreateRequest(
+    name="My Firewall Integration",
+    description="fetch cves ips lists",
+    entity_type=IntegrationType.FIREWALL_INTEGRATION.value,
+    output_format=OutputFormat.PLAIN_TEXT.value,
+)
+
+# Create the integration
+try:
+    response = integrations_service.create_integration(request=request)
+    print(f"Integration Created: {response.model_dump_json(indent=2)}")
+except HTTPStatusError as e:
+    print(f"An error occurred: {e.response.status_code} - {e.response.text}")
+# IMPORTANT: Save the Client Secret securely, it is only shown once!
+```
+
+### List Integrations
+
+You can list all your existing integrations to manage them.
+
+```python
+import os
+from crowdsec_tracker_api import (
+    Integrations,
+    Server,
+    ApiKeyAuth,
+)
+from httpx import HTTPStatusError
+
+KEY = os.getenv("KEY")
+
+# Configure Authentication
+auth = ApiKeyAuth(api_key=KEY)
+
+# Initialize the Integrations service
+integrations_service = Integrations(base_url=Server.production_server.value, auth=auth)
+
+try:
+    response = integrations_service.get_integrations()
+
+    for integration in response.items:
+        print(integration.model_dump_json(indent=2))
+        print("-----")
+except HTTPStatusError as e:
+    print(f"An error occurred: {e.response.status_code} - {e.response.text}")
+
+```
+
+### Update an Integration
+
+You can update the details of an existing integration, such as its name, description, or regenerate its client secret.
+
+```python
+import os
+from httpx import HTTPStatusError
+from crowdsec_tracker_api import (
+    Integrations,
+    Server,
+    ApiKeyAuth,
+    IntegrationUpdateRequest,
+)
+
+KEY = os.getenv("KEY")
+
+# Configure Authentication
+auth = ApiKeyAuth(api_key=KEY)
+
+# Initialize the Integrations service
+integrations_service = Integrations(base_url=Server.production_server.value, auth=auth)
+
+integration_id = "abcdefgh12345678"  # Replace with your integration ID
+request = IntegrationUpdateRequest(
+    name="Updated Firewall Integration",
+    regenerate_credentials=True,
+    description="Updated description for the integration",
+)
+try:
+    response = integrations_service.update_integration(
+        integration_id=integration_id,
+        request=request,
+    )
+    print(f"Integration Updated: {response.model_dump_json(indent=2)}")
+except HTTPStatusError as e:
+    print(f"An error occurred: {e.response.status_code} - {e.response.text}")
+```
+
+### Delete an Integration
+
+If an integration is no longer needed, you can delete it.
+
+```python
+import os
+from httpx import HTTPStatusError
+from crowdsec_tracker_api import (
+    Integrations,
+    Server,
+    ApiKeyAuth,
+)
+
+KEY = os.getenv("KEY")
+
+# Configure Authentication
+auth = ApiKeyAuth(api_key=KEY)
+
+# Initialize the Integrations service
+integrations_service = Integrations(base_url=Server.production_server.value, auth=auth)
+
+# Create the integration
+try:
+    response = integrations_service.delete_integration(
+        integration_id="abcdefgh12345678"  # Replace with your integration ID
+    )
+    print("Integration deleted successfully.")
+except HTTPStatusError as e:
+    print(f"An error occurred: {e.response.status_code} - {e.response.text}")
+
+```
+
+## Subscribe CVE to Integration
+
+Once you have an integration, you can subscribe it to a specific CVE. This means the integration will receive the list of IPs exploiting that CVE.
+
+```python
+import os
+from crowdsec_tracker_api import (
+    Cves,
+    Server,
+    ApiKeyAuth,
+    SubscribeCVEIntegrationRequest,
+)
+from httpx import HTTPStatusError
+
+KEY = os.getenv("KEY")
+
+# Initialize the service
+auth = ApiKeyAuth(api_key=KEY)
+cves_service = Cves(base_url=Server.production_server.value, auth=auth)
+
+cve_id = "CVE-2024-1234"
+integration_name = "My Firewall Integration"  # The name of the integration you created
+
+# Create subscription request
+request = SubscribeCVEIntegrationRequest(name=integration_name)
+
+# Subscribe
+try:
+    response = cves_service.subscribe_integration_to_cve(request=request, cve_id=cve_id)
+    print(response)
+except HTTPStatusError as e:
+    print(f"An error occurred: {e.response.status_code} - {e.response.text}")
+```
+
+## Unsubscribe Integration from CVE
+
+If you no longer want an integration to receive updates for a CVE, you can unsubscribe it.
+
+```python
+import os
+from httpx import HTTPStatusError
+from crowdsec_tracker_api import (
+    Cves,
+    Server,
+    ApiKeyAuth,
+)
+
+KEY = os.getenv("KEY")
+
+# Initialize the service
+auth = ApiKeyAuth(api_key=KEY)
+cves_service = Cves(base_url=Server.production_server.value, auth=auth)
+
+cve_id = "CVE-2024-1234"
+integration_name = "My Firewall Integration"  # The name of the integration you created
+
+# Unsubscribe
+try:
+    response = cves_service.unsubscribe_integration_from_cve(
+        cve_id=cve_id, integration_name=integration_name
+    )
+    if response is None:
+        print(
+            f"Successfully unsubscribed integration '{integration_name}' from CVE '{cve_id}'."
+        )
+except HTTPStatusError as e:
+    print(f"An error occurred: {e.response.status_code} - {e.response.text}")
+
+```
+
+## Next Steps
+
+Now that you have set up integrations and subscribed them to CVEs, you can follow [this documentation guide](https://docs.crowdsec.net/u/integrations/intro) to configure your security appliance based on the integration you created.

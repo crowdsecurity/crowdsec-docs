@@ -1,0 +1,89 @@
+---
+id: prioritize
+title: Prioritize
+---
+
+The **Prioritize** features allow you to assess the threat level of vulnerabilities by providing visibility into which CVEs are actively being exploited and by whom.
+
+## List Tracked CVEs
+
+You can retrieve a paginated list of all CVEs that CrowdSec is currently tracking. This helps you identify which vulnerabilities in your environment might be under active exploitation.
+
+```python
+import os
+from crowdsec_tracker_api import Cves, Server, ApiKeyAuth
+from httpx import HTTPStatusError
+
+KEY = os.getenv("KEY")
+
+# Initialize the service
+auth = ApiKeyAuth(api_key=KEY)
+cves_service = Cves(base_url=Server.production_server.value, auth=auth)
+
+# Get list of CVEs
+try:
+    response = cves_service.get_cves(page=1, size=50)
+
+    for cve in response.items:
+        print(cve.model_dump_json(indent=2))
+        print("-----")
+except HTTPStatusError as e:
+    print(f"An error occurred: {e.response.status_code} - {e.response.text}")
+
+```
+
+## Get CVE Details
+
+Get detailed information about a specific CVE, including its description and CVSS score.
+
+```python
+import os
+from crowdsec_tracker_api import Cves, ApiKeyAuth, Server
+from httpx import HTTPStatusError
+
+KEY = os.getenv("KEY")
+
+# Configure Authentication
+auth = ApiKeyAuth(api_key=KEY)
+
+# Initialize the Cves service
+cves_service = Cves(base_url=Server.production_server.value, auth=auth)
+
+# Get CVE Details
+cve_id = "CVE-2024-1234"
+try:
+    cve_details = cves_service.get_cve(cve_id)
+    print(f"CVE: {cve_details.model_dump_json(indent=2)}")
+except HTTPStatusError as e:
+    print(f"An error occurred: {e.response.status_code} - {e.response.text}")
+```
+
+## Get IPs Targeting a CVE
+
+One of the most powerful features is the ability to see the IP addresses that are actively exploiting a specific CVE. This information allows you to block these IPs immediately.
+
+```python
+import os
+from crowdsec_tracker_api import Cves, ApiKeyAuth, Server
+from httpx import HTTPStatusError
+
+KEY = os.getenv("KEY")
+
+# Configure Authentication
+auth = ApiKeyAuth(api_key=KEY)
+
+# Initialize the Cves service
+cves_service = Cves(base_url=Server.production_server.value, auth=auth)
+
+# Get CVE Details
+cve_id = "CVE-2024-1234"
+try:
+    response = cves_service.get_cve_ips(cve_id, page=1, size=10)
+except HTTPStatusError as e:
+    print(f"An error occurred: {e.response.status_code} - {e.response.text}")
+
+for ip in response.items:
+    print(ip.model_dump_json(indent=2))
+    print("-----")
+
+```

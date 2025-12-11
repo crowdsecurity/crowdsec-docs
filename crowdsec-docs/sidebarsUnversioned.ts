@@ -101,6 +101,28 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			id: "cti_api/faq",
 		},
 	],
+	trackerApiSidebar: [
+		{
+			type: "doc",
+			label: "Getting Started",
+			id: "tracker_api/intro",
+		},
+		{
+			type: "doc",
+			label: "Prioritize",
+			id: "tracker_api/prioritize",
+		},
+		{
+			type: "doc",
+			label: "Mitigate",
+			id: "tracker_api/mitigate",
+		},
+		{
+			type: "doc",
+			label: "API Reference",
+			id: "tracker_api/api_reference",
+		}
+	],
 	consoleSidebar: [
 		{
 			type: "doc",
@@ -761,6 +783,7 @@ export default sidebarsUnversionedConfig;
 
 export const {
 	ctiApiSidebar,
+	trackerApiSidebar,
 	consoleSidebar,
 	remediationSideBar,
 	blocklistsSideBar,
