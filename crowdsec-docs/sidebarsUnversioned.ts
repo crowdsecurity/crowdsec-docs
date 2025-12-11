@@ -121,7 +121,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			type: "doc",
 			label: "API Reference",
 			id: "tracker_api/api_reference",
-		}
+		},
 	],
 	consoleSidebar: [
 		{
