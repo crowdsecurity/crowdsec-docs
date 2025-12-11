@@ -8,6 +8,14 @@ CrowdSec Sentinel Playbook allows you to enrich your Microsoft Sentinel security
 
 This documentation will guide you through deploying the playbook, configuring the necessary permissions, and setting up an example analytics rule to detect threats using CrowdSec's CTI API.
 
+## Prerequisites: Get Your CTI API Key
+
+Before configuring the Logic App, you'll need a CrowdSec CTI API key.  
+For detailed instructions on obtaining your API key, check out the [CTI API Getting Started guide](/cti_api/api_getting_started.mdx).
+:::info
+If you need higher quotas for your CTI API key to handle larger volumes of queries, please [contact us](https://www.crowdsec.net/contact) to discuss custom quotas.
+:::
+
 ## Deployment
 
 The deployment uses an Azure Resource Manager template that can be deployed directly to your Azure environment.
@@ -17,20 +25,6 @@ The deployment uses an Azure Resource Manager template that can be deployed dire
 Click the "Deploy to Azure" button above to begin the deployment process.
 
 ![Deploy](/img/ms_sentinel/setup.png)
-
-## Prerequisites: Get Your CTI API Key
-
-Before configuring the Logic App, you'll need a CrowdSec CTI API key.
-
-### Generate Your API Key
-
-You can create a CTI API key in the [CrowdSec Console ↗️](https://app.crowdsec.net/) by navigating to "Settings" > "CTI API Keys" section.
-
-For detailed instructions on obtaining your API key, check out the [CTI API Getting Started guide](/cti_api/api_getting_started.mdx).
-
-### High-Quota CTI Keys
-
-If you need higher quotas for your CTI API key to handle larger volumes of queries, please [contact us](https://www.crowdsec.net/contact) to discuss enterprise options.
 
 ## Configuring Permissions
 
