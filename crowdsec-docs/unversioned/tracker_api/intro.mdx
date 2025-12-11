@@ -54,7 +54,7 @@ KEY = os.getenv("KEY")
 auth = ApiKeyAuth(api_key=KEY)
 
 # Initialize the Cves service
-cves_service = Cves(base_url=Server.production_server.value, auth=auth)
+cves_service = Cves(auth=auth)
 
 # Get CVE Details
 cve_id = "CVE-2025-1324"

@@ -31,7 +31,7 @@ KEY = os.getenv("KEY")
 auth = ApiKeyAuth(api_key=KEY)
 
 # Initialize the Integrations service
-integrations_service = Integrations(base_url=Server.production_server.value, auth=auth)
+integrations_service = Integrations(auth=auth)
 
 # Create the request
 request = IntegrationCreateRequest(
@@ -69,7 +69,7 @@ KEY = os.getenv("KEY")
 auth = ApiKeyAuth(api_key=KEY)
 
 # Initialize the Integrations service
-integrations_service = Integrations(base_url=Server.production_server.value, auth=auth)
+integrations_service = Integrations(auth=auth)
 
 try:
     response = integrations_service.get_integrations()
@@ -102,7 +102,7 @@ KEY = os.getenv("KEY")
 auth = ApiKeyAuth(api_key=KEY)
 
 # Initialize the Integrations service
-integrations_service = Integrations(base_url=Server.production_server.value, auth=auth)
+integrations_service = Integrations(auth=auth)
 
 integration_id = "abcdefgh12345678"  # Replace with your integration ID
 request = IntegrationUpdateRequest(
@@ -139,7 +139,7 @@ KEY = os.getenv("KEY")
 auth = ApiKeyAuth(api_key=KEY)
 
 # Initialize the Integrations service
-integrations_service = Integrations(base_url=Server.production_server.value, auth=auth)
+integrations_service = Integrations(auth=auth)
 
 # Create the integration
 try:
@@ -170,7 +170,7 @@ KEY = os.getenv("KEY")
 
 # Initialize the service
 auth = ApiKeyAuth(api_key=KEY)
-cves_service = Cves(base_url=Server.production_server.value, auth=auth)
+cves_service = Cves(auth=auth)
 
 cve_id = "CVE-2024-1234"
 integration_name = "My Firewall Integration"  # The name of the integration you created
@@ -203,7 +203,7 @@ KEY = os.getenv("KEY")
 
 # Initialize the service
 auth = ApiKeyAuth(api_key=KEY)
-cves_service = Cves(base_url=Server.production_server.value, auth=auth)
+cves_service = Cves(auth=auth)
 
 cve_id = "CVE-2024-1234"
 integration_name = "My Firewall Integration"  # The name of the integration you created
