@@ -77,3 +77,7 @@ When using `cscli` to list your parsers, scenarios and collections, some might a
 ### Which information is sent to your services ?
 
 See [CAPI documentation](/docs/next/central_api/intro).
+
+### stack Health issues list
+
+<div data-extract-copy="console_issues:stackhealth_issues_list"></div>
