@@ -378,7 +378,6 @@ cloudflare_config:
       compatibility_flags: []
     decisions_sync_worker: # Configuration for autonomous decisions sync worker
         cron: '*/5 * * * *' # Cron schedule for syncing decisions (e.g., "*/5 * * * *" for every 5 minutes)
-    ignore_binding_errors_on_deploy: false # If true, worker route binding errors during deployment will only log warnings instead of failing
 
 log_level: info
 log_media: "stdout"
@@ -730,11 +729,6 @@ This setting only applies to autonomous mode (when using the `-S` flag). In daem
 
 Default to `*/5 * * * *` (every 5 minutes).
 
-#### `ignore_binding_errors_on_deploy`
-> boolean
-
-If true, worker route binding errors during deployment will only log warnings instead of failing.
-Default to `false`.
 
 
 ### `prometheus`
