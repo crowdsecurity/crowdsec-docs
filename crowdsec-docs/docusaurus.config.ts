@@ -222,7 +222,7 @@ const config: Config = {
 			admonitions: true,
 			headingIds: true,
 		},
-		preprocessor:extractPreprocessor
+		preprocessor: extractPreprocessor,
 	},
 	stylesheets: [
 		{
