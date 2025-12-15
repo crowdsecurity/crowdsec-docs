@@ -84,6 +84,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				"cti_api/api_integration/integration_intelowl",
 				"cti_api/api_integration/integration_maltego",
 				"cti_api/api_integration/integration_misp",
+				"cti_api/api_integration/integration_ms_sentinel",
 				"cti_api/api_integration/integration_msticpy",
 				"cti_api/api_integration/integration_opencti",
 				"cti_api/api_integration/integration_paloalto_xsoar",
