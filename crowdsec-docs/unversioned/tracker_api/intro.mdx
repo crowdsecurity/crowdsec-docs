@@ -1,0 +1,117 @@
+---
+id: intro
+title: Getting Started
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+## What is the Exploit Tracker API?
+
+The **Exploit Tracker API** allows you to interact with CrowdSec's Threat Intelligence data, specifically focusing on CVEs and the IPs that exploit them. This enables you to prioritize vulnerabilities based on real-world exploitation data and mitigate threats by integrating IOCs with your existing security infrastructure: firewalls, SIEM, SOAR etc.
+
+:::info
+You can either use the RESTful API directly via HTTP requests or leverage the provided SDK for Python to simplify interactions.
+:::
+
+## Prerequisites
+
+To access the Exploit Tracker API, you need an API key. Please contact the CrowdSec team to obtain your API key if you haven't already.
+
+## SDK Installation
+
+Install the CrowdSec Tracker API SDK using pip:
+
+```bash
+pip install crowdsec-tracker-api
+```
+
+## Authentication
+
+To interact with the API, you need to configure the authentication using your API key.
+
+```python
+import os
+from crowdsec_tracker_api import ApiKeyAuth, Server
+
+KEY = os.getenv("KEY")
+
+# Configure Authentication
+auth = ApiKeyAuth(api_key=KEY)
+
+# Define the Server URL
+base_url = Server.production_server.value
+```
+
+## Quick Example: Get CVE Information
+
+Here is a simple example of how to retrieve information about a specific CVE using the SDK.
+
+<Tabs
+  defaultValue="python"
+  groupId="tracker-api-intro-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X GET -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/cves/CVE-2025-1324
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+from crowdsec_tracker_api import Cves, ApiKeyAuth, Server
+from httpx import HTTPStatusError
+
+KEY = os.getenv("KEY")
+
+# Configure Authentication
+auth = ApiKeyAuth(api_key=KEY)
+
+# Initialize the Cves service
+cves_service = Cves(auth=auth)
+
+# Get CVE Details
+cve_id = "CVE-2025-1324"
+try:
+    cve_details = cves_service.get_cve(cve_id)
+    print(f"CVE: {cve_details.model_dump_json(indent=2)}")
+except HTTPStatusError as e:
+    print(f"An error occurred: {e.response.status_code} - {e.response.text}")
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>answer on success</summary>
+
+```json
+{
+  "cve_id": "CVE-2024-1234",
+  "description": "Description of the CVE...",
+  "severity": "High",
+  "exploit_count": 42,
+  "first_seen": "2024-01-15T12:34:56Z",
+  "last_seen": "2024-06-10T08:22:33Z"
+  ... other fields ...
+}
+```
+
+</details>
+
+## Next Steps
+
+Now you can:
+
+- Explore the [API Reference](./api_reference) for detailed information on all available endpoints.
+- Learn how to use [Prioritize CVEs](./prioritize) based on real-world exploitation
+- Discover how to [Mitigate Threats](./mitigate) by integrating with your security appliances.
+- Explore the SDK documentation on [GitHub](https://github.com/crowdsecurity/crowdsec-tracker-api-sdk-python)
