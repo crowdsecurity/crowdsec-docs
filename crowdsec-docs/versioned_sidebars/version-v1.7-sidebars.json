@@ -1,21 +1,4 @@
 {
-  "sdkSideBar": [
-    {
-      "type": "doc",
-      "label": "Introduction",
-      "id": "getting_started/sdk_intro"
-    },
-    {
-      "type": "doc",
-      "label": "Python",
-      "id": "getting_started/install_pyagent"
-    },
-    {
-      "type": "doc",
-      "label": "PHP",
-      "id": "getting_started/install_softagent"
-    }
-  ],
   "tutorialSidebar": [
     {
       "type": "doc",
@@ -321,6 +304,23 @@
       "type": "doc",
       "label": "Contact the team",
       "id": "contact_team"
+    }
+  ],
+  "sdkSideBar": [
+    {
+      "type": "doc",
+      "label": "Introduction",
+      "id": "getting_started/sdk_intro"
+    },
+    {
+      "type": "doc",
+      "label": "Python",
+      "id": "getting_started/install_pyagent"
+    },
+    {
+      "type": "doc",
+      "label": "PHP",
+      "id": "getting_started/install_softagent"
     }
   ],
   "cscliSidebar": [
