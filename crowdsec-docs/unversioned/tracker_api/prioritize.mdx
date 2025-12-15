@@ -3,11 +3,34 @@ id: prioritize
 title: Prioritize
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 The **Prioritize** features allow you to assess the threat level of vulnerabilities by providing visibility into which CVEs are actively being exploited and by whom.
 
 ## List Tracked CVEs
 
 You can retrieve a paginated list of all CVEs that CrowdSec is currently tracking. This helps you identify which vulnerabilities in your environment might be under active exploitation.
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-prioritize-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves?page=1&size=50' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+</TabItem>
+<TabItem value="python">
 
 ```python
 import os
@@ -32,9 +55,32 @@ except HTTPStatusError as e:
 
 ```
 
+</TabItem>
+</Tabs>
+
 ## Get CVE Details
 
 Get detailed information about a specific CVE, including its description and CVSS score.
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-prioritize-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2025-1324' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+</TabItem>
+<TabItem value="python">
 
 ```python
 import os
@@ -58,9 +104,32 @@ except HTTPStatusError as e:
     print(f"An error occurred: {e.response.status_code} - {e.response.text}")
 ```
 
+</TabItem>
+</Tabs>
+
 ## Get IPs Targeting a CVE
 
 One of the most powerful features is the ability to see the IP addresses that are actively exploiting a specific CVE. This information allows you to block these IPs immediately.
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-prioritize-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-1234/ips?page=1&size=50' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+</TabItem>
+<TabItem value="python">
 
 ```python
 import os
@@ -87,3 +156,6 @@ for ip in response.items:
     print("-----")
 
 ```
+
+</TabItem>
+</Tabs>

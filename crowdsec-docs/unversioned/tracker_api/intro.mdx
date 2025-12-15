@@ -10,13 +10,17 @@ import TabItem from "@theme/TabItem";
 
 The **Exploit Tracker API** allows you to interact with CrowdSec's Threat Intelligence data, specifically focusing on CVEs and the IPs that exploit them. This enables you to prioritize vulnerabilities based on real-world exploitation data and mitigate threats by integrating with your existing security infrastructure.
 
+:::info
+You can either use the RESTful API directly via HTTP requests or leverage the provided SDK for Python to simplify interactions.
+:::
+
 ## Prerequisites
 
 To access the Exploit Tracker API, you need an API key. Please contact the CrowdSec team to obtain your API key if you haven't already.
 
-## Installation
+## SDK Installation
 
-First, install the CrowdSec Tracker API SDK:
+Install the CrowdSec Tracker API SDK using pip:
 
 ```bash
 pip install crowdsec-tracker-api
@@ -43,6 +47,24 @@ base_url = Server.production_server.value
 
 Here is a simple example of how to retrieve information about a specific CVE using the SDK.
 
+<Tabs
+  defaultValue="python"
+  groupId="tracker-api-intro-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X GET -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/cves/CVE-2025-1324
+```
+
+</TabItem>
+<TabItem value="python">
+
 ```python
 import os
 from crowdsec_tracker_api import Cves, ApiKeyAuth, Server
@@ -64,6 +86,9 @@ try:
 except HTTPStatusError as e:
     print(f"An error occurred: {e.response.status_code} - {e.response.text}")
 ```
+
+</TabItem>
+</Tabs>
 
 <details>
   <summary>answer on success</summary>
