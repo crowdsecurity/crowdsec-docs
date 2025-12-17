@@ -82,11 +82,10 @@ If you prefer to manually add the repository, you can do so by following the ins
       <CodeBlock className="language-bash">sudo yum install pygpgme yum-utils</CodeBlock>
       <p>You may need to install the EPEL repository for your system to install these packages. If you do not install pygpgme, GPG verification will not work.</p>
       <p>Create a file named /etc/yum.repos.d/crowdsec_crowdsec.repo that contains the repository configuration below.</p>
-      <p>Make sure to replace `el` and `6` in the config below with your Linux distribution and version:</p>
       <CodeBlock className="language-bash">
       [crowdsec_crowdsec]
       name=crowdsec_crowdsec
-      baseurl=https://packagecloud.io/crowdsec/crowdsec/el/6/$basearch
+      baseurl=https://packagecloud.io/crowdsec/crowdsec/rpm_any/rpm_any/$basearch
       repo_gpgcheck=1
       gpgcheck=1
       enabled=1
@@ -100,7 +99,7 @@ If you prefer to manually add the repository, you can do so by following the ins
 
       [crowdsec_crowdsec-source]
       name=crowdsec_crowdsec-source
-      baseurl=https://packagecloud.io/crowdsec/crowdsec/el/6/SRPMS
+      baseurl=https://packagecloud.io/crowdsec/crowdsec/rpm_any/rpm_any/SRPMS
       repo_gpgcheck=1
       gpgcheck=1
       enabled=1

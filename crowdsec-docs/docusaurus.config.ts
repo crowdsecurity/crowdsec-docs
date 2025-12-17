@@ -4,7 +4,7 @@ import type { Config } from "@docusaurus/types";
 import { themes } from "prism-react-renderer";
 
 import tailwindPlugin from "./plugins/tailwind-config";
-import { ctiApiSidebar, guidesSideBar, remediationSideBar } from "./sidebarsUnversioned";
+import { ctiApiSidebar, guidesSideBar, remediationSideBar, trackerApiSidebar } from "./sidebarsUnversioned";
 
 const generateCurrentAndNextRedirects = (s) => [
 	{
@@ -174,6 +174,7 @@ const redirects = [
 	...[
 		...(Array.isArray(remediationSideBar) ? remediationSideBar : [remediationSideBar]),
 		...(Array.isArray(ctiApiSidebar) ? ctiApiSidebar : [ctiApiSidebar]),
+		...(Array.isArray(trackerApiSidebar) ? trackerApiSidebar : [trackerApiSidebar]),
 		...(Array.isArray(guidesSideBar) ? guidesSideBar : [guidesSideBar]),
 	].flatMap(backportRedirect),
 	{ from: "/docs/troubleshooting", to: "/u/troubleshooting/intro" },

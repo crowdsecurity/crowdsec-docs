@@ -1,6 +1,6 @@
 ---
 id: traefik
-title: Traefik
+title: Traefik (Kubernetes)
 sidebar_position: 5
 ---
 
@@ -25,11 +25,135 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
 
 <RemediationSupportBadges
   Prometheus
+  MTLS
 />
 
-### Traefik on kubernetes
+## Traefik on kubernetes
 
-Traefik expects a resource of "Middleware" type named "bouncer", which we will create now.
+:::important
+This remediation component is community developed and maintained. You can see all
+the configuration options in the [bouncer
+documentation](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin).
+You can also refer to a [full traefik and CrowdSec stack on
+kubernetes](https://github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin/tree/main/examples/kubernetes)
+or our [Appsec Traefik Quickstart](/docs/next/appsec/quickstart/traefik).
+
+This piece of documentation is rather an howto than a full fledge documentation.
+:::
+
+### Prerequesites
+
+#### Source IPs
+
+To ensure remediation works correctly, Traefik must receive the actual client IP
+for every request. When Traefik is deployed behind an upstream proxy or load
+balancer, the source IP may otherwise be replaced with the proxy’s address.
+Traefik Behind an Upstream Proxy or Load Balancer
+
+When Traefik operates behind a load balancer, CDN, or any intermediate proxy,
+proper forwarding and trust of client IP information is required for CrowdSec to
+apply decisions accurately.
+
+Traefik must first be configured to trust the upstream IP ranges. This is done
+using the
+[forwardedHeaders.trustedIPs](https://doc.traefik.io/traefik/v3.2/routing/entrypoints/#forwarded-headers)
+and
+[proxyProtocol.trustedIPs](https://doc.traefik.io/traefik/v3.2/routing/entrypoints/#proxyprotocol)
+entrypoint settings, depending on whether the environment relies on forwarded
+headers or the PROXY protocol.
+
+The CrowdSec bouncer middleware then also needs to trust these same ranges:
+
+```yaml
+spec:
+  plugin:
+    bouncer:
+      forwardedHeadersTrustedIps: <trusted-cidr>
+```
+
+In case the header in which the ip is set is not `X-Forwarded-For`, it can be
+set with:
+
+```yaml
+spec:
+  plugin:
+    bouncer:
+      forwardedHeadersCustomName: X-Real-Ip
+```
+
+Correctly forwarding and trusting these headers ensures that both Traefik and
+CrowdSec operate on the real client IP, which is required for IP-based
+remediation.
+
+<Details>
+<summary>Side note about source ip with CrowdSec and Kubernetes</summary> 
+
+Source IP addresses are essential in a CrowdSec deployment for two reasons.
+First, the log processor must know which IPs are responsible for triggering
+scenarios. Second, the remediation component needs to identify the originating
+IP of incoming requests in order to apply the appropriate action.
+
+In a Kubernetes environment, this requires disabling source NAT on nodes so that
+the CrowdSec-monitored service pods receive the real client IP. As a
+consequence, the Service’s externalTrafficPolicy must be set to Local, and the
+workload (Traefik or any ingress/controller) must run either as a DaemonSet or
+as a Deployment ensuring one pod per node. This guarantees that no traffic — and
+therefore no security events — is missed.
+</Details>
+
+#### Traefik Custom Resources Definition
+
+Traefik’s CRDs provide the custom resource types (such as Middleware) required
+for configuring Traefik through the Kubernetes CRD provider. CrowdSec
+remediation relies on one of these resources to declare the CrowdSec bouncer
+middleware. Without the CRDs, this middleware cannot be created or used, and
+Traefik is unable to apply CrowdSec decisions.
+
+<Tabs
+  groupId="crowdsec-appsec-acquisition"
+  defaultValue="helm"
+  values={[
+    { label: 'Helm', value: 'helm' },
+    { label: 'Kubectl', value: 'kubectl' },
+  ]}
+>
+<TabItem value="helm">
+
+Here is the command sequence to install the Traefik CRDs via the Helm chart:
+
+```bash
+helm repo add traefik https://traefik.github.io/charts
+helm repo update
+helm upgrade --install traefik-crds traefik/traefik-crds -n traefik --create-namespace
+```
+</TabItem>
+<TabItem value="kubectl">
+You can deploy Traefik CRDs without helm as well following [https://doc.traefik.io/traefik/reference/install-configuration/providers/kubernetes/kubernetes-crd/](Traefik documentation)
+```bash
+kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.6/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
+```
+
+
+</TabItem>
+</Tabs>
+
+####  Experimental plugin loading ability
+
+CrowdSec Bouncer Traefik Plugin can't be enabled via CLI flags alone, one has to
+enable the experimental plugin load. This can be done by adding this snippet to
+Traefik helm's chart  values:
+
+```yaml values.yaml
+experimental:
+  plugins:
+    crowdsec-bouncer-traefik-plugin:
+      moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+      version: "v1.4.5"
+```
+
+### Middleware
+
+To achieve remediation in a Traefik environment, one has to use a "Middleware" resource.
 
 Here is bouncer-middleware.yaml:
 
@@ -118,37 +242,9 @@ spec:
       crowdsecLapiPath: "/"
 ```
 
-You can see all the configuration options in the [bouncer documentation](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin).
-You can also refer to a [full traefik and CrowdSec stack on kubernetes](https://raw.githubusercontent.com/maxlerebourg/crowdsec-bouncer-traefik-plugin/main/examples/kubernetes/README.md)
 
-Now, you can install the remediation component:
+Now, you can install or update the remediation component:
 
 ```bash
 kubectl apply -f bouncer-middleware.yaml
-```
-
-### Treafik Behind an Upstream Proxy or Load Balancer
-
-When Traefik operates behind another proxy (such as a load balancer, CDN, etc ...), the source IP seen by Traefik may be the wrong one instead of the real client.
-To ensure Crowdsec applies decisions correctly based on the real client IP, it's crucial to properly forward and trust headers.
-
-First you configure Treafik to trust the upstream forwarded headers. Traefik has [`forwardedHeaders.trustedIPs`](https://doc.traefik.io/traefik/routing/entrypoints/#forwarded-headers) and [`proxyProtocol.trustedIPs`](https://doc.traefik.io/traefik/routing/entrypoints/#forwarded-headers) directives.
-
-
-Then, you need to configure the middleware to trust as well the IP:
-
-```yaml
-spec:
-  plugin:
-    bouncer:
-      forwardedheaderstrustedips: <trusted-cidr>
-```
-
-When using `proxyProtocol.trustedIPs` Traefik replaces `X-Real-Ip`, you can also add :
-
-```yaml
-spec:
-  plugin:
-    bouncer:
-      forwardedHeadersCustomName: X-Real-Ip
 ```

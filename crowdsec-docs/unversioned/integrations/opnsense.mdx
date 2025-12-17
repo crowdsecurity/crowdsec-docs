@@ -12,6 +12,10 @@ The CrowdSec OPNsense integration allows you to block malicious IPs in your OPNs
 
 Before you begin, please ensure your OPNsense software version supports ingesting blocklists (URL aliases). If you are unsure, please refer to the OPNsense documentation or contact OPNsense support.
 
+:::warning
+Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::
+
 ### Steps
 
 We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
