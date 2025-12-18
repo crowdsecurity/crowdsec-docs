@@ -174,6 +174,8 @@ The first time you setup the local dump feature, you need to download manually t
 
 After that, you can look up IPs using the local databases.
 
+If an IP address is not found in the local CrowdSec CTI database, the app automatically falls back to the bundled **CIRCL** ([circl.lu](https://data.public.lu/en/datasets/)) MMDB dataset to enrich the event with at least country and AS/ASN information. This ensures that Offline replication always returns basic geolocation and network owner context, even when CrowdSec CTI has no match for a given IP.
+
 
 :::warning
 
