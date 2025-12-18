@@ -23,9 +23,12 @@ The Exploit Tracker API allows you to access different features:
 ### Prioritize
 
 For a CVE, get:
- - General CVE information: Name, Title, Affected Components, CWEs, References, CVSS score, Presence of known public exploit etc.
+ - **General CVE information**: Name, Title, Affected Components, CWEs, References, CVSS score, Presence of known public exploit etc.
  - Number of IPs actively exploiting the vulnerability.
- - CrowdSec Analysis: A human readable text covering the most important information about the vulnerability, such as exploitation pattern, current momentum etc.
+ - **CrowdSec Analysis**: A human readable text covering the most important information about the vulnerability:
+    - Technical description of the vulnerability
+    - Relevant information about payload such as targeted URI
+    - Description of exploitation patterns, from targeted to large-scale opportunistic attacks
  - CrowdSec Scores:
     - CrowdSec Live Exploit Tracker Score:
     - Exploitation Status: 
@@ -39,12 +42,12 @@ For a CVE, get:
 From a CVE, get related IPs for different usecases:
 
 **CTI Information**
- - List of IPs exploiting the vulnerability over a given period, with [their associated information](https://doc.crowdsec.net/u/cti_api/taxonomy/cti_object), from reputation to known classifications.
+ - List of IPs exploiting the vulnerability over a given period, with [their associated information](https://doc.crowdsec.net/u/cti_api/taxonomy/cti_object), from reputation to known classifications. Allows to differentiate legitimate scanning actors (ie. shodan etc.), well-known attackers and newly deployed infrastructures.
 
 **Blocklists**
  - Create *integrations* allowing blocklist consumption from various firewall vendors.
  - Subscribe *integrations* to CVEs, effectively blocking suspicious and malicious IPs known to actively exploit the vulnerability.
-  
+
 ## Web interface
 
 ### Prerequisites
