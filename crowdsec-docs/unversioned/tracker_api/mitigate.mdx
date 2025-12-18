@@ -268,7 +268,7 @@ Once you have an integration, you can subscribe it to a specific CVE. This means
 
 ```bash
 curl -X 'POST' \
-  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-1234/integrations' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/integrations' \
   -H 'accept: application/json' \
   -H 'x-api-key: ${KEY}' \
   -H 'Content-Type: application/json' \
@@ -296,7 +296,7 @@ KEY = os.getenv("KEY")
 auth = ApiKeyAuth(api_key=KEY)
 cves_service = Cves(auth=auth)
 
-cve_id = "CVE-2024-1234"
+cve_id = "CVE-2024-25600"
 integration_name = "My Firewall Integration"  # The name of the integration you created
 
 # Create subscription request
@@ -329,7 +329,7 @@ If you no longer want an integration to receive updates for a CVE, you can unsub
 
 ```bash
 curl -X 'DELETE' \
-  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-1234/integrations/test_integration_1' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/integrations/test_integration_1' \
   -H 'accept: application/json' \
   -H 'x-api-key: ${KEY}'
 ```
@@ -352,7 +352,7 @@ KEY = os.getenv("KEY")
 auth = ApiKeyAuth(api_key=KEY)
 cves_service = Cves(auth=auth)
 
-cve_id = "CVE-2024-1234"
+cve_id = "CVE-2024-25600"
 integration_name = "My Firewall Integration"  # The name of the integration you created
 
 # Unsubscribe
