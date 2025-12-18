@@ -40,6 +40,26 @@ cssmoke ipfield="ip" fields="confidence,reputation,cves"
 
 ![Example Output (2)](/img/splunk_siem/splunk_siem_example_2.png)
 
+
+## Display profiles
+
+Profiles are optional presets that automatically select a predefined set of CrowdSec output fields, so results stay consistent and you don’t have to manually maintain long `ipfield=` lists.
+
+- `base`: returns `ip`, `reputation`, `confidence`, `as_num`, `as_name`, `location`, `classifications`.
+
+- `anonymous`: (aliases: `vpn` `proxy`): returns `ip`, `reputation`, `proxy_or_vpn`, `classifications`.
+
+- `iprange`: returns `ip`, `ip_range`, `ip_range_24`, `ip_range_24_score`.
+
+You can provide multiple profile in the same command:
+
+```
+| cssmoke ipfield="ip" profile="anonymous,iprange"
+```
+
+The output will contains the columns for the `anonymous` and the `iprange` profiles.
+
+
 ## Multiple IP fields
 
 All output fields have the prefix `crowdsec_{field}_`. For event with multiple IPs (ie. `ipsrc`, `ipdst`), the outputs will be in `crowdsec_ipsrc_reputation`, `crowdsec_ipdst_reputation` etc.
@@ -76,6 +96,7 @@ All output fields are prefixed with `crowdsec_{field}_`.
 * `as_num`: Autonomous system (AS) number
 * `false_positives`: Historical false positives
 * `classifications`: Classifications associated with the IP
+* `proxy_or_vpn`: Either the IP is a proxy or VPN
 
 ### Geolocation
 
@@ -136,4 +157,70 @@ All output fields are prefixed with `crowdsec_{field}_`.
 * `last_month_trust`
 * `last_month_anomaly`
 * `last_month_total`
+
+
+
+## Offline Replication
+
+Offline replication lets the app perform CrowdSec CTI lookups without calling the live CTI API for every search. When enabled, the app periodically (every 24h) downloads the CrowdSec CTI database locally (MMDB format) and queries that local database instead of sending requests to the API.
+
+Because the database is an MMDB, lookups can also return network-level intelligence: if there is no exact match for an IP address but reputation data exists for its containing /24 network, the result can still include that /24 information.
+
+The first time you setup the local dump feature, you need to download manually the CrowdSec lookup databases (they will be updated every 24h automatically after that):
+
+```
+| cssmokedownload
+```
+
+After that, you can look up IPs using the local databases.
+
+
+:::warning
+
+Offline replication requires a CTI API key that has access to the dump endpoint.
+
+:::
+
+:::info
+
+You can use profile `profile=debug` to check the `query_time` and `query_mode` fields in the results to confirm whether lookups are done via `local_dump` or the live API.
+
+:::
+
+## Configuration file
+
+You can configure the CrowdSec app by uploading a JSON configuration file during the setup:
+
+```
+{
+    "api_key": "YOUR_API_KEY_HERE",
+    "batching": true|false,
+    "batch_size": 20,
+    "local_dump": true|false
+}
+```
+
+### `api_key`
+
+CrowdSec CTI API key.
+
+:::warning
+
+Local dump and live CTI API lookups are mutually exclusive (enable only one mode).
+
+:::
+
+### `batching`
+
+Enable batching for live CTI API lookups.
+
+### `batch_size`
+
+Batch size used when `batching` is enabled.
+
+### `local_dump`
+
+Enable offline replication mode (use the downloaded lookup databases).
+
+Lookup databases are download automatically every 24h.
 
