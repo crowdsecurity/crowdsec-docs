@@ -28,7 +28,7 @@ import RemediationSupportBadges from "@site/src/components/remediation-support-b
   &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
-<RemediationSupportBadges Mode Appsec Metrics />
+<RemediationSupportBadges Mode Appsec Metrics MTLS />
 
 A lua Remediation Component for Ingress Nginx Controller.
 
@@ -226,6 +226,36 @@ API_URL=http://<ip>:<port>
 ```
 
 CrowdSec local API URL.
+
+### `USE_TLS_AUTH`
+
+> boolean
+
+```bash
+USE_TLS_AUTH=false # default
+```
+
+Enable mutual TLS (mTLS) authentication for secure communication with CrowdSec Local API. When enabled, the bouncer will use client certificates for authentication instead of API keys.
+
+### `TLS_CLIENT_CERT`
+
+> string (path to file)
+
+```bash
+TLS_CLIENT_CERT=<path_to_cert>
+```
+
+Path to the client certificate file for mTLS authentication. This option is only used when `USE_TLS_AUTH` is set to `true`.
+
+### `TLS_CLIENT_KEY`
+
+> string (path to file)
+
+```bash
+TLS_CLIENT_KEY=<path_to_key>
+```
+
+Path to the client certificate's private key file for mTLS authentication. This option is only used when `USE_TLS_AUTH` is set to `true`.
 
 ### `BOUNCING_ON_TYPE`
 
