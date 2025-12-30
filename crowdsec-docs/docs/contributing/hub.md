@@ -8,7 +8,7 @@ sidebar_position: 3
 
 Parsers, Scenarios, Collections, and WAF rules allow the CrowdSec `Security Engine` to detect and block malevolent behavior. Supporting new services or improving detection capabilities is a great way to contribute to the CrowdSec ecosystem.
 
-Sharing your parsers, scenarios and waf rules on the hub allows other users to use them to protect themselves.
+Sharing your parsers, scenarios, waf rules and collections on the hub allows other users to use them to protect themselves.
 
 ## Communication
 
