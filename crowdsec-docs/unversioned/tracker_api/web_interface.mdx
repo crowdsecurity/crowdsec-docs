@@ -7,15 +7,28 @@ title: Web Interface
 
 The [Web Interface of Live Exploit Tracker](https://let-demo.dev.crowdsec.net/) allows you to consume the API in a more human friendly way, and exposes the same features.
 
- - Prioritize allows you to search and view CVEs information: timeline, activity trends, related IPs.
- - 
+ - View CVEs information: timeline, activity trends, related IPs.
+ - Mitigate exploitation attempts by preemptively blocking IPs known to exploit given vulnerabilitilies.
 
 ## Prioritize
 
 The prioritize feature allows you to list or search tracked CVEs, and view detailed CVEs information:
 
-![Live Exploit Tracker API Key Configuration](/img/exploit-tracker/web-api-key.png)
+![Live Exploit Tracker API Key Configuration](/img/exploit-tracker/prioritize_web.png)
 
 ## Mitigate
 
-From a CVE page, you 
+From a CVE page, you are able to view IPs exploiting the vulnerability:
+
+![Mitigate CVE IP List](/img/exploit-tracker/prioritize_iplist.png)
+
+You can subscribe a firewall integration to a CVE, blocking IPs exploiting that vulnerability:
+
+![Subscribe to CVE](/img/exploit-tracker/mitigate_subscribe_web.png)
+
+## Firewall Integrations
+
+The firewall integration page lets you view and create integrations:
+
+![Integrations page](/img/exploit-tracker/firewall_integration_web.png)
+
