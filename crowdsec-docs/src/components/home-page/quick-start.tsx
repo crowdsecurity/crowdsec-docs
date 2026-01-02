@@ -110,11 +110,11 @@ const QuickStart = (): React.JSX.Element => {
 			</div>
 			<div className="grid grid-cols-1 gap-4 mt-4">
 				<HomePageItem
-					title="Installation Heathcheck"
+					title="Installation Healthcheck"
 					description=""
 					link="/u/getting_started/health_check"
 					icon={MonitorHeartIcon}
-					key="Installation Heathcheck"
+					key="Installation Healthcheck"
 				/>
 			</div>
 			<p className="text-xs mt-1 mb-4 text-foreground/70 text-right">
