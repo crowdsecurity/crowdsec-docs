@@ -123,6 +123,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			label: "API Reference",
 			id: "tracker_api/api_reference",
 		},
+		{
+			type: "doc",
+			label: "Web Interface",
+			id: "tracker_api/web_interface",
+		},
 	],
 	consoleSidebar: [
 		{

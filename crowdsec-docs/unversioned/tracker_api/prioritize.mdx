@@ -8,6 +8,10 @@ import TabItem from "@theme/TabItem";
 
 The **Prioritize** features allow you to assess the threat level of vulnerabilities by providing visibility into which CVEs are actively being exploited and by whom.
 
+:::info
+This page focuses on the API usage, you can also view information from the [web interface](./web_interface)
+:::
+
 ## List Tracked CVEs
 
 You can retrieve a paginated list of all CVEs that CrowdSec is currently tracking. This helps you identify which vulnerabilities in your environment might be under active exploitation.
@@ -74,7 +78,7 @@ Get detailed information about a specific CVE, including its description and CVS
 
 ```bash
 curl -X 'GET' \
-  'https://admin.api.crowdsec.net/v1/cves/CVE-2025-1324' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600' \
   -H 'accept: application/json' \
   -H 'x-api-key: ${KEY}'
 ```
@@ -96,7 +100,7 @@ auth = ApiKeyAuth(api_key=KEY)
 cves_service = Cves(auth=auth)
 
 # Get CVE Details
-cve_id = "CVE-2024-1234"
+cve_id = "CVE-2024-25600"
 try:
     cve_details = cves_service.get_cve(cve_id)
     print(f"CVE: {cve_details.model_dump_json(indent=2)}")
@@ -123,7 +127,7 @@ One of the most powerful features is the ability to see the IP addresses that ar
 
 ```bash
 curl -X 'GET' \
-  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-1234/ips?page=1&size=50' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/ips?page=1&size=50' \
   -H 'accept: application/json' \
   -H 'x-api-key: ${KEY}'
 ```
@@ -145,7 +149,7 @@ auth = ApiKeyAuth(api_key=KEY)
 cves_service = Cves(auth=auth)
 
 # Get CVE Details
-cve_id = "CVE-2024-1234"
+cve_id = "CVE-2024-25600"
 try:
     response = cves_service.get_cve_ips(cve_id, page=1, size=10)
 except HTTPStatusError as e:
