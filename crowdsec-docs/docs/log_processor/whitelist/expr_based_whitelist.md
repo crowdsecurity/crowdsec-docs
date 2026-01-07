@@ -290,11 +290,7 @@ You can see what data can be used from the `s01-parse` stage. Look for fields in
 
 ## Create the parser whitelist file
 
-Once you've identified the fields you want to use, create a new YAML file in the appropriate directory:
-
-- Linux: `/etc/crowdsec/parsers/s02-enrich/`
-- FreeBSD: `/usr/local/etc/crowdsec/parsers/s02-enrich/`
-- Windows: `c:/programdata/crowdsec/config/parsers/s02-enrich/`
+Once you've identified the fields you want to use, create a new YAML file in the appropriate directory. Please see the [introduction](/log_processor/whitelist/introduction.md) for your OS-specific paths.
 
 For example:
 
