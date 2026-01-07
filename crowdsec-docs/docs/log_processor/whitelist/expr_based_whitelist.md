@@ -48,6 +48,110 @@ The `-d/--details` flag shows the events associated with the alert. From the out
 - Any helpful **meta** fields (http path, status, verb, user-agent, etc.)
 - The **source** you want to exempt (endpoint, health-check path, internal scanner, etc.)
 
+:::important
+
+Within the **Events** section of the alert output, each key shown corresponds to a field in `evt.Meta.*`. For example, if you see `http_path` in the events, you can reference it in your whitelist expression as `evt.Meta.http_path`.
+
+:::
+
+<details>
+  <summary>Example: Alert inspection output</summary>
+
+```bash
+$ cscli alerts inspect 176012 -d
+
+################################################################################################
+
+ - ID           : 176012
+ - Date         : 2026-01-07T15:11:08Z
+ - Machine      : testMachine
+ - Simulation   : false
+ - Remediation  : true
+ - Reason       : crowdsecurity/http-crawl-non_statics
+ - Events Count : 44
+ - Scope:Value  : Ip:192.168.1.100
+ - Country      : US
+ - AS           : EXAMPLE-AS-BLOCK
+ - Begin        : 2026-01-07T15:11:05Z
+ - End          : 2026-01-07T15:11:07Z
+ - UUID         : 0061339c-f070-4859-8f2a-66249c709d73
+
+╭────────────────────────────────────────────────────────────────────────────╮
+│ Active Decisions                                                           │
+├───────────┬───────────────────┬────────┬────────────┬──────────────────────┤
+│     ID    │    scope:value    │ action │ expiration │      created_at      │
+├───────────┼───────────────────┼────────┼────────────┼──────────────────────┤
+│ 905003939 │ Ip:192.168.1.100  │ ban    │ 23h35m33s  │ 2026-01-07T15:11:08Z │
+╰───────────┴───────────────────┴────────┴────────────┴──────────────────────╯
+
+ - Context  :
+╭────────────┬────────────╮
+│     Key    │    Value   │
+├────────────┼────────────┤
+│ method     │ GET        │
+│ status     │ 404        │
+│ target_uri │ /lanz.php  │
+│ target_uri │ /xwpg.php  │
+│ target_uri │ /slsqc.php │
+│ target_uri │ /fs8.php   │
+│ target_uri │ /flap.php  │
+│ target_uri │ /ws34.php  │
+│ user_agent │ -          │
+╰────────────┴────────────╯
+
+ - Events  :
+
+- Date: 2026-01-07 15:11:07 +0000 UTC
+╭─────────────────┬─────────────────────────────╮
+│       Key       │            Value            │
+├─────────────────┼─────────────────────────────┤
+│ ASNNumber       │ 64512                       │
+│ ASNOrg          │ EXAMPLE-AS-BLOCK            │
+│ IsInEU          │ false                       │
+│ IsoCode         │ US                          │
+│ SourceRange     │ 192.168.0.0/16              │
+│ datasource_path │ /var/log/nginx/access.log   │
+│ datasource_type │ file                        │
+│ http_args_len   │ 0                           │
+│ http_path       │ /lanz.php                   │
+│ http_status     │ 404                         │
+│ http_user_agent │ -                           │
+│ http_verb       │ GET                         │
+│ log_type        │ http_access-log             │
+│ service         │ http                        │
+│ source_ip       │ 192.168.1.100               │
+│ target_fqdn     │ example.com                 │
+│ timestamp       │ 2026-01-07T15:11:07Z        │
+╰─────────────────┴─────────────────────────────╯
+
+- Date: 2026-01-07 15:11:07 +0000 UTC
+╭─────────────────┬─────────────────────────────╮
+│       Key       │            Value            │
+├─────────────────┼─────────────────────────────┤
+│ ASNNumber       │ 64512                       │
+│ ASNOrg          │ EXAMPLE-AS-BLOCK            │
+│ IsInEU          │ false                       │
+│ IsoCode         │ US                          │
+│ SourceRange     │ 192.168.0.0/16              │
+│ datasource_path │ /var/log/nginx/access.log   │
+│ datasource_type │ file                        │
+│ http_args_len   │ 0                           │
+│ http_path       │ /xwpg.php                   │
+│ http_status     │ 404                         │
+│ http_user_agent │ -                           │
+│ http_verb       │ GET                         │
+│ log_type        │ http_access-log             │
+│ service         │ http                        │
+│ source_ip       │ 192.168.1.100               │
+│ target_fqdn     │ example.com                 │
+│ timestamp       │ 2026-01-07T15:11:07Z        │
+╰─────────────────┴─────────────────────────────╯
+```
+
+In this example, you can see that the events section shows various keys like `http_path`, `http_status`, `http_verb`, `source_ip`, etc. These keys correspond to `evt.Meta.*` fields that you can use in your whitelist expressions. For instance, `http_path` in the events becomes `evt.Meta.http_path` in your whitelist expression.
+
+</details>
+
 #### Step 2: Extract a representative log line
 
 From the alert details, identify one of the triggering log lines. You'll need the raw log line to use with `cscli explain` in the next step.
