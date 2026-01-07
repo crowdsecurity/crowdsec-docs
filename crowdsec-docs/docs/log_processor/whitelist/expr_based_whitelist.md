@@ -1,6 +1,6 @@
 ---
 id: create_expr
-title: Expression-based Whitelists
+title: Expression
 ---
 
 Expression-based whitelists allow you to discard events at parse time using [expr](https://github.com/antonmedv/expr) expressions. This is the most flexible way to create whitelists based on specific event patterns, such as HTTP paths, user agents, status codes, or any combination of parsed fields.
