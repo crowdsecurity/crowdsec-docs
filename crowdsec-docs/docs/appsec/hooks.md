@@ -222,4 +222,4 @@ For example:
 - To get the requested URI: `req.URL.Path`
 - To get the client IP: `req.RemoteAddr`
 - To get the HTTP method: `req.Method`
-- To get the FQDN: `req.URL.Host`
+- To get the FQDN: `req.Host`
