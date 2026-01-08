@@ -321,20 +321,21 @@ const config: Config = {
 			"@signalwire/docusaurus-plugin-llms-txt",
 			{
 				siteTitle: "CrowdSec Documentation",
-				siteDescription: "Real-time & crowdsourced protection against aggressive IPs - Complete documentation for CrowdSec Security Engine, WAF, Bouncers, CTI API, and Console",
+				siteDescription:
+					"Real-time & crowdsourced protection against aggressive IPs - Complete documentation for CrowdSec Security Engine, WAF, Bouncers, CTI API, and Console",
 				depth: 2,
 				enableDescriptions: true,
 				content: {
 					enableMarkdownFiles: true,
-					enableLlmsFullTxt: true,  // Generate comprehensive llms-full.txt
-					relativePaths: false,  // Use absolute URLs for better LLM context
+					enableLlmsFullTxt: true, // Generate comprehensive llms-full.txt
+					relativePaths: false, // Use absolute URLs for better LLM context
 					includeBlog: false,
 					includePages: false,
 					includeDocs: true,
-					includeVersionedDocs: false,  // Only include "next" version, exclude v1.6, v1.7, etc.
+					includeVersionedDocs: false, // Only include "next" version, exclude v1.6, v1.7, etc.
 					excludeRoutes: [
-						"/search",  // Exclude search page
-						"**/tags/**",  // Exclude tag pages
+						"/search", // Exclude search page
+						"**/tags/**", // Exclude tag pages
 					],
 				},
 				optionalLinks: [
