@@ -39,12 +39,6 @@ sudo journalctl -u crowdsec -n 100
 
 If you see many login attempts in a short period, you likely hit the temporary ban.
 
-#### 🛠️ Wait for ban expiry and reduce login frequency
-
-Wait **1 hour** for the ban to expire, then ensure the engine is not repeatedly re-authenticating.
-
-If you run multiple instances behind the same NAT, consider using **one LAPI instance** or lowering reconnection frequency to avoid bursts.
-
 #### 🔎 Inspect engine activity
 
 Check that the engine is stable and not in a crash loop:
@@ -67,6 +61,12 @@ docker compose up
 
 Crash loops can trigger repeated logins, resulting in 403s.
 
+#### 🛠️ Wait for ban expiry and reduce login frequency
+
+Wait **1 hour** for the ban to expire, then ensure the engine is not repeatedly re-authenticating.
+
+If you run multiple instances behind the same NAT, consider using **one LAPI instance** or lowering reconnection frequency to avoid bursts.
+
 #### 🛠️ Stabilize the engine
 
 Resolve the underlying crash or restart loop before retrying CAPI:
@@ -74,14 +74,6 @@ Resolve the underlying crash or restart loop before retrying CAPI:
 ```bash
 sudo systemctl restart crowdsec
 ```
-
-#### 🔎 Verify console and enrollment status
-
-```bash
-sudo cscli console status
-```
-
-Confirm the engine is enrolled and check whether data sharing is enabled as intended in your Console settings.
 
 ### Misconfiguration or multiple instances
 
