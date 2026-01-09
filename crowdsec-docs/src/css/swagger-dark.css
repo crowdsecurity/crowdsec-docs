@@ -38,6 +38,68 @@ html[data-theme="light"] .swagger-ui .info .version-stamp {
 	color: #000 !important;
 }
 
+/* Media type dropdown in light mode */
+html[data-theme="light"] .swagger-ui select {
+	color: #000 !important;
+	background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="black" d="M7 10l5 5 5-5z"/></svg>') !important;
+	background-repeat: no-repeat !important;
+	background-position: right 10px center !important;
+}
+
+html[data-theme="light"] .swagger-ui .content-type,
+html[data-theme="light"] .swagger-ui .response-content-type select,
+html[data-theme="light"] .swagger-ui .responses-wrapper select {
+	color: #000 !important;
+}
+
+/* JSON examples in light mode - grey background on container, dark text with no background */
+html[data-theme="light"] .swagger-ui .example,
+html[data-theme="light"] .swagger-ui .example-value,
+html[data-theme="light"] .swagger-ui .example-value-render,
+html[data-theme="light"] .swagger-ui .microlight,
+html[data-theme="light"] .swagger-ui pre.example,
+html[data-theme="light"] .swagger-ui .highlight-code,
+html[data-theme="light"] .swagger-ui .highlight-code pre,
+html[data-theme="light"] .swagger-ui pre.microlight,
+html[data-theme="light"] .swagger-ui .opblock-body pre,
+html[data-theme="light"] .swagger-ui .response-col_description pre {
+	background: #e8e8e8 !important;
+	background-color: #e8e8e8 !important;
+}
+
+html[data-theme="light"] .swagger-ui .microlight *,
+html[data-theme="light"] .swagger-ui .highlight-code *,
+html[data-theme="light"] .swagger-ui pre.microlight *,
+html[data-theme="light"] .swagger-ui .opblock-body pre * {
+	color: #000 !important;
+	background: none !important;
+	background-color: transparent !important;
+}
+
+/* JSON examples in dark mode - grey background on container, white text with no background */
+html[data-theme="dark"] .swagger-ui .example,
+html[data-theme="dark"] .swagger-ui .example-value,
+html[data-theme="dark"] .swagger-ui .example-value-render,
+html[data-theme="dark"] .swagger-ui .microlight,
+html[data-theme="dark"] .swagger-ui pre.example,
+html[data-theme="dark"] .swagger-ui .highlight-code,
+html[data-theme="dark"] .swagger-ui .highlight-code pre,
+html[data-theme="dark"] .swagger-ui pre.microlight,
+html[data-theme="dark"] .swagger-ui .opblock-body pre,
+html[data-theme="dark"] .swagger-ui .response-col_description pre {
+	background: #2a2a3a !important;
+	background-color: #2a2a3a !important;
+}
+
+html[data-theme="dark"] .swagger-ui .microlight *,
+html[data-theme="dark"] .swagger-ui .highlight-code *,
+html[data-theme="dark"] .swagger-ui pre.microlight *,
+html[data-theme="dark"] .swagger-ui .opblock-body pre * {
+	color: #fff !important;
+	background: none !important;
+	background-color: transparent !important;
+}
+
 /* ============================================
    DARK MODE FIXES
    ============================================ */
@@ -259,9 +321,18 @@ html[data-theme="dark"] .swagger-ui textarea {
 }
 
 html[data-theme="dark"] .swagger-ui select {
-	background: rgb(var(--color-gray-200));
-	color: rgb(var(--foreground));
+	background-color: rgb(var(--color-gray-200));
+	color: #fff !important;
 	border: 1px solid rgb(var(--border));
+	background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="white" d="M7 10l5 5 5-5z"/></svg>') !important;
+	background-repeat: no-repeat !important;
+	background-position: right 10px center !important;
+}
+
+html[data-theme="dark"] .swagger-ui .content-type,
+html[data-theme="dark"] .swagger-ui .response-content-type select,
+html[data-theme="dark"] .swagger-ui .responses-wrapper select {
+	color: #fff !important;
 }
 
 /* Response section */
