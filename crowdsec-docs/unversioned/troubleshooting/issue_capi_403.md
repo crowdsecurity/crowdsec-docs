@@ -97,6 +97,12 @@ Restart or reload CrowdSec: `sudo systemctl restart crowdsec`
 
 If CAPI returns 200/204 and your console status is OK, the 403 is resolved.
 
+## Known Issues
+
+3rd party software or related issues:
+ - [Pangolin](https://github.com/orgs/fosrl/discussions/2119)
+ - [CrowdSec Issue](https://github.com/crowdsecurity/crowdsec/issues/4165)
+
 ## Related Issues
 
 - [Security Engine Troubleshooting](/u/troubleshooting/security_engine) - General Security Engine issues
