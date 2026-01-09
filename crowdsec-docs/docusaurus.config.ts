@@ -317,6 +317,53 @@ const config: Config = {
 
 		["./plugins/gtag/index.ts", { trackingID: "G-0TFBMNTDFQ" }],
 		["@docusaurus/plugin-client-redirects", { redirects }],
+		[
+			"@signalwire/docusaurus-plugin-llms-txt",
+			{
+				siteTitle: "CrowdSec Documentation",
+				siteDescription:
+					"Real-time & crowdsourced protection against aggressive IPs - Complete documentation for CrowdSec Security Engine, WAF, Bouncers, CTI API, and Console",
+				depth: 2,
+				enableDescriptions: true,
+				content: {
+					enableMarkdownFiles: true,
+					enableLlmsFullTxt: true, // Generate comprehensive llms-full.txt
+					relativePaths: false, // Use absolute URLs for better LLM context
+					includeBlog: false,
+					includePages: false,
+					includeDocs: true,
+					includeVersionedDocs: false, // Only include "next" version, exclude v1.6, v1.7, etc.
+					excludeRoutes: [
+						"/search", // Exclude search page
+						"**/tags/**", // Exclude tag pages
+					],
+				},
+				optionalLinks: [
+					{
+						title: "CrowdSec Hub",
+						url: "https://hub.crowdsec.net/",
+						description: "Browse and install parsers, scenarios, collections, and remediation components",
+					},
+					{
+						title: "CrowdSec Console",
+						url: "https://app.crowdsec.net/",
+						description: "Manage your CrowdSec deployments and access the community blocklist",
+					},
+					{
+						title: "GitHub Repository",
+						url: "https://github.com/crowdsecurity/crowdsec",
+						description: "CrowdSec open source repository",
+					},
+					{
+						title: "Community Discourse",
+						url: "https://discourse.crowdsec.net",
+						description: "Community support and discussions",
+					},
+				],
+				logLevel: 1,
+				onRouteError: "warn",
+			},
+		],
 		tailwindPlugin,
 	],
 };
