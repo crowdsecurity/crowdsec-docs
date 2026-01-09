@@ -189,6 +189,12 @@ You can use profile `profile=debug` to check the `query_time` and `query_mode` f
 
 :::
 
+:::info
+
+The size of the downloaded local database is approximately 2.8 GB and may vary over time.
+
+:::
+
 ## Configuration file
 
 You can configure the CrowdSec app by uploading a JSON configuration file during the setup:
