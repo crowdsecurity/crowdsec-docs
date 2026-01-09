@@ -12,7 +12,7 @@ The Local API (LAPI) is one of the core components of the Security Engine to :
  - Allow Remediation Components to consume said alerts & decisions from database
  - Allow `cscli` to manage the database (list, delete, etc)
 
-You can find the swagger documentation [here](https://crowdsecurity.github.io/api_doc/lapi/).
+You can find the API reference documentation [here](local_api/api_reference.mdx).
 
 This allows you to create [multi-machines architectures](https://crowdsec.net/multi-server-setup/) around CrowdSec or leverage [orchestration technologies](https://crowdsec.net/secure-docker-compose-stacks-with-crowdsec/).
 
