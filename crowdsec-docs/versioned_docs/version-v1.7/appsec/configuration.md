@@ -244,7 +244,7 @@ Executed when rules match. Used to modify remediation or generate custom alerts.
 
 ```yaml
 on_match:
-  - filter: req.URL.Host == "staging.example.com"
+  - filter: req.Host == "staging.example.com"
     apply:
       - SetRemediation("allow")
       - CancelAlert()
@@ -325,7 +325,7 @@ If your reverse-proxy forwards all requests to CrowdSec regardless of the FQDN, 
 ```yaml title="/etc/crowdsec/appsec-configs/my_config.yaml"
 name: custom/my_config
 on_match:
- - filter: req.URL.Host == "foo.com"
+ - filter: req.Host == "foo.com"
    apply:
     - CancelEvent()
     - CancelAlert()
