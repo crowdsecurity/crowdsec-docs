@@ -1,3 +1,4 @@
+/* biome-ignore-all lint/style/noDescendingSpecificity: This file overrides third-party Swagger UI styles, specificity order is intentional */
 /**
  * Swagger UI Theme Overrides
  * Fixes text visibility in both dark and light modes
@@ -155,7 +156,8 @@ html[data-theme="dark"] .swagger-ui .expand-operation svg {
 
 html[data-theme="dark"] .swagger-ui .model-toggle:after,
 html[data-theme="dark"] .swagger-ui .model-box .model-toggle:after {
-	background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="white" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>') center no-repeat !important;
+	background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="white" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>')
+		center no-repeat !important;
 }
 
 /* ============================================
@@ -209,7 +211,8 @@ html[data-theme="light"] .swagger-ui .expand-operation svg {
 
 html[data-theme="light"] .swagger-ui .model-toggle:after,
 html[data-theme="light"] .swagger-ui .model-box .model-toggle:after {
-	background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="black" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>') center no-repeat !important;
+	background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="black" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>')
+		center no-repeat !important;
 }
 
 /* Tables */
@@ -560,4 +563,3 @@ html[data-theme="dark"] .swagger-ui small {
 html[data-theme="dark"] .swagger-ui .prop-format {
 	color: rgb(var(--color-gray-600));
 }
-
