@@ -6,6 +6,10 @@ id: capi_403
 Getting a **403 (Forbidden)** from **CrowdSec Central API (CAPI)** means your Security Engine request is blocked or your IP is being rate limited.  
 This is commonly tied to misconfigured setups, and triggers a 1 hour ban from CrowdSec's API.
 
+:::info
+CAPI restrictions only applies to free users. Enterprise users aren't impacted.
+:::
+
 ## What Triggers This Issue
 
 - **Trigger condition**: Amount of logins exceeds thresholds.
@@ -24,10 +28,11 @@ This is commonly tied to misconfigured setups, and triggers a 1 hour ban from Cr
 
 In **CAPI login**, every IP using a **free account** can be blocked for 1 hour when thresholds are exceeded:
 
-- **Non Sharing, not enrolled**: more than 5 logins in 50 minutes
-- **Sharing, not enrolled**: more than 10 logins in 50 minutes
-- **Enrolled, non sharing**: more than 10 requests in 50 minutes
+- **Non Sharing, not enrolled**: more than 20 logins in 50 minutes
+- **Sharing, not enrolled**: more than 20 logins in 50 minutes
+- **Enrolled, non sharing**: more than 20 requests in 50 minutes
 - **Enrolled, sharing**: more than 20 requests in 50 minutes
+- **Non Free Users**: restriction doesn't apply
 
 #### 🔎 Check for repeated login attempts
 
