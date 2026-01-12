@@ -189,8 +189,8 @@ default_remediation: ban
 inband_rules:
  - crowdsecurity/base-config
  - crowdsecurity/vpatch-*
-post_eval:
- - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
+on_match:
+  - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
    apply:
     - CancelAlert()
     - CancelEvent()
