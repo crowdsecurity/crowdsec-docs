@@ -13,10 +13,10 @@ type FeatureCardProps = {
 const FeatureCard = ({ title, description, link, icon }: FeatureCardProps): React.JSX.Element => (
 	<Link href={link} className="hover:no-underline group">
 		<div className="h-full border border-solid border-border rounded-lg p-5 bg-card hover:shadow-md hover:border-primary/30 transition-all duration-200">
-			<div className="text-3xl mb-3">
-				{icon.startsWith("/") ? <img src={icon} alt={title} className="h-8 w-8" /> : icon}
-			</div>
-			<h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors">{title}</h3>
+			<div className="text-3xl mb-3">{icon.startsWith("/") ? <img src={icon} alt={title} className="h-8 w-8" /> : icon}</div>
+			<h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors">
+				{title}
+			</h3>
 			<p className="text-sm text-gray-600 dark:text-gray-700 mb-0">{description}</p>
 		</div>
 	</Link>
@@ -144,19 +144,15 @@ const CTIPage = () => {
 									<h1 className="text-3xl md:text-4xl font-bold m-0 text-gray-900 dark:text-gray-900">CTI API</h1>
 								</div>
 								<p className="text-lg text-gray-600 dark:text-gray-700 mb-6 max-w-2xl">
-									Query our threat intelligence database to enrich your security workflows.
-									Get IP reputation scores, attack history, and behavioral data from our global network of sensors.
+									Query our threat intelligence database to enrich your security workflows. Get IP reputation scores,
+									attack history, and behavioral data from our global network of sensors.
 								</p>
 								<div className="flex gap-3">
 									<Link to="/u/cti_api/intro">
-										<Button color="primary">
-											Read Introduction
-										</Button>
+										<Button color="primary">Read Introduction</Button>
 									</Link>
 									<Link to="/u/cti_api/api_getting_started">
-										<Button variant="outline">
-											API Quickstart
-										</Button>
+										<Button variant="outline">API Quickstart</Button>
 									</Link>
 								</div>
 							</div>

@@ -13,10 +13,10 @@ type FeatureCardProps = {
 const FeatureCard = ({ title, description, link, icon }: FeatureCardProps): React.JSX.Element => (
 	<Link href={link} className="hover:no-underline group">
 		<div className="h-full border border-solid border-border rounded-lg p-5 bg-card hover:shadow-md hover:border-primary/30 transition-all duration-200">
-			<div className="text-3xl mb-3">
-				{icon.startsWith("/") ? <img src={icon} alt={title} className="h-8 w-8" /> : icon}
-			</div>
-			<h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors">{title}</h3>
+			<div className="text-3xl mb-3">{icon.startsWith("/") ? <img src={icon} alt={title} className="h-8 w-8" /> : icon}</div>
+			<h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors">
+				{title}
+			</h3>
 			<p className="text-sm text-gray-600 dark:text-gray-700 mb-0">{description}</p>
 		</div>
 	</Link>
@@ -32,11 +32,11 @@ type IntegrationCardProps = {
 const IntegrationCard = ({ title, description, link, icon }: IntegrationCardProps): React.JSX.Element => (
 	<Link href={link} className="hover:no-underline group">
 		<div className="h-full border border-solid border-border rounded-lg p-4 bg-card hover:shadow-md hover:border-primary/30 transition-all duration-200 flex items-center gap-4">
-			<div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-				{icon}
-			</div>
+			<div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">{icon}</div>
 			<div>
-				<h3 className="text-base font-semibold text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors mb-1">{title}</h3>
+				<h3 className="text-base font-semibold text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors mb-1">
+					{title}
+				</h3>
 				<p className="text-sm text-gray-600 dark:text-gray-700 mb-0">{description}</p>
 			</div>
 		</div>
@@ -119,19 +119,15 @@ const BlocklistsPage = () => {
 									<h1 className="text-3xl md:text-4xl font-bold m-0 text-gray-900 dark:text-gray-900">Blocklists</h1>
 								</div>
 								<p className="text-lg text-gray-600 dark:text-gray-700 mb-6 max-w-2xl">
-									Subscribe to curated threat intelligence feeds to protect your infrastructure.
-									Block known malicious IPs without running your own detection—just subscribe and deploy.
+									Subscribe to curated threat intelligence feeds to protect your infrastructure. Block known malicious IPs
+									without running your own detection—just subscribe and deploy.
 								</p>
 								<div className="flex gap-3">
 									<Link to="/u/blocklists/intro">
-										<Button color="primary">
-											Read Introduction
-										</Button>
+										<Button color="primary">Read Introduction</Button>
 									</Link>
 									<Link to="/u/console/blocklists/catalog">
-										<Button variant="outline">
-											Browse Catalog
-										</Button>
+										<Button variant="outline">Browse Catalog</Button>
 									</Link>
 								</div>
 							</div>
@@ -170,7 +166,13 @@ const BlocklistsPage = () => {
 									title={item.title}
 									description={item.description}
 									link={item.link}
-									icon={item.icon.startsWith("/") ? <img src={item.icon} alt={item.title} className="h-6 w-6" /> : <span className="text-2xl">{item.icon}</span>}
+									icon={
+										item.icon.startsWith("/") ? (
+											<img src={item.icon} alt={item.title} className="h-6 w-6" />
+										) : (
+											<span className="text-2xl">{item.icon}</span>
+										)
+									}
 								/>
 							))}
 						</div>

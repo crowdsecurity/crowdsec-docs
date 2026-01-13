@@ -1,12 +1,7 @@
 import Link from "@docusaurus/Link";
-import HubIcon from "@mui/icons-material/Hub";
 import ForwardIcon from "@mui/icons-material/Forward";
+import HubIcon from "@mui/icons-material/Hub";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
-import Layout from "@theme/Layout";
-import React from "react";
-import { Button } from "../ui/button";
-import { HomePageItem } from "../components/home-page/home-item";
-
 // Platform icons
 import cibApple from "@site/static/img/logo/apple-colored.svg";
 import cibDocker from "@site/static/img/logo/docker-colored.svg";
@@ -17,6 +12,10 @@ import cibWindows from "@site/static/img/logo/windows-colored.svg";
 import opnsenseLogo from "@site/static/img/logo-opnsense.svg";
 import pfSenseLogo from "@site/static/img/logo-pfsense.svg";
 import whmLogo from "@site/static/img/logo-whm.svg";
+import Layout from "@theme/Layout";
+import React from "react";
+import { HomePageItem } from "../components/home-page/home-item";
+import { Button } from "../ui/button";
 
 type PlatformData = {
 	icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -62,10 +61,10 @@ type FeatureCardProps = {
 const FeatureCard = ({ title, description, link, icon }: FeatureCardProps): React.JSX.Element => (
 	<Link href={link} className="hover:no-underline group">
 		<div className="h-full border border-solid border-border rounded-lg p-5 bg-card hover:shadow-md hover:border-primary/30 transition-all duration-200">
-			<div className="text-3xl mb-3">
-				{icon.startsWith("/") ? <img src={icon} alt={title} className="h-8 w-8" /> : icon}
-			</div>
-			<h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors">{title}</h3>
+			<div className="text-3xl mb-3">{icon.startsWith("/") ? <img src={icon} alt={title} className="h-8 w-8" /> : icon}</div>
+			<h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors">
+				{title}
+			</h3>
 			<p className="text-sm text-gray-600 dark:text-gray-700 mb-0">{description}</p>
 		</div>
 	</Link>
@@ -149,14 +148,10 @@ const SecurityEnginePage = () => {
 								</p>
 								<div className="flex gap-3">
 									<Link to="/u/getting_started/intro">
-										<Button color="primary">
-											Read Introduction
-										</Button>
+										<Button color="primary">Read Introduction</Button>
 									</Link>
 									<Link to="https://killercoda.com/iiamloz/scenario/crowdsec-setup">
-										<Button variant="outline">
-											Try in Sandbox
-										</Button>
+										<Button variant="outline">Try in Sandbox</Button>
 									</Link>
 								</div>
 							</div>
@@ -170,8 +165,8 @@ const SecurityEnginePage = () => {
 						<div className="text-left mb-6">
 							<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Installation</h2>
 							<p className="text-gray-600 dark:text-gray-700 max-w-2xl">
-								Choose your platform to install the Security Engine. Each guide covers setup, configuration, and
-								connecting to the CrowdSec Console.
+								Choose your platform to install the Security Engine. Each guide covers setup, configuration, and connecting
+								to the CrowdSec Console.
 							</p>
 						</div>
 

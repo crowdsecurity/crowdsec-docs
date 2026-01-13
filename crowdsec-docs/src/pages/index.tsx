@@ -18,7 +18,9 @@ const ProductCard = ({ title, description, icon, link, features }: ProductCardPr
 				<div className="w-14 h-14 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0">
 					{icon}
 				</div>
-				<h3 className="text-xl font-bold text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors m-0">{title}</h3>
+				<h3 className="text-xl font-bold text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors m-0">
+					{title}
+				</h3>
 			</div>
 			<p className="text-gray-600 dark:text-gray-700 text-base mb-4 flex-grow">{description}</p>
 			<ul className="space-y-2 mb-4">
@@ -74,11 +76,7 @@ const HomePage = () => {
 									Community-powered security for your infrastructure. Choose your path to get started.
 								</p>
 							</div>
-							<img
-								alt="CrowdSec Logo"
-								src="/img/crowdsec_logo.png"
-								className="hidden md:block h-16 flex-shrink-0"
-							/>
+							<img alt="CrowdSec Logo" src="/img/crowdsec_logo.png" className="hidden md:block h-16 flex-shrink-0" />
 						</div>
 					</div>
 				</section>
@@ -86,7 +84,9 @@ const HomePage = () => {
 				{/* Product Selection */}
 				<section className="pb-12 md:pb-20 px-4">
 					<div className="container max-w-5xl mx-auto">
-						<h2 className="text-center text-xl md:text-2xl font-semibold mb-2 text-gray-900 dark:text-gray-900">What do you want to do?</h2>
+						<h2 className="text-center text-xl md:text-2xl font-semibold mb-2 text-gray-900 dark:text-gray-900">
+							What do you want to do?
+						</h2>
 						<p className="text-center text-gray-600 dark:text-gray-700 mb-8">Select a product to view its documentation</p>
 
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -100,7 +100,9 @@ const HomePage = () => {
 				{/* Help Section */}
 				<section className="py-12 md:py-16 px-4 bg-primary/5 border-t border-border">
 					<div className="container max-w-3xl mx-auto text-center">
-						<h2 className="text-xl md:text-2xl font-semibold mb-3 text-gray-900 dark:text-gray-900">Not sure where to start?</h2>
+						<h2 className="text-xl md:text-2xl font-semibold mb-3 text-gray-900 dark:text-gray-900">
+							Not sure where to start?
+						</h2>
 						<p className="text-gray-600 dark:text-gray-700 mb-6">
 							Our guided setup will help you choose the right solution based on your infrastructure and security needs.
 						</p>
@@ -125,19 +127,29 @@ const HomePage = () => {
 						<h2 className="text-center text-sm font-medium mb-4 text-gray-500 dark:text-gray-600">Quick Links</h2>
 						<div className="flex flex-wrap justify-center gap-2">
 							<Link to="/u/console/intro">
-								<Button variant="outline" size="sm">Console</Button>
+								<Button variant="outline" size="sm">
+									Console
+								</Button>
 							</Link>
 							<Link to="/docs/next/appsec/intro">
-								<Button variant="outline" size="sm">AppSec / WAF</Button>
+								<Button variant="outline" size="sm">
+									AppSec / WAF
+								</Button>
 							</Link>
 							<Link to="/docs/next/cscli/">
-								<Button variant="outline" size="sm">CLI Reference</Button>
+								<Button variant="outline" size="sm">
+									CLI Reference
+								</Button>
 							</Link>
 							<Link to="https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation">
-								<Button variant="outline" size="sm">AI Assistant</Button>
+								<Button variant="outline" size="sm">
+									AI Assistant
+								</Button>
 							</Link>
 							<Link to="https://www.crowdsec.net">
-								<Button variant="outline" size="sm">About CrowdSec</Button>
+								<Button variant="outline" size="sm">
+									About CrowdSec
+								</Button>
 							</Link>
 						</div>
 					</div>
