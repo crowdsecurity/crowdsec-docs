@@ -11,19 +11,19 @@ type Props = {
 };
 
 export const HomePageItem = (props: Props): React.JSX.Element => (
-	<Link key={props.title} href={props.link} className="border-0 hover:no-underline">
+	<Link key={props.title} href={props.link} className="border-0 hover:no-underline group">
 		<div
 			className={
-				"w-full flex justify-start items-center border border-solid border-gray-100 dark:border-transparent dark:bg-gray-200 flex-row rounded-lg px-2 py-2 gap-2 flex-1 cursor-pointer shadow-md dark:shadow-none ease-in-out duration-300 hover:scale-101 active:scale-99 hover:dark:bg-gray-300 hover:bg-neutral-200"
+				"w-full h-full flex justify-start items-center border border-solid border-gray-200 dark:border-gray-300 dark:bg-gray-200 flex-row rounded-lg px-3 py-3 gap-3 cursor-pointer shadow-sm dark:shadow-none transition-all duration-200 hover:shadow-md hover:border-primary/30 dark:hover:border-primary/50 hover:dark:bg-gray-300 hover:bg-gray-50"
 			}
 		>
-			<span className="w-12 h-12 rounded-lg inline-flex items-center justify-center border border-solid border-gray-200 dark:bg-gray-50 bg-white">
+			<span className="w-11 h-11 rounded-lg inline-flex items-center justify-center border border-solid border-gray-200 dark:border-gray-300 dark:bg-gray-100 bg-white flex-shrink-0">
 				{(!Array.isArray(props.icon) && <props.icon className="icon icon-xl" />) || <CIcon icon={props.icon} size="xl" />}
 			</span>
 
-			<div className="flex flex-col">
-				<span className={"text-md font-semibold flex-1 text-left text-foreground"}>{props.title}</span>
-				{props.description && <p className="text-sm text-left text-foreground/70 mb-0">{props.description}</p>}
+			<div className="flex flex-col min-w-0">
+				<span className="text-base font-semibold text-left text-foreground group-hover:text-primary transition-colors duration-200">{props.title}</span>
+				{props.description && <p className="text-sm text-left text-foreground/60 mb-0 line-clamp-2">{props.description}</p>}
 			</div>
 		</div>
 	</Link>

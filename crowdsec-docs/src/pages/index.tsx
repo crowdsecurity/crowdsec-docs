@@ -7,49 +7,43 @@ import { Button } from "../ui/button";
 
 const HomePageHeader = (): React.JSX.Element => {
 	return (
-		<section className="flex-1 p-2 md:px-0 md:py-16 text-center relative overflow-hidden">
-			{/* <div className="block absolute top-0 left-1/2 -translate-x-1/2 h-80 w-full bg-landing bg-cover bg-center z-0 opacity-50 " /> */}
-			<div className="container space-y-4 md:space-y-12 z-20">
-				<div>
-					<div className="flex gap-4 justify-between flex-col-reverse md:flex-row items-center md:items-start">
+		<section className="flex-1 p-4 md:px-0 md:py-12 text-center relative overflow-hidden">
+			<div className="container space-y-8 md:space-y-16 z-20">
+				{/* Hero Section */}
+				<div className="py-4 md:py-8">
+					<div className="flex gap-6 justify-between flex-col-reverse md:flex-row items-center md:items-start">
 						<div className="text-left w-full">
-							<h1 className="mb-1">Welcome to the CrowdSec Documentation</h1>
-							<p className="max-w-xl text-foreground/70 text-sm">
-								CrowdSec provides open source solution for detecting and blocking malicious IPs, safeguarding both
-								infrastructure and application security.
+							<h1 className="mb-2 text-3xl md:text-4xl font-bold">CrowdSec Documentation</h1>
+							<p className="max-w-2xl text-foreground/70 text-base md:text-lg leading-relaxed">
+								Learn how to detect and block malicious IPs with our open-source security engine.
+								Protect your infrastructure and applications with community-powered threat intelligence.
 							</p>
 						</div>
-						<img alt="CrowdSec Logo" src="/img/crowdsec_logo.png" className="h-20 w-28 md:h-24 md:w-auto flex-shrink-0" />
+						<img alt="CrowdSec Logo" src="/img/crowdsec_logo.png" className="h-16 w-24 md:h-20 md:w-auto flex-shrink-0" />
 					</div>
-					<div className="flex flex-col md:flex-row items-start gap-2 flex-wrap">
-						<Link to="/u/getting_started/intro" className="w-full md:w-auto">
-							<Button size="lg" color="primary" className="w-full md:w-auto">
-								🚀 Quick Guides
+					<div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-6">
+						<Link to="/u/getting_started/intro" className="w-full sm:w-auto">
+							<Button size="lg" color="primary" className="w-full">
+								Get Started
 							</Button>
 						</Link>
-						<div className="flex flex-row gap-2 w-full md:w-auto">
-							<Link to="https://app.crowdsec.net/" className="flex-1 min-w-0">
-								<Button size="lg" variant="secondary" className="w-full">
-									👨‍💻 Explore the Console
-								</Button>
-							</Link>
-							<Link to="https://killercoda.com/iiamloz/scenario/crowdsec-setup" className="flex-1 min-w-0">
-								<Button size="lg" variant="secondary" className="w-full">
-									🛠️ Online Sandbox
-								</Button>
-							</Link>
-						</div>
-						<Link to="https://start.crowdsec.net/" className="w-full md:w-auto">
-							<Button size="lg" variant="secondary" className="w-full md:w-auto">
-								💡 Not sure where to start?
+						<Link to="https://start.crowdsec.net/" className="w-full sm:w-auto">
+							<Button size="lg" variant="outline" className="w-full">
+								Help Me Choose
 							</Button>
 						</Link>
 					</div>
 				</div>
 
-				<QuickStart />
+				{/* Installation Section */}
+				<div className="border-t border-border/50 pt-8 md:pt-12">
+					<QuickStart />
+				</div>
 
-				<GetToKnowUs />
+				{/* Explore Section */}
+				<div className="border-t border-border/50 pt-8 md:pt-12">
+					<GetToKnowUs />
+				</div>
 			</div>
 		</section>
 	);
