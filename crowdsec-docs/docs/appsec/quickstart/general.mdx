@@ -13,7 +13,7 @@ import UnderlineTooltip from '@site/src/components/underline-tooltip';
 
 # CrowdSec WAF General Setup
 
-This guide covers the core CrowdSec AppSec Component setup that applies to all web servers and reverse proxies. After completing these steps, you'll need to configure your specific remediation component (bouncer) to forward requests to the AppSec Component.
+This guide covers the core AppSec Component setup that applies to all web servers and reverse proxies. After completing these steps, configure your remediation component (bouncer) to forward requests to the AppSec Component.
 
 ## Prerequisites
 
@@ -22,13 +22,13 @@ This guide covers the core CrowdSec AppSec Component setup that applies to all w
 
 ## AppSec Component Setup
 
-AppSec Setup is done in two simple steps:
-- Downloading rules and configuration's Collections
-- Setting AppSec as a new Acquisition datasource
+AppSec setup has two steps:
+- Download rules and configuration collections.
+- Configure AppSec as a new acquisition datasource.
   
 The following sections will guide you through the default setup.
 
-After your installation you can check that everything is working by following the [🩺 HealthCheck](/u/getting_started/health_check).
+After installation, verify everything works with the [🩺 Health Check](/u/getting_started/health_check).
 
 ### Collection Installation
 
@@ -46,7 +46,7 @@ These collections include:
 
 ### Acquisition Configuration
 
-Configure CrowdSec to expose the AppSec Component by creating an acquisition file:
+Configure CrowdSec to expose the AppSec Component by creating an acquisition file.
 
 1. Create the acquisition directory (if it doesn't exist):
    ```bash
@@ -67,8 +67,8 @@ Configure CrowdSec to expose the AppSec Component by creating an acquisition fil
    ```
 
 **Configuration explained:**
-- `appsec_config`: Uses the default configuration from the installed collections
-- `listen_addr`: The IP and port where the AppSec Component will listen (default: 127.0.0.1:7422)
+- `appsec_configs`: Uses the default configuration from the installed collections
+- `listen_addr`: IP and port where the AppSec Component listens (default: 127.0.0.1:7422)
 - `source`: Identifies this as an AppSec data source
 - `name`: A friendly name for your AppSec component
 
@@ -149,10 +149,10 @@ For specific remediation component configuration, see:
 
 ### Testing Detection
 
-If you've enabled an AppSec-capable bouncer with CrowdSec WAF, you can trigger the crowdsecurity/appsec-generic-test dummy scenario.
-This scenario will not lead to decision but is a great way to ensure that your setup is functional.
+If you've enabled an AppSec-capable bouncer with CrowdSec WAF, you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.
+This scenario does not lead to a decision, but it is a good way to confirm the setup is working.
 
-We'll trigger the dummy scenario crowdsecurity/appsec-generic-test by accessing a probe path on your web server.
+Trigger the dummy scenario by accessing a probe path on your web server:
 
 1️⃣ Access your service URL with this path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
 
@@ -160,13 +160,13 @@ We'll trigger the dummy scenario crowdsecurity/appsec-generic-test by accessing 
 curl -I https://<your-service-url>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
 ```
 
-2️⃣ Confirm the alert has triggered for the scenario crowdsecurity/appsec-generic-test
+2️⃣ Confirm the alert has triggered for `crowdsecurity/appsec-generic-test`
 
 ```bash
 sudo cscli alerts list | grep crowdsecurity/appsec-generic-test
 ```
 
-3️⃣ The alert will also appear in the console alerts
+3️⃣ The alert will also appear in the Console alerts
 
 ![appsec-generic-test console view](/img/appsec-generic-test-console.png)
 

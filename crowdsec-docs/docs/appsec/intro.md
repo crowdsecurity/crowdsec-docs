@@ -19,27 +19,27 @@ For a more detailed introduction, check out our [Getting Started Guide](/u/getti
 
 ## Introduction
 
-Meet the Crowdsec **Application Security Component** (AKA : **AppSec Component**), a new capability for advanced application security turning your CrowdSec install into a full fledged **WAF**.
+Meet the CrowdSec **Application Security Component** (AppSec Component), which turns your CrowdSec install into a full-fledged **WAF**.
 
 The **AppSec Component** offers:
 
--   Low-effort **virtual patching** capabilities.
--   Support for your legacy **ModSecurity** rules.
--   Combining classic WAF benefits with advanced CrowdSec features for otherwise difficult **advanced behavior detection**.
--   **Full integration** with the Crowdsec software stack, including the console and remediation components.
+-   Low-effort **virtual patching**.
+-   Support for legacy **ModSecurity** rules.
+-   Classic WAF protection plus CrowdSec features for **advanced behavior detection**.
+-   **Full integration** with the CrowdSec stack, including the console and remediation components.
 
 <!-- xx :  links -->
 
-This component capitalizes on existing remediation functions in web servers (such as Nginx, Traefik, Haproxy, etc.) to provide web application firewall capabilities.
+The component uses existing remediation hooks in web servers and reverse proxies (Nginx, Traefik, HAProxy, etc.) to provide web application firewall capabilities.
 
 ![appsec-global](/img/appsec-global.svg)
 
 ### How it works
 
-1. The Web Server receives the HTTP request
-2. The HTTP Request is forwarded to the CrowdSec Security Engine via a local HTTP interface
-3. The Security Engine analyzes the request against AppSec rules (inband rules for immediate blocking)
-4. Based on the analysis, the Web Server either blocks the HTTP Request or processes it as usual
+1. The web server receives the HTTP request.
+2. The request is forwarded to the CrowdSec Security Engine over a local HTTP interface.
+3. The engine evaluates the request against AppSec rules (in-band rules can block immediately).
+4. Based on the result, the web server either blocks the request or processes it as usual.
 
 ## Supported Web Servers & Reverse Proxies
 
@@ -86,26 +86,26 @@ The AppSec Component works seamlessly with modern web servers and reverse proxie
 
 ## Inband Rules and Out-Of-Band Rules
 
-The AppSec component relies on rules to inspect HTTP Requests:
+The AppSec component relies on rules to inspect HTTP requests:
 
 -   Inband rules are meant to interrupt request processing
 -   Out-Of-Band rules are non-blocking and are evaluated asynchronously
 
-### Inband rule processing
+### In-band rule processing
 
 The security engine first evaluates the inband rules, designed to identify and block specific requests.  
 Once these rules are evaluated, a response is relayed to the remediation component.
 
 This leads to two possible outcomes:
 
-1. If an inband rule is triggered, the remediation component will answer with a 403 or a captcha request to the user of the incriminated request, stopping the request processing.
+1. If an in-band rule is triggered, the remediation component returns a 403 or a captcha challenge to the requester, stopping processing.
 2. Otherwise, the request will be normally processed
 
-### Out-of-band rules processing
+### Out-of-band rule processing
 
 In the background, the security engine will then evaluate the out-of-band rules. These rules do not impact performance or response time, as they are evaluated after the AppSec Component instructs the webserver to continue or stop processing the request.
 
-They are usually meant to detect unwanted behaviors that exhibit a repetitive aspect (ie. Applicative Spam, Resource enumeration, Scalping etc.). When those rules trigger, they emit an event is processed by the Security Engine in the same way a log line is.
+They are usually meant to detect repetitive unwanted behavior (for example, application spam, resource enumeration, scalping). When these rules trigger, they emit an event that the Security Engine processes like a log line.
 
 ## Post processing
 
@@ -114,7 +114,7 @@ When a request triggers one or more rules, either in the inband section (blockin
 -   Inband (blocking) rules will appear in your `cscli alerts list` (and thus in your [console dashboard](https://app.crowdsec.net)).
 -   Inband and Out-Of-Band rules will trigger an internal crowdsec event that can be treated as any log lines.
 
-This is meant to allow for scenarios to exploit the WAF rules events, such as blocking for a longer time an IP that clearly engages in malevolent activities, triggering several virtual patching rules.
+This lets scenarios leverage WAF rule events, such as extending a ban for an IP that triggers multiple virtual patching rules.
 
 ## Next steps
 
