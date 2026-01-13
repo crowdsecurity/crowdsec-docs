@@ -195,6 +195,7 @@ const sidebarsConfig: SidebarConfig = {
 						"local_api/notification_plugins/file",
 						"local_api/notification_plugins/template_helpers",
 						"local_api/notification_plugins/writing_your_own_plugin",
+						"local_api/notification_plugins/testing",
 					],
 				},
 				"local_api/database",
