@@ -57,6 +57,10 @@ If your plugin relies on secrets from environment variables, pass them inline or
 SMTP_PASSWORD=your_password cscli notifications test email_default
 ```
 
+```info
+Template updates are picked up by the `cscli notifications` commands while testing. Restart CrowdSec only after you are satisfied with the changes.
+```
+
 ## Reinject a real alert through profiles
 
 Find an alert ID to replay using the default table output:
