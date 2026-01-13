@@ -74,7 +74,7 @@ const integrationMethods: FeatureCardProps[] = [
 	{
 		title: "Direct Firewall Integration",
 		description: "Push blocklists directly to firewalls without the Security Engine.",
-		link: "/u/console/blocklists/integrations/firewall",
+		link: "/u/integrations/intro",
 		icon: "/img/icons/shield-target.webp",
 	},
 ];

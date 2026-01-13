@@ -238,7 +238,7 @@ const CTIPage = () => {
 							<FeatureCard
 								title="API Reference"
 								description="Complete API documentation with endpoints and parameters."
-								link="/u/cti_api/api_introduction"
+								link="https://crowdsecurity.github.io/cti-api/"
 								icon="📚"
 							/>
 							<FeatureCard
