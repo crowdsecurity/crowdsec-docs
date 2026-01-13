@@ -5,6 +5,10 @@ title: Testing notification plugins
 
 This guide walks through practical ways to validate a notification plugin, from config checks to end-to-end delivery.
 
+```info
+Template updates are picked up by the `cscli notifications` commands while testing. Restart CrowdSec only after you are satisfied with the changes.
+```
+
 ## When to use test vs reinject
 
 - `cscli notifications test` sends a generic alert directly to a plugin. The plugin does not need to be active in any profile for this to work.
