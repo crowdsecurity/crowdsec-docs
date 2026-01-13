@@ -95,7 +95,8 @@ const QuickStart = (): React.JSX.Element => {
 			<div className="text-left mb-6">
 				<h2 className="mb-2 text-2xl md:text-3xl font-semibold">Installation</h2>
 				<p className="max-w-2xl text-base text-foreground/70">
-					Choose your platform to install the CrowdSec Security Engine. Each guide walks you through setup, configuration, and connecting to the CrowdSec Console.
+					Choose your platform to install the CrowdSec Security Engine. Each guide walks you through setup, configuration, and
+					connecting to the CrowdSec Console.
 				</p>
 			</div>
 
@@ -123,9 +124,7 @@ const QuickStart = (): React.JSX.Element => {
 				/>
 			</div>
 
-			<p className="text-xs mt-2 text-foreground/50 text-right">
-				*Logos and trademarks are property of their respective owners.
-			</p>
+			<p className="text-xs mt-2 text-foreground/50 text-right">*Logos and trademarks are property of their respective owners.</p>
 
 			{/* Multi-Server */}
 			<div className="text-left mt-10">

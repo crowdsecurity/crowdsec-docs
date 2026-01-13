@@ -104,51 +104,29 @@ const GetToKnowUs = (): React.JSX.Element => {
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-3">
 				{coreProducts.map((item) => (
-					<HomePageItem
-						title={item.title}
-						description={item.description}
-						link={item.link}
-						icon={item.icon}
-						key={item.title}
-					/>
+					<HomePageItem title={item.title} description={item.description} link={item.link} icon={item.icon} key={item.title} />
 				))}
 			</div>
 
 			{/* Tools & Integration */}
 			<div className="text-left mt-10">
 				<h3 className="mb-1 text-lg font-medium text-primary">Tools & Integration</h3>
-				<p className="max-w-xl text-sm text-foreground/60 mb-4">
-					Extend and integrate CrowdSec with your existing workflows.
-				</p>
+				<p className="max-w-xl text-sm text-foreground/60 mb-4">Extend and integrate CrowdSec with your existing workflows.</p>
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-3">
 				{toolsAndIntegration.map((item) => (
-					<HomePageItem
-						title={item.title}
-						description={item.description}
-						link={item.link}
-						icon={item.icon}
-						key={item.title}
-					/>
+					<HomePageItem title={item.title} description={item.description} link={item.link} icon={item.icon} key={item.title} />
 				))}
 			</div>
 
 			{/* Resources */}
 			<div className="text-left mt-10">
 				<h3 className="mb-1 text-lg font-medium text-primary">Resources</h3>
-				<p className="max-w-xl text-sm text-foreground/60 mb-4">
-					Learn more and get help with your CrowdSec journey.
-				</p>
+				<p className="max-w-xl text-sm text-foreground/60 mb-4">Learn more and get help with your CrowdSec journey.</p>
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-3">
 				{resources.map((item) => (
-					<HomePageItem
-						title={item.title}
-						description={item.description}
-						link={item.link}
-						icon={item.icon}
-						key={item.title}
-					/>
+					<HomePageItem title={item.title} description={item.description} link={item.link} icon={item.icon} key={item.title} />
 				))}
 			</div>
 		</section>

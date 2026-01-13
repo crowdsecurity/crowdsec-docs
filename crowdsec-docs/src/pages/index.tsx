@@ -15,8 +15,8 @@ const HomePageHeader = (): React.JSX.Element => {
 						<div className="text-left w-full">
 							<h1 className="mb-2 text-3xl md:text-4xl font-bold">CrowdSec Documentation</h1>
 							<p className="max-w-2xl text-foreground/70 text-base md:text-lg leading-relaxed">
-								Learn how to detect and block malicious IPs with our open-source security engine.
-								Protect your infrastructure and applications with community-powered threat intelligence.
+								Learn how to detect and block malicious IPs with our open-source security engine. Protect your
+								infrastructure and applications with community-powered threat intelligence.
 							</p>
 						</div>
 						<img alt="CrowdSec Logo" src="/img/crowdsec_logo.png" className="h-16 w-24 md:h-20 md:w-auto flex-shrink-0" />

@@ -22,7 +22,9 @@ export const HomePageItem = (props: Props): React.JSX.Element => (
 			</span>
 
 			<div className="flex flex-col min-w-0">
-				<span className="text-base font-semibold text-left text-foreground group-hover:text-primary transition-colors duration-200">{props.title}</span>
+				<span className="text-base font-semibold text-left text-foreground group-hover:text-primary transition-colors duration-200">
+					{props.title}
+				</span>
 				{props.description && <p className="text-sm text-left text-foreground/60 mb-0 line-clamp-2">{props.description}</p>}
 			</div>
 		</div>
