@@ -741,8 +741,9 @@ const sidebarsConfig: SidebarConfig = {
 			label: "Configuration",
 			items: [
 				{ type: "doc", id: "appsec/configuration" },
-				{ type: "doc", id: "appsec/advanced_deployments" },
-				{ type: "doc", id: "appsec/alerts_and_scenarios" },
+				{ type: "doc", id: "appsec/configuration_creation_testing" },
+				{ type: "doc", id: "appsec/configuration_rule_management" },
+				{ type: "doc", id: "appsec/hooks" },
 			],
 		},
 		{
@@ -752,7 +753,6 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/rules_syntax" },
 				{ type: "doc", id: "appsec/create_rules" },
 				{ type: "doc", id: "appsec/rules_deploy" },
-				{ type: "doc", id: "appsec/hooks" },
 				{ type: "doc", id: "appsec/rules_examples" },
 			],
 		},
@@ -764,6 +764,12 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/benchmark" },
 			],
 		},
+		{
+			type: "doc",
+			id: "appsec/alerts_and_scenarios",
+			label: "WAF behavior analysis",
+		},
+		{ type: "doc", id: "appsec/advanced_deployments" },
 		{ type: "doc", id: "appsec/troubleshooting" },
 	],
 };
