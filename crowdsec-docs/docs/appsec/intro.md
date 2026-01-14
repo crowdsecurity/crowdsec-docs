@@ -50,19 +50,19 @@ The AppSec Component works seamlessly with modern web servers and reverse proxie
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/nginx.svg" alt="Nginx" style={{height: '50px', objectFit: 'contain'}} />
 <strong>Nginx</strong>
-<a href="/appsec/quickstart/nginxopenresty.mdx">Quick Start Guide →</a>
+<a href="quickstart/nginxopenresty">Quick Start Guide →</a>
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/openresty.png" alt="OpenResty" style={{height: '50px', objectFit: 'contain'}} />
 <strong>OpenResty</strong>
-<a href="/appsec/quickstart/nginxopenresty.mdx">Quick Start Guide →</a>
+<a href="quickstart/nginxopenresty">Quick Start Guide →</a>
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/traefik.logo.png" alt="Traefik" style={{height: '50px', objectFit: 'contain'}} />
 <strong>Traefik</strong>
-<a href="/appsec/quickstart/traefik.mdx">Quick Start Guide →</a>
+<a href="quickstart/traefik">Quick Start Guide →</a>
 </div>
 
 {/* HAProxy support coming soon - uncomment when feature is released */}
@@ -77,7 +77,7 @@ The AppSec Component works seamlessly with modern web servers and reverse proxie
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/WordPress-logotype-wmark.png" alt="WordPress" style={{height: '50px', objectFit: 'contain'}} />
 <strong>WordPress</strong>
-<a href="/appsec/quickstart/wordpress.mdx">Quick Start Guide →</a>
+<a href="quickstart/wordpress">Quick Start Guide →</a>
 </div>
 
 </div>
@@ -120,9 +120,9 @@ This lets scenarios leverage WAF rule events, such as extending a ban for an IP 
 
 You can follow our quick start guides depending on your web server:
 
--   [Nginx/OpenResty](/appsec/quickstart/nginxopenresty.mdx)
--   [Traefik](/appsec/quickstart/traefik.mdx)
--   [WordPress](/appsec/quickstart/wordpress.mdx)
+-   [Nginx/OpenResty](quickstart/nginxopenresty)
+-   [Traefik](quickstart/traefik)
+-   [WordPress](quickstart/wordpress)
 -   [CrowdSec WAF with Nginx Reverse Proxy](/u/user_guides/waf_rp_howto)
 
 Or consider learning more about the AppSec capabilities:
