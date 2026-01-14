@@ -3,30 +3,30 @@ id: create_expr
 title: Expression
 ---
 
-Expression-based whitelists allow you to discard events at parse time using [expr](https://github.com/antonmedv/expr) expressions. This is the most flexible way to create whitelists based on specific event patterns, such as HTTP paths, user agents, status codes, or any combination of parsed fields.
+Expression-based whitelists let you discard events during parsing using [expr](https://github.com/antonmedv/expr) expressions. This is the most flexible option for whitelisting patterns such as HTTP paths, user agents, status codes, or any mix of parsed fields.
 
 ## What this achieves
 
-A **parser whitelist** (enrich stage) discards matching **log lines** before they reach scenarios, so they won't create buckets or alerts. This is typically the cleanest way to reduce false positives and resource usage.
+A **parser whitelist** (enrich stage) drops matching **log lines** before they reach scenarios, so they do not create buckets or alerts. This is usually the cleanest way to cut false positives and resource usage.
 
 :::info
 
-If your goal is to centrally allowlist **IP/CIDR across all components**, consider **AllowLists** (available since CrowdSec `1.6.8`). For event-pattern exceptions (URI/user-agent/etc.), parser whitelists are appropriate. See [LAPI AllowLists](/local_api/allowlists.md) for more information.
+If you need to centrally allowlist **IP/CIDR across all components**, use **AllowLists** (available since CrowdSec `1.6.8`). For event-pattern exceptions (URI/user-agent/etc.), use parser whitelists. See [LAPI AllowLists](/local_api/allowlists.md) for details.
 
 :::
 
-Since we are using data that is present from the parsing stage, we can do this within the `Parsing Whitelist` level. Please see the [introduction](/log_processor/whitelist/introduction.md) for your OS-specific paths.
+Because this uses data available at parse time, you can do it at the `Parsing Whitelist` level. See the [introduction](/log_processor/whitelist/introduction.md) for OS-specific paths.
 
 ## Workflow: From an alert to a parser whitelist
 
-There are two main paths to create an expression-based whitelist:
+There are two main ways to create an expression-based whitelist:
 
 1. **Starting from an alert**: When you have a false positive alert and want to whitelist the pattern that triggered it
 2. **Starting from a log line**: When you know the log line pattern you want to whitelist
 
 ### Path 1: Starting from an alert
 
-When you have a false positive alert, you can inspect it to extract the event details and create a whitelist.
+When you have a false positive alert, inspect it to extract event details and build a whitelist.
 
 #### Step 1: Identify the alert and extract its events
 
@@ -50,7 +50,7 @@ The `-d/--details` flag shows the events associated with the alert. From the out
 
 :::important
 
-Within the **Events** section of the alert output, each key shown corresponds to a field in `evt.Meta.*`. For example, if you see `http_path` in the events, you can reference it in your whitelist expression as `evt.Meta.http_path`.
+In the **Events** section, each key maps to a field in `evt.Meta.*`. For example, `http_path` becomes `evt.Meta.http_path` in your whitelist expression.
 
 :::
 
@@ -148,17 +148,17 @@ $ cscli alerts inspect 176012 -d
 ╰─────────────────┴─────────────────────────────╯
 ```
 
-In this example, you can see that the events section shows various keys like `http_path`, `http_status`, `http_verb`, `source_ip`, etc. These keys correspond to `evt.Meta.*` fields that you can use in your whitelist expressions. For instance, `http_path` in the events becomes `evt.Meta.http_path` in your whitelist expression.
+In this example, the events section lists keys such as `http_path`, `http_status`, `http_verb`, and `source_ip`. Those keys map to `evt.Meta.*` fields you can use in your whitelist expressions. For instance, `http_path` becomes `evt.Meta.http_path`.
 
 </details>
 
 #### Step 2: Extract a representative log line
 
-From the alert details, identify one of the triggering log lines. You'll need the raw log line to use with `cscli explain` in the next step.
+From the alert details, pick one triggering log line. You will need the raw line for `cscli explain` in the next step.
 
 #### Step 3: Use `cscli explain` to reveal parsed fields
 
-To write a safe whitelist, you need the exact field names and values CrowdSec has available at parse/enrich time.
+To write a safe whitelist, you need the exact field names and values CrowdSec has at parse/enrich time.
 
 Run `cscli explain` against the log line:
 
@@ -169,24 +169,24 @@ sudo cscli explain \
   -v
 ```
 
-`cscli explain -v` shows which parsers ran and what they populated into `evt.Parsed.*`, `evt.Meta.*`, etc.
+`cscli explain -v` shows which parsers ran and what they populated in `evt.Parsed.*`, `evt.Meta.*`, and so on.
 
-**What you're looking for** in the explain output:
+**What to look for** in the explain output:
 
-- The specific fields that uniquely identify the "good" traffic you want to ignore, e.g.:
+- The specific fields that uniquely identify the "good" traffic you want to ignore, for example:
   - `evt.Parsed.http_user_agent`
   - `evt.Meta.http_path`
   - `evt.Meta.http_verb`
   - `evt.Meta.http_status`
-- Anything stable that won't accidentally exempt real attacks
+- Anything stable that will not accidentally exempt real attacks
 
 ### Path 2: Starting from a log line
 
-When you know the log line pattern you want to whitelist (e.g., health check endpoints, monitoring tools), you can use `cscli explain` directly.
+When you already know the log line pattern you want to whitelist (e.g., health check endpoints, monitoring tools), you can use `cscli explain` directly.
 
 #### Step 1: Use `cscli explain` to reveal parsed fields
 
-You can use [cscli explain](/cscli/cscli_explain.md) to generate output from a given log line or log file.
+You can use [cscli explain](/cscli/cscli_explain.md) to generate output from a log line or a log file.
 
 For example, with a single log line:
 
@@ -284,13 +284,13 @@ line: 5.5.8.5 - - [04/Jan/2020:07:25:02 +0000] "GET /.well-known/acme-challenge/
 		└ 🟢 crowdsecurity/http-probing
 ```
 
-You can see what data can be used from the `s01-parse` stage. Look for fields in `evt.Parsed.*` and `evt.Meta.*` that you can use in your whitelist expression.
+You can see what data is available from the `s01-parse` stage. Look for fields in `evt.Parsed.*` and `evt.Meta.*` that you can use in your whitelist expression.
 
 </details>
 
 ## Create the parser whitelist file
 
-Once you've identified the fields you want to use, create a new YAML file in the appropriate directory. Please see the [introduction](/log_processor/whitelist/introduction.md) for your OS-specific paths.
+Once you have identified the fields you want to use, create a new YAML file in the appropriate directory. See the [introduction](/log_processor/whitelist/introduction.md) for OS-specific paths.
 
 For example:
 
@@ -324,13 +324,13 @@ whitelist:
 
 :::tip
 
-Keep whitelist expressions as narrow as possible (path + verb + maybe user-agent) to avoid masking real attacks.
+Keep whitelist expressions as narrow as possible (path + verb + maybe user-agent) to avoid hiding real attacks.
 
 :::
 
 ### Example 3: Whitelist by multiple conditions
 
-You can combine multiple conditions:
+You can combine conditions:
 
 ```yaml
 name: "myorg/whitelist-acme-challenge"
@@ -354,7 +354,7 @@ whitelist:
 
 ### Real-world example: Nextcloud
 
-For a real-world example of expression-based whitelists, see the [Nextcloud whitelist example on the Hub](https://hub.crowdsec.net/author/crowdsecurity/configurations/nextcloud-whitelist) which demonstrates how to whitelist common Nextcloud endpoints and patterns.
+For a real-world example of expression-based whitelists, see the [Nextcloud whitelist example on the Hub](https://hub.crowdsec.net/author/crowdsecurity/configurations/nextcloud-whitelist), which shows how to whitelist common Nextcloud endpoints and patterns.
 
 ## Reload CrowdSec and validate
 
@@ -366,7 +366,7 @@ sudo systemctl reload crowdsec
 
 Then validate in two ways:
 
-1. **Re-run `cscli explain`** on the same triggering line and confirm it is discarded/whitelisted. CrowdSec will log that lines were discarded due to a whitelist match.
+1. **Re-run `cscli explain`** on the same triggering line and confirm it is discarded/whitelisted. CrowdSec logs when lines are discarded because they match a whitelist.
 
 2. **Confirm new decisions are no longer created** for the same pattern/IP:
 
@@ -376,9 +376,9 @@ sudo cscli decisions list --ip <IP>
 
 ## Clean up any existing bans
 
-A whitelist prevents *future* triggers, but it does not automatically delete decisions that already exist.
+A whitelist prevents *future* triggers, but it does not remove decisions that already exist.
 
-If you need to immediately remove an active decision:
+If you need to remove an active decision immediately:
 
 ```bash
 sudo cscli decisions delete -i <IP>
@@ -398,11 +398,11 @@ You can verify that the whitelist is working by checking the CrowdSec logs:
 tail -f /var/log/crowdsec.log
 ```
 
-CrowdSec will inform you when lines have been discarded because they are whitelisted by the expression.
+CrowdSec will log when lines are discarded because they match the whitelist expression.
 
 ## Finding available fields
 
-The key to creating effective expression whitelists is knowing which fields are available. Use `cscli explain -v` to see all available fields at each stage:
+The key to creating effective expression whitelists is knowing which fields are available. Use `cscli explain -v` to see the fields available at each stage:
 
 - **`evt.Parsed.*`**: Fields extracted by parsers
 - **`evt.Meta.*`**: Metadata fields (often normalized versions of parsed fields)
