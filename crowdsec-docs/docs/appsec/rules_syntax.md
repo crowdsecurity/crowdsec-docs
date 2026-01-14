@@ -69,6 +69,8 @@ The target allows to specify which part of the requests needs to be inspected. Y
   - `BODY_ARGS_NAMES`: Name of the body args
   - `COOKIES`: Cookies sent in the request
   - `COOKIES_NAMES`: Names of the cookies sent in the request
+  - `FILES`: Uploaded files in the request
+  - `FILES_NAMES`: Names of uploaded files in the request
   - `HEADERS`: HTTP headers sent in the request
   - `HEADERS_NAMES`: Name of the HTTP headers sent in the request
   - `METHOD`: HTTP method of the request
