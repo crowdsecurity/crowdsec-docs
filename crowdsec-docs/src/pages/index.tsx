@@ -78,7 +78,8 @@ const HomePage = () => {
 							<div>
 								<h1 className="text-2xl md:text-4xl font-bold mb-2">CrowdSec Documentation</h1>
 								<p className="text-base md:text-lg text-gray-600 dark:text-gray-700 max-w-xl">
-									Community-driven security that unifies detection, blocklists, and threat intel for modern infrastructure.
+									Community-driven security that unifies detection, blocklists, and threat intel for modern
+									infrastructure.
 								</p>
 							</div>
 							<img alt="CrowdSec Logo" src="/img/crowdsec_logo.png" className="hidden md:block h-16 flex-shrink-0 border-0" />
