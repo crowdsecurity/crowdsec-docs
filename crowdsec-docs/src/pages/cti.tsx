@@ -1,39 +1,12 @@
 import Link from "@docusaurus/Link";
-import Layout from "@theme/Layout";
-import React from "react";
-import { Button } from "../ui/button";
-
-type FeatureCardProps = {
-	title: string;
-	description: string;
-	link: string;
-	icon: string;
-};
-
-const FeatureCard = ({ title, description, link, icon }: FeatureCardProps): React.JSX.Element => (
-	<Link href={link} className="hover:no-underline group">
-		<div className="h-full border border-solid border-border rounded-lg p-5 bg-card hover:shadow-md hover:border-primary/30 transition-all duration-200">
-			<div className="text-3xl mb-3">{icon.startsWith("/") ? <img src={icon} alt={title} className="h-8 w-8" /> : icon}</div>
-			<h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors">
-				{title}
-			</h3>
-			<p className="text-sm text-gray-600 dark:text-gray-700 mb-0">{description}</p>
-		</div>
-	</Link>
-);
-
-type IntegrationItemProps = {
-	title: string;
-	link: string;
-};
-
-const IntegrationItem = ({ title, link }: IntegrationItemProps): React.JSX.Element => (
-	<Link href={link} className="hover:no-underline group">
-		<div className="border border-solid border-border rounded-lg px-4 py-3 bg-card hover:shadow-md hover:border-primary/30 transition-all duration-200">
-			<span className="text-sm font-medium text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors">{title}</span>
-		</div>
-	</Link>
-);
+import {
+	FeatureCard,
+	FeatureCardProps,
+	IntegrationItem,
+	IntegrationItemProps,
+	ProductPageLayout,
+	Section,
+} from "../components/product-page";
 
 const gettingStarted: FeatureCardProps[] = [
 	{
@@ -125,159 +98,89 @@ const integrations: IntegrationItemProps[] = [
 	{ title: "IntelOwl", link: "/u/cti_api/api_integration/integration_intelowl" },
 ];
 
+const resources: FeatureCardProps[] = [
+	{
+		title: "API Reference",
+		description: "Full API reference with endpoints and parameters.",
+		link: "https://crowdsecurity.github.io/cti-api/",
+		icon: "📚",
+	},
+	{
+		title: "FAQ",
+		description: "Common questions about access, limits, and data.",
+		link: "/u/cti_api/faq",
+		icon: "❓",
+	},
+	{
+		title: "Chrome Extension",
+		description: "Check IP reputation directly in your browser.",
+		link: "/u/cti_api/api_integration/integration_chrome",
+		icon: "🌐",
+	},
+];
+
 const CTIPage = () => {
 	return (
-		<Layout title="CrowdSec CTI" description="Query CrowdSec's threat intelligence database">
-			<main className="flex-1">
-				{/* Hero Section */}
-				<section className="py-10 md:py-16 px-4 border-b border-border">
-					<div className="container max-w-5xl mx-auto">
-						<Link to="/" className="text-sm text-gray-500 dark:text-gray-600 hover:text-primary mb-4 inline-block">
-							← Back to Documentation
-						</Link>
-						<div className="flex flex-col md:flex-row md:items-center gap-6">
-							<div className="flex-1">
-								<div className="flex items-center gap-3 mb-4">
-									<div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-										<img src="/img/icons/world.webp" className="h-7 w-7" alt="CrowdSec CTI" />
-									</div>
-									<h1 className="text-3xl md:text-4xl font-bold m-0 text-gray-900 dark:text-gray-900">CrowdSec CTI</h1>
-								</div>
-								<p className="text-lg text-gray-600 dark:text-gray-700 mb-6 max-w-2xl">
-									Query CrowdSec threat intelligence to enrich investigations and automate lookups. Get IP reputation,
-									attack history, and behavior data from a global sensor network.
-								</p>
-								<div className="flex gap-3">
-									<Link to="/u/cti_api/intro">
-										<Button color="primary">Get Started</Button>
-									</Link>
-									<Link to="/u/cti_api/api_getting_started">
-										<Button variant="outline">API Quickstart</Button>
-									</Link>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
+		<ProductPageLayout
+			title="CrowdSec CTI"
+			metaDescription="Query CrowdSec's threat intelligence database"
+			icon="/img/icons/world.webp"
+			description="Query CrowdSec threat intelligence to enrich investigations and automate lookups. Get IP reputation, attack history, and behavior data from a global sensor network."
+			heroButtons={[
+				{ label: "Get Started", link: "/u/cti_api/intro" },
+				{ label: "API Quickstart", link: "/u/cti_api/api_getting_started", variant: "outline" },
+			]}
+			helpDescription="Get help in Discord or check the FAQ for quick answers."
+			helpButtons={[
+				{ label: "Join Discord", link: "https://discord.gg/crowdsec" },
+				{ label: "View FAQ", link: "/u/cti_api/faq" },
+			]}
+		>
+			<Section title="Getting Started" description="Choose your access path: web console for exploration or API for automation.">
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+					{gettingStarted.map((item) => (
+						<FeatureCard key={item.title} {...item} />
+					))}
+				</div>
+			</Section>
 
-				{/* Getting Started Section */}
-				<section className="py-10 md:py-14 px-4">
-					<div className="container max-w-5xl mx-auto">
-						<div className="text-left mb-6">
-							<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Getting Started</h2>
-							<p className="text-gray-600 dark:text-gray-700 max-w-2xl">
-								Choose your access path: web console for exploration or API for automation.
-							</p>
-						</div>
-						<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-							{gettingStarted.map((item) => (
-								<FeatureCard key={item.title} {...item} />
-							))}
-						</div>
-					</div>
-				</section>
+			<Section title="Core Features" description="Explore the core capabilities available through the CTI API." variant="muted">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+					{coreFeatures.map((item) => (
+						<FeatureCard key={item.title} {...item} />
+					))}
+				</div>
+			</Section>
 
-				{/* Core Features Section */}
-				<section className="py-10 md:py-14 px-4 bg-muted border-t border-border">
-					<div className="container max-w-5xl mx-auto">
-						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Core Features</h2>
-						<p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">
-							Explore the core capabilities available through the CTI API.
-						</p>
-						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-							{coreFeatures.map((item) => (
-								<FeatureCard key={item.title} {...item} />
-							))}
-						</div>
-					</div>
-				</section>
+			<Section title="Data Taxonomy" description="Understand how CTI data is structured, scored, and classified.">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+					{taxonomy.map((item) => (
+						<FeatureCard key={item.title} {...item} />
+					))}
+				</div>
+			</Section>
 
-				{/* Taxonomy Section */}
-				<section className="py-10 md:py-14 px-4">
-					<div className="container max-w-5xl mx-auto">
-						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Data Taxonomy</h2>
-						<p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">
-							Understand how CTI data is structured, scored, and classified.
-						</p>
-						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-							{taxonomy.map((item) => (
-								<FeatureCard key={item.title} {...item} />
-							))}
-						</div>
-					</div>
-				</section>
+			<Section title="Integrations" description="Connect CTI data to your SIEM, SOAR, and security workflows." variant="muted">
+				<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+					{integrations.map((item) => (
+						<IntegrationItem key={item.title} {...item} />
+					))}
+				</div>
+				<div className="mt-4 text-center">
+					<Link to="/u/cti_api/api_integration/integration_intro" className="text-sm text-primary hover:underline">
+						View all integrations →
+					</Link>
+				</div>
+			</Section>
 
-				{/* Integrations Section */}
-				<section className="py-10 md:py-14 px-4 bg-muted border-t border-border">
-					<div className="container max-w-5xl mx-auto">
-						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Integrations</h2>
-						<p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">
-							Connect CTI data to your SIEM, SOAR, and security workflows.
-						</p>
-						<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-							{integrations.map((item) => (
-								<IntegrationItem key={item.title} {...item} />
-							))}
-						</div>
-						<div className="mt-4 text-center">
-							<Link to="/u/cti_api/api_integration/integration_intro" className="text-sm text-primary hover:underline">
-								View all integrations →
-							</Link>
-						</div>
-					</div>
-				</section>
-
-				{/* Resources Section */}
-				<section className="py-10 md:py-14 px-4">
-					<div className="container max-w-5xl mx-auto">
-						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Resources</h2>
-						<p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">
-							Docs to help you integrate, automate, and troubleshoot CTI.
-						</p>
-						<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-							<FeatureCard
-								title="API Reference"
-								description="Full API reference with endpoints and parameters."
-								link="https://crowdsecurity.github.io/cti-api/"
-								icon="📚"
-							/>
-							<FeatureCard
-								title="FAQ"
-								description="Common questions about access, limits, and data."
-								link="/u/cti_api/faq"
-								icon="❓"
-							/>
-							<FeatureCard
-								title="Chrome Extension"
-								description="Check IP reputation directly in your browser."
-								link="/u/cti_api/api_integration/integration_chrome"
-								icon="🌐"
-							/>
-						</div>
-					</div>
-				</section>
-
-				{/* CTA Section */}
-				<section className="py-10 md:py-14 px-4 bg-primary/5 border-t border-border">
-					<div className="container max-w-3xl mx-auto text-center">
-						<h2 className="text-xl md:text-2xl font-semibold mb-3 text-gray-900 dark:text-gray-900">Need Help?</h2>
-						<p className="text-gray-600 dark:text-gray-700 mb-6">Get help in Discord or check the FAQ for quick answers.</p>
-						<div className="flex flex-col sm:flex-row gap-3 justify-center">
-							<Link to="https://discord.gg/crowdsec">
-								<Button size="lg" variant="outline">
-									Join Discord
-								</Button>
-							</Link>
-							<Link to="/u/cti_api/faq">
-								<Button size="lg" variant="outline">
-									View FAQ
-								</Button>
-							</Link>
-						</div>
-					</div>
-				</section>
-			</main>
-		</Layout>
+			<Section title="Resources" description="Docs to help you integrate, automate, and troubleshoot CTI.">
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+					{resources.map((item) => (
+						<FeatureCard key={item.title} {...item} />
+					))}
+				</div>
+			</Section>
+		</ProductPageLayout>
 	);
 };
 
