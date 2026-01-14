@@ -38,19 +38,19 @@ const IntegrationItem = ({ title, link }: IntegrationItemProps): React.JSX.Eleme
 const gettingStarted: FeatureCardProps[] = [
 	{
 		title: "Introduction",
-		description: "Learn what the CTI API offers and how it can enhance your security.",
+		description: "Learn what the CTI API offers and how to use it.",
 		link: "/u/cti_api/intro",
 		icon: "📖",
 	},
 	{
 		title: "Console Quickstart",
-		description: "Use the web interface to search and explore threat intelligence.",
+		description: "Use the web interface to search and explore CTI data.",
 		link: "/u/cti_api/getting_started",
 		icon: "🖥️",
 	},
 	{
 		title: "API Quickstart",
-		description: "Integrate CTI data programmatically into your applications.",
+		description: "Integrate CTI data programmatically into your workflows.",
 		link: "/u/cti_api/api_getting_started",
 		icon: "🔌",
 	},
@@ -59,25 +59,25 @@ const gettingStarted: FeatureCardProps[] = [
 const coreFeatures: FeatureCardProps[] = [
 	{
 		title: "IP Reports",
-		description: "Get detailed threat intelligence reports for any IP address.",
+		description: "Get full context for any IP, including reputation and activity.",
 		link: "/u/cti_api/ip_report",
 		icon: "📋",
 	},
 	{
 		title: "Search Queries",
-		description: "Search the threat intelligence database with powerful queries.",
+		description: "Search CTI data with filters and query operators.",
 		link: "/u/cti_api/search_queries",
 		icon: "🔍",
 	},
 	{
 		title: "Advanced Search",
-		description: "Build complex queries to find specific threat patterns.",
+		description: "Build complex queries to spot patterns at scale.",
 		link: "/u/cti_api/advanced_search",
 		icon: "🎯",
 	},
 	{
 		title: "CVE Explorer",
-		description: "Explore CVE data and see which IPs exploit specific vulnerabilities.",
+		description: "Explore CVEs and see active exploitation by IP.",
 		link: "/u/cti_api/cve_explorer",
 		icon: "🛡️",
 	},
@@ -86,25 +86,25 @@ const coreFeatures: FeatureCardProps[] = [
 const taxonomy: FeatureCardProps[] = [
 	{
 		title: "Taxonomy Overview",
-		description: "Understand how threat data is categorized and classified.",
+		description: "Learn how CTI data is structured and labeled.",
 		link: "/u/cti_api/taxonomy/intro",
 		icon: "📊",
 	},
 	{
 		title: "Reputation Scores",
-		description: "Learn how IP reputation scores are calculated.",
+		description: "See how scores are computed and what they mean.",
 		link: "/u/cti_api/taxonomy/scores",
 		icon: "⭐",
 	},
 	{
 		title: "Behaviors",
-		description: "Explore the types of malicious behaviors we track.",
+		description: "Explore the behaviors we track across attacks.",
 		link: "/u/cti_api/taxonomy/behaviors",
 		icon: "🔬",
 	},
 	{
 		title: "Classifications",
-		description: "Understand threat actor classifications and categories.",
+		description: "Understand threat classifications and categories.",
 		link: "/u/cti_api/taxonomy/classifications",
 		icon: "🏷️",
 	},
@@ -127,7 +127,7 @@ const integrations: IntegrationItemProps[] = [
 
 const CTIPage = () => {
 	return (
-		<Layout title="CTI API" description="Query CrowdSec's threat intelligence database">
+		<Layout title="CrowdSec CTI" description="Query CrowdSec's threat intelligence database">
 			<main className="flex-1">
 				{/* Hero Section */}
 				<section className="py-10 md:py-16 px-4 border-b border-border">
@@ -139,17 +139,17 @@ const CTIPage = () => {
 							<div className="flex-1">
 								<div className="flex items-center gap-3 mb-4">
 									<div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-										<img src="/img/icons/world.webp" className="h-7 w-7" alt="CTI API" />
+										<img src="/img/icons/world.webp" className="h-7 w-7" alt="CrowdSec CTI" />
 									</div>
-									<h1 className="text-3xl md:text-4xl font-bold m-0 text-gray-900 dark:text-gray-900">CTI API</h1>
+									<h1 className="text-3xl md:text-4xl font-bold m-0 text-gray-900 dark:text-gray-900">CrowdSec CTI</h1>
 								</div>
 								<p className="text-lg text-gray-600 dark:text-gray-700 mb-6 max-w-2xl">
-									Query our threat intelligence database to enrich your security workflows. Get IP reputation scores,
-									attack history, and behavioral data from our global network of sensors.
+									Query CrowdSec threat intelligence to enrich investigations and automate lookups. Get IP reputation,
+									attack history, and behavior data from a global sensor network.
 								</p>
 								<div className="flex gap-3">
 									<Link to="/u/cti_api/intro">
-										<Button color="primary">Read Introduction</Button>
+										<Button color="primary">Get Started</Button>
 									</Link>
 									<Link to="/u/cti_api/api_getting_started">
 										<Button variant="outline">API Quickstart</Button>
@@ -166,7 +166,7 @@ const CTIPage = () => {
 						<div className="text-left mb-6">
 							<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Getting Started</h2>
 							<p className="text-gray-600 dark:text-gray-700 max-w-2xl">
-								Choose how you want to access threat intelligence—via web console or API.
+								Choose your access path: web console for exploration or API for automation.
 							</p>
 						</div>
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -182,7 +182,7 @@ const CTIPage = () => {
 					<div className="container max-w-5xl mx-auto">
 						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Core Features</h2>
 						<p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">
-							Explore the threat intelligence capabilities available through the CTI API.
+							Explore the core capabilities available through the CTI API.
 						</p>
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 							{coreFeatures.map((item) => (
@@ -197,7 +197,7 @@ const CTIPage = () => {
 					<div className="container max-w-5xl mx-auto">
 						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Data Taxonomy</h2>
 						<p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">
-							Understand how threat data is structured, scored, and classified.
+							Understand how CTI data is structured, scored, and classified.
 						</p>
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 							{taxonomy.map((item) => (
@@ -212,7 +212,7 @@ const CTIPage = () => {
 					<div className="container max-w-5xl mx-auto">
 						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Integrations</h2>
 						<p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">
-							Connect CTI data to your existing security tools and workflows.
+							Connect CTI data to your SIEM, SOAR, and security workflows.
 						</p>
 						<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
 							{integrations.map((item) => (
@@ -232,24 +232,24 @@ const CTIPage = () => {
 					<div className="container max-w-5xl mx-auto">
 						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Resources</h2>
 						<p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">
-							Additional documentation and references for the CTI API.
+							Docs to help you integrate, automate, and troubleshoot CTI.
 						</p>
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 							<FeatureCard
 								title="API Reference"
-								description="Complete API documentation with endpoints and parameters."
+								description="Full API reference with endpoints and parameters."
 								link="https://crowdsecurity.github.io/cti-api/"
 								icon="📚"
 							/>
 							<FeatureCard
 								title="FAQ"
-								description="Common questions about the CTI API and its capabilities."
+								description="Common questions about access, limits, and data."
 								link="/u/cti_api/faq"
 								icon="❓"
 							/>
 							<FeatureCard
 								title="Chrome Extension"
-								description="Check IP reputation directly from your browser."
+								description="Check IP reputation directly in your browser."
 								link="/u/cti_api/api_integration/integration_chrome"
 								icon="🌐"
 							/>
@@ -262,7 +262,7 @@ const CTIPage = () => {
 					<div className="container max-w-3xl mx-auto text-center">
 						<h2 className="text-xl md:text-2xl font-semibold mb-3 text-gray-900 dark:text-gray-900">Need Help?</h2>
 						<p className="text-gray-600 dark:text-gray-700 mb-6">
-							Join our community Discord for support, or check out the FAQ for common questions.
+							Get help in Discord or check the FAQ for quick answers.
 						</p>
 						<div className="flex flex-col sm:flex-row gap-3 justify-center">
 							<Link to="https://discord.gg/crowdsec">

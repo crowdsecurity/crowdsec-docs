@@ -41,13 +41,13 @@ const multiServerSetup: PlatformData[] = [
 		icon: HubIcon,
 		text: "Central LAPI",
 		link: "/u/user_guides/multiserver_setup",
-		description: "Use a single LAPI to collect alerts from multiple engines.",
+		description: "Use a single LAPI to aggregate alerts and distribute decisions.",
 	},
 	{
 		icon: ForwardIcon,
 		text: "Log Centralization",
 		link: "/u/user_guides/log_centralization",
-		description: "Use Rsyslog to centralize logs from multiple servers.",
+		description: "Centralize logs from multiple servers to run detection in one place.",
 	},
 ];
 
@@ -73,25 +73,25 @@ const FeatureCard = ({ title, description, link, icon }: FeatureCardProps): Reac
 const features: FeatureCardProps[] = [
 	{
 		title: "Parsers & Scenarios",
-		description: "Understand how CrowdSec analyzes logs and detects threats using community-maintained rules.",
+		description: "Learn how CrowdSec parses logs and detects threats with community-maintained scenarios.",
 		link: "/docs/next/concepts",
 		icon: "📊",
 	},
 	{
-		title: "Bouncers",
-		description: "Block threats at firewalls, web servers, CDNs, and more with remediation components.",
+		title: "Remediation Components",
+		description: "Block threats at firewalls, web servers, and CDNs with remediation components.",
 		link: "/u/bouncers/intro",
 		icon: "/img/icons/shield-target.webp",
 	},
 	{
 		title: "Console Integration",
-		description: "Connect to CrowdSec Console for centralized management, alerts, and analytics.",
+		description: "Connect to the CrowdSec Console for centralized management, alerts, and analytics.",
 		link: "/u/console/intro",
 		icon: "📱",
 	},
 	{
 		title: "AppSec / WAF",
-		description: "Protect web applications from OWASP Top 10 vulnerabilities and custom attack patterns.",
+		description: "Protect web applications from OWASP Top 10 risks and custom attack patterns.",
 		link: "/docs/next/appsec/intro",
 		icon: "/img/icons/waf.webp",
 	},
@@ -143,12 +143,13 @@ const SecurityEnginePage = () => {
 									<h1 className="text-3xl md:text-4xl font-bold m-0 text-gray-900 dark:text-gray-900">Security Engine</h1>
 								</div>
 								<p className="text-lg text-gray-600 dark:text-gray-700 mb-6 max-w-2xl">
-									Detect and block malicious behavior in real-time. The Security Engine analyzes your logs, identifies
-									threats using behavior detection, and shares intelligence with the CrowdSec community.
+									Detect and block malicious behavior in real time. The Security Engine analyzes your logs with
+									behavior-based scenarios, shares intelligence with the CrowdSec community, and powers automated
+									remediation and AppSec protection.
 								</p>
 								<div className="flex gap-3">
 									<Link to="/u/getting_started/intro">
-										<Button color="primary">Read Introduction</Button>
+										<Button color="primary">Get Started</Button>
 									</Link>
 									<Link to="https://killercoda.com/iiamloz/scenario/crowdsec-setup">
 										<Button variant="outline">Try in Sandbox</Button>
@@ -165,8 +166,8 @@ const SecurityEnginePage = () => {
 						<div className="text-left mb-6">
 							<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Installation</h2>
 							<p className="text-gray-600 dark:text-gray-700 max-w-2xl">
-								Choose your platform to install the Security Engine. Each guide covers setup, configuration, and connecting
-								to the CrowdSec Console.
+								Choose your platform to install the Security Engine. Each guide covers setup, configuration, and enrolling
+								in the CrowdSec Console to sync decisions and metrics.
 							</p>
 						</div>
 
@@ -174,7 +175,7 @@ const SecurityEnginePage = () => {
 						<div className="mt-8">
 							<h3 className="text-lg font-medium text-primary mb-1">Single Server</h3>
 							<p className="text-sm text-gray-600 dark:text-gray-700 mb-4 max-w-xl">
-								Standalone installation for protecting a single machine or service.
+								Deploy on a single host or service for fast detection and blocking.
 							</p>
 							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
 								{singleServerSetup.map((props) => (
@@ -201,7 +202,7 @@ const SecurityEnginePage = () => {
 						<div className="mt-10">
 							<h3 className="text-lg font-medium text-primary mb-1">Multi-Server</h3>
 							<p className="text-sm text-gray-600 dark:text-gray-700 mb-4 max-w-xl">
-								Distributed deployment for organizations managing multiple servers or infrastructure.
+								Scale detection across fleets with centralized alerts or logs.
 							</p>
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
 								{multiServerSetup.map((props) => (
@@ -223,7 +224,7 @@ const SecurityEnginePage = () => {
 					<div className="container max-w-5xl mx-auto">
 						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Key Capabilities</h2>
 						<p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">
-							Explore what you can do with the Security Engine once it's installed.
+							Explore the core capabilities you can enable right after install.
 						</p>
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 							{features.map((feature) => (
@@ -238,7 +239,7 @@ const SecurityEnginePage = () => {
 					<div className="container max-w-5xl mx-auto">
 						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">After Installation</h2>
 						<p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">
-							Resources to help you configure, manage, and troubleshoot your Security Engine.
+							Guides to tune detection, manage decisions, and keep the engine healthy.
 						</p>
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 							{nextSteps.map((step) => (
@@ -253,7 +254,7 @@ const SecurityEnginePage = () => {
 					<div className="container max-w-3xl mx-auto text-center">
 						<h2 className="text-xl md:text-2xl font-semibold mb-3 text-gray-900 dark:text-gray-900">Need Help?</h2>
 						<p className="text-gray-600 dark:text-gray-700 mb-6">
-							Join our community Discord for support, or check out the troubleshooting guide for common questions.
+							Get answers fast in Discord or jump straight to troubleshooting.
 						</p>
 						<div className="flex flex-col sm:flex-row gap-3 justify-center">
 							<Link to="https://discord.gg/crowdsec">

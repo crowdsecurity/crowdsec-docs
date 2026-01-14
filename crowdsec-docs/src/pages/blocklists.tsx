@@ -46,19 +46,19 @@ const IntegrationCard = ({ title, description, link, icon }: IntegrationCardProp
 const gettingStarted: FeatureCardProps[] = [
 	{
 		title: "Introduction",
-		description: "Learn what blocklists are and how they protect your infrastructure.",
+		description: "Learn what blocklists are and how they stop known bad IPs.",
 		link: "/u/blocklists/intro",
 		icon: "📖",
 	},
 	{
 		title: "Getting Started",
-		description: "Subscribe to blocklists and start protecting your systems.",
+		description: "Subscribe and start blocking in minutes.",
 		link: "/u/blocklists/getting_started",
 		icon: "🚀",
 	},
 	{
 		title: "Browse Catalog",
-		description: "Explore available blocklists and their coverage.",
+		description: "Explore coverage, categories, and sources.",
 		link: "/u/console/blocklists/catalog",
 		icon: "📚",
 	},
@@ -67,13 +67,13 @@ const gettingStarted: FeatureCardProps[] = [
 const integrationMethods: FeatureCardProps[] = [
 	{
 		title: "With Security Engine",
-		description: "Add blocklist protection to your existing CrowdSec deployment.",
+		description: "Add blocklists to your existing CrowdSec deployment.",
 		link: "/u/blocklists/security_engine",
 		icon: "/img/icons/radar-target.webp",
 	},
 	{
 		title: "Direct Firewall Integration",
-		description: "Push blocklists directly to firewalls without the Security Engine.",
+		description: "Push blocklists directly to firewalls and gateways.",
 		link: "/u/integrations/intro",
 		icon: "/img/icons/shield-target.webp",
 	},
@@ -82,19 +82,19 @@ const integrationMethods: FeatureCardProps[] = [
 const consoleFeatures: FeatureCardProps[] = [
 	{
 		title: "Blocklist Overview",
-		description: "Monitor your subscribed blocklists and their status.",
+		description: "Monitor coverage and update status.",
 		link: "/u/console/blocklists/overview",
 		icon: "📊",
 	},
 	{
 		title: "Subscription Management",
-		description: "Manage your blocklist subscriptions and settings.",
+		description: "Manage subscriptions, quotas, and settings.",
 		link: "/u/console/blocklists/subscription",
 		icon: "⚙️",
 	},
 	{
 		title: "Blocklist Details",
-		description: "View detailed information about specific blocklists.",
+		description: "Inspect sources, scope, and blocklist details.",
 		link: "/u/console/blocklists/details",
 		icon: "🔍",
 	},
@@ -119,12 +119,12 @@ const BlocklistsPage = () => {
 									<h1 className="text-3xl md:text-4xl font-bold m-0 text-gray-900 dark:text-gray-900">Blocklists</h1>
 								</div>
 								<p className="text-lg text-gray-600 dark:text-gray-700 mb-6 max-w-2xl">
-									Subscribe to curated threat intelligence feeds to protect your infrastructure. Block known malicious IPs
-									without running your own detection—just subscribe and deploy.
+									Subscribe to curated threat intelligence feeds to block known malicious IPs across your infrastructure.
+									Deploy in minutes to firewalls or alongside the Security Engine.
 								</p>
 								<div className="flex gap-3">
 									<Link to="/u/blocklists/intro">
-										<Button color="primary">Read Introduction</Button>
+										<Button color="primary">Get Started</Button>
 									</Link>
 									<Link to="/u/console/blocklists/catalog">
 										<Button variant="outline">Browse Catalog</Button>
@@ -141,7 +141,7 @@ const BlocklistsPage = () => {
 						<div className="text-left mb-6">
 							<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Getting Started</h2>
 							<p className="text-gray-600 dark:text-gray-700 max-w-2xl">
-								Learn how blocklists work and start protecting your infrastructure in minutes.
+								Learn how blocklists work and start blocking in minutes.
 							</p>
 						</div>
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -157,7 +157,7 @@ const BlocklistsPage = () => {
 					<div className="container max-w-5xl mx-auto">
 						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Integration Methods</h2>
 						<p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">
-							Choose how you want to deploy blocklists to your infrastructure.
+							Choose how you want to deploy blocklists, with the Security Engine or directly to firewalls.
 						</p>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 							{integrationMethods.map((item) => (
@@ -184,7 +184,7 @@ const BlocklistsPage = () => {
 					<div className="container max-w-5xl mx-auto">
 						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Console Management</h2>
 						<p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">
-							Manage and monitor your blocklist subscriptions from the CrowdSec Console.
+							Track coverage, updates, and subscriptions from the CrowdSec Console.
 						</p>
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 							{consoleFeatures.map((item) => (
@@ -199,7 +199,7 @@ const BlocklistsPage = () => {
 					<div className="container max-w-3xl mx-auto text-center">
 						<h2 className="text-xl md:text-2xl font-semibold mb-3 text-gray-900 dark:text-gray-900">Need Help?</h2>
 						<p className="text-gray-600 dark:text-gray-700 mb-6">
-							Join our community Discord for support, or check out the Console documentation for more details.
+							Get help in Discord or dive into Console docs for setup and monitoring.
 						</p>
 						<div className="flex flex-col sm:flex-row gap-3 justify-center">
 							<Link to="https://discord.gg/crowdsec">
