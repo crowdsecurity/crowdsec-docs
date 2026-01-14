@@ -1,6 +1,7 @@
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
-import React from "react";
+import SearchBar from "@theme/SearchBar";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 
 type ProductCardProps = {
@@ -68,6 +69,16 @@ const products: ProductCardProps[] = [
 ];
 
 const HomePage = () => {
+	// Add class to body to hide navbar search on homepage
+	useEffect(() => {
+		document.body.classList.add("homepage");
+		document.documentElement.classList.add("homepage");
+		return () => {
+			document.body.classList.remove("homepage");
+			document.documentElement.classList.remove("homepage");
+		};
+	}, []);
+
 	return (
 		<Layout title="Documentation" description="CrowdSec, the open-source & participative IPS">
 			<main className="flex-1">
@@ -83,6 +94,15 @@ const HomePage = () => {
 								</p>
 							</div>
 							<img alt="CrowdSec Logo" src="/img/crowdsec_logo.png" className="hidden md:block h-16 flex-shrink-0 border-0" />
+						</div>
+					</div>
+				</section>
+
+				{/* Search Section */}
+				<section className="pb-8 px-4">
+					<div className="container max-w-2xl mx-auto">
+						<div className="homepage-search">
+							<SearchBar />
 						</div>
 					</div>
 				</section>
