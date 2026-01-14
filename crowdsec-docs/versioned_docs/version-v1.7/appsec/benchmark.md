@@ -15,9 +15,9 @@ sidebar_position: 80
 
 -->
 
-The Application Security Component benchmarks have been run on a AWS EC2 Instance `t2.medium` (2vCPU/4GiB RAM).
+The Application Security Component benchmarks were run on an AWS EC2 instance `t2.medium` (2vCPU/4GiB RAM).
 
-All the benchmarks have been run with only one `routine` configured for the Application Security Component.
+All benchmarks were run with a single `routine` configured for the Application Security Component.
 
 The benchmarks cover the following tests:
 
@@ -30,11 +30,11 @@ The benchmarks cover the following tests:
   - 15 concurrent connections / 1000 requests
 -->
 
-Each test has been run with multiple cases:
+Each test was run with multiple cases:
 
 - Application Security Component enabled but without any rules
-- Application Security Component enabled with 100 vpatch rules (in in-band)
-- Application Security Component enabled with all the CRS (in in-band)
+- Application Security Component enabled with 100 vpatch rules (in-band)
+- Application Security Component enabled with all the CRS (in-band)
 
 On the system, we deployed:
 

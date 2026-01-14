@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ## Generated Events Layout
 
-HTTP requests that trigger _In-Band_ or _Out-Of-Band_ AppSec/WAF rules generate events. These events can trigger scenarios that react by banning or alerting when rules are matched.
+HTTP requests that trigger _In-Band_ or _Out-Of-Band_ AppSec/WAF rules generate events. These events can trigger scenarios that ban or alert when rules are matched.
 
 The [`crowdsecurity/appsec-logs` parser](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/appsec-logs) is designed as a general-purpose tool to convert events into a format that is easier to process with scenarios.
 
@@ -21,7 +21,7 @@ The generated event looks like this:
  - `evt.Meta.target_host` is set to the FQDN if present (`Host` header in the HTTP request)
  - `evt.Meta.target_uri` is set to the complete URI of the HTTP request
  - `evt.Meta.rule_name` is set to the name of the triggered rule
- - `evt.Meta.remediation_cmpt_ip` is set to the IP of the Remediation Component (Bouncer) that sent the HTTP request.
+ - `evt.Meta.remediation_cmpt_ip` is set to the IP of the Remediation Component (bouncer) that sent the HTTP request.
 
 :::info
 The [`crowdsecurity/appsec-logs` parser](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/appsec-logs) is already part of the generic AppSec/WAF collections and doesn't have to be manually installed.
@@ -56,7 +56,7 @@ Let's try to solve an imaginary scenario:
 > We aim to prevent users from enumerating certain URLs (specifically, those that begin with `/foobar/*`) when a particular HTTP header is present (`something: *test*`). However, we want to impose this restriction only on users attempting to access two or more distinct `/foobar/*` URLs while this header is set.
 
 :::info
-Keep in mind that _Out-Of-Band_ rules will  generate an event instead of blocking the HTTP Request.
+Keep in mind that _Out-Of-Band_ rules generate an event instead of blocking the HTTP request.
 :::
 
 #### The AppSec/WAF Rule
@@ -85,7 +85,7 @@ rules:
       value: test
 ```
 
-Let ensure it's loaded as an _Out-Of-Band_ rule, first by creating a new appsec-config:
+Let's ensure it's loaded as an _Out-Of-Band_ rule by creating a new AppSec config:
 
 ```yaml title="/etc/crowdsec/appsec-configs/appsec-oob.yaml"
 name: crowdsecurity/appsec-oob
@@ -109,7 +109,7 @@ source: appsec
 
 #### The Scenario
 
-We can now create a scenario that will trigger when a single IPs triggers this rule on distinct URLs:
+We can now create a scenario that will trigger when a single IP triggers this rule on distinct URLs:
 
 ```yaml title="/etc/crowdsec/scenarios/foobar-enum.yaml"
 type: leaky
