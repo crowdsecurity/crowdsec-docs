@@ -276,7 +276,6 @@ html:has(.homepage-search) [class*="navbarSearchContainer"] {
 	box-shadow: 0 1px 0 rgb(var(--color-gray-300));
 }
 
-
 [data-theme="dark"] .DocSearch {
 	--docsearch-primary-color: rgb(var(--primary));
 	--docsearch-text-color: rgb(var(--foreground));
