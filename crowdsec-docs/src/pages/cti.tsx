@@ -261,9 +261,7 @@ const CTIPage = () => {
 				<section className="py-10 md:py-14 px-4 bg-primary/5 border-t border-border">
 					<div className="container max-w-3xl mx-auto text-center">
 						<h2 className="text-xl md:text-2xl font-semibold mb-3 text-gray-900 dark:text-gray-900">Need Help?</h2>
-						<p className="text-gray-600 dark:text-gray-700 mb-6">
-							Get help in Discord or check the FAQ for quick answers.
-						</p>
+						<p className="text-gray-600 dark:text-gray-700 mb-6">Get help in Discord or check the FAQ for quick answers.</p>
 						<div className="flex flex-col sm:flex-row gap-3 justify-center">
 							<Link to="https://discord.gg/crowdsec">
 								<Button size="lg" variant="outline">
