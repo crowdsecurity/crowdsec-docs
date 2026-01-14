@@ -237,13 +237,26 @@ html:has(.homepage-search) [class*="navbarSearchContainer"] {
 	display: none !important;
 }
 
+.homepage-search {
+	display: flex;
+	justify-content: center;
+}
+
 .homepage-search .DocSearch-Button {
 	@apply w-full bg-card border border-solid border-border rounded-lg px-4 py-3 m-0;
 	@apply hover:border-primary/50 hover:shadow-md transition-all;
+	max-width: 100%;
+	margin: 0 auto;
 }
 
 .homepage-search .DocSearch-Button-Placeholder {
 	@apply text-gray-500 dark:text-gray-400;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .homepage-search .DocSearch-Search-Icon {
@@ -252,6 +265,12 @@ html:has(.homepage-search) [class*="navbarSearchContainer"] {
 
 .homepage-search .DocSearch-Button-Keys {
 	@apply hidden md:flex;
+}
+
+@media (max-width: 640px) {
+	.homepage-search .DocSearch-Button {
+		padding: 0.75rem 0.875rem;
+	}
 }
 
 /* Algolia DocSearch modal theming */
