@@ -3,47 +3,208 @@ id: create_expr
 title: Expression
 ---
 
-Let's whitelist a **specific** user-agent (of course, it's just an example, don't do this in production !). 
+Expression-based whitelists let you discard events during parsing using [expr](https://github.com/antonmedv/expr) expressions. This is the most flexible option for whitelisting patterns such as HTTP paths, user agents, status codes, or any mix of parsed fields.
 
-Since we are using data that is present from the parsing stage we can do this within `Parsing Whitelist` level. Please see [introduction](/log_processor/whitelist/introduction.md) for your OS specific paths.
+## What this achieves
 
-```yaml
-name: "my/whitelist" ## Must be unique
-description: "Whitelist events from private ipv4 addresses"
-whitelist:
-  reason: "private ipv4 ranges"
-  expression:
-   - evt.Parsed.http_user_agent == 'MySecretUserAgent'
-```
+A **parser whitelist** (enrich stage) drops matching **log lines** before they reach scenarios, so they do not create buckets or alerts. This is usually the cleanest way to cut false positives and resource usage.
 
-```bash title="Reload CrowdSec"
-sudo systemctl reload crowdsec
-```
+:::info
 
-For the record, I edited nikto's configuration to use 'MySecretUserAgent' as user-agent, and thus :
+If you need to centrally allowlist **IP/CIDR across all components**, use **AllowLists** (available since CrowdSec `1.6.8`). For event-pattern exceptions (URI/user-agent/etc.), use parser whitelists. See [LAPI AllowLists](/local_api/allowlists.md) for details.
 
-```bash
-nikto -host myfqdn.com
-```
+:::
 
-```bash
-tail -f /var/log/crowdsec.log
-```
+Because this uses data available at parse time, you can do it at the `Parsing Whitelist` level. See the [introduction](/log_processor/whitelist/introduction.md) for OS-specific paths.
 
-CrowdSec will inform you some lines have been discarded because they are whitelisted by the expression.
+## Workflow: From an alert to a parser whitelist
 
-### How can I find which data is present from parsing stage?
+There are two main ways to create an expression-based whitelist:
 
-You can use [cscli explain](/cscli/cscli_explain.md) to generate output from a given log line or log file.
+1. **Starting from an alert**: When you have a false positive alert and want to whitelist the pattern that triggered it
+2. **Starting from a log line**: When you know the log line pattern you want to whitelist
 
-For example:
+### Path 1: Starting from an alert
+
+When you have a false positive alert, inspect it to extract event details and build a whitelist.
+
+#### Step 1: Identify the alert and extract its events
+
+1. List recent alerts:
 
 ```bash
-sudo cscli explain --log '5.5.8.5 - - [04/Jan/2020:07:25:02 +0000] "GET /.well-known/acme-challenge/FMuukC2JOJ5HKmLBujjE_BkDo HTTP/1.1" 404 522 "-" "MySecretUserAgent"' --type nginx -v
+sudo cscli alerts list
+```
+
+2. Inspect the alert with event details:
+
+```bash
+sudo cscli alerts inspect <ALERT_ID> -d
+```
+
+The `-d/--details` flag shows the events associated with the alert. From the output, note:
+
+- The **log type** (e.g., `nginx`, `apache2`, `sshd`, etc.)
+- Any helpful **meta** fields (http path, status, verb, user-agent, etc.)
+- The **source** you want to exempt (endpoint, health-check path, internal scanner, etc.)
+
+:::important
+
+In the **Events** section, each key maps to a field in `evt.Meta.*`. For example, `http_path` becomes `evt.Meta.http_path` in your whitelist expression.
+
+:::
+
+<details>
+  <summary>Example: Alert inspection output</summary>
+
+```bash
+$ cscli alerts inspect 176012 -d
+
+################################################################################################
+
+ - ID           : 176012
+ - Date         : 2026-01-07T15:11:08Z
+ - Machine      : testMachine
+ - Simulation   : false
+ - Remediation  : true
+ - Reason       : crowdsecurity/http-crawl-non_statics
+ - Events Count : 44
+ - Scope:Value  : Ip:192.168.1.100
+ - Country      : US
+ - AS           : EXAMPLE-AS-BLOCK
+ - Begin        : 2026-01-07T15:11:05Z
+ - End          : 2026-01-07T15:11:07Z
+ - UUID         : 0061339c-f070-4859-8f2a-66249c709d73
+
+╭────────────────────────────────────────────────────────────────────────────╮
+│ Active Decisions                                                           │
+├───────────┬───────────────────┬────────┬────────────┬──────────────────────┤
+│     ID    │    scope:value    │ action │ expiration │      created_at      │
+├───────────┼───────────────────┼────────┼────────────┼──────────────────────┤
+│ 905003939 │ Ip:192.168.1.100  │ ban    │ 23h35m33s  │ 2026-01-07T15:11:08Z │
+╰───────────┴───────────────────┴────────┴────────────┴──────────────────────╯
+
+ - Context  :
+╭────────────┬────────────╮
+│     Key    │    Value   │
+├────────────┼────────────┤
+│ method     │ GET        │
+│ status     │ 404        │
+│ target_uri │ /lanz.php  │
+│ target_uri │ /xwpg.php  │
+│ target_uri │ /slsqc.php │
+│ target_uri │ /fs8.php   │
+│ target_uri │ /flap.php  │
+│ target_uri │ /ws34.php  │
+│ user_agent │ -          │
+╰────────────┴────────────╯
+
+ - Events  :
+
+- Date: 2026-01-07 15:11:07 +0000 UTC
+╭─────────────────┬─────────────────────────────╮
+│       Key       │            Value            │
+├─────────────────┼─────────────────────────────┤
+│ ASNNumber       │ 64512                       │
+│ ASNOrg          │ EXAMPLE-AS-BLOCK            │
+│ IsInEU          │ false                       │
+│ IsoCode         │ US                          │
+│ SourceRange     │ 192.168.0.0/16              │
+│ datasource_path │ /var/log/nginx/access.log   │
+│ datasource_type │ file                        │
+│ http_args_len   │ 0                           │
+│ http_path       │ /lanz.php                   │
+│ http_status     │ 404                         │
+│ http_user_agent │ -                           │
+│ http_verb       │ GET                         │
+│ log_type        │ http_access-log             │
+│ service         │ http                        │
+│ source_ip       │ 192.168.1.100               │
+│ target_fqdn     │ example.com                 │
+│ timestamp       │ 2026-01-07T15:11:07Z        │
+╰─────────────────┴─────────────────────────────╯
+
+- Date: 2026-01-07 15:11:07 +0000 UTC
+╭─────────────────┬─────────────────────────────╮
+│       Key       │            Value            │
+├─────────────────┼─────────────────────────────┤
+│ ASNNumber       │ 64512                       │
+│ ASNOrg          │ EXAMPLE-AS-BLOCK            │
+│ IsInEU          │ false                       │
+│ IsoCode         │ US                          │
+│ SourceRange     │ 192.168.0.0/16              │
+│ datasource_path │ /var/log/nginx/access.log   │
+│ datasource_type │ file                        │
+│ http_args_len   │ 0                           │
+│ http_path       │ /xwpg.php                   │
+│ http_status     │ 404                         │
+│ http_user_agent │ -                           │
+│ http_verb       │ GET                         │
+│ log_type        │ http_access-log             │
+│ service         │ http                        │
+│ source_ip       │ 192.168.1.100               │
+│ target_fqdn     │ example.com                 │
+│ timestamp       │ 2026-01-07T15:11:07Z        │
+╰─────────────────┴─────────────────────────────╯
+```
+
+In this example, the events section lists keys such as `http_path`, `http_status`, `http_verb`, and `source_ip`. Those keys map to `evt.Meta.*` fields you can use in your whitelist expressions. For instance, `http_path` becomes `evt.Meta.http_path`.
+
+</details>
+
+#### Step 2: Extract a representative log line
+
+From the alert details, pick one triggering log line. You will need the raw line for `cscli explain` in the next step.
+
+#### Step 3: Use `cscli explain` to reveal parsed fields
+
+To write a safe whitelist, you need the exact field names and values CrowdSec has at parse/enrich time.
+
+Run `cscli explain` against the log line:
+
+```bash
+sudo cscli explain \
+  --log '<PASTE_ONE_TRIGGERING_LOG_LINE_HERE>' \
+  --type <LOG_TYPE> \
+  -v
+```
+
+`cscli explain -v` shows which parsers ran and what they populated in `evt.Parsed.*`, `evt.Meta.*`, and so on.
+
+**What to look for** in the explain output:
+
+- The specific fields that uniquely identify the "good" traffic you want to ignore, for example:
+  - `evt.Parsed.http_user_agent`
+  - `evt.Meta.http_path`
+  - `evt.Meta.http_verb`
+  - `evt.Meta.http_status`
+- Anything stable that will not accidentally exempt real attacks
+
+### Path 2: Starting from a log line
+
+When you already know the log line pattern you want to whitelist (e.g., health check endpoints, monitoring tools), you can use `cscli explain` directly.
+
+#### Step 1: Use `cscli explain` to reveal parsed fields
+
+You can use [cscli explain](/cscli/cscli_explain.md) to generate output from a log line or a log file.
+
+For example, with a single log line:
+
+```bash
+sudo cscli explain \
+  --log '5.5.8.5 - - [04/Jan/2020:07:25:02 +0000] "GET /.well-known/acme-challenge/FMuukC2JOJ5HKmLBujjE_BkDo HTTP/1.1" 404 522 "-" "MySecretUserAgent"' \
+  --type nginx \
+  -v
+```
+
+Or with a file:
+
+```bash
+sudo cscli explain --file /path/to/logfile --type nginx -v
 ```
 
 <details>
-  <summary>Output: </summary>
+  <summary>Example output: </summary>
 
 ```bash
 line: 5.5.8.5 - - [04/Jan/2020:07:25:02 +0000] "GET /.well-known/acme-challenge/FMuukC2JOJ5HKmLBujjE_BkDo HTTP/1.1" 404 522 "-" "MySecretUserAgent"
@@ -122,6 +283,129 @@ line: 5.5.8.5 - - [04/Jan/2020:07:25:02 +0000] "GET /.well-known/acme-challenge/
 		├ 🟢 crowdsecurity/http-crawl-non_statics
 		└ 🟢 crowdsecurity/http-probing
 ```
-You can see what data can be used from `s01-parse` stage.
+
+You can see what data is available from the `s01-parse` stage. Look for fields in `evt.Parsed.*` and `evt.Meta.*` that you can use in your whitelist expression.
+
 </details>
 
+## Create the parser whitelist file
+
+Once you have identified the fields you want to use, create a new YAML file in the appropriate directory. See the [introduction](/log_processor/whitelist/introduction.md) for OS-specific paths.
+
+For example:
+
+```bash
+sudo nano /etc/crowdsec/parsers/s02-enrich/zz-whitelist-myapp.yaml
+```
+
+### Example 1: Whitelist by user-agent
+
+```yaml
+name: "myorg/whitelist-healthcheck-ua"
+description: "Ignore our synthetic checks user-agent"
+whitelist:
+  reason: "synthetic monitoring"
+  expression:
+    - evt.Parsed.http_user_agent == 'MyHealthcheckBot/1.0'
+```
+
+### Example 2: Whitelist a specific endpoint (health check)
+
+Use values you confirmed via `cscli explain`:
+
+```yaml
+name: "myorg/whitelist-healthz"
+description: "Ignore health checks hitting /healthz"
+whitelist:
+  reason: "health endpoint"
+  expression:
+    - evt.Meta.http_path == '/healthz' and evt.Meta.http_verb == 'GET'
+```
+
+:::tip
+
+Keep whitelist expressions as narrow as possible (path + verb + maybe user-agent) to avoid hiding real attacks.
+
+:::
+
+### Example 3: Whitelist by multiple conditions
+
+You can combine conditions:
+
+```yaml
+name: "myorg/whitelist-acme-challenge"
+description: "Ignore ACME challenge requests"
+whitelist:
+  reason: "legitimate certificate renewal"
+  expression:
+    - evt.Meta.http_path startsWith '/.well-known/acme-challenge/' and evt.Meta.http_verb == 'GET'
+```
+
+### Example 4: Whitelist by status code and path
+
+```yaml
+name: "myorg/whitelist-monitoring"
+description: "Ignore monitoring tool requests"
+whitelist:
+  reason: "internal monitoring"
+  expression:
+    - evt.Meta.http_path == '/metrics' and evt.Meta.http_status == '200'
+```
+
+### Real-world example: Nextcloud
+
+For a real-world example of expression-based whitelists, see the [Nextcloud whitelist example on the Hub](https://hub.crowdsec.net/author/crowdsecurity/configurations/nextcloud-whitelist), which shows how to whitelist common Nextcloud endpoints and patterns.
+
+## Reload CrowdSec and validate
+
+Reload CrowdSec to apply the new parser whitelist:
+
+```bash
+sudo systemctl reload crowdsec
+```
+
+Then validate in two ways:
+
+1. **Re-run `cscli explain`** on the same triggering line and confirm it is discarded/whitelisted. CrowdSec logs when lines are discarded because they match a whitelist.
+
+2. **Confirm new decisions are no longer created** for the same pattern/IP:
+
+```bash
+sudo cscli decisions list --ip <IP>
+```
+
+## Clean up any existing bans
+
+A whitelist prevents *future* triggers, but it does not remove decisions that already exist.
+
+If you need to remove an active decision immediately:
+
+```bash
+sudo cscli decisions delete -i <IP>
+```
+
+Or delete all decisions for a specific scenario:
+
+```bash
+sudo cscli decisions delete --scenario <SCENARIO_NAME>
+```
+
+## Verify whitelist is working
+
+You can verify that the whitelist is working by checking the CrowdSec logs:
+
+```bash
+tail -f /var/log/crowdsec.log
+```
+
+CrowdSec will log when lines are discarded because they match the whitelist expression.
+
+## Finding available fields
+
+The key to creating effective expression whitelists is knowing which fields are available. Use `cscli explain -v` to see the fields available at each stage:
+
+- **`evt.Parsed.*`**: Fields extracted by parsers
+- **`evt.Meta.*`**: Metadata fields (often normalized versions of parsed fields)
+- **`evt.Enriched.*`**: Fields added by enrichment parsers (geoip, rdns, etc.)
+
+For more information about available fields, see the [expr documentation](/expr/event.md).
