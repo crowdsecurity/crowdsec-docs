@@ -6,13 +6,13 @@ pagination_next: getting_started/post_installation/profiles
 ---
 
 :::info
-We will be adding a [file based acquisition](/docs/next/log_processor/data_sources/file). If you need to use a different source then alter the instructions to match your needs.
+We will add a [file-based acquisition](/docs/next/log_processor/data_sources/file). If you need a different source, adjust the instructions to match your setup.
 :::
 
 import FormattedTabs from '@site/src/components/formatted-tabs';
 
 
-Once you have found service you want to add, you can use the `cscli` command line tool to add the collection.
+Once you have identified the service you want to add, use `cscli` to install its collection.
 
 :::tip
 You can view the available collections on the [Hub](https://hub.crowdsec.net/).
@@ -28,14 +28,14 @@ agent:
       value: '<collection_name>'`}
 />
 
-Once the collection has been downloaded we need to add a new [Acquisition](/docs/next/log_processor/data_sources/intro) to the configuration so CrowdSec knows where to find the log source.
+Once the collection is downloaded, add a new [Acquisition](/docs/next/log_processor/data_sources/intro) so CrowdSec knows where to find the log source.
 
 :::info
-An example of an [Acquisition](/docs/next/log_processor/data_sources/intro) is available in the collection on the [Hub](https://hub.crowdsec.net/), which will assist you in identifying the files to monitor and the labels to assign.
+Each collection on the [Hub](https://hub.crowdsec.net/) includes an example [Acquisition](/docs/next/log_processor/data_sources/intro), which helps you identify files to monitor and labels to assign.
 :::
 
 :::info
-From version `1.5.0` we have added the ability to add acquisitions via the `acquis.d` directory. This allows you to add acquisitions without modifying the main configuration file.
+Since version `1.5.0`, you can add acquisitions via the `acquis.d` directory, which avoids editing the main configuration file.
 :::
 
 ### Create the directory if it does not exist
@@ -65,7 +65,7 @@ agent:
 />
 
 :::info
-You can skip the following step if you are on Kubernetes
+You can skip the following step if you are on Kubernetes.
 :::
 
 ### Add the following contents to the file
@@ -78,7 +78,7 @@ labels:
   type: "<type of logs>" ## Type defined in the parser
 ```
 
-Once you have added the acquisitions you can test the configuration and restart the service.
+Once you have added the acquisitions, test the configuration and restart the service.
 
 <FormattedTabs
   bash="sudo crowdsec -t && sudo systemctl restart crowdsec"
@@ -87,6 +87,6 @@ Once you have added the acquisitions you can test the configuration and restart 
   k8s="helm upgrade -f values.yaml crowdsec crowdsecurity/crowdsec"
 />
 
-## Next Steps?
+## Next steps
 
-Now that you have added a new acquisition, you may want to verify that the logs are being parsed correctly see [are detected log sources working correctly?](/getting_started/post_installation/acquisition.mdx#are-the-detected-log-sources-working-correctly)
+Now that you have added a new acquisition, verify that logs are being parsed correctly. See [Are the detected log sources working correctly?](/getting_started/post_installation/acquisition.mdx#are-the-detected-log-sources-working-correctly).

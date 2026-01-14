@@ -3,16 +3,16 @@ id: metrics
 title: Metrics
 ---
 
-# Crowdsec Metrics
+# CrowdSec Metrics
 
-Crowdsec is instrumented using [prometheus](https://prometheus.io/) to provide detailed metrics and tracability about what is going on.
-The `cscli metrics` allows you to see a subset of the metrics exposed by crowdsec. For a more industrial solution, look into the [Grafana](/docs/next/observability/prometheus) integration.
+CrowdSec is instrumented with [Prometheus](https://prometheus.io/) to provide detailed metrics and traceability.
+`cscli metrics` lets you view a subset of the metrics exposed by CrowdSec. For production-grade dashboards, use the [Grafana](/docs/next/observability/prometheus) integration.
 
-The best way to get an overview of the available metrics is to use `cscli metrics list`:
+The best way to see available metrics is `cscli metrics list`:
 
  Type          | Title                        | Description 
 ---------------|------------------------------|-------------
-acquisition    | Acquisition Metrics          | Measures the lines read, parsed, and unparsed per datasource. Zero read lines indicate a misconfigured or inactive datasource. Zero parsed lines mean the parser(s) failed. Non-zero parsed lines are fine as crowdsec selects relevant lines.
+acquisition    | Acquisition Metrics          | Measures lines read, parsed, and unparsed per datasource. Zero read lines indicate a misconfigured or inactive datasource. Zero parsed lines mean the parser(s) failed. Non-zero parsed lines are fine as CrowdSec selects relevant lines.
 alerts         | Local API Alerts             | Tracks the total number of past and present alerts for the installed scenarios.
 appsec-engine  | Appsec Metrics               | Measures the number of parsed and blocked requests by the AppSec Component.
 appsec-rule    | Appsec Rule Metrics          | Provides “per AppSec Component” information about the number of matches for loaded AppSec Rules.
@@ -21,8 +21,8 @@ lapi           | Local API Metrics            | Monitors the requests made to lo
 lapi-bouncer   | Local API Bouncers Metrics   | Tracks total hits to remediation component related API routes.
 lapi-decisions | Local API Bouncers Decisions | Tracks the number of empty/non-empty answers from LAPI to bouncers that are working in "live" mode.
 lapi-machine   | Local API Machines Metrics   | Tracks the number of calls to the local API from each registered machine.
-parsers        | Parser Metrics               | Tracks the number of events processed by each parser and indicates success of failure. Zero parsed lines means the parer(s) failed. Non-zero unparsed lines are fine as crowdsec select relevant lines.
-scenarios      | Scenario Metrics             | Measure events in different scenarios. Current count is the number of buckets during metrics collection. Overflows are past event-producing buckets, while Expired are the ones that didn’t receive enough events to Overflow. 
+parsers        | Parser Metrics               | Tracks the number of events processed by each parser and indicates success or failure. Zero parsed lines mean the parser(s) failed. Non-zero unparsed lines are fine as CrowdSec selects relevant lines.
+scenarios      | Scenario Metrics             | Measures events in different scenarios. Current count is the number of buckets during metrics collection. Overflows are past event-producing buckets, while Expired are ones that did not receive enough events to overflow. 
 stash          | Parser Stash Metrics         | Tracks the status of stashes that might be created by various parsers and scenarios.
 whitelists     | Whitelist Metrics            | Tracks the number of events processed and possibly whitelisted by each parser whitelist.
 
@@ -31,15 +31,15 @@ whitelists     | Whitelist Metrics            | Tracks the number of events proc
 
 You can use aliases to view metrics related to specific areas (`cscli metrics show $alias`):
 
- - `engine` : Security Engine dedicated metrics (acquisition, parsers, scenarios, whitelists)
- - `lapi` : local api dedicated metrics (bouncer api calls, local api decisions, machines decisions etc.)
- - `appsec` : application Security Engine - WAF specifics (requests processed, rules evaluated and triggered)
+ - `engine` : Security Engine metrics (acquisition, parsers, scenarios, whitelists)
+ - `lapi` : Local API metrics (bouncer API calls, local API decisions, machine decisions)
+ - `appsec` : AppSec metrics (requests processed, rules evaluated and triggered)
 
-You can as well combine various metrics sections (listed in `cscli metrics list`).
+You can combine sections listed in `cscli metrics list`.
 
-## Example : Security Engine Metrics
+## Example: Security Engine metrics
 
-Using `cscli metrics show engine` will display the metrics sections relative to the Security Engine itself : acquisition, parsers, scenarios, whitelists and stash.
+`cscli metrics show engine` displays the metrics sections related to the Security Engine: acquisition, parsers, scenarios, whitelists, and stash.
 
 ```bash title="Command Output"
 Acquisition Metrics:
@@ -85,4 +85,3 @@ Whitelist Metrics:
 │ crowdsecurity/whitelists │ private ipv4/ipv6 ip/ranges │ 12   │ 12          │
 ╰──────────────────────────┴─────────────────────────────┴──────┴─────────────╯
 ```
-

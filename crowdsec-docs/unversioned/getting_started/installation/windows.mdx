@@ -5,17 +5,17 @@ pagination_prev: getting_started/intro
 pagination_next: getting_started/health_check
 ---
 
-# Installation Windows
+# Install on Windows
 
-Before getting started, it is advised to read the [introduction](/unversioned/getting_started/introduction.mdx) page to understand the prerequisites and concepts for running CrowdSec.
+New to CrowdSec? Start with the [introduction](/unversioned/getting_started/introduction.mdx) to learn the core concepts and prerequisites.
 
-## Install Security Engine 
+## Install the Security Engine
 
 ### MSI Installer
 
-We provide MSI installers for Windows. You can download the latest version from the [release page](https://github.com/crowdsecurity/crowdsec/releases/latest)
+We provide MSI installers for Windows. Download the latest version from the [release page](https://github.com/crowdsecurity/crowdsec/releases/latest).
 
-Download and run the installer, it will install CrowdSec as a service and start it.
+Download and run the installer. It installs CrowdSec as a Windows service and starts it automatically.
 
 ### Chocolatey
 
@@ -25,14 +25,14 @@ You can install CrowdSec using [Chocolatey](https://chocolatey.org/), a package 
 choco install crowdsec
 ```
 
-## Install Remediation Component
+## Install a Remediation Component
 
 :::warning
-Security Engine by itself is a detection engine, it will not block anything. You need to install a [Remediation Component](/bouncers/intro.md) to enforce decisions
+The Security Engine only detects. To block malicious traffic, install a [Remediation Component](/bouncers/intro.md) to enforce decisions.
 :::
 
 :::info
-The Windows Firewall [Remediation Component](/bouncers/intro.md) requires the **.NET 6 runtime**. Install it before running the Component or use our setup bundle to install it with the Component.
+The Windows Firewall [Remediation Component](/bouncers/intro.md) requires the **.NET 6 runtime**. Install it before running the component, or use our setup bundle to install both.
 
 The runtime can be downloaded from [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime).
 Choose the "Console App" download.
@@ -40,17 +40,17 @@ Choose the "Console App" download.
 
 ### MSI Installer
 
-You can download either a MSI (containing only the component) or a setup bundle (containing the component and the .NET 6 runtime) from the [github releases](https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases)
+You can download either an MSI (component only) or a setup bundle (component + .NET 6 runtime) from the [GitHub releases](https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases).
 
 
 ### Chocolatey
 
-You can install CrowdSec using [Chocolatey](https://chocolatey.org/), a package manager for Windows.
+You can install the component using [Chocolatey](https://chocolatey.org/), a package manager for Windows.
 
 ```bash
 choco install crowdsec-windows-firewall-bouncer
 ```
 
-## Next Steps?
+## Next steps
 
-Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.mdx) you will find the next steps to configure and optimize your installation. You can also checkout the [detailed documentation](/docs/next/getting_started/install_windows) to find specific information on configuring for IIS and windows firewall.
+Great, you now have CrowdSec installed. Visit the [post-installation steps](/getting_started/next_steps.mdx) to finish setup and optimize your deployment. For IIS or Windows Firewall specifics, see the [detailed documentation](/docs/next/getting_started/install_windows).
