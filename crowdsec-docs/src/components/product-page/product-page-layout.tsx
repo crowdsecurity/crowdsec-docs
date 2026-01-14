@@ -49,8 +49,8 @@ export const ProductPageLayout = ({
 						<div className="flex flex-col md:flex-row md:items-center gap-6">
 							<div className="flex-1">
 								<div className="flex items-center gap-3 mb-4">
-									<div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-										<img src={icon} className="h-7 w-7" alt={title} />
+									<div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center overflow-hidden">
+										<img src={icon} className="h-9 w-9 border-0" alt={title} />
 									</div>
 									<h1 className="text-3xl md:text-4xl font-bold m-0 text-gray-900 dark:text-gray-900">{title}</h1>
 								</div>

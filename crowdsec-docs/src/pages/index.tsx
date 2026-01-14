@@ -16,7 +16,7 @@ const ProductCard = ({ title, description, icon, link, features, bestFor }: Prod
 	<Link href={link} className="hover:no-underline group flex">
 		<div className="w-full flex flex-col border border-solid border-border rounded-xl p-6 bg-card shadow-sm group-hover:shadow-lg group-hover:border-primary/50 transition-all duration-300">
 			<div className="flex items-center gap-4 mb-4">
-				<div className="w-14 h-14 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0">
+				<div className="w-14 h-14 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0 overflow-hidden">
 					{icon}
 				</div>
 				<h3 className="text-xl font-bold text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors m-0">
@@ -44,7 +44,7 @@ const products: ProductCardProps[] = [
 	{
 		title: "Security Engine",
 		description: "Analyze your logs to detect attacks, block malicious IPs, and protect web applications.",
-		icon: <img src="/img/icons/radar-target.webp" className="h-8 w-8" alt="Security Engine" />,
+		icon: <img src="/img/icons/radar-target.webp" className="h-10 w-10 border-0" alt="Security Engine" />,
 		link: "/security-engine",
 		features: ["Behavior-based detection", "Community threat sharing", "AppSec / WAF for web apps", "Open source"],
 		bestFor: "Best for self-hosted detection and protection.",
@@ -52,7 +52,7 @@ const products: ProductCardProps[] = [
 	{
 		title: "Blocklists",
 		description: "Deploy curated threat intel feeds to protect your network without running detection yourself.",
-		icon: <img src="/img/icons/shield.webp" className="h-8 w-8" alt="Blocklists" />,
+		icon: <img src="/img/icons/shield.webp" className="h-10 w-10 border-0" alt="Blocklists" />,
 		link: "/blocklists",
 		features: ["Curated IP lists", "Ready to deploy", "Automatic updates", "Multiple categories"],
 		bestFor: "Best for fast protection with minimal setup.",
@@ -60,7 +60,7 @@ const products: ProductCardProps[] = [
 	{
 		title: "CTI",
 		description: "Query CrowdSec threat intelligence to enrich investigations, automate lookups, and integrate with tools.",
-		icon: <img src="/img/icons/world.webp" className="h-8 w-8" alt="CTI" />,
+		icon: <img src="/img/icons/world.webp" className="h-10 w-10 border-0" alt="CTI" />,
 		link: "/cti",
 		features: ["REST API access", "IP reputation scores", "Attack context", "SIEM integrations"],
 		bestFor: "Best for enrichment, integrations, and investigations.",
@@ -78,11 +78,10 @@ const HomePage = () => {
 							<div>
 								<h1 className="text-2xl md:text-4xl font-bold mb-2">CrowdSec Documentation</h1>
 								<p className="text-base md:text-lg text-gray-600 dark:text-gray-700 max-w-xl">
-									Open-source, community-powered IPS that detects, blocks, and protects across servers, apps, and
-									networks. Pick a product to get the right docs fast.
+									Community-driven security that unifies detection, blocklists, and threat intel for modern infrastructure.
 								</p>
 							</div>
-							<img alt="CrowdSec Logo" src="/img/crowdsec_logo.png" className="hidden md:block h-16 flex-shrink-0" />
+							<img alt="CrowdSec Logo" src="/img/crowdsec_logo.png" className="hidden md:block h-16 flex-shrink-0 border-0" />
 						</div>
 					</div>
 				</section>

@@ -57,8 +57,9 @@ html[data-theme="dark"] {
 	--docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.1);
 }
 
-/* IMAGE STYLES FOR PAGES*/
-main .container img:not(a img) {
+/* IMAGE STYLES FOR DOCUMENTATION CONTENT */
+article img:not(a img),
+.markdown img:not(a img) {
 	@apply border border-solid border-gray-300/80 dark:border-gray-300/80 rounded-lg p-2;
 }
 
