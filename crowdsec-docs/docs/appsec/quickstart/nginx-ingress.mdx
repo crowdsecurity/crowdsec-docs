@@ -26,7 +26,7 @@ will have:
 [Introduction](/appsec/intro.md#introduction) for a better understanding.
 
 2. It's assumed that you have already installed **CrowdSec [Security
-Engine](intro.mdx)**. For installation quickstart, refer to the [QuickStart
+Engine](/intro.mdx)**. For installation quickstart, refer to the [QuickStart
 guide](/u/getting_started/installation/kubernetes).
 
 :::warning
@@ -35,6 +35,10 @@ remediation, as it relies on the Lua plugin interface. Please use the
 `crowdsecurity/controller` image provided by CrowdSec (as specified in the
 values below). Note that the standard upstream controller removed Lua support in
 version 1.12 and therefore is not suitable for use as a CrowdSec remediation component.
+:::
+
+:::tip Already have CrowdSec AppSec running?
+If CrowdSec is already deployed with AppSec enabled in your cluster, skip to [Enable the CrowdSec Lua plugin on NGINX Ingress](#enable-the-crowdsec-lua-plugin-on-nginx-ingress).
 :::
 
 ## Deploy CrowdSec with AppSec enabled
@@ -46,7 +50,7 @@ Add or update the CrowdSec Helm repository:
 ```bash
 helm repo add crowdsec https://crowdsecurity.github.io/helm-charts
 helm repo update
-   ```
+```
 
 :::note
 If CrowdSec is already deployed with Helm in this cluster, the repository entry is already present—you only need `helm repo update`.
@@ -54,12 +58,13 @@ If CrowdSec is already deployed with Helm in this cluster, the repository entry 
 
 ### Update CrowdSec configuration
 
-Add this to the CrowdSec `values.yaml` with the AppSec configuration:
+Add this to the CrowdSec `values.yaml` with the AppSec acquisition datasource (see the [AppSec datasource](/log_processor/data_sources/appsec.md)) and the default [AppSec configuration](/appsec/configuration.md):
 
 ```yaml title="values.yaml"
-appsec
+appsec:
   acquisitions:
-    - appsec_config: crowdsecurity/appsec-default
+    - appsec_configs:
+        - crowdsecurity/appsec-default
       labels:
         type: appsec
       listen_addr: 0.0.0.0:7422
@@ -73,6 +78,7 @@ appsec
 
 This YAML configuration snippet exposes the important configuration items:
      * `listen_addr: 0.0.0.0:7422` exposes the AppSec API inside the cluster.
+     * `appsec_configs` loads the [AppSec configuration(s)](/appsec/configuration.md) that define which rules are evaluated (in-band vs out-of-band).
      * The two collections provide virtual patching and generic rule coverage.
      * The chart bootstraps a bouncer named `nginx_ingress_waf` using the key you export locally.
 
@@ -94,7 +100,7 @@ You should see `crowdsec-agent` pods, the `crowdsec-lapi` pod and the `crowdsec-
 
 To extend the ingress controller with the CrowdSec plugin and point it to the
 AppSec API, create the file named `ingress-values.yaml`. You can read the entire
-file at `crowdsec-docs/crowdsec-docs/docs/appsec/quickstart/nginx-ingress.mdx`.
+file in the snippet below.
 
 ```yaml title="ingress-values.yaml"
 controller:
@@ -318,8 +324,8 @@ Appsec '127.0.0.1:7422/' Rules Metrics:
 </details>
 
 You can test and investigate further with [Stack
-Health-Check](/u/getting_started/health_check#trigger-crowdsecs-test-scenarios) and [Appsec Troubleshooting
-guide](/docs/next/appsec/troubleshooting)
+Health-Check](/u/getting_started/health_check#trigger-crowdsec-test-scenarios) and [Appsec Troubleshooting
+guide](/appsec/troubleshooting.md)
 
 ## Integration with the Console
 

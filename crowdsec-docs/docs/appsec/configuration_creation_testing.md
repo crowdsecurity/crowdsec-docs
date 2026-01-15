@@ -78,7 +78,7 @@ When loading multiple AppSec configs, _hooks_ and _appsec rules_ are appended, a
 
 ### Configuration Processing Order
 
-When multiple AppSec configurations are loaded, they are processed in the order specified in the `appsec_configs` list. For details on how in-band and out-of-band rules work, see the [AppSec Introduction](/appsec/intro.md#inband-rules-and-out-of-band-rules).
+When multiple AppSec configurations are loaded, they are processed in the order specified in the `appsec_configs` list. For details on how in-band and out-of-band rules work, see the [AppSec Introduction](intro.md#inband-rules-and-out-of-band-rules).
 
 ### Multi-Config Rule Evaluation
 
@@ -95,4 +95,4 @@ After updating AppSec configuration files:
 2. Validate behavior with your usual test traffic, or use the [generic AppSec test rule](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/appsec-generic-test).
 3. Inspect results in logs or via `cscli metrics show appsec`.
 
-For more troubleshooting guidance, see [AppSec Troubleshooting](/appsec/troubleshooting.md).
+For more troubleshooting guidance, see [AppSec Troubleshooting](troubleshooting.md).

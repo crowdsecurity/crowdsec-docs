@@ -4,9 +4,11 @@ title: Syntax
 sidebar_position: 1
 ---
 
-## CrowdSec AppSec config
+## AppSec Configuration Files
 
 AppSec configuration files define which rules are loaded, how they run, and how the WAF responds.
+
+They are loaded by the AppSec acquisition datasource via `appsec_configs` (see the [AppSec datasource](/log_processor/data_sources/appsec.md)).
 
 Below is a minimal example followed by the full key reference.
 
@@ -61,7 +63,7 @@ name: custom/my-appsec-config
 
 > array of strings
 
-List of rule patterns to load as in-band rules. See [in-band rule processing](/appsec/intro.md#inband-rule-processing).
+List of rule patterns to load as in-band rules. See [in-band rule processing](intro.md#in-band-rule-processing).
 
 ```yaml
 inband_rules:
@@ -73,7 +75,7 @@ inband_rules:
 
 > array of strings
 
-List of rule patterns to load as out-of-band rules. See [out-of-band rule processing](/appsec/intro.md#out-of-band-rules-processing).
+List of rule patterns to load as out-of-band rules. See [out-of-band rule processing](intro.md#out-of-band-rule-processing).
 
 ```yaml
 outofband_rules:
@@ -86,6 +88,8 @@ outofband_rules:
 > string
 
 Default action for in-band rules that match. The special value `allow` disables blocking.
+
+Common values include `ban` (block) and `captcha` (challenge), depending on what your remediation component supports.
 
 :::info
 When using multiple AppSec configs, the last declared one takes precedence for this property.
@@ -241,4 +245,4 @@ on_match:
       - CancelAlert()
 ```
 
-For complete hook documentation, see [AppSec Hooks](/appsec/hooks.md).
+For complete hook documentation, see [AppSec Hooks](hooks.md).

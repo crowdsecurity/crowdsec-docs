@@ -6,21 +6,22 @@ title: Application Security Component
 
 This module allows you to enable the `Application Security Component` as a data source.
 
-A more detailed documentation is available [here](/docs/next/appsec/intro).
+A more detailed documentation is available [here](/appsec/intro.md).
 
-A quickstart tutorial is available for [Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty) and [Traefik](/docs/next/appsec/quickstart/traefik).
+A quickstart tutorial is available for [Nginx/OpenResty](/appsec/quickstart/nginxopenresty.mdx) and [Traefik](/appsec/quickstart/traefik.mdx).
 
 ## Configuration example
 
-To start an Application Security Component on port 7422, listening on 127.0.0.1, using the `crowdsecurity/vpatch` config:
+To start an Application Security Component on port 7422, listening on 127.0.0.1, using the `crowdsecurity/appsec-default` configuration:
 
 ```yaml
 source: appsec
 listen_addr: 127.0.0.1:7422
 path: /
-appsec_config: crowdsecurity/virtual-patching
+appsec_configs:
+  - crowdsecurity/appsec-default
 labels:
- type: appsec
+  type: appsec
 ```
 
 ## Parameters
@@ -28,7 +29,7 @@ labels:
 ### `listen_addr`
 
 The address and port to listen on.
-Defaults to `127.0.0.1:7442`.
+Defaults to `127.0.0.1:7422`.
 
 ### `path`
 
@@ -37,7 +38,7 @@ Defaults to `/`.
 
 ### `appsec_configs`
 
-The name of the appsec-config to use (as seen in `cscli appsec-configs list`).
+The list of appsec-configs to use (as seen in `cscli appsec-configs list`).
 
 ### `appsec_config`
 

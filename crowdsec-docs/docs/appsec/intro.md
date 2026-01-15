@@ -41,6 +41,12 @@ The component uses existing remediation hooks in web servers and reverse proxies
 3. The engine evaluates the request against AppSec rules (in-band rules can block immediately).
 4. Based on the result, the web server either blocks the request or processes it as usual.
 
+:::tip Common gotchas
+- Installing rules is not enough: you must also enable the AppSec acquisition datasource and restart CrowdSec.
+- The remediation component must support AppSec forwarding, and must be configured to forward to the same `listen_addr` you set in the acquisition file.
+- In-band rules return an action for the current request (for example `ban`/`captcha`); longer-term bans are driven by scenarios and decisions.
+:::
+
 ## Supported Web Servers & Reverse Proxies
 
 The AppSec Component works seamlessly with modern web servers and reverse proxies:
@@ -127,8 +133,8 @@ You can follow our quick start guides depending on your web server:
 
 Or consider learning more about the AppSec capabilities:
 
--   **Rules**: [How to read, write and debug rules](/appsec/rules_syntax.md)
--   **Scenarios**: [How to create scenarios that leverage the AppSec Component events](/appsec/alerts_and_scenarios.md)
--   **Hooks**: [To customise behavior of the AppSec at runtime](/appsec/hooks.md)
--   **Troubleshoot**: [How to troubleshoot the behavior of the AppSec Component](/appsec/troubleshooting.md)
--   **AppSec Technical Details**: [For developers integrating with the AppSec Component](/appsec/protocol.md)
+-   **Rules**: [How to read, write and debug rules](rules_syntax.md)
+-   **Scenarios**: [How to create scenarios that leverage the AppSec Component events](alerts_and_scenarios.md)
+-   **Hooks**: [To customise behavior of the AppSec at runtime](hooks.md)
+-   **Troubleshoot**: [How to troubleshoot the behavior of the AppSec Component](troubleshooting.md)
+-   **AppSec Technical Details**: [For developers integrating with the AppSec Component](protocol.md)

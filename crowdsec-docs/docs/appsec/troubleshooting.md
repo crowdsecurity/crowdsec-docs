@@ -118,7 +118,8 @@ mkdir -p /etc/crowdsec/acquis.d/
 cat > /etc/crowdsec/acquis.d/test_appsec.yaml <<EOF
 name: test_appsec
 listen_addr: 127.0.0.1:4243
-appsec_config: crowdsecurity/test-appsec
+appsec_configs:
+ - crowdsecurity/test-appsec
 source: appsec
 labels:
   type: appsec
