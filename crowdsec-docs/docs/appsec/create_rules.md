@@ -170,12 +170,12 @@ Let's get over the relevant parts:
 - `description` is how your scenario will appear in [the hub](https://hub.crowdsec.net)
 - `labels` section is used both in [the hub](https://hub.crowdsec.net) and [the console](https://app.crowdsec.net). [It must follow rules described here](/log_processor/scenarios/format.md#labels)
 - `rules` describe what we want to match:
-  - a [`METHOD`](/appsec/rules_syntax.md#target) [equal to `POST`](/appsec/rules_syntax.md#match)
-  - the presence of a header ([`HEADERS_NAME`](/appsec/rules_syntax.md#target)) with a name that once transformed to `lowercase`, is `x-foobar-bypass`
+  - a [`METHOD`](rules_syntax.md#zones) [equal to `POST`](rules_syntax.md#match)
+  - the presence of a header ([`HEADERS_NAME`](rules_syntax.md#zones)) with a name that once transformed to `lowercase`, is `x-foobar-bypass`
   - a post parameter (`BODY_ARGS`), `user_id` that contains something else than a-z A-Z or 0-9 or `_`
 
 :::info
-You can [find detailed rules syntax here](/appsec/rules_syntax.md).
+You can [find detailed rules syntax here](rules_syntax.md).
 :::
 
 ## Testing

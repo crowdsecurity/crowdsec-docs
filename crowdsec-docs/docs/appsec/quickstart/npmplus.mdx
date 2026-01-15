@@ -47,9 +47,15 @@ We also install the [`crowdsecurity/appsec-generic-rules`](https://app.crowdsec.
 You can always view the content of a [collection on the Hub](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching).
 :::
 
+:::note
+In this guide, you'll install these collections inside the CrowdSec container after starting the stack.
+:::
+
 ### Setup the Acquisition
 
 NPMplus provides a Docker Compose file that includes both NPMplus and CrowdSec services. We need to configure the acquisition for AppSec and NPMplus log parsing.
+
+The AppSec part of this file is the AppSec acquisition datasource (`source: appsec`). For the complete reference of available keys, see the [AppSec datasource](/log_processor/data_sources/appsec.md).
 
 **Steps:**
 
@@ -97,7 +103,8 @@ labels:
   type: modsecurity
 ---
 listen_addr: 0.0.0.0:7422
-appsec_config: crowdsecurity/appsec-default
+appsec_configs:
+  - crowdsecurity/appsec-default
 name: appsec
 source: appsec
 labels:
@@ -113,7 +120,7 @@ You can find the newest version of the `npmplus.yaml` acquisition file [here](ht
 - The first two sections configure log parsing for NPMplus logs
 - The third section configures the AppSec Component:
   - `listen_addr: 0.0.0.0:7422`: The AppSec Component listens on all interfaces on port 7422 (needed for Docker networking)
-  - `appsec_config`: Uses the default configuration from the installed collections
+  - `appsec_configs`: Uses the [AppSec configuration(s)](/appsec/configuration.md) from the installed collections
   - `source: appsec`: Identifies this as an AppSec data source
 
 ### Running NPMplus and CrowdSec
@@ -239,7 +246,7 @@ Appsec '0.0.0.0:7422/' Rules Metrics:
 ╰─────────────────────────────────┴───────────╯
 ```
 
-You can test and investigate further with [Stack Health-Check](/u/getting_started/health_check) and [Appsec Troubleshooting guide](/appsec/troubleshooting)
+You can test and investigate further with [Stack Health-Check](/u/getting_started/health_check) and [Appsec Troubleshooting guide](/appsec/troubleshooting.md)
 
 </details>
 
