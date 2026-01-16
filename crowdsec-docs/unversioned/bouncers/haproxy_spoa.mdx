@@ -98,6 +98,10 @@ sudo dnf install crowdsec-haproxy-spoa-bouncer
 
 The container image runs the SPOA bouncer (it does not bundle HAProxy): `crowdsecurity/spoa-bouncer`.
 
+:::warning
+The container examples below are not a complete HAProxy setup. For production, pin HAProxy to a stable version (rather than `:latest`) and adapt `haproxy.cfg` to your environment (TLS, backends, logging, timeouts, etc.).
+:::
+
 Quick start:
 
 ```bash
@@ -148,7 +152,7 @@ services:
       - crowdsec
 
   haproxy:
-    image: haproxy:2.9-alpine
+    image: haproxy:latest
     restart: unless-stopped
     volumes:
       - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
