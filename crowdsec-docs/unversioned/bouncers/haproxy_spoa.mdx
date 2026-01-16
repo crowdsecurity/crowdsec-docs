@@ -60,34 +60,6 @@ Supported features:
 - AppSec (WAF evaluation via CrowdSec AppSec)
 - Prometheus metrics
 
-## 0.3.0 highlights
-
-- HTTP processing is driven by HAProxy `spoe-groups` and `http-request send-spoe-group`.
-- Captcha is stateless (JWT-based) and requires a per-host `captcha.signing_key` (minimum 32 bytes).
-- AppSec forwarding (WAF evaluation) is supported via `appsec_url` / `hosts[].appsec`.
-- If you forward bodies (AppSec / captcha), enable `option http-buffer-request` and set `tune.bufsize 65536` (max).
-- The captcha “validated” redirect uses `%[url]`.
-
-Release notes: https://github.com/crowdsecurity/cs-haproxy-spoa-bouncer/releases/tag/v0.3.0-rc1
-
-### HAProxy triggers SPOE groups
-
-```haproxy
-http-request send-spoe-group crowdsec crowdsec-http-body
-http-request send-spoe-group crowdsec crowdsec-http-no-body
-```
-
-### Captcha signing key
-
-Generate a key:
-
-```bash
-openssl rand -hex 32
-```
-
-If you run multiple SPOA instances serving the same domains, use the same `signing_key` everywhere so captcha tokens validate consistently.
-
-
 ## Installation
 
 We strongly encourage the use of our packages.
@@ -766,7 +738,7 @@ hosts:
 ##### `signing_key`
 > string (minimum 32 bytes)
 
-Key used to sign captcha tokens (required when using captcha).
+Key used to sign captcha tokens (required when using captcha). Generate one with `openssl rand -hex 32`. If you run multiple SPOA instances serving the same domains, use the same `signing_key` everywhere so tokens validate consistently.
 
 ```yaml
 hosts:
