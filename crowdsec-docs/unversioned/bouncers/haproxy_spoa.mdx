@@ -22,13 +22,15 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
 </p>
 
 <RemediationSupportBadges
-  Appsec={false}
+  MTLS
+  Mode={false}
+  Appsec
   Metrics
   Prometheus
 />
 
 
-# A Remediation Component for haproxy.
+# A remediation component for HAProxy
 
 :::warning
 
@@ -36,7 +38,7 @@ Beta Remediation Component, please report any issues on GitHub
 
 :::
 
-## What it does ?
+## What it does
 
 The `cs-haproxy-spoa-bouncer` allows CrowdSec to enforce blocking, CAPTCHA, or
 allow actions directly within HAProxy using the [SPOE
@@ -49,12 +51,41 @@ integrates cleanly with CrowdSec’s LAPI using the stream bouncer protocol.
 
 Supported features:
 
- - Stream mode (pull the local API for new/old decisions every X seconds)
- - Ban remediation (can ban an IP address by redirecting or returning a custom HTML page)
- - Captcha remediation (can return a captcha)
- - Works with IPv4/IPv6
- - Support IP ranges (can apply a remediation on an IP range)
- - We are working on supporting AppSec
+- Stream mode (pull LAPI decisions periodically)
+- mTLS to LAPI (via `cert_path` / `key_path` / `ca_cert_path`)
+- IP / range / country decisions
+- Ban remediation (custom HTML / redirects)
+- CAPTCHA remediation (hCaptcha / reCAPTCHA / Turnstile)
+- GeoIP headers (ASN / Country)
+- AppSec (WAF evaluation via CrowdSec AppSec)
+- Prometheus metrics
+
+## 0.3.0 highlights
+
+- HTTP processing is driven by HAProxy `spoe-groups` and `http-request send-spoe-group`.
+- Captcha is stateless (JWT-based) and requires a per-host `captcha.signing_key` (minimum 32 bytes).
+- AppSec forwarding (WAF evaluation) is supported via `appsec_url` / `hosts[].appsec`.
+- If you forward bodies (AppSec / captcha), enable `option http-buffer-request` and set `tune.bufsize 65536` (max).
+- The captcha “validated” redirect uses `%[url]`.
+
+Release notes: https://github.com/crowdsecurity/cs-haproxy-spoa-bouncer/releases/tag/v0.3.0-rc1
+
+### HAProxy triggers SPOE groups
+
+```haproxy
+http-request send-spoe-group crowdsec crowdsec-http-body
+http-request send-spoe-group crowdsec crowdsec-http-no-body
+```
+
+### Captcha signing key
+
+Generate a key:
+
+```bash
+openssl rand -hex 32
+```
+
+If you run multiple SPOA instances serving the same domains, use the same `signing_key` everywhere so captcha tokens validate consistently.
 
 
 ## Installation
@@ -126,26 +157,40 @@ Add a SPOE agent configuration to /etc/haproxy/crowdsec.cfg:
 ```
 [crowdsec]
 spoe-agent crowdsec-agent
-    messages    crowdsec-ip crowdsec-http
+    messages    crowdsec-tcp
+    groups      crowdsec-http-body crowdsec-http-no-body
 
     option      var-prefix      crowdsec
     option      set-on-error    error
-    timeout     hello           100ms
-    timeout     idle            30s
+    timeout     hello           200ms
+    timeout     idle            55s
     timeout     processing      500ms
     use-backend crowdsec-spoa
     log         global
 
-## This message is used to customise the remediation from crowdsec-ip based on the host header
-## src-ip is included as fallback in case crowdsec-ip message didn't fire
-spoe-message crowdsec-http
-    args remediation=var(txn.crowdsec.remediation) crowdsec_captcha_cookie=req.cook(crowdsec_captcha_cookie) id=unique-id host=hdr(Host) method=method path=path query=query version=req.ver headers=req.hdrs body=req.body url=url ssl=ssl_fc src-ip=src src-port=src_port
-    event on-frontend-http-request
-
-## This message should be the first to trigger in the chain
-spoe-message crowdsec-ip
+## TCP/IP level check - runs early to check IP remediation
+## Uses event directive to trigger on each new client session (not sent as a group)
+spoe-message crowdsec-tcp
     args id=unique-id src-ip=src src-port=src_port
     event on-client-session
+
+## HTTP message with body - used when body size is within limit for AppSec
+## Note: Host and captcha cookie are extracted from headers=req.hdrs, no need to send separately
+spoe-message crowdsec-http-body
+    args remediation=var(txn.crowdsec.remediation) id=unique-id method=method path=path query=query version=req.ver headers=req.hdrs body=req.body url=url ssl=ssl_fc src-ip=src src-port=src_port
+
+## HTTP message without body - used when body is too large or not needed
+## Note: Host and captcha cookie are extracted from headers=req.hdrs, no need to send separately
+spoe-message crowdsec-http-no-body
+    args remediation=var(txn.crowdsec.remediation) id=unique-id method=method path=path query=query version=req.ver headers=req.hdrs url=url ssl=ssl_fc src-ip=src src-port=src_port
+
+## Group for HTTP message with body - used when body size is within limit for AppSec
+spoe-group crowdsec-http-body
+    messages    crowdsec-http-body
+
+## Group for HTTP message without body - used when body is too large or not needed
+spoe-group crowdsec-http-no-body
+    messages    crowdsec-http-no-body
 
 ```
 </details>
@@ -168,10 +213,16 @@ the haproxy configuration file.
 frontend http-in
     bind *:80
     filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
+
+    # Select which SPOE group to send (with/without body)
+    acl body_within_limit req.body_size -m int le 51200  # 50KB - stay safely under SPOE frame limit
+    http-request send-spoe-group crowdsec crowdsec-http-body if body_within_limit || !{ req.body_size -m found }
+    http-request send-spoe-group crowdsec crowdsec-http-no-body if !body_within_limit { req.body_size -m found }
+
     http-request set-header X-Crowdsec-Remediation %[var(txn.crowdsec.remediation)]
     
-    ## Handle 302 redirect for successful captcha validation (native HAProxy redirect)
-    http-request redirect code 302 location %[var(txn.crowdsec.redirect)] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
+    ## Handle 302 redirect for successful captcha validation (redirect to current request URL)
+    http-request redirect code 302 location %[url] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
     
     ## Call lua script only for ban and captcha remediations (performance optimization)
     http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "captcha" }
@@ -207,9 +258,66 @@ An example that includes this snippet can also be found in
 
 </details>
 
-### Specific features
+### Real client IP behind a CDN (or upstream proxy)
 
-#### To enable CAPTCHA for a domain:
+When HAProxy is deployed behind an upstream CDN/proxy, the source IP seen by HAProxy may be the CDN edge IP, not the real client IP. Set the source IP in HAProxy **before** calling `send-spoe-group`:
+
+```haproxy
+frontend http-in
+    # Extract real client IP from proxy headers (runs before SPOE groups)
+    # Priority: X-Real-IP > CF-Connecting-IP > X-Forwarded-For > direct src
+    http-request set-src hdr_ip(X-Real-IP) if { req.hdr(X-Real-IP) -m found }
+    http-request set-src hdr_ip(CF-Connecting-IP) if { req.hdr(CF-Connecting-IP) -m found } !{ req.hdr(X-Real-IP) -m found }
+    http-request set-src hdr_ip(X-Forwarded-For) if { req.hdr(X-Forwarded-For) -m found } !{ req.hdr(X-Real-IP) -m found } !{ req.hdr(CF-Connecting-IP) -m found }
+
+    filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
+
+    acl body_within_limit req.body_size -m int le 51200
+    http-request send-spoe-group crowdsec crowdsec-http-body if body_within_limit || !{ req.body_size -m found }
+    http-request send-spoe-group crowdsec crowdsec-http-no-body if !body_within_limit { req.body_size -m found }
+```
+
+In upstream-proxy/CDN setups, the TCP check (`crowdsec-tcp`) still runs at `on-client-session` and may see the proxy IP; calling an HTTP group after `set-src` ensures the request is evaluated with the real client IP.
+
+:::warning Firewall rules for trusted proxies
+
+If you rely on headers like `X-Real-IP` / `X-Forwarded-For`, ensure only your trusted upstream CDN/proxy can connect to your HAProxy ports (typically 80/443). Otherwise, attackers can connect directly and spoof these headers.
+
+:::
+
+#### Common CDN headers
+
+| CDN Provider | Header Name | HAProxy Function |
+|--------------|------------|------------------|
+| Generic / Most CDNs | `X-Real-IP` | `hdr_ip(X-Real-IP)` |
+| Cloudflare | `CF-Connecting-IP` | `hdr_ip(CF-Connecting-IP)` |
+| AWS CloudFront | `CloudFront-Viewer-Address` | `hdr_ip(CloudFront-Viewer-Address)` |
+| Akamai | `True-Client-IP` | `hdr_ip(True-Client-IP)` |
+| Azure CDN | `X-Forwarded-For` | `hdr_ip(X-Forwarded-For)` |
+
+:::tip
+
+If your CDN uses `X-Forwarded-For` with multiple IPs (comma-separated), you may need to select the right one:
+
+```haproxy
+http-request set-src hdr_ip(X-Forwarded-For,1) if { req.hdr(X-Forwarded-For) -m found }
+```
+
+If your CDN appends IPs from right to left, use `-1` for the rightmost IP:
+
+```haproxy
+http-request set-src hdr_ip(X-Forwarded-For,-1) if { req.hdr(X-Forwarded-For) -m found }
+```
+
+:::
+
+## How-to guides
+
+- CAPTCHA: enable per domain
+- AppSec: forward requests for WAF evaluation
+- Prometheus: expose metrics endpoint
+
+### Enable CAPTCHA for a domain
 
 ```
 hosts:
@@ -218,6 +326,7 @@ hosts:
       site_key: "<your-site-key>"
       secret_key: "<your-secret-key>"
       provider: "hcaptcha"
+      signing_key: "<your-32-byte-minimum-secret-key>"
 ```
 
 The following captcha providers are supported:
@@ -227,139 +336,36 @@ recaptcha
 turnstile
 ```
 
-#### HAProxy Behind a CDN
+### Enable AppSec (WAF) forwarding
 
-When HAProxy is deployed behind an upstream Content Delivery Network (CDN), the source IP seen by HAProxy will be the CDN's edge server IP, not the real client IP. To properly evaluate and apply security rules based on the actual client IP, you need to configure the SPOA to extract the real IP from the CDN-provided header.
+The SPOA bouncer can forward requests to CrowdSec AppSec for WAF evaluation.
 
-:::info
+Prerequisites:
+- CrowdSec AppSec is installed and configured (see [intro](/docs/next/appsec/intro) and [quickstart](/docs/next/appsec/quickstart/general_setup)).
 
-Most CDNs add an `X-Real-IP` or `X-Forwarded-For` header to the request to pass the original client IP. Ensure your CDN is configured to add this header, and adjust the examples below if your CDN uses a different header name.
+Enable it in the bouncer configuration:
 
-:::
+```yaml
+# Global AppSec URL (optional)
+appsec_url: http://127.0.0.1:7422
+appsec_timeout: 200ms
 
-##### Configuration Changes
-
-When HAProxy is behind a CDN, modify your `/etc/haproxy/crowdsec.cfg` to:
-
-1. **Use only the `crowdsec-http` message** (the `crowdsec-ip` message will capture the CDN edge IP, which is not useful)
-2. **Extract the real client IP** from the CDN header using `req.hdr_ip()` to convert it to HAProxy's IP type
-3. **Pass the real IP to the bouncer** via the SPOE message
-
-<details>
-
-<summary>`/etc/haproxy/crowdsec.cfg` (CDN Configuration)</summary>
-
-```haproxy
-# /etc/haproxy/spoe/crowdsec.cfg
-# SPOE section for CDN deployments
-# - Uses a single message: crowdsec-http
-# - Extracts real client IP from X-Real-IP header (adjust if needed)
-# - Falls back to IP remediation if 'remediation' var is not set
-
-[crowdsec]
-
-spoe-agent crowdsec-agent
-    messages    crowdsec-http
-    option      var-prefix      crowdsec
-    option      set-on-error    error
-    timeout     hello           100ms
-    timeout     idle            30s
-    timeout     processing      500ms
-    use-backend crowdsec-spoa
-    log         global
-
-# This message extracts the real IP via X-Real-IP and includes all arguments.
-# IMPORTANT: req.hdr_ip() returns an IP type (required by SPOE protocol).
-# If 'remediation' isn't provided by HAProxy, the bouncer will check IP remediation.
-spoe-message crowdsec-http
-    args remediation=var(txn.crowdsec.remediation) \
-         crowdsec_captcha_cookie=req.cook(crowdsec_captcha_cookie) \
-         id=unique-id host=hdr(Host) method=method path=path query=query \
-         version=req.ver headers=req.hdrs body=req.body url=url ssl=ssl_fc \
-         src-ip=req.hdr_ip(x-real-ip) src-port=src_port
-    event on-frontend-http-request
+hosts:
+  - host: "*"
+    appsec:
+      always_send: false
+      # url: http://custom-appsec:7422  # optional per-host override
+      # api_key: custom-key             # optional per-host override
 ```
 
-</details>
+HAProxy requirements when using AppSec (and/or captcha):
+- Enable request buffering: `option http-buffer-request`
+- Increase HAProxy buffer size (max 64KB): `tune.bufsize 65536`
+- Use the `crowdsec-http-body` group when the body is available (see the `body_within_limit` + `send-spoe-group` example above)
 
-##### Key Changes Explained
+Because request-body forwarding is constrained by HAProxy/SPOE/SPOP limits, keep an explicit body size limit (for example `51200`) and consider a layered approach (IP remediation at HAProxy, deeper inspection downstream).
 
-- **Single message**: Only `crowdsec-http` is used. The `crowdsec-ip` message would run at `on-client-session` and capture the CDN's IP, not the real client IP, so it's omitted.
-- **IP extraction**: The `req.hdr_ip(x-real-ip)` function extracts the IP from the `X-Real-IP` header and converts it to HAProxy's IP type, which is required by the SPOE protocol.
-- **Header name**: If your CDN uses a different header (e.g., `X-Forwarded-For`, `CF-Connecting-IP` for Cloudflare), adjust the header name accordingly. For Cloudflare specifically, use `req.hdr_ip(cf-connecting-ip)`.
-
-:::warning Firewall Rules for Trusted Proxies
-
-Since your SPOA bouncer now relies on the `X-Real-IP` header to determine the client IP, **it is critical to ensure that only your trusted upstream CDN proxy can connect to your HAProxy server**. 
-
-If you do not properly firewall your HAProxy port, an attacker could connect directly and spoof the `X-Real-IP` header, bypassing your security rules.
-
-**Ensure your firewall is configured to only allow connections to your HAProxy port (typically 80/443) from your upstream CDN provider's IP ranges.** Always verify your CDN provider's current IP ranges and keep your firewall rules up to date.
-
-:::
-
-##### HAProxy Configuration
-
-Your `/etc/haproxy/haproxy.cfg` frontend configuration remains mostly the same, but ensure the CDN header is being passed through:
-
-```haproxy
-frontend http-in
-    bind *:80
-    
-    # Ensure the CDN header is preserved (may already be done by your CDN)
-    # You can optionally add debugging with set-header
-    # http-request set-header X-Real-IP %[req.hdr(X-Real-IP)]
-    
-    filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
-    http-request set-header X-Crowdsec-Remediation %[var(txn.crowdsec.remediation)]
-    
-    ## Handle 302 redirect for successful captcha validation (native HAProxy redirect)
-    http-request redirect code 302 location %[var(txn.crowdsec.redirect)] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
-    
-    ## Call lua script only for ban and captcha remediations (performance optimization)
-    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "captcha" }
-    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "ban" }
-    
-    ## Handle captcha cookie management via HAProxy (new approach)
-    ## Set captcha cookie when SPOA provides captcha_status (pending or valid)
-    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_status) -m found } { var(txn.crowdsec.captcha_cookie) -m found }
-    ## Clear captcha cookie when cookie exists but no captcha_status (Allow decision)
-    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_cookie) -m found } !{ var(txn.crowdsec.captcha_status) -m found }
-    
-    use_backend <whatever>
-
-backend crowdsec-spoa
-    mode tcp
-    server s1 127.0.0.1:9000
-```
-
-##### Common CDN Headers
-
-| CDN Provider | Header Name | HAProxy Function |
-|--------------|------------|------------------|
-| Generic / Most CDNs | `X-Real-IP` | `req.hdr_ip(x-real-ip)` |
-| Cloudflare | `CF-Connecting-IP` | `req.hdr_ip(cf-connecting-ip)` |
-| AWS CloudFront | `CloudFront-Viewer-Address` | `req.hdr_ip(cloudfront-viewer-address)` |
-| Akamai | `True-Client-IP` | `req.hdr_ip(true-client-ip)` |
-| Azure CDN | `X-Forwarded-For` | `req.hdr_ip(x-forwarded-for)` |
-
-:::tip
-
-If your CDN uses `X-Forwarded-For` with multiple IPs (comma-separated), you'll need to extract the correct IP. For example:
-
-```haproxy
-src-ip=req.hdr_ip(x-forwarded-for,1)
-```
-
-This tells HAProxy to use the first IP from the comma-separated list. If your CDN appends IPs from right to left (instead of left to right), you can use `-1` to extract the rightmost IP:
-
-```haproxy
-src-ip=req.hdr_ip(x-forwarded-for,-1)
-```
-
-:::
-
-### Prometheus Metrics
+### Expose Prometheus metrics
 
 Enable and expose metrics:
 
@@ -367,74 +373,205 @@ Enable and expose metrics:
 prometheus:
   enabled: true
   listen_addr: 127.0.0.1
-  listen_port: 60601
+  listen_port: "60601"
 ```
 
 Access them at http://127.0.0.1:60601/metrics.
 
 ## Configuration Reference
 
-You can find a default configuration hosted on the [Github Repository](https://github.com/crowdsecurity/crowdsec-spoa-bouncer/blob/main/config/crowdsec-spoa-bouncer.yaml) this is provided with the installation package.
+The upstream example configurations live in the `cs-haproxy-spoa-bouncer` repository:
+
+- `crowdsec.cfg`: https://github.com/crowdsecurity/cs-haproxy-spoa-bouncer/blob/main/config/crowdsec.cfg
+- HAProxy examples: https://github.com/crowdsecurity/cs-haproxy-spoa-bouncer/tree/main/config
+
+YAML snippets below show each key in context.
 
 ### `log_mode`
 > `file` | `stdout`
 
 Where the log contents are written (With `file` it will be written to `log_dir` with the name `crowdsec-spoa-bouncer.log`)
 
+```yaml
+log_mode: "file" # or "stdout"
+```
+
 ### `log_dir`
 > string
 
 Log directory path that will contain the log file. By default, this should be set to `/var/log/crowdsec-spoa/` as this directory is automatically created by the systemd service.
+
+When installed from packages, the systemd unit runs the bouncer as the `crowdsec-spoa` user and creates `/var/log/crowdsec-spoa/` automatically (via `LogsDirectory=`). If you set a custom `log_dir`, make sure the directory exists and that the `crowdsec-spoa` user has permission to read/write there.
+
+```yaml
+log_dir: "/var/log/crowdsec-spoa/"
+```
 
 ### `log_level`
 > `trace` | `debug` | `info` | `warn` | `error`
 
 Log level (default: `info`)
 
-### `log_compression`
+```yaml
+log_level: "info"
+```
+
+### `compress_logs`
 > `true` | `false`
 
 Compress log files on rotation (default: `true`)
+
+```yaml
+compress_logs: true
+```
 
 ### `log_max_size`
 > int (in MB)
 
 Max size of log files before rotation (default: `500`)
 
-### `log_max_backups`
+```yaml
+log_max_size: 500
+```
+
+### `log_max_files`
 > int
 
 How many backup log files to keep before deletion (can happen before `log_max_age` is reached) (default: `3`)
 
+```yaml
+log_max_files: 3
+```
+
 ### `log_max_age`
 > int (in days)
 
-Max age of backup files before deletion (can happen before `log_max_backups` is reached) (default: `30`)
+Max age of backup files before deletion (can happen before `log_max_files` is reached) (default: `30`)
+
+```yaml
+log_max_age: 30
+```
+
+:::info
+The LAPI connection settings (`api_url`, `update_frequency`, `insecure_skip_verify`, `api_key`, mTLS paths, and decision filters) are read by the embedded stream bouncer.
+:::
 
 ### `update_frequency`
-> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+> string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 Frequency to contact the API for new/deleted decisions (default: `10s`)
+
+```yaml
+update_frequency: "10s"
+```
 
 ### `api_url`
 > string
 
 URL of the local API EG: `http://127.0.0.1:8080`
 
+```yaml
+api_url: "https://lapi.example.com:8080/"
+```
+
 ### `api_key`
 > string
 
 API key to authenticate with the local API
+
+```yaml
+api_key: "<your-lapi-api-key>"
+```
 
 ### `insecure_skip_verify`
 > `true` | `false`
 
 Skip verification of the API certificate, typical for self-signed certificates
 
+```yaml
+insecure_skip_verify: false
+```
+
+### `cert_path`
+> string
+
+Client certificate path for mTLS to LAPI.
+
+```yaml
+cert_path: "/etc/ssl/certs/client.crt"
+```
+
+### `key_path`
+> string
+
+Client private key path for mTLS to LAPI.
+
+```yaml
+key_path: "/etc/ssl/private/client.key"
+```
+
+### `ca_cert_path`
+> string
+
+CA certificate path for validating the LAPI certificate (mTLS / custom CAs).
+
+```yaml
+ca_cert_path: "/etc/ssl/certs/ca.crt"
+```
+
+### `retry_initial_connect`
+> `true` | `false`
+
+Retry connecting to LAPI on startup instead of failing fast.
+
+```yaml
+retry_initial_connect: true
+```
+
+### `scopes`
+> []string
+
+Only pull decisions matching these scopes (for example `ip`, `range`, `country`).
+
+```yaml
+scopes: ["ip", "range", "country"]
+```
+
+### `scenarios_containing`
+> []string
+
+Only pull decisions whose scenario contains one of these strings.
+
+```yaml
+scenarios_containing: ["crowdsecurity/"]
+```
+
+### `scenarios_not_containing`
+> []string
+
+Do not pull decisions whose scenario contains one of these strings.
+
+```yaml
+scenarios_not_containing: ["whitelist"]
+```
+
+### `origins`
+> []string
+
+Only pull decisions from these origins.
+
+```yaml
+origins: ["crowdsecurity", "lists"]
+```
+
 ### `listen_tcp`
 > string
 
 TCP address and port to listen on for SPOE connections. Format: `ip:port` or `:port`
+
+```yaml
+listen_tcp: "0.0.0.0:9000"
+```
 
 :::info
 At least one of `listen_tcp` or `listen_unix` must be configured.
@@ -445,6 +582,10 @@ At least one of `listen_tcp` or `listen_unix` must be configured.
 
 Unix socket path to listen on for SPOE connections
 
+```yaml
+listen_unix: "/run/crowdsec-spoa/spoa.sock"
+```
+
 :::info
 At least one of `listen_tcp` or `listen_unix` must be configured.
 :::
@@ -454,131 +595,413 @@ At least one of `listen_tcp` or `listen_unix` must be configured.
 
 List of host configurations for domain-specific settings
 
+```yaml
+hosts:
+  - host: "example.com"
+    captcha:
+      provider: "turnstile"
+      site_key: "<your-site-key>"
+      secret_key: "<your-secret-key>"
+      signing_key: "<your-32-byte-minimum-secret-key>"
+    ban:
+      contact_us_url: "https://example.com/support"
+    appsec:
+      always_send: false
+    log_level: "info"
+  - host: "*"
+    captcha:
+      fallback_remediation: "allow"
+```
+
 #### `host`
 > string
 
 Hostname pattern to match (supports wildcards).
 Note: The list of host objects is automatically sorted from longest to shortest pattern, including wildcards. For example, `*.example.com` (matching all subdomains) will be evaluated before `example.com`, and the wildcard `*` (which matches any host) will always be at the bottom of the list. This ensures that more specific patterns take precedence over more general ones.
 
+```yaml
+hosts:
+  - host: "*.example.com" # <-- host pattern
+```
+
 #### `captcha`
 > object
 
 CAPTCHA configuration for this host
+
+```yaml
+hosts:
+  - host: "example.com"
+    captcha:
+      provider: "turnstile"
+      site_key: "<your-site-key>"
+      secret_key: "<your-secret-key>"
+      signing_key: "<your-32-byte-minimum-secret-key>"
+```
 
 ##### `provider`
 > `hcaptcha` | `recaptcha` | `turnstile`
 
 CAPTCHA provider to use
 
+```yaml
+hosts:
+  - host: "example.com"
+    captcha:
+      provider: "turnstile" # <-- provider
+```
+
 ##### `site_key`
 > string
 
 CAPTCHA site key
+
+```yaml
+hosts:
+  - host: "example.com"
+    captcha:
+      site_key: "<your-site-key>" # <-- site_key
+```
 
 ##### `secret_key`
 > string
 
 CAPTCHA secret key
 
+```yaml
+hosts:
+  - host: "example.com"
+    captcha:
+      secret_key: "<your-secret-key>" # <-- secret_key
+```
+
 ##### `fallback_remediation`
 > string `ban` | `allow`
 
 If captcha is not configured which remediation to use as a fallback. Can be configured to `allow` to pass on captcha remediations (default: `ban`)
+
+```yaml
+hosts:
+  - host: "*"
+    captcha:
+      fallback_remediation: "allow" # <-- fallback_remediation
+```
 
 ##### `timeout`
 > int (in seconds)
 
 HTTP client timeout in seconds, maximum 300 (default: `5`)
 
+```yaml
+hosts:
+  - host: "example.com"
+    captcha:
+      timeout: 5 # <-- timeout (seconds)
+```
+
 ##### `cookie`
 > object
 
 Cookie generation configuration
 
-###### `sign_cookies`
-> `true` | `false`
-
-Sign the cookie value (default: `true`)
+```yaml
+hosts:
+  - host: "example.com"
+    captcha:
+      cookie:
+        secure: "auto"
+        http_only: true
+```
 
 ###### `secure`
 > `auto` | `always` | `never`
 
 Set the secure flag on the cookie. `auto` relies on the `ssl_fc` flag from HAProxy (default: `auto`)
 
+```yaml
+hosts:
+  - host: "example.com"
+    captcha:
+      cookie:
+        secure: "auto" # <-- secure
+```
+
 ###### `http_only`
 > `true` | `false`
 
 Set the HttpOnly flag on the cookie (default: `true`)
 
-###### `secret`
-> string
+```yaml
+hosts:
+  - host: "example.com"
+    captcha:
+      cookie:
+        http_only: true # <-- http_only
+```
 
-Secret used for signed/encrypted cookies (default: uses the secret key of the captcha provider)
+##### `pending_ttl`
+> string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
-##### `session_idle_timeout`
-> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+TTL for pending captcha tokens (default: `30m`)
 
-Session idle timeout duration (default: `1h`)
+```yaml
+hosts:
+  - host: "example.com"
+    captcha:
+      pending_ttl: "30m" # <-- pending_ttl
+```
 
-##### `session_max_time`
-> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+##### `passed_ttl`
+> string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
-Maximum session lifetime duration (default: `12h`)
+TTL for passed captcha tokens (default: `24h`)
 
-##### `session_garbage_seconds`
-> int (in seconds)
+```yaml
+hosts:
+  - host: "example.com"
+    captcha:
+      passed_ttl: "24h" # <-- passed_ttl
+```
 
-Interval in seconds for garbage collection of expired sessions (default: `60`)
+##### `signing_key`
+> string (minimum 32 bytes)
+
+Key used to sign captcha tokens (required when using captcha).
+
+```yaml
+hosts:
+  - host: "example.com"
+    captcha:
+      signing_key: "<your-32-byte-minimum-secret-key>" # <-- signing_key
+```
 
 #### `ban`
 > object
 
 Ban remediation configuration for this host
 
+```yaml
+hosts:
+  - host: "example.com"
+    ban:
+      contact_us_url: "https://example.com/support"
+```
+
 ##### `contact_us_url`
 > string
 
 URL to display in ban templates for users to contact support this value is passed to an anchor tag href value
 
+:::warning
+If you use a `mailto:` or `tel:` URL here, it will be visible in the rendered ban page and may be harvested by crawlers/spammers. Consider using a contact form URL instead, ideally hosted on a separate domain (or otherwise exempted) so it remains reachable while the main site is being challenged/blocked.
+:::
+
+```yaml
+hosts:
+  - host: "example.com"
+    ban:
+      contact_us_url: "https://example.com/support" # <-- contact_us_url
+```
+
 #### `log_level`
 > `trace` | `debug` | `info` | `warn` | `error`
 
-Log level for this specific host (overrides the global `log_level` setting)
+Log level for this specific host (overrides the global `log_level` setting), useful when debugging a single host.
+
+```yaml
+hosts:
+  - host: "example.com"
+    log_level: "info" # <-- host log_level
+```
+
+#### `appsec`
+> object
+
+Host-level AppSec configuration (optional).
+
+```yaml
+hosts:
+  - host: "example.com"
+    appsec:
+      always_send: false
+```
+
+##### `always_send`
+> `true` | `false`
+
+When `false`, AppSec evaluation is skipped if a higher-priority remediation already applies (for example `ban` or `captcha`).
+
+```yaml
+hosts:
+  - host: "example.com"
+    appsec:
+      always_send: false # <-- always_send
+```
+
+##### `url`
+> string
+
+AppSec URL override for this host (defaults to global `appsec_url`).
+
+```yaml
+hosts:
+  - host: "example.com"
+    appsec:
+      url: "http://127.0.0.1:7422" # <-- url
+```
+
+##### `api_key`
+> string
+
+AppSec API key override for this host (defaults to top-level `api_key`).
+
+```yaml
+hosts:
+  - host: "example.com"
+    appsec:
+      api_key: "<appsec-api-key>" # <-- api_key
+```
+
+##### `timeout`
+> string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
+
+AppSec request timeout for this host (default: `200ms`).
+
+```yaml
+hosts:
+  - host: "example.com"
+    appsec:
+      timeout: "200ms" # <-- timeout
+```
 
 ### `hosts_dir`
 > string
 
 A directory containing `.yaml` files, each representing a [host](#host) YAML struct. Each file should define all fields required by the host configuration structure.
 
+```yaml
+hosts_dir: "/etc/crowdsec/bouncers/hosts.d"
+```
+
 ### `asn_database_path`
 > string
 
 Path to the GeoIP2 ASN database file (optional)
+
+```yaml
+asn_database_path: "/var/lib/crowdsec/data/GeoLite2-ASN.mmdb"
+```
 
 ### `city_database_path`
 > string
 
 Path to the GeoIP2 City database file (optional)
 
+```yaml
+city_database_path: "/var/lib/crowdsec/data/GeoLite2-City.mmdb"
+```
+
 ### `prometheus`
 > object
 
 Prometheus metrics configuration
+
+```yaml
+prometheus:
+  enabled: true
+  listen_addr: "127.0.0.1"
+  listen_port: "60601"
+```
 
 #### `enabled`
 > `true` | `false`
 
 Enable Prometheus metrics endpoint
 
+```yaml
+prometheus:
+  enabled: true # <-- enabled
+```
+
 #### `listen_addr`
 > string
 
 Address to listen on for Prometheus metrics endpoint
 
+```yaml
+prometheus:
+  listen_addr: "127.0.0.1" # <-- listen_addr
+```
+
 #### `listen_port`
-> int
+> string
 
 Port to listen on for Prometheus metrics endpoint
+
+```yaml
+prometheus:
+  listen_port: "60601" # <-- listen_port
+```
+
+### `pprof`
+> object
+
+Enable and expose Go pprof endpoints (debugging only).
+
+```yaml
+pprof:
+  enabled: false
+  listen_addr: "127.0.0.1"
+  listen_port: "6060"
+```
+
+#### `enabled`
+> `true` | `false`
+
+Enable the pprof endpoint (debugging only).
+
+```yaml
+pprof:
+  enabled: true # <-- enabled
+```
+
+#### `listen_addr`
+> string
+
+Address to listen on for pprof endpoint.
+
+```yaml
+pprof:
+  listen_addr: "127.0.0.1" # <-- listen_addr
+```
+
+#### `listen_port`
+> string
+
+Port to listen on for pprof endpoint.
+
+```yaml
+pprof:
+  listen_port: "6060" # <-- listen_port
+```
+
+### `appsec_url`
+> string
+
+Global CrowdSec AppSec URL (optional).
+
+```yaml
+appsec_url: "http://127.0.0.1:7422"
+```
+
+### `appsec_timeout`
+> string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
+
+Global AppSec request timeout (default: `200ms`).
+
+```yaml
+appsec_timeout: "200ms"
+```
 
 ### Manual installation and advanced configuration
 
@@ -589,8 +1012,8 @@ We strongly encourage the use of our packages.
 This requires a whole working [golang installation](https://go.dev/doc/install).
 
 ```bash
-git clone https://github.com/crowdsecurity/crowdsec-spoa-bouncer.git
-cd crowdsec-spoa-bouncer
+git clone https://github.com/crowdsecurity/cs-haproxy-spoa-bouncer.git
+cd cs-haproxy-spoa-bouncer
 make build
 ```
 
@@ -608,9 +1031,9 @@ The configuration file is located at `/etc/crowdsec/bouncers/crowdsec-spoa-bounc
 log_mode: file
 log_dir: /var/log/crowdsec-spoa/
 log_level: info
-log_compression: true
+compress_logs: true
 log_max_size: 100
-log_max_backups: 3
+log_max_files: 3
 log_max_age: 30
 
 update_frequency: 10s
@@ -618,13 +1041,54 @@ api_url: http://127.0.0.1:8080/
 api_key: ${API_KEY}
 insecure_skip_verify: false
 
+# Optional (mTLS to LAPI)
+#cert_path: /etc/ssl/certs/client.crt
+#key_path: /etc/ssl/private/client.key
+#ca_cert_path: /etc/ssl/certs/ca.crt
+#retry_initial_connect: true
+
+# Host configuration examples
+hosts:
+  - host: "example.com"
+    captcha:
+      provider: "turnstile"
+      site_key: "<your-site-key>"
+      secret_key: "<your-secret-key>"
+      signing_key: "<your-32-byte-minimum-secret-key>"
+      pending_ttl: "30m"
+      passed_ttl: "24h"
+      cookie:
+        secure: "auto"
+        http_only: true
+    ban:
+      contact_us_url: "https://example.com/support"
+    appsec:
+      always_send: false
+      # url: "http://127.0.0.1:7422"  # optional per-host override
+      # api_key: "<appsec-api-key>"  # optional per-host override
+      # timeout: "200ms"             # optional per-host override
+    log_level: "info"
+  - host: "*"
+    captcha:
+      fallback_remediation: "allow"
+
 listen_tcp: 0.0.0.0:9000
 listen_unix: /run/crowdsec-spoa/spoa.sock
 
 prometheus:
   enabled: false
   listen_addr: 127.0.0.1
-  listen_port: 60601
+  listen_port: "60601"
+
+# Optional (AppSec)
+#appsec_url: http://127.0.0.1:7422
+#appsec_timeout: 200ms
+
+# Optional (debug only)
+#pprof:
+#  enabled: false
+#  listen_addr: 127.0.0.1
+#  listen_port: "6060"
 ```
 
 Generate an API key:
@@ -678,86 +1142,7 @@ If you have created `.local` variants of configuration files, apply the same per
 
 
 #### Configure HAProxy
-
-##### Lua Integration & Environment Variables
-
-In the `global` section of your `haproxy.cfg`, configure Lua paths and template environment:
-
-```haproxy
-global
-    lua-prepend-path /usr/lib/crowdsec-haproxy-spoa-bouncer/lua/?.lua
-    lua-load /usr/lib/crowdsec-haproxy-spoa-bouncer/lua/crowdsec.lua
-
-    setenv CROWDSEC_BAN_TEMPLATE_PATH /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban.html
-    setenv CROWDSEC_CAPTCHA_TEMPLATE_PATH /var/lib/crowdsec-haproxy-spoa-bouncer/html/captcha.html
-```
-
-> These variables are used by the Lua module to render proper HTML responses for banned or captcha-validated users.
-
-##### Add SPOE Filter in `frontend`
-
-```haproxy
-frontend test
-    mode http
-    bind *:9090
-
-    filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
-
-    http-request set-header X-Crowdsec-Remediation %[var(txn.crowdsec.remediation)] if { var(txn.crowdsec.remediation) -m found }
-    http-request set-header X-Crowdsec-IsoCode %[var(txn.crowdsec.isocode)] if { var(txn.crowdsec.isocode) -m found }
-    
-    ## Handle 302 redirect for successful captcha validation (native HAProxy redirect)
-    http-request redirect code 302 location %[var(txn.crowdsec.redirect)] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
-    
-    ## Call lua script only for ban and captcha remediations (performance optimization)
-    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "captcha" }
-    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "ban" }
-
-    ## Handle captcha cookie management via HAProxy (new approach)
-    ## Set captcha cookie when SPOA provides captcha_status (pending or valid)
-    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_status) -m found } { var(txn.crowdsec.captcha_cookie) -m found }
-    ## Clear captcha cookie when cookie exists but no captcha_status (Allow decision)
-    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_cookie) -m found } !{ var(txn.crowdsec.captcha_status) -m found }
-
-    use_backend test_backend
-```
-
-
-##### Create SPOE Config
-
-Create `/etc/haproxy/crowdsec.cfg`:
-
-
-<details>
-<summary>/etc/haproxy/crowdsec.cfg</summary>
-```haproxy
-spoe-agent crowdsec-agent
-    messages    crowdsec-ip crowdsec-http
-    option      var-prefix      crowdsec
-    option      set-on-error    error
-    timeout     hello           100ms
-    timeout     idle            30s
-    timeout     processing      500ms
-    use-backend crowdsec-spoa
-
-spoe-message crowdsec-ip
-    args id=unique-id src-ip=src src-port=src_port
-    event on-client-session
-
-spoe-message crowdsec-http
-    args remediation=var(txn.crowdsec.remediation) crowdsec_captcha_cookie=req.cook(crowdsec_captcha_cookie) id=unique-id host=hdr(Host) method=method path=path query=query version=req.ver headers=req.hdrs body=req.body url=url ssl=ssl_fc src-ip=src src-port=src_port
-    event on-frontend-http-request
-```
-</details>
-
-##### Add SPOE Backend
-
-```haproxy
-backend crowdsec-spoa
-    mode tcp
-    balance roundrobin
-    server s1 127.0.0.1:9000
-```
+Follow the “HAProxy Configuration” section above. Use `send-spoe-group` and the upstream `/etc/haproxy/crowdsec.cfg` (with `spoe-groups`). The upstream repository also ships full examples under `config/`.
 
 
 #### Start the Bouncer
