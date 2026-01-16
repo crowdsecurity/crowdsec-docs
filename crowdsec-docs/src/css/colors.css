@@ -96,7 +96,7 @@ html[data-theme="dark"],
 	--popover: 40 44 80;
 	--popover-foreground: 250 251 251;
 	--primary: 133 149 208;
-	--primary-foreground: 52 52 52;
+	--primary-foreground: 250 251 251;
 	--secondary: 224 178 90;
 	--secondary-foreground: 250 251 251;
 	--premium: 248 171 19;
@@ -124,6 +124,20 @@ html[data-theme="dark"],
 	--sidebar-accent-foreground: 250 251 251;
 	--sidebar-border: 56 63 98;
 	--sidebar-ring: 112 112 112;
+	--docsearch-primary-color: rgb(var(--primary));
+	--docsearch-text-color: rgb(var(--foreground));
+	--docsearch-muted-color: rgb(var(--muted-foreground));
+	--docsearch-container-background: rgba(4, 4, 31, 0.72);
+	--docsearch-modal-background: rgb(var(--card));
+	--docsearch-hit-background: rgb(var(--background));
+	--docsearch-hit-color: rgb(var(--foreground));
+	--docsearch-hit-active-color: rgb(var(--primary-foreground));
+	--docsearch-hit-active-background: rgb(var(--primary));
+	--docsearch-footer-background: rgb(var(--muted));
+	--docsearch-key-gradient: linear-gradient(180deg, rgb(var(--background)), rgb(var(--muted)));
+	--docsearch-key-shadow: 0 1px 0 rgb(var(--border)), 0 1px 3px rgba(0, 0, 0, 0.35);
+	--docsearch-searchbox-shadow: 0 0 0 1px rgb(var(--border));
+	--docsearch-modal-shadow: 0 12px 32px rgba(4, 4, 31, 0.35);
 }
 
 @theme inline {
@@ -183,6 +197,20 @@ html[data-theme="dark"],
 
 	/* Algolia global search colors */
 	--docsearch-searchbox-background: rgb(var(--input));
+	--docsearch-primary-color: rgb(var(--primary));
+	--docsearch-text-color: rgb(var(--foreground));
+	--docsearch-muted-color: rgb(var(--muted-foreground));
+	--docsearch-container-background: rgba(16, 24, 39, 0.55);
+	--docsearch-modal-background: rgb(var(--card));
+	--docsearch-hit-background: rgb(var(--background));
+	--docsearch-hit-color: rgb(var(--foreground));
+	--docsearch-hit-active-color: rgb(var(--primary-foreground));
+	--docsearch-hit-active-background: rgb(var(--primary));
+	--docsearch-footer-background: rgb(var(--muted));
+	--docsearch-key-gradient: linear-gradient(180deg, rgb(var(--background)), rgb(var(--muted)));
+	--docsearch-key-shadow: 0 1px 0 rgb(var(--border)), 0 1px 3px rgba(0, 0, 0, 0.15);
+	--docsearch-searchbox-shadow: 0 0 0 1px rgb(var(--border));
+	--docsearch-modal-shadow: 0 12px 32px rgba(16, 24, 39, 0.2);
 }
 
 .platinum-tag-gradient {

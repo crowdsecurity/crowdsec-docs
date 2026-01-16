@@ -1,0 +1,162 @@
+---
+id: intro
+title: Introduction
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+## What is the Live Exploit Tracker
+
+The **Live Exploit Tracker** allows you to interact with CrowdSec's Threat Intelligence data, specifically focusing on CVEs and the IPs that exploit them. This enables you to prioritize vulnerabilities based on real-world exploitation data and mitigate threats by integrating IOCs with your existing security infrastructure: firewalls, SIEM, SOAR etc.
+
+:::info
+Live Exploit Tracker can be used via a web interface, or via the RESTful API.
+:::
+
+## What to expect
+
+The Exploit Tracker API and Web applications allows you to:
+ - Get information related to specific CVE(s) as observed by the CrowdSec Network, helping you to **prioritize**.
+ - Get CTI data and IPs actively exploiting a specific CVE(s) for **mitigation** or threat hunting.
+ - Create and maintain **blocklists** of IPs exploiting specific vulnerabilities that can be easily integrated into most **firewalls**.
+
+### Prioritize
+
+For a CVE, get:
+ - **General CVE information**: Name, Title, Affected Components, CWEs, References, CVSS score, Presence of known public exploit etc.
+ - Number of IPs actively exploiting the vulnerability.
+ - **CrowdSec Analysis**: A human readable text covering the most important information about the vulnerability:
+    - Technical description of the vulnerability
+    - Relevant information about payload such as targeted URI
+    - Description of exploitation patterns, from targeted to large-scale opportunistic attacks
+ - **CrowdSec Scores**:
+    - CrowdSec Live Exploit Tracker Score: The higher the score, the stronger is the momentum around the vulnerability. Vulnerabilities that have been exploited for a while or opportunsticly will get a lower score.
+    - Exploitation Status: The current exploitation status of the vulnerability, from "early exploitation" to "background noise".
+ - **Timeline information**:
+    - First and Last exploitation observed
+    - CVE Publication date, Detection rule Publication date, CISA KEV addition etc.
+    - List of general events related to the CVE and its exploitation status.
+
+### Mitigate
+
+From a CVE, get related IPs for different usecases:
+
+**CTI Information**
+ - List of IPs exploiting the vulnerability over a given period, with [their associated information](https://doc.crowdsec.net/u/cti_api/taxonomy/cti_object), from reputation to known classifications. Allows to differentiate legitimate scanning actors (ie. shodan etc.), well-known attackers and newly deployed infrastructures.
+
+**Blocklists**
+ - Create *integrations* allowing blocklist consumption from various firewall vendors.
+ - Subscribe *integrations* to CVEs, effectively blocking suspicious and malicious IPs known to actively exploit the vulnerability.
+
+## Web interface
+
+### Prerequisites
+
+To access the Exploit Tracker API, you need an API key. Please contact the CrowdSec team to obtain your API key if you haven't already.
+
+### Access
+
+Connect to https://let-demo.dev.crowdsec.net/ and put your provided API key in the top right field.
+
+![Live Exploit Tracker API Key Configuration](/img/exploit-tracker/web-api-key.png)
+
+## API
+
+### Prerequisites
+
+To access the Exploit Tracker API, you need an API key. Please contact the CrowdSec team to obtain your API key if you haven't already.
+
+:::info
+You can use our python SDK: `pip install crowdsec-tracker-api`
+:::
+
+### Authentication
+
+To interact with the API, you need to configure the authentication using your API key.
+
+```python
+import os
+from crowdsec_tracker_api import ApiKeyAuth, Server
+
+KEY = os.getenv("KEY")
+
+# Configure Authentication
+auth = ApiKeyAuth(api_key=KEY)
+
+# Define the Server URL
+base_url = Server.production_server.value
+```
+
+## Quick Example: Get CVE Information
+
+Here is a simple example of how to retrieve information about a specific CVE using the SDK.
+
+<Tabs
+  defaultValue="python"
+  groupId="tracker-api-intro-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X GET -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+from crowdsec_tracker_api import Cves, ApiKeyAuth, Server
+from httpx import HTTPStatusError
+
+KEY = os.getenv("KEY")
+
+# Configure Authentication
+auth = ApiKeyAuth(api_key=KEY)
+
+# Initialize the Cves service
+cves_service = Cves(auth=auth)
+
+# Get CVE Details
+cve_id = "CVE-2024-25600"
+try:
+    cve_details = cves_service.get_cve(cve_id)
+    print(f"CVE: {cve_details.model_dump_json(indent=2)}")
+except HTTPStatusError as e:
+    print(f"An error occurred: {e.response.status_code} - {e.response.text}")
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>answer on success</summary>
+
+```json
+{
+  "cve_id": "CVE-2024-25600",
+  "description": "Description of the CVE...",
+  "severity": "High",
+  "exploit_count": 42,
+  "first_seen": "2024-01-15T12:34:56Z",
+  "last_seen": "2024-06-10T08:22:33Z"
+  ... other fields ...
+}
+```
+
+</details>
+
+## Next Steps
+
+Now you can:
+
+- Explore the [API Reference](./api_reference) for detailed information on all available endpoints.
+- Learn how to use [Prioritize CVEs](./prioritize) based on real-world exploitation
+- Discover how to [Mitigate Threats](./mitigate) by integrating with your security appliances.
+- Explore the SDK documentation on [GitHub](https://github.com/crowdsecurity/crowdsec-tracker-api-sdk-python)

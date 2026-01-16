@@ -21,9 +21,9 @@ If you received a health check alert from the CrowdSec Console, check out the [*
 
 ## Troubleshooting by Topic
 
-* [Security Engine Troubleshooting](/u/troubleshooting/security_engine.mdx)
-* [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components.mdx)
-* [CTI Troubleshooting](/u/troubleshooting/cti.mdx)
+* [Security Engine Troubleshooting](/u/troubleshooting/security_engine)
+* [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components)
+* [CTI Troubleshooting](/u/troubleshooting/cti)
 
 ## Community support
 

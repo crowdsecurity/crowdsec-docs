@@ -11,21 +11,23 @@ This page showcases various WAF rule capabilities with real-world examples from 
 ## 1. Header Analysis - Missing User Agent Detection
 
 ### Description
+
 Header inspection with count transform. Note that empty user agent-agent field or absent user-agent field is equivalent.
 
 ### Rule Example
+
 ```yaml
 rules:
   - and:
       - zones:
-        - METHOD
+          - METHOD
         match:
           type: regex
-          value: '^GET|POST|PUT|DELETE|PATCH$'
+          value: "^GET|POST|PUT|DELETE|PATCH$"
       - zones:
-        - HEADERS
+          - HEADERS
         variables:
-         - "User-Agent"
+          - "User-Agent"
         transform:
           - count
         match:
@@ -34,6 +36,7 @@ rules:
 ```
 
 ### HTTP Request Example
+
 ```http
 GET / HTTP/1.1
 Host: example.com
@@ -41,47 +44,50 @@ User-Agent:
 ```
 
 ### Key Features Demonstrated
+
 - **Header inspection** using HEADERS zone
 - **Transform operations** with count() to check header existence
 - **HTTP method filtering** with regex patterns
 - **AND logic** combining multiple conditions
 
-
 ## 2. Request Body Analysis - JSON Path Extraction
 
 ### Description
+
 JSON path extraction with dot notation.
 
 ### Rule Example
+
 ```yaml
 rules:
   - and:
-    - zones:
-      - METHOD
-      transform:
-      - uppercase
-      match:
-        type: equals
-        value: POST
-    - zones:
-      - URI
-      transform:
-      - lowercase
-      match:
-        type: contains
-        value: /rest/v1/guest-carts/1/estimate-shipping-methods
-    - zones:
-      - BODY_ARGS
-      variables:
-      - json.address.totalsCollector.collectorList.totalCollector.sourceData.data
-      transform:
-        - lowercase
-      match:
-        type: contains
-        value: "<!entity"
+      - zones:
+          - METHOD
+        transform:
+          - uppercase
+        match:
+          type: equals
+          value: POST
+      - zones:
+          - URI
+        transform:
+          - lowercase
+        match:
+          type: contains
+          value: /rest/v1/guest-carts/1/estimate-shipping-methods
+      - zones:
+          - BODY_ARGS
+        variables:
+          - json.address.totalsCollector.collectorList.totalCollector.sourceData.data
+        transform:
+          - lowercase
+        match:
+          type: contains
+          value: "<!entity"
 ```
 
 ### HTTP Request Example
+
 ```http
 POST /rest/v1/guest-carts/1/estimate-shipping-methods HTTP/1.1
 Host: example.com
@@ -104,6 +110,7 @@ Content-Type: application/json
 ```
 
 ### Key Features Demonstrated
+
 - **Deep JSON path navigation** using dot notation
 - **Request body parsing** with BODY_ARGS zone
 - **Multiple transform operations** (uppercase, lowercase)
@@ -112,29 +119,33 @@ Content-Type: application/json
 ## 3. Query Parameter Inspection - SSTI Detection
 
 ### Description
+
 Multi-zone pattern matching (ARGS and RAW_BODY).
 
 ### Rule Example
+
 ```yaml
 rules:
   - and:
-    - zones:
-      - RAW_BODY
-      - ARGS
-      transform:
-      - lowercase
-      match:
-        type: contains
-        value: 'freemarker.template.utility.execute'
+      - zones:
+          - RAW_BODY
+          - ARGS
+        transform:
+          - lowercase
+        match:
+          type: contains
+          value: "freemarker.template.utility.execute"
 ```
 
 ### HTTP Request Example
+
 ```http
 GET /catalog-portal/ui/oauth/verify?error=&deviceUdid=%24%7b%22%66%72%65%65%6d%61%72%6b%65%72%2e%74%65%6d%70%6c%61%74%65%2e%75%74%69%6c%69%74%79%2e%45%78%65%63%75%74%65%22%3f%6e%65%77%28%29%28%22%63%61%74%20%2f%65%74%63%2f%68%6f%73%74%73%22%29%7d HTTP/1.1
 Host: example.com
 ```
 
 ### Key Features Demonstrated
+
 - **URL parameter parsing** with ARGS zone
 - **Multiple zone matching** (RAW_BODY and ARGS)
 - **String transformation** with lowercase normalization
@@ -143,29 +154,33 @@ Host: example.com
 ## 4. File Upload Detection - WordPress PHP Execution
 
 ### Description
+
 URI regex matching with multiple transforms.
 
 ### Rule Example
+
 ```yaml
 rules:
   - and:
-    - zones:
-      - URI
-      transform:
-      - lowercase
-      - urldecode
-      match:
-        type: regex
-        value: '/wp-content/uploads/.*\.(h?ph(p|tm?l?|ar)|module|shtml)'
+      - zones:
+          - URI
+        transform:
+          - lowercase
+          - urldecode
+        match:
+          type: regex
+          value: '/wp-content/uploads/.*\.(h?ph(p|tm?l?|ar)|module|shtml)'
 ```
 
 ### HTTP Request Example
+
 ```http
 GET /wp-content/uploads/2024/10/test.php?exec=id HTTP/1.1
 Host: example.com
 ```
 
 ### Key Features Demonstrated
+
 - **URI path analysis** with regex pattern matching
 - **Multiple transforms** (lowercase and URL decoding)
 - **Complex regex patterns** for file extension detection
@@ -174,47 +189,50 @@ Host: example.com
 ## 5. HTTP Protocol Analysis - Form Data Validation
 
 ### Description
+
 Form data analysis with variable targeting.
 
 ### Rule Example
+
 ```yaml
 rules:
   - and:
-    - zones:
-      - METHOD
-      transform:
-      - lowercase
-      match:
-        type: equals
-        value: post
-    - zones:
-      - URI
-      transform:
-      - lowercase
-      match:
-        type: endsWith
-        value: /boaform/admin/formlogin
-    - zones:
-      - BODY_ARGS
-      variables:
-       - username
-      transform:
-      - lowercase
-      match:
-        type: equals
-        value: "admin"
-    - zones:
-      - BODY_ARGS
-      variables:
-       - psd
-      transform:
-      - lowercase
-      match:
-        type: equals
-        value: "parks"
+      - zones:
+          - METHOD
+        transform:
+          - lowercase
+        match:
+          type: equals
+          value: post
+      - zones:
+          - URI
+        transform:
+          - lowercase
+        match:
+          type: endsWith
+          value: /boaform/admin/formlogin
+      - zones:
+          - BODY_ARGS
+        variables:
+          - username
+        transform:
+          - lowercase
+        match:
+          type: equals
+          value: "admin"
+      - zones:
+          - BODY_ARGS
+        variables:
+          - psd
+        transform:
+          - lowercase
+        match:
+          type: equals
+          value: "parks"
 ```
 
 ### HTTP Request Example
+
 ```http
 POST /boaform/admin/formLogin HTTP/1.1
 Host: example.com
@@ -224,6 +242,7 @@ username=admin&psd=parks
 ```
 
 ### Key Features Demonstrated
+
 - **Form data analysis** with BODY_ARGS and specific variable targeting
 - **HTTP method validation** with case-insensitive matching
 - **URI endpoint matching** using endsWith comparison
@@ -232,9 +251,11 @@ username=admin&psd=parks
 ## 6. Header Names Analysis
 
 ### Description
+
 Header name inspection (HEADERS_NAMES zone).
 
 ### Rule Example
+
 ```yaml
 rules:
   - and:
@@ -262,6 +283,7 @@ rules:
 ```
 
 ### HTTP Request Example
+
 ```http
 POST /mgmt/tm/util/bash HTTP/1.1
 Host: example.com
@@ -277,6 +299,7 @@ Content-Type: application/json
 ```
 
 ### Key Features Demonstrated
+
 - **Header name inspection** using HEADERS_NAMES zone
 - **Multiple header validation** combining different authentication headers
 - **Case-insensitive header matching** with lowercase transform
@@ -285,27 +308,31 @@ Content-Type: application/json
 ## 7. Simple URI Pattern Matching - Environment File Access
 
 ### Description
+
 Simple URI pattern matching with endsWith.
 
 ### Rule Example
+
 ```yaml
 rules:
   - zones:
-    - URI
+      - URI
     transform:
-    - lowercase
+      - lowercase
     match:
       type: endsWith
       value: .env
 ```
 
 ### HTTP Request Example
+
 ```http
 GET /foo/bar/.env HTTP/1.1
 Host: example.com
 ```
 
 ### Key Features Demonstrated
+
 - **Simple URI matching** without complex AND conditions
 - **File extension detection** using endsWith matcher
 - **Case normalization** with lowercase transform
@@ -314,36 +341,39 @@ Host: example.com
 ## 8. Regular Expression Validation - Command Injection Detection
 
 ### Description
+
 Regex pattern matching for input validation.
 
 ### Rule Example
+
 ```yaml
 rules:
   - and:
-    - zones:
-      - METHOD
-      match:
-        type: equals
-        value: POST
-    - zones:
-      - URI
-      transform:
-      - lowercase
-      match:
-        type: endsWith
-        value: /boaform/admin/formping
-    - zones:
-      - BODY_ARGS
-      variables:
-      - target_addr
-      transform:
-      - lowercase
-      match:
-        type: regex
-        value: "[^a-f0-9:.]+"
+      - zones:
+          - METHOD
+        match:
+          type: equals
+          value: POST
+      - zones:
+          - URI
+        transform:
+          - lowercase
+        match:
+          type: endsWith
+          value: /boaform/admin/formping
+      - zones:
+          - BODY_ARGS
+        variables:
+          - target_addr
+        transform:
+          - lowercase
+        match:
+          type: regex
+          value: "[^a-f0-9:.]+"
 ```
 
 ### HTTP Request Example
+
 ```http
 POST /boaform/admin/formPing HTTP/1.1
 Host: example.com
@@ -353,6 +383,7 @@ target_addr=1.2.3.4;cat /etc/passwd
 ```
 
 ### Key Features Demonstrated
+
 - **Regex pattern matching** for command injection detection
 - **Character class validation** to identify suspicious input
 - **Form parameter filtering** on specific variables
@@ -361,47 +392,50 @@ target_addr=1.2.3.4;cat /etc/passwd
 ## 9. Complex JSON Processing - Multi-condition XXE
 
 ### Description
+
 Multi-property JSON validation.
 
 ### Rule Example
+
 ```yaml
 rules:
   - and:
-    - zones:
-      - METHOD
-      transform:
-      - lowercase
-      match:
-        type: equals
-        value: post
-    - zones:
-      - URI
-      transform:
-      - lowercase
-      match:
-        type: contains
-        value: /rest/v1/guest-carts/1/estimate-shipping-methods
-    - zones:
-      - BODY_ARGS
-      variables:
-      - json.address.totalsCollector.collectorList.totalCollector.sourceData.data
-      transform:
-        - lowercase
-      match:
-        type: contains
-        value: "://"
-    - zones:
-      - BODY_ARGS
-      variables:
-      - json.address.totalsCollector.collectorList.totalCollector.sourceData.dataIsURL
-      transform:
-        - lowercase
-      match:
-        type: equals
-        value: "true"
+      - zones:
+          - METHOD
+        transform:
+          - lowercase
+        match:
+          type: equals
+          value: post
+      - zones:
+          - URI
+        transform:
+          - lowercase
+        match:
+          type: contains
+          value: /rest/v1/guest-carts/1/estimate-shipping-methods
+      - zones:
+          - BODY_ARGS
+        variables:
+          - json.address.totalsCollector.collectorList.totalCollector.sourceData.data
+        transform:
+          - lowercase
+        match:
+          type: contains
+          value: "://"
+      - zones:
+          - BODY_ARGS
+        variables:
+          - json.address.totalsCollector.collectorList.totalCollector.sourceData.dataIsURL
+        transform:
+          - lowercase
+        match:
+          type: equals
+          value: "true"
 ```
 
 ### HTTP Request Example
+
 ```http
 POST /rest/v1/guest-carts/1/estimate-shipping-methods HTTP/1.1
 Host: example.com
@@ -424,6 +458,7 @@ Content-Type: application/json
 ```
 
 ### Key Features Demonstrated
+
 - **Multi-property JSON validation** checking both data content and flags
 - **URL scheme detection** using contains match for "://"
 - **Boolean flag inspection** in JSON structures
@@ -432,23 +467,26 @@ Content-Type: application/json
 ## 10. Template Injection in Request Body - POST Data Analysis
 
 ### Description
+
 Raw body content analysis with multi-zone matching.
 
 ### Rule Example
+
 ```yaml
 rules:
   - and:
-    - zones:
-      - RAW_BODY
-      - ARGS
-      transform:
-      - lowercase
-      match:
-        type: contains
-        value: 'freemarker.template.utility.execute'
+      - zones:
+          - RAW_BODY
+          - ARGS
+        transform:
+          - lowercase
+        match:
+          type: contains
+          value: "freemarker.template.utility.execute"
 ```
 
 ### HTTP Request Example
+
 ```http
 POST /template/aui/text-inline.vm HTTP/1.1
 Host: example.com
@@ -459,6 +497,7 @@ label=aaa\u0027%2b#request.get(\u0027.KEY_velocity.struts2.context\u0027).intern
 ```
 
 ### Key Features Demonstrated
+
 - **POST body content analysis** using RAW_BODY zone
 - **Template injection detection** through signature-based matching
 - **URL-encoded payload handling** in form submissions
@@ -475,9 +514,11 @@ Pre-evaluation hooks run before rules are evaluated, allowing you to modify rule
 ### 1. Disable Rules by Name
 
 #### Description
+
 Dynamically disable specific rules before evaluation.
 
 #### Hook Example
+
 ```yaml
 pre_eval:
   - filter: req.URL.Path == "/admin/upload"
@@ -486,14 +527,17 @@ pre_eval:
 ```
 
 #### Use Case
+
 Disable existing rules on specific endpoints.
 
 ### 2. Disable Rules by Tag
 
 #### Description
+
 Disable multiple rules sharing the same tag.
 
 #### Hook Example
+
 ```yaml
 pre_eval:
   - apply:
@@ -501,14 +545,17 @@ pre_eval:
 ```
 
 #### Use Case
+
 Disable all rules with a specific tag.
 
 ### 3. Change Rule Remediation by Name
 
 #### Description
+
 Modify the default remediation for specific rules.
 
 #### Hook Example
+
 ```yaml
 pre_eval:
   - apply:
@@ -516,14 +563,17 @@ pre_eval:
 ```
 
 #### Use Case
+
 Change a blocking rule to log-only mode for testing.
 
 ### 4. Disable Rules by ID
 
 #### Description
+
 Disable specific rules using their unique ID during request processing.
 
 #### Hook Example
+
 ```yaml
 pre_eval:
   - filter: req.Method == "DELETE"
@@ -532,7 +582,40 @@ pre_eval:
 ```
 
 #### Use Case
+
 Disable a specific rule by its ID for certain endpoints or conditions where the rule may cause false positives.
+
+### 5. GeoBlocking
+
+#### Description
+
+Block requests originating (or not) from specific countries.
+
+#### Hook Example
+
+This will block any requests not coming from the US or France.
+
+Note the empty value (`""`) in the list and the `?` after the call to `GeoIPEnrich`: this will allow IPs for which crowdsec was not able to get the country (eg, private IPs) and prevent the helper from returning `nil` which would break the evaluation.
+
+```yaml
+pre_eval:
+  - filter: IsInBand == true && GeoIPEnrich(req.RemoteAddr)?.Country.IsoCode not in ["FR", "US", ""]
+    apply:
+      - DropRequest("Forbidden Country")
+```
+
+If you want to disallow traffic from a specific country:
+
+```yaml
+pre_eval:
+  - filter: IsInBand == true && GeoIPEnrich(req.RemoteAddr)?.Country.IsoCode == "FR"
+    apply:
+      - DropRequest("Forbidden Country")
+```
+
+#### Use Case
+
+Automatically block traffic from unwanted countries.
 
 ## Post-Evaluation Phase (post_eval)
 
@@ -541,9 +624,11 @@ Post-evaluation hooks run after rule evaluation is complete, primarily used for 
 ### 5. Debug Request Dumping
 
 #### Description
+
 Dump request details to file for debugging.
 
 #### Hook Example
+
 ```yaml
 post_eval:
   - filter: IsInBand == true
@@ -552,6 +637,7 @@ post_eval:
 ```
 
 #### Use Case
+
 Capture full request details for forensic analysis or debugging rule behavior.
 
 ## On-Match Phase (on_match)
@@ -561,9 +647,11 @@ On-match hooks run when a rule matches, allowing you to modify the response beha
 ### 6. Change HTTP Response Code
 
 #### Description
+
 Modify the HTTP status code returned to users when a rule matches.
 
 #### Hook Example
+
 ```yaml
 on_match:
   - filter: IsInBand == true
@@ -572,14 +660,17 @@ on_match:
 ```
 
 #### Use Case
+
 Return a 413 "Payload Too Large" instead of the default 403 when a rule triggers.
 
 ### 7. Change Remediation Action
 
 #### Description
+
 Dynamically change the remediation action from the default.
 
 #### Hook Example
+
 ```yaml
 on_match:
   - filter: IsInBand == true
@@ -588,14 +679,17 @@ on_match:
 ```
 
 #### Use Case
+
 Show a captcha instead of blocking the request for certain rule matches.
 
 ### 8. Allow Specific IPs
 
 #### Description
+
 Override blocking for trusted IP addresses.
 
 #### Hook Example
+
 ```yaml
 on_match:
   - filter: IsInBand == true && req.RemoteAddr == "192.168.1.100"
@@ -604,14 +698,17 @@ on_match:
 ```
 
 #### Use Case
+
 Allow internal/admin IPs to bypass security rules while keeping protection for others.
 
 ### 9. Cancel Alert Generation
 
 #### Description
+
 Prevent alert creation while keeping the request blocked.
 
 #### Hook Example
+
 ```yaml
 on_match:
   - filter: IsInBand == true
@@ -620,14 +717,17 @@ on_match:
 ```
 
 #### Use Case
+
 Block suspicious requests without generating alerts for known false positives.
 
 ### 10. Force Alert for Out-of-Band Rules
 
 #### Description
+
 Generate alerts for monitoring rules that normally only log.
 
 #### Hook Example
+
 ```yaml
 on_match:
   - filter: IsOutBand == true
@@ -636,14 +736,17 @@ on_match:
 ```
 
 #### Use Case
+
 Create alerts for reconnaissance attempts detected by monitoring rules.
 
 ### 11. Hook Flow Control
 
 #### Description
+
 Control execution of subsequent hooks with break/continue.
 
 #### Hook Example
+
 ```yaml
 on_match:
   - filter: IsInBand == true
@@ -656,6 +759,7 @@ on_match:
 ```
 
 #### Use Case
+
 Cancel event generation and stop processing further hooks.
 
 ## Hook Execution Phases Summary

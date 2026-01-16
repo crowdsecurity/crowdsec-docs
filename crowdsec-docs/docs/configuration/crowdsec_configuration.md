@@ -259,6 +259,7 @@ api:
         blocklists: "(true|false)"
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     disable_remote_lapi_registration: (true|false)
+    disable_usage_metrics_export: (true|false)
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
     tls:
       cert_file: "<path_to_certificat_file>"
@@ -948,6 +949,7 @@ server:
       blocklists: "(true|false)"
     credentials_path: <path_to_crowdsec_api_client_credential_file>
   disable_remote_lapi_registration: (true|false)
+  disable_usage_metrics_export: (true|false)
   capi_whitelists_path: "<path_to_capi_whitelists_file>"
   tls:
     cert_file: <path_to_certificat_file>
@@ -991,6 +993,11 @@ The path to the console configuration.
 > bool
 
 This option will disable the registration of remote agents using `cscli lapi register` command. As by default the local API registration will create a machine in the database (not validated), this option will prevent the creation of a machine in the database.
+
+#### `disable_usage_metrics_export`
+> bool
+
+If set to true, the Local API will not export usage metrics to the CrowdSec Web Console. Defaults to false.
 
 ##### `capi_whitelists_path`
 > string

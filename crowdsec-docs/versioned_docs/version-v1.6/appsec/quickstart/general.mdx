@@ -13,7 +13,7 @@ import UnderlineTooltip from '@site/src/components/underline-tooltip';
 
 # CrowdSec WAF General Setup
 
-This guide covers the core CrowdSec AppSec Component setup that applies to all web servers and reverse proxies. After completing these steps, you'll need to configure your specific remediation component (bouncer) to forward requests to the AppSec Component.
+This guide covers the core AppSec Component setup that applies to all web servers and reverse proxies. After completing these steps, configure your remediation component (bouncer) to forward requests to the AppSec Component.
 
 ## Prerequisites
 
@@ -22,9 +22,9 @@ This guide covers the core CrowdSec AppSec Component setup that applies to all w
 
 ## AppSec Component Setup
 
-AppSec Setup is done in two simple steps:
-- Downloading rules and configuration's Collections
-- Setting AppSec as a new Acquisition datasource
+AppSec setup has two steps:
+- Download rules and configuration collections.
+- Configure AppSec as a new acquisition datasource.
   
 The following sections will guide you through the default setup.
 
@@ -65,7 +65,7 @@ Configure CrowdSec to expose the AppSec Component by creating an acquisition fil
 
 **Configuration explained:**
 - `appsec_config`: Uses the default configuration from the installed collections
-- `listen_addr`: The IP and port where the AppSec Component will listen (default: 127.0.0.1:7422)
+- `listen_addr`: IP and port where the AppSec Component listens (default: 127.0.0.1:7422)
 - `source`: Identifies this as an AppSec data source
 - `name`: A friendly name for your AppSec component
 
@@ -113,7 +113,7 @@ tcp        0      0 127.0.0.1:7422            0.0.0.0:*               LISTEN    
 ```
 
 :::note
-The output may look differently depending on which command you used but as long as you see the port and the process `crowdsec`, it means the AppSec Component is running.
+The output may look different depending on the command you used. As long as you see port 7422 and the `crowdsec` process, the AppSec Component is running.
 :::
 
 </details>
@@ -142,14 +142,14 @@ For specific remediation component configuration, see:
 - [Nginx/OpenResty Setup](/appsec/quickstart/nginxopenresty.mdx)
 - [Traefik Setup](/appsec/quickstart/traefik.mdx)
 - [WordPress Setup](/appsec/quickstart/wordpress.mdx)
-- [Check the hub for other remediation components supporting AppSec](https://app.crowdsec.net/hub/remediation-components)
+- [Check the Hub for other remediation components supporting AppSec](https://app.crowdsec.net/hub/remediation-components)
 
 ### Testing Detection
 
-If you've enabled an AppSec-capable bouncer with CrowdSec WAF, you can trigger the crowdsecurity/appsec-generic-test dummy scenario.
-This scenario will not lead to decision but is a great way to ensure that your setup is functional.
+If you've enabled an AppSec-capable bouncer with CrowdSec WAF, you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.
+This scenario does not lead to a decision, but it is a good way to confirm the setup is working.
 
-We'll trigger the dummy scenario crowdsecurity/appsec-generic-test by accessing a probe path on your web server.
+Trigger the dummy scenario by accessing a probe path on your web server:
 
 1️⃣ Access your service URL with this path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
 
@@ -157,13 +157,13 @@ We'll trigger the dummy scenario crowdsecurity/appsec-generic-test by accessing 
 curl -I https://<your-service-url>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
 ```
 
-2️⃣ Confirm the alert has triggered for the scenario crowdsecurity/appsec-generic-test
+2️⃣ Confirm the alert has triggered for `crowdsecurity/appsec-generic-test`
 
 ```bash
 sudo cscli alerts list | grep crowdsecurity/appsec-generic-test
 ```
 
-3️⃣ The alert will also appear in the console alerts
+3️⃣ The alert will also appear in the Console alerts
 
 ![appsec-generic-test console view](/img/appsec-generic-test-console.png)
 
@@ -176,7 +176,7 @@ This scenario can only be triggered again after a 1-minute delay.
 
 ### Multiple AppSec Configurations
 
-You can [load multiple AppSec configurations](/appsec/vpatch_crs.md) for different rule sets:
+You can [load multiple AppSec configurations](/appsec/vpatch_and_crs) for different rule sets:
 
 ```yaml
 # /etc/crowdsec/acquis.d/appsec.yaml

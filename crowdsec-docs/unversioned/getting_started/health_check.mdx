@@ -11,14 +11,18 @@ import CodeBlock from '@theme/CodeBlock';
 
 <small className="health-check-version" style={{position: 'relative', top: '-30px'}}>Health Check Version: 0.2.0</small>
 
-Welcome to the interactive Health-Check of your CrowdSec setup.
-We'll guide you through a series of tests to ensure that your Security Stack is fully functional and ready to protect your services:
-**Detecting**, **Threat Sharing** and **Remediating**.
-*This guide covers cases of protecting common services such as web servers (HTTP) and SSH.*
+Welcome to the interactive Health-Check for your CrowdSec setup.
+This guide validates three things end to end: **Detection**, **Threat Sharing**, and **Remediation**.
+It focuses on common services such as HTTP and SSH.
 
-We'll first test the final functionality of each component (top-down approach) before diving into detailed troubleshooting if issues arise.
+We start with top-level checks first, then walk through targeted troubleshooting if something fails.
 
-This health check is divided into three main sections:
+Before you begin, make sure:
+- CrowdSec Security Engine is installed and running.
+- You can run `cscli` commands (or use the Docker/Kubernetes variants below).
+- If you want remediation to be tested, you have a Remediation Component installed.
+
+This health check is divided into three sections:
 - [**📡 Detection**](#-detection-checks): Ensuring CrowdSec properly detects threats targeting your services.
 - [**🔗 Connectivity**](#-crowdsec-connectivity-checks): Verifying communication with the CrowdSec network to receive the community blocklist.
 - [**🛡️ Protection**](#-remediation-checks): Confirming that your bouncers automatically block threats detected by CrowdSec
@@ -31,7 +35,7 @@ Help us improve this health check guide by sharing your experience: [📝 **Heal
 
 ## 📡 Detection checks
 
-### *Trigger CrowdSec's test scenarios*  
+### *Trigger CrowdSec test scenarios*
 
 Let's use CrowdSec's built-in **dummy scenarios** (HTTP and Linux) to safely verify your Security Engine detects threats, without risking accidental self-blocking.
 
@@ -47,7 +51,7 @@ We'll trigger the dummy scenario `crowdsecurity/http-generic-test` by accessing 
 
 <Tabs groupId="deployment">
   <TabItem value="host" label="On Host" default>
-    <CodeBlock className="language-bash">sudo cscli alerts list -s crowdsecurity/http-generic-test</CodeBlock>ss
+    <CodeBlock className="language-bash">sudo cscli alerts list -s crowdsecurity/http-generic-test</CodeBlock>
   </TabItem>
   <TabItem value="docker" label="Docker">
     <CodeBlock className="language-bash">docker exec crowdsec cscli alerts list -s crowdsecurity/http-generic-test</CodeBlock>
@@ -61,7 +65,7 @@ We'll trigger the dummy scenario `crowdsecurity/http-generic-test` by accessing 
 - ⚠️ **Important**: Requests from **private IP addresses won't trigger alerts** (private IPs are whitelisted by default).
   - If testing from localhost or your internal network (192.168.x.x, 10.x.x.x, 172.16.x.x), the test will fail.
   - **Solution**: Test from an external device with a public IP address, or test via a browser from your phone using mobile data.
-- This scenario can be triggered again only after a 5-minutes delay.
+- This scenario can be triggered again after a 5-minute delay.
 </details>
 
 <details>
@@ -87,14 +91,14 @@ We'll trigger the dummy scenario `crowdsecurity/ssh-generic-test` by attempting 
   </TabItem>
 </Tabs>
 
-**Notes:** 
-- This scenario can only be triggered again after a 5-minutes delay. 
+**Notes:**
+- This scenario can only be triggered again after a 5-minute delay.
 </details>
 
 <details>
     <summary>🛡️ **AppSec** detection test - CrowdSec WAF </summary>
 
-If you've enabled an AppSec-capable bouncer with CrowdSec WAF with the [Virtual Patching collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching), you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.  
+If you've enabled an AppSec-capable bouncer with CrowdSec WAF and the [Virtual Patching collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching), you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.  
 It would have triggered along with the HTTP detection test, but it is worth mentioning here as well.  
 
 We'll trigger the dummy scenario `crowdsecurity/appsec-generic-test` by accessing a **probe path** on your web server.
@@ -117,14 +121,14 @@ We'll trigger the dummy scenario `crowdsecurity/appsec-generic-test` by accessin
 </Tabs>
 
 **Notes:**
-- This scenario can only be triggered again after a 1-minute delay. 
+- This scenario can only be triggered again after a 1-minute delay.
 </details>
 
 * * *
 
-### Were all the tests successful ?
+### Were all the tests successful?
 
-Were all the tests related to your setup successful? 
+Were all the tests related to your setup successful?
 👍 If so, you can proceed to the next phase of the health check: [**Connectivity checks**](#-crowdsec-connectivity-checks).  
 
 🛠️ If not, check the troubleshooting section below.
@@ -169,7 +173,7 @@ Were all the tests related to your setup successful?
     - If you don't see any sources or some you have configured are missing, it means that the acquisition configuration is not properly set up. 
     - A non zero number of "Lines parsed" is expected for each source, proving that the appropriate parser was found and used.
   
-  Under The **Parsers Metrics** you have the details of the parsers used.
+  Under **Parsers Metrics** you have the details of the parsers used.
 
   🚨 If this check fails, don’t worry -- the results will point you to the right area to troubleshoot:  
   
@@ -180,7 +184,7 @@ Were all the tests related to your setup successful?
       🐞 If your acquisition sources don't appear, check the [**Acquisition Troubleshooting section**](#troubleshooting_acquisition)
   :::
   :::warning
-    🐞 If parsing fails, check the [**Collection Troubleshooting section****](#troubleshooting_collection)
+    🐞 If parsing fails, check the [**Collection Troubleshooting section**](#troubleshooting_collection)
   :::
 
   </details>

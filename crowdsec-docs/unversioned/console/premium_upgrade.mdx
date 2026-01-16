@@ -1,0 +1,198 @@
+---
+id: premium_upgrade
+title: Premium Upgrade
+description: Upgrade to CrowdSec Premium for enhanced security and commercial-grade features
+---
+
+import { Badge } from "@site/src/ui/badge";
+
+## Why Upgrade to Premium?
+
+CrowdSec Premium features are designed for users who have **commercial usage** of the Console or organizations that want to **enhance the security posture** of their infrastructure.  
+While our Community Plan provides essential security monitoring capabilities, Premium unlocks advanced features that scale with your business needs and provide business-grade protection.
+
+Premium features bring the following benefits:
+
+- **Scalability**:
+    - Extra centralization and synchronization features
+    - Extended data retention
+    - Automation and API access for large-scale deployments
+- **Advanced Threat Detection & Qualification**:
+    - Attack surge detection
+    - Premium proactive blocking with AI-powered blocklists
+    - Background noise filtering
+
+A features comparison can be found on our [pricing page](https://app.crowdsec.net/pricing).
+
+## Optimal Premium Upgrade Setup
+
+When upgrading to a Premium plan, you may not want to upgrade every single Security Engine you monitor. It is common to have a mix of environments:
+- **Production:** Requires Premium features (longer data retention, heavy API limits, organization-wide blocklists).
+- **Dev / Test / Staging:** Can remain on the Free tier.
+
+Because the Premium Upgrade applies to an entire **Organization**, the optimal strategy is to separate your Security Engines into different contexts before subscribing.
+
+When you first create a Console account, your workspace is your "Personal Account".
+As a Community account, you can create one extra organization for free.  
+
+We recommend the following setup:
+- If you have not already, create a new organization for your **Production** environment.
+- Keep your **Dev / Test / Staging** Security Engines in your **Personal Account**.
+- Move your **Production** Security Engines to the new **Production** organization.
+- Upgrade the **Production** organization to **Premium**.
+
+To split your Security Engines into different organizations, use either:
+- The [Transfer feature](/u/console/security_engines/transfer_engine) from the Security Engine page.
+- Or via `cscli`, re-enroll your Security Engines in the desired organization with the `--overwrite` flag to force moving them to the new organization.
+
+After the transfer, the alerts will reappear in the new organization after a few minutes.
+
+---
+
+
+## Test Premium Value in Your Environment
+
+Before exploring all Premium features, here are practical ways to measure and experience the value yourself.  
+The following can be used as a guide during your trial period to assess the benefits of upgrading to Premium.
+
+### 🎯 Measure Improved Protection
+
+**Activate:** 
+- Community Blocklists (premium) will automatically be sent to your enrolled engines.
+- The [Threat Forecast Blocklist](/u/console/threat_forecast) Will be generated automatically used in your organization based on your shared signals.
+- Premium Tier Blocklists can be subscribed and subscription numbers per org are unlimited.
+- You can activate [Remediation Sync](/u/console/remediation_sync) to propagate decisions across all your enrolled Security Engines.   
+- Respond faster to a spike of alerts thanks to "Am I Under Attack" 
+
+**Measure the impact:**
+- **Remediation Metrics:** Track your proactive vs reactive blocking ratio
+- **Server Resources:** Monitor CPU, memory, and bandwidth reduction
+- **SIEM Logs:** Measure log volume decrease and background noise reduction
+
+**Expected results:** 2x more proactive blocking, 75-92% less malicious traffic reaching your servers, cleaner logs and reduced alert fatigue.
+
+---
+
+### 👥 Enable Team Collaboration
+
+**Activate:** 
+- Invite collaborators thanks to Multi-Seat Access
+- Extended Alert Retention (365 days) allow improved traceability
+- Use the improved in-console CTI quotas to enrich your investigations
+- Get notified within your tools thanks to [Push Notification Integrations](/u/console/notification_integrations/overview)
+
+**How your team benefits:**
+- Analyze long-term attack trends and recurring threats
+- Conduct CTI investigations directly in the Console
+- Multiple team members work simultaneously without access conflicts
+
+**Expected results:** Faster incident investigations, better threat attribution, reduced tool sprawl.
+
+---
+
+### 🏢 Scale for MSPs & Enterprises
+
+**Activate:** 
+- Administrate & share access to your clients thanks to Multi-Organization
+- Create & Share Blocklists across organizations via our [Service API (SAPI)](/u/console/service_api/getting_started)
+
+
+**Manage at scale:**
+- Segment customer environments (one org per client)
+- Share custom threat intelligence across organizations
+- Automate blocklist management via API
+
+**Expected results:** Clear tenant isolation, streamlined multi-customer operations, custom visibility on their defenses.
+
+---
+
+## Premium Features Overview
+
+Premium features enable multiple use cases.   
+Make the best use of the premium features for your needs in: **Scaling, Multi-tenancy, Inhanced proactive protection, Centralized management, Team collaboration, Integration and automation, Enhanced threat intelligence, and improved support.**
+
+---
+
+### Scaling, Automation & Multi-Tenancy
+
+#### Remediation Sync
+Automatically synchronize security decisions across your entire organization. Syncs to all Security Engines and Blocklists Integration endpoints, ensuring consistent protection across your infrastructure.  
+[Learn more about remediation sync](/u/console/remediation_sync)
+
+#### Console Decision Management
+Add, delete, and manage security decisions directly from the Console. Force pull blocklists when subscribing or unsubscribing, giving you complete control over your security posture from a central interface.  
+[Learn more about decision management](/u/console/decisions/decisions_management)
+
+#### Centralized Allowlists
+Manage allowlists from a single location and apply them across all security engines and integrations organization-wide. Supports IP expiration for temporary allowlisting.  
+[Learn more about allowlists](/u/console/allowlists)
+
+#### Service API (SAPI)
+Access APIs for console management.  
+[Learn more about Service API](/u/console/service_api/getting_started)
+
+#### Blocklist Creation & Sharing
+Via our [Service API (SAPI)](/u/console/service_api/getting_started) Distribute custom blocklists across multiple organizations or partners, enabling coordinated security operations across your business ecosystem.  
+[Learn more about SAPI Blocklist endpoints](/u/console/service_api/blocklists)
+
+#### Auto Enroll
+Automatically enroll new security engines into your organization for streamlined deployment and management.
+
+#### Expanded Organization Seats
+Provide view/edit/admin access to you customers or collaborate with team members by adding more seats to your organization. (3 included in bas Premium plan)
+
+### Extra protection
+
+#### Threat Forecast Blocklists
+Access exclusive, organization-specific blocklists generated from the signals your organization shares with CrowdSec. These blocklists are more precise than community blocklists and provide tailored protection for your infrastructure.  
+[Learn more about threat forecast blocklists](/u/console/threat_forecast)
+
+#### Expanded Community Blocklist Coverage
+Unlock the premium Community Blocklist as a network participant.
+Receive up to 50k of the most aggressive attackers targeting similar services as yours *(up from top [3k in Community](/central_api/community_blocklist/#community-blocklist-lite)).*
+
+#### Premium Tier Blocklist Access
+Get access to our Premium tier blocklists, providing enhanced protection with curated specialized blocklists tailored for different attack vectors.
+    
+#### Unlimited Blocklist Subscriptions
+Premium subscribers get unlimited blocklist subscriptions (compared to 3 in Community), allowing you to protect your infrastructure with multiple specialized blocklists simultaneously.   
+[Learn more about premium tier blocklists features](/u/blocklists/intro#crowdsec-blocklist-tiers)
+
+### Reactivity & Monitoring
+
+#### Am I Under Attack Feature
+Receive real-time alerts when your infrastructure experiences attack surges. This feature analyzes current traffic patterns against historical baselines to detect anomalous activity, with support for email notifications and webhook integrations.  
+[Learn more about attack detection](/u/console/security_engines/am_i_under_attack)
+
+#### Push Notifications Integrations
+Receive alerts when security engines go offline or become outdated, ensuring your security infrastructure remains operational.  
+[Learn more about push notifications](/u/console/notification_integrations/overview)
+
+#### Increased Alert Quotas and Extended Retention
+Upgrade from the Community Plan's 500 alerts per month and 2-month retention to custom quotas (up to several million alerts) and up to 1 year of retention. This enables comprehensive monitoring of large-scale infrastructures and long-term security analysis.  
+[Learn more about premium quotas](/u/console/alerts/quotas#why-upgrade-to-premium-)
+
+#### Background Noise Filtering
+Automatically filter out internet background radiation and mass scanning activity to focus on genuine threats. Customize noise cancellation levels (Low, Medium, High) to match your security requirements.  
+[Learn more about background noise filtering](/u/console/alerts/background_noise)
+
+#### IP reputation investigation quotas
+Audit what CrowdSec knows about IP addresses, attacking you and present in blocklists, with increased investigation quotas.   
+100 attacker details per week (compared to 30 in Community), including IP reputation and MITRE ATT&CK mappings for comprehensive threat intelligence.
+
+#### CTI API Access
+Leverage CrowdSec IP reputation data into your vendors.  
+Get 100 CTI API calls per week (compared to 30 in Community) for integration with SIEM, SOAR, and other security tools.  
+[Learn more about CTI API](/u/cti_api/api_integration/integration_intro)
+
+---
+
+## How to Upgrade
+
+Ready to enhance your security posture with Premium features?
+
+1. Visit our [pricing page](https://app.crowdsec.net/pricing) to compare plans and pricing
+2. Upgrade to Premium with our self service plan or [Contact](https://www.crowdsec.net/contact-crowdsec) our sales team to discuss your specific requirements
+3. Once upgraded, enjoy immediate access to all Premium features in your organization and add options as you grow.
+
+For questions about Premium features or to discuss custom enterprise solutions, please [contact our team](https://www.crowdsec.net/pricing).

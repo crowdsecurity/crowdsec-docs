@@ -4,9 +4,9 @@ title: AppSec Component Hooks
 sidebar_position: 4
 ---
 
-The Application Security Component allows you to hook at different stages to change its behavior at runtime.
+The Application Security Component lets you hook into different stages to change behavior at runtime.
 
-The three phases are:
+Hooks run in four phases:
  - `on_load`: Called just after the rules have been loaded into the engine.
  - `pre_eval`: Called after a request has been received but before the rules are evaluated.
  - `post_eval`: Called after the rules have been evaluated.
@@ -14,13 +14,13 @@ The three phases are:
 
 ## Using hooks
 
-Hooks are configured in your `appsec-config` file.
+Hooks are configured in your AppSec config file.
 
-`on_load` hook only supports `apply`, while other hooks support `filter` and `apply` parameters.
+The `on_load` hook only supports `apply`, while other hooks support `filter` and `apply`.
 
 Both `filter` and `apply` of the same phase have access to the same helpers.
 
-Except for `on_load`, hooks can be called twice per request: once for in-band processing and once for out-of-band processing, thus it is recommended to use the `IsInBand` and `IsOutBand` variables to filter the hook.
+Except for `on_load`, hooks can be called twice per request: once for in-band processing and once for out-of-band processing. Use `IsInBand` and `IsOutBand` to filter the hook.
 
 
 Hooks have the following format:
@@ -221,4 +221,4 @@ For example:
  - To get the requested URI: `req.URL.Path`
  - To get the client IP: `req.RemoteAddr`
  - To get the HTTP method: `req.Method`
- - To get the FQDN: `req.URL.Host`
+ - To get the FQDN: `req.Host`

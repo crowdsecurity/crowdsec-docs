@@ -3,74 +3,77 @@ title: Log Processor No Logs Parsed
 id: issue_lp_no_logs_parsed
 ---
 
-The **Log Processor No Logs Parsed** issue appears when logs are being successfully read by the Log Processor but none are being parsed correctly in the last 48 hours. This means the acquisition is working, but parsers can't interpret the log format.
+The **Log Processor No Logs Parsed** indicates that logs are being successfully **read** by the Log Processor but none are being **parsed** correctly in the last 48 hours.   
+This means the acquisition is working, but parsers can't interpret the log format.
 
 ## What Triggers This Issue
 
 - **Trigger condition**: Logs read but no successful parsing for 48 hours
-- **Criticality**: Critical
+- **Criticality**: 🔥 Critical
 - **Impact**: No events generated means no detection or alerts possible
 
 ## Common Root Causes
 
-- **Missing collection or parsers**: The required parser collection for your log format isn't installed.
-- **Custom or unexpected log format**: Logs don't match the format expected by the parser (custom format, version mismatch, etc.).
+- [**Missing collection or parsers**](#missing-collection-or-parsers): The required parser collection for your log format isn't installed.
+- [**Custom or unexpected log format**](#acquisition-typeprogram-mismatch): Logs don't match the format expected by the parser (custom format, version mismatch, etc.).
 
-For more advanced cases (often for custom made parsers):
-- **Acquisition type mismatch**: The `type:` or `program:` label in acquisition doesn't match any installed parser's FILTER.
-- **Parser FILTER not matching**: Parser exists but its FILTER clause doesn't match the acquisition label.
+## Diagnosis & Resolution
 
-## How to Diagnose
+### Missing Collection or Parsers
 
-### Check parsing metrics
+#### 🔎 Check parsing metrics and installed collections
 
 ```bash
-# On host
 sudo cscli metrics show acquisition parsers
+```
 
-# Docker
+<details>
+   <summary>Run this command for Docker or Kubernetes</summary>
+
+```bash
 docker exec crowdsec cscli metrics show acquisition parsers
+```
 
-# Kubernetes
+```bash
 kubectl exec -n crowdsec -it <agent-pod> -- cscli metrics show acquisition parsers
 ```
+
+</details>
 
 **What to look for:**
 - **Acquisition**: "Lines read" should be > 0 (confirms logs are being read)
 - **Parsers**: "Lines parsed" should be > 0 (currently 0 means parsing is failing)
 - **Unparsed lines**: Check if there's a high "unparsed" count
 
-### Use cscli explain to test parsing
-
-Take a sample log line and test it:
+Check installed collections and parsers:
 
 ```bash
-# Test with your actual log line
-sudo cscli explain --log "192.168.1.1 - - [01/Jan/2024:12:00:00 +0000] \"GET / HTTP/1.1\" 200 1234" --type nginx
-
-# Or test from a file
-sudo cscli explain --file /var/log/nginx/access.log --type nginx
-```
-
-**What to look for:**
-- 🔴 (red) next to parser names means the parser didn't match
-- 🟢 (green) means the parser succeeded
-- If all parsers show 🔴, the log format isn't being recognized
-
-### Check installed collections and parsers
-
-```bash
-# List installed collections
 sudo cscli collections list
-
-# List installed parsers
+```
+```bash
 sudo cscli parsers list
-
-# Check specific parser details
-sudo cscli parsers inspect crowdsecurity/nginx-logs
 ```
 
-### Verify acquisition type/program label
+#### 🛠️ Install required collections for your log formats
+
+Most services have a collection that includes parsers and scenarios.   
+
+- Search the [CrowdSec Hub ↗️](https://app.crowdsec.net/hub) for a collection with the name of the service you want to protect.
+- Or a [specific log parser ↗️](https://app.crowdsec.net/hub/log-parsers) if you did not find the collection
+- [Get help from the community](#getting-help) to understand what collections you need.
+
+### Acquisition Type/Program Mismatch
+
+The log type defined in the acquisition is linked to the parsing process, having a mismatch can result in the proper parser not being chosen for the log you're reading.   
+
+💡 if you're directly reading a program's log file the type usually matches the name of the program.   
+If you're reading logs from a stream (ie syslog) there might be a first step in parsing that is identifying syslog logs format hence the acquisition type will be "syslog"
+
+:::info
+💡 If you're using default log systems it will usually not be the root cause for your usecase.
+:::
+
+#### 🔎 Check acquisition labels match parser filters
 
 ```bash
 # Check your acquisition configuration
@@ -80,46 +83,14 @@ sudo cat /etc/crowdsec/acquis.d/*.yaml
 
 Compare the `type:` (or `program:` in Kubernetes) with installed parser names.
 
-## How to Resolve
-
-### Install missing collection
-
-Most services have a collection that includes parsers and scenarios:
-
-```bash
-# Search for collections
-sudo cscli collections search nginx
-
-# Install the collection
-sudo cscli collections install crowdsecurity/nginx
-
-# Restart CrowdSec
-sudo systemctl restart crowdsec
-```
-
-**Docker:**
-```yaml
-environment:
-  COLLECTIONS: "crowdsecurity/nginx crowdsecurity/linux"
-```
-Then restart the container.
-
-**Kubernetes:**
-```yaml
-agent:
-  env:
-    - name: COLLECTIONS
-      value: "crowdsecurity/nginx crowdsecurity/traefik"
-```
-Then: `helm upgrade crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml`
-
-### Fix acquisition type/program mismatch
+#### 🛠️ Fix acquisition labels to match parser FILTER
 
 The acquisition label must match a parser's FILTER:
 
-#### On Host or Docker
+**On Host or Docker:**
 
 Check your `acquis.yaml`:
+
 ```yaml
 filenames:
   - /var/log/nginx/access.log
@@ -133,10 +104,12 @@ Common types:
 - `syslog` - for syslog-formatted logs (SSH, etc.)
 - `mysql` - for MySQL logs
 - `postgres` - for PostgreSQL logs
+- 💡 for the exact type you can look at the [filter](#parser-filter-not-matching) in the parser yaml files
 
-#### Kubernetes
+**Kubernetes:**
 
 In Kubernetes, use `program:` instead of `type:`:
+
 ```yaml
 agent:
   acquisition:
@@ -146,51 +119,16 @@ agent:
 ```
 
 **After changing configuration:**
+
 ```bash
 sudo systemctl restart crowdsec
 # or docker restart crowdsec
 # or helm upgrade (for Kubernetes)
 ```
 
-### Handle custom log formats
+### Parser FILTER Not Matching
 
-If you are using non-default log formats for your services or if they are relayed by a 3rd party service they may be changed by this proxy service.
-
-#### Option 1: Adjust log format to match parser
-**NGINX example:**
-```nginx
-# In nginx.conf, use the combined format
-log_format combined '$remote_addr - $remote_user [$time_local] '
-                    '"$request" $status $body_bytes_sent '
-                    '"$http_referer" "$http_user_agent"';
-access_log /var/log/nginx/access.log combined;
-```
-
-#### Option 2: Create a custom parser
-1. Follow the [Create parsers doc](/log_processor/parsers/create) to develop and test your parser
-2. Get help from our [Discord](https://discord.gg/crowdsec) community is you hit roadblocks.
-
-**Simple custom parser example:**
-```yaml
-onsuccess: next_stage
-debug: false
-filter: "evt.Parsed.program == 'my-custom-app'"
-name: my-org/my-custom-app-logs
-description: "Custom parser for my application"
-grok:
-  pattern: '%{IPORHOST:source_ip} - %{DATA:message}'
-  apply_on: message
-statics:
-  - meta: log_type
-    value: my_custom_app
-  - meta: service
-    value: http
-```
-
-#### Option 3: Use a different parser
-Some services have multiple parser options. Check the [Hub](https://app.crowdsec.net/hub/parsers) for alternatives.
-
-### Debug parser FILTER issues
+#### 🔎 Inspect parser FILTER requirements
 
 If a parser is installed but not matching, check its FILTER:
 
@@ -204,35 +142,9 @@ sudo cscli parsers inspect crowdsecurity/nginx-logs
 
 The FILTER must match your acquisition label. If your label is `type: nginx`, the parser FILTER should check `evt.Line.Labels.type == "nginx"` or `evt.Parsed.program == "nginx"`.
 
-## Verify Resolution
+#### 🛠️ Update acquisition configuration to match FILTER
 
-After making changes:
-
-1. **Restart CrowdSec:**
-   ```bash
-   sudo systemctl restart crowdsec
-   ```
-
-2. **Wait 1-2 minutes for log processing**
-
-3. **Check metrics again:**
-   ```bash
-   sudo cscli metrics show parsers
-   ```
-
-   **"Lines parsed" should now be > 0**
-
-4. **Test with cscli explain:**
-   ```bash
-   sudo cscli explain --log "<your sample log>" --type <your-type>
-   ```
-
-   **Parsers should show 🟢 (green) indicators**
-
-5. **Verify events are reaching scenarios:**
-   ```bash
-   sudo cscli metrics show scenarios
-   ```
+Ensure your acquisition configuration uses labels that match the parser's FILTER. Refer to the "Acquisition Type/Program Mismatch" section above for examples.
 
 ## Common Parser FILTER Values
 
@@ -256,5 +168,5 @@ If parsing still fails:
 
 - Test your logs in [CrowdSec Playground](https://playground.crowdsec.net/)
 - Share your log samples and acquisition config on [Discourse](https://discourse.crowdsec.net/)
-- Ask on [Discord](https://discord.gg/crowdsec) with `cscli explain` output
+- Ask on [Discord](https://discord.gg/crowdsec) with `cscli collections list` and `cscli parsers list` output
 - Check parser documentation on the [Hub](https://app.crowdsec.net/hub/parsers)

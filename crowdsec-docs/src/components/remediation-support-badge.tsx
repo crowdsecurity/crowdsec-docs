@@ -11,15 +11,16 @@ type RemediationSupportBadgesProps = {
 };
 
 const RemediationSupportBadge = ({ title, description, support }: { title: string; description: string; support: string }) => {
-	//ugly, for test
-	const colorClass = support === "Unsupported" ? "bg-red-400" : "bg-green-400";
+	const isSupported = support !== "Unsupported";
+	const statusClasses = isSupported ? "bg-emerald-700 dark:bg-emerald-600 text-white" : "bg-red-700 dark:bg-red-500 text-white";
+
 	return (
 		<TooltipProvider>
 			<Tooltip>
 				<TooltipTrigger asChild>
-					<div className="border rounded-full flex text-black">
-						<span className="bg-slate-400 px-2 rounded-l-lg">{title}</span>
-						<span className={clsx("rounded-r-lg px-2", colorClass)}>{support}</span>
+					<div className="rounded-full flex text-xs sm:text-sm font-medium shadow-sm hover:shadow-md transition-shadow cursor-help overflow-hidden">
+						<span className="bg-slate-700 dark:bg-slate-600 text-white px-2.5 sm:px-4 py-1 sm:py-1.5">{title}</span>
+						<span className={clsx("px-2.5 sm:px-4 py-1 sm:py-1.5", statusClasses)}>{support}</span>
 					</div>
 				</TooltipTrigger>
 				<TooltipContent>
@@ -45,7 +46,7 @@ export default function RemediationSupportBadges({
 	const appsecSupport = Appsec !== undefined && Appsec ? "Supported" : "Unsupported";
 
 	return (
-		<div className="flex justify-center flex-wrap mb-4 gap-2">
+		<div className="flex justify-center flex-wrap mb-4 gap-2 sm:gap-3">
 			{Appsec !== undefined && (
 				<RemediationSupportBadge
 					title="AppSec"

@@ -7,21 +7,21 @@ pagination_next: getting_started/post_installation/profiles
 
 import FormattedTabs from '@site/src/components/formatted-tabs';
 
-# Troubleshoting Acquisition
+# Troubleshooting Acquisition
 
-In this section we will walk you through how to troubleshoot acquisitions that are not working as expected.
+This section walks you through troubleshooting acquisitions that are not working as expected.
 
 Depending on the acquisition type you are using, you may need to check different things.
 
-## File based acquisitions
+## File-based acquisitions
 
 ### Check the log file is found and readable
 
 The first thing to check is that the log file is found and readable by the CrowdSec service.
 
-Within the CrowdSec log file it will log if the file was found or not.
+The CrowdSec log will show whether the file was found.
 
-Log file locations change by distribution, you can find the default log location [outlined here](/u/troubleshooting/security_engine.mdx#where-are-the-logs-stored).
+Log file locations change by distribution, you can find the default log location [outlined here](/u/troubleshooting/security_engine#where-are-the-logs-stored).
 
 <FormattedTabs
   bash="grep '/path/to/your/file.log' /var/log/crowdsec.log"
@@ -30,7 +30,7 @@ Log file locations change by distribution, you can find the default log location
 />
 
 :::info
-Please update the above commands to match your log location if it is different and which file you are looking for.
+Update the commands above to match your log location and the file you are searching for.
 :::
 
 ```bash title="File is found"
@@ -51,7 +51,7 @@ If the log file is found but not read, you may want to check the permissions on 
 
 This should be highly unlikely as the CrowdSec service runs as root and should be able to read any file. However, if you are running inside a container environment you may need to check the permissions on the file.
 
-If you are not running inside a container enviromnet you may be facing issues with the default setting on file based acquisitons which is to use `inotify` to watch the file. You can disable this by setting `poll_without_inotify` to `true` in the acquisition configuration.
+If you are not running inside a container environment, you may be hitting the default file-based acquisition behavior, which uses `inotify` to watch the file. You can disable this by setting `poll_without_inotify` to `true` in the acquisition configuration.
 
 ```bash title="Example acquisition"
 filenames:
@@ -65,11 +65,11 @@ labels:
 
 If the log file is read but not parsed, you may want to check the acquisition is correctly configured.
 
-#### Type Label
+#### Type label
 
-Firstly it best to check the acquistion configuration matches the example that is shown on the [hub](https://hub.crowdsec.net/).
+First, check that the acquisition configuration matches the example shown on the [Hub](https://hub.crowdsec.net/).
 
-As an example if you are using the [NGINX Collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx) you will need to set the `type` to `nginx` in the acquisition configuration.
+For example, if you are using the [NGINX Collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx), set `type` to `nginx` in the acquisition configuration.
 
 ```bash title="Example acquisition"
 filenames:
@@ -78,11 +78,11 @@ labels:
   type: nginx
 ```
 
-If you provide the wrong `type` the acquisition will not be able to find the correct parser to parse the log lines. Please refer to the [Collection](https://hub.crowdsec.net/collections) when setting up a new acquisition as most have an example acquisition configuration to guide you.
+If you provide the wrong `type`, the acquisition will not find the correct parser. Refer to the [Collection](https://hub.crowdsec.net/collections) page when setting up a new acquisition; most collections include an example config.
 
 #### Explain the log line
 
-If you are still having issues with parsing the log lines you can use the `cscli` tool to explain the log line.
+If you are still having issues parsing log lines, use `cscli` to explain a line.
 
 ```bash
 tail -n 10 /path/to/your/file.log | cscli explain -f- --type $TYPE -v
@@ -94,4 +94,4 @@ Replace `$TYPE` with the type you have set in the acquisition configuration.
 
 Keep in mind that certain collections are specifically designed to target specific types of log entries and will not parse every log line. For instance, the [sshd collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/sshd) is intended to only parse lines related to failed authentication and not all entries from the sshd log.
 
-If you are struggling to rectify the issue you can reach out to [discord](https://discord.gg/crowdsec) or the [community forum](https://discourse.crowdsec.net/).
+If you are still stuck, reach out on [Discord](https://discord.gg/crowdsec) or the [community forum](https://discourse.crowdsec.net/).

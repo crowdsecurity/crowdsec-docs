@@ -5,10 +5,10 @@ pagination_prev: getting_started/intro
 pagination_next: getting_started/health_check
 ---
 
-# Docker / Podman Deployment
+# Install with Docker or Podman
 
 :::info
-Prerequisites are written for bare metal installations. Please keep in mind the containerization layer may make some of these items unnecessary.
+Prerequisites are written for bare metal installs. In containers, some of these items may not apply.
 :::
 
 :::warning
@@ -16,19 +16,20 @@ Since CrowdSec 1.7.0, it is mandatory to persist the `/var/lib/crowdsec/data` di
 
 If you use the examples provided in this page, they will be.
 
-If you choose to write your own compose file, make sure create a volume for it.
+If you write your own compose file, make sure you create a volume for it.
 
 :::
 
-Before getting started, it is advised to read the [introduction](/unversioned/getting_started/introduction.mdx) page to understand the prerequisites and concepts for running CrowdSec.
+New to CrowdSec? Start with the [introduction](/unversioned/getting_started/introduction.mdx) to understand the components and prerequisites.
+This page installs the **Security Engine** (detection). To block attacks, add a [Remediation Component](/bouncers/intro.md) after installation.
 
 ## Docker
 
-We will presume you have Docker installed on your system. If not, you can install it by following the instructions on the [official Docker website](https://docs.docker.com/get-docker/).
+Make sure Docker is installed. If not, follow the [official Docker instructions](https://docs.docker.com/get-docker/).
 
 ### Run
 
-Docker run command will run a container, this is useful for testing and development purposes.
+The `docker run` command is useful for quick tests and development.
 
 ```bash
 docker run -d \
@@ -41,13 +42,13 @@ docker run -d \
   crowdsecurity/crowdsec:latest
 ```
 
-However, for most users it is recommended to use `compose` module for production deployments. Since it allows you to define your container deployments in a more structured format.
+For most users, we recommend Docker Compose for production. It lets you define services, volumes, and networks in a single file.
 
 ### Compose
 
 Docker Compose is a tool for defining and running multi-container setups in a structured format. It uses a YAML file to configure the application's services, networks, and volumes.
 
-Here is a snippet:
+Example snippet:
 
 ```yaml
 crowdsec:
@@ -73,18 +74,18 @@ crowdsec:
 
 #### Compose key aspects
 
-If you don't find an example that fits your needs, you can create your own `docker-compose.yml` file. Here are the key aspects:
+If you do not find an example that fits your needs, create your own `docker-compose.yml`. Here are the key aspects to keep in mind:
 
-##### Provide Access To Logs
+##### Provide access to logs
 
-Since CrowdSec is running within a container layer you need to provide access to log sources within the example above we provide a named volume called `logs` which other containers will output their log files too.
+Because CrowdSec runs inside a container, you must mount log sources. In the example above, the `logs` volume is shared with the application container.
 
 ```yaml
 volumes:
   - logs:/var/log/nginx
 ```
 
-##### Persistent Data Directories
+##### Persist data directories
 
 The following directories _must_ be persisted, otherwise the container will refuse to start:
 
@@ -98,16 +99,16 @@ volumes:
 If you haven't used named volumes within Docker before you can read their [documentation here](https://docs.docker.com/storage/volumes/#use-a-volume-with-docker-compose)
 :::
 
-##### Depends On
+##### Use depends_on
 
-Depends on directive allows Docker to bring up the compose stack in "order", the reason we use it within the snippet the container `reverse-proxy` creates the log files on startup and we want to make sure CrowdSec finds these files to monitor.
+The `depends_on` directive helps bring up the compose stack in order. In the snippet, the `reverse-proxy` container creates log files on startup, so we want it running first.
 
 ```yaml
 depends_on:
   - "reverse-proxy"
 ```
 
-## Environment Variables
+## Environment variables
 
 You can find a full list of available environment variables on our [Docker Hub image page](https://hub.docker.com/r/crowdsecurity/crowdsec).
 
@@ -119,7 +120,7 @@ Here are the most common environment variables for customizing CrowdSec in Docke
 | `TZ`                 | UTC                         | Timezone for logs (e.g., `Europe/London`).                                                            |
 | `CONFIG_FILE`        | `/etc/crowdsec/config.yaml` | Path to the main config file. Useful if mounting a single file instead of a full directory.           |
 | `LOCAL_API_URL`      | `http://0.0.0.0:8080`       | Where the Local API listens. Normally doesn't need to be changed unless you're running in agent mode. |
-| `DISABLE_LOCAL_API`  | `false`                     | Set to `true` to disable LAPI and use this instance as an log processor only.                         |
+| `DISABLE_LOCAL_API`  | `false`                     | Set to `true` to disable LAPI and use this instance as a log processor only.                          |
 | `DISABLE_AGENT`      | `false`                     | Set to `true` to disable the log processor and use this instance as an LAPI only.                     |
 | `AGENT_USERNAME`     | _(none)_                    | Required only if `DISABLE_LOCAL_API` is true. Username for connecting to central LAPI.                |
 | `AGENT_PASSWORD`     | _(none)_                    | Password for authenticating the agent.                                                                |
@@ -131,6 +132,6 @@ Use a `.env` file or Docker secrets to avoid hardcoding sensitive variables like
 
 ---
 
-## Next Steps?
+## Next steps
 
-Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.mdx) you will find the next steps to configure and optimize your installation.
+Great, you now have CrowdSec installed. Continue with the [post-installation steps](/getting_started/next_steps.mdx) to finish setup and optimize your deployment.

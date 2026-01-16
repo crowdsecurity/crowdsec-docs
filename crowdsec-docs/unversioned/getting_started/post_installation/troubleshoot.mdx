@@ -9,13 +9,13 @@ import FormattedTabs from '@site/src/components/formatted-tabs';
 
 # Troubleshoot
 
-This troubleshoot section is intended to help you resolve common issues that may arise during the installation process. You can find extensive [troubleshooting documentation](/u/troubleshooting/intro.md) if this document does not resolve your issues.
+This section helps you resolve common installation issues. If you need more depth, see the full [troubleshooting documentation](/u/troubleshooting/intro).
 
-# Logs and Errors
+# Logs and errors
 
-Before starting to troubleshoot the installation processes we need to find the underlying error that happened. The logs are the best place to start looking for errors.
+Before troubleshooting, find the underlying error. Logs are the best place to start.
 
-The log location alter depending on your platform here are the default locations:
+Log locations vary by platform. Default locations:
 
 - **Linux** `/var/log/crowdsec.log`
 - **Freebsd** `/var/log/crowdsec.log`
@@ -26,7 +26,7 @@ The log location alter depending on your platform here are the default locations
 
 ## Filter logs for error messages
 
-By default CrowdSec can be quite verbose, to filter the logs for error messages you can use the following commands:
+CrowdSec logs can be verbose. Use the commands below to filter for errors:
 
 <FormattedTabs
     bash='sudo grep -E "level=(error|fatal)" /var/log/crowdsec.log'
@@ -36,20 +36,20 @@ By default CrowdSec can be quite verbose, to filter the logs for error messages 
 />
 
 :::info
-Please update the above commands to match your log location if it is different.
+Update the commands above if your log location differs.
 :::
 
 ## Common errors and solutions
 
-### Port Conflict
+### Port conflict
 
 ```bash title="Error Message"
 level=fatal msg="while serving local API: listen tcp 127.0.0.1:8080: bind: address already in use"
 ```
 
-By default as outlined in the [prerequisites](/unversioned/getting_started/introduction.mdx) page, CrowdSec uses ports `6060` and `8080`. If you have another service using these ports you will need to alter CrowdSec configuration to use different ports.
+By default (see [prerequisites](/unversioned/getting_started/introduction.mdx)), CrowdSec uses ports `6060` and `8080`. If another service uses these ports, update the CrowdSec configuration to use different ports.
 
-This can be achieved by modifying two configuration files here are the locations of the files:
+Update these configuration files:
 
 - **Linux**
   - `/etc/crowdsec/config.yaml`
@@ -61,7 +61,7 @@ This can be achieved by modifying two configuration files here are the locations
   - `C:\ProgramData\CrowdSec\config\config.yaml`
   - `C:\ProgramData\CrowdSec\config\local_api_credentials.yaml`
 
-You can then use your favourite text editor to modify the files, here is an example of how to change the ports:
+Use your preferred editor to modify the files. Example:
 
 :::info
 These configuration files are owned by the default admin user and you will need to use `sudo` or `Administrator` permissions to modify them.
@@ -79,7 +79,7 @@ login: ...
 password: ...
 ```
 
-After you have made the changes you will need to restart the CrowdSec service.
+After making changes, restart the CrowdSec service.
 
 <FormattedTabs
     bash="sudo systemctl restart crowdsec"
@@ -87,8 +87,8 @@ After you have made the changes you will need to restart the CrowdSec service.
     k8s="kubectl delete pod -n crowdsec crowdsec-agent-*"
 />
 
-## Next Steps?
+## Next steps
 
-If the above hasn't resolved the issue you are facing, you can find more detailed troubleshooting documentation [here](/u/troubleshooting/intro.md).
+If the above does not resolve your issue, see the full [troubleshooting documentation](/u/troubleshooting/intro).
 
-If you have resolved the issue you can continue with the [post installation steps](/getting_started/next_steps.mdx#1-crowdsec-console-).
+If you resolved the issue, continue with the [post-installation steps](/getting_started/next_steps.mdx#1-crowdsec-console-).
