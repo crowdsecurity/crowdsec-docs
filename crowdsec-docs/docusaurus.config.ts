@@ -197,6 +197,10 @@ const redirects = [
 		from: "/docs/getting_started/install_crowdsec_freebsd",
 		to: "/u/getting_started/installation/freebsd",
 	},
+	{
+		from: "/blog/crowdsec_firewall_freebsd",
+		to: "/u/bouncers/firewall#pf-setup-freebsd",
+	},
 ];
 
 const config: Config = {
