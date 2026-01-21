@@ -3,7 +3,7 @@ title: Remediation Component Integration Offline
 id: issue_integration_rc_offline
 ---
 
-The **Remediation Component Integration Offline** refers to a [Blocklist-Integration of type Remediation Component](http://localhost:3000/u/integrations/remediationcomponent) has not pulled from its endpoint for more than 24 hours.
+The **Remediation Component Integration Offline** refers to a [Blocklist-Integration of type Remediation Component](/u/integrations/remediationcomponent) has not pulled from its endpoint for more than 24 hours.
 
 This issue applies to Remediation Components *(aka bouncers)* directly connected to a **Blocklist integration endpoint** *(aka Blocklist as a Service / BLaaS)*.
 
