@@ -9,22 +9,20 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
 
-
-<p align="center">
+<div align="center">
   <img src={useBaseUrl('/img/crowdsec_http.svg')} width="400" height="300" />
-</p>
+</div>
 
-<p align="center">
-<p align="center">
-<img src="https://img.shields.io/badge/build-pass-green"></img>
-<img src="https://img.shields.io/badge/tests-pass-green"></img>
-</p>
-<p align="center">
-&#x1F4DA; <a href="#installation/">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-</p>
+<div align="center">
+  <img src="https://img.shields.io/badge/build-pass-green" />
+  <img src="https://img.shields.io/badge/tests-pass-green" />
+</div>
+
+<div align="center">
+  &#x1F4DA; <a href="#installation-from-repositories">Documentation</a>
+  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+  &#128172; <a href="https://discourse.crowdsec.net">Discourse</a>
+</div>
 
 <RemediationSupportBadges
   MTLS
@@ -48,15 +46,15 @@ This Remediation Component exposes CrowdSec's active decisions via provided HTTP
 }>
 <TabItem value="debian">
 
-```console
-$ sudo apt install crowdsec-blocklist-mirror
+```bash
+sudo apt install crowdsec-blocklist-mirror
 ```
 
 </TabItem>
 <TabItem value="rhel">
 
-```console
-$ sudo yum install crowdsec-blocklist-mirror
+```bash
+sudo yum install crowdsec-blocklist-mirror
 ```
 
 </TabItem>
@@ -73,21 +71,21 @@ Refer to [docker hub](https://hub.docker.com/r/crowdsecurity/blocklist-mirror)
 
 First, download the latest [`crowdsec-blocklist-mirror` release](https://github.com/crowdsecurity/cs-blocklist-mirror/releases).
 
-```console
-$ tar xzvf crowdsec-blocklist-mirror.tgz
-$ sudo ./install.sh
+```bash
+tar xzvf crowdsec-blocklist-mirror.tgz
+sudo ./install.sh
 ```
 
 ### From source
 
 Run the following commands:
 
-```console
-$ git clone https://github.com/crowdsecurity/cs-blocklist-mirror.git
-$ cd cs-blocklist-mirror/
-$ make release
-$ cd crowdsec-blocklist-mirror-v*/
-$ sudo ./install.sh
+```bash
+git clone https://github.com/crowdsecurity/cs-blocklist-mirror.git
+cd cs-blocklist-mirror/
+make release
+cd crowdsec-blocklist-mirror-v*/
+sudo ./install.sh
 ```
 
 ### Configuration
@@ -96,13 +94,30 @@ For manual installations before starting the `crowdsec-blocklist-mirror` service
 
 The default configuration file is located under : `/etc/crowdsec/bouncers/` as file `crowdsec-blocklist-mirror.yaml`.
 
-If you need to download and restore the configuration file you can find an example on the [Respository](https://github.com/crowdsecurity/cs-blocklist-mirror/blob/main/config/crowdsec-blocklist-mirror.yaml)
+If you need to download and restore the configuration file you can find an example on the [Repository](https://github.com/crowdsecurity/cs-blocklist-mirror/blob/main/config/crowdsec-blocklist-mirror.yaml)
 
 ## Configuration Reference
 
 ### `crowdsec_config`
 
 Used to nest the configuration related to crowdsec.
+
+```yaml title="Example"
+crowdsec_config:
+  lapi_url: http://127.0.0.1:8080
+  lapi_key: ${LAPI_KEY}
+  update_frequency: 10s
+  include_scenarios_containing:
+    - ssh
+    - http
+  exclude_scenarios_containing:
+    - dns
+  only_include_decisions_from:
+    - crowdsec
+    - cscli
+  insecure_skip_verify: false
+  listen_uri: 127.0.0.1:41412
+```
 
 #### `lapi_url`
 > string
@@ -144,7 +159,9 @@ The component will poll the CrowdSec LAPI every `update_frequency` interval.
 Ignore IPs banned for triggering scenarios not containing the provided words.
 
 ```yaml title="Example"
-include_scenarios_containing: ["ssh", "http"]
+include_scenarios_containing:
+  - ssh
+  - http
 ```
 
 #### `exclude_scenarios_containing`
@@ -153,16 +170,20 @@ include_scenarios_containing: ["ssh", "http"]
 Ignore IPs banned for triggering scenarios containing the provided words.
 
 ```yaml title="Example"
-exclude_scenarios_containing: ["ssh", "http"]
+exclude_scenarios_containing:
+  - ssh
+  - http
 ```
 
 #### `only_include_decisions_from`
 > [ ]string
 
-Only include IPs banned due to decisions orginating from provided sources.
+Only include IPs banned due to decisions originating from provided sources.
 
 ```yaml title="Example"
-only_include_decisions_from: ["cscli", "crowdsec"]
+only_include_decisions_from:
+  - cscli
+  - crowdsec
 ```
 
 #### `insecure_skip_verify`
@@ -183,6 +204,12 @@ listen_uri: "127.0.0.1:41412"
 
 Prometheus metrics
 
+```yaml title="Example"
+metrics:
+  enabled: true
+  endpoint: /metrics
+```
+
 #### `enabled`
 > boolean
 
@@ -198,15 +225,26 @@ The URI endpoint to serve the metrics on.
 
 List of blocklists to serve. Each blocklist has the following configuration.
 
+```yaml title="Example"
+blocklists:
+  - format: plain_text
+    aggregate: true
+    endpoint: /security.txt
+    authentication:
+      type: none
+```
+
 #### `format`
 > string
 
-Format of the blocklist, the following are supported:
+Format of the blocklist. See the supported values and examples in the [Formats](#formats) section.
 
- - `plain_text` : One IP per line
- - `mikrotik` : Generates a mikrotik script
- - `F5` : Lines for f5 appliances
- - `juniper`: One entry per line using CIDR notation
+#### `aggregate`
+> boolean
+
+When enabled, aggregate decisions into CIDR ranges to reduce the size of the served blocklist.
+
+This changes the output to CIDR ranges (including `/32` and `/128` for single IPs) and makes per-decision metadata unavailable, so runtime filters that rely on such metadata (for example `?origin=`) are not compatible.
 
 #### `endpoint`
 > string
@@ -220,7 +258,7 @@ Configuration used to enforce or bypass authentication on the blocklist.
 ##### `type`:
 > `none` | `basic` | `ip_based`
 
-The type of authetentication to impose:
+The type of authentication to impose:
 
 - `none` : No authentication required.
 - `basic` : Basic authentication required.
@@ -245,6 +283,12 @@ List of valid IPv4 and IPv6 IPs and ranges which have access to blocklist. It's 
 
 TLS Configuration is utilized to activate HTTPS on the mirror server.
 
+```yaml title="Example"
+tls:
+  cert_file: /etc/ssl/certs/blocklist-mirror.pem
+  key_file: /etc/ssl/private/blocklist-mirror-key.pem
+```
+
 #### `cert_file`:
 > string
 
@@ -255,7 +299,7 @@ Path to certificate to use if TLS is to be enabled on the mirror server.
 
 Path to certificate key file.
 
-## Global RunTime Query Parameters
+## Global runtime query parameters
 
 `?ipv4only` - Only return IPv4 addresses
 
@@ -270,7 +314,7 @@ Example usage
 ```
 http://localhost:41412/security/blocklist?ipv6only
 ```
-`?nosort` - Do not sort IP's
+`?nosort` - Do not sort IPs
 
 > Only use if you do not care about the sorting of the list, can result in better performance.
 
@@ -279,7 +323,9 @@ Example usage
 http://localhost:41412/security/blocklist?nosort
 ```
 
-`?origin=` - Only return IP's by origin
+`?origin=` - Only return IPs by origin
+
+Not compatible with `aggregate: true` (aggregation can’t preserve the original decision origin).
 
 Example usage
 ```
@@ -372,22 +418,15 @@ Example:
 
 #### SRX Dynamic Address configuration sample
 
-Using the blocklist on a Juniper SRX requires that the published url ends in .txt. This can be acieved by altering the endpoint config in `cfg.yaml` as follows:
+Using the blocklist on a Juniper SRX requires that the published URL ends in `.txt`. This can be achieved by altering the endpoint config in `cfg.yaml` as follows:
 
-Sample `cfg.yaml`
+Sample `cfg.yaml`:
 ```yaml
-####
 blocklists:
-  - format: juniper # Supported formats are either of "plain_text", "mikrotik", "juniper"
-    endpoint: /security/blocklist.txt #Must have .txt for juniper formatter.
+  - format: juniper
+    endpoint: /security/blocklist.txt # Must end with `.txt` for the Juniper formatter.
     authentication:
-      type: none # Supported types are either of "none", "ip_based", "basic"
-      user:
-      password:
-      trusted_ips: # IP ranges, or IPs which don't require auth to access this blocklist
-        - 127.0.0.1
-        - ::1
-####
+      type: none
 ```
 
 This can then be configured on the SRX firewall as follows:
