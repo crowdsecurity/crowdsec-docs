@@ -107,6 +107,8 @@ crowdsec_config:
   lapi_url: http://127.0.0.1:8080
   lapi_key: ${LAPI_KEY}
   update_frequency: 10s
+  supported_decisions_types:
+    - ban
   include_scenarios_containing:
     - ssh
     - http
@@ -152,6 +154,14 @@ Path to the CA file used to trust the LAPI certificate.
 > string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
 The component will poll the CrowdSec LAPI every `update_frequency` interval.
+
+#### `supported_decisions_types`
+> [ ]string
+
+Limit mirrored blocklists to specific decision types (for example `ban`, `captcha`).
+
+- Empty/missing list: no type filtering (all types).
+- Case-insensitive matching.
 
 #### `include_scenarios_containing`
 > [ ]string
@@ -331,6 +341,17 @@ Example usage
 ```
 http://localhost:41412/security/blocklist?origin=cscli
 ```
+
+`?supported_decisions_types=` - Override decision type filtering for this request
+
+Accepts a comma-separated list or repeated query parameters:
+
+```
+/security/blocklist?supported_decisions_types=ban,captcha
+/security/blocklist?supported_decisions_types=ban&supported_decisions_types=captcha
+```
+
+If omitted, the YAML value applies. To include all types, omit the parameter and leave the YAML list empty.
 
 You can then start the service via:
 
