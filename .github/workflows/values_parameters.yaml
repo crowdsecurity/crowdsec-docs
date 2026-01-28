@@ -52,3 +52,10 @@ jobs:
         with:
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: squash
+
+      - name: Trigger downstream
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ github.token }}
+          event-type: values-generated
