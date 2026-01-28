@@ -24,7 +24,7 @@ HTTP security events. The corresponding AppSec rule collections are loaded to
 provide virtual patching and generic protections. The configuration is described
 after the `appsec` directive.
 
-On the LAPI side, we srongly encourages the use of database to provides
+On the LAPI side, we strongly encourages the use of database to provide
 persistence of decisions and alerts.
 
 ```yaml
