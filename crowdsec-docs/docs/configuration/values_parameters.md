@@ -9,24 +9,23 @@ The following configuration keeps the Helm chart close to its defaults while
 explicitly defining how CrowdSec discovers logs, which parsers and collections
 are enabled, and how state is persisted.
 
-The container runtime is set to ensure log lines are decoded in the correct
-format. The agent is scoped to only the namespaces and pods that matter, which
-reduces noise and limits resource usage. Each acquisition entry includes a
-program value that maps logs to the appropriate parser family, and this must
-stay consistent with the collections loaded through environment variables.
+The container runtime `container_runtime` is set to ensure log lines are decoded
+in the correct format. The agent is scoped to only the namespaces and pods that
+matter, which reduces noise and limits resource usage. Each `acquisition` entry
+includes a program value that maps logs to the appropriate parser family, and
+this must stay consistent with the collections loaded through environment
+variables.
 
 Debug logging is enabled here for visibility, but it should normally be disabled
 in production environments.
 
 AppSec is enabled with a local listener so in-cluster components can forward
 HTTP security events. The corresponding AppSec rule collections are loaded to
-provide virtual patching and generic protections.
+provide virtual patching and generic protections. The configuration is described
+after the `appsec` directive.
 
-On the LAPI side, persistent storage is configured to preserve credentials,
-decisions, and machine identities across pod restarts, which is essential for
-stable operation. Sensitive enrollment and bouncer keys are shown inline for
-illustration but should be provided through Kubernetes Secrets in real
-deployments.
+On the LAPI side, we srongly encourages the use of database to provides
+persistence of decisions and alerts.
 
 ```yaml
 # Log format emitted by the container runtime.
