@@ -5,21 +5,28 @@ id: values_parameters
 
 # How to write a values parameter file
 
-The following configuration example keeps the Helm chart close to its defaults
-while explicitly defining how CrowdSec should discover logs, which parsers and
-collections should be enabled, and how state is persisted. The container runtime
-is set so log lines are decoded in the correct format, and the agent is scoped
-to only the namespaces and pods that actually matter, reducing noise and
-resource usage. Each acquisition entry declares a program value that maps logs
-to the right parser family, which must align with the collections you load
-through environment variables. Debug logging is enabled here for visibility but
-should normally be disabled in production. AppSec is turned on with a local
-listener so in-cluster components can send HTTP security events, and the
-relevant AppSec rule collections are loaded. On the LAPI side, persistent
-storage is configured to preserve credentials, decisions, and machine identities
-across pod restarts, which is essential for stable operation. Sensitive
-enrollment and bouncer keys are shown inline for illustration but should be
-supplied through Kubernetes Secrets in real deployments.
+The following configuration keeps the Helm chart close to its defaults while
+explicitly defining how CrowdSec discovers logs, which parsers and collections
+are enabled, and how state is persisted.
+
+The container runtime is set to ensure log lines are decoded in the correct
+format. The agent is scoped to only the namespaces and pods that matter, which
+reduces noise and limits resource usage. Each acquisition entry includes a
+program value that maps logs to the appropriate parser family, and this must
+stay consistent with the collections loaded through environment variables.
+
+Debug logging is enabled here for visibility, but it should normally be disabled
+in production environments.
+
+AppSec is enabled with a local listener so in-cluster components can forward
+HTTP security events. The corresponding AppSec rule collections are loaded to
+provide virtual patching and generic protections.
+
+On the LAPI side, persistent storage is configured to preserve credentials,
+decisions, and machine identities across pod restarts, which is essential for
+stable operation. Sensitive enrollment and bouncer keys are shown inline for
+illustration but should be provided through Kubernetes Secrets in real
+deployments.
 
 ```yaml
 # Log format emitted by the container runtime.
