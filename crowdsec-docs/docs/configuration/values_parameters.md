@@ -57,8 +57,8 @@ agent:
 
     # Enables verbose logs from the CrowdSec agent.
     # Useful for troubleshooting, but should be "false" in steady-state production.
-    - name: DEBUG
-      value: "true"
+    #- name: DEBUG
+    #  value: "true"
 tolerations:
   # Allows the agent pod to run on control-plane nodes.
   # Only keep this if those nodes also run workloads you want to monitor.
