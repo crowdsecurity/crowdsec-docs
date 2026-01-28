@@ -107,6 +107,21 @@ lapi:
         secretKeyRef:
           name: crowdsec-keys
           key: BOUNCER_KEY_ingress
+  # The following piece configuration under config.config.yaml.local is merged
+  # alongside the current documentation
+  config.config.yaml.local:
+    # Using a database is strongly encouraged.
+    db_config:
+      type: postgresql
+      user: crowdsec
+      password: "<password>" # one can use a environment variable as well
+      db_name: crowdsec
+      host: databases-psql-rw.databases-crowdsec.svc
+      flush:
+        bouncers_autodelete:
+          api_key: 1h
+        agents_autodelete:
+          login_password: 1h
 ```
 
 # Values parameters reference
