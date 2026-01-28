@@ -21,7 +21,7 @@ across pod restarts, which is essential for stable operation. Sensitive
 enrollment and bouncer keys are shown inline for illustration but should be
 supplied through Kubernetes Secrets in real deployments.
 
-```
+```yaml
 # Log format emitted by the container runtime.
 # Use "containerd" for CRI-formatted logs (most modern Kubernetes clusters),
 # or "docker" if nodes still use the Docker runtime.
@@ -32,15 +32,15 @@ agent:
   # and which parser family ("program") should process them.
   acquisition:
     # Postfix mail logs from the mail-system namespace
-    - namespace: mail-system              # Kubernetes namespace to watch
-      podName: mail-system-postfix-*      # Pod name glob pattern
-      program: postfix/smtpd              # Parser hint so postfix logs match correctly
+    - namespace: mail-system # Kubernetes namespace to watch
+      podName: mail-system-postfix-* # Pod name glob pattern
+      program: postfix/smtpd # Parser hint so postfix logs match correctly
       poll_without_inotify: true
 
     # NGINX ingress controller logs
     - namespace: ingress-nginx
       podName: ingress-nginx-controller-* # Typical ingress-nginx controller pods
-      program: nginx                     # Routes logs to nginx parsers
+      program: nginx # Routes logs to nginx parsers
       poll_without_inotify: true
 
   env:
@@ -54,23 +54,23 @@ agent:
     - name: DEBUG
       value: "true"
 tolerations:
-    # Allows the agent pod to run on control-plane nodes.
-    # Only keep this if those nodes also run workloads you want to monitor.
-    - key: "node-role.kubernetes.io/control-plane"
-      operator: "Exists"
-      effect: "NoSchedule"
+  # Allows the agent pod to run on control-plane nodes.
+  # Only keep this if those nodes also run workloads you want to monitor.
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
 appsec:
   # Enables CrowdSec AppSec (WAF component)
   enabled: true
 
   acquisitions:
     # Defines how AppSec receives HTTP security events
-    - appsec_config: crowdsecurity/appsec-default  # Default AppSec engine configuration
+    - appsec_config: crowdsecurity/appsec-default # Default AppSec engine configuration
       labels:
-        type: appsec            # Label used internally to identify AppSec events
+        type: appsec # Label used internally to identify AppSec events
       listen_addr: 0.0.0.0:7422 # Address/port where AppSec listens for events
-      path: /                   # URL path to inspect
-      source: appsec            # Marks events as coming from AppSec
+      path: / # URL path to inspect
+      source: appsec # Marks events as coming from AppSec
 
   env:
     # AppSec-specific rule sets (virtual patching + generic protections)
@@ -112,9 +112,9 @@ configuration values, their defaults, and their purpose.
 
 ### Global
 
-| Name                | Description                                       | Value       |
-| ------------------- | ------------------------------------------------- | ----------- | -------- |
-| `container_runtime` | [string] for raw logs format: json or cri (docker | containerd) | `docker` |
+| Name                | Description                                        | Value    |
+| ------------------- | -------------------------------------------------- | -------- |
+| `container_runtime` | [string] for raw logs format: docker or containerd | `docker` |
 
 ### Image
 
