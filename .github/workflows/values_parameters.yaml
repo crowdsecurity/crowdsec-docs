@@ -1,9 +1,10 @@
 name: Generate values parameters
 
 on:
-  push:
-    branches:
-      - values/parameters
+  schedule:
+    # Tous les jours à 02:00 UTC
+    - cron: "0 2 * * *"
+  workflow_dispatch:
 
 jobs:
   update_values_parameters:
