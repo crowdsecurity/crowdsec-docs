@@ -49,16 +49,19 @@ agent:
       program: nginx # Routes logs to nginx parsers
       poll_without_inotify: true
 
-  env:
-    # Collections determine which parsers, scenarios, and postoverflows are installed.
-    # Must match the log sources defined above.
-    - name: COLLECTIONS
-      value: crowdsecurity/postfix crowdsecurity/nginx
+  # It's recommended to avoid putting passwords directly in the values.yaml file
+# for security reasons. Instead, consider using Kubernetes Secrets or environment
+# variables to manage sensitive information securely.
+env:
+  # Collections determine which parsers, scenarios, and postoverflows are installed.
+  # Must match the log sources defined above.
+  - name: COLLECTIONS
+    value: crowdsecurity/postfix crowdsecurity/nginx
 
-    # Enables verbose logs from the CrowdSec agent.
-    # Useful for troubleshooting, but should be "false" in steady-state production.
-    #- name: DEBUG
-    #  value: "true"
+  # Enables verbose logs from the CrowdSec agent.
+  # Useful for troubleshooting, but should be "false" in steady-state production.
+  #- name: DEBUG
+  #  value: "true"
 tolerations:
   # Allows the agent pod to run on control-plane nodes.
   # Only keep this if those nodes also run workloads you want to monitor.
@@ -107,16 +110,31 @@ lapi:
         secretKeyRef:
           name: crowdsec-keys
           key: BOUNCER_KEY_ingress
+
+    # It's recommended to avoid putting passwords directly in the values.yaml file
+    # for security reasons. Instead, consider using Kubernetes Secrets or environment
+    # variables to manage sensitive information securely.
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: database-secret
+          key: DB_PASSWORD
+
   # The following piece configuration under config.config.yaml.local is merged
-  # alongside the current documentation
+  # alongside the current conbfiguration. This mechanism allows
+  # environment-specific overrides. This approach helps maintain
+  # a clean and centralized configuration while enabling developers
+  # to customize their local settings without modifying the primary
+  # configuration files in pods with complex volumes and mount points.
+
   config.config.yaml.local:
     # Using a database is strongly encouraged.
     db_config:
       type: postgresql
       user: crowdsec
-      password: "<password>" # one can use a environment variable as well
+      password: ${DB_PASSWORD}
       db_name: crowdsec
-      host: databases-psql-rw.databases-crowdsec.svc
+      host: <database-host>
       flush:
         bouncers_autodelete:
           api_key: 1h
