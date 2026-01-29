@@ -37,7 +37,9 @@ helm repo update
 
 ### Install the Security Engine
 
-Once the Helm repository is added, create a `crowdsec-values.yaml` file. You can start with this example:
+Once the Helm repository is added, create a `crowdsec-values.yaml` file. This
+`values.yaml` different options are described [here](/docs/next/configuration/values_parameters) You can start with this
+example:
 
 ```yaml
 # for raw logs format: json or cri (docker|containerd)
@@ -91,7 +93,7 @@ if the tags fit.
 </details>
 
 For full configuration options, see the default
-[values.yaml](https://artifacthub.io/packages/helm/crowdsec/crowdsec#values)
+[values.yaml](/docs/next/configuration/values_parameters)
 
 Then, you can install the Security Engine with the following command:
 
@@ -137,17 +139,7 @@ Please note that the [Traefik Kubernetes Ingress (third-party
 development)](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin))
 is maintained outside CrowdSec.
 
-Before installing the remediation component, generate an API key to communicate with the LAPI.
-
-:::info
-If you **have persistentVolumes enabled** in `values.yaml`, you can generate the API key directly from the LAPI pod:
-
-```bash
-kubectl -n crowdsec exec -it crowdsec-lapi-<pod-id> -- cscli bouncers add my-bouncer-name
-```
-
-If you **do not have persistentVolumes enabled**, specify your key
-in the crowdsec helm `values.yaml` file:
+In the crowdsec helm `values.yaml` file:
 
 ```yaml
 lapi:
@@ -162,7 +154,32 @@ lapi:
     - name: BOUNCER_KEY_traefik
       value: "mysecretkey12345"
 ```
-:::
+
+To avoid having secrets stored in you `values.yaml` you can use secrets:
+```bash
+kubectl create secret generic crowdsec-keys \
+  --from-literal=ENROLL_KEY=<enroll_key> \
+  --from-literal=BOUNCER_KEY_ingress=<bouncer_key> \
+  -n crowdsec
+```
+
+And use this in the values.yaml:
+```yaml
+lapi:
+  env:
+    - name: ENROLL_KEY
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: ENROLL_KEY
+      value: "<enroll-key>"
+    - name: BOUNCER_KEY_traefik
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: BOUNCER_KEY_traefik
+      value: "<bouncer_key>"```
+```
 
 ### A word about databases
 
@@ -176,7 +193,11 @@ PostgreSQL. You can leverage existing operators to manage these databases:
 * [mariadb operator](https://mariadb.com/resources/blog/get-started-with-mariadb-in-kubernetes-and-mariadb-operator/)
 * [postgresql operator](https://github.com/cloudnative-pg/cloudnative-pg)
 
-Configuration those databases is out of scope of this documentation.
+Crowdsec in kubernetes configuration for this database is made with the
+[config.config.yaml.local value in
+`values.yaml`](docs/next/configuration/values_parameters).
+
+Configuration of those databases is out of scope of this documentation.
 <!-- We want to create blogpost where we do it -->
 
 :::warning
