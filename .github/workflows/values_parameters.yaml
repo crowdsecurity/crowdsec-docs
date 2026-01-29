@@ -60,3 +60,4 @@ jobs:
         with:
           token: ${{ github.token }}
           event-type: values-generated
+
