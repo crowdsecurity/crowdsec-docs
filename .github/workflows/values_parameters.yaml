@@ -32,8 +32,8 @@ jobs:
             --values "helm-charts/charts/crowdsec/values.yaml" \
             --readme "crowdsec-docs/docs/configuration/values_parameters.md" \
             --schema "/tmp/schema.json"
-          ./scripts/anchor.awk ./crowdsec-docs/docs/configuration/values_parameters.md > \ ./crowdsec-docs/docs/configuration/values_parameters.md
-
+          ./scripts/anchor.awk ./crowdsec-docs/docs/configuration/values_parameters.md > /tmp/values_parameters.md
+          mv /tmp/values_parameters.md ./crowdsec-docs/docs/configuration/values_parameters.md
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v6
