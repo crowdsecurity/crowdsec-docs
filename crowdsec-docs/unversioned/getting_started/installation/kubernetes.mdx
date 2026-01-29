@@ -37,7 +37,9 @@ helm repo update
 
 ### Install the Security Engine
 
-Once the Helm repository is added, create a `crowdsec-values.yaml` file. You can start with this example:
+Once the Helm repository is added, create a `crowdsec-values.yaml` file. This
+`values.yaml` different options are described [here](/docs/next/configuration/values_parameters) You can start with this
+example:
 
 ```yaml
 # for raw logs format: json or cri (docker|containerd)
@@ -191,7 +193,11 @@ PostgreSQL. You can leverage existing operators to manage these databases:
 * [mariadb operator](https://mariadb.com/resources/blog/get-started-with-mariadb-in-kubernetes-and-mariadb-operator/)
 * [postgresql operator](https://github.com/cloudnative-pg/cloudnative-pg)
 
-Configuration those databases is out of scope of this documentation.
+Crowdsec in kubernetes configuration for this database is made with the
+[config.config.yaml.local value in
+`values.yaml`](docs/next/configuration/values_parameters).
+
+Configuration of those databases is out of scope of this documentation.
 <!-- We want to create blogpost where we do it -->
 
 :::warning
