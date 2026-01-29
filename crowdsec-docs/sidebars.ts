@@ -683,6 +683,7 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/quickstart/general_setup" },
 				{ type: "doc", id: "appsec/quickstart/nginx-ingress" },
 				{ type: "doc", id: "appsec/quickstart/nginxopenresty" },
+				{ type: "doc", id: "appsec/quickstart/haproxy_spoa" },
 				{ type: "doc", id: "appsec/quickstart/npmplus" },
 				{ type: "doc", id: "appsec/quickstart/traefik" },
 				{ type: "doc", id: "appsec/quickstart/wordpress" },
