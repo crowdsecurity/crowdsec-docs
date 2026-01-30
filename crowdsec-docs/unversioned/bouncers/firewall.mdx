@@ -118,8 +118,71 @@ sudo pkg install crowdsec-firewall-bouncer
 </TabItem>
 </Tabs>
 
+Continue with the [pf setup section](#pf-setup-freebsd).
+
 
 See as well [Manual Installation documentation below](#manual-installation)
+
+## pf setup (FreeBSD) {#pf-setup-freebsd}
+
+The `pf` mode relies on the `pfctl` command to alter `pf` tables. You must create the CrowdSec tables and reference them in your `pf.conf`.
+
+### 1) Enable `pf`
+
+`pf` is not always loaded/enabled by default.
+
+```bash
+sudo kldload pf
+sudo sysrc pf_enable="YES"
+```
+
+### 2) Configure `/etc/pf.conf`
+
+Add the CrowdSec tables and blocking rules (adjust to your existing ruleset):
+
+```pf title="/etc/pf.conf"
+# create crowdsec ipv4 table
+table <crowdsec-blacklists> persist
+
+# create crowdsec ipv6 table
+table <crowdsec6-blacklists> persist
+
+block drop in quick from <crowdsec-blacklists> to any
+block drop in quick from <crowdsec6-blacklists> to any
+```
+
+Reload and verify:
+
+```bash
+sudo pfctl -f /etc/pf.conf
+sudo pfctl -sr
+sudo service pf check
+sudo service pf status
+```
+
+### 3) Configure the bouncer
+
+Generate an API key:
+
+```bash
+sudo cscli bouncers add --name freebsd-pf-bouncer
+```
+
+Edit the bouncer configuration file on FreeBSD (`/usr/local/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml`) and set at least:
+
+```yaml
+api_url: http://127.0.0.1:8080/
+api_key: <your_api_key>
+mode: pf
+```
+
+Then enable and start it:
+
+```bash
+sudo sysrc crowdsec_firewall_enable="YES"
+sudo service crowdsec_firewall start
+sudo service crowdsec_firewall status
+```
 
 ## Configuration
 
@@ -538,8 +601,7 @@ table <crowdsec6-blacklists> persist
 ```
 
  You can refer to the step-by-step instructions of the [user tutorial on
- FreeBSD](/blog/crowdsec_firewall_freebsd)
- to setup crowdsec-firewall-bouncer with pf.
+ FreeBSD in the [pf setup section](#pf-setup-freebsd).
 
  ### ipset
 

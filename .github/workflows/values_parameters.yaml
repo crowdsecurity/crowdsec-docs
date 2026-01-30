@@ -1,9 +1,10 @@
 name: Generate values parameters
 
 on:
-  push:
-    branches:
-      - values/parameters
+  schedule:
+    # Tous les jours à 02:00 UTC
+    - cron: "0 2 * * *"
+  workflow_dispatch:
 
 jobs:
   update_values_parameters:
@@ -31,7 +32,23 @@ jobs:
             --values "helm-charts/charts/crowdsec/values.yaml" \
             --readme "crowdsec-docs/docs/configuration/values_parameters.md" \
             --schema "/tmp/schema.json"
-      - name: Commit bump
-        uses: EndBug/add-and-commit@v9
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
         with:
-          message: "chore(charts): regenerate values parameters"
+          branch: chore/regen-values-parameters
+          delete-branch: true
+          commit-message: "chore(charts): regenerate values parameters"
+          title: "chore(charts): regenerate values parameters"
+          body: |
+            Regenerate values parameters from helm-charts values.yaml.
+          labels: |
+            automation
+
+      - name: Enable PR auto-merge
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash

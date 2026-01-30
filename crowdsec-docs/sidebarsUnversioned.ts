@@ -456,9 +456,29 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			id: "console/stackhealth",
 		},
 		{
-			type: "doc",
+			type: "category",
 			label: "🏅 Premium Upgrade",
-			id: "console/premium_upgrade",
+			link: {
+				type: "doc",
+				id: "console/premium_upgrade",
+			},
+			items: [
+				{
+					type: "doc",
+					label: "Optimal Setup",
+					id: "console/premium_upgrade/optimal_setup",
+				},
+				{
+					type: "doc",
+					label: "Testing Premium",
+					id: "console/premium_upgrade/testing_premium",
+				},
+				{
+					type: "doc",
+					label: "Features Overview",
+					id: "console/premium_upgrade/features_overview",
+				},
+			],
 		},
 	],
 	remediationSideBar: [

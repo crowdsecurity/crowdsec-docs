@@ -674,54 +674,6 @@ const sidebarsConfig: SidebarConfig = {
 			id: "cscli/cscli_version",
 		},
 	],
-	betaSidebar: [
-		{
-			type: "category",
-			label: "Preview Programs",
-			collapsed: true,
-			items: [
-				{
-					type: "category",
-					label: "Crowdsec v1.5",
-					link: {
-						type: "doc",
-						id: "preview/1-5/intro",
-					},
-					items: ["preview/1-5/crowdsec_preview_setup"],
-				},
-			],
-		},
-		{
-			type: "doc",
-			label: "Backup Guide",
-			id: "preview/backup_guide",
-		},
-		{
-			type: "category",
-			label: "Security Engine (Preview)",
-			collapsed: true,
-			items: [
-				"preview/crowdsec_linux",
-				//"preview/crowdsec_freebsd",
-				"preview/crowdsec_windows",
-				{
-					type: "link",
-					label: "Helm/K8s",
-					href: "https://artifacthub.io/packages/helm/crowdsec/crowdsec",
-				},
-				{
-					type: "link",
-					label: "Docker/Podman",
-					href: "https://hub.docker.com/r/crowdsecurity/crowdsec",
-				},
-			],
-		},
-		{
-			type: "doc",
-			label: "Rollback to previous version",
-			id: "preview/rollback",
-		},
-	],
 	appSecSideBar: [
 		{ type: "doc", id: "appsec/intro", label: "CrowdSec WAF - Introduction" },
 		{
@@ -731,6 +683,7 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/quickstart/general_setup" },
 				{ type: "doc", id: "appsec/quickstart/nginx-ingress" },
 				{ type: "doc", id: "appsec/quickstart/nginxopenresty" },
+				{ type: "doc", id: "appsec/quickstart/haproxy_spoa" },
 				{ type: "doc", id: "appsec/quickstart/npmplus" },
 				{ type: "doc", id: "appsec/quickstart/traefik" },
 				{ type: "doc", id: "appsec/quickstart/wordpress" },

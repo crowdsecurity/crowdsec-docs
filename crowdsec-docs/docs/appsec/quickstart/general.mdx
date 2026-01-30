@@ -49,13 +49,15 @@ These collections include:
 Configure CrowdSec to expose the AppSec Component by creating an acquisition file ([AppSec datasource](/log_processor/data_sources/appsec.md)).
 
 1. Create the acquisition directory (if it doesn't exist):
-   ```bash
-   sudo mkdir -p /etc/crowdsec/acquis.d/
-   ```
+
+```bash
+sudo mkdir -p /etc/crowdsec/acquis.d/
+```
 
 2. Create the AppSec acquisition configuration:
-   ```bash
-   sudo cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
+
+```bash
+sudo cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
 appsec_configs:
   - crowdsecurity/appsec-default
 labels:
@@ -64,7 +66,7 @@ listen_addr: 127.0.0.1:7422
 source: appsec
 name: myAppSecComponent
 EOF
-   ```
+```
 
 **Configuration explained:**
 - `appsec_configs`: Uses the [AppSec configuration(s)](/appsec/configuration.md) from the installed collections
@@ -144,6 +146,7 @@ Now that the AppSec Component is configured and running, you need to:
 For specific remediation component configuration, see:
 - [Nginx/OpenResty Setup](nginxopenresty.mdx)
 - [Traefik Setup](traefik.mdx)
+- [HAProxy (SPOA) Setup](haproxy_spoa.mdx)
 - [WordPress Setup](wordpress.mdx)
 - [Check the hub for other remediation components supporting AppSec](https://app.crowdsec.net/hub/remediation-components)
 

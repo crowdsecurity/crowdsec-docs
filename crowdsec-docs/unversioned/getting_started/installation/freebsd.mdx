@@ -63,6 +63,10 @@ To install:
 sudo pkg install crowdsec-firewall-bouncer
 ```
 
+:::warning
+Before starting the firewall bouncer in `pf` mode, ensure your `/etc/pf.conf` defines the CrowdSec tables and blocking rules. See the [Firewall Remediation Component pf setup guide](/u/bouncers/firewall#pf-setup-freebsd).
+:::
+
 Then you must enable it with the following commands:
 
 #### Enable Service
