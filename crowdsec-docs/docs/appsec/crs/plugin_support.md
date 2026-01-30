@@ -10,26 +10,19 @@ The vast majority of plugins should work with CrowdSec. The only exception is pl
 
 ## How plugins work
 
-CRS plugins are injected both before and after the CRS rules. In a standalone CRS deployment, it typically looks like this:
+CRS plugins are injected both before and after the CRS rules.
 
-```
-Include crs/crs-setup.conf # CRS config include
-
-Include crs/plugins/*-config.conf # CRS plugin
-Include crs/plugins/*-before.conf # CRS plugin
-
-Include crs/rules/*.conf # CRS rules include
-
-Include crs/plugins/*-after.conf # CRS plugin
-```
-
-CrowdSec retains the same logic, but with slightly different paths. The following files are included automatically if present in `/var/lib/crowdsec/data/`:
+The following files are included automatically if present in `/var/lib/crowdsec/data/`:
 
 ```yaml
 - crs-plugins/*/*-config.conf
 - crs-plugins/*/*-before.conf
 - crs-plugins/*/*-after.conf
 ```
+
+The `*-config.conf` and `*-before.conf` files are included before the CRS rules (but after the CRS `crs-setup.conf` file).
+
+The `*-after.conf` files are included after the CRS rules.
 
 :::warning
 
@@ -39,7 +32,18 @@ Plugins are enabled globally, meaning you cannot enable or disable one for one s
 
 ## Installing a CRS plugin from the Hub
 
-Exclusion plugins officially supported and maintained by the CRS team are available in the [CrowdSec Hub](https://app.crowdsec.net/hub). You can search for `appsec-crs-exclusion-plugin`.
+Exclusion plugins officially supported and maintained by the CRS team are available in the [CrowdSec Hub](https://app.crowdsec.net/hub). You can search for `uib`.
+
+As an example, plugins for the following apps are provided:
+
+- Wordpress
+- NextCloud
+- PHPMyAdmin
+- CPanel
+- Drupal
+- PHPBB
+- DokuWiki
+- Xenforo
 
 If the plugin you want to use is listed in the Hub, you can simply install it with `cscli collections install crowdsecurity/<PLUGIN_NAME>`.
 

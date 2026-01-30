@@ -47,6 +47,9 @@ CrowdSec WAF supports multiple deployment strategies that can be implemented pro
 - Security: Dual-layer blocking - virtual patching handles specific vulnerabilities, CRS covers generic attack patterns
 - Consideration: Might require tuning to minimize false positives
 
+You will most likely also need to configure the CRS themselves to tune out potential false positives.
+You can do by using either official or custom CRS plugins, you can refer to [this documentation](/appsec/crs/plugin_support.md) for a general plugin overview and [this page](/appsec/crs/customization.md) for some examples.
+
 ## Implementation Guide
 
 ### Adding Out-of-band CRS
