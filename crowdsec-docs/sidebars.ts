@@ -765,6 +765,19 @@ const sidebarsConfig: SidebarConfig = {
 			],
 		},
 		{
+			type: "category",
+			label: "CRS",
+			link: {
+				type: "doc",
+				id: "appsec/crs/intro",
+			},
+			items: [
+				{ type: "doc", id: "appsec/crs/installation" },
+				{ type: "doc", id: "appsec/crs/plugin_support" },
+				{ type: "doc", id: "appsec/crs/crs_config" },
+			],
+		},
+		{
 			type: "doc",
 			id: "appsec/alerts_and_scenarios",
 			label: "WAF behavior analysis",

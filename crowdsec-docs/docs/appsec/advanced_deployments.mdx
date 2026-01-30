@@ -12,46 +12,35 @@ This guide covers advanced CrowdSec WAF deployment strategies for organizations 
 This guide assumes you have completed the [General Setup](/appsec/quickstart/general.mdx) and have a functional basic WAF deployment.
 :::
 
-## About OWASP Core Rule Set (CRS)
-
-The **OWASP Core Rule Set (CRS)** is a set of generic attack detection rules for use with ModSec-compatible web application firewalls. CRS aims to protect web applications from a wide range of attacks, including the OWASP Top Ten, with minimal false positives.
-
-**Key features of OWASP CRS:**
-- **Comprehensive Coverage**: Protects against SQL injection, XSS, command injection, path traversal, and many other attack types
-- **Generic Detection**: Uses pattern-based rules that detect attack techniques rather than specific exploits
-- **Mature Ruleset**: Actively maintained by the OWASP community with regular updates
-- **Configurable Sensitivity**: Supports paranoia levels to balance security vs false positives
-- **Wide Compatibility**: Works with various WAF engines including CrowdSec's AppSec component
-
-**CRS vs Virtual Patching:**
-- **Virtual Patching**: Targets specific known vulnerabilities (CVEs) with minimal false positives
-- **CRS**: Provides broad attack pattern detection with comprehensive coverage but may require tuning
-
-In CrowdSec, CRS rules can be deployed in two modes:
-- **Out-of-band**: Analyzes traffic without blocking, triggers bans after multiple violations
-- **In-band**: Blocks malicious requests immediately at detection time
+You can read more about the CrowdSec WAF CRS support in the [dedicated documentation](/appsec/crs/intro.md)
 
 ## Security Enhancement Path
 
 CrowdSec WAF supports multiple deployment strategies that can be implemented progressively:
 
 ### 1. Basic Virtual Patching (Quickstart)
+
 **Current State**: Blocking protection against known CVEs
+
 - Collections: [`crowdsecurity/appsec-virtual-patching`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching)
 - Mode: In-band (blocking)
 - Coverage: Known vulnerabilities only
 - False Positives: Minimal
 
 ### 2. Enhanced Detection (Out-of-band CRS)
+
 **Next Step**: Add comprehensive attack detection without performance impact
-- Add: [`crowdsecurity/appsec-crs-inband`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs-inband) (out-of-band) alongside existing virtual patching
+
+- Add: [`crowdsecurity/appsec-crs`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs) (out-of-band) alongside existing virtual patching
 - Mode: Non-blocking analysis + behavioral banning
 - Coverage: OWASP Top 10 + comprehensive attack patterns + specific CVE protection
 - Performance: No latency impact ⚡
 - Security: Layered approach - virtual patching + generic attack detection
 
 ### 3. Maximum Protection (In-band CRS)
+
 **Advanced**: Full blocking protection with comprehensive coverage
+
 - Modify: Use [`crowdsecurity/appsec-crs-inband`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs-inband) for blocking CRS while keeping virtual patching
 - Mode: Immediate blocking of all detected attacks (both generic and CVE-specific)
 - Coverage: Maximum protection with instant response 🛡️
@@ -60,7 +49,7 @@ CrowdSec WAF supports multiple deployment strategies that can be implemented pro
 
 ## Implementation Guide
 
-### Step 2: Adding Out-of-band CRS
+### Adding Out-of-band CRS
 
 Enhance your existing virtual patching deployment by adding comprehensive attack detection as an additional security layer:
 
@@ -69,6 +58,7 @@ sudo cscli collections install crowdsecurity/appsec-crs
 ```
 
 The [`crowdsecurity/appsec-crs`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs) collection includes:
+
 - **crowdsecurity/crs**: AppSec config that loads CRS rules in out-of-band mode
 - **crowdsecurity/crowdsec-appsec-outofband**: Scenario that bans IPs after 5+ out-of-band rule violations
 
@@ -76,8 +66,8 @@ Update your WAF acquisition configuration to include both rule sets:
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
 appsec_configs:
-  - crowdsecurity/appsec-default     # Virtual patching rules (in-band blocking)
-  - crowdsecurity/crs                # OWASP CRS rules (out-of-band detection)
+  - crowdsecurity/appsec-default # Virtual patching rules (in-band blocking)
+  - crowdsecurity/crs # OWASP CRS rules (out-of-band detection)
 labels:
   type: appsec
 listen_addr: 127.0.0.1:7422
@@ -90,6 +80,7 @@ sudo systemctl restart crowdsec
 ```
 
 **Benefits of this layered configuration:**
+
 - **Layer 1**: Immediate protection against known vulnerabilities (virtual patching)
 - **Layer 2**: Comprehensive attack pattern detection (CRS out-of-band)
 - **Complementary Coverage**: Virtual patching rules catch specific CVEs that CRS generic rules might miss
@@ -124,7 +115,7 @@ TARGET="http://your-app.com"
 curl "$TARGET/?id=1'+OR+'1'='1"
 ```
 
-Expected results: 
+Expected results:
 
 - Detailed Alert is created (see `cscli alerts list`)
 
@@ -138,14 +129,14 @@ Expected results:
 | 62419 | Ip:xxx.xx.xx.xx    | anomaly score out-of-band: sql_injection: 10, anomaly: 10,   | FR      | 5410 Bouygues Telecom SA     |           | 2025-09-09T14:41:07Z |
 ...
 ```
-</details>
 
+</details>
 
 - Detailed Alert is visible in console
 
 <details>
   <summary>Alert Console view</summary>
-![timeline](/img/console-appsec-oob.png)
+  ![timeline](/img/console-appsec-oob.png)
 </details>
 
 **Test 3: Verify Scenario Behavior**
@@ -156,10 +147,9 @@ The `crowdsecurity/crowdsec-appsec-outofband` scenario will ban IPs triggering t
 for i in {1..6}; do curl "$TARGET/?id=1'+OR+'1'='1"; done
 ```
 
+Expected results:
 
-Expected results: 
-
-- Alerts are created for each request 
+- Alerts are created for each request
 - Decision is created by the 6th request
 
 <details>
@@ -178,6 +168,7 @@ Expected results:
 │ 62421 │ Ip:xxx.xx.xx.xx    │ anomaly score out-of-band: sql_injection: 10, anomaly: 10,   │ FR      │ 5410 Bouygues Telecom SA     │           │ 2025-09-09T14:51:11Z │
 
 ```
+
 </details>
 
 ### Step 3: CRS In-band (Blocking Mode)
@@ -194,8 +185,8 @@ Modify your acquisition to use the in-band CRS configuration:
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
 appsec_configs:
-  - crowdsecurity/appsec-default     # Virtual patching rules (in-band blocking)
-  - crowdsecurity/crs-inband         # OWASP CRS rules (in-band blocking)
+  - crowdsecurity/appsec-default # Virtual patching rules (in-band blocking)
+  - crowdsecurity/crs-inband # OWASP CRS rules (in-band blocking)
 labels:
   type: appsec
 listen_addr: 127.0.0.1:7422
@@ -232,7 +223,7 @@ TARGET="http://your-app.com"
 # SQL injection - should be blocked immediately
 curl -v "$TARGET/?id=1' OR '1'='1"
 
-# XSS - should be blocked immediately  
+# XSS - should be blocked immediately
 curl -v "$TARGET/?q=<script>alert('xss')</script>"
 
 # Command injection - should be blocked immediately
@@ -243,17 +234,19 @@ curl -v "$TARGET/?file=../../../etc/passwd"
 ```
 
 **Expected behavior:**
+
 - **All requests above**: Immediately blocked with HTTP 403 Forbidden
 - **No delay**: Unlike out-of-band mode, blocking is instant
 - **Dual protection**: Both virtual patching AND CRS rules provide immediate blocking
 
 :::warning Important Considerations
 In-band CRS blocking provides maximum protection but requires:
+
 - **Thorough testing** in a staging environment
 - **Gradual rollout** to production traffic
 - **Monitoring and tuning** to prevent blocking legitimate requests
 - **Whitelisting capabilities** for false positives
-:::
+  :::
 
 ## Next Steps
 
