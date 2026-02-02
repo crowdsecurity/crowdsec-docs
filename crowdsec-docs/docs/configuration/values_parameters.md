@@ -140,6 +140,15 @@ lapi:
           api_key: 1h
         agents_autodelete:
           login_password: 1h
+
+  # persistentVolume in kubernetes for CrowdSec data and configuration is now
+  # discouragfe in favor of a database and direct configuration through
+  # values
+  persistentVolume:
+    data:
+      enabled: false
+    config:
+      enabled: false
 ```
 
 # Values parameters reference
