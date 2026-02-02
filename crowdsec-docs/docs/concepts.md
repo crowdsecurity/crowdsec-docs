@@ -20,18 +20,7 @@ A Security Engine can run [standalone](intro.mdx#architecture) (Log Processor + 
 
 In a distributed setup, detection content (collections/parsers/scenarios) runs on the Log Processor machines, while the Local API focuses on storing data and serving decisions. See the [multi-server setup guide](/u/user_guides/multiserver_setup) for a concrete deployment pattern.
 
-## Key objects
-
-These are the objects you will see throughout the documentation and in tools like `cscli`:
-
-- **Collections**: bundles of parsers, scenarios, and other items installed together. See [Collections](/log_processor/collections/introduction.md) and [Hub management](/cscli/cscli_hub.md).
-- **Scenarios**: behavior detections evaluated by the Log Processor. See [Scenarios](/log_processor/scenarios/introduction.mdx).
-- **AppSec rules**: WAF rules evaluated by the AppSec component. See [AppSec](/appsec/intro.md).
-- **Alerts**: records created when a scenario/AppSec rule triggers; stored in the Local API. See [`cscli alerts`](/cscli/cscli_alerts.md).
-- **Decisions**: remediation instructions (for example `ban`, sometimes other types depending on your setup) created by Local API [profiles](/local_api/profiles/intro.md) or manually via `cscli`; consumed by bouncers. See [`cscli decisions`](/cscli/cscli_decisions.md) and [Bouncers API](/local_api/bouncers-api.md).
-
-
-## Log Processor (LP)
+### Log Processor (LP)
 
 > The Log Processor is the part of the Security Engine in charge of detecting malicious behavior based on your logs and HTTP traffic.
 
@@ -46,7 +35,7 @@ Related documentation:
 - Add context to alerts (visible in `cscli`/Console): [Alert context](/log_processor/alert_context/intro.md)
 - AppSec request inspection and compatible integrations: [AppSec](/appsec/intro.md)
 
-## Local API (LAPI)
+### Local API (LAPI)
 
 > The Local API is the part of the Security Engine that stores alerts/decisions and acts as the middleman between Log Processors, Remediation Components, and the Central API.
 
@@ -63,16 +52,16 @@ For implementation details, see:
 - Storage: [Databases](/local_api/database.md)
 - Controlling exemptions: [AllowLists](/local_api/allowlists.md)
 
-### Example: from a log line to a block
 
-This is a typical flow for a log-based scenario (for example, SSH brute-force):
+## Glossary
 
-0. **Install detection content**: you typically install a [collection](/log_processor/collections/introduction.md) from the Hub (parsers + scenarios) using `cscli` (see [Hub management](/cscli/cscli_hub.md)).
-1. **Acquire**: the Log Processor reads your service logs via an [acquisition configuration](/log_processor/data_sources/introduction.md) (for example, a file tail on `/var/log/auth.log`).
-2. **Parse + enrich**: [parsers](/log_processor/parsers/introduction.mdx) extract fields (source IP, service, status, ...) and [enrichers](/log_processor/parsers/enricher.md) add context (GeoIP/ASN, ...).
-3. **Detect**: a [scenario](/log_processor/scenarios/introduction.mdx) correlates events over time (for example, many failed logins from the same IP) and triggers an **alert**.
-4. **Store + decide**: the Log Processor sends the alert to the `LAPI`. The `LAPI` applies your [profiles](/local_api/profiles/intro.md) to create a **decision** (for example, `ban` for a given duration).
-5. **Enforce**: a [Remediation Component (bouncer)](/u/bouncers/intro) pulls decisions from the `LAPI` and enforces them where it matters (firewall, reverse proxy, web server, ...).
+Quick definitions of terms used throughout the documentation and in tools like `cscli`:
+
+- **Collections**: bundles of parsers, scenarios, and other items installed together. See [Collections](/log_processor/collections/introduction.md) and [Hub management](/cscli/cscli_hub.md).
+- **Scenarios**: behavior detections evaluated by the Log Processor. See [Scenarios](/log_processor/scenarios/introduction.mdx).
+- **AppSec rules**: WAF rules evaluated by the AppSec component. See [AppSec](/appsec/intro.md).
+- **Alerts**: records created when a scenario/AppSec rule triggers; stored in the Local API. See [`cscli alerts`](/cscli/cscli_alerts.md).
+- **Decisions**: remediation instructions (for example `ban`, sometimes other types depending on your setup) created by Local API [profiles](/local_api/profiles/intro.md) or manually via `cscli`; consumed by bouncers. See [`cscli decisions`](/cscli/cscli_decisions.md) and [Bouncers API](/local_api/bouncers-api.md).
 
 
 ## Remediation Components (Bouncers)
@@ -108,3 +97,14 @@ The [Console](https://app.crowdsec.net) allows you to:
 - Manage your API keys ([CTI API](/u/cti_api/intro), [Service API](/u/console/service_api/getting_started)).
 
 To connect an instance to the Console, see [Console enrollment](/u/getting_started/post_installation/console) and the `cscli` command reference: [`cscli console enroll`](/cscli/cscli_console_enroll.md).
+
+## Example: from a log line to a block
+
+This is a typical flow for a log-based scenario (for example, SSH brute-force):
+
+0. **Install detection content**: you typically install a [collection](/log_processor/collections/introduction.md) from the Hub (parsers + scenarios) using `cscli` (see [Hub management](/cscli/cscli_hub.md)).
+1. **Acquire**: the Log Processor reads your service logs via an [acquisition configuration](/log_processor/data_sources/introduction.md) (for example, a file tail on `/var/log/auth.log`).
+2. **Parse + enrich**: [parsers](/log_processor/parsers/introduction.mdx) extract fields (source IP, service, status, ...) and [enrichers](/log_processor/parsers/enricher.md) add context (GeoIP/ASN, ...).
+3. **Detect**: a [scenario](/log_processor/scenarios/introduction.mdx) correlates events over time (for example, many failed logins from the same IP) and triggers an **alert**.
+4. **Store + decide**: the Log Processor sends the alert to the `LAPI`. The `LAPI` applies your [profiles](/local_api/profiles/intro.md) to create a **decision** (for example, `ban` for a given duration).
+5. **Enforce**: a [Remediation Component (bouncer)](/u/bouncers/intro) pulls decisions from the `LAPI` and enforces them where it matters (firewall, reverse proxy, web server, ...).
