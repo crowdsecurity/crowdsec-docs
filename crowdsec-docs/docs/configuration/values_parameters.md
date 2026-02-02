@@ -3,6 +3,154 @@ title: Helm's Parameters
 id: values_parameters
 ---
 
+# How to write a values parameter file
+
+The following configuration keeps the Helm chart close to its defaults while
+explicitly defining how CrowdSec discovers logs, which parsers and collections
+are enabled, and how state is persisted.
+
+The container runtime `container_runtime` is set to ensure log lines are decoded
+in the correct format. The agent is scoped to only the namespaces and pods that
+matter, which reduces noise and limits resource usage. Each `acquisition` entry
+includes a program value that maps logs to the appropriate parser family, and
+this must stay consistent with the collections loaded through environment
+variables.
+
+Debug logging is enabled here for visibility, but it should normally be disabled
+in production environments.
+
+AppSec is enabled with a local listener so in-cluster components can forward
+HTTP security events. The corresponding AppSec rule collections are loaded to
+provide virtual patching and generic protections. The configuration is described
+after the `appsec` directive.
+
+On the LAPI side, we strongly encourages the use of database to provide
+persistence of decisions and alerts.
+
+```yaml
+# Log format emitted by the container runtime.
+# Use "containerd" for CRI-formatted logs (most modern Kubernetes clusters),
+# or "docker" if nodes still use the Docker runtime.
+container_runtime: containerd
+
+agent:
+  # Log acquisition configuration: tells CrowdSec which pod logs to read
+  # and which parser family ("program") should process them.
+  acquisition:
+    # Postfix mail logs from the mail-system namespace
+    - namespace: mail-system # Kubernetes namespace to watch
+      podName: mail-system-postfix-* # Pod name glob pattern
+      program: postfix/smtpd # Parser hint so postfix logs match correctly
+      poll_without_inotify: true
+
+    # NGINX ingress controller logs
+    - namespace: ingress-nginx
+      podName: ingress-nginx-controller-* # Typical ingress-nginx controller pods
+      program: nginx # Routes logs to nginx parsers
+      poll_without_inotify: true
+
+  # It's recommended to avoid putting passwords directly in the values.yaml file
+# for security reasons. Instead, consider using Kubernetes Secrets or environment
+# variables to manage sensitive information securely.
+env:
+  # Collections determine which parsers, scenarios, and postoverflows are installed.
+  # Must match the log sources defined above.
+  - name: COLLECTIONS
+    value: crowdsecurity/postfix crowdsecurity/nginx
+
+  # Enables verbose logs from the CrowdSec agent.
+  # Useful for troubleshooting, but should be "false" in steady-state production.
+  #- name: DEBUG
+  #  value: "true"
+tolerations:
+  # Allows the agent pod to run on control-plane nodes.
+  # Only keep this if those nodes also run workloads you want to monitor.
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
+appsec:
+  # Enables CrowdSec AppSec (WAF component)
+  enabled: true
+
+  acquisitions:
+    # Defines how AppSec receives HTTP security events
+    - appsec_config: crowdsecurity/appsec-default # Default AppSec engine configuration
+      labels:
+        type: appsec # Label used internally to identify AppSec events
+      listen_addr: 0.0.0.0:7422 # Address/port where AppSec listens for events
+      path: / # URL path to inspect
+      source: appsec # Marks events as coming from AppSec
+
+  env:
+    # AppSec-specific rule sets (virtual patching + generic protections)
+    - name: COLLECTIONS
+      value: crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+lapi:
+  env:
+    # Enrollment key used to register this CrowdSec instance with the console.
+    # Should be stored in a Kubernetes Secret in production.
+    - name: ENROLL_KEY
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: ENROLL_KEY
+
+    # Human-readable name for this instance in the console
+    - name: ENROLL_INSTANCE_NAME
+      value: "sabban"
+
+    # Tags help group or filter instances in the console
+    - name: ENROLL_TAGS
+      value: "k8s"
+
+    # API key used by a bouncer (here: ingress) to query decisions from LAPI
+    # Also should be stored as a Secret rather than plaintext.
+    - name: BOUNCER_KEY_ingress
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: BOUNCER_KEY_ingress
+
+    # It's recommended to avoid putting passwords directly in the values.yaml file
+    # for security reasons. Instead, consider using Kubernetes Secrets or environment
+    # variables to manage sensitive information securely.
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: database-secret
+          key: DB_PASSWORD
+
+  # The following piece configuration under config.config.yaml.local is merged
+  # alongside the current conbfiguration. This mechanism allows
+  # environment-specific overrides. This approach helps maintain
+  # a clean and centralized configuration while enabling developers
+  # to customize their local settings without modifying the primary
+  # configuration files in pods with complex volumes and mount points.
+
+  config.config.yaml.local:
+    # Using a database is strongly encouraged.
+    db_config:
+      type: postgresql
+      user: crowdsec
+      password: ${DB_PASSWORD}
+      db_name: crowdsec
+      host: <database-host>
+      flush:
+        bouncers_autodelete:
+          api_key: 1h
+        agents_autodelete:
+          login_password: 1h
+
+  # persistentVolume in kubernetes for CrowdSec data and configuration is now
+  # discouragfe in favor of a database and direct configuration through
+  # values
+  persistentVolume:
+    data:
+      enabled: false
+    config:
+      enabled: false
+```
+
 # Values parameters reference
 
 This page provides a complete, generated reference of all Helm chart
