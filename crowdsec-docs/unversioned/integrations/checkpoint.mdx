@@ -8,9 +8,15 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 
 The CrowdSec Checkpoint integration allows you to block malicious IPs in your Checkpoint firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Checkpoint firewall.
 
+Check Point refers to this feature as [**Custom Intelligence (IoC) Feeds**](https://support.checkpoint.com/results/sk/sk132193), which provide the ability to add custom cyber intelligence feeds into the Threat Prevention engine.
+
 ### Prerequisites
 
 Before you begin, please ensure your Checkpoint device supports ingesting blocklists. If you are unsure, please refer to the Checkpoint documentation or contact Checkpoint support.
+
+:::warning
+Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::
 
 ### Steps
 

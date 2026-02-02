@@ -8,9 +8,15 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 
 The CrowdSec pfSense integration allows you to block malicious IPs in your pfSense firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your pfSense firewall.
 
+pfSense you'll use **URL Table (IPs) aliases**, to create aliases that periodically download and update IP lists from external URLs.
+
 ### Prerequisites
 
 Before you begin, please ensure your pfSense software version supports ingesting blocklists (URL aliases). If you are unsure, please refer to the pfSense documentation or contact pfSense support.
+
+:::warning
+Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::
 
 ### Steps
 

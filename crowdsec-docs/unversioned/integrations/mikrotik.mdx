@@ -12,6 +12,10 @@ The CrowdSec Mikrotik integration allows you to block malicious IPs in your Mikr
 
 Before you begin, please ensure your Mikrotik device supports ingesting blocklists. If you are unsure, please refer to the Mikrotik documentation or contact Mikrotik support.
 
+:::warning
+Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::
+
 ### Steps
 
 We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
@@ -94,7 +98,11 @@ When you click on "OK", the script will be created. You can now run the script a
 
 ![](/img/mikrotik_3.gif)
 
-The script is now running and the blocklist is being imported into the Mikrotik firewall. To automate this process, you can create a scheduler that will run the script every 10 minutes.
+The script is now running and the blocklist is being imported into the Mikrotik firewall. To automate this process, you can create a scheduler that will run the script every 24 hours.
+
+:::warning
+Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::
 
 ![](/img/mikrotik_4.gif)
 

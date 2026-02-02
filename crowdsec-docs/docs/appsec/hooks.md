@@ -4,24 +4,24 @@ title: Hooks
 sidebar_position: 4
 ---
 
-The Application Security Component allows you to hook at different stages to change its behavior at runtime.
+The Application Security Component lets you hook into different stages to change behavior at runtime.
 
-The three phases are:
- - `on_load`: Called just after the rules have been loaded into the engine.
- - `pre_eval`: Called after a request has been received but before the rules are evaluated.
- - `post_eval`: Called after the rules have been evaluated.
- - `on_match`: Called after a successful match of a rule. If multiple rules, this hook will be called only once.
+Hooks run in four phases:
+
+- `on_load`: Called just after the rules have been loaded into the engine.
+- `pre_eval`: Called after a request has been received but before the rules are evaluated.
+- `post_eval`: Called after the rules have been evaluated.
+- `on_match`: Called after a successful match of a rule. If multiple rules, this hook will be called only once.
 
 ## Using hooks
 
-Hooks are configured in your `appsec-config` file.
+Hooks are configured in your AppSec config file.
 
-`on_load` hook only supports `apply`, while other hooks support `filter` and `apply` parameters.
+The `on_load` hook only supports `apply`, while other hooks support `filter` and `apply`.
 
 Both `filter` and `apply` of the same phase have access to the same helpers.
 
-Except for `on_load`, hooks can be called twice per request: once for in-band processing and once for out-of-band processing, thus it is recommended to use the `IsInBand` and `IsOutBand` variables to filter the hook.
-
+Except for `on_load`, hooks can be called twice per request: once for in-band processing and once for out-of-band processing. Use `IsInBand` and `IsOutBand` to filter the hook.
 
 Hooks have the following format:
 
@@ -29,19 +29,17 @@ Hooks have the following format:
 on_match:
   - filter: IsInBand && 1 == 1
     apply:
-    - valid expression
-    - valid expression
+      - valid expression
+      - valid expression
 ```
 
 If the filter returns `true`, each of the expressions in the `apply` section are executed.
-
 
 <!-- once https://github.com/crowdsecurity/crowdsec-docs/issues/555 is fixed, document on_success-->
 
 ### `on_load`
 
 This hook is intended to be used to disable rules at loading (eg, to temporarily disable a rule that is causing false positives).
-
 
 #### Available helpers
 
@@ -63,14 +61,13 @@ This hook is intended to be used to disable rules at loading (eg, to temporarily
 name: crowdsecurity/my-appsec-config
 default_remediation: ban
 inband_rules:
- - crowdsecurity/base-config
- - crowdsecurity/vpatch-*
+  - crowdsecurity/base-config
+  - crowdsecurity/vpatch-*
 on_load:
- - apply:
-    - RemoveInBandRuleByName("my_rule")
-    - SetRemediationByTag("my_tag", "captcha")
+  - apply:
+      - RemoveInBandRuleByName("my_rule")
+      - SetRemediationByTag("my_tag", "captcha")
 ```
-
 
 ### `pre_eval`
 
@@ -92,6 +89,7 @@ This hook is intended to be used to disable rules only for this particular reque
 | `SetRemediationByID`      | `func(id int, remediation string)`   | Change the remediation of the in-band rule identified by the ID                                         |
 | `SetRemediationByName`    | `func(name str, remediation string)` | Change the remediation of the in-band rule identified by the name                                       |
 | `req`                     | `http.Request`                       | Original HTTP request received by the remediation component                                             |
+| `DropRequest`             | `func(reason str)`                   | Stop processing the request immediately and instruct the remediation component to block the request     |
 
 #### Example
 
@@ -99,12 +97,12 @@ This hook is intended to be used to disable rules only for this particular reque
 name: crowdsecurity/my-appsec-config
 default_remediation: ban
 inband_rules:
- - crowdsecurity/base-config
- - crowdsecurity/vpatch-*
+  - crowdsecurity/base-config
+  - crowdsecurity/vpatch-*
 pre_eval:
- - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
-   apply:
-    - RemoveInBandRuleByName("my_rule")
+  - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
+    apply:
+      - RemoveInBandRuleByName("my_rule")
 ```
 
 ### `post_eval`
@@ -112,6 +110,7 @@ pre_eval:
 This hook is mostly intended for debugging or threat-hunting purposes.
 
 #### Available helpers
+
 | Helper Name   | Type           | Description                                                  |
 | ------------- | -------------- | ------------------------------------------------------------ |
 | `IsInBand`    | `bool`         | `true` if the request is in the in-band processing phase     |
@@ -124,25 +123,28 @@ This hook is mostly intended for debugging or threat-hunting purposes.
 In order to make `DumpRequest` write your request to a file, you have to call `DumpRequest().ToJSON()`, which will create a file in the OS temporary directory (eg, `/tmp` on Linux) with the following format: `crowdsec_req_dump_<RANDOM_PART>.json`.
 
 You can configure what is dumped with the following options:
- - `DumpRequest().NoFilters()`: Clear any previous filters (ie. dump everything)
- - `DumpRequest().WithEmptyHeadersFilters()`: Clear the headers filters, ie. dump all the headers
- - `DumpRequest().WithHeadersContentFilter(regexp string)`: Add a filter on the content of the headers, ie. dump only the headers that *do not* match the provided regular expression
- - `DumpRequest().WithHeadersNameFilter(regexp string)`: Add a filter on the name of the headers, ie. dump only the headers that *do not* match the provided regular expression
- - `DumpRequest().WithNoHeaders()`: Do not dump the request headers
- - `DumpRequest().WithHeaders()`: Dump all the request headers (override any previous filter)
- - `DumpRequest().WithBody()`: Dump the request body
- - `DumpRequest().WithNoBody()`: Do not dump the request body
- - `DumpRequest().WithEmptyArgsFilters()`: Clear the query parameters filters, ie. dump all the query parameters
- - `DumpRequest().WithArgsContentFilter(regexp string)`: Add a filter on the content of the query parameters, ie. dump only the query parameters that *do not* match the provided regular expression
- - `DumpRequest().WithArgsNameFilter(regexp string)`: Add a filter on the name of the query parameters, ie. dump only the query parameters that *do not* match the provided regular expression
+
+- `DumpRequest().NoFilters()`: Clear any previous filters (ie. dump everything)
+- `DumpRequest().WithEmptyHeadersFilters()`: Clear the headers filters, ie. dump all the headers
+- `DumpRequest().WithHeadersContentFilter(regexp string)`: Add a filter on the content of the headers, ie. dump only the headers that _do not_ match the provided regular expression
+- `DumpRequest().WithHeadersNameFilter(regexp string)`: Add a filter on the name of the headers, ie. dump only the headers that _do not_ match the provided regular expression
+- `DumpRequest().WithNoHeaders()`: Do not dump the request headers
+- `DumpRequest().WithHeaders()`: Dump all the request headers (override any previous filter)
+- `DumpRequest().WithBody()`: Dump the request body
+- `DumpRequest().WithNoBody()`: Do not dump the request body
+- `DumpRequest().WithEmptyArgsFilters()`: Clear the query parameters filters, ie. dump all the query parameters
+- `DumpRequest().WithArgsContentFilter(regexp string)`: Add a filter on the content of the query parameters, ie. dump only the query parameters that _do not_ match the provided regular expression
+- `DumpRequest().WithArgsNameFilter(regexp string)`: Add a filter on the name of the query parameters, ie. dump only the query parameters that _do not_ match the provided regular expression
 
 By default, everything is dumped.
 All regexps are case-insensitive.
 
-You can chain the options, for example: 
+You can chain the options, for example:
+
 ```
 DumpRequest().WithNoBody().WithArgsNameFilter("var1").WithArgsNameFilter("var2").ToJSON()
 ```
+
 This will discard the body of the request, remove the query parameters `var1` and `var2` from the dump, and dump everything else.
 
 #### Example
@@ -151,12 +153,12 @@ This will discard the body of the request, remove the query parameters `var1` an
 name: crowdsecurity/my-appsec-config
 default_remediation: ban
 inband_rules:
- - crowdsecurity/base-config
- - crowdsecurity/vpatch-*
+  - crowdsecurity/base-config
+  - crowdsecurity/vpatch-*
 post_eval:
- - filter: IsInBand == true
-   apply:
-    - DumpRequest().NoFilters().WithBody().ToJSON()
+  - filter: IsInBand == true
+    apply:
+      - DumpRequest().NoFilters().WithBody().ToJSON()
 ```
 
 ### `on_match`
@@ -165,19 +167,19 @@ This hook is intended to be used to change the behavior of the engine after a ma
 
 #### Available helpers
 
-| Helper Name      | Type                       | Description                                                               |
-| ---------------- | -------------------------- | ------------------------------------------------------------------------- |
-| `SetRemediation` | `func(remediation string)` | Change the remediation that will be returned to the remediation component |
-| `SetReturnCode`  | `func(code int)`           | Change the HTTP code that will be returned to the remediation component   |
-| `CancelAlert`    | `func()`                   | Prevent the Application Security Component to create a crowdsec alert     |
-| `SendAlert`      | `func()`                   | Force the Application Security Component to create a crowdsec alert       |
-| `CancelEvent`    | `func()`                   | Prevent the Application Security Component to create a crowdsec event     |
-| `SendEvent`      | `func()`                   | Force the Application Security Component to create a crowdsec event       |
-| `DumpRequest`    | `func()`                   | Dump the request to a file (see previous section for detailed usage)      |
-| `IsInBand`       | `bool`                     | `true` if the request is in the in-band processing phase                  |
-| `IsOutBand`      | `bool`                     | `true` if the request is in the out-of-band processing phase              |
-| `evt`            | `types.Event`              | [The event that has been generated](/docs/expr/event.md#appsec-helpers) by the Application Security Component   |
-| `req`            | `http.Request`             | Original HTTP request received by the remediation component               |
+| Helper Name      | Type                       | Description                                                                                                   |
+| ---------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `SetRemediation` | `func(remediation string)` | Change the remediation that will be returned to the remediation component                                     |
+| `SetReturnCode`  | `func(code int)`           | Change the HTTP code that will be returned to the remediation component                                       |
+| `CancelAlert`    | `func()`                   | Prevent the Application Security Component to create a crowdsec alert                                         |
+| `SendAlert`      | `func()`                   | Force the Application Security Component to create a crowdsec alert                                           |
+| `CancelEvent`    | `func()`                   | Prevent the Application Security Component to create a crowdsec event                                         |
+| `SendEvent`      | `func()`                   | Force the Application Security Component to create a crowdsec event                                           |
+| `DumpRequest`    | `func()`                   | Dump the request to a file (see previous section for detailed usage)                                          |
+| `IsInBand`       | `bool`                     | `true` if the request is in the in-band processing phase                                                      |
+| `IsOutBand`      | `bool`                     | `true` if the request is in the out-of-band processing phase                                                  |
+| `evt`            | `types.Event`              | [The event that has been generated](/docs/expr/event.md#appsec-helpers) by the Application Security Component |
+| `req`            | `http.Request`             | Original HTTP request received by the remediation component                                                   |
 
 #### Example
 
@@ -187,8 +189,8 @@ default_remediation: ban
 inband_rules:
  - crowdsecurity/base-config
  - crowdsecurity/vpatch-*
-post_eval:
- - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
+on_match:
+  - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
    apply:
     - CancelAlert()
     - CancelEvent()
@@ -209,8 +211,6 @@ post_eval:
 When using `SetRemediation*` helpers, the only special value is `allow`: the remediation component won't block the request.
 Any other values (including `ban` and `captcha`) are transmitted as-is to the remediation component.
 
-
-
 ### `req` object
 
 The `pre_eval`, `on_match` and `post_eval` hooks have access to a `req` variable that represents the HTTP request that was forwarded to the appsec.
@@ -218,7 +218,8 @@ The `pre_eval`, `on_match` and `post_eval` hooks have access to a `req` variable
 It's a Go [http.Request](https://pkg.go.dev/net/http#Request) object, so you can directly access all the details about the request.
 
 For example:
- - To get the requested URI: `req.URL.Path`
- - To get the client IP: `req.RemoteAddr`
- - To get the HTTP method: `req.Method`
- - To get the FQDN: `req.URL.Host`
+
+- To get the requested URI: `req.URL.Path`
+- To get the client IP: `req.RemoteAddr`
+- To get the HTTP method: `req.Method`
+- To get the FQDN: `req.Host`

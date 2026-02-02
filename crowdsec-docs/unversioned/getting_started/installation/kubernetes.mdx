@@ -10,18 +10,21 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
-# Kubernetes Deployment
+# Install on Kubernetes
 
-Before getting started, it is advised to read the
-[introduction](/unversioned/getting_started/introduction.mdx) page to understand
-the prerequisites and concepts for running CrowdSec.
+New to CrowdSec? Start with the
+[introduction](/unversioned/getting_started/introduction.mdx) to understand the
+components and prerequisites.
+
+This page installs the **Security Engine** (detection). For blocking, install a
+[Remediation Component](/bouncers/intro.md) after the engine is running.
 
 ## Requirements
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [Helm](https://helm.sh/docs/intro/install/)
 
-Even if an installation could be possible without Helm, it's not documented for now.
+You can install without Helm, but it is not documented yet.
 
 ## Helm Repository Installation
 
@@ -32,9 +35,11 @@ helm repo add crowdsec https://crowdsecurity.github.io/helm-charts
 helm repo update
 ```
 
-### Install Security Engine
+### Install the Security Engine
 
-Once the helm repository is added, first you need to write your crowdsec-values.yaml file. You can use the following example:
+Once the Helm repository is added, create a `crowdsec-values.yaml` file. This
+`values.yaml` different options are described [here](/docs/next/configuration/values_parameters) You can start with this
+example:
 
 ```yaml
 # for raw logs format: json or cri (docker|containerd)
@@ -87,8 +92,8 @@ run; if it doesn’t, they stay idle. One log stream can match several collectio
 if the tags fit.
 </details>
 
-If you want more information about the configuration, you can check the default
-[values.yaml](https://artifacthub.io/packages/helm/crowdsec/crowdsec#values)
+For full configuration options, see the default
+[values.yaml](/docs/next/configuration/values_parameters)
 
 Then, you can install the Security Engine with the following command:
 
@@ -110,45 +115,31 @@ crowdsec-agent-kf9fr 1/1 Running 0 34s
 crowdsec-lapi-777c469947-jbk9q 1/1 Running 0 34s
 ```
 
-### A word About Source IPs
+### A word about source IPs
 
-For CrowdSec to do its job in Kubernetes, it needs to see the real client IP. If
-not, every request will just look like it’s coming from your ingress controller
-or load balancer, and CrowdSec won’t know who the actual attacker is. To fix
-this, you need to make sure the original IP gets passed through. Depending on
-your setup, that could mean turning on the proxy-protocol in your ingress,
-setting externalTrafficPolicy: Local on Services, or tweaking things like
-real_ip_header and set_real_ip_from if you’re using NGINX. The exact steps
-depend on your stack, but the main idea is simple: CrowdSec needs the real IP,
-not the proxy’s.
+For CrowdSec to work in Kubernetes, it must see the real client IP. Otherwise
+every request looks like it came from your ingress controller or load balancer.
+Make sure the original IP is passed through (for example, proxy-protocol on
+ingress, `externalTrafficPolicy: Local` on Services, or `real_ip_header` and
+`set_real_ip_from` with NGINX). The exact steps depend on your stack, but the
+goal is always the same: CrowdSec needs the real IP, not the proxy's.
 
-### A Word About Remediation Component
+### A word about Remediation Components
 
-Installing the CrowdSec Engine as a local API and log processors is very useful
-to detect aggressive behaviors, but no remediation action will be taken upon it.
-To get remediation actions, one has to install remediation component. As of now
-remediation can only happen at ingress level.
+Installing the Security Engine (LAPI + agent) enables detections, but it does
+not block anything by itself. To enforce decisions, install a remediation
+component. In Kubernetes, remediation is currently done at the ingress level.
 
 For now, we support:
 
 * [Ingress Nginx](/bouncers/ingress-nginx.mdx)
 * [Traefik Ingress](/bouncers/traefik.mdx)
 
-Please note that the [Traefik Kubernetes Ingress (Third party
+Please note that the [Traefik Kubernetes Ingress (third-party
 development)](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin))
-is maintained outside CrowdSec
+is maintained outside CrowdSec.
 
-Before installing the remediation component, you need to generate API key to communicate with the LAPI.
-
-:::info
-If you **have persistentVolumes enabled** in `values.yaml`, you can generate the api key directly from the LAPI pod:
-
-```bash
-kubectl -n crowdsec exec -it crowdsec-lapi-<pod-id> -- cscli bouncers add my-bouncer-name
-```
-
-Else you **don't have persistentVolumes enabled**, you need to specify your key
-in the crowdsec helm `values.yaml` file:
+In the crowdsec helm `values.yaml` file:
 
 ```yaml
 lapi:
@@ -163,7 +154,32 @@ lapi:
     - name: BOUNCER_KEY_traefik
       value: "mysecretkey12345"
 ```
-:::
+
+To avoid having secrets stored in you `values.yaml` you can use secrets:
+```bash
+kubectl create secret generic crowdsec-keys \
+  --from-literal=ENROLL_KEY=<enroll_key> \
+  --from-literal=BOUNCER_KEY_ingress=<bouncer_key> \
+  -n crowdsec
+```
+
+And use this in the values.yaml:
+```yaml
+lapi:
+  env:
+    - name: ENROLL_KEY
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: ENROLL_KEY
+      value: "<enroll-key>"
+    - name: BOUNCER_KEY_traefik
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: BOUNCER_KEY_traefik
+      value: "<bouncer_key>"```
+```
 
 ### A word about databases
 
@@ -177,7 +193,11 @@ PostgreSQL. You can leverage existing operators to manage these databases:
 * [mariadb operator](https://mariadb.com/resources/blog/get-started-with-mariadb-in-kubernetes-and-mariadb-operator/)
 * [postgresql operator](https://github.com/cloudnative-pg/cloudnative-pg)
 
-Configuration those databases is out of scope of this documentation.
+Crowdsec in kubernetes configuration for this database is made with the
+[config.config.yaml.local value in
+`values.yaml`](docs/next/configuration/values_parameters).
+
+Configuration of those databases is out of scope of this documentation.
 <!-- We want to create blogpost where we do it -->
 
 :::warning
@@ -188,7 +208,7 @@ replication, SQLite can also become a performance bottleneck under heavy load.
 
 :::
 
-## Next Steps?
+## Next steps
 
 Great, you now have CrowdSec installed on your system. Within the [post
 installation steps](/getting_started/next_steps.mdx) you will find the next

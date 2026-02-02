@@ -15,10 +15,15 @@ If you have any suggestions for this please open an [issue here](https://github.
 
 Also, checkout our 🩺 [**Stack Health-Check page**](/u/getting_started/health_check) to make sure your **Detection**, **Community Sharing** and **Remediation** are working properly
 
-Here you'll also find Troubleshooting by topic:
-* [Security Engine Troubleshooting](/troubleshooting/security_engine.mdx)
-* [Remediation Components Troubleshooting](/troubleshooting/remediation_components.mdx)
-* [CTI Troubleshooting](/troubleshooting/cti.mdx)
+## Console Health Check Issues
+
+If you received a health check alert from the CrowdSec Console, check out the [**Console Health Check Issues**](/u/troubleshooting/console_issues) page for a complete list of issues, their trigger conditions, and dedicated troubleshooting guides.
+
+## Troubleshooting by Topic
+
+* [Security Engine Troubleshooting](/u/troubleshooting/security_engine)
+* [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components)
+* [CTI Troubleshooting](/u/troubleshooting/cti)
 
 ## Community support
 

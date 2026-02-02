@@ -8,9 +8,15 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 
 The CrowdSec Cisco integration allows you to block malicious IPs in your Cisco firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Cisco firewall.
 
+Cisco refers to this feature as [**Security Intelligence feeds**](https://www.cisco.com/c/en/us/td/docs/security/secure-firewall/management-center/device-config/710/management-center-device-config-71/objects-object-mgmt.html#ID-2243-00000291), which provide dynamic threat intelligence that can be used in your firewall policies.
+
 ### Prerequisites
 
 Before you begin, please ensure your Cisco device supports ingesting blocklists. If you are unsure, please refer to the Cisco documentation or contact Cisco support.
+
+:::warning
+Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::
 
 ### Steps
 

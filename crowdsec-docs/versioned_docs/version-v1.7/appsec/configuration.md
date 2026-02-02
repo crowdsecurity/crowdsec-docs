@@ -1,12 +1,12 @@
 ---
 id: configuration
-title: Configurations Files
+title: Configuration Files
 sidebar_position: 6
 ---
 
 ## Overview
 
-This page explains the interaction between various files involved in AppSec configuration and the details about the processing pipeline AppSec request processing.
+This page explains how AppSec configuration files work together and how the request processing pipeline behaves.
 
 **Prerequisites**: 
 - Familiarity with [AppSec concepts](/appsec/intro.md)
@@ -14,27 +14,27 @@ This page explains the interaction between various files involved in AppSec conf
 
 The AppSec Component configuration consists of three main parts:
 
- - **[Acquisition configuration](/log_processor/data_sources/appsec.md)**: Defines which port the AppSec Component listens on and which AppSec configurations files to load <!-- Fix linked page to ie. speak about appsec_configs-->
- - **AppSec configurations**: Define which rules are loaded and how they behave, along with [hooks](/appsec/hooks.md) for runtime customization
+- **[Acquisition configuration](/log_processor/data_sources/appsec.md)**: Defines which port the AppSec Component listens on and which AppSec configuration files to load <!-- Fix linked page to ie. speak about appsec_configs-->
+- **AppSec configurations**: Define which rules are loaded and how they behave, along with [hooks](/appsec/hooks.md) for runtime customization
  - **[AppSec rules](/appsec/rules_syntax.md)**: The actual detection signatures that identify and block malicious requests
 
 ## AppSec Acquisition
 
-The goals of the acquisition file are:
-- To specify the **address** and **port** where the AppSec-enabled Remediation Component(s) will forward the requests to.
-- And specify one or more [AppSec configuration files](#appsec-configuration-files) to use as definition of what rules to apply and how. 
+The acquisition file is used to:
+- Specify the **address** and **port** where AppSec-enabled remediation components forward requests.
+- Specify one or more [AppSec configuration files](#appsec-configuration-files) that define which rules to apply and how.
 
 Details can be found in the [AppSec Datasource page](/log_processor/data_sources/appsec.md).
 
 ### Defining Multiple AppSec Configurations
 
-Often you will want to activate multiple AppSec configuration defining groups of rules that will be handled the same way.  
+Often you will want multiple AppSec configurations to define groups of rules that are handled the same way.  
 
 Use the `appsec_configs` *(with an S)* parameter to load multiple configurations that work together.  
 
 In the following example we have two configurations:
-- One with [CrowdSec default AppSec rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-configurations/appsec-default) running in inband mode 
-- The other for the [CRS rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs) that by default run in out of band mode.
+- One with [CrowdSec default AppSec rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-configurations/appsec-default) running in in-band mode 
+- The other for the [CRS rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs) that run in out-of-band mode by default.
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
 appsec_configs:
@@ -55,7 +55,7 @@ This collection installs OWASP CRS in out-of-band and adds a scenario to ban IPs
 
 ### Using Custom Configurations
 
-If you want to alter the default configuration files we recommend creating a new configuration files instead of modifying existing hub configurations.  
+If you want to alter default configuration files, create a new configuration file instead of modifying hub configurations.  
 Modifying hub configurations will make them *tainted* and prevent automatic updates.
 
 For example, if you want to change the default vpatch rules config, create your own and use it instead in the acquisition file.  
@@ -82,7 +82,7 @@ inband_rules:
 
 ## AppSec Configuration Files
 
-AppSec configuration files declare **which rules to load** in the **in-band** *(blocking)* and/or **out-of-band** *(non-blocking)*, define how matches are handled (e.g., default remediation), and let you tweak processing via hooks like `on_load`, `pre_eval`, `post_eval`, and `on_match`.
+AppSec configuration files declare **which rules to load** in **in-band** *(blocking)* and/or **out-of-band** *(non-blocking)* mode, define how matches are handled (e.g., default remediation), and let you tweak processing via hooks like `on_load`, `pre_eval`, `post_eval`, and `on_match`.
 
 For details, jump to the [Configuration properties list](#appendix-appsec-configuration-properties)
 
@@ -146,7 +146,7 @@ default_remediation: ban      # or "allow", "captcha", etc.
 ```
 
 :::info
-When using multiple AppSec configs the last declared one takes precedence for this property
+When using multiple AppSec configs, the last declared one takes precedence for this property.
 :::
 
 #### `default_pass_action` (optional, default: "allow")
@@ -157,7 +157,7 @@ default_pass_action: allow    # or any custom value
 ```
 
 :::info
-When using multiple AppSec configs the last declared one takes precedence for this property
+When using multiple AppSec configs, the last declared one takes precedence for this property.
 :::
 
 ### HTTP Response Codes
@@ -244,7 +244,7 @@ Executed when rules match. Used to modify remediation or generate custom alerts.
 
 ```yaml
 on_match:
-  - filter: req.URL.Host == "staging.example.com"
+  - filter: req.Host == "staging.example.com"
     apply:
       - SetRemediation("allow")
       - CancelAlert()
@@ -325,7 +325,7 @@ If your reverse-proxy forwards all requests to CrowdSec regardless of the FQDN, 
 ```yaml title="/etc/crowdsec/appsec-configs/my_config.yaml"
 name: custom/my_config
 on_match:
- - filter: req.URL.Host == "foo.com"
+ - filter: req.Host == "foo.com"
    apply:
     - CancelEvent()
     - CancelAlert()

@@ -1,10 +1,10 @@
 ---
 id: advanced_deployments
-title: Advanced WAF Deployments
+title: WAF Deployment Strategies
 sidebar_position: 6
 ---
 
-# Advanced WAF Deployments
+# WAF Deployment Strategies
 
 This guide covers advanced CrowdSec WAF deployment strategies for organizations looking to gradually enhance their web application security posture. Learn how to progressively improve your WAF configuration from basic virtual patching to comprehensive multi-layer protection.
 
@@ -44,7 +44,7 @@ CrowdSec WAF supports multiple deployment strategies that can be implemented pro
 
 ### 2. Enhanced Detection (Out-of-band CRS)
 **Next Step**: Add comprehensive attack detection without performance impact
-- Add: [`crowdsecurity/appsec-crs-inband`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs-inband) (out-of-band) alongside existing virtual patching
+- Add: [`crowdsecurity/appsec-crs`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/crowdsecurity/appsec-crs) (out-of-band) alongside existing virtual patching
 - Mode: Non-blocking analysis + behavioral banning
 - Coverage: OWASP Top 10 + comprehensive attack patterns + specific CVE protection
 - Performance: No latency impact ⚡
@@ -259,7 +259,7 @@ In-band CRS blocking provides maximum protection but requires:
 
 Once you've implemented advanced deployments:
 
-- Configure [Custom Rules](/appsec/create_rules.md) for application-specific protection
-- Set up [Hooks](/appsec/hooks.md) for custom response actions
-- Explore [Configuration Options](/appsec/configuration.md) for fine-tuning
-- Review [Troubleshooting Guide](/appsec/troubleshooting.md) for operational issues
+- Configure [Custom Rules](create_rules.md) for application-specific protection
+- Set up [Hooks](hooks.md) for custom response actions
+- Explore [Configuration Options](configuration.md) for fine-tuning
+- Review [Troubleshooting Guide](troubleshooting.md) for operational issues

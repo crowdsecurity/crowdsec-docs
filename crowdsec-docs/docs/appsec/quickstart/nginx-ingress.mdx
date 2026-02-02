@@ -1,0 +1,345 @@
+---
+id: nginx-ingress
+title: QuickStart - NGINX Ingress (Helm)
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# CrowdSec WAF QuickStart for NGINX Ingress (Helm)
+
+## Objectives
+
+This quickstart shows how to deploy the CrowdSec AppSec Component with the
+official Helm chart and protect workloads exposed through the Kubernetes [NGINX
+Ingress Controller](https://kubernetes.github.io/ingress-nginx/). At the end, you
+will have:
+
+- CrowdSec running in-cluster with the AppSec API listening on `7422`
+- The ingress controller using the CrowdSec Lua plugin to forward requests for inspection
+- Basic virtual patching rules blocking common web exploits
+
+## Prerequisites
+
+1. If you're new to the [AppSec Component](/appsec/intro.md#introduction) or
+**W**eb **A**pplication **F**irewalls, start with the
+[Introduction](/appsec/intro.md#introduction) for a better understanding.
+
+2. It's assumed that you have already installed **CrowdSec [Security
+Engine](/intro.mdx)**. For installation quickstart, refer to the [QuickStart
+guide](/u/getting_started/installation/kubernetes).
+
+:::warning
+A Lua-enabled controller is essential for CrowdSec's NGINX Ingress
+remediation, as it relies on the Lua plugin interface. Please use the
+`crowdsecurity/controller` image provided by CrowdSec (as specified in the
+values below). Note that the standard upstream controller removed Lua support in
+version 1.12 and therefore is not suitable for use as a CrowdSec remediation component.
+:::
+
+:::tip Already have CrowdSec AppSec running?
+If CrowdSec is already deployed with AppSec enabled in your cluster, skip to [Enable the CrowdSec Lua plugin on NGINX Ingress](#enable-the-crowdsec-lua-plugin-on-nginx-ingress).
+:::
+
+## Deploy CrowdSec with AppSec enabled
+
+### Helm repository
+
+Add or update the CrowdSec Helm repository:
+
+```bash
+helm repo add crowdsec https://crowdsecurity.github.io/helm-charts
+helm repo update
+```
+
+:::note
+If CrowdSec is already deployed with Helm in this cluster, the repository entry is already present—you only need `helm repo update`.
+:::
+
+### Update CrowdSec configuration
+
+Add this to the CrowdSec `values.yaml` with the AppSec acquisition datasource (see the [AppSec datasource](/log_processor/data_sources/appsec.md)) and the default [AppSec configuration](/appsec/configuration.md):
+
+```yaml title="values.yaml"
+appsec:
+  acquisitions:
+    - appsec_configs:
+        - crowdsecurity/appsec-default
+      labels:
+        type: appsec
+      listen_addr: 0.0.0.0:7422
+      path: /
+      source: appsec
+  enabled: true
+  env:
+    - name: COLLECTIONS
+      value: crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+```
+
+This YAML configuration snippet exposes the important configuration items:
+     * `listen_addr: 0.0.0.0:7422` exposes the AppSec API inside the cluster.
+     * `appsec_configs` loads the [AppSec configuration(s)](/appsec/configuration.md) that define which rules are evaluated (in-band vs out-of-band).
+     * The two collections provide virtual patching and generic rule coverage.
+     * The chart bootstraps a bouncer named `nginx_ingress_waf` using the key you export locally.
+
+And now we apply the new configuration with:
+
+```bash
+helm upgrade --install crowdsec crowdsec/crowdsec --namespace crowdsec --create-namespace -f crowdsec-appsec-values.yaml
+```
+
+### Confirm the pods are healthy:
+
+```bash
+kubectl -n crowdsec get pods
+```
+
+You should see `crowdsec-agent` pods, the `crowdsec-lapi` pod and the `crowdsec-appsec` pod in `Running` state.
+
+## Enable the CrowdSec Lua plugin on NGINX Ingress
+
+To extend the ingress controller with the CrowdSec plugin and point it to the
+AppSec API, create the file named `ingress-values.yaml`. You can read the entire
+file in the snippet below.
+
+```yaml title="ingress-values.yaml"
+controller:
+  image:
+    registry: docker.io
+    image: crowdsecurity/controller
+    tag: v1.13.2
+    digest: sha256:4575be24781cad35f8e58437db6a3f492df2a3167fed2b6759a6ff0dc3488d56
+  extraVolumes:
+    - name: crowdsec-bouncer-plugin
+      emptyDir: {}
+  extraInitContainers:
+    - name: init-clone-crowdsec-bouncer
+      image: crowdsecurity/lua-bouncer-plugin:latest
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: API_URL
+          value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080"
+        - name: API_KEY
+          value: privateKey-foo
+        - name: BOUNCER_CONFIG
+          value: "/crowdsec/crowdsec-bouncer.conf"
+        - name: APPSEC_URL
+          value: "http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422"
+        - name: APPSEC_FAILURE_ACTION
+          value: "ban"
+        - name: APPSEC_CONNECT_TIMEOUT
+          value: "100"
+        - name: APPSEC_SEND_TIMEOUT
+          value: "100"
+        - name: APPSEC_PROCESS_TIMEOUT
+          value: "1000"
+        - name: ALWAYS_SEND_TO_APPSEC
+          value: "false"
+      command:
+        - sh
+        - -c
+        - |
+          sh /docker_start.sh
+          mkdir -p /lua_plugins/crowdsec/
+          cp -R /crowdsec/* /lua_plugins/crowdsec/
+      volumeMounts:
+        - name: crowdsec-bouncer-plugin
+          mountPath: /lua_plugins
+  extraVolumeMounts:
+    - name: crowdsec-bouncer-plugin
+      mountPath: /etc/nginx/lua/plugins/crowdsec
+      subPath: crowdsec
+  config:
+    plugins: "crowdsec"
+    lua-shared-dicts: "crowdsec_cache: 50m"
+    server-snippet: |
+      lua_ssl_trusted_certificate "/etc/ssl/certs/ca-certificates.crt"
+      resolver local=on ipv6=off;
+```
+
+
+- `API_URL` targets the Local API service exposed by the Helm chart.
+- `API_KEY` defines the key for the bouncer to be able to connect to CrowdSec LAPI
+- `APPSEC_URL` points to the AppSec service; keep the namespace in sync with your CrowdSec release.
+- The plugin copies the Lua files from the init container into an `emptyDir` that is mounted at runtime.
+
+Deploy or upgrade the ingress controller with the new values:
+
+```bash
+helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+  --namespace ingress-nginx \
+  -f crowdsec-ingress-values.yaml
+```
+
+<details>
+<summary>CrowdSec Ingress-NGINX Remediation Configuration Explained</summary>
+
+This `values.yaml` snippet integrates the CrowdSec remediation (Lua bouncer)
+into the `ingress-nginx` controller by injecting the Lua plugin, generating its
+configuration, and enabling it inside NGINX.
+
+#### Controller Image Override
+```yaml
+controller:
+  image:
+    registry: docker.io
+    image: crowdsecurity/controller
+    tag: v1.13.2
+    digest: sha256:...
+```
+
+The controller image is replaced with a CrowdSec-enabled build that includes the
+required Lua integration points.
+
+#### Shared Volume for the Plugin
+
+```yaml
+extraVolumes:
+  - name: crowdsec-bouncer-plugin
+    emptyDir: {}
+```
+
+An emptyDir volume is used to hold the Lua bouncer plugin. It will be filled by
+an initContainer and mounted into the main controller.
+
+#### InitContainer: Plugin Fetch and Configuration
+
+```yaml
+extraInitContainers:
+  - name: init-clone-crowdsec-bouncer
+    image: crowdsecurity/lua-bouncer-plugin:latest
+    env:
+      - name: API_URL
+        value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080"
+      - name: API_KEY
+        value: privateKey-foo
+      - name: BOUNCER_CONFIG
+        value: "/crowdsec/crowdsec-bouncer.conf"
+      - name: APPSEC_URL
+        value: "http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422"
+      - name: APPSEC_FAILURE_ACTION
+        value: "ban"
+      - name: APPSEC_CONNECT_TIMEOUT
+        value: "100"
+      - name: APPSEC_SEND_TIMEOUT
+        value: "100"
+      - name: APPSEC_PROCESS_TIMEOUT
+        value: "1000"
+      - name: ALWAYS_SEND_TO_APPSEC
+        value: "false"
+    command:
+      - sh
+      - -c
+      - |
+        sh /docker_start.sh
+        mkdir -p /lua_plugins/crowdsec/
+        cp -R /crowdsec/* /lua_plugins/crowdsec/
+    volumeMounts:
+      - name: crowdsec-bouncer-plugin
+        mountPath: /lua_plugins
+```
+
+The initContainer generates the plugin configuration (crowdsec-bouncer.conf)
+from environment variables and copies the Lua plugin files into the shared
+volume so the main controller can load them.
+
+#### Mounting the Plugin in NGINX
+
+```yaml
+extraVolumeMounts:
+  - name: crowdsec-bouncer-plugin
+    mountPath: /etc/nginx/lua/plugins/crowdsec
+    subPath: crowdsec
+```
+
+This mounts the plugin files inside the directory where ingress-nginx expects
+Lua plugins.
+
+#### NGINX Configuration to Enable the Plugin
+
+```
+config:
+  plugins: "crowdsec"
+  lua-shared-dicts: "crowdsec_cache: 50m"
+  server-snippet: |
+    lua_ssl_trusted_certificate "/etc/ssl/certs/ca-certificates.crt"
+    resolver local=on ipv6=off;
+```
+
+This snippet enables the crowdsec Lua plugin, aAllocates shared memory for
+caching LAPI/AppSec results and ensures Lua HTTPS validation and DNS resolution
+work properly.
+
+#### Summary
+
+This configuration:
+* Injects the CrowdSec Lua bouncer plugin into ingress-nginx.
+* Generates its configuration via an initContainer.
+* Mounts it into NGINX so it is executed during request processing.
+* Enables both LAPI enforcement and optional AppSec forwarding depending on settings.
+</details> 
+
+
+:::note
+After the rollout, you can optionally check that the right container is deployed with something like:
+
+`kubectl -n ingress-nginx exec -ti <ingress-pod-name> -- find /etc/nginx/lua/plugins/crowdsec`
+
+This should give you a bunch of crowdsec lua files.
+
+:::
+
+## Testing the AppSec Component + Remediation Component
+
+:::note
+We're assuming the web server is installed on the same machine and is listening on port 80. Please adjust your testing accordingly if this is not the case.
+:::
+
+if you try to access `http://localhost/.env` from a browser, your request will be blocked, resulting in the display of the following HTML page:
+
+![appsec-denied](/img/appsec_denied.png)
+
+We can also look at the metrics from `cscli metrics show appsec` on the appsec pod it will display:
+ - the number of requests processed by the AppSec Component
+ - Individual rule matches
+
+ <details>
+     <summary>Example Output</summary>
+
+```bash title="kubectl exec -n crowdsec -ti crowdsec-appsec-<pod-name> -- cscli metrics show appsec"
+Appsec Metrics:
+╭─────────────────┬───────────┬─────────╮
+│  Appsec Engine  │ Processed │ Blocked │
+├─────────────────┼───────────┼─────────┤
+│ 127.0.0.1:7422/ │ 2         │ 1       │
+╰─────────────────┴───────────┴─────────╯
+
+Appsec '127.0.0.1:7422/' Rules Metrics:
+╭─────────────────────────────────┬───────────╮
+│             Rule ID             │ Triggered │
+├─────────────────────────────────┼───────────┤
+│ crowdsecurity/vpatch-env-access │ 1         │
+╰─────────────────────────────────┴───────────╯
+```
+</details>
+
+You can test and investigate further with [Stack
+Health-Check](/u/getting_started/health_check#trigger-crowdsec-test-scenarios) and [Appsec Troubleshooting
+guide](/appsec/troubleshooting.md)
+
+## Integration with the Console
+
+If you haven't yet, follow the guide about [how to enroll your Security Engine in the Console](/u/getting_started/post_installation/console).
+
+Once done, all your alerts, including the ones generated by the AppSec Component, appear in the Console:
+
+![appsec-console](/img/appsec_console.png)
+
+## Next steps
+
+You are now running the AppSec Component on your CrowdSec Security Engine.
+
+As the next steps, you can:
+ - Look at [WAF Deployment Strategies](/appsec/advanced_deployments.mdx) to discover how to gradually improve your WAF security.
+ - Look at the [Rules syntax](/appsec/rules_syntax.md) and [creation process](/appsec/create_rules.md) to create your own and contribute
+ - Take a look at [the benchmarks](/appsec/benchmark.md)

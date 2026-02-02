@@ -8,9 +8,15 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 
 The CrowdSec Juniper integration allows you to block malicious IPs in your Juniper firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Juniper router.
 
+Juniper refers to this feature as [**Security Dynamic Address feeds**](https://www.juniper.net/documentation/us/en/software/nm-apps23.1/policy-enforcer-user-guide/topics/task/dynamic-example.html), which allow you to import and automatically update IP address lists from external feed servers.
+
 ### Prerequisites
 
 Before you begin, please ensure your Juniper device supports ingesting blocklists. If you are unsure, please refer to the Juniper documentation or contact Juniper support.
+
+:::warning
+Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::
 
 ### Steps
 
@@ -48,7 +54,7 @@ Once the integration is generated you will be presented with a credentials scree
     }}
 />
 
-[Juniper Documentation JunOS](https://www.juniper.net/documentation/us/en/software/junos/cli-reference/topics/ref/statement/edit-security-dynamic-address.html)
+[Juniper Documentation JunOS](https://www.juniper.net/documentation/us/en/software/nm-apps23.1/policy-enforcer-user-guide/topics/task/dynamic-example.html)
 
 ## Configuration Example
 
@@ -64,7 +70,7 @@ set security dynamic-address feed-server crowdsec-feed url https://<USERNAME>:<P
 ```
 set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed description "CrowdSec Feed"
 set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed path /v1/integrations/<integration_id>/content
-set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed update-interval 120 hold-interval 43200
+set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed update-interval 1440 hold-interval 43200
 ```
 
 ### Define AddressName-to-ThreatFeed mapping

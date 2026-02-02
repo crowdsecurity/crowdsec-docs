@@ -8,9 +8,15 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 
 The CrowdSec Fortinet integration allows you to block malicious IPs in your Fortinet firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Fortinet firewall.
 
+Fortinet refers to this feature as [**IP address Threat Feeds**](https://docs.fortinet.com/document/fortigate/6.4.5/administration-guide/891236/external-blocklist-policy), which enable you to integrate external threat intelligence sources into your firewall policies.
+
 ### Prerequisites
 
 Before you begin, please ensure your Fortinet device supports ingesting blocklists. If you are unsure, please refer to the Fortinet documentation or contact Fortinet support.
+
+:::warning
+Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::
 
 ### Steps
 

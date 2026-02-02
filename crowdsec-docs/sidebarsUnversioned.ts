@@ -84,6 +84,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				"cti_api/api_integration/integration_intelowl",
 				"cti_api/api_integration/integration_maltego",
 				"cti_api/api_integration/integration_misp",
+				"cti_api/api_integration/integration_ms_sentinel",
 				"cti_api/api_integration/integration_msticpy",
 				"cti_api/api_integration/integration_opencti",
 				"cti_api/api_integration/integration_paloalto_xsoar",
@@ -99,6 +100,33 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			type: "doc",
 			label: "FAQ",
 			id: "cti_api/faq",
+		},
+	],
+	trackerApiSidebar: [
+		{
+			type: "doc",
+			label: "Getting Started",
+			id: "tracker_api/intro",
+		},
+		{
+			type: "doc",
+			label: "Prioritize",
+			id: "tracker_api/prioritize",
+		},
+		{
+			type: "doc",
+			label: "Mitigate",
+			id: "tracker_api/mitigate",
+		},
+		{
+			type: "doc",
+			label: "API Reference",
+			id: "tracker_api/api_reference",
+		},
+		{
+			type: "doc",
+			label: "Web Interface",
+			id: "tracker_api/web_interface",
 		},
 	],
 	consoleSidebar: [
@@ -422,6 +450,36 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 			],
 		},
+		{
+			type: "doc",
+			label: "🩺 Stack Health",
+			id: "console/stackhealth",
+		},
+		{
+			type: "category",
+			label: "🏅 Premium Upgrade",
+			link: {
+				type: "doc",
+				id: "console/premium_upgrade",
+			},
+			items: [
+				{
+					type: "doc",
+					label: "Optimal Setup",
+					id: "console/premium_upgrade/optimal_setup",
+				},
+				{
+					type: "doc",
+					label: "Testing Premium",
+					id: "console/premium_upgrade/testing_premium",
+				},
+				{
+					type: "doc",
+					label: "Features Overview",
+					id: "console/premium_upgrade/features_overview",
+				},
+			],
+		},
 	],
 	remediationSideBar: [
 		{
@@ -525,7 +583,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "Traefik",
+			label: "Traefik (Kubernetes)",
 			id: "bouncers/traefik",
 		},
 		{
@@ -751,6 +809,7 @@ export default sidebarsUnversionedConfig;
 
 export const {
 	ctiApiSidebar,
+	trackerApiSidebar,
 	consoleSidebar,
 	remediationSideBar,
 	blocklistsSideBar,

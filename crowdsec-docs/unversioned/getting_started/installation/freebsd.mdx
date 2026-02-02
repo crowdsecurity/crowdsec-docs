@@ -5,19 +5,19 @@ pagination_prev: getting_started/intro
 pagination_next: getting_started/health_check
 ---
 
-# Installation FreeBSD
+# Install on FreeBSD
 
-Before getting started, it is advised to read the [introduction](/unversioned/getting_started/introduction.mdx) page to understand the prerequisites and concepts for running CrowdSec.
+New to CrowdSec? Start with the [introduction](/unversioned/getting_started/introduction.mdx) to understand the components and prerequisites.
 
-# Configuring the repositories
+# Configure repositories
 
 FreeBSD packages are available in the official repositories.
 
-By default, the command `pkg install` should use the quarterly releases (January, April, July and October, updated with security fixes).
+By default, `pkg install` uses quarterly releases (January, April, July, October), which include security fixes.
 
 You can check `/etc/pkg/FreeBSD.conf` and [change **quarterly** to **latest**](https://wiki.freebsd.org/Ports/QuarterlyBranch) if you feel comfortable upgrading your system.
 
-## Install Security Engine
+## Install the Security Engine
 
 The CrowdSec package itself can be installed with:
 
@@ -49,19 +49,23 @@ INFO[21-12-2021 03:13:35 PM] Wrote new 197364 bytes index to /usr/local/etc/crow
 [...]
 ```
 
-## Install Remediation Component
+## Install a Remediation Component
 
 :::warning
-Security Engine by itself is a detection engine, it will not block anything. You need to install a [Remediation Component](/bouncers/intro.md) to enforce decisions
+The Security Engine only detects. To block malicious traffic, install a [Remediation Component](/bouncers/intro.md).
 :::
 
-For the quick start guide we will be installing the [PF](https://en.wikipedia.org/wiki/PF_(firewall)) firewall [Remediation Component](/bouncers/intro.md). (This may not be optimal for your environment, please refer to the [Remediation Documentation](/bouncers/intro.md) for more information)
+For a quick start, we install the [PF](https://en.wikipedia.org/wiki/PF_(firewall)) firewall [Remediation Component](/bouncers/intro.md). This may not fit every environment, so see the [Remediation documentation](/bouncers/intro.md) for alternatives.
 
-To install 
+To install:
 
 ```shell
 sudo pkg install crowdsec-firewall-bouncer
 ```
+
+:::warning
+Before starting the firewall bouncer in `pf` mode, ensure your `/etc/pf.conf` defines the CrowdSec tables and blocking rules. See the [Firewall Remediation Component pf setup guide](/u/bouncers/firewall#pf-setup-freebsd).
+:::
 
 Then you must enable it with the following commands:
 
@@ -85,6 +89,6 @@ sudo service crowdsec_firewall start
 Registered: cs-firewall-bouncer-ZjpcXlUx
 ```
 
-## Next Steps?
+## Next steps
 
-Great, you now have CrowdSec installed on your system. Within the [post installation steps](/getting_started/next_steps.mdx) you will find the next steps to configure and optimize your installation.
+Great, you now have CrowdSec installed. Continue with the [post-installation steps](/getting_started/next_steps.mdx) to finish setup and optimize your deployment.

@@ -1,0 +1,54 @@
+name: Generate values parameters
+
+on:
+  schedule:
+    # Tous les jours à 02:00 UTC
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  update_values_parameters:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          repository: crowdsecurity/helm-charts
+          path: helm-charts
+      - name: Set up Node.js (readme-generator requires Node 22.x)
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install readme-generator-for-helm
+        run: npm i -g @bitnami/readme-generator-for-helm@2.7.2
+
+      - name: Generate README.md & values.schema.json
+        run: |
+          find . 
+          readme-generator \
+            --values "helm-charts/charts/crowdsec/values.yaml" \
+            --readme "crowdsec-docs/docs/configuration/values_parameters.md" \
+            --schema "/tmp/schema.json"
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/regen-values-parameters
+          delete-branch: true
+          commit-message: "chore(charts): regenerate values parameters"
+          title: "chore(charts): regenerate values parameters"
+          body: |
+            Regenerate values parameters from helm-charts values.yaml.
+          labels: |
+            automation
+
+      - name: Enable PR auto-merge
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash

@@ -1,5 +1,6 @@
 import ForwardIcon from "@mui/icons-material/Forward";
 import HubIcon from "@mui/icons-material/Hub";
+import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import cibApple from "@site/static/img/logo/apple-colored.svg";
 import cibDocker from "@site/static/img/logo/docker-colored.svg";
 import cibFreebsd from "@site/static/img/logo/freebsd-colored.svg";
@@ -91,33 +92,48 @@ const multiServerSetup: StaticData[] = [
 const QuickStart = (): React.JSX.Element => {
 	return (
 		<section>
-			<div className="text-left">
-				<h2 className="mb-1">Select your environment</h2>
-				<p className="max-w-xl text-sm text-foreground/70">We can secure your stack. Just select your platform and get started.</p>
-			</div>
-
-			<div className="text-left">
-				<h4 className="mb-1">Single Server Setup</h4>
-				<p className="max-w-xl text-sm text-foreground/70">
-					Install CrowdSec on a single server. This is the simplest way to get started with CrowdSec.
+			<div className="text-left mb-6">
+				<h2 className="mb-2 text-2xl md:text-3xl font-semibold">Installation</h2>
+				<p className="max-w-2xl text-base text-foreground/70">
+					Choose your platform to install the CrowdSec Security Engine. Each guide walks you through setup, configuration, and
+					connecting to the CrowdSec Console.
 				</p>
 			</div>
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+
+			{/* Single Server */}
+			<div className="text-left mt-8">
+				<h3 className="mb-1 text-lg font-medium text-primary">Single Server</h3>
+				<p className="max-w-xl text-sm text-foreground/60 mb-4">
+					Standalone installation for protecting a single machine or service.
+				</p>
+			</div>
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
 				{singleServerSetup.map((props) => (
 					<HomePageItem title={props.text} description="" link={props.link} icon={props.icon} key={props.text} />
 				))}
 			</div>
-			<p className="text-xs mt-1 mb-4 text-foreground/70 text-right">
-				*Logos and trademarks, such as the logos above, are the property of their respective owners and are used here for
-				identification purposes only.
-			</p>
-			<div className="text-left">
-				<h4 className="mb-1">Multi-Server Setup</h4>
-				<p className="max-w-xl text-sm text-foreground/70">
-					Use CrowdSec within a multi-server environment. This is the advanced way to get started.
+
+			{/* Healthcheck */}
+			<div className="mt-4">
+				<HomePageItem
+					title="Installation Healthcheck"
+					description="Verify your installation is working correctly"
+					link="/u/getting_started/health_check"
+					icon={MonitorHeartIcon}
+					key="Installation Healthcheck"
+				/>
+			</div>
+
+			<p className="text-xs mt-2 text-foreground/50 text-right">*Logos and trademarks are property of their respective owners.</p>
+
+			{/* Multi-Server */}
+			<div className="text-left mt-10">
+				<h3 className="mb-1 text-lg font-medium text-primary">Multi-Server</h3>
+				<p className="max-w-xl text-sm text-foreground/60 mb-4">
+					Distributed deployment for organizations managing multiple servers or infrastructure.
 				</p>
 			</div>
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
 				{multiServerSetup.map((props) => (
 					<HomePageItem title={props.text} description={props.description} link={props.link} icon={props.icon} key={props.text} />
 				))}
