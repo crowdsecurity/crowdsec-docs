@@ -90,7 +90,7 @@ sudo systemctl restart crowdsec
 - Behavioral analysis and repeat offender banning
 - No performance impact on legitimate traffic
 
-#### How to Test Step 2: Out-of-band CRS Detection
+#### How to Test Out-of-band CRS Detection
 
 After implementing the layered configuration, verify both protection layers are working correctly:
 
@@ -174,13 +174,21 @@ Expected results:
 
 </details>
 
-### Step 3: CRS In-band (Blocking Mode)
+### CRS In-band (Blocking Mode)
 
 For organizations requiring maximum protection, configure CRS rules to block requests immediately by installing the in-band CRS collection:
 
 ```bash title="Install CRS in-band collection"
 sudo cscli collections install crowdsecurity/appsec-crs-inband
 ```
+
+:::info
+
+In order to avoid potential false positives, you can also install a CRS exclusion rules plugin from the hub or write a custom one.
+
+Refer to [this documentation](/appsec/crs/plugin_support.md) for a general plugin overview and [this page](/appsec/crs/customization.md) for instruction on how to write a custom plugin.
+
+:::
 
 #### Update Acquisition Configuration
 
@@ -201,7 +209,7 @@ name: myAppSecComponent
 sudo systemctl restart crowdsec
 ```
 
-#### How to Test Step 3: CRS In-band Blocking
+#### How to Test CRS In-band Blocking
 
 After configuring CRS for in-band (blocking) mode, test that both virtual patching and CRS rules provide immediate blocking:
 
