@@ -120,6 +120,15 @@ lapi:
           name: database-secret
           key: DB_PASSWORD
 
+  # persistentVolume in kubernetes for CrowdSec data and configuration is now
+  # discouragfe in favor of a database and direct configuration through
+  # values
+  persistentVolume:
+    data:
+      enabled: false
+    config:
+      enabled: false
+
   # The following piece configuration under config.config.yaml.local is merged
   # alongside the current conbfiguration. This mechanism allows
   # environment-specific overrides. This approach helps maintain
@@ -127,7 +136,19 @@ lapi:
   # to customize their local settings without modifying the primary
   # configuration files in pods with complex volumes and mount points.
 
-  config.config.yaml.local:
+config:
+  config.yaml.local:
+    # This is needed for agent autoregistration
+    api:
+      server:
+        auto_registration: # Activate if not using TLS for authentication
+          enabled: true
+          token: "${REGISTRATION_TOKEN}" # /!\ Do not modify this variable (auto-generated and handled by the chart)
+          allowed_ranges: # /!\ Make sure to adapt to the pod IP ranges used by your cluster
+            - "127.0.0.1/32"
+            - "192.168.0.0/16"
+            - "10.0.0.0/8"
+            - "172.16.0.0/12"
     # Using a database is strongly encouraged.
     db_config:
       type: postgresql
@@ -140,15 +161,6 @@ lapi:
           api_key: 1h
         agents_autodelete:
           login_password: 1h
-
-  # persistentVolume in kubernetes for CrowdSec data and configuration is now
-  # discouragfe in favor of a database and direct configuration through
-  # values
-  persistentVolume:
-    data:
-      enabled: false
-    config:
-      enabled: false
 ```
 
 # Values parameters reference
