@@ -137,7 +137,7 @@ lapi:
   # configuration files in pods with complex volumes and mount points.
 
 config:
-  config.yaml.local:
+  config.yaml.local: |
     # This is needed for agent autoregistration
     api:
       server:
