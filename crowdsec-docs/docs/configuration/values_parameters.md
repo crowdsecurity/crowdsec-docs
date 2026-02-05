@@ -121,7 +121,7 @@ lapi:
           key: DB_PASSWORD
 
   # persistentVolume in kubernetes for CrowdSec data and configuration is now
-  # discouragfe in favor of a database and direct configuration through
+  # discouraged in favor of a database and direct configuration through
   # values
   persistentVolume:
     data:
