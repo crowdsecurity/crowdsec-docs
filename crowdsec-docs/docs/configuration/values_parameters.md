@@ -139,11 +139,11 @@ lapi:
 config:
   config.yaml.local: |
   # the log processor will remove delete itself from LAPI when stopping.
-    client:
-      unregister_on_exit: true
 
     # This is needed for agent autoregistration
     api:
+      client:
+        unregister_on_exit: true
       server:
         auto_registration: # Activate if not using TLS for authentication
           enabled: true
