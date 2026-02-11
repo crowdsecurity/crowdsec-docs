@@ -138,13 +138,12 @@ lapi:
 
 config:
   config.yaml.local: |
-  # the log processor will remove delete itself from LAPI when stopping.
-
-    # This is needed for agent autoregistration
     api:
       client:
+        # the log processor will remove delete itself from LAPI when stopping.    
         unregister_on_exit: true
       server:
+        # This is needed for agent autoregistration
         auto_registration: # Activate if not using TLS for authentication
           enabled: true
           token: "${REGISTRATION_TOKEN}" # /!\ Do not modify this variable (auto-generated and handled by the chart)
