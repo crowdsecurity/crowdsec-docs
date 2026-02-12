@@ -20,7 +20,7 @@ If you need higher quotas for your CTI API key to handle larger volumes of queri
 
 The deployment uses an Azure Resource Manager template that can be deployed directly to your Azure environment.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbuixor%2Fcrowdsec-sentinel-playbook%2Frefs%2Fheads%2Fmain%2Fazuredeploy.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcrowdsecurity%2Fcrowdsec-sentinel-playbook%2Frefs%2Fheads%2Fmain%2Fazuredeploy.json)
 
 Click the "Deploy to Azure" button above to begin the deployment process.
 
@@ -36,7 +36,6 @@ In your resource group, navigate to IAM (Identity and Access Management) and gra
 
 - **"Microsoft Sentinel Contributor"** role to the Logic App
 - **"Microsoft Sentinel Automation Contributor"** role to "Azure Security Insights"
-
 
 ### 2. Configure API Connection
 
