@@ -3,7 +3,7 @@ id: kubernetes
 title: Kubernetes
 ---
 
-This module allows the `Security Engine` to stream container logs from pods running in a Kubernetes cluster via the Kubernetes API. It only operates in streaming (`tail`) mode: when a pod matching the selector starts or restarts, the datasource follows every container's stdout/stderr until the pod disappears.
+This module allows the `Security Engine` to stream container logs from pods running in a Kubernetes cluster via the Kubernetes API. It only operates in streaming (`tail`) mode: when a pod matching the selector starts or restarts, the datasource follows every container's stdout/stderr until the pod disappears. CrowdSec always attempts to authenticate using the in-cluster service-account first (leveraging `rest.InClusterConfig`) and **only if that fails** will it fall back to kubeconfig/explicit overrides.
 
 ## Configuration example
 
