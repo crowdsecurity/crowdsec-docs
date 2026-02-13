@@ -46,6 +46,7 @@ const sidebarsConfig: SidebarConfig = {
 						"log_processor/data_sources/http",
 						"log_processor/data_sources/journald",
 						"log_processor/data_sources/kafka",
+						"log_processor/data_sources/kubernetes",
 						"log_processor/data_sources/kubernetes_audit",
 						"log_processor/data_sources/loki",
 						"log_processor/data_sources/victorialogs",
