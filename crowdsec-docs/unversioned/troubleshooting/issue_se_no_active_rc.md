@@ -40,6 +40,10 @@ Open the file and verify the following fields are present and correctly set:
 - `api_url`: the address of your Security Engine's LAPI (e.g. `http://127.0.0.1:8080`)
 - `api_key`: a valid API key generated with `cscli bouncers add`
 
+:::warning
+Properties may change slightly, check the specific [configuration for your bouncer](http://localhost:3000/u/bouncers/intro)
+:::
+
 #### 🛠️ Fix the configuration and restart the RC
 
 After editing the configuration file, restart the RC service to apply changes:
@@ -90,7 +94,7 @@ The RC must be able to reach the Security Engine's LAPI. This can fail due to ne
 curl -s http://127.0.0.1:8080/health
 ```
 
-A healthy LAPI returns `{"status":"ok"}`. Anything else indicates a connectivity or LAPI issue.
+A healthy LAPI returns `{"status":"up"}`. Anything else indicates a connectivity or LAPI issue.
 
 #### 🔎 Check the LAPI listen address
 
