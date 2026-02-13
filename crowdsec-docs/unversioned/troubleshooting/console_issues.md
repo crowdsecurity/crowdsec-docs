@@ -15,15 +15,18 @@ This page lists all possible health check issues, their trigger conditions, and 
 
 ## Health Check Issues Overview
 
-| Issue | Criticality | Summary | Resolution |
-|-------|-------------|---------|------------|
+| Issue | Criticality   | Summary | Resolution |
+|-------|---------------|---------|------------|
 | **Integration for Firewall Offline** | 🔥 Critical | Firewall has not pulled from BLaaS endpoint for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_integration_fw_offline) |
+| **Integration for Firewall Pulling Zero IPs** | ⚠️ High | Firewall BLaaS integration is content is empty | [Troubleshooting](/u/troubleshooting/issue_integration_fw_zero_ips) |
 | **Integration for RC Offline** | 🔥 Critical | Remediation Component has not pulled from endpoint for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_integration_rc_offline) |
 | **Log Processor No Alerts** | ⚠️ High | Log Processor has not generated alerts in 48 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_alerts) |
 | **Log Processor No Logs Parsed** | 🔥 Critical | Logs read but none parsed in the last 48 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_logs_parsed) |
 | **Log Processor No Logs Read** | 🔥 Critical | No logs acquired in the last 24 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_logs_read) |
 | **Log Processor Offline** | 🔥 Critical | Log Processor has not checked in with LAPI for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_lp_offline) |
 | **Security Engine No Alerts** | ⚠️ High | No alerts generated in the last 48 hours | [Troubleshooting](/u/troubleshooting/issue_se_no_alerts) |
+| **Security Engine No RC** | 💡 Reco. | Security Engine has no Remediation Component registered | [Troubleshooting](/u/troubleshooting/issue_se_no_rc) |
+| **Security Engine No Active RC** | 🔥 Critical | All registered Remediation Components have been inactive for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_se_no_active_rc) |
 | **Security Engine Offline** | 🔥 Critical | Security Engine has not reported to Console for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_se_offline) |
 | **Security Engine Too Many Alerts** | ⚠️ High | More than 250,000 alerts in 6 hours | [Troubleshooting](/u/troubleshooting/issue_se_too_many_alerts) |
 
