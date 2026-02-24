@@ -65,6 +65,10 @@ print(response.model_dump_json())
 The `id` element of the response payload is going to be used as the future identifier operations targeting this allowlist.
 :::
 
+:::warning Important
+Creating an allowlist is only the first step. **The allowlist will not take effect until you subscribe at least one entity** (Security Engine, Integration, Tag, or Organization) to it. See [Subscribe to an allowlist](#subscribe-to-an-allowlist) below.
+:::
+
 <details>
   <summary>answer on success</summary>
 

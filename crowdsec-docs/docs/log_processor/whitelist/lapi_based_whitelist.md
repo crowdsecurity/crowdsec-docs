@@ -3,9 +3,15 @@ id: create_lapi
 title: LAPI
 ---
 
-LAPI based whitelist are not your traditional whitelists, as in they wont prevent an overflow from happening, but they will prevent a decision being made by the LAPI this means log processors that forward alerts to the LAPI will not need to be configured individually to ignore certain conditions.
+:::warning Deprecated
 
-You can create a LAPI based whitelist by prepending a profile to the `profiles.yaml` file:
+This approach is deprecated. Please use [Centralized AllowLists](/local_api/allowlists.md) instead.
+
+:::
+
+LAPI-based whitelists differ from parser whitelists: they do not prevent overflows, but they do prevent the LAPI from creating decisions. This means log processors forwarding alerts to the LAPI do not need per-agent ignore rules for those conditions.
+
+Create a LAPI-based whitelist by prepending a profile in `profiles.yaml`:
 
 ```yaml
 name: whitelist
@@ -18,13 +24,13 @@ on_success: break
 
 In this example, the LAPI will not make a decision if the source IP is `2.2.2.2` or `3.3.3.3`.
 
-The `profiles.yaml` file location differs based on the OS type here are the default locations:
+`profiles.yaml` location depends on the OS:
 
 - Linux: `/etc/crowdsec/profiles.yaml`
 - FreeBSD: `/usr/local/etc/crowdsec/profiles.yaml`
 - Windows: `C:\ProgramData\CrowdSec\config\profiles.yaml`
 
-You can use our extensive [EXPR helpers](/expr/intro.md) to create more complex whitelists, for example, you can whitelist a range of IPs by using the following syntax:
+You can use [EXPR helpers](/expr/intro.md) for more complex whitelists. For example, to whitelist an IP range:
 
 ```yaml
 name: whitelist
@@ -35,9 +41,8 @@ on_success: break
 ---
 ```
 
-If you have implemented a LAPI based whitelist then you must reload the CrowdSec service for the changes to take effect.
+After adding a LAPI-based whitelist, reload CrowdSec for changes to take effect:
 
 ```bash title="Reload CrowdSec"
 sudo systemctl reload crowdsec
 ```
-

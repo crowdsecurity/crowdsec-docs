@@ -3,7 +3,7 @@ title: Mismatching Collection(s)
 id: issue_mismatch_collections
 ---
 
-The **Mismatching Collection(s)** issue appears when a specific collection is installed, but the associated log files aren't read. For example having the [crowdsecurity/nginx](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx) collection installed, while not reading any nginx logs.
+The **Mismatching Collection(s)** issue appears when a collection is installed but its related log files are not read. For example, `crowdsecurity/nginx` is installed while no nginx logs are being read.
 
 ## What Triggers This Issue
 
@@ -18,7 +18,7 @@ The **Mismatching Collection(s)** issue appears when a specific collection is in
 
 ## Diagnosis & Resolution
 
-- Refer to the official [hub page of the collection](https://app.crowdsec.net/hub/collections) and see if you added the needed acquisition configuration.
+- Refer to the official [Hub page for the collection](https://app.crowdsec.net/hub/collections) and verify that the required acquisition configuration is present.
 
 For example, if you installed [crowdsecurity/nginx](https://app.crowdsec.net/hub/author/crowdsecurity/collections/nginx), ensure that you added the recommended acquisition configuration. Look for existing acquisition in `/etc/crowdsec/acquis.yaml` or add the needed one(s):
 

@@ -10,8 +10,8 @@ This page lists all possible health check issues, their trigger conditions, and 
 
 - 🔥 **Critical**: Immediate attention required - core functionality is impaired
 - ⚠️ **High**: Important issue that should be addressed soon - may impact protection effectiveness
-- 💡 **Recommended**: Additionnal actions that will continue improving your security posture *(comming in next iterations of Stack Health)*
-- 🌟 **Bonus** : Optimization advises and upper tier recommendation with great return on value *(comming in next iterations of Stack Health)*
+- 💡 **Recommended**: Additional actions that improve your security posture *(coming in future Stack Health iterations)*
+- 🌟 **Bonus**: Optimization advice and upper-tier recommendations with strong return on value *(coming in future Stack Health iterations)*
 
 ## Health Check Issues Overview
 
@@ -41,11 +41,11 @@ Some issues are related and share common root causes:
   - LP No Logs Parsed
   - Scenarios not matching the parsed events
 
-Understanding these dependencies helps you troubleshoot more efficiently by addressing root causes first.
+Understanding these dependencies helps you troubleshoot faster by addressing root causes first.
 
 ## Future Enhancements
 
-For planned and experimental health checks, see [Future Console Health Check Issues](/u/troubleshooting/future_console_issues) page for planned features including:
+For planned and experimental health checks, see [Future Console Health Check Issues](/u/troubleshooting/future_console_issues) for features including:
 
 - Enhanced configuration validation
 - Blocklists optimization recommendations

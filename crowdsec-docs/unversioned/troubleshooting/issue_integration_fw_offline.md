@@ -3,19 +3,19 @@ title: Firewall Integration Offline
 id: issue_integration_fw_offline
 ---
 
-The **Firewall Integration Offline** issue appears when a firewall that is configured to pull blocklists directly from CrowdSec's Blocklist-as-a-Service (BLaaS) endpoint has not pulled the list for more than 24 hours.   
+The **Firewall Integration Offline** issue appears when a firewall configured to pull blocklists directly from CrowdSec Blocklist-as-a-Service (BLaaS) has not pulled in more than 24 hours.   
 This means your firewall is no longer receiving the latest threat intelligence and blocked IPs.
 
 ## What Triggers This Issue
 
 - **Trigger condition**: No pull from BLaaS endpoint for 24 hours
 - **Criticality**: 🔥 Critical
-- **Impact**: Firewall blocklist is not being updated - new threats are not being blocked - Firewall potentially malfunctioning.
+- **Impact**: Firewall blocklist is not updated; new threats are not blocked; firewall may be malfunctioning.
 
 ## Common Root Causes
 
 - [**Firewall rule disabled or removed**](#firewall-rule-disabled-or-removed): The firewall rule that pulls from external blocklists no longer exists or has been disabled.
-- [**BLaaS credentials invalid**](#blaas-credentials-invalid): The basic auth credentials configured in the firewall for accessing the BLaaS endpoint is incorrect, expired, or has been regenerated.
+- [**BLaaS credentials invalid**](#blaas-credentials-invalid): The Basic Auth credentials configured in the firewall for the BLaaS endpoint are incorrect, expired, or were regenerated.
 - [**Network connectivity issues**](#network-connectivity-issues): The firewall cannot reach the BLaaS endpoint due to network problems, DNS issues, or routing failures.
 - [**Firewall offline**](#firewall-offline): The firewall itself is powered off, unreachable, or not processing rules.
 
@@ -45,17 +45,17 @@ Verify:
 ### BLaaS credentials invalid
 
 :::info
-Credentials are available on creation, it's recommended to write them down in your password management system.   
-You can re-generate them from the console UI.
+Credentials are shown at creation. Store them in your password manager.  
+You can regenerate them from the Console UI.
 :::
 
 #### 🛠️🔎 Verify credentials and test connectivity
 
-🔎 Make sure your Firewall configuration uses both the BLaaS endpoint url AND the Basic auth credentials.  
-🛠️ Use the *Configuration/Refresh Credentials* action on your integration if you lost them
+🔎 Make sure your firewall configuration uses both the BLaaS endpoint URL and the Basic Auth credentials.  
+🛠️ Use the *Configuration/Refresh Credentials* action on your integration if you lost them.
 
-🔎 Some firewalls provide forms to fill in basic auth but some version have bugs.  
-🛠️ Try to inject the basc auth directly into the url provided to your firewall: 
+🔎 Some firewalls provide Basic Auth forms, but some versions have bugs.  
+🛠️ Try embedding Basic Auth directly in the URL provided to your firewall:
 - `https://<username>:<password>@admin.api.crowdsec.net/v1/integrations/<yourIntegId>/content`
 
 ### Network connectivity issues

@@ -3,7 +3,7 @@ title: Log Processor No Logs Parsed
 id: issue_lp_no_logs_parsed
 ---
 
-The **Log Processor No Logs Parsed** indicates that logs are being successfully **read** by the Log Processor but none are being **parsed** correctly in the last 48 hours.   
+The **Log Processor No Logs Parsed** issue indicates that logs are being **read** by the Log Processor, but none are being **parsed** correctly in the last 48 hours.   
 This means the acquisition is working, but parsers can't interpret the log format.
 
 ## What Triggers This Issue
@@ -56,21 +56,21 @@ sudo cscli parsers list
 
 #### 🛠️ Install required collections for your log formats
 
-Most services have a collection that includes parsers and scenarios.   
+Most services have a collection that includes parsers and scenarios.
 
 - Search the [CrowdSec Hub ↗️](https://app.crowdsec.net/hub) for a collection with the name of the service you want to protect.
-- Or a [specific log parser ↗️](https://app.crowdsec.net/hub/log-parsers) if you did not find the collection
+- Or a [specific log parser ↗️](https://app.crowdsec.net/hub/log-parsers) if you do not find a collection
 - [Get help from the community](#getting-help) to understand what collections you need.
 
 ### Acquisition Type/Program Mismatch
 
-The log type defined in the acquisition is linked to the parsing process, having a mismatch can result in the proper parser not being chosen for the log you're reading.   
+The log type defined in acquisition is linked to parsing. A mismatch can prevent the correct parser from being selected.
 
-💡 if you're directly reading a program's log file the type usually matches the name of the program.   
-If you're reading logs from a stream (ie syslog) there might be a first step in parsing that is identifying syslog logs format hence the acquisition type will be "syslog"
+💡 If you are reading a program log file directly, the type usually matches the program name.  
+If you are reading logs from a stream (for example, syslog), parsing usually starts by identifying the syslog format, so the acquisition type is `syslog`.
 
 :::info
-💡 If you're using default log systems it will usually not be the root cause for your usecase.
+💡 If you use default logging systems, this is usually not the root cause.
 :::
 
 #### 🔎 Check acquisition labels match parser filters

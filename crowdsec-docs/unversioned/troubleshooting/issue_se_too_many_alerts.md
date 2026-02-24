@@ -9,22 +9,22 @@ The **Engine Too Many Alerts** issue appears when your Security Engine generates
 
 - **Trigger condition**: More than 250,000 alerts in 6 hours
 - **Criticality**: ⚠️ High
-- **Impact**: May indicate misconfiguration, performance issues, or a real large scale attack.
+- **Impact**: May indicate misconfiguration, performance issues, or a real large-scale attack
 
 ## Common Root Causes
 
 - [**Misconfigured or overly sensitive scenario**](#misconfigured-or-overly-sensitive-scenario): A scenario with thresholds set too low or matching too broadly can trigger excessive alerts.
 - [**Parser creating duplicate events**](#parser-creating-duplicate-events): A parser issue causing the same log line to generate multiple events.
 - [**Actual large-scale attack**](#legitimate-large-scale-attack): A genuine distributed attack (DDoS, brute force campaign) targeting your infrastructure.
-- [**Custom scenario misconfigured *blackhole***](#custom-scenario-missing-blackhole-param): A custom scenario without proper [*`blackhole`*](https://doc.crowdsec.net/docs/next/log_processor/scenarios/format/#blackhole) param may result in alert spam.
+- [**Custom scenario misconfigured *blackhole***](#custom-scenario-missing-blackhole-param): A custom scenario without the proper [*`blackhole`*](https://doc.crowdsec.net/docs/next/log_processor/scenarios/format/#blackhole) setting may generate alert spam
 
 ## Diagnosis & Resolution
 
 ### Misconfigured or Overly Sensitive Scenario
 
-CrowdSec scenarios are likely not misconfigured. Here we're talking about custom or third party scenarios or scenarios you altered yourself.  
+CrowdSec default scenarios are usually not misconfigured. This section mostly applies to custom or third-party scenarios, or scenarios you modified.
 
-If you don't have any non default scenarios you can still investigate but the issue will more likely be upstream (acquisition, profile or logging).
+If you do not use non-default scenarios, still investigate, but the issue is more likely upstream (acquisition, profile, or logging).
 
 #### 🔎 Identify problematic scenarios
 
@@ -78,7 +78,7 @@ Look for scenarios with extremely high "Overflow" counts or "Current count" numb
 
 #### 🛠️ Tuning or Disabling the scenario
 
-If you identify that the scenario is the reason you can try the folllowing
+If you identify a problematic scenario, try the following:
 
 ##### Tuning the scenario threshold
 
