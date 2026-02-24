@@ -4,38 +4,40 @@ title: Introduction
 sidebar_position: 1
 ---
 
+:::tip Recommended for IP/CIDR Allowlisting
 
-Whitelists are special parsers that allow you to "discard" events, and can exist at two different steps :
+For simple IP and CIDR-based allowlisting, we recommend using [**Centralized AllowLists**](/local_api/allowlists.md) instead of parser whitelists. AllowLists are easier to manage and also affect blocklist pulls. The parser whitelists documented below are best suited for complex expression-based rules that rely on log elements.
 
- - *Parser whitelists* : Allows you to discard an event at parse time, so that it never hits the buckets.
+:::
+
+Whitelists are special parsers that let you discard events. They can exist at different stages:
+
+- *Parser whitelists*: Discard an event at parse time, so it never reaches buckets.
     - Linux: `/etc/crowdsec/parsers/s02-enrich/`
     - Freebsd: `/usr/local/etc/crowdsec/parsers/s02-enrich/`
     - Windows: `c:/programdata/crowdsec/config/parsers/s02-enrich/`
 
- - *LAPI AllowLists* : Centralized at the LAPI level, those allowlists allow to discard the decision and alert while still generating a log entry. They can be IP/Range (CIDR) based. See [LAPI AllowLists](/local_api/allowlists.md)
+- *LAPI AllowLists*: Centralized at the LAPI level. They discard decisions and alerts while still generating log entries. They support IP/range (CIDR) rules. See [LAPI AllowLists](/local_api/allowlists.md).
 
- - *PostOverflow whitelists* : Those are whitelists that are checked *after* the overflow happens. It is usually best for whitelisting process that can be expensive (such as performing reverse DNS on an IP address, or performing a `whois` of an IP address).
+- *PostOverflow whitelists*: Checked *after* overflow. Best for expensive checks (for example reverse DNS or `whois` lookups on IPs).
     - Linux: `/etc/crowdsec/postoverflows/s01-whitelist/`
     - Freebsd: `/usr/local/etc/crowdsec/postoverflows/s01-whitelist/`
     - Windows: `c:/programdata/crowdsec/config/postoverflows/s01-whitelist/`
 
-*Postoverflow whitelist folders do not exist by default so you **MUST** manually create them*
+*Postoverflow whitelist folders do not exist by default, so you **MUST** create them manually.*
 
-**Parser Whitelists** and **PostOverflow Whitelists** offer more flexibility, but are harder to manage. If you  stick to IP-based whitelists, [**Centralized AllowLists**](/local_api/allowlists.md) is  the way to go.
+Whitelists can be based on:
 
-Otherwise, whitelist can be based on several criteria:
-
- - specific IP address : if the event/overflow IP is the same, event is whitelisted
- - IP ranges : if the event/overflow IP address belongs to this range, event is whitelisted
- - a list of [expr](https://github.com/antonmedv/expr) expressions : if any expression returns true, event is whitelisted
+- Specific IP addresses: if the event/overflow IP matches, the event is whitelisted.
+- IP ranges: if the event/overflow IP is in a range, the event is whitelisted.
+- A list of [expr](https://github.com/antonmedv/expr) expressions: if any expression returns true, the event is whitelisted.
 
 :::info
 
-While the whitelists are the same for parser or postoverflows, beware that field names might change.
+Parser and postoverflow whitelists use the same format, but field names can differ.
 
-Source ip is usually in `evt.Meta.source_ip` when it's a log, but `evt.Overflow.Alert.Source.IP` when it's an overflow
+Source IP is usually `evt.Meta.source_ip` for logs, but `evt.Overflow.Alert.Source.IP` for overflows.
 
 :::
-
 
 

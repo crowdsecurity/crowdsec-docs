@@ -7,7 +7,7 @@ LogProcessors are Security Engine used to read log in a distributed setup.
 In a standalone install your unique Security Engine registers itself as a LogProcessing machine.
 :::
 
-When a Log Processor has not checked in with the Local API (LAPI) of the central Security Engine for more than 24 hours.
+This issue appears when a Log Processor has not checked in with the Local API (LAPI) of the central Security Engine for more than 24 hours.
 
 ## What Triggers This Issue
 
@@ -80,7 +80,7 @@ Check that the `Last Update` timestamp is recent (within last few minutes).
 
 #### 🛠️ Prune dead/out of date Log processors
 
-💡 In cases your log processors are clones, as it's the case in orchestrated environments (like Kubernetes), it can happen that some LP stay registered even after their instance was killed. *It's a know issue that will be addressed in future versions of CrowdSec.*
+💡 If your Log Processors are clones (common in orchestrated environments like Kubernetes), some LPs can remain registered after instances are removed. *This is a known issue that will be addressed in future CrowdSec versions.*
 
 If you're facing such an issue, consider running the [cscli machines prune](/cscli/cscli_machines_prune/) command and even cron this pruning every so often if the issue re-appears often.
 

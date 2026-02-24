@@ -49,7 +49,7 @@ By default Remediation components will log to the following locations depending 
 
 ### Filtering logs to only show errors
 
-You can use the os related commands to filter the logs to only show errors.
+Use OS-specific commands to filter logs and show only errors.
 
 <FormattedTabs
     bash='sudo grep -E "level=(error|fatal)" /var/log/{component}.log'
@@ -59,9 +59,9 @@ You can use the os related commands to filter the logs to only show errors.
 
 **Please make sure the log location matches your distribution.**
 
-## My Remediation Component is not showing any error messages within its log file but its failing to start/work
+## My Remediation Component shows no errors in its log file but still fails to start/work
 
-Most likely means the bouncer is failing to decode the configuration file provided. To find which line is causing the issue, you can use systemd/journalctl to get the error message:
+This usually means the bouncer cannot parse its configuration file. To identify the failing line, use systemd/journalctl:
 
 ```bash
 sudo systemctl status <bouncer-service-name> -l
@@ -78,11 +78,11 @@ sudo journalctl -u <bouncer-service-name> -l
 ```
 level=error msg="auth-api: auth with api key failed return nil response, error: dial tcp 127.0.0.1:8080: connect: connection refused"
 ```
-  - **solution** verify that the local API runs on the logged IP and port. If the logged IP and port is incorrect, you can edit the bouncer configuration file. If the logged IP and port is correct, verify that the local API is running.
+  - **solution** verify that the local API runs on the logged IP and port. If the logged IP/port is incorrect, edit the bouncer configuration file. If it is correct, verify that the local API is running.
 
 ### Cannot authenticate to the local API
   - **error** message might look like:
 ```
 time="19-04-2022 15:43:07" level=error msg="API error: access forbidden"
 ```
-  - **solution** regenerate the API key via [cscli bouncers](/docs/next/cscli/cscli_bouncers_add) and replace the old one in the bouncer configuration file. Do not attempt to use the same name for the API key as it will not work.
+  - **solution** regenerate the API key via [cscli bouncers](/docs/next/cscli/cscli_bouncers_add) and replace the old one in the bouncer configuration file. Do not reuse the same key name.

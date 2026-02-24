@@ -109,7 +109,6 @@ const sidebarsConfig: SidebarConfig = {
 								"log_processor/whitelist/create_postoverflow",
 								"log_processor/whitelist/create_fqdn",
 								"log_processor/whitelist/create_capi",
-								"log_processor/whitelist/create_lapi",
 							],
 						},
 					],
