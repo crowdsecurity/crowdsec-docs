@@ -714,6 +714,7 @@ const sidebarsConfig: SidebarConfig = {
 			items: [
 				{ type: "doc", id: "appsec/protocol" },
 				{ type: "doc", id: "appsec/benchmark" },
+				{ type: "doc", id: "appsec/request_lifecycle" },
 			],
 		},
 		{
