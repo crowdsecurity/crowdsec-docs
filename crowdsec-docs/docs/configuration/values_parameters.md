@@ -258,6 +258,8 @@ configuration values, their defaults, and their purpose.
 | `lapi.extraInitContainers`                      | Additional init containers for LAPI pods                                                                                  | `[]`                |
 | `lapi.extraVolumes`                             | Additional volumes for LAPI pods                                                                                          | `[]`                |
 | `lapi.extraVolumeMounts`                        | Additional volumeMounts for LAPI pods                                                                                     | `[]`                |
+| `lapi.podSecurityContext`                       | Security context for LAPI pods                                                                                            | `{}`                |
+| `lapi.securityContext`                          | Security context for the LAPI contaienr                                                                                   | `{}`                |
 | `lapi.resources`                                | Resource requests and limits for the LAPI pods                                                                            | `{}`                |
 | `lapi.persistentVolume.data.enabled`            | Enable persistent volume for the data folder (stores bouncer API keys)                                                    | `true`              |
 | `lapi.persistentVolume.data.accessModes`        | Access modes for the data PVC                                                                                             | `["ReadWriteOnce"]` |
@@ -320,6 +322,8 @@ configuration values, their defaults, and their purpose.
 | `agent.extraInitContainers`                      | Extra init containers for agent pods                                                       | `[]`    |
 | `agent.extraVolumes`                             | Extra volumes for agent pods                                                               | `[]`    |
 | `agent.extraVolumeMounts`                        | Extra volume mounts for agent pods                                                         | `[]`    |
+| `agent.podSecurityContext`                       | Security context for agent pods                                                            | `{}`    |
+| `agent.securityContext`                          | Security context for agent containers                                                      | `{}`    |
 | `agent.resources`                                | Resource requests and limits for agent pods                                                | `{}`    |
 | `agent.persistentVolume.config.enabled`          | [object] Enable persistent volume for agent config                                         | `false` |
 | `agent.persistentVolume.config.accessModes`      | Access modes for the config PVC                                                            | `[]`    |
@@ -351,6 +355,7 @@ configuration values, their defaults, and their purpose.
 | `agent.wait_for_lapi.image.repository`           | Repository for the wait-for-lapi init container image                                      | `""`    |
 | `agent.wait_for_lapi.image.pullPolicy`           | Image pull policy for the wait-for-lapi init container                                     | `""`    |
 | `agent.wait_for_lapi.image.tag`                  | Image tag for the wait-for-lapi init container                                             | `""`    |
+| `agent.wait_for_lapi.securityContext`            | Security context for the wait-for-lapi init container                                      | `{}`    |
 | `appsec.enabled`                                 | [object] Enable AppSec component (disabled by default)                                     | `false` |
 | `appsec.lapiURL`                                 | URL the AppSec component uses to reach LAPI (defaults to internal service URL)             | `""`    |
 | `appsec.lapiHost`                                | Hostname the AppSec component uses to reach LAPI                                           | `""`    |
@@ -367,6 +372,8 @@ configuration values, their defaults, and their purpose.
 | `appsec.extraInitContainers`                     | Extra init containers for AppSec pods                                                      | `[]`    |
 | `appsec.extraVolumes`                            | Extra volumes for AppSec pods                                                              | `[]`    |
 | `appsec.extraVolumeMounts`                       | Extra volume mounts for AppSec pods                                                        | `[]`    |
+| `appsec.podSecurityContext`                      | Security context for AppSec pods                                                           | `{}`    |
+| `appsec.securityContext`                         | Security context for the appsec container                                                  | `{}`    |
 | `appsec.resources`                               | Resource requests and limits for AppSec pods                                               | `{}`    |
 | `appsec.env`                                     | Environment variables for the AppSec container (collections/configs/rules toggles, etc.)   | `[]`    |
 | `appsec.nodeSelector`                            | Node selector for scheduling AppSec pods                                                   | `{}`    |
@@ -390,3 +397,4 @@ configuration values, their defaults, and their purpose.
 | `appsec.wait_for_lapi.image.repository`          | Repository for the wait-for-lapi init con                                                  | `""`    |
 | `appsec.wait_for_lapi.image.pullPolicy`          | Image pull policy for the wait-for-lapi init container                                     | `""`    |
 | `appsec.wait_for_lapi.image.tag`                 | Image tag for the wait-for-lapi init container                                             | `1.28`  |
+| `appsec.wait_for_lapi.securityContext`           | Security context for the wait-for-lapi init container                                      | `{}`    |
