@@ -32,7 +32,8 @@ jobs:
             --values "helm-charts/charts/crowdsec/values.yaml" \
             --readme "crowdsec-docs/docs/configuration/values_parameters.md" \
             --schema "/tmp/schema.json"
-
+          ./scripts/anchor.awk ./crowdsec-docs/docs/configuration/values_parameters.md > /tmp/values_parameters.md
+          mv /tmp/values_parameters.md ./crowdsec-docs/docs/configuration/values_parameters.md
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v6
@@ -52,3 +53,10 @@ jobs:
         with:
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: squash
+
+      - name: Trigger downstream
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ github.token }}
+          event-type: values-generated
