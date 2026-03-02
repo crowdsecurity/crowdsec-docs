@@ -4,34 +4,39 @@ title: AWS WAF
 sidebar_position: 1
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import RemediationSupportBadges from "@site/src/components/remediation-support-badge";
 
 <p align="center">
-<img src={useBaseUrl('/img/aws-waf-bouncer-logo.png')} alt="CrowdSec" title="CrowdSec" width="300" height="300" />
+  <img
+    src={useBaseUrl("/img/aws-waf-bouncer-logo.png")}
+    alt="CrowdSec"
+    title="CrowdSec"
+    width="300"
+    height="300"
+  />
 </p>
 
 <p align="center">
-&#x1F4DA; <a href="#installation/">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+  &#x1F4DA; <a href="#installation/">Documentation</a>
+  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+  &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
-<RemediationSupportBadges
-  MTLS
-/>
+<RemediationSupportBadges MTLS />
 
 ## Overview
 
 The `crowdsec-awf-waf-bouncer` automatically adds rules to an AWS WAF ACL and manages IPSets content to apply decisions taken by crowdsec.
 
 This allows to protect the following AWS resources with crowdsec:
- - AWS REST API Gateway
- - Cloudfront distribution
- - AWS Application LoadBalancer
- - AWS AppSync GraphQL API
+
+- AWS REST API Gateway
+- Cloudfront distribution
+- AWS Application LoadBalancer
+- AWS AppSync GraphQL API
 
 As the component does not manage your WAF ACLs, you will need to have existing ACLs already associated with your AWS resources for the component to work properly.
 The component supports the `ban` and `captcha` remediation type and can be configured to fall back to one of those for decisions of unknown type.
@@ -89,7 +94,6 @@ You can increase it by specifying `--stop-timeout` in your `run` command or by s
 
 :::
 
-
 ## Configuration Reference
 
 You will need to edit `/etc/crowdsec/bouncers/crowdsec-aws-waf-bouncer.yaml` to configure the ACLs you want the component to use.
@@ -126,10 +130,12 @@ Environment="BOUNCER_API_KEY=XXXXX"
 
 AWS authentication is handled with the standard environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_PROFILE) or instance role.
 
-You can also use the `aws_profile` directive to specify a profile to use for a specific waf configuration. 
+You can also use the `aws_profile` directive to specify a profile to use for a specific waf configuration.
 
 ---
+
 ### `api_key`
+
 > string
 
 > Environment variable: `BOUNCER_API_KEY`
@@ -137,6 +143,7 @@ You can also use the `aws_profile` directive to specify a profile to use for a s
 API key to use for communication with LAPI.
 
 ### `api_url`
+
 > string
 
 > Environment variable: `BOUNCER_API_URL`
@@ -144,6 +151,7 @@ API key to use for communication with LAPI.
 URL of LAPI EG `http://127.0.0.1:8080`
 
 ### `update_frequency`
+
 > string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
 > Environment variable: `BOUNCER_UPDATE_FREQUENCY`
@@ -151,6 +159,7 @@ URL of LAPI EG `http://127.0.0.1:8080`
 How often the component will contact LAPI to update its content.
 
 ### `supported_actions`
+
 > string
 
 > Environment variable: `BOUNCER_SUPPORTED_ACTIONS`
@@ -164,11 +173,12 @@ Default to `ban`, `captcha` and `count`.
 If set from the environment, provide a comma-separated list: `ban,captcha,count`.
 
 ---
+
 ### `waf_config`
+
 > [ ][AclConfig](https://github.com/crowdsecurity/cs-aws-waf-bouncer/blob/ae18a8d09d6186117d570b229d698979edd50b7e/pkg/cfg/config.go#L33-L47)
 
 > Environment variable: `BOUNCER_WAF_CONFIG_`
-
 
 List of object with the following properties:
 
@@ -181,19 +191,21 @@ waf_config:
     region: eu-west-1
     ipset_prefix: crowdsec-ipset-
 ```
+
 :::info
 When configuring via environment variables, you can pass multiple `BOUNCER_WAF_CONFIG_X_` variables, with `X` being a unique identifier (eg, `0`, `1`, `2`).
 :::
 
 ### `web_acl_name`
+
 > string
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_WEB_ACL_NAME`
 
-
 Name of the WAF ACL in which the rule group will be added
 
 ### `fallback_action`
+
 > string
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_FALLBACK_ACTION`
@@ -203,48 +215,51 @@ Action to use if the type of a decision is not in the list defined by `supported
 Must be one of `captcha`, `ban` or `count`.
 
 ### `rule_group_name`
+
 > string
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_RULE_GROUP_NAME`
-
 
 Name of the rule group the component will create and add to the WAF ACL.
 
 Must be unique across all the configuration.
 
 2 rules can be created:
- - crowdsec-rule-ban
- - crowdsec-rule-captcha
+
+- crowdsec-rule-ban
+- crowdsec-rule-captcha
 
 Those rules are automatically deleted if no decisions of the associated type exist.
 
 If a decision for a country is received, the following rules will be created:
- - crowdsec-rule-ban-country: Contains a geomatch statement for banned countries
- - crowdsec-rule-captcha-country: Contains a geomatch statement for captcha'ed countries
+
+- crowdsec-rule-ban-country: Contains a geomatch statement for banned countries
+- crowdsec-rule-captcha-country: Contains a geomatch statement for captcha'ed countries
 
 Those rules will be deleted on shutdown and recreated on startup if they already exist.
 
 ### `scope`
+
 > string
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_SCOPE`
-
 
 Scope of the rule group and ipset. Can be `REGIONAL` or `CLOUDFRONT`.
 
 Must match the scope of the WAF ACL.
 
 ### `region`
+
 > string
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_REGION`
-
 
 Region where all resources will be created.
 
 No required when scope is `CLOUDFRONT`
 
 ### `ipset_prefix`
+
 > string
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_IPSET_PREFIX`
@@ -260,6 +275,7 @@ All ipsets are deleted on shutdown.
 :::
 
 ### `aws_profile`
+
 > string
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_AWS_PROFILE`
@@ -267,6 +283,7 @@ All ipsets are deleted on shutdown.
 Name of the AWS profile (defined in ~/.aws/config) to use.
 
 ### `ip_header`
+
 > string
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_IP_HEADER`
@@ -277,6 +294,7 @@ If not defined, the actual source IP will be used.
 The request will be allowed if the header is not present or contains no valid IP.
 
 ### `ip_header_position`
+
 > `FIRST`, `LAST`, `ANY`
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_IP_HEADER_POSITION`
@@ -286,6 +304,7 @@ If the header used to get the source IP is a comma-separated list, this paramete
 Required when `ip_header` is defined.
 
 ### `capacity`
+
 > int
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_CAPACITY`
@@ -294,11 +313,12 @@ Capacity of the rule group created by the component.
 
 If not set, default to 300 (this value is way higher than it needs to be, but this prevents any kind of issue regarding capacity of the rule group).
 
-For reference, a simple match on a IP with no custom header will cost 1 WCU per IPSet created by the bouncer, or 5 WCU if you are getting the source IP from a header. 
+For reference, a simple match on a IP with no custom header will cost 1 WCU per IPSet created by the bouncer, or 5 WCU if you are getting the source IP from a header.
 
 See [AWS WAF documentation](https://docs.aws.amazon.com/waf/latest/developerguide/how-aws-waf-works.html#aws-waf-capacity-units) for more information.
 
 ### `cloudwatch_enabled`
+
 > boolean
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_CLOUDWATCH_ENABLED`
@@ -306,6 +326,7 @@ See [AWS WAF documentation](https://docs.aws.amazon.com/waf/latest/developerguid
 Whether or not AWS WAF will send metrics to CloudWatch for the rule group.
 
 ### `cloudwatch_metric_name`
+
 > string
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_CLOUDWATCH_METRIC_NAME`
@@ -313,61 +334,73 @@ Whether or not AWS WAF will send metrics to CloudWatch for the rule group.
 Name of the cloudwatch metric. Default to the rule group name.
 
 ### `sample_requests`
+
 > boolean
 
 > Environment variable: `BOUNCER_WAF_CONFIG_X_SAMPLE_REQUESTS`
 
 Whether or not to sample requests from the rule groups created by the component.
 
+### `remove_sets_on_start`
+
+> boolean
+
+> Environment variable: `BOUNCER_WAF_CONFIG_X_CLEAN_ON_START`
+
+Whether or not to remove any sets matching the current prefix in the configuration on startup.
+
+Be careful if you are running multiple instances of the bouncer and using common prefixes, as this could lead to a bouncer deleting the other's sets.
+
 ## IAM Permissions
 
 Because the component needs to interact with AWS resources, it need the proper permissions.
 
 Here is the set of required permissions:
+
 ```json
 {
-    "Statement": [
-        {
-            "Action": [
-                "wafv2:UpdateWebACL",
-                "wafv2:UpdateRuleGroup",
-                "wafv2:UpdateIPSet",
-                "wafv2:TagResource",
-                "wafv2:GetWebACL",
-                "wafv2:GetRuleGroup",
-                "wafv2:GetIPSet",
-                "wafv2:DeleteRuleGroup",
-                "wafv2:DeleteIPSet",
-                "wafv2:CreateRuleGroup",
-                "wafv2:CreateIPSet"
-            ],
-            "Effect": "Allow",
-            "Resource": [
-                "arn:aws:wafv2:*:*:global/webacl/*/*",
-                "arn:aws:wafv2:*:*:global/rulegroup/*/*",
-                "arn:aws:wafv2:*:*:global/managedruleset/*/*",
-                "arn:aws:wafv2:*:*:regional/webacl/*/*",
-                "arn:aws:wafv2:*:*:regional/rulegroup/*/*",
-                "arn:aws:wafv2:*:*:regional/managedruleset/*/*",
-                "arn:aws:wafv2:*:*:*/ipset/*/*"
-            ],
-            "Sid": "WAF1"
-        },
-        {
-            "Action": [
-                "wafv2:ListWebACLs",
-                "wafv2:ListRuleGroups",
-                "wafv2:ListIPSets"
-            ],
-            "Effect": "Allow",
-            "Resource": "*",
-            "Sid": "WAF2"
-        }
-    ],
-    "Version": "2012-10-17"
+  "Statement": [
+    {
+      "Action": [
+        "wafv2:UpdateWebACL",
+        "wafv2:UpdateRuleGroup",
+        "wafv2:UpdateIPSet",
+        "wafv2:TagResource",
+        "wafv2:GetWebACL",
+        "wafv2:GetRuleGroup",
+        "wafv2:GetIPSet",
+        "wafv2:DeleteRuleGroup",
+        "wafv2:DeleteIPSet",
+        "wafv2:CreateRuleGroup",
+        "wafv2:CreateIPSet"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:wafv2:*:*:global/webacl/*/*",
+        "arn:aws:wafv2:*:*:global/rulegroup/*/*",
+        "arn:aws:wafv2:*:*:global/managedruleset/*/*",
+        "arn:aws:wafv2:*:*:regional/webacl/*/*",
+        "arn:aws:wafv2:*:*:regional/rulegroup/*/*",
+        "arn:aws:wafv2:*:*:regional/managedruleset/*/*",
+        "arn:aws:wafv2:*:*:*/ipset/*/*"
+      ],
+      "Sid": "WAF1"
+    },
+    {
+      "Action": [
+        "wafv2:ListWebACLs",
+        "wafv2:ListRuleGroups",
+        "wafv2:ListIPSets"
+      ],
+      "Effect": "Allow",
+      "Resource": "*",
+      "Sid": "WAF2"
+    }
+  ],
+  "Version": "2012-10-17"
 }
 ```
 
 AWS requires the resource for `wafv2:List*` to be `*`.
 
-For the other permissions, we recommend to restrict the resources to only the WebACL the component is configured to interact with and the rule groups/ipsets the component will create. 
+For the other permissions, we recommend to restrict the resources to only the WebACL the component is configured to interact with and the rule groups/ipsets the component will create.
