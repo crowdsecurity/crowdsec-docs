@@ -181,14 +181,17 @@ configuration values, their defaults, and their purpose.
 
 ### Image
 
-| Name                | Description                                               | Value                    |
-| ------------------- | --------------------------------------------------------- | ------------------------ |
-| `image.repository`  | [string] docker image repository name                     | `crowdsecurity/crowdsec` |
-| `image.pullPolicy`  | [string] Image pull policy (Always, IfNotPresent, Never)  | `IfNotPresent`           |
-| `image.pullSecrets` | Image pull secrets (array of objects with a 'name' field) | `[]`                     |
-| `image.tag`         | docker image tag (empty defaults to chart AppVersion)     | `""`                     |
-| `podAnnotations`    | podAnnotations to be added to pods (string:string map)    | `{}`                     |
-| `podLabels`         | Labels to be added to pods (string:string map)            | `{}`                     |
+| Name                       | Description                                                                                                        | Value                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------ |
+| `image.repository`         | [string] docker image repository name                                                                              | `crowdsecurity/crowdsec` |
+| `image.pullPolicy`         | [string] Image pull policy (Always, IfNotPresent, Never)                                                           | `IfNotPresent`           |
+| `image.pullSecrets`        | Image pull secrets (array of objects with a 'name' field)                                                          | `[]`                     |
+| `image.tag`                | docker image tag (empty defaults to chart AppVersion)                                                              | `""`                     |
+| `image.kubectl.repository` | [string] kubectl image repository used by registration jobs initContainers                                         | `alpine/kubectl`         |
+| `image.kubectl.tag`        | [string] kubectl image tag (override to match your cluster version if you encounter issues with registration jobs) | `latest`                 |
+| `image.kubectl.pullPolicy` | [string] kubectl image pull policy (Always, IfNotPresent, Never)                                                   | `IfNotPresent`           |
+| `podAnnotations`           | podAnnotations to be added to pods (string:string map)                                                             | `{}`                     |
+| `podLabels`                | Labels to be added to pods (string:string map)                                                                     | `{}`                     |
 
 ### Configuration
 
