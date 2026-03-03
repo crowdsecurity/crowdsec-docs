@@ -19,6 +19,12 @@ function loadLeadfeeder() {
     fs.parentNode.insertBefore(cs, fs)
 }
 
+if (ExecutionEnvironment.canUseDOM) {
+    window.addEventListener("cookieConsentAccepted", () => {
+        loadLeadfeeder()
+    }, { once: true })
+}
+
 const clientModule = {
     onRouteDidUpdate() {
         if (!ExecutionEnvironment.canUseDOM) return
