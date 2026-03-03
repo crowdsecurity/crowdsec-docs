@@ -14,7 +14,7 @@ function loadLeadfeeder() {
 
     var fs = document.getElementsByTagName("script")[0]
     var cs = document.createElement("script")
-    cs.src = "https://sc.lfeeder.com/lftracker_v1_lAxoEaKqxpv7OYGd.js"
+    cs.src = process.env.LEADFEEDER_TRACKER_URL
     cs.async = 1
     fs.parentNode.insertBefore(cs, fs)
 }
