@@ -203,11 +203,7 @@ const sidebarsConfig: SidebarConfig = {
 				"local_api/authentication",
 				"local_api/tls_auth",
 				"local_api/centralized_allowlists",
-				{
-					type: "link",
-					label: "Swagger",
-					href: "https://crowdsecurity.github.io/api_doc/lapi/",
-				},
+				"local_api/api_reference",
 			],
 		},
 		{
