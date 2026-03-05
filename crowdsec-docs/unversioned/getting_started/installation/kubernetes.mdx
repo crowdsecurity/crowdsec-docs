@@ -65,6 +65,33 @@ lapi:
       value: "my-k8s-cluster"
     - name: ENROLL_TAGS
       value: "k8s linux test"
+## config.yaml.local is the configuration file used by the Security Engine itself
+config:
+  config.yaml.local: |
+    api:
+      client:
+        # the log processor will remove delete itself from LAPI when stopping.    
+        unregister_on_exit: true
+      server:
+        # This is needed for agent autoregistration
+        auto_registration: # Activate if not using TLS for authentication
+          enabled: true
+          token: "${REGISTRATION_TOKEN}" # /!\ Do not modify this variable (auto-generated and handled by the chart)
+          allowed_ranges: # /!\ Make sure to adapt to the pod IP ranges used by your cluster
+            - "127.0.0.1/32"
+            - "192.168.0.0/16"
+            - "10.0.0.0/8"
+            - "172.16.0.0/12"
+    # Using a database is strongly encouraged.
+    db_config:
+      type: postgresql
+      user: crowdsec
+      password: ${DB_PASSWORD}
+      db_name: crowdsec
+      host: <database-host>
+      flush:
+        bouncers_autodelete:
+          api_key: 1h
 ```
 
 Acquisition is done by reading logs directly from pods. You select which pods to
@@ -94,6 +121,10 @@ if the tags fit.
 
 For full configuration options, see the default
 [values.yaml](/docs/next/configuration/values_parameters)
+
+:::warning
+Pay attention to the `bouncers_autodelete` and `unregister_on_exit` parameters, as they help avoid orphaned resources.
+:::
 
 Then, you can install the Security Engine with the following command:
 
@@ -195,7 +226,7 @@ PostgreSQL. You can leverage existing operators to manage these databases:
 
 Crowdsec in kubernetes configuration for this database is made with the
 [config.config.yaml.local value in
-`values.yaml`](docs/next/configuration/values_parameters).
+`values.yaml`](/docs/next/configuration/values_parameters).
 
 Configuration of those databases is out of scope of this documentation.
 <!-- We want to create blogpost where we do it -->
@@ -210,6 +241,9 @@ replication, SQLite can also become a performance bottleneck under heavy load.
 
 ## Next steps
 
-Great, you now have CrowdSec installed on your system. Within the [post
-installation steps](/getting_started/next_steps.mdx) you will find the next
+Great, you now have CrowdSec installed on your system!
+
+ - Look at the [post
+installation steps](/getting_started/next_steps.mdx) to find the next
 steps to configure and optimize your installation.
+ - Look at the [values.yaml](/docs/next/configuration/values_parameters) for available configuration parameters.
