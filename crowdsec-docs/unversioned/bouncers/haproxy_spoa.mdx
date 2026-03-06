@@ -38,6 +38,12 @@ Beta Remediation Component, please report any issues on GitHub
 
 :::
 
+:::tip AppSec Support
+This is the **only HAProxy bouncer with AppSec support**. It can forward HTTP requests to the [AppSec Component](/docs/next/appsec/intro) for real-time WAF protection, virtual patching, and defense against known CVEs. See [Enable AppSec (WAF) forwarding](#enable-appsec-waf-forwarding) below.
+
+For a full walkthrough, see the [AppSec Quickstart for HAProxy](/docs/next/appsec/quickstart/haproxy_spoa).
+:::
+
 ## What it does
 
 The `cs-haproxy-spoa-bouncer` allows CrowdSec to enforce blocking, CAPTCHA, or
@@ -437,6 +443,19 @@ HAProxy requirements when using AppSec (and/or captcha):
 - Use the `crowdsec-http-body` group when the body is available (see the `body_within_limit` + `send-spoe-group` example above)
 
 Because request-body forwarding is constrained by HAProxy/SPOE/SPOP limits, keep an explicit body size limit (for example `51200`) and consider a layered approach (IP remediation at HAProxy, deeper inspection downstream).
+
+#### Validate AppSec
+
+Test that malicious requests are blocked:
+
+```bash
+curl -I http://localhost/.env
+# Expected: HTTP/1.1 403 Forbidden
+```
+
+:::tip Monitoring AppSec
+Once AppSec is enabled, use `cscli metrics show appsec` to view processed vs. blocked requests and individual rule triggers. These metrics also appear in the [CrowdSec Console](https://app.crowdsec.net) after enrollment.
+:::
 
 ### Expose Prometheus metrics
 

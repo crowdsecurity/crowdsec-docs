@@ -28,6 +28,12 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
   MTLS
 />
 
+:::tip AppSec Support
+This bouncer supports the [AppSec Component](/docs/next/appsec/intro) for real-time WAF protection. Enable `crowdsecAppsecEnabled: true` in your middleware configuration to get virtual patching and defense against known CVEs, SQL injection, XSS, and other application-layer attacks.
+
+For a full walkthrough, see the [AppSec Quickstart for Traefik](/docs/next/appsec/quickstart/traefik).
+:::
+
 ## Traefik on kubernetes
 
 :::important
@@ -248,3 +254,16 @@ Now, you can install or update the remediation component:
 ```bash
 kubectl apply -f bouncer-middleware.yaml
 ```
+
+#### Validate AppSec
+
+Test that malicious requests are blocked:
+
+```bash
+curl -I http://<your-ingress-ip>/.env
+# Expected: HTTP/1.1 403 Forbidden
+```
+
+:::tip Monitoring AppSec
+Once AppSec is enabled, use `cscli metrics show appsec` to view processed vs. blocked requests and individual rule triggers. These metrics also appear in the [CrowdSec Console](https://app.crowdsec.net) after enrollment.
+:::

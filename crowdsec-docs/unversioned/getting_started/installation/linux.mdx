@@ -273,15 +273,26 @@ Once the repository is added and you have checked the install candidate, you can
   </TabItem>
 </Tabs>
 
-### Install Remediation Component
+### Choose and Install a Remediation Component
 
 :::warning
-Security Engine by itself is a detection engine, it will not block anything. You need to install a [Remediation Component](/bouncers/intro.md) to enforce decisions
+The Security Engine by itself is a detection engine -- it will not block anything. You need to install a [Remediation Component](/bouncers/intro.md) to enforce decisions.
 :::
 
-For the quick start guide we will be installing the [iptables](https://en.wikipedia.org/wiki/Iptables) firewall [Remediation Component](/bouncers/intro.md). (This may not be optimal for your environment, please refer to the [Remediation Documentation](/bouncers/intro.md) for more information)
+:::tip Protecting a web application?
+If you are running a web server or reverse proxy (Nginx, OpenResty, Traefik, HAProxy), install the matching **AppSec-capable** bouncer instead of the firewall bouncer. This gives you real-time WAF protection, virtual patching, and defense against application-layer attacks (SQLi, XSS, CVE exploits).
 
-#### IPTables
+- **Nginx** -- [crowdsec-nginx-bouncer](/bouncers/nginx.mdx)
+- **OpenResty** -- [crowdsec-openresty-bouncer](/bouncers/openresty.mdx)
+- **Traefik** -- [traefik-bouncer-plugin](/bouncers/traefik.mdx)
+- **HAProxy** -- [cs-haproxy-spoa-bouncer](/bouncers/haproxy_spoa.mdx)
+
+See the [full bouncer selection guide](/bouncers/intro.md) for details.
+:::
+
+#### Firewall Bouncer (Infrastructure Protection)
+
+For non-web services such as SSH, databases, or SMTP, the firewall bouncer provides broad IP-level protection:
 
 <Tabs
   defaultValue="iptables_debian"

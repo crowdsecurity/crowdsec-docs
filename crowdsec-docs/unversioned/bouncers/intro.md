@@ -14,16 +14,29 @@ You may see Remediation Components referred to as "bouncers" in the documentatio
 
 Remediation Components are software packages in charge of acting upon decisions provided by the Security Engine. Depending on where you would like to remediate the decision, you will need to install the appropriate Remediation Component.
 
+## Choosing the Right Remediation Component
+
+CrowdSec offers two categories of remediation: **infrastructure-level** (Layer 3/4) and **application-level** (Layer 7). Choosing the right one depends on what you are protecting.
+
+:::tip Protecting a web application?
+Use an **AppSec-capable** bouncer ([Nginx](/bouncers/nginx.mdx), [OpenResty](/bouncers/openresty.mdx), [Traefik](/bouncers/traefik.mdx), or [HAProxy SPOA](/bouncers/haproxy_spoa.mdx)) to get real-time WAF protection, virtual patching, and defense against application-layer attacks like SQL injection, XSS, and CVE exploitation. [Learn more about AppSec](/docs/next/appsec/intro).
+:::
+
+| What are you protecting? | Recommended Component | Why? |
+| :--- | :--- | :--- |
+| **Web app behind Nginx** | [crowdsec-nginx-bouncer](/bouncers/nginx.mdx) | In-band WAF + virtual patching via AppSec |
+| **Docker/K8s with Traefik** | [traefik-bouncer-plugin](/bouncers/traefik.mdx) | Native middleware integration + AppSec |
+| **High-performance proxy (HAProxy)** | [cs-haproxy-spoa-bouncer](/bouncers/haproxy_spoa.mdx) | SPOA offloading for L7 inspection + AppSec |
+| **Web app behind OpenResty** | [crowdsec-openresty-bouncer](/bouncers/openresty.mdx) | Built-in Lua support + AppSec |
+| **Infrastructure services (SSH, DB, SMTP)** | [crowdsec-firewall-bouncer](/bouncers/firewall.mdx) | Broad port protection at kernel level |
+| **Cloudflare-fronted sites** | [crowdsec-cloudflare-bouncer](/bouncers/cloudflare.mdx) | Push decisions to the Cloudflare firewall |
+| **Appliances (pfSense, Fortinet, etc.)** | [crowdsec-blocklist-mirror](/bouncers/blocklist-mirror.mdx) | Serve blocklists over HTTP |
+
 :::info
 Don't know which component suits your needs? Then join our [discord](https://discord.gg/crowdsec) and ask the community!
 :::
 
-- [nginx](/bouncers/nginx.mdx) will check requester IP against the local API before granting or denying access.
-- [firewall](/bouncers/firewall.mdx) will add IPs to nftables/ipset set.
-- [cloudflare](/bouncers/cloudflare.mdx) will add IPs to the Cloudflare firewall.
-- [blocklist](/bouncers/blocklist-mirror.mdx) will serve the blocklist to a appliance such as pfsense, fortinet, untangle via a http server.
-
-**The above is not an exhaustive list of remediation components, you can find more on the [hub](https://app.crowdsec.net/hub/remediation-components).**
+**This is not an exhaustive list of remediation components. You can find more on the [hub](https://app.crowdsec.net/hub/remediation-components).**
 
 Remediation Components interact with [crowdsec's Local API](/docs/next/local_api/intro) to retrieve active decisions and remediate appropriately.
 

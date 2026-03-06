@@ -31,6 +31,12 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
 
 CrowdSec Remediation Component written in golang for firewalls.
 
+:::info When to Choose a Different Bouncer
+The firewall bouncer is ideal for protecting **infrastructure services** like SSH, databases, and SMTP. If you are protecting a **web application**, consider using an AppSec-capable bouncer instead: [Nginx](/bouncers/nginx.mdx), [OpenResty](/bouncers/openresty.mdx), [Traefik](/bouncers/traefik.mdx), or [HAProxy SPOA](/bouncers/haproxy_spoa.mdx). These provide real-time HTTP inspection, virtual patching, and WAF capabilities that a firewall bouncer cannot offer. [Learn more about AppSec](/docs/next/appsec/intro).
+
+For maximum protection on web-facing servers, you can run **both** a firewall bouncer (for IP-level blocking) and an AppSec-capable bouncer (for HTTP-level inspection) side by side.
+:::
+
 crowdsec-firewall-bouncer will fetch new and old decisions from a CrowdSec API and add them to a blocklist used by supported firewalls.
 
 Supported firewalls:
