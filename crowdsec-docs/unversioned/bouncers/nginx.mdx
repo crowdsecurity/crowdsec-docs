@@ -52,6 +52,32 @@ Supported features:
 
 At the back, this component uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
+:::tip Protect against web attacks — Enable the WAF (Recommended)
+The Nginx Remediation Component can forward every HTTP request to the **CrowdSec Application Security Component (WAF)** for inline inspection. This adds protection against **SQL injection, XSS, path traversal**, and actively exploited CVEs — with zero false positives by default.
+
+**Enable in two steps:**
+
+```bash
+# Step 1 — Activate AppSec on the Security Engine
+sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+sudo sh -c 'cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
+appsec_configs:
+  - crowdsecurity/appsec-default
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+EOF'
+sudo systemctl restart crowdsec
+
+# Step 2 — Point the Nginx bouncer to the AppSec Component
+echo "APPSEC_URL=http://127.0.0.1:7422" | sudo tee -a /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
+sudo systemctl restart nginx
+```
+
+For the full walkthrough with testing and monitoring, see the [**Nginx/OpenResty WAF Quickstart**](/docs/next/appsec/quickstart/nginxopenresty).
+:::
+
 ## Installation
 
 ### Dependencies
@@ -272,9 +298,24 @@ You can also change this with a valid one :
 
 ### Application Security Component Configuration
 
-To setup the Application Security Component you first need to install it in your CrowdSec Security Engine.
+The AppSec Component (WAF) inspects every HTTP request inline and blocks attacks before they reach your application.
 
-On the Remediation Component side, you just need to configure the following option in the component file:
+**Step 1 — Set up the AppSec Component on the Security Engine** (if not already done):
+
+```bash
+sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+sudo sh -c 'cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
+appsec_configs:
+  - crowdsecurity/appsec-default
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+EOF'
+sudo systemctl restart crowdsec
+```
+
+**Step 2 — Enable forwarding in the Nginx bouncer** by adding these lines to `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`:
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
 # Mandatory
@@ -289,6 +330,21 @@ APPSEC_PROCESS_TIMEOUT=1000        # default
 ALWAYS_SEND_TO_APPSEC=false        # default
 SSL_VERIFY=true                    # default
 ```
+
+Then restart Nginx:
+
+```bash
+sudo systemctl restart nginx
+```
+
+**Test the WAF is working:**
+
+```bash
+# This request should be blocked (HTTP 403) — .env access is a known attack vector
+curl -i http://localhost/.env
+```
+
+For a full walkthrough with monitoring and advanced profiles, see the [Nginx/OpenResty WAF Quickstart](/docs/next/appsec/quickstart/nginxopenresty).
 
 ### Setup captcha
 

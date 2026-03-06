@@ -28,6 +28,19 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
   MTLS
 />
 
+:::tip Protect against web attacks — Enable the WAF (Recommended)
+The CrowdSec Traefik plugin supports the **Application Security Component (WAF)**, which inspects every HTTP request inline and blocks **SQL injection, XSS, path traversal**, and exploited CVEs.
+
+Enable it by adding two fields to your Traefik middleware configuration:
+
+```yaml
+crowdsecAppsecEnabled: true
+crowdsecAppsecHost: crowdsec:7422   # AppSec Component address
+```
+
+For the full setup guide including the Security Engine configuration, see the [**Traefik WAF Quickstart**](/docs/next/appsec/quickstart/traefik).
+:::
+
 ## Traefik on kubernetes
 
 :::important

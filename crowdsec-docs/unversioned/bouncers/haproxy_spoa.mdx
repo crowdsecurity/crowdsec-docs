@@ -49,6 +49,35 @@ This remediation component is meant to obsolete the old lua-based haproxy bounce
 It supports IP-based decisions, CAPTCHA challenges, GeoIP-based headers, and
 integrates cleanly with CrowdSec’s LAPI using the stream bouncer protocol.
 
+:::tip Protect against web attacks — Enable the WAF (Recommended)
+The HAProxy SPOA bouncer supports the **CrowdSec Application Security Component (WAF)**, which inspects HTTP requests inline and blocks **SQL injection, XSS, path traversal**, and exploited CVEs.
+
+**Enable in three steps:**
+
+```bash
+# Step 1 — Install AppSec rules on the Security Engine
+sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+sudo sh -c ‘cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
+appsec_configs:
+  - crowdsecurity/appsec-default
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+EOF’
+sudo systemctl restart crowdsec
+
+# Step 2 — Enable AppSec forwarding in the SPOA bouncer config
+# Add to /etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml:
+#   appsec_url: "http://127.0.0.1:7422"
+
+# Step 3 — Restart the bouncer
+sudo systemctl restart crowdsec-spoa-bouncer
+```
+
+For a full walkthrough with testing and monitoring, see the [**HAProxy (SPOA) WAF Quickstart**](/docs/next/appsec/quickstart/haproxy_spoa).
+:::
+
 Supported features:
 
 - Stream mode (pull LAPI decisions periodically)

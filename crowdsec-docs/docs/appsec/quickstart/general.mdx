@@ -78,6 +78,101 @@ EOF
 Do not expose the AppSec Component to the internet. It should only be accessible from your web server or reverse proxy.
 :::
 
+### Choose Your Protection Level
+
+Not sure which rules to use? Pick the profile that matches your needs:
+
+<Tabs
+  defaultValue="strict"
+  values={[
+    { label: '🛡️ Strict (Recommended)', value: 'strict' },
+    { label: '⚖️ Balanced', value: 'balanced' },
+    { label: '🔒 Paranoid', value: 'paranoid' },
+  ]}>
+
+<TabItem value="strict">
+
+**Virtual patching only — zero false positives, instant protection**
+
+Best for: New users, production environments, getting started quickly.
+
+Blocks actively exploited CVEs and common attack vectors. Updated daily. Will never block legitimate traffic.
+
+```bash
+sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+```
+
+```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
+appsec_configs:
+  - crowdsecurity/appsec-default
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+name: myAppSecComponent
+```
+
+</TabItem>
+
+<TabItem value="balanced">
+
+**Virtual patching + OWASP CRS detection (out-of-band)**
+
+Best for: Users who want broader attack detection while keeping zero blocking false positives.
+
+Adds OWASP CRS rules in *out-of-band* mode: attacks are detected and logged, and repeat offenders are banned after 5+ violations — but individual requests are never blocked on the first hit.
+
+```bash
+sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules crowdsecurity/appsec-crs
+```
+
+```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
+appsec_configs:
+  - crowdsecurity/appsec-default    # Virtual patching (in-band blocking)
+  - crowdsecurity/crs               # OWASP CRS (out-of-band detection + ban)
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+name: myAppSecComponent
+```
+
+</TabItem>
+
+<TabItem value="paranoid">
+
+**Full OWASP CRS in blocking mode**
+
+Best for: Security-focused environments willing to tune for false positives.
+
+Immediately blocks any request matching OWASP CRS rules. Provides maximum protection but requires testing and tuning in your environment before production use.
+
+```bash
+sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules crowdsecurity/appsec-crs-inband
+```
+
+```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
+appsec_configs:
+  - crowdsecurity/appsec-default    # Virtual patching (in-band blocking)
+  - crowdsecurity/crs-inband        # OWASP CRS (in-band blocking)
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+name: myAppSecComponent
+```
+
+:::warning
+Always test in-band CRS in a staging environment first. See [WAF Deployment Strategies](/appsec/advanced_deployments.mdx) for tuning guidance.
+:::
+
+</TabItem>
+</Tabs>
+
+:::info Start with Strict
+If you're unsure, start with **Strict**. It's the safest choice: you get real protection immediately, and you can upgrade to a broader profile once you're comfortable with the setup.
+:::
+
 ### Start the AppSec Component
 
 Restart CrowdSec to activate the AppSec Component:
@@ -134,13 +229,79 @@ INFO[...] Starting Appsec server on 127.0.0.1:7422/
 INFO[...] Appsec Runner ready to process event
 ```
 
+### Attack Simulation — See the WAF in Action
+
+Once your AppSec-capable bouncer is configured, simulate real attack traffic to confirm the WAF is working end-to-end.
+
+#### Test 1: Connectivity check (no rules required)
+
+Trigger the built-in `crowdsecurity/appsec-generic-test` probe. This does **not** block traffic — it just confirms the AppSec Component is reachable from your bouncer.
+
+```bash
+curl -I https://<your-service-url>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
+```
+
+Confirm the probe was seen:
+
+```bash
+sudo cscli alerts list | grep crowdsecurity/appsec-generic-test
+```
+
+The alert also appears in the [CrowdSec Console](https://app.crowdsec.net):
+
+![appsec-generic-test console view](/img/appsec-generic-test-console.png)
+
+:::info
+This probe can only be triggered once per minute.
+:::
+
+#### Test 2: Block a real attack
+
+Try to access a `.env` file — a common technique attackers use to steal credentials left on servers. This is covered by the `crowdsecurity/appsec-virtual-patching` collection.
+
+```bash
+curl -i http://<your-service-url>/.env
+```
+
+Expected result — the WAF returns **HTTP 403 Forbidden**:
+
+```
+HTTP/1.1 403 Forbidden
+...
+```
+
+#### Test 3: SQL injection (requires `crowdsecurity/appsec-generic-rules`)
+
+Simulate a SQL injection attack with a scanner-like user agent:
+
+```bash
+curl -i -H "User-Agent: Nikto/2.1.6" "http://<your-service-url>/?id=1+UNION+SELECT+1,2,3--"
+```
+
+Expected result: **HTTP 403 Forbidden** — the request is blocked inline.
+
+#### View blocked attacks
+
+After triggering attacks, check what the WAF caught:
+
+```bash
+# List recent AppSec alerts
+sudo cscli alerts list
+
+# Show per-rule block counts
+sudo cscli metrics show appsec
+```
+
+For a richer view with attack timelines and rule breakdowns, open the **[CrowdSec Console → Alerts](https://app.crowdsec.net)** tab — AppSec blocks appear automatically with full context.
+
+![appsec-console](/img/appsec_console.png)
 
 ## Next Steps
 
 Now that the AppSec Component is configured and running, you need to:
 
 1. **Configure your remediation component** to forward requests to `http://127.0.0.1:7422`
-2. **Test the setup** [by triggering a rule](#testing-detection)
+2. **Test the setup** [by simulating an attack](#attack-simulation--see-the-waf-in-action)
 3. **Monitor alerts** with `sudo cscli alerts list` or in the [CrowdSec Console](https://app.crowdsec.net)
 
 For specific remediation component configuration, see:
@@ -150,32 +311,16 @@ For specific remediation component configuration, see:
 - [WordPress Setup](wordpress.mdx)
 - [Check the hub for other remediation components supporting AppSec](https://app.crowdsec.net/hub/remediation-components)
 
-### Testing Detection
+### Monitor WAF alerts in the Console
 
-If you've enabled an AppSec-capable bouncer with CrowdSec WAF, you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.
-This scenario does not lead to a decision, but it is a good way to confirm the setup is working.
+The **[CrowdSec Console](https://app.crowdsec.net)** gives you a visual dashboard of all WAF blocks, including attack type, source IP, and the rule that triggered. AppSec alerts are tagged with scenario labels like `appsec:sqli`, `appsec:xss`, making them easy to filter and analyze.
 
-Trigger the dummy scenario by accessing a probe path on your web server:
+Once you [enroll your Security Engine](/u/getting_started/post_installation/console), WAF alerts populate automatically:
 
-1️⃣ Access your service URL with this path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
+![AppSec alerts in the CrowdSec Console](/img/appsec_console.png)
 
-```bash
-curl -I https://<your-service-url>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
-```
-
-2️⃣ Confirm the alert has triggered for `crowdsecurity/appsec-generic-test`
-
-```bash
-sudo cscli alerts list | grep crowdsecurity/appsec-generic-test
-```
-
-3️⃣ The alert will also appear in the Console alerts
-
-![appsec-generic-test console view](/img/appsec-generic-test-console.png)
-
-
-:::info
-This scenario can only be triggered again after a 1-minute delay.
+:::tip Seeing is believing
+Users who connect the Console report the visual feedback — watching real attacks get blocked in real time — as the moment WAF adoption becomes a no-brainer.
 :::
 
 ## Optional: Advanced Configuration
