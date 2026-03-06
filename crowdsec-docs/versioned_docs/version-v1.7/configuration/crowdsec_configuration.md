@@ -179,7 +179,7 @@ attached) instead of merged. See [profiles - introduction](/local_api/profiles/i
 common:
   daemonize: "(true|false)"
   pid_dir: "<path_to_pid_folder>"
-  log_media: "(file|stdout)"
+  log_media: "(file|stdout|syslog)"
   log_level: "(error|info|debug|trace)"
   log_dir: "<path_to_log_folder>"
   working_dir: "<path_to_working_folder>"
@@ -294,7 +294,7 @@ prometheus:
 common:
   daemonize: "(true|false)"
   pid_dir: "<path_to_pid_folder>"
-  log_media: "(file|stdout)"
+  log_media: "(file|stdout|syslog)"
   log_level: "(error|info|debug|trace)"
   log_dir: "<path_to_log_folder>"
   working_dir: "<path_to_working_folder>"
@@ -318,7 +318,7 @@ Folder to store PID file.
 #### `log_media`
 > string
 
-Log media. Can be `stdout` or `file`.
+Log output destination. Can be `stdout`, `file`, or `syslog`.
 
 #### `log_level`
 > string
