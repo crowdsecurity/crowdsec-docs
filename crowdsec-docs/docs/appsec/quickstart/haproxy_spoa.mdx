@@ -102,11 +102,11 @@ HAProxy SPOA forwarding is constrained by HAProxy/SPOE/SPOA mechanics:
 - When the body is too large (uploads, large JSON, etc.), you typically fall back to a “no-body” SPOE group, which means **body-dependent WAF rules cannot match**.
 - You are not doing full “streaming” inspection: SPOA works with what HAProxy can capture and send to the agent within buffer/frame limits.
 
-CrowdSec AppSec is still a single “source of truth” for rules/config: you can point multiple AppSec-capable integrations to the same AppSec endpoint so rule updates stay in sync across your infrastructure.
+CrowdSec AppSec is still a single “source of truth” for rules/config: you can point multiple WAF-capable integrations to the same AppSec endpoint so rule updates stay in sync across your infrastructure.
 
 Recommended layered approach:
 - Use HAProxy SPOA for **edge enforcement** (IP/range/country decisions, ban/captcha) and lightweight WAF evaluation when the request fits within the configured limits.
-- Put a full-featured L7 proxy/WAF-capable integration **downstream** (or protect the app directly) when you need deeper inspection of large bodies, file uploads, or application-specific request parsing. Examples of AppSec-capable integrations include:
+- Put a full-featured L7 proxy/WAF-capable integration **downstream** (or protect the app directly) when you need deeper inspection of large bodies, file uploads, or application-specific request parsing. Examples of WAF-capable integrations include:
   - [Nginx/OpenResty](/appsec/quickstart/nginxopenresty)
   - [Traefik](/appsec/quickstart/traefik)
   - [WordPress](/appsec/quickstart/wordpress)

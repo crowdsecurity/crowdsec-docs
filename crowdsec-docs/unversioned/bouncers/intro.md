@@ -19,7 +19,7 @@ Remediation Components are software packages in charge of acting upon decisions 
 CrowdSec offers two categories of remediation: **infrastructure-level** (Layer 3/4) and **application-level** (Layer 7). Choosing the right one depends on what you are protecting.
 
 :::tip Protecting a web application?
-Use an **AppSec-capable** bouncer ([Nginx](/bouncers/nginx.mdx), [OpenResty](/bouncers/openresty.mdx), [Traefik](/bouncers/traefik.mdx), or [HAProxy SPOA](/bouncers/haproxy_spoa.mdx)) to get real-time WAF protection, virtual patching, and defense against application-layer attacks like SQL injection, XSS, and CVE exploitation. [Learn more about AppSec](/docs/next/appsec/intro).
+Use a **WAF-capable** bouncer ([Nginx](/bouncers/nginx.mdx), [OpenResty](/bouncers/openresty.mdx), [Traefik](/bouncers/traefik.mdx), or [HAProxy SPOA](/bouncers/haproxy_spoa.mdx)) to get real-time WAF protection, virtual patching, and defense against application-layer attacks like SQL injection, XSS, and CVE exploitation. [Learn more about AppSec](/docs/next/appsec/intro).
 :::
 
 | What are you protecting? | Recommended Component | Why? |
