@@ -3,7 +3,7 @@ title: Remediation Component Integration Offline
 id: issue_integration_rc_offline
 ---
 
-The **Remediation Component Integration Offline** refers to a [Blocklist-Integration of type Remediation Component](/u/integrations/remediationcomponent) has not pulled from its endpoint for more than 24 hours.
+The **Remediation Component Integration Offline** issue means a [Blocklist integration of type Remediation Component](/u/integrations/remediationcomponent) has not pulled from its endpoint for more than 24 hours.
 
 This issue applies to Remediation Components *(aka bouncers)* directly connected to a **Blocklist integration endpoint** *(aka Blocklist as a Service / BLaaS)*.
 
@@ -21,16 +21,16 @@ This issue applies to Remediation Components *(aka bouncers)* directly connected
 
 ## Diagnosis & Resolution
 
-Depending on the type of bouncer, you'll need to check its installation status, configuration, and running status. Refer to your specific [remediation component documentation](/u/bouncers/intro) for detailed setup and troubleshooting steps.
+Depending on the bouncer type, check installation status, configuration, and runtime status. Refer to your [remediation component documentation](/u/bouncers/intro) for detailed setup and troubleshooting.
 
 ### Configuration errors
 
 #### 🔎 Verify bouncer configuration has correct API URL and key
 
-For Blocklist-as-a-Service (BLaaS) connectivity, verify the bouncer configuration has proper API URL and key:
+For Blocklist-as-a-Service (BLaaS) connectivity, verify that the bouncer configuration has the correct API URL and key:
 
 1. **api_url**: Must point to your BLaaS endpoint (e.g., `https://admin.api.crowdsec.net/v1/decisions/stream`)
-2. **api_key**: Your BLaaS API key *(Found in the Console in your Blocklist integration section, on creation or on "Refresh Credentials")*
+2. **api_key**: Your BLaaS API key *(found in Console, in your Blocklist integration section, at creation or via "Refresh Credentials")*
 
 :::info
 Property names and configuration file locations vary by bouncer type. Check your [remediation component documentation](/u/bouncers/intro) for specifics.
@@ -62,14 +62,14 @@ See your [remediation component documentation](/u/bouncers/intro) for specific c
 
 #### 🔎 Check bouncer service status and logs
 
-Verify the bouncer is running and check for errors. 
+Verify that the bouncer is running and check for errors.
 The method depends on your bouncer type:
 - Some Bouncers are modules/plugins (NGINX, Apache...)
 - Some are independent processes interacting with a service, via provided config or API (NFtables, Cloudflare,...)
 
-**For modules/plugins** Check the logs of the service to identify any issues with the loading or running of the module.
+**For modules/plugins:** Check service logs for module loading/runtime issues.
 
-**For standalone processes:** Make sure the process is running and their logs don't contain launch errors
+**For standalone processes:** Make sure the process is running and logs do not contain startup errors.
 
 ### Network connectivity issues
 

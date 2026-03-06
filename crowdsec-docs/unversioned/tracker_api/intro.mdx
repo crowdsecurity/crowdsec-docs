@@ -31,7 +31,9 @@ For a CVE, get:
     - Relevant information about payload such as targeted URI
     - Description of exploitation patterns, from targeted to large-scale opportunistic attacks
  - **CrowdSec Scores**:
-    - CrowdSec Live Exploit Tracker Score: The higher the score, the stronger is the momentum around the vulnerability. Vulnerabilities that have been exploited for a while or opportunsticly will get a lower score.
+    - CrowdSec Score: A one-size-fits-all score that indicates how a SOC could prioritize a security alert for a given CVE. Generally CVEs where CrowdSec observes strong increases in targeted attacks have a higher score than vulnerabilities which are mainly used by automated mass-scanners in non-sophisticated global campaigns.
+    - Opportunity Score: A score from 0 to 5 indicating how opportunistic the attackers for a given CVE operate. A score of 0 is given to CVEs where attackers essentially target IPs at random in an automated fashion while a score of 5 is given to CVEs which see precisely targeted exploitation making alerts much more indicative of a dangerous attack campaign targeting your organization.
+    - Momentum Score: A score from 0 to 5 indicating the how current exploitation volume compares to historical averages for a given CVE. CVEs where we observe below average attack volume (decreasing trend) are given a low score, while CVEs where we see rapidly growing attack volume (increasing trend) are given a high score.
     - Exploitation Status: The current exploitation status of the vulnerability, from "early exploitation" to "background noise".
  - **Timeline information**:
     - First and Last exploitation observed

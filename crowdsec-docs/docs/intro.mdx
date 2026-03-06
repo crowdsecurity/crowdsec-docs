@@ -8,9 +8,9 @@ import AcademyPromo from "@site/src/components/academy-promo"
 
 # Security Engine Overview
 
-The [CrowdSec Security Engine](https://github.com/crowdsecurity/crowdsec) is an open-source, lightweight software that detects and blocks malicious actors from accessing your systems at various levels, using log and HTTP Requests analysis with threat patterns called scenarios.
+The [CrowdSec Security Engine](https://github.com/crowdsecurity/crowdsec) is an open-source, lightweight security engine that detects and blocks malicious actors. It analyzes logs and HTTP requests using behavior-based patterns called scenarios.
 
-CrowdSec is a modular security tool offering [behavior-based detection](https://app.crowdsec.net/hub/collections), including [AppSec rules](https://app.crowdsec.net/hub/appsec-rules), and optional components to block threats called [Remediation Components](https://app.crowdsec.net/hub/bouncers)
+CrowdSec is modular: it provides [behavior-based detection](https://app.crowdsec.net/hub/collections), including [AppSec rules](https://app.crowdsec.net/hub/appsec-rules), and optional [Remediation Components](https://app.crowdsec.net/hub/bouncers) that enforce blocks.
 
 <div style={{ display: "flex" }}>
     <div style={{ textAlign: "center", flex: "1" }}>
@@ -23,20 +23,20 @@ CrowdSec is a modular security tool offering [behavior-based detection](https://
 </div>
 &nbsp; &nbsp;
 
-The crowd-sourced aspect allows the sharing of attacks they detected and blocked. Participants of this crowd-sourced threat intel receive, automatically via the security engine, a curated list of validated attackers (community blocklist) enhancing their real-time protection capabilities by taking preemptive actions against known threats.
+CrowdSec is crowdsourced: when you participate, you share the attacks you detect and block. In return, the Security Engine automatically downloads a curated list of validated attackers (the community blocklist), so you can take action sooner against known threats.
 
 ## Main Features
 
 In addition to the core "detect and react" mechanism, CrowdSec is committed to several other key aspects:
 
--   **Easy Installation**: Effortless out-of-the-box installation on all [supported platforms](/u/getting_started/intro).
--   **Simplified Daily Operations**: You have access to our Web UI administration via [CrowdSec's console](http://app.crowdsec.net) or the powerful [Command line tool cscli](/cscli/cscli.md) for effortless maintenance and keeping your detection mechanisms up-to-date.
--   **Reproducibility**: The Security Engine can analyze not only live logs but also [cold logs](/u/user_guides/replay_mode), making it easier to detect potential false triggers, conduct forensic analysis, or generate reports.
--   **Versatile**: The Security Engine can analyze [system logs](/log_processor/data_sources/introduction.md) and [HTTP Requests](/appsec/intro.md) to exhaustively protect your perimeter.
+-   **Easy Installation**: Get started quickly on all [supported platforms](/u/getting_started/intro).
+-   **Simplified Daily Operations**: Manage and maintain your setup from the [CrowdSec Console](http://app.crowdsec.net) (Web UI) or with the [cscli command-line tool](/cscli/cscli.md).
+-   **Reproducibility**: Analyze live logs and [cold logs](/u/user_guides/replay_mode) to validate detections, run forensic analysis, or generate reports.
+-   **Versatile**: Protect your perimeter by analyzing [system logs](/log_processor/data_sources/introduction.md) and [HTTP requests](/appsec/intro.md).
 -   **Observability**: Providing valuable insights into the system's activity:
-    -   Users can view/manage alerts from the ([Console](https://app.crowdsec.net/signup)).
-    -   Operations personnel have access to detailed Prometheus metrics ([Prometheus](/observability/prometheus.md)).
-    -   Administrators can utilize a user-friendly command-line interface tool ([cscli](/observability/cscli.md)).
+    -   View and manage alerts in the [Console](https://app.crowdsec.net/signup).
+    -   Expose detailed [Prometheus metrics](/observability/prometheus.md).
+    -   Use the [cscli CLI](/observability/cscli.md) for administration.
 -   **API-Centric**: All components communicate via an [HTTP API](/local_api/intro.md), facilitating multi-machine setups.
 
 ## Architecture
@@ -49,23 +49,23 @@ In addition to the core "detect and react" mechanism, CrowdSec is committed to s
 
 Under the hood, the Security Engine has various components:
 
--   The [Log Processor](/log_processor/intro.mdx) is in charge of detection: it analyzes logs from [various data sources](/log_processor/data_sources/introduction.md) or [HTTP requests](/appsec/intro.md) from web servers.
--   The [Appsec](appsec/intro) feature is part of the Log Processor and filters HTTP Requests from the compatible web servers.
--   The [Local API](local_api/intro.md) acts as a middle man:
+-   The [Log Processor](/log_processor/intro.mdx) handles detection. It analyzes logs from [various data sources](/log_processor/data_sources/introduction.md) and [HTTP requests](/appsec/intro.md) from compatible web servers.
+-   The [Appsec](appsec/intro) feature is part of the Log Processor. It filters HTTP requests from compatible web servers.
+-   The [Local API](local_api/intro.md) acts as a middleman:
     -   Between the [Log Processors](/log_processor/intro.mdx) and the [Remediation Components](/u/bouncers/intro) which are in charge of enforcing decisions.
     -   And with the [Central API](/central_api/intro.md) to share alerts and receive blocklists.
--   The [Remediation Components](/u/bouncers/intro) - also known as bouncers - block malicious IPs at your chosen level—whether via IpTables, firewalls, web servers, or reverse proxies. [See the full list on our CrowdSec Hub.](https://app.crowdsec.net/hub/remediation-components)
+-   The [Remediation Components](/u/bouncers/intro) (also called bouncers) block malicious IPs at your chosen level—IpTables, firewalls, web servers, or reverse proxies. [See the full list on the CrowdSec Hub.](https://app.crowdsec.net/hub/remediation-components)
 
 ## Deployment options
 
-This architecture allows for both simple/standalone setups, or more distributed ones including as illustrated below:
+This architecture supports simple standalone setups and more distributed deployments:
 
--   Single machine ? Follow our [getting started guide](/u/getting_started/intro)
--   Multiple machines? Use the [distributed setup guide](/u/user_guides/multiserver_setup)
--   Already have a log pit (such as rsyslog or loki)? [Run crowdsec next to it](/u/user_guides/log_centralization), not on the production workloads
--   Running Kubernetes? Have a look at [our helm chart](/u/getting_started/installation/kubernetes)
--   Running containers? The [docker data source](/log_processor/data_sources/docker.md) might be what you need
--   Just looking for a WAF? Look at [our quickstart](appsec/intro)
+-   Single machine: Follow the [getting started guide](/u/getting_started/intro).
+-   Multiple machines: Use the [distributed setup guide](/u/user_guides/multiserver_setup).
+-   Centralized logs (rsyslog, Loki, ...): [Run CrowdSec next to your log pipeline](/u/user_guides/log_centralization), not on production workloads.
+-   Kubernetes: See [our Helm chart](/u/getting_started/installation/kubernetes).
+-   Containers: Use the [Docker data source](/log_processor/data_sources/docker.md).
+-   WAF only: Start with the [AppSec quickstart](appsec/intro).
 
 Distributed architecture example:
 

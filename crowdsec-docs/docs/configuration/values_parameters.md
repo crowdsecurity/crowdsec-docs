@@ -3,6 +3,169 @@ title: Helm's Parameters
 id: values_parameters
 ---
 
+# How to write a values parameter file
+
+The following configuration keeps the Helm chart close to its defaults while
+explicitly defining how CrowdSec discovers logs, which parsers and collections
+are enabled, and how state is persisted.
+
+The container runtime `container_runtime` is set to ensure log lines are decoded
+in the correct format. The agent is scoped to only the namespaces and pods that
+matter, which reduces noise and limits resource usage. Each `acquisition` entry
+includes a program value that maps logs to the appropriate parser family, and
+this must stay consistent with the collections loaded through environment
+variables.
+
+Debug logging is enabled here for visibility, but it should normally be disabled
+in production environments.
+
+AppSec is enabled with a local listener so in-cluster components can forward
+HTTP security events. The corresponding AppSec rule collections are loaded to
+provide virtual patching and generic protections. The configuration is described
+after the `appsec` directive.
+
+On the LAPI side, we strongly encourages the use of database to provide
+persistence of decisions and alerts.
+
+```yaml
+# Log format emitted by the container runtime.
+# Use "containerd" for CRI-formatted logs (most modern Kubernetes clusters),
+# or "docker" if nodes still use the Docker runtime.
+container_runtime: containerd
+
+agent:
+  # Log acquisition configuration: tells CrowdSec which pod logs to read
+  # and which parser family ("program") should process them.
+  acquisition:
+    # Postfix mail logs from the mail-system namespace
+    - namespace: mail-system # Kubernetes namespace to watch
+      podName: mail-system-postfix-* # Pod name glob pattern
+      program: postfix/smtpd # Parser hint so postfix logs match correctly
+      poll_without_inotify: true
+
+    # NGINX ingress controller logs
+    - namespace: ingress-nginx
+      podName: ingress-nginx-controller-* # Typical ingress-nginx controller pods
+      program: nginx # Routes logs to nginx parsers
+      poll_without_inotify: true
+
+  # It's recommended to avoid putting passwords directly in the values.yaml file
+# for security reasons. Instead, consider using Kubernetes Secrets or environment
+# variables to manage sensitive information securely.
+env:
+  # Collections determine which parsers, scenarios, and postoverflows are installed.
+  # Must match the log sources defined above.
+  - name: COLLECTIONS
+    value: crowdsecurity/postfix crowdsecurity/nginx
+
+  # Enables verbose logs from the CrowdSec agent.
+  # Useful for troubleshooting, but should be "false" in steady-state production.
+  #- name: DEBUG
+  #  value: "true"
+tolerations:
+  # Allows the agent pod to run on control-plane nodes.
+  # Only keep this if those nodes also run workloads you want to monitor.
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
+appsec:
+  # Enables CrowdSec AppSec (WAF component)
+  enabled: true
+
+  acquisitions:
+    # Defines how AppSec receives HTTP security events
+    - appsec_config: crowdsecurity/appsec-default # Default AppSec engine configuration
+      labels:
+        type: appsec # Label used internally to identify AppSec events
+      listen_addr: 0.0.0.0:7422 # Address/port where AppSec listens for events
+      path: / # URL path to inspect
+      source: appsec # Marks events as coming from AppSec
+
+  env:
+    # AppSec-specific rule sets (virtual patching + generic protections)
+    - name: COLLECTIONS
+      value: crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+lapi:
+  env:
+    # Enrollment key used to register this CrowdSec instance with the console.
+    # Should be stored in a Kubernetes Secret in production.
+    - name: ENROLL_KEY
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: ENROLL_KEY
+
+    # Human-readable name for this instance in the console
+    - name: ENROLL_INSTANCE_NAME
+      value: "sabban"
+
+    # Tags help group or filter instances in the console
+    - name: ENROLL_TAGS
+      value: "k8s"
+
+    # API key used by a bouncer (here: ingress) to query decisions from LAPI
+    # Also should be stored as a Secret rather than plaintext.
+    - name: BOUNCER_KEY_ingress
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: BOUNCER_KEY_ingress
+
+    # It's recommended to avoid putting passwords directly in the values.yaml file
+    # for security reasons. Instead, consider using Kubernetes Secrets or environment
+    # variables to manage sensitive information securely.
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: database-secret
+          key: DB_PASSWORD
+
+  # persistentVolume in kubernetes for CrowdSec data and configuration is now
+  # discouraged in favor of a database and direct configuration through
+  # values
+  persistentVolume:
+    data:
+      enabled: false
+    config:
+      enabled: false
+
+  # The following piece configuration under config.config.yaml.local is merged
+  # alongside the current conbfiguration. This mechanism allows
+  # environment-specific overrides. This approach helps maintain
+  # a clean and centralized configuration while enabling developers
+  # to customize their local settings without modifying the primary
+  # configuration files in pods with complex volumes and mount points.
+
+config:
+  config.yaml.local: |
+    api:
+      client:
+        # the log processor will remove delete itself from LAPI when stopping.    
+        unregister_on_exit: true
+      server:
+        # This is needed for agent autoregistration
+        auto_registration: # Activate if not using TLS for authentication
+          enabled: true
+          token: "${REGISTRATION_TOKEN}" # /!\ Do not modify this variable (auto-generated and handled by the chart)
+          allowed_ranges: # /!\ Make sure to adapt to the pod IP ranges used by your cluster
+            - "127.0.0.1/32"
+            - "192.168.0.0/16"
+            - "10.0.0.0/8"
+            - "172.16.0.0/12"
+    # Using a database is strongly encouraged.
+    db_config:
+      type: postgresql
+      user: crowdsec
+      password: ${DB_PASSWORD}
+      db_name: crowdsec
+      host: <database-host>
+      flush:
+        bouncers_autodelete:
+          api_key: 1h
+        agents_autodelete:
+          login_password: 1h
+```
+
 # Values parameters reference
 
 This page provides a complete, generated reference of all Helm chart
@@ -18,14 +181,17 @@ configuration values, their defaults, and their purpose.
 
 ### Image
 
-| Name                | Description                                               | Value                    |
-| ------------------- | --------------------------------------------------------- | ------------------------ |
-| `image.repository`  | [string] docker image repository name                     | `crowdsecurity/crowdsec` |
-| `image.pullPolicy`  | [string] Image pull policy (Always, IfNotPresent, Never)  | `IfNotPresent`           |
-| `image.pullSecrets` | Image pull secrets (array of objects with a 'name' field) | `[]`                     |
-| `image.tag`         | docker image tag (empty defaults to chart AppVersion)     | `""`                     |
-| `podAnnotations`    | podAnnotations to be added to pods (string:string map)    | `{}`                     |
-| `podLabels`         | Labels to be added to pods (string:string map)            | `{}`                     |
+| Name                       | Description                                                                                                        | Value                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------ |
+| `image.repository`         | [string] docker image repository name                                                                              | `crowdsecurity/crowdsec` |
+| `image.pullPolicy`         | [string] Image pull policy (Always, IfNotPresent, Never)                                                           | `IfNotPresent`           |
+| `image.pullSecrets`        | Image pull secrets (array of objects with a 'name' field)                                                          | `[]`                     |
+| `image.tag`                | docker image tag (empty defaults to chart AppVersion)                                                              | `""`                     |
+| `image.kubectl.repository` | [string] kubectl image repository used by registration jobs initContainers                                         | `alpine/kubectl`         |
+| `image.kubectl.tag`        | [string] kubectl image tag (override to match your cluster version if you encounter issues with registration jobs) | `latest`                 |
+| `image.kubectl.pullPolicy` | [string] kubectl image pull policy (Always, IfNotPresent, Never)                                                   | `IfNotPresent`           |
+| `podAnnotations`           | podAnnotations to be added to pods (string:string map)                                                             | `{}`                     |
+| `podLabels`                | Labels to be added to pods (string:string map)                                                                     | `{}`                     |
 
 ### Configuration
 
@@ -95,6 +261,8 @@ configuration values, their defaults, and their purpose.
 | `lapi.extraInitContainers`                      | Additional init containers for LAPI pods                                                                                  | `[]`                |
 | `lapi.extraVolumes`                             | Additional volumes for LAPI pods                                                                                          | `[]`                |
 | `lapi.extraVolumeMounts`                        | Additional volumeMounts for LAPI pods                                                                                     | `[]`                |
+| `lapi.podSecurityContext`                       | Security context for LAPI pods                                                                                            | `{}`                |
+| `lapi.securityContext`                          | Security context for the LAPI contaienr                                                                                   | `{}`                |
 | `lapi.resources`                                | Resource requests and limits for the LAPI pods                                                                            | `{}`                |
 | `lapi.persistentVolume.data.enabled`            | Enable persistent volume for the data folder (stores bouncer API keys)                                                    | `true`              |
 | `lapi.persistentVolume.data.accessModes`        | Access modes for the data PVC                                                                                             | `["ReadWriteOnce"]` |
@@ -157,6 +325,8 @@ configuration values, their defaults, and their purpose.
 | `agent.extraInitContainers`                      | Extra init containers for agent pods                                                       | `[]`    |
 | `agent.extraVolumes`                             | Extra volumes for agent pods                                                               | `[]`    |
 | `agent.extraVolumeMounts`                        | Extra volume mounts for agent pods                                                         | `[]`    |
+| `agent.podSecurityContext`                       | Security context for agent pods                                                            | `{}`    |
+| `agent.securityContext`                          | Security context for agent containers                                                      | `{}`    |
 | `agent.resources`                                | Resource requests and limits for agent pods                                                | `{}`    |
 | `agent.persistentVolume.config.enabled`          | [object] Enable persistent volume for agent config                                         | `false` |
 | `agent.persistentVolume.config.accessModes`      | Access modes for the config PVC                                                            | `[]`    |
@@ -188,6 +358,7 @@ configuration values, their defaults, and their purpose.
 | `agent.wait_for_lapi.image.repository`           | Repository for the wait-for-lapi init container image                                      | `""`    |
 | `agent.wait_for_lapi.image.pullPolicy`           | Image pull policy for the wait-for-lapi init container                                     | `""`    |
 | `agent.wait_for_lapi.image.tag`                  | Image tag for the wait-for-lapi init container                                             | `""`    |
+| `agent.wait_for_lapi.securityContext`            | Security context for the wait-for-lapi init container                                      | `{}`    |
 | `appsec.enabled`                                 | [object] Enable AppSec component (disabled by default)                                     | `false` |
 | `appsec.lapiURL`                                 | URL the AppSec component uses to reach LAPI (defaults to internal service URL)             | `""`    |
 | `appsec.lapiHost`                                | Hostname the AppSec component uses to reach LAPI                                           | `""`    |
@@ -204,6 +375,8 @@ configuration values, their defaults, and their purpose.
 | `appsec.extraInitContainers`                     | Extra init containers for AppSec pods                                                      | `[]`    |
 | `appsec.extraVolumes`                            | Extra volumes for AppSec pods                                                              | `[]`    |
 | `appsec.extraVolumeMounts`                       | Extra volume mounts for AppSec pods                                                        | `[]`    |
+| `appsec.podSecurityContext`                      | Security context for AppSec pods                                                           | `{}`    |
+| `appsec.securityContext`                         | Security context for the appsec container                                                  | `{}`    |
 | `appsec.resources`                               | Resource requests and limits for AppSec pods                                               | `{}`    |
 | `appsec.env`                                     | Environment variables for the AppSec container (collections/configs/rules toggles, etc.)   | `[]`    |
 | `appsec.nodeSelector`                            | Node selector for scheduling AppSec pods                                                   | `{}`    |
@@ -227,3 +400,4 @@ configuration values, their defaults, and their purpose.
 | `appsec.wait_for_lapi.image.repository`          | Repository for the wait-for-lapi init con                                                  | `""`    |
 | `appsec.wait_for_lapi.image.pullPolicy`          | Image pull policy for the wait-for-lapi init container                                     | `""`    |
 | `appsec.wait_for_lapi.image.tag`                 | Image tag for the wait-for-lapi init container                                             | `1.28`  |
+| `appsec.wait_for_lapi.securityContext`           | Security context for the wait-for-lapi init container                                      | `{}`    |

@@ -3,11 +3,11 @@ title: Central API 403 (Forbidden)
 id: capi_403
 ---
 
-Getting a **403 (Forbidden)** from **CrowdSec Central API (CAPI)** means your Security Engine request is blocked or your IP is being rate limited.  
-This is commonly tied to misconfigured setups, and triggers a 1 hour ban from CrowdSec's API.
+Getting a **403 (Forbidden)** from **CrowdSec Central API (CAPI)** means your Security Engine requests are blocked or your IP is rate limited.  
+This is commonly caused by misconfiguration and triggers a 1-hour ban from CrowdSec API.
 
 :::info
-CAPI restrictions only applies to free users. Enterprise users aren't impacted.
+CAPI restrictions apply only to free users. Enterprise users are not impacted.
 :::
 
 ## What Triggers This Issue
@@ -32,7 +32,7 @@ In **CAPI login**, every IP using a **free account** can be blocked for 1 hour w
 - **Sharing, not enrolled**: more than 20 logins in 50 minutes
 - **Enrolled, non sharing**: more than 20 requests in 50 minutes
 - **Enrolled, sharing**: more than 20 requests in 50 minutes
-- **Non Free Users**: restriction doesn't apply
+- **Non-free users**: this restriction does not apply
 
 #### 🔎 Check for repeated login attempts
 
@@ -70,7 +70,7 @@ Crash loops can trigger repeated logins, resulting in 403s.
 
 Wait **1 hour** for the ban to expire, then ensure the engine is not repeatedly re-authenticating.
 
-If you run multiple instances behind the same NAT, consider using **one LAPI instance** or lowering reconnection frequency to avoid bursts.
+If you run multiple instances behind the same NAT, consider using **one LAPI instance** or reducing reconnection frequency to avoid bursts.
 
 #### 🛠️ Stabilize the engine
 
@@ -82,7 +82,7 @@ sudo systemctl restart crowdsec
 
 ### Misconfiguration or multiple instances
 
-Running multiple instances from the same public IP can lead to trigering the rate limit.
+Running multiple instances from the same public IP can trigger rate limiting.
 
 ## Verify Resolution
 

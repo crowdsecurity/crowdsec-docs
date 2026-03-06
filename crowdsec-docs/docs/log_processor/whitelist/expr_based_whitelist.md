@@ -26,9 +26,9 @@ There are two main ways to create an expression-based whitelist:
 
 ### Path 1: Starting from an alert
 
-When you have a false positive alert, inspect it to extract event details and build a whitelist.
+When you have a false-positive alert, inspect it to extract event details and build a whitelist.
 
-#### Step 1: Identify the alert and extract its events
+#### Step 1: Identify the alert and extract events
 
 1. List recent alerts:
 
@@ -36,13 +36,13 @@ When you have a false positive alert, inspect it to extract event details and bu
 sudo cscli alerts list
 ```
 
-2. Inspect the alert with event details:
+2. Inspect an alert with event details:
 
 ```bash
 sudo cscli alerts inspect <ALERT_ID> -d
 ```
 
-The `-d/--details` flag shows the events associated with the alert. From the output, note:
+The `-d/--details` flag shows events associated with the alert. From the output, note:
 
 - The **log type** (e.g., `nginx`, `apache2`, `sshd`, etc.)
 - Any helpful **meta** fields (http path, status, verb, user-agent, etc.)
@@ -152,13 +152,13 @@ In this example, the events section lists keys such as `http_path`, `http_status
 
 </details>
 
-#### Step 2: Extract a representative log line
+#### Step 2: Pick a representative log line
 
-From the alert details, pick one triggering log line. You will need the raw line for `cscli explain` in the next step.
+From the alert details, pick one triggering log line. You will use the raw line with `cscli explain` in the next step.
 
 #### Step 3: Use `cscli explain` to reveal parsed fields
 
-To write a safe whitelist, you need the exact field names and values CrowdSec has at parse/enrich time.
+To write a safe whitelist, use the exact field names and values available at parse/enrich time.
 
 Run `cscli explain` against the log line:
 
@@ -169,7 +169,7 @@ sudo cscli explain \
   -v
 ```
 
-`cscli explain -v` shows which parsers ran and what they populated in `evt.Parsed.*`, `evt.Meta.*`, and so on.
+`cscli explain -v` shows which parsers ran and what they populated in `evt.Parsed.*`, `evt.Meta.*`, and related fields.
 
 **What to look for** in the explain output:
 
@@ -186,7 +186,7 @@ When you already know the log line pattern you want to whitelist (e.g., health c
 
 #### Step 1: Use `cscli explain` to reveal parsed fields
 
-You can use [cscli explain](/cscli/cscli_explain.md) to generate output from a log line or a log file.
+Use [cscli explain](/cscli/cscli_explain.md) on a log line or a log file.
 
 For example, with a single log line:
 
@@ -284,7 +284,7 @@ line: 5.5.8.5 - - [04/Jan/2020:07:25:02 +0000] "GET /.well-known/acme-challenge/
 		└ 🟢 crowdsecurity/http-probing
 ```
 
-You can see what data is available from the `s01-parse` stage. Look for fields in `evt.Parsed.*` and `evt.Meta.*` that you can use in your whitelist expression.
+This output shows what data is available from the `s01-parse` stage. Look for fields in `evt.Parsed.*` and `evt.Meta.*` that you can use in your whitelist expression.
 
 </details>
 
@@ -324,7 +324,7 @@ whitelist:
 
 :::tip
 
-Keep whitelist expressions as narrow as possible (path + verb + maybe user-agent) to avoid hiding real attacks.
+Keep whitelist expressions as narrow as possible (path + verb + optional user-agent) to avoid hiding real attacks.
 
 :::
 

@@ -88,6 +88,9 @@ const HomePage = () => {
 						<div className="flex items-center justify-between gap-6">
 							<div>
 								<h1 className="text-2xl md:text-4xl font-bold mb-2">CrowdSec Documentation</h1>
+								<p className="text-sm italic text-gray-500 dark:text-gray-600 mb-2">
+									Pronounced: <span className="font-semibold">Krowd-Sek</span> [/kraʊd-sek/]
+								</p>
 								<p className="text-base md:text-lg text-gray-600 dark:text-gray-700 max-w-xl">
 									Community-driven security that unifies detection, blocklists, and threat intel for modern
 									infrastructure.

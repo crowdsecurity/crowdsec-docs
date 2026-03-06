@@ -3,7 +3,7 @@ title: Log Processor No Logs Read
 id: issue_lp_no_logs_read
 ---
 
-The **Log Processor No Logs Read** means the LP is running but hasn't acquired any log lines in the last 24 hours.   
+The **Log Processor No Logs Read** issue means the LP is running but has not acquired any log lines in the last 24 hours.   
 This is the first step in the detection pipeline and must work for CrowdSec to function.
 
 ## What Triggers This Issue
@@ -14,7 +14,7 @@ This is the first step in the detection pipeline and must work for CrowdSec to f
 
 ## Common Root Causes
 
-- [**Missing or incorrect acquisition configuration**](#missing-acquisition-configuration): No acquisition files exist, not properly referencing the datasource for logs
+- [**Missing or incorrect acquisition configuration**](#missing-acquisition-configuration): No acquisition files exist, or they do not reference the correct datasource
 - [**File permission issues**](#file-permission-issues): CrowdSec doesn't have read access to the log files.
 - [**Log files are empty or not being written**](#log-files-empty-or-not-being-written): The services being monitored aren't generating logs.
 - [**Incorrect Acquisition endpoint configuration**](#detailed-acquisition-documentation): Error in endpoint config, for acquisition types listening for incoming data (httpLogs, syslog,...)
@@ -48,7 +48,7 @@ kubectl get configmap -n crowdsec -o yaml
 
 </details>
 
-If these files are empty or missing, you need to create acquisition configuration.
+If these files are empty or missing, create acquisition configuration.
 
 Also check acquisition metrics:
 
@@ -134,7 +134,7 @@ For more information on acquisition configuration:
 
 ## Getting Help
 
-If acquisition still doesn't work:
+If acquisition still does not work:
 
 - Share your acquisition config on [Discourse](https://discourse.crowdsec.net/)
 - Ask on [Discord](https://discord.gg/crowdsec) with your `cscli metrics` output and acquisition files

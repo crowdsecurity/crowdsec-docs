@@ -3,7 +3,7 @@ title: Future Console Health Check Issues
 id: future_console_issues
 ---
 
-This page lists potential health check issues and recommendations that may be added to the CrowdSec Console in future versions. These are categorized by type and priority to help guide feature development.
+This page lists potential health checks and recommendations that may be added to CrowdSec Console in future versions. They are grouped by type and priority to guide feature development.
 
 :::info
 These features are planned or under consideration and are not yet available in the Console. This documentation is maintained for planning purposes.
@@ -233,7 +233,7 @@ These future issues require:
 
 ## Feedback
 
-These future issues are based on user feedback and operational insights. If you have suggestions for additional health checks or recommendations, please:
+These future issues are based on user feedback and operational insights. If you have suggestions for additional health checks, please:
 
 - Share on [Discourse](https://discourse.crowdsec.net/)
 - Join the discussion on [Discord](https://discord.gg/crowdsec)

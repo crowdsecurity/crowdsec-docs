@@ -22,6 +22,7 @@ export default function CookieConsent() {
           className={clsx('clean-btn', styles.button)}
           onClick={() => {
             storage.set('true');
+            window.dispatchEvent(new CustomEvent('cookieConsentAccepted'));
             setDismissed(true);
           }}>
           Accept

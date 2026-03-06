@@ -8,8 +8,8 @@ sidebar_position: 81
 ## Monitoring with `cscli`
 
 `cscli metrics` exposes basic metrics about the AppSec Component:
- - Number of requests processed and blocked by the component/data source
- - Number of triggers for each rule
+- Number of requests processed and blocked by the component/data source
+- Number of triggers for each rule
 
 ```
 Appsec Metrics:
@@ -43,8 +43,8 @@ Setting `log_level` to `debug` or `trace` in the acquisition config section or t
 
 
 When enabling debug at acquisition or AppSec config level:
- - load time debug will be enabled, such as information regarding the translation of the rule to `SecRule` format.
- - runtime debug will be enabled for all the rules loaded by the AppSec Component / AppSec config.
+- Load-time debug is enabled (for example, rule translation to `SecRule` format).
+- Runtime debug is enabled for all rules loaded by the AppSec Component/AppSec config.
 
 When enabling debug directly at the AppSec rule level, only runtime evaluation details for that rule are displayed, such as:
 
@@ -107,10 +107,10 @@ INFO[2023-12-06 14:58:19] loading acquisition file : ...
 
 ## Testing a given rule
 
-We can create a skeleton environment with:
- - acquisition config that is going to load your test AppSec config
- - appsec config to load the test rule
- - the test rule itself
+Create a minimal test environment with:
+- An acquisition config that loads your test AppSec config
+- An AppSec config that loads the test rule
+- The test rule itself
 
 > /etc/crowdsec/acquis.d/test_appsec.yaml 
 ```bash
@@ -170,13 +170,13 @@ time="2023-12-20 13:39:29" level=info msg="Appsec Runner ready to process event"
 
 ## Interacting with the AppSec Component
 
-To test that the AppSec Component is working correctly, you can send requests directly to it. A few things to know:
- - To query the AppSec Component, you need to have a valid remediation component API Key
- - The AppSec Component expects to receive some of the elements in specific headers
+To test that the AppSec Component is working, send requests directly to it. Keep in mind:
+- You need a valid remediation component API key
+- The AppSec Component expects specific values in headers
 
 
-We are going to test that the AppSec Component detects correctly CVE-2023-42793, which is part of the [virtual patching collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching), that should be installed for this to work (see `cscli appsec-rules list`).
-[This rule](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-CVE-2023-42793) is pretty straightforward and detects requests to an URI ending with `/rpc2`:
+This example tests detection for CVE-2023-42793, part of the [virtual patching collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching). Make sure the collection is installed (`cscli appsec-rules list`).
+[This rule](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-CVE-2023-42793) detects requests to a URI ending with `/rpc2`:
 
 > cat /etc/crowdsec/appsec-rules/vpatch-CVE-2023-42793.yaml
 ```yaml
@@ -204,13 +204,13 @@ labels:
    - cwe.CWE-288
 ```
 
-To be able to communicate with the AppSec Component, let's create a bouncer API Key:
+To communicate with the AppSec Component, create a bouncer API key:
 
 ```bash
 cscli bouncers add appsec_test -k this_is_a_bad_password
 ```
 
-We can now query our AppSec Component (we're assuming here that it runs on the default `127.0.0.1:7422`, see the `listen_addr` parameter of the acquisition config):
+You can now query the AppSec Component (assuming the default `127.0.0.1:7422`; see the `listen_addr` setting in your acquisition config):
 
 ```bash
 ▶ curl -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-ip: 192.168.1.1' -H 'x-crowdsec-appsec-uri: /rpc2' -H 'x-crowdsec-appsec-host: google.com' -H 'x-crowdsec-appsec-verb: POST' -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password'
@@ -222,7 +222,7 @@ Content-Type: text/plain; charset=utf-8
 {"action":"ban"}
 ```
 
-And we see the alert appearing in `crowdsec.log` :
+The alert should appear in `crowdsec.log`:
 
 ```
 ...
@@ -230,7 +230,7 @@ INFO[2023-12-05 12:17:52] (test) alert : crowdsecurity/vpatch-CVE-2023-42793 by 
 ...
 ```
 
-And in `cscli alerts list` : 
+And in `cscli alerts list`:
 
 ```
 ╭────┬────────────────┬─────────────────────────────────────┬─────────┬────┬───────────┬───────────────────────────────╮

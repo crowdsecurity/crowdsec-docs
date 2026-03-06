@@ -63,7 +63,7 @@ In the following example, we deprecated `cscli_setup` and retired `papi`, then w
 and the error.
 
 ```console
-$ CROWDSEC_FEATURE_PAPI_CLIENT=true CROWDSEC_FEATURE_CSCLI_SETUP=true ./tests/local/bin/cscli version
+$ CROWDSEC_FEATURE_PAPI_CLIENT=true CROWDSEC_FEATURE_CSCLI_SETUP=true ./test/local/bin/cscli version
 ERRO[02-03-2023 15:55:45] Ignored envvar 'CROWDSEC_FEATURE_PAPI_CLIENT': the flag is retired.  
 WARN[02-03-2023 15:55:45] Envvar 'CROWDSEC_FEATURE_CSCLI_SETUP': the flag is deprecated.  
 2023/03/02 15:55:45 version: v1.5.0-rc1-13-ge729bf5d-e729bf5d6103894da28818ab4626bab918fbd09d
@@ -76,7 +76,7 @@ WARN[02-03-2023 15:55:45] Envvar 'CROWDSEC_FEATURE_CSCLI_SETUP': the flag is dep
 Retired flags don't appear in `cscli config feature-flags` unless you use the `--retired` option:
 
 ```console
-$ CROWDSEC_FEATURE_PAPI_CLIENT=true CROWDSEC_FEATURE_CSCLI_SETUP=true ./tests/local/bin/cscli config feature-flags --retired
+$ CROWDSEC_FEATURE_PAPI_CLIENT=true CROWDSEC_FEATURE_CSCLI_SETUP=true ./test/local/bin/cscli config feature-flags --retired
 ERRO[02-03-2023 15:58:38] Ignored envvar 'CROWDSEC_FEATURE_PAPI_CLIENT': the flag is retired.
 WARN[02-03-2023 15:58:38] Envvar 'CROWDSEC_FEATURE_CSCLI_SETUP': the flag is deprecated.
  --- Enabled features ---
@@ -91,7 +91,7 @@ WARN[02-03-2023 15:58:38] Envvar 'CROWDSEC_FEATURE_CSCLI_SETUP': the flag is dep
 
 To enable a feature you can:
   - set the environment variable CROWDSEC_FEATURE_<uppercase_feature_name> to true
-  - add the line '- <feature_name>' to the file /home/marco/src/crowdsec/tests/local/etc/crowdsec/feature.yaml
+  - add the line '- <feature_name>' to the file /home/marco/src/crowdsec/test/local/etc/crowdsec/feature.yaml
 
  --- Retired features ---
 

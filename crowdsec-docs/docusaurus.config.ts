@@ -320,6 +320,7 @@ const config: Config = {
 		],
 
 		["./plugins/gtag/index.ts", { trackingID: "G-0TFBMNTDFQ" }],
+		"./plugins/leadfeeder/index.js",
 		["@docusaurus/plugin-client-redirects", { redirects }],
 		[
 			"@signalwire/docusaurus-plugin-llms-txt",

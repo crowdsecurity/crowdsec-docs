@@ -3,7 +3,7 @@ title: Log Processor No Alerts
 id: issue_lp_no_alerts
 ---
 
-The **Log Processor No Alerts** issue appears when a specific Log Processor is running and communicating with the Local API but hasn't generated any alerts in the last 48 hours.   
+The **Log Processor No Alerts** issue appears when a specific Log Processor is running and communicating with the Local API but has not generated alerts in the last 48 hours.   
 
 This is similar to [Security Engine No Alerts](/u/troubleshooting/issue_se_no_alerts) but applies to individual Log Processor instances in distributed setups.
 
@@ -23,7 +23,7 @@ This is similar to [Security Engine No Alerts](/u/troubleshooting/issue_se_no_al
 - 🔗 **[No logs being read](/u/troubleshooting/issue_lp_no_logs_read)**: The acquisition configuration on this specific Log Processor may be missing, disabled, or pointing to empty sources.
 - 🔗 **[No logs being parsed](/u/troubleshooting/issue_lp_no_logs_parsed)**: Logs are being read but parsers can't process them due to format mismatches or missing collections.
 
-If it's not due to other issues above, continue with the diagnosis and resolutions below.
+If the issue is not caused by the items above, continue with the diagnosis and resolutions below.
 
 ## Diagnosis & Resolution
 

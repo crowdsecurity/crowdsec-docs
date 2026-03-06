@@ -41,6 +41,16 @@ The component uses existing remediation hooks in web servers and reverse proxies
 3. The engine evaluates the request against AppSec rules (in-band rules can block immediately).
 4. Based on the result, the web server either blocks the request or processes it as usual.
 
+### One WAF, many web servers
+
+The AppSec Component lives in the **CrowdSec Security Engine**, so you get a single “source of truth” for:
+- AppSec configurations and rules (collections from the Hub)
+- logging, alerting, and Console visibility
+
+This makes it easy to protect **multiple web servers / reverse proxies** with one CrowdSec instance: each remediation component forwards requests to the same AppSec `listen_addr`.
+
+Compared to WAFs embedded directly inside each web server, you don’t have to duplicate rule and configuration updates across multiple locations: update the rules once in CrowdSec, and every connected remediation component benefits.
+
 :::tip Common gotchas
 - Installing rules is not enough: you must also enable the AppSec acquisition datasource and restart CrowdSec.
 - The remediation component must support AppSec forwarding, and must be configured to forward to the same `listen_addr` you set in the acquisition file.
@@ -71,14 +81,11 @@ The AppSec Component works seamlessly with modern web servers and reverse proxie
 <a href="quickstart/traefik">Quick Start Guide →</a>
 </div>
 
-{/* HAProxy support coming soon - uncomment when feature is released */}
-{/*
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/haproxy-logo.png" alt="HAProxy" style={{height: '50px', objectFit: 'contain'}} />
 <strong>HAProxy</strong>
-<a href="https://hub.crowdsec.net/browse/#remediation-components">Hub Component →</a>
+<a href="quickstart/haproxy_spoa">Quick Start Guide →</a>
 </div>
-*/}
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/WordPress-logotype-wmark.png" alt="WordPress" style={{height: '50px', objectFit: 'contain'}} />
@@ -128,6 +135,7 @@ You can follow our quick start guides depending on your web server:
 
 -   [Nginx/OpenResty](quickstart/nginxopenresty)
 -   [Traefik](quickstart/traefik)
+-   [HAProxy (SPOA)](quickstart/haproxy_spoa)
 -   [WordPress](quickstart/wordpress)
 -   [CrowdSec WAF with Nginx Reverse Proxy](/u/user_guides/waf_rp_howto)
 

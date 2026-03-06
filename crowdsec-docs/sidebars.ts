@@ -109,7 +109,6 @@ const sidebarsConfig: SidebarConfig = {
 								"log_processor/whitelist/create_postoverflow",
 								"log_processor/whitelist/create_fqdn",
 								"log_processor/whitelist/create_capi",
-								"log_processor/whitelist/create_lapi",
 							],
 						},
 					],
@@ -683,6 +682,7 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/quickstart/general_setup" },
 				{ type: "doc", id: "appsec/quickstart/nginx-ingress" },
 				{ type: "doc", id: "appsec/quickstart/nginxopenresty" },
+				{ type: "doc", id: "appsec/quickstart/haproxy_spoa" },
 				{ type: "doc", id: "appsec/quickstart/npmplus" },
 				{ type: "doc", id: "appsec/quickstart/traefik" },
 				{ type: "doc", id: "appsec/quickstart/wordpress" },
@@ -714,6 +714,20 @@ const sidebarsConfig: SidebarConfig = {
 			items: [
 				{ type: "doc", id: "appsec/protocol" },
 				{ type: "doc", id: "appsec/benchmark" },
+				{ type: "doc", id: "appsec/request_lifecycle" },
+			],
+		},
+		{
+			type: "category",
+			label: "CRS",
+			link: {
+				type: "doc",
+				id: "appsec/crs/intro",
+			},
+			items: [
+				{ type: "doc", id: "appsec/crs/installation" },
+				{ type: "doc", id: "appsec/crs/plugin_support" },
+				{ type: "doc", id: "appsec/crs/crs_config" },
 			],
 		},
 		{

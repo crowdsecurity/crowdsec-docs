@@ -1,0 +1,150 @@
+---
+id: haproxy_spoa
+title: QuickStart - HAProxy (SPOA)
+---
+
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
+
+# CrowdSec WAF QuickStart for HAProxy (SPOA)
+
+## Objectives
+
+Set up the [AppSec Component](/appsec/intro.md#introduction) to protect web applications running behind [HAProxy](https://www.haproxy.org/) using the **HAProxy SPOA remediation component**.
+
+You will:
+- Enable CrowdSec AppSec (WAF) in the Security Engine.
+- Install and configure `crowdsec-haproxy-spoa-bouncer` so HAProxy can forward HTTP requests to AppSec.
+- Validate everything by triggering a test detection.
+
+## Prerequisites
+
+1. If you're new to the [AppSec Component](/appsec/intro.md#introduction) or **W**eb **A**pplication **F**irewalls, start with the [Introduction](/appsec/intro.md#introduction).
+2. It's assumed that you have already installed:
+   - **CrowdSec [Security Engine](/intro.mdx)**: for installation, refer to the [QuickStart guide](/u/getting_started/installation/linux).
+   - **HAProxy**: already running and proxying your application(s).
+   - **HAProxy SPOA [Remediation Component](/u/bouncers/intro)**: `crowdsec-haproxy-spoa-bouncer`.
+
+:::tip Already did the base setup?
+If you already completed the [General Setup](general.mdx) (collections + acquisition), skip to [Remediation Component Setup](#remediation-component-setup).
+:::
+
+## AppSec Component Setup
+
+### Collection installation
+
+Install the main AppSec rule collections:
+
+```bash
+sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+```
+
+These <UnderlineTooltip tooltip="Collections are bundles of parsers, scenarios, and AppSec rules/configuration items.">collections</UnderlineTooltip> provide virtual patching (CVE rules), generic WAF detections, and the default AppSec configuration.
+
+### Setup the acquisition
+
+Create `/etc/crowdsec/acquis.d/appsec.yaml` (see the [AppSec datasource](/log_processor/data_sources/appsec.md) for the full reference):
+
+```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
+appsec_configs:
+  - crowdsecurity/appsec-default
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+```
+
+Restart CrowdSec:
+
+```bash
+sudo systemctl restart crowdsec
+```
+
+:::warning
+Do not expose the AppSec Component to the internet. It should only be reachable from your reverse proxy.
+:::
+
+## Remediation Component Setup
+
+### Install and configure the HAProxy SPOA bouncer
+
+Read here how to install the SPOA remediation component: [HAProxy SPOA remediation component docs](/u/bouncers/haproxy_spoa).
+
+Once the bouncer is installed and able to talk to CrowdSec LAPI, you only need to enable **AppSec forwarding**.
+
+### Enable AppSec forwarding in the bouncer (YAML)
+
+In `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml`, configure the AppSec endpoint the bouncer should query for WAF evaluation:
+
+```yaml title="/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml"
+# AppSec (WAF forwarding)
+appsec_url: "http://127.0.0.1:7422"
+appsec_timeout: "200ms"
+
+hosts:
+  - host: "*"
+    appsec:
+      always_send: false
+```
+
+Restart the bouncer:
+
+```bash
+sudo systemctl restart crowdsec-spoa-bouncer
+```
+
+:::note
+If AppSec runs on a different host (or in containers), update `appsec_url` to the correct reachable address.
+:::
+
+:::warning AppSec limitations with HAProxy SPOA (important)
+HAProxy SPOA forwarding is constrained by HAProxy/SPOE/SPOA mechanics:
+- Request bodies are only available if you enable buffering (`option http-buffer-request`) and they must fit within tight size limits (commonly capped at ~50KB in examples).
+- When the body is too large (uploads, large JSON, etc.), you typically fall back to a “no-body” SPOE group, which means **body-dependent WAF rules cannot match**.
+- You are not doing full “streaming” inspection: SPOA works with what HAProxy can capture and send to the agent within buffer/frame limits.
+
+CrowdSec AppSec is still a single “source of truth” for rules/config: you can point multiple AppSec-capable integrations to the same AppSec endpoint so rule updates stay in sync across your infrastructure.
+
+Recommended layered approach:
+- Use HAProxy SPOA for **edge enforcement** (IP/range/country decisions, ban/captcha) and lightweight WAF evaluation when the request fits within the configured limits.
+- Put a full-featured L7 proxy/WAF-capable integration **downstream** (or protect the app directly) when you need deeper inspection of large bodies, file uploads, or application-specific request parsing. Examples of AppSec-capable integrations include:
+  - [Nginx/OpenResty](/appsec/quickstart/nginxopenresty)
+  - [Traefik](/appsec/quickstart/traefik)
+  - [WordPress](/appsec/quickstart/wordpress)
+:::
+
+## Testing the AppSec Component + Remediation Component
+
+:::note
+Adjust the URL below to match your HAProxy frontend (HTTP/HTTPS, port, hostname).
+:::
+
+If you try to access `http(s)://<your-haproxy-url>/.env`, your request should be blocked:
+
+```bash
+curl -i http://<your-haproxy-url>/.env
+```
+
+![appsec-denied](/img/appsec_denied.png)
+
+You can also check AppSec metrics:
+
+```bash
+sudo cscli metrics show appsec
+```
+
+### Explanation
+
+What happened in the test above is:
+
+1. You requested `/.env` through HAProxy.
+2. HAProxy forwarded the request to the SPOA remediation component (SPOE/SPOA).
+3. The remediation component queried the AppSec Component at `appsec_url`.
+4. The request matched the [AppSec rule to detect `.env` access](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access).
+5. AppSec returned a blocking action (HTTP 403) to the remediation component.
+6. HAProxy blocked the request.
+
+## Next steps
+
+- Monitor WAF alerts with `sudo cscli alerts list` and in the [CrowdSec Console](https://app.crowdsec.net).
+- Tune rules and configurations: `/appsec/configuration.md` and `/appsec/configuration_rule_management.md`.
+- Troubleshoot: `/appsec/troubleshooting.md` and [HAProxy SPOA remediation component docs](/u/bouncers/haproxy_spoa).
