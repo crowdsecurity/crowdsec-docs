@@ -132,6 +132,22 @@ Use a `.env` file or Docker secrets to avoid hardcoding sensitive variables like
 
 ---
 
+## Choose a Remediation Component
+
+:::warning
+The Security Engine by itself is a detection engine -- it will not block anything. You need to add a [Remediation Component](/bouncers/intro.md) to enforce decisions.
+:::
+
+:::tip Protecting a web application?
+Use a **WAF-capable** bouncer to get real-time WAF protection and virtual patching. For Docker and Kubernetes environments, the [Traefik bouncer plugin](/bouncers/traefik.mdx) is a natural fit. If you use Nginx as a reverse proxy, see the [Nginx bouncer](/bouncers/nginx.mdx).
+
+See the [full bouncer selection guide](/bouncers/intro.md) for all available options.
+:::
+
+For non-web services (SSH, databases, SMTP), use the [firewall bouncer](/bouncers/firewall.mdx) for IP-level protection.
+
+---
+
 ## Next steps
 
 Great, you now have CrowdSec installed. Continue with the [post-installation steps](/getting_started/next_steps.mdx) to finish setup and optimize your deployment.
