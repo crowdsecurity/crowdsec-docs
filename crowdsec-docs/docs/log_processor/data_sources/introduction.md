@@ -26,6 +26,7 @@ Name | Type | Stream | One-shot
 [HTTP](/log_processor/data_sources/http.md) | read logs from an HTTP endpoint | yes | no
 [journald](/log_processor/data_sources/journald.md) | journald via filter | yes | yes
 [Kafka](/log_processor/data_sources/kafka.md)| read logs from kafka topic | yes | no
+[Kubernetes](/log_processor/data_sources/kubernetes.md) | stream container logs from pods selected by labels | yes | no
 [Kubernetes Audit](/log_processor/data_sources/kubernetes_audit.md) | expose a webhook to receive audit logs from a Kubernetes cluster  | yes | no
 [Loki](/log_processor/data_sources/loki.md) | read logs from loki | yes | yes
 [VictoriaLogs](/log_processor/data_sources/victorialogs.md) | read logs from VictoriaLogs | yes | yes
