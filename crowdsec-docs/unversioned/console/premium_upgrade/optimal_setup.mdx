@@ -4,23 +4,228 @@ title: Optimal Premium Upgrade Setup
 description: Best practices for setting up your Premium upgrade
 ---
 
-When upgrading to a Premium plan, you may not want to upgrade every single Security Engine you monitor. It is common to have a mix of environments:
-- **Production:** Requires Premium features (longer data retention, heavy API limits, organization-wide blocklists).
-- **Dev / Test / Staging:** Can remain on the Free tier.
+import { FeatureCard } from '@site/src/components/premium-upgrade/feature-card';
 
-Because the Premium Upgrade applies to an entire **Organization**, the optimal strategy is to separate your Security Engines into different contexts before subscribing.
+<div className="p-6 rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 border border-solid border-primary/20 mb-8">
 
-When you first create a Console account, your workspace is your "Personal Account".
-As a Community account, you can create one extra organization for free.
+## 💡 Why Organize Before Upgrading?
 
-We recommend the following setup:
-- If you have not already, create a new organization for your **Production** environment.
-- Keep your **Dev / Test / Staging** Security Engines in your **Personal Account**.
-- Move your **Production** Security Engines to the new **Production** organization.
-- Upgrade the **Production** organization to **Premium**.
+Premium upgrades apply to an **entire Organization**. You may not want Premium features for all environments—typically only **Production** needs extended retention, higher quotas, and advanced protection.
 
-To split your Security Engines into different organizations, use either:
-- The [Transfer feature](/u/console/security_engines/transfer_engine) from the Security Engine page.
-- Or via `cscli`, re-enroll your Security Engines in the desired organization with the `--overwrite` flag to force moving them to the new organization.
+By organizing your Security Engines **before** upgrading, you save costs and keep your infrastructure organized.
 
-After the transfer, the alerts will reappear in the new organization after a few minutes.
+</div>
+
+---
+
+## Common Multi-Environment Setup
+
+Most teams have a mix of environments with different security requirements:
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+
+<div className="border-2 border-solid border-primary/30 rounded-lg p-6 bg-card">
+
+### 🔥 Production Environments
+
+**Needs Premium:**
+
+- Extended alert retention (12 months)
+- Higher alert quotas (millions/month)
+- Organization-wide blocklists
+- CTI API access for SIEM integration
+- Threat Forecast blocklists
+- Multi-seat team access
+
+</div>
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### 🧪 Dev / Test / Staging
+
+**Community is sufficient:**
+
+- Basic alert monitoring (500/month)
+- Short retention (2 months)
+- Community blocklists (3k IPs)
+- Individual engine management
+- Single-user access
+
+</div>
+
+</div>
+
+---
+
+## Recommended Setup Strategy
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-sm">
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card text-left">
+
+### 1️⃣ Create Production Organization
+
+Create a new organization specifically for your Production environment.
+
+**Community accounts** get **1 extra organization for free** (beyond your Personal Account).
+
+[Learn about Organizations →](/u/console/organizations/intro)
+
+</div>
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card text-left">
+
+### 2️⃣ Organize Your Engines
+
+- **Personal Account:** Keep Dev/Test/Staging engines here (Community tier)
+- **Production Org:** Transfer Production engines to the new organization
+
+You can transfer engines in two ways:
+- Console: [Transfer feature](/u/console/security_engines/transfer_engine)
+- CLI: Re-enroll with `cscli`   
+  using `--overwrite` flag
+
+</div>
+
+<div className="border-2 border-solid border-primary/30 rounded-lg p-6 bg-card text-left">
+
+### 3️⃣ Upgrade Production Only
+
+Upgrade **only the Production organization** to Premium.
+
+Your Dev/Test/Staging environments remain on Community tier with no additional cost.
+
+✅ Alerts reappear in the new organization within minutes
+
+</div>
+
+</div>
+
+---
+
+## Step-by-Step: Splitting Your Engines
+
+### Option 1: Transfer via Console UI
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card mb-4">
+
+**Best for:** Quick transfers of individual or small batches of engines
+
+1. Navigate to **Security Engines** page in Console
+2. Select the engine(s) you want to transfer
+3. Use the **Transfer** feature to move them to your Production organization
+4. Confirm the transfer
+
+[Transfer Feature Documentation →](/u/console/security_engines/transfer_engine)
+
+</div>
+
+### Option 2: Re-enroll via `cscli`
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card mb-4">
+
+**Best for:** Bulk transfers, automation, or infrastructure-as-code deployments
+
+```bash
+# Get enrollment key from your Production organization
+# Console → Organizations → Production → Enrollment Keys
+
+# Re-enroll the Security Engine with --overwrite flag
+cscli console enroll <ENROLLMENT_KEY> --overwrite
+```
+
+The `--overwrite` flag forces the engine to move to the new organization, even if already enrolled elsewhere.
+
+</div>
+
+---
+
+## Example Organizational Structure
+
+<div className="border-l-4 border-solid border-primary p-6 bg-card mb-6">
+
+**Before Organizing (All in Personal Account):**
+
+- 10 Production servers (web, API, database)
+- 5 Staging servers
+- 3 Dev laptops
+
+**After Organizing:**
+
+**Personal Account (Community - Free):**
+- 5 Staging servers
+- 3 Dev laptops
+
+**Production Organization (Premium - Paid):**
+- 10 Production servers
+- Full Premium features
+- Team collaboration with 3 seats
+- Extended retention and quotas
+
+</div>
+
+---
+
+## Benefits of This Approach
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+
+<FeatureCard
+	title="Cost Optimization"
+	metric="Save 60-80%"
+	category="scale"
+	description="Only pay for Premium where you need it. Dev/Test environments remain free on Community tier."
+/>
+
+<FeatureCard
+	title="Clear Separation"
+	metric="Zero confusion"
+	category="scale"
+	description="Production and non-production environments are cleanly separated, reducing noise and improving security posture visibility."
+/>
+
+<FeatureCard
+	title="Flexible Scaling"
+	metric="Grow as needed"
+	category="scale"
+	description="Add more organizations later (MSPs can create unlimited orgs). Start simple, expand when required."
+/>
+
+<FeatureCard
+	title="No Downtime"
+	metric="Seamless transfer"
+	category="monitoring"
+	description="Alerts reappear in new organization within minutes. No disruption to security monitoring."
+/>
+
+</div>
+
+---
+
+## When NOT to Separate
+
+You may want **all** engines in a single Premium organization if:
+
+- You need extended retention across **all environments** for compliance
+- Your team investigates attacks in staging/dev environments regularly
+- You want centralized allowlists and blocklists everywhere
+- You're an MSP managing multiple client environments (use [Multi-Organization](/u/console/premium_upgrade/features_overview) instead)
+
+---
+
+## Next Steps
+
+<div className="p-6 rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 border border-solid border-primary/20">
+
+### Ready to upgrade?
+
+1. **Organize** your Security Engines across Personal Account and Production Organization
+2. **Upgrade** the Production organization to Premium
+3. **Test** Premium features during your trial period ([Testing Guide →](/u/console/premium_upgrade/testing_premium))
+
+<div style={{display: 'flex', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap'}}>
+	<a href="https://app.crowdsec.net/pricing" className="button button--primary button--lg">View Pricing →</a>
+	<a href="/u/console/premium_upgrade/testing_premium" className="button button--secondary button--lg">Testing Premium →</a>
+</div>
+
+</div>
