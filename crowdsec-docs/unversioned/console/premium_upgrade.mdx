@@ -8,6 +8,31 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Link from '@docusaurus/Link';
 import { FeatureCard, HighlightCard } from '@site/src/components/premium-upgrade/feature-card';
+import { TabsWithPersona } from '@site/src/components/premium-upgrade/tabs-with-persona';
+
+export const personaOptions = [
+	{
+		value: "devops",
+		icon: "⚙️",
+		label: "DevOps / SRE",
+		description: "Managing infrastructure solo or in small teams, focused on reducing noise and blocking more threats.",
+		tag: "Solo · SME"
+	},
+	{
+		value: "secops",
+		icon: "🛡️",
+		label: "SecOps / Blue Team",
+		description: "Team needs collaboration, investigation capabilities, and data retention for audits.",
+		tag: "Team · Enterprise"
+	},
+	{
+		value: "msp",
+		icon: "🏢",
+		label: "MSP / Integrator",
+		description: "Managing security for multiple clients, requiring isolation and automation capabilities.",
+		tag: "Multi-tenant · API"
+	}
+];
 
 <div style={{marginBottom: '2rem'}}>
 
@@ -19,8 +44,13 @@ CrowdSec Premium features are designed for users who have **commercial usage** o
 
 </div>
 
-<Tabs groupId="user-persona" className="premium-persona-tabs">
-<TabItem value="devops" label="⚙️ DevOps / SRE" default>
+<TabsWithPersona
+	options={personaOptions}
+	defaultValue="devops"
+	groupId="user-persona"
+	headerLabel="Your Profile"
+>
+<TabItem value="devops">
 
 ## Solo or Small Team Infrastructure Management
 
@@ -434,7 +464,7 @@ CrowdSec Premium features are designed for users who have **commercial usage** o
 - **White-label ready**: Manage all clients from single dashboard
 
 </TabItem>
-</Tabs>
+</TabsWithPersona>
 
 ---
 

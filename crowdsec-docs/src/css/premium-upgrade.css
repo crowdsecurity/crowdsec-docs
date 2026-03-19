@@ -1,6 +1,17 @@
 /* Premium Upgrade Page Styles */
 
-/* Make tabs look more like persona cards */
+/* Persona Selector Cards */
+.persona-card {
+	cursor: pointer;
+	user-select: none;
+	position: relative;
+}
+
+.persona-card:active {
+	transform: scale(0.98);
+}
+
+/* Make default tabs look more like persona cards (fallback) */
 .premium-persona-tabs .tabs__item {
 	font-size: 0.9rem;
 	padding: 0.5rem 1rem;
@@ -16,6 +27,11 @@
 	background: rgb(var(--primary) / 0.1);
 	color: rgb(var(--primary));
 	border-color: rgb(var(--primary) / 0.3);
+}
+
+/* Hide default tabs when using custom persona header */
+.tabs-with-persona .tabs {
+	display: none;
 }
 
 /* Feature card animations */
