@@ -1,0 +1,82 @@
+/* Premium Upgrade Page Styles */
+
+/* Make tabs look more like persona cards */
+.premium-persona-tabs .tabs__item {
+	font-size: 0.9rem;
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
+	transition: all 0.2s ease;
+}
+
+.premium-persona-tabs .tabs__item:hover {
+	background-color: rgb(var(--muted));
+}
+
+.premium-persona-tabs .tabs__item--active {
+	background: rgb(var(--primary) / 0.1);
+	color: rgb(var(--primary));
+	border-color: rgb(var(--primary) / 0.3);
+}
+
+/* Feature card animations */
+.feature-card {
+	animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Highlight card extra styling */
+.feature-card-highlight {
+	position: relative;
+	overflow: hidden;
+}
+
+.feature-card-highlight::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+	background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--secondary)));
+}
+
+/* Category color accents - left border */
+.category-protection {
+	border-left: 4px solid rgb(var(--color-red));
+}
+
+.category-scale {
+	border-left: 4px solid rgb(133 149 208); /* purple from colors */
+}
+
+.category-monitoring {
+	border-left: 4px solid rgb(75 192 192); /* teal */
+}
+
+.category-intelligence {
+	border-left: 4px solid rgb(var(--color-yellow));
+}
+
+/* Responsive grid improvements */
+@media (max-width: 768px) {
+	.premium-persona-tabs .tabs__item {
+		font-size: 0.8rem;
+		padding: 0.4rem 0.8rem;
+	}
+}
+
+/* Button improvements for CTA */
+.button--lg {
+	padding: 0.75rem 1.5rem;
+	font-size: 1rem;
+}
