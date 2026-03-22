@@ -1,4 +1,0 @@
----
-id: building
-title: Building
----

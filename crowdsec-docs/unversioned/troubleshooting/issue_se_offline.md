@@ -3,7 +3,7 @@ title: Security Engine Offline
 id: issue_se_offline
 ---
 
-The **Security Engine Offline** indicates that an enrolled Security Engine has not reported or logged into **CrowdSec Central API** for more than **48 hours**.  
+The **Security Engine Offline** issue indicates that an enrolled Security Engine has not reported to **CrowdSec Central API** for more than **48 hours**.  
 This usually means the core `crowdsec` service has stopped working or communicating with our infrastructure.
 
 ## What Triggers This Issue
@@ -73,18 +73,18 @@ After restarting, re-run `sudo cscli console status` to ensure the heartbeat is 
 
 #### 🔎 Check console status and logs for connectivity errors
 
-`sudo cscli console status` may show errors such as `permission denied`, `unable to reach console`, or TLS failures. Inspect `/var/log/crowdsec/crowdsec.log` (or container stdout) for more details.
+`sudo cscli console status` may show errors such as `permission denied`, `unable to reach console`, or TLS failures. Inspect `/var/log/crowdsec/crowdsec.log` (or container stdout) for details.
 
-Let's confirm that your Security Engine can communicate with the CrowdSec Central API (CAPI).
+Confirm that your Security Engine can communicate with CrowdSec Central API (CAPI):
 ```bash
 sudo cscli capi status
 ```
 
-Let's also check that the security engine's Local API is running and is healthy.
+Also check that the Security Engine Local API is running and healthy:
 ```bash
 sudo cscli machines list
 ```
-In a standalone install you should see one machine, check the Last update time.
+In a standalone install, you should see one machine. Check the `Last Update` time.
 
 Ensure outbound access to the CrowdSec Console endpoints listed in [Network management](/docs/configuration/network_management). Firewalls or proxy changes often block the HTTPS calls required for heartbeats.
 
@@ -136,7 +136,7 @@ Once the engine resumes contact, the Console clears the **Security Engine Offlin
 
 ## Getting Help
 
-If you still don't manage to resume your Security Engine heartbeat towards CrowdSec Console:
+If you still cannot restore Security Engine heartbeat to CrowdSec Console:
 
 - Check [Discourse](https://discourse.crowdsec.net/) for similar cases
 - Ask on [Discord](https://discord.gg/crowdsec) with your `sudo cscli support dump` output

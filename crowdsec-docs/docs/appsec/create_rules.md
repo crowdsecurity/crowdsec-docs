@@ -6,14 +6,14 @@ sidebar_position: 3
 
 ## Foreword
 
-This documentation assumes you're trying to create an AppSec rules with the intent of submitting to the hub, and thus creating the associated functional testing. The creation of said functional testing will guide our process and will make it easier.
+This documentation assumes you're creating an AppSec rule to submit to the Hub, along with its functional tests. Building the test first guides the process and makes it easier.
 
 We're going to create a rule for an imaginary vulnerability: [a shell injection in the user_id parameter](https://nvd.nist.gov/vuln/detail/CVE-2022-46169) that can be triggered because [the `x-foobar-bypass` header confuses the application](https://nvd.nist.gov/vuln/detail/CVE-2023-22515).
 
 The exploit looks like this:
 `curl localhost -H "x-foobar-bypass: 1" -d "user_id=123;cat /etc/password&do=yes"`
 
-And results in a HTTP request looking like this:
+And results in an HTTP request that looks like this:
 
 ```
 POST / HTTP/1.1
@@ -25,11 +25,11 @@ Content-Type: application/x-www-form-urlencoded
 user_id=123;cat /etc/password&do=yes
 ```
 
-## Pre-requisites
+## Prerequisites
 
-1. [Create a local test environment](https://doc.crowdsec.net/docs/contributing/contributing_test_env) or have crowdsec (>= 1.5.6) installed locally
-2. Have docker installed locally to run the test web server
-3. Have [nuclei installed](https://docs.projectdiscovery.io/tools/nuclei/install) (`go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest`)
+1. [Create a local test environment](https://doc.crowdsec.net/docs/contributing/contributing_test_env) or have CrowdSec (>= 1.5.6) installed locally
+2. Have Docker installed locally to run the test web server
+3. Have [Nuclei installed](https://docs.projectdiscovery.io/tools/nuclei/install) (`go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest`)
 4. Clone the hub
 
 ```bash
@@ -64,9 +64,9 @@ appsec-rules:
 nuclei_template: my-vuln.yaml
 ```
 
-_note:_ Since our custom AppSec rule has not been added to the hub yet, we need to define its path relative to the root of the hub directory.
+_Note:_ Since our custom AppSec rule has not been added to the Hub yet, we need to define its path relative to the root of the Hub directory.
 
-The `hubtest create` command created a boilerplate nuclei template that we can edit to add our HTTP request:
+The `hubtest create` command created a boilerplate Nuclei template that we can edit to add our HTTP request:
 
 > .appsec-tests/my-vuln/my-vuln.yaml
 
@@ -170,12 +170,12 @@ Let's get over the relevant parts:
 - `description` is how your scenario will appear in [the hub](https://hub.crowdsec.net)
 - `labels` section is used both in [the hub](https://hub.crowdsec.net) and [the console](https://app.crowdsec.net). [It must follow rules described here](/log_processor/scenarios/format.md#labels)
 - `rules` describe what we want to match:
-  - a [`METHOD`](/appsec/rules_syntax.md#target) [equal to `POST`](/appsec/rules_syntax.md#match)
-  - the presence of a header ([`HEADERS_NAME`](/appsec/rules_syntax.md#target)) with a name that once transformed to `lowercase`, is `x-foobar-bypass`
+  - a [`METHOD`](rules_syntax.md#zones) [equal to `POST`](rules_syntax.md#match)
+  - the presence of a header ([`HEADERS_NAME`](rules_syntax.md#zones)) with a name that once transformed to `lowercase`, is `x-foobar-bypass`
   - a post parameter (`BODY_ARGS`), `user_id` that contains something else than a-z A-Z or 0-9 or `_`
 
 :::info
-You can [find detailed rules syntax here](/appsec/rules_syntax.md).
+You can [find detailed rules syntax here](rules_syntax.md).
 :::
 
 ## Testing

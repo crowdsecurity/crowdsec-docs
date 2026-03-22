@@ -8,6 +8,8 @@ import useBaseUrl from "@docusaurus/useBaseUrl"
 
 The CrowdSec Palo Alto integration allows you to block malicious IPs in your Palo Alto firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Palo Alto firewall.
 
+Palo Alto refers to this feature as [**External Dynamic Lists (EDL)**](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/policy/use-an-external-dynamic-list-in-policy/external-dynamic-list), which allow you to import and automatically update blocklists from external sources.
+
 ### Prerequisites
 
 Before you begin, please ensure your Palo Alto device supports ingesting blocklists. If you are unsure, please refer to the Palo Alto documentation or contact Palo Alto support.
@@ -99,7 +101,7 @@ You should have your policy created, don't forget to click on ‘commit‘.
 
 ![](/img/paloalto_step7.png)
 
-[Palo Alto Documentation](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/policy/use-an-external-dynamic-list-in-policy/external-dynamic-list#idf36cb80a-77f1-4d17-9c4b-7efe9fe426af)
+[Palo Alto Documentation](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/policy/use-an-external-dynamic-list-in-policy/external-dynamic-list)
 [Video Tutorial](https://www.youtube.com/watch?v=QFVI4sOFoaI)
 
 ## Format example

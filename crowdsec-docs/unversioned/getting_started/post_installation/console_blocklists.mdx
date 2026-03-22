@@ -9,9 +9,8 @@ import FormattedTabs from '@site/src/components/formatted-tabs';
 
 # CrowdSec Blocklists
 
-In the community edition of CrowdSec, you have the capability to subscribe to three blocklists, offering proactive protection against known malicious sources.
-
-These lists are curated and frequently updated by the CrowdSec team to ensure your infrastructure remains safeguarded.
+In the community edition of CrowdSec, you can subscribe to three blocklists for proactive protection against known malicious sources.
+These lists are curated and updated regularly by the CrowdSec team.
 
 ## Subscribing to your first blocklist
 
@@ -27,27 +26,27 @@ To subscribe to a blocklist, you need to go to the `Blocklists` tab in the conso
 
 ### Which blocklist should I use?
 
-The answer to this question depends on the kind of traffic you aim to block and the security level you wish to uphold.
+This depends on the traffic you want to block and the level of strictness you need.
 
 For instance, if you're running a web server and wish to shield your websites from known free proxies, subscribing to the `Free Proxies list` blocklist would be a suitable measure.
 
 :::info
-A `proxy` is a server that acts as an intermediary for requests from clients seeking resources from other servers. Meaning the original requester IP address is hidden from your server.
+A `proxy` is an intermediary server. It hides the original requester IP address from your server.
 :::
 
 On the other hand, if you're not hosting websites, for example, you might opt for the `Firehol greensnow.co list`. This list compiles IPs known for conducting `bruteforce` attacks on a range of services, providing a targeted defense against such malicious activities.
 
 :::info
-`Bruteforce` attacks are a trial-and-error method used to obtain information such as a user password
+`Bruteforce` attacks are trial-and-error attempts to obtain credentials such as passwords.
 :::
 
-If neither of the two examples mentioned suits your specific needs, each blocklist comes with a description to assist you in making an informed decision about which one to utilize.
+If neither example fits, each blocklist includes a description to help you choose.
 
 ### Subscribing an engine to a blocklist
 
-To subscribe an engine to a blocklist, click on the `Subscribe` button next to the blocklist you wish to use.
+To subscribe an engine to a blocklist, click `Subscribe` next to the blocklist.
 
-Opening this will reveal the blocklist's details panel, where you can click on the `Add Security Engine(s)` button to bring up the modal for selecting engines.
+This opens the details panel. Click `Add Security Engine(s)` to choose engines.
 
 <ThemedImage
     alt="CrowdSec Blocklist Subscription"
@@ -57,7 +56,7 @@ Opening this will reveal the blocklist's details panel, where you can click on t
     }}
 />
 
-After opening the modal, you can choose the engine(s) you want to add to the blocklist and select the appropriate action for the Security Engine to take. To finalize your choice, click `Save`.
+In the modal, select the engine(s) and the action to apply, then click `Save`.
 
 <ThemedImage
     alt="CrowdSec Blocklist Engine Selection"
@@ -67,7 +66,7 @@ After opening the modal, you can choose the engine(s) you want to add to the blo
     }}
 />
 
-After saving, as indicated, it could take up to `2 hours` for the blocklist to become fully functional. This delay is due to the blocklist being refreshed every 2 hours on the community plan.
+After saving, it can take up to `2 hours` for the blocklist to become active because community blocklists refresh every 2 hours.
 
 ### Where can I see blocklist decisions?
 
@@ -101,10 +100,10 @@ Local API Decisions:
 
 In the example output, you can see that the `free_proxies` and `tor-exit-nodes` blocklists are active and have the origin `lists`.
 
-## Next Steps?
+## Next steps
 
-Now that you have subscribed your engine to a list, you can continue exploring the console features:
+Now that you have subscribed an engine to a list, continue exploring the Console:
 
 - [CrowdSec Hub](/getting_started/post_installation/console_hub.mdx)
 
-If not head back to the [post installation steps](/getting_started/next_steps.mdx#1-crowdsec-console-) to follow the rest of the steps.
+If you want the full setup flow, return to the [post-installation steps](/getting_started/next_steps.mdx#1-crowdsec-console-).

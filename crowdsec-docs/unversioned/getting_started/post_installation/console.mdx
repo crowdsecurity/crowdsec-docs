@@ -9,13 +9,13 @@ import FormattedTabs from '@site/src/components/formatted-tabs';
 
 # CrowdSec Console
 
-The CrowdSec Console serves as a web-based interface designed for managing your CrowdSec Security Engines effectively. This console comes equipped with an intuitive dashboard, offering a comprehensive visualization of your engines' activities, thereby enhancing the ease of monitoring and analysis.
+The CrowdSec Console is a web interface for managing your CrowdSec Security Engines. It provides dashboards and activity views to make monitoring and analysis easier.
 
-Additionally, it offers the capability to integrate enhanced functionalities, including the option to incorporate Third-Party blocklists. This feature not only extends the flexibility and adaptability of your security setup but also enables a more robust defense mechanism by leveraging external intelligence sources. 
+The Console also lets you add advanced features, including third-party blocklists, so you can extend protection with external intelligence.
 
-## Your first Enrollment
+## Your first enrollment
 
-This guide presumes you have already installed CrowdSec on your machine. If you haven't, you can check the following getting started guides:
+This guide assumes CrowdSec is already installed. If not, start with one of these guides:
 
 - [Install on Linux](/getting_started/installation/linux.mdx)
 - [Install on FreeBSD](/getting_started/installation/freebsd.mdx)
@@ -39,19 +39,19 @@ Head over to the [CrowdSec Console](https://app.crowdsec.net/signup) and sign up
 
 ### Verify Email
 
-After signing up, you will receive an email to verify your account. Click on the link provided or enter the code in the email to verify your account.
+After signing up, you will receive a verification email. Click the link or enter the code to verify your account.
 
 #### Missing Email?
 
-If you don't receive an email, check your spam folder. If you still don't see it, you can request a new verification email by clicking on the "Resend verification email" link on the login page.
+If you do not receive an email, check your spam folder. If it is still missing, click "Resend verification email" on the login page.
 
 :::info
-If more than 5 minutes have passed and you haven't received the email, [please get in touch with us](mailto:support@crowdsec.net)
+If more than 5 minutes have passed, [contact us](mailto:support@crowdsec.net).
 :::
 
 ### Survey
 
-When you log in for the first time, we will ask you a few questions to gain a clearer understanding of your needs and use case.
+When you log in for the first time, we ask a few questions to understand your use case.
 
 <ThemedImage
     alt="CrowdSec Survey"
@@ -62,12 +62,12 @@ When you log in for the first time, we will ask you a few questions to gain a cl
 />
 
 :::info
-The survey is optional and you can skip it if you want. We use this information to tailor your experience and to better understand our users.
+The survey is optional. We use the information to tailor your experience and better understand users.
 :::
 
 ### Engines page
 
-After signing up, the first page you'll visit is the engines page. This is where you can view all your enrolled engines and check their current status.
+After signing up, the first page you see is the engines page, where you can view enrolled engines and their status.
 
 <ThemedImage
     alt="CrowdSec Enrollment Key"
@@ -77,9 +77,9 @@ After signing up, the first page you'll visit is the engines page. This is where
     }}
 />
 
-However! since this is your first enrollment, you won't see any engines yet. Let's fix that by enrolling a new engine.
+Since this is your first enrollment, you will not see any engines yet. Let's enroll one.
 
-At the very bottom of the page, you will see a code card with a command to run on your engine. This command will enroll it to your account.
+At the bottom of the page, you will see a code card with a command to run on your engine. This enrolls it to your account.
 
 :::info
 `$ENROLLMENT_KEY` is a placeholder for your actual enrollment key.
@@ -109,9 +109,9 @@ INFO[2024-02-21T16:50:17Z] Please restart crowdsec after accepting the enrollmen
 ```
 
 
-### Accept Enrollment
+### Accept enrollment
 
-Once you execute the command, a new engine will show up on the engines page. Select this new engine and click on "Accept enroll" to proceed.
+Once you execute the command, a new engine appears on the engines page. Select it and click "Accept enroll."
 
 <ThemedImage
     alt="CrowdSec Accept Enrollment"
@@ -122,12 +122,12 @@ Once you execute the command, a new engine will show up on the engines page. Sel
 />
 
 :::tip
-If you don't see the engine appear, you can use the refresh button at the right of the page near "Add Security Engine".
+If you do not see the engine, use the refresh button near "Add Security Engine".
 :::
 
 ### Restart CrowdSec
 
-After accepting the enrollment, you will need to restart the CrowdSec service.
+After accepting the enrollment, restart the CrowdSec service.
 
 <FormattedTabs
     bash="sudo systemctl restart crowdsec"
@@ -136,14 +136,14 @@ After accepting the enrollment, you will need to restart the CrowdSec service.
 />
 
 :::warning
-While it's not critical to restart the service right away, it's advisable to do so at your earliest convenience to make sure all `metadata` is fully synchronized.
+Restarting is not critical immediately, but it ensures metadata is fully synchronized.
 :::
 
-## Next Steps?
+## Next steps
 
-Now that you have enrolled your first engine, you can start exploring the console and its features. Here are a few things you can do next:
+Now that your first engine is enrolled, explore the Console features:
 
 - [Third-Party Blocklists](/getting_started/post_installation/console_blocklists.mdx)
 - [CrowdSec Hub](/getting_started/post_installation/console_hub.mdx)
 
-If not head back to the [post installation steps](/getting_started/next_steps.mdx#1-crowdsec-console-) to follow the rest of the steps.
+If you want to follow the full setup, return to the [post-installation steps](/getting_started/next_steps.mdx#1-crowdsec-console-).

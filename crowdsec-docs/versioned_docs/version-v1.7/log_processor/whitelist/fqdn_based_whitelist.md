@@ -4,28 +4,27 @@ title: FQDN
 ---
 
 :::info
-FQDN lookups can be potentially cause latency issues, we only recommend to use this within the `Postoverflow whitelist` stage see [introduction](/log_processor/whitelist/introduction.md) for your OS specific path
+FQDN lookups can potentially cause latency issues. We recommend using them only in the `Postoverflow whitelist` stage. See [introduction](/log_processor/whitelist/introduction.md) for your OS specific path.
 :::
 
-### Create the whitelist with fully qualified domaine name
+### Create a whitelist by fully qualified domain name
 
-You might want to whitelist a fully qualified domain name (FQDN eg foo.com), in that case you need to follow this below
+If you need to whitelist a fully qualified domain name (FQDN, for example `foo.com`), create a whitelist file like the one below.
 
-Let's create the following file `FQDN-whitelists.yaml` (See [introduction](/log_processor/whitelist/introduction.md) for your OS specific path) :
+Create `FQDN-whitelists.yaml` in your whitelist directory (see [introduction](/log_processor/whitelist/introduction.md) for your OS specific path):
 
 ```yaml
-name: "my/FQDN-whitlists" ## Must be unique
-description: "Whitelist postoverflows from FQDN"
+name: "my/fqdn-whitelists" ## Must be unique
+description: "Whitelist postoverflows by FQDN"
 whitelist:
-  reason: "do whitelistings by FQDN"
+  reason: "whitelist by FQDN"
   expression:
     - evt.Overflow.Alert.Source.IP in LookupHost("foo.com")
     - evt.Overflow.Alert.Source.IP in LookupHost("foo.foo.org")
     - evt.Overflow.Alert.Source.IP in LookupHost("12123564.org")
 ```
-Save and reload CrowdSec before to test
+Save the file, then reload CrowdSec to apply the change:
 
 ```bash title="Reload CrowdSec"
 sudo systemctl reload crowdsec
 ```
-

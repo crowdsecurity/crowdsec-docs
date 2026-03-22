@@ -7,58 +7,58 @@ pagination_next: getting_started/next_steps
 
 # Whitelists
 
-Whitelists are a way to tell CrowdSec to ignore certain events or IP addresses. This can be useful if you have a static IP address that you know is safe, or if you have a service that _could_ generates a lot of false triggers by loading alot of thumbnails, images or fonts.
+Whitelists tell CrowdSec to ignore certain events or IP addresses. This is useful if you have a static IP you trust, or a service that could generate false triggers (for example, a site that loads many thumbnails, images, or fonts).
 
-By default CrowdSec will whitelist private LAN IP addresses via [this parser](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/whitelists), however you may want to whitelist additional IP addresses or events.
+By default, CrowdSec whitelists private LAN IP addresses via [this parser](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/whitelists). You can add additional IPs or events.
 
-In this guide we will cover how to create some whitelists and how to apply them to your CrowdSec instance.
+This guide covers how to create whitelists and apply them to your CrowdSec instance.
 
-However, we can't cover every possible use case, so if you have a specific one that isn't covered here, please refer to [detailed whitelist documentation](/docs/next/log_processor/whitelist/intro)
+We cannot cover every use case. For advanced scenarios, see the [detailed whitelist documentation](/docs/next/log_processor/whitelist/intro).
 
 :::info
-We use "event" as a term to describe a log line that is currently being processed by CrowdSec. An "event" can be a log line from a log file, or an "overflow" from a scenario.
+An "event" is a log line being processed by CrowdSec, or an "overflow" from a scenario.
 :::
 
 ## Whitelist Types
 
-There are three different types of whitelists in CrowdSec:
+There are three whitelist types in CrowdSec:
 - Parser (at enrich stage)
 - Postoverflow
 - AllowLists
 
-Its important to note where these whitelists are applied in the pipeline, as this will affect the behavior and the context of the whitelists.
+It is important to know where these are applied in the pipeline, as it affects behavior and context.
 
 ### Parser
 
-Parser based whitelists are applied whilst the event is being Enriched. This means that the whitelists will prevent the event (log line) from hitting the scenario stage, leading to better memory management.
+Parser-based whitelists are applied while the event is being enriched. They prevent the log line from reaching the scenario stage, which saves resources.
 
-typically these files are located in the following locations depending on your OS:
+Typically these files are located here, depending on your OS:
 - Linux: `/etc/crowdsec/parsers/s02-enrich/`
 - Freebsd: `/usr/local/etc/crowdsec/parsers/s02-enrich/`
 - Windows: `c:/programdata/crowdsec/config/parsers/s02-enrich/`
 
 ### Postoverflow
 
-Postoverflow whitelists are applied after a scenario has been triggered. You may want use this stage to do _"expensive"_ whitelists, such as DNS lookups.
+Postoverflow whitelists are applied after a scenario triggers. Use this stage for _expensive_ checks, such as DNS lookups.
 
 :::info
-We deem a whitelist as _"expensive"_ if it requires a network call or a lookup that could potentially slow down the processing of the event.
+A whitelist is "expensive" if it requires a network call or lookup that could slow event processing.
 :::
 
-typically these files are located in the following locations depending on your OS:
+Typically these files are located here, depending on your OS:
 - Linux: `/etc/crowdsec/postoverflows/s01-whitelist/`
 - Freebsd: `/usr/local/etc/crowdsec/postoverflows/s01-whitelist/`
 - Windows: `c:/programdata/crowdsec/config/postoverflows/s01-whitelist/`
 
-*Postoverflow whitelist folders do not exist by default so you **MUST** manually create them*
+*Postoverflow whitelist folders do not exist by default, so you must create them manually.*
 
 ### AllowLists
 
 :::info
-Allowlist were added in version `1.6.8` please ensure you are on this version to follow these Steps
+AllowLists were added in version `1.6.8`. Ensure you are on this version to follow these steps.
 :::
 
-AllowLists are a new feature that lets you centrally manage whitelisted IP addresses and CIDR ranges using `cscli`. This is the preferred method for allowlisting, as AllowLists are integrated with all major components of CrowdSec, including:
+AllowLists let you centrally manage whitelisted IP addresses and CIDR ranges using `cscli`. This is the preferred method because AllowLists integrate with major components, including:
 
 - AppSec component  
 - `cscli`  
@@ -68,9 +68,9 @@ AllowLists are a new feature that lets you centrally manage whitelisted IP addre
 
 ### Which one should I use?
 
-If you already know the IP address or CIDR range you want to whitelist, use the `cscli` AllowLists feature. This ensures the IP is excluded across all CrowdSec components.
+If you already know the IP or CIDR range to whitelist, use `cscli` AllowLists. This excludes the IP across all CrowdSec components.
 
-If you're looking to whitelist based on a specific event pattern (such as a URI), use a **Parser whitelist**. For more advanced logic—like DNS or reverse DNS lookups—use a **Postoverflow whitelist**.
+If you need to whitelist a specific event pattern (such as a URI), use a **Parser whitelist**. For advanced logic like DNS or reverse DNS lookups, use a **Postoverflow whitelist**.
 
 To summarize:
 - Use **AllowLists** for IP and CIDR ranges.
@@ -79,28 +79,28 @@ To summarize:
 
 ## Should I create a whitelist?
 
-Whilst configuring CrowdSec for the first time you may want to create a whitelist for the following reasons:
+When configuring CrowdSec for the first time, you may want to create a whitelist for the following reasons:
 - You have a static IP address that you want to ensure is never banned.
 - You have a service that could generate a lot of false triggers.
 
 :::info
-An example of a service that could generate a lot of false triggers is a web application that loads a lot of resources such a thumbnails, images, or fonts.
+An example is a web application that loads many resources such as thumbnails, images, or fonts.
 :::
 
 If you are unsure if you need a whitelist, you can monitor the logs and see if there are any false positives that you want to prevent.
 
-However, please note if you should get a decision made agaisnt your IP address and using remediation components such as `iptables` or `nftables` then this will prevent you from accessing **ANY** service on the server.
+If a decision is made against your IP and you use remediation components like `iptables` or `nftables`, you may be blocked from **all** services on that server.
 
-Within our enterprise offering we have a feature called [Decision Management](console/decisions/decisions_management.mdx) that allows you to manage decisions via the [console](https://app.crowdsec.net/).
+In our enterprise offering, [Decision Management](console/decisions/decisions_management.mdx) lets you manage decisions via the [Console](https://app.crowdsec.net/).
 
-## Creating your first whitelist.
+## Creating your first whitelist
 
 Depending on your criteria, you may want to create a whitelist for a specific IP address, a range of IP addresses, or a specific event pattern.
 
-We will provide examples for each of these scenarios.
+We provide examples for each scenario.
 
-:::note
-The example location shown is for Linux, you will need to adjust the path based on your OS as noted above.
+:::info
+The example location shown is for Linux. Adjust the path based on your OS as noted above.
 :::
 
 ### Static IP address
@@ -164,7 +164,7 @@ You can see the full list of `allowlist` command via `cscli` [here](/docs/next/c
 If you want to whitelist a specific IP address for example `192.168.1.1`, you can create a file in the Enricher folder with the following content:
 
 ```yaml title="/etc/crowdsec/parsers/s02-enrich/01-my-whitelist.yaml"
-name: my/whitelist ## Must be unqiue
+name: my/whitelist ## Must be unique
 description: "Whitelist events from my IP"
 whitelist:
   reason: "My IP"
@@ -178,7 +178,7 @@ Once you have created the file you will need to restart the CrowdSec service for
 sudo systemctl restart crowdsec
 ```
 
-If you want to whitelist a range of IP addresses, for example `192.168.1.0/24` you can create a file in the Enricher folder with the following content:
+If you want to whitelist a range of IP addresses, for example `192.168.1.0/24`, create a file in the Enricher folder with the following content:
 
 ```yaml title="/etc/crowdsec/parsers/s02-enrich/01-my-whitelist.yaml"
 name: my/whitelist ## Must be unqiue
@@ -294,7 +294,7 @@ You must manually remove the decisions by running:
 sudo cscli decisions delete --ip 192.168.1.1
 ```
 
-## Next Steps?
+## Next steps
 
 If you are still looking for examples on how to create a whitelist, you can find more detailed documentation [here](/docs/next/log_processor/whitelist/intro).
 

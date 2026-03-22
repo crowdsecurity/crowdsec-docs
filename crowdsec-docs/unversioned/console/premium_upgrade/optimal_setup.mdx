@@ -1,0 +1,26 @@
+---
+id: optimal_setup
+title: Optimal Premium Upgrade Setup
+description: Best practices for setting up your Premium upgrade
+---
+
+When upgrading to a Premium plan, you may not want to upgrade every single Security Engine you monitor. It is common to have a mix of environments:
+- **Production:** Requires Premium features (longer data retention, heavy API limits, organization-wide blocklists).
+- **Dev / Test / Staging:** Can remain on the Free tier.
+
+Because the Premium Upgrade applies to an entire **Organization**, the optimal strategy is to separate your Security Engines into different contexts before subscribing.
+
+When you first create a Console account, your workspace is your "Personal Account".
+As a Community account, you can create one extra organization for free.
+
+We recommend the following setup:
+- If you have not already, create a new organization for your **Production** environment.
+- Keep your **Dev / Test / Staging** Security Engines in your **Personal Account**.
+- Move your **Production** Security Engines to the new **Production** organization.
+- Upgrade the **Production** organization to **Premium**.
+
+To split your Security Engines into different organizations, use either:
+- The [Transfer feature](/u/console/security_engines/transfer_engine) from the Security Engine page.
+- Or via `cscli`, re-enroll your Security Engines in the desired organization with the `--overwrite` flag to force moving them to the new organization.
+
+After the transfer, the alerts will reappear in the new organization after a few minutes.

@@ -442,6 +442,17 @@ Delta in days between first seen and today.
 "days_age" : 40
 ```
 
+### `proxy_or_vpn`
+
+> type: **bool**
+
+```json
+"proxy_or_vpn" : true
+```
+
+Either the IP is a proxy or a VPN.
+If `true`, more informations can be found in the `classifications`.
+
 Delta in days between first and last seen timestamps.
 
 ## `behaviors`

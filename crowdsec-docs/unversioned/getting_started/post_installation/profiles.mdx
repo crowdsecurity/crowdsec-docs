@@ -7,11 +7,11 @@ import FormattedTabs from '@site/src/components/formatted-tabs';
 
 # Profiles
 
-Profiles are a list of rules that drives what actions will be taken by CrowdSec upon a detection. This can be as trivial as banning an IP address, or as complex as computing previous detections and banning on a scaling factor.
+Profiles are a list of rules that determine what actions CrowdSec takes after a detection. This can be as simple as banning an IP, or as complex as scaling ban duration based on prior detections.
 
 The `profiles.yaml` file, situated at the root of the configuration directory, outlines profiles to be used. It is loaded during startup and can be refreshed while the system is running.
 
-Here is the default file path fo profiles depending on your platform:
+Here is the default `profiles.yaml` path by platform:
 
 - **Linux** `/etc/crowdsec/profiles.yaml`
 - **Freebsd** `/usr/local/etc/crowdsec/profiles.yaml`
@@ -35,7 +35,7 @@ decisions:
 on_success: break
 ```
 
-We won't delve into the file's specifics in this section, but further information is available in the [profiles.yaml reference](/docs/next/local_api/profiles/format#profile-directives).
+We do not cover every directive here. See the [profiles.yaml reference](/docs/next/local_api/profiles/format#profile-directives) for full details.
 
 ## Example Modifications
 
@@ -44,7 +44,7 @@ Here are a few examples of how you might modify your profiles to better suit you
 ### Enable Notifications
 
 :::info
-Notifications are plugins that can forward alerts to another service for example the `http` plugin can forward to your SIEM
+Notifications are plugins that forward alerts to another service. For example, the `http` plugin can forward to your SIEM.
 ::: 
 
 This adjustment can be made by configuring the plugin files located under:
@@ -53,7 +53,7 @@ This adjustment can be made by configuring the plugin files located under:
 - **Freebsd** `/usr/local/etc/crowdsec/notifications/`
 - **Windows** `C:\ProgramData\CrowdSec\config\notifications\`
 
-We wont be covering the configuration as you can find [extensive documentation](/docs/next/local_api/notification_plugins/intro) on the files. Once this is done you can start by removing the comment (`#`) from the [`notifications`](/docs/next/local_api/profiles/format#notifications) lines. This will enable notifications for the specified components.
+We do not cover configuration here. See the [notification plugins documentation](/docs/next/local_api/notification_plugins/intro). After configuring, remove the comment (`#`) from the [`notifications`](/docs/next/local_api/profiles/format#notifications) lines to enable them.
 
 <details>
 
@@ -85,11 +85,11 @@ on_success: break
 duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
 ```
 
-This adjustment can be made by removing the comment (`#`) from the [`duration_expr`](/docs/next/local_api/profiles/format#duration_expr) line. The default formula utilizes [`GetDecisionsCount`](/docs/next/expr/other_helpers#getdecisionscountvalue-string-int) to determine how many times the specific value has been identified. We always add 1 to the count to ensure that the first ban is always 4 hours.
+Enable this by removing the comment (`#`) from the [`duration_expr`](/docs/next/local_api/profiles/format#duration_expr) line. The default formula uses [`GetDecisionsCount`](/docs/next/expr/other_helpers#getdecisionscountvalue-string-int) to determine how many times the value was detected. We add 1 so the first ban is always 4 hours.
 
 The resulting duration is calculated by multiplying this count by 4, then the [`Sprintf`](/docs/next/expr/strings_helpers/#sprintfformat-string-a-interface-string) function formats the result into a string with the `h` suffix. The `h` suffix is used to denote hours within [Go's time package](https://pkg.go.dev/time#ParseDuration).
 
-So for example if an IP has been banned 3 times, the resulting string would be `12h` meaning 12 hours.
+For example, if an IP has been banned 3 times, the resulting string is `12h` (12 hours).
 
 <details>
 
@@ -138,7 +138,7 @@ name: default_ip_remediation
 ...
 ```
 
-The highlighted line above is the seperator between the two profiles. It is important to note that the `on_success` directive is set to `break` to ensure that the alert will not be evaluated by other profiles, so the offender will only get a captcha decision.
+The highlighted line above is the separator between profiles. `on_success` is set to `break` so the alert does not continue to other profiles; the offender receives only the captcha decision.
 
 
 <details>
@@ -174,9 +174,9 @@ on_success: break
 
 </details>
 
-## Next Steps?
+## Next steps
 
-Now that you have made some modifications to your profiles, you **MUST** restart the CrowdSec service to apply the changes. You can do this by running the following command:
+After modifying profiles, restart the CrowdSec service to apply changes:
 
 <FormattedTabs
   bash="sudo crowdsec -t && sudo systemctl restart crowdsec"

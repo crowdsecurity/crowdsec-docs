@@ -13,8 +13,8 @@ The **Engine No Alerts** issue appears when your Security Engine has been runnin
 
 ## Common Root Causes
 
-- [**Appropriate collections not installed**](#appropriate-collections-not-installed): Make sure you have the detection scenarios and/or appsec rules covering your services needs
-- [**Events massively whitelisted**](#events-massively-whitelisted): Due to misconfiguration, proxy-ing issues or faulty custom whitelisting.
+- [**Appropriate collections not installed**](#appropriate-collections-not-installed): Make sure you have detection scenarios and/or AppSec rules that cover your services
+- [**Events massively whitelisted**](#events-massively-whitelisted): Due to misconfiguration, proxying issues, or faulty custom whitelisting
 - [**Scenarios in simulation mode**](#scenarios-in-simulation-mode): Detection scenarios are installed but set to simulation mode, preventing actual alerts.
 - [**Legitimate low-activity environment**](#legitimate-low-activity-environment): Your proactive defenses might be good enough that you don't detect additional malicious behaviors (CrowdSec blocklists or other protections may already deflect all malicious activity)
 
@@ -24,7 +24,7 @@ The **Engine No Alerts** issue appears when your Security Engine has been runnin
 
 ## Diagnosis & Resolution
 
-If it's not due to [other issues](#other-issues), here are the diagnosis and resolutions for other root causes.
+If it is not due to [other issues](#other-issues), use the diagnosis and resolutions below.
 
 ### Appropriate collections not installed
 
@@ -54,7 +54,7 @@ You can try to run a test on your logs to spot issues. See the [cscli explain do
 
 #### 🛠️ Install required collections for your services
 
-Visit the [CrowdSec Hub](https://hub.crowdsec.net/) to find collections for your stack by either browsing or using the search bar. A collection is meant to embed parsers adn scenario that cover all that CrowdSec can detect for a given service: ie. The NGINX collection will have NGINX parser and Scenario correcpondig to HTTP base attacks.
+Visit the [CrowdSec Hub](https://hub.crowdsec.net/) to find collections for your stack by browsing or searching. A collection bundles parsers and scenarios for a given service. For example, the NGINX collection includes NGINX parsers and scenarios for common HTTP attacks.
 
 Collections are packaged for various type of services:
 
@@ -97,11 +97,11 @@ kubectl rollout restart deployment/crowdsec -n crowdsec
 
 ### Events massively whitelisted
 
-Misconfiguration of whitelists may result in alerts being ignored
+Misconfigured whitelists can cause alerts to be ignored.
 
 #### 🔎 Check whitelisting metrics
 
-Verify if you have a lot of whitelisted lines maybe all of them.
+Check whether many (or all) lines are being whitelisted.
 
 ```bash
 sudo cscli metrics show acquisition
@@ -135,14 +135,14 @@ kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name
 
 #### 🛠️ Make sure the IP in your logs are public IPs
 
-Due to some misconfiguration or choice of log file it cna happen that the source IPs in the log are not the **X-Forwarded-For** but a private IP or your infrastructure.
+Due to misconfiguration or log source choice, source IPs can be private/internal addresses instead of **X-Forwarded-For** client IPs.
 
-Look at your log files and make sure any proxying mechanism in front of your service provide the X-Forwarded-For source IPs.
+Look at your log files and make sure any proxy in front of your service provides X-Forwarded-For source IPs.
 
 #### 🛠️ Review and adjust your custom whitelist configuration
 
-If you create custom whitelist configuration via s02-enrich, make sure it's not discarding legitimate alerts.  
-Check our [documentation about whitelisting.](/u/getting_started/post_installation/whitelists/)
+If you create custom whitelist configuration via `s02-enrich`, make sure it does not discard legitimate alerts.  
+Check our [whitelisting documentation](/u/getting_started/post_installation/whitelists/).
 
 ### Scenarios in simulation mode
 
@@ -168,7 +168,7 @@ kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name
 
 </details>
 
-If scenarios are listed, they're in simulation mode and won't be sent to CrowdSec console (they should however still appear in `cscli alerts list`).
+If scenarios are listed, they are in simulation mode and are not sent to CrowdSec Console (they should still appear in `cscli alerts list`).
 
 #### 🛠️ Disable simulation mode to generate alerts
 
@@ -188,7 +188,7 @@ docker exec crowdsec cscli simulation disable --all
 
 ```bash
 docker restart crowdsec
-``
+```
 
 **Kubernetes**
 ```bash
@@ -212,9 +212,9 @@ sudo systemctl reload crowdsec
 
 ### Legitimate low-activity environment
 
-If you have protection measures deployed ahead of your services it might block all unwanted traffic already.  
-With the state of background noise on the internet it's unlikely for a popular service exposed on the internet to completely avoid reconnaissance traffic but CrowdSec blocklists are very efficient at that and may be blocking all bad traffic already.  
-Let's check
+If you have protection measures in front of your services, they may already block unwanted traffic.  
+Given background internet noise, publicly exposed services usually still receive reconnaissance traffic, but CrowdSec blocklists may already block most malicious traffic.  
+Let’s check.
 
 #### 🔎 Check traffic volume being processed
 
@@ -243,7 +243,7 @@ Look at "Lines parsed" - if this number is very low (dozens or hundreds per day)
 
 #### 🔎 Check if blocklists are blocking threats upstream
 
-Check if proactive defenses are blocking threats upstream. you can do so with `cscli` or within the [console remediation metrics](/u/console/remediation_metrics) if you have a compatible bouncer.
+Check whether proactive defenses are blocking threats upstream. You can do this with `cscli` or [Console remediation metrics](/u/console/remediation_metrics) if you have a compatible bouncer.
 
 ```bash
 sudo cscli decisions list
@@ -275,7 +275,7 @@ kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name
 
 </details>
 
-High numbers of active decisions or bouncer blocks may indicate your proactive defenses are effectively blocking all malicious actors. However lets make sure no other issues
+High numbers of active decisions or bouncer blocks may indicate proactive defenses are already blocking malicious actors. Still verify that no other issue exists.
 
 ## Related Issues
 

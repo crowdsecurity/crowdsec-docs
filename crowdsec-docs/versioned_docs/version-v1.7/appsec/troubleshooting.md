@@ -7,9 +7,9 @@ sidebar_position: 81
 
 ## Monitoring with `cscli`
 
-`cscli metrics` expose minimal metrics about the AppSec Component:
+`cscli metrics` exposes basic metrics about the AppSec Component:
  - Number of requests processed and blocked by the component/data source
- - Number of triggers of each individual rules
+ - Number of triggers for each rule
 
 ```
 Appsec Metrics:
@@ -29,9 +29,9 @@ Appsec 'myAppSecComponent' Rules Metrics:
 
 ```
 
-The prometheus metrics are more detailed, detailing analysis time for each request, along with detailed processing time for inband and out-of-band rule groups.
+Prometheus metrics are more detailed, including analysis time for each request and processing time for in-band and out-of-band rule groups.
 
-They can be seen in the dedicated [grafana dashboard](/observability/prometheus.md#exploitation-with-prometheus-server--grafana).
+They are available in the dedicated [Grafana dashboard](/observability/prometheus.md#exploitation-with-prometheus-server--grafana).
 
 You can also inspect an AppSec rule directly with `cscli appsec-rules inspect <rule_name>` to see the amount of requests that were blocked by the rule.
 
@@ -46,7 +46,7 @@ When enabling debug at acquisition or AppSec config level:
  - load time debug will be enabled, such as information regarding the translation of the rule to `SecRule` format.
  - runtime debug will be enabled for all the rules loaded by the AppSec Component / AppSec config.
 
-When enabling debug directly at the appsec rule level, only runtime evaluation information of the rule will be displayed, such as:
+When enabling debug directly at the AppSec rule level, only runtime evaluation details for that rule are displayed, such as:
 
 ```
 DEBU[2023-12-06 15:40:26] Evaluating rule                               band=inband name=appseclol rule_id=2145145579 type=appsec uuid=adc5ffc4-6080-432c-af93-7c76c79afc25
@@ -63,7 +63,7 @@ DEBU[2023-12-06 15:40:26] Finish evaluating rule                        band=inb
 ## Authenticating with the AppSec Component
 
 :::note
-We are assuming the AppSec engine is running on `127.0.0.1:7422`. See [installation directives](/appsec/quickstart/general.mdx)
+We assume the AppSec engine is running on `127.0.0.1:7422`. See the [installation directives](/appsec/quickstart/general.mdx).
 :::
 
 > Create a valid API Key
@@ -72,7 +72,7 @@ We are assuming the AppSec engine is running on `127.0.0.1:7422`. See [installat
 cscli bouncers add appsec_test -k this_is_a_bad_password
 ```
 
-> Emit a request to the AppSec Component
+> Send a request to the AppSec Component
 
 ```bash
 curl -I -X POST localhost:7422/ -i -H 'x-crowdsec-appsec-api-key: this_is_a_bad_password' -H 'x-crowdsec-appsec-ip: 192.168.1.1' -H 'x-crowdsec-appsec-uri: /test' -H 'x-crowdsec-appsec-host: test.com' -H 'x-crowdsec-appsec-verb: GET' 
@@ -95,8 +95,8 @@ Content-Length: 0
 
 ## Ensuring your rule(s) are loaded
 
-Crowdsec will show on startup all the rules that are installed (even if they are not used by any active appsec-config).
-Seeing a rule here does not mean it will be used by the AppSec Component, depending on the appsec-config you are using:
+CrowdSec shows all installed rules at startup (even if they are not used by any active AppSec config).
+Seeing a rule here does not mean it will be used by the AppSec Component; it depends on the AppSec config you are using.
 
 ```
 ...

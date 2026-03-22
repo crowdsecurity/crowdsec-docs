@@ -11,7 +11,7 @@ We will set up a reverse proxy (Nginx) protected with CrowdSec in front of our w
 
 **This article dives into the technical details of configuring CrowdSec WAF.**
 
-To achieve robust protection, we'll use two key components that work in tandem: the **Security Engine** and the **Web Application Firewall (WAF)** *– enabled by an AppSec-capable Remediation Component aka **Bouncer**, in our case, CrowdSec’s NGINX Bouncer*
+To achieve robust protection, we'll use two key components that work in tandem: the **Security Engine** and the **Web Application Firewall (WAF)** *– enabled by an WAF-capable Remediation Component aka **Bouncer**, in our case, CrowdSec’s NGINX Bouncer*
 
 **The Security Engine**: excels at identifying persistent or recurring behaviours. It analyzes your web server/reverse proxy logs to identify suspicious patterns of behavior. For example, the http-probing scenario detects IPs rapidly requesting a large number of non-existent files – a common tactic used by vulnerability scanners searching known vulnerabilities, backdoors, or publicly exposed admin interfaces. While powerful and able to protect a large number service from various log sources, the Security Engine reacts **after** the request have been processed by your web server.  
 

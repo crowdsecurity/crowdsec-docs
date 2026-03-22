@@ -95,6 +95,5 @@ sudo cscli dashboard stop
 sudo cscli dashboard start
 ```
 
-**Note:** Please look [at this documentation](/blog/metabase_without_docker) for those of you that would like to deploy metabase without using docker.
-
+**Note:** `cscli dashboard` uses Docker to deploy Metabase. If you can't use Docker, run Metabase using the upstream instructions and configure it manually.
 

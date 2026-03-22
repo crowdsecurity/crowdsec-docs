@@ -8,6 +8,7 @@
 @import url("alerts.css");
 @import url("code.css");
 @import url("navbar.css");
+@import url("swagger-dark.css");
 
 /**
  * Any CSS included here will be global. The classic template
@@ -56,8 +57,9 @@ html[data-theme="dark"] {
 	--docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.1);
 }
 
-/* IMAGE STYLES FOR PAGES*/
-main .container img:not(a img) {
+/* IMAGE STYLES FOR DOCUMENTATION CONTENT */
+article img:not(a img),
+.markdown img:not(a img) {
 	@apply border border-solid border-gray-300/80 dark:border-gray-300/80 rounded-lg p-2;
 }
 
@@ -219,6 +221,94 @@ div[class^="announcementBar"] {
 	clip: rect(0, 0, 0, 0) !important;
 	white-space: nowrap !important;
 	border: 0 !important;
+}
+
+/* Homepage search styles - hide navbar search on homepage */
+body.homepage .navbar__search {
+	display: none !important;
+}
+body.homepage [class*="navbarSearchContainer"] {
+	display: none !important;
+}
+html:has(.homepage-search) .navbar__search {
+	display: none !important;
+}
+html:has(.homepage-search) [class*="navbarSearchContainer"] {
+	display: none !important;
+}
+
+.homepage-search {
+	display: flex;
+	justify-content: center;
+}
+
+.homepage-search .DocSearch-Button {
+	@apply w-full bg-card border border-solid border-border rounded-lg px-4 py-3 m-0;
+	@apply hover:border-primary/50 hover:shadow-md transition-all;
+	max-width: 100%;
+	margin: 0 auto;
+}
+
+.homepage-search .DocSearch-Button-Placeholder {
+	@apply text-gray-500 dark:text-gray-400;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.homepage-search .DocSearch-Search-Icon {
+	@apply text-gray-400 dark:text-gray-500;
+}
+
+.homepage-search .DocSearch-Button-Keys {
+	@apply hidden md:flex;
+}
+
+@media (max-width: 640px) {
+	.homepage-search .DocSearch-Button {
+		padding: 0.75rem 0.875rem;
+	}
+}
+
+/* Algolia DocSearch modal theming */
+[data-theme="light"] .DocSearch {
+	--docsearch-primary-color: rgb(var(--primary));
+	--docsearch-text-color: rgb(var(--foreground));
+	--docsearch-muted-color: rgb(var(--muted-foreground));
+	--docsearch-container-background: rgb(var(--color-gray-900) / 0.55);
+	--docsearch-modal-background: rgb(var(--card));
+	--docsearch-searchbox-background: rgb(var(--input));
+	--docsearch-searchbox-focus-background: rgb(var(--card));
+	--docsearch-hit-color: rgb(var(--foreground));
+	--docsearch-hit-active-color: rgb(var(--primary-foreground));
+	--docsearch-hit-background: rgb(var(--background));
+	--docsearch-footer-background: rgb(var(--muted));
+	--docsearch-key-gradient: linear-gradient(180deg, rgb(var(--background)), rgb(var(--muted)));
+	--docsearch-key-shadow: 0 1px 0 rgb(var(--border)), 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .DocSearch-Commands-Key {
+	background: rgb(var(--color-gray-200));
+	box-shadow: 0 1px 0 rgb(var(--color-gray-300));
+}
+
+[data-theme="dark"] .DocSearch {
+	--docsearch-primary-color: rgb(var(--primary));
+	--docsearch-text-color: rgb(var(--foreground));
+	--docsearch-muted-color: rgb(var(--muted-foreground));
+	--docsearch-container-background: rgb(var(--color-gray-950) / 0.72);
+	--docsearch-modal-background: rgb(var(--card));
+	--docsearch-searchbox-background: rgb(var(--input));
+	--docsearch-searchbox-focus-background: rgb(var(--card));
+	--docsearch-hit-color: rgb(var(--foreground));
+	--docsearch-hit-active-color: rgb(var(--primary-foreground));
+	--docsearch-hit-background: rgb(var(--background));
+	--docsearch-footer-background: rgb(var(--background));
+	--docsearch-key-gradient: linear-gradient(180deg, rgb(var(--background)), rgb(var(--muted)));
+	--docsearch-key-shadow: 0 1px 0 rgb(var(--border)), 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
 /* Quick guide specific CSS /u/getting_started/... */

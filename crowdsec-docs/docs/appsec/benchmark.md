@@ -17,9 +17,9 @@ sidebar_position: 80
 
 # Basic Benchmark
 
-The Application Security Component benchmarks have been run on a AWS EC2 Instance `t2.medium` (2vCPU/4GiB RAM).
+The Application Security Component benchmarks were run on an AWS EC2 instance `t2.medium` (2vCPU/4GiB RAM).
 
-All the benchmarks have been run with only one `routine` configured for the Application Security Component.
+All benchmarks were run with a single `routine` configured for the Application Security Component.
 
 The benchmarks cover the following tests:
 
@@ -32,11 +32,11 @@ The benchmarks cover the following tests:
   - 15 concurrent connections / 1000 requests
 -->
 
-Each test has been run with multiple cases:
+Each test was run with multiple cases:
 
 - Application Security Component enabled but without any rules
-- Application Security Component enabled with 100 vpatch rules (in in-band)
-- Application Security Component enabled with all the CRS (in in-band)
+- Application Security Component enabled with 100 vpatch rules (in-band)
+- Application Security Component enabled with all the CRS (in-band)
 
 On the system, we deployed:
 
@@ -76,9 +76,9 @@ Tested versions are:
 - CrowdSec `v1.7.0`
 - cs-openresty-bouncer `v1.1.2`
 
-Openresty was configured to not log anything and forward requests to a Go backend that always return 200, in order to improve raw throughput and not be limited by disk access.
+Openresty was configured to not log anything and forward requests to a Go backend that always returns 200, to improve raw throughput and avoid disk access limits.
 
-Crowdsec WAF was configured with 16 routines to make use of as much CPU as possible.
+CrowdSec WAF was configured with 16 routines to make use of as much CPU as possible.
 
 All tests were simulating 400 concurrent users, making requests as quickly as possible during 1 minute.
 

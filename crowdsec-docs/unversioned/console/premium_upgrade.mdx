@@ -8,7 +8,7 @@ import { Badge } from "@site/src/ui/badge";
 
 ## Why Upgrade to Premium?
 
-CrowdSec Premium features are designed for users who have **commercial usage** of the Console or organizations that want to **enhance the security posture** of their infrastructure.  
+CrowdSec Premium features are designed for users who have **commercial usage** of the Console or organizations that want to **enhance the security posture** of their infrastructure.
 While our Community Plan provides essential security monitoring capabilities, Premium unlocks advanced features that scale with your business needs and provide business-grade protection.
 
 Premium features bring the following benefits:
@@ -24,25 +24,29 @@ Premium features bring the following benefits:
 
 A features comparison can be found on our [pricing page](https://app.crowdsec.net/pricing).
 
-## Optimal Premium Upgrade Setup
+---
 
-When upgrading to a Premium plan, you may not want to upgrade every single Security Engine you monitor. It is common to have a mix of environments:
-- **Production:** Requires Premium features (longer data retention, heavy API limits, organization-wide blocklists).
-- **Dev / Test / Staging:** Can remain on the Free tier.
+## Getting Started with Premium
 
-Because the Premium Upgrade applies to an entire **Organization**, the optimal strategy is to separate your Security Engines into different contexts before subscribing.
+To help you make the most of your Premium upgrade, we've prepared the following guides:
 
-When you first create a Console account, your workspace is your "Personal Account".
-As a Community account, you can create one extra organization for free.  
+### [Optimal Premium Upgrade Setup](/u/console/premium_upgrade/optimal_setup)
+Learn the best practices for organizing your Security Engines across different environments (Production, Dev, Test) before upgrading to maximize value and cost-efficiency.
 
-We recommend the following setup:
-- If you have not already, create a new organization for your **Production** environment.
-- Keep your **Dev / Test / Staging** Security Engines in your **Personal Account**.
-- Move your **Production** Security Engines to the new **Production** organization.
-- Upgrade the **Production** organization to **Premium**.
+### [Test Premium Value in Your Environment](/u/console/premium_upgrade/testing_premium)
+Discover practical ways to measure and experience Premium value during your trial period, including improved protection metrics, team collaboration features, and enterprise scaling capabilities.
 
-To split your Security Engines into different organizations, use either:
-- The [Transfer feature](/u/console/security_engines/transfer_engine) from the Security Engine page.
-- Or via `cscli`, re-enroll your Security Engines in the desired organization with the `--overwrite` flag to force moving them to the new organization.
+### [Premium Features Overview](/u/console/premium_upgrade/features_overview)
+Explore the complete catalog of Premium features including scaling & automation, enhanced protection, reactivity & monitoring, and advanced threat intelligence capabilities.
 
-After the transfer, the alerts will reappear in the new organization after a few minutes.
+---
+
+## How to Upgrade
+
+Ready to enhance your security posture with Premium features?
+
+1. Visit our [pricing page](https://app.crowdsec.net/pricing) to compare plans and pricing
+2. Upgrade to Premium with our self service plan or [Contact](https://www.crowdsec.net/contact-crowdsec) our sales team to discuss your specific requirements
+3. Once upgraded, enjoy immediate access to all Premium features in your organization and add options as you grow.
+
+For questions about Premium features or to discuss custom enterprise solutions, please [contact our team](https://www.crowdsec.net/pricing).

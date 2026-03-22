@@ -10,21 +10,24 @@ import UnderlineTooltip from "@site/src/components/underline-tooltip"
 
 ## What is CrowdSec Security Engine?
 
-The Security Engine is a collaborative and lightweight <UnderlineTooltip tooltip="An Intrusion Detection System monitors logs or traffic to detect and report suspicious or malicious behavior, such as scans, brute-force attempts, or exploits.">Intrusion Detection System</UnderlineTooltip> (IDS) and <UnderlineTooltip tooltip="A security system that filters, monitors, and blocks HTTP traffic to and from a web application to prevent attacks like SQL injection, XSS, and more.">Web Application Firewall</UnderlineTooltip> (WAF).
+The Security Engine is a lightweight, collaborative <UnderlineTooltip tooltip="An Intrusion Detection System monitors logs or traffic to detect and report suspicious or malicious behavior, such as scans, brute-force attempts, or exploits.">Intrusion Detection System</UnderlineTooltip> (IDS) with optional <UnderlineTooltip tooltip="A security system that filters, monitors, and blocks HTTP traffic to and from a web application to prevent attacks like SQL injection, XSS, and more.">Web Application Firewall</UnderlineTooltip> (WAF) capabilities. It detects behaviors that match known attack patterns defined by scenarios.
 
-It begins by reading logs specified in <UnderlineTooltip tooltip="Acquisition files tell CrowdSec where to find logs and which application they belong to.">acquisitions</UnderlineTooltip>, then uses <UnderlineTooltip tooltip="YAML files that extract relevant data from logs, such as IP addresses, timestamps, or request paths.">parsers</UnderlineTooltip> to structure the information. This data is evaluated against <UnderlineTooltip tooltip="Behavioral rules written in a domain-specific language that define what malicious activity looks like, such as multiple failed logins in a short time.">scenarios</UnderlineTooltip>, which are designed to detect specific types of attacks or suspicious patterns.
+At a high level, the engine works like this:
 
-When an attack is identified, CrowdSec can apply a <UnderlineTooltip tooltip="A temporary or permanent decision, like blocking an IP address, taken in response to a detected threat.">remediation</UnderlineTooltip>, based on rules defined in <UnderlineTooltip tooltip="Profiles are rule sets that define which decisions to take (or ignore) when a behavior is detected.">profiles</UnderlineTooltip>.
+1. It reads logs from sources you define in <UnderlineTooltip tooltip="Acquisition files tell CrowdSec where to find logs and which application they belong to.">acquisitions</UnderlineTooltip>.
+2. It normalizes them with <UnderlineTooltip tooltip="YAML files that extract relevant data from logs, such as IP addresses, timestamps, or request paths.">parsers</UnderlineTooltip>.
+3. It evaluates behavior against <UnderlineTooltip tooltip="Behavioral rules written in a domain-specific language that define what malicious activity looks like, such as multiple failed logins in a short time.">scenarios</UnderlineTooltip>.
+4. It creates <UnderlineTooltip tooltip="A temporary or permanent decision, like blocking an IP address, taken in response to a detected threat.">decisions</UnderlineTooltip> based on <UnderlineTooltip tooltip="Profiles are rule sets that define which decisions to take (or ignore) when a behavior is detected.">profiles</UnderlineTooltip>, which remediation components enforce.
 
-What makes CrowdSec unique is its <UnderlineTooltip tooltip="Users who detect malicious behavior share anonymized signals with the wider network, helping others preemptively block emerging threats.">collaborative threat intelligence</UnderlineTooltip> system, where each protected system contributes to a [community blocklist](/docs/next/central_api/community_blocklist) that helps everyone stay better protected.
+What makes CrowdSec unique is its <UnderlineTooltip tooltip="Users who detect malicious behavior share anonymized signals with the wider network, helping others preemptively block emerging threats.">collaborative threat intelligence</UnderlineTooltip>: when you opt in, your detections help maintain a [community blocklist](/docs/next/central_api/community_blocklist) that protects everyone.
 
 ## What is a Remediation Component?
 
-Remediation Components are software packages that connect to the <UnderlineTooltip tooltip="The Local API (LAPI) is exposed by the Security Engine and acts as the interface for retrieving and managing decisions.">Local API</UnderlineTooltip> (LAPI) and enforce <UnderlineTooltip tooltip="Decisions are remediation actions such as bans or alerts taken by the Security Engine in response to detected threats.">decisions</UnderlineTooltip> made by the Security Engine.
+Remediation Components (previously called *bouncers*) enforce the Security Engine's decisions by connecting to the <UnderlineTooltip tooltip="The Local API (LAPI) is exposed by the Security Engine and acts as the interface for retrieving and managing decisions.">Local API</UnderlineTooltip> (LAPI).
 
-Previously referred to as *bouncers*, these components can operate independently, such as the [Firewall Remediation](bouncers/firewall.mdx), which integrates with <UnderlineTooltip tooltip="A widely used packet filtering and firewall system for Linux.">iptables</UnderlineTooltip>, <UnderlineTooltip tooltip="The modern replacement for iptables, offering improved performance and a more consistent syntax.">nftables</UnderlineTooltip>, or <UnderlineTooltip tooltip="The built-in firewall system used on BSD-based systems like FreeBSD, OpenBSD, and macOS.">pf</UnderlineTooltip>. They can also be embedded directly into existing applications, such as [Nginx](bouncers/nginx.mdx), where <UnderlineTooltip tooltip="A lightweight scripting language embedded into software like Nginx to enable custom behavior, including dynamic security enforcement.">Lua</UnderlineTooltip> is used to enforce decisions at runtime.
+They can be standalone (for example, [Firewall Remediation](bouncers/firewall.mdx) with <UnderlineTooltip tooltip="A widely used packet filtering and firewall system for Linux.">iptables</UnderlineTooltip>, <UnderlineTooltip tooltip="The modern replacement for iptables, offering improved performance and a more consistent syntax.">nftables</UnderlineTooltip>, or <UnderlineTooltip tooltip="The built-in firewall system used on BSD-based systems like FreeBSD, OpenBSD, and macOS.">pf</UnderlineTooltip>) or embedded inside applications like [Nginx](bouncers/nginx.mdx), where <UnderlineTooltip tooltip="A lightweight scripting language embedded into software like Nginx to enable custom behavior, including dynamic security enforcement.">Lua</UnderlineTooltip> enforces decisions in real time.
 
-This is often referred to as the <UnderlineTooltip tooltip="An Intrusion Prevention System actively blocks or mitigates detected threats, often based on decisions made by an Intrusion Detection System.">Intrusion Prevention System</UnderlineTooltip> (IPS) layer that complements the <UnderlineTooltip tooltip="An Intrusion Detection System monitors logs or traffic to detect and report suspicious or malicious behavior, such as scans, brute-force attempts, or exploits.">Intrusion Detection System</UnderlineTooltip> (IDS) role of the Security Engine. They do not make decisions on their own; instead, they act based on what the Security Engine instructs.
+Think of this as the <UnderlineTooltip tooltip="An Intrusion Prevention System actively blocks or mitigates detected threats, often based on decisions made by an Intrusion Detection System.">Intrusion Prevention System</UnderlineTooltip> (IPS) layer that complements the Security Engine's IDS role. The Remediation Component does not decide; it simply enforces what the Security Engine decides.
 
 ## Architecture Diagram
 
@@ -40,24 +43,23 @@ This is often referred to as the <UnderlineTooltip tooltip="An Intrusion Prevent
 
 ## Prerequisites
 
-We recommend that you understand the following prerequisites before installing CrowdSec:
+If you are new to CrowdSec, read this page once, then jump to your platform install guide.
+We recommend understanding the following prerequisites before you install:
 
 ### Hardware
 
-CrowdSec is a lightweight software that can run on most modern hardware.
-
-However, the recommendation is at least:
+CrowdSec is lightweight and runs on most modern hardware. Recommended minimums:
 
 * platform:
     * amd64
     * arm64
     * armhf
 * 1 CPU core
-* 100mb of free RAM
-* 1GB of free disk space
+* 100 MB of free RAM
+* 1 GB of free disk space
 
 :::info
-We recommend 1gb of free disk space due to the amount of data that can be stored in the database.
+We recommend 1 GB of free disk space due to the amount of data that can be stored in the database.
 :::
 
 ### Operating System
@@ -76,14 +78,14 @@ We support the following operating systems:
 
 ### Ports
 
-CrowdSec Security Engine uses the following default ports (bound to localhost/loopback by default) - these can be altered after installation:
+CrowdSec Security Engine uses the following default ports (bound to localhost/loopback by default). You can change them after installation:
 
 * 6060/tcp: Prometheus metrics port
 * 8080/tcp: API port
 
 ## Next Steps
 
-After installing CrowdSec, use our **[interactive Health-Check guide](health_check.mdx)** to verify your setup is working correctly. It will walk you through testing detection, connectivity, and remediation to ensure your Security Stack is fully functional.
+After installing CrowdSec, use our **[interactive Health-Check guide](health_check.mdx)** to verify your setup. It will walk you through detection, connectivity, and remediation so you can confirm the stack is working end to end.
 
 ## Resources
 
@@ -97,4 +99,3 @@ After installing CrowdSec, use our **[interactive Health-Check guide](health_che
   course="crowdsec-fundamentals"
   utm="?utm_source=docs&utm_medium=banner&utm_campaign=intro-page&utm_id=academydocs"
 />
-

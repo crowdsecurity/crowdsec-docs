@@ -5,31 +5,31 @@ pagination_prev: getting_started/intro
 pagination_next: getting_started/health_check
 ---
 
-# OPNsense plugin
+# Install on OPNsense
 
-Before getting started, it is advised to read the [introduction](/unversioned/getting_started/introduction.mdx) page to understand the prerequisites and concepts for running CrowdSec.
+New to CrowdSec? Start with the [introduction](/unversioned/getting_started/introduction.mdx) to understand the components and prerequisites.
 
 The CrowdSec plugin for OPNsense is installed from the official repositories.
-It includes a Log Processor, LAPI service, and Remediation Component. This allows you
+It includes a log processor, LAPI service, and Remediation Component. This allows you to:
 to:
 
- - block attacking traffic from entering the network (protect machines that don't have CrowdSec)
- - deploy a log processor on OPNsense and scan its logs for attacks
- - use the OPNsense server as LAPI for other log processors and remediation components
- - list the hub plugins (parsers, scenarios..) and decisions on the OPNsense admin interface
+ - block attacking traffic before it reaches the network (protect machines without CrowdSec)
+ - scan OPNsense logs for attacks
+ - use OPNsense as the LAPI for other agents and remediation components
+ - view hub items (parsers, scenarios) and decisions in the OPNsense UI
 
 ## Plugin installation
 
-Click `System > Firmware > Plugins` menu. Select os-crowdsec. It will deploy three packages:
+Go to `System > Firmware > Plugins`, select `os-crowdsec`, and install it. It will deploy three packages:
 
  - `os-crowdsec`, the plugin itself
  - `crowdsec`
  - `crowdsec-firewall-bouncer`
 
-Do not enable/start the services from the terminal like you would on a standard freebsd system, because the plugin takes care of that.
+Do not enable or start services from the terminal like a standard FreeBSD system; the plugin manages them for you.
 
 Refresh the page and go to `Services > CrowdSec > Overview` to verify the running services and installed configurations.
 
-## Next Steps?
+## Next steps
 
-Great, you now have CrowdSec installed on your system. Have a look at the [post installation steps](/getting_started/next_steps.mdx) to see how to to configure and optimize it, or keep reading [the rest of the plugin documentation](/docs/next/getting_started/install_crowdsec_opnsense)
+Great, you now have CrowdSec installed. Review the [post-installation steps](/getting_started/next_steps.mdx) to finish setup, or continue with [the rest of the plugin documentation](/docs/next/getting_started/install_crowdsec_opnsense).

@@ -9,7 +9,7 @@ sidebar_position: 2
 ```yaml
 name: "my/whitelist" ## Must be unique
 description: "Whitelist events from my ipv4 addresses"
-#it's a normal parser, so we can restrict its scope with filter
+# This is a normal parser, so you can restrict its scope with a filter
 filter: "1 == 1"
 whitelist:
   reason: "my ipv4 ranges"
@@ -20,9 +20,9 @@ whitelist:
     - "10.0.0.0/8"
     - "172.16.0.0/12"
   expression:
-  #beware, this one will work *only* if you enabled the reverse dns (crowdsecurity/rdns) enrichment postoverflow parser
+  # Works only if reverse DNS enrichment (crowdsecurity/rdns) is enabled
     - evt.Enriched.reverse_dns endsWith ".mycoolorg.com."
-  #this one will work *only* if you enabled the geoip (crowdsecurity/geoip-enrich) enrichment parser
+  # Works only if geoip enrichment (crowdsecurity/geoip-enrich) is enabled
     - evt.Enriched.IsoCode == 'FR'
 ```
 
@@ -35,9 +35,9 @@ whitelist:
 name: my_author_name/my_whitelist_name
 ```
 
-The `name` is mandatory. 
+The `name` is mandatory.
 
-It must be unique (and will define the scenario's name in the hub). 
+It must be unique (it also defines the scenario name in the hub).
 
 
 ### `description`
@@ -48,7 +48,7 @@ description: whitelist office
 
 The `description` is mandatory.
 
-It is a quick sentence describing what it detects.
+It is a short sentence describing what it detects.
 
 
 ### `filter`
@@ -59,13 +59,13 @@ filter: expression
 
 `filter` must be a valid [expr](https://github.com/antonmedv/expr) expression that will be evaluated against the [event](/expr/event.md).
 
-If `filter` evaluation returns true or is absent, node will be processed.
+If `filter` evaluates to `true`, or is absent, the node is processed.
 
-If `filter` returns `false` or a non-boolean, node won't be processed.
+If `filter` evaluates to `false` or a non-boolean value, the node is not processed.
 
 Here is the [expr documentation](https://github.com/antonmedv/expr/tree/master/docs).
 
-Examples :
+Examples:
 
  - `filter: "evt.Enriched.foo == 'test'"`
  - `filter: "evt.Enriched.bar == 'test' && evt.Enriched.foo == 'test2'`
@@ -83,9 +83,9 @@ whitelist:
     - "10.0.0.0/8"
     - "172.16.0.0/12"
   expression:
-  #beware, this one will work *only* if you enabled the reverse dns (crowdsecurity/rdns) enrichment postoverflow parser
+  # Works only if reverse DNS enrichment (crowdsecurity/rdns) is enabled
     - evt.Enriched.reverse_dns endsWith ".mycoolorg.com."
-  #this one will work *only* if you enabled the geoip (crowdsecurity/geoip-enrich) enrichment parser
+  # Works only if geoip enrichment (crowdsecurity/geoip-enrich) is enabled
     - evt.Enriched.IsoCode == 'FR'
 ```
 
@@ -97,7 +97,7 @@ reason: whitelist for test
 
 The `reason` is mandatory.
 
-It is a quick sentence describing the reason of the whitelist.
+It is a short sentence describing the reason for the whitelist.
 
 #### `ip`
 
@@ -107,7 +107,7 @@ whitelist:
     - "127.0.0.1"
 ```
 
-A valid [expr](/expr/intro.md) expression that return a string to apply the pattern on.
+List of IP addresses to whitelist.
 
 
 #### `cidr`
@@ -120,7 +120,7 @@ whitelist:
     - "172.16.0.0/12"
 ```
 
-A valid [expr](/expr/intro.md) expression that return a string to apply the pattern on.
+List of CIDR ranges to whitelist.
 
 
 #### `expression`
@@ -128,13 +128,13 @@ A valid [expr](/expr/intro.md) expression that return a string to apply the patt
 ```yaml
 whitelist:
   expression:
-  #beware, this one will work *only* if you enabled the reverse dns (crowdsecurity/rdns) enrichment postoverflow parser
+  # Works only if reverse DNS enrichment (crowdsecurity/rdns) is enabled
     - evt.Enriched.reverse_dns endsWith ".mycoolorg.com."
-  #this one will work *only* if you enabled the geoip (crowdsecurity/geoip-enrich) enrichment parser
+  # Works only if geoip enrichment (crowdsecurity/geoip-enrich) is enabled
     - evt.Enriched.IsoCode == 'FR'
 ```
 
-A valid [expr](/expr/intro.md) expression that return a string to apply the pattern on.
+List of [expr](/expr/intro.md) expressions. If any expression evaluates to `true`, the event is whitelisted.
 
 
 ### `data`
@@ -146,7 +146,7 @@ data:
     type: (regexp|string)
 ```
 
-`data` allows user to specify an external source of data.
+`data` lets you specify an external data source.
 This section is only relevant when `cscli` is used to install parser from hub, as it will download the `source_url` and store it to `dest_file`. When the parser is not installed from the hub, CrowdSec won't download the URL, but the file must exist for the parser to be loaded correctly.
 
 The `type` is mandatory if you want to evaluate the data in the file, and should be `regex` for valid (re2) regular expression per line or `string` for string per line.

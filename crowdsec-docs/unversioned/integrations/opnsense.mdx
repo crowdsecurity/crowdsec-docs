@@ -8,6 +8,8 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 
 The CrowdSec OPNsense integration allows you to block malicious IPs in your OPNsense firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your OPNsense firewall.
 
+In OPNsense you'll use **URL Table (IPs) aliases** to create dynamic firewall aliases that automatically update from external URL sources.
+
 ### Prerequisites
 
 Before you begin, please ensure your OPNsense software version supports ingesting blocklists (URL aliases). If you are unsure, please refer to the OPNsense documentation or contact OPNsense support.

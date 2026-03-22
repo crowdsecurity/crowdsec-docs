@@ -1,0 +1,636 @@
+/* biome-ignore-all lint/style/noDescendingSpecificity: This file overrides third-party Swagger UI styles, specificity order is intentional */
+/**
+ * Swagger UI Theme Overrides
+ * Fixes text visibility in both dark and light modes
+ */
+
+/* ============================================
+   LIGHT MODE FIXES
+   ============================================ */
+
+/* API version and OAS info at top - ensure dark text in light mode */
+html[data-theme="light"] .swagger-ui .info .title,
+html[data-theme="light"] .swagger-ui .info .title small,
+html[data-theme="light"] .swagger-ui .info .title small pre,
+html[data-theme="light"] .swagger-ui .info .version,
+html[data-theme="light"] .swagger-ui .info hgroup.main a {
+	color: #000 !important;
+}
+
+html[data-theme="light"] .swagger-ui .info .version {
+	background: #e0e0e0;
+	color: #000 !important;
+}
+
+html[data-theme="light"] .swagger-ui .info .base-url {
+	color: #333;
+}
+
+html[data-theme="light"] .swagger-ui .info p,
+html[data-theme="light"] .swagger-ui .info li,
+html[data-theme="light"] .swagger-ui .info .description {
+	color: #333;
+}
+
+/* OAS version badge in light mode */
+html[data-theme="light"] .swagger-ui .info .version-stamp {
+	background: #e0e0e0;
+	color: #000 !important;
+}
+
+/* Media type dropdown in light mode */
+html[data-theme="light"] .swagger-ui select {
+	color: #000 !important;
+	background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="black" d="M7 10l5 5 5-5z"/></svg>') !important;
+	background-repeat: no-repeat !important;
+	background-position: right 10px center !important;
+}
+
+html[data-theme="light"] .swagger-ui .content-type,
+html[data-theme="light"] .swagger-ui .response-content-type select,
+html[data-theme="light"] .swagger-ui .responses-wrapper select {
+	color: #000 !important;
+}
+
+/* JSON examples in light mode - grey background on container, dark text with no background */
+html[data-theme="light"] .swagger-ui .example,
+html[data-theme="light"] .swagger-ui .example-value,
+html[data-theme="light"] .swagger-ui .example-value-render,
+html[data-theme="light"] .swagger-ui .microlight,
+html[data-theme="light"] .swagger-ui pre.example,
+html[data-theme="light"] .swagger-ui .highlight-code,
+html[data-theme="light"] .swagger-ui .highlight-code pre,
+html[data-theme="light"] .swagger-ui pre.microlight,
+html[data-theme="light"] .swagger-ui .opblock-body pre,
+html[data-theme="light"] .swagger-ui .response-col_description pre {
+	background: #e8e8e8 !important;
+	background-color: #e8e8e8 !important;
+}
+
+html[data-theme="light"] .swagger-ui .microlight *,
+html[data-theme="light"] .swagger-ui .highlight-code *,
+html[data-theme="light"] .swagger-ui pre.microlight *,
+html[data-theme="light"] .swagger-ui .opblock-body pre * {
+	color: #000 !important;
+	background: none !important;
+	background-color: transparent !important;
+}
+
+/* JSON examples in dark mode - grey background on container, white text with no background */
+html[data-theme="dark"] .swagger-ui .example,
+html[data-theme="dark"] .swagger-ui .example-value,
+html[data-theme="dark"] .swagger-ui .example-value-render,
+html[data-theme="dark"] .swagger-ui .microlight,
+html[data-theme="dark"] .swagger-ui pre.example,
+html[data-theme="dark"] .swagger-ui .highlight-code,
+html[data-theme="dark"] .swagger-ui .highlight-code pre,
+html[data-theme="dark"] .swagger-ui pre.microlight,
+html[data-theme="dark"] .swagger-ui .opblock-body pre,
+html[data-theme="dark"] .swagger-ui .response-col_description pre {
+	background: #2a2a3a !important;
+	background-color: #2a2a3a !important;
+}
+
+html[data-theme="dark"] .swagger-ui .microlight *,
+html[data-theme="dark"] .swagger-ui .highlight-code *,
+html[data-theme="dark"] .swagger-ui pre.microlight *,
+html[data-theme="dark"] .swagger-ui .opblock-body pre * {
+	color: #fff !important;
+	background: none !important;
+	background-color: transparent !important;
+}
+
+/* ============================================
+   DARK MODE FIXES
+   ============================================ */
+
+html[data-theme="dark"] .swagger-ui {
+	/* Main background and text colors */
+	--swagger-ui-bg: rgb(var(--background));
+	--swagger-ui-text: rgb(var(--foreground));
+	--swagger-ui-text-muted: rgb(var(--color-gray-600));
+	--swagger-ui-border: rgb(var(--border));
+	--swagger-ui-code-bg: rgb(var(--color-gray-200));
+}
+
+/* Base wrapper */
+html[data-theme="dark"] .swagger-ui {
+	color: rgb(var(--foreground));
+}
+
+/* Info section */
+html[data-theme="dark"] .swagger-ui .info .title,
+html[data-theme="dark"] .swagger-ui .info .title small,
+html[data-theme="dark"] .swagger-ui .info .title small pre {
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .info .description p,
+html[data-theme="dark"] .swagger-ui .info .description,
+html[data-theme="dark"] .swagger-ui .info li,
+html[data-theme="dark"] .swagger-ui .info h1,
+html[data-theme="dark"] .swagger-ui .info h2,
+html[data-theme="dark"] .swagger-ui .info h3,
+html[data-theme="dark"] .swagger-ui .info h4,
+html[data-theme="dark"] .swagger-ui .info h5 {
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .info a {
+	color: rgb(var(--primary));
+}
+
+/* Operation blocks */
+html[data-theme="dark"] .swagger-ui .opblock .opblock-summary-description,
+html[data-theme="dark"] .swagger-ui .opblock-description-wrapper p,
+html[data-theme="dark"] .swagger-ui .opblock .opblock-section-header h4 {
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .opblock .opblock-section-header {
+	background: rgb(var(--color-gray-200));
+	border-bottom: 1px solid rgb(var(--border));
+}
+
+html[data-theme="dark"] .swagger-ui .opblock-body pre.microlight {
+	background: rgb(var(--color-gray-200)) !important;
+	color: rgb(var(--foreground)) !important;
+	border-radius: 4px;
+}
+
+/* Tabs */
+html[data-theme="dark"] .swagger-ui .tab li {
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .tab li.active {
+	color: rgb(var(--primary));
+}
+
+/* ============================================
+   SCHEMAS SECTION - DARK MODE
+   White text, no background
+   ============================================ */
+
+html[data-theme="dark"] .swagger-ui section.models,
+html[data-theme="dark"] .swagger-ui section.models.is-open,
+html[data-theme="dark"] .swagger-ui .models {
+	background: none !important;
+	background-color: transparent !important;
+}
+
+html[data-theme="dark"] .swagger-ui section.models *,
+html[data-theme="dark"] .swagger-ui .model *,
+html[data-theme="dark"] .swagger-ui .model-box * {
+	color: #fff !important;
+	background: none !important;
+	background-color: transparent !important;
+}
+
+html[data-theme="dark"] .swagger-ui .model-box,
+html[data-theme="dark"] .swagger-ui .model-container,
+html[data-theme="dark"] .swagger-ui .model {
+	background: none !important;
+	background-color: transparent !important;
+}
+
+html[data-theme="dark"] .swagger-ui section.models h4,
+html[data-theme="dark"] .swagger-ui section.models h5,
+html[data-theme="dark"] .swagger-ui .models-control,
+html[data-theme="dark"] .swagger-ui .model-title {
+	color: #fff !important;
+	background: none !important;
+}
+
+html[data-theme="dark"] .swagger-ui .prop-type {
+	color: rgb(var(--primary)) !important;
+}
+
+/* Arrow/chevron icons in schemas - dark mode */
+html[data-theme="dark"] .swagger-ui section.models svg,
+html[data-theme="dark"] .swagger-ui .model svg,
+html[data-theme="dark"] .swagger-ui .model-box svg,
+html[data-theme="dark"] .swagger-ui .model-toggle:after,
+html[data-theme="dark"] .swagger-ui .models-control svg,
+html[data-theme="dark"] .swagger-ui .expand-operation svg {
+	fill: #fff !important;
+}
+
+html[data-theme="dark"] .swagger-ui .model-toggle:after,
+html[data-theme="dark"] .swagger-ui .model-box .model-toggle:after {
+	background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="white" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>')
+		center no-repeat !important;
+}
+
+/* ============================================
+   SCHEMAS SECTION - LIGHT MODE
+   Dark text, no background
+   ============================================ */
+
+html[data-theme="light"] .swagger-ui section.models,
+html[data-theme="light"] .swagger-ui section.models.is-open,
+html[data-theme="light"] .swagger-ui .models {
+	background: none !important;
+	background-color: transparent !important;
+}
+
+html[data-theme="light"] .swagger-ui section.models *,
+html[data-theme="light"] .swagger-ui .model *,
+html[data-theme="light"] .swagger-ui .model-box * {
+	color: #000 !important;
+	background: none !important;
+	background-color: transparent !important;
+}
+
+html[data-theme="light"] .swagger-ui .model-box,
+html[data-theme="light"] .swagger-ui .model-container,
+html[data-theme="light"] .swagger-ui .model {
+	background: none !important;
+	background-color: transparent !important;
+}
+
+html[data-theme="light"] .swagger-ui section.models h4,
+html[data-theme="light"] .swagger-ui section.models h5,
+html[data-theme="light"] .swagger-ui .models-control,
+html[data-theme="light"] .swagger-ui .model-title {
+	color: #000 !important;
+	background: none !important;
+}
+
+html[data-theme="light"] .swagger-ui .prop-type {
+	color: rgb(var(--primary)) !important;
+}
+
+/* Arrow/chevron icons in schemas - light mode */
+html[data-theme="light"] .swagger-ui section.models svg,
+html[data-theme="light"] .swagger-ui .model svg,
+html[data-theme="light"] .swagger-ui .model-box svg,
+html[data-theme="light"] .swagger-ui .model-toggle:after,
+html[data-theme="light"] .swagger-ui .models-control svg,
+html[data-theme="light"] .swagger-ui .expand-operation svg {
+	fill: #000 !important;
+}
+
+html[data-theme="light"] .swagger-ui .model-toggle:after,
+html[data-theme="light"] .swagger-ui .model-box .model-toggle:after {
+	background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="black" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>')
+		center no-repeat !important;
+}
+
+/* Tables */
+html[data-theme="dark"] .swagger-ui table thead tr th,
+html[data-theme="dark"] .swagger-ui table thead tr td,
+html[data-theme="dark"] .swagger-ui .parameters-col_description {
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui table tbody tr td {
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .parameter__name,
+html[data-theme="dark"] .swagger-ui .parameter__type,
+html[data-theme="dark"] .swagger-ui .parameter__deprecated,
+html[data-theme="dark"] .swagger-ui .parameter__in {
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .parameter__name.required span {
+	color: rgb(var(--color-red));
+}
+
+html[data-theme="dark"] .swagger-ui .parameter__name.required::after {
+	color: rgb(var(--color-red));
+}
+
+/* Inputs and selects */
+html[data-theme="dark"] .swagger-ui input[type="text"],
+html[data-theme="dark"] .swagger-ui input[type="password"],
+html[data-theme="dark"] .swagger-ui input[type="search"],
+html[data-theme="dark"] .swagger-ui input[type="email"],
+html[data-theme="dark"] .swagger-ui input[type="file"] {
+	background: rgb(var(--color-gray-200));
+	color: rgb(var(--foreground));
+	border: 1px solid rgb(var(--border));
+}
+
+html[data-theme="dark"] .swagger-ui textarea {
+	background: rgb(var(--color-gray-200));
+	color: rgb(var(--foreground));
+	border: 1px solid rgb(var(--border));
+}
+
+html[data-theme="dark"] .swagger-ui select {
+	background-color: rgb(var(--color-gray-200));
+	color: #fff !important;
+	border: 1px solid rgb(var(--border));
+	background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="white" d="M7 10l5 5 5-5z"/></svg>') !important;
+	background-repeat: no-repeat !important;
+	background-position: right 10px center !important;
+}
+
+html[data-theme="dark"] .swagger-ui .content-type,
+html[data-theme="dark"] .swagger-ui .response-content-type select,
+html[data-theme="dark"] .swagger-ui .responses-wrapper select {
+	color: #fff !important;
+}
+
+/* Response section */
+html[data-theme="dark"] .swagger-ui .responses-inner h4,
+html[data-theme="dark"] .swagger-ui .responses-inner h5,
+html[data-theme="dark"] .swagger-ui .response-col_status,
+html[data-theme="dark"] .swagger-ui .response-col_description,
+html[data-theme="dark"] .swagger-ui .response-col_links {
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .response-col_description__inner p {
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .responses-table thead td {
+	color: rgb(var(--color-gray-600));
+}
+
+/* Code blocks and pre tags */
+html[data-theme="dark"] .swagger-ui pre,
+html[data-theme="dark"] .swagger-ui code {
+	background: rgb(var(--color-gray-200));
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .highlight-code pre {
+	background: rgb(var(--color-gray-200)) !important;
+}
+
+html[data-theme="dark"] .swagger-ui .highlight-code code {
+	color: rgb(var(--foreground)) !important;
+}
+
+/* JSON viewer / syntax highlighting */
+html[data-theme="dark"] .swagger-ui .microlight {
+	background: rgb(var(--color-gray-200)) !important;
+	color: rgb(var(--foreground)) !important;
+}
+
+/* Response content type dropdown */
+html[data-theme="dark"] .swagger-ui .responses-wrapper .content-type {
+	color: rgb(var(--foreground));
+}
+
+/* Scheme container */
+html[data-theme="dark"] .swagger-ui .scheme-container {
+	background: rgb(var(--color-gray-100));
+	border-bottom: 1px solid rgb(var(--border));
+}
+
+html[data-theme="dark"] .swagger-ui .scheme-container .schemes > label {
+	color: rgb(var(--foreground));
+}
+
+/* Authorization */
+html[data-theme="dark"] .swagger-ui .authorization__btn {
+	fill: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .authorization__btn svg {
+	fill: rgb(var(--foreground));
+}
+
+/* Modal dialogs (Authorize popup) - Dark mode */
+html[data-theme="dark"] .swagger-ui .dialog-ux {
+	background: rgba(0, 0, 0, 0.8) !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux {
+	background: #1a1a2e !important;
+	border: 1px solid rgb(var(--border)) !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-header {
+	background: transparent !important;
+	border-bottom: 1px solid rgb(var(--border)) !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-header h3 {
+	color: #fff !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-header .close-modal {
+	fill: #fff !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-header .close-modal svg {
+	fill: #fff !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content {
+	background: transparent !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content p,
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content h4,
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content h5,
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content label,
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content span,
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content code {
+	color: #fff !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content input {
+	background: #2a2a4a !important;
+	color: #fff !important;
+	border: 1px solid rgb(var(--border)) !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content .auth-container {
+	background: transparent !important;
+	border-color: rgb(var(--border)) !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content .auth-container h4,
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content .auth-container h5 {
+	color: #fff !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content .scopes h2 {
+	color: #fff !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content .scope-def {
+	color: #ccc !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content .errors {
+	color: rgb(var(--color-red)) !important;
+}
+
+/* Auth buttons in modal */
+html[data-theme="dark"] .swagger-ui .dialog-ux .auth-btn-wrapper .btn {
+	color: #fff !important;
+}
+
+html[data-theme="dark"] .swagger-ui .dialog-ux .auth-btn-wrapper .btn-done {
+	background: transparent !important;
+	border-color: rgb(var(--border)) !important;
+}
+
+/* Wrapper around auth sections */
+html[data-theme="dark"] .swagger-ui .dialog-ux .modal-ux-content .wrapper {
+	background: transparent !important;
+}
+
+/* Key icon and other SVGs in modal */
+html[data-theme="dark"] .swagger-ui .dialog-ux svg {
+	fill: #fff !important;
+}
+
+/* Expand/collapse arrows */
+html[data-theme="dark"] .swagger-ui .expand-operation svg,
+html[data-theme="dark"] .swagger-ui .model-toggle::after {
+	fill: rgb(var(--foreground));
+}
+
+/* Try it out button */
+html[data-theme="dark"] .swagger-ui .try-out__btn {
+	border-color: rgb(var(--border));
+	color: rgb(var(--foreground));
+}
+
+/* Loading indicator */
+html[data-theme="dark"] .swagger-ui .loading-container .loading::after {
+	color: rgb(var(--foreground));
+}
+
+/* Operation tag descriptions */
+html[data-theme="dark"] .swagger-ui .opblock-tag {
+	color: rgb(var(--foreground));
+	border-bottom: 1px solid rgb(var(--border));
+}
+
+html[data-theme="dark"] .swagger-ui .opblock-tag small {
+	color: rgb(var(--color-gray-600));
+}
+
+html[data-theme="dark"] .swagger-ui .opblock-tag svg {
+	fill: rgb(var(--foreground));
+}
+
+/* Servers dropdown */
+html[data-theme="dark"] .swagger-ui .servers > label {
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .servers-title {
+	color: rgb(var(--foreground));
+}
+
+/* Filter input */
+html[data-theme="dark"] .swagger-ui .filter-container input {
+	background: rgb(var(--color-gray-200));
+	color: rgb(var(--foreground));
+	border: 1px solid rgb(var(--border));
+}
+
+/* Markdown rendered content */
+html[data-theme="dark"] .swagger-ui .markdown p,
+html[data-theme="dark"] .swagger-ui .markdown li,
+html[data-theme="dark"] .swagger-ui .markdown h1,
+html[data-theme="dark"] .swagger-ui .markdown h2,
+html[data-theme="dark"] .swagger-ui .markdown h3,
+html[data-theme="dark"] .swagger-ui .markdown h4,
+html[data-theme="dark"] .swagger-ui .markdown h5,
+html[data-theme="dark"] .swagger-ui .markdown h6,
+html[data-theme="dark"] .swagger-ui .markdown a,
+html[data-theme="dark"] .swagger-ui .renderedMarkdown p,
+html[data-theme="dark"] .swagger-ui .renderedMarkdown li {
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .markdown a {
+	color: rgb(var(--primary));
+}
+
+/* JSON body example */
+html[data-theme="dark"] .swagger-ui .body-param__text {
+	background: rgb(var(--color-gray-200));
+	color: rgb(var(--foreground));
+}
+
+/* Headers section */
+html[data-theme="dark"] .swagger-ui .headers-wrapper .headers h4 {
+	color: rgb(var(--foreground));
+}
+
+/* Copy to clipboard button */
+html[data-theme="dark"] .swagger-ui .copy-to-clipboard {
+	background: rgb(var(--color-gray-300));
+}
+
+html[data-theme="dark"] .swagger-ui .copy-to-clipboard button {
+	background: transparent;
+}
+
+/* Schema toggle */
+html[data-theme="dark"] .swagger-ui .model-toggle {
+	color: rgb(var(--foreground));
+}
+
+/* Example values */
+html[data-theme="dark"] .swagger-ui .example,
+html[data-theme="dark"] .swagger-ui .examples__title,
+html[data-theme="dark"] .swagger-ui .examples__select-label {
+	color: rgb(var(--foreground));
+}
+
+/* Version badge */
+html[data-theme="dark"] .swagger-ui .info .version {
+	background: transparent;
+	color: #fff !important;
+}
+
+/* Version stamp (OAS badge) */
+html[data-theme="dark"] .swagger-ui .info .version-stamp {
+	background: transparent;
+	color: #fff !important;
+}
+
+/* Base URL display */
+html[data-theme="dark"] .swagger-ui .info .base-url {
+	color: #ccc;
+}
+
+/* Operation summary path */
+html[data-theme="dark"] .swagger-ui .opblock-summary-path {
+	color: rgb(var(--foreground));
+}
+
+html[data-theme="dark"] .swagger-ui .opblock-summary-path__deprecated {
+	color: rgb(var(--color-gray-500));
+}
+
+/* Download button */
+html[data-theme="dark"] .swagger-ui .download-contents {
+	background: rgb(var(--color-gray-300));
+	color: rgb(var(--foreground));
+}
+
+/* No margin paragraph override */
+html[data-theme="dark"] .swagger-ui p {
+	color: rgb(var(--foreground));
+}
+
+/* Labels */
+html[data-theme="dark"] .swagger-ui label {
+	color: rgb(var(--foreground));
+}
+
+/* Small text */
+html[data-theme="dark"] .swagger-ui small {
+	color: rgb(var(--color-gray-600));
+}
+
+/* Prop format */
+html[data-theme="dark"] .swagger-ui .prop-format {
+	color: rgb(var(--color-gray-600));
+}
