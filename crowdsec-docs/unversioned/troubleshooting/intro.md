@@ -36,6 +36,6 @@ Please try to resolve your issue by reading the documentation. If you're unable 
 
 If you are on an Enterprise plan, you can use dedicated support via the Console:
 
-### stack Health issues list
+### Stack Health issues list
 
 <div data-extract-copy="console_issues:stackhealth_issues_list"></div>
