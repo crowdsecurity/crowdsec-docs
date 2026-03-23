@@ -18,11 +18,11 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 
 <FeatureCard
 	title="Remediation Sync"
-	metric="Automatic"
+	metric="Streamlined"
 	category="scale"
 	description="Automatically synchronize security decisions across your entire organization. Syncs to all Security Engines and Blocklists Integration endpoints, ensuring consistent protection across your infrastructure."
 	comparison={{
-		before: "Community: manual sync",
+		before: "Community: no sync",
 		after: "Premium: automatic sync"
 	}}
 	link="/u/console/remediation_sync"
@@ -30,7 +30,7 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 
 <FeatureCard
 	title="Console Decision Management"
-	metric="Centralized"
+	metric="Organization-wide"
 	category="scale"
 	description="Add, delete, and manage security decisions directly from the Console. Force pull blocklists when subscribing or unsubscribing, giving you complete control over your security posture from a central interface."
 	link="/u/console/decisions/decisions_management"
@@ -50,7 +50,7 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 
 <FeatureCard
 	title="Service API (SAPI)"
-	metric="REST + webhooks"
+	metric="Automation-enabler"
 	category="scale"
 	badges={["API"]}
 	description="Access APIs for console management. Automate blocklist creation, decision management, and enrollment operations via API."
@@ -63,7 +63,7 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 
 <FeatureCard
 	title="Blocklist Creation & Sharing"
-	metric="Custom via API"
+	metric="Automation-enabler"
 	category="scale"
 	badges={["API"]}
 	description="Distribute custom blocklists across multiple organizations or partners, enabling coordinated security operations across your business ecosystem."
@@ -72,7 +72,7 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 
 <FeatureCard
 	title="Auto Enroll"
-	metric="Zero-touch"
+	metric="Streamlined"
 	category="scale"
 	description="Automatically enroll new security engines into your organization for streamlined deployment and management. Perfect for infrastructure-as-code deployments."
 	comparison={{
@@ -83,12 +83,12 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 
 <FeatureCard
 	title="Expanded Organization Seats"
-	metric="3 seats included"
+	metric="5 seats included"
 	category="scale"
 	description="Provide view/edit/admin access to your customers or collaborate with team members by adding more seats to your organization. Base Premium plan includes 3 seats, with options to add more."
 	comparison={{
 		before: "Community: 1 user only",
-		after: "Premium: full team (3+)"
+		after: "Premium: full team (5+)"
 	}}
 	link="/u/console/organizations/intro"
 />
@@ -102,8 +102,8 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
 <FeatureCard
-	title="Threat Forecast Blocklists"
-	metric="Organization-specific"
+	title="Threat Forecast Blocklist"
+	metric="Up to 40% more blocks"
 	category="protection"
 	description="Access exclusive, organization-specific blocklists generated from the signals your organization shares with CrowdSec. These blocklists are more precise than community blocklists and provide tailored protection for your infrastructure."
 	comparison={{
@@ -126,7 +126,7 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 />
 
 <FeatureCard
-	title="Premium Tier Blocklist Access"
+	title="Premium Tier Blocklists Access"
 	metric="Curated lists"
 	category="protection"
 	description="Get access to our Premium tier blocklists, providing enhanced protection with curated specialized blocklists tailored for different attack vectors."
@@ -163,7 +163,7 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 
 <FeatureCard
 	title="Push Notifications Integrations"
-	metric="Slack · PagerDuty"
+	metric="Messaging & Webhooks"
 	category="monitoring"
 	description="Receive alerts when security engines go offline or become outdated, ensuring your security infrastructure remains operational. Native integrations with major SecOps tools."
 	comparison={{
@@ -180,16 +180,16 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 	description="Upgrade from the Community Plan's 500 alerts per month and 2-month retention to custom quotas (up to several million alerts) and up to 1 year of retention. This enables comprehensive monitoring of large-scale infrastructures and long-term security analysis."
 	comparison={{
 		before: "Community: 500/month, 2 months",
-		after: "Premium: millions/month, 365 days"
+		after: "Premium: 10k/SE/month, 365 days"
 	}}
 	link="/u/console/alerts/quotas#why-upgrade-to-premium-"
 />
 
 <FeatureCard
 	title="Background Noise Filtering"
-	metric="−75% to −92% noise"
+	metric="~80% noise reduction"
 	category="monitoring"
-	description="Automatically filter out internet background radiation and mass scanning activity to focus on genuine threats. Customize noise cancellation levels (Low, Medium, High) to match your security requirements."
+	description="Automatically filter out internet background radiation and mass scanning activity from your alert board to focus on genuine threats. Customize noise cancellation levels (Low, Medium, High) to match your security requirements."
 	comparison={{
 		before: "Community: all signals",
 		after: "Premium: real threats only"
@@ -210,13 +210,13 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 
 <FeatureCard
 	title="CTI API Access"
-	metric="30 → 100 calls/week"
+	metric="40 → 120 calls/month"
 	category="intelligence"
 	badges={["API"]}
-	description="Leverage CrowdSec IP reputation data into your vendors. Get 100 CTI API calls per week (compared to 30 in Community) for integration with SIEM, SOAR, and other security tools."
+	description="Leverage CrowdSec IP reputation data into your vendors. Get 120 CTI API calls per month (compared to 40 in Community) for integration with SIEM, SOAR, and other security tools."
 	comparison={{
-		before: "Community: 30 calls/week",
-		after: "Premium: 100 calls/week"
+		before: "Community: 40 calls/month",
+		after: "Premium: 120 calls/month"
 	}}
 	link="/u/cti_api/api_integration/integration_intro"
 />

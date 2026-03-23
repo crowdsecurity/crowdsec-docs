@@ -66,10 +66,10 @@ export const personaOptions = [
 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
 <FeatureCard
-	title="Extended Community Blocklist"
+	title="Expanded Community Blocklist Coverage"
 	metric="3k → 50k IPs"
 	category="protection"
-	description="Receive the top 50k most aggressive attackers targeting services like yours (up from 3,000 in Community). More attackers blocked before they reach your servers."
+	description="Receive the top 50k most aggressive attackers targeting services like yours (up from 3k in Community). More attackers blocked before they reach your servers."
 	comparison={{
 		before: "Community: top 3k",
 		after: "Premium: top 50k (×16)"
@@ -78,8 +78,8 @@ export const personaOptions = [
 />
 
 <FeatureCard
-	title="Threat Forecast Blocklist"
-	metric="Organization-specific"
+	title="Threat Forecast Blocklists"
+	metric="Up to 40% more blocks"
 	category="protection"
 	description="Automatically generated blocklists from signals shared by your organization. More precise than community lists—tailored to your specific infrastructure."
 	comparison={{
@@ -91,7 +91,7 @@ export const personaOptions = [
 
 <FeatureCard
 	title="Background Noise Filtering"
-	metric="−75% to −92% noise"
+	metric="~80% noise reduction"
 	category="protection"
 	description="Automatically filter internet background radiation (mass scanners, crawlers) to focus on real threats. Configurable levels: Low, Medium, High."
 	comparison={{
@@ -121,6 +121,7 @@ export const personaOptions = [
 
 <HighlightCard
 	title="Remediation Sync"
+	metric="Streamlined"
 	category="protection"
 	description="Automatically sync security decisions to all Security Engines and integrations. One blocklist update propagates everywhere—zero manual work."
 	stats={[
@@ -133,7 +134,7 @@ export const personaOptions = [
 <div className="mt-4">
 <FeatureCard
 	title="Auto Enroll"
-	metric="Zero-touch"
+	metric="Streamlined"
 	category="scale"
 	description="Automatically enroll new Security Engines into your organization as they're deployed. Perfect for infrastructure-as-code (Terraform, Ansible, K8s)."
 	comparison={{
@@ -179,7 +180,7 @@ export const personaOptions = [
 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
 <FeatureCard
-	title="Multi-Seat Access"
+	title="Expanded Organization Seats"
 	metric="3 seats included"
 	category="scale"
 	description="Give view/edit/admin access to your team. Multiple members work simultaneously without access conflicts. Add more seats as needed."
@@ -211,7 +212,7 @@ export const personaOptions = [
 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
 <FeatureCard
-	title="Extended Alert Retention"
+	title="Increased Alert Quotas and Extended Retention"
 	metric="2 months → 1 year"
 	category="monitoring"
 	description="Keep up to 1 year of alerts with custom quotas (up to millions/month). Essential for audits, forensic investigation, and trend analysis."
@@ -235,19 +236,19 @@ export const personaOptions = [
 
 <FeatureCard
 	title="CTI API Access"
-	metric="30 → 100 calls/week"
+	metric="40 → 120 calls/month"
 	category="intelligence"
 	description="Query CrowdSec IP reputation from your SIEM, SOAR or custom tools. Includes MITRE ATT&CK mappings for contextual threat qualification."
 	comparison={{
-		before: "Community: 30 calls/week",
-		after: "Premium: 100 calls/week"
+		before: "Community: 40 calls/month",
+		after: "Premium: 120 calls/month"
 	}}
 	link="/u/cti_api/api_integration/integration_intro"
 />
 
 <FeatureCard
 	title="Background Noise Filtering"
-	metric="Focus on real threats"
+	metric="~80% noise reduction"
 	category="monitoring"
 	description="Filter internet background radiation automatically. Configurable levels (Low, Medium, High) to match security requirements."
 	link="/u/console/alerts/background_noise"
@@ -271,7 +272,7 @@ export const personaOptions = [
 
 <FeatureCard
 	title="Push Notifications Integrations"
-	metric="Slack · PagerDuty"
+	metric="Messaging & Webhooks"
 	category="monitoring"
 	description="Receive alerts in existing tools when Security Engines go offline or become outdated. Native integrations with major SecOps tools."
 	comparison={{
@@ -290,7 +291,7 @@ export const personaOptions = [
 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
 <FeatureCard
-	title="Extended Community Blocklist"
+	title="Expanded Community Blocklist Coverage"
 	metric="3k → 50k IPs"
 	category="protection"
 	description="Top 50,000 most aggressive attackers (up from 3,000 in Community)."
@@ -298,8 +299,8 @@ export const personaOptions = [
 />
 
 <FeatureCard
-	title="Threat Forecast Blocklist"
-	metric="Organization-specific"
+	title="Threat Forecast Blocklists"
+	metric="Up to 40% more blocks"
 	category="protection"
 	description="Automatically generated blocklists from your organization's shared signals."
 	link="/u/console/threat_forecast"
@@ -307,7 +308,7 @@ export const personaOptions = [
 
 <FeatureCard
 	title="Remediation Sync"
-	metric="Automatic"
+	metric="Streamlined"
 	category="protection"
 	description="Sync security decisions across all engines and integrations automatically."
 	link="/u/console/remediation_sync"
@@ -367,7 +368,7 @@ export const personaOptions = [
 
 <FeatureCard
 	title="Auto Enroll"
-	metric="Zero-touch"
+	metric="Streamlined"
 	category="scale"
 	description="Automatically enroll new Security Engines into your organization as deployed. Perfect for infrastructure-as-code deployments (Terraform, Ansible, K8s)."
 	comparison={{
@@ -386,7 +387,7 @@ export const personaOptions = [
 
 <FeatureCard
 	title="Remediation Sync"
-	metric="Automatic"
+	metric="Streamlined"
 	category="protection"
 	description="Sync security decisions across all client engines and integrations automatically."
 	link="/u/console/remediation_sync"
@@ -401,7 +402,7 @@ export const personaOptions = [
 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
 <FeatureCard
-	title="Multi-Seat Access"
+	title="Expanded Organization Seats"
 	metric="3 seats included"
 	category="scale"
 	description="Provide view/edit/admin access to team members or clients. Add seats as your business grows."
@@ -425,7 +426,7 @@ export const personaOptions = [
 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
 <FeatureCard
-	title="Extended Community Blocklist"
+	title="Expanded Community Blocklist Coverage"
 	metric="3k → 50k IPs"
 	category="protection"
 	description="Access to 50,000 most aggressive IPs (vs 3,000 in Community)."
@@ -440,8 +441,8 @@ export const personaOptions = [
 />
 
 <FeatureCard
-	title="Threat Forecast Blocklist"
-	metric="Per organization"
+	title="Threat Forecast Blocklists"
+	metric="Up to 40% more blocks"
 	category="protection"
 	description="Each organization gets tailored blocklists from their shared signals."
 	link="/u/console/threat_forecast"
@@ -449,7 +450,7 @@ export const personaOptions = [
 
 <FeatureCard
 	title="Background Noise Filtering"
-	metric="Reduce fatigue"
+	metric="~80% noise reduction"
 	category="monitoring"
 	description="Filter internet noise automatically across all client organizations."
 	link="/u/console/alerts/background_noise"
