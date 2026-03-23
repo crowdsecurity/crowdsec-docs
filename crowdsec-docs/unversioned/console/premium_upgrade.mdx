@@ -83,8 +83,8 @@ export const personaOptions = [
 	category="protection"
 	description="Automatically generated blocklist from signals shared by your organization. Complements the community blocklist for extra protection tailored to your infrastructure."
 	comparison={{
-		before: "Community: generic list",
-		after: "Premium: org-specific"
+		before: "Community: unavailable",
+		after: "Premium: tailor-made blocklist"
 	}}
 	link="/u/console/threat_forecast"
 />
@@ -175,7 +175,7 @@ export const personaOptions = [
 
 ---
 
-#### 👥 Team Collaboration
+#### 👥 Team Collaboration & Access Control
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
@@ -201,6 +201,27 @@ export const personaOptions = [
 		after: "Premium: centralized + expiration"
 	}}
 	link="/u/console/allowlists"
+/>
+
+<FeatureCard
+	title="Blocklist Creation & Sharing"
+	metric="Custom via API"
+	category="scale"
+	description="Create and distribute custom blocklists across multiple organizations or partners. Enable coordinated security operations across your ecosystem."
+	link="/u/console/service_api/blocklists"
+/>
+
+<FeatureCard
+	title="Service API (SAPI)"
+	metric="REST + webhooks"
+	category="scale"
+	badges={["API"]}
+	description="Automate Console management: create and share custom blocklists, manage decisions and enrollments via API. Integrate into CI/CD or SOAR pipelines."
+	comparison={{
+		before: "Community: no API access",
+		after: "Premium: full SAPI"
+	}}
+	link="/u/console/service_api/getting_started"
 />
 
 </div>
@@ -484,10 +505,10 @@ export const personaOptions = [
 | **Background Noise Filter** | ✗ | ✓ |
 | **Am I Under Attack** | ✗ | ✓ |
 | **Threat Forecast Blocklist** | ✗ | ✓ |
-| **Organization Seats** | 1 | 3 included + more |
-| **CTI API Lookups/Week** | 30 | 100 |
+| **Organization Seats** | 1 | 5 included + more |
+| **CTI API Lookups/Week** | 30 | 100 + more |
 | **Service API (SAPI)** | ✗ | ✓ |
-| **Multi-Organization (MSP)** | ✗ | ✓ (option) |
+| **Multi-Organization (MSP)** | ✗ | ✓ |
 
 ---
 
@@ -507,7 +528,7 @@ Review available plans and pricing based on your volume and requirements.
 
 ### 2️⃣ Upgrade or Contact
 
-Upgrade self-service in minutes, or contact our team for custom plans (enterprise, MSP, volume).
+[Upgrade self-service](https://app.crowdsec.net/pricing) with 30 days free trial, or contact our team for custom plans (enterprise, MSP, volume).
 
 </div>
 
@@ -515,7 +536,7 @@ Upgrade self-service in minutes, or contact our team for custom plans (enterpris
 
 ### 3️⃣ Immediate Access
 
-All Premium features available instantly in your organization. No migration required.
+Premium features available instantly in your organization. No migration required.
 
 </div>
 
@@ -529,7 +550,7 @@ All Premium features available instantly in your organization. No migration requ
 
 ### Start with a trial or discuss your needs with our team
 
-No immediate commitment required. All Premium features available instantly upon upgrade.
+No immediate commitment required. Premium features available instantly upon upgrade.
 
 <div style={{display: 'flex', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap'}}>
 	<a href="https://app.crowdsec.net/pricing" className="button button--primary button--lg">View Pricing →</a>
@@ -540,7 +561,7 @@ No immediate commitment required. All Premium features available instantly upon 
 
 ---
 
-## Getting Started with Premium
+## Need more help deciding?
 
 To help you make the most of your Premium upgrade, explore these guides:
 
