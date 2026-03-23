@@ -2,6 +2,7 @@ import Link from "@docusaurus/Link";
 import React from "react";
 
 export interface FeatureCardProps {
+	id?: string;
 	title: string;
 	metric?: string;
 	description: string;
@@ -35,6 +36,7 @@ const categoryColors = {
 };
 
 export const FeatureCard = ({
+	id,
 	title,
 	metric,
 	description,
@@ -46,8 +48,12 @@ export const FeatureCard = ({
 }: FeatureCardProps): React.JSX.Element => {
 	const colors = categoryColors[category];
 
+	// Generate ID from title if not explicitly provided
+	const generatedId = id || title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+
 	const cardContent = (
 		<div
+			id={generatedId}
 			className={`
 				h-full border border-solid border-border rounded-lg p-5 bg-card
 				hover:shadow-md hover:border-primary/30 transition-all duration-200
@@ -103,6 +109,7 @@ export const FeatureCard = ({
 };
 
 export interface HighlightCardProps {
+	id?: string;
 	title: string;
 	description: string;
 	stats?: Array<{
@@ -113,9 +120,12 @@ export interface HighlightCardProps {
 	category?: "protection" | "scale" | "monitoring" | "intelligence";
 }
 
-export const HighlightCard = ({ title, description, stats, link, category = "protection" }: HighlightCardProps): React.JSX.Element => {
+export const HighlightCard = ({ id, title, description, stats, link, category = "protection" }: HighlightCardProps): React.JSX.Element => {
+	// Generate ID from title if not explicitly provided
+	const generatedId = id || title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+
 	const content = (
-		<div className="border border-solid border-primary/30 rounded-lg p-6 bg-gradient-to-r from-primary/5 to-transparent hover:shadow-md transition-all">
+		<div id={generatedId} className="border border-solid border-primary/30 rounded-lg p-6 bg-gradient-to-r from-primary/5 to-transparent hover:shadow-md transition-all">
 			<h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-900">{title}</h4>
 			<p className="text-sm text-gray-600 dark:text-gray-700 mb-4 leading-relaxed">{description}</p>
 			{stats && stats.length > 0 && (
