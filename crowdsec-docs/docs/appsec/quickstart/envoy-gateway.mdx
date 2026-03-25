@@ -112,7 +112,6 @@ metadata:
 type: Opaque
 stringData:
   ENROLL_KEY: "<your-existing-enroll-key>"
-  BOUNCER_KEY_ingress: "<your-existing-ingress-key>"
   BOUNCER_KEY_envoy: "<choose-a-long-random-key>"
 ```
 
@@ -142,15 +141,6 @@ helm upgrade --install crowdsec crowdsec/crowdsec \
   --create-namespace \
   -f crowdsec-values.yaml
 ```
-
-:::note
-One key is enough for both:
-
-- LAPI decision streaming
-- AppSec/WAF requests
-
-This quickstart uses the same key on both sides.
-:::
 
 :::tip
 The important part is that `BOUNCER_KEY_envoy` is forced through the LAPI
