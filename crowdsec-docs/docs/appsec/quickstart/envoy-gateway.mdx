@@ -14,8 +14,17 @@ using an external authorization service.
 At the end, you will have:
 
 - CrowdSec running in-cluster with the AppSec API listening on `7422`
-- A CrowdSec-compatible Envoy external auth service running in the cluster
-- `SecurityPolicy` resources attached to your `HTTPRoute` objects
+- A CrowdSec-compatible Envoy external auth service running in the cluster.
+  This is the service Envoy calls during external authorization checks; it
+  queries CrowdSec LAPI and AppSec, then tells Envoy whether the request should
+  be allowed or denied.
+- `SecurityPolicy` resources attached to your `HTTPRoute` objects.
+  In Envoy Gateway, a `SecurityPolicy` is the custom resource that enables
+  external authorization for a `Gateway` or `HTTPRoute` and points Envoy to the
+  auth backend.
+- `HTTPRoute` objects exposing your applications. In Gateway API, an
+  `HTTPRoute` defines how HTTP requests for specific hostnames or paths are
+  matched and forwarded to your backend `Service`.
 - Virtual patching and generic AppSec rules inspecting requests before they
   reach your backends
 
