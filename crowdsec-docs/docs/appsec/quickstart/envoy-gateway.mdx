@@ -3,6 +3,9 @@ id: envoy-gateway
 title: QuickStart - Envoy Gateway (Kubernetes)
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # CrowdSec WAF QuickStart for Envoy Gateway
 
 ## Objectives
@@ -143,18 +146,27 @@ helm upgrade --install crowdsec crowdsec/crowdsec \
 ```
 
 :::tip
-The important part is that `BOUNCER_KEY_envoy` is forced through the LAPI
-environment and kept under declarative configuration. You do not need to create
-the key dynamically from inside the `crowdsec-lapi` pod for this workflow.
+Keep `BOUNCER_KEY_envoy` declarative in the Kubernetes secret and in
+`crowdsec-values.yaml`.
+
+In our cluster, this was enough to keep the key value under configuration
+management, but it did not recreate the `envoy` bouncer entry in LAPI after a
+restart. If `crowdsec-lapi` still returns `403` to `envoy-proxy-bouncer`, run a
+one-time registration with the same key:
+
+```bash
+kubectl -n crowdsec exec deploy/crowdsec-lapi -- \
+  cscli bouncers add envoy -k <same-value-as-BOUNCER_KEY_envoy>
+```
 :::
 
 ## Deploy the Envoy external auth bouncer
 
-Create a manifest like the following in the namespace where your Envoy Gateway
-infrastructure runs. In this example, that namespace is
+Keep the bouncer API key in a Kubernetes secret in the namespace where your
+Envoy Gateway infrastructure runs. In this example, that namespace is
 `envoy-gateway-system`.
 
-```yaml title="crowdsec-envoy-bouncer.yaml"
+```yaml title="crowdsec-envoy-bouncer-secret.yaml"
 apiVersion: v1
 kind: Secret
 metadata:
@@ -162,15 +174,94 @@ metadata:
   namespace: envoy-gateway-system
 type: Opaque
 stringData:
-  api-key: "<use-the-same-value-as-BOUNCER_KEY_envoy>"
----
+  api-key: "<same-value-as-BOUNCER_KEY_envoy>"
+```
+
+<Tabs>
+<TabItem value="helm" label="Helm-Based Installation" default>
+
+Create a values file for the upstream Helm chart:
+
+```yaml title="crowdsec-envoy-bouncer-values.yaml"
+fullnameOverride: crowdsec-envoy-bouncer
+
+image:
+  repository: msabban/envoy-proxy-crowdsec-bouncer
+  pullPolicy: Always
+  tag: latest
+
+config:
+  bouncer:
+    enabled: true
+    lapiURL: http://crowdsec-service.crowdsec.svc.cluster.local:8080
+    apiKeySecretRef:
+      name: crowdsec-envoy-bouncer-secrets
+      key: api-key
+  waf:
+    enabled: true
+    appSecURL: http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422
+    apiKeySecretRef:
+      name: crowdsec-envoy-bouncer-secrets
+      key: api-key
+
+referenceGrant:
+  create: true
+  fromNamespaces:
+    - roundcube
+    - chess-trainer
+```
+
+Apply the secret:
+
+```bash
+kubectl apply -f crowdsec-envoy-bouncer-secret.yaml
+```
+
+Then install the upstream Helm chart.
+
+At the time of writing, the published chart repository can return `404` for the
+packaged chart artifact. If that happens in your environment, clone the source
+repository and install the chart from its `charts/` directory:
+
+```bash
+git clone --depth=1 https://github.com/kdwils/envoy-proxy-crowdsec-bouncer.git
+helm upgrade --install crowdsec-envoy-bouncer \
+  ./envoy-proxy-crowdsec-bouncer/charts/envoy-proxy-bouncer \
+  --namespace envoy-gateway-system \
+  --create-namespace \
+  -f crowdsec-envoy-bouncer-values.yaml
+```
+
+If the published repository works for you, the equivalent install is:
+
+```bash
+helm repo add kdwils https://kdwils.github.io/envoy-proxy-crowdsec-bouncer
+helm repo update
+helm upgrade --install crowdsec-envoy-bouncer kdwils/envoy-proxy-bouncer \
+  --namespace envoy-gateway-system \
+  --create-namespace \
+  -f crowdsec-envoy-bouncer-values.yaml
+```
+
+The chart also creates the `ReferenceGrant` when `referenceGrant.create: true`.
+
+</TabItem>
+<TabItem value="manifests" label="Without Helm">
+
+Apply the secret:
+
+```bash
+kubectl apply -f crowdsec-envoy-bouncer-secret.yaml
+```
+
+Then create the bouncer objects directly:
+
+```yaml title="crowdsec-envoy-bouncer.yaml"
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: crowdsec-envoy-bouncer
   namespace: envoy-gateway-system
-  labels:
-    app.kubernetes.io/name: crowdsec-envoy-bouncer
 spec:
   replicas: 1
   selector:
@@ -183,13 +274,12 @@ spec:
     spec:
       containers:
         - name: crowdsec-envoy-bouncer
-          image: ghcr.io/kdwils/envoy-proxy-bouncer:v0.5.1
-          imagePullPolicy: IfNotPresent
+          image: msabban/envoy-proxy-crowdsec-bouncer:latest
+          imagePullPolicy: Always
           ports:
             - name: grpc
               containerPort: 8080
-            - name: http
-              containerPort: 8081
+              protocol: TCP
           env:
             - name: ENVOY_BOUNCER_BOUNCER_ENABLED
               value: "true"
@@ -199,7 +289,7 @@ spec:
                   name: crowdsec-envoy-bouncer-secrets
                   key: api-key
             - name: ENVOY_BOUNCER_BOUNCER_LAPIURL
-              value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080"
+              value: http://crowdsec-service.crowdsec.svc.cluster.local:8080
             - name: ENVOY_BOUNCER_WAF_ENABLED
               value: "true"
             - name: ENVOY_BOUNCER_WAF_APIKEY
@@ -208,13 +298,13 @@ spec:
                   name: crowdsec-envoy-bouncer-secrets
                   key: api-key
             - name: ENVOY_BOUNCER_WAF_APPSECURL
-              value: "http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422"
+              value: http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422
             - name: ENVOY_BOUNCER_SERVER_GRPCPORT
               value: "8080"
             - name: ENVOY_BOUNCER_SERVER_HTTPPORT
               value: "8081"
             - name: ENVOY_BOUNCER_SERVER_LOGLEVEL
-              value: "info"
+              value: info
 ---
 apiVersion: v1
 kind: Service
@@ -228,15 +318,42 @@ spec:
     - name: grpc
       port: 8080
       targetPort: grpc
-    - name: http
-      port: 8081
-      targetPort: http
+      protocol: TCP
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: crowdsec-envoy-bouncer
+  namespace: envoy-gateway-system
+spec:
+  from:
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: roundcube
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: chess-trainer
+  to:
+    - group: ""
+      kind: Service
+      name: crowdsec-envoy-bouncer
 ```
 
 Apply it:
 
 ```bash
 kubectl apply -f crowdsec-envoy-bouncer.yaml
+```
+
+This path gives you full control over the generated objects, but you must keep
+the `Deployment`, `Service`, and `ReferenceGrant` aligned yourself.
+
+</TabItem>
+</Tabs>
+
+Verify the rollout:
+
+```bash
 kubectl -n envoy-gateway-system rollout status deploy/crowdsec-envoy-bouncer
 ```
 
@@ -300,53 +417,26 @@ kubectl apply -f chess-securitypolicy.yaml
 
 ## Allow cross-namespace references
 
-If the `SecurityPolicy` objects are not in the same namespace as the bouncer
-`Service`, create `ReferenceGrant` resources in the bouncer namespace:
+The Helm chart can create the required `ReferenceGrant` for you. In the example
+above, this is handled by:
 
-```yaml title="crowdsec-envoy-referencegrant.yaml"
-apiVersion: gateway.networking.k8s.io/v1beta1
-kind: ReferenceGrant
-metadata:
-  name: allow-roundcube-securitypolicy-to-bouncer
-  namespace: envoy-gateway-system
-spec:
-  from:
-    - group: gateway.envoyproxy.io
-      kind: SecurityPolicy
-      namespace: roundcube
-  to:
-    - group: ""
-      kind: Service
-      name: crowdsec-envoy-bouncer
----
-apiVersion: gateway.networking.k8s.io/v1beta1
-kind: ReferenceGrant
-metadata:
-  name: allow-chess-securitypolicy-to-bouncer
-  namespace: envoy-gateway-system
-spec:
-  from:
-    - group: gateway.envoyproxy.io
-      kind: SecurityPolicy
-      namespace: chess-trainer
-  to:
-    - group: ""
-      kind: Service
-      name: crowdsec-envoy-bouncer
+```yaml
+referenceGrant:
+  create: true
+  fromNamespaces:
+    - roundcube
+    - chess-trainer
 ```
 
-Apply them:
-
-```bash
-kubectl apply -f crowdsec-envoy-referencegrant.yaml
-```
+If you do not let the chart manage `ReferenceGrant`, you must create an
+equivalent `ReferenceGrant` manually in `envoy-gateway-system`.
 
 ## Validate the deployment
 
 Check the bouncer:
 
 ```bash
-kubectl -n envoy-gateway-system get pods -l app.kubernetes.io/name=crowdsec-envoy-bouncer
+kubectl -n envoy-gateway-system get pods -l app.kubernetes.io/instance=crowdsec-envoy-bouncer
 kubectl -n envoy-gateway-system logs deploy/crowdsec-envoy-bouncer
 ```
 
@@ -406,21 +496,43 @@ For Envoy Gateway, route-level attachment is the safer pattern for this
 integration, especially if you later want to handle multiple applications or
 CAPTCHA endpoints independently.
 
-### 2. Cross-namespace bouncer references require `ReferenceGrant`
+### 2. Cross-namespace bouncer references still require `ReferenceGrant`
 
 If your bouncer `Service` is in `envoy-gateway-system` and your applications
-live in other namespaces, `ReferenceGrant` is required.
+live in other namespaces, `ReferenceGrant` is required. The Helm chart can
+create it, but the requirement itself does not go away.
 
 ### 3. Use `failOpen: true` during rollout
 
 If you apply a fail-closed external auth policy before the bouncer is healthy,
 Envoy will start rejecting traffic with `403`
 
-### 4. Check image architecture support
+### 4. The published Helm repo can be broken
 
-The community bouncer image may not be published all architectures for every
+We hit a `404 Not Found` on the packaged chart artifact from the published Helm
+repository. If that happens, clone the upstream repository and install the chart
+from `charts/envoy-proxy-bouncer` instead.
+
+### 5. Check image architecture support
+
+The community bouncer image may not be published for all architectures on every
 tag. If your Kubernetes nodes are `arm64`, verify that the image you use
-provides an `arm64` manifest.
+provides an `arm64` manifest. In our cluster, we had to use a custom `arm64`
+image.
+
+### 6. `BOUNCER_KEY_envoy` may still need one explicit registration
+
+Even with `BOUNCER_KEY_envoy` forced through `lapi.env`, we still had to run a
+one-time `cscli bouncers add envoy -k ...` before LAPI stopped returning `403`
+to the Envoy bouncer. Keep the key declarative, but verify the actual bouncer
+entry exists in LAPI.
+
+### 7. An invalid `ENROLL_KEY` can break the whole rollout
+
+Our `crowdsec-lapi` pod was crash-looping because the configured `ENROLL_KEY`
+was invalid for console enrollment. If LAPI is not healthy, the Envoy bouncer
+will never become ready. Check LAPI health first when the bouncer cannot sync
+decisions.
 
 ## Next steps
 
