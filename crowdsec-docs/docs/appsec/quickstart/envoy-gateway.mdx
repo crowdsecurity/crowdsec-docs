@@ -1,0 +1,430 @@
+---
+id: envoy-gateway
+title: QuickStart - Envoy Gateway (Kubernetes)
+---
+
+# CrowdSec WAF QuickStart for Envoy Gateway
+
+## Objectives
+
+This quickstart shows how to deploy the CrowdSec AppSec Component in Kubernetes
+and protect workloads exposed through [Envoy Gateway](https://gateway.envoyproxy.io/)
+using an external authorization service.
+
+At the end, you will have:
+
+- CrowdSec running in-cluster with the AppSec API listening on `7422`
+- A CrowdSec-compatible Envoy external auth service running in the cluster
+- `SecurityPolicy` resources attached to your `HTTPRoute` objects
+- Virtual patching and generic AppSec rules inspecting requests before they
+  reach your backends
+
+## Prerequisites
+
+1. If you're new to the [AppSec Component](/appsec/intro.md#introduction) or
+   **W**eb **A**pplication **F**irewalls, start with the
+   [Introduction](/appsec/intro.md#introduction).
+
+2. It is assumed that you already have:
+   - A working **CrowdSec [Security Engine](/intro.mdx)** installation. For a
+     Kubernetes install quickstart, refer to
+     [/u/getting_started/installation/kubernetes](/u/getting_started/installation/kubernetes).
+   - A working **Envoy Gateway** installation with the Gateway API CRDs and an
+     accepted `GatewayClass`.
+   - Existing `Gateway` / `HTTPRoute` resources exposing your applications.
+
+:::warning
+This integration currently relies on a community Envoy external auth bouncer,
+not on a first-party CrowdSec remediation component.
+
+The upstream project used in this guide is:
+
+- `kdwils/envoy-proxy-crowdsec-bouncer`
+  :::
+
+## Deploy CrowdSec with AppSec enabled
+
+Add this to the CrowdSec `values.yaml` to enable the AppSec acquisition
+datasource and load the default AppSec configuration:
+
+```yaml title="crowdsec-values.yaml"
+appsec:
+  acquisitions:
+    - appsec_configs:
+        - crowdsecurity/appsec-default
+      labels:
+        type: appsec
+      listen_addr: 0.0.0.0:7422
+      path: /
+      source: appsec
+  enabled: true
+  env:
+    - name: COLLECTIONS
+      value: crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+```
+
+Apply or upgrade the CrowdSec release:
+
+```bash
+helm upgrade --install crowdsec crowdsec/crowdsec \
+  --namespace crowdsec \
+  --create-namespace \
+  -f crowdsec-values.yaml
+```
+
+Verify the CrowdSec pods:
+
+```bash
+kubectl -n crowdsec get pods
+kubectl -n crowdsec get svc crowdsec-service crowdsec-appsec-service
+```
+
+You should see:
+
+- `crowdsec-lapi` in `Running`
+- `crowdsec-appsec` in `Running`
+- `crowdsec-service` exposing port `8080`
+- `crowdsec-appsec-service` exposing port `7422`
+
+## Store the Envoy bouncer key in a Kubernetes secret
+
+For Envoy Gateway, a practical approach is to choose a fixed key, store it in a
+Kubernetes secret, and force `BOUNCER_KEY_envoy` from `lapi.env` with
+`valueFrom.secretKeyRef`.
+
+Create or update the secret used by CrowdSec LAPI:
+
+```yaml title="crowdsec-keys.yaml"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-keys
+  namespace: crowdsec
+type: Opaque
+stringData:
+  ENROLL_KEY: "<your-existing-enroll-key>"
+  BOUNCER_KEY_ingress: "<your-existing-ingress-key>"
+  BOUNCER_KEY_envoy: "<choose-a-long-random-key>"
+```
+
+Apply it:
+
+```bash
+kubectl apply -f crowdsec-keys.yaml
+```
+
+Then reference `BOUNCER_KEY_envoy` from the CrowdSec Helm values:
+
+```yaml title="crowdsec-values.yaml"
+lapi:
+  env:
+    - name: BOUNCER_KEY_envoy
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: BOUNCER_KEY_envoy
+```
+
+Apply the CrowdSec release again:
+
+```bash
+helm upgrade --install crowdsec crowdsec/crowdsec \
+  --namespace crowdsec \
+  --create-namespace \
+  -f crowdsec-values.yaml
+```
+
+:::note
+One key is enough for both:
+
+- LAPI decision streaming
+- AppSec/WAF requests
+
+This quickstart uses the same key on both sides.
+:::
+
+:::tip
+The important part is that `BOUNCER_KEY_envoy` is forced through the LAPI
+environment and kept under declarative configuration. You do not need to create
+the key dynamically from inside the `crowdsec-lapi` pod for this workflow.
+:::
+
+## Deploy the Envoy external auth bouncer
+
+Create a manifest like the following in the namespace where your Envoy Gateway
+infrastructure runs. In this example, that namespace is
+`envoy-gateway-system`.
+
+```yaml title="crowdsec-envoy-bouncer.yaml"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-envoy-bouncer-secrets
+  namespace: envoy-gateway-system
+type: Opaque
+stringData:
+  api-key: "<use-the-same-value-as-BOUNCER_KEY_envoy>"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crowdsec-envoy-bouncer
+  namespace: envoy-gateway-system
+  labels:
+    app.kubernetes.io/name: crowdsec-envoy-bouncer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: crowdsec-envoy-bouncer
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: crowdsec-envoy-bouncer
+    spec:
+      containers:
+        - name: crowdsec-envoy-bouncer
+          image: ghcr.io/kdwils/envoy-proxy-bouncer:v0.5.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: grpc
+              containerPort: 8080
+            - name: http
+              containerPort: 8081
+          env:
+            - name: ENVOY_BOUNCER_BOUNCER_ENABLED
+              value: "true"
+            - name: ENVOY_BOUNCER_BOUNCER_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: crowdsec-envoy-bouncer-secrets
+                  key: api-key
+            - name: ENVOY_BOUNCER_BOUNCER_LAPIURL
+              value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080"
+            - name: ENVOY_BOUNCER_WAF_ENABLED
+              value: "true"
+            - name: ENVOY_BOUNCER_WAF_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: crowdsec-envoy-bouncer-secrets
+                  key: api-key
+            - name: ENVOY_BOUNCER_WAF_APPSECURL
+              value: "http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422"
+            - name: ENVOY_BOUNCER_SERVER_GRPCPORT
+              value: "8080"
+            - name: ENVOY_BOUNCER_SERVER_HTTPPORT
+              value: "8081"
+            - name: ENVOY_BOUNCER_SERVER_LOGLEVEL
+              value: "info"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crowdsec-envoy-bouncer
+  namespace: envoy-gateway-system
+spec:
+  selector:
+    app.kubernetes.io/name: crowdsec-envoy-bouncer
+  ports:
+    - name: grpc
+      port: 8080
+      targetPort: grpc
+    - name: http
+      port: 8081
+      targetPort: http
+```
+
+Apply it:
+
+```bash
+kubectl apply -f crowdsec-envoy-bouncer.yaml
+kubectl -n envoy-gateway-system rollout status deploy/crowdsec-envoy-bouncer
+```
+
+## Attach Envoy `SecurityPolicy` resources to `HTTPRoute`s
+
+Envoy Gateway external auth is configured through
+`gateway.envoyproxy.io/v1alpha1` `SecurityPolicy` resources.
+
+Attach them at the `HTTPRoute` level:
+
+```yaml title="roundcube-securitypolicy.yaml"
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: crowdsec-ext-auth
+  namespace: roundcube
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: roundcube
+  extAuth:
+    failOpen: true
+    grpc:
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: crowdsec-envoy-bouncer
+          namespace: envoy-gateway-system
+          port: 8080
+```
+
+```yaml title="chess-securitypolicy.yaml"
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: crowdsec-ext-auth
+  namespace: chess-trainer
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: chess-trainer-chess-pgn-trainer
+  extAuth:
+    failOpen: true
+    grpc:
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: crowdsec-envoy-bouncer
+          namespace: envoy-gateway-system
+          port: 8080
+```
+
+Apply them:
+
+```bash
+kubectl apply -f roundcube-securitypolicy.yaml
+kubectl apply -f chess-securitypolicy.yaml
+```
+
+## Allow cross-namespace references
+
+If the `SecurityPolicy` objects are not in the same namespace as the bouncer
+`Service`, create `ReferenceGrant` resources in the bouncer namespace:
+
+```yaml title="crowdsec-envoy-referencegrant.yaml"
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: allow-roundcube-securitypolicy-to-bouncer
+  namespace: envoy-gateway-system
+spec:
+  from:
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: roundcube
+  to:
+    - group: ""
+      kind: Service
+      name: crowdsec-envoy-bouncer
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: allow-chess-securitypolicy-to-bouncer
+  namespace: envoy-gateway-system
+spec:
+  from:
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: chess-trainer
+  to:
+    - group: ""
+      kind: Service
+      name: crowdsec-envoy-bouncer
+```
+
+Apply them:
+
+```bash
+kubectl apply -f crowdsec-envoy-referencegrant.yaml
+```
+
+## Validate the deployment
+
+Check the bouncer:
+
+```bash
+kubectl -n envoy-gateway-system get pods -l app.kubernetes.io/name=crowdsec-envoy-bouncer
+kubectl -n envoy-gateway-system logs deploy/crowdsec-envoy-bouncer
+```
+
+Check the policies:
+
+```bash
+kubectl -n roundcube describe securitypolicy crowdsec-ext-auth
+kubectl -n chess-trainer describe securitypolicy crowdsec-ext-auth
+```
+
+Check LAPI and AppSec:
+
+```bash
+kubectl -n crowdsec logs deploy/crowdsec-lapi --since=2m
+kubectl -n crowdsec logs deploy/crowdsec-appsec --since=2m
+```
+
+Healthy signs include:
+
+- the Envoy bouncer logging `initial decision sync complete`
+- `crowdsec-lapi` returning `200` on `/v1/decisions/stream` to the Envoy bouncer
+- no recent `invalid API key` messages in `crowdsec-appsec`
+
+## Roll from `failOpen: true` to `failOpen: false`
+
+Start with:
+
+```yaml
+extAuth:
+  failOpen: true
+```
+
+This allows requests through if the bouncer is unavailable during rollout.
+
+Once the following are true:
+
+- the bouncer pod is `Running`
+- `crowdsec-lapi` shows successful `envoy-proxy-bouncer` decision pulls
+- `crowdsec-appsec` shows no new auth or timeout errors
+- your applications still answer correctly through Envoy
+
+switch to:
+
+```yaml
+extAuth:
+  failOpen: false
+```
+
+This makes Envoy fail closed and turns the external auth service into an
+enforcement point instead of a best-effort filter.
+
+## Important Notes
+
+### 1. Attach `SecurityPolicy` to `HTTPRoute`s, not just to the `Gateway`
+
+For Envoy Gateway, route-level attachment is the safer pattern for this
+integration, especially if you later want to handle multiple applications or
+CAPTCHA endpoints independently.
+
+### 2. Cross-namespace bouncer references require `ReferenceGrant`
+
+If your bouncer `Service` is in `envoy-gateway-system` and your applications
+live in other namespaces, `ReferenceGrant` is required.
+
+### 3. Use `failOpen: true` during rollout
+
+If you apply a fail-closed external auth policy before the bouncer is healthy,
+Envoy will start rejecting traffic with `403`
+
+### 4. Check image architecture support
+
+The community bouncer image may not be published all architectures for every
+tag. If your Kubernetes nodes are `arm64`, verify that the image you use
+provides an `arm64` manifest.
+
+## Next steps
+
+- Tune rules and configurations: [/appsec/configuration.md](/appsec/configuration.md) and [/appsec/configuration_rule_management.md](/appsec/configuration_rule_management.md)
+- Troubleshoot AppSec behavior: [/appsec/troubleshooting.md](/appsec/troubleshooting.md)
+- Learn more about remediation components: [/u/bouncers/intro](/u/bouncers/intro)
