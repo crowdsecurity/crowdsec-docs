@@ -207,8 +207,8 @@ config:
 referenceGrant:
   create: true
   fromNamespaces:
-    - roundcube
-    - chess-trainer
+    - app-a
+    - app-b
 ```
 
 Apply the secret:
@@ -329,10 +329,10 @@ spec:
   from:
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
-      namespace: roundcube
+      namespace: app-a
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
-      namespace: chess-trainer
+      namespace: app-b
   to:
     - group: ""
       kind: Service
@@ -364,17 +364,17 @@ Envoy Gateway external auth is configured through
 
 Attach them at the `HTTPRoute` level:
 
-```yaml title="roundcube-securitypolicy.yaml"
+```yaml title="app-a-securitypolicy.yaml"
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
   name: crowdsec-ext-auth
-  namespace: roundcube
+  namespace: app-a
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      name: roundcube
+      name: app-a-route
   extAuth:
     failOpen: true
     grpc:
@@ -386,17 +386,17 @@ spec:
           port: 8080
 ```
 
-```yaml title="chess-securitypolicy.yaml"
+```yaml title="app-b-securitypolicy.yaml"
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
   name: crowdsec-ext-auth
-  namespace: chess-trainer
+  namespace: app-b
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      name: chess-trainer-chess-pgn-trainer
+      name: app-b-route
   extAuth:
     failOpen: true
     grpc:
@@ -411,8 +411,8 @@ spec:
 Apply them:
 
 ```bash
-kubectl apply -f roundcube-securitypolicy.yaml
-kubectl apply -f chess-securitypolicy.yaml
+kubectl apply -f app-a-securitypolicy.yaml
+kubectl apply -f app-b-securitypolicy.yaml
 ```
 
 ## Allow cross-namespace references
@@ -424,8 +424,8 @@ above, this is handled by:
 referenceGrant:
   create: true
   fromNamespaces:
-    - roundcube
-    - chess-trainer
+    - app-a
+    - app-b
 ```
 
 If you do not let the chart manage `ReferenceGrant`, you must create an
@@ -443,8 +443,8 @@ kubectl -n envoy-gateway-system logs deploy/crowdsec-envoy-bouncer
 Check the policies:
 
 ```bash
-kubectl -n roundcube describe securitypolicy crowdsec-ext-auth
-kubectl -n chess-trainer describe securitypolicy crowdsec-ext-auth
+kubectl -n app-a describe securitypolicy crowdsec-ext-auth
+kubectl -n app-b describe securitypolicy crowdsec-ext-auth
 ```
 
 Check LAPI and AppSec:
