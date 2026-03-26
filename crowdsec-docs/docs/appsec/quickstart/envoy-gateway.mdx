@@ -180,70 +180,28 @@ stringData:
 <Tabs>
 <TabItem value="helm" label="Helm-Based Installation" default>
 
-Create a values file for the upstream Helm chart:
-
-```yaml title="crowdsec-envoy-bouncer-values.yaml"
-fullnameOverride: crowdsec-envoy-bouncer
-
-image:
-  repository: msabban/envoy-proxy-crowdsec-bouncer
-  pullPolicy: Always
-  tag: latest
-
-config:
-  bouncer:
-    enabled: true
-    lapiURL: http://crowdsec-service.crowdsec.svc.cluster.local:8080
-    apiKeySecretRef:
-      name: crowdsec-envoy-bouncer-secrets
-      key: api-key
-  waf:
-    enabled: true
-    appSecURL: http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422
-    apiKeySecretRef:
-      name: crowdsec-envoy-bouncer-secrets
-      key: api-key
-
-referenceGrant:
-  create: true
-  fromNamespaces:
-    - app-a
-    - app-b
-```
-
-Apply the secret:
+Add the Helm repository:
 
 ```bash
-kubectl apply -f crowdsec-envoy-bouncer-secret.yaml
-```
-
-Then install the upstream Helm chart.
-
-At the time of writing, the published chart repository can return `404` for the
-packaged chart artifact. If that happens in your environment, clone the source
-repository and install the chart from its `charts/` directory:
-
-```bash
-git clone --depth=1 https://github.com/kdwils/envoy-proxy-crowdsec-bouncer.git
-helm upgrade --install crowdsec-envoy-bouncer \
-  ./envoy-proxy-crowdsec-bouncer/charts/envoy-proxy-bouncer \
-  --namespace envoy-gateway-system \
-  --create-namespace \
-  -f crowdsec-envoy-bouncer-values.yaml
-```
-
-If the published repository works for you, the equivalent install is:
-
-```bash
-helm repo add kdwils https://kdwils.github.io/envoy-proxy-crowdsec-bouncer
+helm repo add envoy-proxy-bouncer https://kdwils.github.io/envoy-proxy-crowdsec-bouncer
 helm repo update
-helm upgrade --install crowdsec-envoy-bouncer kdwils/envoy-proxy-bouncer \
-  --namespace envoy-gateway-system \
-  --create-namespace \
-  -f crowdsec-envoy-bouncer-values.yaml
 ```
 
-The chart also creates the `ReferenceGrant` when `referenceGrant.create: true`.
+Install the chart and create a `SecurityPolicy`:
+
+```bash
+helm install crowdsec-envoy-bouncer envoy-proxy-bouncer/envoy-proxy-bouncer \
+  --namespace envoy-gateway-system \
+  --create-namespace \
+  --set crowdsec.apiKey=<same-value-as-BOUNCER_KEY_envoy> \
+  --set crowdsec.apiURL=http://crowdsec-service.crowdsec.svc.cluster.local:8080 \
+  --set securityPolicy.create=true \
+  --set securityPolicy.gatewayName=shared-public \
+  --set securityPolicy.gatewayNamespace=envoy-gateway-system
+```
+
+If you only want to deploy the bouncer and manage `SecurityPolicy` objects
+manually, omit the `securityPolicy.*` settings.
 
 </TabItem>
 <TabItem value="manifests" label="Without Helm">
