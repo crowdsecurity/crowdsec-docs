@@ -2,6 +2,8 @@
 id: cscli_appsec-configs_list
 title: cscli appsec-configs list
 ---
+## cscli appsec-configs list
+
 List appsec-config(s)
 
 ### Synopsis
@@ -15,14 +17,14 @@ cscli appsec-configs list [item... | -a] [flags]
 ### Examples
 
 ```
-# List enabled (installed) appsec-configs.
-cscli appsec-configs list
+# List enabled (installed) waf-configs.
+cscli waf-configs list
 
-# List all available appsec-configs (installed or not).
-cscli appsec-configs list -a
+# List all available waf-configs (installed or not).
+cscli waf-configs list -a
 
-# List specific appsec-configs (installed or not).
-cscli appsec-configs list crowdsecurity/virtual-patching crowdsecurity/generic-rules
+# List specific waf-configs (installed or not).
+cscli waf-configs list crowdsecurity/virtual-patching crowdsecurity/generic-rules
 ```
 
 ### Options

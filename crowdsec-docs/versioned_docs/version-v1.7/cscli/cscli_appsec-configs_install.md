@@ -2,6 +2,8 @@
 id: cscli_appsec-configs_install
 title: cscli appsec-configs install
 ---
+## cscli appsec-configs install
+
 Install given appsec-config(s)
 
 ### Synopsis
@@ -15,24 +17,24 @@ cscli appsec-configs install [item]... [flags]
 ### Examples
 
 ```
-# Install some appsec-configs.
-cscli appsec-configs install crowdsecurity/virtual-patching
+# Install some waf-configs.
+cscli waf-configs install crowdsecurity/virtual-patching
 
 # Show the execution plan without changing anything - compact output sorted by type and name.
-cscli appsec-configs install crowdsecurity/virtual-patching --dry-run
+cscli waf-configs install crowdsecurity/virtual-patching --dry-run
 
 # Show the execution plan without changing anything - verbose output sorted by execution order.
-cscli appsec-configs install crowdsecurity/virtual-patching --dry-run -o raw
+cscli waf-configs install crowdsecurity/virtual-patching --dry-run -o raw
 
 # Download only, to be installed later.
-cscli appsec-configs install crowdsecurity/virtual-patching --download-only
+cscli waf-configs install crowdsecurity/virtual-patching --download-only
 
 # Install over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
-cscli appsec-configs install crowdsecurity/virtual-patching --force
+cscli waf-configs install crowdsecurity/virtual-patching --force
 
 # Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
-cscli appsec-configs install crowdsecurity/virtual-patching -i
-cscli appsec-configs install crowdsecurity/virtual-patching --interactive
+cscli waf-configs install crowdsecurity/virtual-patching -i
+cscli waf-configs install crowdsecurity/virtual-patching --interactive
 ```
 
 ### Options

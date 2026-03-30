@@ -3,9 +3,15 @@ id: create_ip
 title: IP / CIDR
 ---
 
-IP whitelists are best suited at `Parser whitelists` level because once the log line has been parsed we already know the IP address and can save resources by discarding it earlier in the pipeline.
+:::info Recommended: Use Centralized AllowLists
 
-We will create the file `mywhitelist.yaml` please see [introduction](/log_processor/whitelist/introduction.md) for your OS specific paths.
+For IP and CIDR-based allowlisting, we recommend using [Centralized AllowLists](/local_api/allowlists.md) instead. AllowLists are managed at the LAPI level, making them easier to maintain and they also affect blocklist pulls. The parser whitelists documented below are more suited for complex expressions based on log elements.
+
+:::
+
+IP whitelists are best suited for the `Parser whitelists` stage: once a log line is parsed, CrowdSec already knows the IP and can discard it early to save resources.
+
+Create `mywhitelist.yaml` in your parser whitelist directory (see [introduction](/log_processor/whitelist/introduction.md) for OS-specific paths):
 
 ```yaml
 name: "my/whitelist" ## Must be unique
@@ -13,9 +19,9 @@ description: "Whitelist events from my ip addresses"
 whitelist:
   reason: "my ip ranges"
   ip:
-    - "192.168.1.1" # Replace with your WAN IP
+    - "192.168.1.1" # Replace with your public IP
   cidr:
-    - "192.168.1.0/24" # Replace with your WAN IP range
+    - "192.168.1.0/24" # Replace with your public IP range
 ```
 
 ```bash title="Reload CrowdSec"
@@ -24,22 +30,22 @@ sudo systemctl reload crowdsec
 
 ### Test the whitelist
 
-You can run a security tool such as `nikto` to test your whitelist
+Use a security tool such as `nikto` to test the whitelist:
 
 ```bash
 nikto -host myfqdn.com
 ```
 
 ```bash
-sudo cscli decisions list --ip {your_whitelisted_ip}
+sudo cscli decisions list --ip <your_whitelisted_ip>
 ```
 
-Should show the result `No active decisions`
+The expected result is `No active decisions`.
 
 ### I still see an old decision?
 
-The whitelist will only prevent new decisions so you must remove any old decisions with
+Whitelisting only prevents new decisions. Remove old decisions with:
 
 ```bash
-sudo decisions delete --ip {your_whitelist_ip}
+sudo cscli decisions delete --ip <your_whitelisted_ip>
 ```

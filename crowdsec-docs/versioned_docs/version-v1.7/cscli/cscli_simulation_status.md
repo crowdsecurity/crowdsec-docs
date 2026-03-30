@@ -2,6 +2,8 @@
 id: cscli_simulation_status
 title: cscli simulation status
 ---
+## cscli simulation status
+
 Show simulation mode status
 
 ```

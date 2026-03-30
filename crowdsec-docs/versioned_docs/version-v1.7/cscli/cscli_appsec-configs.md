@@ -2,16 +2,22 @@
 id: cscli_appsec-configs
 title: cscli appsec-configs
 ---
+## cscli appsec-configs
+
 Manage hub appsec-configs
+
+```
+cscli appsec-configs <action> [item]... [flags]
+```
 
 ### Examples
 
 ```
-cscli appsec-configs list -a
-cscli appsec-configs install crowdsecurity/virtual-patching
-cscli appsec-configs inspect crowdsecurity/virtual-patching
-cscli appsec-configs upgrade crowdsecurity/virtual-patching
-cscli appsec-configs remove crowdsecurity/virtual-patching
+cscli waf-configs list -a
+cscli waf-configs install crowdsecurity/virtual-patching
+cscli waf-configs inspect crowdsecurity/virtual-patching
+cscli waf-configs upgrade crowdsecurity/virtual-patching
+cscli waf-configs remove crowdsecurity/virtual-patching
 
 ```
 

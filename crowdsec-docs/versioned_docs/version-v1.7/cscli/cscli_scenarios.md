@@ -2,7 +2,13 @@
 id: cscli_scenarios
 title: cscli scenarios
 ---
+## cscli scenarios
+
 Manage hub scenarios
+
+```
+cscli scenarios <action> [item]... [flags]
+```
 
 ### Examples
 

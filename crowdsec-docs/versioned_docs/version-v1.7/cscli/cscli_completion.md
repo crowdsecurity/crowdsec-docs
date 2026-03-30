@@ -2,6 +2,8 @@
 id: cscli_completion
 title: cscli completion
 ---
+## cscli completion
+
 Generate completion script
 
 ### Synopsis

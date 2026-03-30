@@ -2,6 +2,9 @@
 id: cscli_lapi_context_delete
 title: cscli lapi context delete
 ---
+## cscli lapi context delete
+
+
 
 ```
 cscli lapi context delete [flags]

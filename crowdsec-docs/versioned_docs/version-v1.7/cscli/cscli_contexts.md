@@ -2,7 +2,13 @@
 id: cscli_contexts
 title: cscli contexts
 ---
+## cscli contexts
+
 Manage hub contexts
+
+```
+cscli contexts <action> [item]... [flags]
+```
 
 ### Examples
 

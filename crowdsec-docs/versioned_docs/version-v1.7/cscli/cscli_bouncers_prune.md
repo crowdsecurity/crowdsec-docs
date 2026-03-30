@@ -2,6 +2,8 @@
 id: cscli_bouncers_prune
 title: cscli bouncers prune
 ---
+## cscli bouncers prune
+
 prune multiple bouncers from the database
 
 ```

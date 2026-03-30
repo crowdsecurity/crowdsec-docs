@@ -2,6 +2,8 @@
 id: cscli_scenarios_remove
 title: cscli scenarios remove
 ---
+## cscli scenarios remove
+
 Remove given scenario(s)
 
 ### Synopsis

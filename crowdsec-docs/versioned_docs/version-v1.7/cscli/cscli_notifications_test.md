@@ -2,6 +2,8 @@
 id: cscli_notifications_test
 title: cscli notifications test
 ---
+## cscli notifications test
+
 send a generic test alert to notification plugin
 
 ### Synopsis

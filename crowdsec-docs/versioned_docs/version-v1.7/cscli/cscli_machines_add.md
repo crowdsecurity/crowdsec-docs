@@ -2,6 +2,8 @@
 id: cscli_machines_add
 title: cscli machines add
 ---
+## cscli machines add
+
 add a single machine to the database
 
 ### Synopsis
