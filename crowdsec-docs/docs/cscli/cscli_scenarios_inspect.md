@@ -2,6 +2,8 @@
 id: cscli_scenarios_inspect
 title: cscli scenarios inspect
 ---
+## cscli scenarios inspect
+
 Inspect given scenario(s)
 
 ### Synopsis

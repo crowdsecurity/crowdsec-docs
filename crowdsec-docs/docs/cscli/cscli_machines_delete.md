@@ -2,6 +2,8 @@
 id: cscli_machines_delete
 title: cscli machines delete
 ---
+## cscli machines delete
+
 delete machine(s) by name
 
 ```

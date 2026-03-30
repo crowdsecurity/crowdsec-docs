@@ -2,7 +2,13 @@
 id: cscli_papi
 title: cscli papi
 ---
+## cscli papi
+
 Manage interaction with Polling API (PAPI)
+
+```
+cscli papi [action] [flags]
+```
 
 ### Options
 

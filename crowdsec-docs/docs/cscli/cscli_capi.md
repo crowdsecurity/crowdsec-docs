@@ -2,7 +2,13 @@
 id: cscli_capi
 title: cscli capi
 ---
+## cscli capi
+
 Manage interaction with Central API (CAPI)
+
+```
+cscli capi [action] [flags]
+```
 
 ### Options
 

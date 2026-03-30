@@ -2,6 +2,8 @@
 id: cscli_bouncers
 title: cscli bouncers
 ---
+## cscli bouncers
+
 Manage bouncers [requires local API]
 
 ### Synopsis
@@ -9,6 +11,10 @@ Manage bouncers [requires local API]
 To list/add/delete/prune bouncers.
 Note: This command requires database direct access, so is intended to be run on Local API/master.
 
+
+```
+cscli bouncers [action] [flags]
+```
 
 ### Options
 

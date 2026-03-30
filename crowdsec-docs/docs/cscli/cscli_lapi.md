@@ -2,7 +2,13 @@
 id: cscli_lapi
 title: cscli lapi
 ---
+## cscli lapi
+
 Manage interaction with Local API (LAPI)
+
+```
+cscli lapi [action] [flags]
+```
 
 ### Options
 

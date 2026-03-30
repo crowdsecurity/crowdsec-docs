@@ -2,11 +2,17 @@
 id: cscli_notifications
 title: cscli notifications
 ---
+## cscli notifications
+
 Helper for notification plugin configuration
 
 ### Synopsis
 
 To list/inspect/test notification template
+
+```
+cscli notifications [action] [flags]
+```
 
 ### Options
 

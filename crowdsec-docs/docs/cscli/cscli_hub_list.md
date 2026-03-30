@@ -2,6 +2,8 @@
 id: cscli_hub_list
 title: cscli hub list
 ---
+## cscli hub list
+
 List all installed configurations
 
 ```

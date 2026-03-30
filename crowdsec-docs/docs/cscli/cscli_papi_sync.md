@@ -2,6 +2,8 @@
 id: cscli_papi_sync
 title: cscli papi sync
 ---
+## cscli papi sync
+
 Sync with the Polling API, pulling all non-expired orders for the instance
 
 ```

@@ -2,12 +2,18 @@
 id: cscli
 title: cscli
 ---
+## cscli
+
 cscli allows you to manage crowdsec
 
 ### Synopsis
 
 cscli is the main command to interact with your crowdsec service, scenarios & db.
 It is meant to allow you to manage bans, parsers/scenarios/etc, api and generally manage your crowdsec setup.
+
+```
+cscli [flags]
+```
 
 ### Options
 
@@ -36,6 +42,7 @@ It is meant to allow you to manage bans, parsers/scenarios/etc, api and generall
 * [cscli config](/cscli/cscli_config.md)	 - Allows to view current config
 * [cscli console](/cscli/cscli_console.md)	 - Manage interaction with Crowdsec console (https://app.crowdsec.net)
 * [cscli contexts](/cscli/cscli_contexts.md)	 - Manage hub contexts
+* [cscli dashboard](/cscli/cscli_dashboard.md)	 - 
 * [cscli decisions](/cscli/cscli_decisions.md)	 - Manage decisions
 * [cscli explain](/cscli/cscli_explain.md)	 - Explain log pipeline
 * [cscli hub](/cscli/cscli_hub.md)	 - Manage hub index

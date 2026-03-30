@@ -2,6 +2,8 @@
 id: cscli_console_enroll
 title: cscli console enroll
 ---
+## cscli console enroll
+
 Enroll this instance to https://app.crowdsec.net [requires local API]
 
 ### Synopsis
