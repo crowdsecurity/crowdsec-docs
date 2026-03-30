@@ -22,7 +22,7 @@ id: network_management
  - Installation script is hosted on `install.crowdsec.net` over HTTPS.
  - Repositories are hosted on `packagecloud.io` over HTTPS.
 
-__(1) - both FQDN are cloudfront entries to crowdsec's github repositories so people avoid hitting github's quotas__
+__(1) - FQDN is cloudfront entry to crowdsec's github repository so people avoid hitting github's quotas__
 
 
 # Communication between components
