@@ -105,28 +105,96 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 	trackerApiSidebar: [
 		{
 			type: "doc",
-			label: "Getting Started",
-			id: "tracker_api/intro",
+			label: "Overview",
+			id: "tracker_api/overview",
 		},
 		{
-			type: "doc",
-			label: "Prioritize",
-			id: "tracker_api/prioritize",
-		},
-		{
-			type: "doc",
-			label: "Mitigate",
-			id: "tracker_api/mitigate",
-		},
-		{
-			type: "doc",
-			label: "API Reference",
-			id: "tracker_api/api_reference",
+			type: "category",
+			label: "Understanding the Data",
+			items: [
+				{
+					type: "doc",
+					label: "Scores & Ratings",
+					id: "tracker_api/scores",
+				},
+				{
+					type: "doc",
+					label: "Exploitation Phases",
+					id: "tracker_api/exploitation_phases",
+				},
+				{
+					type: "doc",
+					label: "CrowdSec Analysis",
+					id: "tracker_api/crowdsec_analysis",
+				},
+				{
+					type: "doc",
+					label: "Reconnaissance Rules vs CVEs",
+					id: "tracker_api/fingerprints_vs_cves",
+				},
+			],
 		},
 		{
 			type: "doc",
 			label: "Web Interface",
 			id: "tracker_api/web_interface",
+		},
+		{
+			type: "category",
+			label: "API",
+			items: [
+				{
+					type: "doc",
+					label: "Authentication & Setup",
+					id: "tracker_api/api_authentication",
+				},
+				{
+					type: "doc",
+					label: "CVEs",
+					id: "tracker_api/api_cves",
+				},
+				{
+					type: "doc",
+					label: "Reconnaissance / Fingerprints",
+					id: "tracker_api/api_fingerprints",
+				},
+				{
+					type: "doc",
+					label: "Vendors, Products & Tags",
+					id: "tracker_api/api_lookups",
+				},
+				{
+					type: "doc",
+					label: "Integrations & Blocklists",
+					id: "tracker_api/api_integrations",
+				},
+				{
+					type: "doc",
+					label: "SDKs & Libraries",
+					id: "tracker_api/api_sdks",
+				},
+				{
+					type: "doc",
+					label: "API Reference",
+					id: "tracker_api/api_reference",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Guides",
+			items: [
+				{
+					type: "doc",
+					label: "Triage Workflow",
+					id: "tracker_api/guide_triage",
+				},
+				{
+					type: "doc",
+					label: "Proactive Monitoring",
+					id: "tracker_api/guide_proactive",
+				},
+			],
 		},
 	],
 	consoleSidebar: [
