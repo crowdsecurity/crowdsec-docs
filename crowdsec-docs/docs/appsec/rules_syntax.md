@@ -214,9 +214,7 @@ rules:
 Match provides the pattern to match the target against. You can combine it with a [`transform`](#transform).
 
 - _(mandatory)_ `match` containing both:
-
   - _(mandatory)_ `type` indicates the matching method, one of:
-
     - `regex`: matches _target_ against value (_value_ is a RE2 regexp)
     - `equals`: _target_ is a string equal to _value_
     - `startsWith`: _target_ starts with _value_
@@ -259,13 +257,46 @@ Optional operations applied to the target before matching:
 
 - `lowercase`
 - `uppercase`
-- `b64decode` : base64 decode
 - `length` : transform _target_ to a number representing the string's length
-- `urldecode` : URL decode
-- `trim` : remove leading and trailing spaces
-- `normalizepath` : normalize the path (remove double slashes, etc)
-- `htmlEntitydecode` : decode HTML entities
 - `count` : number of times the _target_ appears
+
+**Trim:**
+
+- `trim` : remove leading and trailing spaces
+- `trim_left` : remove leading spaces
+- `trim_right` : remove trailing spaces
+
+**Decoding:**
+
+- `htmlentitydecode` : decode HTML entities
+- `js_decode` : decode JavaScript escape sequences
+- `css_decode` : decode CSS escape sequences
+- `urldecode` : URL decode
+- `hexdecode` : hex decode
+- `cmdline` : decode common command-line obfuscation techniques
+
+**Base64:**
+
+- `b64decode` : strict base64 decode
+- `b64decode_lenient` : lenient base64 decode (no padding required, decodes up to first invalid character, skips whitespaces and dots)
+- `b64encode` : base64 encode
+
+**Path normalization:**
+
+- `normalize_path` (or `normalizepath`) : normalize the path (remove double slashes, etc)
+- `normalize_path_win` (or `normalizepathwin`) : normalize the path for Windows (handles backslashes)
+
+**Whitespace and nulls:**
+
+- `remove_whitespaces` : remove all whitespace characters
+- `compress_whitespaces` : compress multiple whitespace characters into one
+- `remove_nulls` : remove null bytes
+- `replace_nulls` : replace null bytes with spaces
+
+**Comments:**
+
+- `remove_comments` : remove common comment sequences (e.g. `/* ... */`, `//`, `#`, `--`)
+- `replace_comments` : replace comment sequences with a space
 
 ```yaml {5-6}
 name: crowdsecurity/example-rule
