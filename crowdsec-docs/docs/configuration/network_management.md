@@ -52,5 +52,7 @@ Both components need proper configuration to run (we decide to keep this behavio
 
  - If you're scrapping prometheus metrics from your agents or your local API, you need to allow inbound connections to `tcp/6060`
 
+## Notes on proxy use
 
+ - It's possible to use crowdsec through proxy, it will honor the `HTTP_PROXY` environment variable. More on the configuration how to use crowdsec through a proxy [here](/u/troubleshooting/security_engine#how-to-set-up-a-proxy)
 
