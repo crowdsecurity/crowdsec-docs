@@ -2,6 +2,8 @@
 id: cscli_capi_register
 title: cscli capi register
 ---
+## cscli capi register
+
 Register to Central API (CAPI)
 
 ```

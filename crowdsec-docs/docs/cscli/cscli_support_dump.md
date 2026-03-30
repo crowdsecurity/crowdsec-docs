@@ -2,13 +2,15 @@
 id: cscli_support_dump
 title: cscli support dump
 ---
+## cscli support dump
+
 Dump all your configuration to a zip file for easier support
 
 ### Synopsis
 
 Dump the following information:
 - Crowdsec version
-- OS version
+- OS version and runtime system information
 - Enabled feature flags
 - Latest Crowdsec logs (log processor, LAPI, remediation components)
 - Installed collections, parsers, scenarios...
@@ -33,6 +35,7 @@ cscli support dump -f /tmp/crowdsec-support.zip
 ### Options
 
 ```
+      --fast             Skip slow operations, like cpu profiling
   -h, --help             help for dump
   -f, --outFile string   File to dump the information to
 ```

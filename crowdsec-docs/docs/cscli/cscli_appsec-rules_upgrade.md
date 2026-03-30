@@ -2,6 +2,8 @@
 id: cscli_appsec-rules_upgrade
 title: cscli appsec-rules upgrade
 ---
+## cscli appsec-rules upgrade
+
 Upgrade given appsec-rule(s)
 
 ### Synopsis
@@ -15,21 +17,21 @@ cscli appsec-rules upgrade [item]... [flags]
 ### Examples
 
 ```
-# Upgrade some appsec-rules. If they are not currently installed, they are downloaded but not installed.
-cscli appsec-rules upgrade crowdsecurity/crs
+# Upgrade some waf-rules. If they are not currently installed, they are downloaded but not installed.
+cscli waf-rules upgrade crowdsecurity/crs
 
 # Show the execution plan without changing anything - compact output sorted by type and name.
-cscli appsec-rules upgrade crowdsecurity/crs --dry-run
+cscli waf-rules upgrade crowdsecurity/crs --dry-run
 
 # Show the execution plan without changing anything - verbose output sorted by execution order.
-cscli appsec-rules upgrade crowdsecurity/crs --dry-run -o raw
+cscli waf-rules upgrade crowdsecurity/crs --dry-run -o raw
 
 # Upgrade over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
-cscli appsec-rules upgrade crowdsecurity/crs --force
+cscli waf-rules upgrade crowdsecurity/crs --force
 
 # Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
-cscli appsec-rules upgrade crowdsecurity/crs -i
-cscli appsec-rules upgrade crowdsecurity/crs --interactive
+cscli waf-rules upgrade crowdsecurity/crs -i
+cscli waf-rules upgrade crowdsecurity/crs --interactive
 ```
 
 ### Options

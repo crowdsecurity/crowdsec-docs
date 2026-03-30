@@ -2,6 +2,8 @@
 id: cscli_contexts_list
 title: cscli contexts list
 ---
+## cscli contexts list
+
 List context(s)
 
 ### Synopsis

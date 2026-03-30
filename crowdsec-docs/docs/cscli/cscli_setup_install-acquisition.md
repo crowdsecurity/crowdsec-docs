@@ -2,6 +2,8 @@
 id: cscli_setup_install-acquisition
 title: cscli setup install-acquisition
 ---
+## cscli setup install-acquisition
+
 Generate acquisition configuration from a setup file
 
 ### Synopsis

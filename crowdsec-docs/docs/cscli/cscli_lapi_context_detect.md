@@ -2,6 +2,8 @@
 id: cscli_lapi_context_detect
 title: cscli lapi context detect
 ---
+## cscli lapi context detect
+
 Detect available fields from the installed parsers
 
 ```
