@@ -3,8 +3,8 @@ id: envoy-gateway
 title: QuickStart - Envoy Gateway (Kubernetes)
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 # CrowdSec WAF QuickStart for Envoy Gateway
 
@@ -60,6 +60,17 @@ Add this to the CrowdSec `values.yaml` to enable the AppSec acquisition
 datasource and load the default AppSec configuration:
 
 ```yaml title="crowdsec-values.yaml"
+agent:
+  acquisition:
+    - namespace: envoy-gateway-system
+      podName: envoy-default-*
+      poll_without_inotify: true
+      program: envoy
+  env:
+    - name: COLLECTIONS
+      value: yanis-kouidri/envoy
+    - name: DEBUG
+      value: "true"
 appsec:
   acquisitions:
     - appsec_configs:
@@ -73,6 +84,13 @@ appsec:
   env:
     - name: COLLECTIONS
       value: crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+lapi:
+  env:
+    - name: BOUNCER_KEY_envoy
+      valueFrom:
+        secretKeyRef:
+          key: BOUNCER_KEY_envoy
+          name: crowdsec-keys
 ```
 
 Apply or upgrade the CrowdSec release:
@@ -158,27 +176,17 @@ one-time registration with the same key:
 kubectl -n crowdsec exec deploy/crowdsec-lapi -- \
   cscli bouncers add envoy -k <same-value-as-BOUNCER_KEY_envoy>
 ```
+
 :::
 
 ## Deploy the Envoy external auth bouncer
 
-Keep the bouncer API key in a Kubernetes secret in the namespace where your
-Envoy Gateway infrastructure runs. In this example, that namespace is
-`envoy-gateway-system`.
-
-```yaml title="crowdsec-envoy-bouncer-secret.yaml"
-apiVersion: v1
-kind: Secret
-metadata:
-  name: crowdsec-envoy-bouncer-secrets
-  namespace: envoy-gateway-system
-type: Opaque
-stringData:
-  api-key: "<same-value-as-BOUNCER_KEY_envoy>"
-```
-
 <Tabs>
 <TabItem value="helm" label="Helm-Based Installation" default>
+
+For the Helm-based install, the chart takes the bouncer key from
+`crowdsec.apiKey`. You do not need a separate Kubernetes `Secret` for this
+path unless you adapt the chart to read from one yourself.
 
 Add the Helm repository:
 
@@ -205,6 +213,21 @@ manually, omit the `securityPolicy.*` settings.
 
 </TabItem>
 <TabItem value="manifests" label="Without Helm">
+
+Keep the bouncer API key in a Kubernetes secret in the namespace where your
+Envoy Gateway infrastructure runs. In this example, that namespace is
+`envoy-gateway-system`.
+
+```yaml title="crowdsec-envoy-bouncer-secret.yaml"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-envoy-bouncer-secrets
+  namespace: envoy-gateway-system
+type: Opaque
+stringData:
+  api-key: "<same-value-as-BOUNCER_KEY_envoy>"
+```
 
 Apply the secret:
 
