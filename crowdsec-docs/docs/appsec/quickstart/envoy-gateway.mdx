@@ -187,13 +187,6 @@ kubectl -n crowdsec exec deploy/crowdsec-lapi -- \
 For the Helm-based install, keep the API key in a Kubernetes `Secret` and
 reference that secret from a user-managed `values.yaml` file.
 
-Add the Helm repository:
-
-```bash
-helm repo add envoy-proxy-bouncer https://kdwils.github.io/envoy-proxy-crowdsec-bouncer
-helm repo update
-```
-
 Create the secret holding the CrowdSec bouncer key:
 
 ```yaml title="crowdsec-envoy-bouncer-secret.yaml"
@@ -237,7 +230,7 @@ securityPolicy:
 Install the chart and create a `SecurityPolicy`:
 
 ```bash
-helm install crowdsec-envoy-bouncer envoy-proxy-bouncer/envoy-proxy-bouncer \
+helm install crowdsec-envoy-bouncer oci://ghcr.io/kdwils/charts/envoy-proxy-bouncer \
   --namespace envoy-gateway-system \
   --create-namespace \
   -f envoy-bouncer-values.yaml
