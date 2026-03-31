@@ -1,0 +1,82 @@
+---
+id: fingerprints_vs_cves
+title: Reconnaissance Rules vs CVEs
+---
+
+:::info Terminology
+Reconnaissance rules are called **"Reconnaissance"** or **"Recon Rules"** in the web interface, and **"fingerprint rules"** or **"fingerprints"** in the API. This documentation uses both terms interchangeably — they refer to the same thing.
+:::
+
+## Two Types of Tracking
+
+The Live Exploit Tracker monitors threats at two levels:
+
+- **CVEs**: Specific, named vulnerabilities (e.g., CVE-2024-25600 — a code injection flaw in Bricks Builder for WordPress).
+- **Reconnaissance Rules** (API: fingerprint rules): Product-level probing patterns that detect reconnaissance or exploitation activity targeting a product family, regardless of which specific CVE the attacker intends to exploit.
+
+Both share the same scoring system ([CrowdSec Score, Opportunity/Targeted Score, Momentum Score](./scores)), the same [exploitation phases](./exploitation_phases), and the same integration/blocklist capabilities. The difference is in what they track and why.
+
+## CVE Tracking
+
+A CVE entry in the tracker focuses on a **single, identified vulnerability**. The detection rule is built around the specific exploit technique — the URL, the payload structure, the HTTP method — that attackers use to exploit that particular flaw.
+
+CVE tracking is ideal when:
+
+- You know which specific vulnerabilities affect your environment
+- You want to monitor exploitation of a known flaw you haven't patched yet
+- You need to assess the urgency of a specific patch
+
+Each CVE entry includes a description, CVSS score, CWE classification, references, a CrowdSec Analysis, and a timeline of key events (CVE published, detection rule released, first exploitation observed).
+
+## Fingerprint Rule Tracking
+
+A fingerprint rule detects **product-level probing and reconnaissance activity** that doesn't map to a single CVE. Instead, it catches patterns like:
+
+- Scanning for the presence of a specific product (e.g., probing known Microsoft Exchange endpoints to determine if a server is running Exchange)
+- Enumeration of product versions or configurations
+- Broad reconnaissance that could precede exploitation of any of several CVEs affecting that product
+
+### Examples
+
+| Fingerprint Rule | What It Detects |
+|---|---|
+| **Microsoft Exchange Probing** | Reconnaissance targeting Exchange servers, including version detection and endpoint enumeration across Exchange Server, OWA, and EWS. |
+| **F5 Probing** | Scanning activity targeting F5 BIG-IP and TMUI interfaces. |
+| **WordPress Probing** | Broad WordPress discovery and enumeration activity. |
+
+### Why Fingerprints Matter
+
+Fingerprint rules fill a critical gap:
+
+1. **Early warning**: Reconnaissance typically precedes exploitation. Seeing fingerprint activity targeting a product you run suggests an attacker is mapping your attack surface — even if they haven't launched an exploit yet.
+
+2. **Zero-day coverage**: When a new vulnerability is disclosed for a product, attackers who were already probing that product may exploit it immediately. If you're tracking the fingerprint rule, you already have visibility into who has been scanning your infrastructure.
+
+3. **Multi-CVE protection**: A single product may have dozens of CVEs. Rather than subscribing to each one individually, a fingerprint rule covers reconnaissance activity that could lead to any of them.
+
+## Feature Comparison
+
+| Capability | CVEs | Fingerprints |
+|---|---|---|
+| Scores (CrowdSec, Opportunity, Momentum) | ✅ | ✅ |
+| Exploitation phases | ✅ | ✅ |
+| IP intelligence (attacker IPs with CTI) | ✅ | ✅ |
+| Timeline (activity over time) | ✅ | ✅ |
+| Firewall integration subscriptions | ✅ | ✅ |
+| CVSS score | ✅ | — |
+| CWE classification | ✅ | — |
+| CrowdSec Analysis narrative | ✅ | — |
+| CVE events timeline | ✅ | — |
+
+## Using Them Together
+
+The most comprehensive monitoring strategy combines both:
+
+1. **Subscribe fingerprint rules** for all products in your technology stack (Exchange, WordPress, F5, etc.). This gives you broad reconnaissance visibility.
+2. **Monitor specific CVEs** for unpatched vulnerabilities in your environment. This gives you targeted exploitation intelligence.
+3. **Create firewall integrations** subscribed to both CVEs and fingerprint rules to build layered blocklists.
+
+For example, if you run WordPress:
+- Subscribe to the **WordPress Probing** fingerprint rule to catch general reconnaissance
+- Subscribe to specific CVEs like **CVE-2024-25600** (Bricks Builder RCE) if you run affected plugins
+- Create a firewall integration subscribed to both, so your blocklist captures both scanners and active exploiters

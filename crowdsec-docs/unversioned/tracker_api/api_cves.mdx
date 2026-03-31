@@ -1,0 +1,350 @@
+---
+id: api_cves
+title: CVEs
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+This page covers the API endpoints for listing, searching, and retrieving detailed intelligence about CVEs tracked by the Live Exploit Tracker.
+
+:::info
+For an introduction to what the scores and phases mean, see [Scores & Ratings](./scores) and [Exploitation Phases](./exploitation_phases). This page focuses on API usage.
+:::
+
+## List Tracked CVEs
+
+Retrieve a paginated list of all CVEs that CrowdSec is currently tracking.
+
+```
+GET /v1/cves
+```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `page` | integer | 1 | Page number |
+| `size` | integer | 50 | Items per page (max 100) |
+| `sort_by` | string | `rule_release_date` | Sort field: `rule_release_date`, `trending`, `nb_ips`, `name`, `first_seen` |
+| `sort_order` | string | `desc` | Sort direction: `asc`, `desc` |
+| `filter_by` | string | — | Filter: `is_public` (only CVEs with public exploits) |
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-cves-selection"
+  values={[
+    { label: 'cURL', value: 'curl' },
+    { label: 'Python', value: 'python' },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+# List CVEs sorted by trending (highest CrowdSec Score first)
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves?page=1&size=10&sort_by=trending&sort_order=desc' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+from crowdsec_tracker_api import Cves, ApiKeyAuth
+from httpx import HTTPStatusError
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+auth = ApiKeyAuth(api_key=KEY)
+cves_service = Cves(auth=auth)
+
+try:
+    response = cves_service.get_cves(page=1, size=10)
+    for cve in response.items:
+        print(f"{cve.name}: CrowdSec Score={cve.crowdsec_score}, "
+              f"Phase={cve.exploitation_phase.label}, "
+              f"IPs={cve.nb_ips}")
+except HTTPStatusError as e:
+    print(f"Error: {e.response.status_code} - {e.response.text}")
+```
+
+</TabItem>
+</Tabs>
+
+### Response Fields
+
+Each CVE in the list includes:
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | string | CVE identifier (e.g., `CVE-2024-25600`) |
+| `title` | string | Human-readable title (e.g., "Bricks Builder - RCE") |
+| `affected_components` | array | Vendor and product names |
+| `crowdsec_score` | integer | Composite severity score (0–10) |
+| `opportunity_score` | integer | Attack targeting score (0–5) |
+| `momentum_score` | integer | Trend direction score (0–5) |
+| `exploitation_phase` | object | Current phase: `name`, `label`, `description` |
+| `nb_ips` | integer | Number of IPs currently exploiting this CVE |
+| `cvss_score` | float | Standard CVSS severity score |
+| `has_public_exploit` | boolean | Whether a public exploit exists |
+| `first_seen` | datetime | When CrowdSec first observed exploitation |
+| `last_seen` | datetime | Most recent observed exploitation |
+| `published_date` | datetime | CVE publication date in NVD |
+| `rule_release_date` | datetime | When CrowdSec released the detection rule |
+| `adjustment_score` | object | Score adjustments: `total`, `recency` |
+| `threat_context` | object | Contextual threat intelligence: `attacker_countries`, `defender_countries`, `industry_types`, `industry_risk_profiles`, `attacker_objectives` (may be empty for low-activity CVEs) |
+
+## Get CVE Details
+
+Retrieve full intelligence for a specific CVE, including the CrowdSec Analysis narrative, CWE classifications, references, events timeline, and tags.
+
+```
+GET /v1/cves/{cve_id}
+```
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-cves-selection"
+  values={[
+    { label: 'cURL', value: 'curl' },
+    { label: 'Python', value: 'python' },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+from crowdsec_tracker_api import Cves, ApiKeyAuth
+from httpx import HTTPStatusError
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+auth = ApiKeyAuth(api_key=KEY)
+cves_service = Cves(auth=auth)
+
+try:
+    cve = cves_service.get_cve("CVE-2024-25600")
+    print(f"Title: {cve.title}")
+    print(f"CrowdSec Score: {cve.crowdsec_score}")
+    print(f"Phase: {cve.exploitation_phase.label}")
+    print(f"Analysis: {cve.crowdsec_analysis[:200]}...")
+except HTTPStatusError as e:
+    print(f"Error: {e.response.status_code} - {e.response.text}")
+```
+
+</TabItem>
+</Tabs>
+
+### Additional Fields (Detail Only)
+
+In addition to all the list fields, the detail response includes:
+
+| Field | Type | Description |
+|---|---|---|
+| `description` | string | Official CVE description |
+| `crowdsec_analysis` | string | Human-readable intelligence narrative (Markdown) |
+| `cwes` | array | CWE classifications with name, label, description |
+| `references` | array | External reference URLs (advisories, exploits, nuclei templates) |
+| `events` | array | Key events: CVE published, rule released, first seen, CISA KEV, etc. |
+| `tags` | array | Category tags (e.g., `wordpress`, `cms`, `enterprise_software`) |
+
+## Get CVE Timeline
+
+Retrieve exploitation activity over time for a specific CVE. This powers the activity chart in the web interface.
+
+```
+GET /v1/cves/{cve_id}/timeline
+```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `interval` | string | `day` | Time bucket size: `hour`, `day`, `week` |
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-cves-selection"
+  values={[
+    { label: 'cURL', value: 'curl' },
+    { label: 'Python', value: 'python' },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/timeline?interval=week' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+# Timeline data is returned as an array of {timestamp, count} objects
+# Use your preferred charting library to visualize
+```
+
+</TabItem>
+</Tabs>
+
+The response is an array of timeline items:
+
+| Field | Type | Description |
+|---|---|---|
+| `timestamp` | datetime | Start of the time bucket |
+| `count` | integer | Number of exploitation events in this bucket |
+
+## Get IPs Exploiting a CVE
+
+Retrieve the list of IP addresses observed exploiting a specific CVE, enriched with CTI data.
+
+```
+GET /v1/cves/{cve_id}/ips-details
+```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `page` | integer | 1 | Page number |
+| `size` | integer | 50 | Items per page |
+| `since` | integer | — | Only IPs seen in the last N days: `1`, `7`, or `30` |
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-cves-selection"
+  values={[
+    { label: 'cURL', value: 'curl' },
+    { label: 'Python', value: 'python' },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+# Get IPs seen exploiting CVE-2024-25600 in the last 7 days
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/ips-details?page=1&size=10&since=7' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+from crowdsec_tracker_api import Cves, ApiKeyAuth
+from httpx import HTTPStatusError
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+auth = ApiKeyAuth(api_key=KEY)
+cves_service = Cves(auth=auth)
+
+try:
+    response = cves_service.get_cve_ips("CVE-2024-25600", page=1, size=10)
+    for ip_item in response.items:
+        print(ip_item.model_dump_json(indent=2))
+except HTTPStatusError as e:
+    print(f"Error: {e.response.status_code} - {e.response.text}")
+```
+
+</TabItem>
+</Tabs>
+
+### IP Response Fields
+
+Each IP item includes [CTI data](https://doc.crowdsec.net/u/cti_api/taxonomy/cti_object):
+
+| Field | Type | Description |
+|---|---|---|
+| `ip` | string | The IP address |
+| `reputation` | string | Overall reputation: `malicious`, `suspicious`, `known`, `safe` |
+| `ip_range` | string | The IP's network range (e.g., `70.35.192.0/20`) |
+| `ip_range_score` | integer | Reputation score for the IP range |
+| `ip_range_24` | string | The /24 subnet (null if not applicable) |
+| `ip_range_24_reputation` | string | Reputation of the /24 subnet |
+| `ip_range_24_score` | integer | Score for the /24 subnet |
+| `as_name` | string | Autonomous System name (e.g., `IONOS SE`) |
+| `as_num` | integer | Autonomous System Number |
+| `background_noise` | string | Background noise level: `none`, `low`, `medium`, `high` |
+| `background_noise_score` | integer | Numeric background noise score |
+| `confidence` | string | Confidence level of the intelligence: `low`, `medium`, `high` |
+| `location` | object | `country`, `city`, `latitude`, `longitude` |
+| `reverse_dns` | string | Reverse DNS hostname (null if unavailable) |
+| `scores` | object | CTI scores broken down by timeframe (`overall`, `last_day`, `last_week`, `last_month`), each containing `aggressiveness`, `threat`, `trust`, `anomaly`, `total` |
+| `classifications` | object | `classifications` (actor categories) and `false_positives` arrays |
+| `behaviors` | array | Observed behaviors with `name`, `label`, `description` |
+| `attack_details` | array | Specific attacks observed from this IP with `name`, `label`, `description` |
+| `mitre_techniques` | array | MITRE ATT&CK techniques with `name`, `label`, `description` |
+| `cves` | array | List of CVE IDs this IP has been observed exploiting |
+| `target_countries` | object | Countries targeted by this IP (country code → percentage) |
+| `references` | array | External references |
+| `history` | object | `first_seen`, `last_seen`, `full_age`, `days_age` |
+
+## Download IPs (Raw)
+
+Download a raw list of IP addresses exploiting a CVE, suitable for direct import into security tools.
+
+```
+GET /v1/cves/{cve_id}/ips-download
+```
+
+This returns a plain text list of IP addresses, one per line — useful for scripting and bulk import into SIEMs or blocklists.
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/ips-download' \
+  -H 'x-api-key: ${KEY}'
+```
+
+## Manage CVE Integration Subscriptions
+
+You can subscribe and unsubscribe firewall integrations to specific CVEs via the API. See [Integrations & Blocklists](./api_integrations) for full details on creating and managing integrations.
+
+### Subscribe an Integration to a CVE
+
+```
+POST /v1/cves/{cve_id}/integrations
+```
+
+```bash
+curl -X 'POST' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/integrations' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}' \
+  -H 'Content-Type: application/json' \
+  -d '{"name": "my_firewall_integration"}'
+```
+
+### List Subscribed Integrations for a CVE
+
+```
+GET /v1/cves/{cve_id}/integrations
+```
+
+### Unsubscribe an Integration from a CVE
+
+```
+DELETE /v1/cves/{cve_id}/integrations/{integration_name}
+```
+
+```bash
+curl -X 'DELETE' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/integrations/my_firewall_integration' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```

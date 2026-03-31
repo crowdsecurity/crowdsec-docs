@@ -1,0 +1,158 @@
+---
+id: api_lookups
+title: Vendors, Products & Tags
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+The Live Exploit Tracker provides lookup endpoints to explore the coverage landscape. These help answer questions like "what WordPress vulnerabilities are being tracked?", "which Citrix products are covered?", or "what enterprise software threats should I monitor?"
+
+## Tags
+
+Tags are technology categories applied to CVEs and fingerprint rules (e.g., `wordpress`, `cms`, `enterprise_software`, `file_sharing`).
+
+### List All Tags
+
+```
+GET /v1/tags
+```
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-lookups-selection"
+  values={[
+    { label: 'cURL', value: 'curl' },
+    { label: 'Python', value: 'python' },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/tags' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+import httpx
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+headers = {"x-api-key": KEY, "accept": "application/json"}
+
+response = httpx.get("https://admin.api.crowdsec.net/v1/tags", headers=headers)
+response.raise_for_status()
+
+for tag in response.json()["items"]:
+    print(f"{tag['value']}: {tag['nb_cves']} CVEs, {tag['nb_fingerprints']} fingerprints, "
+          f"{tag['nb_ips_cves'] + tag['nb_ips_fingerprints']} total IPs")
+```
+
+</TabItem>
+</Tabs>
+
+Each tag includes:
+
+| Field | Type | Description |
+|---|---|---|
+| `value` | string | Tag name |
+| `nb_cves` | integer | Number of CVEs with this tag |
+| `nb_fingerprints` | integer | Number of fingerprint rules with this tag |
+| `nb_ips_cves` | integer | Total attacker IPs across CVEs with this tag |
+| `nb_ips_fingerprints` | integer | Total attacker IPs across fingerprint rules with this tag |
+| `latest_rule_release` | datetime | Most recent detection rule release for this tag |
+
+### Get Tag Impact
+
+View all CVEs and fingerprint rules associated with a specific tag:
+
+```
+GET /v1/tags/{tag}
+```
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/tags/wordpress' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+## Vendors
+
+Vendors are the organizations responsible for the affected software (e.g., Microsoft, Citrix, WordPress).
+
+### List All Vendors
+
+```
+GET /v1/vendors
+```
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/vendors?page=1&size=20' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+Each vendor includes the same statistics as tags: number of CVEs, fingerprint rules, and attacker IPs.
+
+### Get Vendor Impact
+
+View all CVEs and fingerprint rules affecting a specific vendor's products:
+
+```
+GET /v1/vendors/{vendor}
+```
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/vendors/Microsoft' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+## Products
+
+Products are specific software applications (e.g., Exchange Server, BIG-IP, WordPress).
+
+### List All Products
+
+```
+GET /v1/products
+```
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/products?page=1&size=20' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+### Get Product Impact
+
+View all CVEs and fingerprint rules affecting a specific product:
+
+```
+GET /v1/products/{product}
+```
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/products/Exchange%20Server' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+## Use Cases
+
+These lookup endpoints are particularly useful for:
+
+- **Asset-based monitoring**: "Show me all tracked threats for the products in my technology stack."
+- **Coverage assessment**: "How many vulnerabilities affecting WordPress does CrowdSec track?"
+- **Reporting**: "What's the overall threat landscape for enterprise software this month?"
+- **Automation**: Build scripts that automatically subscribe integrations to all new CVEs for your vendor ecosystem.

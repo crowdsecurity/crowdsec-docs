@@ -1,0 +1,351 @@
+---
+id: api_integrations
+title: Integrations & Blocklists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Integrations are the bridge between CrowdSec's threat intelligence and your security infrastructure. An integration generates a blocklist of attacker IPs that your firewall can consume. You subscribe integrations to specific CVEs or fingerprint rules, and the blocklist automatically updates as new attacker IPs are observed.
+
+## Supported Output Formats
+
+When creating an integration, you choose an output format matching your firewall:
+
+| Format | Value | Description |
+|---|---|---|
+| Plain Text | `plain_text` | One IP per line. Universal format supported by most tools. |
+| F5 | `f5` | F5 BIG-IP compatible format |
+| FortiGate | `fortigate` | FortiGate compatible format |
+| Palo Alto | `paloalto` | PAN-OS compatible format |
+| Checkpoint | `checkpoint` | Check Point compatible format |
+| Cisco | `cisco` | Cisco compatible format |
+| Juniper | `juniper` | Juniper compatible format |
+| MikroTik | `mikrotik` | MikroTik compatible format |
+| pfSense | `pfsense` | pfSense compatible format |
+| OPNsense | `opnsense` | OPNsense compatible format |
+| Sophos | `sophos` | Sophos compatible format |
+| Remediation Component | `remediation_component` | CrowdSec's own remediation components |
+
+## Create an Integration
+
+```
+POST /v1/integrations
+```
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-integrations-selection"
+  values={[
+    { label: 'cURL', value: 'curl' },
+    { label: 'Python', value: 'python' },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -X 'POST' \
+  'https://admin.api.crowdsec.net/v1/integrations' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "paloalto_production",
+    "description": "Production Palo Alto firewall - CVE blocklist",
+    "entity_type": "firewall_integration",
+    "output_format": "paloalto"
+  }'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+from crowdsec_tracker_api import (
+    Integrations, IntegrationCreateRequest,
+    IntegrationType, OutputFormat, ApiKeyAuth,
+)
+from httpx import HTTPStatusError
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+auth = ApiKeyAuth(api_key=KEY)
+integrations_service = Integrations(auth=auth)
+
+request = IntegrationCreateRequest(
+    name="paloalto_production",
+    description="Production Palo Alto firewall - CVE blocklist",
+    entity_type=IntegrationType.FIREWALL_INTEGRATION.value,
+    output_format=OutputFormat.PALOALTO.value,
+)
+
+try:
+    response = integrations_service.create_integration(request=request)
+    print(f"Integration ID: {response.id}")
+    print(f"Credentials: {response.credentials}")
+    # IMPORTANT: Save the credentials securely — they are only shown once!
+except HTTPStatusError as e:
+    print(f"Error: {e.response.status_code} - {e.response.text}")
+```
+
+</TabItem>
+</Tabs>
+
+:::warning
+The integration credentials (API key or username/password depending on type) are **only shown once** in the creation response. Store them securely. If you lose them, you'll need to regenerate them by updating the integration.
+:::
+
+### Integration Types
+
+| Type | Value | Description |
+|---|---|---|
+| Firewall Integration | `firewall_integration` | For direct firewall consumption via blocklist URL |
+| Remediation Component | `remediation_component_integration` | For CrowdSec remediation components |
+
+### Integration Response Fields
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | string | Unique integration identifier |
+| `name` | string | Integration name |
+| `description` | string | Human-readable description |
+| `organization_id` | string | Owning organization ID |
+| `entity_type` | string | `firewall_integration` or `remediation_component_integration` |
+| `output_format` | string | Blocklist format (see table above) |
+| `cves` | array | CVE subscriptions (each with `id`) |
+| `fingerprints` | array | Fingerprint rule subscriptions |
+| `blocklists` | array | Blocklist subscriptions |
+| `endpoint` | string | URL for fetching the integration's blocklist content |
+| `stats` | object | Statistics including `count` (number of IPs in the blocklist) |
+| `tags` | array | Tags attached to the integration |
+| `enable_ip_aggregation` | boolean | When enabled, CrowdSec automatically aggregates adjacent IPs into network ranges where possible, reducing blocklist size |
+| `created_at` | datetime | Creation timestamp |
+| `updated_at` | datetime | Last update timestamp |
+
+## List Integrations
+
+```
+GET /v1/integrations
+```
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-integrations-selection"
+  values={[
+    { label: 'cURL', value: 'curl' },
+    { label: 'Python', value: 'python' },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/integrations' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+from crowdsec_tracker_api import Integrations, ApiKeyAuth
+from httpx import HTTPStatusError
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+auth = ApiKeyAuth(api_key=KEY)
+integrations_service = Integrations(auth=auth)
+
+try:
+    response = integrations_service.get_integrations()
+    for integration in response.items:
+        print(f"{integration.name}: {integration.entity_type}, "
+              f"subscriptions: {len(integration.blocklist_subscriptions or [])}")
+except HTTPStatusError as e:
+    print(f"Error: {e.response.status_code} - {e.response.text}")
+```
+
+</TabItem>
+</Tabs>
+
+## Get Integration Details
+
+```
+GET /v1/integrations/{integration_id}
+```
+
+## Update an Integration
+
+Update the name, description, output format, or regenerate credentials.
+
+```
+PATCH /v1/integrations/{integration_id}
+```
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-integrations-selection"
+  values={[
+    { label: 'cURL', value: 'curl' },
+    { label: 'Python', value: 'python' },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -X 'PATCH' \
+  'https://admin.api.crowdsec.net/v1/integrations/YOUR_INTEGRATION_ID' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "paloalto_production_v2",
+    "description": "Updated description",
+    "regenerate_credentials": true
+  }'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+from crowdsec_tracker_api import (
+    Integrations, IntegrationUpdateRequest, ApiKeyAuth,
+)
+from httpx import HTTPStatusError
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+auth = ApiKeyAuth(api_key=KEY)
+integrations_service = Integrations(auth=auth)
+
+request = IntegrationUpdateRequest(
+    name="paloalto_production_v2",
+    regenerate_credentials=True,
+    description="Updated description",
+)
+
+try:
+    response = integrations_service.update_integration(
+        integration_id="YOUR_INTEGRATION_ID",
+        request=request,
+    )
+    print(f"Updated: {response.name}")
+    if response.credentials:
+        print(f"New credentials: {response.credentials}")
+except HTTPStatusError as e:
+    print(f"Error: {e.response.status_code} - {e.response.text}")
+```
+
+</TabItem>
+</Tabs>
+
+:::tip
+Use `regenerate_credentials: true` if you need to rotate the integration's credentials. The new credentials will be returned in the response.
+:::
+
+## Delete an Integration
+
+```
+DELETE /v1/integrations/{integration_id}
+```
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-integrations-selection"
+  values={[
+    { label: 'cURL', value: 'curl' },
+    { label: 'Python', value: 'python' },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+# Force delete even if integration has active subscriptions
+curl -X 'DELETE' \
+  'https://admin.api.crowdsec.net/v1/integrations/YOUR_INTEGRATION_ID?force=true' \
+  -H 'accept: */*' \
+  -H 'x-api-key: ${KEY}'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+from crowdsec_tracker_api import Integrations, ApiKeyAuth
+from httpx import HTTPStatusError
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+auth = ApiKeyAuth(api_key=KEY)
+integrations_service = Integrations(auth=auth)
+
+try:
+    integrations_service.delete_integration(integration_id="YOUR_INTEGRATION_ID")
+    print("Integration deleted.")
+except HTTPStatusError as e:
+    print(f"Error: {e.response.status_code} - {e.response.text}")
+```
+
+</TabItem>
+</Tabs>
+
+Use the `force=true` query parameter to delete an integration even if it has active CVE or fingerprint subscriptions.
+
+## Get Integration Content (Blocklist)
+
+Retrieve the actual blocklist content that a firewall would consume.
+
+```
+GET /v1/integrations/{integration_id}/content
+```
+
+This returns the blocklist in the format specified when the integration was created (plain text, PAN-OS format, etc.).
+
+You can also check if an integration has content without downloading it:
+
+```
+HEAD /v1/integrations/{integration_id}/content
+```
+
+Returns `200` if content is available, `204` if the integration has no subscriptions or no content.
+
+## Streaming Content (Remediation Components)
+
+For CrowdSec remediation components, a streaming endpoint is available:
+
+```
+GET /v1/integrations/{integration_id}/v1/decisions/stream
+```
+
+This is compatible with CrowdSec's remediation component protocol.
+
+## End-to-End Workflow
+
+Here's a complete example: create an integration, subscribe it to a CVE and a fingerprint rule, and verify the blocklist.
+
+```bash
+# 1. Create a plain text integration
+curl -X 'POST' 'https://admin.api.crowdsec.net/v1/integrations' \
+  -H 'x-api-key: ${KEY}' -H 'Content-Type: application/json' \
+  -d '{"name": "demo_blocklist", "description": "Demo", "entity_type": "firewall_integration", "output_format": "plain_text"}'
+
+# 2. Subscribe to a CVE
+curl -X 'POST' 'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/integrations' \
+  -H 'x-api-key: ${KEY}' -H 'Content-Type: application/json' \
+  -d '{"name": "demo_blocklist"}'
+
+# 3. Subscribe to a fingerprint rule
+curl -X 'POST' 'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/integrations' \
+  -H 'x-api-key: ${KEY}' -H 'Content-Type: application/json' \
+  -d '{"name": "demo_blocklist"}'
+
+# 4. Fetch the blocklist (using integration credentials)
+curl 'https://admin.api.crowdsec.net/v1/integrations/INTEGRATION_ID/content' \
+  -H 'x-api-key: INTEGRATION_API_KEY'
+```
+
+## Next Steps
+
+Once your integration is created and subscribed, configure your firewall to fetch the blocklist URL at regular intervals. See the [CrowdSec Integrations documentation](https://docs.crowdsec.net/u/integrations/intro) for vendor-specific setup guides.

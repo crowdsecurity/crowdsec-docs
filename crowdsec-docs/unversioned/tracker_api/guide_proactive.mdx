@@ -1,0 +1,142 @@
+---
+id: guide_proactive
+title: "Guide: Proactive Monitoring"
+---
+
+## Scenario
+
+Rather than reacting to alerts one at a time, you want to **proactively monitor** the threat landscape for vulnerabilities relevant to your technology stack. This guide shows how to set up ongoing monitoring using the Live Exploit Tracker.
+
+## Step 1: Identify Your Technology Stack
+
+Start by identifying the vendors, products, and technology categories you care about. Common examples:
+
+| If you run... | Monitor these tags/vendors |
+|---|---|
+| WordPress sites | Tag: `wordpress`, `cms` |
+| Microsoft infrastructure | Vendor: `Microsoft`, Tags: `enterprise_software` |
+| Network appliances | Vendors: `F5`, `Cisco`, `Palo Alto`, `Fortinet` |
+| Java applications | Tag: `web_application`, specific product names |
+
+## Step 2: Explore Coverage
+
+Use the lookup endpoints to see what CrowdSec tracks for your stack.
+
+### Via Web Interface
+
+Browse the CVE and fingerprint rule lists, filtering by tag or searching by product name.
+
+### Via API
+
+```bash
+# What WordPress vulnerabilities does CrowdSec track?
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/tags/wordpress' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+
+# What Microsoft products are covered?
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/vendors/Microsoft' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+
+# What fingerprint rules exist for Exchange?
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/fingerprints?page=1&size=50' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+## Step 3: Set Up Fingerprint Monitoring
+
+[Fingerprint rules](./fingerprints_vs_cves) give you broad coverage for product families. Even if a new CVE drops tomorrow for Exchange, the "Microsoft Exchange Probing" fingerprint rule already captures reconnaissance activity.
+
+1. Identify fingerprint rules matching your products
+2. Create a firewall integration (if you don't have one)
+3. Subscribe the integration to relevant fingerprint rules
+
+```bash
+# Subscribe to Microsoft Exchange probing detection
+curl -X 'POST' \
+  'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/integrations' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}' \
+  -H 'Content-Type: application/json' \
+  -d '{"name": "production_firewall"}'
+```
+
+## Step 4: Monitor New and Trending CVEs
+
+Check the tracker regularly (or automate it) for new CVEs affecting your stack:
+
+```bash
+# Get the latest detection rules, sorted by release date
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves?sort_by=rule_release_date&sort_order=desc&size=20' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+
+# Get the most actively exploited CVEs right now
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves?sort_by=trending&sort_order=desc&size=20' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+For each new CVE that affects your products:
+
+1. Check the **CrowdSec Score** and **Exploitation Phase**
+2. Read the **CrowdSec Analysis** for exploitation context
+3. Subscribe your integration if the threat warrants immediate blocklist protection
+4. Open a patching ticket with the appropriate priority
+
+## Step 5: Build a Monitoring Script
+
+Here's a template for a daily check that surfaces new and trending threats for your stack:
+
+```python
+import os
+from crowdsec_tracker_api import Cves, ApiKeyAuth
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+auth = ApiKeyAuth(api_key=KEY)
+cves_service = Cves(auth=auth)
+
+# Define your technology stack tags
+MY_TAGS = {"wordpress", "cms", "enterprise_software"}
+
+# Get trending CVEs
+response = cves_service.get_cves(page=1, size=50)
+
+alerts = []
+for cve in response.items:
+    # Filter for CVEs relevant to your stack
+    cve_tags = set(getattr(cve, 'tags', []) or [])
+    if not cve_tags.intersection(MY_TAGS):
+        continue
+
+    # Flag anything with a meaningful CrowdSec Score
+    if cve.crowdsec_score >= 4:
+        alerts.append({
+            "cve": cve.name,
+            "title": cve.title,
+            "score": cve.crowdsec_score,
+            "phase": cve.exploitation_phase.label,
+            "ips": cve.nb_ips,
+        })
+
+# Output alerts (integrate with your notification system)
+for alert in sorted(alerts, key=lambda x: x["score"], reverse=True):
+    print(f"[Score {alert['score']}] {alert['cve']}: {alert['title']}")
+    print(f"  Phase: {alert['phase']}, Active IPs: {alert['ips']}")
+```
+
+## Step 6: Integrate with Your Security Stack
+
+The Live Exploit Tracker API can feed data into:
+
+- **SIEM**: Enrich alerts with CrowdSec Scores and exploitation context. When your SIEM fires an alert for a CVE, automatically look up the CrowdSec intelligence to assign priority.
+- **SOAR**: Build playbooks that automatically create blocklist subscriptions when a new high-severity CVE is detected for your products.
+- **Vulnerability Management**: Correlate your vulnerability scanner findings with real-world exploitation data to reorder your patch queue.
+- **Reporting Dashboards**: Pull scores and phase data into your security dashboard to give leadership a real-time view of the threat landscape.

@@ -1,0 +1,103 @@
+---
+id: scores
+title: Scores & Ratings
+---
+
+## Overview
+
+The Live Exploit Tracker assigns multiple scores to each tracked CVE and fingerprint rule. These scores are derived from real-world exploitation telemetry observed across the CrowdSec Network — they reflect what attackers are *actually doing*, not what's theoretically possible.
+
+Three scores work together to give you a complete picture:
+
+- **CrowdSec Score**: The headline number — how urgently should you care?
+- **Opportunity Score**: Are attacks targeted or opportunistic?
+- **Momentum Score**: Is exploitation growing or fading?
+
+These are complemented by an **Exploitation Phase** (covered in [its own page](./exploitation_phases)) and supplementary scores described below.
+
+## CrowdSec Score (0–10)
+
+The CrowdSec Score is a composite rating designed to answer one question: **how should a SOC prioritize a security alert for this CVE?**
+
+It combines the Opportunity and Momentum scores along with additional signals. Generally, CVEs where CrowdSec observes targeted attacks with increasing volume score higher than vulnerabilities used only by automated mass-scanners.
+
+| Score | Interpretation | Recommended Action |
+|-------|---------------|-------------------|
+| **0** | No observed exploitation or insufficient data | Monitor. Low priority for immediate action. |
+| **1–3** | Background noise — opportunistic, automated scanning | Patch within your standard maintenance window. Alerts are likely low-signal. |
+| **4–6** | Active exploitation with moderate targeting or momentum | Prioritize patching. Consider deploying a blocklist for affected CVEs. |
+| **7–8** | Significant targeted exploitation, often with growing trend | Urgent patching recommended. Deploy blocklists. Investigate any alerts on your infrastructure. |
+| **9–10** | Critical active campaign — highly targeted and rapidly growing | Emergency response. Immediate mitigation required. Treat alerts as confirmed incidents. |
+
+:::tip Practical example
+At the time of writing, CVE-2026-1731 (BeyondTrust Remote Support RCE) has a CrowdSec Score of **9**, with an Opportunity Score of 5 and Momentum Score of 3. This tells you: attackers are deliberately targeting this vulnerability with high precision (not just scanning randomly), activity is above average, and any alert on your systems should be treated as a confirmed incident requiring immediate response.
+
+Compare with CVE-2021-44228 (Log4Shell), which currently has a CrowdSec Score of **3** with Opportunity 1 and Momentum 2. Despite its legendary CVSS 10.0, it has settled into background noise — opportunistic scanning at average volume. Patch it, but it doesn't need to jump the queue anymore.
+
+*Scores are computed from live telemetry and change over time. The values shown here may differ from what you see today.*
+:::
+
+## Opportunity Score / Targeted (0–5)
+
+The Opportunity Score measures **how targeted the exploitation is**. It answers: "If I see an alert for this CVE on my network, does that mean someone picked *me* specifically, or am I just caught in a spray-and-pray campaign?"
+
+:::info Terminology
+This score is called **Targeted** in the web interface (with the subtitle "Low = mass scanning, High = targeted") and **opportunity_score** in the API. They represent the same metric.
+:::
+
+| Score | Label | What It Means | Alert Significance |
+|-------|-------|--------------|-------------------|
+| **0** | Mass scanning | Attackers are hitting IPs at random in automated sweeps. | Low — you're one of millions being scanned. |
+| **1** | Mostly opportunistic | Largely automated, with minimal target selection. | Low to moderate. |
+| **2** | Opportunistic with some targeting | Mix of automated campaigns and light reconnaissance. | Moderate — worth investigating. |
+| **3** | Mixed | Significant portion of attacks show target selection. | Moderate to high. |
+| **4** | Targeted | Attackers are performing reconnaissance before exploitation. Campaigns are tailored. | High — an alert likely means deliberate targeting. |
+| **5** | Highly targeted | Precisely targeted exploitation. Attackers select specific victims based on exposure and configuration. | Very high — treat as a deliberate attack on your organization. |
+
+:::info Why this matters
+A CVSS 10.0 vulnerability with an Opportunity Score of 0 might generate thousands of alerts across the internet but pose less real danger to any specific organization than a CVSS 7.5 vulnerability with an Opportunity Score of 5, where every alert represents a deliberate attack campaign.
+:::
+
+## Momentum Score (0–5)
+
+The Momentum Score tracks **how current exploitation volume compares to historical averages**. It answers: "Is this threat growing, stable, or fading?"
+
+| Score | Label | What It Means | Implication |
+|-------|-------|--------------|------------|
+| **0** | Declining / dormant | Exploitation is well below historical levels or has stopped entirely. | Patch at normal cadence. Threat is receding. |
+| **1** | Below average | Activity is lower than typical. | Reduced urgency. |
+| **2** | Average | Consistent with long-term trends. | Steady-state — no special urgency beyond the base score. |
+| **3** | Above average | Noticeable uptick in exploitation activity. | Increased urgency. May indicate renewed attacker interest. |
+| **4** | Growing rapidly | Significant increase in volume week-over-week. | High urgency. A new campaign is likely underway. |
+| **5** | Surging | Explosive growth in exploitation activity. | Critical. Active mass campaign or newly weaponized exploit. |
+
+:::tip Reading Momentum alongside Opportunity
+The combination tells you different stories:
+
+- **High Momentum + Low Opportunity** = A new automated scanning campaign has launched. Lots of noise, but individual alerts are low-signal.
+- **High Momentum + High Opportunity** = A targeted attack campaign is ramping up. This is the most dangerous combination.
+- **Low Momentum + High Opportunity** = Persistent, targeted attacks at steady volume. The threat is real but stable — no immediate spike to react to.
+- **Low Momentum + Low Opportunity** = Background noise is fading. Lowest priority.
+:::
+
+## Adjustment Score
+
+The Adjustment Score provides **transparent corrections** applied to the composite CrowdSec Score.
+
+| Component | Description |
+|-----------|------------|
+| **recency** | A bonus applied when exploitation activity is very recent. A CVE last seen exploited today gets a recency boost compared to one last seen a month ago, all else being equal. |
+| **total** | The net adjustment applied to the score. |
+
+These adjustments are surfaced so you can understand *why* a score is what it is. For example, if a CVE has a CrowdSec Score of 6 with an adjustment_score.recency of +1, you know that 1 point of that score comes from very recent activity rather than sustained long-term exploitation.
+
+## CVSS Score
+
+The Live Exploit Tracker also surfaces the standard **CVSS score** from the National Vulnerability Database. This measures the *theoretical* severity of a vulnerability based on its technical characteristics (attack vector, complexity, impact, etc.).
+
+The CrowdSec Score and CVSS score often diverge, and that's the point:
+
+- A CVSS 10.0 vulnerability that nobody is actually exploiting might have a CrowdSec Score of 0.
+- A CVSS 5.4 vulnerability that sophisticated attackers are actively targeting might have a CrowdSec Score of 6 or higher.
+
+**Use CVSS for understanding the vulnerability's potential impact. Use the CrowdSec Score for prioritizing your response based on what's happening in the real world.**
