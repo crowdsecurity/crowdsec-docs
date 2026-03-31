@@ -184,9 +184,8 @@ kubectl -n crowdsec exec deploy/crowdsec-lapi -- \
 <Tabs>
 <TabItem value="helm" label="Helm-Based Installation" default>
 
-For the Helm-based install, the chart takes the bouncer key from
-`crowdsec.apiKey`. You do not need a separate Kubernetes `Secret` for this
-path unless you adapt the chart to read from one yourself.
+For the Helm-based install, keep the API key in a Kubernetes `Secret` and
+reference that secret from a user-managed `values.yaml` file.
 
 Add the Helm repository:
 
@@ -195,17 +194,53 @@ helm repo add envoy-proxy-bouncer https://kdwils.github.io/envoy-proxy-crowdsec-
 helm repo update
 ```
 
+Create the secret holding the CrowdSec bouncer key:
+
+```yaml title="crowdsec-envoy-bouncer-secret.yaml"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-envoy-bouncer-secrets
+  namespace: envoy-gateway-system
+type: Opaque
+stringData:
+  api-key: "<same-value-as-BOUNCER_KEY_envoy>"
+```
+
+Apply it:
+
+```bash
+kubectl apply -f crowdsec-envoy-bouncer-secret.yaml
+```
+
+Then create a values file:
+
+```yaml title="envoy-bouncer-values.yaml"
+config:
+  bouncer:
+    lapiURL: http://crowdsec-service.crowdsec.svc.cluster.local:8080
+    apiKeySecretRef:
+      name: crowdsec-envoy-bouncer-secrets
+      key: api-key
+  waf:
+    enabled: true
+    appSecURL: http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422
+    apiKeySecretRef:
+      name: crowdsec-envoy-bouncer-secrets
+      key: api-key
+securityPolicy:
+  create: true
+  gatewayName: shared-public
+  gatewayNamespace: envoy-gateway-system
+```
+
 Install the chart and create a `SecurityPolicy`:
 
 ```bash
 helm install crowdsec-envoy-bouncer envoy-proxy-bouncer/envoy-proxy-bouncer \
   --namespace envoy-gateway-system \
   --create-namespace \
-  --set crowdsec.apiKey=<same-value-as-BOUNCER_KEY_envoy> \
-  --set crowdsec.apiURL=http://crowdsec-service.crowdsec.svc.cluster.local:8080 \
-  --set securityPolicy.create=true \
-  --set securityPolicy.gatewayName=shared-public \
-  --set securityPolicy.gatewayNamespace=envoy-gateway-system
+  -f envoy-bouncer-values.yaml
 ```
 
 If you only want to deploy the bouncer and manage `SecurityPolicy` objects
