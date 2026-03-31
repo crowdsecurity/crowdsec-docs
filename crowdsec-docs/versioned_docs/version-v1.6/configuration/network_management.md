@@ -16,13 +16,18 @@ id: network_management
  - Local API connects to `tcp/443` on `blocklists.api.crowdsec.net` (blocklists pull)
  - Local API connects to `tcp/443` on `papi.api.crowdsec.net` (console management)
  - `cscli` connects to `tcp/443` on `cdn-hub.crowdsec.net` to fetch scenarios, parsers etc. (1)
- - `cscli` connects to `tcp/443` on `version.crowdsec.net` to check latest version available.
- - `cscli` connects to `tcp/443` on `hub-data.crowdsec.net` to fetch external data loaded by parsers, scenario and postoverflows.
+ - `cscli` connects to `tcp/443` on `version.crowdsec.net` to check latest version available. (2)
+ - `cscli` connects to `tcp/443` on `hub-data.crowdsec.net` to fetch external data loaded by parsers, scenario and postoverflows. (2)
  - [`cscli dashboard`](/cscli/cscli_dashboard.md) fetches metabase configuration from a s3 bucket (`https://crowdsec-statics-assets.s3-eu-west-1.amazonaws.com/`)
  - Installation script is hosted on `install.crowdsec.net` over HTTPS.
  - Repositories are hosted on `packagecloud.io` over HTTPS.
 
-__(1) - FQDN is cloudfront entry to crowdsec's github repositories so people avoid hitting github's quotas__
+__(1) - This FQDN routes traffic to CrowdSec's GitHub repositories through CloudFront, which helps avoid GitHub rate limits.__
+[AWS publishes the CloudFront IP ranges](https://ip-ranges.amazonaws.com/ip-ranges.json); CloudFront entries are tagged `CLOUDFRONT`.
+
+__(2) - This FQDN routes traffic to CrowdSec's GitHub repository through Cloudflare, which helps avoid GitHub rate limits.__
+[Cloudflare publishes its IP ranges](https://www.cloudflare.com/ips/): [IPv4](https://cloudflare.com/ips-v4) and [IPv6](https://cloudflare.com/ips-v6).
+
 
 
 # Communication between components
@@ -51,6 +56,3 @@ Both components need proper configuration to run (we decide to keep this behavio
 ## Prometheus -> Agents
 
  - If you're scrapping prometheus metrics from your agents or your local API, you need to allow inbound connections to `tcp/6060`
-
-
-
