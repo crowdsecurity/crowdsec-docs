@@ -54,6 +54,53 @@ The upstream project used in this guide is:
 - `kdwils/envoy-proxy-crowdsec-bouncer`
   :::
 
+## Store the Envoy bouncer key in a Kubernetes secret
+
+For Envoy Gateway, a practical approach is to choose a fixed key, store it in a
+Kubernetes secret, and force `BOUNCER_KEY_envoy` from `lapi.env` with
+`valueFrom.secretKeyRef`.
+
+Create or update the secret used by CrowdSec LAPI:
+
+```yaml title="crowdsec-keys.yaml"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-keys
+  namespace: crowdsec
+type: Opaque
+stringData:
+  ENROLL_KEY: "<your-existing-enroll-key>"
+  BOUNCER_KEY_envoy: "<choose-a-long-random-key>"
+```
+
+Apply it:
+
+```bash
+kubectl apply -f crowdsec-keys.yaml
+```
+
+Then reference `BOUNCER_KEY_envoy` from the CrowdSec Helm values:
+
+```yaml title="crowdsec-values.yaml"
+lapi:
+  env:
+    - name: BOUNCER_KEY_envoy
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: BOUNCER_KEY_envoy
+```
+
+Apply the CrowdSec release again:
+
+```bash
+helm upgrade --install crowdsec crowdsec/crowdsec \
+  --namespace crowdsec \
+  --create-namespace \
+  -f crowdsec-values.yaml
+```
+
 ## Deploy CrowdSec with AppSec enabled
 
 Add this to the CrowdSec `values.yaml` to enable the AppSec acquisition
@@ -115,69 +162,6 @@ You should see:
 - `crowdsec-appsec` in `Running`
 - `crowdsec-service` exposing port `8080`
 - `crowdsec-appsec-service` exposing port `7422`
-
-## Store the Envoy bouncer key in a Kubernetes secret
-
-For Envoy Gateway, a practical approach is to choose a fixed key, store it in a
-Kubernetes secret, and force `BOUNCER_KEY_envoy` from `lapi.env` with
-`valueFrom.secretKeyRef`.
-
-Create or update the secret used by CrowdSec LAPI:
-
-```yaml title="crowdsec-keys.yaml"
-apiVersion: v1
-kind: Secret
-metadata:
-  name: crowdsec-keys
-  namespace: crowdsec
-type: Opaque
-stringData:
-  ENROLL_KEY: "<your-existing-enroll-key>"
-  BOUNCER_KEY_envoy: "<choose-a-long-random-key>"
-```
-
-Apply it:
-
-```bash
-kubectl apply -f crowdsec-keys.yaml
-```
-
-Then reference `BOUNCER_KEY_envoy` from the CrowdSec Helm values:
-
-```yaml title="crowdsec-values.yaml"
-lapi:
-  env:
-    - name: BOUNCER_KEY_envoy
-      valueFrom:
-        secretKeyRef:
-          name: crowdsec-keys
-          key: BOUNCER_KEY_envoy
-```
-
-Apply the CrowdSec release again:
-
-```bash
-helm upgrade --install crowdsec crowdsec/crowdsec \
-  --namespace crowdsec \
-  --create-namespace \
-  -f crowdsec-values.yaml
-```
-
-:::tip
-Keep `BOUNCER_KEY_envoy` declarative in the Kubernetes secret and in
-`crowdsec-values.yaml`.
-
-In our cluster, this was enough to keep the key value under configuration
-management, but it did not recreate the `envoy` bouncer entry in LAPI after a
-restart. If `crowdsec-lapi` still returns `403` to `envoy-proxy-bouncer`, run a
-one-time registration with the same key:
-
-```bash
-kubectl -n crowdsec exec deploy/crowdsec-lapi -- \
-  cscli bouncers add envoy -k <same-value-as-BOUNCER_KEY_envoy>
-```
-
-:::
 
 ## Deploy the Envoy external auth bouncer
 
