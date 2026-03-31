@@ -2,11 +2,17 @@
 id: cscli_hubtest
 title: cscli hubtest
 ---
+## cscli hubtest
+
 Run functional tests on hub configurations
 
 ### Synopsis
 
 Run functional tests on hub configurations (parsers, scenarios, collections...)
+
+```
+cscli hubtest [flags]
+```
 
 ### Options
 

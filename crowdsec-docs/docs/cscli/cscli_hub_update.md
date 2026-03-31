@@ -2,6 +2,8 @@
 id: cscli_hub_update
 title: cscli hub update
 ---
+## cscli hub update
+
 Download the latest index (catalog of available configurations)
 
 ### Synopsis

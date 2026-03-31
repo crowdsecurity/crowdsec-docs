@@ -2,6 +2,8 @@
 id: cscli_config_show-yaml
 title: cscli config show-yaml
 ---
+## cscli config show-yaml
+
 Displays merged config.yaml + config.yaml.local
 
 ```

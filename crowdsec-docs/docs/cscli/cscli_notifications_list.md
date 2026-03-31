@@ -2,6 +2,8 @@
 id: cscli_notifications_list
 title: cscli notifications list
 ---
+## cscli notifications list
+
 list notifications plugins
 
 ### Synopsis

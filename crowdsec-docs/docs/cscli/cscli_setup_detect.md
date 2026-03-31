@@ -2,6 +2,8 @@
 id: cscli_setup_detect
 title: cscli setup detect
 ---
+## cscli setup detect
+
 Detect installed services and generate a setup file
 
 ### Synopsis

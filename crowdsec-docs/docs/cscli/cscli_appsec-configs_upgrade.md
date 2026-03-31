@@ -2,6 +2,8 @@
 id: cscli_appsec-configs_upgrade
 title: cscli appsec-configs upgrade
 ---
+## cscli appsec-configs upgrade
+
 Upgrade given appsec-config(s)
 
 ### Synopsis
@@ -15,21 +17,21 @@ cscli appsec-configs upgrade [item]... [flags]
 ### Examples
 
 ```
-# Upgrade some appsec-configs. If they are not currently installed, they are downloaded but not installed.
-cscli appsec-configs upgrade crowdsecurity/virtual-patching
+# Upgrade some waf-configs. If they are not currently installed, they are downloaded but not installed.
+cscli waf-configs upgrade crowdsecurity/virtual-patching
 
 # Show the execution plan without changing anything - compact output sorted by type and name.
-cscli appsec-configs upgrade crowdsecurity/virtual-patching --dry-run
+cscli waf-configs upgrade crowdsecurity/virtual-patching --dry-run
 
 # Show the execution plan without changing anything - verbose output sorted by execution order.
-cscli appsec-configs upgrade crowdsecurity/virtual-patching --dry-run -o raw
+cscli waf-configs upgrade crowdsecurity/virtual-patching --dry-run -o raw
 
 # Upgrade over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
-cscli appsec-configs upgrade crowdsecurity/virtual-patching --force
+cscli waf-configs upgrade crowdsecurity/virtual-patching --force
 
 # Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
-cscli appsec-configs upgrade crowdsecurity/virtual-patching -i
-cscli appsec-configs upgrade crowdsecurity/virtual-patching --interactive
+cscli waf-configs upgrade crowdsecurity/virtual-patching -i
+cscli waf-configs upgrade crowdsecurity/virtual-patching --interactive
 ```
 
 ### Options

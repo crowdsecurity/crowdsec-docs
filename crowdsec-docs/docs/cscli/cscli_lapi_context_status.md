@@ -2,6 +2,8 @@
 id: cscli_lapi_context_status
 title: cscli lapi context status
 ---
+## cscli lapi context status
+
 List context to send with alerts
 
 ```

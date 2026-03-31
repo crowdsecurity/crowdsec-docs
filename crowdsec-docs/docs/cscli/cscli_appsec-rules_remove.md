@@ -2,6 +2,8 @@
 id: cscli_appsec-rules_remove
 title: cscli appsec-rules remove
 ---
+## cscli appsec-rules remove
+
 Remove given appsec-rule(s)
 
 ### Synopsis
@@ -15,24 +17,24 @@ cscli appsec-rules remove [item]... [flags]
 ### Examples
 
 ```
-# Uninstall some appsec-rules.
-cscli appsec-rules remove crowdsecurity/crs
+# Uninstall some waf-rules.
+cscli waf-rules remove crowdsecurity/crs
 
 # Show the execution plan without changing anything - compact output sorted by type and name.
-cscli appsec-rules remove crowdsecurity/crs --dry-run
+cscli waf-rules remove crowdsecurity/crs --dry-run
 
 # Show the execution plan without changing anything - verbose output sorted by execution order.
-cscli appsec-rules remove crowdsecurity/crs --dry-run -o raw
+cscli waf-rules remove crowdsecurity/crs --dry-run -o raw
 
 # Uninstall and also remove the downloaded files.
-cscli appsec-rules remove crowdsecurity/crs --purge
+cscli waf-rules remove crowdsecurity/crs --purge
 
 # Remove tainted items.
-cscli appsec-rules remove crowdsecurity/crs --force
+cscli waf-rules remove crowdsecurity/crs --force
 
 # Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
-cscli appsec-rules remove crowdsecurity/crs -i
-cscli appsec-rules remove crowdsecurity/crs --interactive
+cscli waf-rules remove crowdsecurity/crs -i
+cscli waf-rules remove crowdsecurity/crs --interactive
 ```
 
 ### Options

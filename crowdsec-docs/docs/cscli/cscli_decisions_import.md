@@ -2,6 +2,8 @@
 id: cscli_decisions_import
 title: cscli decisions import
 ---
+## cscli decisions import
+
 Import decisions from a file or pipe
 
 ### Synopsis

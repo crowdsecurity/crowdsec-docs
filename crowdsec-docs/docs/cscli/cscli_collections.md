@@ -2,7 +2,13 @@
 id: cscli_collections
 title: cscli collections
 ---
+## cscli collections
+
 Manage hub collections
+
+```
+cscli collections <action> [item]... [flags]
+```
 
 ### Examples
 
