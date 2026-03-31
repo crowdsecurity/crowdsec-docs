@@ -281,7 +281,7 @@ spec:
                 secretKeyRef:
                   name: crowdsec-envoy-bouncer-secrets
                   key: api-key
-            - name: ENVOY_BOUNCER_BOUNCER_LAPIURL
+            - name: ENVOY_BOUNCER_BOUNCER_APIURL
               value: http://crowdsec-service.crowdsec.svc.cluster.local:8080
             - name: ENVOY_BOUNCER_WAF_ENABLED
               value: "true"
@@ -323,9 +323,6 @@ spec:
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
       namespace: app-a
-    - group: gateway.envoyproxy.io
-      kind: SecurityPolicy
-      namespace: app-b
   to:
     - group: ""
       kind: Service
@@ -379,33 +376,10 @@ spec:
           port: 8080
 ```
 
-```yaml title="app-b-securitypolicy.yaml"
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: SecurityPolicy
-metadata:
-  name: crowdsec-ext-auth
-  namespace: app-b
-spec:
-  targetRefs:
-    - group: gateway.networking.k8s.io
-      kind: HTTPRoute
-      name: app-b-route
-  extAuth:
-    failOpen: true
-    grpc:
-      backendRefs:
-        - group: ""
-          kind: Service
-          name: crowdsec-envoy-bouncer
-          namespace: envoy-gateway-system
-          port: 8080
-```
-
 Apply them:
 
 ```bash
 kubectl apply -f app-a-securitypolicy.yaml
-kubectl apply -f app-b-securitypolicy.yaml
 ```
 
 ## Allow cross-namespace references
@@ -414,11 +388,20 @@ The Helm chart can create the required `ReferenceGrant` for you. In the example
 above, this is handled by:
 
 ```yaml
-referenceGrant:
-  create: true
-  fromNamespaces:
-    - app-a
-    - app-b
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: crowdsec-ext-auth-backend
+  namespace: envoy-gateway-system
+spec:
+  from:
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: default
+  to:
+    - group: ""
+      kind: Service
+      name: crowdsec-envoy-bouncer-envoy-proxy-bouncer
 ```
 
 If you do not let the chart manage `ReferenceGrant`, you must create an
@@ -426,10 +409,34 @@ equivalent `ReferenceGrant` manually in `envoy-gateway-system`.
 
 ## Validate the deployment
 
+First validate the AppSec backend directly, before testing through Envoy:
+
+```bash
+kubectl -n crowdsec port-forward svc/crowdsec-appsec-service 7422:7422
+curl -i -X POST http://127.0.0.1:7422/ \
+  -H 'x-crowdsec-appsec-ip: 198.51.100.10' \
+  -H 'x-crowdsec-appsec-uri: /.env' \
+  -H 'x-crowdsec-appsec-host: www.example.com' \
+  -H 'x-crowdsec-appsec-verb: GET' \
+  -H 'x-crowdsec-appsec-api-key: <same-value-as-BOUNCER_KEY_envoy>'
+```
+
+Expected result:
+
+- `HTTP/1.1 403 Forbidden`
+- a new `crowdsecurity/vpatch-env-access` trigger in AppSec / CrowdSec logs
+
+If this direct test does not return `403`, the issue is not Envoy-to-bouncer
+connectivity yet. Check that:
+
+- `crowdsecurity/appsec-virtual-patching` is installed and loaded
+- the AppSec API key matches the Envoy bouncer key registered in LAPI
+- `crowdsec-appsec` is healthy and listening on `7422`
+
 Check the bouncer:
 
 ```bash
-kubectl -n envoy-gateway-system get pods -l app.kubernetes.io/instance=crowdsec-envoy-bouncer
+kubectl -n envoy-gateway-system get pods -l app.kubernetes.io/name=crowdsec-envoy-bouncer
 kubectl -n envoy-gateway-system logs deploy/crowdsec-envoy-bouncer
 ```
 
@@ -437,7 +444,6 @@ Check the policies:
 
 ```bash
 kubectl -n app-a describe securitypolicy crowdsec-ext-auth
-kubectl -n app-b describe securitypolicy crowdsec-ext-auth
 ```
 
 Check LAPI and AppSec:
@@ -452,6 +458,38 @@ Healthy signs include:
 - the Envoy bouncer logging `initial decision sync complete`
 - `crowdsec-lapi` returning `200` on `/v1/decisions/stream` to the Envoy bouncer
 - no recent `invalid API key` messages in `crowdsec-appsec`
+- `kubectl -n app-a describe securitypolicy crowdsec-ext-auth` showing the policy as accepted
+
+Then validate the full Envoy path:
+
+```bash
+curl -i --resolve www.example.com:80:<gateway-ip> http://www.example.com/.env
+```
+
+This request should only be blocked if the attached `HTTPRoute` actually
+matches `/.env`. If your route only matches a narrower prefix such as `/api`,
+`/app`, or `/get`, Envoy will not run ext-auth for `/.env` on that route.
+Make sure the protected `HTTPRoute` matches the paths you want WAF to inspect.
+
+To verify route matching:
+
+```bash
+kubectl -n app-a get httproute app-a-route -o yaml
+```
+
+For a broad catch-all test route, use a `PathPrefix` of `/`.
+
+If Envoy still cannot reach the bouncer, check the service wiring directly:
+
+```bash
+kubectl -n envoy-gateway-system get svc crowdsec-envoy-bouncer
+kubectl -n envoy-gateway-system get endpointslice -l kubernetes.io/service-name=crowdsec-envoy-bouncer
+kubectl -n envoy-gateway-system describe referencegrant crowdsec-envoy-bouncer
+```
+
+The `crowdsec-envoy-bouncer` `Service` must have at least one ready endpoint on
+port `8080`, and the `ReferenceGrant` must allow references from every
+application namespace that attaches a `SecurityPolicy`.
 
 ## Roll from `failOpen: true` to `failOpen: false`
 
@@ -513,14 +551,21 @@ tag. If your Kubernetes nodes are `arm64`, verify that the image you use
 provides an `arm64` manifest. In our cluster, we had to use a custom `arm64`
 image.
 
-### 6. `BOUNCER_KEY_envoy` may still need one explicit registration
+### 6. Use the upstream LAPI env var name in raw manifests
+
+If you deploy the bouncer with raw manifests, use
+`ENVOY_BOUNCER_BOUNCER_APIURL`, not `ENVOY_BOUNCER_BOUNCER_LAPIURL`. The
+upstream `kdwils/envoy-proxy-bouncer` project uses `bouncer.apiURL` /
+`ENVOY_BOUNCER_BOUNCER_APIURL` for CrowdSec LAPI connectivity.
+
+### 7. `BOUNCER_KEY_envoy` may still need one explicit registration
 
 Even with `BOUNCER_KEY_envoy` forced through `lapi.env`, we still had to run a
 one-time `cscli bouncers add envoy -k ...` before LAPI stopped returning `403`
 to the Envoy bouncer. Keep the key declarative, but verify the actual bouncer
 entry exists in LAPI.
 
-### 7. An invalid `ENROLL_KEY` can break the whole rollout
+### 8. An invalid `ENROLL_KEY` can break the whole rollout
 
 Our `crowdsec-lapi` pod was crash-looping because the configured `ENROLL_KEY`
 was invalid for console enrollment. If LAPI is not healthy, the Envoy bouncer
