@@ -322,7 +322,7 @@ spec:
   from:
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
-      namespace: app-a
+      namespace: "<app-namespace>"
   to:
     - group: ""
       kind: Service
@@ -354,17 +354,17 @@ Envoy Gateway external auth is configured through
 
 Attach them at the `HTTPRoute` level:
 
-```yaml title="app-a-securitypolicy.yaml"
+```yaml title="app-securitypolicy.yaml"
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
   name: crowdsec-ext-auth
-  namespace: app-a
+  namespace: "<app-namespace>"
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      name: app-a-route
+      name: "<app-route>"
   extAuth:
     failOpen: true
     grpc:
@@ -379,7 +379,7 @@ spec:
 Apply them:
 
 ```bash
-kubectl apply -f app-a-securitypolicy.yaml
+kubectl apply -f app-securitypolicy.yaml
 ```
 
 ## Allow cross-namespace references
@@ -443,7 +443,7 @@ kubectl -n envoy-gateway-system logs deploy/crowdsec-envoy-bouncer
 Check the policies:
 
 ```bash
-kubectl -n app-a describe securitypolicy crowdsec-ext-auth
+kubectl -n <app-namespace> describe securitypolicy crowdsec-ext-auth
 ```
 
 Check LAPI and AppSec:
@@ -538,39 +538,10 @@ create it, but the requirement itself does not go away.
 If you apply a fail-closed external auth policy before the bouncer is healthy,
 Envoy will start rejecting traffic with `403`
 
-### 4. The published Helm repo can be broken
+### 4. Check image architecture support
 
-We hit a `404 Not Found` on the packaged chart artifact from the published Helm
-repository. If that happens, clone the upstream repository and install the chart
-from `charts/envoy-proxy-bouncer` instead.
-
-### 5. Check image architecture support
-
-The community bouncer image may not be published for all architectures on every
-tag. If your Kubernetes nodes are `arm64`, verify that the image you use
-provides an `arm64` manifest. In our cluster, we had to use a custom `arm64`
-image.
-
-### 6. Use the upstream LAPI env var name in raw manifests
-
-If you deploy the bouncer with raw manifests, use
-`ENVOY_BOUNCER_BOUNCER_APIURL`, not `ENVOY_BOUNCER_BOUNCER_LAPIURL`. The
-upstream `kdwils/envoy-proxy-bouncer` project uses `bouncer.apiURL` /
-`ENVOY_BOUNCER_BOUNCER_APIURL` for CrowdSec LAPI connectivity.
-
-### 7. `BOUNCER_KEY_envoy` may still need one explicit registration
-
-Even with `BOUNCER_KEY_envoy` forced through `lapi.env`, we still had to run a
-one-time `cscli bouncers add envoy -k ...` before LAPI stopped returning `403`
-to the Envoy bouncer. Keep the key declarative, but verify the actual bouncer
-entry exists in LAPI.
-
-### 8. An invalid `ENROLL_KEY` can break the whole rollout
-
-Our `crowdsec-lapi` pod was crash-looping because the configured `ENROLL_KEY`
-was invalid for console enrollment. If LAPI is not healthy, the Envoy bouncer
-will never become ready. Check LAPI health first when the bouncer cannot sync
-decisions.
+The community bouncer image is published for amd64. For other architectures you
+will need a custom build.
 
 ## Next steps
 
