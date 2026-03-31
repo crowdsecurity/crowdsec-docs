@@ -24,6 +24,7 @@ id: network_management
 
 __(1) - This FQDN routes traffic to CrowdSec's GitHub repositories through CloudFront, which helps avoid GitHub rate limits.__
 [AWS publishes the CloudFront IP ranges](https://ip-ranges.amazonaws.com/ip-ranges.json); CloudFront entries are tagged `CLOUDFRONT`.
+
 __(2) - This FQDN routes traffic to CrowdSec's GitHub repository through Cloudflare, which helps avoid GitHub rate limits.__
 [Cloudflare publishes its IP ranges](https://www.cloudflare.com/ips/): [IPv4](https://cloudflare.com/ips-v4) and [IPv6](https://cloudflare.com/ips-v6).
 

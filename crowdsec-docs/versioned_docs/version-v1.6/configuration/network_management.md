@@ -24,6 +24,7 @@ id: network_management
 
 __(1) - This FQDN routes traffic to CrowdSec's GitHub repositories through CloudFront, which helps avoid GitHub rate limits.__
 [AWS publishes the CloudFront IP ranges](https://ip-ranges.amazonaws.com/ip-ranges.json); CloudFront entries are tagged `CLOUDFRONT`.
+
 __(2) - This FQDN routes traffic to CrowdSec's GitHub repository through Cloudflare, which helps avoid GitHub rate limits.__
 [Cloudflare publishes its IP ranges](https://www.cloudflare.com/ips/): [IPv4](https://cloudflare.com/ips-v4) and [IPv6](https://cloudflare.com/ips-v6).
 
@@ -55,4 +56,3 @@ Both components need proper configuration to run (we decide to keep this behavio
 ## Prometheus -> Agents
 
  - If you're scrapping prometheus metrics from your agents or your local API, you need to allow inbound connections to `tcp/6060`
-
