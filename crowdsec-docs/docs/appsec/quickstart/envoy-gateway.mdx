@@ -193,6 +193,7 @@ kubectl apply -f crowdsec-envoy-bouncer-secret.yaml
 Then create a values file:
 
 ```yaml title="envoy-bouncer-values.yaml"
+fullnameOverride: crowdsec-envoy-bouncer
 config:
   bouncer:
     lapiURL: http://crowdsec-service.crowdsec.svc.cluster.local:8080
@@ -211,7 +212,7 @@ securityPolicy:
   gatewayNamespace: envoy-gateway-system
 ```
 
-Install the chart and create a `SecurityPolicy`:
+Install the chart:
 
 ```bash
 helm install crowdsec-envoy-bouncer oci://ghcr.io/kdwils/charts/envoy-proxy-bouncer \
@@ -386,144 +387,32 @@ spec:
   to:
     - group: ""
       kind: Service
-      name: crowdsec-envoy-bouncer-envoy-proxy-bouncer
+      name: crowdsec-envoy-bouncer
 ```
 
 If you do not let the chart manage `ReferenceGrant`, you must create an
 equivalent `ReferenceGrant` manually in `envoy-gateway-system`.
 
-## Validate the deployment
-
-First validate the AppSec backend directly, before testing through Envoy:
-
-```bash
-kubectl -n crowdsec port-forward svc/crowdsec-appsec-service 7422:7422
-curl -i -X POST http://127.0.0.1:7422/ \
-  -H 'x-crowdsec-appsec-ip: 198.51.100.10' \
-  -H 'x-crowdsec-appsec-uri: /.env' \
-  -H 'x-crowdsec-appsec-host: www.example.com' \
-  -H 'x-crowdsec-appsec-verb: GET' \
-  -H 'x-crowdsec-appsec-api-key: <same-value-as-BOUNCER_KEY_envoy>'
-```
-
-Expected result:
-
-- `HTTP/1.1 403 Forbidden`
-- a new `crowdsecurity/vpatch-env-access` trigger in AppSec / CrowdSec logs
-
-If this direct test does not return `403`, the issue is not Envoy-to-bouncer
-connectivity yet. Check that:
-
-- `crowdsecurity/appsec-virtual-patching` is installed and loaded
-- the AppSec API key matches the Envoy bouncer key registered in LAPI
-- `crowdsec-appsec` is healthy and listening on `7422`
-
-Check the bouncer:
-
-```bash
-kubectl -n envoy-gateway-system get pods -l app.kubernetes.io/name=crowdsec-envoy-bouncer
-kubectl -n envoy-gateway-system logs deploy/crowdsec-envoy-bouncer
-```
-
-Check the policies:
-
-```bash
-kubectl -n <app-namespace> describe securitypolicy crowdsec-ext-auth
-```
-
-Check LAPI and AppSec:
-
-```bash
-kubectl -n crowdsec logs deploy/crowdsec-lapi --since=2m
-kubectl -n crowdsec logs deploy/crowdsec-appsec --since=2m
-```
-
-Healthy signs include:
-
-- the Envoy bouncer logging `initial decision sync complete`
-- `crowdsec-lapi` returning `200` on `/v1/decisions/stream` to the Envoy bouncer
-- no recent `invalid API key` messages in `crowdsec-appsec`
-- `kubectl -n app-a describe securitypolicy crowdsec-ext-auth` showing the policy as accepted
-
-Then validate the full Envoy path:
-
-```bash
-curl -i --resolve www.example.com:80:<gateway-ip> http://www.example.com/.env
-```
-
-This request should only be blocked if the attached `HTTPRoute` actually
-matches `/.env`. If your route only matches a narrower prefix such as `/api`,
-`/app`, or `/get`, Envoy will not run ext-auth for `/.env` on that route.
-Make sure the protected `HTTPRoute` matches the paths you want WAF to inspect.
-
-To verify route matching:
-
-```bash
-kubectl -n app-a get httproute app-a-route -o yaml
-```
-
-For a broad catch-all test route, use a `PathPrefix` of `/`.
-
-If Envoy still cannot reach the bouncer, check the service wiring directly:
-
-```bash
-kubectl -n envoy-gateway-system get svc crowdsec-envoy-bouncer
-kubectl -n envoy-gateway-system get endpointslice -l kubernetes.io/service-name=crowdsec-envoy-bouncer
-kubectl -n envoy-gateway-system describe referencegrant crowdsec-envoy-bouncer
-```
-
-The `crowdsec-envoy-bouncer` `Service` must have at least one ready endpoint on
-port `8080`, and the `ReferenceGrant` must allow references from every
-application namespace that attaches a `SecurityPolicy`.
-
-## Roll from `failOpen: true` to `failOpen: false`
-
-Start with:
-
-```yaml
-extAuth:
-  failOpen: true
-```
-
-This allows requests through if the bouncer is unavailable during rollout.
-
-Once the following are true:
-
-- the bouncer pod is `Running`
-- `crowdsec-lapi` shows successful `envoy-proxy-bouncer` decision pulls
-- `crowdsec-appsec` shows no new auth or timeout errors
-- your applications still answer correctly through Envoy
-
-switch to:
-
-```yaml
-extAuth:
-  failOpen: false
-```
-
-This makes Envoy fail closed and turns the external auth service into an
-enforcement point instead of a best-effort filter.
-
 ## Important Notes
 
-### 1. Attach `SecurityPolicy` to `HTTPRoute`s, not just to the `Gateway`
+### Attach `SecurityPolicy` to `HTTPRoute`s, not just to the `Gateway`
 
 For Envoy Gateway, route-level attachment is the safer pattern for this
 integration, especially if you later want to handle multiple applications or
 CAPTCHA endpoints independently.
 
-### 2. Cross-namespace bouncer references still require `ReferenceGrant`
+### Cross-namespace bouncer references still require `ReferenceGrant`
 
 If your bouncer `Service` is in `envoy-gateway-system` and your applications
-live in other namespaces, `ReferenceGrant` is required. The Helm chart can
-create it, but the requirement itself does not go away.
+live in other namespaces, `ReferenceGrant` is required. The ReferenceGrant has
+to correctly specify the crowdsec bouncer service.
 
-### 3. Use `failOpen: true` during rollout
+### Use `failOpen: true` during rollout
 
 If you apply a fail-closed external auth policy before the bouncer is healthy,
 Envoy will start rejecting traffic with `403`
 
-### 4. Check image architecture support
+### Check image architecture support
 
 The community bouncer image is published for amd64. For other architectures you
 will need a custom build.
