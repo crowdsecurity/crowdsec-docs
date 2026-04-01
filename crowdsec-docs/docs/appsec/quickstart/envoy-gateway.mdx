@@ -312,21 +312,6 @@ spec:
       port: 8080
       targetPort: grpc
       protocol: TCP
----
-apiVersion: gateway.networking.k8s.io/v1beta1
-kind: ReferenceGrant
-metadata:
-  name: crowdsec-envoy-bouncer
-  namespace: envoy-gateway-system
-spec:
-  from:
-    - group: gateway.envoyproxy.io
-      kind: SecurityPolicy
-      namespace: "<app-namespace>"
-  to:
-    - group: ""
-      kind: Service
-      name: crowdsec-envoy-bouncer
 ```
 
 Apply it:
