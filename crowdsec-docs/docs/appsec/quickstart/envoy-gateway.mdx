@@ -281,7 +281,7 @@ spec:
                 secretKeyRef:
                   name: crowdsec-envoy-bouncer-secrets
                   key: api-key
-            - name: ENVOY_BOUNCER_BOUNCER_APIURL
+            - name: ENVOY_BOUNCER_BOUNCER_LAPIURL
               value: http://crowdsec-service.crowdsec.svc.cluster.local:8080
             - name: ENVOY_BOUNCER_WAF_ENABLED
               value: "true"
