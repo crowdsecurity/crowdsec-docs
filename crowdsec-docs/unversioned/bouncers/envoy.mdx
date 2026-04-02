@@ -18,7 +18,7 @@ import RemediationSupportBadges from "@site/src/components/remediation-support-b
   Metrics
   MTLS
   Prometheus={false}
-  Appsec={false}
+  Appsec
 />
 
 # CrowdSec Remediation QuickStart for Envoy Gateway
@@ -56,11 +56,12 @@ The upstream project used in this guide is:
 - `kdwils/envoy-proxy-crowdsec-bouncer`
 :::
 
-:::important
-This page covers remediation only. The Envoy bouncer described here does not
-enable CrowdSec AppSec inspection.
+:::tip AppSec Support
+This bouncer supports the [AppSec Component](/docs/next/appsec/intro) for
+real-time WAF protection.
 
-If you want Envoy Gateway with WAF and virtual patching, follow the
+This page focuses on remediation-only deployment. If you want Envoy Gateway
+with WAF and virtual patching, follow the
 [CrowdSec WAF QuickStart for Envoy Gateway](/docs/next/appsec/quickstart/envoy-gateway).
 :::
 
