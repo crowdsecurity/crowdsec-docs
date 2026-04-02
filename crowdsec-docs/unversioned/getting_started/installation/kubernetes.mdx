@@ -5,10 +5,9 @@ pagination_prev: getting_started/intro
 pagination_next: getting_started/health_check
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
 
 # Install on Kubernetes
 
@@ -107,6 +106,7 @@ In standard standalone setups, documentation states that the labels should be
 name `type` with the type being the parsed log program (eg nginx, traefik). A
 transformation from `type` to `program` is done by the first stage parser
 `crowdsecurity/syslog-logs` which is not relevant in a Kubernetes context.
+
 </details>
 
 <details>
@@ -117,6 +117,7 @@ own. You choose which pods to read, and you tag those logs with a program (like
 nginx or traefik). When the tag matches what a collection expects, its rules
 run; if it doesn’t, they stay idle. One log stream can match several collections
 if the tags fit.
+
 </details>
 
 For full configuration options, see the default
@@ -136,6 +137,7 @@ helm install crowdsec crowdsec/crowdsec -n crowdsec -f crowdsec-values.yaml
 ```
 
 Check the installation status:
+
 ```bash
 kubectl -n crowdsec get pods
 ```
@@ -163,8 +165,8 @@ component. In Kubernetes, remediation is currently done at the ingress level.
 
 For now, we support:
 
-* [Ingress Nginx](/bouncers/ingress-nginx.mdx)
-* [Traefik Ingress](/bouncers/traefik.mdx)
+- [Ingress Nginx](/bouncers/ingress-nginx.mdx)
+- [Traefik Ingress](/bouncers/traefik.mdx)
 
 Please note that the [Traefik Kubernetes Ingress (third-party
 development)](https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin))
@@ -178,7 +180,9 @@ lapi:
     - name: BOUNCER_KEY_<name>
       value: "<bouncer-key>"
 ```
+
 example:
+
 ```yaml
 lapi:
   env:
@@ -187,6 +191,7 @@ lapi:
 ```
 
 To avoid having secrets stored in you `values.yaml` you can use secrets:
+
 ```bash
 kubectl create secret generic crowdsec-keys \
   --from-literal=ENROLL_KEY=<enroll_key> \
@@ -195,7 +200,8 @@ kubectl create secret generic crowdsec-keys \
 ```
 
 And use this in the values.yaml:
-```yaml
+
+````yaml
 lapi:
   env:
     - name: ENROLL_KEY
@@ -210,7 +216,7 @@ lapi:
           name: crowdsec-keys
           key: BOUNCER_KEY_traefik
       value: "<bouncer_key>"```
-```
+````
 
 ### A word about databases
 
@@ -221,14 +227,16 @@ replicated.
 For production deployments on Kubernetes, we recommend using a database engine
 that can be deployed in a replicated or highly available way, such as MariaDB or
 PostgreSQL. You can leverage existing operators to manage these databases:
-* [mariadb operator](https://mariadb.com/resources/blog/get-started-with-mariadb-in-kubernetes-and-mariadb-operator/)
-* [postgresql operator](https://github.com/cloudnative-pg/cloudnative-pg)
+
+- [mariadb operator](https://mariadb.com/resources/blog/get-started-with-mariadb-in-kubernetes-and-mariadb-operator/)
+- [postgresql operator](https://github.com/cloudnative-pg/cloudnative-pg)
 
 Crowdsec in kubernetes configuration for this database is made with the
 [config.config.yaml.local value in
 `values.yaml`](/docs/next/configuration/values_parameters).
 
 Configuration of those databases is out of scope of this documentation.
+
 <!-- We want to create blogpost where we do it -->
 
 :::warning
@@ -243,7 +251,8 @@ replication, SQLite can also become a performance bottleneck under heavy load.
 
 Great, you now have CrowdSec installed on your system!
 
- - Look at the [post
-installation steps](/getting_started/next_steps.mdx) to find the next
-steps to configure and optimize your installation.
- - Look at the [values.yaml](/docs/next/configuration/values_parameters) for available configuration parameters.
+- Look at the [post
+  installation steps](/getting_started/next_steps.mdx) to find the next
+  steps to configure and optimize your installation.
+- Look at the [values.yaml](/docs/next/configuration/values_parameters) for available configuration parameters.
+- Look at the [ingress nginx](/docs/next/appsec/quickstart/nginx-ingress) and [traefik](/docs/next/appsec/quickstart/traefik) for AppSec (Web Application Firewall) configuration
