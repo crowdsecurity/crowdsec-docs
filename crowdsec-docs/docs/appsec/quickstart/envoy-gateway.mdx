@@ -45,6 +45,18 @@ At the end, you will have:
      accepted `GatewayClass`.
    - Existing `Gateway` / `HTTPRoute` resources exposing your applications.
 
+:::important
+For remediation to work correctly, CrowdSec must see the real client IP in the
+Envoy access logs, and the bouncer must evaluate requests against that same IP.
+
+If Envoy only logs an internal proxy, load balancer, or node IP, CrowdSec will
+create decisions for the wrong source and bouncing will not work as expected.
+
+In Kubernetes, make sure the Envoy service configuration preserves source IPs,
+for example by setting `externalTrafficPolicy: Local` instead of a setup that
+hides the original client IP.
+:::
+
 :::warning
 This integration currently relies on a community Envoy external auth bouncer,
 not on a first-party CrowdSec remediation component.
