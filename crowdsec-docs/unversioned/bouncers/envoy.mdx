@@ -16,7 +16,6 @@ import RemediationSupportBadges from "@site/src/components/remediation-support-b
 <RemediationSupportBadges
   Mode={false}
   Metrics
-  MTLS
   Prometheus={false}
   Appsec
 />
@@ -36,6 +35,15 @@ At the end, you will have:
 - `SecurityPolicy` resources attached to your `HTTPRoute` objects
 - CrowdSec remediation decisions enforced before traffic reaches your backends
 
+:::tip AppSec Support
+This bouncer supports the [AppSec Component](/docs/next/appsec/intro) for
+real-time WAF protection.
+
+This page focuses on remediation-only deployment. If you want Envoy Gateway
+with WAF and virtual patching, follow the
+[CrowdSec WAF QuickStart for Envoy Gateway](/docs/next/appsec/quickstart/envoy-gateway).
+:::
+
 ## Prerequisites
 
 1. It is assumed that you already have:
@@ -47,18 +55,6 @@ At the end, you will have:
      accepted `GatewayClass`.
    - Existing `Gateway` / `HTTPRoute` resources exposing your applications.
 
-:::important
-For remediation to work correctly, CrowdSec must see the real client IP in the
-Envoy access logs, and the bouncer must evaluate requests against that same IP.
-
-If Envoy only logs an internal proxy, load balancer, or node IP, CrowdSec will
-create decisions for the wrong source and bouncing will not work as expected.
-
-In Kubernetes, make sure the Envoy service configuration preserves source IPs,
-for example by setting `externalTrafficPolicy: Local` instead of a setup that
-hides the original client IP.
-:::
-
 :::warning
 This integration currently relies on a community Envoy external auth bouncer,
 not on a first-party CrowdSec remediation component.
@@ -66,15 +62,6 @@ not on a first-party CrowdSec remediation component.
 The upstream project used in this guide is:
 
 - `kdwils/envoy-proxy-crowdsec-bouncer`
-:::
-
-:::tip AppSec Support
-This bouncer supports the [AppSec Component](/docs/next/appsec/intro) for
-real-time WAF protection.
-
-This page focuses on remediation-only deployment. If you want Envoy Gateway
-with WAF and virtual patching, follow the
-[CrowdSec WAF QuickStart for Envoy Gateway](/docs/next/appsec/quickstart/envoy-gateway).
 :::
 
 ## Store the Envoy bouncer key in a Kubernetes secret
@@ -141,6 +128,18 @@ You should see:
 
 - `crowdsec-lapi` in `Running`
 - `crowdsec-service` exposing port `8080`
+
+:::important
+For remediation to work correctly, CrowdSec must see the real client IP in the
+Envoy access logs, and the bouncer must evaluate requests against that same IP.
+
+If Envoy only logs an internal proxy, load balancer, or node IP, CrowdSec will
+create decisions for the wrong source and bouncing will not work as expected.
+
+In Kubernetes, make sure the Envoy service configuration preserves source IPs,
+for example by setting `externalTrafficPolicy: Local` instead of a setup that
+hides the original client IP.
+:::
 
 ## Deploy the Envoy bouncer
 
