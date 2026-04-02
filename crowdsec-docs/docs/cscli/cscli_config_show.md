@@ -2,6 +2,8 @@
 id: cscli_config_show
 title: cscli config show
 ---
+## cscli config show
+
 Displays current config
 
 ### Synopsis

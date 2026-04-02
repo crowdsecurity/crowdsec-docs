@@ -2,7 +2,13 @@
 id: cscli_alerts
 title: cscli alerts
 ---
+## cscli alerts
+
 Manage alerts
+
+```
+cscli alerts [action] [flags]
+```
 
 ### Options
 

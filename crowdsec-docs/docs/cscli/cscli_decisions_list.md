@@ -2,6 +2,8 @@
 id: cscli_decisions_list
 title: cscli decisions list
 ---
+## cscli decisions list
+
 List decisions from LAPI
 
 ```
@@ -26,7 +28,7 @@ cscli decisions list --origin lists --scenario list_name
       --until duration    restrict to alerts older than until (ie. 4h, 30d) (default 0s)
   -t, --type string       restrict to this decision type (ie. ban,captcha)
       --scope string      restrict to this scope (ie. ip,range,session)
-      --origin string     the value to match for the specified origin (cscli,crowdsec,console,cscli-import,lists,CAPI ...)
+      --origin string     the value to match for the specified origin (cscli,crowdsec,console,cscli-import,lists,CAPI,remediation_sync ...)
   -v, --value string      restrict to this value (ie. 1.2.3.4,userName)
   -s, --scenario string   restrict to this scenario (ie. crowdsecurity/ssh-bf)
   -i, --ip string         restrict to alerts from this source ip (shorthand for --scope ip --value <IP>)

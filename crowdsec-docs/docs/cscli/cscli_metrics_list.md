@@ -2,6 +2,8 @@
 id: cscli_metrics_list
 title: cscli metrics list
 ---
+## cscli metrics list
+
 List available types of metrics.
 
 ### Synopsis

@@ -356,6 +356,7 @@ const sidebarsConfig: SidebarConfig = {
 				"cscli/cscli_allowlists_inspect",
 				"cscli/cscli_allowlists_list",
 				"cscli/cscli_allowlists_remove",
+				"cscli/cscli_allowlists_import",
 			],
 		},
 		{

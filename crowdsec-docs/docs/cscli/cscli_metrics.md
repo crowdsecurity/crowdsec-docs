@@ -2,6 +2,8 @@
 id: cscli_metrics
 title: cscli metrics
 ---
+## cscli metrics
+
 Display crowdsec prometheus metrics.
 
 ### Synopsis

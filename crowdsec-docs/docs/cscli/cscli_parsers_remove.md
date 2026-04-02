@@ -2,6 +2,8 @@
 id: cscli_parsers_remove
 title: cscli parsers remove
 ---
+## cscli parsers remove
+
 Remove given parser(s)
 
 ### Synopsis

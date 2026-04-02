@@ -1,24 +1,19 @@
 ---
-id: cscli_config_feature-flags
-title: cscli config feature-flags
+id: cscli_dashboard
+title: cscli dashboard
 ---
-## cscli config feature-flags
+## cscli dashboard
 
-Displays feature flag status
 
-### Synopsis
-
-Displays the supported feature flags and their current status.
 
 ```
-cscli config feature-flags [flags]
+cscli dashboard [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help      help for feature-flags
-      --retired   Show retired features
+  -h, --help   help for dashboard
 ```
 
 ### Options inherited from parent commands
@@ -36,5 +31,5 @@ cscli config feature-flags [flags]
 
 ### SEE ALSO
 
-* [cscli config](/cscli/cscli_config.md)	 - Allows to view current config
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
 

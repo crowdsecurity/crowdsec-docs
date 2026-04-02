@@ -2,6 +2,8 @@
 id: cscli_allowlists_inspect
 title: cscli allowlists inspect
 ---
+## cscli allowlists inspect
+
 Inspect an allowlist
 
 ```

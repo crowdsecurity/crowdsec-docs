@@ -2,6 +2,8 @@
 id: cscli_appsec-configs_remove
 title: cscli appsec-configs remove
 ---
+## cscli appsec-configs remove
+
 Remove given appsec-config(s)
 
 ### Synopsis
@@ -15,24 +17,24 @@ cscli appsec-configs remove [item]... [flags]
 ### Examples
 
 ```
-# Uninstall some appsec-configs.
-cscli appsec-configs remove crowdsecurity/virtual-patching
+# Uninstall some waf-configs.
+cscli waf-configs remove crowdsecurity/virtual-patching
 
 # Show the execution plan without changing anything - compact output sorted by type and name.
-cscli appsec-configs remove crowdsecurity/virtual-patching --dry-run
+cscli waf-configs remove crowdsecurity/virtual-patching --dry-run
 
 # Show the execution plan without changing anything - verbose output sorted by execution order.
-cscli appsec-configs remove crowdsecurity/virtual-patching --dry-run -o raw
+cscli waf-configs remove crowdsecurity/virtual-patching --dry-run -o raw
 
 # Uninstall and also remove the downloaded files.
-cscli appsec-configs remove crowdsecurity/virtual-patching --purge
+cscli waf-configs remove crowdsecurity/virtual-patching --purge
 
 # Remove tainted items.
-cscli appsec-configs remove crowdsecurity/virtual-patching --force
+cscli waf-configs remove crowdsecurity/virtual-patching --force
 
 # Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
-cscli appsec-configs remove crowdsecurity/virtual-patching -i
-cscli appsec-configs remove crowdsecurity/virtual-patching --interactive
+cscli waf-configs remove crowdsecurity/virtual-patching -i
+cscli waf-configs remove crowdsecurity/virtual-patching --interactive
 ```
 
 ### Options

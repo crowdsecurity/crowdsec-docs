@@ -2,6 +2,8 @@
 id: cscli_appsec-configs_inspect
 title: cscli appsec-configs inspect
 ---
+## cscli appsec-configs inspect
+
 Inspect given appsec-config(s)
 
 ### Synopsis
@@ -15,18 +17,18 @@ cscli appsec-configs inspect [item]... [flags]
 ### Examples
 
 ```
-# Display metadata, state, ancestor collections of appsec-configs (installed or not).
-cscli appsec-configs inspect crowdsecurity/virtual-patching
+# Display metadata, state, ancestor collections of waf-configs (installed or not).
+cscli waf-configs inspect crowdsecurity/virtual-patching
 
 # If the config is installed, its metrics are collected and shown as well (with an error if crowdsec is not running).
 # To avoid this, use --no-metrics.
-cscli appsec-configs inspect crowdsecurity/virtual-patching --no-metrics
+cscli waf-configs inspect crowdsecurity/virtual-patching --no-metrics
 
 # Display difference between a tainted item and the latest one.
-cscli appsec-configs inspect crowdsecurity/virtual-patching --diff
+cscli waf-configs inspect crowdsecurity/virtual-patching --diff
 
 # Reverse the above diff
-cscli appsec-configs inspect crowdsecurity/virtual-patching --diff --rev
+cscli waf-configs inspect crowdsecurity/virtual-patching --diff --rev
 ```
 
 ### Options

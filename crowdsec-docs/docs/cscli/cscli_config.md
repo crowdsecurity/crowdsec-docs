@@ -2,7 +2,13 @@
 id: cscli_config
 title: cscli config
 ---
+## cscli config
+
 Allows to view current config
+
+```
+cscli config [command] [flags]
+```
 
 ### Options
 

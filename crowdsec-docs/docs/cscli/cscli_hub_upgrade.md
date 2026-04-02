@@ -2,6 +2,8 @@
 id: cscli_hub_upgrade
 title: cscli hub upgrade
 ---
+## cscli hub upgrade
+
 Upgrade all configurations to their latest version
 
 ### Synopsis

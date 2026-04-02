@@ -2,6 +2,8 @@
 id: cscli_console_enable
 title: cscli console enable
 ---
+## cscli console enable
+
 Enable a console option
 
 ### Synopsis

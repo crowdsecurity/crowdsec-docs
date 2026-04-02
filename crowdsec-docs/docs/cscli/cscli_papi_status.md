@@ -2,6 +2,8 @@
 id: cscli_papi_status
 title: cscli papi status
 ---
+## cscli papi status
+
 Get status of the Polling API
 
 ```
