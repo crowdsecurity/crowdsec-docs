@@ -414,13 +414,58 @@ spec:
 If you do not let the chart manage `ReferenceGrant`, you must create an
 equivalent `ReferenceGrant` manually in `envoy-gateway-system`.
 
+## Testing detection
+
+### Test the HTTP generic scenario
+
+You can verify that CrowdSec is parsing Envoy logs correctly by triggering the
+`crowdsecurity/http-generic-test` dummy scenario.
+
+1. Access your service URL with this path:
+   `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
+
+```bash
+curl -I http://<your-service-url>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
+```
+
+2. Confirm the alert has triggered for `crowdsecurity/http-generic-test`:
+
+```bash
+kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list -s crowdsecurity/http-generic-test
+```
+
+:::note
+This scenario can be triggered again after a 5-minute delay.
+:::
+
+### Test the AppSec generic scenario
+
+If AppSec forwarding is enabled, the same probe path also lets you verify the
+`crowdsecurity/appsec-generic-test` dummy scenario.
+
+1. Access your service URL with this path:
+   `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
+
+```bash
+curl -I http://<your-service-url>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
+```
+
+2. Confirm the alert has triggered for `crowdsecurity/appsec-generic-test`:
+
+```bash
+kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list -s crowdsecurity/appsec-generic-test
+```
+
+:::note
+This scenario can be triggered again after a 1-minute delay.
+:::
+
 ## Important Notes
 
 ### Attach `SecurityPolicy` to `HTTPRoute`s, not just to the `Gateway`
 
 For Envoy Gateway, route-level attachment is the safer pattern for this
-integration, especially if you later want to handle multiple applications or
-CAPTCHA endpoints independently.
+integration.
 
 ### Cross-namespace bouncer references still require `ReferenceGrant`
 

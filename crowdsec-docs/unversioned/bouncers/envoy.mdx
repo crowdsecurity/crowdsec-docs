@@ -397,13 +397,34 @@ To validate remediation, add a temporary decision for a test IP and send a
 request from that source through Envoy Gateway. Envoy should deny the request
 once the bouncer has synchronized the decision from LAPI.
 
+## Testing detection
+
+You can also verify that CrowdSec is parsing Envoy logs correctly by
+triggering the `crowdsecurity/http-generic-test` dummy scenario.
+
+1. Access your service URL with this path:
+   `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`
+
+```bash
+curl -I http://<your-service-url>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
+```
+
+2. Confirm the alert has triggered for `crowdsecurity/http-generic-test`:
+
+```bash
+kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list -s crowdsecurity/http-generic-test
+```
+
+:::note
+This scenario can be triggered again after a 5-minute delay.
+:::
+
 ## Important Notes
 
 ### Attach `SecurityPolicy` to `HTTPRoute`s, not only to the `Gateway`
 
 For Envoy Gateway, route-level attachment is the safer pattern for this
-integration, especially if you later want to handle multiple applications
-independently.
+integration.
 
 ### Cross-namespace bouncer references require `ReferenceGrant`
 
