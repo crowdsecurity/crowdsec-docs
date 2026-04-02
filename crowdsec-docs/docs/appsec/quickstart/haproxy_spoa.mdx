@@ -107,9 +107,9 @@ CrowdSec AppSec is still a single “source of truth” for rules/config: you ca
 Recommended layered approach:
 - Use HAProxy SPOA for **edge enforcement** (IP/range/country decisions, ban/captcha) and lightweight WAF evaluation when the request fits within the configured limits.
 - Put a full-featured L7 proxy/WAF-capable integration **downstream** (or protect the app directly) when you need deeper inspection of large bodies, file uploads, or application-specific request parsing. Examples of WAF-capable integrations include:
-  - [Nginx/OpenResty](/appsec/quickstart/nginxopenresty)
-  - [Traefik](/appsec/quickstart/traefik)
-  - [WordPress](/appsec/quickstart/wordpress)
+  - [Nginx/OpenResty](nginxopenresty.mdx)
+  - [Traefik](traefik.mdx)
+  - [WordPress](wordpress.mdx)
 :::
 
 ## Testing the AppSec Component + Remediation Component
@@ -145,6 +145,10 @@ What happened in the test above is:
 
 ## Next steps
 
+You are now running the AppSec Component on your CrowdSec Security Engine with HAProxy SPOA.
+
+As the next steps, you can:
 - Monitor WAF alerts with `sudo cscli alerts list` and in the [CrowdSec Console](https://app.crowdsec.net).
-- Tune rules and configurations: `/appsec/configuration.md` and `/appsec/configuration_rule_management.md`.
-- Troubleshoot: `/appsec/troubleshooting.md` and [HAProxy SPOA remediation component docs](/u/bouncers/haproxy_spoa).
+- Tune AppSec rules and configurations with the [AppSec configuration guide](/appsec/configuration.md) and [rule management guide](/appsec/configuration_rule_management.md).
+- Review the [AppSec troubleshooting guide](/appsec/troubleshooting.md) and the [HAProxy SPOA remediation component docs](/u/bouncers/haproxy_spoa) if you need to investigate or refine the deployment.
+- Explore [WAF deployment strategies](/appsec/advanced_deployments.mdx) if you want to expand beyond this initial setup.
