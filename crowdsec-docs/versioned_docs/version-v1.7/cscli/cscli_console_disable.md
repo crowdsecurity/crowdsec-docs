@@ -2,6 +2,8 @@
 id: cscli_console_disable
 title: cscli console disable
 ---
+## cscli console disable
+
 Disable a console option
 
 ### Synopsis

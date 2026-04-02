@@ -393,17 +393,18 @@ statics:
 data:
   - source_url: https://URL/TO/FILE
     dest_file: LOCAL_FILENAME
-    type: (regexp|string)
+    type: (regexp|string|map)
 ```
 
 `data` allows user to specify an external source of data.
 This section is only relevant when `cscli` is used to install parser from hub, as it will download the `source_url` and store it to `dest_file`. When the parser is not installed from the hub, CrowdSec won't download the URL, but the file must exist for the parser to be loaded correctly.
 
-The `type` is mandatory if you want to evaluate the data in the file, and should be `regex` for valid (re2) regular expression per line or `string` for string per line.
+The `type` is mandatory if you want to evaluate the data in the file, and should be `regex` for valid (re2) regular expression per line, `string` for string per line, or `map` for JSON-lines map files (see [map file helpers](/expr/file_helpers.md#map-file-helpers)).
+
 The regexps will be compiled, the strings will be loaded into a list and both will be kept in memory.
 Without specifying a `type`, the file will be downloaded and stored as file and not in memory.
 
-You can refer to the content of the downloaded file(s) by using either the `File()` or `RegexpInFile()` function in an expression:
+You can refer to the content of the downloaded file(s) by using `File()`, `RegexpInFile()`, `FileMap()`, or `LookupFile()` in an expression:
 
 ```yaml
 filter: 'evt.Meta.log_type in ["http_access-log", "http_error-log"] and any(File("backdoors.txt"), { evt.Parsed.request contains #})'

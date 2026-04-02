@@ -2,6 +2,8 @@
 id: cscli_scenarios_install
 title: cscli scenarios install
 ---
+## cscli scenarios install
+
 Install given scenario(s)
 
 ### Synopsis

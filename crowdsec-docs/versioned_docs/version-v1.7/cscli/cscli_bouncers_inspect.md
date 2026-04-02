@@ -2,6 +2,8 @@
 id: cscli_bouncers_inspect
 title: cscli bouncers inspect
 ---
+## cscli bouncers inspect
+
 inspect a bouncer by name
 
 ```

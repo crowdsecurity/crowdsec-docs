@@ -32,7 +32,7 @@ The [`crowdsecurity/appsec-logs` parser](https://app.crowdsec.net/hub/author/cro
 
 ### Triggering on _In-Band_ Rules
 
-A simple yexample is the [`crowdsecurity/appsec-vpatch` scenario](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/appsec-vpatch) that will ban IPs triggering two distinct _In-Band_ rules:
+A simple example is the [`crowdsecurity/appsec-vpatch` scenario](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/appsec-vpatch) that will ban IPs triggering two distinct _In-Band_ rules:
 
 ```yaml title="/etc/crowdsec/scenarios/appsec-vpatch.yaml"
 type: leaky

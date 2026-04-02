@@ -2,6 +2,8 @@
 id: cscli_explain
 title: cscli explain
 ---
+## cscli explain
+
 Explain log pipeline
 
 ### Synopsis

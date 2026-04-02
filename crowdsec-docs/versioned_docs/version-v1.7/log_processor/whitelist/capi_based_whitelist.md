@@ -6,13 +6,13 @@ title: CAPI
 :::warning
 
 This option is deprecated.
-You should use [centralized allowlists](local_api/allowlists.md) instead.
+You should use [centralized allowlists](/local_api/allowlists.md) instead.
 
 :::
 
 ## Whitelists from CAPI (Central API) community blocklist or third party blocklist
 
-From version 1.5.0 a user can specify a list of IP's or IP ranges to be whitelisted from a community blocklist or third party blocklist. You will have to specify a path to the file within `config.yaml` as by default there is no file specified.
+From version 1.5.0, you can define IPs or IP ranges to whitelist from the community blocklist or third-party blocklists. Set the whitelist file path in `config.yaml` (no default path is set).
 
 ```yaml
 api:
@@ -20,15 +20,15 @@ api:
     capi_whitelists_path: <path_to_capi_whitelists_file>
 ```
 
-We recommend to use the following files for each OS:
+Recommended file paths:
 
 - Linux `/etc/crowdsec/capi-whitelists.yaml` 
 - Freebsd `/usr/local/etc/crowdsec/capi-whitelists.yaml` 
 - Windows `c:/programdata/crowdsec/config/capi-whitelists.yaml`
 
-*These files **DO NOT** exist and you **MUST** create them manually and configure the above settings*
+*These files **DO NOT** exist by default. You **MUST** create them manually and set the path above.*
 
-The following snippet should be used as a guide
+Example file content:
 
 ```yaml
 ips:
@@ -44,8 +44,8 @@ sudo systemctl reload crowdsec
 
 :::warning
 
-The whitelist only applies when crowdsec pulls the blocklist from CAPI. This means that any IPs already in your local database will not get whitelisted.
+The whitelist applies only when CrowdSec pulls blocklists from CAPI. IPs already in your local database are not retroactively whitelisted.
 
-You can either manually delete the decisions for the IPs you want to whitelist with `cscli decisions delete`, or delete all alerts and active decisions from the database with `cscli alerts delete --all` and restart crowdsec.
+You can either delete decisions for specific IPs with `cscli decisions delete`, or delete all alerts and active decisions with `cscli alerts delete --all` and then restart CrowdSec.
 
 :::

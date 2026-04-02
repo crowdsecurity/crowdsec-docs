@@ -2,6 +2,8 @@
 id: cscli_notifications_reinject
 title: cscli notifications reinject
 ---
+## cscli notifications reinject
+
 reinject an alert into profiles to trigger notifications
 
 ### Synopsis

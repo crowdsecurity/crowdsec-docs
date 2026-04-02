@@ -2,11 +2,17 @@
 id: cscli_decisions
 title: cscli decisions
 ---
+## cscli decisions
+
 Manage decisions
 
 ### Synopsis
 
 Add/List/Delete/Import decisions from LAPI
+
+```
+cscli decisions [action] [flags]
+```
 
 ### Examples
 

@@ -5,60 +5,106 @@ sidebar_position: 1
 ---
 
 
-# Global overview
+## Global overview
 
-# Security Engine
+This page defines the core CrowdSec concepts and how the components interact. It focuses on how detection is done, where data is stored, and where remediation is enforced.
 
-> The Security Engine is CrowdSec's IDS/IPS (Intrusion Detection System/Intrusion Prevention System)
-> It is a rules and behavior detection engine comprised of Log Processor and the Local API.
+## Security Engine
 
-A Security Engine can operate [independently](intro.mdx#architecture) or in a [distributed manner](intro.mdx#deployment-options), adapting to the specific needs and constraints of your infrastructure. For more information on CrowdSec's distributed approach, visit our documentation on collaborative operations and distributed deployments.
+> The Security Engine is the CrowdSec software you install (an IDS: Intrusion Detection System).
+> It detects threats and produces alerts. The Local API can turn alerts into decisions using [profiles](/local_api/profiles/intro.md).
+> Threat prevention (blocking) is enforced by Remediation Components (bouncers).
+> Internally, the Security Engine is made of two main components: the Log Processor (detection) and the Local API (storage and decision distribution).
+
+A Security Engine can run [standalone](intro.mdx#architecture) (Log Processor + Local API on the same host) or in a [distributed setup](intro.mdx#deployment-options) (multiple Log Processors sending alerts to a shared Local API). This lets you adapt CrowdSec to your infrastructure and constraints.
+
+In a distributed setup, detection content (collections/parsers/scenarios) runs on the Log Processor machines, while the Local API focuses on storing data and serving decisions. See the [multi-server setup guide](/u/user_guides/multiserver_setup) for a concrete deployment pattern.
+
+### Log Processor (LP)
+
+> The Log Processor is the part of the Security Engine in charge of detecting malicious behavior based on your logs and HTTP traffic.
+
+The Log Processor (abbreviated as `LP`) detects malicious behavior in two main ways:
+- It [acquires](/log_processor/data_sources/introduction.md) logs, [parses](/log_processor/parsers/introduction.mdx) and [enriches](/log_processor/parsers/enricher.md) events, then matches them against [scenarios](/log_processor/scenarios/introduction.mdx).
+- It receives [HTTP requests](/log_processor/data_sources/appsec.md) and matches them against [AppSec rules](/appsec/intro.md).
+
+When a scenario or an AppSec rule is triggered, the Log Processor sends an alert to the `LAPI`.
+
+Related documentation:
+- Installation and updates of detection content: [Collections](/log_processor/collections/introduction.md), [Hub management](/cscli/cscli_hub.md)
+- Add context to alerts (visible in `cscli`/Console): [Alert context](/log_processor/alert_context/intro.md)
+- AppSec request inspection and compatible integrations: [AppSec](/appsec/intro.md)
+
+### Local API (LAPI)
+
+> The Local API is the part of the Security Engine that stores alerts/decisions and acts as the middleman between Log Processors, Remediation Components, and the Central API.
+
+The Local API (abbreviated as `LAPI`) has several roles:
+- Receive alerts from Log Processors and (optionally) create decisions based on configured [profiles](/local_api/profiles/intro.md).
+- Expose decisions to [Remediation Components](/u/bouncers/intro) so they can enforce them.
+- Interact with the Central API to share signals and receive community blocklists.
+
+For implementation details, see:
+- Local API configuration for distributed setups: [Local API configuration](/local_api/configuration.md)
+- How bouncers consume decisions: [Bouncers API](/local_api/bouncers-api.md)
+- Authentication methods: [Local API authentication](/local_api/authentication.md)
+- Notifications: [Notification plugins](/local_api/notification_plugins/intro.md)
+- Storage: [Databases](/local_api/database.md)
+- Controlling exemptions: [AllowLists](/local_api/allowlists.md)
 
 
-# Log Processor (LP)
+## Glossary
 
-> The Log Processor is the part of the Security Engine in charge of the detection of bad behaviors, based on your logs or your HTTP trafic.
+Quick definitions of terms used throughout the documentation and in tools like `cscli`:
 
-The Log Processor (abreviated as `LP`) detects bad behaviors via two main functions:
- - [Acquire](/log_processor/data_sources/introduction.md) logs, [parse](/log_processor/parsers/introduction.mdx), [enrich](/log_processor/parsers/enricher.md) and match them against [Scenarios](/log_processor/scenarios/introduction.mdx).
- - Receive [HTTP Requests](/log_processor/data_sources/appsec.md) and match them against the [Appsec Rules](/appsec/intro.md).
-
-Alerts resulting from Scenarios or Appsec Rules being triggered are sent to the `LAPI`.
-
-# Local API (LAPI)
-
-> The Local API is the part of the Security Engine acting as the middleman between the Log Processors, the Remediation Components and the Central API.
-
-The Local API (abreviated as `LAPI`) has several functions:
- - Receive alerts from Log Processors and create Decisions based on configured [Profiles](/local_api/profiles/intro.md)
- - Expose Decisions to [Remediation Components](/u/bouncers/intro)
- - Interact with the Central API to send Alerts receive Blocklists
+- **Collections**: bundles of parsers, scenarios, and other items installed together. See [Collections](/log_processor/collections/introduction.md) and [Hub management](/cscli/cscli_hub.md).
+- **Scenarios**: behavior detections evaluated by the Log Processor. See [Scenarios](/log_processor/scenarios/introduction.mdx).
+- **AppSec rules**: WAF rules evaluated by the AppSec component. See [AppSec](/appsec/intro.md).
+- **Alerts**: records created when a scenario/AppSec rule triggers; stored in the Local API. See [`cscli alerts`](/cscli/cscli_alerts.md).
+- **Decisions**: remediation instructions (for example `ban`, sometimes other types depending on your setup) created by Local API [profiles](/local_api/profiles/intro.md) or manually via `cscli`; consumed by bouncers. See [`cscli decisions`](/cscli/cscli_decisions.md) and [Bouncers API](/local_api/bouncers-api.md).
 
 
-# Remediation Components (Bouncers)
+## Remediation Components (Bouncers)
 
 > The Remediation Components (also called `Bouncers`) are external components in charge of enforcing decisions.
 
-Remediation Components rely on the Local API to receive decisions about malevolent IPs to be blocked *(or other supported types or remediations such as Captcha, supported by some of our Bouncers).*    
+Remediation Components rely on the Local API to receive decisions about malicious IPs to be blocked *(or other remediation types such as CAPTCHA, supported by some bouncers).*    
 *Note that they also support [CrowdSec's Blocklist as a Service](/u/integrations/intro).*
 
-Those Decisions can be based on behavioral detection made by the `LP` or from Blocklists.
+Those decisions can come from detections made by the `LP` or from blocklists.
 
-Remediations components leverage existing components of your infrastructure to block malevolent IPs where it matters most. You can find them on our [Remediation Components' HUB](https://app.crowdsec.net/hub/remediation-components)
+Remediation Components leverage existing parts of your infrastructure to block malicious IPs where it matters most (firewall, reverse proxy, web server, ...). You can find them on our [Remediation Components Hub](https://app.crowdsec.net/hub/remediation-components).
 
-# Central API (CAPI)
+## Central API (CAPI)
 
 > The Central API (CAPI) serves as the gateway for network participants to connect and communicate with CrowdSec's network.
 
-The Central API (abreviated as `CAPI`) receives attack signals from all participating Security Engines and signal partners, then re-distribute them curated community decisions ([Community Blocklist](/central_api/blocklist.md)).   
-It's also at the heart of CrowdSec centralized [Blocklist services](/u/blocklists/intro).
+The Central API (abbreviated as `CAPI`) receives attack signals from participating Security Engines and signal partners. It then redistributes curated community decisions (the [Community Blocklist](/central_api/blocklist.md)).
 
-# Console
+The Central API is also at the heart of CrowdSec centralized [blocklist services](/u/blocklists/intro).
 
-> The CrowdSec Console is a web-based interface providing reporting, alerting, management and QoL features to CrowdSec's products usages: from your park of Security Engines to the management of CTI related actions
+For details about what data is sent (and when), see the [Central API introduction](/central_api/intro.md).
+If you want to disable sharing to the Central API, see [how to disable the Central API](/u/troubleshooting/security_engine#how-to-disable-the-central-api).
+
+## Console
+
+> The CrowdSec Console is a web-based interface for reporting, alerting, and management across your CrowdSec products (from your fleet of Security Engines to CTI-related actions).
 
 The [Console](https://app.crowdsec.net) allows you to:
- - [Manage alerts](/u/console/alerts/intro) of your security stack
- - [Manage decisions](/u/console/decisions/decisions_intro) in real-time
- - View and use [blocklists and integrations](/u/blocklists/intro)
- - Manage your API keys ([CTI API](/u/cti_api/intro), [Service API](/u/console/service_api/getting_started))
+- [Manage alerts](/u/console/alerts/intro) from your security stack.
+- [Manage decisions](/u/console/decisions/decisions_intro) in real time.
+- View and use [blocklists and integrations](/u/blocklists/intro).
+- Manage your API keys ([CTI API](/u/cti_api/intro), [Service API](/u/console/service_api/getting_started)).
+
+To connect an instance to the Console, see [Console enrollment](/u/getting_started/post_installation/console) and the `cscli` command reference: [`cscli console enroll`](/cscli/cscli_console_enroll.md).
+
+## Example: from a log line to a block
+
+This is a typical flow for a log-based scenario (for example, SSH brute-force):
+
+0. **Install detection content**: you typically install a [collection](/log_processor/collections/introduction.md) from the Hub (parsers + scenarios) using `cscli` (see [Hub management](/cscli/cscli_hub.md)).
+1. **Acquire**: the Log Processor reads your service logs via an [acquisition configuration](/log_processor/data_sources/introduction.md) (for example, a file tail on `/var/log/auth.log`).
+2. **Parse + enrich**: [parsers](/log_processor/parsers/introduction.mdx) extract fields (source IP, service, status, ...) and [enrichers](/log_processor/parsers/enricher.md) add context (GeoIP/ASN, ...).
+3. **Detect**: a [scenario](/log_processor/scenarios/introduction.mdx) correlates events over time (for example, many failed logins from the same IP) and triggers an **alert**.
+4. **Store + decide**: the Log Processor sends the alert to the `LAPI`. The `LAPI` applies your [profiles](/local_api/profiles/intro.md) to create a **decision** (for example, `ban` for a given duration).
+5. **Enforce**: a [Remediation Component (bouncer)](/u/bouncers/intro) pulls decisions from the `LAPI` and enforces them where it matters (firewall, reverse proxy, web server, ...).

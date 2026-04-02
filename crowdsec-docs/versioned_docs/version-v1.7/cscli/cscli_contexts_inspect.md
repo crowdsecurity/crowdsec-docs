@@ -2,6 +2,8 @@
 id: cscli_contexts_inspect
 title: cscli contexts inspect
 ---
+## cscli contexts inspect
+
 Inspect given context(s)
 
 ### Synopsis

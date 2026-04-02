@@ -2,16 +2,22 @@
 id: cscli_appsec-rules
 title: cscli appsec-rules
 ---
+## cscli appsec-rules
+
 Manage hub appsec-rules
+
+```
+cscli appsec-rules <action> [item]... [flags]
+```
 
 ### Examples
 
 ```
-cscli appsec-rules list -a
-cscli appsec-rules install crowdsecurity/crs
-cscli appsec-rules inspect crowdsecurity/crs
-cscli appsec-rules upgrade crowdsecurity/crs
-cscli appsec-rules remove crowdsecurity/crs
+cscli waf-rules list -a
+cscli waf-rules install crowdsecurity/crs
+cscli waf-rules inspect crowdsecurity/crs
+cscli waf-rules upgrade crowdsecurity/crs
+cscli waf-rules remove crowdsecurity/crs
 
 ```
 

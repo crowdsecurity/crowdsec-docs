@@ -2,7 +2,13 @@
 id: cscli_parsers
 title: cscli parsers
 ---
+## cscli parsers
+
 Manage hub parsers
+
+```
+cscli parsers <action> [item]... [flags]
+```
 
 ### Examples
 

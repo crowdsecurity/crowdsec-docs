@@ -2,6 +2,8 @@
 id: cscli_allowlists_remove
 title: cscli allowlists remove
 ---
+## cscli allowlists remove
+
 Remove content from an allowlist
 
 ```

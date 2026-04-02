@@ -2,6 +2,8 @@
 id: cscli_allowlists_list
 title: cscli allowlists list
 ---
+## cscli allowlists list
+
 List all allowlists
 
 ```

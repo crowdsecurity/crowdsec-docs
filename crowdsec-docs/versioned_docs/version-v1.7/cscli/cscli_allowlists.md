@@ -2,7 +2,13 @@
 id: cscli_allowlists
 title: cscli allowlists
 ---
+## cscli allowlists
+
 Manage centralized allowlists
+
+```
+cscli allowlists [action] [flags]
+```
 
 ### Options
 
@@ -30,6 +36,7 @@ Manage centralized allowlists
 * [cscli allowlists check](/cscli/cscli_allowlists_check.md)	 - Check if a value is in an allowlist
 * [cscli allowlists create](/cscli/cscli_allowlists_create.md)	 - Create a new allowlist
 * [cscli allowlists delete](/cscli/cscli_allowlists_delete.md)	 - Delete an allowlist
+* [cscli allowlists import](/cscli/cscli_allowlists_import.md)	 - Import values to an allowlist from a CSV file
 * [cscli allowlists inspect](/cscli/cscli_allowlists_inspect.md)	 - Inspect an allowlist
 * [cscli allowlists list](/cscli/cscli_allowlists_list.md)	 - List all allowlists
 * [cscli allowlists remove](/cscli/cscli_allowlists_remove.md)	 - Remove content from an allowlist

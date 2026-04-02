@@ -1,0 +1,30 @@
+---
+id: install_drupal_plugin
+title: Drupal Plugin
+sidebar_position: 1
+---
+
+The CrowdSec Drupal plugin provides real-time protection against malicious actors by integrating your Drupal site with the CrowdSec security network.
+
+## Overview
+
+The Drupal plugin leverages the [PHP Soft Agent](install_php_softagent) to connect your site to CrowdSec's collaborative security ecosystem. This integration allows your Drupal site to:
+
+- **Detect threats**: Automatically identify brute force attacks and scanning attempts
+- **Share intelligence**: Contribute attack data to the global CrowdSec network
+- **Receive protection**: Get real-time updates on known malicious IP addresses
+- **Block attackers**: Automatically prevent access from validated threats
+
+## How It Works
+
+The plugin monitors your Drupal site for suspicious activities, particularly:
+- **Brute force attacks** on login forms
+- **Scanning attempts** targeting vulnerabilities
+- **Suspicious traffic patterns**
+
+When threats are detected, the plugin signals the CrowdSec network. In return, your site receives continuously updated lists of malicious IPs identified by the global community, providing proactive protection against known attackers.
+
+## Installation & Configuration
+
+The plugin works out-of-the-box with minimal configuration thanks to the Drupal Plugin architecture.
+For complete installation instructions, configuration options, and troubleshooting guidance, visit the [official Drupal plugin documentation](https://www.drupal.org/project/crowdsec).
