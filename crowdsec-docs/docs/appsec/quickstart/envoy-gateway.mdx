@@ -350,6 +350,15 @@ kubectl -n envoy-gateway-system rollout status deploy/crowdsec-envoy-bouncer
 Envoy Gateway external auth is configured through
 `gateway.envoyproxy.io/v1alpha1` `SecurityPolicy` resources.
 
+:::note
+Attaching the `SecurityPolicy` to an `HTTPRoute` is usually better than
+attaching it to the `Gateway`.
+
+It keeps the policy scoped to one application route instead of every route on
+the shared entrypoint, which makes rollout, debugging, and multi-application
+setups easier to manage.
+:::
+
 Attach them at the `HTTPRoute` level:
 
 ```yaml title="app-securitypolicy.yaml"
