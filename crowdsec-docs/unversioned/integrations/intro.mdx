@@ -6,6 +6,11 @@ sidebar_position: 1
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
+
 
 CrowdSec Blocklist Integrations — also known as **Blocklist as a Service** — give you a secure, hosted HTTPS endpoint serving live blocklists that you configure your firewall or security tool to pull from.   
 You don't host anything: CrowdSec updates the blocklists multiple times per day, and your device fetches them on a schedule you control.
@@ -62,22 +67,15 @@ Each vendor page explains how to create the integration in the CrowdSec Console 
 You will need a [CrowdSec Console account](https://app.crowdsec.net/signup) to create integrations. Once logged in, go to **Blocklists → Integrations** and select the integration type you need.
 
 <details>
-<summary>How to create a Console account</summary>
+<summary>Setup a Blocklist Integration Endpoint</summary>
 
-Navigate to [app.crowdsec.net/signup](https://app.crowdsec.net/signup) and create your account.
-
-<a href="https://app.crowdsec.net/signup" target="_blank">
-    <ThemedImage
-        alt="CrowdSec Signup Screen"
-        sources={{
-            light: useBaseUrl("/img/console_login_light.png"),
-            dark: useBaseUrl("/img/console_login_dark.png"),
-        }}
-    />
-</a>
-
-Once authenticated, navigate to the **Blocklist** tab in the top menu bar, then select the **Integrations** sub-menu.
-
+### Step 1 — Create an integration in the CrowdSec Console
+In your CrowdSec Console account, navigate to the **Blocklist** tab in the top menu bar, then select the **Integrations** sub-menu.  
+Choose the integration type you need, then click **Connect**.
+:::info
+If you don't have a CrowdSec Console account, [sign up here](https://app.crowdsec.net/signup).  
+On mobile, use the menu icon in the top-right corner, tap **Blocklist**, then **Integrations**.
+:::
 <a href="https://app.crowdsec.net/blocklists/integrations" target="_blank">
     <ThemedImage
         alt="CrowdSec Integrations Screen"
@@ -88,6 +86,87 @@ Once authenticated, navigate to the **Blocklist** tab in the top menu bar, then 
     />
 </a>
 
-On mobile, use the menu icon in the top-right corner, tap **Blocklist**, then **Integrations**.
+### Step 2 — Fill in integration details
+Name the integration* (must be unique to your account)*  
+Optionnaly, add a description and tagsto help you identify it later.  
+✨ Then click **Create**.
+
+<ThemedImage
+    alt="Raw IP List Integration Creation Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_creation_light.png"),
+        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
+    }}
+/>
+
+### Step 3 — Copy your credentials
+:::warning
+The credentials shown next are displayed **only once**. Copy them before closing this screen.  
+If you lose your credentials, you can regenerate them via **Configure → Regenerate Credentials** on the integration page.
+:::
+
+<Tabs
+  defaultValue="basicauth"
+  groupId="listening-ports"
+  values={[
+    {label: 'BasicAuth', value: 'basicauth'},
+    {label: 'RemediationComponent', value: 'remediationcomponent'},
+  ]}>
+  
+  <TabItem value="basicauth">
+    With this HTTPS endpoint and Basic Auth credentials, you can verify the endpoint with any HTTP client, for example:
+
+    ```
+    curl -u 'username:password' https://admin.api.crowdsec.net/v1/integrations/${content_id}/content
+    ```
+
+    <ThemedImage
+        alt="Raw IP List Integration Credentials Screen"
+        sources={{
+            light: useBaseUrl("/img/console_integrations_generic_credentials_light.png"),
+            dark: useBaseUrl("/img/console_integrations_generic_credentials_dark.png"),
+        }}
+    />
+  </TabItem>
+
+  <TabItem value="remediationcomponent">
+    The Remediation Component integration provides you with an API KEY credentials to copy in in your your Remediation Component config file along with the endpoint URL.
+
+    <ThemedImage
+        alt="CrowdSec Remediation Component Integration Credentials Screen"
+        sources={{
+            light: useBaseUrl("/img/console_integrations_rc_credentials_light.png"),
+            dark: useBaseUrl("/img/console_integrations_rc_credentials_dark.png"),
+        }}
+    />
+  </TabItem>
+</Tabs>
+
+
+
+### Step 4 — Subscribe Integration to Chosen Blocklists
+The Integration endpoint will serve deduplicated blocklists and subsctracted allowlists it's subscribed to.  
+After creation the subscription pop-up appears.  
+You can also access it later via the "Add Blocklist" button.  
+
+You will see the list of blocklists available for your plan. Select one or more blocklists to subscribe to, then click **Confirm Subscription**.
+
+After subscription you'll see the blocklist name(s) appear in the integration tile.
+
+<ThemedImage
+    alt="Subscribe Integration to Blocklists Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_add_blocklist_light.png"),
+        dark: useBaseUrl("/img/console_integrations_add_blocklist_dark.png"),
+    }}
+/>
+
+<ThemedImage
+    alt="Subscribe Integration to Blocklists Screen"
+    sources={{
+        light: useBaseUrl("/img/console_integrations_tile_light.png"),
+        dark: useBaseUrl("/img/console_integrations_tile_dark.png"),
+    }}
+/>
 
 </details>
