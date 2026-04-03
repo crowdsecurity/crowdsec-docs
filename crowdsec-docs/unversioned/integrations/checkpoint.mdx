@@ -6,25 +6,17 @@ title: Checkpoint
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
-The CrowdSec Checkpoint integration allows you to block malicious IPs in your Checkpoint firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Checkpoint firewall.
+The CrowdSec Checkpoint integration connects CrowdSec's hosted blocklist endpoint to your Checkpoint firewall.   
+Check Point calls this feature **Custom Intelligence (IoC) Feeds**, which provide the ability to add custom cyber intelligence feeds into the Threat Prevention engine.   
 
-Check Point refers to this feature as [**Custom Intelligence (IoC) Feeds**](https://support.checkpoint.com/results/sk/sk132193), which provide the ability to add custom cyber intelligence feeds into the Threat Prevention engine.
-
-### Prerequisites
-
-Before you begin, please ensure your Checkpoint device supports ingesting blocklists. If you are unsure, please refer to the Checkpoint documentation or contact Checkpoint support.
-
-:::warning
-Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::info
+Ensure your Checkpoint device supports Custom Intelligence (IoC) Feeds.  
+The vendor documentation is available in the [References](#references) section below.
 :::
 
-### Steps
+## Step 1 — Create the integration in the CrowdSec Console
 
-We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
-
-Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
-
-Once the page has loaded, you can click the "Connect" button under the Checkpoint logo.
+In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the Checkpoint card.
 
 <ThemedImage
     alt="Checkpoint Integration Card"
@@ -34,7 +26,7 @@ Once the page has loaded, you can click the "Connect" button under the Checkpoin
     }}
 />
 
-Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
+Name the integration (must be unique to your account), then click **Create**.
 
 <ThemedImage
     alt="Checkpoint Integration Creation Screen"
@@ -44,7 +36,9 @@ Doing so will prompt you to name this integration, you can name it anything you 
     }}
 />
 
-Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your Checkpoint Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
+:::warning
+The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::
 
 <ThemedImage
     alt="Checkpoint Integration Credentials Screen"
@@ -54,46 +48,43 @@ Once the integration is generated you will be presented with a credentials scree
     }}
 />
 
-## Checkpoint Configuration
+You now have an HTTPS endpoint and Basic Auth credentials to configure on your Checkpoint device.
 
+## Step 2 — Configure Checkpoint
 
-In the gateways and servers tab, double-click on the specific gateway you want to configure
+In the **Gateways and Servers** tab, double-click the gateway you want to configure.
 
 ![](/img/checkpoint_step1.png)
 
-You will have this properties menu, select "Threat Prevention (Custom)", then activate at least Anti-Bot or Anti-Virus.
+In the properties menu, select **Threat Prevention (Custom)**, then activate at least Anti-Bot or Anti-Virus.
 
 ![](/img/checkpoint_step2.png)
 
-Now go to the "Security policies" tab, and click on "New IOC Feed"
+Go to the **Security policies** tab and click **New IOC Feed**.
 
 ![](/img/checkpoint_step3.png)
 
-Click on "Custom Policy", then below on "Indicators". Add your feed information and click "Test Feed".
-
-You need to put the username and password provided by the console in the "Feed URL" so it can use basic authentication:
+Click **Custom Policy**, then **Indicators**. Add your feed information using the endpoint URL with Basic Auth credentials embedded:
 
 ```
 https://<username>:<password>@admin.api.crowdsec.net/v1/integrations/<integration_id>/content
 ```
 
-In this example, we used "Raw IP List Format", but you can use checkpoint format and select the data column "1".
+You can use the Raw IP List format and set the data column to `1`. Click **Test Feed**.
 
 ![](/img/checkpoint_step4.png)
 
-Select the Gateway and click "Test Feed"
+Select the gateway and click **Test Feed**.
 
 ![](/img/checkpoint_step5.png)
 
-Check That the feed is working and save the configuration.
+Verify the feed is working, then save the configuration.
 
 ![](/img/checkpoint_step6.png)
 
-You can also take a look at the [Checkpoint Documentation](https://support.checkpoint.com/results/sk/sk132193) for more information (if you want to do it using CLI).
-
 ## Format example
 
-The CrowdSec blocklist will be in checkpoint format, with formatted data per line. Here is an example of how the blocklist will look:
+The CrowdSec blocklist is served in Checkpoint format, with one entry per line:
 
 ```
 Accessobserv2,192.168.38.187,IP,high,high,AB,C&C server IP
@@ -101,18 +92,17 @@ Accessobserv2,192.168.38.188,IP,high,high,AB,C&C server IP
 ```
 
 :::info
-The format is as follows: UNIQ-NAME , VALUE , TYPE , CONFIDENCE , SEVERITY , PRODUCT , COMMENT
+Format: `UNIQ-NAME, VALUE, TYPE, CONFIDENCE, SEVERITY, PRODUCT, COMMENT`
 :::
 
 ## Manage integration size limits with pagination
 
 If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
 
-## Contribute to this documentation
+## References
 
-Since CrowdSec is a community-driven project, we welcome contributions to this documentation. If you have any instructions or tips that you would like to share with the community, please feel free to open a pull request on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs)
+- [Check Point — Custom Intelligence (IoC) Feeds documentation](https://support.checkpoint.com/results/sk/sk132193)
 
 ## Next Steps
 
-Now that you have integrated CrowdSec integration with your Checkpoint Firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
-
+Subscribe to blocklists in the [Blocklist Catalog](console/blocklists/catalog.md) to populate your integration.

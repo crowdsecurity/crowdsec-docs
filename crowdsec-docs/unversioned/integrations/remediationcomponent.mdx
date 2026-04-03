@@ -2,18 +2,17 @@
 id: remediationcomponent
 title: Remediation Component
 ---
+
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
-The [Remediation Component](bouncers/intro.md) integration allows you to feed the component without a [Security Engine](blocklists/security_engine.mdx).
+The CrowdSec [Remediation Component](bouncers/intro.md) integration allows you to feed a Remediation Component directly from a CrowdSec blocklist, without requiring a local [Security Engine](blocklists/security_engine.mdx).
 
-### Steps
+This is the integration to use for platforms that do not support native IP list ingestion from an external URL — such as Cloudflare, AWS WAF, and others. Remediation Components act as the bridge between CrowdSec's blocklist endpoint and those platforms. See the [full list of available Remediation Components](bouncers/intro.md) to find the one matching your platform.
 
-We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
+## Step 1 — Create the integration in the CrowdSec Console
 
-Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
-
-Once the page has loaded, you can click the "Connect" button under the CrowdSec Remediation Component logo.
+In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the Remediation Component card.
 
 <ThemedImage
     alt="CrowdSec Remediation Component Integration Card"
@@ -23,7 +22,7 @@ Once the page has loaded, you can click the "Connect" button under the CrowdSec 
     }}
 />
 
-Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
+Name the integration (must be unique to your account), then click **Create**.
 
 <ThemedImage
     alt="CrowdSec Remediation Component Integration Creation Screen"
@@ -33,7 +32,9 @@ Doing so will prompt you to name this integration, you can name it anything you 
     }}
 />
 
-Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your component. This information will **ONLY** be displayed once, so please ensure you copy it down.
+:::warning
+The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::
 
 <ThemedImage
     alt="CrowdSec Remediation Component Integration Credentials Screen"
@@ -43,8 +44,10 @@ Once the integration is generated you will be presented with a credentials scree
     }}
 />
 
-You can read the [Remediation Component](bouncers/intro.md) documentation to learn more about how to configure the component.
+## Step 2 — Configure the Remediation Component
+
+Use the credentials from the Console to configure your Remediation Component. Refer to the [Remediation Component documentation](bouncers/intro.md) for platform-specific setup instructions.
 
 ## Next Steps
 
-Now that you have integrated CrowdSec integration with your Remediation Component, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
+Subscribe to blocklists in the [Blocklist Catalog](console/blocklists/catalog.md) to populate your integration.

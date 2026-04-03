@@ -6,25 +6,17 @@ title: Fortinet
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
-The CrowdSec Fortinet integration allows you to block malicious IPs in your Fortinet firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Fortinet firewall.
+The CrowdSec Fortinet integration connects CrowdSec's hosted blocklist endpoint to your Fortinet firewall.  
+Fortinet calls this feature **IP address Threat Feeds**, which enable you to integrate external threat intelligence sources into your firewall policies.
 
-Fortinet refers to this feature as [**IP address Threat Feeds**](https://docs.fortinet.com/document/fortigate/6.4.5/administration-guide/891236/external-blocklist-policy), which enable you to integrate external threat intelligence sources into your firewall policies.
-
-### Prerequisites
-
-Before you begin, please ensure your Fortinet device supports ingesting blocklists. If you are unsure, please refer to the Fortinet documentation or contact Fortinet support.
-
-:::warning
-Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::info
+Ensure your Fortinet firmware supports IP address Threat Feeds.  
+The vendor documentation is available in the [References](#references) section below.
 :::
 
-### Steps
+## Step 1 — Create the integration in the CrowdSec Console
 
-We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
-
-Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
-
-Once the page has loaded, you can click the "Connect" button under the Fortinet logo.
+In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the Fortinet card.
 
 <ThemedImage
     alt="Fortinet Integration Card"
@@ -34,7 +26,7 @@ Once the page has loaded, you can click the "Connect" button under the Fortinet 
     }}
 />
 
-Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
+Name the integration (must be unique to your account), then click **Create**.
 
 <ThemedImage
     alt="Fortinet Integration Creation Screen"
@@ -44,7 +36,9 @@ Doing so will prompt you to name this integration, you can name it anything you 
     }}
 />
 
-Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your Fortinet Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
+:::warning
+The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::
 
 <ThemedImage
     alt="Fortinet Integration Credentials Screen"
@@ -54,26 +48,13 @@ Once the integration is generated you will be presented with a credentials scree
     }}
 />
 
-[Fortinet Documentation](https://docs.fortinet.com/document/fortigate/6.4.5/administration-guide/891236/external-blocklist-policy)
-[Youtube tutorial](https://www.youtube.com/watch?v=E3b4Yr2zf_s)
+You now have an HTTPS endpoint and Basic Auth credentials to configure on your Fortinet device.
 
-## Format example
+## References
 
-The CrowdSec blocklist will be in plain text format, with one IP address per line. Here is an example of how the blocklist will look:
-
-```
-192.168.38.187
-192.168.38.186
-```
-
-## Manage integration size limits with pagination
-
-If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
-
-## Contribute to this documentation
-
-Since CrowdSec is a community-driven project, we welcome contributions to this documentation. If you have any instructions or tips that you would like to share with the community, please feel free to open a pull request on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs)
+- [Fortinet — IP address Threat Feeds documentation](https://docs.fortinet.com/document/fortigate/6.4.5/administration-guide/891236/external-blocklist-policy)
+- [Video tutorial](https://www.youtube.com/watch?v=E3b4Yr2zf_s)
 
 ## Next Steps
 
-Now that you have integrated CrowdSec integration with your Fortinet Firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
+Subscribe to blocklists in the [Blocklist Catalog](console/blocklists/catalog.md) to populate your integration.

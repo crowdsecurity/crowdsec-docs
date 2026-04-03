@@ -7,17 +7,64 @@ sidebar_position: 1
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
+CrowdSec Blocklist Integrations — also known as **Blocklist as a Service** — give you a secure, hosted HTTPS endpoint serving live blocklists that you configure your firewall or security tool to pull from.   
+You don't host anything: CrowdSec updates the blocklists multiple times per day, and your device fetches them on a schedule you control.
 
-Integrations are direct integration with services that can act upon a feed provided by CrowdSec. Depending on if you would like to remediate or simply log, you would need to integrate with the appropriate service.
+Each integration represents a unique endpoint protected by Basic Authentication (username + password), consumable by any HTTP-capable device or software.
 
-## Use Cases
+## Choosing the right integration
 
-- **Remediation**: Block malicious IPs in your firewall, CDN, or other security solutions
-- **Logging**: Log malicious IPs in your SIEM, logging solution, or other security solutions
+| Your situation | Recommended integration |
+|---|---|
+| Your firewall supports external IP list ingestion | Use the dedicated page for your vendor in the [table below](#firewall-integrations) |
+| Any HTTP-capable device not listed | [Raw IP List](integrations/rawiplist.mdx) — one IP per line, works in the vast majority of cases |
+| Platforms without native IP list ingestion (Cloudflare, AWS WAF, etc.) | [Remediation Component](integrations/remediationcomponent.mdx) — CrowdSec's own integration layer |
 
-## Getting Started
+## Refresh frequency
 
-Firstly you will need to create a Console account you can do so [here](https://app.crowdsec.net/signup).
+Blocklists are updated multiple times per day. Configure your device to pull on the following schedule:
+
+| Tier | Recommended refresh | Minimum allowed interval |
+|---|---|---|
+| Community / Premium | Every 24 hours | 24 hours |
+| Platinum | Every hour | 1 hour |
+
+:::warning
+Pulling more frequently than the allowed interval for your plan will result in HTTP 429.
+:::
+
+## Available integrations
+
+### Firewall integrations
+
+Each vendor page explains how to create the integration in the CrowdSec Console and includes a link to the vendor's own documentation on how to configure ingestion on the firewall side.
+
+| Firewall | Vendor feature name |
+|---|---|
+| [Checkpoint](integrations/checkpoint.mdx) | Custom Intelligence (IoC) Feeds |
+| [Cisco](integrations/cisco.mdx) | Security Intelligence feeds |
+| [F5](integrations/f5.mdx) | External IP blocklist / Feed lists |
+| [Fortinet](integrations/fortinet.mdx) | IP address Threat Feeds |
+| [Juniper](integrations/juniper.mdx) | Security Dynamic Address feeds |
+| [Mikrotik](integrations/mikrotik.mdx) | — |
+| [OPNsense](integrations/opnsense.mdx) | URL Table (IPs) aliases |
+| [Palo Alto](integrations/paloalto.mdx) | External Dynamic Lists (EDL) |
+| [pfSense](integrations/pfsense.mdx) | URL Table (IPs) aliases |
+| [Sophos](integrations/sophos.mdx) | Third-Party Threat Feeds |
+
+### Other integrations
+
+- [Raw IP List](integrations/rawiplist.mdx) — generic format, works with any HTTP-capable device
+- [Remediation Component](integrations/remediationcomponent.mdx) — for platforms without native IP list ingestion (Cloudflare, AWS WAF, etc.)
+
+## Getting started
+
+You will need a [CrowdSec Console account](https://app.crowdsec.net/signup) to create integrations. Once logged in, go to **Blocklists → Integrations** and select the integration type you need.
+
+<details>
+<summary>How to create a Console account</summary>
+
+Navigate to [app.crowdsec.net/signup](https://app.crowdsec.net/signup) and create your account.
 
 <a href="https://app.crowdsec.net/signup" target="_blank">
     <ThemedImage
@@ -29,7 +76,7 @@ Firstly you will need to create a Console account you can do so [here](https://a
     />
 </a>
 
-Once you have created an account you can can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
+Once authenticated, navigate to the **Blocklist** tab in the top menu bar, then select the **Integrations** sub-menu.
 
 <a href="https://app.crowdsec.net/blocklists/integrations" target="_blank">
     <ThemedImage
@@ -41,29 +88,6 @@ Once you have created an account you can can proceed to the Blocklist tab locate
     />
 </a>
 
-If you are on a mobile device you can use menu icon in top right hand corner to access the menu, within the menu you will see the Blocklist and tapping on it will reveal the Integrations sub menu.
+On mobile, use the menu icon in the top-right corner, tap **Blocklist**, then **Integrations**.
 
-Once you are on the Integrations page you can select the integration you would like to use and follow the instructions provided.
-
-:::warning
-Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
-:::
-
-## Current Integrations
-
-- [Raw IP List](integrations/rawiplist.mdx)
-- [Checkpoint](integrations/checkpoint.mdx)
-- [Cisco](integrations/cisco.mdx)
-- [F5](integrations/f5.mdx)
-- [Fortinet](integrations/fortinet.mdx)
-- [Juniper](integrations/juniper.mdx)
-- [Mikrotik](integrations/mikrotik.mdx)
-- [OPNsense](integrations/opnsense.mdx)
-- [Palo Alto](integrations/paloalto.mdx)
-- [pfSense](integrations/pfsense.mdx)
-- [Sophos](integrations/sophos.mdx)
-- [Remediation Component](integrations/remediationcomponent.mdx)
-
-:::info
-If you don't see an integration for your specific Firewall, you can use the [Raw IP List](integrations/rawiplist.mdx) integration in most cases.
-:::
+</details>

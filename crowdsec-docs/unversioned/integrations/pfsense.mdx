@@ -6,25 +6,16 @@ title: pfSense
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
-The CrowdSec pfSense integration allows you to block malicious IPs in your pfSense firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your pfSense firewall.
+The CrowdSec pfSense integration connects CrowdSec's hosted blocklist endpoint to your pfSense firewall.
+In pfSense, you'll use **URL Table (IPs) aliases** to create aliases that periodically download and update IP lists from external URLs.
 
-pfSense you'll use **URL Table (IPs) aliases**, to create aliases that periodically download and update IP lists from external URLs.
-
-### Prerequisites
-
-Before you begin, please ensure your pfSense software version supports ingesting blocklists (URL aliases). If you are unsure, please refer to the pfSense documentation or contact pfSense support.
-
-:::warning
-Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::info
+Ensure your pfSense version supports URL Table (IPs) aliases. If unsure, refer to the pfSense documentation or contact pfSense support.
 :::
 
-### Steps
+## Step 1 — Create the integration in the CrowdSec Console
 
-We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
-
-Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
-
-Once the page has loaded, you can click the "Connect" button under the pfSense logo.
+In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the pfSense card.
 
 <ThemedImage
     alt="pfSense Integration Card"
@@ -34,7 +25,7 @@ Once the page has loaded, you can click the "Connect" button under the pfSense l
     }}
 />
 
-Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
+Name the integration (must be unique to your account), then click **Create**.
 
 <ThemedImage
     alt="pfSense Integration Creation Screen"
@@ -44,7 +35,9 @@ Doing so will prompt you to name this integration, you can name it anything you 
     }}
 />
 
-Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your pfSense Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
+:::warning
+The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::
 
 <ThemedImage
     alt="pfSense Integration Credentials Screen"
@@ -54,45 +47,27 @@ Once the integration is generated you will be presented with a credentials scree
     }}
 />
 
-## pfSense Configuration
+You now have an HTTPS endpoint and Basic Auth credentials to configure on your pfSense device.
 
-To configure the pfSense firewall, we will :
+## Step 2 — Configure pfSense
 
-1. Create a URL alias and choose 1 day as the update frequency.
-:::info
-You need to put the username and password provided by the console in the "URL" so it can use basic authentication:
+1. Create a URL Table (IPs) alias with a 1-day update frequency. Embed the credentials in the URL using Basic Auth:
 
 ```
 https://<username>:<password>@admin.api.crowdsec.net/v1/integrations/<integration_id>/content
 ```
-:::
 
-2. Check the URL alias is working.
-3. Create a firewall rule to block the malicious IPs.
+2. Verify the URL alias is resolving correctly.
+3. Create a firewall rule to block IPs matching the alias.
 
-Here is a tutorial on how to configure the pfSense firewall with the CrowdSec Integration:
+Here is a walkthrough of the full pfSense configuration:
 
 ![](/img/pfsense.gif)
-
-
-## Format example
-
-The CrowdSec blocklist will be in plain text format, with one IP address per line. Here is an example of how the blocklist will look:
-
-```
-192.168.38.187
-192.168.38.186
-```
 
 ## Manage integration size limits with pagination
 
 If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
 
-## Contribute to this documentation
-
-Since CrowdSec is a community-driven project, we welcome contributions to this documentation. If you have any instructions or tips that you would like to share with the community, please feel free to open a pull request on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs)
-
 ## Next Steps
 
-Now that you have integrated CrowdSec integration with your pfSense firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
-
+Subscribe to blocklists in the [Blocklist Catalog](console/blocklists/catalog.md) to populate your integration.

@@ -6,25 +6,17 @@ title: Juniper
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
-The CrowdSec Juniper integration allows you to block malicious IPs in your Juniper firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Juniper router.
+The CrowdSec Juniper integration connects CrowdSec's hosted blocklist endpoint to your Juniper router.  
+Juniper calls this feature **Security Dynamic Address feeds**, which allow you to import and automatically update IP address lists from external feed servers.
 
-Juniper refers to this feature as [**Security Dynamic Address feeds**](https://www.juniper.net/documentation/us/en/software/nm-apps23.1/policy-enforcer-user-guide/topics/task/dynamic-example.html), which allow you to import and automatically update IP address lists from external feed servers.
-
-### Prerequisites
-
-Before you begin, please ensure your Juniper device supports ingesting blocklists. If you are unsure, please refer to the Juniper documentation or contact Juniper support.
-
-:::warning
-Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
+:::info
+Ensure your Juniper device supports Security Dynamic Address feeds.  
+The vendor documentation is available in the [References](#references) section below.
 :::
 
-### Steps
+## Step 1 — Create the integration in the CrowdSec Console
 
-We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
-
-Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
-
-Once the page has loaded, you can click the "Connect" button under the Juniper logo.
+In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the Juniper card.
 
 <ThemedImage
     alt="Juniper Integration Card"
@@ -34,7 +26,7 @@ Once the page has loaded, you can click the "Connect" button under the Juniper l
     }}
 />
 
-Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
+Name the integration (must be unique to your account), then click **Create**.
 
 <ThemedImage
     alt="Juniper Integration Creation Screen"
@@ -44,7 +36,9 @@ Doing so will prompt you to name this integration, you can name it anything you 
     }}
 />
 
-Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your Juniper Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
+:::warning
+The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::
 
 <ThemedImage
     alt="Juniper Integration Credentials Screen"
@@ -54,18 +48,18 @@ Once the integration is generated you will be presented with a credentials scree
     }}
 />
 
-[Juniper Documentation JunOS](https://www.juniper.net/documentation/us/en/software/nm-apps23.1/policy-enforcer-user-guide/topics/task/dynamic-example.html)
+You now have an HTTPS endpoint and Basic Auth credentials to configure on your Juniper device.
 
-## Configuration Example
+## Step 2 — Configure Juniper
 
-### define the feed server
+### Define the feed server
 
 ```
 set security dynamic-address feed-server crowdsec-feed description "CrowdSec Feed"
 set security dynamic-address feed-server crowdsec-feed url https://<USERNAME>:<PASSWORD>@admin.api.crowdsec.net
 ```
 
-### define the threat feed and the update interval
+### Define the threat feed and update interval
 
 ```
 set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed description "CrowdSec Feed"
@@ -73,7 +67,7 @@ set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed p
 set security dynamic-address feed-server crowdsec-feed feed-name crowdsec-feed update-interval 1440 hold-interval 43200
 ```
 
-### Define AddressName-to-ThreatFeed mapping
+### Define the AddressName-to-ThreatFeed mapping
 
 ```
 set security dynamic-address address-name crowdsec-feed address-name crowdsec-feed feed-name crowdsec-feed
@@ -105,24 +99,14 @@ address-name crowdsec-feed {
 }
 ```
 
-## Format example
-
-The CrowdSec blocklist will be in plain text format, with one IP address per line. Here is an example of how the blocklist will look:
-
-```
-192.168.38.187
-192.168.38.186
-```
-
 ## Manage integration size limits with pagination
 
 If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
 
-## Contribute to this documentation
+## References
 
-Since CrowdSec is a community-driven project, we welcome contributions to this documentation. If you have any instructions or tips that you would like to share with the community, please feel free to open a pull request on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs)
+- [Juniper — Security Dynamic Address feeds documentation (JunOS)](https://www.juniper.net/documentation/us/en/software/nm-apps23.1/policy-enforcer-user-guide/topics/task/dynamic-example.html)
 
 ## Next Steps
 
-Now that you have integrated CrowdSec integration with your Juniper firewall, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too. 
-
+Subscribe to blocklists in the [Blocklist Catalog](console/blocklists/catalog.md) to populate your integration.
