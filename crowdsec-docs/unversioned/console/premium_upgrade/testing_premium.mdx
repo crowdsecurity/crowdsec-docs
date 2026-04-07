@@ -2,56 +2,280 @@
 id: testing_premium
 title: Test Premium Value in Your Environment
 description: Practical ways to measure and experience Premium value during your trial
+toc_max_heading_level: 2
 ---
 
-Before exploring all Premium features, here are practical ways to measure and experience the value yourself.
-The following can be used as a guide during your trial period to assess the benefits of upgrading to Premium.
+import { FeatureCard, HighlightCard } from '@site/src/components/premium-upgrade/feature-card';
 
-## 🎯 Measure Improved Protection
+<div className="p-6 rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 border border-solid border-primary/20 mb-8">
 
-**Activate:**
-- Community Blocklists (premium) will automatically be sent to your enrolled engines.
-- The [Threat Forecast Blocklist](/u/console/threat_forecast) Will be generated automatically used in your organization based on your shared signals.
-- Premium Tier Blocklists can be subscribed and subscription numbers per org are unlimited.
-- You can activate [Remediation Sync](/u/console/remediation_sync) to propagate decisions across all your enrolled Security Engines.
-- Respond faster to a spike of alerts thanks to "Am I Under Attack"
+## 🧪 Measure Premium Value During Your Trial
 
-**Measure the impact:**
-- **Remediation Metrics:** Track your proactive vs reactive blocking ratio
-- **Server Resources:** Monitor CPU, memory, and bandwidth reduction
-- **SIEM Logs:** Measure log volume decrease and background noise reduction
+Before exploring all Premium features, use this guide to measure and experience the value in your environment. These practical tests help you assess the concrete benefits of Premium during your trial period.
 
-**Expected results:** 2x more proactive blocking, 75-92% less malicious traffic reaching your servers, cleaner logs and reduced alert fatigue.
+</div>
 
 ---
 
-## 👥 Enable Team Collaboration
+## 🎯 Test 1: Measure Improved Protection
 
-**Activate:**
-- Invite collaborators thanks to Multi-Seat Access
-- Extended Alert Retention (365 days) allow improved traceability
-- Use the improved in-console CTI quotas to enrich your investigations
-- Get notified within your tools thanks to [Push Notification Integrations](/u/console/notification_integrations/overview)
+<div className="border-l-4 border-solid border-primary p-6 bg-card mb-6">
 
-**How your team benefits:**
-- Analyze long-term attack trends and recurring threats
-- Conduct CTI investigations directly in the Console
-- Multiple team members work simultaneously without access conflicts
+### What to Activate
 
-**Expected results:** Faster incident investigations, better threat attribution, reduced tool sprawl.
+Premium protection features are automatically enabled when you upgrade:
+
+- **Community Blocklist (Premium):** Automatically sent to enrolled engines (50k IPs vs 3k)
+- **[Threat Forecast Blocklist](/u/console/threat_forecast):** Generated automatically from your organization's shared signals
+- **Premium Tier Blocklists:** Subscribe to unlimited specialized blocklists
+- **[Remediation Sync](/u/console/remediation_sync):** Propagate decisions across all Security Engines
+- **Am I Under Attack:** Get alerted on traffic surges
+
+</div>
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### 📊 Metric 1: Remediation Ratio
+
+**How to measure:**
+Check your Console dashboard for proactive vs reactive blocking ratio.
+
+**Expected result:**
+2× more proactive blocking (blocklist hits vs real-time decisions)
+
+</div>
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### 💻 Metric 2: Server Resources
+
+**How to measure:**
+Monitor CPU, memory, and bandwidth usage on your Security Engines before and after.
+
+**Expected result:**
+75-92% reduction in malicious traffic reaching your servers
+
+</div>
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### 📝 Metric 3: Log Volume
+
+**How to measure:**
+Check your SIEM or log aggregator for alert volume changes.
+
+**Expected result:**
+Cleaner logs, reduced alert fatigue, fewer false positives
+
+</div>
+
+</div>
+
+<HighlightCard
+	title="Quick Test: Background Noise Filtering"
+	category="monitoring"
+	description="Enable Background Noise Filtering (Low/Medium/High) and compare your alert dashboard before/after. You should see 75-92% fewer scanner and crawler alerts within 24 hours."
+	stats={[
+		{ value: "24h", label: "to see results" },
+		{ value: "60~90%", label: "noise reduction" }
+	]}
+	link="/u/console/alerts/background_noise"
+/>
 
 ---
 
-## 🏢 Scale for MSPs & Enterprises
+## 👥 Test 2: Enable Team Collaboration
 
-**Activate:**
-- Administrate & share access to your clients thanks to Multi-Organization
-- Create & Share Blocklists across organizations via our [Service API (SAPI)](/u/console/service_api/getting_started)
+<div className="border-l-4 border-solid border-primary p-6 bg-card mb-6">
 
+### What to Activate
 
-**Manage at scale:**
-- Segment customer environments (one org per client)
-- Share custom threat intelligence across organizations
-- Automate blocklist management via API
+Enable team features to see collaboration improvements:
 
-**Expected results:** Clear tenant isolation, streamlined multi-customer operations, custom visibility on their defenses.
+- **Multi-Seat Access:** Invite team members (view/edit/admin roles)
+- **Extended Alert Retention:** 365 days of historical data (vs 60 days)
+- **Increased CTI Quotas:** 100 IP lookups/week (vs 30)
+- **[Push Notification Integrations](/u/console/notification_integrations/overview):** Slack, PagerDuty, webhooks
+
+</div>
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+<FeatureCard
+	title="Test: Long-Term Trend Analysis"
+	metric="365 days"
+	category="monitoring"
+	description="Access your Console's Alerts page and analyze attack patterns over the past year. Look for recurring threats, seasonal patterns, or evolving attack vectors. This is impossible with Community's 60-day retention."
+	link="/u/console/alerts/quotas#why-upgrade-to-premium-"
+/>
+
+<FeatureCard
+	title="Test: CTI Investigation Workflow"
+	metric="100 lookups/week"
+	category="intelligence"
+	description="Investigate suspicious IPs directly in the Console. View complete profiles: reputation, behavior, fingerprint, MITRE ATT&CK mappings. Perfect for incident response workflows without leaving the Console."
+/>
+
+<FeatureCard
+	title="Test: Simultaneous Access"
+	metric="3+ seats"
+	category="scale"
+	description="Have multiple team members work in the Console at the same time. Test concurrent operations: one person investigates alerts, another manages allowlists, a third reviews metrics. No access conflicts."
+	link="/u/console/organizations/intro"
+/>
+
+<FeatureCard
+	title="Test: Alerting Integration"
+	metric="Real-time"
+	category="monitoring"
+	description="Connect your Slack or PagerDuty account and test notifications when a Security Engine goes offline or becomes outdated. Verify your team receives alerts in their existing tools."
+	link="/u/console/notification_integrations/overview"
+/>
+
+</div>
+
+<div className="p-6 rounded-lg bg-gray-50 dark:bg-gray-900/30 border border-solid border-border mb-8">
+
+**Expected Results:**
+
+- ⚡ Faster incident investigations (direct CTI access in Console)
+- 🔍 Better threat attribution (1-year retention for pattern analysis)
+- 🤝 Reduced tool sprawl (team works in one place)
+- 📢 Proactive alerting (issues detected before users complain)
+
+</div>
+
+---
+
+## 🏢 Test 3: Scale for MSPs & Enterprises
+
+<div className="border-l-4 border-solid border-primary p-6 bg-card mb-6">
+
+### What to Activate
+
+Test multi-tenant and automation capabilities:
+
+- **Multi-Organization:** Create separate organizations for each client/environment
+- **[Service API (SAPI)](/u/console/service_api/getting_started):** Automate console management
+- **Blocklist Creation & Sharing:** Distribute custom threat intel via API
+- **Auto Enroll:** Zero-touch engine enrollment
+
+</div>
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+<FeatureCard
+	title="Test: Multi-Tenant Isolation"
+	metric="100% isolated"
+	category="scale"
+	description="Create 2-3 test organizations for different clients. Verify complete data isolation: each org sees only its engines, alerts, and decisions. Test switching between orgs from a single account."
+/>
+
+<FeatureCard
+	title="Test: Custom Blocklist via API"
+	metric="API-driven"
+	category="scale"
+	badges={["API"]}
+	description="Use SAPI to create a custom blocklist with 10-20 IPs from your SIEM. Subscribe multiple organizations to it. Verify the IPs are blocked across all client environments within minutes."
+	link="/u/console/service_api/blocklists"
+/>
+
+<FeatureCard
+	title="Test: Automated Enrollment"
+	metric="Zero-touch"
+	category="scale"
+	description="Enable Auto Enroll, then deploy a new Security Engine with your org's enrollment key. It should automatically join your organization without manual approval. Perfect for Terraform/Ansible/K8s deployments."
+/>
+
+<FeatureCard
+	title="Test: Decision Management via API"
+	metric="Programmatic"
+	category="scale"
+	badges={["API"]}
+	description="Use SAPI to add/remove decisions from the Console. Test forcing a blocklist pull after subscription. Integrate this into your incident response playbooks or SOAR platform."
+	link="/u/console/service_api/getting_started"
+/>
+
+</div>
+
+<div className="p-6 rounded-lg bg-gray-50 dark:bg-gray-900/30 border border-solid border-border mb-8">
+
+**Expected Results:**
+
+- 🏗️ Clear tenant isolation (one org per client)
+- 🤖 Streamlined multi-customer operations (API automation)
+- 📊 Custom visibility per client (each org has its own dashboard)
+- ⚙️ Infrastructure-as-code ready (zero-touch enrollment)
+
+</div>
+
+---
+
+## 🎓 Recommended Trial Timeline
+
+<div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 text-sm">
+
+<div className="border-2 border-solid border-primary/30 rounded-lg p-6 bg-card">
+
+### Week 1: Protection
+
+- Enable all blocklists
+- Activate Background Noise
+- Turn on Remediation Sync
+- Measure baseline metrics
+
+</div>
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### Week 2: Team
+
+- Invite team members
+- Test CTI lookups
+- Configure push notifications
+- Analyze historical trends
+
+</div>
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### Week 3: Scale
+
+- Create test organizations
+- Test SAPI endpoints
+- Try Auto Enroll
+- Custom blocklist sharing
+
+</div>
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### Week 4: Review
+
+- Compare metrics vs Week 1
+- Document value realized
+- Plan production rollout
+- Prepare upgrade decision
+
+</div>
+
+</div>
+
+---
+
+## 💡 Need Help Testing?
+
+<div className="p-6 rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 border border-solid border-primary/20">
+
+### Questions about your trial?
+
+Our team can help you set up proper testing and measure the value in your specific environment.
+
+<div style={{display: 'flex', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap'}}>
+	<a href="https://www.crowdsec.net/contact-crowdsec" className="button button--primary button--lg">Contact Support</a>
+	<a href="/u/console/premium_upgrade/features_overview" className="button button--secondary button--lg">View All Features →</a>
+</div>
+
+</div>
