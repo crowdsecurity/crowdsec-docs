@@ -5,18 +5,13 @@ title: pfSense
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
 
-The CrowdSec pfSense integration connects CrowdSec's hosted blocklist endpoint to your pfSense firewall.
-In pfSense, you'll use **URL Table (IPs) aliases** to create aliases that periodically download and update IP lists from external URLs.
-
-:::info
-Ensure your pfSense version supports URL Table (IPs) aliases. If unsure, refer to the pfSense documentation or contact pfSense support.
-:::
-
-## Step 1 — Create the integration in the CrowdSec Console
-
-In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the pfSense card.
-
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '0 0 20%'}}>
 <ThemedImage
     alt="pfSense Integration Card"
     sources={{
@@ -24,32 +19,22 @@ In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, cl
         dark: useBaseUrl("/img/console_integrations_pfsense_card_dark.png"),
     }}
 />
+</div>
+<div style={{flex: '1'}}>
+The CrowdSec pfSense integration connects CrowdSec's hosted blocklist endpoint to your pfSense firewall.
+In pfSense, you'll use **URL Table (IPs) aliases** to create aliases that periodically download and update IP lists from external URLs.
 
-Name the integration (must be unique to your account), then click **Create**.
-
-<ThemedImage
-    alt="pfSense Integration Creation Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_creation_light.png"),
-        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
-    }}
-/>
-
-:::warning
-The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::info
+Ensure your pfSense version supports URL Table (IPs) aliases. If unsure, refer to the pfSense documentation or contact pfSense support.
 :::
+</div>
+</div>
 
-<ThemedImage
-    alt="pfSense Integration Credentials Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_generic_credentials_light.png"),
-        dark: useBaseUrl("/img/console_integrations_generic_credentials_dark.png"),
-    }}
-/>
+## Create a pfSense Integration Endpoint
+<snippet-extract data-extract-copy="rawiplist:bl_integ_setup"></snippet-extract>
+<hr /> 
 
-You now have an HTTPS endpoint and Basic Auth credentials to configure on your pfSense device.
-
-## Step 2 — Configure pfSense
+## Configure pfSense
 
 1. Create a URL Table (IPs) alias with a 1-day update frequency. Embed the credentials in the URL using Basic Auth:
 

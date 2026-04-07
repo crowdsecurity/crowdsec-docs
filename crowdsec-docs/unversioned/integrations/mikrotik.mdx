@@ -5,18 +5,13 @@ title: Mikrotik
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
 
-The CrowdSec Mikrotik integration connects CrowdSec's hosted blocklist endpoint to your Mikrotik router.  
-Because Mikrotik does not have native external IP list ingestion, the integration uses a script that fetches the blocklist from CrowdSec's API and imports it into the Mikrotik firewall address list, scheduled to run automatically.
-
-:::info
-Ensure your Mikrotik device supports scripting and scheduled tasks. If unsure, refer to the Mikrotik documentation or contact Mikrotik support.
-:::
-
-## Step 1 — Create the integration in the CrowdSec Console
-
-In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the Mikrotik card.
-
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '0 0 20%'}}>
 <ThemedImage
     alt="Mikrotik Integration Card"
     sources={{
@@ -24,32 +19,22 @@ In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, cl
         dark: useBaseUrl("/img/console_integrations_mikrotik_card_dark.png"),
     }}
 />
+</div>
+<div style={{flex: '1'}}>
+The CrowdSec Mikrotik integration connects CrowdSec's hosted blocklist endpoint to your Mikrotik router.  
+Because Mikrotik does not have native external IP list ingestion, the integration uses a script that fetches the blocklist from CrowdSec's API and imports it into the Mikrotik firewall address list, scheduled to run automatically.
 
-Name the integration (must be unique to your account), then click **Create**.
-
-<ThemedImage
-    alt="Mikrotik Integration Creation Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_creation_light.png"),
-        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
-    }}
-/>
-
-:::warning
-The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::info
+Ensure your Mikrotik device supports scripting and scheduled tasks. If unsure, refer to the Mikrotik documentation or contact Mikrotik support.
 :::
+</div>
+</div>
 
-<ThemedImage
-    alt="Mikrotik Integration Credentials Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_generic_credentials_light.png"),
-        dark: useBaseUrl("/img/console_integrations_generic_credentials_dark.png"),
-    }}
-/>
+## Create a Mikrotik Integration Endpoint
+<snippet-extract data-extract-copy="rawiplist:bl_integ_setup"></snippet-extract>
+<hr />
 
-You now have an HTTPS endpoint and Basic Auth credentials to configure on your Mikrotik device.
-
-## Step 2 — Configure Mikrotik
+## Configure Mikrotik
 
 ### Create the fetch script
 

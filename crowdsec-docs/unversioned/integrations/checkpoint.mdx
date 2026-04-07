@@ -5,19 +5,13 @@ title: Checkpoint
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
 
-The CrowdSec Checkpoint integration connects CrowdSec's hosted blocklist endpoint to your Checkpoint firewall.   
-Check Point calls this feature **Custom Intelligence (IoC) Feeds**, which provide the ability to add custom cyber intelligence feeds into the Threat Prevention engine.   
-
-:::info
-Ensure your Checkpoint device supports Custom Intelligence (IoC) Feeds.  
-The vendor documentation is available in the [References](#references) section below.
-:::
-
-## Step 1 — Create the integration in the CrowdSec Console
-
-In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the Checkpoint card.
-
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '0 0 20%'}}>
 <ThemedImage
     alt="Checkpoint Integration Card"
     sources={{
@@ -25,32 +19,22 @@ In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, cl
         dark: useBaseUrl("/img/console_integrations_checkpoint_card_dark.png"),
     }}
 />
+</div>
+<div style={{flex: '1'}}>
+The CrowdSec Checkpoint integration connects CrowdSec's hosted blocklist endpoint to your Checkpoint firewall.   
+Check Point calls this feature **Custom Intelligence (IoC) Feeds**, which provide the ability to add custom cyber intelligence feeds into the Threat Prevention engine.   
 
-Name the integration (must be unique to your account), then click **Create**.
-
-<ThemedImage
-    alt="Checkpoint Integration Creation Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_creation_light.png"),
-        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
-    }}
-/>
-
-:::warning
-The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::info
+Ensure your Checkpoint device supports Custom Intelligence (IoC) Feeds.  
+The vendor documentation is available in the [References](#references) section below.
 :::
+</div>
+</div>
+## Setup a Checkpoint Integration Endpoint
+<snippet-extract data-extract-copy="rawiplist:bl_integ_setup"></snippet-extract>
+<hr />
 
-<ThemedImage
-    alt="Checkpoint Integration Credentials Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_checkpoint_credentials_light.png"),
-        dark: useBaseUrl("/img/console_integrations_checkpoint_credentials_dark.png"),
-    }}
-/>
-
-You now have an HTTPS endpoint and Basic Auth credentials to configure on your Checkpoint device.
-
-## Step 2 — Configure Checkpoint
+## Configure Checkpoint
 
 In the **Gateways and Servers** tab, double-click the gateway you want to configure.
 

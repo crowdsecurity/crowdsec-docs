@@ -5,19 +5,13 @@ title: Juniper
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
 
-The CrowdSec Juniper integration connects CrowdSec's hosted blocklist endpoint to your Juniper router.  
-Juniper calls this feature **Security Dynamic Address feeds**, which allow you to import and automatically update IP address lists from external feed servers.
-
-:::info
-Ensure your Juniper device supports Security Dynamic Address feeds.  
-The vendor documentation is available in the [References](#references) section below.
-:::
-
-## Step 1 — Create the integration in the CrowdSec Console
-
-In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the Juniper card.
-
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '0 0 20%'}}>
 <ThemedImage
     alt="Juniper Integration Card"
     sources={{
@@ -25,32 +19,23 @@ In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, cl
         dark: useBaseUrl("/img/console_integrations_juniper_card_dark.png"),
     }}
 />
+</div>
+<div style={{flex: '1'}}>
+The CrowdSec Juniper integration connects CrowdSec's hosted blocklist endpoint to your Juniper router.  
+Juniper calls this feature **Security Dynamic Address feeds**, which allow you to import and automatically update IP address lists from external feed servers.
 
-Name the integration (must be unique to your account), then click **Create**.
-
-<ThemedImage
-    alt="Juniper Integration Creation Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_creation_light.png"),
-        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
-    }}
-/>
-
-:::warning
-The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::info
+Ensure your Juniper device supports Security Dynamic Address feeds.  
+The vendor documentation is available in the [References](#references) section below.
 :::
+</div>
+</div>
 
-<ThemedImage
-    alt="Juniper Integration Credentials Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_generic_credentials_light.png"),
-        dark: useBaseUrl("/img/console_integrations_generic_credentials_dark.png"),
-    }}
-/>
+## Create a Juniper Integration Endpoint
+<snippet-extract data-extract-copy="rawiplist:bl_integ_setup"></snippet-extract>
+<hr />
 
-You now have an HTTPS endpoint and Basic Auth credentials to configure on your Juniper device.
-
-## Step 2 — Configure Juniper
+## Configure Juniper
 
 ### Define the feed server
 

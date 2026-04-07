@@ -5,19 +5,13 @@ title: Fortinet
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
 
-The CrowdSec Fortinet integration connects CrowdSec's hosted blocklist endpoint to your Fortinet firewall.  
-Fortinet calls this feature **IP address Threat Feeds**, which enable you to integrate external threat intelligence sources into your firewall policies.
-
-:::info
-Ensure your Fortinet firmware supports IP address Threat Feeds.  
-The vendor documentation is available in the [References](#references) section below.
-:::
-
-## Step 1 — Create the integration in the CrowdSec Console
-
-In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the Fortinet card.
-
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '0 0 20%'}}>
 <ThemedImage
     alt="Fortinet Integration Card"
     sources={{
@@ -25,30 +19,21 @@ In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, cl
         dark: useBaseUrl("/img/console_integrations_fortinet_card_dark.png"),
     }}
 />
+</div>
+<div style={{flex: '1'}}>
+The CrowdSec Fortinet integration connects CrowdSec's hosted blocklist endpoint to your Fortinet firewall.  
+Fortinet calls this feature **IP address Threat Feeds**, which enable you to integrate external threat intelligence sources into your firewall policies.
 
-Name the integration (must be unique to your account), then click **Create**.
-
-<ThemedImage
-    alt="Fortinet Integration Creation Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_creation_light.png"),
-        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
-    }}
-/>
-
-:::warning
-The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::info
+Ensure your Fortinet firmware supports IP address Threat Feeds.  
+The vendor documentation is available in the [References](#references) section below.
 :::
+</div>
+</div>
 
-<ThemedImage
-    alt="Fortinet Integration Credentials Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_fortinet_credentials_light.png"),
-        dark: useBaseUrl("/img/console_integrations_fortinet_credentials_dark.png"),
-    }}
-/>
-
-You now have an HTTPS endpoint and Basic Auth credentials to configure on your Fortinet device.
+## Setup a Fortinet Integration Endpoint
+<snippet-extract data-extract-copy="rawiplist:bl_integ_setup"></snippet-extract>
+<hr />
 
 ## References
 

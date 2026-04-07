@@ -5,19 +5,13 @@ title: F5
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
 
-The CrowdSec F5 integration connects CrowdSec's hosted blocklist endpoint to your F5 BIG-IP AFM.  
-F5 refers to this feature as **External IP blocklist** or **Feed lists**, which allow you to import external threat intelligence to block or allow traffic based on IP reputation.
-
-:::info
-Ensure your F5 BIG-IP AFM supports **External IP blocklists** or **Feed lists**.  
-The vendor documentation is available in the [References](#references) section below.
-:::
-
-## Step 1 — Create the integration in the CrowdSec Console
-
-In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the F5 card.
-
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '0 0 20%'}}>
 <ThemedImage
     alt="F5 Integration Card"
     sources={{
@@ -25,30 +19,20 @@ In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, cl
         dark: useBaseUrl("/img/console_integrations_f5_card_dark.png"),
     }}
 />
+</div>
+<div style={{flex: '1'}}>
+The CrowdSec F5 integration connects CrowdSec's hosted blocklist endpoint to your F5 BIG-IP AFM.  
+F5 refers to this feature as **External IP blocklist** or **Feed lists**, which allow you to import external threat intelligence to block or allow traffic based on IP reputation.
 
-Name the integration (must be unique to your account), then click **Create**.
-
-<ThemedImage
-    alt="F5 Integration Creation Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_creation_light.png"),
-        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
-    }}
-/>
-
-:::warning
-The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::info
+Ensure your F5 BIG-IP AFM supports **External IP blocklists** or **Feed lists**.  
+The vendor documentation is available in the [References](#references) section below.
 :::
-
-<ThemedImage
-    alt="F5 Integration Credentials Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_f5_credentials_light.png"),
-        dark: useBaseUrl("/img/console_integrations_f5_credentials_dark.png"),
-    }}
-/>
-
-You now have an HTTPS endpoint and Basic Auth credentials to configure on your F5 device.
+</div>
+</div>
+## Setup a F5 Integration Endpoint
+<snippet-extract data-extract-copy="rawiplist:bl_integ_setup"></snippet-extract>
+<hr />
 
 ## Format example
 

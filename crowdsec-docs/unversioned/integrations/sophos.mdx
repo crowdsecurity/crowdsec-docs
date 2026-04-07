@@ -5,19 +5,13 @@ title: Sophos
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
 
-The CrowdSec Sophos integration connects CrowdSec's hosted blocklist endpoint to your Sophos firewall.  
-Sophos calls this feature **Third-Party Threat Feeds**, which enable you to integrate external sources of IP addresses, domains, and URLs involved in threat activity.
-
-:::info
-Ensure your Sophos device supports Third-Party Threat Feeds.  
-The vendor documentation is available in the [References](#references) section below.
-:::
-
-## Step 1 — Create the integration in the CrowdSec Console
-
-In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the Sophos card.
-
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '0 0 20%'}}>
 <ThemedImage
     alt="Sophos Integration Card"
     sources={{
@@ -25,30 +19,21 @@ In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, cl
         dark: useBaseUrl("/img/console_integrations_sophos_card_dark.png"),
     }}
 />
+</div>
+<div style={{flex: '1'}}>
+The CrowdSec Sophos integration connects CrowdSec's hosted blocklist endpoint to your Sophos firewall.  
+Sophos calls this feature **Third-Party Threat Feeds**, which enable you to integrate external sources of IP addresses, domains, and URLs involved in threat activity.
 
-Name the integration (must be unique to your account), then click **Create**.
-
-<ThemedImage
-    alt="Sophos Integration Creation Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_creation_light.png"),
-        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
-    }}
-/>
-
-:::warning
-The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::info
+Ensure your Sophos device supports Third-Party Threat Feeds.  
+The vendor documentation is available in the [References](#references) section below.
 :::
+</div>
+</div>
 
-<ThemedImage
-    alt="Sophos Integration Credentials Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_sophos_credentials_light.png"),
-        dark: useBaseUrl("/img/console_integrations_sophos_credentials_dark.png"),
-    }}
-/>
-
-You now have an HTTPS endpoint and Basic Auth credentials to configure on your Sophos device.
+## Create a Sophos Integration Endpoint
+<snippet-extract data-extract-copy="rawiplist:bl_integ_setup"></snippet-extract>
+<hr />
 
 ## Manage integration size limits with pagination
 

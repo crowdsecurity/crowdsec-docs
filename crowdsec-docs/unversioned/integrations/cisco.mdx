@@ -5,19 +5,13 @@ title: Cisco
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
 
-The CrowdSec Cisco integration connects CrowdSec's hosted blocklist endpoint to your Cisco firewall.   
-Cisco calls this feature **Security Intelligence feeds**, which provide dynamic threat intelligence that can be used in your firewall policies. 
-
-:::info
-Ensure your Cisco device supports Security Intelligence feeds. Depending on the make and model, the steps to ingest the blocklist may differ.   
-The vendor documentation is available in the [References](#references) section below.
-:::
-
-## Step 1 — Create the integration in the CrowdSec Console
-
-In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, click **Connect** under the Cisco card.
-
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '0 0 20%'}}>
 <ThemedImage
     alt="Cisco Integration Card"
     sources={{
@@ -25,30 +19,20 @@ In the [Integrations](https://app.crowdsec.net/blocklists/integrations) page, cl
         dark: useBaseUrl("/img/console_integrations_cisco_card_dark.png"),
     }}
 />
+</div>
+<div style={{flex: '1'}}>
+The CrowdSec Cisco integration connects CrowdSec's hosted blocklist endpoint to your Cisco firewall.   
+Cisco calls this feature **Security Intelligence feeds**, which provide dynamic threat intelligence that can be used in your firewall policies. 
 
-Name the integration (must be unique to your account), then click **Create**.
-
-<ThemedImage
-    alt="Cisco Integration Creation Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_creation_light.png"),
-        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
-    }}
-/>
-
-:::warning
-The credentials shown next are displayed **only once**. Copy them before closing this screen.
+:::info
+Ensure your Cisco device supports Security Intelligence feeds. Depending on the make and model, the steps to ingest the blocklist may differ.   
+The vendor documentation is available in the [References](#references) section below.
 :::
-
-<ThemedImage
-    alt="Cisco Integration Credentials Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_cisco_credentials_light.png"),
-        dark: useBaseUrl("/img/console_integrations_cisco_credentials_dark.png"),
-    }}
-/>
-
-You now have an HTTPS endpoint and Basic Auth credentials to configure on your Cisco device.
+</div>
+</div>
+## Setup a Cisco Integration Endpoint
+<snippet-extract data-extract-copy="rawiplist:bl_integ_setup"></snippet-extract>
+<hr />
 
 ## Manage integration size limits with pagination
 

@@ -657,7 +657,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				"integrations/opnsense",
 				"integrations/paloalto",
 				"integrations/pfsense",
-				"integrations/sophos",				
+				"integrations/sophos",
 			],
 		},
 	],
