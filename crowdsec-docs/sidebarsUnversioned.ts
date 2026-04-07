@@ -642,6 +642,12 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			label: "Integrations",
 			items: [
 				"integrations/rawiplist",
+				"integrations/remediationcomponent",
+				{
+					type: "html",
+					value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+					defaultStyle: false,
+				},
 				"integrations/checkpoint",
 				"integrations/cisco",
 				"integrations/f5",
@@ -651,7 +657,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				"integrations/opnsense",
 				"integrations/paloalto",
 				"integrations/pfsense",
-				"integrations/remediationcomponent",
 				"integrations/sophos",
 			],
 		},
