@@ -121,7 +121,7 @@ export interface HighlightCardProps {
 	category?: "protection" | "scale" | "monitoring" | "intelligence";
 }
 
-export const HighlightCard = ({ id, title, description, stats, link, category = "protection" }: HighlightCardProps): React.JSX.Element => {
+export const HighlightCard = ({ id, title, description, stats, link }: HighlightCardProps): React.JSX.Element => {
 	// Generate ID from title if not explicitly provided
 	const generatedId =
 		id ||
@@ -139,8 +139,8 @@ export const HighlightCard = ({ id, title, description, stats, link, category = 
 			<p className="text-sm text-gray-600 dark:text-gray-700 mb-4 leading-relaxed">{description}</p>
 			{stats && stats.length > 0 && (
 				<div className="flex gap-8 mt-4">
-					{stats.map((stat, idx) => (
-						<div key={idx} className="text-center">
+					{stats.map((stat) => (
+						<div key={`${stat.value}-${stat.label}`} className="text-center">
 							<div className="text-3xl font-bold text-primary">{stat.value}</div>
 							<div className="text-xs text-gray-500 dark:text-gray-600 mt-1">{stat.label}</div>
 						</div>
