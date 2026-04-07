@@ -1,7 +1,7 @@
-import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import React, { useState } from "react";
+import Tabs from "@theme/Tabs";
 import type { ReactElement } from "react";
+import React, { useState } from "react";
 
 export interface PersonaOption {
 	value: string;

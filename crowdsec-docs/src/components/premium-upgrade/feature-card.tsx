@@ -49,7 +49,12 @@ export const FeatureCard = ({
 	const colors = categoryColors[category];
 
 	// Generate ID from title if not explicitly provided
-	const generatedId = id || title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+	const generatedId =
+		id ||
+		title
+			.toLowerCase()
+			.replace(/\s+/g, "-")
+			.replace(/[^\w-]/g, "");
 
 	const cardContent = (
 		<div
@@ -89,11 +94,7 @@ export const FeatureCard = ({
 					<span className="font-semibold text-primary">{comparison.after}</span>
 				</div>
 			)}
-			{link && (
-				<div className="mt-3 text-sm font-medium text-primary hover:underline">
-					Learn more →
-				</div>
-			)}
+			{link && <div className="mt-3 text-sm font-medium text-primary hover:underline">Learn more →</div>}
 		</div>
 	);
 
@@ -122,10 +123,18 @@ export interface HighlightCardProps {
 
 export const HighlightCard = ({ id, title, description, stats, link, category = "protection" }: HighlightCardProps): React.JSX.Element => {
 	// Generate ID from title if not explicitly provided
-	const generatedId = id || title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+	const generatedId =
+		id ||
+		title
+			.toLowerCase()
+			.replace(/\s+/g, "-")
+			.replace(/[^\w-]/g, "");
 
 	const content = (
-		<div id={generatedId} className="border border-solid border-primary/30 rounded-lg p-6 bg-gradient-to-r from-primary/5 to-transparent hover:shadow-md transition-all">
+		<div
+			id={generatedId}
+			className="border border-solid border-primary/30 rounded-lg p-6 bg-gradient-to-r from-primary/5 to-transparent hover:shadow-md transition-all"
+		>
 			<h4 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-900">{title}</h4>
 			<p className="text-sm text-gray-600 dark:text-gray-700 mb-4 leading-relaxed">{description}</p>
 			{stats && stats.length > 0 && (
@@ -138,11 +147,7 @@ export const HighlightCard = ({ id, title, description, stats, link, category = 
 					))}
 				</div>
 			)}
-			{link && (
-				<div className="mt-4 text-sm font-medium text-primary hover:underline">
-					Learn more →
-				</div>
-			)}
+			{link && <div className="mt-4 text-sm font-medium text-primary hover:underline">Learn more →</div>}
 		</div>
 	);
 
