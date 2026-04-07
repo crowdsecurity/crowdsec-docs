@@ -56,7 +56,7 @@ export const TabsWithPersona = ({
 		<div className="tabs-with-persona">
 			{/* Custom Persona Header */}
 			<div className="persona-tabs-header mb-8">
-				<p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-600 mb-4">{headerLabel}</p>
+				<p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4">{headerLabel}</p>
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-3">
 					{options.map((option) => {
 						const isSelected = selectedValue === option.value;
@@ -70,14 +70,14 @@ export const TabsWithPersona = ({
 									${
 										isSelected
 											? "border-primary bg-primary text-white shadow-lg scale-[1.02]"
-											: "border-border bg-card hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-md"
+											: "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-400 hover:shadow-md"
 									}
 								`}
 							>
 								<div
 									className={`
 										text-3xl mb-3 w-9 h-9 rounded-lg flex items-center justify-center transition-all
-										${isSelected ? "bg-white/20" : "bg-gray-100 dark:bg-gray-800"}
+										${isSelected ? "bg-white/20" : "bg-gray-100 dark:bg-gray-700"}
 									`}
 								>
 									{option.icon}
@@ -93,7 +93,7 @@ export const TabsWithPersona = ({
 								<p
 									className={`
 										text-sm mb-3 leading-relaxed transition-colors
-										${isSelected ? "text-white/80" : "text-gray-600 dark:text-gray-400"}
+										${isSelected ? "text-white/80" : "text-gray-600 dark:text-gray-300"}
 									`}
 								>
 									{option.description}
@@ -101,7 +101,7 @@ export const TabsWithPersona = ({
 								<span
 									className={`
 										inline-block text-xs font-medium px-3 py-1 rounded-full transition-all
-										${isSelected ? "bg-white/20 text-white/90" : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"}
+										${isSelected ? "bg-white/20 text-white/90" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"}
 									`}
 								>
 									{option.tag}

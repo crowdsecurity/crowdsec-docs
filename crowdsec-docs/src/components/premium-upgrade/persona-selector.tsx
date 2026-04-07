@@ -30,7 +30,7 @@ export const PersonaSelector = ({
 
 	return (
 		<div className="persona-selector mb-8">
-			<p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-600 mb-4">{label}</p>
+			<p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4">{label}</p>
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-3">
 				{options.map((option) => (
 					<button
@@ -42,14 +42,14 @@ export const PersonaSelector = ({
 							${
 								selected === option.id
 									? "border-primary bg-primary text-white shadow-lg scale-[1.02]"
-									: "border-border bg-card hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-md"
+									: "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-400 hover:shadow-md"
 							}
 						`}
 					>
 						<div
 							className={`
 								text-3xl mb-3 w-9 h-9 rounded-lg flex items-center justify-center transition-all
-								${selected === option.id ? "bg-white/20" : "bg-gray-100 dark:bg-gray-800"}
+								${selected === option.id ? "bg-white/20" : "bg-gray-100 dark:bg-gray-700"}
 							`}
 						>
 							{option.icon}
@@ -65,7 +65,7 @@ export const PersonaSelector = ({
 						<p
 							className={`
 								text-sm mb-3 leading-relaxed transition-colors
-								${selected === option.id ? "text-white/80" : "text-gray-600 dark:text-gray-400"}
+								${selected === option.id ? "text-white/80" : "text-gray-600 dark:text-gray-300"}
 							`}
 						>
 							{option.description}
@@ -76,7 +76,7 @@ export const PersonaSelector = ({
 								${
 									selected === option.id
 										? "bg-white/20 text-white/90"
-										: "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+										: "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
 								}
 							`}
 						>
