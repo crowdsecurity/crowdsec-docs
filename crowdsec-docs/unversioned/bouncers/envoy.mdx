@@ -9,16 +9,12 @@ import RemediationSupportBadges from "@site/src/components/remediation-support-b
 
 <p align="center">
   &#x1F4DA; <a href="#deploy-the-envoy-bouncer">Documentation</a>
-  &#x1F4A0; <a href="https://github.com/kdwils/envoy-proxy-crowdsec-bouncer">Source</a>
+  &#x1F4A0;{" "}
+  <a href="https://github.com/kdwils/envoy-proxy-crowdsec-bouncer">Source</a>
   &#128172; <a href="https://discourse.crowdsec.net">Discourse</a>
 </p>
 
-<RemediationSupportBadges
-  Mode={false}
-  Metrics
-  Prometheus={false}
-  Appsec
-/>
+<RemediationSupportBadges Mode={false} Metrics Prometheus={false} Appsec />
 
 # CrowdSec Remediation QuickStart for Envoy Gateway
 
@@ -62,7 +58,7 @@ not on a first-party CrowdSec remediation component.
 The upstream project used in this guide is:
 
 - `kdwils/envoy-proxy-crowdsec-bouncer`
-:::
+  :::
 
 ## Store the Envoy bouncer key in a Kubernetes secret
 
@@ -241,7 +237,7 @@ spec:
     spec:
       containers:
         - name: crowdsec-envoy-bouncer
-          image: ghcr.io/kdwils/envoy-proxy-crowdsec-bouncer:latest
+          image: ghcr.io/kdwils/envoy-proxy-bouncer:v0.6.0
           imagePullPolicy: Always
           ports:
             - name: grpc
@@ -414,8 +410,8 @@ curl -I http://<your-service-url>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list -s crowdsecurity/http-generic-test
 ```
 
-:::note
-This scenario can be triggered again after a 5-minute delay.
+:::warning
+If you trigger this scenario from a private ip, you won't see it trigger as it will be dismissed by the whitelist parser.
 :::
 
 ## Important Notes
@@ -423,7 +419,12 @@ This scenario can be triggered again after a 5-minute delay.
 ### Attach `SecurityPolicy` to `HTTPRoute`s, not only to the `Gateway`
 
 For Envoy Gateway, route-level attachment is the safer pattern for this
-integration.
+integration. Attaching the policy at the `Gateway` level can apply external
+auth to every routed application behind that listener, which increases the
+blast radius of a bad policy, a broken backend reference, or an unhealthy
+bouncer. Attaching it to individual `HTTPRoute`s keeps the rollout explicit and
+incremental: you can protect only the routes that should use CrowdSec, leave
+other traffic untouched, and troubleshoot one application at a time.
 
 ### Cross-namespace bouncer references require `ReferenceGrant`
 

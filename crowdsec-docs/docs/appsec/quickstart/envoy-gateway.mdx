@@ -280,7 +280,7 @@ spec:
     spec:
       containers:
         - name: crowdsec-envoy-bouncer
-          image: msabban/envoy-proxy-crowdsec-bouncer:latest
+          image: ghcr.io/kdwils/envoy-proxy-bouncer:v0.6.0
           imagePullPolicy: Always
           ports:
             - name: grpc
@@ -434,8 +434,8 @@ curl -I http://<your-service-url>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list -s crowdsecurity/http-generic-test
 ```
 
-:::note
-This scenario can be triggered again after a 5-minute delay.
+:::warning
+If you trigger this scenario from a private ip, you won't see it trigger as it will be dismissed by the whitelist parser.
 :::
 
 ### Test the AppSec generic scenario
@@ -456,8 +456,8 @@ curl -I http://<your-service-url>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=lapi -o name) -- cscli alerts list -s crowdsecurity/appsec-generic-test
 ```
 
-:::note
-This scenario can be triggered again after a 1-minute delay.
+:::warning
+If you trigger this scenario from a private ip, you won't see it trigger as it will be dismissed by the whitelist parser.
 :::
 
 ## Important Notes
@@ -465,7 +465,12 @@ This scenario can be triggered again after a 1-minute delay.
 ### Attach `SecurityPolicy` to `HTTPRoute`s, not just to the `Gateway`
 
 For Envoy Gateway, route-level attachment is the safer pattern for this
-integration.
+integration. Attaching the policy at the `Gateway` level can apply external
+auth to every routed application behind that listener, which increases the
+blast radius of a bad policy, a broken backend reference, or an unhealthy
+bouncer. Attaching it to individual `HTTPRoute`s keeps the rollout explicit and
+incremental: you can protect only the routes that should use CrowdSec, leave
+other traffic untouched, and troubleshoot one application at a time.
 
 ### Cross-namespace bouncer references still require `ReferenceGrant`
 
