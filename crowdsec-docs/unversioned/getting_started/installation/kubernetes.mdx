@@ -148,6 +148,193 @@ crowdsec-agent-kf9fr 1/1 Running 0 34s
 crowdsec-lapi-777c469947-jbk9q 1/1 Running 0 34s
 ```
 
+### Adding custom parsers and scenarios
+
+You can ship your own parser and scenario files through Helm by using:
+
+- `config.parsers`
+- `config.scenarios`
+
+Those values are mounted into the agent pods as files and passed to CrowdSec as-is.
+
+`config.parsers` is split by parser stage:
+
+- `config.parsers.s00-raw`
+- `config.parsers.s01-parse`
+- `config.parsers.s02-enrich`
+
+`config.scenarios` is a flat map of scenario files.
+
+What is allowed:
+
+- `config.parsers.<stage>.<fileName>: |` with a string value
+- `config.scenarios.<fileName>: |` with a string value
+- file names with or without a `.yaml` / `.yml` suffix
+- keys such as `my-parser`, `my-parser.yaml`, `test_scenario`, `custom.rule.yaml`
+
+What is not allowed:
+
+- nested objects below the file name
+- using a non-string value for a file entry
+- adding custom stages under `config.parsers`
+- forgetting to escape dots when using `--set` or `--set-file`
+
+This is valid in a values file:
+
+```yaml title="crowdsec-custom-items.yaml"
+config:
+  parsers:
+    s01-parse:
+      test-parser: |
+        name: mycorp/test-parser
+        description: "Parse my custom application logs"
+        filter: "evt.Parsed.program == 'myapp'"
+        onsuccess: next_stage
+        nodes:
+          - grok:
+              pattern: '^%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:level} %{GREEDYDATA:message}$'
+              apply_on: message
+
+      another-parser.yaml: |
+        name: mycorp/another-parser
+        description: "A parser stored with an explicit .yaml suffix"
+        filter: "evt.Parsed.program == 'another-app'"
+        onsuccess: next_stage
+
+  scenarios:
+    test-scenario: |
+      type: leaky
+      name: mycorp/test-scenario
+      description: "Detect repeated errors from my application"
+      filter: "evt.Meta.service == 'myapp' && evt.Parsed.level == 'ERROR'"
+      groupby: evt.Meta.source_ip
+      capacity: 5
+      leakspeed: 1m
+      blackhole: 5m
+
+    another-scenario.yaml: |
+      type: trigger
+      name: mycorp/another-scenario
+      description: "Raise an alert on a specific event"
+      filter: "evt.Meta.log_type == 'special_event'"
+      blackhole: 10m
+```
+
+Minimal valid parser file example:
+
+```yaml title="parser.yaml"
+name: mycorp/minimal-parser
+description: "Parse a simple custom log format"
+filter: "evt.Parsed.program == 'myapp'"
+onsuccess: next_stage
+nodes:
+  - grok:
+      pattern: '^%{WORD:action} %{IP:source_ip}$'
+      apply_on: message
+      statics:
+        - meta: log_type
+          value: myapp_event
+```
+
+The same parser embedded as a `config.parsers` item:
+
+```yaml
+config:
+  parsers:
+    s01-parse:
+      minimal-parser: |
+        name: mycorp/minimal-parser
+        description: "Parse a simple custom log format"
+        filter: "evt.Parsed.program == 'myapp'"
+        onsuccess: next_stage
+        nodes:
+          - grok:
+              pattern: '^%{WORD:action} %{IP:source_ip}$'
+              apply_on: message
+              statics:
+                - meta: log_type
+                  value: myapp_event
+```
+
+This is not valid:
+
+```yaml
+config:
+  parsers:
+    s01-parse:
+      test-parser:
+        yaml: |
+          name: mycorp/test-parser
+```
+
+The example above is invalid because `test-parser` becomes an object with a `yaml` field. Each file entry must be a single string.
+
+#### Using a dedicated values file
+
+If you have several custom items, the simplest approach is to keep them in a dedicated values file and pass it with `-f`:
+
+```bash
+helm upgrade --install crowdsec crowdsec/crowdsec \
+  -n crowdsec \
+  -f crowdsec-values.yaml \
+  -f crowdsec-custom-items.yaml
+```
+
+This works well when:
+
+- you manage several parsers and scenarios together
+- you want everything in Git
+- you do not want shell escaping issues in the command line
+
+#### Using `--set-file`
+
+You can also load file contents directly from local files:
+
+```bash
+helm upgrade --install crowdsec crowdsec/crowdsec \
+  -n crowdsec \
+  -f crowdsec-values.yaml \
+  --set-file "config.parsers.s01-parse.test-parser=/tmp/crowdsec-custom-items/parser.yaml" \
+  --set-file "config.scenarios.test-scenario=/tmp/crowdsec-custom-items/scenario.yaml"
+```
+
+If you want the key itself to contain `.yaml`, you must escape the dot in the Helm path:
+
+```bash
+helm upgrade --install crowdsec crowdsec/crowdsec \
+  -n crowdsec \
+  -f crowdsec-values.yaml \
+  --set-file "config.parsers.s01-parse.test-parser\.yaml=/tmp/crowdsec-custom-items/parser.yaml" \
+  --set-file "config.scenarios.test-scenario\.yaml=/tmp/crowdsec-custom-items/scenario.yaml"
+```
+
+This is important because Helm uses dots as path separators. Without escaping, this:
+
+```bash
+--set-file "config.parsers.s01-parse.test-parser.yaml=/tmp/crowdsec-custom-items/parser.yaml"
+```
+
+is interpreted as:
+
+```yaml
+config:
+  parsers:
+    s01-parse:
+      test-parser:
+        yaml: <file-content>
+```
+
+which is not valid for CrowdSec chart values.
+
+Practical rules:
+
+- `config.parsers.s01-parse.test-parser` is valid
+- `config.parsers.s01-parse.test-parser\.yaml` is valid
+- `config.scenarios.test-scenario` is valid
+- `config.scenarios.test-scenario\.yaml` is valid
+- `config.parsers.s03-custom.test-parser` is not valid
+- `config.parsers.s01-parse.test-parser.yaml` without escaping is not valid
+
 ### A word about source IPs
 
 For CrowdSec to work in Kubernetes, it must see the real client IP. Otherwise
