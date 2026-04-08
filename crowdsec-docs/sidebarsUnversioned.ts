@@ -518,6 +518,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
+			label: "Envoy (Kubernetes)",
+			id: "bouncers/envoy",
+		},
+		{
+			type: "doc",
 			label: "Fastly",
 			id: "bouncers/fastly",
 		},
