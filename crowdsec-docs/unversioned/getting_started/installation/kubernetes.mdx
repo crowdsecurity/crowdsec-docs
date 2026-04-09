@@ -148,14 +148,19 @@ crowdsec-agent-kf9fr 1/1 Running 0 34s
 crowdsec-lapi-777c469947-jbk9q 1/1 Running 0 34s
 ```
 
-### Adding custom parsers and scenarios
+### Adding custom parsers, scenarios, postoverflows, and AppSec files
 
-You can ship your own parser and scenario files through Helm by using:
+You can ship your own parser, scenario, postoverflow, AppSec configuration, AppSec rule, AppSec scenario, and AppSec postoverflow files through Helm by using:
 
 - `config.parsers`
 - `config.scenarios`
+- `config.postoverflows`
+- `appsec.configs`
+- `appsec.rules`
+- `appsec.scenarios`
+- `appsec.postoverflows`
 
-Those values are mounted into the agent pods as files and passed to CrowdSec as-is.
+Those values are mounted into the relevant pods as files and passed to CrowdSec as-is.
 
 `config.parsers` is split by parser stage:
 
@@ -165,19 +170,38 @@ Those values are mounted into the agent pods as files and passed to CrowdSec as-
 
 `config.scenarios` is a flat map of scenario files.
 
+`config.postoverflows` is split by postoverflow stage:
+
+- `config.postoverflows.s00-enrich`
+- `config.postoverflows.s01-whitelist`
+
+`appsec.configs`, `appsec.rules`, and `appsec.scenarios` are flat maps of AppSec files.
+
+`appsec.postoverflows` is split by postoverflow stage:
+
+- `appsec.postoverflows.s00-enrich`
+- `appsec.postoverflows.s01-whitelist`
+
 What is allowed:
 
 - `config.parsers.<stage>.<fileName>: |` with a string value
 - `config.scenarios.<fileName>: |` with a string value
+- `config.postoverflows.<stage>.<fileName>: |` with a string value
+- `appsec.configs.<fileName>: |` with a string value
+- `appsec.rules.<fileName>: |` with a string value
+- `appsec.scenarios.<fileName>: |` with a string value
+- `appsec.postoverflows.<stage>.<fileName>: |` with a string value
 - file names with or without a `.yaml` / `.yml` suffix
-- keys such as `my-parser`, `my-parser.yaml`, `test_scenario`, `custom.rule.yaml`
+- keys such as `my-parser`, `my-parser.yaml`, `test_scenario`, `custom.rule.yaml`, `my-appsec-config`, `my-rule.yml`, `my-postoverflow`, `my-appsec-scenario.yaml`
 
 What is not allowed:
 
 - nested objects below the file name
 - using a non-string value for a file entry
 - adding custom stages under `config.parsers`
+- adding custom stages under `config.postoverflows` or `appsec.postoverflows`
 - forgetting to escape dots when using `--set` or `--set-file`
+- enabling `appsec.configs`, `appsec.rules`, `appsec.scenarios`, or `appsec.postoverflows` without also enabling the AppSec component
 
 This is valid in a values file:
 
@@ -218,6 +242,55 @@ config:
       description: "Raise an alert on a specific event"
       filter: "evt.Meta.log_type == 'special_event'"
       blackhole: 10m
+
+  postoverflows:
+    s01-whitelist:
+      trusted-ip.yaml: |
+        name: mycorp/trusted-ip
+        description: "Whitelist a known source after overflow"
+        whitelist:
+          reason: "trusted source"
+          expression:
+            - evt.Overflow.Source_ip == "203.0.113.10"
+
+appsec:
+  enabled: true
+  configs:
+    my-appsec-config: |
+      name: mycorp/my-appsec-config
+      default_remediation: ban
+      inband_rules:
+        - mycorp/my-rule
+
+  rules:
+    my-rule.yaml: |
+      name: mycorp/my-rule
+      zones:
+        - URI
+      transform:
+        - lowercase
+      match:
+        type: contains
+        value: /admin
+      action: ban
+
+  scenarios:
+    my-appsec-scenario: |
+      type: trigger
+      name: mycorp/my-appsec-scenario
+      description: "Generate an alert when the custom AppSec rule matches"
+      filter: evt.Meta.log_type == 'appsec'
+      blackhole: 2m
+
+  postoverflows:
+    s01-whitelist:
+      my-appsec-whitelist.yaml: |
+        name: mycorp/my-appsec-whitelist
+        description: "Whitelist a trusted source for AppSec alerts"
+        whitelist:
+          reason: "trusted appsec source"
+          expression:
+            - evt.Overflow.Source_ip == "203.0.113.11"
 ```
 
 Minimal valid parser file example:
@@ -269,6 +342,18 @@ config:
 
 The example above is invalid because `test-parser` becomes an object with a `yaml` field. Each file entry must be a single string.
 
+The same rule applies to AppSec files. For example, this is not valid either:
+
+```yaml
+appsec:
+  configs:
+    my-appsec-config:
+      yaml: |
+        name: mycorp/my-appsec-config
+```
+
+Like parser and scenario files, AppSec file names can include `.yaml` or `.yml`, uppercase characters, underscores, or dots. The chart normalizes those keys into Kubernetes-safe volume names before mounting them, so the same filename flexibility is available for `config.postoverflows`, `appsec.configs`, `appsec.rules`, `appsec.scenarios`, and `appsec.postoverflows`.
+
 #### Using a dedicated values file
 
 If you have several custom items, the simplest approach is to keep them in a dedicated values file and pass it with `-f`:
@@ -282,7 +367,7 @@ helm upgrade --install crowdsec crowdsec/crowdsec \
 
 This works well when:
 
-- you manage several parsers and scenarios together
+- you manage several parsers, scenarios, or AppSec files together
 - you want everything in Git
 - you do not want shell escaping issues in the command line
 
@@ -295,7 +380,13 @@ helm upgrade --install crowdsec crowdsec/crowdsec \
   -n crowdsec \
   -f crowdsec-values.yaml \
   --set-file "config.parsers.s01-parse.test-parser=/tmp/crowdsec-custom-items/parser.yaml" \
-  --set-file "config.scenarios.test-scenario=/tmp/crowdsec-custom-items/scenario.yaml"
+  --set-file "config.scenarios.test-scenario=/tmp/crowdsec-custom-items/scenario.yaml" \
+  --set-file "config.postoverflows.s01-whitelist.my-whitelist=/tmp/crowdsec-custom-items/postoverflow.yaml" \
+  --set 'appsec.enabled=true' \
+  --set-file "appsec.configs.my-appsec-config=/tmp/crowdsec-custom-items/appsec-config.yaml" \
+  --set-file "appsec.rules.my-rule=/tmp/crowdsec-custom-items/appsec-rule.yaml" \
+  --set-file "appsec.scenarios.my-appsec-scenario=/tmp/crowdsec-custom-items/appsec-scenario.yaml" \
+  --set-file "appsec.postoverflows.s01-whitelist.my-appsec-whitelist=/tmp/crowdsec-custom-items/appsec-postoverflow.yaml"
 ```
 
 If you want the key itself to contain `.yaml`, you must escape the dot in the Helm path:
@@ -305,7 +396,13 @@ helm upgrade --install crowdsec crowdsec/crowdsec \
   -n crowdsec \
   -f crowdsec-values.yaml \
   --set-file "config.parsers.s01-parse.test-parser\.yaml=/tmp/crowdsec-custom-items/parser.yaml" \
-  --set-file "config.scenarios.test-scenario\.yaml=/tmp/crowdsec-custom-items/scenario.yaml"
+  --set-file "config.scenarios.test-scenario\.yaml=/tmp/crowdsec-custom-items/scenario.yaml" \
+  --set-file "config.postoverflows.s01-whitelist.my-whitelist\.yaml=/tmp/crowdsec-custom-items/postoverflow.yaml" \
+  --set 'appsec.enabled=true' \
+  --set-file "appsec.configs.my-appsec-config\.yaml=/tmp/crowdsec-custom-items/appsec-config.yaml" \
+  --set-file "appsec.rules.my-rule\.yaml=/tmp/crowdsec-custom-items/appsec-rule.yaml" \
+  --set-file "appsec.scenarios.my-appsec-scenario\.yaml=/tmp/crowdsec-custom-items/appsec-scenario.yaml" \
+  --set-file "appsec.postoverflows.s01-whitelist.my-appsec-whitelist\.yaml=/tmp/crowdsec-custom-items/appsec-postoverflow.yaml"
 ```
 
 This is important because Helm uses dots as path separators. Without escaping, this:
@@ -332,8 +429,21 @@ Practical rules:
 - `config.parsers.s01-parse.test-parser\.yaml` is valid
 - `config.scenarios.test-scenario` is valid
 - `config.scenarios.test-scenario\.yaml` is valid
+- `config.postoverflows.s01-whitelist.my-whitelist` is valid
+- `config.postoverflows.s01-whitelist.my-whitelist\.yaml` is valid
+- `appsec.configs.my-appsec-config` is valid
+- `appsec.configs.my-appsec-config\.yaml` is valid
+- `appsec.rules.my-rule` is valid
+- `appsec.rules.my-rule\.yaml` is valid
+- `appsec.scenarios.my-appsec-scenario` is valid
+- `appsec.scenarios.my-appsec-scenario\.yaml` is valid
+- `appsec.postoverflows.s01-whitelist.my-appsec-whitelist` is valid
+- `appsec.postoverflows.s01-whitelist.my-appsec-whitelist\.yaml` is valid
 - `config.parsers.s03-custom.test-parser` is not valid
+- `config.postoverflows.s02-custom.my-whitelist` is not valid
 - `config.parsers.s01-parse.test-parser.yaml` without escaping is not valid
+- `appsec.scenarios.my-appsec-scenario.yaml` without escaping is not valid
+- `appsec.rules.my-rule.yaml` without escaping is not valid
 
 ### A word about source IPs
 
