@@ -87,6 +87,7 @@ The Adjustment Score provides **transparent corrections** applied to the composi
 | Component | Description |
 |-----------|------------|
 | **recency** | A bonus applied when vulnerability release is very recent. A CVE gets a small boost to its total score shortly after release to account for uncertainty in the scores due to a lack of historic data. |
+| **low_info** | A penalty applied when CrowdSec has limited telemetry data for this CVE, reducing the score to avoid over-rating vulnerabilities with sparse data. |
 | **total** | The net adjustment applied to the score. |
 
 These adjustments are surfaced so you can understand *why* a score is what it is. For example, if a CVE has a CrowdSec Score of 6 with an adjustment_score.recency of +1, you know that 1 point of that score comes from very recent CVE release rather than long-term exploitation data.

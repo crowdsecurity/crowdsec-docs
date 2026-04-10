@@ -129,6 +129,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "doc",
+					label: "Threat Context",
+					id: "tracker_api/threat_context",
+				},
+				{
+					type: "doc",
 					label: "Reconnaissance Rules vs CVEs",
 					id: "tracker_api/fingerprints_vs_cves",
 				},

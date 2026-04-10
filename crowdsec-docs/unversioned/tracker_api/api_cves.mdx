@@ -93,8 +93,8 @@ Each CVE in the list includes:
 | `last_seen` | datetime | Most recent observed exploitation |
 | `published_date` | datetime | CVE publication date in NVD |
 | `rule_release_date` | datetime | When CrowdSec released the detection rule |
-| `adjustment_score` | object | Score adjustments: `total`, `recency` |
-| `threat_context` | object | Contextual threat intelligence: `attacker_countries`, `defender_countries`, `industry_types`, `industry_risk_profiles`, `attacker_objectives` (may be empty for low-activity CVEs) |
+| `adjustment_score` | object | Score adjustments: `total`, `recency`, `low_info` |
+| `threat_context` | object | Contextual threat intelligence: `attacker_countries`, `defender_countries`, `industry_types`, `industry_risk_profiles`, `attacker_objectives`. See [Threat Context](./threat_context) for field details and interpretation. May be `null` or contain empty sub-objects for low-activity CVEs. |
 
 ## Get CVE Details
 

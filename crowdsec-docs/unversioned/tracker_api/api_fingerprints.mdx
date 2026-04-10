@@ -89,7 +89,8 @@ for rule in data["items"]:
 | `first_seen` | datetime | First observation |
 | `last_seen` | datetime | Most recent observation |
 | `rule_release_date` | datetime | When the detection rule was released |
-| `adjustment_score` | object | Score adjustments: `total`, `recency` |
+| `adjustment_score` | object | Score adjustments: `total`, `recency`, `low_info` |
+| `threat_context` | object | Contextual threat intelligence: `attacker_countries`, `defender_countries`, `industry_types`, `industry_risk_profiles`, `attacker_objectives`. See [Threat Context](./threat_context). May be `null` for rules with insufficient data. |
 
 ## Get Fingerprint Rule Details
 
