@@ -11,8 +11,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "link",
-			label: "Web UI 📖",
+			label: "Web UI",
 			href: "/u/console/ip_reputation/intro",
+			customProps: {
+				tag: "otherSection",
+			},
 		},
 		{
 			type: "doc",
@@ -46,14 +49,14 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
-					type: "link",
-					label: "Swagger",
-					href: "https://crowdsecurity.github.io/cti-api/",
-		},
-		{
 			type: "html",
 			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
 			defaultStyle: false,
+		},
+		{
+			type: "doc",
+			label: "Advanced Query Syntax",
+			id: "cti_api/search_queries",
 		},
 		{
 			type: "category",
@@ -68,6 +71,16 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				"cti_api/taxonomy/false_positives",
 				"cti_api/taxonomy/benign",
 			],
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		{
+					type: "link",
+					label: "Swagger",
+					href: "https://crowdsecurity.github.io/cti-api/",
 		},
 		{
 			type: "doc",
@@ -314,8 +327,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 						},
 						{
 							type: "link",
-							label: "Search Queries Syntax 📖",
+							label: "Search Queries Syntax",
 							href: "/u/cti_api/search_queries",
+							customProps: {
+								tag: "otherSection",
+							},
 						},	
 					],
 				},
@@ -342,13 +358,19 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 						},
 						{
 							type: "link",
-							label: "CTI API Integrations 📖",
+							label: "CTI API Integrations",
 							href: "/u/cti_api/api_integration/integration_intro",
+							customProps: {
+								tag: "otherSection",
+							},
 						},
 						{
 							type: "link",
-							label: "Technical Documentation 📖",
+							label: "Technical Documentation",
 							href: "/u/cti_api/taxonomy/intro",
+							customProps: {
+								tag: "otherSection",
+							},
 						},
 					],
 				},
