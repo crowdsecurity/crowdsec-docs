@@ -4,35 +4,38 @@ title: API Introduction
 sidebar_position: 1
 ---
 
-## Objective
+The CrowdSec CTI API gives you programmatic access to IP reputation data collected from CrowdSec deployments worldwide. Use it to enrich your own security workflows — whether that's a quick manual lookup, a script that checks IPs at ingestion, or a fully automated enrichment pipeline inside a SIEM, SOAR, or TIP.
 
-Welcome to the documentation section dedicated to Crowdsec's CTI API.
-The data you access via this API is fed chiefly by Crowdsec instances worldwide.
+## Authentication
 
-## Datasets
+All requests require a CTI API key passed in the `x-api-key` header.
 
-Crowdsec's CTI API presents two primary datasets :
- - **fire** dataset reflects the content of the community blocklist with more context.
- - **smoke** dataset reflects most of the IPs reported by Crowdsec users
+Keys are created and managed in the Console under **Settings → CTI API Keys**.
+[Create your API key →](/u/console/ip_reputation/api_keys)
 
-> note: The ratio of fire to smoke is around 1% at the time of writing
+## Ways to Use the API
 
-## CTI Information
+### Integrations
 
-When querying the CTI API about a given IP, you will get to know more about:
- - What it does: observed behaviors, targetted protocols, exploited vulnerabilities, etc.
- - To what categories does it belong: proxy/VPN, CDN exit node, Legit security scanner, etc.
- - What it targets: Countries, services, etc.
- - Existing cross-references: Existing lists, etc.
- - How virulent it is
- - For how long it has been reported by users
- - The confidence level of the information
- - And so on
+CrowdSec maintains ready-made integrations for common security platforms — Splunk, QRadar, Microsoft Sentinel, MISP, OpenCTI, Palo Alto XSOAR, TheHive, and more. If you use one of these, it's the fastest path to enrichment.
 
-## How to access it
+[Browse all integrations →](/u/cti_api/api_integration/integration_intro)
 
-See the [getting started](/u/cti_api/api_getting_started) section to see how to get your API key and start exploring data.
+### cURL
 
-API keys are managed in the Console under **Settings → CTI API Keys**: [app.crowdsec.net/settings/cti-api-keys](https://app.crowdsec.net/settings/cti-api-keys). See [API Keys](/u/console/ip_reputation/api_keys) for step-by-step instructions.
+For quick lookups or scripting, query the API directly:
 
-For a no-code interface to the same data, see the [IP Reputation section of the Console](/u/console/ip_reputation/intro).
+```shell
+curl -H "x-api-key: $API_KEY" https://cti.api.crowdsec.net/v2/smoke/1.2.3.4 | jq .
+```
+
+### IPDEX
+
+Available in [Web UI](https://ipdex.crowdsec.net/) or [CLI](https://github.com/crowdsecurity/ipdex), this tools provides an detailed IP reputation report from a list of IP or logs you provide.   
+This is a usefull Proof of Value tool to see the coverage of CrowdSec Threat Intel for both Blocklists and Threat Intel.
+
+[IPDEX →](/u/cti_api/api_integration/integration_ipdex)
+
+## API Reference
+
+Full endpoint documentation is available via [Swagger](https://crowdsecurity.github.io/cti-api/).

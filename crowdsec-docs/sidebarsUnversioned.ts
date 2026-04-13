@@ -342,7 +342,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "category",
-					label: "API",
+					label: "API Keys",
 					link: {
 						type: "doc",
 						id: "console/ip_reputation/api_keys",
@@ -366,7 +366,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 						},
 						{
 							type: "link",
-							label: "Technical Documentation",
+							label: "Enrichment Fields Ref",
 							href: "/u/cti_api/taxonomy/intro",
 							customProps: {
 								tag: "otherSection",
