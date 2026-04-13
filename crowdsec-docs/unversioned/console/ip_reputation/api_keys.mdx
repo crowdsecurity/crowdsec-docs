@@ -8,44 +8,45 @@ import AcademyPromo from '@site/src/components/academy-promo';
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
-## Your first CTI Key
+## Create CTI API Keys
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+  <div style={{flex: '1'}}>
+  * Click the `+` in the top right corner.  
+  * Alternatively you can also click the `+ New Key` in the **Settings → CTI API Keys** page.
+  </div>
+  <div style={{flex: '0 0 50%'}}>
+  <ThemedImage
+      alt="CrowdSec Create API Key Dropdown"
+      sources={{
+          light: useBaseUrl("/img/console_create_api_key_dropdown_light.png"),
+          dark: useBaseUrl("/img/console_create_api_key_dropdown_dark.png"),
+      }}
+  />
+  </div>
+</div>
 
-### Sign Up
+<hr/>
 
-Head over to the [CrowdSec Console](https://app.crowdsec.net/signup) and sign up for a new account.
-
-<a href="https://app.crowdsec.net/signup" target="_blank">
-    <ThemedImage
-        alt="CrowdSec Signup Screen"
-        sources={{
-            light: useBaseUrl("/img/console_login_light.png"),
-            dark: useBaseUrl("/img/console_login_dark.png"),
-        }}
-    />
-</a>
-
-## Getting an API Key
-
-When you are authenticated you can click the `+` button in the top right hand corner near your profile icon to create a new API key.
-
-<ThemedImage
-    alt="CrowdSec Create API Key Dropdown"
-    sources={{
-        light: useBaseUrl("/img/console_create_api_key_dropdown_light.png"),
-        dark: useBaseUrl("/img/console_create_api_key_dropdown_dark.png"),
-    }}
-/>
-
-On the next page you can create an API key by clicking the `+ New Key` button.
-
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+  <div style={{flex: '1'}}>
+There, you can chose among the various quotas options. We provide a free key in order to test your integrations.
+:::info
+The free quota will be better if your organization is Premium than if it's on the free Community plan.
+:::
+:::info
+Only Premium orgizations can buy keys with higher quotas. See [Premium API Keys](/u/console/ip_reputation/api_keys_premium) for more details.
+:::
+  </div>
+  <div style={{flex: '0 0 50%'}}>
 <ThemedImage
     alt="CrowdSec Create API Key Page"
     sources={{
-        light: useBaseUrl("/img/console_create_api_key_page_light.png"),
-        dark: useBaseUrl("/img/console_create_api_key_page_dark.png"),
+        light: useBaseUrl("/img/console_create_api_key_form_light.png"),
+        dark: useBaseUrl("/img/console_create_api_key_form_dark.png"),
     }}
 />
-
+  </div>
+</div>
 ## Accessing the API
 
 ### cURL
