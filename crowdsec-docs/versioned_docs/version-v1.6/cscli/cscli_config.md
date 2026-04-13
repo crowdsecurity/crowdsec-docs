@@ -27,7 +27,7 @@ Allows to view current config
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 * [cscli config feature-flags](/cscli/cscli_config_feature-flags.md)	 - Displays feature flag status
 * [cscli config show](/cscli/cscli_config_show.md)	 - Displays current config
 * [cscli config show-yaml](/cscli/cscli_config_show-yaml.md)	 - Displays merged config.yaml + config.yaml.local

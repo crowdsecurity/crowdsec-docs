@@ -27,7 +27,7 @@ Manage interaction with Polling API (PAPI)
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 * [cscli papi status](/cscli/cscli_papi_status.md)	 - Get status of the Polling API
 * [cscli papi sync](/cscli/cscli_papi_sync.md)	 - Sync with the Polling API, pulling all non-expired orders for the instance
 

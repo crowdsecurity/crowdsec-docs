@@ -88,5 +88,5 @@ cscli completion [bash|zsh|powershell|fish]
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 

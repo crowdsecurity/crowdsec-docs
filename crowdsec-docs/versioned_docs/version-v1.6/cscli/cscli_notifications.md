@@ -31,7 +31,7 @@ To list/inspect/test notification template
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 * [cscli notifications inspect](/cscli/cscli_notifications_inspect.md)	 - Inspect notifications plugin
 * [cscli notifications list](/cscli/cscli_notifications_list.md)	 - list notifications plugins
 * [cscli notifications reinject](/cscli/cscli_notifications_reinject.md)	 - reinject an alert into profiles to trigger notifications

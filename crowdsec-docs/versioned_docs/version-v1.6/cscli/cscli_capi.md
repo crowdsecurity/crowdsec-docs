@@ -27,7 +27,7 @@ Manage interaction with Central API (CAPI)
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 * [cscli capi register](/cscli/cscli_capi_register.md)	 - Register to Central API (CAPI)
 * [cscli capi status](/cscli/cscli_capi_status.md)	 - Check status with the Central API (CAPI)
 

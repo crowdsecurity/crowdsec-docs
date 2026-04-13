@@ -50,7 +50,7 @@ cscli metrics list
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 * [cscli metrics list](/cscli/cscli_metrics_list.md)	 - List available types of metrics.
 * [cscli metrics show](/cscli/cscli_metrics_show.md)	 - Display all or part of the available metrics.
 

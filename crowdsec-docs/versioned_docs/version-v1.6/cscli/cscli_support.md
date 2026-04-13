@@ -27,6 +27,6 @@ Provide commands to help during support
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 * [cscli support dump](/cscli/cscli_support_dump.md)	 - Dump all your configuration to a zip file for easier support
 

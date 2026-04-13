@@ -2,6 +2,9 @@ import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 type SidebarConfig = SidebarsConfig[string];
 
+/** IF you make significant changes to the nav bar or side bars 
+ * make sure to have proper mapping in crowdsec-docs/src/sectionMap.ts */
+ 
 const sidebarsUnversionedConfig: SidebarConfig = {
 	ctiApiSidebar: [
 		{

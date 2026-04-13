@@ -44,7 +44,7 @@ cscli dashboard remove
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 * [cscli dashboard remove](/cscli/cscli_dashboard_remove.md)	 - removes the metabase container.
 * [cscli dashboard setup](/cscli/cscli_dashboard_setup.md)	 - Setup a metabase container.
 * [cscli dashboard show-password](/cscli/cscli_dashboard_show-password.md)	 - displays password of metabase.

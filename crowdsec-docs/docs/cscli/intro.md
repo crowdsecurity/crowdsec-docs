@@ -1,5 +1,5 @@
 ---
-id: cscli
+id: intro
 title: cscli
 ---
 ## cscli

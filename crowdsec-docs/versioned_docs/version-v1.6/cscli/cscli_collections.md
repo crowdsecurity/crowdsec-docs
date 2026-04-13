@@ -38,7 +38,7 @@ cscli collections remove crowdsecurity/http-cve crowdsecurity/iptables
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 * [cscli collections inspect](/cscli/cscli_collections_inspect.md)	 - Inspect given collection(s)
 * [cscli collections install](/cscli/cscli_collections_install.md)	 - Install given collection(s)
 * [cscli collections list](/cscli/cscli_collections_list.md)	 - List collection(s)

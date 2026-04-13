@@ -38,7 +38,7 @@ cscli parsers remove crowdsecurity/caddy-logs crowdsecurity/sshd-logs
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 * [cscli parsers inspect](/cscli/cscli_parsers_inspect.md)	 - Inspect given parser(s)
 * [cscli parsers install](/cscli/cscli_parsers_install.md)	 - Install given parser(s)
 * [cscli parsers list](/cscli/cscli_parsers_list.md)	 - List parser(s)

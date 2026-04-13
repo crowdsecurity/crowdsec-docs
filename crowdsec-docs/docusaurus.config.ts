@@ -5,6 +5,7 @@ import { themes } from "prism-react-renderer";
 
 import tailwindPlugin from "./plugins/tailwind-config";
 import { ctiApiSidebar, guidesSideBar, remediationSideBar, trackerApiSidebar } from "./sidebarsUnversioned";
+import { patternRedirects } from "./src/patternRedirects";
 
 const extractPreprocessor = require("./plugins/extract-preprocessor");
 
@@ -56,13 +57,10 @@ const ACADEMY_URL = `https://academy.crowdsec.net/courses?${
 	process.env.NODE_ENV === "production" ? "utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs" : ""
 }`;
 
+/** IF you make significant changes to the nav bar or side bars 
+ * make sure to have proper mapping in crowdsec-docs/src/sectionMap.ts */
+ 
 const NAVBAR_ITEMS: NavbarItem[] = [
-	{
-		type: "docsVersionDropdown",
-		docsPluginId: "default",
-		position: "left",
-		dropdownActiveClassDisabled: true,
-	},
 	{
 		label: "Security Stack",
 		position: "left",
@@ -74,7 +72,7 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 				to: "/docs/next/appsec/intro",
 				label: "Web Application Firewall (AppSec)",
 			},
-			{ type: "doc", docId: "cscli/cscli", label: "Cscli" },
+			{ type: "doc", docId: "cscli/intro", label: "Cscli" },
 			{ to: "/u/user_guides/intro", label: "Guides" },
 			{
 				type: "doc",
@@ -177,6 +175,7 @@ const FOOTER_LINKS = [
 	},
 ];
 
+
 const redirects = [
 	...[
 		...(Array.isArray(remediationSideBar) ? remediationSideBar : [remediationSideBar]),
@@ -208,6 +207,7 @@ const redirects = [
 		from: "/blog/crowdsec_firewall_freebsd",
 		to: "/u/bouncers/firewall#pf-setup-freebsd",
 	},
+	
 ];
 
 const config: Config = {
@@ -329,7 +329,20 @@ const config: Config = {
 
 		["./plugins/gtag/index.ts", { trackingID: "G-0TFBMNTDFQ" }],
 		"./plugins/leadfeeder/index.js",
-		["@docusaurus/plugin-client-redirects", { redirects }],
+		["@docusaurus/plugin-client-redirects", {
+			redirects,
+			createRedirects(existingPath: string) {
+				for (const { from, to } of patternRedirects) {
+					// Build a regex from the `to` pattern by replacing capture group refs ($1) with (.+)
+					const toRegex = new RegExp("^" + to.replace(/\$\d+/g, "(.+)") + "$");
+					if (toRegex.test(existingPath)) {
+						// Reverse: produce the old `from` URL from the real path
+						return [existingPath.replace(toRegex, from.source)];
+					}
+				}
+				return undefined;
+			},
+		}],
 		[
 			"@signalwire/docusaurus-plugin-llms-txt",
 			{

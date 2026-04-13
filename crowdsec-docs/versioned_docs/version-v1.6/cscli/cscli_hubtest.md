@@ -35,7 +35,7 @@ Run functional tests on hub configurations (parsers, scenarios, collections...)
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 * [cscli hubtest clean](/cscli/cscli_hubtest_clean.md)	 - clean [test_name]
 * [cscli hubtest coverage](/cscli/cscli_hubtest_coverage.md)	 - coverage
 * [cscli hubtest create](/cscli/cscli_hubtest_create.md)	 - create [test_name]

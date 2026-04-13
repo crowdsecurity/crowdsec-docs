@@ -33,7 +33,7 @@ Note: This command requires database direct access, so is intended to be run on 
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 * [cscli bouncers add](/cscli/cscli_bouncers_add.md)	 - add a single bouncer to the database
 * [cscli bouncers delete](/cscli/cscli_bouncers_delete.md)	 - delete bouncer(s) from the database
 * [cscli bouncers inspect](/cscli/cscli_bouncers_inspect.md)	 - inspect a bouncer by name

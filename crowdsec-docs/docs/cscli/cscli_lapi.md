@@ -31,7 +31,7 @@ cscli lapi [action] [flags]
 
 ### SEE ALSO
 
-* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
 * [cscli lapi context](/cscli/cscli_lapi_context.md)	 - Manage context to send with alerts
 * [cscli lapi register](/cscli/cscli_lapi_register.md)	 - Register a machine to Local API (LAPI)
 * [cscli lapi status](/cscli/cscli_lapi_status.md)	 - Check authentication to Local API (LAPI)

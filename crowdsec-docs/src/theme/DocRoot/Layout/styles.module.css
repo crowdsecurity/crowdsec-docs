@@ -1,0 +1,124 @@
+/* DocRoot/Layout */
+
+.docRoot {
+	display: flex;
+	width: 100%;
+}
+
+.docsWrapper {
+	display: flex;
+	flex: 1 0 auto;
+	flex-direction: column;
+}
+
+/* ── Secondary navbar ─────────────────────────────────────────── */
+
+.secondaryNavbar {
+	position: sticky;
+	top: var(--ifm-navbar-height);
+	z-index: calc(var(--ifm-z-index-fixed) - 1);
+	border-bottom: 1px solid rgb(var(--border));
+	background-color: rgb(var(--card));
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.secondaryNavbarInner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	max-width: var(--ifm-container-width);
+	margin: 0 0;
+	padding: 0 var(--ifm-spacing-horizontal);
+	height: 36px;
+	gap: 1rem;
+}
+
+/* ── Breadcrumb ───────────────────────────────────────────────── */
+
+.breadcrumb {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: 0.8rem;
+	overflow: hidden;
+	white-space: nowrap;
+	min-width: 0;
+}
+
+.breadcrumbHome {
+	display: flex;
+	align-items: center;
+	color: rgb(var(--muted-foreground));
+	flex-shrink: 0;
+}
+
+.breadcrumbHome:hover {
+	color: rgb(var(--primary));
+	text-decoration: none;
+}
+
+.breadcrumbSeparator {
+	color: rgb(var(--muted-foreground));
+	flex-shrink: 0;
+	opacity: 0.5;
+}
+
+/* Intermediate crumbs (links) */
+.breadcrumbItem {
+	color: rgb(var(--muted-foreground));
+	text-decoration: none;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+a.breadcrumbItem:hover {
+	color: rgb(var(--primary));
+	text-decoration: none;
+}
+
+/* Last crumb (current page) */
+.breadcrumbItemActive {
+	color: rgb(var(--foreground));
+	font-weight: 600;
+}
+
+/* ── Version dropdown ─────────────────────────────────────────── */
+
+.versionDropdown {
+	flex-shrink: 0;
+}
+
+.versionDropdown select {
+	appearance: none;
+	-webkit-appearance: none;
+	background-color: rgb(var(--card));
+	color: rgb(var(--foreground));
+	border: 1px solid rgb(var(--border));
+	border-radius: 6px;
+	padding: 2px 28px 2px 10px;
+	font-size: 0.78rem;
+	font-weight: 500;
+	cursor: pointer;
+	outline: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 8px center;
+	transition: border-color 0.15s;
+}
+
+.versionDropdown select:hover,
+.versionDropdown select:focus {
+	border-color: rgb(var(--primary));
+}
+
+html[data-theme="dark"] .versionDropdown select {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+
+@media (max-width: 996px) {
+	.secondaryNavbarInner {
+		padding: 0 1rem;
+	}
+}
