@@ -10,35 +10,9 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			id: "cti_api/intro",
 		},
 		{
-			type: "category",
+			type: "link",
 			label: "Web UI",
-			items: [
-				{
-					type: "doc",
-					label: "Getting Started",
-					id: "cti_api/getting_started",
-				},
-				{
-					type: "doc",
-					label: "IP Report",
-					id: "cti_api/ip_report",
-				},
-				{
-					type: "doc",
-					label: "Advanced Search",
-					id: "cti_api/advanced_search",
-				},
-				{
-					type: "doc",
-					label: "Search Queries",
-					id: "cti_api/search_queries",
-				},
-				{
-					type: "doc",
-					label: "CVE Explorer",
-					id: "cti_api/cve_explorer",
-				},
-			],
+			href: "/u/console/ip_reputation/intro",
 		},
 		{
 			type: "category",
@@ -329,9 +303,67 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 		},
 		{
-			type: "link",
-			label: "CTI",
-			href: "/u/cti_api/intro",
+			type: "category",
+			label: "IP Reputation / CTI",
+			link: {
+				type: "doc",
+				id: "console/ip_reputation/intro",
+			},
+			items: [
+				{
+					type: "category",
+					label: "Search UI",
+					link: {
+						type: "doc",
+						id: "console/ip_reputation/search_ui",
+					},
+					items: [
+						{
+							type: "doc",
+							label: "Advanced Search",
+							id: "console/ip_reputation/search_ui_advanced",	
+						},
+						{
+							type: "link",
+							label: "Search Queries Syntax",
+							href: "/u/cti_api/search_queries",
+						},	
+					],
+				},
+				{
+					type: "doc",
+					label: "IP Reputation Report",
+					id: "console/ip_reputation/ip_report",
+				},
+				{
+					type: "category",
+					label: "API",
+					link: {
+						type: "doc",
+						id: "console/ip_reputation/api_keys",
+					},
+					items: [
+						{
+							type: "doc",
+							label: "Premium API Keys",
+							id: "console/ip_reputation/api_keys_premium",
+							customProps: {
+								tag: "premium",
+							},
+						},
+						{
+							type: "link",
+							label: "CTI API Integrations 🔀",
+							href: "/u/cti_api/api_integration/integration_intro",
+						},
+						{
+							type: "link",
+							label: "Technical Documentation 🔀",
+							href: "/u/cti_api/taxonomy/intro",
+						},
+					],
+				},
+			],
 		},
 		{
 			type: "category",
