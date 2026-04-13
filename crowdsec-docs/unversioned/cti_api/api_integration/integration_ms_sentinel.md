@@ -11,7 +11,7 @@ This documentation will guide you through deploying the playbook, configuring th
 ## Prerequisites: Get Your CTI API Key
 
 Before configuring the Logic App, you'll need a CrowdSec CTI API key.  
-For detailed instructions on obtaining your API key, check out the [CTI API Getting Started guide](/cti_api/api_getting_started.mdx).
+For detailed instructions on obtaining your API key, check out the [CTI API Getting Started guide](/u/console/ip_reputation/api_keys).
 :::info
 If you need higher quotas for your CTI API key to handle larger volumes of queries, please [contact us](https://www.crowdsec.net/contact) to discuss custom quotas.
 :::
