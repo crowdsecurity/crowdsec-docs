@@ -11,38 +11,13 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "link",
-			label: "Web UI",
+			label: "Web UI 📖",
 			href: "/u/console/ip_reputation/intro",
 		},
 		{
-			type: "category",
-			label: "API",
-			items: [
-				{
-					type: "doc",
-					label: "Getting Started",
-					id: "cti_api/api_getting_started",
-				},
-				{
-					type: "link",
-					label: "Swagger",
-					href: "https://crowdsecurity.github.io/cti-api/",
-				},
-			],
-		},
-		{
-			type: "category",
-			label: "Taxonomy",
-			items: [
-				"cti_api/taxonomy/intro",
-				"cti_api/taxonomy/cti_object",
-				"cti_api/taxonomy/scores",
-				"cti_api/taxonomy/scenarios",
-				"cti_api/taxonomy/behaviors",
-				"cti_api/taxonomy/classifications",
-				"cti_api/taxonomy/false_positives",
-				"cti_api/taxonomy/benign",
-			],
+			type: "doc",
+			label: "API Access",
+			id: "cti_api/api_introduction",
 		},
 		{
 			type: "category",
@@ -68,6 +43,30 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				"cti_api/api_integration/integration_splunk_siem",
 				"cti_api/api_integration/integration_splunk_soar",
 				"cti_api/api_integration/integration_thehive",
+			],
+		},
+		{
+					type: "link",
+					label: "Swagger",
+					href: "https://crowdsecurity.github.io/cti-api/",
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		{
+			type: "category",
+			label: "Taxonomy",
+			items: [
+				"cti_api/taxonomy/intro",
+				"cti_api/taxonomy/cti_object",
+				"cti_api/taxonomy/scores",
+				"cti_api/taxonomy/scenarios",
+				"cti_api/taxonomy/behaviors",
+				"cti_api/taxonomy/classifications",
+				"cti_api/taxonomy/false_positives",
+				"cti_api/taxonomy/benign",
 			],
 		},
 		{
@@ -113,6 +112,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			type: "doc",
 			label: "Getting Started",
 			id: "console/getting_started",
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
 		},
 		{
 			type: "category",
@@ -181,11 +185,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 					id: "console/security_engines/details_page",
 				},
 			],
-		},
-		{
-			label: "Blocklists",
-			type: "doc",
-			id: "blocklists/intro",
 		},
 		{
 			type: "category",
@@ -262,6 +261,16 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		{
+			label: "Blocklists",
+			type: "doc",
+			id: "blocklists/intro",
+		},
+		{
 			id: "console/allowlists",
 			type: "doc",
 			label: "Centralized Allowlists",
@@ -270,37 +279,17 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 		},
 		{
-			type: "category",
-			label: "Enterprise plan",
-			customProps: {
-				tag: "premium",
-			},
-			items: [
-				{
-					type: "doc",
-					label: "Enterprise support",
-					id: "console/enterprise_plan/enterprise_support",
-					customProps: {
-						tag: "premium",
-					},
-				},
-				{
-					type: "doc",
-					label: "Invoices",
-					id: "console/enterprise_plan/enterprise_invoices",
-					customProps: {
-						tag: "premium",
-					},
-				},
-			],
-		},
-		{
 			id: "console/threat_forecast",
 			type: "doc",
 			label: "Threat Forecast",
 			customProps: {
 				tag: "premium",
 			},
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
 		},
 		{
 			type: "category",
@@ -325,7 +314,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 						},
 						{
 							type: "link",
-							label: "Search Queries Syntax",
+							label: "Search Queries Syntax 📖",
 							href: "/u/cti_api/search_queries",
 						},	
 					],
@@ -353,15 +342,61 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 						},
 						{
 							type: "link",
-							label: "CTI API Integrations 🔀",
+							label: "CTI API Integrations 📖",
 							href: "/u/cti_api/api_integration/integration_intro",
 						},
 						{
 							type: "link",
-							label: "Technical Documentation 🔀",
+							label: "Technical Documentation 📖",
 							href: "/u/cti_api/taxonomy/intro",
 						},
 					],
+				},
+			],
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		{
+			type: "category",
+			label: "Notification integrations",
+			customProps: {
+				tag: "premium",
+			},
+			items: [
+				{
+					type: "doc",
+					label: "Overview",
+					id: "console/notification_integrations/overview",
+					customProps: {
+						tag: "premium",
+					},
+				},
+				{
+					type: "doc",
+					label: "Notification Rule",
+					id: "console/notification_integrations/rule",
+					customProps: {
+						tag: "premium",
+					},
+				},
+				{
+					type: "doc",
+					label: "Discord",
+					id: "console/notification_integrations/discord",
+				},
+				{
+					type: "doc",
+					label: "Slack",
+					id: "console/notification_integrations/slack",
+				},
+
+				{
+					type: "doc",
+					label: "Webhook",
+					id: "console/notification_integrations/webhook",
 				},
 			],
 		},
@@ -442,45 +477,9 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
-			type: "category",
-			label: "Notification integrations",
-			customProps: {
-				tag: "premium",
-			},
-			items: [
-				{
-					type: "doc",
-					label: "Overview",
-					id: "console/notification_integrations/overview",
-					customProps: {
-						tag: "premium",
-					},
-				},
-				{
-					type: "doc",
-					label: "Notification Rule",
-					id: "console/notification_integrations/rule",
-					customProps: {
-						tag: "premium",
-					},
-				},
-				{
-					type: "doc",
-					label: "Discord",
-					id: "console/notification_integrations/discord",
-				},
-				{
-					type: "doc",
-					label: "Slack",
-					id: "console/notification_integrations/slack",
-				},
-
-				{
-					type: "doc",
-					label: "Webhook",
-					id: "console/notification_integrations/webhook",
-				},
-			],
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
 		},
 		{
 			type: "doc",

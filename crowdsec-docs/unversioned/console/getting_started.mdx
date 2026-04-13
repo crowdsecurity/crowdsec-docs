@@ -3,33 +3,50 @@ id: getting_started
 title: Getting started
 ---
 
-import ConsolePromo from '@site/src/components/console-promo';
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import FormattedTabs from '@site/src/components/formatted-tabs';
 
-# Getting Started
+## Sign Up
 
-The CrowdSec Console provides a range of tools designed to bolster your infrastructure's security. We offer a range of features that can be tailored to your specific needs, including the ability to manage your Security Engines, subscribe to CrowdSec CTI, and integrate blocklists.
+:::info
+You can sign up using Google SSO, Github SSO, or email and password.   
+We recommend using SSO for the best experience, but you can choose the method that works best for you.  
+:::
 
-Depending on your use case you may want to start with the following guides:
+Head over to the [CrowdSec Console ↗️](https://app.crowdsec.net/signup) and sign up for a new account.
 
-<ConsolePromo
-    title="CrowdSec Security Engine"
-    description="The CrowdSec Security Engine is a powerful, open-source software for detecting and blocking malicious IPs, safeguarding both infrastructure and application security."
-    image="Hero Security Engine.png"
-    link="/u/getting_started/post_installation/console/"
+<a href="https://app.crowdsec.net/signup" target="_blank">
+    <ThemedImage
+        alt="CrowdSec Signup Screen"
+        sources={{
+            light: useBaseUrl("/img/console_login_light.png"),
+            dark: useBaseUrl("/img/console_login_dark.png"),
+        }}
+    />
+</a>
+    
+### Email Authentication
+
+If you have chosen to sign up with email and password, you will receive a verification email. Click the link or enter the code to verify your account
+
+:::info
+If you do not receive an email, check your spam folder. If it is still missing, click "Resend verification email" on the login page.   
+_If more than 5 minutes have passed, [contact us](mailto:support@crowdsec.net)._
+:::
+
+## Survey
+
+When you log in for the first time, we ask a few questions to understand your use case.
+
+<ThemedImage
+    alt="CrowdSec Survey"
+    sources={{
+        light: useBaseUrl("/img/console_signup_survey_light.png"),
+        dark: useBaseUrl("/img/console_signup_survey_dark.png"),
+    }}
 />
-<br/>
-<ConsolePromo
-    title="CrowdSec CTI"
-    description="CrowdSec Cyber Threat Intelligence is the largest and most diverse CTI network on earth, delivering key contextualized and curated benchmarking insights from real users across the globe."
-    image="Hero CTI Engine.png"
-    link="/u/cti_api/getting_started/"
-/>
-<br/>
-<ConsolePromo
-    title="CrowdSec Blocklists"
-    description="Get immediate protection against active malicious IPs with CrowdSec’s actionable and real-time Blocklists."
-    image="Hero Blocklists.png"
-    link="/u/blocklists/getting_started/"
-/>
-<br/>
-If you're new to CrowdSec, we recommend starting with the [Security Engine](/getting_started/introduction.mdx) guide, however, if you are unsure where to start, feel free to browse our [main website for more information](https://www.crowdsec.net/).
+
+:::info
+The survey is optional. We use the information to tailor your experience and better understand users.
+:::

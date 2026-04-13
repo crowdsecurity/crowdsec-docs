@@ -17,6 +17,15 @@
 	@apply border border-b border-solid;
 }
 
+.navbar-separator {
+  display: inline-block;
+  width: 1px;
+  height: 24px;
+  background: var(--ifm-color-emphasis-300);
+  margin: 0 0.75rem;
+  vertical-align: middle;
+}
+
 /** Patch some colors **/
 button[class*="toggleButton"]:hover {
 	@apply bg-transparent;
