@@ -52,7 +52,7 @@ Fingerprint rules fill a critical gap:
 
 2. **Zero-day coverage**: When a new vulnerability is disclosed for a product, attackers who were already probing that product may exploit it immediately. If you're tracking the fingerprint rule, you already have visibility into who has been scanning your infrastructure.
 
-3. **Multi-CVE protection**: A single product may have dozens of CVEs. Rather than subscribing to each one individually, a fingerprint rule covers reconnaissance activity that could lead to any of them.
+3. **Multi-CVE protection**: A single product may have dozens of CVEs. [Vendor subscriptions](./api_lookups#subscribe-an-integration-to-a-vendor) automatically cover all CVEs and reconnaissance rules for a vendor's products. Fingerprint rules complement this by providing reconnaissance-specific visibility — detecting probing activity that precedes exploitation.
 
 ## Feature Comparison
 
@@ -70,13 +70,13 @@ Fingerprint rules fill a critical gap:
 
 ## Using Them Together
 
-The most comprehensive monitoring strategy combines both:
+The most comprehensive monitoring strategy combines vendor subscriptions with targeted CVE and reconnaissance rule tracking:
 
-1. **Subscribe fingerprint rules** for all products in your technology stack (Exchange, WordPress, F5, etc.). This gives you broad reconnaissance visibility.
-2. **Monitor specific CVEs** for unpatched vulnerabilities in your environment. This gives you targeted exploitation intelligence.
-3. **Create firewall integrations** subscribed to both CVEs and fingerprint rules to build layered blocklists.
+1. **Subscribe to your vendors** — this is the simplest starting point. A vendor subscription automatically covers all current and future CVEs and reconnaissance rules for that vendor's products. See [Vendor Subscriptions](./api_lookups#subscribe-an-integration-to-a-vendor).
+2. **Add individual fingerprint rules** for products outside your subscribed vendors, or when you want reconnaissance-specific visibility.
+3. **Monitor specific CVEs** for unpatched vulnerabilities to inform patching priorities and triage decisions.
 
-For example, if you run WordPress:
-- Subscribe to the **WordPress Probing** fingerprint rule to catch general reconnaissance
-- Subscribe to specific CVEs like **CVE-2024-25600** (Bricks Builder RCE) if you run affected plugins
-- Create a firewall integration subscribed to both, so your blocklist captures both scanners and active exploiters
+For example, if you run WordPress and Microsoft infrastructure:
+- Subscribe to the **WordPress** and **Microsoft** vendors to automatically cover all their CVEs and reconnaissance rules
+- Add individual subscriptions for any other products you use that aren't covered by a vendor subscription (e.g., a niche plugin or appliance)
+- Use the tracker's scores and phases to prioritize which patches to apply first
