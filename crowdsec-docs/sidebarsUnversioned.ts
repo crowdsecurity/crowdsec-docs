@@ -78,9 +78,9 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			defaultStyle: false,
 		},
 		{
-					type: "link",
-					label: "Swagger",
-					href: "https://crowdsecurity.github.io/cti-api/",
+			type: "link",
+			label: "Swagger",
+			href: "https://crowdsecurity.github.io/cti-api/",
 		},
 		{
 			type: "doc",
@@ -323,7 +323,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 						{
 							type: "doc",
 							label: "Advanced Search",
-							id: "console/ip_reputation/search_ui_advanced",	
+							id: "console/ip_reputation/search_ui_advanced",
 						},
 						{
 							type: "link",
@@ -332,7 +332,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 							customProps: {
 								tag: "otherSection",
 							},
-						},	
+						},
 					],
 				},
 				{

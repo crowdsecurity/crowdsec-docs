@@ -47,9 +47,7 @@ export default function DocSidebarItemLink({ item, onItemClick, activePath, leve
 						Premium
 					</Badge>
 				)}
-				{tag === "otherSection" && (
-					<Signpost className="ml-1 h-4 text-foreground/80" />
-				)}
+				{tag === "otherSection" && (<Signpost className="ml-1 h-4 text-foreground/80" />)}
 				{!isInternalLink && <ExternalLinkIcon className="ml-1 h-4 text-foreground/80" />}
 			</Link>
 		</li>

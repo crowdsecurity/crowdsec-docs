@@ -91,9 +91,9 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 	{ to: "/u/cti_api/intro", position: "left", label: "IP Reputation & CTI" },
 	{ to: "/u/console/intro", position: "left", label: "Console" },
 	{
-		type: 'html',
+		type: "html",
 		value: '<span class="navbar-separator" aria-hidden="true"></span>',
-		position: 'left',
+		position: "left",
 	},
 	{
 		label: "Resources",
