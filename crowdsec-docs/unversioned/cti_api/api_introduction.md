@@ -31,7 +31,7 @@ curl -H "x-api-key: $API_KEY" https://cti.api.crowdsec.net/v2/smoke/1.2.3.4 | jq
 
 ### IPDEX
 
-Available in [Web UI](https://ipdex.crowdsec.net/) or [CLI](https://github.com/crowdsecurity/ipdex), this tool provides a detailed IP reputation report from a list of IPs or logs you provide.
+Available in [Web UI](https://ipdex.crowdsec.net/) or [CLI](https://github.com/crowdsecurity/ipdex), this tool provides a detailed IP reputation report from a list of IPs or logs you provide.   
 This is a useful Proof of Value tool to see the coverage of CrowdSec Threat Intel for both Blocklists and Threat Intel.
 
 [IPDEX →](/u/cti_api/api_integration/integration_ipdex)

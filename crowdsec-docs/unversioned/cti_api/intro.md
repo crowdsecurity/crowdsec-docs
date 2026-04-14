@@ -9,7 +9,7 @@ CrowdSec's **Cyber Threat Intelligence (CTI)** exposes the threat data collected
 This section covers the **API** side of CTI: authentication, datasets, data format, taxonomy, and integrations with third-party security platforms.
 
 :::tip Prefer a visual interface?
-The [IP Reputation section of the Console](/u/console/ip_reputation/intro) present exploration via the Console UI to: get details about a specific IP, run advanced queries, and manage your CTI API Key(s)
+The [IP Reputation section of the Console](/u/console/ip_reputation/intro) presents exploration via the Console UI to: get details about a specific IP, run advanced queries, and manage your CTI API Key(s)
 :::
 
 ---
@@ -48,7 +48,7 @@ Understanding the CTI data model is key to making good use of the API. The [Taxo
 
 ## Getting Started
 
-1. **Get an API key** — create one in the [Console](https://app.crowdsec.net/settings/cti-api-keys). A free key (50 queries/week) is available to all registered users. See [API Keys](/u/console/ip_reputation/api_keys).
+1. **Get an API key** — create one in the [Console](https://app.crowdsec.net/settings/cti-api-keys). A free key is available to all registered users. See [API Keys](/u/console/ip_reputation/api_keys).
 2. **Make your first request** — see [API Introduction](/u/cti_api/api_introduction) for the base URL, authentication header, and an example response.
 3. **Integrate** — connect CrowdSec CTI to your SIEM, SOAR, or TIP using one of the [supported integrations](/u/cti_api/api_integration/integration_intro).
 
