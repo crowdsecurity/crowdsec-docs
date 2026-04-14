@@ -6,7 +6,11 @@ title: Integrations & Blocklists
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-Integrations are the bridge between CrowdSec's threat intelligence and your security infrastructure. An integration generates a blocklist of attacker IPs that your firewall can consume. You subscribe integrations to specific CVEs or fingerprint rules, and the blocklist automatically updates as new attacker IPs are observed.
+Integrations are the bridge between CrowdSec's threat intelligence and your security infrastructure. An integration generates a blocklist of attacker IPs that your firewall can consume. You subscribe integrations to specific CVEs, fingerprint rules, or entire vendors, and the blocklist automatically updates as new attacker IPs are observed.
+
+:::tip Vendor Subscriptions
+Instead of subscribing to CVEs and fingerprint rules one by one, you can subscribe an integration to a **vendor**. This automatically covers all current and future CVEs and reconnaissance rules for that vendor's products. See [Vendors, Products & Tags](./api_lookups#subscribe-an-integration-to-a-vendor) for details.
+:::
 
 ## Supported Output Formats
 
@@ -114,6 +118,7 @@ The integration credentials (API key or username/password depending on type) are
 | `output_format` | string | Blocklist format (see table above) |
 | `cves` | array | CVE subscriptions (each with `id`) |
 | `fingerprints` | array | Fingerprint rule subscriptions |
+| `vendors` | array | Vendor subscriptions (each with `id`). Subscribing to a vendor automatically covers all current and future CVEs and reconnaissance rules for that vendor. |
 | `blocklists` | array | Blocklist subscriptions |
 | `endpoint` | string | URL for fetching the integration's blocklist content |
 | `stats` | object | Statistics including `count` (number of IPs in the blocklist) |
@@ -291,7 +296,7 @@ except HTTPStatusError as e:
 </TabItem>
 </Tabs>
 
-Use the `force=true` query parameter to delete an integration even if it has active CVE or fingerprint subscriptions.
+Use the `force=true` query parameter to delete an integration even if it has active CVE, fingerprint, or vendor subscriptions.
 
 ## Get Integration Content (Blocklist)
 
@@ -323,7 +328,7 @@ This is compatible with CrowdSec's remediation component protocol.
 
 ## End-to-End Workflow
 
-Here's a complete example: create an integration, subscribe it to a CVE and a fingerprint rule, and verify the blocklist.
+Here's a complete example: create an integration, subscribe it to a vendor, a CVE, and a fingerprint rule, and verify the blocklist.
 
 ```bash
 # 1. Create a plain text integration
@@ -331,20 +336,29 @@ curl -X 'POST' 'https://admin.api.crowdsec.net/v1/integrations' \
   -H 'x-api-key: ${KEY}' -H 'Content-Type: application/json' \
   -d '{"name": "demo_blocklist", "description": "Demo", "entity_type": "firewall_integration", "output_format": "plain_text"}'
 
-# 2. Subscribe to a CVE
+# 2. Subscribe to a vendor (covers all current and future CVEs + recon rules for that vendor)
+curl -X 'POST' 'https://admin.api.crowdsec.net/v1/vendors/Microsoft/integrations' \
+  -H 'x-api-key: ${KEY}' -H 'Content-Type: application/json' \
+  -d '{"name": "demo_blocklist"}'
+
+# 3. Subscribe to an additional individual CVE (for a vendor you haven't subscribed to)
 curl -X 'POST' 'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/integrations' \
   -H 'x-api-key: ${KEY}' -H 'Content-Type: application/json' \
   -d '{"name": "demo_blocklist"}'
 
-# 3. Subscribe to a fingerprint rule
+# 4. Subscribe to an additional fingerprint rule
 curl -X 'POST' 'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/integrations' \
   -H 'x-api-key: ${KEY}' -H 'Content-Type: application/json' \
   -d '{"name": "demo_blocklist"}'
 
-# 4. Fetch the blocklist (using integration credentials)
+# 5. Fetch the blocklist (using integration credentials)
 curl 'https://admin.api.crowdsec.net/v1/integrations/INTEGRATION_ID/content' \
   -H 'x-api-key: INTEGRATION_API_KEY'
 ```
+
+:::tip
+Vendor subscriptions are the simplest way to get broad coverage. Subscribe to the vendors in your technology stack, then add individual CVE or fingerprint subscriptions only for threats outside those vendors.
+:::
 
 ## Next Steps
 

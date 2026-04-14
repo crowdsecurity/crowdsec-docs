@@ -48,16 +48,35 @@ curl -X 'GET' \
   -H 'x-api-key: ${KEY}'
 ```
 
-## Step 3: Set Up Fingerprint Monitoring
+## Step 3: Subscribe to Your Vendors
 
-[Fingerprint rules](./fingerprints_vs_cves) give you broad coverage for product families. Even if a new CVE drops tomorrow for Exchange, the "Microsoft Exchange Probing" fingerprint rule already captures reconnaissance activity.
+The simplest way to get broad, ongoing coverage is to subscribe your integration to the **vendors** in your technology stack. A vendor subscription automatically covers all current and future CVEs and reconnaissance rules for that vendor's products — when a new threat is added, your blocklist is updated without any action on your part.
 
-1. Identify fingerprint rules matching your products
-2. Create a firewall integration (if you don't have one)
-3. Subscribe the integration to relevant fingerprint rules
+1. Create a firewall integration (if you don't have one) — see [Integrations & Blocklists](./api_integrations)
+2. Subscribe the integration to each vendor you rely on
 
 ```bash
-# Subscribe to Microsoft Exchange probing detection
+# Subscribe to all Microsoft threats
+curl -X 'POST' \
+  'https://admin.api.crowdsec.net/v1/vendors/Microsoft/integrations' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}' \
+  -H 'Content-Type: application/json' \
+  -d '{"name": "production_firewall"}'
+
+# Subscribe to all Citrix threats
+curl -X 'POST' \
+  'https://admin.api.crowdsec.net/v1/vendors/Citrix/integrations' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}' \
+  -H 'Content-Type: application/json' \
+  -d '{"name": "production_firewall"}'
+```
+
+For threats outside your subscribed vendors, you can also subscribe to individual [fingerprint rules](./fingerprints_vs_cves) or CVEs:
+
+```bash
+# Subscribe to a specific reconnaissance rule
 curl -X 'POST' \
   'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/integrations' \
   -H 'accept: application/json' \
@@ -68,7 +87,7 @@ curl -X 'POST' \
 
 ## Step 4: Monitor New and Trending CVEs
 
-Check the tracker regularly (or automate it) for new CVEs affecting your stack:
+If you've subscribed to your vendors (Step 3), new CVEs are automatically covered in your blocklist. However, you'll still want to monitor the threat landscape for situational awareness and to inform patching priorities:
 
 ```bash
 # Get the latest detection rules, sorted by release date
@@ -88,7 +107,7 @@ For each new CVE that affects your products:
 
 1. Check the **CrowdSec Score** and **Exploitation Phase**
 2. Read the **CrowdSec Analysis** for exploitation context
-3. Subscribe your integration if the threat warrants immediate blocklist protection
+3. If the CVE is from a vendor you've subscribed to, your blocklist is already protecting you. If not, subscribe the integration to the CVE directly.
 4. Open a patching ticket with the appropriate priority
 
 ## Step 5: Build a Monitoring Script
@@ -137,6 +156,6 @@ for alert in sorted(alerts, key=lambda x: x["score"], reverse=True):
 The Live Exploit Tracker API can feed data into:
 
 - **SIEM**: Enrich alerts with CrowdSec Scores and exploitation context. When your SIEM fires an alert for a CVE, automatically look up the CrowdSec intelligence to assign priority.
-- **SOAR**: Build playbooks that automatically create blocklist subscriptions when a new high-severity CVE is detected for your products.
+- **SOAR**: Build playbooks that react to new high-severity CVEs. If you're using vendor subscriptions, the blocklist is already covered — your playbook can focus on escalation, ticket creation, and patching workflows.
 - **Vulnerability Management**: Correlate your vulnerability scanner findings with real-world exploitation data to reorder your patch queue.
 - **Reporting Dashboards**: Pull scores and phase data into your security dashboard to give leadership a real-time view of the threat landscape.

@@ -189,7 +189,7 @@ Each vendor card displays:
 
 Use the **search bar** to find a specific vendor and the **Sort by** dropdown to order by Most IPs, Most CVEs, or alphabetically.
 
-Clicking a vendor card shows all CVEs and Reconnaissance rules affecting their products.
+Clicking a vendor card shows all CVEs and Reconnaissance rules affecting their products. From the vendor detail page, you can **subscribe a firewall integration to the vendor**, which automatically covers all current and future CVEs and reconnaissance rules for that vendor's products.
 
 ![Vendors Page](/img/exploit-tracker/vendors.png)
 
@@ -211,15 +211,17 @@ Each integration card shows:
 2. Choose a name and select the output format matching your firewall vendor
 3. Save the integration and **securely store the generated credentials** — they are only shown once
 
-### Subscribing to CVEs and Reconnaissance Rules
+### Subscribing to Vendors, CVEs, and Reconnaissance Rules
 
-There are two ways to subscribe:
+There are several ways to subscribe an integration:
+
+**Subscribe to a vendor** (recommended for broad coverage): From a vendor's detail page, click the **SUBSCRIBE TO FIREWALL** button. This subscribes the integration to **all current and future** CVEs and reconnaissance rules for that vendor's products. When a new threat is added for the vendor, your blocklist is updated automatically.
 
 **From the CVE/Recon detail page**: Click the **SUBSCRIBE TO FIREWALL** button in the top right of any CVE or Reconnaissance rule detail page, then select the integration to subscribe.
 
 **From the Remediation & Protection section**: Scroll to the bottom of a CVE detail page and click **Subscribe** under the Firewall Integration card.
 
-The integration's blocklist will now include all IPs observed exploiting that CVE or matching that Reconnaissance rule. As new IPs are observed, they are automatically added.
+The integration's blocklist will now include all IPs observed exploiting the subscribed CVEs, matching the subscribed Reconnaissance rules, or targeting the subscribed vendors' products. As new IPs are observed, they are automatically added.
 
 ### Consuming the Blocklist
 

@@ -87,9 +87,10 @@ Based on what you've found:
 
 If the situation calls for immediate mitigation:
 
-1. **Create a firewall integration** (if you don't have one) — see [Integrations & Blocklists](./api_integrations)
-2. **Subscribe it to the CVE** — either via the web interface or API
-3. Your firewall will start blocking known attacker IPs automatically
+1. **Check your vendor subscriptions first** — if you've already subscribed an integration to this CVE's vendor, your blocklist is already covering this threat automatically.
+2. If not, **create a firewall integration** (if you don't have one) — see [Integrations & Blocklists](./api_integrations)
+3. **Subscribe it to the CVE** (or to the vendor for broader coverage) — either via the web interface or API
+4. Your firewall will start blocking known attacker IPs automatically
 
 This buys you time while you schedule and deploy the patch.
 

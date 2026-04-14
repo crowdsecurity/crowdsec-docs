@@ -116,6 +116,85 @@ curl -X 'GET' \
   -H 'x-api-key: ${KEY}'
 ```
 
+### Subscribe an Integration to a Vendor
+
+Subscribing an integration to a vendor automatically covers **all current and future CVEs and reconnaissance rules** for that vendor's products. When a new CVE or reconnaissance rule is added for the vendor, the integration's blocklist is updated automatically — no action needed on your part.
+
+```
+POST /v1/vendors/{vendor}/integrations
+```
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-lookups-selection"
+  values={[
+    { label: 'cURL', value: 'curl' },
+    { label: 'Python', value: 'python' },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -X 'POST' \
+  'https://admin.api.crowdsec.net/v1/vendors/Microsoft/integrations' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}' \
+  -H 'Content-Type: application/json' \
+  -d '{"name": "production_firewall"}'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+import httpx
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+headers = {"x-api-key": KEY, "accept": "application/json", "Content-Type": "application/json"}
+
+response = httpx.post(
+    "https://admin.api.crowdsec.net/v1/vendors/Microsoft/integrations",
+    headers=headers,
+    json={"name": "production_firewall"},
+)
+response.raise_for_status()
+print("Subscribed to Microsoft")
+```
+
+</TabItem>
+</Tabs>
+
+:::tip
+Vendor subscriptions are the simplest way to get broad coverage for your technology stack. Subscribe to the vendors you rely on, and you'll automatically be protected against all tracked threats for their products — including new ones added in the future.
+:::
+
+### List Subscribed Integrations for a Vendor
+
+```
+GET /v1/vendors/{vendor}/integrations
+```
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/vendors/Microsoft/integrations' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+### Unsubscribe an Integration from a Vendor
+
+```
+DELETE /v1/vendors/{vendor}/integrations/{integration_name}
+```
+
+```bash
+curl -X 'DELETE' \
+  'https://admin.api.crowdsec.net/v1/vendors/Microsoft/integrations/production_firewall' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
 ## Products
 
 Products are specific software applications (e.g., Exchange Server, BIG-IP, WordPress).
@@ -155,4 +234,4 @@ These lookup endpoints are particularly useful for:
 - **Asset-based monitoring**: "Show me all tracked threats for the products in my technology stack."
 - **Coverage assessment**: "How many vulnerabilities affecting WordPress does CrowdSec track?"
 - **Reporting**: "What's the overall threat landscape for enterprise software this month?"
-- **Automation**: Build scripts that automatically subscribe integrations to all new CVEs for your vendor ecosystem.
+- **Vendor subscriptions**: Subscribe an integration to your vendors and automatically receive blocklist coverage for all their current and future CVEs and reconnaissance rules — no scripting required.
