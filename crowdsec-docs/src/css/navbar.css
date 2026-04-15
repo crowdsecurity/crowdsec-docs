@@ -26,15 +26,11 @@
 	vertical-align: middle;
 }
 
-<<<<<<< HEAD
-=======
-/* Tweak hidding breadcrumb on top of pages that have sidebar - as we have the secondary bar version now*/
 nav.theme-doc-breadcrumbs
 {
     display: none;
 }
 
->>>>>>> 8f5b5b01 (New second bar with better breadcrumb)
 /** Patch some colors **/
 button[class*="toggleButton"]:hover {
 	@apply bg-transparent;
