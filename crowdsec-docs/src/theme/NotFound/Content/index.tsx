@@ -1,23 +1,12 @@
 import Link from "@docusaurus/Link";
 import Translate from "@docusaurus/Translate";
-import { patternRedirects } from "@site/src/patternRedirects";
 import { Button } from "@site/src/ui/button";
 import Heading from "@theme/Heading";
 import type { Props } from "@theme/NotFound/Content";
 import clsx from "clsx";
 import React, { useEffect, type ReactNode } from "react";
 
-export default function NotFoundContent({ className }: Props): ReactNode {
-	// At runtime, try each pattern rule against the current URL before showing the 404 page.
-	useEffect(() => {
-		const path = window.location.pathname;
-		for (const { from, to } of patternRedirects) {
-			if (from.test(path)) {
-				window.location.replace(path.replace(from, to));
-				return;
-			}
-		}
-	}, []);
+export default function NotFoundContent({ className }: Props): ReactNode {	
 	return (
 		<main className={clsx("container margin-vert--xl", className)}>
 			<div className="row">
