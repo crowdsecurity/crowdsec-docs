@@ -1,0 +1,133 @@
+---
+id: guide_triage
+title: "Guide: Triage Workflow"
+---
+
+## Scenario
+
+You've received a security alert — your vulnerability scanner flagged a CVE, a vendor published a critical advisory, or your SIEM correlated an event with a known vulnerability. You need to decide: **how urgently should I act?**
+
+This guide walks through using the Live Exploit Tracker to turn a CVE identifier into an informed triage decision.
+
+## Step 1: Look Up the CVE
+
+Navigate to the CVE in the [web interface](https://tracker.crowdsec.net) by searching for its ID (e.g., `CVE-2024-25600`), or query the API:
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+## Step 2: Read the CrowdSec Score
+
+The **CrowdSec Score** is your first signal. Think of it as a traffic light:
+
+| Score | Action |
+|-------|--------|
+| **0–3** | 🟢 Standard priority. Patch in your normal maintenance window. |
+| **4–6** | 🟡 Elevated priority. Move it up in the patch queue. Consider a blocklist. |
+| **7–10** | 🔴 Urgent. Escalate immediately. Deploy mitigations now. |
+
+## Step 3: Understand the Context
+
+The score alone doesn't tell the full story. Check these fields to understand *why* the score is what it is:
+
+### Opportunity Score
+
+- **High (4–5)**: Attackers are deliberately targeting victims. If you see an alert on your systems, take it seriously — someone likely chose to attack you.
+- **Low (0–1)**: Mass scanning. You're one of millions being probed. The alert is real but low-signal.
+
+### Momentum Score
+
+- **High (4–5)**: Exploitation is surging. A new campaign is underway. Act fast — the threat is getting worse.
+- **Low (0–1)**: Activity is declining. The threat is fading, though you should still patch.
+
+### Exploitation Phase
+
+- **Mass Exploitation** or **Targeted Exploitation**: The threat is active and real. Treat as urgent.
+- **Background Noise**: Ongoing but low-level. Standard patching is appropriate.
+- **Unpopular** or **Insufficient Data**: Limited attacker interest. Low urgency.
+
+## Step 4: Read the CrowdSec Analysis
+
+The `crowdsec_analysis` field provides a narrative that puts everything in context. It covers:
+
+- How the vulnerability is being exploited
+- Whether attacks are targeted or opportunistic
+- How activity is trending
+- Specific indicators (URLs, endpoints, payload patterns)
+
+This is the section you want to include in your incident report or escalation email.
+
+## Step 5: Check the Attacker IPs
+
+If you've seen suspicious traffic on your network, check whether the source IPs appear in the tracker:
+
+1. Go to the CVE detail page and view the **Attacker IPs** section
+2. Check whether the IPs hitting your infrastructure match known exploiters
+3. Review the CTI data for those IPs: are they known botnets, legitimate scanners, or fresh infrastructure?
+
+If your attacker IP matches a known exploiter with a `malicious` reputation and attack history, that's strong confirmation of an exploitation attempt.
+
+## Step 6: Decide and Act
+
+Based on what you've found:
+
+| Finding | Recommended Action |
+|---------|-------------------|
+| High CrowdSec Score + Targeted + Growing | **Emergency patch.** Deploy blocklist immediately. Investigate for compromise. |
+| High CrowdSec Score + Mass exploitation | **Urgent patch.** Deploy blocklist. Check all instances of affected software. |
+| Moderate score + Background noise | **Prioritize patch** within days, not weeks. Blocklist optional. |
+| Low score + Unpopular | **Standard patch** cycle. Monitor for phase changes. |
+| Insufficient data | **Fall back to CVSS** and vendor advisory. Check back for updates. |
+
+## Step 7: Deploy Mitigation (If Needed)
+
+If the situation calls for immediate mitigation:
+
+1. **Check your vendor subscriptions first** — if you've already subscribed an integration to this CVE's vendor, your blocklist is already covering this threat automatically.
+2. If not, **create a firewall integration** (if you don't have one) — see [Integrations & Blocklists](./api_integrations)
+3. **Subscribe it to the CVE** (or to the vendor for broader coverage) — either via the web interface or API
+4. Your firewall will start blocking known attacker IPs automatically
+
+This buys you time while you schedule and deploy the patch.
+
+## Automating Triage
+
+For teams handling many alerts, consider automating the lookup:
+
+```python
+import os
+from crowdsec_tracker_api import Cves, ApiKeyAuth
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+auth = ApiKeyAuth(api_key=KEY)
+cves_service = Cves(auth=auth)
+
+def triage_cve(cve_id: str) -> str:
+    """Return a triage priority based on CrowdSec intelligence."""
+    try:
+        cve = cves_service.get_cve(cve_id)
+    except Exception:
+        return "UNKNOWN — CVE not tracked by CrowdSec"
+
+    score = cve.crowdsec_score
+    phase = cve.exploitation_phase.name
+
+    if score >= 7 or phase in ("mass_exploitation", "targeted_exploitation"):
+        return f"CRITICAL — Score {score}, Phase: {phase}"
+    elif score >= 4:
+        return f"HIGH — Score {score}, Phase: {phase}"
+    elif score >= 1:
+        return f"MEDIUM — Score {score}, Phase: {phase}"
+    else:
+        return f"LOW — Score {score}, Phase: {phase}"
+
+# Example usage in a SIEM integration
+print(triage_cve("CVE-2024-25600"))
+# Output: "CRITICAL — Score 7, Phase: insufficient_data"
+```
+
+This function can be integrated into your SIEM or SOAR playbook to automatically enrich alerts with CrowdSec intelligence and assign initial priority.

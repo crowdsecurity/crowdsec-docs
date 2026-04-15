@@ -1,0 +1,236 @@
+---
+id: api_fingerprints
+title: Reconnaissance / Fingerprint Rules
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+This page covers the API endpoints for **Reconnaissance rules** (called "fingerprint rules" or "fingerprints" in the API) — detection patterns for product-level probing activity. See [Reconnaissance Rules vs CVEs](./fingerprints_vs_cves) for an explanation of the concept.
+
+:::info Terminology
+The web interface calls these **Reconnaissance rules** (or "Recon Rules"). The API uses **fingerprints** in all endpoint paths and field names. They are the same thing.
+:::
+
+Fingerprint endpoints mirror the CVE endpoints: list, detail, timeline, IPs, and integration subscriptions.
+
+## List Fingerprint Rules
+
+Retrieve a paginated list of all fingerprint rules.
+
+```
+GET /v1/fingerprints
+```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `page` | integer | 1 | Page number |
+| `size` | integer | 50 | Items per page |
+| `sort_by` | string | `rule_release_date` | Sort field: `rule_release_date`, `trending`, `nb_ips`, `name`, `first_seen` |
+| `sort_order` | string | `desc` | Sort direction: `asc`, `desc` |
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-fingerprints-selection"
+  values={[
+    { label: 'cURL', value: 'curl' },
+    { label: 'Python', value: 'python' },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/fingerprints?page=1&size=10' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+import httpx
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+headers = {"x-api-key": KEY, "accept": "application/json"}
+
+response = httpx.get(
+    "https://admin.api.crowdsec.net/v1/fingerprints",
+    params={"page": 1, "size": 10},
+    headers=headers,
+)
+response.raise_for_status()
+data = response.json()
+
+for rule in data["items"]:
+    print(f"{rule['title']}: CrowdSec Score={rule['crowdsec_score']}, IPs={rule['nb_ips']}")
+```
+
+</TabItem>
+</Tabs>
+
+### Response Fields
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | string | Fingerprint rule identifier (e.g., `microsoft-exchange`) |
+| `name` | string | Rule name |
+| `title` | string | Human-readable title (e.g., "Microsoft Exchange Probing") |
+| `affected_components` | array | Products and vendors covered by this rule |
+| `crowdsec_score` | integer | Composite severity score (0–10) |
+| `opportunity_score` | integer | Attack targeting score (0–5) |
+| `momentum_score` | integer | Trend direction score (0–5) |
+| `exploitation_phase` | object | Current phase: `name`, `label`, `description` |
+| `nb_ips` | integer | Number of IPs matching this fingerprint |
+| `first_seen` | datetime | First observation |
+| `last_seen` | datetime | Most recent observation |
+| `rule_release_date` | datetime | When the detection rule was released |
+| `adjustment_score` | object | Score adjustments: `total`, `recency`, `low_info` |
+| `threat_context` | object | Contextual threat intelligence: `attacker_countries`, `defender_countries`, `industry_types`, `industry_risk_profiles`, `attacker_objectives`. See [Threat Context](./threat_context). May be `null` for rules with insufficient data. |
+
+## Get Fingerprint Rule Details
+
+Returns the full detail for a fingerprint rule. The response includes the same list fields plus: `description`, `crowdsec_analysis`, `events`, `tags`, `references`, and `threat_context`.
+
+:::info
+Unlike CVE details, fingerprint details do **not** include `cvss_score`, `published_date`, `has_public_exploit`, or `cwes` — these are CVE-specific fields.
+:::
+
+```
+GET /v1/fingerprints/{fingerprint}
+```
+
+<Tabs
+  defaultValue="curl"
+  groupId="tracker-api-fingerprints-selection"
+  values={[
+    { label: 'cURL', value: 'curl' },
+    { label: 'Python', value: 'python' },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+import httpx
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+headers = {"x-api-key": KEY, "accept": "application/json"}
+
+response = httpx.get(
+    "https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange",
+    headers=headers,
+)
+response.raise_for_status()
+print(response.json())
+```
+
+</TabItem>
+</Tabs>
+
+## Get Fingerprint Timeline
+
+Retrieve probing activity over time for a fingerprint rule.
+
+```
+GET /v1/fingerprints/{fingerprint}/timeline
+```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `interval` | string | `day` | Time bucket: `hour`, `day`, `week` |
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/timeline?interval=week' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+## Get IPs Matching a Fingerprint
+
+Retrieve IPs observed probing targets matching this fingerprint rule, enriched with CTI data.
+
+```
+GET /v1/fingerprints/{fingerprint}/ips-details
+```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `page` | integer | 1 | Page number |
+| `size` | integer | 50 | Items per page |
+| `since` | integer | — | Only IPs seen in the last N days: `1`, `7`, or `30` |
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/ips-details?page=1&size=10&since=7' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+The response format is identical to [CVE IP details](./api_cves#ip-response-fields).
+
+## Download IPs (Raw)
+
+```
+GET /v1/fingerprints/{fingerprint}/ips-download
+```
+
+Returns a plain text list of IPs, one per line.
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/ips-download' \
+  -H 'x-api-key: ${KEY}'
+```
+
+## Manage Fingerprint Integration Subscriptions
+
+:::tip
+For broader coverage, consider subscribing to a **vendor** instead of individual fingerprint rules. A vendor subscription automatically covers all current and future CVEs and reconnaissance rules for that vendor's products. See [Vendor Subscriptions](./api_lookups#subscribe-an-integration-to-a-vendor).
+:::
+
+### Subscribe an Integration
+
+```
+POST /v1/fingerprints/{fingerprint}/integrations
+```
+
+```bash
+curl -X 'POST' \
+  'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/integrations' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}' \
+  -H 'Content-Type: application/json' \
+  -d '{"name": "my_firewall_integration"}'
+```
+
+### List Subscribed Integrations
+
+```
+GET /v1/fingerprints/{fingerprint}/integrations
+```
+
+### Unsubscribe an Integration
+
+```
+DELETE /v1/fingerprints/{fingerprint}/integrations/{integration_name}
+```

@@ -8,23 +8,29 @@ The documentation is built using [Docusaurus](https://docusaurus.io/), a modern 
 
 ## Pre-requisites
 
-- Node.js (version 20 or later)
-- npm (Node package manager)
+- [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager)
+- Node.js stable (install via nvm: `nvm install stable && nvm use stable`)
 - VSCode with recommended extensions installed (see `.vscode/extensions.json`)
 
 ## Installation
 
 ```console
+nvm use stable
+cd crowdsec-docs
 npm install
 ```
 
 ## Local Development
 
 ```console
-npm run start
+nvm use stable
+cd crowdsec-docs
+npm start
+# or equivalently
+npx docusaurus start
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+This command starts a local development server at http://localhost:3000. Most changes are reflected live without having to restart the server.
 
 ## Build
 
