@@ -106,7 +106,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		{
 			type: "doc",
 			label: "Overview",
-			id: "tracker_api/overview",
+			id: "tracker_api/intro",
 		},
 		{
 			type: "category",

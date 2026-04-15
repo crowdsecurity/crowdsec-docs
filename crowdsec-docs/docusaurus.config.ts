@@ -203,10 +203,6 @@ const redirects = [
 		from: "/blog/crowdsec_firewall_freebsd",
 		to: "/u/bouncers/firewall#pf-setup-freebsd",
 	},
-	{
-		from: "/u/tracker_api/intro",
-		to: "/u/tracker_api/overview",
-	},
 ];
 
 const config: Config = {
