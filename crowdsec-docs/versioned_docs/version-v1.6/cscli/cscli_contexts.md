@@ -38,7 +38,7 @@ cscli contexts remove crowdsecurity/bf_base crowdsecurity/fortinet
 
 ### SEE ALSO
 
-* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
 * [cscli contexts inspect](/cscli/cscli_contexts_inspect.md)	 - Inspect given context(s)
 * [cscli contexts install](/cscli/cscli_contexts_install.md)	 - Install given context(s)
 * [cscli contexts list](/cscli/cscli_contexts_list.md)	 - List context(s)

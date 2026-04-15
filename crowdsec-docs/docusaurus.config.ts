@@ -72,7 +72,7 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 				to: "/docs/next/appsec/intro",
 				label: "Web Application Firewall (AppSec)",
 			},
-			{ type: "doc", docId: "cscli/intro", label: "Cscli" },
+			{ type: "doc", docId: "cscli/cscli", label: "Cscli" },
 			{ to: "/u/user_guides/intro", label: "Guides" },
 			{
 				type: "doc",
@@ -214,6 +214,7 @@ const redirects = [
 	{ from: "/u/cti_api/search_queries", to: "/u/console/ip_reputation/search_ui" },
 	{ from: "/u/cti_api/advanced_search", to: "/u/console/ip_reputation/search_ui_advanced" },
 	{ from: "/u/cti_api/cve_explorer", to: "/u/console/ip_reputation/intro#live-exploit-tracker" },
+	
 	
 ];
 

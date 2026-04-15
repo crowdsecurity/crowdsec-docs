@@ -333,7 +333,7 @@ const sidebarsConfig: SidebarConfig = {
 		{
 			type: "doc",
 			label: "cscli",
-			id: "cscli/intro",
+			id: "cscli/cscli",
 		},
 		{
 			type: "category",

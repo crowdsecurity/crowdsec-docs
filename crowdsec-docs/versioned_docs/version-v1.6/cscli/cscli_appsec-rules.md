@@ -38,7 +38,7 @@ cscli appsec-rules remove crowdsecurity/crs
 
 ### SEE ALSO
 
-* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
 * [cscli appsec-rules inspect](/cscli/cscli_appsec-rules_inspect.md)	 - Inspect given appsec-rule(s)
 * [cscli appsec-rules install](/cscli/cscli_appsec-rules_install.md)	 - Install given appsec-rule(s)
 * [cscli appsec-rules list](/cscli/cscli_appsec-rules_list.md)	 - List appsec-rule(s)

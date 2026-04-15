@@ -405,10 +405,10 @@
         {
           "name": "Cscli",
           "type": "NavBarItem",
-          "links_to": "/docs/next/cscli/intro",
+          "links_to": "/docs/next/cscli/cscli",
           "short_description": "CrowdSec command-line interface full reference",
           "children": [
-            { "name": "Introduction", "type": "presentation", "path": "/docs/next/cscli/intro", "file_path": "crowdsec-docs/docs/cscli/intro.md", "short_description": "cscli overview — manage CrowdSec from the command line", "children": [] },
+            { "name": "Introduction", "type": "presentation", "path": "/docs/next/cscli/cscli", "file_path": "crowdsec-docs/docs/cscli/cscli.md", "short_description": "cscli overview — manage CrowdSec from the command line", "children": [] },
             { "name": "cscli alerts", "type": "reference", "path": "/docs/next/cscli/cscli_alerts", "file_path": "crowdsec-docs/docs/cscli/cscli_alerts.md", "short_description": "List, delete, and inspect alerts", "children": [] },
             { "name": "cscli allowlists", "type": "reference", "path": "/docs/next/cscli/cscli_allowlists", "file_path": "crowdsec-docs/docs/cscli/cscli_allowlists.md", "short_description": "Manage centralized allowlists", "children": [] },
             { "name": "cscli appsec-configs", "type": "reference", "path": "/docs/next/cscli/cscli_appsec-configs", "file_path": "crowdsec-docs/docs/cscli/cscli_appsec-configs.md", "short_description": "Manage AppSec configurations from Hub", "children": [] },

@@ -38,7 +38,7 @@ cscli postoverflows remove crowdsecurity/cdn-whitelist crowdsecurity/rdns
 
 ### SEE ALSO
 
-* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
 * [cscli postoverflows inspect](/cscli/cscli_postoverflows_inspect.md)	 - Inspect given postoverflow(s)
 * [cscli postoverflows install](/cscli/cscli_postoverflows_install.md)	 - Install given postoverflow(s)
 * [cscli postoverflows list](/cscli/cscli_postoverflows_list.md)	 - List postoverflow(s)

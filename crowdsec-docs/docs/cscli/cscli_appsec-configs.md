@@ -42,7 +42,7 @@ cscli waf-configs remove crowdsecurity/virtual-patching
 
 ### SEE ALSO
 
-* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
 * [cscli appsec-configs inspect](/cscli/cscli_appsec-configs_inspect.md)	 - Inspect given appsec-config(s)
 * [cscli appsec-configs install](/cscli/cscli_appsec-configs_install.md)	 - Install given appsec-config(s)
 * [cscli appsec-configs list](/cscli/cscli_appsec-configs_list.md)	 - List appsec-config(s)

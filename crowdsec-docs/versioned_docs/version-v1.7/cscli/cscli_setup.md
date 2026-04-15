@@ -51,7 +51,7 @@ cscli setup [command]
 
 ### SEE ALSO
 
-* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
 * [cscli setup detect](/cscli/cscli_setup_detect.md)	 - Detect installed services and generate a setup file
 * [cscli setup install-acquisition](/cscli/cscli_setup_install-acquisition.md)	 - Generate acquisition configuration from a setup file
 * [cscli setup install-hub](/cscli/cscli_setup_install-hub.md)	 - Install recommended hub items from a setup file

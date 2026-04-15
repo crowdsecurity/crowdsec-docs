@@ -42,7 +42,7 @@ cscli scenarios remove crowdsecurity/ssh-bf crowdsecurity/http-probing
 
 ### SEE ALSO
 
-* [cscli](/cscli/intro.md)	 - cscli allows you to manage crowdsec
+* [cscli](/cscli/cscli.md)	 - cscli allows you to manage crowdsec
 * [cscli scenarios inspect](/cscli/cscli_scenarios_inspect.md)	 - Inspect given scenario(s)
 * [cscli scenarios install](/cscli/cscli_scenarios_install.md)	 - Install given scenario(s)
 * [cscli scenarios list](/cscli/cscli_scenarios_list.md)	 - List scenario(s)
