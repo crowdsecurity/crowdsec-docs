@@ -1,0 +1,124 @@
+---
+id: api_sdks
+title: SDKs & Libraries
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+CrowdSec provides official SDKs to simplify integration with the Live Exploit Tracker API. These libraries handle authentication, request construction, response parsing, and provide typed models for a better developer experience.
+
+## Python SDK
+
+The official Python SDK is the recommended way to interact with the API from Python applications, scripts, and automation pipelines.
+
+### Installation
+
+```bash
+pip install crowdsec-tracker-api
+```
+
+**Requirements**: Python 3.8+
+
+**Source**: [github.com/crowdsecurity/crowdsec-tracker-api-sdk-python](https://github.com/crowdsecurity/crowdsec-tracker-api-sdk-python)
+
+### Authentication
+
+```python
+import os
+from crowdsec_tracker_api import ApiKeyAuth, Server
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+
+# Configure authentication
+auth = ApiKeyAuth(api_key=KEY)
+
+# The SDK automatically uses the production server URL
+# You can also set it explicitly:
+# base_url = Server.production_server.value
+```
+
+### Service Classes
+
+The SDK provides typed service classes for each API domain:
+
+| Service Class | Purpose | Key Methods |
+|---|---|---|
+| `Cves` | CVE intelligence | `get_cves()`, `get_cve()`, `get_cve_ips()` |
+| `Integrations` | Firewall integration management | `get_integrations()`, `create_integration()`, `update_integration()`, `delete_integration()` |
+
+### Examples
+
+#### List trending CVEs
+
+```python
+import os
+from crowdsec_tracker_api import Cves, ApiKeyAuth
+from httpx import HTTPStatusError
+
+KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+auth = ApiKeyAuth(api_key=KEY)
+cves_service = Cves(auth=auth)
+
+try:
+    response = cves_service.get_cves(page=1, size=10)
+    for cve in response.items:
+        print(f"{cve.name}: CrowdSec Score={cve.crowdsec_score}, "
+              f"Phase={cve.exploitation_phase.label}, "
+              f"IPs={cve.nb_ips}")
+except HTTPStatusError as e:
+    print(f"Error: {e.response.status_code} - {e.response.text}")
+```
+
+#### Get detailed CVE intelligence
+
+```python
+try:
+    cve = cves_service.get_cve("CVE-2024-25600")
+    print(f"Title: {cve.title}")
+    print(f"CrowdSec Score: {cve.crowdsec_score}")
+    print(f"Phase: {cve.exploitation_phase.label}")
+    print(f"Analysis: {cve.crowdsec_analysis[:200]}...")
+except HTTPStatusError as e:
+    print(f"Error: {e.response.status_code} - {e.response.text}")
+```
+
+#### Retrieve attacker IPs for a CVE
+
+```python
+try:
+    response = cves_service.get_cve_ips("CVE-2024-25600", page=1, size=10)
+    for ip_item in response.items:
+        print(f"{ip_item.ip}: reputation={ip_item.reputation}, "
+              f"country={ip_item.location.country}")
+except HTTPStatusError as e:
+    print(f"Error: {e.response.status_code} - {e.response.text}")
+```
+
+#### Create and manage a firewall integration
+
+```python
+from crowdsec_tracker_api import (
+    Integrations, IntegrationCreateRequest,
+    IntegrationType, OutputFormat, ApiKeyAuth,
+)
+
+integrations_service = Integrations(auth=auth)
+
+# Create
+request = IntegrationCreateRequest(
+    name="paloalto_production",
+    description="Production Palo Alto firewall - CVE blocklist",
+    entity_type=IntegrationType.FIREWALL_INTEGRATION.value,
+    output_format=OutputFormat.PALOALTO.value,
+)
+response = integrations_service.create_integration(request=request)
+print(f"Integration ID: {response.id}")
+# IMPORTANT: Save the credentials — they are only shown once!
+```
+
+## Other Languages
+
+Need the API in another language? The REST API is straightforward to call from any HTTP client — see [Authentication & Setup](./api_authentication) for the base URL and authentication details, and the [API Reference (Swagger)](./api_reference) for the full OpenAPI specification.
+
+If you'd like to see an official SDK for your language, let us know on [GitHub](https://github.com/crowdsecurity) or [Discord](https://discord.gg/crowdsec).

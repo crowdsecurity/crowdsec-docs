@@ -1,0 +1,160 @@
+---
+id: threat_context
+title: Threat Context
+---
+
+## Overview
+
+The `threat_context` object provides geographic and industry-level intelligence about exploitation activity for a given CVE or reconnaissance rule. While [scores](./scores) tell you *how urgent* a threat is and [exploitation phases](./exploitation_phases) tell you *where in the lifecycle* it sits, threat context answers a different set of questions:
+
+- **Where are attacks coming from?** (attacker countries)
+- **Who is being targeted?** (defender countries, industry types, risk profiles)
+- **What do attackers want?** (attacker objectives)
+
+All distributions are **percentage-based** and sum to approximately 100. The top entries are listed individually, with an `OTHER` bucket aggregating the remainder.
+
+:::info Null and empty values
+- `threat_context: null` — The CVE or rule has no threat context data at all (insufficient telemetry).
+- Individual sub-fields as `{}` — Data for that dimension is not yet available, even though other dimensions may have data. This is common for very recently tracked CVEs.
+:::
+
+## Attacker Countries
+
+Shows the geographic distribution of attack traffic as observed by the CrowdSec Network. Keys are [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes; values are percentages.
+
+```json
+"attacker_countries": {
+    "US": 48,
+    "IE": 18,
+    "DE": 7,
+    "FR": 5,
+    "NL": 4,
+    "SG": 4,
+    "GB": 2,
+    "AE": 2,
+    "VN": 1,
+    "OTHER": 10
+}
+```
+
+:::info
+These reflect the **IP geolocation** of attacking infrastructure, not necessarily the nationality of the threat actor. Attackers routinely use cloud providers, VPNs, and compromised infrastructure worldwide. A high percentage for a given country means attack *traffic* originates there — not that the attacker is physically located there.
+:::
+
+## Defender Countries
+
+Shows which countries' infrastructure is being targeted, using the same format as attacker countries.
+
+```json
+"defender_countries": {
+    "HU": 22,
+    "FR": 22,
+    "US": 12,
+    "DE": 10,
+    "AT": 8,
+    "SM": 4,
+    "SG": 3,
+    "BE": 3,
+    "NL": 2,
+    "OTHER": 15
+}
+```
+
+:::tip
+If your organization operates primarily in countries that show high defender percentages, this CVE is disproportionately relevant to you. A CVE where 70% of targets are in your country warrants more attention than one spread evenly across the globe.
+:::
+
+## Industry Types
+
+Shows the distribution of targeted organizations by industry sector.
+
+| Value | Description |
+|---|---|
+| `commerce` | Retail, e-commerce, and commercial businesses |
+| `education` | Schools, universities, and educational institutions |
+| `financial_services` | Banks, insurance, fintech, financial institutions |
+| `government` | Government agencies and public administration |
+| `healthcare` | Healthcare providers, hospitals, medical organizations |
+| `industry` | Manufacturing, industrial, and production organizations |
+| `media` | Media, entertainment, and publishing organizations |
+| `non_profit` | Non-profit organizations, NGOs, charities |
+| `SOHO` | Small office / home office environments |
+
+```json
+"industry_types": {
+    "financial_services": 1,
+    "commerce": 71,
+    "government": 4,
+    "healthcare": 5,
+    "non_profit": 19
+}
+```
+
+:::tip
+If your industry shows a high percentage, the CVE is disproportionately relevant to your sector — attackers are specifically hitting organizations like yours.
+:::
+
+## Industry Risk Profiles
+
+Classifies targets by their **technology risk profile** rather than their business sector. This provides a complementary lens to industry types — two organizations in the same industry may have very different exposure depending on their technology stack.
+
+| Value | Description |
+|---|---|
+| `critical_infrastructure` | Energy, water, transportation, telecommunications |
+| `public_service` | Government services, education, public utilities |
+| `SOHO` | Small office / home office environments |
+| `technology_business` | Technology-focused businesses, SaaS, software companies |
+| `traditional_business` | Non-tech commercial enterprises, manufacturing, logistics |
+
+```json
+"industry_risk_profiles": {
+    "critical_infrastructure": 6,
+    "traditional_business": 6,
+    "public_service": 6,
+    "technology_business": 65,
+    "SOHO": 17
+}
+```
+
+## Attacker Objectives
+
+Shows the inferred goals of the exploitation campaigns.
+
+| Value | Description |
+|---|---|
+| `data_exfiltration` | Stealing sensitive data for sale, espionage, or leverage |
+| `infrastructure_takeover` | Gaining persistent control of target systems (botnets, cryptomining, proxying) |
+| `ransomware` | Encryption-based extortion campaigns |
+
+```json
+"attacker_objectives": {
+    "ransomware": 7,
+    "data_exfiltration": 11,
+    "infrastructure_takeover": 82
+}
+```
+
+:::info
+These objectives are inferred from observed attack patterns and post-exploitation behavior across the CrowdSec Network, not from attacker self-reporting. A single campaign may exhibit multiple objectives.
+:::
+
+## Practical Example
+
+:::tip Reading a complete threat context
+Consider CVE-2024-0012 (PanOS Authentication Bypass). Its threat context shows:
+
+- **Attacker Countries**: 48% US, 18% IE — attacks are concentrated from US and Irish cloud infrastructure
+- **Defender Countries**: 22% HU, 22% FR — Hungarian and French organizations are disproportionately targeted
+- **Industry Types**: 71% commerce — commercial organizations are the primary targets
+- **Risk Profiles**: 65% technology_business — tech companies running PanOS infrastructure are the main victims
+- **Objectives**: 82% infrastructure_takeover — attackers want persistent access to PAN-OS management interfaces, not data theft
+
+This tells a SOC analyst: if you operate PAN-OS in a tech company in France or Hungary, this CVE should be at the top of your priority list. The attackers are not after your data — they want control of your firewall management plane.
+
+*Threat context is computed from live telemetry and changes over time. The values shown here may differ from what you see today.*
+:::
+
+## Accessing Threat Context
+
+- **Web Interface**: Available on each CVE and Reconnaissance Rule detail page in the [Live Exploit Tracker](https://tracker.crowdsec.net).
+- **API**: Returned in the `threat_context` field of the [CVE endpoints](./api_cves) (`/v1/cves` and `/v1/cves/{cve_id}`) and [Fingerprint endpoints](./api_fingerprints) (`/v1/fingerprints` and `/v1/fingerprints/{fingerprint}`).

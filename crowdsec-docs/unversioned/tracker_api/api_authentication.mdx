@@ -1,0 +1,74 @@
+---
+id: api_authentication
+title: Authentication & Setup
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+## Prerequisites
+
+To use the Live Exploit Tracker API, you need an **API key**. Contact the CrowdSec team to obtain yours if you haven't already.
+
+The same API key works for both the [web interface](./web_interface) and the REST API.
+
+## Base URL
+
+All API endpoints are available at:
+
+```
+https://admin.api.crowdsec.net/v1/
+```
+
+## Authentication
+
+Every API request must include your API key in the `x-api-key` header:
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves?page=1&size=10' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: YOUR_API_KEY'
+```
+
+## SDKs
+
+CrowdSec provides official SDKs for convenient API access with typed models, authentication handling, and a better developer experience. See the [SDKs & Libraries](./api_sdks) page for installation instructions, examples, and the full list of available SDKs.
+
+**Quick start with the Python SDK:**
+
+```bash
+pip install crowdsec-tracker-api
+```
+
+```python
+import os
+from crowdsec_tracker_api import Cves, ApiKeyAuth
+
+auth = ApiKeyAuth(api_key=os.getenv("CROWDSEC_TRACKER_API_KEY"))
+cve = Cves(auth=auth).get_cve("CVE-2024-25600")
+print(f"{cve.title}: Score {cve.crowdsec_score}, Phase: {cve.exploitation_phase.label}")
+```
+
+## Error Handling
+
+The API returns standard HTTP status codes:
+
+| Status Code | Meaning |
+|---|---|
+| `200` | Success |
+| `201` | Resource created successfully |
+| `204` | Success with no content (e.g., after deletion) |
+| `401` | Invalid or missing API key |
+| `404` | Resource not found |
+| `422` | Validation error (check request parameters) |
+| `429` | Rate limit exceeded |
+
+## Next Steps
+
+- [Explore CVEs](./api_cves) — List, search, and get detailed intelligence
+- [Fingerprint Rules](./api_fingerprints) — Monitor product-level probing activity
+- [Integrations & Blocklists](./api_integrations) — Create firewall integrations and subscribe to CVEs
+- [Browse by Vendor, Product, or Tag](./api_lookups) — Explore the coverage landscape
+- [SDKs & Libraries](./api_sdks) — Official SDKs for Python and more
+- [API Reference (Swagger)](./api_reference) — Full interactive API documentation

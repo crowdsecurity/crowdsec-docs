@@ -234,6 +234,7 @@ const config: Config = {
 	organizationName: "CrowdSec",
 	projectName: "crowdsec-docs",
 	markdown: {
+		mermaid: true,
 		mdx1Compat: {
 			comments: true,
 			admonitions: true,
@@ -246,6 +247,7 @@ const config: Config = {
 			href: "https://fonts.googleapis.com/icon?family=Material+Icons",
 		},
 	],
+	themes: ["@docusaurus/theme-mermaid"],
 	themeConfig: {
 		image: "img/crowdsec_og_image.png",
 		colorMode: {

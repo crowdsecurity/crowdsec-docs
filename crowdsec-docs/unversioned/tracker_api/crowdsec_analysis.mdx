@@ -1,0 +1,77 @@
+---
+id: crowdsec_analysis
+title: CrowdSec Analysis
+---
+
+## What is the CrowdSec Analysis
+
+Every tracked CVE with sufficient data includes a **CrowdSec Analysis** — a human-readable intelligence narrative that synthesizes what CrowdSec has observed about the vulnerability and its exploitation in the wild.
+
+Unlike raw scores or static CVE descriptions, the analysis tells a story: what the vulnerability does, how attackers are using it, what patterns have been observed, and what specific indicators to watch for.
+
+## What the Analysis Contains
+
+A typical CrowdSec Analysis covers four areas:
+
+### 1. Vulnerability Summary
+
+A concise explanation of the vulnerability itself — what it allows an attacker to do and why it matters. This goes beyond the standard CVE description by focusing on practical impact rather than technical classification.
+
+### 2. Tracking Timeline
+
+When CrowdSec started tracking this vulnerability, which provides context for how mature the telemetry data is. A CVE tracked for months will have richer behavioral data than one added last week.
+
+### 3. Exploitation Patterns
+
+The most operationally valuable part. Based on CrowdSec Network telemetry, this section describes:
+
+- **Attack sophistication**: Are attackers conducting reconnaissance first, or blindly spraying exploits? Are campaigns tailored to specific environments?
+- **Trend analysis**: Is exploitation activity increasing, decreasing, or steady? How does current volume compare to historical averages?
+- **Attacker behavior**: What does the typical attack campaign look like? Is it a single coordinated group or many independent actors?
+
+### 4. Technical Indicators
+
+Specific, actionable details about what the exploitation looks like on the wire. This typically includes:
+
+- Targeted URLs or endpoints (e.g., `/wp-json/bricks/v1/render_element`)
+- HTTP methods and payload characteristics
+- Request patterns that distinguish exploitation from legitimate traffic
+
+These indicators can be used to write detection rules, validate alerts, or understand what your WAF logs should show during an exploitation attempt.
+
+## How to Use It
+
+### In Triage
+
+When investigating an alert, the CrowdSec Analysis tells you whether the attack pattern you're seeing matches what's being observed globally. If your logs show requests to the exact endpoint described in the analysis, that's strong confirmation of an exploitation attempt — not a false positive.
+
+### In Reporting
+
+The analysis provides ready-to-use language for security briefings. Instead of presenting raw scores to stakeholders, you can reference the narrative: "CrowdSec observes that attackers are performing focused reconnaissance before exploiting this vulnerability, and activity has been growing week-over-week."
+
+### In Threat Hunting
+
+The technical indicators section points you to exactly where to look in your logs. Search for the specific URLs, parameters, or request patterns described in the analysis to identify exploitation attempts — both successful and blocked.
+
+## Accessing the Analysis
+
+### Web Interface
+
+The CrowdSec Analysis is displayed prominently on each CVE's detail page in the [web interface](https://tracker.crowdsec.net).
+
+### API
+
+The analysis is returned in the `crowdsec_analysis` field of the CVE detail endpoint:
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+The response includes the full analysis text in the `crowdsec_analysis` field, formatted as Markdown with links to external references.
+
+:::info
+The CrowdSec Analysis is not available for CVEs in the *Insufficient Data* phase, as there isn't enough telemetry to generate meaningful intelligence.
+:::
