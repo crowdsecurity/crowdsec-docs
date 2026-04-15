@@ -40,7 +40,6 @@ If you prefer to manually add the repository, you can do so by following the ins
   ]}
 >
   <TabItem value="debian">
-  <>
     <p>Begin by refreshing your package cache by running</p>
     <CodeBlock className="language-bash">sudo apt update</CodeBlock>
     <p>If you are running Debian, install debian-archive-keyring so that official Debian repositories will be verified (Ubuntu users can skip this)</p>
@@ -51,35 +50,33 @@ If you prefer to manually add the repository, you can do so by following the ins
     <CodeBlock className="language-bash">apt -v</CodeBlock>
     <p>For apt version >= v1.1:</p>
     <p>(Equivalent to or later than Debian/Raspbian Stretch, Ubuntu Xenial, Linux Mint Sarah, Elementary OS Loki)</p>
-    > Create the directory to import the GPG key:
-    >From apt v2.4.0, `/etc/apt/keyrings/` is the designated directory for administrator imported keys. We will be using that for the following instructions, but you can replace `/etc/apt/keyrings/` with any path of your choosing. If you need to create the directory, run:
-    >
-    > <CodeBlock className="language-bash">mkdir -p /etc/apt/keyrings/</CodeBlock>
-    > Then add the GPG key:
-    >
-    > <CodeBlock className="language-bash">curl -fsSL https://packagecloud.io/crowdsec/crowdsec/gpgkey | gpg --dearmor > /etc/apt/keyrings/crowdsec_crowdsec-archive-keyring.gpg</CodeBlock>
-    > Create a file named `/etc/apt/sources.list.d/crowdsec_crowdsec.list` that contains the repository configuration below.
-    >
-    > <CodeBlock className="language-bash">deb [signed-by=/etc/apt/keyrings/crowdsec_crowdsec-archive-keyring.gpg] https://packagecloud.io/crowdsec/crowdsec/any any main
+    Create the directory to import the GPG key:
+    From apt v2.4.0, `/etc/apt/keyrings/` is the designated directory for administrator imported keys. We will be using that for the following instructions, but you can replace `/etc/apt/keyrings/` with any path of your choosing. If you need to create the directory, run:
+    
+    <CodeBlock className="language-bash">mkdir -p /etc/apt/keyrings/</CodeBlock>
+    Then add the GPG key:
+    
+    <CodeBlock className="language-bash">curl -fsSL https://packagecloud.io/crowdsec/crowdsec/gpgkey | gpg --dearmor > /etc/apt/keyrings/crowdsec_crowdsec-archive-keyring.gpg</CodeBlock>
+    Create a file named `/etc/apt/sources.list.d/crowdsec_crowdsec.list` that contains the repository configuration below.
+    
+    <CodeBlock className="language-bash">deb [signed-by=/etc/apt/keyrings/crowdsec_crowdsec-archive-keyring.gpg] https://packagecloud.io/crowdsec/crowdsec/any any main
     deb-src [signed-by=/etc/apt/keyrings/crowdsec_crowdsec-archive-keyring.gpg] https://packagecloud.io/crowdsec/crowdsec/any any main </CodeBlock>
 
     <p>For apt version < v1.1:</p>
     <p>(Equivalent to or older than Debian/Raspbian Jessie, Ubuntu Wily, Linux Mint Rosa, Elementary OS Freya)</p>
-    > Add the GPG key:
-    >
-    > <CodeBlock className="language-bash">curl -fsSL https://packagecloud.io/crowdsec/crowdsec/gpgkey | gpg --dearmor > /etc/apt/trusted.gpg.d/crowdsec_crowdsec.gpg</CodeBlock>
-    > Create a file named `/etc/apt/sources.list.d/crowdsec_crowdsec.list` that contains the repository configuration below.
-    >
-    > <CodeBlock className="language-bash">deb https://packagecloud.io/crowdsec/crowdsec/any any main
+    Add the GPG key:
+    
+    <CodeBlock className="language-bash">curl -fsSL https://packagecloud.io/crowdsec/crowdsec/gpgkey | gpg --dearmor > /etc/apt/trusted.gpg.d/crowdsec_crowdsec.gpg</CodeBlock>
+    Create a file named `/etc/apt/sources.list.d/crowdsec_crowdsec.list` that contains the repository configuration below.
+    
+    <CodeBlock className="language-bash">deb https://packagecloud.io/crowdsec/crowdsec/any any main
     deb-src https://packagecloud.io/crowdsec/crowdsec/any any main</CodeBlock>
 
     <p>Run this command update your local APT cache:</p>
     <CodeBlock className="language-bash">sudo apt update</CodeBlock>
     <p>You can now install packages from your repository.</p>
-  </>
   </TabItem>
   <TabItem value="rpm">
-    <>
       <p>Install pygpgme, a package which allows yum to handle gpg signatures, and a package called yum-utils which contains the tools you need for installing source RPMs.</p>
       <CodeBlock className="language-bash">sudo yum install pygpgme yum-utils</CodeBlock>
       <p>You may need to install the EPEL repository for your system to install these packages. If you do not install pygpgme, GPG verification will not work.</p>
@@ -116,7 +113,6 @@ If you prefer to manually add the repository, you can do so by following the ins
       <p>Update your local yum cache by running</p>
       <CodeBlock className="language-bash">sudo yum -q makecache -y --disablerepo='*' --enablerepo='crowdsec_crowdsec'</CodeBlock>
       <p>You can now install packages from your repository.</p>
-    </>
   </TabItem>
 </Tabs>
 

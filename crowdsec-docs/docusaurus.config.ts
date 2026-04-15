@@ -5,7 +5,6 @@ import { themes } from "prism-react-renderer";
 
 import tailwindPlugin from "./plugins/tailwind-config";
 import { ctiApiSidebar, guidesSideBar, remediationSideBar, trackerApiSidebar } from "./sidebarsUnversioned";
-import { patternRedirects } from "./src/patternRedirects";
 
 const extractPreprocessor = require("./plugins/extract-preprocessor");
 
@@ -339,20 +338,6 @@ const config: Config = {
 
 		["./plugins/gtag/index.ts", { trackingID: "G-0TFBMNTDFQ" }],
 		"./plugins/leadfeeder/index.js",
-		["@docusaurus/plugin-client-redirects", {
-			redirects,
-			createRedirects(existingPath: string) {
-				for (const { from, to } of patternRedirects) {
-					// Build a regex from the `to` pattern by replacing capture group refs ($1) with (.+)
-					const toRegex = new RegExp("^" + to.replace(/\$\d+/g, "(.+)") + "$");
-					if (toRegex.test(existingPath)) {
-						// Reverse: produce the old `from` URL from the real path
-						return [existingPath.replace(toRegex, from.source)];
-					}
-				}
-				return undefined;
-			},
-		}],
 		[
 			"@signalwire/docusaurus-plugin-llms-txt",
 			{
