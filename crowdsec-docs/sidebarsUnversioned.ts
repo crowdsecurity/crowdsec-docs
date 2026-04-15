@@ -10,65 +10,17 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			id: "cti_api/intro",
 		},
 		{
-			type: "category",
+			type: "link",
 			label: "Web UI",
-			items: [
-				{
-					type: "doc",
-					label: "Getting Started",
-					id: "cti_api/getting_started",
-				},
-				{
-					type: "doc",
-					label: "IP Report",
-					id: "cti_api/ip_report",
-				},
-				{
-					type: "doc",
-					label: "Advanced Search",
-					id: "cti_api/advanced_search",
-				},
-				{
-					type: "doc",
-					label: "Search Queries",
-					id: "cti_api/search_queries",
-				},
-				{
-					type: "doc",
-					label: "CVE Explorer",
-					id: "cti_api/cve_explorer",
-				},
-			],
+			href: "/u/console/ip_reputation/intro",
+			customProps: {
+				tag: "otherSection",
+			},
 		},
 		{
-			type: "category",
-			label: "API",
-			items: [
-				{
-					type: "doc",
-					label: "Getting Started",
-					id: "cti_api/api_getting_started",
-				},
-				{
-					type: "link",
-					label: "Swagger",
-					href: "https://crowdsecurity.github.io/cti-api/",
-				},
-			],
-		},
-		{
-			type: "category",
-			label: "Taxonomy",
-			items: [
-				"cti_api/taxonomy/intro",
-				"cti_api/taxonomy/cti_object",
-				"cti_api/taxonomy/scores",
-				"cti_api/taxonomy/scenarios",
-				"cti_api/taxonomy/behaviors",
-				"cti_api/taxonomy/classifications",
-				"cti_api/taxonomy/false_positives",
-				"cti_api/taxonomy/benign",
-			],
+			type: "doc",
+			label: "API Access",
+			id: "cti_api/api_introduction",
 		},
 		{
 			type: "category",
@@ -95,6 +47,40 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				"cti_api/api_integration/integration_splunk_soar",
 				"cti_api/api_integration/integration_thehive",
 			],
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		{
+			type: "doc",
+			label: "Advanced Query Syntax",
+			id: "cti_api/search_queries",
+		},
+		{
+			type: "category",
+			label: "Taxonomy",
+			items: [
+				"cti_api/taxonomy/intro",
+				"cti_api/taxonomy/cti_object",
+				"cti_api/taxonomy/scores",
+				"cti_api/taxonomy/scenarios",
+				"cti_api/taxonomy/behaviors",
+				"cti_api/taxonomy/classifications",
+				"cti_api/taxonomy/false_positives",
+				"cti_api/taxonomy/benign",
+			],
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		{
+			type: "link",
+			label: "Swagger",
+			href: "https://crowdsecurity.github.io/cti-api/",
 		},
 		{
 			type: "doc",
@@ -139,6 +125,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			type: "doc",
 			label: "Getting Started",
 			id: "console/getting_started",
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
 		},
 		{
 			type: "category",
@@ -207,11 +198,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 					id: "console/security_engines/details_page",
 				},
 			],
-		},
-		{
-			label: "Blocklists",
-			type: "doc",
-			id: "blocklists/intro",
 		},
 		{
 			type: "category",
@@ -288,37 +274,22 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		{
+			label: "Blocklists",
+			type: "doc",
+			id: "blocklists/intro",
+		},
+		{
 			id: "console/allowlists",
 			type: "doc",
 			label: "Centralized Allowlists",
 			customProps: {
 				tag: "premium",
 			},
-		},
-		{
-			type: "category",
-			label: "Enterprise plan",
-			customProps: {
-				tag: "premium",
-			},
-			items: [
-				{
-					type: "doc",
-					label: "Enterprise support",
-					id: "console/enterprise_plan/enterprise_support",
-					customProps: {
-						tag: "premium",
-					},
-				},
-				{
-					type: "doc",
-					label: "Invoices",
-					id: "console/enterprise_plan/enterprise_invoices",
-					customProps: {
-						tag: "premium",
-					},
-				},
-			],
 		},
 		{
 			id: "console/threat_forecast",
@@ -329,9 +300,127 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 		},
 		{
-			type: "link",
-			label: "CTI",
-			href: "/u/cti_api/intro",
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		{
+			type: "category",
+			label: "IP Reputation / CTI",
+			link: {
+				type: "doc",
+				id: "console/ip_reputation/intro",
+			},
+			items: [
+				{
+					type: "category",
+					label: "Search UI",
+					link: {
+						type: "doc",
+						id: "console/ip_reputation/search_ui",
+					},
+					items: [
+						{
+							type: "doc",
+							label: "Advanced Search",
+							id: "console/ip_reputation/search_ui_advanced",
+						},
+						{
+							type: "link",
+							label: "Search Queries Syntax",
+							href: "/u/cti_api/search_queries",
+							customProps: {
+								tag: "otherSection",
+							},
+						},
+					],
+				},
+				{
+					type: "doc",
+					label: "IP Reputation Report",
+					id: "console/ip_reputation/ip_report",
+				},
+				{
+					type: "category",
+					label: "API Keys",
+					link: {
+						type: "doc",
+						id: "console/ip_reputation/api_keys",
+					},
+					items: [
+						{
+							type: "doc",
+							label: "Premium API Keys",
+							id: "console/ip_reputation/api_keys_premium",
+							customProps: {
+								tag: "premium",
+							},
+						},
+						{
+							type: "link",
+							label: "CTI API Integrations",
+							href: "/u/cti_api/api_integration/integration_intro",
+							customProps: {
+								tag: "otherSection",
+							},
+						},
+						{
+							type: "link",
+							label: "Enrichment Fields Ref",
+							href: "/u/cti_api/taxonomy/intro",
+							customProps: {
+								tag: "otherSection",
+							},
+						},
+					],
+				},
+			],
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		{
+			type: "category",
+			label: "Notification integrations",
+			customProps: {
+				tag: "premium",
+			},
+			items: [
+				{
+					type: "doc",
+					label: "Overview",
+					id: "console/notification_integrations/overview",
+					customProps: {
+						tag: "premium",
+					},
+				},
+				{
+					type: "doc",
+					label: "Notification Rule",
+					id: "console/notification_integrations/rule",
+					customProps: {
+						tag: "premium",
+					},
+				},
+				{
+					type: "doc",
+					label: "Discord",
+					id: "console/notification_integrations/discord",
+				},
+				{
+					type: "doc",
+					label: "Slack",
+					id: "console/notification_integrations/slack",
+				},
+
+				{
+					type: "doc",
+					label: "Webhook",
+					id: "console/notification_integrations/webhook",
+				},
+			],
 		},
 		{
 			type: "category",
@@ -410,45 +499,9 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
-			type: "category",
-			label: "Notification integrations",
-			customProps: {
-				tag: "premium",
-			},
-			items: [
-				{
-					type: "doc",
-					label: "Overview",
-					id: "console/notification_integrations/overview",
-					customProps: {
-						tag: "premium",
-					},
-				},
-				{
-					type: "doc",
-					label: "Notification Rule",
-					id: "console/notification_integrations/rule",
-					customProps: {
-						tag: "premium",
-					},
-				},
-				{
-					type: "doc",
-					label: "Discord",
-					id: "console/notification_integrations/discord",
-				},
-				{
-					type: "doc",
-					label: "Slack",
-					id: "console/notification_integrations/slack",
-				},
-
-				{
-					type: "doc",
-					label: "Webhook",
-					id: "console/notification_integrations/webhook",
-				},
-			],
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
 		},
 		{
 			type: "doc",

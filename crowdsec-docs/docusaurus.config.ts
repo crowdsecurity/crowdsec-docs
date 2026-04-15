@@ -88,8 +88,13 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 		position: "left",
 		label: "Blocklists",
 	},
-	{ to: "/u/cti_api/intro", position: "left", label: "CTI" },
+	{ to: "/u/cti_api/intro", position: "left", label: "IP Reputation & CTI" },
 	{ to: "/u/console/intro", position: "left", label: "Console" },
+	{
+		type: "html",
+		value: '<span class="navbar-separator" aria-hidden="true"></span>',
+		position: "left",
+	},
 	{
 		label: "Resources",
 		position: "left",

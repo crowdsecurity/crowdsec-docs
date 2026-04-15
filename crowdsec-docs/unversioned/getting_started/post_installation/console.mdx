@@ -7,15 +7,17 @@ import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import FormattedTabs from '@site/src/components/formatted-tabs';
 
-# CrowdSec Console
+# Enroll your Security Engine in CrowdSec Console
 
-The CrowdSec Console is a web interface for managing your CrowdSec Security Engines. It provides dashboards and activity views to make monitoring and analysis easier.
+The CrowdSec Console is a web interface providing management and extra features for CrowdSec Products.   
 
-The Console also lets you add advanced features, including third-party blocklists, so you can extend protection with external intelligence.
+For Security Engine users, the Console offers:
+- A centralized view of your security posture across all your machines.
+- The ability to manage additional blocklists
+- And many quality of life and advanced features to enhance your protection.
 
-## Your first enrollment
-
-This guide assumes CrowdSec is already installed. If not, start with one of these guides:
+The following guide assumes you have successfully installed one or more CrowdSec Security Engines.  
+If not, start with one of these guides:
 
 - [Install on Linux](/getting_started/installation/linux.mdx)
 - [Install on FreeBSD](/getting_started/installation/freebsd.mdx)
@@ -23,49 +25,9 @@ This guide assumes CrowdSec is already installed. If not, start with one of thes
 - [Install on MacOS](/getting_started/installation/macos.mdx)
 - [Install on Kubernetes](/getting_started/installation/kubernetes.mdx)
 
-### Sign Up
+<snippet-extract data-extract-copy="getting_started:console_signup"></snippet-extract>
 
-Head over to the [CrowdSec Console](https://app.crowdsec.net/signup) and sign up for a new account.
-
-<a href="https://app.crowdsec.net/signup" target="_blank">
-    <ThemedImage
-        alt="CrowdSec Signup Screen"
-        sources={{
-            light: useBaseUrl("/img/console_login_light.png"),
-            dark: useBaseUrl("/img/console_login_dark.png"),
-        }}
-    />
-</a>
-
-### Verify Email
-
-After signing up, you will receive a verification email. Click the link or enter the code to verify your account.
-
-#### Missing Email?
-
-If you do not receive an email, check your spam folder. If it is still missing, click "Resend verification email" on the login page.
-
-:::info
-If more than 5 minutes have passed, [contact us](mailto:support@crowdsec.net).
-:::
-
-### Survey
-
-When you log in for the first time, we ask a few questions to understand your use case.
-
-<ThemedImage
-    alt="CrowdSec Survey"
-    sources={{
-        light: useBaseUrl("/img/console_signup_survey_light.png"),
-        dark: useBaseUrl("/img/console_signup_survey_dark.png"),
-    }}
-/>
-
-:::info
-The survey is optional. We use the information to tailor your experience and better understand users.
-:::
-
-### Engines page
+## Engines page
 
 After signing up, the first page you see is the engines page, where you can view enrolled engines and their status.
 
@@ -109,7 +71,7 @@ INFO[2024-02-21T16:50:17Z] Please restart crowdsec after accepting the enrollmen
 ```
 
 
-### Accept enrollment
+## Accept enrollment
 
 Once you execute the command, a new engine appears on the engines page. Select it and click "Accept enroll."
 
@@ -125,7 +87,7 @@ Once you execute the command, a new engine appears on the engines page. Select i
 If you do not see the engine, use the refresh button near "Add Security Engine".
 :::
 
-### Restart CrowdSec
+## Restart CrowdSec
 
 After accepting the enrollment, restart the CrowdSec service.
 

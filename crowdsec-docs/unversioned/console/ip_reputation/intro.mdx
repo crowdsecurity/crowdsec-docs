@@ -1,0 +1,76 @@
+---
+id: intro
+title: IP Reputation / CTI
+description: Explore and query CrowdSec's IP Reputation data and manage CTI API keys from the Console.
+---
+
+CrowdSec's **IP Reputation / CTI** section of the Console gives you access to the world's largest crowdsourced threat intelligence network. 
+
+From the Console you can:
+- **Investigate IPs** directly in the Web UI — no code required
+- **Explore Specific Classifications** with search queries
+- **Query at scale** using the CTI REST API with a managed API key
+
+---
+
+## Web UI Features
+
+### IP Search
+
+The [CTI home page](https://app.crowdsec.net/cti) lets you search any IP address or run Lucene queries against the threat database. Predefined searches give quick access to common patterns, and the **Top 10 Most Aggressive IPs** leaderboard shows the most active threat actors in the last 24 hours.
+
+[IP Search →](/u/console/ip_reputation/search_ui)
+
+### Advanced Search
+
+The [Advanced Search page](https://app.crowdsec.net/cti) supports Lucene queries with a live faceted filter panel (reputation, country, AS, behaviors, classifications). Use it for threat hunting, bulk investigation, or building targeted blocklists.
+
+[Advanced Search →](/u/console/ip_reputation/search_ui_advanced)  
+[Search Query Reference →](/u/cti_api/search_queries)
+
+### IP Report
+
+Clicking any IP opens a full report with its reputation, key metadata, behaviors, classifications, MITRE techniques, CVEs, and time-windowed scores.
+
+[IP Report →](/u/console/ip_reputation/ip_report)
+
+### Live Exploit Tracker
+
+The [Live Exploit Tracker ↗️](https://tracker.crowdsec.net/) is the evolution of the CVE Explorer — a dedicated platform for tracking vulnerabilities that are actively being exploited in the wild, powered by live data from the CrowdSec network.
+:::info
+It now resides outside the Console to provide a more focused experience and richer features, but remains fully accessible with the same CTI API key.
+:::
+
+Beyond listing CVEs, it adds exploitation context that helps you **prioritize and act**:
+
+- **CrowdSec Score** — a SOC-oriented priority signal based on observed attack patterns
+- **Opportunity Score** — how targeted vs. opportunistic the exploitation is (0 = mass automated scan, 5 = precisely targeted campaign)
+- **Momentum Score** — whether exploitation volume is growing, stable, or declining
+- **Exploitation Status** — from *early exploitation* to *background noise*
+- **Timeline** — first/last seen, CVE publication, CISA KEV addition, and key events
+- **Malicious IPs** — IPs actively exploiting a given CVE, with full CTI context, for threat hunting or direct blocklist integration
+
+[Explore the Live Exploit Tracker ↗️](https://tracker.crowdsec.net/)
+
+---
+
+## API Access
+
+You can query the same data programmatically using a CTI API key and the [CTI REST API](/u/cti_api/intro).
+
+| Plan | Quota | Use case |
+|---|---|---|
+| **Free** | 40 queries / month | POC, low-traffic scripts |
+| **Premium** | 120 queries / month | Regular enrichment, small integrations |
+| **Premium Options** | 5K / 25K / 100K queries / month | Production integrations, SIEMs, SOARs |
+
+Manage your keys in the Console under **Settings → CTI API Keys**, or go straight to [app.crowdsec.net/settings/cti-api-keys](https://app.crowdsec.net/settings/cti-api-keys).
+
+[Get your first API key →](/u/console/ip_reputation/api_keys)   
+[Premium quotas →](/u/console/ip_reputation/api_keys_premium)
+
+---
+
+:::tip Want the full technical reference?
+For API endpoints, request/response schemas, integrations (SIEM, SOAR, TIP platforms), and data taxonomy, see the [CTI API documentation](/u/cti_api/intro).
+:::
