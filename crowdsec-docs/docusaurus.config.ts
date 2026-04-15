@@ -212,8 +212,8 @@ const redirects = [
 	{ from: "/u/cti_api/getting_started", to: "/u/console/ip_reputation/intro" },
 	{ from: "/u/cti_api/api_getting_started", to: "/u/console/ip_reputation/api_keys" },
 	{ from: "/u/cti_api/ip_report", to: "/u/console/ip_reputation/ip_report" },
+	{ from: "/u/cti_api/search_queries", to: "/u/console/ip_reputation/search_ui" },
 	{ from: "/u/cti_api/advanced_search", to: "/u/console/ip_reputation/search_ui_advanced" },
-	{ from: "/u/cti_api/search_queries", to: "/u/console/ip_reputation/search_queries" },
 	{ from: "/u/cti_api/cve_explorer", to: "/u/console/ip_reputation/intro#live-exploit-tracker" },
 ];
 
