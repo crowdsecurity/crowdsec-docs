@@ -1,0 +1,63 @@
+---
+id: api_keys
+title: CTI API Getting Started
+sidebar_position: 2
+---
+
+import AcademyPromo from '@site/src/components/academy-promo';
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+## Create CTI API Keys
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+  <div style={{flex: '1'}}>
+  * Click the `+` in the top right corner.  
+  * Alternatively you can also click the `+ New Key` in the **Settings → CTI API Keys** page.
+  </div>
+  <div style={{flex: '0 0 50%'}}>
+  <ThemedImage
+      alt="CrowdSec Create API Key Dropdown"
+      sources={{
+          light: useBaseUrl("/img/console_create_api_key_dropdown_light.png"),
+          dark: useBaseUrl("/img/console_create_api_key_dropdown_dark.png"),
+      }}
+  />
+  </div>
+</div>
+
+<hr/>
+
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+  <div style={{flex: '1'}}>
+There, you can choose among the various quota options. We provide a free key in order to test your integrations.
+:::info
+The free quota will be better if your organization is Premium than if it's on the free Community plan.
+:::
+:::info
+Only Premium organizations can buy keys with higher quotas. See [Premium API Keys](/u/console/ip_reputation/api_keys_premium) for more details.
+:::
+  </div>
+  <div style={{flex: '0 0 50%'}}>
+<ThemedImage
+    alt="CrowdSec Create API Key Page"
+    sources={{
+        light: useBaseUrl("/img/console_create_api_key_form_light.png"),
+        dark: useBaseUrl("/img/console_create_api_key_form_dark.png"),
+    }}
+/>
+  </div>
+</div>
+## Using the API
+
+CrowdSec provides [ready-made integrations](/u/cti_api/api_integration/integration_intro) for the most common security platforms — SIEM, SOAR, TIP, and investigation tools. If your platform is listed, that's the fastest way to get started.
+
+If you prefer to use your own scripts, call the API directly from the command line, or build custom playbooks, the API is a straightforward REST interface authenticated with your key.
+
+
+<AcademyPromo
+  image="crowdsec_threat_intelligence.svg"
+  description="Watch a short series of videos on how to get the most out of CrowdSec’s Cyber Threat Intelligence database"
+  title="More ways to learn"
+  course="crowdsec-cyber-threat-intelligence"
+  utm="?utm_source=docs&utm_medium=banner&utm_campaign=cti-page&utm_id=academydocs"
+/>

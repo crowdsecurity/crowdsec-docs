@@ -5,7 +5,7 @@ import { ThemeClassNames } from "@docusaurus/theme-common";
 import { Badge } from "@site/src/ui/badge";
 import type { Props } from "@theme/DocSidebarItem/Link";
 import clsx from "clsx";
-import { ExternalLinkIcon } from "lucide-react";
+import { ExternalLinkIcon, Signpost } from "lucide-react";
 import React from "react";
 
 export default function DocSidebarItemLink({ item, onItemClick, activePath, level, index, ...props }: Readonly<Props>): React.JSX.Element {
@@ -31,7 +31,7 @@ export default function DocSidebarItemLink({ item, onItemClick, activePath, leve
 					{
 						"menu__link--active": isActive,
 					},
-					tag ? "flex items-center justify-between" : "flex items-center"
+					tag === "premium" ? "flex items-center justify-between" : "flex items-center"
 				)}
 				autoAddBaseUrl={autoAddBaseUrl}
 				aria-current={isActive ? "page" : undefined}
@@ -47,6 +47,7 @@ export default function DocSidebarItemLink({ item, onItemClick, activePath, leve
 						Premium
 					</Badge>
 				)}
+				{tag === "otherSection" && <Signpost className="ml-1 h-4 text-foreground/80" />}
 				{!isInternalLink && <ExternalLinkIcon className="ml-1 h-4 text-foreground/80" />}
 			</Link>
 		</li>

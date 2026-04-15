@@ -4,27 +4,34 @@ title: IPDEX
 sidebar_position: 1
 ---
 
-`ipdex` is a simple CLI tool developed by CrowdSec to gather insight about a list of IPs or an IP using the CrowdSec CTI (Cyber Threat Intelligence) API.
+`ipdex` is a tool developed by CrowdSec to investigate IP reputation using the CrowdSec CTI API. It is available as a **web application** and a **CLI**, and is particularly useful as a Proof of Value tool to assess CrowdSec's threat intelligence coverage across both blocklists and threat intel data.
 
-[Official IPDEX Repository](https://github.com/crowdsecurity/ipdex)
+## Web UI
 
-## Installation
+The [ipdex web app](https://ipdex.crowdsec.net/) lets you upload a list of IPs or a log file and instantly get a reputation report — no installation required.
 
-You can check the [install guide on ipdex repository](https://github.com/crowdsecurity/ipdex?tab=readme-ov-file#1-install).
+![ipdex web UI](/img/ipdex_demo.png)
 
+For full usage documentation, see [ipdex.crowdsec.net/docs](https://ipdex.crowdsec.net/docs).
 
-## Usage
+## CLI
 
-You can check the [user guide on ipdex repository](https://github.com/crowdsecurity/ipdex?tab=readme-ov-file#user-guide).
+The CLI version is available for local use and automation. It connects to the CTI API using your API key.
 
-Here are some screenshot to demonstrate ipdex user experience.
+[Official ipdex repository](https://github.com/crowdsecurity/ipdex)
 
-### Analyzing an IP address
+### Installation
 
-![IP Analyses](/img/ipdex/ipdex_ip.png)
+See the [install guide](https://github.com/crowdsecurity/ipdex?tab=readme-ov-file#1-install) on the ipdex repository.
 
+### Usage
 
-### Analyzing a log file
+See the [user guide](https://github.com/crowdsecurity/ipdex?tab=readme-ov-file#user-guide) on the ipdex repository.
 
+#### Analyzing an IP address
 
-![Log File Analyses](/img/ipdex/ipdex_log_file.png)
+![IP Analysis](/img/ipdex/ipdex_ip.png)
+
+#### Analyzing a log file
+
+![Log File Analysis](/img/ipdex/ipdex_log_file.png)

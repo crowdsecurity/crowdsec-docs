@@ -3,6 +3,16 @@ id: integration_intro
 title: Integrations
 ---
 
+CrowdSec has developed native integrations for the most common security platforms so you can enrich your workflows with IP reputation data without writing any code. If your platform isn't listed, the API is a standard REST interface — you can query it directly with cURL, write your own scripts, or build custom playbooks in any SIEM, SOAR, or TIP that supports HTTP enrichment:
+
+```shell
+curl -H "x-api-key: $API_KEY" https://cti.api.crowdsec.net/v2/smoke/1.2.3.4 | jq .
+```
+
+For the full API reference, see the [Swagger documentation](https://crowdsecurity.github.io/cti-api/).
+
+---
+
 | Integration          | Description                                   |
 |---------------------------|----------------------------------------|
 | [Chrome](/cti_api/api_integration/integration_browser_chrome.md)                 | A Chrome extension which allows you to quickly search an IP on a web page       |
