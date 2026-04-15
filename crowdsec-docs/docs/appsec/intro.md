@@ -82,6 +82,11 @@ The AppSec Component works seamlessly with modern web servers and reverse proxie
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
+<strong>Envoy Gateway</strong>
+<a href="quickstart/envoy-gateway">Quick Start Guide →</a>
+</div>
+
+<div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/haproxy-logo.png" alt="HAProxy" style={{height: '50px', objectFit: 'contain'}} />
 <strong>HAProxy</strong>
 <a href="quickstart/haproxy_spoa">Quick Start Guide →</a>
@@ -134,6 +139,7 @@ This lets scenarios leverage WAF rule events, such as extending a ban for an IP 
 You can follow our quick start guides depending on your web server:
 
 -   [Nginx/OpenResty](quickstart/nginxopenresty)
+-   [Envoy Gateway](quickstart/envoy-gateway)
 -   [Traefik](quickstart/traefik)
 -   [HAProxy (SPOA)](quickstart/haproxy_spoa)
 -   [WordPress](quickstart/wordpress)

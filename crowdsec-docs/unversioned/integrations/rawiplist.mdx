@@ -1,28 +1,18 @@
 ---
 id: rawiplist
 title: Raw IP List
+toc_max_heading_level: 2
 ---
+
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import UnderlineTooltip from '@site/src/components/underline-tooltip';
 
-The CrowdSec **Raw IP List** integration allows you to block malicious IPs in your Firewall. This guide will walk you through the steps to integrate CrowdSec blocklists with your Firewall.
-
-### Prerequisites
-
-Before you begin, please ensure your device supports ingesting the raw IP format (one ip per line).
-
-:::warning
-Integrations for commnunity plan users are limited to pull once every 24 hours. Pulling more often will result in HTTP 429.
-:::
-
-### Steps
-
-We will presume you followed the [Getting Started](integrations/intro.mdx) guide and have created an account on the CrowdSec Console.
-
-Once you are authenticated, you can proceed to the Blocklist tab located on the top menu bar, from there you can select the Integrations sub menu.
-
-Once the page has loaded, you can click the "Connect" button under the **Raw IP List** logo.
-
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '0 0 20%'}}>
 <ThemedImage
     alt="Raw IP List Integration Card"
     sources={{
@@ -30,38 +20,145 @@ Once the page has loaded, you can click the "Connect" button under the **Raw IP 
         dark: useBaseUrl("/img/console_integrations_generic_card_dark.png"),
     }}
 />
+</div>
+<div style={{flex: '1'}}>
+The **Raw IP List** integration is a generic HTTPS endpoint serving Blocklists as plain text — one IP address per line.   
+It works with any HTTP-capable devices or software that supports ingesting IP lists from a URL.  
+It can be used as the default choice or when no vendor-specific integration exists.
+</div>
+</div>
 
-Doing so will prompt you to name this integration, you can name it anything you like, for example "My Integration ". Note the name should be unique per integration that is tied to your account.
+## Setup a Raw IP List Integration Endpoint
 
-<ThemedImage
-    alt="Raw IP List Integration Creation Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_creation_light.png"),
-        dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
-    }}
-/>
+<snippet-extract data-extract="bl_integ_setup">
+<Tabs
+  defaultValue="step1"
+  values={[
+    {label: '1- Create an integration', value: 'step1'},
+    {label: '2- Remediation Component', value: 'step2'},
+    {label: '3- Save your credentials', value: 'step3'},
+    {label: '4- Subscribe to blocklists', value: 'step4'},
+  ]}>
 
-Once the integration is generated you will be presented with a credentials screen that will provide you with the necessary information to configure your Firewall. This information will **ONLY** be displayed once, so please ensure you copy it down.
+    <TabItem value="step1">
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '1'}}>
 
-<ThemedImage
-    alt="Raw IP ListIntegration Credentials Screen"
-    sources={{
-        light: useBaseUrl("/img/console_integrations_generic_credentials_light.png"),
-        dark: useBaseUrl("/img/console_integrations_generic_credentials_dark.png"),
-    }}
-/>
+### Step 1 — Create an integration in the CrowdSec Console
 
-The username and password provided follows a *Basic Authentication* mechanism that you can use with any HTTP client such as `curl`
+In your CrowdSec Console account, navigate to the **Blocklist** tab in the top menu bar, then select the **Integrations** sub-menu.
+Choose the integration type you need, then click **Connect**.
 
-```
-curl -u 'username:password' https://admin.api.crowdsec.net/v1/integrations/${content_id}/content
-```
+:::info
+If you don't have a CrowdSec Console account, [sign up here](https://app.crowdsec.net/signup).
+On mobile, use the menu icon in the top-right corner, tap **Blocklist**, then **Integrations**.
+:::
 
-In case you lost your credentials you can regenerate them by clicking `Configure -> Regenerate Credentials` button at the top right corner of the integration.
+</div>
+<div style={{flex: '0 0 30%'}}>
+<a href="https://app.crowdsec.net/blocklists/integrations" target="_blank">
+    <ThemedImage
+        alt="CrowdSec Integrations Screen"
+        sources={{
+            light: useBaseUrl("/img/console_integrations_light.png"),
+            dark: useBaseUrl("/img/console_integrations_dark.png"),
+        }}
+    />
+</a>
+</div>
+</div>
+    </TabItem>
+
+    <TabItem value="step2">
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '1'}}>
+
+### Step 2 — Fill in integration details
+
+Name the integration *(must be unique to your account)*
+Optionally, add a description and tags to help you identify it later.
+Then click **Create**.
+
+</div>
+<div style={{flex: '0 0 30%'}}>
+    <ThemedImage
+        alt="Raw IP List Integration Creation Screen"
+        sources={{
+            light: useBaseUrl("/img/console_integrations_creation_light.png"),
+            dark: useBaseUrl("/img/console_integrations_creation_dark.png"),
+        }}
+    />
+</div>
+</div>
+    </TabItem>
+
+    <TabItem value="step3">
+
+### Step 3 — Copy your credentials
+
+:::warning
+The credentials shown next are displayed **only once**. Copy them before closing this screen.
+If you lose your credentials, you can regenerate them via **Configure → Regenerate Credentials** on the integration page.
+:::
+
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '1'}}>
+
+With this HTTPS endpoint and Basic Auth credentials, you can verify the endpoint with any HTTP client, for example:
+
+<CodeBlock language="bash">{`curl -u 'usr:pass' https://admin.api.crowdsec.net/v1/integrations/$integID/content`}</CodeBlock>
+
+</div>
+<div style={{flex: '0 0 30%'}}>
+    <ThemedImage
+        alt="Raw IP List Integration Credentials Screen"
+        sources={{
+            light: useBaseUrl("/img/console_integrations_generic_credentials_light.png"),
+            dark: useBaseUrl("/img/console_integrations_generic_credentials_dark.png"),
+        }}
+    />
+</div>
+</div>
+
+    </TabItem>
+
+    <TabItem value="step4">
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '1'}}>
+
+### Step 4 — Subscribe to Blocklists
+
+The integration endpoint will serve the deduplicated blocklists it's subscribed to.
+After creation, a subscription pop-up appears automatically.
+You can also access it later via the **Add Blocklist** button.
+
+Select one or more blocklists available for your plan, then click **Confirm Subscription**.
+The blocklist name(s) will appear in the integration tile once subscribed.
+
+</div>
+<div style={{flex: '0 0 30%'}}>
+    <ThemedImage
+        alt="Subscribe Integration to Blocklists Screen"
+        sources={{
+            light: useBaseUrl("/img/console_integrations_add_blocklist_light.png"),
+            dark: useBaseUrl("/img/console_integrations_add_blocklist_dark.png"),
+        }}
+    />
+    <ThemedImage
+        alt="Integration tile after subscription"
+        sources={{
+            light: useBaseUrl("/img/console_integrations_tile_light.png"),
+            dark: useBaseUrl("/img/console_integrations_tile_dark.png"),
+        }}
+    />
+</div>
+</div>
+    </TabItem>
+</Tabs>
+</snippet-extract>
+<hr />
 
 ## Format example
-
-The CrowdSec blocklist will be in plain text format, with one IP address per line. Here is an example of how the blocklist will look:
 
 ```
 192.168.38.187
@@ -72,10 +169,6 @@ The CrowdSec blocklist will be in plain text format, with one IP address per lin
 
 If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
 
-## Contribute to this documentation
-
-Since CrowdSec is a community-driven project, we welcome contributions to this documentation. If you have any instructions or tips that you would like to share with the community, please feel free to open a pull request on our [GitHub repository](https://github.com/crowdsecurity/crowdsec-docs)
-
 ## Next Steps
 
-Now that you have integrated CrowdSec integration in your asset, you can proceed to the [Blocklist Catalog](console/blocklists/catalog.md) to find what blocklists you can subscribe too.
+Subscribe to blocklists in the [Blocklist Catalog](console/blocklists/catalog.md) to populate your integration.

@@ -2,6 +2,8 @@
 id: cscli_setup_install-hub
 title: cscli setup install-hub
 ---
+## cscli setup install-hub
+
 Install recommended hub items from a setup file
 
 ### Synopsis

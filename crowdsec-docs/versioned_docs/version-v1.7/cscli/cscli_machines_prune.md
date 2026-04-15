@@ -2,6 +2,8 @@
 id: cscli_machines_prune
 title: cscli machines prune
 ---
+## cscli machines prune
+
 prune multiple machines from the database
 
 ### Synopsis

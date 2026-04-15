@@ -14,7 +14,7 @@ This page lists all possible health check issues, their trigger conditions, and 
 - 🌟 **Bonus**: Optimization advice and upper-tier recommendations with strong return on value *(coming in future Stack Health iterations)*
 
 ## Health Check Issues Overview
-<div data-extract="stackhealth_issues_list">
+<snippet-extract data-extract="stackhealth_issues_list">
 
 | Issue | Criticality   | Summary | Resolution |
 |-------|---------------|---------|------------|
@@ -31,7 +31,7 @@ This page lists all possible health check issues, their trigger conditions, and 
 | **Security Engine Offline** | 🔥 Critical | Security Engine has not reported to Console for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_se_offline) |
 | **Security Engine Too Many Alerts** | ⚠️ High | More than 250,000 alerts in 6 hours | [Troubleshooting](/u/troubleshooting/issue_se_too_many_alerts) |
 
-</div>
+</snippet-extract>
 ## Issue Dependencies
 
 Some issues are related and share common root causes:

@@ -2,6 +2,8 @@
 id: cscli_appsec-rules_install
 title: cscli appsec-rules install
 ---
+## cscli appsec-rules install
+
 Install given appsec-rule(s)
 
 ### Synopsis
@@ -15,24 +17,24 @@ cscli appsec-rules install [item]... [flags]
 ### Examples
 
 ```
-# Install some appsec-rules.
-cscli appsec-rules install crowdsecurity/crs
+# Install some waf-rules.
+cscli waf-rules install crowdsecurity/crs
 
 # Show the execution plan without changing anything - compact output sorted by type and name.
-cscli appsec-rules install crowdsecurity/crs --dry-run
+cscli waf-rules install crowdsecurity/crs --dry-run
 
 # Show the execution plan without changing anything - verbose output sorted by execution order.
-cscli appsec-rules install crowdsecurity/crs --dry-run -o raw
+cscli waf-rules install crowdsecurity/crs --dry-run -o raw
 
 # Download only, to be installed later.
-cscli appsec-rules install crowdsecurity/crs --download-only
+cscli waf-rules install crowdsecurity/crs --download-only
 
 # Install over tainted items. Can be used to restore or repair after local modifications or missing dependencies.
-cscli appsec-rules install crowdsecurity/crs --force
+cscli waf-rules install crowdsecurity/crs --force
 
 # Prompt for confirmation if running in an interactive terminal; otherwise, the option is ignored.
-cscli appsec-rules install crowdsecurity/crs -i
-cscli appsec-rules install crowdsecurity/crs --interactive
+cscli waf-rules install crowdsecurity/crs -i
+cscli waf-rules install crowdsecurity/crs --interactive
 ```
 
 ### Options

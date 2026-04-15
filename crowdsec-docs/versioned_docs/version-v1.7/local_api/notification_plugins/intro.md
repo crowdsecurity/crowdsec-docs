@@ -643,6 +643,8 @@ Extract the meta associated with the alerts
 plugin configuration. Those are provided by the `cscli notifications`
 command and its subcommands.
 
+For a practical, end-to-end walkthrough, see [Testing notification plugins](/local_api/notification_plugins/testing.md).
+
 | SubCommand | Description |
 |---------|-------------|
 | [list](/cscli/cscli_notifications_list.md) | List all notification plugins and their status |

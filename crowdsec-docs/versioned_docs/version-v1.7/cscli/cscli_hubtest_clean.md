@@ -2,6 +2,8 @@
 id: cscli_hubtest_clean
 title: cscli hubtest clean
 ---
+## cscli hubtest clean
+
 clean [test_name]
 
 ```

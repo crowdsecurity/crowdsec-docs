@@ -2,6 +2,8 @@
 id: cscli_appsec-rules_inspect
 title: cscli appsec-rules inspect
 ---
+## cscli appsec-rules inspect
+
 Inspect given appsec-rule(s)
 
 ### Synopsis
@@ -15,18 +17,18 @@ cscli appsec-rules inspect [item]... [flags]
 ### Examples
 
 ```
-# Display metadata, state, ancestor collections of appsec-rules (installed or not).
-cscli appsec-rules inspect crowdsecurity/crs
+# Display metadata, state, ancestor collections of waf-rules (installed or not).
+cscli waf-rules inspect crowdsecurity/crs
 
 # If the rule is installed, its metrics are collected and shown as well (with an error if crowdsec is not running).
 # To avoid this, use --no-metrics.
-cscli appsec-configs inspect crowdsecurity/crs --no-metrics
+cscli waf-rules inspect crowdsecurity/crs --no-metrics
 
 # Display difference between a tainted item and the latest one.
-cscli appsec-rules inspect crowdsecurity/crs --diff
+cscli waf-rules inspect crowdsecurity/crs --diff
 
 # Reverse the above diff
-cscli appsec-rules inspect crowdsecurity/crs --diff --rev
+cscli waf-rules inspect crowdsecurity/crs --diff --rev
 ```
 
 ### Options

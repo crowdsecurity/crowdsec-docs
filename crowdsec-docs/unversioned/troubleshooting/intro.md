@@ -38,4 +38,4 @@ If you are on an Enterprise plan, you can use dedicated support via the Console:
 
 ### Stack Health issues list
 
-<div data-extract-copy="console_issues:stackhealth_issues_list"></div>
+<snippet-extract data-extract-copy="console_issues:stackhealth_issues_list"></snippet-extract>

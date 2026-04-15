@@ -2,6 +2,8 @@
 id: cscli_decisions_delete
 title: cscli decisions delete
 ---
+## cscli decisions delete
+
 Delete decisions
 
 ```
@@ -15,7 +17,7 @@ cscli decisions delete -r 1.2.3.0/24
 cscli decisions delete -i 1.2.3.4
 cscli decisions delete --id 42
 cscli decisions delete --type captcha
-cscli decisions delete --origin lists  --scenario list_name
+cscli decisions delete --origin lists --scenario list_name
 
 ```
 
@@ -27,7 +29,7 @@ cscli decisions delete --origin lists  --scenario list_name
   -t, --type string       the decision type (ie. ban,captcha)
   -v, --value string      the value to match for in the specified scope
   -s, --scenario string   the scenario name (ie. crowdsecurity/ssh-bf)
-      --origin string     the value to match for the specified origin (cscli,crowdsec,console,cscli-import,lists,CAPI ...)
+      --origin string     the value to match for the specified origin (cscli,crowdsec,console,cscli-import,lists,CAPI,remediation_sync ...)
       --id string         decision id
       --all               delete all decisions
       --contained         query decisions contained by range

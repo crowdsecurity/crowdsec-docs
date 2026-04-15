@@ -2,6 +2,8 @@
 id: cscli_appsec-rules_list
 title: cscli appsec-rules list
 ---
+## cscli appsec-rules list
+
 List appsec-rule(s)
 
 ### Synopsis
@@ -15,14 +17,14 @@ cscli appsec-rules list [item... | -a] [flags]
 ### Examples
 
 ```
-# List enabled (installed) appsec-rules.
-cscli appsec-rules list
+# List enabled (installed) waf-rules.
+cscli waf-rules list
 
-# List all available appsec-rules (installed or not).
-cscli appsec-rules list -a
+# List all available waf-rules (installed or not).
+cscli waf-rules list -a
 
-# List specific appsec-rules (installed or not).
-cscli appsec-rules list crowdsecurity/crs crowdsecurity/vpatch-git-config
+# List specific waf-rules (installed or not).
+cscli waf-rules list crowdsecurity/crs crowdsecurity/vpatch-git-config
 ```
 
 ### Options

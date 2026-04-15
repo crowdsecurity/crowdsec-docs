@@ -2,6 +2,8 @@
 id: cscli_contexts_upgrade
 title: cscli contexts upgrade
 ---
+## cscli contexts upgrade
+
 Upgrade given context(s)
 
 ### Synopsis

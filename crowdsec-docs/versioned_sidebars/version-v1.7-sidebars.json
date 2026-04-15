@@ -71,7 +71,8 @@
           "items": [
             "log_processor/scenarios/format",
             "log_processor/scenarios/simulation",
-            "log_processor/scenarios/create"
+            "log_processor/scenarios/create",
+            "log_processor/scenarios/deploy"
           ]
         },
         {
@@ -102,8 +103,7 @@
                 "log_processor/whitelist/create_expr",
                 "log_processor/whitelist/create_postoverflow",
                 "log_processor/whitelist/create_fqdn",
-                "log_processor/whitelist/create_capi",
-                "log_processor/whitelist/create_lapi"
+                "log_processor/whitelist/create_capi"
               ]
             }
           ]
@@ -188,7 +188,8 @@
             "local_api/notification_plugins/splunk",
             "local_api/notification_plugins/file",
             "local_api/notification_plugins/template_helpers",
-            "local_api/notification_plugins/writing_your_own_plugin"
+            "local_api/notification_plugins/writing_your_own_plugin",
+            "local_api/notification_plugins/testing"
           ]
         },
         "local_api/database",
@@ -229,7 +230,8 @@
       },
       "items": [
         "configuration/feature_flags",
-        "configuration/network_management"
+        "configuration/network_management",
+        "configuration/values_parameters"
       ]
     },
     {
@@ -309,7 +311,7 @@
   "sdkSideBar": [
     {
       "type": "doc",
-      "label": "Introduction",
+      "label": "SDK Introduction",
       "id": "getting_started/sdk_intro"
     },
     {
@@ -320,7 +322,12 @@
     {
       "type": "doc",
       "label": "PHP",
-      "id": "getting_started/install_softagent"
+      "id": "getting_started/install_php_softagent"
+    },
+    {
+      "type": "doc",
+      "label": "Drupal Plugin",
+      "id": "getting_started/install_drupal_plugin"
     }
   ],
   "cscliSidebar": [
@@ -357,7 +364,8 @@
         "cscli/cscli_allowlists_check",
         "cscli/cscli_allowlists_inspect",
         "cscli/cscli_allowlists_list",
-        "cscli/cscli_allowlists_remove"
+        "cscli/cscli_allowlists_remove",
+        "cscli/cscli_allowlists_import"
       ]
     },
     {
@@ -709,7 +717,19 @@
         },
         {
           "type": "doc",
+          "id": "appsec/quickstart/nginx-ingress"
+        },
+        {
+          "type": "doc",
           "id": "appsec/quickstart/nginxopenresty"
+        },
+        {
+          "type": "doc",
+          "id": "appsec/quickstart/haproxy_spoa"
+        },
+        {
+          "type": "doc",
+          "id": "appsec/quickstart/npmplus"
         },
         {
           "type": "doc",
@@ -731,11 +751,15 @@
         },
         {
           "type": "doc",
-          "id": "appsec/vpatch_and_crs"
+          "id": "appsec/configuration_creation_testing"
         },
         {
           "type": "doc",
-          "id": "appsec/alerts_and_scenarios"
+          "id": "appsec/configuration_rule_management"
+        },
+        {
+          "type": "doc",
+          "id": "appsec/hooks"
         }
       ]
     },
@@ -749,11 +773,15 @@
         },
         {
           "type": "doc",
-          "id": "appsec/hooks"
+          "id": "appsec/create_rules"
         },
         {
           "type": "doc",
-          "id": "appsec/create_rules"
+          "id": "appsec/rules_deploy"
+        },
+        {
+          "type": "doc",
+          "id": "appsec/rules_examples"
         }
       ]
     },
@@ -768,8 +796,43 @@
         {
           "type": "doc",
           "id": "appsec/benchmark"
+        },
+        {
+          "type": "doc",
+          "id": "appsec/request_lifecycle"
         }
       ]
+    },
+    {
+      "type": "category",
+      "label": "CRS",
+      "link": {
+        "type": "doc",
+        "id": "appsec/crs/intro"
+      },
+      "items": [
+        {
+          "type": "doc",
+          "id": "appsec/crs/installation"
+        },
+        {
+          "type": "doc",
+          "id": "appsec/crs/plugin_support"
+        },
+        {
+          "type": "doc",
+          "id": "appsec/crs/crs_config"
+        }
+      ]
+    },
+    {
+      "type": "doc",
+      "id": "appsec/alerts_and_scenarios",
+      "label": "WAF behavior analysis"
+    },
+    {
+      "type": "doc",
+      "id": "appsec/advanced_deployments"
     },
     {
       "type": "doc",

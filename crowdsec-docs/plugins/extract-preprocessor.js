@@ -44,9 +44,9 @@ const buildIndex = () => {
 
   let count = 0;
 
-  // Regex to find: <div data-extract="ID"> CONTENT </div>
+  // Regex to find: <snippet-extract data-extract="ID"> CONTENT </snippet-extract>
   // We use [\s\S]*? to match content across multiple lines (lazy match)
-  const extractRegex = /<div\s+data-extract=["']([^"']+)["'][^>]*>([\s\S]*?)<\/div>/g;
+  const extractRegex = /<snippet-extract\s+data-extract=["']([^"']+)["'][^>]*>([\s\S]*?)<\/snippet-extract>/g;
 
   allFiles.forEach(filePath => {
     try {
@@ -84,9 +84,9 @@ const preprocessor = ({ filePath, fileContent }) => {
   // 1. Ensure Index exists (runs once)
   buildIndex();
 
-  // 2. Regex to find: <div data-extract-copy="ID" />
-  // Matches <div data-extract-copy="xyz"></div> OR <div data-extract-copy="xyz" />
-  const copyRegex = /<div\s+data-extract-copy=["']([^"']+)["']\s*\/?>\s*(?:<\/div>)?/g;
+  // 2. Regex to find: <snippet-extract data-extract-copy="ID" />
+  // Matches <snippet-extract data-extract-copy="xyz"></snippet-extract> OR <snippet-extract data-extract-copy="xyz" />
+  const copyRegex = /<snippet-extract\s+data-extract-copy=["']([^"']+)["']\s*\/?>\s*(?:<\/snippet-extract>)?/g;
 
   // 3. Replace with content
   return fileContent.replace(copyRegex, (match, requestedId) => {

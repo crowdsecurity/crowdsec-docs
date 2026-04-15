@@ -2,6 +2,8 @@
 id: cscli_machines
 title: cscli machines
 ---
+## cscli machines
+
 Manage local API machines [requires local API]
 
 ### Synopsis
@@ -9,6 +11,10 @@ Manage local API machines [requires local API]
 To list/add/delete/validate/prune machines.
 Note: This command requires database direct access, so is intended to be run on the local API machine.
 
+
+```
+cscli machines [action] [flags]
+```
 
 ### Examples
 
