@@ -71,10 +71,14 @@ Shows the distribution of targeted organizations by industry sector.
 | Value | Description |
 |---|---|
 | `commerce` | Retail, e-commerce, and commercial businesses |
+| `education` | Schools, universities, and educational institutions |
 | `financial_services` | Banks, insurance, fintech, financial institutions |
 | `government` | Government agencies and public administration |
 | `healthcare` | Healthcare providers, hospitals, medical organizations |
+| `industry` | Manufacturing, industrial, and production organizations |
+| `media` | Media, entertainment, and publishing organizations |
 | `non_profit` | Non-profit organizations, NGOs, charities |
+| `SOHO` | Small office / home office environments |
 
 ```json
 "industry_types": {
@@ -97,8 +101,8 @@ Classifies targets by their **technology risk profile** rather than their busine
 | Value | Description |
 |---|---|
 | `critical_infrastructure` | Energy, water, transportation, telecommunications |
-| `homelab_and_iot` | Home labs, IoT devices, consumer-grade infrastructure |
 | `public_service` | Government services, education, public utilities |
+| `SOHO` | Small office / home office environments |
 | `technology_business` | Technology-focused businesses, SaaS, software companies |
 | `traditional_business` | Non-tech commercial enterprises, manufacturing, logistics |
 
@@ -108,7 +112,7 @@ Classifies targets by their **technology risk profile** rather than their busine
     "traditional_business": 6,
     "public_service": 6,
     "technology_business": 65,
-    "homelab_and_iot": 17
+    "SOHO": 17
 }
 ```
 
