@@ -91,6 +91,8 @@ config:
       flush:
         bouncers_autodelete:
           api_key: 1h
+        agents_autodelete:
+          login_password: 6h
 ```
 
 Acquisition is done by reading logs directly from pods. You select which pods to
@@ -124,7 +126,7 @@ For full configuration options, see the default
 [values.yaml](/docs/next/configuration/values_parameters)
 
 :::warning
-Pay attention to the `bouncers_autodelete` and `unregister_on_exit` parameters, as they help avoid orphaned resources.
+Pay attention to the `bouncers_autodelete`, `agents_autodelete` and `unregister_on_exit` parameters, as they help avoid orphaned resources.
 :::
 
 Then, you can install the Security Engine with the following command:
