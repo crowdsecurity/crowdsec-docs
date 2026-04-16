@@ -105,8 +105,7 @@ function SecondaryNavbar(): ReactNode {
 					)}
 
 					{/* Sidebar breadcrumb trail */}
-					{breadcrumbs &&
-						breadcrumbs.map((item: PropSidebarBreadcrumbsItem, idx: number) => {
+					{breadcrumbs?.map((item: PropSidebarBreadcrumbsItem, idx: number) => {
 							const isLast = idx === breadcrumbs.length - 1;
 							const href =
 								item.type === "category" && (item as { linkUnlisted?: boolean }).linkUnlisted

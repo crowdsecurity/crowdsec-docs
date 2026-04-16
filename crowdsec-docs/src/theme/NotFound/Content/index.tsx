@@ -4,9 +4,9 @@ import { Button } from "@site/src/ui/button";
 import Heading from "@theme/Heading";
 import type { Props } from "@theme/NotFound/Content";
 import clsx from "clsx";
-import React, { useEffect, type ReactNode } from "react";
+import React, { type ReactNode } from "react";
 
-export default function NotFoundContent({ className }: Props): ReactNode {	
+export default function NotFoundContent({ className }: Props): ReactNode {
 	return (
 		<main className={clsx("container margin-vert--xl", className)}>
 			<div className="row">

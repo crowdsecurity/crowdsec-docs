@@ -381,6 +381,7 @@ const config: Config = {
 				onRouteError: "warn",
 			},
 		],
+		["@docusaurus/plugin-client-redirects", { redirects }],
 		tailwindPlugin,
 	],
 };
