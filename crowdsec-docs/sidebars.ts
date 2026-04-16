@@ -1,5 +1,4 @@
 import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
-import type { SectionInfo } from "./src/sectionMap";
 
 type SidebarConfig = SidebarsConfig[string];
 
@@ -746,13 +745,5 @@ const sidebarsConfig: SidebarConfig = {
 	],
 };
 
+/** If you add or rename a sidebar key here, update src/sectionMap.ts to keep breadcrumbs working. */
 export default sidebarsConfig;
-
-// Used to have the Breadcrumbs display proper label and point to where we want
-// Also make it work properly when side bar leads to sub sections with their own sideBars
-export const sidebarBreadcrumbMeta: Record<string, SectionInfo> = {
-	tutorialSidebar: { label: "Security Engine", introPath: "/docs/intro" },
-	appSecSideBar:   { label: "Web Application Firewall", introPath: "/docs/next/appsec/intro", parent: { label: "Security Engine", introPath: "/docs/intro" } },
-	cscliSidebar:    { label: "Cscli", introPath: "/docs/cscli/cscli", parent: { label: "Security Engine", introPath: "/docs/intro" } },
-	sdkSideBar:      { label: "SDK", introPath: "/docs/getting_started/sdk_intro", parent: { label: "Security Engine", introPath: "/docs/intro" } },
-};

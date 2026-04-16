@@ -4,7 +4,7 @@ import type { Config } from "@docusaurus/types";
 import { themes } from "prism-react-renderer";
 
 import tailwindPlugin from "./plugins/tailwind-config";
-import { ctiApiSidebar, guidesSideBar, remediationSideBar, trackerApiSidebar } from "./sidebarsUnversioned";
+import sidebarsUnversioned from "./sidebarsUnversioned";
 
 const extractPreprocessor = require("./plugins/extract-preprocessor");
 
@@ -31,6 +31,7 @@ function handleSidebarItems(items) {
 	return arr;
 }
 
+// This function generates redirects for all items in the unversioned sidebars, so that if we move a doc from versioned to unversioned, we don't break existing links. It handles both string items (doc ids) and nested objects (categories with their own items).
 const backportRedirect = (s) => {
 	const arr = [];
 	if (typeof s === "string") {
@@ -176,12 +177,7 @@ const FOOTER_LINKS = [
 
 
 const redirects = [
-	...[
-		...(Array.isArray(remediationSideBar) ? remediationSideBar : [remediationSideBar]),
-		...(Array.isArray(ctiApiSidebar) ? ctiApiSidebar : [ctiApiSidebar]),
-		...(Array.isArray(trackerApiSidebar) ? trackerApiSidebar : [trackerApiSidebar]),
-		...(Array.isArray(guidesSideBar) ? guidesSideBar : [guidesSideBar]),
-	].flatMap(backportRedirect),
+	...Object.values(sidebarsUnversioned).flatMap(backportRedirect),
 	{ from: "/docs/troubleshooting", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/next/troubleshooting", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/faq", to: "/u/troubleshooting/intro" },

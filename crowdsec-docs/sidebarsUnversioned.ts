@@ -1,5 +1,4 @@
 import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
-import type { SectionInfo } from "./src/sectionMap";
 
 type SidebarConfig = SidebarsConfig[string];
 
@@ -945,28 +944,5 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 	],
 };
 
+/** If you add or rename a sidebar key here, update src/sectionMap.ts to keep breadcrumbs working. */
 export default sidebarsUnversionedConfig;
-
-export const {
-	ctiApiSidebar,
-	trackerApiSidebar,
-	consoleSidebar,
-	remediationSideBar,
-	blocklistsSideBar,
-	troubleshootingSideBar,
-	guidesSideBar,
-	gettingStarted,
-} = sidebarsUnversionedConfig;
-
-// Used to have the Breadcrumbs display proper label and point to where we want
-// Also make it work properly when side bar leads to sub sections with their own sideBars
-export const sidebarBreadcrumbMeta: Record<string, SectionInfo> = {
-	ctiApiSidebar:          { label: "CTI", introPath: "/u/cti_api/intro" },
-	trackerApiSidebar:      { label: "Tracker API", introPath: "/u/tracker_api/intro" },
-	consoleSidebar:         { label: "Console", introPath: "/u/console/intro" },
-	remediationSideBar:     { label: "Remediation Components", introPath: "/u/bouncers/intro" },
-	blocklistsSideBar:      { label: "Blocklists", introPath: "/u/blocklists/getting_started" },
-	troubleshootingSideBar: { label: "Troubleshooting", introPath: "/u/troubleshooting/intro" },
-	guidesSideBar:          { label: "Guides", introPath: "/u/user_guides/intro" },
-	gettingStarted:         { label: "Getting Started", introPath: "/u/getting_started/intro", parent: { label: "Security Engine", introPath: "/docs/intro" } },
-};
