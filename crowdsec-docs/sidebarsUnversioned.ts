@@ -2,9 +2,8 @@ import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 type SidebarConfig = SidebarsConfig[string];
 
-/** IF you make significant changes to the nav bar or side bars 
+/** IF you make significant changes to the nav bar or side bars
  * make sure to have proper mapping in crowdsec-docs/src/sectionMap.ts */
- 
 const sidebarsUnversionedConfig: SidebarConfig = {
 	ctiApiSidebar: [
 		{
@@ -944,5 +943,4 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 	],
 };
 
-/** If you add or rename a sidebar key here, update src/sectionMap.ts to keep breadcrumbs working. */
 export default sidebarsUnversionedConfig;

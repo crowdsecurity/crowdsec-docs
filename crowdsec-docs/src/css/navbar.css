@@ -26,9 +26,8 @@
 	vertical-align: middle;
 }
 
-nav.theme-doc-breadcrumbs
-{
-    display: none;
+nav.theme-doc-breadcrumbs {
+	display: none;
 }
 
 /** Patch some colors **/

@@ -57,9 +57,8 @@ const ACADEMY_URL = `https://academy.crowdsec.net/courses?${
 	process.env.NODE_ENV === "production" ? "utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs" : ""
 }`;
 
-/** IF you make significant changes to the nav bar or side bars 
+/** IF you make significant changes to the nav bar or side bars
  * make sure to have proper mapping in crowdsec-docs/src/sectionMap.ts */
- 
 const NAVBAR_ITEMS: NavbarItem[] = [
 	{
 		label: "Security Stack",
@@ -175,7 +174,6 @@ const FOOTER_LINKS = [
 	},
 ];
 
-
 const redirects = [
 	...Object.values(sidebarsUnversioned).flatMap(backportRedirect),
 	{ from: "/docs/troubleshooting", to: "/u/troubleshooting/intro" },
@@ -209,8 +207,6 @@ const redirects = [
 	{ from: "/u/cti_api/search_queries", to: "/u/console/ip_reputation/search_ui" },
 	{ from: "/u/cti_api/advanced_search", to: "/u/console/ip_reputation/search_ui_advanced" },
 	{ from: "/u/cti_api/cve_explorer", to: "/u/console/ip_reputation/intro#live-exploit-tracker" },
-	
-	
 ];
 
 const config: Config = {

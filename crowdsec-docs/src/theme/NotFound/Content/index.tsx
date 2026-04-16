@@ -4,7 +4,7 @@ import { Button } from "@site/src/ui/button";
 import Heading from "@theme/Heading";
 import type { Props } from "@theme/NotFound/Content";
 import clsx from "clsx";
-import React, { type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 export default function NotFoundContent({ className }: Props): ReactNode {
 	return (

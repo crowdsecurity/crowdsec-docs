@@ -1,4 +1,4 @@
- /**
+/**
  * CrowdSec Made Swizzled override of @docusaurus/theme-classic's DocRoot/Layout component.
  *
  * The original only renders the sidebar + main content area.
@@ -10,22 +10,22 @@
  * src/theme/DocRoot/Layout/index.tsx, shadowing the original in node_modules.
  */
 
+import Link from "@docusaurus/Link";
+import type { PropSidebarBreadcrumbsItem } from "@docusaurus/plugin-content-docs";
 import {
 	useActiveDocContext,
 	useActivePlugin,
-	useDocsSidebar,
 	useDocsPreferredVersion,
-	useVersions,
+	useDocsSidebar,
 	useSidebarBreadcrumbs,
+	useVersions,
 } from "@docusaurus/plugin-content-docs/client";
 import { useHistorySelector } from "@docusaurus/theme-common";
-import Link from "@docusaurus/Link";
+import { SECTION_MAP } from "@site/src/sectionMap";
 import BackToTopButton from "@theme/BackToTopButton";
+import type { Props } from "@theme/DocRoot/Layout";
 import DocRootLayoutMain from "@theme/DocRoot/Layout/Main";
 import DocRootLayoutSidebar from "@theme/DocRoot/Layout/Sidebar";
-import type { Props } from "@theme/DocRoot/Layout";
-import type { PropSidebarBreadcrumbsItem } from "@docusaurus/plugin-content-docs";
-import { SECTION_MAP } from "@site/src/sectionMap";
 import clsx from "clsx";
 import { ChevronRight, House } from "lucide-react";
 import React, { type ReactNode, useState } from "react";
@@ -106,27 +106,22 @@ function SecondaryNavbar(): ReactNode {
 
 					{/* Sidebar breadcrumb trail */}
 					{breadcrumbs?.map((item: PropSidebarBreadcrumbsItem, idx: number) => {
-							const isLast = idx === breadcrumbs.length - 1;
-							const href =
-								item.type === "category" && (item as { linkUnlisted?: boolean }).linkUnlisted
-									? undefined
-									: item.href;
+						const isLast = idx === breadcrumbs.length - 1;
+						const href = item.type === "category" && (item as { linkUnlisted?: boolean }).linkUnlisted ? undefined : item.href;
 
-							return (
-								<React.Fragment key={idx}>
-									<ChevronRight size={13} className={styles.breadcrumbSeparator} aria-hidden />
-									{!isLast && href ? (
-										<Link to={href} className={styles.breadcrumbItem}>
-											{item.label}
-										</Link>
-									) : (
-										<span className={clsx(styles.breadcrumbItem, isLast && styles.breadcrumbItemActive)}>
-											{item.label}
-										</span>
-									)}
-								</React.Fragment>
-							);
-						})}
+						return (
+							<React.Fragment key={`${item.label}-${idx}`}>
+								<ChevronRight size={13} className={styles.breadcrumbSeparator} aria-hidden />
+								{!isLast && href ? (
+									<Link to={href} className={styles.breadcrumbItem}>
+										{item.label}
+									</Link>
+								) : (
+									<span className={clsx(styles.breadcrumbItem, isLast && styles.breadcrumbItemActive)}>{item.label}</span>
+								)}
+							</React.Fragment>
+						);
+					})}
 				</nav>
 
 				<VersionDropdown pluginId={pluginId} />
@@ -151,9 +146,7 @@ export default function DocRootLayout({ children }: Props): ReactNode {
 						setHiddenSidebarContainer={setHiddenSidebarContainer}
 					/>
 				)}
-				<DocRootLayoutMain hiddenSidebarContainer={hiddenSidebarContainer}>
-					{children}
-				</DocRootLayoutMain>
+				<DocRootLayoutMain hiddenSidebarContainer={hiddenSidebarContainer}>{children}</DocRootLayoutMain>
 			</div>
 		</div>
 	);
