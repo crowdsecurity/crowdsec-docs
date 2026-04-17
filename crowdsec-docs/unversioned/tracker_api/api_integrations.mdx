@@ -66,13 +66,13 @@ curl -X 'POST' \
 
 ```python
 import os
-from crowdsec_tracker_api import (
+from crowdsec_service_api import (
     Integrations, IntegrationCreateRequest,
     IntegrationType, OutputFormat, ApiKeyAuth,
 )
 from httpx import HTTPStatusError
 
-KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+KEY = os.getenv("CROWDSEC_SERVICE_API_KEY")
 auth = ApiKeyAuth(api_key=KEY)
 integrations_service = Integrations(auth=auth)
 
@@ -155,10 +155,10 @@ curl -X 'GET' \
 
 ```python
 import os
-from crowdsec_tracker_api import Integrations, ApiKeyAuth
+from crowdsec_service_api import Integrations, ApiKeyAuth
 from httpx import HTTPStatusError
 
-KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+KEY = os.getenv("CROWDSEC_SERVICE_API_KEY")
 auth = ApiKeyAuth(api_key=KEY)
 integrations_service = Integrations(auth=auth)
 
@@ -216,12 +216,12 @@ curl -X 'PATCH' \
 
 ```python
 import os
-from crowdsec_tracker_api import (
+from crowdsec_service_api import (
     Integrations, IntegrationUpdateRequest, ApiKeyAuth,
 )
 from httpx import HTTPStatusError
 
-KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+KEY = os.getenv("CROWDSEC_SERVICE_API_KEY")
 auth = ApiKeyAuth(api_key=KEY)
 integrations_service = Integrations(auth=auth)
 
@@ -279,10 +279,10 @@ curl -X 'DELETE' \
 
 ```python
 import os
-from crowdsec_tracker_api import Integrations, ApiKeyAuth
+from crowdsec_service_api import Integrations, ApiKeyAuth
 from httpx import HTTPStatusError
 
-KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+KEY = os.getenv("CROWDSEC_SERVICE_API_KEY")
 auth = ApiKeyAuth(api_key=KEY)
 integrations_service = Integrations(auth=auth)
 

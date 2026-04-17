@@ -38,14 +38,14 @@ CrowdSec provides official SDKs for convenient API access with typed models, aut
 **Quick start with the Python SDK:**
 
 ```bash
-pip install crowdsec-tracker-api
+pip install crowdsec_service_api
 ```
 
 ```python
 import os
-from crowdsec_tracker_api import Cves, ApiKeyAuth
+from crowdsec_service_api import Cves, ApiKeyAuth
 
-auth = ApiKeyAuth(api_key=os.getenv("CROWDSEC_TRACKER_API_KEY"))
+auth = ApiKeyAuth(api_key=os.getenv("CROWDSEC_SERVICE_API_KEY"))
 cve = Cves(auth=auth).get_cve("CVE-2024-25600")
 print(f"{cve.title}: Score {cve.crowdsec_score}, Phase: {cve.exploitation_phase.label}")
 ```
@@ -71,4 +71,4 @@ The API returns standard HTTP status codes:
 - [Integrations & Blocklists](./api_integrations) — Create firewall integrations and subscribe to CVEs
 - [Browse by Vendor, Product, or Tag](./api_lookups) — Explore the coverage landscape
 - [SDKs & Libraries](./api_sdks) — Official SDKs for Python and more
-- [API Reference (Swagger)](./api_reference) — Full interactive API documentation
+- [API Reference](https://admin.api.crowdsec.net/v1/docs#tag/Cves) — Full interactive API documentation

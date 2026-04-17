@@ -165,9 +165,9 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 					id: "tracker_api/api_sdks",
 				},
 				{
-					type: "doc",
+					type: "link",
 					label: "API Reference",
-					id: "tracker_api/api_reference",
+					href: "https://admin.api.crowdsec.net/v1/docs#tag/Cves",
 				},
 			],
 		},

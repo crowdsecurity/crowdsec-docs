@@ -55,7 +55,7 @@ curl -X 'GET' \
 import os
 import httpx
 
-KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+KEY = os.getenv("CROWDSEC_SERVICE_API_KEY")
 headers = {"x-api-key": KEY, "accept": "application/json"}
 
 response = httpx.get(
@@ -128,7 +128,7 @@ curl -X 'GET' \
 import os
 import httpx
 
-KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+KEY = os.getenv("CROWDSEC_SERVICE_API_KEY")
 headers = {"x-api-key": KEY, "accept": "application/json"}
 
 response = httpx.get(

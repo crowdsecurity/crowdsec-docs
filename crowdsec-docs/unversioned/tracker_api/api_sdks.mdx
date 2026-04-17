@@ -15,20 +15,20 @@ The official Python SDK is the recommended way to interact with the API from Pyt
 ### Installation
 
 ```bash
-pip install crowdsec-tracker-api
+pip install crowdsec_service_api
 ```
 
-**Requirements**: Python 3.8+
+**Requirements**: Python 3.11+
 
-**Source**: [github.com/crowdsecurity/crowdsec-tracker-api-sdk-python](https://github.com/crowdsecurity/crowdsec-tracker-api-sdk-python)
+**Source**: [github.com/crowdsecurity/crowdsec-service-api-sdk-python](https://github.com/crowdsecurity/crowdsec-service-api-sdk-python)
 
 ### Authentication
 
 ```python
 import os
-from crowdsec_tracker_api import ApiKeyAuth, Server
+from crowdsec_service_api import ApiKeyAuth, Server
 
-KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+KEY = os.getenv("CROWDSEC_SERVICE_API_KEY")
 
 # Configure authentication
 auth = ApiKeyAuth(api_key=KEY)
@@ -53,10 +53,10 @@ The SDK provides typed service classes for each API domain:
 
 ```python
 import os
-from crowdsec_tracker_api import Cves, ApiKeyAuth
+from crowdsec_service_api import Cves, ApiKeyAuth
 from httpx import HTTPStatusError
 
-KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+KEY = os.getenv("CROWDSEC_SERVICE_API_KEY")
 auth = ApiKeyAuth(api_key=KEY)
 cves_service = Cves(auth=auth)
 
@@ -98,7 +98,7 @@ except HTTPStatusError as e:
 #### Create and manage a firewall integration
 
 ```python
-from crowdsec_tracker_api import (
+from crowdsec_service_api import (
     Integrations, IntegrationCreateRequest,
     IntegrationType, OutputFormat, ApiKeyAuth,
 )
@@ -119,6 +119,6 @@ print(f"Integration ID: {response.id}")
 
 ## Other Languages
 
-Need the API in another language? The REST API is straightforward to call from any HTTP client — see [Authentication & Setup](./api_authentication) for the base URL and authentication details, and the [API Reference (Swagger)](./api_reference) for the full OpenAPI specification.
+Need the API in another language? The REST API is straightforward to call from any HTTP client — see [Authentication & Setup](./api_authentication) for the base URL and authentication details, and the [API Reference](https://admin.api.crowdsec.net/v1/docs#tag/Cves) for the full OpenAPI specification.
 
 If you'd like to see an official SDK for your language, let us know on [GitHub](https://github.com/crowdsecurity) or [Discord](https://discord.gg/crowdsec).
