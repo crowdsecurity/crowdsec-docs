@@ -53,10 +53,10 @@ curl -X 'GET' \
 
 ```python
 import os
-from crowdsec_tracker_api import Cves, ApiKeyAuth
+from crowdsec_service_api import Cves, ApiKeyAuth
 from httpx import HTTPStatusError
 
-KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+KEY = os.getenv("CROWDSEC_SERVICE_API_KEY")
 auth = ApiKeyAuth(api_key=KEY)
 cves_service = Cves(auth=auth)
 
@@ -126,10 +126,10 @@ curl -X 'GET' \
 
 ```python
 import os
-from crowdsec_tracker_api import Cves, ApiKeyAuth
+from crowdsec_service_api import Cves, ApiKeyAuth
 from httpx import HTTPStatusError
 
-KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+KEY = os.getenv("CROWDSEC_SERVICE_API_KEY")
 auth = ApiKeyAuth(api_key=KEY)
 cves_service = Cves(auth=auth)
 
@@ -247,10 +247,10 @@ curl -X 'GET' \
 
 ```python
 import os
-from crowdsec_tracker_api import Cves, ApiKeyAuth
+from crowdsec_service_api import Cves, ApiKeyAuth
 from httpx import HTTPStatusError
 
-KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+KEY = os.getenv("CROWDSEC_SERVICE_API_KEY")
 auth = ApiKeyAuth(api_key=KEY)
 cves_service = Cves(auth=auth)
 

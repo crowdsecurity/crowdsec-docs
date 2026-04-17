@@ -116,9 +116,9 @@ Here's a template for a daily check that surfaces new and trending threats for y
 
 ```python
 import os
-from crowdsec_tracker_api import Cves, ApiKeyAuth
+from crowdsec_service_api import Cves, ApiKeyAuth
 
-KEY = os.getenv("CROWDSEC_TRACKER_API_KEY")
+KEY = os.getenv("CROWDSEC_SERVICE_API_KEY")
 auth = ApiKeyAuth(api_key=KEY)
 cves_service = Cves(auth=auth)
 
