@@ -44,6 +44,7 @@ function VersionDropdown({ pluginId }: { pluginId: string }): ReactNode {
 
 	return (
 		<div className={styles.versionDropdown}>
+			<span className={styles.versionLabel}>Security Engine version:</span>
 			<select
 				value={activeVersion.name}
 				onChange={(e) => {

@@ -26,7 +26,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	max-width: var(--ifm-container-width);
+	max-width: calc(var(--doc-sidebar-width) + var(--ifm-container-width));
 	margin: 0 0;
 	padding: 0 var(--ifm-spacing-horizontal);
 	height: 36px;
@@ -85,7 +85,17 @@ a.breadcrumbItem:hover {
 /* ── Version dropdown ─────────────────────────────────────────── */
 
 .versionDropdown {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
 	flex-shrink: 0;
+}
+
+.versionLabel {
+	font-size: 0.75rem;
+	font-weight: 500;
+	color: rgb(var(--muted-foreground));
+	white-space: nowrap;
 }
 
 .versionDropdown select {
@@ -93,22 +103,23 @@ a.breadcrumbItem:hover {
 	-webkit-appearance: none;
 	background-color: rgb(var(--card));
 	color: rgb(var(--foreground));
-	border: 1px solid rgb(var(--border));
+	border: 1.5px solid rgb(var(--primary) / 0.5);
 	border-radius: 6px;
 	padding: 2px 28px 2px 10px;
 	font-size: 0.78rem;
-	font-weight: 500;
+	font-weight: 600;
 	cursor: pointer;
 	outline: none;
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: right 8px center;
-	transition: border-color 0.15s;
+	transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .versionDropdown select:hover,
 .versionDropdown select:focus {
 	border-color: rgb(var(--primary));
+	box-shadow: 0 0 0 2px rgb(var(--primary) / 0.15);
 }
 
 html[data-theme="dark"] .versionDropdown select {
