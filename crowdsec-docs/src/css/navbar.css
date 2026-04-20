@@ -26,6 +26,10 @@
 	vertical-align: middle;
 }
 
+nav.theme-doc-breadcrumbs {
+	display: none;
+}
+
 /** Patch some colors **/
 button[class*="toggleButton"]:hover {
 	@apply bg-transparent;

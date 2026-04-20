@@ -2,7 +2,6 @@
 
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import { useWindowSize } from "@docusaurus/theme-common";
-import DocBreadcrumbs from "@theme/DocBreadcrumbs";
 import DocItemContent from "@theme/DocItem/Content";
 import DocItemPaginator from "@theme/DocItem/Paginator";
 import DocItemTOCDesktop from "@theme/DocItem/TOC/Desktop";
@@ -39,7 +38,6 @@ const DocItemLayout = ({ children }: PropsWithChildren): React.JSX.Element => {
 				<DocVersionBanner />
 				<div>
 					<article>
-						<DocBreadcrumbs />
 						<DocVersionBadge />
 						{docTableOfContent.mobile}
 						<DocItemContent>{children}</DocItemContent>
