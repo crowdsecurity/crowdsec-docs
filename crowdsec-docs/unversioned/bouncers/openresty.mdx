@@ -30,10 +30,10 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
 
 A lua Remediation Component for OpenResty.
 
-:::tip AppSec Support
-This bouncer supports the [AppSec Component](/docs/next/appsec/intro) for real-time WAF protection. After installing the bouncer, [enable AppSec](#enable-appsec-waf-protection) to get virtual patching and defense against known CVEs, SQL injection, XSS, and other application-layer attacks.
+:::tip Enable the WAF for optimal protection
+After installing the bouncer, enable the [AppSec (WAF) Component](/docs/next/appsec/intro) to get virtual patching and defense against known CVEs, SQL injection, XSS, and other application-layer attacks.
 
-For a full walkthrough, see the [AppSec Quickstart for Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty).
+Follow the dedicated [AppSec Quickstart for Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty) — it picks up right where this page ends.
 :::
 
 ## How does it work ?
@@ -132,69 +132,15 @@ If you are on a mono-machine setup, the `crowdsec-openresty-bouncer` install scr
 
 </details>
 
-## Enable AppSec (WAF Protection)
+## Enable the WAF (AppSec Component)
 
-The OpenResty bouncer can forward HTTP requests to the CrowdSec AppSec Component for real-time inspection, giving you virtual patching and protection against known CVEs and generic attack patterns.
+For real-time WAF protection — virtual patching, defense against known CVEs, SQLi, XSS, and other application-layer attacks — turn on the AppSec Component after installing the bouncer.
 
-### 1. Install AppSec collections on the Security Engine
-
-```bash
-sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
-```
-
-### 2. Configure the AppSec acquisition
-
-Create the acquisition file:
-
-```bash
-sudo mkdir -p /etc/crowdsec/acquis.d/
-```
-
-```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
-appsec_configs:
-  - crowdsecurity/appsec-default
-labels:
-  type: appsec
-listen_addr: 127.0.0.1:7422
-source: appsec
-```
-
-Restart CrowdSec:
-
-```bash
-sudo systemctl restart crowdsec
-```
-
-### 3. Enable AppSec in the bouncer
-
-Add the following to `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`:
-
-```bash
-APPSEC_URL=http://127.0.0.1:7422
-```
-
-Restart OpenResty:
-
-```bash
-sudo systemctl restart openresty
-```
-
-### 4. Validate
-
-Test that malicious requests are blocked:
-
-```bash
-curl -I http://localhost/.env
-# Expected: HTTP/1.1 403 Forbidden
-```
-
-:::tip Monitoring AppSec
-Once AppSec is enabled, use `cscli metrics show appsec` to view processed vs. blocked requests and individual rule triggers. These metrics also appear in the [CrowdSec Console](https://app.crowdsec.net) after enrollment.
+:::tip Recommended: enable the WAF for optimal protection
+Follow the [AppSec Quickstart for Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty) to enable the WAF. It's a few copy-paste commands and picks up right where this installation ends.
 :::
 
-:::info
-For a more detailed guide including console integration and advanced configuration, see the [AppSec Quickstart for Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty).
-:::
+The AppSec-related knobs in `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf` are documented in the [Configuration Reference](#configuration-reference) below (all `APPSEC_*` entries).
 
 ## Configuration
 
@@ -328,7 +274,7 @@ You can also change this with a valid one :
 
 ### Application Security Component Configuration
 
-For a step-by-step guide to enable AppSec, see [Enable AppSec (WAF Protection)](#enable-appsec-waf-protection) above.
+To turn on the WAF, follow the [AppSec Quickstart for Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty).
 
 The AppSec-related options in `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`:
 
