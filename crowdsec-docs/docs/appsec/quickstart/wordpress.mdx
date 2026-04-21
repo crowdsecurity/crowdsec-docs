@@ -76,8 +76,9 @@ From any machine, send a request with a malicious body through WordPress — thi
 curl -X POST https://<your-wordpress-url>/ \
     -d "class.module.classLoader.resources." \
     -o /dev/null -s -w "%{http_code}\n"
-# expect: 403
 ```
+
+You should get `403` printed.
 
 Check that CrowdSec recorded the block:
 

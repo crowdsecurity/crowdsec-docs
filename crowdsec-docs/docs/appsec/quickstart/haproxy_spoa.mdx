@@ -79,8 +79,9 @@ Hit an endpoint that should trip an AppSec rule (adjust the URL to match your HA
 
 ```bash
 curl -I http://<your-haproxy-url>/.env
-# expect: HTTP/1.1 403 Forbidden
 ```
+
+You should get an `HTTP/1.1 403 Forbidden` response.
 
 Check that CrowdSec recorded the block:
 

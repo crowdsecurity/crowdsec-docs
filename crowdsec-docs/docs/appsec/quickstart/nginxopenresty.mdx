@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # CrowdSec WAF QuickStart for Nginx / OpenResty
 
-Protect an [Nginx](https://nginx.com) or [OpenResty](https://openresty.org/en/) server with CrowdSec's [AppSec (WAF) Component](/appsec/intro.md#introduction). After the prerequisites below, every step is a single copy-paste command — pick your engine once in the tabs and the page will remember the choice.
+Protect an [Nginx](https://nginx.com) or [OpenResty](https://openresty.org/en/) server with CrowdSec's [AppSec (WAF) Component](/appsec/intro.md#introduction). After the prerequisites below, every step is a single copy-paste command. Most steps are the same for both engines — only step 3 differs, and the tabs there let you pick the right variant.
 
 ## Prerequisites
 
@@ -22,21 +22,7 @@ Make sure the following are already done on the machine running your web server 
     Only follow the **Installation** section of those pages — the "Enable AppSec" section is exactly what this quickstart covers, come back here for it.
 3. Nginx or OpenResty is currently serving traffic on port 80 (used by the verification step at the end).
 
-:::info Pick your engine
-The tabs below remember your choice across the whole page.
-:::
-
-<Tabs groupId="engine" defaultValue="nginx" values={[
-  {label: 'Nginx', value: 'nginx'},
-  {label: 'OpenResty', value: 'openresty'},
-]}>
-  <TabItem value="nginx">Commands below will target Nginx.</TabItem>
-  <TabItem value="openresty">Commands below will target OpenResty.</TabItem>
-</Tabs>
-
 ## 1. Install the AppSec rule collections
-
-Same command for both engines:
 
 ```bash
 sudo cscli collections install \
@@ -101,8 +87,9 @@ Send a request that should trip an AppSec rule:
 
 ```bash
 curl -I http://localhost/.env
-# expect: HTTP/1.1 403 Forbidden
 ```
+
+You should get an `HTTP/1.1 403 Forbidden` response.
 
 We're hitting a `.env` file, a [common way to retrieve credentials left by mistake](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access) — the AppSec Component detects and blocks it.
 

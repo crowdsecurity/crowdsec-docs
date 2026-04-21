@@ -125,8 +125,9 @@ Hit an endpoint that should trip an AppSec rule (replace `localhost` with your s
 
 ```bash
 curl -I http://localhost/.env
-# expect: HTTP/1.1 403 Forbidden
 ```
+
+You should get an `HTTP/1.1 403 Forbidden` response.
 
 Check metrics inside the CrowdSec container:
 
