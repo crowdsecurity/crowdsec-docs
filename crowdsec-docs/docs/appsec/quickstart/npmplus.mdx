@@ -3,95 +3,42 @@ id: npmplus
 title: QuickStart - NPMplus
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import UnderlineTooltip from '@site/src/components/underline-tooltip';
-
 # CrowdSec WAF QuickStart for NPMplus
 
-## Objectives
+Protect web applications running behind [NPMplus](https://github.com/ZoeyVid/NPMplus) (an enhanced Nginx Proxy Manager fork with built-in CrowdSec support) with CrowdSec's [AppSec (WAF) Component](/appsec/intro.md#introduction).
 
-The goal of this quickstart is to set up the [AppSec Component](/appsec/intro.md#introduction) to safeguard web applications running on [NPMplus](https://github.com/ZoeyVid/NPMplus), an enhanced version of Nginx Proxy Manager.
-
-We'll deploy a [set of rules](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) designed to block [well-known attacks](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) and [currently exploited vulnerabilities](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching).
-
-Additionally, we'll show how to monitor these alerts through the [Console](https://app.crowdsec.net/).
+This flow is mostly Docker Compose work: you download the NPMplus compose file, edit a few values, add an AppSec acquisition, start the stack, and enable AppSec from the NPMplus admin UI.
 
 ## Prerequisites
 
-1. If you're new to the [AppSec Component](/appsec/intro.md#introduction) or **W**eb **A**pplication **F**irewalls, start with the [Introduction](/appsec/intro.md#introduction) for a better understanding.
+- **Docker** and **Docker Compose** installed.
+- Ports **80/TCP, 443/TCP, 443/UDP** exposed to the internet; **81/TCP** available for the admin interface (can stay internal).
+- A text editor and `curl` available on the host.
 
-2. It's assumed that you have:
-   - **Docker and Docker Compose** installed and ready
-   - **Ports available**: 80/TCP, 443/TCP, 443/UDP (exposed to internet), 81/TCP (admin interface, can be internal)
-   - A text editor (e.g., nano, vim) and a way to download files (e.g., curl)
-
-:::info
-NPMplus is an enhanced version of Nginx Proxy Manager that provides additional security, performance optimizations, and advanced features for reverse proxy and web server management. It includes built-in support for CrowdSec integration.
-:::
-
-## AppSec Component Setup
-
-### Collection installation
-
-To begin setting up the AppSec Component, the initial step is to install a relevant set of rules.
-
-We will utilize the [`crowdsecurity/appsec-virtual-patching`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) collection, which offers a wide range of rules aimed at identifying and preventing the exploitation of known vulnerabilities.
-
-This <UnderlineTooltip tooltip="Collections are bundle of parsers, scenarios, postoverflows that form a coherent package.">collection</UnderlineTooltip> is regularly updated to include protection against newly discovered vulnerabilities. Upon installation, it receives automatic daily updates to ensure your protection is always current.
-
-We also install the [`crowdsecurity/appsec-generic-rules`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) collection. This collection contains detection scenarios for generic attack vectors. It provides protection in cases where specific scenarios for vulnerabilities do not exist yet.
-
-:::info
-You can always view the content of a [collection on the Hub](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching).
-:::
-
-:::note
-In this guide, you'll install these collections inside the CrowdSec container after starting the stack.
-:::
-
-### Setup the Acquisition
-
-NPMplus provides a Docker Compose file that includes both NPMplus and CrowdSec services. We need to configure the acquisition for AppSec and NPMplus log parsing.
-
-The AppSec part of this file is the AppSec acquisition datasource (`source: appsec`). For the complete reference of available keys, see the [AppSec datasource](/log_processor/data_sources/appsec.md).
-
-**Steps:**
-
-1. Download the compose.yaml file:
+## 1. Download the NPMplus compose file
 
 ```bash
-curl -L https://raw.githubusercontent.com/ZoeyVid/NPMplus/refs/heads/develop/compose.yaml -o compose.yaml
+curl -L https://raw.githubusercontent.com/ZoeyVid/NPMplus/refs/heads/develop/compose.yaml \
+    -o compose.yaml
 ```
 
-2. Edit the `compose.yaml` file with your preferred text editor:
+## 2. Edit `compose.yaml`
 
-   - **For the NPMplus service**: Set the environment variables:
-     - `TZ`: Your timezone (e.g., `TZ=Europe/Berlin`)
-     - `ACME_EMAIL`: Your email address for Let's Encrypt (e.g., `ACME_EMAIL=admin@example.org`)
-     - `LOGROTATE`: Set to `true` (uncomment this line). This is required for CrowdSec to parse NPMplus logs.
+Open the file and apply the following changes — none of these can be automated because you need to choose values for your environment:
 
-   - **For the CrowdSec service**: Uncomment the `crowdsec` service block. Make sure to keep the `openappsec` line commented (note: `appsec` and `openappsec` are different things).
+- **NPMplus service** — set the environment variables:
+  - `TZ` — your timezone (e.g. `Europe/Berlin`).
+  - `ACME_EMAIL` — your email for Let's Encrypt (e.g. `admin@example.org`).
+  - `LOGROTATE=true` — uncomment this line. Required for CrowdSec to parse NPMplus logs.
+- **CrowdSec service** — uncomment the `crowdsec` service block. Leave the `openappsec` line commented (`appsec` and `openappsec` are different things).
 
-3. Create the acquisition directory and configuration file:
+## 3. Add the AppSec acquisition
 
-   The exact path depends on how volumes are mounted in your `compose.yaml`. Typically, you'll need to create the file in the location where CrowdSec's configuration is persisted. If the compose file mounts `/opt/crowdsec` or `/etc/crowdsec` from the host, create the directory and file there:
+Create the acquisition file on the host; the path must match how you mount the CrowdSec config volume in `compose.yaml` (the default NPMplus compose uses `/opt/crowdsec/conf`):
 
 ```bash
-# Adjust the path based on your Docker volume mounts
-mkdir -p /opt/crowdsec/conf/acquis.d
-```
-
-   Alternatively, if you're using a different volume mount path, adjust accordingly. You can also create the file directly inside the container:
-
-```bash
-docker exec -it crowdsec mkdir -p /etc/crowdsec/acquis.d
-```
-
-4. Create the acquisition configuration file `/opt/crowdsec/conf/acquis.d/npmplus.yaml` (or `/etc/crowdsec/acquis.d/npmplus.yaml` if using the container path) with the following content:
-
-```yaml title="/opt/crowdsec/conf/acquis.d/npmplus.yaml"
+sudo mkdir -p /opt/crowdsec/conf/acquis.d
+sudo tee /opt/crowdsec/conf/acquis.d/npmplus.yaml > /dev/null <<'EOF'
 filenames:
   - /opt/npmplus/nginx/*.log
 labels:
@@ -109,126 +56,87 @@ name: appsec
 source: appsec
 labels:
   type: appsec
+EOF
 ```
 
+The first two blocks parse NPMplus access logs; the third turns on the AppSec Component on `0.0.0.0:7422` (needed because CrowdSec is inside a container — exposure is still limited to the Docker network, **not** the internet).
+
 :::info
-You can find the newest version of the `npmplus.yaml` acquisition file [here](https://github.com/ZoeyVid/NPMplus).
+The upstream `npmplus.yaml` can evolve; the latest reference is in the [NPMplus repo](https://github.com/ZoeyVid/NPMplus).
 :::
 
-**Configuration explained:**
-
-- The first two sections configure log parsing for NPMplus logs
-- The third section configures the AppSec Component:
-  - `listen_addr: 0.0.0.0:7422`: The AppSec Component listens on all interfaces on port 7422 (needed for Docker networking)
-  - `appsec_configs`: Uses the [AppSec configuration(s)](/appsec/configuration.md) from the installed collections
-  - `source: appsec`: Identifies this as an AppSec data source
-
-### Running NPMplus and CrowdSec
-
-Start the services using Docker Compose:
+## 4. Start the stack
 
 ```bash
 docker compose up -d
 ```
 
-### Install AppSec Collections
-
-After the containers have started, install the required AppSec collections inside the CrowdSec container:
+Install the AppSec collections inside the running CrowdSec container, then restart it so the new collections are picked up:
 
 ```bash
-docker exec crowdsec cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
-```
-
-This command installs the following items:
-- The [*AppSec Rules*](/appsec/rules_syntax.md) contain the definition of malicious requests to be matched and stopped
-- The [*AppSec Configuration*](/appsec/configuration.md#appsec-configuration-files) links together a set of rules to provide a coherent set
-- The <UnderlineTooltip tooltip="YAML files that extract relevant data from logs, such as IP addresses, timestamps, or request paths.">CrowdSec Parser</UnderlineTooltip> and <UnderlineTooltip tooltip="Behavioral rules written in a domain-specific language that define what malicious activity looks like, such as multiple failed logins in a short time.">CrowdSec Scenario(s)</UnderlineTooltip> are used to detect and remediate persistent attacks
-
-After installing the collections, restart the CrowdSec container to load the new configuration:
-
-```bash
+docker exec crowdsec cscli collections install \
+    crowdsecurity/appsec-virtual-patching \
+    crowdsecurity/appsec-generic-rules
 docker restart crowdsec
 ```
 
-:::warning Important
-After starting NPMplus, wait about a minute, then check the logs to retrieve the initial admin password:
+Retrieve the initial NPMplus admin password from its logs:
 
 ```bash
-docker logs npmplus
+sleep 60 && docker logs npmplus 2>&1 | grep -i password
 ```
 
-**Save this password** - you'll need it to log into the NPMplus admin interface.
-:::
+Save this password — you'll need it in step 5.
 
-## Remediation Component Setup
+## 5. Enable AppSec in NPMplus
 
-Now we need to configure NPMplus to function as a Remediation Component for the Security Engine and enable the AppSec Component.
-
-### Generate API Key
-
-Generate an API key for NPMplus:
+### Generate a bouncer API key
 
 ```bash
 docker exec crowdsec cscli bouncers add npmplus -o raw
 ```
 
-Copy the output API key - you'll need it in the next step.
+Copy the printed key.
 
 ### Configure NPMplus
 
-Edit the NPMplus CrowdSec configuration file:
+Edit the NPMplus CrowdSec configuration file — its location depends on your compose mounts, typically `/opt/npmplus/crowdsec/crowdsec.conf`:
 
-```bash
-# The file location may vary depending on your Docker setup
-# Typically it's at: /opt/npmplus/crowdsec/crowdsec.conf
-```
-
-In this file, you need to:
-
-1. Set `ENABLED=true` to enable the CrowdSec integration
-2. Set `API_KEY` to the key you generated in the previous step
-
-The configuration file should look similar to:
-
-```ini
+```ini title="/opt/npmplus/crowdsec/crowdsec.conf"
 ENABLED=true
-API_KEY=your-api-key-here
+API_KEY=<paste-the-key-from-above>
 ```
 
-### Restart NPMplus
-
-Restart the NPMplus container to apply the changes:
+Restart NPMplus:
 
 ```bash
 docker restart npmplus
 ```
 
-### Verify Connection
-
-Check the Docker logs to confirm NPMplus is connected to CrowdSec:
+Confirm NPMplus connects to CrowdSec:
 
 ```bash
-docker logs npmplus
+docker logs npmplus 2>&1 | grep -i crowdsec
 ```
 
-You should see lines mentioning that NPMplus is connected to CrowdSec.
+## 6. Verify
 
-## Testing the AppSec Component + Remediation Component
+Hit an endpoint that should trip an AppSec rule (replace `localhost` with your server's address if different):
 
-:::note
-We're assuming the web server is accessible. Please adjust your testing accordingly.
-:::
+```bash
+curl -I http://localhost/.env
+```
 
-If you try to access `http://localhost/.env` (or your server's IP address) from a browser, your request will be blocked, resulting in the display of the following HTML page:
+You should get an `HTTP/1.1 403 Forbidden` response.
 
-![appsec-denied](/img/appsec_denied.png)
+Check metrics inside the CrowdSec container:
 
-We can also look at the metrics from `cscli metrics show appsec` - it will display:
-- the number of requests processed by the AppSec Component
-- Individual rule matches
+```bash
+docker exec crowdsec cscli metrics show appsec
+```
 
 <details>
-  <summary>Example Output</summary>
+<summary>Example metrics output</summary>
 
 ```bash title="docker exec crowdsec cscli metrics show appsec"
 Appsec Metrics:
@@ -241,43 +149,35 @@ Appsec Metrics:
 Appsec '0.0.0.0:7422/' Rules Metrics:
 ╭─────────────────────────────────┬───────────╮
 │             Rule ID             │ Triggered │
-├─────────────────────────────────┼─────────┤
+├─────────────────────────────────┼───────────┤
 │ crowdsecurity/vpatch-env-access │ 1         │
 ╰─────────────────────────────────┴───────────╯
 ```
 
-You can test and investigate further with [Stack Health-Check](/u/getting_started/health_check) and [Appsec Troubleshooting guide](/appsec/troubleshooting.md)
+</details>
+
+<details>
+<summary>What just happened?</summary>
+
+1. `curl` hit NPMplus at `/.env`.
+2. The NPMplus bouncer forwarded the request to the AppSec Component inside the Docker network (on `crowdsec:7422`).
+3. AppSec matched the [`vpatch-env-access`](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access) rule and answered `403`.
+4. NPMplus served the ban page.
 
 </details>
 
-### Explanation
+## Log into the NPMplus admin UI
 
-What happened in the test that we just did is:
+Open `https://<server-ip>:81` and log in with the `ACME_EMAIL` you set in step 2 and the password you saved in step 4. You'll be prompted to change both on first login.
 
-1. We did a request (`localhost/.env`) to our web server
-2. Thanks to the NPMplus Remediation Component configuration, the request was forwarded to `http://crowdsec:7422` (or the appropriate Docker network address)
-3. Our AppSec Component, listening on `0.0.0.0:7422` analyzed the request
-4. The request matches the [AppSec rule to detect .env access](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access)
-5. The AppSec Component thus answered with [HTTP 403](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403) to the Remediation Component, indicating that the request must be blocked
-6. The web server then presented us with the default "request blocked" page.
+## Monitor in the Console
 
-## Integration with the Console
-
-If you haven't yet, follow the guide about [how to enroll your Security Engine in the Console](/u/getting_started/post_installation/console).
-
-Once done, all your alerts, including the ones generated by the AppSec Component, appear in the Console:
+If you haven't enrolled the Security Engine yet, follow [how to enroll in the Console](/u/getting_started/post_installation/console). Once enrolled, AppSec alerts appear alongside the rest of your alerts:
 
 ![appsec-console](/img/appsec_console.png)
 
 ## Next steps
 
-You are now running the AppSec Component on your CrowdSec Security Engine with NPMplus, congrats!
-
-:::info
-You can now log into the NPMplus admin interface at `https://<ip-of-the-server>:81` using the email address you configured (`ACME_EMAIL`) and the password you saved earlier. You should be prompted to change these credentials on first login.
-:::
-
-As the next steps, you can:
-- Monitor WAF alerts with `sudo cscli alerts list` and in the [CrowdSec Console](https://app.crowdsec.net).
+- Monitor WAF alerts with `docker exec crowdsec cscli alerts list` or in the [CrowdSec Console](https://app.crowdsec.net).
 - Review the [AppSec troubleshooting guide](/appsec/troubleshooting.md) if you need to investigate or refine the deployment.
 - Explore [WAF deployment strategies](/appsec/advanced_deployments.mdx), [rules syntax](/appsec/rules_syntax.md), [rule creation](/appsec/create_rules.md), and [benchmarks](/appsec/benchmark.md) to go further.
