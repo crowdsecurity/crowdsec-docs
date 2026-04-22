@@ -11,6 +11,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import UnderlineTooltip from '@site/src/components/underline-tooltip';
+import IntegrationTile, { firewallIntegrations } from '@site/src/components/integration-tile';
 
 
 CrowdSec Blocklist Integrations — also known as **Blocklist as a Service** — give you a secure, hosted HTTPS endpoint serving live blocklists that you configure your firewall or security tool to pull from.   
@@ -41,27 +42,37 @@ Pulling more frequently than the allowed interval for your plan will result in H
 
 ## Available integrations
 
+
 ### Firewall integrations
 
 Each vendor page explains how to create the integration in the CrowdSec Console and includes a link to the vendor's own documentation on how to configure ingestion on the firewall side.
 
-| Firewall | Vendor feature name |
-|---|---|
-| [Checkpoint](integrations/checkpoint.mdx) | Custom Intelligence (IoC) Feeds |
-| [Cisco](integrations/cisco.mdx) | Security Intelligence feeds |
-| [F5](integrations/f5.mdx) | External IP blocklist / Feed lists |
-| [Fortinet](integrations/fortinet.mdx) | IP address Threat Feeds |
-| [Juniper](integrations/juniper.mdx) | Security Dynamic Address feeds |
-| [Mikrotik](integrations/mikrotik.mdx) | — |
-| [OPNsense](integrations/opnsense.mdx) | URL Table (IPs) aliases |
-| [Palo Alto](integrations/paloalto.mdx) | External Dynamic Lists (EDL) |
-| [pfSense](integrations/pfsense.mdx) | URL Table (IPs) aliases |
-| [Sophos](integrations/sophos.mdx) | Third-Party Threat Feeds |
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '0.6rem',
+  margin: '1.5rem 0',
+}}>
+  {firewallIntegrations.map(({ name, slug, href, desc, color }) => (
+    <IntegrationTile key={slug} name={name} slug={slug} href={href} desc={desc} color={color} />
+  ))}
+</div>
 
 ### Other integrations
 
-- [Raw IP List](integrations/rawiplist.mdx) — generic format, works with any HTTP-capable device
-- [Remediation Component](integrations/remediationcomponent.mdx) — for platforms without native IP list ingestion (Cloudflare, AWS WAF, etc.)
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '0.6rem',
+  margin: '1.5rem 0',
+}}>
+  <IntegrationTile name="Raw IP List" slug="rawiplist" href="integrations/rawiplist" color="#6c757d">
+    One IP per line — compatible with virtually any firewall, router, or HTTP-capable device
+  </IntegrationTile>
+  <IntegrationTile name="Remediation Component" slug="remediationcomponent" href="integrations/remediationcomponent" color="#f97316">
+    Extends blocklist handling to platforms without native ingestion (Cloudflare, AWS WAF, …) via <a href="/u/bouncers/intro" style={{ color: 'inherit', textDecoration: 'underline' }}>CrowdSec Remediation Components</a>
+  </IntegrationTile>
+</div>
 
 ## Setup a Blocklist Integration Endpoint
 

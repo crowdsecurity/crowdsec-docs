@@ -1,8 +1,223 @@
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
 import SearchBar from "@theme/SearchBar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+
+// ── Intent card ──────────────────────────────────────────────────────────────
+
+type IntentCardProps = {
+	icon: string;
+	title: string;
+	desc: string;
+	pill: string;
+	accent: string;
+	href: string;
+};
+
+const IntentCard = ({ icon, title, desc, pill, accent, href }: IntentCardProps) => (
+	<a
+		href={href}
+		style={{ textDecoration: "none", color: "inherit" }}
+		className="group"
+		onMouseEnter={e => {
+			const el = e.currentTarget as HTMLAnchorElement;
+			el.style.borderColor = accent;
+			el.style.boxShadow = `0 0 0 1px ${accent}`;
+			el.style.transform = "translateY(-1px)";
+		}}
+		onMouseLeave={e => {
+			const el = e.currentTarget as HTMLAnchorElement;
+			el.style.borderColor = "var(--ifm-color-emphasis-200)";
+			el.style.boxShadow = "none";
+			el.style.transform = "none";
+		}}
+	>
+		<div style={{
+			display: "flex", alignItems: "flex-start", gap: "14px",
+			padding: "18px 20px",
+			background: "var(--ifm-card-background-color)",
+			border: "1px solid var(--ifm-color-emphasis-200)",
+			borderRadius: "11px",
+			transition: "border-color .2s, box-shadow .2s, transform .15s",
+			height: "100%",
+		}}>
+			<div style={{
+				width: "38px", height: "38px", flexShrink: 0,
+				borderRadius: "9px", display: "flex", alignItems: "center", justifyContent: "center",
+				fontSize: "18px",
+				background: "var(--ifm-color-emphasis-100)",
+				border: "1px solid var(--ifm-color-emphasis-200)",
+			}}>{icon}</div>
+			<div style={{ flex: 1 }}>
+				<div style={{ fontWeight: 700, fontSize: "14.5px", marginBottom: "4px" }}>{title}</div>
+				<div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.5, marginBottom: "10px" }}>{desc}</div>
+				<span style={{
+					display: "inline-flex", alignItems: "center", gap: "5px",
+					padding: "3px 10px", borderRadius: "100px",
+					fontFamily: "var(--ifm-font-family-monospace)",
+					fontSize: "10.5px", letterSpacing: "0.5px", fontWeight: 500,
+					color: accent, border: `1px solid ${accent}44`, background: `${accent}11`,
+				}}>→ {pill}</span>
+			</div>
+			<div style={{ alignSelf: "center", color: "var(--ifm-color-emphasis-400)", fontSize: "15px", flexShrink: 0 }}>→</div>
+		</div>
+	</a>
+);
+
+// ── Schema / path block ───────────────────────────────────────────────────────
+
+type Step = {
+	num: number;
+	icon: string;
+	title: string;
+	desc: string;
+	optional?: boolean;
+	optionalLabel?: string;
+	perks?: string[];
+};
+
+type SchemaBlockProps = {
+	id: string;
+	color: string;
+	eyebrowIcon: string;
+	eyebrow: string;
+	title: string;
+	ctaLabel: string;
+	ctaHref: string;
+	steps: Step[];
+	open: boolean;
+	onToggle: () => void;
+};
+
+const SchemaBlock = ({ id, color, eyebrowIcon, eyebrow, title, ctaLabel, ctaHref, steps, open, onToggle }: SchemaBlockProps) => (
+	<div
+		id={id}
+		style={{
+			background: "var(--ifm-card-background-color)",
+			border: "1px solid var(--ifm-color-emphasis-200)",
+			borderRadius: "16px",
+			marginBottom: "12px",
+			position: "relative",
+			overflow: "hidden",
+		}}
+	>
+		{/* left accent strip */}
+		<div style={{
+			position: "absolute", left: 0, top: 0, bottom: 0, width: "3px",
+			borderRadius: "3px 0 0 3px",
+			background: `linear-gradient(to bottom, ${color}, transparent)`,
+		}} />
+		{/* subtle radial glow */}
+		<div style={{
+			position: "absolute", inset: 0, pointerEvents: "none",
+			background: `radial-gradient(ellipse 50% 40% at 0% 0%, ${color}0d 0%, transparent 60%)`,
+		}} />
+
+		{/* header — always visible, clickable to toggle */}
+		<button
+			onClick={onToggle}
+			style={{
+				width: "100%", background: "none", border: "none", cursor: "pointer",
+				display: "flex", alignItems: "center", justifyContent: "space-between",
+				gap: "16px", padding: "24px 28px",
+				position: "relative", zIndex: 1, textAlign: "left",
+				color: "inherit",
+			}}
+		>
+			<div>
+				<div style={{
+					fontFamily: "var(--ifm-font-family-monospace)",
+					fontSize: "10px", letterSpacing: "1.2px", textTransform: "uppercase",
+					marginBottom: "6px", display: "flex", alignItems: "center", gap: "7px",
+					color: color,
+				}}>
+					<span>{eyebrowIcon}</span> {eyebrow}
+				</div>
+				<div style={{ fontWeight: 700, fontSize: "18px", lineHeight: 1.2 }}>{title}</div>
+			</div>
+			<div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+				<Link
+					href={ctaHref}
+					onClick={e => e.stopPropagation()}
+					style={{
+						display: "inline-flex", alignItems: "center", gap: "6px",
+						padding: "8px 16px", borderRadius: "8px",
+						fontSize: "13px", fontWeight: 600,
+						background: color, color: "#000",
+						textDecoration: "none", border: "none",
+					}}
+				>
+					{ctaLabel}
+				</Link>
+				<span style={{
+					fontSize: "18px", color: "var(--ifm-color-emphasis-500)",
+					transform: open ? "rotate(180deg)" : "rotate(0deg)",
+					transition: "transform .2s",
+					display: "inline-block",
+				}}>▾</span>
+			</div>
+		</button>
+
+		{/* collapsible step flow */}
+		{open && (
+			<div style={{
+				display: "flex", alignItems: "flex-start", flexWrap: "wrap",
+				gap: "0", padding: "0 28px 28px",
+				position: "relative", zIndex: 1,
+			}}>
+				{steps.map((step, i) => (
+					<div key={i} style={{
+						flex: "1", minWidth: "150px",
+						display: "flex", flexDirection: "column", alignItems: "center",
+						textAlign: "center", padding: "0 12px",
+						position: "relative",
+					}}>
+						{i > 0 && (
+							<div style={{
+								position: "absolute", left: "-10px", top: "22px",
+								color: "var(--ifm-color-emphasis-400)", fontSize: "16px",
+							}}>→</div>
+						)}
+						{step.optional && (
+							<div style={{
+								fontFamily: "var(--ifm-font-family-monospace)",
+								fontSize: "9px", letterSpacing: "0.8px", textTransform: "uppercase",
+								color: "var(--ifm-color-emphasis-400)", marginBottom: "4px",
+							}}>{step.optionalLabel || "Optional"}</div>
+						)}
+						<div style={{
+							width: "44px", height: "44px", borderRadius: "50%",
+							display: "flex", alignItems: "center", justifyContent: "center",
+							fontWeight: 800, fontSize: "17px", marginBottom: "10px", flexShrink: 0,
+							border: `2px ${step.optional ? "dashed" : "solid"} ${color}55`,
+							color: color, background: `${color}14`,
+							opacity: step.optional ? 0.75 : 1,
+						}}>{step.num}</div>
+						<div style={{ fontSize: "20px", marginBottom: "8px" }}>{step.icon}</div>
+						<div style={{ fontWeight: 700, fontSize: "13.5px", marginBottom: "6px", lineHeight: 1.3 }}>{step.title}</div>
+						<div style={{ fontSize: "12px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.55 }}>{step.desc}</div>
+						{step.perks && (
+							<ul style={{ listStyle: "none", margin: "8px 0 0", padding: 0, display: "flex", flexDirection: "column", gap: "4px" }}>
+								{step.perks.map((p, j) => (
+									<li key={j} style={{
+										fontSize: "11.5px", color: "var(--ifm-color-emphasis-500)",
+										display: "flex", alignItems: "flex-start", gap: "5px", textAlign: "left",
+									}}>
+										<span style={{ color, flexShrink: 0, fontSize: "10px", marginTop: "1px" }}>✓</span>
+										{p}
+									</li>
+								))}
+							</ul>
+						)}
+					</div>
+				))}
+			</div>
+		)}
+	</div>
+);
+
+// ── Product card ──────────────────────────────────────────────────────────────
 
 type ProductCardProps = {
 	title: string;
@@ -10,66 +225,172 @@ type ProductCardProps = {
 	icon: React.ReactNode;
 	link: string;
 	features: string[];
-	bestFor: string;
 };
 
-const ProductCard = ({ title, description, icon, link, features, bestFor }: ProductCardProps): React.JSX.Element => (
+const ProductCard = ({ title, description, icon, link, features }: ProductCardProps): React.JSX.Element => (
 	<Link href={link} className="hover:no-underline group flex">
 		<div className="w-full flex flex-col border border-solid border-border rounded-xl p-6 bg-card shadow-sm group-hover:shadow-lg group-hover:border-primary/50 transition-all duration-300">
 			<div className="flex items-center gap-4 mb-4">
-				<div className="w-14 h-14 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0 overflow-hidden">
+				<div className="w-12 h-12 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0 overflow-hidden">
 					{icon}
 				</div>
-				<h3 className="text-xl font-bold text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors m-0">
-					{title}
-				</h3>
+				<h3 className="text-lg font-bold group-hover:text-primary transition-colors m-0">{title}</h3>
 			</div>
-			<p className="text-gray-600 dark:text-gray-700 text-base mb-3">{description}</p>
-			<p className="text-sm font-medium text-primary mb-4">{bestFor}</p>
-			<ul className="space-y-2 mb-4 flex-grow">
-				{features.map((feature) => (
-					<li key={feature} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-700">
-						<span className="text-primary">✓</span>
-						{feature}
+			<p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-grow">{description}</p>
+			<ul className="space-y-1 mb-4">
+				{features.map((f) => (
+					<li key={f} className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+						<span className="text-primary">✓</span>{f}
 					</li>
 				))}
 			</ul>
-			<div className="mt-auto pt-4 border-t border-border">
-				<span className="text-primary font-medium group-hover:underline">Explore product →</span>
+			<div className="mt-auto pt-3 border-t border-border">
+				<span className="text-primary text-sm font-medium group-hover:underline">Explore product →</span>
 			</div>
 		</div>
 	</Link>
 );
 
+// ── Data ──────────────────────────────────────────────────────────────────────
+
+const ORANGE = "#f97316";
+const GREEN  = "#22d3a0";
+const BLUE   = "#60a5fa";
+
+const intents: IntentCardProps[] = [
+	{
+		icon: "🛡️", accent: ORANGE,
+		title: "Detect and block attacks on systems I run",
+		desc: "You operate servers, VMs, or containers and want active threat detection — not just a blocklist.",
+		pill: "Security Engine", 		href: "/security-engine",
+	},
+	{
+		icon: "🚫", accent: GREEN,
+		title: "Push a threat feed into my firewall, router, or CDN",
+		desc: "You manage network perimeter devices and want a URL to subscribe to — no agent to install.",
+		pill: "Blocklist Feed Endpoints", 		href: "/blocklists",
+	},
+	{
+		icon: "🔍", accent: BLUE,
+		title: "Look up an IP or enrich my security tools",
+		desc: "You're a security analyst or developer who wants IP context — in a browser or via REST API.",
+		pill: "IP Reputation & CTI", pillColor: BLUE,
+		href: "/cti",
+	},
+];
+
+const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
+	{
+		id: "schema-engine", color: ORANGE,
+		eyebrowIcon: "🛡️", eyebrow: "Security Engine",
+		title: "Detect and block malicious behaviors on your infrastructure",
+		ctaLabel: "Get started →", ctaHref: "/security-engine",
+		steps: [
+			{
+				num: 1, icon: "⚡",
+				title: "Install the Security Engine",
+				desc: "Runs on your server, reads your logs, detects attack patterns in real time.",
+				perks: [
+					"Immediately protected from incoming attacks",
+					"Automatically receives global threat intel from the CrowdSec network",
+				],
+			},
+			{
+				num: 2, icon: "🛡️", optional: true,
+				title: "Activate the Web Application Firewall",
+				desc: "Layer in the AppSec component to inspect HTTP traffic and block web exploits before they reach your app.",
+			},
+			{
+				num: 3, icon: "📋", optional: true,
+				title: "Subscribe to additional blocklists",
+				desc: "Add curated threat feeds on top of the community blocklist — by category, use case, or vendor.",
+			},
+			{
+				num: 4, icon: "✍️", optional: true,
+				title: "Craft your own detection rules",
+				desc: "Write custom scenarios for your stack, then share them back with the community on the Hub.",
+			},
+		],
+	},
+	{
+		id: "schema-blocklists", color: GREEN,
+		eyebrowIcon: "🚫", eyebrow: "Blocklists",
+		title: "Push curated threat feeds directly into your firewall, CDN, or WAF",
+		ctaLabel: "Get started →", ctaHref: "/blocklists",
+		steps: [
+			{
+				num: 1, icon: "🔌",
+				title: "Create a blocklist integration endpoint",
+				desc: "Generate a dedicated URL in the Console — one per target device or environment.",
+			},
+			{
+				num: 2, icon: "🗂️",
+				title: "Choose which blocklists to serve",
+				desc: "Select from curated feeds by threat category: scanners, bots, TOR exits, exploits, and more.",
+			},
+			{
+				num: 3, icon: "🔗",
+				title: "Plug it in as an external threat feed",
+				desc: "Point your firewall, CDN, or WAF at the endpoint. It auto-refreshes — no further maintenance needed.",
+				perks: [
+					"Works with pfSense, OPNsense, Cloudflare, nginx, HAProxy, and more",
+					"No agent to install or maintain",
+				],
+			},
+		],
+	},
+	{
+		id: "schema-cti", color: BLUE,
+		eyebrowIcon: "🔍", eyebrow: "IP Reputation & CTI",
+		title: "Query threat intel — in the browser or via API in your tools",
+		ctaLabel: "Explore CTI →", ctaHref: "/cti",
+		steps: [
+			{
+				num: 1, icon: "🖥️",
+				title: "Look up any IP in the Console",
+				desc: "No setup. Search instantly — get reputation score, behaviors, attack history, and CVE links.",
+			},
+			{
+				num: 2, icon: "🔑", optional: true, optionalLabel: "For integrations",
+				title: "Generate a CTI API key",
+				desc: "Unlock programmatic access to the same data. Free tier included — no credit card needed.",
+			},
+			{
+				num: 3, icon: "⚙️", optional: true, optionalLabel: "For integrations",
+				title: "Connect to your SIEM or security tool",
+				desc: "Native integrations for Splunk, Sentinel, QRadar, TheHive, OpenCTI, MISP, and more.",
+			},
+		],
+	},
+];
+
 const products: ProductCardProps[] = [
 	{
 		title: "Security Engine",
 		description: "Analyze your logs to detect attacks, block malicious IPs, and protect web applications.",
-		icon: <img src="/img/icons/radar-target.webp" className="h-10 w-10 border-0" alt="Security Engine" />,
+		icon: <img src="/img/icons/radar-target.webp" className="h-9 w-9 border-0" alt="Security Engine" />,
 		link: "/security-engine",
 		features: ["Behavior-based detection", "Community threat sharing", "AppSec / WAF for web apps", "Open source"],
-		bestFor: "Best for self-hosted detection and protection.",
 	},
 	{
 		title: "Blocklists",
 		description: "Deploy curated threat intel feeds to protect your network without running detection yourself.",
-		icon: <img src="/img/icons/shield.webp" className="h-10 w-10 border-0" alt="Blocklists" />,
+		icon: <img src="/img/icons/shield.webp" className="h-9 w-9 border-0" alt="Blocklists" />,
 		link: "/blocklists",
-		features: ["Curated IP lists", "Ready to deploy", "Automatic updates", "Multiple categories"],
-		bestFor: "Best for fast protection with minimal setup.",
+		features: ["Curated IP lists, auto-updated", "Ready-to-deploy feeds", "Multiple threat categories", "Works standalone or with Engine"],
 	},
 	{
 		title: "CTI",
 		description: "Query CrowdSec threat intelligence to enrich investigations, automate lookups, and integrate with tools.",
-		icon: <img src="/img/icons/world.webp" className="h-10 w-10 border-0" alt="CTI" />,
+		icon: <img src="/img/icons/world.webp" className="h-9 w-9 border-0" alt="CTI" />,
 		link: "/cti",
 		features: ["REST API access", "IP reputation scores", "Attack context", "SIEM integrations"],
-		bestFor: "Best for enrichment, integrations, and investigations.",
 	},
 ];
 
+// ── Page ──────────────────────────────────────────────────────────────────────
+
 const HomePage = () => {
-	// Add class to body to hide navbar search on homepage
 	useEffect(() => {
 		document.body.classList.add("homepage");
 		document.documentElement.classList.add("homepage");
@@ -79,112 +400,195 @@ const HomePage = () => {
 		};
 	}, []);
 
+	const [openSchema, setOpenSchema] = useState<string | null>(null);
+
+	const toggleSchema = (id: string) => setOpenSchema(prev => prev === id ? null : id);
+
 	return (
 		<Layout title="Documentation" description="CrowdSec, the open-source & participative IPS">
 			<main className="flex-1">
-				{/* Hero Section */}
-				<section className="py-8 md:py-12 px-4">
-					<div className="container max-w-5xl mx-auto">
-						<div className="flex items-center justify-between gap-6">
-							<div>
-								<h1 className="text-2xl md:text-4xl font-bold mb-2">CrowdSec Documentation</h1>
-								<p className="text-sm italic text-gray-500 dark:text-gray-600 mb-2">
-									Pronounced: <span className="font-semibold">Krowd-Sek</span> [/kraʊd-sek/]
-								</p>
-								<p className="text-base md:text-lg text-gray-600 dark:text-gray-700 max-w-xl">
-									Community-driven security that unifies detection, blocklists, and threat intel for modern
-									infrastructure.
-								</p>
-							</div>
-							<img alt="CrowdSec Logo" src="/img/crowdsec_logo.png" className="hidden md:block h-16 flex-shrink-0 border-0" />
-						</div>
+
+				{/* Hero */}
+				<section className="py-10 md:py-16 px-4 text-center" style={{ position: "relative", overflow: "hidden" }}>
+					<div style={{
+						position: "absolute", inset: 0, pointerEvents: "none",
+						background: "radial-gradient(ellipse 55% 40% at 50% 0%, rgba(249,115,22,0.07) 0%, transparent 70%)",
+					}} />
+					<div style={{ position: "relative", zIndex: 1 }}>
+						<h1 className="text-3xl md:text-5xl font-bold mb-3" style={{ letterSpacing: "-1px", lineHeight: 1.1 }}>
+							What do you want<br />to protect today?
+						</h1>
+						<p className="text-base md:text-lg mb-0" style={{ color: "var(--ifm-color-emphasis-600)", maxWidth: "460px", margin: "0 auto" }}>
+							Community-driven security — detection, blocklists, and threat intel for modern infrastructure.
+						</p>
 					</div>
 				</section>
 
-				{/* Search Section */}
+				{/* Search */}
 				<section className="pb-8 px-4">
 					<div className="container max-w-2xl mx-auto">
-						<div className="homepage-search">
-							<SearchBar />
+						<div className="homepage-search"><SearchBar /></div>
+					</div>
+				</section>
+
+				{/* Intent strip */}
+				<section className="pb-6 px-4">
+					<div className="container mx-auto" style={{ maxWidth: "940px" }}>
+						<div style={{
+							fontFamily: "var(--ifm-font-family-monospace)",
+							fontSize: "10.5px", letterSpacing: "1.5px", textTransform: "uppercase",
+							color: "var(--ifm-color-emphasis-500)", marginBottom: "12px",
+						}}>I want to…</div>
+						<div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+							{intents.map(i => <IntentCard key={i.pill} {...i} />)}
+						</div>
+
+						{/* Existing user strip */}
+						<div style={{
+							display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap",
+							marginTop: "10px", padding: "12px 18px",
+							background: "var(--ifm-card-background-color)",
+							border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "10px",
+						}}>
+							<span style={{
+								fontFamily: "var(--ifm-font-family-monospace)",
+								fontSize: "10.5px", letterSpacing: "0.8px", textTransform: "uppercase",
+								color: "var(--ifm-color-emphasis-500)", whiteSpace: "nowrap", flexShrink: 0,
+							}}>Already running CrowdSec?</span>
+							<div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+								{[
+									{ label: "🖥️ Open the Console",        href: "https://app.crowdsec.net" },
+									{ label: "📋 Manage alerts & decisions", href: "/u/console/intro" },
+									{ label: "🔄 Remediation sync",          href: "/u/bouncers/intro" },
+									{ label: "❓ Troubleshooting",           href: "/docs/next/troubleshooting/security_engine" },
+								].map(({ label, href }) => (
+									<Link
+										key={label}
+										href={href}
+										style={{
+											display: "inline-flex", alignItems: "center", gap: "6px",
+											padding: "5px 12px", borderRadius: "7px",
+											fontSize: "12.5px", color: "var(--ifm-color-emphasis-700)",
+											border: "1px solid var(--ifm-color-emphasis-200)",
+											background: "var(--ifm-background-color)",
+											textDecoration: "none",
+											transition: "border-color .15s, color .15s",
+										}}
+									>{label}</Link>
+								))}
+							</div>
 						</div>
 					</div>
 				</section>
 
-				{/* Product Selection */}
-				<section className="pb-12 md:pb-20 px-4">
-					<div className="container max-w-5xl mx-auto">
-						<h2 className="text-center text-xl md:text-2xl font-semibold mb-2 text-gray-900 dark:text-gray-900">
-							Choose your starting point
-						</h2>
-						<p className="text-center text-gray-600 dark:text-gray-700 mb-8">
-							Each path links to setup, how-tos, and reference docs.
-						</p>
+				{/* How each path works — accordion */}
+				<section className="py-6 px-4">
+					<div className="container mx-auto" style={{ maxWidth: "940px" }}>
+						<div style={{
+							display: "flex", alignItems: "center", gap: "16px",
+							color: "var(--ifm-color-emphasis-400)",
+							fontSize: "11px", fontFamily: "var(--ifm-font-family-monospace)",
+							letterSpacing: "1px", textTransform: "uppercase",
+							marginBottom: "20px",
+						}}>
+							<div style={{ flex: 1, height: "1px", background: "var(--ifm-color-emphasis-200)" }} />
+							how each path works
+							<div style={{ flex: 1, height: "1px", background: "var(--ifm-color-emphasis-200)" }} />
+						</div>
 
-						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-							{products.map((product) => (
-								<ProductCard key={product.title} {...product} />
+						{schemas.map(s => (
+							<SchemaBlock
+								key={s.id}
+								{...s}
+								open={openSchema === s.id}
+								onToggle={() => toggleSchema(s.id)}
+							/>
+						))}
+					</div>
+				</section>
+
+				{/* Browse by product */}
+				<section className="py-6 px-4">
+					<div className="container mx-auto" style={{ maxWidth: "940px" }}>
+						<div style={{
+							display: "flex", alignItems: "center", gap: "16px",
+							color: "var(--ifm-color-emphasis-400)",
+							fontSize: "11px", fontFamily: "var(--ifm-font-family-monospace)",
+							letterSpacing: "1px", textTransform: "uppercase",
+							marginBottom: "20px",
+						}}>
+							<div style={{ flex: 1, height: "1px", background: "var(--ifm-color-emphasis-200)" }} />
+							or browse by product
+							<div style={{ flex: 1, height: "1px", background: "var(--ifm-color-emphasis-200)" }} />
+						</div>
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+							{products.map(p => <ProductCard key={p.title} {...p} />)}
+						</div>
+					</div>
+				</section>
+
+				{/* Not sure / fallback */}
+				<section className="py-6 px-4">
+					<div className="container mx-auto" style={{ maxWidth: "940px" }}>
+						<div style={{
+							padding: "24px 28px",
+							background: "var(--ifm-card-background-color)",
+							border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "13px",
+							display: "flex", alignItems: "center", justifyContent: "space-between",
+							gap: "20px", flexWrap: "wrap",
+						}}>
+							<div>
+								<div style={{ fontWeight: 700, fontSize: "15px", marginBottom: "3px" }}>Not sure where to start?</div>
+								<div style={{ fontSize: "13px", color: "var(--ifm-color-emphasis-600)" }}>Answer a few questions and get a recommended path with install steps for your stack.</div>
+							</div>
+							<div style={{ display: "flex", gap: "9px", flexWrap: "wrap" }}>
+								<Link to="https://start.crowdsec.net/">
+									<Button size="lg" color="primary">🧭 Guided Setup</Button>
+								</Link>
+								<Link to="https://killercoda.com/iiamloz/scenario/crowdsec-setup">
+									<Button size="lg" variant="outline">⚡ Try in Sandbox</Button>
+								</Link>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				{/* Popular docs */}
+				<section className="py-8 px-4">
+					<div className="container mx-auto" style={{ maxWidth: "940px" }}>
+						<div style={{
+							fontFamily: "var(--ifm-font-family-monospace)",
+							fontSize: "10.5px", letterSpacing: "1.5px", textTransform: "uppercase",
+							color: "var(--ifm-color-emphasis-500)", marginBottom: "12px",
+						}}>Popular docs</div>
+						<div style={{ display: "flex", flexWrap: "wrap", gap: "7px" }}>
+							{[
+								{ label: "🖥️ Console",           href: "/u/console/intro" },
+								{ label: "🛡️ AppSec / WAF",      href: "/docs/next/appsec/intro" },
+								{ label: "💻 CLI Reference",      href: "/docs/next/cscli/" },
+								{ label: "📖 Docs AI Assistant",  href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation" },
+								{ label: "🔑 CTI API Keys",       href: "/cti" },
+								{ label: "❓ Troubleshooting",    href: "/docs/next/troubleshooting/security_engine" },
+								{ label: "🌐 About CrowdSec",     href: "https://www.crowdsec.net" },
+							].map(({ label, href }) => (
+								<Link
+									key={label}
+									href={href}
+									style={{
+										display: "inline-flex", alignItems: "center", gap: "6px",
+										padding: "7px 14px", borderRadius: "100px",
+										border: "1px solid var(--ifm-color-emphasis-200)",
+										fontSize: "13px", color: "var(--ifm-color-emphasis-700)",
+										background: "var(--ifm-card-background-color)",
+										textDecoration: "none",
+										transition: "color .15s, border-color .15s",
+									}}
+								>{label}</Link>
 							))}
 						</div>
 					</div>
 				</section>
 
-				{/* Help Section */}
-				<section className="py-12 md:py-16 px-4 bg-primary/5 border-t border-border">
-					<div className="container max-w-3xl mx-auto text-center">
-						<h2 className="text-xl md:text-2xl font-semibold mb-3 text-gray-900 dark:text-gray-900">
-							Not sure where to start?
-						</h2>
-						<p className="text-gray-600 dark:text-gray-700 mb-6">
-							Answer a few questions and get a recommended path with install steps for your stack.
-						</p>
-						<div className="flex flex-col sm:flex-row gap-3 justify-center">
-							<Link to="https://start.crowdsec.net/">
-								<Button size="lg" color="primary">
-									Guided Setup
-								</Button>
-							</Link>
-							<Link to="https://killercoda.com/iiamloz/scenario/crowdsec-setup">
-								<Button size="lg" variant="outline">
-									Try in a Sandbox
-								</Button>
-							</Link>
-						</div>
-					</div>
-				</section>
-
-				{/* Quick Links */}
-				<section className="py-10 md:py-12 px-4">
-					<div className="container max-w-5xl mx-auto">
-						<h2 className="text-center text-sm font-medium mb-4 text-gray-500 dark:text-gray-600">Popular Docs</h2>
-						<div className="flex flex-wrap justify-center gap-2">
-							<Link to="/u/console/intro">
-								<Button variant="outline" size="sm">
-									Console
-								</Button>
-							</Link>
-							<Link to="/docs/next/appsec/intro">
-								<Button variant="outline" size="sm">
-									AppSec / WAF
-								</Button>
-							</Link>
-							<Link to="/docs/next/cscli/">
-								<Button variant="outline" size="sm">
-									CLI Reference
-								</Button>
-							</Link>
-							<Link to="https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation">
-								<Button variant="outline" size="sm">
-									Docs AI Assistant
-								</Button>
-							</Link>
-							<Link to="https://www.crowdsec.net">
-								<Button variant="outline" size="sm">
-									About CrowdSec
-								</Button>
-							</Link>
-						</div>
-					</div>
-				</section>
 			</main>
 		</Layout>
 	);
