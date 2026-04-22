@@ -1,12 +1,27 @@
 import Link from "@docusaurus/Link";
 import Translate from "@docusaurus/Translate";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import useGlobalData from "@docusaurus/useGlobalData";
 import { Button } from "@site/src/ui/button";
 import Heading from "@theme/Heading";
 import type { Props } from "@theme/NotFound/Content";
 import clsx from "clsx";
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
 
 export default function NotFoundContent({ className }: Props): ReactNode {
+	const { siteConfig } = useDocusaurusContext();
+	const globalData = useGlobalData();
+	const pluginData = globalData["redirects-global-data"]?.default as { redirects: { from: string; to: string }[] } | undefined;
+
+	useEffect(() => {
+		if (!pluginData?.redirects) return;
+		const path = window.location.pathname.replace(siteConfig.baseUrl.replace(/\/$/, ""), "") || "/";
+		const match = pluginData.redirects.find((r) => r.from === path);
+		if (match) {
+			window.location.replace(match.to);
+		}
+	}, [pluginData, siteConfig.baseUrl]);
+
 	return (
 		<main className={clsx("container margin-vert--xl", className)}>
 			<div className="row">

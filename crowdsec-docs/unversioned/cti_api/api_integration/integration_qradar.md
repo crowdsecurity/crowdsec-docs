@@ -51,4 +51,4 @@ You can click on the "Show" button to see the RAW JSON response from the API.
 
 ## References
 
-You can find our latest taxonomy about attack details, classifications, scores etc in [our official docs](https://docs.crowdsec.net/docs/next/cti_api/taxonomy)
+You can find our latest taxonomy about attack details, classifications, scores etc in [our official docs](/u/cti_api/taxonomy/intro)

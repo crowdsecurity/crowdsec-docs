@@ -7,7 +7,7 @@ sidebar_position: 4
 ## CTI Helpers
 
 CTI Helper allows to query Crowdsec's CTI API to enhance the engine capabilities.
-It requires [creating a CTI API Key in the console, as described here](/u/cti_api/getting_started).
+It requires [creating a CTI API Key in the console, as described here](/u/console/ip_reputation/intro).
 
 The CTI API Key must be present in the `api.cti` section of the configuration file:
 

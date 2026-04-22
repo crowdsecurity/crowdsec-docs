@@ -18,13 +18,13 @@ const gettingStarted: FeatureCardProps[] = [
 	{
 		title: "Console Quickstart",
 		description: "Use the web interface to search and explore CTI data.",
-		link: "/u/cti_api/getting_started",
+		link: "/u/console/ip_reputation/intro",
 		icon: "🖥️",
 	},
 	{
 		title: "API Quickstart",
 		description: "Integrate CTI data programmatically into your workflows.",
-		link: "/u/cti_api/api_getting_started",
+		link: "/u/console/ip_reputation/api_keys",
 		icon: "🔌",
 	},
 ];
@@ -33,7 +33,7 @@ const coreFeatures: FeatureCardProps[] = [
 	{
 		title: "IP Reports",
 		description: "Get full context for any IP, including reputation and activity.",
-		link: "/u/cti_api/ip_report",
+		link: "/u/console/ip_reputation/ip_report",
 		icon: "📋",
 	},
 	{
@@ -45,13 +45,13 @@ const coreFeatures: FeatureCardProps[] = [
 	{
 		title: "Advanced Search",
 		description: "Build complex queries to spot patterns at scale.",
-		link: "/u/cti_api/advanced_search",
+		link: "/u/console/ip_reputation/search_ui_advanced",
 		icon: "🎯",
 	},
 	{
 		title: "CVE Explorer",
 		description: "Explore CVEs and see active exploitation by IP.",
-		link: "/u/cti_api/cve_explorer",
+		link: "/u/console/ip_reputation/intro#live-exploit-tracker",
 		icon: "🛡️",
 	},
 ];
@@ -128,7 +128,7 @@ const CTIPage = () => {
 			description="Query CrowdSec threat intelligence to enrich investigations and automate lookups. Get IP reputation, attack history, and behavior data from a global sensor network."
 			heroButtons={[
 				{ label: "Get Started", link: "/u/cti_api/intro" },
-				{ label: "API Quickstart", link: "/u/cti_api/api_getting_started", variant: "outline" },
+				{ label: "API Quickstart", link: "/u/console/ip_reputation/api_keys", variant: "outline" },
 			]}
 			helpDescription="Get help in Discord or check the FAQ for quick answers."
 			helpButtons={[

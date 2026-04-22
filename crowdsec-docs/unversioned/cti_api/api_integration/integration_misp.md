@@ -10,7 +10,7 @@ MISP plugin lets you enrich the knowledge of IP attributes using CrowdSec's CTI 
 
 ### Requirements
 
-- A CrowdSec CTI API key. See [instructions to obtain it](https://docs.crowdsec.net/docs/next/cti_api/getting_started/#getting-an-api-key)
+- A CrowdSec CTI API key. See [instructions to obtain it](https://docs.crowdsec.net/docs/u/console/ip_reputation/api_keys/#getting-an-api-key)
 
 ### Setting up plugin server
 
@@ -58,7 +58,7 @@ Configuration parameters are described below:
 |------------------------------------------------------|-----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------|
 | `Plugin.Enrichment_crowdsec_enabled`                 | Yes       | Boolean | Enable or disable the crowdsec module                                                                                                      |
 | `Plugin.Enrichment_crowdsec_restrict`                | No        | String  | Restrict the crowdsec module to the given organisation.                                                                                    |
-| `Plugin.Enrichment_crowdsec_api_key`                 | Yes       | String  | CrowdSec CTI  API key. See [instructions to obtain it](https://docs.crowdsec.net/docs/next/cti_api/getting_started/#getting-an-api-key)    |
+| `Plugin.Enrichment_crowdsec_api_key`                 | Yes       | String  | CrowdSec CTI  API key. See [instructions to obtain it](https://docs.crowdsec.net/docs/u/console/ip_reputation/api_keys/#getting-an-api-key)    |
 | `Plugin.Enrichment_crowdsec_add_reputation_tag`      | No        | String  | Enable/disable the creation of a reputation tag for the IP attribute. You can use  `True` or `False` as string value. Default: `True`      |
 | `Plugin.Enrichment_crowdsec_add_behavior_tag`        | No        | String  | Enable/disable the creation of a behavior tag for the IP attribute. You can use  `True` or `False` as string value. Default: `True`        |
 | `Plugin.Enrichment_crowdsec_add_classification_tag`  | No        | String  | Enable/disable the creation of a classification tag for the IP attribute. You can use  `True` or `False` as string value. Default: `True`  |
