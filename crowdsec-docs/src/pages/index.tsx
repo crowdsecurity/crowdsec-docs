@@ -3,11 +3,12 @@ import Layout from "@theme/Layout";
 import SearchBar from "@theme/SearchBar";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { ExternalLink } from "lucide-react";
 
 // ── Intent card ──────────────────────────────────────────────────────────────
 
 type IntentCardProps = {
-	icon: string;
+	icon: React.ReactNode;
 	title: string;
 	desc: string;
 	pill: string;
@@ -18,40 +19,42 @@ type IntentCardProps = {
 const IntentCard = ({ icon, title, desc, pill, accent, href }: IntentCardProps) => (
 	<a
 		href={href}
+		className="hover:no-underline group flex"
 		style={{ textDecoration: "none", color: "inherit" }}
-		className="group"
 		onMouseEnter={e => {
 			const el = e.currentTarget as HTMLAnchorElement;
 			el.style.borderColor = accent;
-			el.style.boxShadow = `0 0 0 1px ${accent}`;
-			el.style.transform = "translateY(-1px)";
+			el.style.boxShadow = `0 8px 24px ${accent}22, 0 0 0 1px ${accent}`;
+			el.style.transform = "translateY(-2px)";
+			el.style.borderRadius = "14px";
 		}}
 		onMouseLeave={e => {
 			const el = e.currentTarget as HTMLAnchorElement;
-			el.style.borderColor = "var(--ifm-color-emphasis-200)";
-			el.style.boxShadow = "none";
-			el.style.transform = "none";
+			el.style.borderColor = "";
+			el.style.boxShadow = "";
+			el.style.transform = "";
 		}}
 	>
 		<div style={{
-			display: "flex", alignItems: "flex-start", gap: "14px",
-			padding: "18px 20px",
+			width: "100%", display: "flex", flexDirection: "column",
+			padding: "24px",
 			background: "var(--ifm-card-background-color)",
 			border: "1px solid var(--ifm-color-emphasis-200)",
-			borderRadius: "11px",
-			transition: "border-color .2s, box-shadow .2s, transform .15s",
-			height: "100%",
+			borderRadius: "12px",
+			boxShadow: "var(--ifm-global-shadow-sm)",
+			transition: "border-color .2s, box-shadow .2s, transform .2s",
 		}}>
-			<div style={{
-				width: "38px", height: "38px", flexShrink: 0,
-				borderRadius: "9px", display: "flex", alignItems: "center", justifyContent: "center",
-				fontSize: "18px",
-				background: "var(--ifm-color-emphasis-100)",
-				border: "1px solid var(--ifm-color-emphasis-200)",
-			}}>{icon}</div>
-			<div style={{ flex: 1 }}>
-				<div style={{ fontWeight: 700, fontSize: "14.5px", marginBottom: "4px" }}>{title}</div>
-				<div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.5, marginBottom: "10px" }}>{desc}</div>
+			<div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "12px" }}>
+				<div style={{
+					width: "48px", height: "48px", flexShrink: 0,
+					borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center",
+					background: `${accent}1a`,
+					overflow: "hidden",
+				}}>{icon}</div>
+				<div style={{ fontWeight: 700, fontSize: "15px", lineHeight: 1.25 }}>{title}</div>
+			</div>
+			<div style={{ fontSize: "13px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.55, marginBottom: "14px", flexGrow: 1 }}>{desc}</div>
+			<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 				<span style={{
 					display: "inline-flex", alignItems: "center", gap: "5px",
 					padding: "3px 10px", borderRadius: "100px",
@@ -59,8 +62,8 @@ const IntentCard = ({ icon, title, desc, pill, accent, href }: IntentCardProps) 
 					fontSize: "10.5px", letterSpacing: "0.5px", fontWeight: 500,
 					color: accent, border: `1px solid ${accent}44`, background: `${accent}11`,
 				}}>→ {pill}</span>
+				<span style={{ color: accent, fontSize: "16px", transition: "transform .2s" }}>→</span>
 			</div>
-			<div style={{ alignSelf: "center", color: "var(--ifm-color-emphasis-400)", fontSize: "15px", flexShrink: 0 }}>→</div>
 		</div>
 	</a>
 );
@@ -72,8 +75,7 @@ type Step = {
 	icon: string;
 	title: string;
 	desc: string;
-	optional?: boolean;
-	optionalLabel?: string;
+	hint?: string;
 	perks?: string[];
 };
 
@@ -179,20 +181,20 @@ const SchemaBlock = ({ id, color, eyebrowIcon, eyebrow, title, ctaLabel, ctaHref
 								color: "var(--ifm-color-emphasis-400)", fontSize: "16px",
 							}}>→</div>
 						)}
-						{step.optional && (
+						{step.hint && (
 							<div style={{
 								fontFamily: "var(--ifm-font-family-monospace)",
 								fontSize: "9px", letterSpacing: "0.8px", textTransform: "uppercase",
 								color: "var(--ifm-color-emphasis-400)", marginBottom: "4px",
-							}}>{step.optionalLabel || "Optional"}</div>
+							}}>{step.hint}</div>
 						)}
 						<div style={{
 							width: "44px", height: "44px", borderRadius: "50%",
 							display: "flex", alignItems: "center", justifyContent: "center",
 							fontWeight: 800, fontSize: "17px", marginBottom: "10px", flexShrink: 0,
-							border: `2px ${step.optional ? "dashed" : "solid"} ${color}55`,
+							border: `2px ${step.hint ? "dashed" : "solid"} ${color}55`,
 							color: color, background: `${color}14`,
-							opacity: step.optional ? 0.75 : 1,
+							opacity: step.hint ? 0.75 : 1,
 						}}>{step.num}</div>
 						<div style={{ fontSize: "20px", marginBottom: "8px" }}>{step.icon}</div>
 						<div style={{ fontWeight: 700, fontSize: "13.5px", marginBottom: "6px", lineHeight: 1.3 }}>{step.title}</div>
@@ -259,22 +261,27 @@ const BLUE   = "#60a5fa";
 
 const intents: IntentCardProps[] = [
 	{
-		icon: "🛡️", accent: ORANGE,
+		icon: <img src="/img/icons/radar-target.webp" className="h-8 w-8 border-0" alt="Security Engine" />,
+		accent: ORANGE,
 		title: "Detect and block attacks on systems I run",
 		desc: "You operate servers, VMs, or containers and want active threat detection — not just a blocklist.",
-		pill: "Security Engine", 		href: "/security-engine",
+		pill: "Security Engine",
+		href: "/security-engine",
 	},
 	{
-		icon: "🚫", accent: GREEN,
+		icon: <img src="/img/icons/shield.webp" className="h-8 w-8 border-0" alt="Blocklists" />,
+		accent: GREEN,
 		title: "Push a threat feed into my firewall, router, or CDN",
 		desc: "You manage network perimeter devices and want a URL to subscribe to — no agent to install.",
-		pill: "Blocklist Feed Endpoints", 		href: "/blocklists",
+		pill: "Blocklist Feed Endpoints",
+		href: "/blocklists",
 	},
 	{
-		icon: "🔍", accent: BLUE,
+		icon: <img src="/img/icons/world.webp" className="h-8 w-8 border-0" alt="CTI" />,
+		accent: BLUE,
 		title: "Look up an IP or enrich my security tools",
 		desc: "You're a security analyst or developer who wants IP context — in a browser or via REST API.",
-		pill: "IP Reputation & CTI", pillColor: BLUE,
+		pill: "IP Reputation & CTI",
 		href: "/cti",
 	},
 ];
@@ -296,17 +303,17 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 				],
 			},
 			{
-				num: 2, icon: "🛡️", optional: true,
+				num: 2, icon: "🛡️", hint: "RECOMMENDED",
 				title: "Activate the Web Application Firewall",
 				desc: "Layer in the AppSec component to inspect HTTP traffic and block web exploits before they reach your app.",
 			},
 			{
-				num: 3, icon: "📋", optional: true,
+				num: 3, icon: "📋", hint: "OPTIONAL",
 				title: "Subscribe to additional blocklists",
 				desc: "Add curated threat feeds on top of the community blocklist — by category, use case, or vendor.",
 			},
 			{
-				num: 4, icon: "✍️", optional: true,
+				num: 4, icon: "✍️", hint: "OPTIONAL",
 				title: "Craft your own detection rules",
 				desc: "Write custom scenarios for your stack, then share them back with the community on the Hub.",
 			},
@@ -351,12 +358,12 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 				desc: "No setup. Search instantly — get reputation score, behaviors, attack history, and CVE links.",
 			},
 			{
-				num: 2, icon: "🔑", optional: true, optionalLabel: "For integrations",
+				num: 2, icon: "🔑", hint: "For integrations",
 				title: "Generate a CTI API key",
 				desc: "Unlock programmatic access to the same data. Free tier included — no credit card needed.",
 			},
 			{
-				num: 3, icon: "⚙️", optional: true, optionalLabel: "For integrations",
+				num: 3, icon: "⚙️", hint: "Enrich",
 				title: "Connect to your SIEM or security tool",
 				desc: "Native integrations for Splunk, Sentinel, QRadar, TheHive, OpenCTI, MISP, and more.",
 			},
@@ -457,11 +464,11 @@ const HomePage = () => {
 							}}>Already running CrowdSec?</span>
 							<div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
 								{[
-									{ label: "🖥️ Open the Console",        href: "https://app.crowdsec.net" },
+									{ label: "🖥️ Open the Console",        href: "https://app.crowdsec.net",                              external: true },
 									{ label: "📋 Manage alerts & decisions", href: "/u/console/intro" },
 									{ label: "🔄 Remediation sync",          href: "/u/bouncers/intro" },
 									{ label: "❓ Troubleshooting",           href: "/docs/next/troubleshooting/security_engine" },
-								].map(({ label, href }) => (
+								].map(({ label, href, external }) => (
 									<Link
 										key={label}
 										href={href}
@@ -474,7 +481,7 @@ const HomePage = () => {
 											textDecoration: "none",
 											transition: "border-color .15s, color .15s",
 										}}
-									>{label}</Link>
+									>{label}{external && <ExternalLink size={11} style={{ opacity: 0.5, flexShrink: 0 }} />}</Link>
 								))}
 							</div>
 						</div>
@@ -543,10 +550,14 @@ const HomePage = () => {
 							</div>
 							<div style={{ display: "flex", gap: "9px", flexWrap: "wrap" }}>
 								<Link to="https://start.crowdsec.net/">
-									<Button size="lg" color="primary">🧭 Guided Setup</Button>
+									<Button size="lg" color="primary" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+										🧭 Guided Setup <ExternalLink size={13} style={{ opacity: 0.7 }} />
+									</Button>
 								</Link>
 								<Link to="https://killercoda.com/iiamloz/scenario/crowdsec-setup">
-									<Button size="lg" variant="outline">⚡ Try in Sandbox</Button>
+									<Button size="lg" variant="outline" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+										⚡ Try in Sandbox <ExternalLink size={13} style={{ opacity: 0.7 }} />
+									</Button>
 								</Link>
 							</div>
 						</div>
@@ -566,11 +577,11 @@ const HomePage = () => {
 								{ label: "🖥️ Console",           href: "/u/console/intro" },
 								{ label: "🛡️ AppSec / WAF",      href: "/docs/next/appsec/intro" },
 								{ label: "💻 CLI Reference",      href: "/docs/next/cscli/" },
-								{ label: "📖 Docs AI Assistant",  href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation" },
+								{ label: "📖 Docs AI Assistant",  href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation", external: true },
 								{ label: "🔑 CTI API Keys",       href: "/cti" },
 								{ label: "❓ Troubleshooting",    href: "/docs/next/troubleshooting/security_engine" },
-								{ label: "🌐 About CrowdSec",     href: "https://www.crowdsec.net" },
-							].map(({ label, href }) => (
+								{ label: "🌐 About CrowdSec",     href: "https://www.crowdsec.net", external: true },
+							].map(({ label, href, external }) => (
 								<Link
 									key={label}
 									href={href}
@@ -583,7 +594,7 @@ const HomePage = () => {
 										textDecoration: "none",
 										transition: "color .15s, border-color .15s",
 									}}
-								>{label}</Link>
+								>{label}{external && <ExternalLink size={12} style={{ opacity: 0.5, flexShrink: 0 }} />}</Link>
 							))}
 						</div>
 					</div>
