@@ -212,6 +212,15 @@ const redirects = [
 	{ from: "/next/cti_api/getting_started", to: "/u/console/ip_reputation/api_keys" },
 ];
 
+function redirectsGlobalDataPlugin() {
+	return {
+		name: "redirects-global-data",
+		async contentLoaded({ actions }: { actions: { setGlobalData: (data: unknown) => void } }) {
+			actions.setGlobalData({ redirects });
+		},
+	};
+}
+
 const config: Config = {
 	future: {
 		v4: {
@@ -381,6 +390,7 @@ const config: Config = {
 			},
 		],
 		["@docusaurus/plugin-client-redirects", { redirects }],
+		redirectsGlobalDataPlugin,
 		tailwindPlugin,
 	],
 };
