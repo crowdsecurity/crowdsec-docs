@@ -219,40 +219,6 @@ const SchemaBlock = ({ id, color, eyebrowIcon, eyebrow, title, ctaLabel, ctaHref
 	</div>
 );
 
-// ── Product card ──────────────────────────────────────────────────────────────
-
-type ProductCardProps = {
-	title: string;
-	description: string;
-	icon: React.ReactNode;
-	link: string;
-	features: string[];
-};
-
-const ProductCard = ({ title, description, icon, link, features }: ProductCardProps): React.JSX.Element => (
-	<Link href={link} className="hover:no-underline group flex">
-		<div className="w-full flex flex-col border border-solid border-border rounded-xl p-6 bg-card shadow-sm group-hover:shadow-lg group-hover:border-primary/50 transition-all duration-300">
-			<div className="flex items-center gap-4 mb-4">
-				<div className="w-12 h-12 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0 overflow-hidden">
-					{icon}
-				</div>
-				<h3 className="text-lg font-bold group-hover:text-primary transition-colors m-0">{title}</h3>
-			</div>
-			<p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-grow">{description}</p>
-			<ul className="space-y-1 mb-4">
-				{features.map((f) => (
-					<li key={f} className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
-						<span className="text-primary">✓</span>{f}
-					</li>
-				))}
-			</ul>
-			<div className="mt-auto pt-3 border-t border-border">
-				<span className="text-primary text-sm font-medium group-hover:underline">Explore product →</span>
-			</div>
-		</div>
-	</Link>
-);
-
 // ── Data ──────────────────────────────────────────────────────────────────────
 
 const ORANGE = "#f97316";
@@ -371,29 +337,6 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 	},
 ];
 
-const products: ProductCardProps[] = [
-	{
-		title: "Security Engine",
-		description: "Analyze your logs to detect attacks, block malicious IPs, and protect web applications.",
-		icon: <img src="/img/icons/radar-target.webp" className="h-9 w-9 border-0" alt="Security Engine" />,
-		link: "/security-engine",
-		features: ["Behavior-based detection", "Community threat sharing", "AppSec / WAF for web apps", "Open source"],
-	},
-	{
-		title: "Blocklists",
-		description: "Deploy curated threat intel feeds to protect your network without running detection yourself.",
-		icon: <img src="/img/icons/shield.webp" className="h-9 w-9 border-0" alt="Blocklists" />,
-		link: "/blocklists",
-		features: ["Curated IP lists, auto-updated", "Ready-to-deploy feeds", "Multiple threat categories", "Works standalone or with Engine"],
-	},
-	{
-		title: "CTI",
-		description: "Query CrowdSec threat intelligence to enrich investigations, automate lookups, and integrate with tools.",
-		icon: <img src="/img/icons/world.webp" className="h-9 w-9 border-0" alt="CTI" />,
-		link: "/cti",
-		features: ["REST API access", "IP reputation scores", "Attack context", "SIEM integrations"],
-	},
-];
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
@@ -514,27 +457,7 @@ const HomePage = () => {
 					</div>
 				</section>
 
-				{/* Browse by product */}
-				<section className="py-6 px-4">
-					<div className="container mx-auto" style={{ maxWidth: "940px" }}>
-						<div style={{
-							display: "flex", alignItems: "center", gap: "16px",
-							color: "var(--ifm-color-emphasis-400)",
-							fontSize: "11px", fontFamily: "var(--ifm-font-family-monospace)",
-							letterSpacing: "1px", textTransform: "uppercase",
-							marginBottom: "20px",
-						}}>
-							<div style={{ flex: 1, height: "1px", background: "var(--ifm-color-emphasis-200)" }} />
-							or browse by product
-							<div style={{ flex: 1, height: "1px", background: "var(--ifm-color-emphasis-200)" }} />
-						</div>
-						<div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-							{products.map(p => <ProductCard key={p.title} {...p} />)}
-						</div>
-					</div>
-				</section>
-
-				{/* Not sure / fallback */}
+{/* Not sure / fallback */}
 				<section className="py-6 px-4">
 					<div className="container mx-auto" style={{ maxWidth: "940px" }}>
 						<div style={{
