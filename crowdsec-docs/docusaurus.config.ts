@@ -207,6 +207,9 @@ const redirects = [
 	{ from: "/u/cti_api/search_queries", to: "/u/console/ip_reputation/search_ui" },
 	{ from: "/u/cti_api/advanced_search", to: "/u/console/ip_reputation/search_ui_advanced" },
 	{ from: "/u/cti_api/cve_explorer", to: "/u/console/ip_reputation/intro#live-exploit-tracker" },
+	// other CTI pages redirect / fixes
+	{ from: "/next/cti_api/intro", to: "/u/console/ip_reputation/api_keys" },
+	{ from: "/next/cti_api/getting_started", to: "/u/console/ip_reputation/api_keys" },
 ];
 
 const config: Config = {
