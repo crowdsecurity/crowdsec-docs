@@ -41,7 +41,7 @@ const IntentCard = ({ icon, title, desc, pill, accent, href }: IntentCardProps) 
 				display: "flex",
 				flexDirection: "column",
 				padding: "24px",
-				background: "var(--ifm-card-background-color)",
+				background: "rgb(var(--card)/var(--tw-bg-opacity,1))",
 				border: "1px solid var(--ifm-color-emphasis-200)",
 				borderRadius: "12px",
 				boxShadow: "var(--ifm-global-shadow-sm)",
@@ -122,7 +122,7 @@ const SchemaBlock = ({ id, color, eyebrowIcon, eyebrow, title, ctaLabel, ctaHref
 	<div
 		id={id}
 		style={{
-			background: "var(--ifm-card-background-color)",
+			background: "rgb(var(--card)/var(--tw-bg-opacity,1))",
 			border: "1px solid var(--ifm-color-emphasis-200)",
 			borderRadius: "16px",
 			marginBottom: "12px",
@@ -559,7 +559,7 @@ const HomePage = () => {
 								flexWrap: "wrap",
 								marginTop: "10px",
 								padding: "12px 18px",
-								background: "var(--ifm-card-background-color)",
+								background: "rgb(var(--card)/var(--tw-bg-opacity,1))",
 								border: "1px solid var(--ifm-color-emphasis-200)",
 								borderRadius: "10px",
 							}}
@@ -643,7 +643,7 @@ const HomePage = () => {
 						<div
 							style={{
 								padding: "24px 28px",
-								background: "var(--ifm-card-background-color)",
+								background: "rgb(var(--card)/var(--tw-bg-opacity,1))",
 								border: "1px solid var(--ifm-color-emphasis-200)",
 								borderRadius: "13px",
 								display: "flex",
@@ -720,7 +720,7 @@ const HomePage = () => {
 										border: "1px solid var(--ifm-color-emphasis-200)",
 										fontSize: "13px",
 										color: "var(--ifm-color-emphasis-700)",
-										background: "var(--ifm-card-background-color)",
+										background: "rgb(var(--card)/var(--tw-bg-opacity,1))",
 										textDecoration: "none",
 										transition: "color .15s, border-color .15s",
 									}}
