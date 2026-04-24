@@ -1,4 +1,5 @@
 import useBaseUrl from "@docusaurus/useBaseUrl";
+// biome-ignore lint/correctness/noUnusedImports: React is needed for JSX
 import React, { useRef, useState } from "react";
 import { type CtiIntegrationData, ctiIntegrations } from "./data/cti-integrations";
 
@@ -95,7 +96,14 @@ export default function CtiIntegrationTile({ name, slug, href, plugin, desc, col
 					>
 						{name}
 					</span>
-					<span style={{ fontSize: "0.7rem", color: "var(--ifm-color-emphasis-500)", lineHeight: 1.3, fontFamily: "var(--ifm-font-family-monospace)" }}>
+					<span
+						style={{
+							fontSize: "0.7rem",
+							color: "var(--ifm-color-emphasis-500)",
+							lineHeight: 1.3,
+							fontFamily: "var(--ifm-font-family-monospace)",
+						}}
+					>
 						{plugin}
 					</span>
 				</div>
@@ -123,7 +131,9 @@ export default function CtiIntegrationTile({ name, slug, href, plugin, desc, col
 						pointerEvents: "none",
 					}}
 				>
-					<div style={{ fontWeight: 600, fontSize: "12px", marginBottom: "4px", color: "var(--ifm-color-emphasis-900)" }}>{name}</div>
+					<div style={{ fontWeight: 600, fontSize: "12px", marginBottom: "4px", color: "var(--ifm-color-emphasis-900)" }}>
+						{name}
+					</div>
 					{desc}
 					{/* Arrow */}
 					<div

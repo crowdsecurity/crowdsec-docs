@@ -230,8 +230,8 @@ export const CTIContent = () => (
 					className="text-base md:text-lg mb-6"
 					style={{ color: "var(--ifm-color-emphasis-600)", maxWidth: "520px", margin: "0 auto 24px" }}
 				>
-					IP reputation and threat data from a global sensor network. Look up IPs, enrich investigations, and automate
-					security workflows.
+					IP reputation and threat data from a global sensor network. Look up IPs, enrich investigations, and automate security
+					workflows.
 				</p>
 
 				{/* Quick access bar */}
