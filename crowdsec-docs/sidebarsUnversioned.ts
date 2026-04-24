@@ -11,6 +11,12 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			label: "Introduction",
 			id: "cti_api/intro",
 		},
+		// ── EXPLORE ──────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-500);'>Explore</span>",
+			defaultStyle: false,
+		},
 		{
 			type: "link",
 			label: "Web UI",
@@ -18,6 +24,20 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			customProps: {
 				tag: "otherSection",
 			},
+		},
+		{
+			type: "link",
+			label: "Live Exploit Tracker",
+			href: "/u/tracker_api/intro",
+			customProps: {
+				tag: "otherSection",
+			},
+		},
+		// ── API ──────────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' /> <span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-500);'>API</span>",
+			defaultStyle: false,
 		},
 		{
 			type: "doc",
@@ -50,15 +70,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				"cti_api/api_integration/integration_thehive",
 			],
 		},
+		// ── TECHNICAL DOC ─────────────────────────────────────────────────────
 		{
 			type: "html",
-			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' /> <span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-500);'>Technical Doc</span>",
 			defaultStyle: false,
-		},
-		{
-			type: "doc",
-			label: "Advanced Query Syntax",
-			id: "cti_api/search_queries",
 		},
 		{
 			type: "category",
@@ -75,14 +91,18 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
-			type: "html",
-			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
-			defaultStyle: false,
+			type: "doc",
+			label: "Advanced Query Syntax",
+			id: "cti_api/search_queries",
 		},
 		{
 			type: "link",
-			label: "Swagger",
+			label: "Swagger ↗",
 			href: "https://crowdsecurity.github.io/cti-api/",
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
 		},
 		{
 			type: "doc",
