@@ -1,5 +1,5 @@
 ---
-id: intro
+id: intro_old
 title: CrowdSec CTI - Cyber Threat Intelligence
 sidebar_position: 1
 ---

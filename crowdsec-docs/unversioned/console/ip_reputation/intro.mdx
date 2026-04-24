@@ -4,72 +4,95 @@ title: IP Reputation / CTI
 description: Explore and query CrowdSec's IP Reputation data and manage CTI API keys from the Console.
 ---
 
-CrowdSec's **IP Reputation / CTI** section of the Console gives you access to the world's largest crowdsourced threat intelligence network. 
+import Link from "@docusaurus/Link";
 
-From the Console you can:
-- **Investigate IPs** directly in the Web UI — no code required
-- **Explore Specific Classifications** with search queries
-- **Query at scale** using the CTI REST API with a managed API key
+CrowdSec's **IP Reputation / CTI** section gives you access to the world's largest crowdsourced threat intelligence network — investigate IPs in the web UI, hunt threats with advanced search, or query at scale via REST API.
 
 ---
 
 ## Web UI Features
 
-### IP Search
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px", margin: "1.25rem 0" }}>
 
-The [CTI home page](https://app.crowdsec.net/cti) lets you search any IP address or run Lucene queries against the threat database. Predefined searches give quick access to common patterns, and the **Top 10 Most Aggressive IPs** leaderboard shows the most active threat actors in the last 24 hours.
+<div style={{ display: "flex", flexDirection: "column", padding: "18px 20px", background: "rgb(var(--card)/var(--tw-bg-opacity,1))", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "10px" }}>
+  <div style={{ fontSize: "20px", marginBottom: "8px" }}>🔍</div>
+  <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "6px" }}>IP Search</div>
+  <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, flexGrow: 1 }}>
+    Search any IP or run Lucene queries against the threat database. Predefined searches and a <strong>Top 10 Most Aggressive IPs</strong> leaderboard (last 24h) are available right on the homepage.
+  </div>
+  <Link to="/u/console/ip_reputation/search_ui" style={{ marginTop: "12px", fontSize: "12.5px", fontWeight: 600 }}>IP Search →</Link>
+</div>
 
-[IP Search →](/u/console/ip_reputation/search_ui)
+<div style={{ display: "flex", flexDirection: "column", padding: "18px 20px", background: "rgb(var(--card)/var(--tw-bg-opacity,1))", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "10px" }}>
+  <div style={{ fontSize: "20px", marginBottom: "8px" }}>🎯</div>
+  <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "6px" }}>Advanced Search</div>
+  <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, flexGrow: 1 }}>
+    Lucene queries with a live faceted filter panel — reputation, country, AS, behaviors, classifications. Built for threat hunting, bulk investigation, and targeted blocklist building.
+  </div>
+  <div style={{ display: "flex", gap: "10px", marginTop: "12px", flexWrap: "wrap" }}>
+    <Link to="/u/console/ip_reputation/search_ui_advanced" style={{ fontSize: "12.5px", fontWeight: 600 }}>Advanced Search →</Link>
+    <Link to="/u/cti_api/search_queries" style={{ fontSize: "12.5px", fontWeight: 600 }}>Query Reference →</Link>
+  </div>
+</div>
 
-### Advanced Search
+<div style={{ display: "flex", flexDirection: "column", padding: "18px 20px", background: "rgb(var(--card)/var(--tw-bg-opacity,1))", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "10px" }}>
+  <div style={{ fontSize: "20px", marginBottom: "8px" }}>📋</div>
+  <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "6px" }}>IP Report</div>
+  <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, flexGrow: 1 }}>
+    Click any IP to open its full report: reputation score, key metadata, behaviors, classifications, MITRE techniques, CVEs, and time-windowed activity scores.
+  </div>
+  <Link to="/u/console/ip_reputation/ip_report" style={{ marginTop: "12px", fontSize: "12.5px", fontWeight: 600 }}>IP Report →</Link>
+</div>
 
-The [Advanced Search page](https://app.crowdsec.net/cti) supports Lucene queries with a live faceted filter panel (reputation, country, AS, behaviors, classifications). Use it for threat hunting, bulk investigation, or building targeted blocklists.
-
-[Advanced Search →](/u/console/ip_reputation/search_ui_advanced)  
-[Search Query Reference →](/u/cti_api/search_queries)
-
-### IP Report
-
-Clicking any IP opens a full report with its reputation, key metadata, behaviors, classifications, MITRE techniques, CVEs, and time-windowed scores.
-
-[IP Report →](/u/console/ip_reputation/ip_report)
+</div>
 
 ### Live Exploit Tracker
 
-The [Live Exploit Tracker ↗️](https://tracker.crowdsec.net/) is the evolution of the CVE Explorer — a dedicated platform for tracking vulnerabilities that are actively being exploited in the wild, powered by live data from the CrowdSec network.
-:::info
-It now resides outside the Console to provide a more focused experience and richer features, but remains fully accessible with the same CTI API key.
-:::
-
-Beyond listing CVEs, it adds exploitation context that helps you **prioritize and act**:
-
-- **CrowdSec Score** — a SOC-oriented priority signal based on observed attack patterns
-- **Opportunity Score** — how targeted vs. opportunistic the exploitation is (0 = mass automated scan, 5 = precisely targeted campaign)
-- **Momentum Score** — whether exploitation volume is growing, stable, or declining
-- **Exploitation Status** — from *early exploitation* to *background noise*
-- **Timeline** — first/last seen, CVE publication, CISA KEV addition, and key events
-- **Malicious IPs** — IPs actively exploiting a given CVE, with full CTI context, for threat hunting or direct blocklist integration
-
-[Explore the Live Exploit Tracker ↗️](https://tracker.crowdsec.net/)
+<div style={{ display: "flex", gap: "16px", padding: "20px 22px", background: "rgb(var(--card)/var(--tw-bg-opacity,1))", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "10px", margin: "1rem 0", alignItems: "flex-start" }}>
+  <div style={{ fontSize: "28px", flexShrink: 0 }}>🚨</div>
+  <div>
+    <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "6px" }}>
+      <a href="https://tracker.crowdsec.net/" target="_blank" rel="noopener noreferrer">tracker.crowdsec.net ↗</a>
+    </div>
+    <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.65, marginBottom: "12px" }}>
+      A dedicated platform for tracking vulnerabilities actively exploited in the wild, powered by live CrowdSec network data. Accessible with the same CTI API key.
+    </div>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "6px" }}>
+      {[
+        ["⚡", "CrowdSec Score", "SOC-oriented priority signal based on observed attack patterns"],
+        ["🎯", "Opportunity Score", "How targeted vs. opportunistic the exploitation is (0 = mass scan, 5 = precise campaign)"],
+        ["📈", "Momentum Score", "Whether exploitation volume is growing, stable, or declining"],
+        ["🏷️", "Exploitation Status", "From early exploitation to background noise"],
+        ["🕐", "Timeline", "First/last seen, CVE publication, CISA KEV addition, key events"],
+        ["🌐", "Malicious IPs", "IPs actively exploiting a CVE — with full CTI context for hunting or blocklisting"],
+      ].map(([icon, title, desc]) => (
+        <div key={title} style={{ padding: "10px 12px", background: "var(--ifm-background-color)", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "8px" }}>
+          <div style={{ fontSize: "13px", fontWeight: 600, marginBottom: "3px" }}>{icon} {title}</div>
+          <div style={{ fontSize: "11.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.5 }}>{desc}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
 
 ---
 
 ## API Access
 
-You can query the same data programmatically using a CTI API key and the [CTI REST API](/u/cti_api/intro).
+Query the same data programmatically with a CTI API key and the [CTI REST API](/u/cti_api/intro).
 
-| Plan | Quota | Use case |
-|---|---|---|
-| **Free** | 40 queries / month | POC, low-traffic scripts |
-| **Premium** | 120 queries / month | Regular enrichment, small integrations |
-| **Premium Options** | 5K / 25K / 100K queries / month | Production integrations, SIEMs, SOARs |
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "10px", margin: "1rem 0" }}>
 
-Manage your keys in the Console under **Settings → CTI API Keys**, or go straight to [app.crowdsec.net/settings/cti-api-keys](https://app.crowdsec.net/settings/cti-api-keys).
+<div style={{ padding: "16px 18px", background: "rgb(var(--card)/var(--tw-bg-opacity,1))", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "10px" }}>
+  <div style={{ fontWeight: 700, fontSize: "13px", marginBottom: "4px" }}>Free</div>
+  <div style={{ fontSize: "20px", fontWeight: 800, marginBottom: "4px" }}>40 <span style={{ fontSize: "12px", fontWeight: 400, color: "var(--ifm-color-emphasis-500)" }}>queries / month</span></div>
+  <div style={{ fontSize: "12px", color: "var(--ifm-color-emphasis-600)" }}>POC, low-traffic scripts</div>
+</div>
 
 [Get your first API key →](/u/console/ip_reputation/api_keys)   
 
 ---
 
-:::tip Want the full technical reference?
+:::tip Full technical reference
 For API endpoints, request/response schemas, integrations (SIEM, SOAR, TIP platforms), and data taxonomy, see the [CTI API documentation](/u/cti_api/intro).
 :::

@@ -366,7 +366,7 @@ const intents: IntentCardProps[] = [
 		title: "Look up an IP or enrich my security tools",
 		desc: "You're a security analyst or developer who wants IP context — in a browser or via REST API.",
 		pill: "IP Reputation & CTI",
-		href: "/cti",
+		href: "/u/cti_api/intro",
 	},
 ];
 

@@ -79,6 +79,13 @@ div.markdown {
 	@apply text-justify;
 }
 
+/* Pull embedded full-bleed content flush with the doc container edges */
+.doc-flush {
+	margin-left: calc(-1 * var(--ifm-spacing-horizontal));
+	margin-right: calc(-1 * var(--ifm-spacing-horizontal));
+	margin-top: calc(-1 * var(--ifm-spacing-vertical, 1rem));
+}
+
 a {
 	@apply text-primary;
 }
