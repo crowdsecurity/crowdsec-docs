@@ -1,0 +1,24 @@
+---
+id: integration_intro
+title: Integrations
+---
+
+import CtiIntegrationTile, { ctiIntegrations } from '@site/src/components/cti-integration-tile';
+
+CrowdSec has native integrations for the most common security platforms — enrich your workflows with IP reputation data without writing any code.
+
+If your platform isn't listed, the API is a standard REST interface you can query directly:
+
+```shell
+curl -H "x-api-key: $API_KEY" https://cti.api.crowdsec.net/v2/smoke/1.2.3.4 | jq .
+```
+
+For the full reference, see the [Swagger documentation](https://crowdsecurity.github.io/cti-api/).
+
+---
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.6rem', margin: '1.5rem 0' }}>
+  {ctiIntegrations.map(({ name, slug, href, plugin, desc, color }) => (
+    <CtiIntegrationTile key={slug} name={name} slug={slug} href={href} plugin={plugin} desc={desc} color={color} />
+  ))}
+</div>
