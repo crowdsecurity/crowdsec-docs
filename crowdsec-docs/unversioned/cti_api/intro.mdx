@@ -32,32 +32,6 @@ export const PURPLE = "#a78bfa";
   </div>
 </div>
 
-{/* ── What makes CrowdSec CTI different ───────────────────────────────── */}
-
-<div style={{ marginBottom: "2.5rem" }}>
-  <div className="doc-eyebrow">Why CrowdSec CTI</div>
-  <div className="doc-section-title">What makes it different</div>
-  <p style={{ fontSize: "13px", color: "var(--ifm-color-emphasis-600)", marginBottom: "1rem" }}>
-    Most IP reputation services tell you an IP is <em>"bad."</em> CrowdSec tells you <strong>what it was doing</strong> — data from real deployments detecting real attacks, not honeypots.
-  </p>
-  <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "8px" }}>
-    {[
-      { icon: "🌍", title: "Crowdsourced from live attacks", desc: "Signals from active CrowdSec installs globally. When an IP appears here, hundreds of machines saw it in action." },
-      { icon: "🧠", title: "Behavioral, not just reputation", desc: "What was the IP doing? Brute-force, CVE exploitation, scan, credential stuffing — mapped to MITRE ATT&CK." },
-      { icon: "⚡", title: "Real-time, not cached lists", desc: "Continuously updated. Time-windowed scores show if a threat is rising, stable, or decaying." },
-      { icon: "🔬", title: "CVE-level exploit tracking", desc: "The Live Exploit Tracker shows which CVEs are actively exploited, with momentum and opportunity scores." },
-    ].map(({ icon, title, desc }) => (
-      <div key={title} className="doc-card" style={{ display: "flex", gap: "12px" }}>
-        <span style={{ fontSize: "20px", flexShrink: 0, lineHeight: 1.3 }}>{icon}</span>
-        <div>
-          <div style={{ fontWeight: 700, fontSize: "13px", marginBottom: "3px" }}>{title}</div>
-          <div style={{ fontSize: "12px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.55 }}>{desc}</div>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
-
 {/* ── How do you want to use it? ──────────────────────────────────────── */}
 
 <div style={{ marginBottom: "2.5rem" }}>
@@ -94,6 +68,30 @@ export const PURPLE = "#a78bfa";
             <Link key={label} href={href} style={{ fontSize: "12px", fontWeight: 600, color: accent, textDecoration: "none" }}>{label}</Link>
           ))}
         </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* ── Why CrowdSec CTI (informational, de-emphasized) ────────────────── */}
+
+<div style={{ borderLeft: "3px solid var(--ifm-color-emphasis-200)", paddingLeft: "16px", marginBottom: "2.5rem" }}>
+  <div className="doc-eyebrow" style={{ marginBottom: "6px" }}>Why CrowdSec CTI</div>
+  <p style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-500)", marginBottom: "10px", fontStyle: "italic" }}>
+    Most IP reputation services tell you an IP is "bad." CrowdSec tells you <strong style={{ color: "var(--ifm-color-emphasis-600)" }}>what it was doing</strong> — from real deployments, not honeypots.
+  </p>
+  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+    {[
+      { icon: "🌍", title: "Crowdsourced from live attacks", desc: "Signals from active CrowdSec installs globally. When an IP appears here, hundreds of machines saw it in action." },
+      { icon: "🧠", title: "Behavioral, not just reputation", desc: "Brute-force, CVE exploitation, scan, credential stuffing — mapped to MITRE ATT&CK." },
+      { icon: "⚡", title: "Real-time, not cached lists", desc: "Continuously updated with time-windowed scores showing if a threat is rising, stable, or decaying." },
+      { icon: "🔬", title: "CVE-level exploit tracking", desc: "The Live Exploit Tracker shows which CVEs are actively exploited, with momentum and opportunity scores." },
+    ].map(({ icon, title, desc }) => (
+      <div key={title} style={{ display: "flex", gap: "10px", alignItems: "baseline" }}>
+        <span style={{ fontSize: "14px", flexShrink: 0 }}>{icon}</span>
+        <span style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.5 }}>
+          <strong style={{ color: "var(--ifm-color-emphasis-700)", fontWeight: 600 }}>{title}</strong> — {desc}
+        </span>
       </div>
     ))}
   </div>

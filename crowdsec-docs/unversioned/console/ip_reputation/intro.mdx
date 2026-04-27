@@ -5,88 +5,101 @@ description: Explore and query CrowdSec's IP Reputation data and manage CTI API 
 ---
 
 import Link from "@docusaurus/Link";
+import { ExternalLink } from "lucide-react";
 
-CrowdSec's **IP Reputation / CTI** section gives you access to the world's largest crowdsourced threat intelligence network — investigate IPs in the web UI, hunt threats with advanced search, or query at scale via REST API.
+export const BLUE = "#60a5fa";
+export const GREEN = "#22d3a0";
+export const PURPLE = "#a78bfa";
 
----
+<p style={{ fontSize: "14px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.65, marginBottom: "1.5rem" }}>
+  Query behavioral intelligence on any IP — reputation scores, attack patterns, linked CVEs, and activity history — sourced from hundreds of thousands of real CrowdSec deployments worldwide.
+</p>
 
-## Web UI Features
+{/* ── Row 1: Search + IP Report ───────────────────────────────────────── */}
 
-<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px", margin: "1.25rem 0" }}>
+<div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px", marginBottom: "10px" }}>
 
-<div style={{ display: "flex", flexDirection: "column", padding: "18px 20px", background: "rgb(var(--card)/var(--tw-bg-opacity,1))", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "10px" }}>
-  <div style={{ fontSize: "20px", marginBottom: "8px" }}>🔍</div>
-  <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "6px" }}>IP Search</div>
-  <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, flexGrow: 1 }}>
-    Search any IP or run Lucene queries against the threat database. Predefined searches and a <strong>Top 10 Most Aggressive IPs</strong> leaderboard (last 24h) are available right on the homepage.
-  </div>
-  <Link to="/u/console/ip_reputation/search_ui" style={{ marginTop: "12px", fontSize: "12.5px", fontWeight: 600 }}>IP Search →</Link>
-</div>
-
-<div style={{ display: "flex", flexDirection: "column", padding: "18px 20px", background: "rgb(var(--card)/var(--tw-bg-opacity,1))", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "10px" }}>
-  <div style={{ fontSize: "20px", marginBottom: "8px" }}>🎯</div>
-  <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "6px" }}>Advanced Search</div>
-  <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, flexGrow: 1 }}>
-    Lucene queries with a live faceted filter panel — reputation, country, AS, behaviors, classifications. Built for threat hunting, bulk investigation, and targeted blocklist building.
-  </div>
-  <div style={{ display: "flex", gap: "10px", marginTop: "12px", flexWrap: "wrap" }}>
-    <Link to="/u/console/ip_reputation/search_ui_advanced" style={{ fontSize: "12.5px", fontWeight: 600 }}>Advanced Search →</Link>
-    <Link to="/u/cti_api/search_queries" style={{ fontSize: "12.5px", fontWeight: 600 }}>Query Reference →</Link>
-  </div>
-</div>
-
-<div style={{ display: "flex", flexDirection: "column", padding: "18px 20px", background: "rgb(var(--card)/var(--tw-bg-opacity,1))", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "10px" }}>
-  <div style={{ fontSize: "20px", marginBottom: "8px" }}>📋</div>
-  <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "6px" }}>IP Report</div>
-  <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, flexGrow: 1 }}>
-    Click any IP to open its full report: reputation score, key metadata, behaviors, classifications, MITRE techniques, CVEs, and time-windowed activity scores.
-  </div>
-  <Link to="/u/console/ip_reputation/ip_report" style={{ marginTop: "12px", fontSize: "12.5px", fontWeight: 600 }}>IP Report →</Link>
-</div>
-
-</div>
-
-### Live Exploit Tracker
-
-<div style={{ display: "flex", gap: "16px", padding: "20px 22px", background: "rgb(var(--card)/var(--tw-bg-opacity,1))", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "10px", margin: "1rem 0", alignItems: "flex-start" }}>
-  <div style={{ fontSize: "28px", flexShrink: 0 }}>🚨</div>
-  <div>
-    <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "6px" }}>
-      <a href="https://tracker.crowdsec.net/" target="_blank" rel="noopener noreferrer">tracker.crowdsec.net ↗</a>
+  <div className="doc-card" style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ fontSize: "22px", marginBottom: "8px" }}>🔍</div>
+    <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "6px" }}>Explore IP Reputation</div>
+    <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, flexGrow: 1, marginBottom: "14px" }}>
+      Search any IP or run Lucene queries with live faceted filters — reputation, country, AS, behaviors, classifications. The homepage also surfaces a <strong>Top 10 Most Aggressive IPs</strong> leaderboard updated every 24h.
     </div>
-    <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.65, marginBottom: "12px" }}>
-      A dedicated platform for tracking vulnerabilities actively exploited in the wild, powered by live CrowdSec network data. Accessible with the same CTI API key.
+    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+      <Link to="/u/console/ip_reputation/search_ui" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>IP Search →</span></Link>
+      <Link to="/u/console/ip_reputation/search_ui_advanced" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>Advanced Search →</span></Link>
+      <Link to="/u/cti_api/search_queries" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>Query Reference →</span></Link>
     </div>
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "6px" }}>
-      {[
-        ["⚡", "CrowdSec Score", "SOC-oriented priority signal based on observed attack patterns"],
-        ["🎯", "Opportunity Score", "How targeted vs. opportunistic the exploitation is (0 = mass scan, 5 = precise campaign)"],
-        ["📈", "Momentum Score", "Whether exploitation volume is growing, stable, or declining"],
-        ["🏷️", "Exploitation Status", "From early exploitation to background noise"],
-        ["🕐", "Timeline", "First/last seen, CVE publication, CISA KEV addition, key events"],
-        ["🌐", "Malicious IPs", "IPs actively exploiting a CVE — with full CTI context for hunting or blocklisting"],
-      ].map(([icon, title, desc]) => (
-        <div key={title} style={{ padding: "10px 12px", background: "var(--ifm-background-color)", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "8px" }}>
-          <div style={{ fontSize: "13px", fontWeight: 600, marginBottom: "3px" }}>{icon} {title}</div>
-          <div style={{ fontSize: "11.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.5 }}>{desc}</div>
+  </div>
+
+  <div className="doc-card" style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ fontSize: "22px", marginBottom: "8px" }}>📋</div>
+    <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "6px" }}>Understand an IP Report</div>
+    <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, flexGrow: 1, marginBottom: "14px" }}>
+      Click any IP to open its full report: <strong>threat reputation score</strong>, observed attack behaviors mapped to MITRE ATT&amp;CK, <strong>linked CVEs</strong>, classifications, and time-windowed activity details showing whether the threat is rising, stable, or decaying.
+    </div>
+    <Link to="/u/console/ip_reputation/ip_report" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>IP Report →</span></Link>
+  </div>
+
+</div>
+
+{/* ── Row 2: API Key ──────────────────────────────────────────────────── */}
+
+<div className="doc-card" style={{ marginBottom: "2rem" }}>
+  <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "14px" }}>
+    <div style={{ fontSize: "22px", lineHeight: 1 }}>🔑</div>
+    <div>
+      <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "4px" }}>Create an API Key</div>
+      <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6 }}>
+        Unlock programmatic access to 30+ enrichment fields per IP — reputation, behaviors, CVEs, attack context, MITRE mappings, and more. Use it to enrich SIEM alerts, automate lookups, or feed threat intel platforms. <strong>Free tier included, no credit card needed.</strong>
+      </div>
+    </div>
+  </div>
+
+  {/* Quota sub-tiles */}
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px", marginBottom: "14px" }}>
+    {[
+      { label: "Community", quota: "40", unit: "/ month", desc: "Ad-hoc lookups, proof of concept", color: GREEN },
+      { label: "Premium", quota: "120", unit: "/ month", desc: "Regular enrichment, small integrations", color: BLUE },
+      { label: "Premium Options", quota: "5K–100K", unit: "/ month", desc: "Production SIEMs, SOARs, high-volume pipelines", color: PURPLE },
+    ].map(({ label, quota, unit, desc, color }) => (
+      <div key={label} style={{ padding: "10px 12px", background: "var(--ifm-background-color)", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "8px" }}>
+        <div style={{ fontWeight: 700, fontSize: "12px", color, marginBottom: "2px" }}>{label}</div>
+        <div style={{ fontFamily: "var(--ifm-font-family-monospace)", fontSize: "13px", fontWeight: 700, marginBottom: "2px" }}>
+          {quota} <span style={{ fontSize: "10px", fontWeight: 400, color: "var(--ifm-color-emphasis-500)" }}>{unit}</span>
         </div>
-      ))}
-    </div>
+        <div style={{ fontSize: "11px", color: "var(--ifm-color-emphasis-500)", lineHeight: 1.4 }}>{desc}</div>
+      </div>
+    ))}
+  </div>
+
+  <div style={{ fontSize: "11.5px", color: "var(--ifm-color-emphasis-500)", lineHeight: 1.55, marginBottom: "12px", padding: "8px 12px", background: "var(--ifm-background-color)", borderRadius: "7px", border: "1px solid var(--ifm-color-emphasis-200)" }}>
+    <strong style={{ color: "var(--ifm-color-emphasis-700)" }}>API quotas are separate from Web UI quotas.</strong> Web UI searches consume their own quota: <strong>100 searches/week</strong> when not logged in (1 quota per results page or report viewed); <strong>40/month</strong> for logged-in Community accounts, <strong>100/month</strong> for Premium. API key usage does not count against Web UI quotas, and vice versa.
+  </div>
+
+  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+    <Link to="/u/console/ip_reputation/api_keys" style={{ display: "inline-flex", alignItems: "center", padding: "7px 14px", borderRadius: "8px", fontSize: "12.5px", fontWeight: 600, background: `${BLUE}22`, color: BLUE, border: `1px solid ${BLUE}44`, textDecoration: "none" }}><span>Create an API key →</span></Link>
+    <Link to="/u/cti_api/taxonomy/intro" style={{ display: "inline-flex", alignItems: "center", padding: "7px 14px", borderRadius: "8px", fontSize: "12.5px", fontWeight: 500, border: "1px solid var(--ifm-color-emphasis-200)", color: "var(--ifm-color-emphasis-700)", textDecoration: "none" }}><span>Data Taxonomy →</span></Link>
+    <Link to="https://crowdsecurity.github.io/cti-api/" style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "7px 14px", borderRadius: "8px", fontSize: "12.5px", fontWeight: 500, border: "1px solid var(--ifm-color-emphasis-200)", color: "var(--ifm-color-emphasis-700)", textDecoration: "none" }}><span>API Reference</span><ExternalLink size={11} style={{ opacity: 0.5 }} /></Link>
   </div>
 </div>
 
----
+{/* ── You might also be interested in: LET ───────────────────────────── */}
 
-## API Access
-
-Query the same data programmatically with a CTI API key and the [CTI REST API](/u/cti_api/intro).
-
-<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "10px", margin: "1rem 0" }}>
-
-<div style={{ padding: "16px 18px", background: "rgb(var(--card)/var(--tw-bg-opacity,1))", border: "1px solid var(--ifm-color-emphasis-200)", borderRadius: "10px" }}>
-  <div style={{ fontWeight: 700, fontSize: "13px", marginBottom: "4px" }}>Free</div>
-  <div style={{ fontSize: "20px", fontWeight: 800, marginBottom: "4px" }}>40 <span style={{ fontSize: "12px", fontWeight: 400, color: "var(--ifm-color-emphasis-500)" }}>queries / month</span></div>
-  <div style={{ fontSize: "12px", color: "var(--ifm-color-emphasis-600)" }}>POC, low-traffic scripts</div>
+<div style={{ borderLeft: "3px solid var(--ifm-color-emphasis-200)", paddingLeft: "16px", marginBottom: "1rem" }}>
+  <div className="doc-eyebrow" style={{ marginBottom: "8px" }}>You might also be interested in</div>
+  <div style={{ display: "flex", gap: "14px", alignItems: "flex-start" }}>
+    <div style={{ fontSize: "24px", flexShrink: 0 }}>🚨</div>
+    <div>
+      <div style={{ fontWeight: 700, fontSize: "13.5px", marginBottom: "4px" }}>
+        <a href="https://tracker.crowdsec.net/" target="_blank" rel="noopener noreferrer" style={{ color: "inherit" }}>Live Exploit Tracker ↗</a>
+      </div>
+      <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, marginBottom: "8px" }}>
+        A dedicated platform tracking CVEs actively exploited in the wild — with exploitation momentum, opportunity scores, and the IPs behind each attack. Uses the same CTI API key.
+      </div>
+      <Link to="/u/tracker_api/intro" style={{ fontSize: "12px", fontWeight: 600 }}><span>Explore the Live Exploit Tracker →</span></Link>
+    </div>
+  </div>
 </div>
 
 [Get your first API key →](/u/console/ip_reputation/api_keys)   
