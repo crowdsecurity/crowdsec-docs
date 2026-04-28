@@ -92,9 +92,33 @@ const IntentCard = ({ icon, title, desc, pill, accent, href, aka }: IntentCardPr
 			</div>
 			{aka && aka.length > 0 && (
 				<div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "12px", flexWrap: "wrap" }}>
-					<span style={{ fontFamily: "var(--ifm-font-family-monospace)", fontSize: "8px", letterSpacing: "0.8px", textTransform: "uppercase", color: "var(--ifm-color-emphasis-400)", flexShrink: 0 }}>aka</span>
+					<span
+						style={{
+							fontFamily: "var(--ifm-font-family-monospace)",
+							fontSize: "8px",
+							letterSpacing: "0.8px",
+							textTransform: "uppercase",
+							color: "var(--ifm-color-emphasis-400)",
+							flexShrink: 0,
+						}}
+					>
+						aka
+					</span>
 					{aka.map((tag) => (
-						<span key={tag} style={{ fontFamily: "var(--ifm-font-family-monospace)", fontSize: "8px", color: "var(--ifm-color-emphasis-400)", padding: "1px 7px", borderRadius: "4px", border: "1px solid var(--ifm-color-emphasis-200)", background: "var(--ifm-background-color)" }}>{tag}</span>
+						<span
+							key={tag}
+							style={{
+								fontFamily: "var(--ifm-font-family-monospace)",
+								fontSize: "8px",
+								color: "var(--ifm-color-emphasis-400)",
+								padding: "1px 7px",
+								borderRadius: "4px",
+								border: "1px solid var(--ifm-color-emphasis-200)",
+								background: "var(--ifm-background-color)",
+							}}
+						>
+							{tag}
+						</span>
 					))}
 				</div>
 			)}
