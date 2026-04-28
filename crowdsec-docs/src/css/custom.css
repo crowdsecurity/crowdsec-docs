@@ -156,7 +156,9 @@ div.markdown {
 	background: var(--ifm-background-color);
 	text-decoration: none;
 	text-align: left;
-	transition: border-color 0.15s, color 0.15s;
+	transition:
+		border-color 0.15s,
+		color 0.15s;
 }
 
 /* Reset markdown-injected styles when pills appear inside doc content */

@@ -88,7 +88,6 @@ const IntentCard = ({ icon, title, desc, pill, accent, href }: IntentCardProps) 
 				>
 					→ {pill}
 				</span>
-				<span style={{ color: accent, fontSize: "16px", transition: "transform .2s" }}>→</span>
 			</div>
 		</div>
 	</a>
@@ -347,23 +346,23 @@ const intents: IntentCardProps[] = [
 	{
 		icon: <img src="/img/icons/radar-target.webp" className="h-8 w-8 border-0" alt="Security Engine" />,
 		accent: ORANGE,
-		title: "Detect and block attacks on systems I run",
-		desc: "You operate servers, VMs, or containers and want active threat detection — not just a blocklist.",
+		title: "Detect & Block attacks on my servers",
+		desc: "Locally identify and ban bad behaving IPs observed in your logs and requests with CrowdSec Detection Scenarios, and Virtual-Patching Collections.",
 		pill: "Security Engine",
 		href: "/security-engine",
 	},
 	{
 		icon: <img src="/img/icons/shield.webp" className="h-8 w-8 border-0" alt="Blocklists" />,
 		accent: GREEN,
-		title: "Push a threat feed into my firewall, router, or CDN",
+		title: "Push a Blocklists into my firewall, CDN or WAF",
 		desc: "You manage network perimeter devices and want a URL to subscribe to — no agent to install.",
-		pill: "Blocklist Feed Endpoints",
+		pill: "Blocklist Integration Endpoint",
 		href: "/blocklists",
 	},
 	{
 		icon: <img src="/img/icons/world.webp" className="h-8 w-8 border-0" alt="CTI" />,
 		accent: BLUE,
-		title: "Look up an IP or enrich my security tools",
+		title: "Investigate IPs or enrich alerts",
 		desc: "You're a security analyst or developer who wants IP context — in a browser or via REST API.",
 		pill: "IP Reputation & CTI",
 		href: "/u/cti_api/intro",
@@ -384,7 +383,7 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 				num: 1,
 				icon: "⚡",
 				title: "Install the Security Engine",
-				desc: "Runs on your server, reads your logs, detects attack patterns in real time.",
+				desc: "Runs on your server, detects attack patterns in real time.",
 				perks: [
 					"Immediately protected from incoming attacks",
 					"Automatically receives global threat intel from the CrowdSec network",
@@ -394,21 +393,21 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 				num: 2,
 				icon: "🛡️",
 				hint: "RECOMMENDED",
-				title: "Activate the Web Application Firewall",
+				title: "Activate the WAF module",
 				desc: "Layer in the AppSec component to inspect HTTP traffic and block web exploits before they reach your app.",
 			},
 			{
 				num: 3,
 				icon: "📋",
 				hint: "OPTIONAL",
-				title: "Subscribe to additional blocklists",
-				desc: "Add curated threat feeds on top of the community blocklist — by category, use case, or vendor.",
+				title: "Subscribe to blocklists",
+				desc: "Add a selection of extra blocklists on top of the built-in detection & community blocklist",
 			},
 			{
 				num: 4,
 				icon: "✍️",
 				hint: "OPTIONAL",
-				title: "Craft your own detection rules",
+				title: "Craft your own rules",
 				desc: "Write custom scenarios for your stack, then share them back with the community on the Hub.",
 			},
 		],
@@ -507,15 +506,15 @@ const HomePage = () => {
 					/>
 					<div style={{ position: "relative", zIndex: 1 }}>
 						<h1 className="text-3xl md:text-5xl font-bold mb-3" style={{ letterSpacing: "-1px", lineHeight: 1.1 }}>
-							What do you want
+							Find the right 
 							<br />
-							to protect today?
+							CrowdSec tool for you
 						</h1>
 						<p
 							className="text-base md:text-lg mb-0"
 							style={{ color: "var(--ifm-color-emphasis-600)", maxWidth: "460px", margin: "0 auto" }}
 						>
-							Community-driven security — detection, blocklists, and threat intel for modern infrastructure.
+							IDPS/WAF | Blocklist feeds | IP Reputation
 						</p>
 					</div>
 				</section>
