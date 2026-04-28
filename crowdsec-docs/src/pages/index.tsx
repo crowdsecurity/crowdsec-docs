@@ -471,7 +471,7 @@ const HomePage = () => {
 					/>
 					<div style={{ position: "relative", zIndex: 1 }}>
 						<h1 className="text-3xl md:text-5xl font-bold mb-3" style={{ letterSpacing: "-1px", lineHeight: 1.1 }}>
-							Find the right 
+							Find the right
 							<br />
 							CrowdSec tool for you
 						</h1>
