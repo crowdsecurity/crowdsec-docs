@@ -14,9 +14,10 @@ type IntentCardProps = {
 	pill: string;
 	accent: string;
 	href: string;
+	aka?: string[];
 };
 
-const IntentCard = ({ icon, title, desc, pill, accent, href }: IntentCardProps) => (
+const IntentCard = ({ icon, title, desc, pill, accent, href, aka }: IntentCardProps) => (
 	<a
 		href={href}
 		className="hover:no-underline group flex"
@@ -89,6 +90,14 @@ const IntentCard = ({ icon, title, desc, pill, accent, href }: IntentCardProps) 
 					→ {pill}
 				</span>
 			</div>
+			{aka && aka.length > 0 && (
+				<div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "12px", flexWrap: "wrap" }}>
+					<span style={{ fontFamily: "var(--ifm-font-family-monospace)", fontSize: "8px", letterSpacing: "0.8px", textTransform: "uppercase", color: "var(--ifm-color-emphasis-400)", flexShrink: 0 }}>aka</span>
+					{aka.map((tag) => (
+						<span key={tag} style={{ fontFamily: "var(--ifm-font-family-monospace)", fontSize: "8px", color: "var(--ifm-color-emphasis-400)", padding: "1px 7px", borderRadius: "4px", border: "1px solid var(--ifm-color-emphasis-200)", background: "var(--ifm-background-color)" }}>{tag}</span>
+					))}
+				</div>
+			)}
 		</div>
 	</a>
 );
@@ -320,6 +329,7 @@ const intents: IntentCardProps[] = [
 		desc: "Locally identify and ban bad behaving IPs observed in your logs and requests with CrowdSec Detection Scenarios, and Virtual-Patching Collections.",
 		pill: "Security Engine",
 		href: "/security-engine",
+		aka: ["IDPS", "WAF", "CrowdSec FOSS"],
 	},
 	{
 		icon: <img src="/img/icons/shield.webp" className="h-8 w-8 border-0" alt="Blocklists" />,
@@ -328,6 +338,7 @@ const intents: IntentCardProps[] = [
 		desc: "You manage network perimeter devices and want a URL to subscribe to — no agent to install.",
 		pill: "Blocklist Integration Endpoint",
 		href: "/blocklists",
+		aka: ["Threat Feeds", "IOC Streams", "Deny-list"],
 	},
 	{
 		icon: <img src="/img/icons/world.webp" className="h-8 w-8 border-0" alt="CTI" />,
@@ -336,6 +347,7 @@ const intents: IntentCardProps[] = [
 		desc: "You're a security analyst or developer who wants IP context — in a browser or via REST API.",
 		pill: "IP Reputation & CTI",
 		href: "/u/cti_api/intro",
+		aka: ["IoC Lookup", "Threat Intel"],
 	},
 ];
 
@@ -669,7 +681,7 @@ const HomePage = () => {
 									external: true,
 								},
 								{ label: "🔑 CTI API Keys", href: "/cti" },
-								{ label: "❓ Troubleshooting", href: "/docs/next/troubleshooting/security_engine" },
+								{ label: "❓ Troubleshooting", href: "/u/troubleshooting/intro" },
 								{ label: "🌐 About CrowdSec", href: "https://www.crowdsec.net", external: true },
 							].map(({ label, href, external }) => (
 								<Link
