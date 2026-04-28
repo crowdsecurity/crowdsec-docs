@@ -101,7 +101,6 @@ type Step = {
 	title: string;
 	desc: string;
 	hint?: string;
-	perks?: string[];
 };
 
 type SchemaBlockProps = {
@@ -300,35 +299,6 @@ const SchemaBlock = ({ id, color, eyebrowIcon, eyebrow, title, ctaLabel, ctaHref
 						<div style={{ fontSize: "20px", marginBottom: "8px" }}>{step.icon}</div>
 						<div style={{ fontWeight: 700, fontSize: "13.5px", marginBottom: "6px", lineHeight: 1.3 }}>{step.title}</div>
 						<div style={{ fontSize: "12px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.55 }}>{step.desc}</div>
-						{step.perks && (
-							<ul
-								style={{
-									listStyle: "none",
-									margin: "8px 0 0",
-									padding: 0,
-									display: "flex",
-									flexDirection: "column",
-									gap: "4px",
-								}}
-							>
-								{step.perks.map((p) => (
-									<li
-										key={p}
-										style={{
-											fontSize: "11.5px",
-											color: "var(--ifm-color-emphasis-500)",
-											display: "flex",
-											alignItems: "flex-start",
-											gap: "5px",
-											textAlign: "left",
-										}}
-									>
-										<span style={{ color, flexShrink: 0, fontSize: "10px", marginTop: "1px" }}>✓</span>
-										{p}
-									</li>
-								))}
-							</ul>
-						)}
 					</div>
 				))}
 			</div>
@@ -383,11 +353,7 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 				num: 1,
 				icon: "⚡",
 				title: "Install the Security Engine",
-				desc: "Runs on your server, detects attack patterns in real time.",
-				perks: [
-					"Immediately protected from incoming attacks",
-					"Automatically receives global threat intel from the CrowdSec network",
-				],
+				desc: "Runs on your server, detects attack patterns in real time — immediately protected, and continuously updated with CrowdSec Community Blocklist.",
 			},
 			{
 				num: 2,
@@ -425,7 +391,7 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 				num: 1,
 				icon: "🔌",
 				title: "Create a blocklist integration endpoint",
-				desc: "Generate a dedicated URL in the Console — one per target device or environment.",
+				desc: "Generates a dedicated URL and credentials to serve blocklists to your perimeter devices.",
 			},
 			{
 				num: 2,
@@ -437,8 +403,7 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 				num: 3,
 				icon: "🔗",
 				title: "Plug it in as an external threat feed",
-				desc: "Point your firewall, CDN, or WAF at the endpoint. It auto-refreshes — no further maintenance needed.",
-				perks: ["Works with pfSense, OPNsense, Cloudflare, nginx, HAProxy, and more", "No agent to install or maintain"],
+				desc: "Point your firewall, CDN, or WAF at the endpoint. Use the feed to protect your infrastructure.",
 			},
 		],
 	},
@@ -455,20 +420,20 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 				num: 1,
 				icon: "🖥️",
 				title: "Look up any IP in the Console",
-				desc: "No setup. Search instantly — get reputation score, behaviors, attack history, and CVE links.",
+				desc: "Search instantly from our Web UI— get reputation score, behaviors, attack history, and CVE links.",
 			},
 			{
 				num: 2,
 				icon: "🔑",
-				hint: "For integrations",
+				hint: "Integrate",
 				title: "Generate a CTI API key",
-				desc: "Unlock programmatic access to the same data. Free tier included — no credit card needed.",
+				desc: "Unlock programmatic access to 30+ data points on IPs detected by CrowdSec Network.",
 			},
 			{
 				num: 3,
 				icon: "⚙️",
 				hint: "Enrich",
-				title: "Connect to your SIEM or security tool",
+				title: "Connect to your SIEM/SOAR/TIP",
 				desc: "Native integrations for Splunk, Sentinel, QRadar, TheHive, OpenCTI, MISP, and more.",
 			},
 		],
