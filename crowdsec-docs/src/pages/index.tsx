@@ -531,7 +531,7 @@ const HomePage = () => {
 							<span
 								style={{
 									fontFamily: "var(--ifm-font-family-monospace)",
-									fontSize: "10.5px",
+									fontSize: "10px",
 									letterSpacing: "0.8px",
 									textTransform: "uppercase",
 									color: "var(--ifm-color-emphasis-500)",
@@ -544,9 +544,9 @@ const HomePage = () => {
 							<div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
 								{[
 									{ label: "🖥️ Open the Console", href: "https://app.crowdsec.net", external: true },
-									{ label: "📋 Manage alerts & decisions", href: "/u/console/intro" },
-									{ label: "🔄 Remediation sync", href: "/u/bouncers/intro" },
-									{ label: "❓ Troubleshooting", href: "/docs/next/troubleshooting/security_engine" },
+									{ label: "🛡️ Activate the WAF", href: "/docs/next/appsec/intro" },
+									{ label: "📊 Measure what is being Blocked", href: "/u/console/remediation_metrics" },
+									{ label: "🩺 Check my Stack Health", href: "/u/console/stackhealth" },
 								].map(({ label, href, external }) => (
 									<Link
 										key={label}
@@ -557,7 +557,7 @@ const HomePage = () => {
 											gap: "6px",
 											padding: "5px 12px",
 											borderRadius: "7px",
-											fontSize: "12.5px",
+											fontSize: "11px",
 											color: "var(--ifm-color-emphasis-700)",
 											border: "1px solid var(--ifm-color-emphasis-200)",
 											background: "var(--ifm-background-color)",

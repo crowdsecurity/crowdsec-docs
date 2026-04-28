@@ -15,7 +15,7 @@ export const PURPLE = "#a78bfa";
 {/* ── Hero ─────────────────────────────────────────────────────────────── */}
 
 <h1 style={{ fontSize: "clamp(1.6rem, 4vw, 2.4rem)", fontWeight: 800, letterSpacing: "-0.5px", lineHeight: 1.1, marginBottom: "0.75rem" }}>
-  Know who's attacking you — and why.
+  Understand the IPs behind attacks
 </h1>
 <p style={{ fontSize: "14px", color: "var(--ifm-color-emphasis-600)", marginBottom: "1.25rem" }}>
   <p>CrowdSec tracks malicious IPs across hundreds of thousands of real deployments worldwide.
@@ -41,19 +41,19 @@ export const PURPLE = "#a78bfa";
     {[
       {
         badge: "🔍 No setup needed", icon: "🖥️", accent: BLUE,
-        title: "Investigate in the Console",
+        title: "Web UI investigation - in the Console",
         desc: "Search any IP instantly. Explore threat history and the top aggressive IPs in the last 24h — no API key needed.",
         links: [{ label: "Web UI guide →", href: "/u/console/ip_reputation/intro" }, { label: "IP Report →", href: "/u/console/ip_reputation/ip_report" }],
       },
       {
         badge: "⚙️ Developer / SecOps", icon: "🔌", accent: ORANGE,
-        title: "Integrate via API",
-        desc: "Enrich SIEM alerts, build enrichment pipelines, or plug into Splunk, Sentinel, QRadar, TheHive, and more.",
+        title: "Enrich Alerts via API",
+        desc: "Use the CTI API to add CrowdSec IP context to SIEM alerts, SOAR workflows, TIPs, scripts, and internal tools.",
         links: [{ label: "API quickstart →", href: "/u/cti_api/api_introduction" }, { label: "All integrations →", href: "/u/cti_api/api_integration/integration_intro" }],
       },
       {
         badge: "🎯 Threat hunter", icon: "🚨", accent: PURPLE,
-        title: "Hunt for threat patterns",
+        title: "Hunt active threats",
         desc: "Advanced Search with live faceted filters — behavior, country, AS, CVE — to find campaigns or build blocklists.",
         links: [{ label: "Advanced search →", href: "/u/console/ip_reputation/search_ui_advanced" }, { label: "Live Exploit Tracker →", href: "/u/tracker_api/intro" }],
       },

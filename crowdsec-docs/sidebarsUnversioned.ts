@@ -421,6 +421,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 							id: "console/ip_reputation/search_ui_advanced",
 						},
 						{
+							type: "doc",
+							label: "IP Reputation Report",
+							id: "console/ip_reputation/ip_report",
+						},
+						{
 							type: "link",
 							label: "Search Queries Syntax",
 							href: "/u/cti_api/search_queries",
