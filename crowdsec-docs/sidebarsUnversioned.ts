@@ -424,14 +424,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 					},
 					items: [
 						{
-							type: "doc",
-							label: "Premium API Keys",
-							id: "console/ip_reputation/api_keys_premium",
-							customProps: {
-								tag: "premium",
-							},
-						},
-						{
 							type: "link",
 							label: "CTI API Integrations",
 							href: "/u/cti_api/api_integration/integration_intro",
