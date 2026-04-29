@@ -16,6 +16,10 @@ export const PURPLE = "#a78bfa";
 CrowdSec CTI information can be navigated in the [WEB UI](/u/console/ip_reputation/search_ui) but for those who want to integrate CrowdSec's CTI into their tools and workflows, an API access is available through self-service API keys.   
 There are different quota options, from keys included in the current plan to higher-volume keys available as options to the premium plan.   
 
+export const PremiumBadge = () => (
+  <span style={{ display: "inline-flex", alignItems: "center", marginLeft: "7px", padding: "1px 8px", borderRadius: "999px", border: "1px solid transparent", fontSize: "9.5px", fontWeight: 600, lineHeight: 1, color: "#000", background: "linear-gradient(90deg, rgba(213,176,80,1) 0%, rgba(203,161,53,1) 25%, rgba(255,222,138,1) 50%, rgba(203,161,53,1) 75%, rgba(213,176,80,1) 100%)" }}>Premium</span>
+);
+
 <div style={{ display: "flex", flexDirection: "column", gap: "6px", margin: "1.25rem 0", borderLeft: "2px solid var(--ifm-color-emphasis-200)", paddingLeft: "14px" }}>
   {[
     { label: "Community Plan Free Key", quota: "40 / month", desc: "Testing integrations, personal servers, ad-hoc lookups", color: GREEN },
@@ -28,6 +32,7 @@ There are different quota options, from keys included in the current plan to hig
       <span style={{ fontFamily: "var(--ifm-font-family-monospace)", fontSize: "11.5px" }}>{quota}</span>
       {" · "}
       <span style={{ color: "var(--ifm-color-emphasis-500)" }}>{desc}</span>
+      {label.includes("Premium") && <PremiumBadge />}
     </div>
   ))}
 </div>
