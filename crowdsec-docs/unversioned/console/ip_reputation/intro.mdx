@@ -42,30 +42,8 @@ export const PURPLE = "#a78bfa";
       Unlock programmatic access to 30+ enrichment fields per IP — reputation, behaviors, CVEs, attack context, MITRE mappings, and more. Use it to enrich SIEM alerts, automate lookups, or feed threat intel platforms. <strong>Free tier included, no credit card needed.</strong>
     </div>
 
-    {/* Quota rows */}
-    <div style={{ display: "flex", flexDirection: "column", gap: "4px", marginBottom: "10px", borderLeft: "2px solid var(--ifm-color-emphasis-200)", paddingLeft: "12px" }}>
-      {[
-        { label: "Community", quota: "40 / month", desc: "ad-hoc lookups, proof of concept", color: GREEN },
-        { label: "Premium", quota: "120 / month", desc: "regular enrichment, small integrations", color: BLUE },
-        { label: "Premium Options", quota: "5K–100K / month", desc: "production SIEMs, SOARs, high-volume pipelines", color: PURPLE },
-      ].map(({ label, quota, desc, color }) => (
-        <div key={label} style={{ fontSize: "12px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.5 }}>
-          <strong style={{ color, fontWeight: 600 }}>{label}</strong>
-          {" — "}
-          <span style={{ fontFamily: "var(--ifm-font-family-monospace)", fontSize: "11.5px" }}>{quota}</span>
-          {" · "}
-          <span style={{ color: "var(--ifm-color-emphasis-500)" }}>{desc}</span>
-        </div>
-      ))}
-    </div>
-
-    <div style={{ fontSize: "11px", color: "var(--ifm-color-emphasis-500)", lineHeight: 1.5, marginBottom: "12px" }}>
-      API quotas are separate from Web UI quotas. Unused quota does not roll over.
-    </div>
-
     <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
       <Link to="/u/console/ip_reputation/api_keys" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>Create an API key →</span></Link>
-      <Link to="/u/console/ip_reputation/api_keys_premium" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>Quotas & plans →</span></Link>
       <Link to="/u/cti_api/taxonomy/intro" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>Data Taxonomy →</span></Link>
       <Link to="https://crowdsecurity.github.io/cti-api/" style={{ fontSize: "12.5px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "4px" }}><span>API Reference</span><ExternalLink size={11} style={{ opacity: 0.5 }} /></Link>
     </div>
