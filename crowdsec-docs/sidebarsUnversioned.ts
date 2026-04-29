@@ -408,12 +408,12 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 								tag: "otherSection",
 							},
 						},
+						{
+							type: "doc",
+							label: "IP Reputation Report",
+							id: "console/ip_reputation/ip_report",
+						},
 					],
-				},
-				{
-					type: "doc",
-					label: "IP Reputation Report",
-					id: "console/ip_reputation/ip_report",
 				},
 				{
 					type: "category",
@@ -423,14 +423,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 						id: "console/ip_reputation/api_keys",
 					},
 					items: [
-						{
-							type: "doc",
-							label: "Premium API Keys",
-							id: "console/ip_reputation/api_keys_premium",
-							customProps: {
-								tag: "premium",
-							},
-						},
 						{
 							type: "link",
 							label: "CTI API Integrations",

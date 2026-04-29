@@ -1,17 +1,50 @@
 ---
 id: api_keys
-title: CTI API Getting Started
+title: CTI API Keys
 sidebar_position: 2
 ---
 
 import AcademyPromo from '@site/src/components/academy-promo';
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import Link from "@docusaurus/Link";
+
+export const GREEN = "#22d3a0";
+export const BLUE = "#60a5fa";
+export const PURPLE = "#a78bfa";
+
+CrowdSec CTI information can be navigated in the [WEB UI](/u/console/ip_reputation/search_ui) but for those who want to integrate CrowdSec's CTI into their tools and workflows, an API access is available through self-service API keys.   
+There are different quota options, from keys included in the current plan to higher-volume keys available as options to the premium plan.   
+
+export const PremiumBadge = () => (
+  <span style={{ display: "inline-flex", alignItems: "center", marginLeft: "7px", padding: "1px 8px", borderRadius: "999px", border: "1px solid transparent", fontSize: "9.5px", fontWeight: 600, lineHeight: 1, color: "#000", background: "linear-gradient(90deg, rgba(213,176,80,1) 0%, rgba(203,161,53,1) 25%, rgba(255,222,138,1) 50%, rgba(203,161,53,1) 75%, rgba(213,176,80,1) 100%)" }}>Premium</span>
+);
+
+<div style={{ display: "flex", flexDirection: "column", gap: "6px", margin: "1.25rem 0", borderLeft: "2px solid var(--ifm-color-emphasis-200)", paddingLeft: "14px" }}>
+  {[
+    { label: "Community Plan Free Key", quota: "40 / month", desc: "Testing integrations, personal servers, ad-hoc lookups", color: GREEN },
+    { label: "Premium Plan Free Key", quota: "120 / month", desc: "Regular enrichment, small SOC teams, recurring automation", color: BLUE },
+    { label: "Premium Keys Options", quota: "5K · 25K · 100K / month", desc: "Production SIEMs, SOARs, high-volume pipelines — requires Premium", color: PURPLE },
+  ].map(({ label, quota, desc, color }) => (
+    <div key={label} style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6 }}>
+      <strong style={{ color, fontWeight: 600 }}>{label}</strong>
+      {" — "}
+      <span style={{ fontFamily: "var(--ifm-font-family-monospace)", fontSize: "11.5px" }}>{quota}</span>
+      {" · "}
+      <span style={{ color: "var(--ifm-color-emphasis-500)" }}>{desc}</span>
+      {label.includes("Premium") && <PremiumBadge />}
+    </div>
+  ))}
+</div>
+<div style={{ fontSize: "11px", color: "var(--ifm-color-emphasis-500)", lineHeight: 1.5}}>
+  API quotas are separate from Web UI quotas. Unused quota does not roll over.
+</div>
 
 ## Create CTI API Keys
+
 <div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
   <div style={{flex: '1'}}>
-  * Click the `+` in the top right corner.  
+  * Click the `+` in the top right corner.
   * Alternatively you can also click the `+ New Key` in the **Settings → CTI API Keys** page.
   </div>
   <div style={{flex: '0 0 50%'}}>
@@ -29,13 +62,7 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 
 <div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
   <div style={{flex: '1'}}>
-There, you can choose among the various quota options. We provide a free key in order to test your integrations.
-:::info
-The free quota will be better if your organization is Premium than if it's on the free Community plan.
-:::
-:::info
-Only Premium organizations can buy keys with higher quotas. See [Premium API Keys](/u/console/ip_reputation/api_keys_premium) for more details.
-:::
+There, you can choose among the various quota options. A free key is always available to test your integrations — the quota is higher if your organization is on a Premium plan.
   </div>
   <div style={{flex: '0 0 50%'}}>
 <ThemedImage
@@ -47,6 +74,17 @@ Only Premium organizations can buy keys with higher quotas. See [Premium API Key
 />
   </div>
 </div>
+
+:::warning CTI API Keys and trials
+- Purchasing a CTI API Key does **not** grant access to a Premium Plan trial.
+- Purchasing a CTI API Key while a trial is active will **immediately end the trial**.
+- Cancelled CTI API Keys are **non-refundable** and will not be prorated — the full price remains due regardless of when the cancellation occurs.
+:::
+
+:::warning Lucene search via API
+The Advanced Search Lucene query interface available in the Console is a Web UI feature only — it is not accessible through self-service API keys. Programmatic access to bulk Lucene-style querying requires an Advanced CTI plan. [Contact our team](https://www.crowdsec.net/contact-crowdsec?message=Advanced%20CTI%20plan%20discussion) to discuss your use case.
+:::
+
 ## Using the API
 
 CrowdSec provides [ready-made integrations](/u/cti_api/api_integration/integration_intro) for the most common security platforms — SIEM, SOAR, TIP, and investigation tools. If your platform is listed, that's the fastest way to get started.
@@ -56,7 +94,7 @@ If you prefer to use your own scripts, call the API directly from the command li
 
 <AcademyPromo
   image="crowdsec_threat_intelligence.svg"
-  description="Watch a short series of videos on how to get the most out of CrowdSec’s Cyber Threat Intelligence database"
+  description="Watch a short series of videos on how to get the most out of CrowdSec's Cyber Threat Intelligence database"
   title="More ways to learn"
   course="crowdsec-cyber-threat-intelligence"
   utm="?utm_source=docs&utm_medium=banner&utm_campaign=cti-page&utm_id=academydocs"
