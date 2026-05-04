@@ -367,8 +367,8 @@ const intents: IntentCardProps[] = [
 	{
 		icon: <img src="/img/icons/world.webp" className="h-8 w-8 border-0" alt="CTI" />,
 		accent: BLUE,
-		title: "Investigate IPs or enrich alerts",
-		desc: "You're a security analyst or developer who wants IP context — in a browser or via REST API.",
+		title: "Investigate IPs Behaviors and Enrich Alerts",
+		desc: "You're a security analyst or developer who wants IP context, behaviors, CVEs, Aggressivity... In a browser or via REST API.",
 		pill: "IP Reputation & CTI",
 		href: "/u/cti_api/intro",
 		aka: ["IoC Lookup", "Threat Intel"],
@@ -626,8 +626,7 @@ const HomePage = () => {
 								marginBottom: "20px",
 							}}
 						>
-							<div style={{ flex: 1, height: "1px", background: "var(--ifm-color-emphasis-200)" }} />
-							how each path works
+							<div style={{ flex: 1, height: "1px", background: "var(--ifm-color-emphasis-200)" }} />💡 how each path works
 							<div style={{ flex: 1, height: "1px", background: "var(--ifm-color-emphasis-200)" }} />
 						</div>
 
@@ -699,14 +698,14 @@ const HomePage = () => {
 								{ label: "🖥️ Console", href: "/u/console/intro" },
 								{ label: "🛡️ AppSec / WAF", href: "/docs/next/appsec/intro" },
 								{ label: "💻 CLI Reference", href: "/docs/next/cscli/" },
+								{ label: "🔑 CTI API Keys", href: "/cti" },
+								{ label: "❓ Troubleshooting", href: "/u/troubleshooting/intro" },
 								{
 									label: "📖 Docs AI Assistant",
 									href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation",
 									external: true,
 								},
-								{ label: "🔑 CTI API Keys", href: "/cti" },
-								{ label: "❓ Troubleshooting", href: "/u/troubleshooting/intro" },
-								{ label: "🌐 About CrowdSec", href: "https://www.crowdsec.net", external: true },
+								{ label: "🌐 WWW - CrowdSec", href: "https://www.crowdsec.net", external: true },
 							].map(({ label, href, external }) => (
 								<Link
 									key={label}
