@@ -5,7 +5,7 @@
 }
 
 pre {
-	@apply rounded-lg font-semibold;
+	@apply rounded-lg font-medium;
 }
 
 .prism-code .token.plain {
@@ -18,5 +18,5 @@ pre {
 }
 
 code:not(.prism-code code) {
-	@apply bg-gray-100 dark:bg-gray-50 border-primary/20 border-solid border text-primary px-1 py-0.5 rounded-md font-semibold;
+	@apply bg-gray-100 dark:bg-gray-50 border-primary/20 border-solid border text-primary px-1 py-0.5 rounded-md font-medium;
 }

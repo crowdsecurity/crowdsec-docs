@@ -13,7 +13,7 @@ export const ctiIntegrations: CtiIntegrationData[] = [
 		slug: "ipdex",
 		href: "/u/cti_api/api_integration/integration_ipdex",
 		plugin: "CrowdSec CTI Reports",
-		desc: "IPDEX extracts IP addresses from your logs and cross-references them against CrowdSec's global threat intelligence network — instantly.",
+		desc: "IPDEX extracts IP addresses from your logs and cross-references them against CrowdSec's global threat intelligence network instantly.",
 		color: "#e55c2f",
 	},
 	{
@@ -29,7 +29,7 @@ export const ctiIntegrations: CtiIntegrationData[] = [
 		slug: "gigasheet",
 		href: "/u/cti_api/api_integration/integration_gigasheet",
 		plugin: "No-Code API Enrichment",
-		desc: "Enrich spreadsheet columns with CTI data using Gigasheet's no-code API enrichment feature — no scripting required.",
+		desc: "Enrich spreadsheet columns with CTI data using Gigasheet's no-code API enrichment feature. No scripting required.",
 		color: "#00b4d8",
 	},
 	{

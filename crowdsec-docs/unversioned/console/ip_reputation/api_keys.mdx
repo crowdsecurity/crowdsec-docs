@@ -24,11 +24,11 @@ export const PremiumBadge = () => (
   {[
     { label: "Community Plan Free Key", quota: "40 / month", desc: "Testing integrations, personal servers, ad-hoc lookups", color: GREEN },
     { label: "Premium Plan Free Key", quota: "120 / month", desc: "Regular enrichment, small SOC teams, recurring automation", color: BLUE },
-    { label: "Premium Keys Options", quota: "5K · 25K · 100K / month", desc: "Production SIEMs, SOARs, high-volume pipelines — requires Premium", color: PURPLE },
+    { label: "Premium Keys Options", quota: "5K · 25K · 100K / month", desc: "Production SIEMs, SOARs, high-volume pipelines. Requires Premium", color: PURPLE },
   ].map(({ label, quota, desc, color }) => (
     <div key={label} style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6 }}>
       <strong style={{ color, fontWeight: 600 }}>{label}</strong>
-      {" — "}
+      {" - "}
       <span style={{ fontFamily: "var(--ifm-font-family-monospace)", fontSize: "11.5px" }}>{quota}</span>
       {" · "}
       <span style={{ color: "var(--ifm-color-emphasis-600)" }}>{desc}</span>
@@ -62,7 +62,7 @@ export const PremiumBadge = () => (
 
 <div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
   <div style={{flex: '1'}}>
-There, you can choose among the various quota options. A free key is always available to test your integrations — the quota is higher if your organization is on a Premium plan.
+There, you can choose among the various quota options. A free key is always available to test your integrations. The quota is higher if your organization is on a Premium plan.
   </div>
   <div style={{flex: '0 0 50%'}}>
 <ThemedImage
@@ -78,16 +78,16 @@ There, you can choose among the various quota options. A free key is always avai
 :::warning CTI API Keys and trials
 - Purchasing a CTI API Key does **not** grant access to a Premium Plan trial.
 - Purchasing a CTI API Key while a trial is active will **immediately end the trial**.
-- Cancelled CTI API Keys are **non-refundable** and will not be prorated — the full price remains due regardless of when the cancellation occurs.
+- Cancelled CTI API Keys are **non-refundable** and will not be prorated, the full price remains due regardless of when the cancellation occurs.
 :::
 
 :::warning Lucene search via API
-The Advanced Search Lucene query interface available in the Console is a Web UI feature only — it is not accessible through self-service API keys. Programmatic access to bulk Lucene-style querying requires an Advanced CTI plan. [Contact our team](https://www.crowdsec.net/contact-crowdsec?message=Advanced%20CTI%20plan%20discussion) to discuss your use case.
+The Advanced Search Lucene query interface available in the Console is a Web UI feature only, it is not accessible through self-service API keys. Programmatic access to bulk Lucene-style querying requires an Advanced CTI plan. [Contact our team](https://www.crowdsec.net/contact-crowdsec?message=Advanced%20CTI%20plan%20discussion) to discuss your use case.
 :::
 
 ## Using the API
 
-CrowdSec provides [ready-made integrations](/u/cti_api/api_integration/integration_intro) for the most common security platforms — SIEM, SOAR, TIP, and investigation tools. If your platform is listed, that's the fastest way to get started.
+CrowdSec provides [ready-made integrations](/u/cti_api/api_integration/integration_intro) for the most common security platforms: SIEM, SOAR, TIP, and investigation tools. If your platform is listed, that's the fastest way to get started.
 
 If you prefer to use your own scripts, call the API directly from the command line, or build custom playbooks, the API is a straightforward REST interface authenticated with your key.
 

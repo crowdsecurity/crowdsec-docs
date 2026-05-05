@@ -20,10 +20,10 @@ export const GREEN = "#22d3a0";
 </h1>
 <p style={{ fontSize: "14px", color: "var(--ifm-color-emphasis-600)", marginBottom: "1.25rem" }}>
   <p>CrowdSec tracks malicious IPs across hundreds of thousands of real deployments worldwide.
-  <br />Every lookup gives you <strong>behavioral context</strong> — what the IP was doing, where, and when.</p>
+  <br />Every lookup gives you <strong>behavioral context</strong>: what the IP was doing, where, and when.</p>
 </p>
 
-{/* Quick access strip — same pattern as "Already running CrowdSec?" on the homepage */}
+{/* Quick access strip - same pattern as "Already running CrowdSec?" on the homepage */}
 <div className="doc-quick-strip">
   <span className="doc-quick-strip__label">Quick access</span>
   <div className="doc-quick-strip__pills">
@@ -43,7 +43,7 @@ export const GREEN = "#22d3a0";
       {
         badge: "🔍 No setup needed", icon: "🖥️", accent: BLUE,
         title: "Web UI investigation - in the Console",
-        desc: "Search any IP instantly. Explore threat history and the top aggressive IPs in the last 24h — no API key needed.",
+        desc: "Search any IP instantly. Explore threat history and the top aggressive IPs in the last 24h. No API key needed.",
         links: [{ label: "Web UI guide →", href: "/u/console/ip_reputation/intro" }, { label: "IP Report →", href: "/u/console/ip_reputation/ip_report" }],
       },
       {
@@ -55,7 +55,7 @@ export const GREEN = "#22d3a0";
       {
         badge: "🎯 Threat hunter", icon: "🚨", accent: PURPLE,
         title: "Hunt active threats",
-        desc: "Advanced Search with live faceted filters — behavior, country, AS, CVE — to find campaigns or build blocklists.",
+        desc: "Advanced Search with live faceted filters (behavior, country, AS, CVE) to find campaigns or build blocklists.",
         links: [{ label: "Advanced search →", href: "/u/console/ip_reputation/search_ui_advanced" }, { label: "Live Exploit Tracker →", href: "/u/tracker_api/intro" }],
       },
     ].map(({ badge, icon, accent, title, desc, links }) => (
@@ -79,19 +79,19 @@ export const GREEN = "#22d3a0";
 <div style={{ borderLeft: "3px solid var(--ifm-color-emphasis-200)", paddingLeft: "16px", marginBottom: "2.5rem" }}>
   <div className="doc-eyebrow" style={{ marginBottom: "6px" }}>Why CrowdSec CTI</div>
   <p style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", marginBottom: "10px", fontStyle: "italic" }}>
-    Most IP reputation services tell you an IP is "bad." CrowdSec tells you <strong style={{ color: "var(--ifm-color-emphasis-600)" }}>what it was doing</strong> — from real deployments, not honeypots.
+    Most IP reputation services tell you an IP is "bad." CrowdSec tells you <strong style={{ color: "var(--ifm-color-emphasis-600)" }}>what it was doing</strong>. From real deployments, not honeypots.
   </p>
   <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
     {[
       { icon: "🌍", title: "Real-world attack signals", desc: "CrowdSec intelligence is built from signals shared by real deployments across the Internet." },
-      { icon: "🧠", title: "Behavioral, not just reputation", desc: "Brute-force, CVE exploitation, scan, credential stuffing — mapped to MITRE ATT&CK." },
+      { icon: "🧠", title: "Behavioral, not just reputation", desc: "Brute-force, CVE exploitation, scan, credential stuffing, mapped to MITRE ATT&CK." },
       { icon: "⚡", title: "Real-time, not cached lists", desc: "Continuously updated with time-windowed scores showing if a threat is rising, stable, or decaying." },
       { icon: "🔬", title: "CVE-level exploit tracking", desc: "Live Exploit Tracker shows which CVEs are actively exploited, with momentum, opportunity, and malicious IP context." },
     ].map(({ icon, title, desc }) => (
       <div key={title} style={{ display: "flex", gap: "10px", alignItems: "baseline" }}>
         <span style={{ fontSize: "14px", flexShrink: 0 }}>{icon}</span>
         <span style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.5 }}>
-          <strong style={{ color: "var(--ifm-color-emphasis-700)", fontWeight: 600 }}>{title}</strong> — {desc}
+          <strong style={{ color: "var(--ifm-color-emphasis-700)", fontWeight: 600 }}>{title}</strong>: {desc}
         </span>
       </div>
     ))}
@@ -104,7 +104,7 @@ export const GREEN = "#22d3a0";
   <div className="doc-eyebrow">Integrations</div>
   <div className="doc-section-title">Already using one of these?</div>
   <p style={{ fontSize: "13px", color: "var(--ifm-color-emphasis-600)", marginBottom: "1rem" }}>
-    Jump straight to the integration guide — no need to read the full API docs first.
+    Jump straight to the integration guide, no need to read the full API docs first.
   </p>
   <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.5rem", marginBottom: "1.5rem" }}>
     {ctiIntegrations.map(({ name, slug, href, plugin, desc, color }) => (
@@ -116,11 +116,11 @@ export const GREEN = "#22d3a0";
   {[
     { label: "Community Plan Free Key", quota: "40 / month", desc: "Testing integrations, personal servers, ad-hoc lookups", color: GREEN },
     { label: "Premium Plan Free Key", quota: "120 / month", desc: "Regular enrichment, small SOC teams, recurring automation", color: BLUE },
-    { label: "Premium Keys Options", quota: "5K · 25K · 100K / month", desc: "Production SIEMs, SOARs, high-volume pipelines — requires Premium", color: PURPLE },
+    { label: "Premium Keys Options", quota: "5K · 25K · 100K / month", desc: "Production SIEMs, SOARs, high-volume pipelines (requires Premium)", color: PURPLE },
   ].map(({ label, quota, desc, color }) => (
     <div key={label} style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6 }}>
       <strong style={{ color, fontWeight: 600 }}>{label}</strong>
-      {" — "}
+      {" : "}
       <span style={{ fontFamily: "var(--ifm-font-family-monospace)", fontSize: "11.5px" }}>{quota}</span>
       {" · "}
       <span style={{ color: "var(--ifm-color-emphasis-600)" }}>{desc}</span>
