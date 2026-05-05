@@ -450,7 +450,7 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 		eyebrow: "IP Reputation & CTI",
 		title: "Query threat intel — in the browser or via API in your tools",
 		ctaLabel: "Explore CTI →",
-		ctaHref: "/cti",
+		ctaHref: "/u/cti_api/intro",
 		steps: [
 			{
 				num: 1,
@@ -698,7 +698,7 @@ const HomePage = () => {
 								{ label: "🖥️ Console", href: "/u/console/intro" },
 								{ label: "🛡️ AppSec / WAF", href: "/docs/next/appsec/intro" },
 								{ label: "💻 CLI Reference", href: "/docs/next/cscli/" },
-								{ label: "🔑 CTI API Keys", href: "/cti" },
+								{ label: "🔑 CTI API Keys", href: "/u/console/ip_reputation/api_keys" },
 								{ label: "❓ Troubleshooting", href: "/u/troubleshooting/intro" },
 								{
 									label: "📖 Docs AI Assistant",
