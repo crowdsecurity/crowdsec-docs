@@ -195,7 +195,7 @@ export default function DocSidebarItemCategory({
 					{...props}
 				>
 					{label}
-					{!collapsible && isPremium && (
+					{isPremium && (
 						<Tooltip>
 							<Badge className="m-1" variant="premium">
 								Premium

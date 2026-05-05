@@ -31,12 +31,12 @@ export const PremiumBadge = () => (
       {" — "}
       <span style={{ fontFamily: "var(--ifm-font-family-monospace)", fontSize: "11.5px" }}>{quota}</span>
       {" · "}
-      <span style={{ color: "var(--ifm-color-emphasis-500)" }}>{desc}</span>
+      <span style={{ color: "var(--ifm-color-emphasis-600)" }}>{desc}</span>
       {label.includes("Premium") && <PremiumBadge />}
     </div>
   ))}
 </div>
-<div style={{ fontSize: "11px", color: "var(--ifm-color-emphasis-500)", lineHeight: 1.5}}>
+<div style={{ fontSize: "11px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.5}}>
   API quotas are separate from Web UI quotas. Unused quota does not roll over.
 </div>
 

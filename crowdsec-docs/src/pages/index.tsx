@@ -1,75 +1,484 @@
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
 import SearchBar from "@theme/SearchBar";
-import React, { useEffect } from "react";
+import { ExternalLink } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 
-type ProductCardProps = {
-	title: string;
-	description: string;
+// ── Intent card ──────────────────────────────────────────────────────────────
+
+type IntentCardProps = {
 	icon: React.ReactNode;
-	link: string;
-	features: string[];
-	bestFor: string;
+	title: string;
+	desc: string;
+	pill: string;
+	accent: string;
+	href: string;
+	aka?: string[];
 };
 
-const ProductCard = ({ title, description, icon, link, features, bestFor }: ProductCardProps): React.JSX.Element => (
-	<Link href={link} className="hover:no-underline group flex">
-		<div className="w-full flex flex-col border border-solid border-border rounded-xl p-6 bg-card shadow-sm group-hover:shadow-lg group-hover:border-primary/50 transition-all duration-300">
-			<div className="flex items-center gap-4 mb-4">
-				<div className="w-14 h-14 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0 overflow-hidden">
+const IntentCard = ({ icon, title, desc, pill, accent, href, aka }: IntentCardProps) => (
+	<a
+		href={href}
+		className="hover:no-underline group flex"
+		style={{ textDecoration: "none", color: "inherit" }}
+		onMouseEnter={(e) => {
+			const el = e.currentTarget as HTMLAnchorElement;
+			el.style.borderColor = accent;
+			el.style.boxShadow = `0 8px 24px ${accent}22, 0 0 0 1px ${accent}`;
+			el.style.transform = "translateY(-2px)";
+			el.style.borderRadius = "14px";
+		}}
+		onMouseLeave={(e) => {
+			const el = e.currentTarget as HTMLAnchorElement;
+			el.style.borderColor = "";
+			el.style.boxShadow = "";
+			el.style.transform = "";
+		}}
+	>
+		<div
+			style={{
+				width: "100%",
+				display: "flex",
+				flexDirection: "column",
+				padding: "24px",
+				background: "rgb(var(--card)/var(--tw-bg-opacity,1))",
+				border: "1px solid var(--ifm-color-emphasis-200)",
+				borderRadius: "12px",
+				boxShadow: "var(--ifm-global-shadow-sm)",
+				transition: "border-color .2s, box-shadow .2s, transform .2s",
+			}}
+		>
+			<div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "12px" }}>
+				<div
+					style={{
+						width: "48px",
+						height: "48px",
+						flexShrink: 0,
+						borderRadius: "12px",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+						background: `${accent}1a`,
+						overflow: "hidden",
+					}}
+				>
 					{icon}
 				</div>
-				<h3 className="text-xl font-bold text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors m-0">
-					{title}
-				</h3>
+				<div style={{ fontWeight: 700, fontSize: "15px", lineHeight: 1.25 }}>{title}</div>
 			</div>
-			<p className="text-gray-600 dark:text-gray-700 text-base mb-3">{description}</p>
-			<p className="text-sm font-medium text-primary mb-4">{bestFor}</p>
-			<ul className="space-y-2 mb-4 flex-grow">
-				{features.map((feature) => (
-					<li key={feature} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-700">
-						<span className="text-primary">✓</span>
-						{feature}
-					</li>
-				))}
-			</ul>
-			<div className="mt-auto pt-4 border-t border-border">
-				<span className="text-primary font-medium group-hover:underline">Explore product →</span>
+			<div style={{ fontSize: "13px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.55, marginBottom: "14px", flexGrow: 1 }}>
+				{desc}
 			</div>
+			<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+				<span
+					style={{
+						display: "inline-flex",
+						alignItems: "center",
+						gap: "5px",
+						padding: "3px 10px",
+						borderRadius: "100px",
+						fontFamily: "var(--ifm-font-family-monospace)",
+						fontSize: "10.5px",
+						letterSpacing: "0.5px",
+						fontWeight: 500,
+						color: accent,
+						border: `1px solid ${accent}44`,
+						background: `${accent}11`,
+					}}
+				>
+					→ {pill}
+				</span>
+			</div>
+			{aka && aka.length > 0 && (
+				<div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "12px", flexWrap: "wrap" }}>
+					<span
+						style={{
+							fontFamily: "var(--ifm-font-family-monospace)",
+							fontSize: "8px",
+							letterSpacing: "0.8px",
+							textTransform: "uppercase",
+							color: "var(--ifm-color-emphasis-600)",
+							flexShrink: 0,
+						}}
+					>
+						aka
+					</span>
+					{aka.map((tag) => (
+						<span
+							key={tag}
+							style={{
+								fontFamily: "var(--ifm-font-family-monospace)",
+								fontSize: "8px",
+								color: "var(--ifm-color-emphasis-600)",
+								padding: "1px 7px",
+								borderRadius: "4px",
+								border: "1px solid var(--ifm-color-emphasis-200)",
+								background: "var(--ifm-background-color)",
+							}}
+						>
+							{tag}
+						</span>
+					))}
+				</div>
+			)}
 		</div>
-	</Link>
+	</a>
 );
 
-const products: ProductCardProps[] = [
+// ── Schema / path block ───────────────────────────────────────────────────────
+
+type Step = {
+	num: number;
+	icon: string;
+	title: string;
+	desc: string;
+	hint?: string;
+};
+
+type SchemaBlockProps = {
+	id: string;
+	color: string;
+	eyebrowIcon: string;
+	eyebrow: string;
+	title: string;
+	ctaLabel: string;
+	ctaHref: string;
+	steps: Step[];
+	open: boolean;
+	onToggle: () => void;
+};
+
+const SchemaBlock = ({ id, color, eyebrowIcon, eyebrow, title, ctaLabel, ctaHref, steps, open, onToggle }: SchemaBlockProps) => (
+	<div
+		id={id}
+		style={{
+			background: "rgb(var(--card)/var(--tw-bg-opacity,1))",
+			border: "1px solid var(--ifm-color-emphasis-200)",
+			borderRadius: "16px",
+			marginBottom: "12px",
+			position: "relative",
+			overflow: "hidden",
+		}}
+	>
+		{/* left accent strip */}
+		<div
+			style={{
+				position: "absolute",
+				left: 0,
+				top: 0,
+				bottom: 0,
+				width: "3px",
+				borderRadius: "3px 0 0 3px",
+				background: `linear-gradient(to bottom, ${color}, transparent)`,
+			}}
+		/>
+		{/* subtle radial glow */}
+		<div
+			style={{
+				position: "absolute",
+				inset: 0,
+				pointerEvents: "none",
+				background: `radial-gradient(ellipse 50% 40% at 0% 0%, ${color}0d 0%, transparent 60%)`,
+			}}
+		/>
+
+		{/* header — always visible, clickable to toggle */}
+		<button
+			type="button"
+			onClick={onToggle}
+			style={{
+				width: "100%",
+				background: "none",
+				border: "none",
+				cursor: "pointer",
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "space-between",
+				gap: "16px",
+				padding: "24px 28px",
+				position: "relative",
+				zIndex: 1,
+				textAlign: "left",
+				color: "inherit",
+			}}
+		>
+			<div>
+				<div
+					style={{
+						fontFamily: "var(--ifm-font-family-monospace)",
+						fontSize: "10px",
+						letterSpacing: "1.2px",
+						textTransform: "uppercase",
+						marginBottom: "6px",
+						display: "flex",
+						alignItems: "center",
+						gap: "7px",
+						color: color,
+					}}
+				>
+					<span>{eyebrowIcon}</span> {eyebrow}
+				</div>
+				<div style={{ fontWeight: 700, fontSize: "18px", lineHeight: 1.2 }}>{title}</div>
+			</div>
+			<div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+				<Link
+					href={ctaHref}
+					onClick={(e) => e.stopPropagation()}
+					style={{
+						display: "inline-flex",
+						alignItems: "center",
+						gap: "6px",
+						padding: "8px 16px",
+						borderRadius: "8px",
+						fontSize: "13px",
+						fontWeight: 600,
+						background: color,
+						color: "#000",
+						textDecoration: "none",
+						border: "none",
+					}}
+				>
+					{ctaLabel}
+				</Link>
+				<span
+					style={{
+						fontSize: "18px",
+						color: "var(--ifm-color-emphasis-600)",
+						transform: open ? "rotate(180deg)" : "rotate(0deg)",
+						transition: "transform .2s",
+						display: "inline-block",
+					}}
+				>
+					▾
+				</span>
+			</div>
+		</button>
+
+		{/* collapsible step flow */}
+		{open && (
+			<div
+				style={{
+					display: "flex",
+					alignItems: "flex-start",
+					flexWrap: "wrap",
+					gap: "0",
+					padding: "0 28px 28px",
+					position: "relative",
+					zIndex: 1,
+				}}
+			>
+				{steps.map((step, i) => (
+					<div
+						key={step.num}
+						style={{
+							flex: "1",
+							minWidth: "150px",
+							display: "flex",
+							flexDirection: "column",
+							alignItems: "center",
+							textAlign: "center",
+							padding: "0 12px",
+							position: "relative",
+						}}
+					>
+						{i > 0 && (
+							<div
+								style={{
+									position: "absolute",
+									left: "-10px",
+									top: "22px",
+									color: "var(--ifm-color-emphasis-600)",
+									fontSize: "16px",
+								}}
+							>
+								→
+							</div>
+						)}
+						{step.hint && (
+							<div
+								style={{
+									fontFamily: "var(--ifm-font-family-monospace)",
+									fontSize: "9px",
+									letterSpacing: "0.8px",
+									textTransform: "uppercase",
+									color: "var(--ifm-color-emphasis-600)",
+									marginBottom: "4px",
+								}}
+							>
+								{step.hint}
+							</div>
+						)}
+						<div
+							style={{
+								width: "44px",
+								height: "44px",
+								borderRadius: "50%",
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+								fontWeight: 800,
+								fontSize: "17px",
+								marginBottom: "10px",
+								flexShrink: 0,
+								border: `2px ${step.hint ? "dashed" : "solid"} ${color}55`,
+								color: color,
+								background: `${color}14`,
+								opacity: step.hint ? 0.75 : 1,
+							}}
+						>
+							{step.num}
+						</div>
+						<div style={{ fontSize: "20px", marginBottom: "8px" }}>{step.icon}</div>
+						<div style={{ fontWeight: 700, fontSize: "13.5px", marginBottom: "6px", lineHeight: 1.3 }}>{step.title}</div>
+						<div style={{ fontSize: "12px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.55 }}>{step.desc}</div>
+					</div>
+				))}
+			</div>
+		)}
+	</div>
+);
+
+// ── Data ──────────────────────────────────────────────────────────────────────
+
+const ORANGE = "#f97316";
+const GREEN = "#22d3a0";
+const BLUE = "#60a5fa";
+
+const intents: IntentCardProps[] = [
 	{
-		title: "Security Engine",
-		description: "Analyze your logs to detect attacks, block malicious IPs, and protect web applications.",
-		icon: <img src="/img/icons/radar-target.webp" className="h-10 w-10 border-0" alt="Security Engine" />,
-		link: "/security-engine",
-		features: ["Behavior-based detection", "Community threat sharing", "AppSec / WAF for web apps", "Open source"],
-		bestFor: "Best for self-hosted detection and protection.",
+		icon: <img src="/img/icons/radar-target.webp" className="h-8 w-8 border-0" alt="Security Engine" />,
+		accent: ORANGE,
+		title: "Detect & Block attacks on my servers",
+		desc: "Locally identify and ban bad behaving IPs observed in your logs and requests with CrowdSec Detection Scenarios, and Virtual-Patching Collections.",
+		pill: "Security Engine",
+		href: "/security-engine",
+		aka: ["IDPS", "WAF", "CrowdSec FOSS"],
 	},
 	{
-		title: "Blocklists",
-		description: "Deploy curated threat intel feeds to protect your network without running detection yourself.",
-		icon: <img src="/img/icons/shield.webp" className="h-10 w-10 border-0" alt="Blocklists" />,
-		link: "/blocklists",
-		features: ["Curated IP lists", "Ready to deploy", "Automatic updates", "Multiple categories"],
-		bestFor: "Best for fast protection with minimal setup.",
+		icon: <img src="/img/icons/shield.webp" className="h-8 w-8 border-0" alt="Blocklists" />,
+		accent: GREEN,
+		title: "Push a Blocklists into my firewall, CDN or WAF",
+		desc: "You manage network perimeter devices and want a URL to subscribe to — no agent to install.",
+		pill: "Blocklist Integration Endpoint",
+		href: "/blocklists",
+		aka: ["Threat Feeds", "IOC Streams", "Deny-list"],
 	},
 	{
-		title: "CTI",
-		description: "Query CrowdSec threat intelligence to enrich investigations, automate lookups, and integrate with tools.",
-		icon: <img src="/img/icons/world.webp" className="h-10 w-10 border-0" alt="CTI" />,
-		link: "/cti",
-		features: ["REST API access", "IP reputation scores", "Attack context", "SIEM integrations"],
-		bestFor: "Best for enrichment, integrations, and investigations.",
+		icon: <img src="/img/icons/world.webp" className="h-8 w-8 border-0" alt="CTI" />,
+		accent: BLUE,
+		title: "Investigate IPs Behaviors and Enrich Alerts",
+		desc: "You're a security analyst or developer who wants IP context, behaviors, CVEs, Aggressivity... In a browser or via REST API.",
+		pill: "IP Reputation & CTI",
+		href: "/u/cti_api/intro",
+		aka: ["IoC Lookup", "Threat Intel"],
 	},
 ];
 
+const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
+	{
+		id: "schema-engine",
+		color: ORANGE,
+		eyebrowIcon: "🛡️",
+		eyebrow: "Security Engine",
+		title: "Detect and block malicious behaviors on your infrastructure",
+		ctaLabel: "Install CrowdSec →",
+		ctaHref: "/security-engine",
+		steps: [
+			{
+				num: 1,
+				icon: "⚡",
+				title: "Install the Security Engine",
+				desc: "Runs on your server, detects attack patterns in real time — immediately protected, and continuously updated with CrowdSec Community Blocklist.",
+			},
+			{
+				num: 2,
+				icon: "🛡️",
+				hint: "RECOMMENDED",
+				title: "Activate the WAF module",
+				desc: "Layer in the AppSec component to inspect HTTP traffic and block web exploits before they reach your app.",
+			},
+			{
+				num: 3,
+				icon: "📋",
+				hint: "OPTIONAL",
+				title: "Subscribe to blocklists",
+				desc: "Add a selection of extra blocklists on top of the built-in detection & community blocklist",
+			},
+			{
+				num: 4,
+				icon: "✍️",
+				hint: "OPTIONAL",
+				title: "Craft your own rules",
+				desc: "Write custom scenarios for your stack, then share them back with the community on the Hub.",
+			},
+		],
+	},
+	{
+		id: "schema-blocklists",
+		color: GREEN,
+		eyebrowIcon: "🚫",
+		eyebrow: "Blocklists",
+		title: "Push curated threat feeds directly into your firewall, CDN, or WAF",
+		ctaLabel: "Discover Blocklists →",
+		ctaHref: "/blocklists",
+		steps: [
+			{
+				num: 1,
+				icon: "🔌",
+				title: "Create a blocklist integration endpoint",
+				desc: "Generates a dedicated URL and credentials to serve blocklists to your perimeter devices.",
+			},
+			{
+				num: 2,
+				icon: "🗂️",
+				title: "Choose which blocklists to serve",
+				desc: "Select from curated feeds by threat category: scanners, bots, TOR exits, exploits, and more.",
+			},
+			{
+				num: 3,
+				icon: "🔗",
+				title: "Plug it in as an external threat feed",
+				desc: "Point your firewall, CDN, or WAF at the endpoint. Use the feed to protect your infrastructure.",
+			},
+		],
+	},
+	{
+		id: "schema-cti",
+		color: BLUE,
+		eyebrowIcon: "🔍",
+		eyebrow: "IP Reputation & CTI",
+		title: "Query threat intel — in the browser or via API in your tools",
+		ctaLabel: "Explore CTI →",
+		ctaHref: "/u/cti_api/intro",
+		steps: [
+			{
+				num: 1,
+				icon: "🖥️",
+				title: "Look up any IP in the Console",
+				desc: "Search instantly from our Web UI— get reputation score, behaviors, attack history, and CVE links.",
+			},
+			{
+				num: 2,
+				icon: "🔑",
+				hint: "Integrate",
+				title: "Generate a CTI API key",
+				desc: "Unlock programmatic access to 30+ data points on IPs detected by CrowdSec Network.",
+			},
+			{
+				num: 3,
+				icon: "⚙️",
+				hint: "Enrich",
+				title: "Connect to your SIEM/SOAR/TIP",
+				desc: "Native integrations for Splunk, Sentinel, QRadar, TheHive, OpenCTI, MISP, and more.",
+			},
+		],
+	},
+];
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+
 const HomePage = () => {
-	// Add class to body to hide navbar search on homepage
 	useEffect(() => {
 		document.body.classList.add("homepage");
 		document.documentElement.classList.add("homepage");
@@ -79,29 +488,39 @@ const HomePage = () => {
 		};
 	}, []);
 
+	const [openSchema, setOpenSchema] = useState<string | null>(null);
+
+	const toggleSchema = (id: string) => setOpenSchema((prev) => (prev === id ? null : id));
+
 	return (
 		<Layout title="Documentation" description="CrowdSec, the open-source & participative IPS">
 			<main className="flex-1">
-				{/* Hero Section */}
-				<section className="py-8 md:py-12 px-4">
-					<div className="container max-w-5xl mx-auto">
-						<div className="flex items-center justify-between gap-6">
-							<div>
-								<h1 className="text-2xl md:text-4xl font-bold mb-2">CrowdSec Documentation</h1>
-								<p className="text-sm italic text-gray-500 dark:text-gray-600 mb-2">
-									Pronounced: <span className="font-semibold">Krowd-Sek</span> [/kraʊd-sek/]
-								</p>
-								<p className="text-base md:text-lg text-gray-600 dark:text-gray-700 max-w-xl">
-									Community-driven security that unifies detection, blocklists, and threat intel for modern
-									infrastructure.
-								</p>
-							</div>
-							<img alt="CrowdSec Logo" src="/img/crowdsec_logo.png" className="hidden md:block h-16 flex-shrink-0 border-0" />
-						</div>
+				{/* Hero */}
+				<section className="py-10 md:py-16 px-4 text-center" style={{ position: "relative", overflow: "hidden" }}>
+					<div
+						style={{
+							position: "absolute",
+							inset: 0,
+							pointerEvents: "none",
+							background: "radial-gradient(ellipse 55% 40% at 50% 0%, rgba(249,115,22,0.07) 0%, transparent 70%)",
+						}}
+					/>
+					<div style={{ position: "relative", zIndex: 1 }}>
+						<h1 className="text-3xl md:text-5xl font-bold mb-3" style={{ letterSpacing: "-1px", lineHeight: 1.1 }}>
+							Find the right
+							<br />
+							CrowdSec tool for you
+						</h1>
+						<p
+							className="text-base md:text-lg mb-0"
+							style={{ color: "var(--ifm-color-emphasis-600)", maxWidth: "460px", margin: "0 auto" }}
+						>
+							IDPS/WAF | Blocklist feeds | IP Reputation
+						</p>
 					</div>
 				</section>
 
-				{/* Search Section */}
+				{/* Search */}
 				<section className="pb-8 px-4">
 					<div className="container max-w-2xl mx-auto">
 						<div className="homepage-search">
@@ -110,78 +529,206 @@ const HomePage = () => {
 					</div>
 				</section>
 
-				{/* Product Selection */}
-				<section className="pb-12 md:pb-20 px-4">
-					<div className="container max-w-5xl mx-auto">
-						<h2 className="text-center text-xl md:text-2xl font-semibold mb-2 text-gray-900 dark:text-gray-900">
-							Choose your starting point
-						</h2>
-						<p className="text-center text-gray-600 dark:text-gray-700 mb-8">
-							Each path links to setup, how-tos, and reference docs.
-						</p>
-
-						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-							{products.map((product) => (
-								<ProductCard key={product.title} {...product} />
+				{/* Intent strip */}
+				<section className="pb-6 px-4">
+					<div className="container mx-auto" style={{ maxWidth: "940px" }}>
+						<div
+							style={{
+								fontFamily: "var(--ifm-font-family-monospace)",
+								fontSize: "10.5px",
+								letterSpacing: "1.5px",
+								textTransform: "uppercase",
+								color: "var(--ifm-color-emphasis-600)",
+								marginBottom: "12px",
+							}}
+						>
+							I want to…
+						</div>
+						<div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+							{intents.map((i) => (
+								<IntentCard key={i.pill} {...i} />
 							))}
 						</div>
-					</div>
-				</section>
 
-				{/* Help Section */}
-				<section className="py-12 md:py-16 px-4 bg-primary/5 border-t border-border">
-					<div className="container max-w-3xl mx-auto text-center">
-						<h2 className="text-xl md:text-2xl font-semibold mb-3 text-gray-900 dark:text-gray-900">
-							Not sure where to start?
-						</h2>
-						<p className="text-gray-600 dark:text-gray-700 mb-6">
-							Answer a few questions and get a recommended path with install steps for your stack.
-						</p>
-						<div className="flex flex-col sm:flex-row gap-3 justify-center">
-							<Link to="https://start.crowdsec.net/">
-								<Button size="lg" color="primary">
-									Guided Setup
-								</Button>
-							</Link>
-							<Link to="https://killercoda.com/iiamloz/scenario/crowdsec-setup">
-								<Button size="lg" variant="outline">
-									Try in a Sandbox
-								</Button>
-							</Link>
+						{/* Existing user strip */}
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								gap: "16px",
+								flexWrap: "wrap",
+								marginTop: "10px",
+								padding: "12px 18px",
+								background: "rgb(var(--card)/var(--tw-bg-opacity,1))",
+								border: "1px solid var(--ifm-color-emphasis-200)",
+								borderRadius: "10px",
+							}}
+						>
+							<span
+								style={{
+									fontFamily: "var(--ifm-font-family-monospace)",
+									fontSize: "10px",
+									letterSpacing: "0.8px",
+									textTransform: "uppercase",
+									color: "var(--ifm-color-emphasis-600)",
+									whiteSpace: "nowrap",
+									flexShrink: 0,
+								}}
+							>
+								Already running CrowdSec?
+							</span>
+							<div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+								{[
+									{ label: "🖥️ Open the Console", href: "https://app.crowdsec.net", external: true },
+									{ label: "🛡️ Activate the WAF", href: "/docs/next/appsec/intro" },
+									{ label: "📊 Measure what is being Blocked", href: "/u/console/remediation_metrics" },
+									{ label: "🩺 Check my Stack Health", href: "/u/console/stackhealth" },
+								].map(({ label, href, external }) => (
+									<Link
+										key={label}
+										href={href}
+										style={{
+											display: "inline-flex",
+											alignItems: "center",
+											gap: "6px",
+											padding: "5px 12px",
+											borderRadius: "7px",
+											fontSize: "11px",
+											color: "var(--ifm-color-emphasis-700)",
+											border: "1px solid var(--ifm-color-emphasis-200)",
+											background: "var(--ifm-background-color)",
+											textDecoration: "none",
+											transition: "border-color .15s, color .15s",
+										}}
+									>
+										{label}
+										{external && <ExternalLink size={11} style={{ opacity: 0.5, flexShrink: 0 }} />}
+									</Link>
+								))}
+							</div>
 						</div>
 					</div>
 				</section>
 
-				{/* Quick Links */}
-				<section className="py-10 md:py-12 px-4">
-					<div className="container max-w-5xl mx-auto">
-						<h2 className="text-center text-sm font-medium mb-4 text-gray-500 dark:text-gray-600">Popular Docs</h2>
-						<div className="flex flex-wrap justify-center gap-2">
-							<Link to="/u/console/intro">
-								<Button variant="outline" size="sm">
-									Console
-								</Button>
-							</Link>
-							<Link to="/docs/next/appsec/intro">
-								<Button variant="outline" size="sm">
-									AppSec / WAF
-								</Button>
-							</Link>
-							<Link to="/docs/next/cscli/">
-								<Button variant="outline" size="sm">
-									CLI Reference
-								</Button>
-							</Link>
-							<Link to="https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation">
-								<Button variant="outline" size="sm">
-									Docs AI Assistant
-								</Button>
-							</Link>
-							<Link to="https://www.crowdsec.net">
-								<Button variant="outline" size="sm">
-									About CrowdSec
-								</Button>
-							</Link>
+				{/* How each path works — accordion */}
+				<section className="py-6 px-4">
+					<div className="container mx-auto" style={{ maxWidth: "940px" }}>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								gap: "16px",
+								color: "var(--ifm-color-emphasis-600)",
+								fontSize: "11px",
+								fontFamily: "var(--ifm-font-family-monospace)",
+								letterSpacing: "1px",
+								textTransform: "uppercase",
+								marginBottom: "20px",
+							}}
+						>
+							<div style={{ flex: 1, height: "1px", background: "var(--ifm-color-emphasis-200)" }} />💡 how each path works
+							<div style={{ flex: 1, height: "1px", background: "var(--ifm-color-emphasis-200)" }} />
+						</div>
+
+						{schemas.map((s) => (
+							<SchemaBlock key={s.id} {...s} open={openSchema === s.id} onToggle={() => toggleSchema(s.id)} />
+						))}
+					</div>
+				</section>
+
+				{/* Not sure / fallback */}
+				<section className="py-6 px-4">
+					<div className="container mx-auto" style={{ maxWidth: "940px" }}>
+						<div
+							style={{
+								padding: "24px 28px",
+								background: "rgb(var(--card)/var(--tw-bg-opacity,1))",
+								border: "1px solid var(--ifm-color-emphasis-200)",
+								borderRadius: "13px",
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "space-between",
+								gap: "20px",
+								flexWrap: "wrap",
+							}}
+						>
+							<div>
+								<div style={{ fontWeight: 700, fontSize: "15px", marginBottom: "3px" }}>Not sure where to start?</div>
+								<div style={{ fontSize: "13px", color: "var(--ifm-color-emphasis-600)" }}>
+									Answer a few questions and get a recommended path with install steps for your stack.
+								</div>
+							</div>
+							<div style={{ display: "flex", gap: "9px", flexWrap: "wrap" }}>
+								<Link to="https://start.crowdsec.net/">
+									<Button size="lg" color="primary" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+										🧭 Use Case Questionnaire <ExternalLink size={13} style={{ opacity: 0.7 }} />
+									</Button>
+								</Link>
+								<Link to="https://killercoda.com/iiamloz/scenario/crowdsec-setup">
+									<Button
+										size="lg"
+										variant="outline"
+										style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+									>
+										⚡ Try in Sandbox <ExternalLink size={13} style={{ opacity: 0.7 }} />
+									</Button>
+								</Link>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				{/* Popular docs */}
+				<section className="py-8 px-4">
+					<div className="container mx-auto" style={{ maxWidth: "940px" }}>
+						<div
+							style={{
+								fontFamily: "var(--ifm-font-family-monospace)",
+								fontSize: "10.5px",
+								letterSpacing: "1.5px",
+								textTransform: "uppercase",
+								color: "var(--ifm-color-emphasis-600)",
+								marginBottom: "12px",
+							}}
+						>
+							Popular docs
+						</div>
+						<div style={{ display: "flex", flexWrap: "wrap", gap: "7px" }}>
+							{[
+								{ label: "🖥️ Console", href: "/u/console/intro" },
+								{ label: "🛡️ AppSec / WAF", href: "/docs/next/appsec/intro" },
+								{ label: "💻 CLI Reference", href: "/docs/next/cscli/" },
+								{ label: "🔑 CTI API Keys", href: "/u/console/ip_reputation/api_keys" },
+								{ label: "❓ Troubleshooting", href: "/u/troubleshooting/intro" },
+								// Need to redo the prompt this one is out of date
+								// {
+								// 	label: "📖 Docs AI Assistant",
+								// 	href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation",
+								// 	external: true,
+								// },
+								{ label: "🌐 WWW - CrowdSec", href: "https://www.crowdsec.net", external: true },
+							].map(({ label, href, external }) => (
+								<Link
+									key={label}
+									href={href}
+									style={{
+										display: "inline-flex",
+										alignItems: "center",
+										gap: "6px",
+										padding: "7px 14px",
+										borderRadius: "100px",
+										border: "1px solid var(--ifm-color-emphasis-200)",
+										fontSize: "13px",
+										color: "var(--ifm-color-emphasis-700)",
+										background: "rgb(var(--card)/var(--tw-bg-opacity,1))",
+										textDecoration: "none",
+										transition: "color .15s, border-color .15s",
+									}}
+								>
+									{label}
+									{external && <ExternalLink size={12} style={{ opacity: 0.5, flexShrink: 0 }} />}
+								</Link>
+							))}
 						</div>
 					</div>
 				</section>

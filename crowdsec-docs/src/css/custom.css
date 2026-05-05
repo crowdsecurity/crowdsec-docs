@@ -79,6 +79,115 @@ div.markdown {
 	@apply text-justify;
 }
 
+/* Pull embedded full-bleed content flush with the doc container edges */
+.doc-flush {
+	margin-left: calc(-1 * var(--ifm-spacing-horizontal));
+	margin-right: calc(-1 * var(--ifm-spacing-horizontal));
+	margin-top: calc(-1 * var(--ifm-spacing-vertical, 1rem));
+}
+
+/* ── Shared doc-page primitives ────────────────────────────────────────── */
+
+/* Monospace eyebrow label above a section title */
+.doc-eyebrow {
+	font-family: var(--ifm-font-family-monospace);
+	font-size: 10px;
+	letter-spacing: 1.2px;
+	text-transform: uppercase;
+	color: var(--ifm-color-emphasis-600);
+	margin-bottom: 4px;
+}
+
+/* Section title */
+.doc-section-title {
+	font-weight: 700;
+	font-size: 1.15rem;
+	margin-bottom: 0.4rem;
+}
+
+/* Card: used for differentiator items, ref cards, etc. */
+.doc-card {
+	background: rgb(var(--card) / var(--tw-bg-opacity, 1));
+	border: 1px solid var(--ifm-color-emphasis-200);
+	border-radius: 10px;
+	padding: 14px 16px;
+}
+
+/* Quick-access strip — label + pill buttons in a row (matches homepage "Already running?" strip) */
+.doc-quick-strip {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	flex-wrap: wrap;
+	padding: 10px 16px;
+	background: rgb(var(--card) / var(--tw-bg-opacity, 1));
+	border: 1px solid var(--ifm-color-emphasis-200);
+	border-radius: 10px;
+	margin-bottom: 2rem;
+}
+
+.doc-quick-strip__label {
+	font-family: var(--ifm-font-family-monospace);
+	font-size: 10.5px;
+	letter-spacing: 0.8px;
+	text-transform: uppercase;
+	color: var(--ifm-color-emphasis-600);
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.doc-quick-strip__pills {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.doc-quick-strip__pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 5px 12px;
+	border-radius: 7px;
+	font-size: 12.5px;
+	line-height: 1;
+	white-space: nowrap;
+	color: var(--ifm-color-emphasis-700);
+	border: 1px solid var(--ifm-color-emphasis-200);
+	background: var(--ifm-background-color);
+	text-decoration: none;
+	text-align: left;
+	transition:
+		border-color 0.15s,
+		color 0.15s;
+}
+
+/* Reset markdown-injected styles when pills appear inside doc content */
+div.markdown .doc-quick-strip__pill {
+	margin-bottom: 0;
+	display: inline-flex;
+}
+
+/* Horizontal rule divider with centered text label */
+.doc-section-sep {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	color: var(--ifm-color-emphasis-600);
+	font-size: 10px;
+	font-family: var(--ifm-font-family-monospace);
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	margin-bottom: 1rem;
+}
+
+.doc-section-sep::before,
+.doc-section-sep::after {
+	content: "";
+	flex: 1;
+	height: 1px;
+	background: var(--ifm-color-emphasis-200);
+}
+
 a {
 	@apply text-primary;
 }

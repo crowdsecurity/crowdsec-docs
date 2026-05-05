@@ -11,6 +11,12 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			label: "Introduction",
 			id: "cti_api/intro",
 		},
+		// ── EXPLORE ──────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Explore</span>",
+			defaultStyle: false,
+		},
 		{
 			type: "link",
 			label: "Web UI",
@@ -18,6 +24,20 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			customProps: {
 				tag: "otherSection",
 			},
+		},
+		{
+			type: "link",
+			label: "Live Exploit Tracker",
+			href: "/u/tracker_api/intro",
+			customProps: {
+				tag: "otherSection",
+			},
+		},
+		// ── API ──────────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' /> <span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>API</span>",
+			defaultStyle: false,
 		},
 		{
 			type: "doc",
@@ -50,15 +70,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				"cti_api/api_integration/integration_thehive",
 			],
 		},
+		// ── TECHNICAL DOC ─────────────────────────────────────────────────────
 		{
 			type: "html",
-			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' /> <span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Technical Doc</span>",
 			defaultStyle: false,
-		},
-		{
-			type: "doc",
-			label: "Advanced Query Syntax",
-			id: "cti_api/search_queries",
 		},
 		{
 			type: "category",
@@ -75,14 +91,18 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
-			type: "html",
-			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
-			defaultStyle: false,
+			type: "doc",
+			label: "Advanced Query Syntax",
+			id: "cti_api/search_queries",
 		},
 		{
 			type: "link",
-			label: "Swagger",
+			label: "Swagger ↗",
 			href: "https://crowdsecurity.github.io/cti-api/",
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
 		},
 		{
 			type: "doc",
@@ -204,6 +224,12 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		{
 			type: "html",
 			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		// ── Security Stack ──────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Security Stack</span>",
 			defaultStyle: false,
 		},
 		{
@@ -353,10 +379,19 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
 			defaultStyle: false,
 		},
+		// ── Blocklist & Allowlists ──────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Blocklist & Allowlists</span>",
+			defaultStyle: false,
+		},
 		{
 			label: "Blocklists",
 			type: "doc",
 			id: "blocklists/intro",
+			customProps: {
+				tag: "otherSection",
+			},
 		},
 		{
 			id: "console/allowlists",
@@ -379,67 +414,73 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
 			defaultStyle: false,
 		},
+		// ── IP Reputation / CTI ──────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>IP Reputation / CTI</span>",
+			defaultStyle: false,
+		},
+		{
+			id: "console/ip_reputation/intro",
+			type: "doc",
+			label: "Web UI Overview",
+		},
 		{
 			type: "category",
-			label: "IP Reputation / CTI",
+			label: "Search UI",
 			link: {
 				type: "doc",
-				id: "console/ip_reputation/intro",
+				id: "console/ip_reputation/search_ui",
 			},
 			items: [
 				{
-					type: "category",
-					label: "Search UI",
-					link: {
-						type: "doc",
-						id: "console/ip_reputation/search_ui",
-					},
-					items: [
-						{
-							type: "doc",
-							label: "Advanced Search",
-							id: "console/ip_reputation/search_ui_advanced",
-						},
-						{
-							type: "link",
-							label: "Search Queries Syntax",
-							href: "/u/cti_api/search_queries",
-							customProps: {
-								tag: "otherSection",
-							},
-						},
-						{
-							type: "doc",
-							label: "IP Reputation Report",
-							id: "console/ip_reputation/ip_report",
-						},
-					],
+					type: "doc",
+					label: "Advanced Search",
+					id: "console/ip_reputation/search_ui_advanced",
 				},
 				{
-					type: "category",
-					label: "API Keys",
-					link: {
-						type: "doc",
-						id: "console/ip_reputation/api_keys",
+					type: "doc",
+					label: "IP Reputation Report",
+					id: "console/ip_reputation/ip_report",
+				},
+				{
+					type: "link",
+					label: "Search Queries Syntax",
+					href: "/u/cti_api/search_queries",
+					customProps: {
+						tag: "otherSection",
 					},
-					items: [
-						{
-							type: "link",
-							label: "CTI API Integrations",
-							href: "/u/cti_api/api_integration/integration_intro",
-							customProps: {
-								tag: "otherSection",
-							},
-						},
-						{
-							type: "link",
-							label: "Enrichment Fields Ref",
-							href: "/u/cti_api/taxonomy/intro",
-							customProps: {
-								tag: "otherSection",
-							},
-						},
-					],
+				},
+				{
+					type: "doc",
+					label: "IP Reputation Report",
+					id: "console/ip_reputation/ip_report",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "API Keys",
+			link: {
+				type: "doc",
+				id: "console/ip_reputation/api_keys",
+			},
+			items: [
+				{
+					type: "link",
+					label: "CTI API Integrations",
+					href: "/u/cti_api/api_integration/integration_intro",
+					customProps: {
+						tag: "otherSection",
+					},
+				},
+				{
+					type: "link",
+					label: "Enrichment Fields Ref",
+					href: "/u/cti_api/taxonomy/intro",
+					customProps: {
+						tag: "otherSection",
+					},
 				},
 			],
 		},
@@ -448,28 +489,22 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
 			defaultStyle: false,
 		},
+		// ── Other ──────────────────────────────────────────────────────────
 		{
 			type: "category",
-			label: "Notification integrations",
+			label: "Notifications",
+			link: {
+				type: "doc",
+				id: "console/notification_integrations/overview",
+			},
 			customProps: {
 				tag: "premium",
 			},
 			items: [
 				{
 					type: "doc",
-					label: "Overview",
-					id: "console/notification_integrations/overview",
-					customProps: {
-						tag: "premium",
-					},
-				},
-				{
-					type: "doc",
 					label: "Notification Rule",
 					id: "console/notification_integrations/rule",
-					customProps: {
-						tag: "premium",
-					},
 				},
 				{
 					type: "doc",
@@ -492,24 +527,17 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		{
 			type: "category",
 			label: "Service API",
+			link: {
+				type: "doc",
+				id: "console/service_api/getting_started",
+			},
 			customProps: {
 				tag: "premium",
 			},
 			items: [
 				{
-					type: "doc",
-					id: "console/service_api/getting_started",
-					label: "Getting Started",
-					customProps: {
-						tag: "premium",
-					},
-				},
-				{
 					type: "category",
 					label: "Quickstart",
-					customProps: {
-						tag: "premium",
-					},
 					items: [
 						"console/service_api/quickstart/authentication",
 						"console/service_api/quickstart/blocklists",
@@ -531,17 +559,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				{
 					type: "category",
 					label: "SDKs",
-					customProps: {
-						tag: "premium",
-					},
 					items: [
 						{
 							type: "doc",
 							label: "Python",
 							id: "console/service_api/sdks/python",
-							customProps: {
-								tag: "premium",
-							},
 						},
 					],
 				},
@@ -559,9 +581,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 					type: "doc",
 					id: "console/service_api/faq",
 					label: "FAQ",
-					customProps: {
-						tag: "premium",
-					},
 				},
 			],
 		},

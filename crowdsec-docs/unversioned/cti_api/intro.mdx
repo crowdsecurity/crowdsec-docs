@@ -1,0 +1,170 @@
+---
+id: intro
+title: CrowdSec IP Reputation / CTI
+sidebar_position: 1
+---
+
+import Link from "@docusaurus/Link";
+import { ExternalLink } from "lucide-react";
+import CtiIntegrationTile, { ctiIntegrations } from '@site/src/components/cti-integration-tile';
+
+export const BLUE = "#60a5fa";
+export const ORANGE = "#f97316";
+export const PURPLE = "#a78bfa";
+export const GREEN = "#22d3a0";
+
+{/* ── Hero ─────────────────────────────────────────────────────────────── */}
+
+<h1 style={{ fontSize: "clamp(1.6rem, 4vw, 2.4rem)", fontWeight: 800, letterSpacing: "-0.5px", lineHeight: 1.1, marginBottom: "0.75rem" }}>
+  Understand the IPs behind attacks
+</h1>
+<p style={{ fontSize: "14px", color: "var(--ifm-color-emphasis-600)", marginBottom: "1.25rem" }}>
+  <p>CrowdSec tracks malicious IPs across hundreds of thousands of real deployments worldwide.
+  <br />Every lookup gives you <strong>behavioral context</strong> — what the IP was doing, where, and when.</p>
+</p>
+
+{/* Quick access strip — same pattern as "Already running CrowdSec?" on the homepage */}
+<div className="doc-quick-strip">
+  <span className="doc-quick-strip__label">Quick access</span>
+  <div className="doc-quick-strip__pills">
+    <Link href="https://app.crowdsec.net/cti" className="doc-quick-strip__pill"><span>🔍 Look up an IP</span><ExternalLink size={11} style={{ opacity: 0.5, flexShrink: 0 }} /></Link>
+    <Link href="/u/console/ip_reputation/api_keys" className="doc-quick-strip__pill"><span>🔑 Get an API key</span></Link>
+    <Link href="/u/tracker_api/intro" className="doc-quick-strip__pill"><span>🎯 Hunt for threats</span></Link>
+  </div>
+</div>
+
+{/* ── How do you want to use it? ──────────────────────────────────────── */}
+
+<div style={{ marginBottom: "2.5rem" }}>
+  <div className="doc-eyebrow">Entry points</div>
+  <div className="doc-section-title">How do you want to use it?</div>
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
+    {[
+      {
+        badge: "🔍 No setup needed", icon: "🖥️", accent: BLUE,
+        title: "Web UI investigation - in the Console",
+        desc: "Search any IP instantly. Explore threat history and the top aggressive IPs in the last 24h — no API key needed.",
+        links: [{ label: "Web UI guide →", href: "/u/console/ip_reputation/intro" }, { label: "IP Report →", href: "/u/console/ip_reputation/ip_report" }],
+      },
+      {
+        badge: "⚙️ Developer / SecOps", icon: "🔌", accent: ORANGE,
+        title: "Enrich Alerts via API",
+        desc: "Use the CTI API to add CrowdSec IP context to SIEM alerts, SOAR workflows, TIPs, scripts, and internal tools.",
+        links: [{ label: "API quickstart →", href: "/u/cti_api/api_introduction" }, { label: "All integrations →", href: "/u/cti_api/api_integration/integration_intro" }],
+      },
+      {
+        badge: "🎯 Threat hunter", icon: "🚨", accent: PURPLE,
+        title: "Hunt active threats",
+        desc: "Advanced Search with live faceted filters — behavior, country, AS, CVE — to find campaigns or build blocklists.",
+        links: [{ label: "Advanced search →", href: "/u/console/ip_reputation/search_ui_advanced" }, { label: "Live Exploit Tracker →", href: "/u/tracker_api/intro" }],
+      },
+    ].map(({ badge, icon, accent, title, desc, links }) => (
+      <div key={title} className="doc-card" style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "inline-flex", alignSelf: "flex-start", padding: "2px 8px", borderRadius: "100px", fontFamily: "var(--ifm-font-family-monospace)", fontSize: "9.5px", letterSpacing: "0.5px", fontWeight: 600, color: accent, border: `1px solid ${accent}44`, background: `${accent}11`, marginBottom: "10px" }}>{badge}</div>
+        <div style={{ fontSize: "22px", marginBottom: "8px" }}>{icon}</div>
+        <div style={{ fontWeight: 700, fontSize: "13.5px", marginBottom: "6px" }}>{title}</div>
+        <div style={{ fontSize: "12px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, flexGrow: 1, marginBottom: "12px" }}>{desc}</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+          {links.map(({ label, href }) => (
+            <Link key={label} href={href} style={{ fontSize: "12px", fontWeight: 600, color: accent, textDecoration: "none" }}>{label}</Link>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* ── Why CrowdSec CTI (informational, de-emphasized) ────────────────── */}
+
+<div style={{ borderLeft: "3px solid var(--ifm-color-emphasis-200)", paddingLeft: "16px", marginBottom: "2.5rem" }}>
+  <div className="doc-eyebrow" style={{ marginBottom: "6px" }}>Why CrowdSec CTI</div>
+  <p style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", marginBottom: "10px", fontStyle: "italic" }}>
+    Most IP reputation services tell you an IP is "bad." CrowdSec tells you <strong style={{ color: "var(--ifm-color-emphasis-600)" }}>what it was doing</strong> — from real deployments, not honeypots.
+  </p>
+  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+    {[
+      { icon: "🌍", title: "Real-world attack signals", desc: "CrowdSec intelligence is built from signals shared by real deployments across the Internet." },
+      { icon: "🧠", title: "Behavioral, not just reputation", desc: "Brute-force, CVE exploitation, scan, credential stuffing — mapped to MITRE ATT&CK." },
+      { icon: "⚡", title: "Real-time, not cached lists", desc: "Continuously updated with time-windowed scores showing if a threat is rising, stable, or decaying." },
+      { icon: "🔬", title: "CVE-level exploit tracking", desc: "Live Exploit Tracker shows which CVEs are actively exploited, with momentum, opportunity, and malicious IP context." },
+    ].map(({ icon, title, desc }) => (
+      <div key={title} style={{ display: "flex", gap: "10px", alignItems: "baseline" }}>
+        <span style={{ fontSize: "14px", flexShrink: 0 }}>{icon}</span>
+        <span style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.5 }}>
+          <strong style={{ color: "var(--ifm-color-emphasis-700)", fontWeight: 600 }}>{title}</strong> — {desc}
+        </span>
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* ── Integrations ────────────────────────────────────────────────────── */}
+
+<div style={{ marginBottom: "2.5rem" }}>
+  <div className="doc-eyebrow">Integrations</div>
+  <div className="doc-section-title">Already using one of these?</div>
+  <p style={{ fontSize: "13px", color: "var(--ifm-color-emphasis-600)", marginBottom: "1rem" }}>
+    Jump straight to the integration guide — no need to read the full API docs first.
+  </p>
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.5rem", marginBottom: "1.5rem" }}>
+    {ctiIntegrations.map(({ name, slug, href, plugin, desc, color }) => (
+      <CtiIntegrationTile key={slug} name={name} slug={slug} href={href} plugin={plugin} desc={desc} color={color} />
+    ))}
+  </div>
+
+  <div style={{ display: "flex", flexDirection: "column", gap: "6px", margin: "1.25rem 0", borderLeft: "2px solid var(--ifm-color-emphasis-200)", paddingLeft: "14px" }}>
+  {[
+    { label: "Community Plan Free Key", quota: "40 / month", desc: "Testing integrations, personal servers, ad-hoc lookups", color: GREEN },
+    { label: "Premium Plan Free Key", quota: "120 / month", desc: "Regular enrichment, small SOC teams, recurring automation", color: BLUE },
+    { label: "Premium Keys Options", quota: "5K · 25K · 100K / month", desc: "Production SIEMs, SOARs, high-volume pipelines — requires Premium", color: PURPLE },
+  ].map(({ label, quota, desc, color }) => (
+    <div key={label} style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6 }}>
+      <strong style={{ color, fontWeight: 600 }}>{label}</strong>
+      {" — "}
+      <span style={{ fontFamily: "var(--ifm-font-family-monospace)", fontSize: "11.5px" }}>{quota}</span>
+      {" · "}
+      <span style={{ color: "var(--ifm-color-emphasis-600)" }}>{desc}</span>
+    </div>
+  ))}
+</div>
+<div style={{ fontSize: "11px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.5}}>
+  API quotas are separate from Web UI quotas. Unused quota does not roll over.
+</div>
+</div>
+
+{/* ── Technical details ───────────────────────────────────────────────── */}
+
+<div style={{ marginBottom: "2.5rem" }}>
+  <div className="doc-section-sep">Technical details</div>
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
+    {[
+      { icon: "📊", title: "Data Taxonomy", desc: "CTI Data structure, scores, behaviors and classifications", href: "/u/cti_api/taxonomy/intro" },
+      { icon: "📚", title: "API Reference", desc: "Full endpoint reference with request/response schemas.", href: "https://crowdsecurity.github.io/cti-api/", external: true },
+      { icon: "❓", title: "FAQ", desc: "Common questions about access, quotas, and data.", href: "/u/cti_api/faq" },
+    ].map(({ icon, title, desc, href, external }) => (
+      <Link key={title} href={href} className="doc-card" style={{ display: "flex", gap: "12px", textDecoration: "none", color: "inherit" }}>
+        <span style={{ fontSize: "18px", flexShrink: 0, lineHeight: 1.4 }}>{icon}</span>
+        <div>
+          <div style={{ fontWeight: 700, fontSize: "13px", marginBottom: "3px", display: "flex", alignItems: "center", gap: "5px" }}>
+            {title}{external && <ExternalLink size={11} style={{ opacity: 0.5 }} />}
+          </div>
+          <div style={{ fontSize: "11.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.55 }}>{desc}</div>
+        </div>
+      </Link>
+    ))}
+  </div>
+</div>
+
+{/* ── Need help ───────────────────────────────────────────────────────── */}
+
+<div className="doc-quick-strip" style={{ justifyContent: "space-between" }}>
+  <div>
+    <div style={{ fontWeight: 700, fontSize: "13px", marginBottom: "2px" }}>Need help?</div>
+    <div style={{ fontSize: "12px", color: "var(--ifm-color-emphasis-600)" }}>Get answers in Discord or check the FAQ.</div>
+  </div>
+  <div className="doc-quick-strip__pills">
+    <Link href="https://discord.gg/crowdsec" className="doc-quick-strip__pill"><span>💬 Join Discord</span><ExternalLink size={11} style={{ opacity: 0.5, flexShrink: 0 }} /></Link>
+    <Link href="/u/cti_api/faq" className="doc-quick-strip__pill"><span>❓ View FAQ</span></Link>
+    <Link href="https://crowdsecurity.github.io/cti-api/" className="doc-quick-strip__pill"><span>📚 API Reference</span><ExternalLink size={11} style={{ opacity: 0.5, flexShrink: 0 }} /></Link>
+  </div>
+</div>

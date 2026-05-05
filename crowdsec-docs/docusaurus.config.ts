@@ -210,6 +210,7 @@ const redirects = [
 	// other CTI pages redirect / fixes
 	{ from: "/next/cti_api/intro", to: "/u/console/ip_reputation/api_keys" },
 	{ from: "/next/cti_api/getting_started", to: "/u/console/ip_reputation/api_keys" },
+	{ from: "/u/console/ip_reputation/api_keys_premium", to: "/u/console/ip_reputation/api_keys" },
 ];
 
 function redirectsGlobalDataPlugin() {
