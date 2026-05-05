@@ -192,7 +192,7 @@ html[data-theme="dark"],
 	--ifm-global-shadow-md: 0px;
 	--ifm-code-font-size: 95%;
 	--ifm-font-family-base: "Instrument Sans", sans-serif; /* For body text */
-	--ifm-font-family-monospace: "Courier New", monospace; /* For code blocks */
+	--ifm-font-family-monospace: "Roboto Mono", ui-monospace, "SF Mono", "Cascadia Mono", "Segoe UI Mono", Menlo, Consolas, monospace; /* For code blocks */
 	--ifm-dropdown-background-color: rgb(var(--card));
 
 	/* Algolia global search colors */
