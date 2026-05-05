@@ -98,7 +98,7 @@ const IntentCard = ({ icon, title, desc, pill, accent, href, aka }: IntentCardPr
 							fontSize: "8px",
 							letterSpacing: "0.8px",
 							textTransform: "uppercase",
-							color: "var(--ifm-color-emphasis-400)",
+							color: "var(--ifm-color-emphasis-600)",
 							flexShrink: 0,
 						}}
 					>
@@ -110,7 +110,7 @@ const IntentCard = ({ icon, title, desc, pill, accent, href, aka }: IntentCardPr
 							style={{
 								fontFamily: "var(--ifm-font-family-monospace)",
 								fontSize: "8px",
-								color: "var(--ifm-color-emphasis-400)",
+								color: "var(--ifm-color-emphasis-600)",
 								padding: "1px 7px",
 								borderRadius: "4px",
 								border: "1px solid var(--ifm-color-emphasis-200)",
@@ -244,7 +244,7 @@ const SchemaBlock = ({ id, color, eyebrowIcon, eyebrow, title, ctaLabel, ctaHref
 				<span
 					style={{
 						fontSize: "18px",
-						color: "var(--ifm-color-emphasis-500)",
+						color: "var(--ifm-color-emphasis-600)",
 						transform: open ? "rotate(180deg)" : "rotate(0deg)",
 						transition: "transform .2s",
 						display: "inline-block",
@@ -288,7 +288,7 @@ const SchemaBlock = ({ id, color, eyebrowIcon, eyebrow, title, ctaLabel, ctaHref
 									position: "absolute",
 									left: "-10px",
 									top: "22px",
-									color: "var(--ifm-color-emphasis-400)",
+									color: "var(--ifm-color-emphasis-600)",
 									fontSize: "16px",
 								}}
 							>
@@ -302,7 +302,7 @@ const SchemaBlock = ({ id, color, eyebrowIcon, eyebrow, title, ctaLabel, ctaHref
 									fontSize: "9px",
 									letterSpacing: "0.8px",
 									textTransform: "uppercase",
-									color: "var(--ifm-color-emphasis-400)",
+									color: "var(--ifm-color-emphasis-600)",
 									marginBottom: "4px",
 								}}
 							>
@@ -538,7 +538,7 @@ const HomePage = () => {
 								fontSize: "10.5px",
 								letterSpacing: "1.5px",
 								textTransform: "uppercase",
-								color: "var(--ifm-color-emphasis-500)",
+								color: "var(--ifm-color-emphasis-600)",
 								marginBottom: "12px",
 							}}
 						>
@@ -570,7 +570,7 @@ const HomePage = () => {
 									fontSize: "10px",
 									letterSpacing: "0.8px",
 									textTransform: "uppercase",
-									color: "var(--ifm-color-emphasis-500)",
+									color: "var(--ifm-color-emphasis-600)",
 									whiteSpace: "nowrap",
 									flexShrink: 0,
 								}}
@@ -618,7 +618,7 @@ const HomePage = () => {
 								display: "flex",
 								alignItems: "center",
 								gap: "16px",
-								color: "var(--ifm-color-emphasis-400)",
+								color: "var(--ifm-color-emphasis-600)",
 								fontSize: "11px",
 								fontFamily: "var(--ifm-font-family-monospace)",
 								letterSpacing: "1px",
@@ -687,7 +687,7 @@ const HomePage = () => {
 								fontSize: "10.5px",
 								letterSpacing: "1.5px",
 								textTransform: "uppercase",
-								color: "var(--ifm-color-emphasis-500)",
+								color: "var(--ifm-color-emphasis-600)",
 								marginBottom: "12px",
 							}}
 						>

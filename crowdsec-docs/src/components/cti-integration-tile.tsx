@@ -99,7 +99,7 @@ export default function CtiIntegrationTile({ name, slug, href, plugin, desc, col
 					<span
 						style={{
 							fontSize: "0.7rem",
-							color: "var(--ifm-color-emphasis-500)",
+							color: "var(--ifm-color-emphasis-600)",
 							lineHeight: 1.3,
 							fontFamily: "var(--ifm-font-family-monospace)",
 						}}

@@ -242,7 +242,7 @@ export const CTIContent = () => (
 							fontSize: "9.5px",
 							letterSpacing: "1.2px",
 							textTransform: "uppercase" as const,
-							color: "var(--ifm-color-emphasis-400)",
+							color: "var(--ifm-color-emphasis-600)",
 						}}
 					>
 						Quick access
@@ -294,7 +294,7 @@ export const CTIContent = () => (
 						fontSize: "10.5px",
 						letterSpacing: "1.5px",
 						textTransform: "uppercase" as const,
-						color: "var(--ifm-color-emphasis-500)",
+						color: "var(--ifm-color-emphasis-600)",
 						marginBottom: "12px",
 					}}
 				>
@@ -316,7 +316,7 @@ export const CTIContent = () => (
 						display: "flex",
 						alignItems: "center",
 						gap: "16px",
-						color: "var(--ifm-color-emphasis-400)",
+						color: "var(--ifm-color-emphasis-600)",
 						fontSize: "11px",
 						fontFamily: "var(--ifm-font-family-monospace)",
 						letterSpacing: "1px",

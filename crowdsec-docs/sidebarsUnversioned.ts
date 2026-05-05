@@ -14,7 +14,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		// ── EXPLORE ──────────────────────────────────────────────────────────
 		{
 			type: "html",
-			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-500);'>Explore</span>",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Explore</span>",
 			defaultStyle: false,
 		},
 		{
@@ -36,7 +36,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		// ── API ──────────────────────────────────────────────────────────────
 		{
 			type: "html",
-			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' /> <span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-500);'>API</span>",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' /> <span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>API</span>",
 			defaultStyle: false,
 		},
 		{
@@ -73,7 +73,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		// ── TECHNICAL DOC ─────────────────────────────────────────────────────
 		{
 			type: "html",
-			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' /> <span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-500);'>Technical Doc</span>",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' /> <span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Technical Doc</span>",
 			defaultStyle: false,
 		},
 		{
