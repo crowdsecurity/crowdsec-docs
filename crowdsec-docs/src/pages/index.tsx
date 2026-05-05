@@ -382,7 +382,7 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 		eyebrowIcon: "🛡️",
 		eyebrow: "Security Engine",
 		title: "Detect and block malicious behaviors on your infrastructure",
-		ctaLabel: "Get started →",
+		ctaLabel: "Install CrowdSec →",
 		ctaHref: "/security-engine",
 		steps: [
 			{
@@ -420,7 +420,7 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 		eyebrowIcon: "🚫",
 		eyebrow: "Blocklists",
 		title: "Push curated threat feeds directly into your firewall, CDN, or WAF",
-		ctaLabel: "Get started →",
+		ctaLabel: "Discover Blocklists →",
 		ctaHref: "/blocklists",
 		steps: [
 			{
@@ -661,7 +661,7 @@ const HomePage = () => {
 							<div style={{ display: "flex", gap: "9px", flexWrap: "wrap" }}>
 								<Link to="https://start.crowdsec.net/">
 									<Button size="lg" color="primary" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
-										🧭 Guided Setup <ExternalLink size={13} style={{ opacity: 0.7 }} />
+										🧭 Use Case Questionnaire <ExternalLink size={13} style={{ opacity: 0.7 }} />
 									</Button>
 								</Link>
 								<Link to="https://killercoda.com/iiamloz/scenario/crowdsec-setup">
@@ -700,11 +700,12 @@ const HomePage = () => {
 								{ label: "💻 CLI Reference", href: "/docs/next/cscli/" },
 								{ label: "🔑 CTI API Keys", href: "/u/console/ip_reputation/api_keys" },
 								{ label: "❓ Troubleshooting", href: "/u/troubleshooting/intro" },
-								{
-									label: "📖 Docs AI Assistant",
-									href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation",
-									external: true,
-								},
+								// Need to redo the prompt this one is out of date
+								// {
+								// 	label: "📖 Docs AI Assistant",
+								// 	href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation",
+								// 	external: true,
+								// },
 								{ label: "🌐 WWW - CrowdSec", href: "https://www.crowdsec.net", external: true },
 							].map(({ label, href, external }) => (
 								<Link
