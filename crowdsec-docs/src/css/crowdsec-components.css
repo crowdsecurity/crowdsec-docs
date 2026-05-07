@@ -413,10 +413,6 @@ code:not(pre code):not(.cs-ic) {
 	overflow: hidden;
 	background: var(--cs-surface);
 }
-.cs-table-wrap table {
-	margin: 0 !important;
-	border: none !important;
-}
 
 /* ── Direct table targeting (catches HTML tables too) ─────────── */
 
@@ -515,6 +511,14 @@ article table tbody tr:hover td {
 	background: color-mix(in srgb, var(--cs-orange) 4%, transparent) !important;
 }
 
+/* ── Reset table styles when inside cs-table-wrap (after all general rules so this wins) */
+.cs-table-wrap table {
+	margin: 0 !important;
+	border: none !important;
+	border-radius: 0 !important;
+	overflow: visible !important;
+}
+
 /* ── Pill component ─────────────────────────────────────────────── */
 .cs-pill {
 	display: inline-flex;
@@ -578,6 +582,13 @@ article table tbody tr:hover td {
 	border-bottom: 1px solid var(--cs-border) !important;
 	margin-bottom: 0 !important;
 	gap: 8px !important;
+	flex-wrap: nowrap !important;
+	overflow-x: auto !important;
+	scrollbar-width: none !important;
+}
+
+.tabs::-webkit-scrollbar {
+	display: none !important;
 }
 
 /* Individual tab items */
@@ -592,6 +603,8 @@ article table tbody tr:hover td {
 	border-radius: 6px 6px 0 0 !important;
 	border: none !important;
 	border-bottom: 2px solid transparent !important;
+	white-space: nowrap !important;
+	flex-shrink: 0 !important;
 	transition:
 		color 0.12s,
 		background 0.12s,

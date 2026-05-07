@@ -167,7 +167,7 @@
 }
 
 .theme-doc-sidebar-item-link hr {
-	visibility: hidden;
+	background-color: var(--cs-border-hi) !important;
 	margin: 0.25rem 0 !important;
 }
 

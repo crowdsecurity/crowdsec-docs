@@ -20,8 +20,7 @@ New to CrowdSec blocklists? Read the [Introduction](/u/blocklists/intro) first t
     badge="Path A · Self-hosted"
     title="CrowdSec Security Engine"
     desc="Ingest blocklists with the open-source agent. Behavior detection, parsing pipeline, Local API — everything runs on your infra."
-    href="/u/blocklists/security_engine"
-    ctaLabel="Get started"
+    links={[{ label: "Get started", href: "/u/blocklists/security_engine" }]}
   >
     <div style={{ display: "flex", flexDirection: "column", gap: 6, margin: "4px 0" }}>
       {[
@@ -43,8 +42,7 @@ New to CrowdSec blocklists? Read the [Introduction](/u/blocklists/intro) first t
     badge="Path B · No agent"
     title="Direct Integrations"
     desc="Push CrowdSec blocklists straight into your existing firewall, CDN, or WAF. No agent to install — just configure your subscription."
-    href="/u/integrations/intro"
-    ctaLabel="Browse integrations"
+    links={[{ label: "Browse integrations", href: "/u/integrations/intro" }]}
   >
     <div style={{ display: "flex", flexDirection: "column", gap: 6, margin: "4px 0" }}>
       {[
@@ -63,10 +61,28 @@ New to CrowdSec blocklists? Read the [Introduction](/u/blocklists/intro) first t
 
 ## Quick comparison
 
-|  | Security Engine | Integrations |
-|---|---|---|
-| Setup time | ~ 10 min | ~ 2 min |
-| Runs on | Your infrastructure | Your existing firewall / CDN |
-| Behavior detection | Yes — full engine | No — blocklists only |
-| Best for | Servers, gateways, k8s | Edge, WAF, managed CDN |
-| Free community feed | Included | Included |
+export const pill = (color) => ({
+  display: "inline-flex", alignItems: "center",
+  fontFamily: "var(--cs-font-mono)", fontSize: 10.5, letterSpacing: "0.1em",
+  textTransform: "uppercase", fontWeight: 600,
+  padding: "2px 10px", borderRadius: 999,
+  background: `color-mix(in srgb, ${color} 14%, transparent)`,
+  color,
+});
+
+<table>
+  <thead>
+    <tr>
+      <th style={{ width: "30%" }}></th>
+      <th><span style={pill("var(--cs-orange)")}>Security Engine</span></th>
+      <th><span style={pill("var(--cs-teal)")}>Integrations</span></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Setup time</td><td>~ 10 min</td><td>~ 2 min</td></tr>
+    <tr><td>Runs on</td><td>Your infrastructure</td><td>Your existing firewall / CDN</td></tr>
+    <tr><td>Behavior detection</td><td>Yes — full engine</td><td>No — blocklists only</td></tr>
+    <tr><td>Best for</td><td>Servers, gateways, k8s</td><td>Edge, WAF, managed CDN</td></tr>
+    <tr><td>Free community feed</td><td>Included</td><td>Included</td></tr>
+  </tbody>
+</table>
