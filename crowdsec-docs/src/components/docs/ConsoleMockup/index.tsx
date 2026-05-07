@@ -48,7 +48,6 @@ export default function ConsoleMockup() {
           { x: 172, label: 'Alerts Today', value: '1,284', color: 'var(--cs-orange)' },
           { x: 340, label: 'Blocked IPs', value: '3,921', color: 'var(--cs-teal)' },
           { x: 508, label: 'Decisions', value: '8,406', color: 'var(--cs-violet)' },
-          { x: 676, label: 'CTI Score', value: 'A+', color: 'var(--cs-blue)' },
         ].map((card) => (
           <g key={card.x}>
             <rect x={card.x} y="56" width="150" height="72" rx="8" fill="var(--cs-surface-2)" stroke="var(--cs-border)" strokeWidth="1" />

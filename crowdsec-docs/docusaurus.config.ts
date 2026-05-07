@@ -322,6 +322,10 @@ const config: Config = {
 							path: "/next",
 						},
 					},
+					admonitions: {
+						keywords: ["premium"],
+						extendDefaults: true,
+					},
 				},
 				blog: {
 					showReadingTime: true,
@@ -342,6 +346,10 @@ const config: Config = {
 				path: "unversioned",
 				routeBasePath: "u",
 				sidebarPath: "./sidebarsUnversioned.ts",
+				admonitions: {
+					keywords: ["premium"],
+					extendDefaults: true,
+				},
 			},
 		],
 

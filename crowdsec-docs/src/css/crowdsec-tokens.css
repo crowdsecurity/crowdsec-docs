@@ -287,9 +287,23 @@ nav.theme-doc-breadcrumbs {
   box-shadow: none !important;
 }
 
-/* Ensure link color uses the token */
+/* UI-level links (navbar, TOC, breadcrumb) follow --ifm-link-color (orange) */
 a {
   color: var(--ifm-link-color);
+}
+
+/* Only plain Markdown links (no class) get the primary purple.
+   Styled anchors (buttons, cards, etc.) keep their own color. */
+.theme-doc-markdown a:not([class]),
+article a:not([class]) {
+  color: rgb(var(--primary));
+}
+
+.theme-doc-markdown a:not([class]):hover,
+article a:not([class]):hover {
+  color: rgb(var(--primary));
+  opacity: 0.8;
+  text-decoration: underline;
 }
 
 /* Table of contents active link */

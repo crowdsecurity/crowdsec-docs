@@ -8,6 +8,7 @@
 @import url("crowdsec-tokens.css");
 @import url("crowdsec-typography.css");
 @import url("crowdsec-algolia.css");
+@import url("crowdsec-components.css");
 @import url("alerts.css");
 @import url("code.css");
 @import url("navbar.css");
@@ -190,7 +191,7 @@ div[class^="announcementBar"] {
 
 @media screen and (max-width: 996px) {
 	:root {
-		--ifm-font-size-base: 1rem;
+		--ifm-font-size-base: 14px;
 	}
 	article header h1 {
 		font-size: 1.5rem !important;
@@ -202,7 +203,7 @@ div[class^="announcementBar"] {
 
 @media screen and (min-width: 997px) {
 	:root {
-		--ifm-font-size-base: 1rem;
+		--ifm-font-size-base: 15px;
 	}
 	article header h1 {
 		font-size: 2rem !important;

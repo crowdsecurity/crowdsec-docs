@@ -3,9 +3,21 @@
    Applies to doc pages via .theme-doc-markdown. No hex colors — uses --cs-* vars.
 ───────────────────────────────────────────────────────────────────────────── */
 
+/* ── Global font size reduction (from 16px default to 15px) ────────────── */
+:root {
+  --ifm-font-size-base: 15px;
+}
+
 /* ── Base prose container ───────────────────────────────────────────────── */
 .theme-doc-markdown {
   counter-reset: cs-section;
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+
+.theme-doc-markdown p,
+.theme-doc-markdown li {
+  font-size: 14.5px;
   line-height: 1.65;
 }
 
