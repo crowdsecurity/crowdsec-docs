@@ -7,7 +7,7 @@ sidebar_position: 1
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import useBaseUrl from "@docusaurus/useBaseUrl";
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import RemediationSupportBadges from "@site/src/components/remediation-support-badge";
 
 <p align="center">
   <img
@@ -28,12 +28,7 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
   &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
-<RemediationSupportBadges
-  Mode
-  Appsec
-  Metrics
-  MTLS
-/>
+<RemediationSupportBadges Mode Appsec Metrics MTLS />
 
 A lua Remediation Component for nginx.
 
@@ -210,11 +205,12 @@ TLS_CLIENT_KEY=
 ## Application Security Component Configuration
 APPSEC_URL=
 #### default ###
-APPSEC_FAILURE_ACTION=passthrough  
-APPSEC_CONNECT_TIMEOUT=100        
-APPSEC_SEND_TIMEOUT=100            
-APPSEC_PROCESS_TIMEOUT=1000        
-ALWAYS_SEND_TO_APPSEC=false        
+APPSEC_FAILURE_ACTION=passthrough
+APPSEC_CONNECT_TIMEOUT=100
+APPSEC_SEND_TIMEOUT=100
+APPSEC_PROCESS_TIMEOUT=1000
+ALWAYS_SEND_TO_APPSEC=false
+APPSEC_DROP_UNREADABLE_BODY=false
 SSL_VERIFY=true
 ################
 ```
@@ -308,8 +304,16 @@ APPSEC_CONNECT_TIMEOUT=100         # default
 APPSEC_SEND_TIMEOUT=100            # default
 APPSEC_PROCESS_TIMEOUT=1000        # default
 ALWAYS_SEND_TO_APPSEC=false        # default
+APPSEC_DROP_UNREADABLE_BODY=false  # default
 SSL_VERIFY=true                    # default
 ```
+
+:::warning
+
+Due to limitations in the underlying library used by the remediation component, by default, the body of any HTTP2/HTTP3 request without a Content-Length will not be analyzed.
+To avoid potential bypasses of the WAF, you can set the option `APPSEC_DROP_UNREADABLE_BODY` to `true` to drop any request whose body cannot be inspected.
+
+:::
 
 ### Setup captcha
 
@@ -357,6 +361,7 @@ Here is a config example, but you can change values:
 resolver 8.8.8.8 ipv6=off;
 lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
 ```
+
 And restart Nginx.
 
 ### Ubuntu 22.xx getting lua error
@@ -371,7 +376,8 @@ You have a few options to resolve this issue:
   The `lua` module is included again in newer Ubuntu releases.
 
 - **Use OpenResty instead of NGINX**  
-  OpenResty is a drop-in replacement for NGINX that includes the `lua` module by default.  
+  OpenResty is a drop-in replacement for NGINX that includes the `lua` module by default.
+
   > Note: OpenResty uses slightly different service names and paths, but configuration remains compatible with standard NGINX.
 
 - **Manually compile the lua module**  
@@ -380,6 +386,7 @@ You have a few options to resolve this issue:
 ## Configuration Reference
 
 ### `API_KEY`
+
 > string
 
 ```bash
@@ -391,6 +398,7 @@ CrowdSec Local API key.
 Generated with [`sudo cscli bouncers add`](/u/getting_started/installation/linux) command.
 
 ### `API_URL`
+
 > string
 
 ```bash
@@ -430,6 +438,7 @@ TLS_CLIENT_KEY=<path_to_key>
 Path to the client certificate's private key file for mTLS authentication. This option is only used when `USE_TLS_AUTH` is set to `true`.
 
 ### `BOUNCING_ON_TYPE`
+
 > all | ban | captcha
 
 ```bash
@@ -440,6 +449,7 @@ Type of remediation we want to bounce.
 If you choose `ban` only and receive a decision with `captcha` as remediation, the component will skip the decision.
 
 ### `FALLBACK_REMEDIATION`
+
 > ban | captcha
 
 ```bash
@@ -449,6 +459,7 @@ FALLBACK_REMEDIATION=ban
 The fallback remediation is applied if the component receives a decision with an unknown remediation.
 
 ### `MODE`
+
 > stream | live
 
 ```bash
@@ -458,14 +469,16 @@ MODE=stream
 The default mode is `live`.
 
 The component mode:
- - stream: The component will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
- - live: The component will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
+
+- stream: The component will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
+- live: The component will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
 
 :::note
 The timer that pull the local API will be triggered after the first request.
 :::
 
 ### `REQUEST_TIMEOUT`
+
 > int
 
 ```bash
@@ -475,6 +488,7 @@ REQUEST_TIMEOUT=1000
 Timeout in milliseconds for the HTTP requests done by the component to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
+
 > string (comma separated)
 
 ```bash
@@ -486,6 +500,7 @@ The locations to exclude while bouncing. It is a list of location, separated by 
 :warning: It is not recommended to put `EXCLUDE_LOCATION=/`.
 
 ### `ENABLE_INTERNAL`
+
 > bool
 
 ```bash
@@ -496,8 +511,8 @@ Whether to process internal requests or not (after a rewrite for example).
 
 Disabled by default.
 
-
 ### `CACHE_EXPIRATION`
+
 > int
 
 > This option is only for the `live` mode.
@@ -509,6 +524,7 @@ CACHE_EXPIRATION=1
 The cache expiration, in second, for IPs that the remediation store in cache in `live` mode.
 
 ### `UPDATE_FREQUENCY`
+
 > int
 
 > This option is only for the `stream` mode.
@@ -520,6 +536,7 @@ UPDATE_FREQUENCY=10
 The frequency of update, in second, to pull new/old IPs from the CrowdSec local API.
 
 ### `REDIRECT_LOCATION`
+
 > string
 
 > This option is only for the `ban` remediation.
@@ -533,6 +550,7 @@ The location to redirect the user when there is a ban.
 If it is not set, the component will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
 
 ### `BAN_TEMPLATE_PATH`
+
 > string (path to file)
 
 > This option is only for the `ban` remediation.
@@ -546,6 +564,7 @@ The path to a HTML page to return to IPs that trigger `ban` remediation.
 By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/ban.html`.
 
 ### `RET_CODE`
+
 > int
 
 > This option is only for the `ban` remediation.
@@ -558,6 +577,7 @@ The HTTP code to return for IPs that trigger a `ban` remediation.
 If nothing specified, it will return a 403.
 
 ### `CAPTCHA_PROVIDER`
+
 > recaptcha | hcaptcha | turnstile
 
 > This option is only for the `captcha` remediation.
@@ -571,6 +591,7 @@ For backwards compatibility reasons `recaptcha` is the default if no value is se
 :::
 
 ### `SECRET_KEY`
+
 > string
 
 > This option is only for the `captcha` remediation.
@@ -582,6 +603,7 @@ SECRET_KEY=<captcha_secret_key>
 The captcha secret key.
 
 ### `SITE_KEY`
+
 > string
 
 > This option is only for the `captcha` remediation.
@@ -593,6 +615,7 @@ SITE_KEY=<captcha_site_key>
 The captcha site key.
 
 ### `CAPTCHA_TEMPLATE_PATH`
+
 > string (path to file)
 
 > This option is only for the `captcha` remediation.
@@ -608,6 +631,7 @@ The component will try to replace `{{captcha_site_key}}` in the template with `S
 By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/captcha.html`.
 
 ### `CAPTCHA_EXPIRATION`
+
 > int
 
 > This option is only for the `captcha` remediation.
@@ -619,6 +643,7 @@ CAPTCHA_EXPIRATION=3600
 The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IPs address will get a captcha again.
 
 ### `CAPTCHA_RET_CODE`
+
 > int
 
 > This option is only for the `captcha` remediation.
@@ -630,6 +655,7 @@ CAPTCHA_RET_CODE=200
 Specifies the HTTP status code that should be returned to the client when a CAPTCHA challenge is required. This is especially useful when your traffic is routed through a CDN (like Cloudflare), where you may want to avoid triggering caching based on non-200 status codes. By default if no value is provided it will use 200 status code.
 
 ### `APPSEC_URL`
+
 > string
 
 > URL of the Application Security Component
@@ -639,6 +665,7 @@ APPSEC_URL=http://127.0.0.1:7422
 ```
 
 ### `APPSEC_FAILURE_ACTION`
+
 > passthrough | deny
 
 ```bash
@@ -648,6 +675,7 @@ APPSEC_FAILURE_ACTION=passthrough  # default
 Behavior when the AppSec Component return a 500. Can let the request passthrough or deny it.
 
 ### `ALWAYS_SEND_TO_APPSEC`
+
 > boolean
 
 ```bash
@@ -657,6 +685,7 @@ ALWAYS_SEND_TO_APPSEC=false  # default
 Send the request to the AppSec Component even if there is a decision for the IP.
 
 ### `SSL_VERIFY`
+
 > boolean
 
 ```bash
@@ -666,6 +695,7 @@ SSL_VERIFY=false  # default
 Verify the AppSec Component SSL certificate validity.
 
 ### `APPSEC_CONNECT_TIMEOUT`
+
 > int (milliseconds)
 
 ```bash
@@ -674,8 +704,8 @@ APPSEC_CONNECT_TIMEOUT=100  # default
 
 The timeout of the connection between the Remediation Component and AppSec Component.
 
-
 ### `APPSEC_SEND_TIMEOUT`
+
 > int (milliseconds)
 
 ```bash
@@ -685,6 +715,7 @@ APPSEC_SEND_TIMEOUT=100  # default
 The timeout to send data from the Remediation Component to the AppSec Component.
 
 ### `APPSEC_PROCESS_TIMEOUT`
+
 > int (milliseconds)
 
 ```bash
@@ -693,17 +724,30 @@ APPSEC_PROCESS_TIMEOUT=500  # default
 
 The timeout to process the request from the Remediation Component to the AppSec Component.
 
+### `APPSEC_DROP_UNREADABLE_BODY`
+
+> bool
+
+```bash
+APPSEC_DROP_UNREADABLE_BODY=false #default
+```
+
+If the bouncer cannot read the request body (eg, HTTP2 without Content-Length header), drop or not the request without forwarding it to the WAF.
+
+If set to `false` (the default), the request will be evaluated by the WAF without the body content.
+If set to `true`, the request will be blocked directly by nginx.
+
 ### Nginx variables
 
 Nginx variables can be used to adapt behaviour and or more flexible configurations:
-* `ngx.var.crowdsec_disable_bouncer`: set to 1, it will disable the bouncer
-* `ngx.var.crowdsec_enable_bouncer`: set to 1, it will disable the bouncer
-* `ngx.var.crowdsec_enable_appsec`: set to 1, it will enable the appsec even if it's disabled by configuration or if bouncer is disabled
-* `ngx.var.crowdsec_disable_appsec`: set to 1, it will disable the appsec
-* `ngx.var.crowdsec_always_send_to_appsec`: set 1, it will always send the request to appsec, even if a decision already exist for the ip requesting
+
+- `ngx.var.crowdsec_disable_bouncer`: set to 1, it will disable the bouncer
+- `ngx.var.crowdsec_enable_bouncer`: set to 1, it will disable the bouncer
+- `ngx.var.crowdsec_enable_appsec`: set to 1, it will enable the appsec even if it's disabled by configuration or if bouncer is disabled
+- `ngx.var.crowdsec_disable_appsec`: set to 1, it will disable the appsec
+- `ngx.var.crowdsec_always_send_to_appsec`: set 1, it will always send the request to appsec, even if a decision already exist for the ip requesting
 
 If both `ngx.var.crowdsec_disable_bouncer` and
 `ngx.var.crowdsec_enable_bouncer`, or both `ngx.var.crowdsec_disable_appsec` and
 `ngx.var.crowdsec_enable_appsec` are set to 1, it's the disable configuration
 that prevails.
-
