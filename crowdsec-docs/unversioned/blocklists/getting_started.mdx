@@ -1,31 +1,70 @@
 ---
 id: getting_started
 title: Getting Started
+eyebrow: Blocklists · 02
 ---
 
-import ConsolePromo from '@site/src/components/console-promo';
+import { CIcon } from "@coreui/icons-react";
+import { cilCheckCircle } from "@coreui/icons";
 
-Make sure to read the [Introduction](/blocklists/intro.md) to understand CrowdSec Blocklists, how they work, and their available tiers.  
+New to CrowdSec blocklists? Read the [Introduction](/u/blocklists/intro) first to understand how they work and the available tiers. Then choose one of the two paths below — most people pick **one or the other, not both**.
 
-When you're ready, you can get started with Blocklists in two ways:
+## Choose your path
 
-1. **Security Engine** - Use the CrowdSec Security Engine to ingest blocklists
-2. **Integrations** - Use Integrations to ingest blocklists into firewall, CDN, or other security solutions
-
-Depending on which path you take you can start with the following guides:
-
-<ConsolePromo
+<DocCardGrid cols={2}>
+  <DocCard
+    iconName="shield"
+    color="var(--cs-orange)"
+    badge="Path A · Self-hosted"
     title="CrowdSec Security Engine"
-    description="The CrowdSec Security Engine is a powerful, open-source software for detecting and blocking malicious IPs, safeguarding both infrastructure and application security."
-    image="Hero Security Engine.png"
-    link="/u/blocklists/security_engine"
-/>
-<br/>
-<ConsolePromo
-    title="Integrations"
-    description="A seemless way to integrate CrowdSec blocklists into your existing firewall, CDN, or other security solutions."
-    image="Hero Blocklists.png"
-    link="/u/integrations/intro"
-/>
-<br/>
-If you're new to CrowdSec, and want to use blocklists we recommend starting with the [Integrations guide](integrations/intro.mdx), however, if you are unsure where to start, feel free to browse our [main website for more information](https://www.crowdsec.net/).
+    desc="Ingest blocklists with the open-source agent. Behavior detection, parsing pipeline, Local API — everything runs on your infra."
+    href="/u/blocklists/security_engine"
+    ctaLabel="Get started"
+  >
+    <div style={{ display: "flex", flexDirection: "column", gap: 6, margin: "4px 0" }}>
+      {[
+        "Behavior + reputation in one engine",
+        "60+ bouncers (NGINX, FW, CDN…)",
+        "Free community blocklists included",
+      ].map((item) => (
+        <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13, color: "var(--cs-ink)" }}>
+          <CIcon icon={cilCheckCircle} style={{ width: 14, height: 14, color: "var(--cs-orange)", flexShrink: 0, marginTop: 2 }} aria-hidden="true" />
+          {item}
+        </div>
+      ))}
+    </div>
+  </DocCard>
+
+  <DocCard
+    iconName="box"
+    color="var(--cs-teal)"
+    badge="Path B · No agent"
+    title="Direct Integrations"
+    desc="Push CrowdSec blocklists straight into your existing firewall, CDN, or WAF. No agent to install — just configure your subscription."
+    href="/u/integrations/intro"
+    ctaLabel="Browse integrations"
+  >
+    <div style={{ display: "flex", flexDirection: "column", gap: 6, margin: "4px 0" }}>
+      {[
+        "Cloudflare, AWS WAF, Fortinet…",
+        "Setup in minutes from the Console",
+        "Premium tiers for richer feeds",
+      ].map((item) => (
+        <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13, color: "var(--cs-ink)" }}>
+          <CIcon icon={cilCheckCircle} style={{ width: 14, height: 14, color: "var(--cs-teal)", flexShrink: 0, marginTop: 2 }} aria-hidden="true" />
+          {item}
+        </div>
+      ))}
+    </div>
+  </DocCard>
+</DocCardGrid>
+
+## Quick comparison
+
+|  | Security Engine | Integrations |
+|---|---|---|
+| Setup time | ~ 10 min | ~ 2 min |
+| Runs on | Your infrastructure | Your existing firewall / CDN |
+| Behavior detection | Yes — full engine | No — blocklists only |
+| Best for | Servers, gateways, k8s | Edge, WAF, managed CDN |
+| Free community feed | Included | Included |
