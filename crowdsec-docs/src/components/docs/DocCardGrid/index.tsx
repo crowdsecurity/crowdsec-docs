@@ -6,16 +6,5 @@ type Props = {
 };
 
 export default function DocCardGrid({ children, cols = 3 }: Props) {
-	return (
-		<div
-			style={{
-				display: "grid",
-				gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
-				gap: 14,
-				margin: "16px 0 24px",
-			}}
-		>
-			{children}
-		</div>
-	);
+	return <div className={`grid gap-[14px] my-4 mb-6 ${cols === 2 ? "grid-cols-2" : "grid-cols-3"}`}>{children}</div>;
 }

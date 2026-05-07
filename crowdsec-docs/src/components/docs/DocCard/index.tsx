@@ -63,85 +63,39 @@ export default function DocCard({
 
 	const card = (
 		<div
-			style={{
-				padding: 20,
-				borderRadius: 12,
-				background: "var(--cs-surface)",
-				border: "1px solid var(--cs-border)",
-				display: "flex",
-				flexDirection: "column",
-				gap: 12,
-				height: "100%",
-				boxSizing: "border-box",
-				textDecoration: "none",
-				color: "inherit",
-				transition: href ? "border-color 0.15s, box-shadow 0.15s" : undefined,
-			}}
+			className={`p-5 rounded-xl bg-cs-surface border border-cs-border flex flex-col gap-3 h-full${href ? " transition-[border-color,box-shadow] duration-150" : ""}`}
 		>
 			{/* Header: icon + title + premium badge */}
-			<div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+			<div className="flex items-start gap-3">
 				{resolvedIcon && (
 					<div
+						className="w-9 h-9 rounded-[9px] flex items-center justify-center shrink-0"
 						style={{
-							width: 36,
-							height: 36,
-							borderRadius: 9,
 							background: mix(color, 14),
 							border: `1px solid ${mix(color, 28)}`,
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center",
 							color,
-							flexShrink: 0,
 						}}
 					>
-						<div style={{ width: 17, height: 17, display: "flex" }}>{resolvedIcon}</div>
+						<div className="w-[17px] h-[17px] flex">{resolvedIcon}</div>
 					</div>
 				)}
-				<div style={{ flex: 1, minWidth: 0 }}>
+				<div className="flex-1 min-w-0">
 					{badge && (
 						<div
+							className="inline-flex self-start px-2 py-[2px] rounded-full font-cs-mono text-[9.5px] tracking-[0.08em] font-semibold mb-1.5"
 							style={{
-								display: "inline-flex",
-								alignSelf: "flex-start",
-								padding: "2px 8px",
-								borderRadius: 100,
-								fontFamily: "var(--cs-font-mono)",
-								fontSize: 9.5,
-								letterSpacing: "0.08em",
-								fontWeight: 600,
 								color,
 								border: `1px solid ${mix(color, 30)}`,
 								background: mix(color, 10),
-								marginBottom: 6,
 							}}
 						>
 							{badge}
 						</div>
 					)}
-					<div
-						style={{
-							display: "flex",
-							alignItems: "center",
-							gap: 8,
-							flexWrap: "wrap",
-						}}
-					>
-						<div style={{ fontSize: 15, fontWeight: 600, color: "var(--cs-ink)", lineHeight: 1.3 }}>{title}</div>
+					<div className="flex items-center gap-2 flex-wrap">
+						<div className="text-[15px] font-semibold text-cs-ink leading-[1.3]">{title}</div>
 						{premium && (
-							<span
-								style={{
-									fontFamily: "var(--cs-font-mono)",
-									fontSize: 9.5,
-									letterSpacing: "0.08em",
-									textTransform: "uppercase",
-									padding: "2px 6px",
-									borderRadius: 4,
-									background: mix("var(--cs-orange)", 14),
-									color: "var(--cs-orange)",
-									fontWeight: 600,
-								}}
-							>
+							<span className="font-cs-mono text-[9.5px] tracking-[0.08em] uppercase px-[6px] py-[2px] rounded bg-[color-mix(in_srgb,var(--cs-orange)_14%,transparent)] text-cs-orange font-semibold">
 								Premium
 							</span>
 						)}
@@ -150,58 +104,28 @@ export default function DocCard({
 			</div>
 
 			{/* Description */}
-			{desc && <div style={{ fontSize: 13.5, color: "var(--cs-ink-dim)", lineHeight: 1.55, flex: 1 }}>{desc}</div>}
+			{desc && <div className="text-[13.5px] text-cs-ink-dim leading-[1.55] flex-1">{desc}</div>}
 
 			{/* Extra content slot */}
-			{children && <div style={{ flex: 1 }}>{children}</div>}
+			{children && <div className="flex-1">{children}</div>}
 
 			{/* Command block */}
 			{command && (
-				<div
-					style={{
-						padding: "9px 12px",
-						borderRadius: 8,
-						background: "var(--cs-bg)",
-						border: "1px solid var(--cs-border)",
-						fontFamily: "var(--cs-font-mono)",
-						fontSize: 12,
-						color,
-						display: "flex",
-						alignItems: "center",
-						gap: 10,
-					}}
-				>
-					<span style={{ color: "var(--cs-ink-mute)", userSelect: "none" }}>$</span>
-					<span
-						style={{
-							flex: 1,
-							overflow: "hidden",
-							textOverflow: "ellipsis",
-							whiteSpace: "nowrap",
-							color: "var(--cs-ink)",
-						}}
-					>
-						{command}
-					</span>
+				<div className="py-[9px] px-3 rounded-lg bg-cs-bg border border-cs-border font-cs-mono text-xs flex items-center gap-[10px]">
+					<span className="text-cs-ink-mute select-none">$</span>
+					<span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-cs-ink">{command}</span>
 				</div>
 			)}
 
 			{/* Link list */}
 			{links && links.length > 0 && (
-				<div style={{ display: "flex", flexDirection: "column", gap: 5, marginTop: 4 }}>
+				<div className="flex flex-col gap-[5px] mt-1">
 					{links.map((l) => (
 						<a
 							key={l.href}
 							href={l.href}
-							style={{
-								fontSize: 12.5,
-								fontWeight: 600,
-								color,
-								textDecoration: "none",
-								display: "inline-flex",
-								alignItems: "center",
-								gap: 4,
-							}}
+							className="text-[12.5px] font-semibold no-underline inline-flex items-center gap-1"
+							style={{ color }}
 						>
 							{l.label}
 							{l.external ? <ExternalArrow /> : <ArrowRight />}
@@ -212,26 +136,8 @@ export default function DocCard({
 
 			{/* CTA — explicit label, or auto arrow footer for href-only clickable cards */}
 			{href && (ctaLabel || (!links?.length && !command)) && (
-				<div
-					style={{
-						marginTop: "auto",
-						paddingTop: 12,
-						borderTop: "1px dashed var(--cs-border)",
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "space-between",
-					}}
-				>
-					<span
-						style={{
-							fontSize: 12.5,
-							fontWeight: 600,
-							color,
-							display: "inline-flex",
-							alignItems: "center",
-							gap: 5,
-						}}
-					>
+				<div className="mt-auto pt-3 border-t border-dashed border-cs-border flex items-center justify-between">
+					<span className="text-[12.5px] font-semibold inline-flex items-center gap-[5px]" style={{ color }}>
 						{ctaLabel ?? title} <ArrowRight />
 					</span>
 				</div>
@@ -241,7 +147,7 @@ export default function DocCard({
 
 	if (href && !ctaLabel && !links) {
 		return (
-			<a href={href} style={{ textDecoration: "none", display: "block" }}>
+			<a href={href} className="no-underline block">
 				{card}
 			</a>
 		);

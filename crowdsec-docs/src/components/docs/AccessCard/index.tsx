@@ -36,7 +36,7 @@ export default function AccessCard({ icon, title, command, ctaLabel, ctaHref }: 
 			</div>
 			{command && (
 				<div className="flex items-center gap-2 py-[9px] px-[14px] bg-cs-bg border border-cs-border rounded-[7px] font-cs-mono text-[12.5px] text-cs-teal">
-					<span style={{ color: "var(--cs-ink-mute)" }}>$</span>
+					<span className="text-cs-ink-mute">$</span>
 					<span>{command}</span>
 				</div>
 			)}

@@ -30,7 +30,7 @@ function ExternalArrow() {
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			aria-hidden="true"
-			style={{ opacity: 0.5, flexShrink: 0 }}
+			className="opacity-50 shrink-0"
 		>
 			<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
 			<polyline points="15 3 21 3 21 9" />
@@ -42,66 +42,29 @@ function ExternalArrow() {
 export default function QuickStrip({ label, title, subtitle, links }: QuickStripProps) {
 	return (
 		<div
-			style={{
-				display: "flex",
-				alignItems: "center",
-				gap: 18,
-				flexWrap: "wrap",
-				padding: "14px 18px",
-				background: "linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0))",
-				border: "1px solid var(--cs-border)",
-				borderRadius: 12,
-				margin: "16px 0",
-			}}
+			className="flex items-center gap-[18px] flex-wrap py-[14px] px-[18px] border border-cs-border rounded-xl my-4"
+			style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0))" }}
 		>
 			{/* Left: simple label OR rich title+subtitle */}
 			{(label || title) && (
-				<div style={{ flexShrink: 0 }}>
+				<div className="shrink-0">
 					{label && (
-						<div
-							style={{
-								fontFamily: "var(--cs-font-mono)",
-								fontSize: 11,
-								letterSpacing: "0.18em",
-								textTransform: "uppercase",
-								color: "var(--cs-ink-mute)",
-								fontWeight: 500,
-							}}
-						>
-							{label}
-						</div>
+						<div className="font-cs-mono text-[11px] tracking-[0.18em] uppercase text-cs-ink-mute font-medium">{label}</div>
 					)}
-					{title && (
-						<div style={{ fontWeight: 700, fontSize: 13.5, color: "var(--cs-ink)", marginBottom: subtitle ? 2 : 0 }}>
-							{title}
-						</div>
-					)}
-					{subtitle && <div style={{ fontSize: 12, color: "var(--cs-ink-dim)" }}>{subtitle}</div>}
+					{title && <div className={`font-bold text-[13.5px] text-cs-ink${subtitle ? " mb-0.5" : ""}`}>{title}</div>}
+					{subtitle && <div className="text-xs text-cs-ink-dim">{subtitle}</div>}
 				</div>
 			)}
 
-			<div style={{ flex: 1 }} />
+			<div className="flex-1" />
 
 			{/* Right: pill links */}
-			<div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+			<div className="flex flex-wrap gap-2">
 				{links.map((l) => (
 					<a
 						key={l.href}
 						href={l.href}
-						style={{
-							display: "inline-flex",
-							alignItems: "center",
-							gap: 7,
-							padding: "6px 12px",
-							borderRadius: 8,
-							border: "1px solid var(--cs-border-hi)",
-							background: "var(--cs-surface)",
-							color: "var(--cs-ink)",
-							fontSize: 13,
-							fontWeight: 500,
-							textDecoration: "none",
-							transition: "border-color 0.12s, color 0.12s, background 0.12s",
-						}}
+						className="inline-flex items-center gap-[7px] py-[6px] px-3 rounded-lg border border-cs-border-hi bg-cs-surface text-cs-ink text-[13px] font-medium no-underline transition-[border-color,color,background] duration-[120ms]"
 						onMouseEnter={(e) => {
 							const el = e.currentTarget as HTMLAnchorElement;
 							el.style.borderColor = l.color ?? "var(--cs-border-hi)";
@@ -115,7 +78,11 @@ export default function QuickStrip({ label, title, subtitle, links }: QuickStrip
 							el.style.background = "";
 						}}
 					>
-						{l.icon && <span style={{ color: l.color || "var(--cs-orange)", display: "flex", flexShrink: 0 }}>{l.icon}</span>}
+						{l.icon && (
+							<span className="flex shrink-0" style={{ color: l.color || "var(--cs-orange)" }}>
+								{l.icon}
+							</span>
+						)}
 						{l.label}
 						{l.external && <ExternalArrow />}
 					</a>

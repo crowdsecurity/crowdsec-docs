@@ -36,7 +36,11 @@ export default function RunningStrip({ label = "Already running CrowdSec?", link
 							(e.currentTarget as HTMLAnchorElement).style.background = "";
 						}}
 					>
-						{l.icon && <span style={{ color: l.color || "var(--cs-orange)", display: "flex", flexShrink: 0 }}>{l.icon}</span>}
+						{l.icon && (
+							<span className="flex shrink-0" style={{ color: l.color || "var(--cs-orange)" }}>
+								{l.icon}
+							</span>
+						)}
 						{l.label}
 						{l.external && (
 							<CIcon

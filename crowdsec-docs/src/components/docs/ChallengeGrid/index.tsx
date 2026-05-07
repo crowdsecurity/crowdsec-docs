@@ -32,20 +32,14 @@ export default function ChallengeGrid({ challenges }: Props) {
 						<div className="flex items-center gap-3 mb-[10px]">
 							{iconEl && (
 								<div
+									className="w-9 h-9 rounded-[9px] flex items-center justify-center shrink-0"
 									style={{
-										width: 36,
-										height: 36,
-										borderRadius: 9,
 										background: `${c.color}14`,
 										border: `1px solid ${c.color}33`,
-										display: "flex",
-										alignItems: "center",
-										justifyContent: "center",
 										color: c.color,
-										flexShrink: 0,
 									}}
 								>
-									<div style={{ width: 17, height: 17, display: "flex" }}>{iconEl}</div>
+									<div className="w-[17px] h-[17px] flex">{iconEl}</div>
 								</div>
 							)}
 							<div className="font-cs-mono text-[11px] text-cs-ink-mute tracking-[0.10em]">

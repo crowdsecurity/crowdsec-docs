@@ -38,115 +38,45 @@ export const ProductPageLayout = ({
 }: ProductPageLayoutProps): React.JSX.Element => {
 	return (
 		<Layout title={title} description={metaDescription}>
-			<main style={{ flex: 1 }}>
+			<main className="flex-1">
 				{/* ── Hero ── */}
-				<section
-					style={{
-						padding: "40px 24px 48px",
-						borderBottom: "1px solid var(--cs-border)",
-						background: "var(--cs-bg)",
-						position: "relative",
-						overflow: "hidden",
-					}}
-				>
+				<section className="py-10 px-6 pb-12 border-b border-cs-border bg-cs-bg relative overflow-hidden">
 					{/* Subtle radial glow */}
 					<div
+						className="absolute inset-0 pointer-events-none"
 						style={{
-							position: "absolute",
-							inset: 0,
-							pointerEvents: "none",
 							background:
 								"radial-gradient(ellipse 600px 300px at 60% 50%, color-mix(in srgb, var(--cs-orange) 6%, transparent), transparent 70%)",
 						}}
 						aria-hidden="true"
 					/>
 
-					<div style={{ maxWidth: 960, margin: "0 auto", position: "relative" }}>
+					<div className="max-w-[960px] mx-auto relative">
 						<Link
 							to="/"
-							style={{
-								fontSize: 12,
-								fontFamily: "var(--cs-font-mono)",
-								color: "var(--cs-ink-mute)",
-								letterSpacing: "0.06em",
-								display: "inline-flex",
-								alignItems: "center",
-								gap: 6,
-								marginBottom: 24,
-								textDecoration: "none",
-							}}
+							className="text-xs font-cs-mono text-cs-ink-mute tracking-[0.06em] inline-flex items-center gap-1.5 mb-6 no-underline"
 						>
 							← Back to Documentation
 						</Link>
 
-						<div style={{ display: "flex", alignItems: "flex-start", gap: 24 }}>
-							<div
-								style={{
-									width: 56,
-									height: 56,
-									borderRadius: 14,
-									flexShrink: 0,
-									background: "color-mix(in srgb, var(--cs-orange) 14%, transparent)",
-									border: "1px solid color-mix(in srgb, var(--cs-orange) 25%, transparent)",
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "center",
-									overflow: "hidden",
-								}}
-							>
-								<img src={icon} alt={title} style={{ width: 36, height: 36, border: "none" }} />
+						<div className="flex items-start gap-6">
+							<div className="w-14 h-14 rounded-[14px] shrink-0 bg-[color-mix(in_srgb,var(--cs-orange)_14%,transparent)] border border-[color-mix(in_srgb,var(--cs-orange)_25%,transparent)] flex items-center justify-center overflow-hidden">
+								<img src={icon} alt={title} className="w-9 h-9 border-none" />
 							</div>
 
-							<div style={{ flex: 1, minWidth: 0 }}>
-								<h1
-									style={{
-										fontSize: "clamp(28px, 4vw, 40px)",
-										fontWeight: 700,
-										letterSpacing: "-0.025em",
-										lineHeight: 1.1,
-										color: "var(--cs-ink)",
-										margin: "0 0 12px",
-									}}
-								>
+							<div className="flex-1 min-w-0">
+								<h1 className="text-[clamp(28px,4vw,40px)] font-bold tracking-[-0.025em] leading-[1.1] text-cs-ink m-0 mb-3">
 									{title}
 								</h1>
-								<p
-									style={{
-										fontSize: 16,
-										color: "var(--cs-ink-dim)",
-										lineHeight: 1.65,
-										maxWidth: 640,
-										margin: "0 0 24px",
-									}}
-								>
-									{description}
-								</p>
+								<p className="text-base text-cs-ink-dim leading-[1.65] max-w-[640px] m-0 mb-6">{description}</p>
 
-								<div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+								<div className="flex gap-[10px] flex-wrap">
 									{heroButtons.map((btn) =>
 										btn.variant === "outline" ? (
 											<a
 												key={btn.label}
 												href={btn.link}
-												style={{
-													padding: "9px 20px",
-													borderRadius: 8,
-													border: "1px solid var(--cs-border-hi)",
-													background: "transparent",
-													color: "var(--cs-ink-dim)",
-													fontSize: 14,
-													fontWeight: 600,
-													textDecoration: "none",
-													transition: "border-color 0.15s, color 0.15s",
-												}}
-												onMouseEnter={(e) => {
-													(e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--cs-orange)";
-													(e.currentTarget as HTMLAnchorElement).style.color = "var(--cs-orange)";
-												}}
-												onMouseLeave={(e) => {
-													(e.currentTarget as HTMLAnchorElement).style.borderColor = "";
-													(e.currentTarget as HTMLAnchorElement).style.color = "";
-												}}
+												className="py-[9px] px-5 rounded-lg border border-cs-border-hi bg-transparent text-cs-ink-dim text-sm font-semibold no-underline transition-[border-color,color] duration-150 hover:border-cs-orange hover:text-cs-orange"
 											>
 												{btn.label}
 											</a>
@@ -154,23 +84,7 @@ export const ProductPageLayout = ({
 											<a
 												key={btn.label}
 												href={btn.link}
-												style={{
-													padding: "9px 20px",
-													borderRadius: 8,
-													background: "var(--cs-orange)",
-													color: "var(--cs-btn-text)",
-													fontSize: 14,
-													fontWeight: 600,
-													textDecoration: "none",
-													boxShadow: "0 4px 16px color-mix(in srgb, var(--cs-orange) 28%, transparent)",
-													transition: "opacity 0.15s",
-												}}
-												onMouseEnter={(e) => {
-													(e.currentTarget as HTMLAnchorElement).style.opacity = "0.88";
-												}}
-												onMouseLeave={(e) => {
-													(e.currentTarget as HTMLAnchorElement).style.opacity = "";
-												}}
+												className="py-[9px] px-5 rounded-lg bg-cs-orange text-cs-btn-text text-sm font-semibold no-underline transition-opacity duration-150 hover:opacity-[0.88] shadow-[0_4px_16px_color-mix(in_srgb,var(--cs-orange)_28%,transparent)]"
 											>
 												{btn.label}
 											</a>
@@ -186,53 +100,18 @@ export const ProductPageLayout = ({
 
 				{/* ── Help Section ── */}
 				<section
-					style={{
-						padding: "48px 24px",
-						background: "color-mix(in srgb, var(--cs-orange) 4%, var(--cs-bg))",
-						borderTop: "1px solid var(--cs-border)",
-					}}
+					className="py-12 px-6 border-t border-cs-border"
+					style={{ background: "color-mix(in srgb, var(--cs-orange) 4%, var(--cs-bg))" }}
 				>
-					<div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
-						<h2
-							style={{
-								fontSize: 22,
-								fontWeight: 700,
-								letterSpacing: "-0.01em",
-								color: "var(--cs-ink)",
-								margin: "0 0 10px",
-							}}
-						>
-							{helpTitle}
-						</h2>
-						{helpDescription && (
-							<p style={{ fontSize: 14.5, color: "var(--cs-ink-dim)", margin: "0 0 22px", lineHeight: 1.6 }}>
-								{helpDescription}
-							</p>
-						)}
-						<div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+					<div className="max-w-[600px] mx-auto text-center">
+						<h2 className="text-[22px] font-bold tracking-[-0.01em] text-cs-ink m-0 mb-[10px]">{helpTitle}</h2>
+						{helpDescription && <p className="text-[14.5px] text-cs-ink-dim m-0 mb-[22px] leading-[1.6]">{helpDescription}</p>}
+						<div className="flex gap-[10px] justify-center flex-wrap">
 							{helpButtons.map((btn) => (
 								<a
 									key={btn.label}
 									href={btn.link}
-									style={{
-										padding: "9px 20px",
-										borderRadius: 8,
-										border: "1px solid var(--cs-border-hi)",
-										background: "var(--cs-surface)",
-										color: "var(--cs-ink-dim)",
-										fontSize: 14,
-										fontWeight: 600,
-										textDecoration: "none",
-										transition: "border-color 0.15s, color 0.15s",
-									}}
-									onMouseEnter={(e) => {
-										(e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--cs-orange)";
-										(e.currentTarget as HTMLAnchorElement).style.color = "var(--cs-orange)";
-									}}
-									onMouseLeave={(e) => {
-										(e.currentTarget as HTMLAnchorElement).style.borderColor = "";
-										(e.currentTarget as HTMLAnchorElement).style.color = "";
-									}}
+									className="py-[9px] px-5 rounded-lg border border-cs-border-hi bg-cs-surface text-cs-ink-dim text-sm font-semibold no-underline transition-[border-color,color] duration-150 hover:border-cs-orange hover:text-cs-orange"
 								>
 									{btn.label}
 								</a>
