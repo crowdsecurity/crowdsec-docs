@@ -1,20 +1,40 @@
 .navbar {
-	@apply border-b border-border border-solid;
+	background: rgba(8, 14, 26, 0.85) !important;
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	border-bottom: 1px solid var(--cs-border) !important;
+}
+
+[data-theme='light'] .navbar {
+	background: rgba(250, 250, 247, 0.90) !important;
+	border-bottom: 1px solid var(--cs-border) !important;
 }
 
 .navbar__link {
-	--ifm-navbar-link-hover-color: rgb(var(--primary));
+	--ifm-navbar-link-hover-color: var(--cs-orange);
+	color: var(--cs-ink-dim);
+	font-size: 13.5px;
+	font-weight: 500;
+	border-radius: 6px;
+	padding: 6px 10px;
+	transition: color 0.15s, background 0.15s;
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+	color: var(--cs-orange) !important;
+	background: color-mix(in srgb, var(--cs-orange) 12%, transparent);
 }
 
 .navbar,
 .navbar-sidebar {
-	@apply bg-card text-foreground border-border/80;
-	--ifm-navbar-link-color: rgb(var(--foreground));
-	--ifm-menu-color: rgb(var(--foreground));
+	--ifm-navbar-link-color: var(--cs-ink-dim);
+	--ifm-menu-color: var(--cs-ink-dim);
 }
 
-.navbar {
-	@apply border border-b border-solid;
+/* Logo area */
+.navbar__logo {
+	height: 28px;
 }
 
 .navbar-separator {
