@@ -65,7 +65,6 @@ export default function DocCard({
 		<div
 			className={`p-5 rounded-xl bg-cs-surface border border-cs-border flex flex-col gap-3 h-full${href ? " transition-[border-color,box-shadow] duration-150" : ""}`}
 		>
-			{/* Header: icon + title + premium badge */}
 			<div className="flex items-start gap-3">
 				{resolvedIcon && (
 					<div
@@ -103,13 +102,10 @@ export default function DocCard({
 				</div>
 			</div>
 
-			{/* Description */}
 			{desc && <div className="text-[13.5px] text-cs-ink-dim leading-[1.55] flex-1">{desc}</div>}
 
-			{/* Extra content slot */}
 			{children && <div className="flex-1">{children}</div>}
 
-			{/* Command block */}
 			{command && (
 				<div className="py-[9px] px-3 rounded-lg bg-cs-bg border border-cs-border font-cs-mono text-xs flex items-center gap-[10px]">
 					<span className="text-cs-ink-mute select-none">$</span>
@@ -117,7 +113,6 @@ export default function DocCard({
 				</div>
 			)}
 
-			{/* Link list */}
 			{links && links.length > 0 && (
 				<div className="flex flex-col gap-[5px] mt-1">
 					{links.map((l) => (

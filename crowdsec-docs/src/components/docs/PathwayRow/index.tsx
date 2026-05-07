@@ -61,15 +61,13 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 				background: open ? `linear-gradient(180deg, ${mix(color, 8)}, var(--cs-surface) 60%)` : "var(--cs-surface)",
 			}}
 		>
-			{/* Header row — always visible */}
+			{" "}
 			<div className="flex items-center py-[18px] px-5 gap-[18px]">
-				{/* Color rail */}
+				{" "}
 				<div
 					className="w-[3px] h-[38px] rounded-sm shrink-0"
 					style={{ background: color, boxShadow: `0 0 12px ${mix(color, 40)}` }}
-				/>
-
-				{/* Icon */}
+				/>{" "}
 				{icon && (
 					<div
 						style={{
@@ -87,9 +85,7 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 					>
 						{icon}
 					</div>
-				)}
-
-				{/* Labels */}
+				)}{" "}
 				<div className="flex-1 min-w-0">
 					<div className="font-cs-mono text-[10.5px] tracking-[0.12em] uppercase mb-1" style={{ color }}>
 						{eyebrow}
@@ -97,7 +93,6 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 					<div className="text-[15.5px] font-semibold text-cs-ink tracking-[-0.005em]">{title}</div>
 					{open && sub && <div className="text-[13px] text-cs-ink-dim mt-1.5 leading-[1.5]">{sub}</div>}
 				</div>
-
 				{/* CTA in header when CLOSED */}
 				{!open && (
 					<a
@@ -112,9 +107,7 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 					>
 						{ctaLabel} <ArrowIcon />
 					</a>
-				)}
-
-				{/* Chevron toggle */}
+				)}{" "}
 				<button
 					type="button"
 					onClick={() => setOpen(!open)}
@@ -136,12 +129,10 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 						<path d="M6 9l6 6 6-6" />
 					</svg>
 				</button>
-			</div>
-
-			{/* Expanded body — horizontal steps grid + CTA */}
+			</div>{" "}
 			{open && (
 				<div className="px-5 pb-[22px] pt-1 border-t border-cs-border">
-					{/* Horizontal step grid */}
+					{" "}
 					<div className="grid gap-[10px] my-4 mb-5" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
 						{steps.map((step, i) => (
 							<div
@@ -149,7 +140,7 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 								key={i}
 								className="p-[12px_14px] rounded-[9px] bg-cs-surface-2 border border-cs-border relative"
 							>
-								{/* Step number + optional hint badge in same row */}
+								{" "}
 								<div className="flex items-center gap-[6px] mb-2">
 									<div
 										className="w-6 h-6 rounded-full flex items-center justify-center font-cs-mono text-[10px] font-bold shrink-0"
@@ -175,7 +166,6 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 							</div>
 						))}
 					</div>
-
 					{/* CTA in content when OPEN */}
 					<a
 						href={ctaHref}

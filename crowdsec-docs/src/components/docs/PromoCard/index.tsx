@@ -57,6 +57,7 @@ const PROMO_DATA: Record<PromoVariant, PromoData> = {
 };
 
 function SparklineBox({ color }: { color: string }) {
+	const gradientId = `pg-fill-${color.replace(/[^a-z]/gi, "")}`;
 	return (
 		<div className="my-1 h-[76px] rounded-lg bg-cs-bg border border-cs-border relative overflow-hidden">
 			<div
@@ -69,14 +70,14 @@ function SparklineBox({ color }: { color: string }) {
 			/>
 			<svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 70" preserveAspectRatio="none" aria-hidden="true">
 				<defs>
-					<linearGradient id={`pg-fill-${color.replace(/[^a-z]/gi, "")}`} x1="0" x2="0" y1="0" y2="1">
+					<linearGradient id={gradientId} x1="0" x2="0" y1="0" y2="1">
 						<stop offset="0%" stopColor={color} stopOpacity="0.45" />
 						<stop offset="100%" stopColor={color} stopOpacity="0" />
 					</linearGradient>
 				</defs>
 				<path
 					d="M0 50 L20 42 L40 46 L60 30 L80 36 L100 22 L120 28 L140 14 L160 20 L180 8 L200 16 L200 70 L0 70 Z"
-					fill={`url(#pg-fill-${color.replace(/[^a-z]/gi, "")})`}
+					fill={`url(#${gradientId})`}
 				/>
 				<path
 					d="M0 50 L20 42 L40 46 L60 30 L80 36 L100 22 L120 28 L140 14 L160 20 L180 8 L200 16"

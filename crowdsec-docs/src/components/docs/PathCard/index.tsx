@@ -13,6 +13,24 @@ type Props = {
 	href: string;
 };
 
+function ArrowRight() {
+	return (
+		<svg
+			width="14"
+			height="14"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth={1.6}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			aria-hidden="true"
+		>
+			<path d="M5 12h14M13 6l6 6-6 6" />
+		</svg>
+	);
+}
+
 export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags = [], audience, href }: Props) {
 	const [hover, setHover] = useState(false);
 
@@ -31,26 +49,18 @@ export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags 
 					: "inset 0 1px 0 rgba(255,255,255,0.02)",
 			}}
 		>
-			{/* Corner glow */}
 			<div
 				className="absolute -top-10 -right-10 w-[140px] h-[140px] rounded-full blur-[60px] pointer-events-none transition-opacity duration-200"
 				style={{ background: color, opacity: hover ? 0.18 : 0.09 }}
 			/>
 
-			{/* Header row: icon + eyebrow */}
 			<div className="flex items-center justify-between mb-[18px]">
 				<div
+					className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0"
 					style={{
-						width: 40,
-						height: 40,
-						borderRadius: 10,
 						background: mix(color, 14),
 						border: `1px solid ${mix(color, 28)}`,
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "center",
 						color,
-						flexShrink: 0,
 					}}
 				>
 					{icon}
@@ -66,24 +76,16 @@ export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags 
 
 			<p className="text-[13.5px] text-cs-ink-dim leading-[1.55] m-0 flex-1">{desc}</p>
 
-			{/* Tags */}
 			{tags.length > 0 && (
 				<div className="flex flex-wrap gap-[5px] mt-[18px]">
 					{tags.map((t, i) => (
 						<span
 							key={t}
+							className="inline-block font-cs-mono text-[10.5px] tracking-[0.06em] uppercase px-2 py-[3px] rounded font-medium"
 							style={{
-								display: "inline-block",
-								fontFamily: "var(--cs-font-mono)",
-								fontSize: 10.5,
-								letterSpacing: "0.06em",
-								textTransform: "uppercase",
 								color: i === 0 ? color : "var(--cs-ink-dim)",
 								border: `1px solid ${i === 0 ? mix(color, 28) : mix("var(--cs-ink-dim)", 20)}`,
 								background: i === 0 ? mix(color, 8) : mix("var(--cs-ink-dim)", 6),
-								padding: "3px 8px",
-								borderRadius: 4,
-								fontWeight: 500,
 							}}
 						>
 							{t}
@@ -92,7 +94,6 @@ export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags 
 				</div>
 			)}
 
-			{/* Footer */}
 			<div className="mt-5 pt-4 border-t border-dashed border-cs-border flex items-center justify-between">
 				{audience && (
 					<div className="font-cs-mono text-[10.5px] text-cs-ink-mute tracking-[0.06em] leading-[1.4] min-w-0 overflow-hidden">
@@ -104,19 +105,7 @@ export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags 
 					style={{ color }}
 				>
 					{tag}
-					<svg
-						width="14"
-						height="14"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						strokeWidth={1.6}
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						aria-hidden="true"
-					>
-						<path d="M5 12h14M13 6l6 6-6 6" />
-					</svg>
+					<ArrowRight />
 				</div>
 			</div>
 		</a>
