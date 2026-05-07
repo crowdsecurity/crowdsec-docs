@@ -12,6 +12,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        "cs-bg":          "var(--cs-bg)",
+        "cs-bg-soft":     "var(--cs-bg-soft)",
+        "cs-surface":     "var(--cs-surface)",
+        "cs-surface-2":   "var(--cs-surface-2)",
+        "cs-border":      "var(--cs-border)",
+        "cs-border-hi":   "var(--cs-border-hi)",
+        "cs-ink":         "var(--cs-ink)",
+        "cs-ink-dim":     "var(--cs-ink-dim)",
+        "cs-ink-mute":    "var(--cs-ink-mute)",
+        "cs-orange":      "var(--cs-orange)",
+        "cs-orange-soft": "var(--cs-orange-soft)",
+        "cs-teal":        "var(--cs-teal)",
+        "cs-violet":      "var(--cs-violet)",
+        "cs-blue":        "var(--cs-blue)",
+        "cs-pink":        "var(--cs-pink)",
+        "cs-red":         "var(--cs-red)",
+        "cs-btn-text":    "var(--cs-btn-text)",
         primary: `rgb(var(--primary) / <alpha-value>)`,
         "primary-foreground": `rgb(var(--primary-foreground) / <alpha-value>)`,
         secondary: `rgb(var(--secondary) / <alpha-value>)`,
@@ -45,6 +62,10 @@ module.exports = {
       backgroundImage: () => ({
         landing: "url('/img/landing-page-bg.webp')",
       }),
+      fontFamily: {
+        "cs-sans": ["var(--cs-font-sans)"],
+        "cs-mono": ["var(--cs-font-mono)"],
+      },
       scale: {
         99: "0.99",
         101: "1.01",

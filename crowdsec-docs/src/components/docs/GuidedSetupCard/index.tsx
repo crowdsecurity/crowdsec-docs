@@ -12,50 +12,20 @@ type Props = {
 
 export default function GuidedSetupCard({ title, desc, primaryCta, secondaryCta }: Props) {
 	return (
-		<div
-			style={{
-				position: "relative",
-				padding: "24px 28px",
-				borderRadius: 14,
-				background: "var(--cs-surface)",
-				border: "1px solid var(--cs-border)",
-				overflow: "hidden",
-				display: "flex",
-				alignItems: "center",
-				gap: 24,
-				margin: "28px 0",
-				flexWrap: "wrap",
-			}}
-		>
+		<div className="relative py-6 px-7 rounded-[14px] bg-cs-surface border border-cs-border overflow-hidden flex items-center gap-6 my-7 flex-wrap">
 			{/* Corner glow */}
 			<div
-				style={{
-					position: "absolute",
-					top: -60,
-					left: -60,
-					width: 220,
-					height: 220,
-					borderRadius: "50%",
-					background: "var(--cs-violet)",
-					filter: "blur(80px)",
-					opacity: 0.1,
-					pointerEvents: "none",
-				}}
+				className="absolute -top-[60px] -left-[60px] w-[220px] h-[220px] rounded-full blur-[80px] opacity-10 pointer-events-none"
+				style={{ background: "var(--cs-violet)" }}
 				aria-hidden="true"
 			/>
 
 			{/* Icon */}
 			<div
+				className="w-14 h-14 rounded-[14px] flex items-center justify-center shrink-0"
 				style={{
-					width: 56,
-					height: 56,
-					borderRadius: 14,
 					background: "color-mix(in srgb, var(--cs-violet) 14%, transparent)",
 					border: "1px solid color-mix(in srgb, var(--cs-violet) 30%, transparent)",
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-					flexShrink: 0,
 					color: "var(--cs-violet)",
 				}}
 			>
@@ -63,37 +33,17 @@ export default function GuidedSetupCard({ title, desc, primaryCta, secondaryCta 
 			</div>
 
 			{/* Text */}
-			<div style={{ flex: 1, minWidth: 200 }}>
-				<div
-					style={{
-						fontSize: 17,
-						fontWeight: 600,
-						color: "var(--cs-ink)",
-						marginBottom: 4,
-					}}
-				>
-					{title}
-				</div>
-				<div style={{ fontSize: 13.5, color: "var(--cs-ink-dim)" }}>{desc}</div>
+			<div className="flex-1 min-w-[200px]">
+				<div className="text-[17px] font-semibold text-cs-ink mb-1">{title}</div>
+				<div className="text-[13.5px] text-cs-ink-dim">{desc}</div>
 			</div>
 
 			{/* Actions */}
-			<div style={{ display: "flex", gap: 10, flexWrap: "wrap", flexShrink: 0 }}>
+			<div className="flex gap-[10px] flex-wrap shrink-0">
 				<a
 					href={primaryCta.href}
-					style={{
-						padding: "10px 16px",
-						borderRadius: 9,
-						background: "var(--cs-violet)",
-						color: "var(--cs-btn-text)",
-						fontWeight: 600,
-						fontSize: 13.5,
-						textDecoration: "none",
-						display: "inline-flex",
-						alignItems: "center",
-						gap: 8,
-						boxShadow: "0 8px 24px color-mix(in srgb, var(--cs-violet) 30%, transparent)",
-					}}
+					className="py-[10px] px-4 rounded-[9px] bg-cs-violet text-cs-btn-text font-semibold text-[13.5px] no-underline inline-flex items-center gap-2"
+					style={{ boxShadow: "0 8px 24px color-mix(in srgb, var(--cs-violet) 30%, transparent)" }}
 				>
 					<CIcon icon={cilCompass} style={{ width: 14, height: 14 }} />
 					{primaryCta.label}
@@ -101,19 +51,7 @@ export default function GuidedSetupCard({ title, desc, primaryCta, secondaryCta 
 				{secondaryCta && (
 					<a
 						href={secondaryCta.href}
-						style={{
-							padding: "10px 16px",
-							borderRadius: 9,
-							background: "var(--cs-surface-2)",
-							color: "var(--cs-ink)",
-							fontWeight: 600,
-							fontSize: 13.5,
-							border: "1px solid var(--cs-border-hi)",
-							textDecoration: "none",
-							display: "inline-flex",
-							alignItems: "center",
-							gap: 8,
-						}}
+						className="py-[10px] px-4 rounded-[9px] bg-cs-surface-2 text-cs-ink font-semibold text-[13.5px] border border-cs-border-hi no-underline inline-flex items-center gap-2"
 					>
 						<CIcon icon={cilBolt} style={{ width: 14, height: 14 }} />
 						{secondaryCta.label}

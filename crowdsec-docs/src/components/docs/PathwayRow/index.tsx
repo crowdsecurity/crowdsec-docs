@@ -55,27 +55,18 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 
 	return (
 		<div
+			className="rounded-xl overflow-hidden mb-2 transition-all duration-[180ms]"
 			style={{
 				border: `1px solid ${open ? mix(color, 25) : "var(--cs-border)"}`,
-				borderRadius: 12,
 				background: open ? `linear-gradient(180deg, ${mix(color, 8)}, var(--cs-surface) 60%)` : "var(--cs-surface)",
-				transition: "all 180ms",
-				overflow: "hidden",
-				marginBottom: 8,
 			}}
 		>
 			{/* Header row — always visible */}
-			<div style={{ display: "flex", alignItems: "center", padding: "18px 20px", gap: 18 }}>
+			<div className="flex items-center py-[18px] px-5 gap-[18px]">
 				{/* Color rail */}
 				<div
-					style={{
-						width: 3,
-						height: 38,
-						background: color,
-						borderRadius: 2,
-						boxShadow: `0 0 12px ${mix(color, 40)}`,
-						flexShrink: 0,
-					}}
+					className="w-[3px] h-[38px] rounded-sm shrink-0"
+					style={{ background: color, boxShadow: `0 0 12px ${mix(color, 40)}` }}
 				/>
 
 				{/* Icon */}
@@ -99,21 +90,12 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 				)}
 
 				{/* Labels */}
-				<div style={{ flex: 1, minWidth: 0 }}>
-					<div
-						style={{
-							fontFamily: "var(--cs-font-mono)",
-							fontSize: 10.5,
-							letterSpacing: "0.12em",
-							textTransform: "uppercase",
-							color,
-							marginBottom: 4,
-						}}
-					>
+				<div className="flex-1 min-w-0">
+					<div className="font-cs-mono text-[10.5px] tracking-[0.12em] uppercase mb-1" style={{ color }}>
 						{eyebrow}
 					</div>
-					<div style={{ fontSize: 15.5, fontWeight: 600, color: "var(--cs-ink)", letterSpacing: "-0.005em" }}>{title}</div>
-					{open && sub && <div style={{ fontSize: 13, color: "var(--cs-ink-dim)", marginTop: 6, lineHeight: 1.5 }}>{sub}</div>}
+					<div className="text-[15.5px] font-semibold text-cs-ink tracking-[-0.005em]">{title}</div>
+					{open && sub && <div className="text-[13px] text-cs-ink-dim mt-1.5 leading-[1.5]">{sub}</div>}
 				</div>
 
 				{/* CTA in header when CLOSED */}
@@ -121,20 +103,11 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 					<a
 						href={ctaHref}
 						onClick={(e) => e.stopPropagation()}
+						className="py-2 px-[14px] rounded-lg font-semibold text-[13px] inline-flex items-center gap-1.5 no-underline shrink-0 whitespace-nowrap"
 						style={{
-							padding: "8px 14px",
-							borderRadius: 8,
 							background: color,
 							color: "var(--cs-btn-text)",
-							fontWeight: 600,
-							fontSize: 13,
-							display: "inline-flex",
-							alignItems: "center",
-							gap: 6,
-							textDecoration: "none",
 							boxShadow: `0 4px 16px ${mix(color, 30)}`,
-							flexShrink: 0,
-							whiteSpace: "nowrap",
 						}}
 					>
 						{ctaLabel} <ArrowIcon />
@@ -146,21 +119,8 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 					type="button"
 					onClick={() => setOpen(!open)}
 					aria-expanded={open}
-					style={{
-						width: 30,
-						height: 30,
-						borderRadius: 7,
-						background: "var(--cs-surface-2)",
-						border: "1px solid var(--cs-border-hi)",
-						color: "var(--cs-ink-dim)",
-						cursor: "pointer",
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "center",
-						transform: open ? "rotate(180deg)" : "none",
-						transition: "transform 180ms",
-						flexShrink: 0,
-					}}
+					className="w-[30px] h-[30px] rounded-[7px] bg-cs-surface-2 border border-cs-border-hi text-cs-ink-dim cursor-pointer flex items-center justify-center shrink-0 transition-transform duration-[180ms]"
+					style={{ transform: open ? "rotate(180deg)" : "none" }}
 				>
 					<svg
 						width="13"
@@ -180,47 +140,20 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 
 			{/* Expanded body — horizontal steps grid + CTA */}
 			{open && (
-				<div
-					style={{
-						padding: "4px 20px 22px",
-						borderTop: "1px solid var(--cs-border)",
-					}}
-				>
+				<div className="px-5 pb-[22px] pt-1 border-t border-cs-border">
 					{/* Horizontal step grid */}
-					<div
-						style={{
-							display: "grid",
-							gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))`,
-							gap: 10,
-							margin: "16px 0 20px",
-						}}
-					>
+					<div className="grid gap-[10px] my-4 mb-5" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
 						{steps.map((step, i) => (
 							<div
 								// biome-ignore lint/suspicious/noArrayIndexKey: steps have no stable id
 								key={i}
-								style={{
-									padding: "12px 14px",
-									borderRadius: 9,
-									background: "var(--cs-surface-2)",
-									border: `1px solid var(--cs-border)`,
-									position: "relative",
-								}}
+								className="p-[12px_14px] rounded-[9px] bg-cs-surface-2 border border-cs-border relative"
 							>
 								{/* Step number + optional hint badge in same row */}
-								<div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+								<div className="flex items-center gap-[6px] mb-2">
 									<div
+										className="w-6 h-6 rounded-full flex items-center justify-center font-cs-mono text-[10px] font-bold shrink-0"
 										style={{
-											width: 24,
-											height: 24,
-											borderRadius: "50%",
-											display: "flex",
-											alignItems: "center",
-											justifyContent: "center",
-											fontFamily: "var(--cs-font-mono)",
-											fontSize: 10,
-											fontWeight: 700,
-											flexShrink: 0,
 											background: mix(color, 11),
 											color,
 											border: `1px solid ${mix(color, 22)}`,
@@ -230,25 +163,15 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 									</div>
 									{step.hint && (
 										<span
-											style={{
-												fontFamily: "var(--cs-font-mono)",
-												fontSize: 9,
-												letterSpacing: "0.08em",
-												textTransform: "uppercase",
-												padding: "2px 5px",
-												borderRadius: 3,
-												fontWeight: 600,
-												...HINT_STYLE[step.hint],
-											}}
+											className="font-cs-mono text-[9px] tracking-[0.08em] uppercase p-[2px_5px] rounded-[3px] font-semibold"
+											style={HINT_STYLE[step.hint]}
 										>
 											{step.hint}
 										</span>
 									)}
 								</div>
-								<div style={{ fontSize: 13, fontWeight: 600, color: "var(--cs-ink)", marginBottom: 4, lineHeight: 1.3 }}>
-									{step.title}
-								</div>
-								<div style={{ fontSize: 12, color: "var(--cs-ink-dim)", lineHeight: 1.5 }}>{step.desc}</div>
+								<div className="text-[13px] font-semibold text-cs-ink mb-1 leading-[1.3]">{step.title}</div>
+								<div className="text-xs text-cs-ink-dim leading-[1.5]">{step.desc}</div>
 							</div>
 						))}
 					</div>
@@ -256,19 +179,11 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 					{/* CTA in content when OPEN */}
 					<a
 						href={ctaHref}
+						className="inline-flex items-center gap-1.5 py-2 px-[18px] rounded-[7px] text-[13px] font-semibold no-underline whitespace-nowrap"
 						style={{
-							display: "inline-flex",
-							alignItems: "center",
-							gap: 6,
-							padding: "8px 18px",
-							borderRadius: 7,
 							background: color,
 							color: "var(--cs-btn-text)",
-							fontSize: 13,
-							fontWeight: 600,
-							textDecoration: "none",
 							boxShadow: `0 4px 16px ${mix(color, 30)}`,
-							whiteSpace: "nowrap",
 						}}
 					>
 						{ctaLabel} <ArrowIcon />

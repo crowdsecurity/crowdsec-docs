@@ -13,8 +13,6 @@ type Props = {
 	href: string;
 };
 
-/* color-mix() helper so CSS vars like var(--cs-orange) can be used with opacity */
-
 export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags = [], audience, href }: Props) {
 	const [hover, setHover] = useState(false);
 
@@ -23,52 +21,29 @@ export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags 
 			href={href}
 			onMouseEnter={() => setHover(true)}
 			onMouseLeave={() => setHover(false)}
+			className="relative p-6 rounded-[14px] overflow-hidden cursor-pointer flex flex-col no-underline min-w-0 transition-[border-color,background,box-shadow] duration-200"
 			style={{
-				position: "relative",
-				padding: 24,
+				color: "inherit",
 				background: hover ? "var(--cs-surface-2)" : "var(--cs-surface)",
-				/* Border matches icon color on hover */
 				border: `1px solid ${hover ? mix(color, 40) : "var(--cs-border)"}`,
-				borderRadius: 14,
-				transition: "border-color 200ms, background 200ms, box-shadow 200ms",
-				/* No translateY — avoids layout shift */
 				boxShadow: hover
 					? `0 16px 40px rgba(0,0,0,0.40), inset 0 0 0 1px ${mix(color, 15)}`
 					: "inset 0 1px 0 rgba(255,255,255,0.02)",
-				overflow: "hidden",
-				cursor: "pointer",
-				display: "flex",
-				flexDirection: "column",
-				textDecoration: "none",
-				color: "inherit",
-				minWidth: 0,
 			}}
 		>
 			{/* Corner glow */}
 			<div
-				style={{
-					position: "absolute",
-					top: -40,
-					right: -40,
-					width: 140,
-					height: 140,
-					borderRadius: "50%",
-					background: color,
-					filter: "blur(60px)",
-					opacity: hover ? 0.18 : 0.09,
-					transition: "opacity 200ms",
-					pointerEvents: "none",
-				}}
+				className="absolute -top-10 -right-10 w-[140px] h-[140px] rounded-full blur-[60px] pointer-events-none transition-opacity duration-200"
+				style={{ background: color, opacity: hover ? 0.18 : 0.09 }}
 			/>
 
 			{/* Header row: icon + eyebrow */}
-			<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+			<div className="flex items-center justify-between mb-[18px]">
 				<div
 					style={{
 						width: 40,
 						height: 40,
 						borderRadius: 10,
-						/* Use color-mix so CSS vars work as opacity-tinted backgrounds */
 						background: mix(color, 14),
 						border: `1px solid ${mix(color, 28)}`,
 						display: "flex",
@@ -81,49 +56,19 @@ export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags 
 					{icon}
 				</div>
 				{eyebrow && (
-					<div
-						style={{
-							fontFamily: "var(--cs-font-mono)",
-							fontSize: 11,
-							letterSpacing: "0.18em",
-							textTransform: "uppercase" as const,
-							color,
-							fontWeight: 500,
-						}}
-					>
+					<div className="font-cs-mono text-[11px] tracking-[0.18em] uppercase font-medium" style={{ color }}>
 						{eyebrow}
 					</div>
 				)}
 			</div>
 
-			<h3
-				style={{
-					fontSize: 18.5,
-					fontWeight: 600,
-					lineHeight: 1.25,
-					margin: "0 0 10px",
-					color: "var(--cs-ink)",
-					letterSpacing: "-0.01em",
-				}}
-			>
-				{title}
-			</h3>
+			<h3 className="text-[18.5px] font-semibold leading-[1.25] m-0 mb-[10px] text-cs-ink tracking-[-0.01em]">{title}</h3>
 
-			<p
-				style={{
-					fontSize: 13.5,
-					color: "var(--cs-ink-dim)",
-					lineHeight: 1.55,
-					margin: 0,
-					flex: 1,
-				}}
-			>
-				{desc}
-			</p>
+			<p className="text-[13.5px] text-cs-ink-dim leading-[1.55] m-0 flex-1">{desc}</p>
 
 			{/* Tags */}
 			{tags.length > 0 && (
-				<div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 18 }}>
+				<div className="flex flex-wrap gap-[5px] mt-[18px]">
 					{tags.map((t, i) => (
 						<span
 							key={t}
@@ -132,7 +77,7 @@ export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags 
 								fontFamily: "var(--cs-font-mono)",
 								fontSize: 10.5,
 								letterSpacing: "0.06em",
-								textTransform: "uppercase" as const,
+								textTransform: "uppercase",
 								color: i === 0 ? color : "var(--cs-ink-dim)",
 								border: `1px solid ${i === 0 ? mix(color, 28) : mix("var(--cs-ink-dim)", 20)}`,
 								background: i === 0 ? mix(color, 8) : mix("var(--cs-ink-dim)", 6),
@@ -148,45 +93,15 @@ export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags 
 			)}
 
 			{/* Footer */}
-			<div
-				style={{
-					marginTop: 20,
-					paddingTop: 16,
-					borderTop: `1px dashed var(--cs-border)`,
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "space-between",
-				}}
-			>
+			<div className="mt-5 pt-4 border-t border-dashed border-cs-border flex items-center justify-between">
 				{audience && (
-					<div
-						style={{
-							fontFamily: "var(--cs-font-mono)",
-							fontSize: 10.5,
-							color: "var(--cs-ink-mute)",
-							letterSpacing: "0.06em",
-							lineHeight: 1.4,
-							minWidth: 0,
-							flex: "0 1 auto",
-							overflow: "hidden",
-						}}
-					>
+					<div className="font-cs-mono text-[10.5px] text-cs-ink-mute tracking-[0.06em] leading-[1.4] min-w-0 overflow-hidden">
 						{audience}
 					</div>
 				)}
 				<div
-					style={{
-						display: "inline-flex",
-						alignItems: "center",
-						gap: 6,
-						color,
-						fontWeight: 600,
-						fontSize: 13,
-						marginLeft: "auto",
-						transition: "gap 160ms",
-						whiteSpace: "nowrap",
-						flexShrink: 0,
-					}}
+					className="inline-flex items-center gap-1.5 font-semibold text-[13px] ml-auto whitespace-nowrap shrink-0 transition-[gap] duration-[160ms]"
+					style={{ color }}
 				>
 					{tag}
 					<svg

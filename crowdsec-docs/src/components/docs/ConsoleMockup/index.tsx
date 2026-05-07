@@ -1,16 +1,14 @@
-import styles from "./index.module.css";
-
 export default function ConsoleMockup() {
 	return (
-		<div className={styles.wrap}>
-			<div className={styles.titleBar}>
-				<div className={styles.dot} style={{ background: "#FF5F57" }} />
-				<div className={styles.dot} style={{ background: "#FFBD2E" }} />
-				<div className={styles.dot} style={{ background: "#28C840" }} />
-				<span className={styles.titleText}>app.crowdsec.net — Console</span>
+		<div className="rounded-xl overflow-hidden border border-cs-border-hi bg-cs-surface my-6">
+			<div className="flex items-center gap-1.5 py-[10px] px-4 bg-cs-surface-2 border-b border-cs-border">
+				<div className="w-2.5 h-2.5 rounded-full" style={{ background: "#FF5F57" }} />
+				<div className="w-2.5 h-2.5 rounded-full" style={{ background: "#FFBD2E" }} />
+				<div className="w-2.5 h-2.5 rounded-full" style={{ background: "#28C840" }} />
+				<span className="ml-2 font-cs-mono text-[11px] text-cs-ink-mute">app.crowdsec.net — Console</span>
 			</div>
 			<svg
-				className={styles.svg}
+				className="w-full block"
 				viewBox="0 0 800 420"
 				xmlns="http://www.w3.org/2000/svg"
 				aria-label="CrowdSec Console dashboard preview"

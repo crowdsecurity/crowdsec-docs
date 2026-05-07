@@ -16,14 +16,7 @@ type Props = {
 
 export default function ChallengeGrid({ challenges }: Props) {
 	return (
-		<div
-			style={{
-				display: "grid",
-				gridTemplateColumns: "repeat(2, 1fr)",
-				gap: 14,
-				margin: "20px 0",
-			}}
-		>
+		<div className="grid grid-cols-2 gap-[14px] my-5">
 			{challenges.map((c, i) => {
 				const iconEl =
 					c.icon ??
@@ -34,16 +27,9 @@ export default function ChallengeGrid({ challenges }: Props) {
 					<div
 						// biome-ignore lint/suspicious/noArrayIndexKey: challenges have no stable id
 						key={i}
-						style={{
-							position: "relative",
-							padding: 18,
-							borderRadius: 12,
-							background: "var(--cs-surface)",
-							border: "1px solid var(--cs-border)",
-							overflow: "hidden",
-						}}
+						className="relative p-[18px] rounded-xl bg-cs-surface border border-cs-border overflow-hidden"
 					>
-						<div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
+						<div className="flex items-center gap-3 mb-[10px]">
 							{iconEl && (
 								<div
 									style={{
@@ -62,29 +48,12 @@ export default function ChallengeGrid({ challenges }: Props) {
 									<div style={{ width: 17, height: 17, display: "flex" }}>{iconEl}</div>
 								</div>
 							)}
-							<div
-								style={{
-									fontFamily: "var(--cs-font-mono)",
-									fontSize: 11,
-									color: "var(--cs-ink-mute)",
-									letterSpacing: "0.10em",
-								}}
-							>
+							<div className="font-cs-mono text-[11px] text-cs-ink-mute tracking-[0.10em]">
 								{String(i + 1).padStart(2, "0")}
 							</div>
 						</div>
-						<div
-							style={{
-								fontSize: 15,
-								fontWeight: 600,
-								color: "var(--cs-ink)",
-								marginBottom: 6,
-								letterSpacing: "-0.005em",
-							}}
-						>
-							{c.title}
-						</div>
-						<div style={{ fontSize: 13.5, color: "var(--cs-ink-dim)", lineHeight: 1.55 }}>{c.body}</div>
+						<div className="text-[15px] font-semibold text-cs-ink mb-[6px] tracking-[-0.005em]">{c.title}</div>
+						<div className="text-[13.5px] text-cs-ink-dim leading-[1.55]">{c.body}</div>
 					</div>
 				);
 			})}
