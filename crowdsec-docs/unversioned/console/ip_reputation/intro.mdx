@@ -6,50 +6,42 @@ description: Explore and query CrowdSec's IP Reputation data and manage CTI API 
 
 import Link from "@docusaurus/Link";
 import { ExternalLink } from "lucide-react";
+import DocCard from '@site/src/components/docs/DocCard';
+import DocCardGrid from '@site/src/components/docs/DocCardGrid';
 
-export const BLUE = "#60a5fa";
-export const GREEN = "#22d3a0";
-export const PURPLE = "#a78bfa";
+export const BLUE = "var(--cs-blue)";
+export const GREEN = "var(--cs-teal)";
+export const PURPLE = "var(--cs-violet)";
 
 <p style={{ fontSize: "14px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.65, marginBottom: "1.5rem" }}>
   Query behavioral intelligence on any IP: reputation scores, attack patterns, linked CVEs, and activity history. Sourced from hundreds of thousands of real CrowdSec deployments worldwide.
 </p>
 
-{/* ── Row 1: two cards side by side ──────────────────────────────────── */}
-
-<div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px", marginBottom: "2rem" }}>
-
-  {/* Card 1: Web UI exploration (merged Search + IP Report) */}
-  <div className="doc-card" style={{ display: "flex", flexDirection: "column" }}>
-    <div style={{ fontSize: "22px", marginBottom: "8px" }}>🔍</div>
-    <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "6px" }}>Explore in the Web UI</div>
-    <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, flexGrow: 1, marginBottom: "14px" }}>
-      No setup needed. Search any IP directly from your browser: run Lucene queries with live faceted filters (reputation, country, AS, behaviors, classifications) and open any result to see its full report: <strong>threat score</strong>, behaviors mapped to MITRE ATT&amp;CK, <strong>linked CVEs</strong>, and time-windowed activity. The homepage also surfaces a <strong>Top 10 Most Aggressive IPs</strong> leaderboard updated every 24h.
-    </div>
-    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-      <Link to="/u/console/ip_reputation/search_ui" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>IP Search →</span></Link>
-      <Link to="/u/console/ip_reputation/search_ui_advanced" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>Advanced Search →</span></Link>
-      <Link to="/u/console/ip_reputation/ip_report" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>IP Report →</span></Link>
-      <Link to="/u/cti_api/search_queries" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>Lucene Query Reference →</span></Link>
-    </div>
-  </div>
-
-  {/* Card 2: Enrich your Alerts (API Key) */}
-  <div className="doc-card" style={{ display: "flex", flexDirection: "column" }}>
-    <div style={{ fontSize: "22px", marginBottom: "8px" }}>🔑</div>
-    <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "6px" }}>Enrich your Alerts</div>
-    <div style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, flexGrow: 1, marginBottom: "12px" }}>
-      Unlock programmatic access to 30+ enrichment fields per IP: reputation, behaviors, CVEs, attack context, MITRE mappings, and more. Use it to enrich SIEM alerts, automate lookups, or feed threat intel platforms. <strong>Free tier included, no credit card needed.</strong>
-    </div>
-
-    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-      <Link to="/u/console/ip_reputation/api_keys" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>Create an API key →</span></Link>
-      <Link to="/u/cti_api/taxonomy/intro" style={{ fontSize: "12.5px", fontWeight: 600 }}><span>Data Taxonomy →</span></Link>
-      <Link to="https://crowdsecurity.github.io/cti-api/" style={{ fontSize: "12.5px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "4px" }}><span>API Reference</span><ExternalLink size={11} style={{ opacity: 0.5 }} /></Link>
-    </div>
-  </div>
-
-</div>
+<DocCardGrid cols={2}>
+  <DocCard
+    iconName="search"
+    color={BLUE}
+    title="Explore in the Web UI"
+    desc="No setup needed. Search any IP directly from your browser: run Lucene queries with live faceted filters (reputation, country, AS, behaviors, classifications) and open any result to see its full report: threat score, behaviors mapped to MITRE ATT&CK, linked CVEs, and time-windowed activity."
+    links={[
+      { label: "IP Search", href: "/u/console/ip_reputation/search_ui" },
+      { label: "Advanced Search", href: "/u/console/ip_reputation/search_ui_advanced" },
+      { label: "IP Report", href: "/u/console/ip_reputation/ip_report" },
+      { label: "Lucene Query Reference", href: "/u/cti_api/search_queries" },
+    ]}
+  />
+  <DocCard
+    iconName="key"
+    color={PURPLE}
+    title="Enrich your Alerts"
+    desc="Unlock programmatic access to 30+ enrichment fields per IP: reputation, behaviors, CVEs, attack context, MITRE mappings, and more. Free tier included, no credit card needed."
+    links={[
+      { label: "Create an API key", href: "/u/console/ip_reputation/api_keys" },
+      { label: "Data Taxonomy", href: "/u/cti_api/taxonomy/intro" },
+      { label: "API Reference", href: "https://crowdsecurity.github.io/cti-api/", external: true },
+    ]}
+  />
+</DocCardGrid>
 
 {/* ── You might also be interested in: LET ───────────────────────────── */}
 

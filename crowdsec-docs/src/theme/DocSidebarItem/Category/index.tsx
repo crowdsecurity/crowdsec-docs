@@ -196,11 +196,19 @@ export default function DocSidebarItemCategory({
 				>
 					{label}
 					{isPremium && (
-						<Tooltip>
-							<Badge className="m-1" variant="premium">
-								Premium
-							</Badge>
-						</Tooltip>
+						<span style={{
+							fontFamily: 'var(--cs-font-mono)',
+							fontSize: 9.5,
+							letterSpacing: '0.08em',
+							textTransform: 'uppercase' as const,
+							padding: '2px 6px',
+							borderRadius: 4,
+							background: 'color-mix(in srgb, var(--cs-orange) 14%, transparent)',
+							color: 'var(--cs-orange)',
+							fontWeight: 600,
+							flexShrink: 0,
+							marginLeft: 'auto',
+						}}>Premium</span>
 					)}
 				</Link>
 

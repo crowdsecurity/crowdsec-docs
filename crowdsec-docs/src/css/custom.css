@@ -30,7 +30,7 @@ body,
 }
 
 .theme-doc-sidebar-container {
-	@apply bg-card;
+	background: var(--cs-bg-soft) !important;
 }
 
 /* Infima active state overrides are now handled by crowdsec-tokens.css */

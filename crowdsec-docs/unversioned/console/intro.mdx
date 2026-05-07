@@ -22,42 +22,12 @@ The CrowdSec Console is a central component of the CrowdSec ecosystem, offering 
 The CrowdSec Console addresses several key cybersecurity challenges:
 
 <ChallengeGrid challenges={[
-  {
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
-    color: "var(--cs-orange)",
-    title: "Complexity of Threat Detection",
-    body: "By providing a unified interface for monitoring and analysis, it simplifies the process of identifying and understanding security threats."
-  },
-  {
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-    color: "var(--cs-teal)",
-    title: "Response Time",
-    body: "Enhances the ability to quickly respond to and mitigate detected threats, reducing potential damage."
-  },
-  {
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>,
-    color: "var(--cs-violet)",
-    title: "Scalability and Management",
-    body: "Offers a scalable solution that can manage security data across multiple installations, ideal for small and large businesses."
-  },
-  {
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
-    color: "var(--cs-blue)",
-    title: "Proactive Threat Blocking",
-    body: "Enables users to leverage dynamically updated blocklists, crucial for preemptively blocking known malicious IP addresses before they can attack."
-  },
-  {
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
-    color: "var(--cs-pink)",
-    title: "Informed Decision-Making",
-    body: "Access to detailed CTI data enables administrators to make informed decisions about their security posture, improving effectiveness of response strategies."
-  },
-  {
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
-    color: "var(--cs-teal)",
-    title: "Visibility & Metrics",
-    body: "Track remediation metrics, alert trends, and community contributions to continuously improve your security posture."
-  }
+  { iconName: "search",  color: "var(--cs-orange)", title: "Complexity of Threat Detection",   body: "By providing a unified interface for monitoring and analysis, it simplifies the process of identifying and understanding security threats." },
+  { iconName: "pulse",   color: "var(--cs-teal)",   title: "Response Time",                    body: "Enhances the ability to quickly respond to and mitigate detected threats, reducing potential damage." },
+  { iconName: "box",     color: "var(--cs-violet)", title: "Scalability and Management",        body: "Offers a scalable solution that can manage security data across multiple installations, ideal for small and large businesses." },
+  { iconName: "shield",  color: "var(--cs-blue)",   title: "Proactive Threat Blocking",         body: "Enables users to leverage dynamically updated blocklists, crucial for preemptively blocking known malicious IP addresses before they can attack." },
+  { iconName: "compass", color: "var(--cs-pink)",   title: "Informed Decision-Making",          body: "Access to detailed CTI data enables administrators to make informed decisions about their security posture, improving response strategies." },
+  { iconName: "gauge",   color: "var(--cs-teal)",   title: "Visibility & Metrics",              body: "Track remediation metrics, alert trends, and community contributions to continuously improve your security posture." }
 ]} />
 
 ## Accessing the Console

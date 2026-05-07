@@ -17,39 +17,39 @@ const CS_BLUE   = 'var(--cs-blue)';
 
 /* ── Small inline icons for the RunningStrip */
 function IconCompass() {
-  return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 5-5 2 2-5 5-2z"/></svg>;
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 5-5 2 2-5 5-2z"/></svg>;
 }
 function IconShield() {
-  return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.4-8 9-4.6-.6-8-4.5-8-9V6l8-3z"/></svg>;
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.4-8 9-4.6-.6-8-4.5-8-9V6l8-3z"/></svg>;
 }
 function IconGauge() {
-  return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 14a9 9 0 0 1 18 0"/><path d="M12 14l4-4"/><circle cx="12" cy="14" r="1.5"/></svg>;
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 14a9 9 0 0 1 18 0"/><path d="M12 14l4-4"/><circle cx="12" cy="14" r="1.5"/></svg>;
 }
 function IconPulse() {
-  return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>;
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>;
 }
 function IconFeed() {
-  return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="6" cy="18" r="2"/><path d="M4 4a16 16 0 0 1 16 16"/><path d="M4 11a9 9 0 0 1 9 9"/></svg>;
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="6" cy="18" r="2"/><path d="M4 4a16 16 0 0 1 16 16"/><path d="M4 11a9 9 0 0 1 9 9"/></svg>;
 }
 function IconGlobe() {
   return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>;
 }
 
 const securityEngineSteps = [
-  { title: 'Install the Security Engine', desc: 'Runs on your server, detects attack patterns in real time. Immediately protected with the CrowdSec Community Blocklist.' },
-  { title: 'Activate the WAF module', desc: 'Layer in the AppSec component to inspect HTTP traffic and block web exploits before they reach your app.' },
-  { title: 'Subscribe to blocklists', desc: 'Add a selection of extra blocklists on top of the built-in detection & community blocklist.' },
-  { title: 'Craft your own rules', desc: 'Write custom scenarios for your stack, then share them back with the community on the Hub.' },
+  { title: 'Install the Security Engine', desc: 'Runs on your server, detects attack patterns in real time. Immediately protected with the Community Blocklist.' },
+  { title: 'Activate the WAF module', hint: 'RECOMMENDED' as const, desc: 'Layer in the AppSec component to inspect HTTP traffic and block web exploits.' },
+  { title: 'Subscribe to blocklists', hint: 'OPTIONAL' as const, desc: 'Add extra curated feeds on top of the built-in detection & community blocklist.' },
+  { title: 'Craft your own rules', hint: 'OPTIONAL' as const, desc: 'Write custom scenarios for your stack, then share them on the Hub.' },
 ];
 const blocklistSteps = [
-  { title: 'Create a blocklist integration endpoint', desc: 'Generates a dedicated URL and credentials to serve blocklists to your perimeter devices.' },
-  { title: 'Choose which blocklists to serve', desc: 'Select from curated feeds by threat category: scanners, bots, TOR exits, exploits, and more.' },
-  { title: 'Plug it in as an external threat feed', desc: 'Point your firewall, CDN, or WAF at the endpoint. Use the feed to protect your infrastructure.' },
+  { title: 'Create an integration endpoint', desc: 'Generates a dedicated URL and credentials to serve blocklists to your perimeter devices.' },
+  { title: 'Choose blocklists to serve', desc: 'Select from curated feeds: scanners, bots, TOR exits, exploits, and more.' },
+  { title: 'Plug in as a threat feed', desc: 'Point your firewall, CDN, or WAF at the endpoint. No agent to install.' },
 ];
 const ctiSteps = [
-  { title: 'Look up any IP in the Console', desc: 'Search instantly from our Web UI. Get reputation score, behaviors, attack history, and CVE links.' },
-  { title: 'Generate a CTI API key', desc: 'Unlock programmatic access to 30+ data points on IPs detected by CrowdSec Network.' },
-  { title: 'Connect to your SIEM/SOAR/TIP', desc: 'Native integrations for Splunk, Sentinel, QRadar, TheHive, OpenCTI, MISP, and more.' },
+  { title: 'Look up any IP in the Console', desc: 'Get reputation score, behaviors, attack history, and CVE links instantly.' },
+  { title: 'Generate a CTI API key', hint: 'OPTIONAL' as const, desc: 'Unlock programmatic access to 30+ data points per IP detected by the CrowdSec network.' },
+  { title: 'Connect to your SIEM/SOAR', hint: 'OPTIONAL' as const, desc: 'Native integrations for Splunk, Sentinel, QRadar, TheHive, MISP, and more.' },
 ];
 
 const alreadyRunningLinks = [
@@ -153,7 +153,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <div style={{ maxWidth: 940, margin: '0 auto', padding: '0 24px 80px' }}>
+        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '0 24px 80px' }}>
           {/* ── "I want to…" eyebrow ── */}
           <div style={{
             fontFamily: 'var(--cs-font-mono)',

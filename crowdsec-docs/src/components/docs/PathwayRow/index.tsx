@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
-type Step = { title: string; desc: string };
+export type Step = {
+  title: string;
+  desc: string;
+  hint?: 'RECOMMENDED' | 'OPTIONAL';
+};
 
 type Props = {
   color: string;
@@ -22,14 +26,29 @@ function ArrowIcon() {
   );
 }
 
+const mix = (c: string, pct: number) => `color-mix(in srgb, ${c} ${pct}%, transparent)`;
+
+const HINT_STYLE: Record<string, React.CSSProperties> = {
+  RECOMMENDED: {
+    background: 'color-mix(in srgb, var(--cs-teal) 15%, transparent)',
+    color: 'var(--cs-teal)',
+    border: '1px solid color-mix(in srgb, var(--cs-teal) 30%, transparent)',
+  },
+  OPTIONAL: {
+    background: 'color-mix(in srgb, var(--cs-ink-mute) 12%, transparent)',
+    color: 'var(--cs-ink-mute)',
+    border: '1px solid color-mix(in srgb, var(--cs-ink-mute) 20%, transparent)',
+  },
+};
+
 export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel, ctaHref, defaultOpen = false, icon }: Props) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
     <div style={{
-      border: `1px solid ${open ? `${color}40` : 'var(--cs-border)'}`,
+      border: `1px solid ${open ? mix(color, 25) : 'var(--cs-border)'}`,
       borderRadius: 12,
-      background: open ? `linear-gradient(180deg, ${color}0d, var(--cs-surface) 60%)` : 'var(--cs-surface)',
+      background: open ? `linear-gradient(180deg, ${mix(color, 8)}, var(--cs-surface) 60%)` : 'var(--cs-surface)',
       transition: 'all 180ms',
       overflow: 'hidden',
       marginBottom: 8,
@@ -42,7 +61,7 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
           height: 38,
           background: color,
           borderRadius: 2,
-          boxShadow: `0 0 12px ${color}66`,
+          boxShadow: `0 0 12px ${mix(color, 40)}`,
           flexShrink: 0,
         }} />
 
@@ -52,8 +71,8 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
             width: 36,
             height: 36,
             borderRadius: 9,
-            background: `${color}15`,
-            border: `1px solid ${color}33`,
+            background: mix(color, 14),
+            border: `1px solid ${mix(color, 28)}`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -86,7 +105,7 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
           )}
         </div>
 
-        {/* CTA — visible in header when CLOSED, hidden when open */}
+        {/* CTA in header when CLOSED */}
         {!open && (
           <a
             href={ctaHref}
@@ -95,14 +114,14 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
               padding: '8px 14px',
               borderRadius: 8,
               background: color,
-              color: '#0A1120',
+              color: 'var(--cs-btn-text)',
               fontWeight: 600,
               fontSize: 13,
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
               textDecoration: 'none',
-              boxShadow: `0 6px 20px ${color}40`,
+              boxShadow: `0 4px 16px ${mix(color, 30)}`,
               flexShrink: 0,
               whiteSpace: 'nowrap',
             }}
@@ -137,46 +156,66 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
         </button>
       </div>
 
-      {/* Expanded body — steps + CTA */}
+      {/* Expanded body — horizontal steps grid + CTA */}
       {open && (
         <div style={{
-          padding: '0 20px 22px',
+          padding: '4px 20px 22px',
           borderTop: '1px solid var(--cs-border)',
         }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 0, margin: '18px 0 20px' }}>
+          {/* Horizontal step grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))`,
+            gap: 10,
+            margin: '16px 0 20px',
+          }}>
             {steps.map((step, i) => (
               <div key={i} style={{
-                display: 'flex',
-                gap: 14,
-                alignItems: 'flex-start',
-                padding: '12px 0',
-                borderTop: i > 0 ? '1px solid var(--cs-border)' : undefined,
+                padding: '12px 14px',
+                borderRadius: 9,
+                background: 'var(--cs-surface-2)',
+                border: `1px solid var(--cs-border)`,
+                position: 'relative',
               }}>
-                <div style={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontFamily: 'var(--cs-font-mono)',
-                  fontSize: 11,
-                  fontWeight: 700,
-                  flexShrink: 0,
-                  marginTop: 1,
-                  background: `${color}1a`,
-                  color,
-                  border: `1px solid ${color}33`,
-                }}>
-                  {String(i + 1).padStart(2, '0')}
+                {/* Step number + optional hint badge in same row */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                  <div style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontFamily: 'var(--cs-font-mono)',
+                    fontSize: 10,
+                    fontWeight: 700,
+                    flexShrink: 0,
+                    background: mix(color, 11),
+                    color,
+                    border: `1px solid ${mix(color, 22)}`,
+                  }}>
+                    {String(i + 1).padStart(2, '0')}
+                  </div>
+                  {step.hint && (
+                    <span style={{
+                      fontFamily: 'var(--cs-font-mono)',
+                      fontSize: 9,
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      padding: '2px 5px',
+                      borderRadius: 3,
+                      fontWeight: 600,
+                      ...HINT_STYLE[step.hint],
+                    }}>
+                      {step.hint}
+                    </span>
+                  )}
                 </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--cs-ink)', marginBottom: 3 }}>
-                    {step.title}
-                  </div>
-                  <div style={{ fontSize: 12.5, color: 'var(--cs-ink-dim)', lineHeight: 1.5 }}>
-                    {step.desc}
-                  </div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--cs-ink)', marginBottom: 4, lineHeight: 1.3 }}>
+                  {step.title}
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--cs-ink-dim)', lineHeight: 1.5 }}>
+                  {step.desc}
                 </div>
               </div>
             ))}
@@ -192,11 +231,12 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
               padding: '8px 18px',
               borderRadius: 7,
               background: color,
-              color: '#0A1120',
+              color: 'var(--cs-btn-text)',
               fontSize: 13,
               fontWeight: 600,
               textDecoration: 'none',
-              boxShadow: `0 6px 20px ${color}40`,
+              boxShadow: `0 4px 16px ${mix(color, 30)}`,
+              whiteSpace: 'nowrap',
             }}
           >
             {ctaLabel} <ArrowIcon />
