@@ -166,10 +166,9 @@
 	box-shadow: none !important;
 }
 
-/* Remove any horizontal dividers Infima might render between groups */
-.menu__list-item-divider,
-.menu__divider {
-	display: none !important;
+.theme-doc-sidebar-item-link hr {
+	visibility: hidden;
+	margin: 0.25rem 0 !important;
 }
 
 /* All menu links: base style */

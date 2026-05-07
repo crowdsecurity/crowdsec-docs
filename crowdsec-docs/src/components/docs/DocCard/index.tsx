@@ -1,55 +1,8 @@
-import {
-	cilArrowRight,
-	cilBarChart,
-	cilBell,
-	cilBook,
-	cilBriefcase,
-	cilCheckCircle,
-	cilCode,
-	cilCompass,
-	cilGlobeAlt,
-	cilInfo,
-	cilLayers,
-	cilLockLocked,
-	cilNotes,
-	cilPeople,
-	cilPuzzle,
-	cilRss,
-	cilSearch,
-	cilShieldAlt,
-	cilSpeedometer,
-	cilStar,
-	cilTerminal,
-	cilWarning,
-} from "@coreui/icons";
+import { cilArrowRight } from "@coreui/icons";
 import { CIcon } from "@coreui/icons-react";
 import React from "react";
-
-/* Shared icon set — use CoreUI icons throughout */
-const CUI: Record<string, object> = {
-	search: cilSearch,
-	key: cilLockLocked,
-	terminal: cilTerminal,
-	globe: cilGlobeAlt,
-	shield: cilShieldAlt,
-	feed: cilRss,
-	compass: cilCompass,
-	book: cilBook,
-	plug: cilPuzzle,
-	alert: cilWarning,
-	gauge: cilSpeedometer,
-	lock: cilLockLocked,
-	box: cilLayers,
-	pulse: cilBarChart,
-	users: cilPeople,
-	bell: cilBell,
-	check: cilCheckCircle,
-	code: cilCode,
-	star: cilStar,
-	info: cilInfo,
-	notes: cilNotes,
-	briefcase: cilBriefcase,
-};
+import { mix } from "../../../utils/colorMix";
+import { CUI } from "../icons/cuiMap";
 
 function renderIcon(name: string) {
 	const icon = CUI[name];
@@ -77,8 +30,6 @@ export type DocCardProps = {
 	premium?: boolean;
 	children?: React.ReactNode;
 };
-
-const mix = (c: string, pct: number) => `color-mix(in srgb, ${c} ${pct}%, transparent)`;
 
 function ExternalArrow() {
 	return (

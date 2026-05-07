@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { mix } from "../../../utils/colorMix";
 
 export type Step = {
 	title: string;
@@ -35,8 +36,6 @@ function ArrowIcon() {
 		</svg>
 	);
 }
-
-const mix = (c: string, pct: number) => `color-mix(in srgb, ${c} ${pct}%, transparent)`;
 
 const HINT_STYLE: Record<string, React.CSSProperties> = {
 	RECOMMENDED: {

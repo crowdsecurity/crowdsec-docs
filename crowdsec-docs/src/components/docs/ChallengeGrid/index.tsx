@@ -1,30 +1,6 @@
-import {
-	cilBarChart,
-	cilBell,
-	cilCompass,
-	cilGlobeAlt,
-	cilLayers,
-	cilLockLocked,
-	cilRss,
-	cilSearch,
-	cilShieldAlt,
-	cilSpeedometer,
-} from "@coreui/icons";
 import { CIcon } from "@coreui/icons-react";
 import React from "react";
-
-const CUI: Record<string, object> = {
-	search: cilSearch,
-	pulse: cilBarChart,
-	box: cilLayers,
-	shield: cilShieldAlt,
-	compass: cilCompass,
-	gauge: cilSpeedometer,
-	globe: cilGlobeAlt,
-	lock: cilLockLocked,
-	bell: cilBell,
-	feed: cilRss,
-};
+import { CUI } from "../icons/cuiMap";
 
 export type Challenge = {
 	iconName?: string;

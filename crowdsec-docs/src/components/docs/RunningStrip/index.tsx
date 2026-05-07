@@ -1,6 +1,8 @@
+import { cilArrowRight } from "@coreui/icons";
+import { CIcon } from "@coreui/icons-react";
 import React from "react";
 
-type Link = { icon?: React.ReactNode; label: string; href: string; color?: string; ext?: boolean };
+type Link = { icon?: React.ReactNode; label: string; href: string; color?: string; external?: boolean };
 
 type Props = {
 	label?: string;
@@ -68,21 +70,12 @@ export default function RunningStrip({ label = "Already running CrowdSec?", link
 					>
 						{l.icon && <span style={{ color: l.color || "var(--cs-orange)", display: "flex", flexShrink: 0 }}>{l.icon}</span>}
 						{l.label}
-						{l.ext && (
-							<svg
-								width="11"
-								height="11"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								strokeWidth={1.6}
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								style={{ opacity: 0.5, flexShrink: 0, color: "var(--cs-ink-mute)" }}
+						{l.external && (
+							<CIcon
+								icon={cilArrowRight}
+								style={{ width: 11, height: 11, opacity: 0.5, flexShrink: 0, transform: "rotate(-45deg)" }}
 								aria-hidden="true"
-							>
-								<path d="M5 12h14M13 6l6 6-6 6" />
-							</svg>
+							/>
 						)}
 					</a>
 				))}

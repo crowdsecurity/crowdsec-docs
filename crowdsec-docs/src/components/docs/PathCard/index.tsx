@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { mix } from "../../../utils/colorMix";
 
 type Props = {
 	eyebrow?: string;
@@ -13,7 +14,6 @@ type Props = {
 };
 
 /* color-mix() helper so CSS vars like var(--cs-orange) can be used with opacity */
-const mix = (c: string, pct: number) => `color-mix(in srgb, ${c} ${pct}%, transparent)`;
 
 export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags = [], audience, href }: Props) {
 	const [hover, setHover] = useState(false);

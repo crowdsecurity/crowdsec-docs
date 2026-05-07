@@ -67,7 +67,7 @@ const alreadyRunningLinks = [
 		label: "Open the Console",
 		href: "https://app.crowdsec.net",
 		color: CS_ORANGE,
-		ext: true,
+		external: true,
 	},
 	{
 		icon: <CIcon icon={cilShieldAlt} style={ICON_SM} aria-hidden="true" />,
