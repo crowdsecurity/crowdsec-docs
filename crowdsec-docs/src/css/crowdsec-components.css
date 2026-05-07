@@ -573,3 +573,48 @@ article table tbody tr:hover td {
 div[class*="tabItem"] {
   padding: 0 !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   6. PAGINATION NAV (prev / next at bottom of doc pages)
+   ═══════════════════════════════════════════════════════════════════ */
+.pagination-nav {
+  gap: 14px !important;
+}
+
+.pagination-nav__link {
+  background: var(--cs-surface) !important;
+  border: 1px solid var(--cs-border) !important;
+  border-radius: 10px !important;
+  padding: 16px 20px !important;
+  text-decoration: none !important;
+  transition: border-color 0.15s, background 0.15s !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+.pagination-nav__link:hover {
+  border-color: color-mix(in srgb, var(--cs-orange) 45%, transparent) !important;
+  background: var(--cs-surface-2) !important;
+  text-decoration: none !important;
+}
+
+.pagination-nav__sublabel {
+  font-family: var(--cs-font-mono) !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.14em !important;
+  font-weight: 600 !important;
+  color: var(--cs-ink-mute) !important;
+}
+
+.pagination-nav__label {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: var(--cs-ink) !important;
+  line-height: 1.3 !important;
+}
+
+.pagination-nav__link:hover .pagination-nav__label {
+  color: var(--cs-orange) !important;
+}

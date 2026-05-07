@@ -8,13 +8,30 @@ type SectionProps = {
 };
 
 export const Section = ({ title, description, children, variant = "default" }: SectionProps): React.JSX.Element => {
-	const bgClass = variant === "muted" ? "bg-muted border-t border-border" : "";
-
 	return (
-		<section className={`py-10 md:py-14 px-4 ${bgClass}`}>
-			<div className="container max-w-5xl mx-auto">
-				<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">{title}</h2>
-				{description && <p className="text-gray-600 dark:text-gray-700 mb-8 max-w-2xl">{description}</p>}
+		<section style={{
+			padding: '48px 24px',
+			background: variant === "muted"
+				? 'color-mix(in srgb, var(--cs-ink) 3%, var(--cs-bg))'
+				: 'var(--cs-bg)',
+			borderTop: variant === "muted" ? '1px solid var(--cs-border)' : undefined,
+			borderBottom: variant === "muted" ? '1px solid var(--cs-border)' : undefined,
+		}}>
+			<div style={{ maxWidth: 960, margin: '0 auto' }}>
+				<h2 style={{
+					fontSize: 22, fontWeight: 700, letterSpacing: '-0.015em',
+					color: 'var(--cs-ink)', margin: '0 0 8px',
+				}}>
+					{title}
+				</h2>
+				{description && (
+					<p style={{
+						fontSize: 14.5, color: 'var(--cs-ink-dim)',
+						margin: '0 0 28px', maxWidth: 600, lineHeight: 1.6,
+					}}>
+						{description}
+					</p>
+				)}
 				{children}
 			</div>
 		</section>

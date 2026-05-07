@@ -10,9 +10,11 @@ import cibWindows from "@site/static/img/logo/windows-colored.svg";
 import opnsenseLogo from "@site/static/img/logo-opnsense.svg";
 import pfSenseLogo from "@site/static/img/logo-pfsense.svg";
 import whmLogo from "@site/static/img/logo-whm.svg";
+import DocCard from "@site/src/components/docs/DocCard";
+import DocCardGrid from "@site/src/components/docs/DocCardGrid";
 import React from "react";
 import { HomePageItem } from "../components/home-page/home-item";
-import { FeatureCard, FeatureCardProps, ProductPageLayout, Section } from "../components/product-page";
+import { ProductPageLayout, Section } from "../components/product-page";
 
 type PlatformData = {
 	icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -48,60 +50,6 @@ const multiServerSetup: PlatformData[] = [
 	},
 ];
 
-const features: FeatureCardProps[] = [
-	{
-		title: "Parsers & Scenarios",
-		description: "Learn how CrowdSec parses logs and detects threats with community-maintained scenarios.",
-		link: "/docs/next/concepts",
-		icon: "📊",
-	},
-	{
-		title: "Remediation Components",
-		description: "Block threats at firewalls, web servers, and CDNs with remediation components.",
-		link: "/u/bouncers/intro",
-		icon: "/img/icons/shield-target.webp",
-	},
-	{
-		title: "Console Integration",
-		description: "Connect to the CrowdSec Console for centralized management, alerts, and analytics.",
-		link: "/u/console/intro",
-		icon: "📱",
-	},
-	{
-		title: "AppSec / WAF",
-		description: "Protect web applications from OWASP Top 10 risks and custom attack patterns.",
-		link: "/docs/next/appsec/intro",
-		icon: "/img/icons/waf.webp",
-	},
-];
-
-const nextSteps: FeatureCardProps[] = [
-	{
-		title: "Post-Installation Checklist",
-		description: "Essential steps after installing the Security Engine",
-		link: "/u/getting_started/next_steps",
-		icon: "✅",
-	},
-	{
-		title: "CLI Reference",
-		description: "Complete cscli command documentation",
-		link: "/docs/next/cscli/",
-		icon: "💻",
-	},
-	{
-		title: "Configuration",
-		description: "Fine-tune your Security Engine settings",
-		link: "/docs/next/configuration/crowdsec_configuration",
-		icon: "⚙️",
-	},
-	{
-		title: "Troubleshooting",
-		description: "Common issues and how to resolve them",
-		link: "/u/troubleshooting/intro",
-		icon: "🔧",
-	},
-];
-
 const SecurityEnginePage = () => {
 	return (
 		<ProductPageLayout
@@ -119,83 +67,128 @@ const SecurityEnginePage = () => {
 				{ label: "Troubleshooting", link: "/u/troubleshooting/intro" },
 			]}
 		>
-			{/* Installation Section - custom layout for platforms */}
-			<section className="py-10 md:py-14 px-4">
-				<div className="container max-w-5xl mx-auto">
-					<div className="text-left mb-6">
-						<h2 className="text-2xl md:text-3xl font-semibold mb-2 text-gray-900 dark:text-gray-900">Installation</h2>
-						<p className="text-gray-600 dark:text-gray-700 max-w-2xl">
-							Choose your platform to install the Security Engine. Each guide covers setup, configuration, and enrolling in
-							the CrowdSec Console to sync decisions and metrics.
-						</p>
+			{/* Installation Section */}
+			<Section title="Installation" description="Choose your platform. Each guide covers setup, configuration, and enrolling in the CrowdSec Console.">
+				<div style={{ marginBottom: 24 }}>
+					<div style={{
+						fontFamily: 'var(--cs-font-mono)', fontSize: 11, textTransform: 'uppercase',
+						letterSpacing: '0.12em', color: 'var(--cs-orange)', fontWeight: 600, marginBottom: 12,
+					}}>
+						Single Server
 					</div>
-
-					{/* Single Server */}
-					<div className="mt-8">
-						<h3 className="text-lg font-medium text-primary mb-1">Single Server</h3>
-						<p className="text-sm text-gray-600 dark:text-gray-700 mb-4 max-w-xl">
-							Deploy on a single host or service for fast detection and blocking.
-						</p>
-						<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-							{singleServerSetup.map((props) => (
-								<HomePageItem title={props.text} description="" link={props.link} icon={props.icon} key={props.text} />
-							))}
-						</div>
-					</div>
-
-					{/* Healthcheck */}
-					<div className="mt-4">
-						<HomePageItem
-							title="Installation Healthcheck"
-							description="Verify your installation is working correctly"
-							link="/u/getting_started/health_check"
-							icon={MonitorHeartIcon}
-						/>
-					</div>
-
-					<p className="text-xs mt-2 text-gray-500 dark:text-gray-600 text-right">
-						*Logos and trademarks are property of their respective owners.
+					<p style={{ fontSize: 13.5, color: 'var(--cs-ink-dim)', marginBottom: 14, maxWidth: 520 }}>
+						Deploy on a single host or service for fast detection and blocking.
 					</p>
-
-					{/* Multi-Server */}
-					<div className="mt-10">
-						<h3 className="text-lg font-medium text-primary mb-1">Multi-Server</h3>
-						<p className="text-sm text-gray-600 dark:text-gray-700 mb-4 max-w-xl">
-							Scale detection across fleets with centralized alerts or logs.
-						</p>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-							{multiServerSetup.map((props) => (
-								<HomePageItem
-									title={props.text}
-									description={props.description || ""}
-									link={props.link}
-									icon={props.icon}
-									key={props.text}
-								/>
-							))}
-						</div>
+					<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+						{singleServerSetup.map((p) => (
+							<HomePageItem title={p.text} description="" link={p.link} icon={p.icon} key={p.text} />
+						))}
 					</div>
 				</div>
-			</section>
 
-			<Section
-				title="Key Capabilities"
-				description="Explore the core capabilities you can enable right after install."
-				variant="muted"
-			>
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-					{features.map((feature) => (
-						<FeatureCard key={feature.title} {...feature} />
-					))}
+				<div style={{ marginBottom: 8 }}>
+					<HomePageItem
+						title="Installation Healthcheck"
+						description="Verify your installation is working correctly"
+						link="/u/getting_started/health_check"
+						icon={MonitorHeartIcon}
+					/>
+				</div>
+				<p style={{ fontSize: 12, color: 'var(--cs-ink-mute)', textAlign: 'right', marginBottom: 24 }}>
+					*Logos and trademarks are property of their respective owners.
+				</p>
+
+				<div>
+					<div style={{
+						fontFamily: 'var(--cs-font-mono)', fontSize: 11, textTransform: 'uppercase',
+						letterSpacing: '0.12em', color: 'var(--cs-teal)', fontWeight: 600, marginBottom: 12,
+					}}>
+						Multi-Server
+					</div>
+					<p style={{ fontSize: 13.5, color: 'var(--cs-ink-dim)', marginBottom: 14, maxWidth: 520 }}>
+						Scale detection across fleets with centralized alerts or logs.
+					</p>
+					<DocCardGrid cols={2}>
+						{multiServerSetup.map((p) => (
+							<DocCard
+								key={p.text}
+								iconName="box"
+								color="var(--cs-teal)"
+								title={p.text}
+								desc={p.description ?? ""}
+								href={p.link}
+							/>
+						))}
+					</DocCardGrid>
 				</div>
 			</Section>
 
+			{/* Key Capabilities */}
+			<Section title="Key Capabilities" description="Core capabilities you can enable right after install." variant="muted">
+				<DocCardGrid cols={2}>
+					<DocCard
+						iconName="book"
+						color="var(--cs-orange)"
+						title="Parsers & Scenarios"
+						desc="Learn how CrowdSec parses logs and detects threats with community-maintained scenarios."
+						href="/docs/next/concepts"
+					/>
+					<DocCard
+						iconName="shield"
+						color="var(--cs-teal)"
+						title="Remediation Components"
+						desc="Block threats at firewalls, web servers, and CDNs with remediation components."
+						href="/u/bouncers/intro"
+					/>
+					<DocCard
+						iconName="compass"
+						color="var(--cs-violet)"
+						title="Console Integration"
+						desc="Connect to the CrowdSec Console for centralized management, alerts, and analytics."
+						href="/u/console/intro"
+					/>
+					<DocCard
+						iconName="lock"
+						color="var(--cs-blue)"
+						title="AppSec / WAF"
+						desc="Protect web applications from OWASP Top 10 risks and custom attack patterns."
+						href="/docs/next/appsec/intro"
+					/>
+				</DocCardGrid>
+			</Section>
+
+			{/* After Installation */}
 			<Section title="After Installation" description="Guides to tune detection, manage decisions, and keep the engine healthy.">
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-					{nextSteps.map((step) => (
-						<FeatureCard key={step.title} {...step} />
-					))}
-				</div>
+				<DocCardGrid cols={2}>
+					<DocCard
+						iconName="check"
+						color="var(--cs-teal)"
+						title="Post-Installation Checklist"
+						desc="Essential steps after installing the Security Engine."
+						href="/u/getting_started/next_steps"
+					/>
+					<DocCard
+						iconName="terminal"
+						color="var(--cs-orange)"
+						title="CLI Reference"
+						desc="Complete cscli command documentation."
+						href="/docs/next/cscli/"
+					/>
+					<DocCard
+						iconName="box"
+						color="var(--cs-violet)"
+						title="Configuration"
+						desc="Fine-tune your Security Engine settings."
+						href="/docs/next/configuration/crowdsec_configuration"
+					/>
+					<DocCard
+						iconName="search"
+						color="var(--cs-blue)"
+						title="Troubleshooting"
+						desc="Common issues and how to resolve them."
+						href="/u/troubleshooting/intro"
+					/>
+				</DocCardGrid>
 			</Section>
 		</ProductPageLayout>
 	);

@@ -1,73 +1,130 @@
 .card {
   margin-top: 24px;
-  padding: 18px;
   background: var(--cs-surface);
   border: 1px solid var(--cs-border-hi);
-  border-radius: 12px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+}
+
+.glow {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  filter: blur(56px);
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.inner {
+  position: relative;
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .eyebrow {
   font-family: var(--cs-font-mono);
-  font-size: 9px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  color: var(--cs-ink-mute);
   font-weight: 600;
 }
 
 .title {
-  font-size: 13.5px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--cs-ink);
-  line-height: 1.3;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-top: -2px;
 }
 
-.sparkline {
-  display: block;
+.desc {
+  font-size: 12px;
+  color: var(--cs-ink-dim);
+  line-height: 1.5;
+}
+
+/* Sparkline chart box */
+.sparkBox {
+  margin: 4px 0;
+  height: 76px;
+  border-radius: 8px;
+  background: var(--cs-bg);
+  border: 1px solid var(--cs-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.sparkGrid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--cs-border-hi) 1px, transparent 1px);
+  background-size: 100% 18px;
+  opacity: 0.5;
+}
+
+.sparkSvg {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 36px;
+  height: 100%;
 }
 
+/* Perk list */
 .perks {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 8px;
 }
 
 .perk {
   display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  font-size: 11.5px;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
   color: var(--cs-ink-dim);
   line-height: 1.4;
 }
 
-.checkIcon {
-  width: 14px;
-  height: 14px;
+.perkIcon {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  margin-top: 1px;
 }
 
+.perkIcon svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* CTA button */
 .cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 14px;
-  border-radius: 7px;
-  font-size: 12px;
-  font-weight: 600;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
   text-decoration: none;
   transition: opacity 0.15s;
-  text-align: center;
-  width: 100%;
+  margin-top: 4px;
+  letter-spacing: 0.01em;
 }
 
 .cta:hover {
-  opacity: 0.85;
+  opacity: 0.88;
   text-decoration: none;
+  color: var(--cs-btn-text);
 }

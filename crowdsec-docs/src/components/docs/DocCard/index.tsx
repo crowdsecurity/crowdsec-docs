@@ -218,23 +218,27 @@ export default function DocCard({
         </div>
       )}
 
-      {/* Single CTA */}
-      {ctaLabel && href && (
-        <a
-          href={href}
-          style={{
+      {/* CTA — explicit label, or auto arrow footer for href-only clickable cards */}
+      {href && (ctaLabel || (!links?.length && !command)) && (
+        <div style={{
+          marginTop: 'auto',
+          paddingTop: 12,
+          borderTop: '1px dashed var(--cs-border)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+          <span style={{
+            fontSize: 12.5,
+            fontWeight: 600,
+            color,
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 6,
-            color,
-            fontWeight: 600,
-            fontSize: 13.5,
-            textDecoration: 'none',
-            marginTop: 4,
-          }}
-        >
-          {ctaLabel} <ArrowRight />
-        </a>
+            gap: 5,
+          }}>
+            {ctaLabel ?? title} <ArrowRight />
+          </span>
+        </div>
       )}
     </div>
   );

@@ -3,114 +3,147 @@ import styles from './index.module.css';
 
 export type PromoVariant = 'console' | 'cti' | 'engine';
 
+type PerkDef = { label: string; icon: React.ReactNode };
 type PromoData = {
   eyebrow: string;
   title: string;
+  desc: string;
   color: string;
-  perks: string[];
+  perks: PerkDef[];
   ctaLabel: string;
   ctaHref: string;
 };
 
+function FeedIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><circle cx="6" cy="18" r="2"/><path d="M4 4a16 16 0 0 1 16 16"/><path d="M4 11a9 9 0 0 1 9 9"/></svg>;
+}
+function BellIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2H4.5L6 16z"/><path d="M10 21h4"/></svg>;
+}
+function GaugeIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M3 14a9 9 0 0 1 18 0"/><path d="M12 14l4-4"/><circle cx="12" cy="14" r="1.5"/></svg>;
+}
+function GlobeIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>;
+}
+function ShieldIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.4-8 9-4.6-.6-8-4.5-8-9V6l8-3z"/></svg>;
+}
+
 const PROMO_DATA: Record<PromoVariant, PromoData> = {
   console: {
-    eyebrow: 'CrowdSec Console',
-    title: 'Manage your security from one place',
+    eyebrow: 'CrowdSec',
+    title: 'Console',
+    desc: 'Centralized, real-time visibility across all your engines.',
     color: 'var(--cs-orange)',
     perks: [
-      'Visualize alerts in real-time',
-      'Manage blocklists & allowlists',
-      'CTI intelligence dashboard',
+      { label: 'Free 3rd-party Blocklists', icon: <FeedIcon /> },
+      { label: 'Additional Alert Context', icon: <BellIcon /> },
+      { label: 'Stack-wide health metrics', icon: <GaugeIcon /> },
     ],
-    ctaLabel: 'Open the Console →',
+    ctaLabel: 'Sign up for free',
     ctaHref: 'https://app.crowdsec.net/signup?mtm_campaign=Console&mtm_source=docs&mtm_medium=tocAd',
   },
   cti: {
-    eyebrow: 'IP Reputation & CTI',
-    title: 'Query 13B+ IP signals with our CTI API',
+    eyebrow: 'CrowdSec',
+    title: 'IP Reputation & CTI',
+    desc: 'Query 13B+ observed IPs for behavioral context, CVEs, and threat intel.',
     color: 'var(--cs-violet)',
     perks: [
-      'Real-time IP reputation scoring',
-      'Threat intelligence feeds',
-      'REST API with generous free tier',
+      { label: 'Real-time IP reputation scoring', icon: <GlobeIcon /> },
+      { label: 'Threat intelligence feeds', icon: <FeedIcon /> },
+      { label: 'REST API · generous free tier', icon: <GaugeIcon /> },
     ],
-    ctaLabel: 'CTI API docs →',
+    ctaLabel: 'CTI API docs',
     ctaHref: '/u/cti_api/intro',
   },
   engine: {
-    eyebrow: 'Security Engine',
-    title: 'Open-source log-based threat detection',
+    eyebrow: 'CrowdSec',
+    title: 'Security Engine',
+    desc: 'Open-source log-based threat detection that shares intel with the community.',
     color: 'var(--cs-teal)',
     perks: [
-      'Detects attacks from your own logs',
-      'Shares blocklists with the community',
-      'Installs in minutes on any system',
+      { label: 'Detects attacks from your own logs', icon: <ShieldIcon /> },
+      { label: 'Shares blocklists with the community', icon: <FeedIcon /> },
+      { label: 'Installs in minutes on any system', icon: <GaugeIcon /> },
     ],
-    ctaLabel: 'Get started →',
+    ctaLabel: 'Get started',
     ctaHref: '/u/getting_started/installation/linux',
   },
 };
 
-function CheckIcon() {
+function SparklineBox({ color }: { color: string }) {
   return (
-    <svg className={styles.checkIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
+    <div className={styles.sparkBox}>
+      {/* Horizontal grid lines */}
+      <div className={styles.sparkGrid} aria-hidden="true" />
+      <svg className={styles.sparkSvg} viewBox="0 0 200 70" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id={`pg-fill-${color.replace(/[^a-z]/gi, '')}`} x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor={color} stopOpacity="0.45" />
+            <stop offset="100%" stopColor={color} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M0 50 L20 42 L40 46 L60 30 L80 36 L100 22 L120 28 L140 14 L160 20 L180 8 L200 16 L200 70 L0 70 Z"
+          fill={`url(#pg-fill-${color.replace(/[^a-z]/gi, '')})`}
+        />
+        <path
+          d="M0 50 L20 42 L40 46 L60 30 L80 36 L100 22 L120 28 L140 14 L160 20 L180 8 L200 16"
+          fill="none"
+          stroke={color}
+          strokeWidth="1.8"
+        />
+      </svg>
+    </div>
   );
 }
 
-function Sparkline({ color }: { color: string }) {
-  return (
-    <svg className={styles.sparkline} viewBox="0 0 160 36" preserveAspectRatio="none" aria-hidden="true">
-      <defs>
-        <linearGradient id={`spark-grad-${color.replace(/[^a-z]/gi, '')}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity="0.3" />
-          <stop offset="100%" stopColor={color} stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M0,28 L20,22 L40,25 L60,14 L80,18 L100,10 L120,14 L140,8 L160,4"
-        fill="none"
-        stroke={color}
-        strokeWidth="1.5"
-        opacity="0.7"
-      />
-      <path
-        d="M0,28 L20,22 L40,25 L60,14 L80,18 L100,10 L120,14 L140,8 L160,4 L160,36 L0,36 Z"
-        fill={`url(#spark-grad-${color.replace(/[^a-z]/gi, '')})`}
-      />
-    </svg>
-  );
-}
-
-type Props = {
-  variant?: PromoVariant;
-};
+type Props = { variant?: PromoVariant };
 
 export default function PromoCard({ variant = 'console' }: Props) {
   const data = PROMO_DATA[variant];
   if (!data) return null;
+  const mix = (pct: number) => `color-mix(in srgb, ${data.color} ${pct}%, transparent)`;
 
   return (
     <div className={styles.card}>
-      <div className={styles.eyebrow}>{data.eyebrow}</div>
-      <div className={styles.title}>{data.title}</div>
-      <Sparkline color={data.color} />
-      <div className={styles.perks}>
-        {data.perks.map((perk) => (
-          <div key={perk} className={styles.perk}>
-            <span style={{ color: data.color, flexShrink: 0 }}><CheckIcon /></span>
-            <span>{perk}</span>
-          </div>
-        ))}
+      {/* Corner glow */}
+      <div className={styles.glow} style={{ background: data.color }} aria-hidden="true" />
+
+      <div className={styles.inner}>
+        <div className={styles.eyebrow} style={{ color: data.color }}>{data.eyebrow}</div>
+        <div className={styles.title}>{data.title}</div>
+        <div className={styles.desc}>{data.desc}</div>
+
+        <SparklineBox color={data.color} />
+
+        <div className={styles.perks}>
+          {data.perks.map((p) => (
+            <div key={p.label} className={styles.perk}>
+              <span
+                className={styles.perkIcon}
+                style={{
+                  background: mix(14),
+                  color: data.color,
+                  border: `1px solid ${mix(25)}`,
+                }}
+              >
+                {p.icon}
+              </span>
+              <span>{p.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <a
+          href={data.ctaHref}
+          className={styles.cta}
+          style={{ background: data.color, color: 'var(--cs-btn-text)' }}
+        >
+          {data.ctaLabel} →
+        </a>
       </div>
-      <a
-        href={data.ctaHref}
-        className={styles.cta}
-        style={{ background: data.color, color: '#0A1120' }}
-      >
-        {data.ctaLabel}
-      </a>
     </div>
   );
 }

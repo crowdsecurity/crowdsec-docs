@@ -292,18 +292,26 @@ a {
   color: var(--ifm-link-color);
 }
 
-/* Only plain Markdown links (no class) get the primary purple.
-   Styled anchors (buttons, cards, etc.) keep their own color. */
-.theme-doc-markdown a:not([class]),
-article a:not([class]) {
+/* All doc prose links use the brand primary purple.
+   Components with inline-style color (buttons, cards) override this
+   naturally since inline styles beat class-based CSS. */
+.theme-doc-markdown a,
+article a {
   color: rgb(var(--primary));
 }
 
-.theme-doc-markdown a:not([class]):hover,
-article a:not([class]):hover {
+.theme-doc-markdown a:hover,
+article a:hover {
   color: rgb(var(--primary));
   opacity: 0.8;
   text-decoration: underline;
+}
+
+/* Preserve admonition body link tone color */
+.cs-admon__content a,
+.cs-admon__content a:hover {
+  color: var(--tone) !important;
+  opacity: 1 !important;
 }
 
 /* Table of contents active link */
