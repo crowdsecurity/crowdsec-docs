@@ -1,6 +1,8 @@
 import ForwardIcon from "@mui/icons-material/Forward";
 import HubIcon from "@mui/icons-material/Hub";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
+import DocCard from "@site/src/components/docs/DocCard";
+import DocCardGrid from "@site/src/components/docs/DocCardGrid";
 import cibApple from "@site/static/img/logo/apple-colored.svg";
 import cibDocker from "@site/static/img/logo/docker-colored.svg";
 import cibFreebsd from "@site/static/img/logo/freebsd-colored.svg";
@@ -10,8 +12,6 @@ import cibWindows from "@site/static/img/logo/windows-colored.svg";
 import opnsenseLogo from "@site/static/img/logo-opnsense.svg";
 import pfSenseLogo from "@site/static/img/logo-pfsense.svg";
 import whmLogo from "@site/static/img/logo-whm.svg";
-import DocCard from "@site/src/components/docs/DocCard";
-import DocCardGrid from "@site/src/components/docs/DocCardGrid";
 import React from "react";
 import { HomePageItem } from "../components/home-page/home-item";
 import { ProductPageLayout, Section } from "../components/product-page";
@@ -68,18 +68,28 @@ const SecurityEnginePage = () => {
 			]}
 		>
 			{/* Installation Section */}
-			<Section title="Installation" description="Choose your platform. Each guide covers setup, configuration, and enrolling in the CrowdSec Console.">
+			<Section
+				title="Installation"
+				description="Choose your platform. Each guide covers setup, configuration, and enrolling in the CrowdSec Console."
+			>
 				<div style={{ marginBottom: 24 }}>
-					<div style={{
-						fontFamily: 'var(--cs-font-mono)', fontSize: 11, textTransform: 'uppercase',
-						letterSpacing: '0.12em', color: 'var(--cs-orange)', fontWeight: 600, marginBottom: 12,
-					}}>
+					<div
+						style={{
+							fontFamily: "var(--cs-font-mono)",
+							fontSize: 11,
+							textTransform: "uppercase",
+							letterSpacing: "0.12em",
+							color: "var(--cs-orange)",
+							fontWeight: 600,
+							marginBottom: 12,
+						}}
+					>
 						Single Server
 					</div>
-					<p style={{ fontSize: 13.5, color: 'var(--cs-ink-dim)', marginBottom: 14, maxWidth: 520 }}>
+					<p style={{ fontSize: 13.5, color: "var(--cs-ink-dim)", marginBottom: 14, maxWidth: 520 }}>
 						Deploy on a single host or service for fast detection and blocking.
 					</p>
-					<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+					<div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
 						{singleServerSetup.map((p) => (
 							<HomePageItem title={p.text} description="" link={p.link} icon={p.icon} key={p.text} />
 						))}
@@ -94,18 +104,25 @@ const SecurityEnginePage = () => {
 						icon={MonitorHeartIcon}
 					/>
 				</div>
-				<p style={{ fontSize: 12, color: 'var(--cs-ink-mute)', textAlign: 'right', marginBottom: 24 }}>
+				<p style={{ fontSize: 12, color: "var(--cs-ink-mute)", textAlign: "right", marginBottom: 24 }}>
 					*Logos and trademarks are property of their respective owners.
 				</p>
 
 				<div>
-					<div style={{
-						fontFamily: 'var(--cs-font-mono)', fontSize: 11, textTransform: 'uppercase',
-						letterSpacing: '0.12em', color: 'var(--cs-teal)', fontWeight: 600, marginBottom: 12,
-					}}>
+					<div
+						style={{
+							fontFamily: "var(--cs-font-mono)",
+							fontSize: 11,
+							textTransform: "uppercase",
+							letterSpacing: "0.12em",
+							color: "var(--cs-teal)",
+							fontWeight: 600,
+							marginBottom: 12,
+						}}
+					>
 						Multi-Server
 					</div>
-					<p style={{ fontSize: 13.5, color: 'var(--cs-ink-dim)', marginBottom: 14, maxWidth: 520 }}>
+					<p style={{ fontSize: 13.5, color: "var(--cs-ink-dim)", marginBottom: 14, maxWidth: 520 }}>
 						Scale detection across fleets with centralized alerts or logs.
 					</p>
 					<DocCardGrid cols={2}>

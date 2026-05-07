@@ -8,17 +8,17 @@ import { ExternalLinkIcon, Signpost } from "lucide-react";
 import React from "react";
 
 const premiumBadge: React.CSSProperties = {
-	fontFamily: 'var(--cs-font-mono)',
+	fontFamily: "var(--cs-font-mono)",
 	fontSize: 9.5,
-	letterSpacing: '0.08em',
-	textTransform: 'uppercase',
-	padding: '2px 6px',
+	letterSpacing: "0.08em",
+	textTransform: "uppercase",
+	padding: "2px 6px",
 	borderRadius: 4,
-	background: 'color-mix(in srgb, var(--cs-orange) 14%, transparent)',
-	color: 'var(--cs-orange)',
+	background: "color-mix(in srgb, var(--cs-orange) 14%, transparent)",
+	color: "var(--cs-orange)",
 	fontWeight: 600,
 	flexShrink: 0,
-	marginLeft: 'auto',
+	marginLeft: "auto",
 };
 
 export default function DocSidebarItemLink({ item, onItemClick, activePath, level, index, ...props }: Readonly<Props>): React.JSX.Element {
@@ -55,9 +55,7 @@ export default function DocSidebarItemLink({ item, onItemClick, activePath, leve
 				{...props}
 			>
 				{label}
-				{tag === "premium" && (
-					<span style={premiumBadge}>Premium</span>
-				)}
+				{tag === "premium" && <span style={premiumBadge}>Premium</span>}
 				{tag === "otherSection" && <Signpost className="ml-1 h-4 text-foreground/80" />}
 				{!isInternalLink && <ExternalLinkIcon className="ml-1 h-4 text-foreground/80" />}
 			</Link>

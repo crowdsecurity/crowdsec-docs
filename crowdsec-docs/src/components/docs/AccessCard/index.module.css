@@ -1,74 +1,74 @@
 .card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 20px 22px;
-  background: var(--cs-surface);
-  border: 1px solid var(--cs-border-hi);
-  border-radius: 12px;
-  margin: 16px 0;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 20px 22px;
+	background: var(--cs-surface);
+	border: 1px solid var(--cs-border-hi);
+	border-radius: 12px;
+	margin: 16px 0;
 }
 
 .top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
 }
 
 .iconWrap {
-  width: 38px;
-  height: 38px;
-  border-radius: 9px;
-  background: var(--cs-orange-soft);
-  border: 1px solid color-mix(in srgb, var(--cs-orange) 25%, transparent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--cs-orange);
-  flex-shrink: 0;
+	width: 38px;
+	height: 38px;
+	border-radius: 9px;
+	background: var(--cs-orange-soft);
+	border: 1px solid color-mix(in srgb, var(--cs-orange) 25%, transparent);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--cs-orange);
+	flex-shrink: 0;
 }
 
 .iconWrap svg {
-  width: 18px;
-  height: 18px;
+	width: 18px;
+	height: 18px;
 }
 
 .title {
-  font-size: 14.5px;
-  font-weight: 600;
-  color: var(--cs-ink);
+	font-size: 14.5px;
+	font-weight: 600;
+	color: var(--cs-ink);
 }
 
 .command {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 14px;
-  background: var(--cs-bg);
-  border: 1px solid var(--cs-border);
-  border-radius: 7px;
-  font-family: var(--cs-font-mono);
-  font-size: 12.5px;
-  color: var(--cs-teal);
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 9px 14px;
+	background: var(--cs-bg);
+	border: 1px solid var(--cs-border);
+	border-radius: 7px;
+	font-family: var(--cs-font-mono);
+	font-size: 12.5px;
+	color: var(--cs-teal);
 }
 
 .cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 18px;
-  border-radius: 7px;
-  background: var(--cs-orange);
-  color: #0A1120;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: opacity 0.15s;
-  align-self: flex-start;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 18px;
+	border-radius: 7px;
+	background: var(--cs-orange);
+	color: #0a1120;
+	font-size: 13px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: opacity 0.15s;
+	align-self: flex-start;
 }
 
 .cta:hover {
-  opacity: 0.85;
-  text-decoration: none;
-  color: #0A1120;
+	opacity: 0.85;
+	text-decoration: none;
+	color: #0a1120;
 }

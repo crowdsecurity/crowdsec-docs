@@ -6,290 +6,294 @@
 
 /* DARK — default */
 :root,
-[data-theme='dark'] {
-  /* Surfaces */
-  --cs-bg:        #0A1120;
-  --cs-bg-soft:   #0E1729;
-  --cs-surface:   #111B30;
-  --cs-surface-2: #162238;
-  --cs-border:    rgba(148, 163, 184, 0.10);
-  --cs-border-hi: rgba(148, 163, 184, 0.18);
+[data-theme="dark"] {
+	/* Surfaces */
+	--cs-bg: #0a1120;
+	--cs-bg-soft: #0e1729;
+	--cs-surface: #111b30;
+	--cs-surface-2: #162238;
+	--cs-border: rgba(148, 163, 184, 0.1);
+	--cs-border-hi: rgba(148, 163, 184, 0.18);
 
-  /* Text */
-  --cs-ink:       #F1F5F9;
-  --cs-ink-dim:   #94A3B8;
-  --cs-ink-mute:  #64748B;
+	/* Text */
+	--cs-ink: #f1f5f9;
+	--cs-ink-dim: #94a3b8;
+	--cs-ink-mute: #64748b;
 
-  /* Brand + path colors */
-  --cs-orange:    #F9B124;
-  --cs-teal:      #34D399;
-  --cs-violet:    #A78BFA;
-  --cs-blue:      #60A5FA;
-  --cs-pink:      #F472B6;
+	/* Brand + path colors */
+	--cs-orange: #f9b124;
+	--cs-teal: #34d399;
+	--cs-violet: #a78bfa;
+	--cs-blue: #60a5fa;
+	--cs-pink: #f472b6;
 
-  /* Button text: dark on bright/light bg in dark mode */
-  --cs-btn-text:  #0A1120;
+	/* Button text: dark on bright/light bg in dark mode */
+	--cs-btn-text: #0a1120;
 
-  /* Tinted soft backgrounds via color-mix */
-  --cs-orange-soft: color-mix(in srgb, var(--cs-orange) 12%, transparent);
-  --cs-teal-soft:   color-mix(in srgb, var(--cs-teal)   12%, transparent);
-  --cs-violet-soft: color-mix(in srgb, var(--cs-violet) 14%, transparent);
-  --cs-blue-soft:   color-mix(in srgb, var(--cs-blue)   12%, transparent);
-  --cs-pink-soft:   color-mix(in srgb, var(--cs-pink)   12%, transparent);
+	/* Tinted soft backgrounds via color-mix */
+	--cs-orange-soft: color-mix(in srgb, var(--cs-orange) 12%, transparent);
+	--cs-teal-soft: color-mix(in srgb, var(--cs-teal) 12%, transparent);
+	--cs-violet-soft: color-mix(in srgb, var(--cs-violet) 14%, transparent);
+	--cs-blue-soft: color-mix(in srgb, var(--cs-blue) 12%, transparent);
+	--cs-pink-soft: color-mix(in srgb, var(--cs-pink) 12%, transparent);
 
-  /* Type */
-  --cs-font-sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
-  --cs-font-mono: 'JetBrains Mono', 'Roboto Mono', ui-monospace, Menlo, monospace;
+	/* Type */
+	--cs-font-sans: "Instrument Sans", system-ui, -apple-system, sans-serif;
+	--cs-font-mono: "JetBrains Mono", "Roboto Mono", ui-monospace, Menlo, monospace;
 
-  /* ── Infima / Docusaurus bridge ──────────────────────────────────────── */
-  --ifm-background-color:           var(--cs-bg);
-  --ifm-background-surface-color:   var(--cs-bg-soft);
+	/* ── Infima / Docusaurus bridge ──────────────────────────────────────── */
+	--ifm-background-color: var(--cs-bg);
+	--ifm-background-surface-color: var(--cs-bg-soft);
 
-  --ifm-color-primary:              var(--cs-orange);
-  --ifm-color-primary-dark:         #E2890C;
-  --ifm-color-primary-darker:       #C77808;
-  --ifm-color-primary-darkest:      #A76406;
-  --ifm-color-primary-light:        #FBBE45;
-  --ifm-color-primary-lighter:      #FCC85F;
-  --ifm-color-primary-lightest:     #FDD988;
+	--ifm-color-primary: var(--cs-orange);
+	--ifm-color-primary-dark: #e2890c;
+	--ifm-color-primary-darker: #c77808;
+	--ifm-color-primary-darkest: #a76406;
+	--ifm-color-primary-light: #fbbe45;
+	--ifm-color-primary-lighter: #fcc85f;
+	--ifm-color-primary-lightest: #fdd988;
 
-  --ifm-color-content:              var(--cs-ink);
-  --ifm-color-content-secondary:    var(--cs-ink-dim);
+	--ifm-color-content: var(--cs-ink);
+	--ifm-color-content-secondary: var(--cs-ink-dim);
 
-  --ifm-toc-border-color:           var(--cs-border);
+	--ifm-toc-border-color: var(--cs-border);
 
-  --ifm-menu-color:                 var(--cs-ink-dim);
-  --ifm-menu-color-active:          var(--cs-orange);
-  --ifm-menu-color-background-active: var(--cs-orange-soft);
-  --ifm-menu-color-background-hover:  var(--cs-orange-soft);
+	--ifm-menu-color: var(--cs-ink-dim);
+	--ifm-menu-color-active: var(--cs-orange);
+	--ifm-menu-color-background-active: var(--cs-orange-soft);
+	--ifm-menu-color-background-hover: var(--cs-orange-soft);
 
-  --ifm-font-family-base:           var(--cs-font-sans);
-  --ifm-font-family-monospace:      var(--cs-font-mono);
-  --ifm-heading-font-family:        var(--cs-font-sans);
+	--ifm-font-family-base: var(--cs-font-sans);
+	--ifm-font-family-monospace: var(--cs-font-mono);
+	--ifm-heading-font-family: var(--cs-font-sans);
 
-  --ifm-link-color:                 var(--cs-orange);
-  --ifm-link-hover-color:           var(--cs-orange);
+	--ifm-link-color: var(--cs-orange);
+	--ifm-link-hover-color: var(--cs-orange);
 
-  --ifm-code-background:            var(--cs-bg-soft);
-  --ifm-navbar-background-color:    color-mix(in srgb, var(--cs-bg) 85%, transparent);
+	--ifm-code-background: var(--cs-bg-soft);
+	--ifm-navbar-background-color: color-mix(in srgb, var(--cs-bg) 85%, transparent);
 
-  --ifm-hr-border-color:            var(--cs-border-hi);
-  --ifm-blockquote-border-color:    var(--cs-orange);
+	--ifm-hr-border-color: var(--cs-border-hi);
+	--ifm-blockquote-border-color: var(--cs-orange);
 
-  --ifm-tabs-color-active:          var(--cs-orange);
-  --ifm-tabs-color-active-border:   var(--cs-orange);
+	--ifm-tabs-color-active: var(--cs-orange);
+	--ifm-tabs-color-active-border: var(--cs-orange);
 
-  --ifm-breadcrumb-color-active:    var(--cs-orange);
-  --ifm-breadcrumb-separator-color: var(--cs-ink-mute);
+	--ifm-breadcrumb-color-active: var(--cs-orange);
+	--ifm-breadcrumb-separator-color: var(--cs-ink-mute);
 }
 
 /* LIGHT — inverted surfaces, adjusted path colors for AA contrast */
-[data-theme='light'] {
-  /* Surfaces */
-  --cs-bg:        #FAFAF7;
-  --cs-bg-soft:   #FFFFFF;
-  --cs-surface:   #FFFFFF;
-  --cs-surface-2: #F4F2EC;
-  --cs-border:    rgba(15, 23, 42, 0.08);
-  --cs-border-hi: rgba(15, 23, 42, 0.14);
+[data-theme="light"] {
+	/* Surfaces */
+	--cs-bg: #fafaf7;
+	--cs-bg-soft: #ffffff;
+	--cs-surface: #ffffff;
+	--cs-surface-2: #f4f2ec;
+	--cs-border: rgba(15, 23, 42, 0.08);
+	--cs-border-hi: rgba(15, 23, 42, 0.14);
 
-  /* Text */
-  --cs-ink:       #0F172A;
-  --cs-ink-dim:   #475569;
-  --cs-ink-mute:  #64748B;
+	/* Text */
+	--cs-ink: #0f172a;
+	--cs-ink-dim: #475569;
+	--cs-ink-mute: #64748b;
 
-  /* Brand + path — vibrant enough to carry white text (AA large text) */
-  --cs-orange:    #D4890A;
-  --cs-teal:      #0A9960;
-  --cs-violet:    #7C5CE8;
-  --cs-blue:      #2B72E5;
-  --cs-pink:      #E03880;
+	/* Brand + path — vibrant enough to carry white text (AA large text) */
+	--cs-orange: #d4890a;
+	--cs-teal: #0a9960;
+	--cs-violet: #7c5ce8;
+	--cs-blue: #2b72e5;
+	--cs-pink: #e03880;
 
-  /* Button text: white on dark/vibrant bg in light mode */
-  --cs-btn-text:  #FFFFFF;
+	/* Button text: white on dark/vibrant bg in light mode */
+	--cs-btn-text: #ffffff;
 
-  --cs-orange-soft: color-mix(in srgb, var(--cs-orange) 10%, transparent);
-  --cs-teal-soft:   color-mix(in srgb, var(--cs-teal)   10%, transparent);
-  --cs-violet-soft: color-mix(in srgb, var(--cs-violet) 10%, transparent);
-  --cs-blue-soft:   color-mix(in srgb, var(--cs-blue)   10%, transparent);
-  --cs-pink-soft:   color-mix(in srgb, var(--cs-pink)   10%, transparent);
+	--cs-orange-soft: color-mix(in srgb, var(--cs-orange) 10%, transparent);
+	--cs-teal-soft: color-mix(in srgb, var(--cs-teal) 10%, transparent);
+	--cs-violet-soft: color-mix(in srgb, var(--cs-violet) 10%, transparent);
+	--cs-blue-soft: color-mix(in srgb, var(--cs-blue) 10%, transparent);
+	--cs-pink-soft: color-mix(in srgb, var(--cs-pink) 10%, transparent);
 
-  /* ── Infima / Docusaurus bridge ──────────────────────────────────────── */
-  --ifm-background-color:           var(--cs-bg);
-  --ifm-background-surface-color:   var(--cs-bg-soft);
+	/* ── Infima / Docusaurus bridge ──────────────────────────────────────── */
+	--ifm-background-color: var(--cs-bg);
+	--ifm-background-surface-color: var(--cs-bg-soft);
 
-  --ifm-color-primary:              var(--cs-orange);
-  --ifm-color-primary-dark:         #A76406;
-  --ifm-color-primary-darker:       #8F5605;
-  --ifm-color-primary-darkest:      #6E4204;
-  --ifm-color-primary-light:        #E2890C;
-  --ifm-color-primary-lighter:      #F09920;
-  --ifm-color-primary-lightest:     #F9B124;
+	--ifm-color-primary: var(--cs-orange);
+	--ifm-color-primary-dark: #a76406;
+	--ifm-color-primary-darker: #8f5605;
+	--ifm-color-primary-darkest: #6e4204;
+	--ifm-color-primary-light: #e2890c;
+	--ifm-color-primary-lighter: #f09920;
+	--ifm-color-primary-lightest: #f9b124;
 
-  --ifm-color-content:              var(--cs-ink);
-  --ifm-color-content-secondary:    var(--cs-ink-dim);
+	--ifm-color-content: var(--cs-ink);
+	--ifm-color-content-secondary: var(--cs-ink-dim);
 
-  --ifm-toc-border-color:           var(--cs-border);
+	--ifm-toc-border-color: var(--cs-border);
 
-  --ifm-menu-color:                 var(--cs-ink-dim);
-  --ifm-menu-color-active:          var(--cs-orange);
-  --ifm-menu-color-background-active: var(--cs-orange-soft);
-  --ifm-menu-color-background-hover:  var(--cs-orange-soft);
+	--ifm-menu-color: var(--cs-ink-dim);
+	--ifm-menu-color-active: var(--cs-orange);
+	--ifm-menu-color-background-active: var(--cs-orange-soft);
+	--ifm-menu-color-background-hover: var(--cs-orange-soft);
 
-  --ifm-font-family-base:           var(--cs-font-sans);
-  --ifm-font-family-monospace:      var(--cs-font-mono);
-  --ifm-heading-font-family:        var(--cs-font-sans);
+	--ifm-font-family-base: var(--cs-font-sans);
+	--ifm-font-family-monospace: var(--cs-font-mono);
+	--ifm-heading-font-family: var(--cs-font-sans);
 
-  --ifm-link-color:                 var(--cs-orange);
-  --ifm-link-hover-color:           var(--cs-orange);
+	--ifm-link-color: var(--cs-orange);
+	--ifm-link-hover-color: var(--cs-orange);
 
-  --ifm-code-background:            var(--cs-surface-2);
-  --ifm-navbar-background-color:    var(--cs-bg-soft);
+	--ifm-code-background: var(--cs-surface-2);
+	--ifm-navbar-background-color: var(--cs-bg-soft);
 
-  --ifm-hr-border-color:            var(--cs-border-hi);
-  --ifm-blockquote-border-color:    var(--cs-orange);
+	--ifm-hr-border-color: var(--cs-border-hi);
+	--ifm-blockquote-border-color: var(--cs-orange);
 
-  --ifm-tabs-color-active:          var(--cs-orange);
-  --ifm-tabs-color-active-border:   var(--cs-orange);
+	--ifm-tabs-color-active: var(--cs-orange);
+	--ifm-tabs-color-active-border: var(--cs-orange);
 
-  --ifm-breadcrumb-color-active:    var(--cs-orange);
-  --ifm-breadcrumb-separator-color: var(--cs-ink-mute);
+	--ifm-breadcrumb-color-active: var(--cs-orange);
+	--ifm-breadcrumb-separator-color: var(--cs-ink-mute);
 }
 
 /* ── Sidebar ──────────────────────────────────────────────────────────────── */
 
 /* Container background */
 .theme-doc-sidebar-container aside {
-  background: var(--cs-bg-soft) !important;
-  border-right: none !important;
+	background: var(--cs-bg-soft) !important;
+	border-right: none !important;
 }
 
 /* All menu links: base style */
 .menu__link {
-  color: var(--cs-ink-dim);
-  font-size: 13.5px;
-  font-weight: 500;
-  border-radius: 7px;
-  padding: 7px 10px;
-  border-left: 2px solid transparent;
-  transition: color 0.12s, background 0.12s;
+	color: var(--cs-ink-dim);
+	font-size: 13.5px;
+	font-weight: 500;
+	border-radius: 7px;
+	padding: 7px 10px;
+	border-left: 2px solid transparent;
+	transition:
+		color 0.12s,
+		background 0.12s;
 }
 
 .menu__link:hover {
-  color: var(--cs-ink);
-  background: color-mix(in srgb, var(--cs-ink) 5%, transparent);
+	color: var(--cs-ink);
+	background: color-mix(in srgb, var(--cs-ink) 5%, transparent);
 }
 
 /* Active non-category link */
 .menu__link--active:not(.menu__link--sublist) {
-  color: var(--cs-orange) !important;
-  background: color-mix(in srgb, var(--cs-orange) 14%, transparent) !important;
-  border-left: 2px solid var(--cs-orange);
-  padding-left: calc(10px - 2px);
-  font-weight: 600;
+	color: var(--cs-orange) !important;
+	background: color-mix(in srgb, var(--cs-orange) 14%, transparent) !important;
+	border-left: 2px solid var(--cs-orange);
+	padding-left: calc(10px - 2px);
+	font-weight: 600;
 }
 
 /* Top-level category labels: eyebrow mono */
 .menu__list > .menu__list-item > .menu__list-item-collapsible > .menu__link--sublist {
-  font-family: var(--cs-font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--cs-ink-mute);
-  font-weight: 600;
-  padding: 8px 10px 6px;
-  border-radius: 0;
-  border-left: none;
-  background: transparent !important;
+	font-family: var(--cs-font-mono);
+	font-size: 10.5px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--cs-ink-mute);
+	font-weight: 600;
+	padding: 8px 10px 6px;
+	border-radius: 0;
+	border-left: none;
+	background: transparent !important;
 }
 
 .menu__list > .menu__list-item > .menu__list-item-collapsible > .menu__link--sublist:hover {
-  background: transparent !important;
-  color: var(--cs-ink-dim);
+	background: transparent !important;
+	color: var(--cs-ink-dim);
 }
 
 .menu__list > .menu__list-item > .menu__list-item-collapsible > .menu__link--sublist.menu__link--active {
-  color: var(--cs-orange);
-  background: transparent !important;
+	color: var(--cs-orange);
+	background: transparent !important;
 }
 
 /* ── Sublist (expandable category) links — same look as regular links ──── */
 /* Reset any Infima special treatment on .menu__link--sublist */
 .menu__link--sublist {
-  font-family: var(--cs-font-sans) !important;
-  font-size: 13.5px !important;
-  font-weight: 500 !important;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-  color: var(--cs-ink-dim) !important;
+	font-family: var(--cs-font-sans) !important;
+	font-size: 13.5px !important;
+	font-weight: 500 !important;
+	text-transform: none !important;
+	letter-spacing: normal !important;
+	color: var(--cs-ink-dim) !important;
 }
 
 /* Remove Infima's built-in CSS caret for sublist — we use the React chevron */
 .menu__link--sublist-caret:after,
 .menu__link--sublist:after {
-  display: none !important;
+	display: none !important;
 }
 
 /* Nested items: slightly smaller */
 .menu__list .menu__list .menu__link {
-  font-size: 13px;
-  padding-left: 14px;
+	font-size: 13px;
+	padding-left: 14px;
 }
 
 /* ── Breadcrumb: transparent bg, matches page background ──────────────── */
 nav.theme-doc-breadcrumbs {
-  background: transparent !important;
+	background: transparent !important;
 }
 
 /* ── Dropdown menu ────────────────────────────────────────────────────────── */
 .dropdown__menu {
-  background: var(--cs-surface) !important;
-  border: 1px solid var(--cs-border-hi) !important;
-  border-radius: 10px !important;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35) !important;
-  padding: 6px !important;
-  min-width: 200px;
+	background: var(--cs-surface) !important;
+	border: 1px solid var(--cs-border-hi) !important;
+	border-radius: 10px !important;
+	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35) !important;
+	padding: 6px !important;
+	min-width: 200px;
 }
 
 /* items inside the dropdown: only class 'dropdown__link', NOT navbar__link */
 .dropdown__link,
 .dropdown__menu a,
 .dropdown__menu .navbar__link {
-  color: var(--cs-ink-dim) !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  border-radius: 6px;
-  padding: 7px 12px !important;
-  transition: color 0.12s, background 0.12s;
+	color: var(--cs-ink-dim) !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+	border-radius: 6px;
+	padding: 7px 12px !important;
+	transition:
+		color 0.12s,
+		background 0.12s;
 }
 
 .dropdown__link:hover,
 .dropdown__menu a:hover {
-  color: var(--cs-orange) !important;
-  background: color-mix(in srgb, var(--cs-orange) 12%, transparent) !important;
+	color: var(--cs-orange) !important;
+	background: color-mix(in srgb, var(--cs-orange) 12%, transparent) !important;
 }
 
 .dropdown__link--active,
 .dropdown__link--active:hover {
-  color: var(--cs-orange) !important;
-  background: color-mix(in srgb, var(--cs-orange) 12%, transparent) !important;
+	color: var(--cs-orange) !important;
+	background: color-mix(in srgb, var(--cs-orange) 12%, transparent) !important;
 }
 
-[data-theme='light'] .dropdown__menu {
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
+[data-theme="light"] .dropdown__menu {
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
 }
 
 /* ── Secondary navbar (breadcrumb bar) ────────────────────────────────────── */
 /* Target via attribute selector to be resilient to CSS module hash changes */
 [class*="secondaryNavbar_"] {
-  background: var(--cs-bg-soft) !important;
-  border-bottom: 1px solid var(--cs-border) !important;
-  box-shadow: none !important;
+	background: var(--cs-bg-soft) !important;
+	border-bottom: 1px solid var(--cs-border) !important;
+	box-shadow: none !important;
 }
 
 /* UI-level links (navbar, TOC, breadcrumb) follow --ifm-link-color (orange) */
 a {
-  color: var(--ifm-link-color);
+	color: var(--ifm-link-color);
 }
 
 /* All doc prose links use the brand primary purple.
@@ -297,70 +301,70 @@ a {
    naturally since inline styles beat class-based CSS. */
 .theme-doc-markdown a,
 article a {
-  color: rgb(var(--primary));
+	color: rgb(var(--primary));
 }
 
 .theme-doc-markdown a:hover,
 article a:hover {
-  color: rgb(var(--primary));
-  opacity: 0.8;
-  text-decoration: underline;
+	color: rgb(var(--primary));
+	opacity: 0.8;
+	text-decoration: underline;
 }
 
 /* Preserve admonition body link tone color */
 .cs-admon__content a,
 .cs-admon__content a:hover {
-  color: var(--tone) !important;
-  opacity: 1 !important;
+	color: var(--tone) !important;
+	opacity: 1 !important;
 }
 
 /* Table of contents active link */
 .table-of-contents__link--active {
-  color: var(--cs-orange) !important;
-  font-weight: 600;
-  border-left-color: var(--cs-orange) !important;
+	color: var(--cs-orange) !important;
+	font-weight: 600;
+	border-left-color: var(--cs-orange) !important;
 }
 
 /* Tabs active state */
 .tabs__item--active {
-  border-bottom-color: var(--cs-orange) !important;
-  color: var(--cs-orange) !important;
+	border-bottom-color: var(--cs-orange) !important;
+	color: var(--cs-orange) !important;
 }
 
 /* ── Footer link columns (rendered inside FooterLayout by Docusaurus) ──────── */
 .footer__col {
-  padding: 0;
+	padding: 0;
 }
 
 .footer__title {
-  font-family: var(--cs-font-mono) !important;
-  font-size: 10.5px !important;
-  letter-spacing: 0.14em !important;
-  text-transform: uppercase !important;
-  color: var(--cs-ink-mute) !important;
-  font-weight: 600 !important;
-  margin-bottom: 14px !important;
+	font-family: var(--cs-font-mono) !important;
+	font-size: 10.5px !important;
+	letter-spacing: 0.14em !important;
+	text-transform: uppercase !important;
+	color: var(--cs-ink-mute) !important;
+	font-weight: 600 !important;
+	margin-bottom: 14px !important;
 }
 
 .footer__item {
-  margin-bottom: 8px;
-  list-style: none;
+	margin-bottom: 8px;
+	list-style: none;
 }
 
 .footer__link-item {
-  color: var(--cs-ink-dim) !important;
-  font-size: 13.5px !important;
-  font-weight: 400;
-  text-decoration: none;
-  transition: color 0.12s;
-  line-height: 1.5;
+	color: var(--cs-ink-dim) !important;
+	font-size: 13.5px !important;
+	font-weight: 400;
+	text-decoration: none;
+	transition: color 0.12s;
+	line-height: 1.5;
 }
 
 .footer__link-item:hover {
-  color: var(--cs-orange) !important;
-  text-decoration: none;
+	color: var(--cs-orange) !important;
+	text-decoration: none;
 }
 
 .footer__copyright {
-  display: none; /* handled by FooterLayout */
+	display: none; /* handled by FooterLayout */
 }

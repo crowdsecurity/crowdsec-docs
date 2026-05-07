@@ -1,50 +1,53 @@
 .strip {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 10px 18px;
-  background: var(--cs-surface);
-  border: 1px solid var(--cs-border);
-  border-radius: 10px;
-  margin: 16px 0 24px;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	flex-wrap: wrap;
+	padding: 10px 18px;
+	background: var(--cs-surface);
+	border: 1px solid var(--cs-border);
+	border-radius: 10px;
+	margin: 16px 0 24px;
 }
 
 .label {
-  font-family: var(--cs-font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  color: var(--cs-ink-mute);
-  white-space: nowrap;
-  flex-shrink: 0;
+	font-family: var(--cs-font-mono);
+	font-size: 10.5px;
+	letter-spacing: 0.8px;
+	text-transform: uppercase;
+	color: var(--cs-ink-mute);
+	white-space: nowrap;
+	flex-shrink: 0;
 }
 
 .pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
 }
 
 .pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 12px;
-  border-radius: 7px;
-  font-size: 12.5px;
-  line-height: 1;
-  white-space: nowrap;
-  color: var(--cs-ink-dim);
-  border: 1px solid var(--cs-border-hi);
-  background: var(--cs-bg);
-  text-decoration: none;
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 5px 12px;
+	border-radius: 7px;
+	font-size: 12.5px;
+	line-height: 1;
+	white-space: nowrap;
+	color: var(--cs-ink-dim);
+	border: 1px solid var(--cs-border-hi);
+	background: var(--cs-bg);
+	text-decoration: none;
+	transition:
+		border-color 0.15s,
+		color 0.15s,
+		background 0.15s;
 }
 
 .pill:hover {
-  border-color: var(--cs-orange);
-  color: var(--cs-orange);
-  background: var(--cs-orange-soft);
-  text-decoration: none;
+	border-color: var(--cs-orange);
+	color: var(--cs-orange);
+	background: var(--cs-orange-soft);
+	text-decoration: none;
 }

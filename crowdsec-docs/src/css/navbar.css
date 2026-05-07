@@ -5,8 +5,8 @@
 	border-bottom: 1px solid var(--cs-border) !important;
 }
 
-[data-theme='light'] .navbar {
-	background: rgba(250, 250, 247, 0.90) !important;
+[data-theme="light"] .navbar {
+	background: rgba(250, 250, 247, 0.9) !important;
 	border-bottom: 1px solid var(--cs-border) !important;
 }
 
@@ -17,7 +17,9 @@
 	font-weight: 500;
 	border-radius: 6px;
 	padding: 6px 10px;
-	transition: color 0.15s, background 0.15s;
+	transition:
+		color 0.15s,
+		background 0.15s;
 }
 
 .navbar__link:hover,
