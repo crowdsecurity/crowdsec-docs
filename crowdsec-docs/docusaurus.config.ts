@@ -251,6 +251,10 @@ const config: Config = {
 		{
 			href: "https://fonts.googleapis.com/icon?family=Material+Icons",
 		},
+		{
+			href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap",
+			rel: "stylesheet",
+		},
 	],
 	themes: ["@docusaurus/theme-mermaid"],
 	themeConfig: {
@@ -258,7 +262,7 @@ const config: Config = {
 		colorMode: {
 			defaultMode: "dark",
 			disableSwitch: false,
-			respectPrefersColorScheme: true,
+			respectPrefersColorScheme: false,
 		},
 		announcementBar: {
 			id: "banner_docs",

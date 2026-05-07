@@ -1,0 +1,98 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   CrowdSec Typography System
+   Applies to doc pages via .theme-doc-markdown. No hex colors — uses --cs-* vars.
+───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Base prose container ───────────────────────────────────────────────── */
+.theme-doc-markdown {
+  counter-reset: cs-section;
+  line-height: 1.65;
+}
+
+.theme-doc-markdown > p,
+.theme-doc-markdown > ul > li,
+.theme-doc-markdown > ol > li {
+  max-width: 720px;
+  line-height: 1.65;
+}
+
+/* ── Headings ───────────────────────────────────────────────────────────── */
+article h1,
+.theme-doc-markdown h1 {
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+article h2,
+.theme-doc-markdown h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+article h3,
+.theme-doc-markdown h3 {
+  font-size: 18.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+/* ── § NN auto-counter on h2 ────────────────────────────────────────────── */
+.theme-doc-markdown > h2 {
+  counter-increment: cs-section;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.theme-doc-markdown > h2::before {
+  content: "§ " counter(cs-section, decimal-leading-zero);
+  font: 600 12px/1 var(--cs-font-mono);
+  color: var(--cs-orange);
+  letter-spacing: 0.16em;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+/* ── Lede paragraph (first <p> after the page header) ───────────────────── */
+.theme-doc-markdown > p:first-of-type {
+  font-size: 16px;
+  color: var(--cs-ink-dim);
+  line-height: 1.65;
+  max-width: 720px;
+}
+
+/* ── Eyebrow element (rendered by DocItem/Content swizzle) ──────────────── */
+.cs-eyebrow {
+  font-family: var(--cs-font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--cs-orange);
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* ── Mobile overrides ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  article h1,
+  .theme-doc-markdown h1 {
+    font-size: 32px;
+  }
+
+  article h2,
+  .theme-doc-markdown h2 {
+    font-size: 22px;
+  }
+
+  .theme-doc-markdown > h2::before {
+    font-size: 10px;
+  }
+}

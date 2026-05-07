@@ -1,0 +1,73 @@
+.card {
+  margin-top: 24px;
+  padding: 18px;
+  background: var(--cs-surface);
+  border: 1px solid var(--cs-border-hi);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.eyebrow {
+  font-family: var(--cs-font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--cs-ink-mute);
+  font-weight: 600;
+}
+
+.title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--cs-ink);
+  line-height: 1.3;
+}
+
+.sparkline {
+  display: block;
+  width: 100%;
+  height: 36px;
+}
+
+.perks {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.perk {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--cs-ink-dim);
+  line-height: 1.4;
+}
+
+.checkIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.15s;
+  text-align: center;
+  width: 100%;
+}
+
+.cta:hover {
+  opacity: 0.85;
+  text-decoration: none;
+}
