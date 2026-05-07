@@ -57,6 +57,59 @@ The Ingress nginx controller should be installed using the [official helm chart]
 
 First you need to create new ingress-nginx chart values file (`crowdsec-ingress-values.yaml`) to upgrade the ingress controller with the crowdsec plugin.
 
+Store the CrowdSec bouncer key in Kubernetes Secrets instead of embedding it
+directly in the Helm values.
+
+Create or update the secret used by CrowdSec LAPI:
+
+```yaml title="crowdsec-keys.yaml"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-keys
+  namespace: crowdsec
+type: Opaque
+stringData:
+  BOUNCER_KEY_nginx_ingress_waf: "<choose-a-long-random-key>"
+```
+
+Apply it:
+
+```bash
+kubectl apply -f crowdsec-keys.yaml
+```
+
+Then reference it from your CrowdSec values:
+
+```yaml title="crowdsec-values.yaml"
+lapi:
+  env:
+    - name: BOUNCER_KEY_nginx_ingress_waf
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: BOUNCER_KEY_nginx_ingress_waf
+```
+
+Create the secret holding the same key in the `ingress-nginx` namespace:
+
+```yaml title="crowdsec-ingress-bouncer-secret.yaml"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-ingress-bouncer-secrets
+  namespace: ingress-nginx
+type: Opaque
+stringData:
+  api-key: "<same-value-as-BOUNCER_KEY_nginx_ingress_waf>"
+```
+
+Apply it:
+
+```bash
+kubectl apply -f crowdsec-ingress-bouncer-secret.yaml
+```
+
 :::warning
 
 Lua support has been removed from mainline ingress nginx in version 1.12. As
@@ -70,9 +123,9 @@ controller:
     PullPolicy: IfNotPresent
     image: crowdsecurity/controller
     # Crowdsec Remediation with Ingress Nginx requires to use our controller image
-    tag: v1.13.2
+    tag: v1.14.3
     # If you update the tag, the digest needs to be updated as well
-    digest: sha256:4575be24781cad35f8e58437db6a3f492df2a3167fed2b6759a6ff0dc3488d56
+    digest: sha256:9ab8791635f4cde9964ab2562fb8b15faf72fe0205f0fe288089a87e1455675d
     registry: docker.io
   extraVolumes:
     - name: crowdsec-bouncer-plugin
@@ -85,7 +138,10 @@ controller:
         - name: API_URL
           value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080" # crowdsec lapi service-name
         - name: API_KEY
-          value: "<API KEY>" # generated with `cscli bouncers add <bouncer_name>
+          valueFrom:
+            secretKeyRef:
+              name: crowdsec-ingress-bouncer-secrets
+              key: api-key
         - name: BOUNCER_CONFIG
           value: "/crowdsec/crowdsec-bouncer.conf"
         - name: CAPTCHA_PROVIDER
@@ -133,35 +189,18 @@ controller:
       resolver local=on ipv6=off;
 ```
 
-<details>
-    <summary>You already have a deployed ingress nginx</summary>
-
-This values.yaml upgrade your ingress deployment to add crowdsec lua lib as a
-plugin and run with the crowdsec maintained nginx ingress controller with lua
-support. It uses [this docker
+Use this values file to deploy or upgrade ingress-nginx with the CrowdSec Lua
+plugin and the CrowdSec-maintained ingress controller image with Lua support.
+It uses [this docker
 image](https://hub.docker.com/r/crowdsecurity/lua-bouncer-plugin) to copy the
-crowdsec lua library. You can upgrade the ingress-nginx using this `crowdsec-ingress-values.yaml`
+CrowdSec Lua library.
 
 ```bash
-helm -n ingress-nginx upgrade -f ingress-nginx-values.yaml -f crowdsec-ingress-values.yaml ingress-nginx/ingress-nginx
+helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+  -n ingress-nginx \
+  --create-namespace \
+  -f crowdsec-ingress-values.yaml
 ```
-
-</details>
-
-<details>
-    <summary>You don't have a deployed ingress nginx</summary>
-
-This values.yaml install your ingress deployment to add crowdsec lua lib as a
-plugin and run with the crowdsec maintained nginx ingress controller with lua
-support. It uses [this docker
-image](https://hub.docker.com/r/crowdsecurity/lua-bouncer-plugin) to copy the
-crowdsec lua library. You can install the ingress-nginx using this `crowdsec-ingress-values.yaml`
-
-```bash
-helm -n ingress-nginx install -f crowdsec-ingress-values.yaml ingress-nginx ingress-nginx/ingress-nginx
-```
-
-</details>
 
 And then check if the ingress controller is running well.
 

@@ -58,6 +58,28 @@ If CrowdSec is already deployed with Helm in this cluster, the repository entry 
 
 ### Update CrowdSec configuration
 
+Store the nginx bouncer key in a Kubernetes secret, following the same pattern
+used by the Envoy quickstart.
+
+Create or update the secret used by CrowdSec LAPI:
+
+```yaml title="crowdsec-keys.yaml"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-keys
+  namespace: crowdsec
+type: Opaque
+stringData:
+  BOUNCER_KEY_nginx_ingress_waf: "<choose-a-long-random-key>"
+```
+
+Apply it:
+
+```bash
+kubectl apply -f crowdsec-keys.yaml
+```
+
 Add this to the CrowdSec `values.yaml` with the AppSec acquisition datasource (see the [AppSec datasource](/log_processor/data_sources/appsec.md)) and the default [AppSec configuration](/appsec/configuration.md):
 
 ```yaml title="values.yaml"
@@ -74,13 +96,20 @@ appsec:
   env:
     - name: COLLECTIONS
       value: crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+lapi:
+  env:
+    - name: BOUNCER_KEY_nginx_ingress_waf
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: BOUNCER_KEY_nginx_ingress_waf
 ```
 
 This YAML configuration snippet exposes the important configuration items:
      * `listen_addr: 0.0.0.0:7422` exposes the AppSec API inside the cluster.
      * `appsec_configs` loads the [AppSec configuration(s)](/appsec/configuration.md) that define which rules are evaluated (in-band vs out-of-band).
      * The two collections provide virtual patching and generic rule coverage.
-     * The chart bootstraps a bouncer named `nginx_ingress_waf` using the key you export locally.
+     * `lapi.env` forces the `nginx_ingress_waf` bouncer key from the `crowdsec-keys` Secret.
 
 And now we apply the new configuration with:
 
@@ -97,6 +126,26 @@ kubectl -n crowdsec get pods
 You should see `crowdsec-agent` pods, the `crowdsec-lapi` pod and the `crowdsec-appsec` pod in `Running` state.
 
 ## Enable the CrowdSec Lua plugin on NGINX Ingress
+
+Create the secret holding the same CrowdSec bouncer key in the
+`ingress-nginx` namespace:
+
+```yaml title="crowdsec-ingress-bouncer-secret.yaml"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-ingress-bouncer-secrets
+  namespace: ingress-nginx
+type: Opaque
+stringData:
+  api-key: "<same-value-as-BOUNCER_KEY_nginx_ingress_waf>"
+```
+
+Apply it:
+
+```bash
+kubectl apply -f crowdsec-ingress-bouncer-secret.yaml
+```
 
 To extend the ingress controller with the CrowdSec plugin and point it to the
 AppSec API, create the file named `ingress-values.yaml`. You can read the entire
@@ -120,7 +169,10 @@ controller:
         - name: API_URL
           value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080"
         - name: API_KEY
-          value: privateKey-foo
+          valueFrom:
+            secretKeyRef:
+              name: crowdsec-ingress-bouncer-secrets
+              key: api-key
         - name: BOUNCER_CONFIG
           value: "/crowdsec/crowdsec-bouncer.conf"
         - name: APPSEC_URL
@@ -153,13 +205,13 @@ controller:
     plugins: "crowdsec"
     lua-shared-dicts: "crowdsec_cache: 50m"
     server-snippet: |
-      lua_ssl_trusted_certificate "/etc/ssl/certs/ca-certificates.crt"
+      lua_ssl_trusted_certificate "/etc/ssl/certs/ca-certificates.crt";
       resolver local=on ipv6=off;
 ```
 
 
 - `API_URL` targets the Local API service exposed by the Helm chart.
-- `API_KEY` defines the key for the bouncer to be able to connect to CrowdSec LAPI
+- `API_KEY` is read from the `crowdsec-ingress-bouncer-secrets` Secret in the `ingress-nginx` namespace.
 - `APPSEC_URL` points to the AppSec service; keep the namespace in sync with your CrowdSec release.
 - The plugin copies the Lua files from the init container into an `emptyDir` that is mounted at runtime.
 
@@ -212,7 +264,10 @@ extraInitContainers:
       - name: API_URL
         value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080"
       - name: API_KEY
-        value: privateKey-foo
+        valueFrom:
+          secretKeyRef:
+            name: crowdsec-ingress-bouncer-secrets
+            key: api-key
       - name: BOUNCER_CONFIG
         value: "/crowdsec/crowdsec-bouncer.conf"
       - name: APPSEC_URL
