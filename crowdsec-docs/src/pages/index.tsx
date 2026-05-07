@@ -183,7 +183,7 @@ const SchemaBlock = ({ id, color, eyebrowIcon, eyebrow, title, ctaLabel, ctaHref
 			}}
 		/>
 
-		{/* header — always visible, clickable to toggle */}
+		{/* header - always visible, clickable to toggle */}
 		<button
 			type="button"
 			onClick={onToggle}
@@ -359,7 +359,7 @@ const intents: IntentCardProps[] = [
 		icon: <img src="/img/icons/shield.webp" className="h-8 w-8 border-0" alt="Blocklists" />,
 		accent: GREEN,
 		title: "Push a Blocklists into my firewall, CDN or WAF",
-		desc: "You manage network perimeter devices and want a URL to subscribe to — no agent to install.",
+		desc: "You manage network perimeter devices and want a URL to subscribe to. No agent to install.",
 		pill: "Blocklist Integration Endpoint",
 		href: "/blocklists",
 		aka: ["Threat Feeds", "IOC Streams", "Deny-list"],
@@ -389,7 +389,7 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 				num: 1,
 				icon: "⚡",
 				title: "Install the Security Engine",
-				desc: "Runs on your server, detects attack patterns in real time — immediately protected, and continuously updated with CrowdSec Community Blocklist.",
+				desc: "Runs on your server, detects attack patterns in real time. Immediately protected, and continuously updated with CrowdSec Community Blocklist.",
 			},
 			{
 				num: 2,
@@ -448,7 +448,7 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 		color: BLUE,
 		eyebrowIcon: "🔍",
 		eyebrow: "IP Reputation & CTI",
-		title: "Query threat intel — in the browser or via API in your tools",
+		title: "Query threat intel in the browser or via API in your tools",
 		ctaLabel: "Explore CTI →",
 		ctaHref: "/u/cti_api/intro",
 		steps: [
@@ -456,7 +456,7 @@ const schemas: Omit<SchemaBlockProps, "open" | "onToggle">[] = [
 				num: 1,
 				icon: "🖥️",
 				title: "Look up any IP in the Console",
-				desc: "Search instantly from our Web UI— get reputation score, behaviors, attack history, and CVE links.",
+				desc: "Search instantly from our Web UI. Get reputation score, behaviors, attack history, and CVE links.",
 			},
 			{
 				num: 2,
@@ -610,7 +610,7 @@ const HomePage = () => {
 					</div>
 				</section>
 
-				{/* How each path works — accordion */}
+				{/* How each path works - accordion */}
 				<section className="py-6 px-4">
 					<div className="container mx-auto" style={{ maxWidth: "940px" }}>
 						<div

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Roboto+Mono:wght@400;500&display=swap");
 
 @import "tailwindcss/base";
 @import "tailwindcss/components";
@@ -113,7 +113,7 @@ div.markdown {
 	padding: 14px 16px;
 }
 
-/* Quick-access strip — label + pill buttons in a row (matches homepage "Already running?" strip) */
+/* Quick-access strip - label + pill buttons in a row (matches homepage "Already running?" strip) */
 .doc-quick-strip {
 	display: flex;
 	align-items: center;
