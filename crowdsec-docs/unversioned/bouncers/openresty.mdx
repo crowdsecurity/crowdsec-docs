@@ -4,30 +4,31 @@ title: OpenResty
 sidebar_position: 1
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import RemediationSupportBadges from "@site/src/components/remediation-support-badge";
 
 <p align="center">
-<img src={useBaseUrl('/img/openresty.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
+  <img
+    src={useBaseUrl("/img/openresty.svg")}
+    alt="CrowdSec"
+    title="CrowdSec"
+    width="400"
+    height="300"
+  />
 </p>
 <p align="center">
-<img src="https://img.shields.io/badge/build-pass-green" />
-<img src="https://img.shields.io/badge/tests-pass-green" />
+  <img src="https://img.shields.io/badge/build-pass-green" />
+  <img src="https://img.shields.io/badge/tests-pass-green" />
 </p>
 <p align="center">
-&#x1F4DA; <a href="#installation/">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+  &#x1F4DA; <a href="#installation/">Documentation</a>
+  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+  &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
-<RemediationSupportBadges
-  Mode
-  Appsec
-  Metrics
-  MTLS
-/>
+<RemediationSupportBadges Mode Appsec Metrics MTLS />
 
 A lua Remediation Component for OpenResty.
 
@@ -43,18 +44,18 @@ This component leverages OpenResty lua's API, namely `access_by_lua_block` to ch
 
 Supported features:
 
- - Live mode (query the local API for each request)
- - Stream mode (pull the local API for new/old decisions every X seconds)
- - Ban remediation (can ban an IP address by redirecting him or returning a custom HTML page)
- - Captcha remediation (can return a captcha)
- - Works with IPv4/IPv6
- - Support IP ranges (can apply a remediation on an IP range)
- - Application Security Component (forward request to CrowdSec Application Security Engine and block is necessary)
+- Live mode (query the local API for each request)
+- Stream mode (pull the local API for new/old decisions every X seconds)
+- Ban remediation (can ban an IP address by redirecting him or returning a custom HTML page)
+- Captcha remediation (can return a captcha)
+- Works with IPv4/IPv6
+- Support IP ranges (can apply a remediation on an IP range)
+- Application Security Component (forward request to CrowdSec Application Security Engine and block is necessary)
 
 At the back, this component uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
 :::warning
-If you need to upgrade the component from v0.X to v1.X, please follow [this migration process](#migrate-from-v0-to-v1) 
+If you need to upgrade the component from v0.X to v1.X, please follow [this migration process](#migrate-from-v0-to-v1)
 :::
 
 ## Installation
@@ -98,7 +99,6 @@ sudo yum install crowdsec-openresty-bouncer
 
 </Tabs>
 
-
 :::info
 In stream mode, the component will launch an internal timer to pull the local API at the first request made to the server.
 :::
@@ -128,8 +128,8 @@ If you are on a mono-machine setup, the `crowdsec-openresty-bouncer` install scr
 <details>
   <summary>non-debian based dependencies</summary>
 
-  - openresty-opm : OpenResty Package Manager
-  - pintsized/lua-resty-http : lua lib managed by openresty-opm
+- openresty-opm : OpenResty Package Manager
+- pintsized/lua-resty-http : lua lib managed by openresty-opm
 
 </details>
 
@@ -146,8 +146,6 @@ The AppSec-related knobs in `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.c
 ## Configuration
 
 ### Component configuration
-
-
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf"
 API_URL=<CROWDSEC_LAPI_URL>
@@ -188,11 +186,12 @@ TLS_CLIENT_KEY=
 ## Application Security Component Configuration
 APPSEC_URL=
 #### default ###
-APPSEC_FAILURE_ACTION=passthrough  
-APPSEC_CONNECT_TIMEOUT=100        
-APPSEC_SEND_TIMEOUT=100            
-APPSEC_PROCESS_TIMEOUT=1000        
-ALWAYS_SEND_TO_APPSEC=false        
+APPSEC_FAILURE_ACTION=passthrough
+APPSEC_CONNECT_TIMEOUT=100
+APPSEC_SEND_TIMEOUT=100
+APPSEC_PROCESS_TIMEOUT=1000
+ALWAYS_SEND_TO_APPSEC=false
+APPSEC_DROP_UNREADABLE_BODY=false
 SSL_VERIFY=true
 ################
 ```
@@ -254,7 +253,6 @@ init_worker_by_lua_block {
 }
 ```
 
-
 The component uses [lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict) to share cache between all workers.
 
 If you want to increase the cache size you need to change this value `lua_shared_dict crowdsec_cache 50m;`.
@@ -265,8 +263,9 @@ If you want to increase the cache size you need to change this value `lua_shared
 
 To make HTTP request in the component, we need to set a `resolver` in the configuration. We choose `local=on` directive since we query `google.com` for the captcha verification, but you can replace it with a valid one.
 
-To make secure HTTP request in the component, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`). 
+To make secure HTTP request in the component, we need to specify a trusted certificate (`lua_ssl_trusted_certificate`).
 You can also change this with a valid one :
+
 ```
   - /etc/ssl/certs/ca-certificates.crt (Debian/Ubuntu/Gentoo)
   - /etc/pki/tls/certs/ca-bundle.crt (Fedora/RHEL 6)
@@ -275,7 +274,6 @@ You can also change this with a valid one :
   - /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem (CentOS/RHEL 7)
   - /etc/ssl/cert.pem (OpenBSD, Alpine)
 ```
-
 
 ### Application Security Component Configuration
 
@@ -296,8 +294,15 @@ ALWAYS_SEND_TO_APPSEC=false        # default
 SSL_VERIFY=true                    # default
 ```
 
+:::warning
+
+Due to limitations in the underlying library used by the remediation component, by default, the body of any HTTP2/HTTP3 request without a Content-Length will not be analyzed.
+To avoid potential bypasses of the WAF, you can set the option `APPSEC_DROP_UNREADABLE_BODY` to `true` to drop any request whose body cannot be inspected.
+
+:::
 
 ### Setup captcha
+
 > Currently, we have support for 3 providers: recaptcha, hcaptcha or turnstile
 
 If you want to use captcha with your OpenResty, you must provide a Site key and Secret key in your component configuration. If you wish to use any other provider than recaptcha you must also provide a Captcha provider.
@@ -345,10 +350,9 @@ lua_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
 
 And restart OpenResty.
 
-
 ### Migrate from v0 to v1
 
-The best way to migrate from the crowdsec-openresty-bouncer v0.* to v1 is to reinstall the bouncer. Indeed, many new configurations options are now available and some have been removed.
+The best way to migrate from the crowdsec-openresty-bouncer v0.\* to v1 is to reinstall the bouncer. Indeed, many new configurations options are now available and some have been removed.
 
 - Backup your CrowdSec Local API key from your configuration file (`/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`)
 - Remove the old component:
@@ -358,6 +362,7 @@ sudo apt-get remove --purge crowdsec-openresty-bouncer
 ```
 
 - Install the new component:
+
 ```bash
 sudo apt-get update
 sudo apt-get install crowdsec-openresty-bouncer
@@ -368,6 +373,7 @@ sudo apt-get install crowdsec-openresty-bouncer
 ## Configuration Reference
 
 ### `API_KEY`
+
 > string
 
 ```bash
@@ -379,6 +385,7 @@ CrowdSec Local API key.
 Generated with [`sudo cscli bouncers add`](/u/getting_started/installation/linux) command.
 
 ### `API_URL`
+
 > string
 
 ```bash
@@ -418,6 +425,7 @@ TLS_CLIENT_KEY=<path_to_key>
 Path to the client certificate's private key file for mTLS authentication. This option is only used when `USE_TLS_AUTH` is set to `true`.
 
 ### `BOUNCING_ON_TYPE`
+
 > all | ban | captcha
 
 ```bash
@@ -428,6 +436,7 @@ Type of remediation we want to bounce.
 If you choose `ban` only and receive a decision with `captcha` as remediation, the component will skip the decision.
 
 ### `FALLBACK_REMEDIATION`
+
 > ban | captcha
 
 ```bash
@@ -437,6 +446,7 @@ FALLBACK_REMEDIATION=ban
 The fallback remediation is applied if the component receives a decision with an unknown remediation.
 
 ### `MODE`
+
 > stream | live
 
 ```bash
@@ -446,14 +456,16 @@ MODE=stream
 The default mode is `live`.
 
 The component mode:
- - stream: The component will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
- - live: The component will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
+
+- stream: The component will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
+- live: The component will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
 
 :::note
 The timer that pull the local API will be triggered after the first request.
 :::
 
 ### `REQUEST_TIMEOUT`
+
 > int
 
 ```bash
@@ -463,6 +475,7 @@ REQUEST_TIMEOUT=1000
 Timeout in milliseconds for the HTTP requests done by the component to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
+
 > string (comma separated)
 
 ```bash
@@ -474,6 +487,7 @@ The locations to exclude while bouncing. It is a list of location, separated by 
 :warning: It is not recommended to put `EXCLUDE_LOCATION=/`.
 
 ### `CACHE_EXPIRATION`
+
 > int
 
 > This option is only for the `live` mode.
@@ -485,6 +499,7 @@ CACHE_EXPIRATION=1
 The cache expiration, in second, for IPs that the remediation store in cache in `live` mode.
 
 ### `UPDATE_FREQUENCY`
+
 > int
 
 > This option is only for the `stream` mode.
@@ -496,6 +511,7 @@ UPDATE_FREQUENCY=10
 The frequency of update, in second, to pull new/old IPs from the CrowdSec local API.
 
 ### `REDIRECT_LOCATION`
+
 > string
 
 > This option is only for the `ban` remediation.
@@ -509,6 +525,7 @@ The location to redirect the user when there is a ban.
 If it is not set, the component will return the page defined in the `BAN_TEMPLATE_PATH` with the `RET_CODE` (403 by default).
 
 ### `BAN_TEMPLATE_PATH`
+
 > string (path to file)
 
 > This option is only for the `ban` remediation.
@@ -522,6 +539,7 @@ The path to a HTML page to return to IPs that trigger `ban` remediation.
 By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/ban.html`.
 
 ### `RET_CODE`
+
 > int
 
 > This option is only for the `ban` remediation.
@@ -534,6 +552,7 @@ The HTTP code to return for IPs that trigger a `ban` remediation.
 If nothing specified, it will return a 403.
 
 ### `CAPTCHA_PROVIDER`
+
 > recaptcha | hcaptcha | turnstile
 
 > This option is only for the `captcha` remediation.
@@ -547,6 +566,7 @@ For backwards compatibility reasons `recaptcha` is the default if no value is se
 :::
 
 ### `SECRET_KEY`
+
 > string
 
 > This option is only for the `captcha` remediation.
@@ -558,6 +578,7 @@ SECRET_KEY=<captcha_secret_key>
 The captcha secret key.
 
 ### `SITE_KEY`
+
 > string
 
 > This option is only for the `captcha` remediation.
@@ -569,6 +590,7 @@ SITE_KEY=<captcha_site_key>
 The captcha site key.
 
 ### `CAPTCHA_TEMPLATE_PATH`
+
 > string (path to file)
 
 > This option is only for the `captcha` remediation.
@@ -584,6 +606,7 @@ The component will try to replace `{{captcha_site_key}}` in the template with `S
 By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/captcha.html`.
 
 ### `CAPTCHA_EXPIRATION`
+
 > int
 
 > This option is only for the `captcha` remediation.
@@ -595,6 +618,7 @@ CAPTCHA_EXPIRATION=3600
 The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IPs address will get a captcha again.
 
 ### `APPSEC_URL`
+
 > string
 
 > URL of the Application Security Component
@@ -604,6 +628,7 @@ APPSEC_URL=http://127.0.0.1:7422
 ```
 
 ### `APPSEC_FAILURE_ACTION`
+
 > passthrough | deny
 
 ```bash
@@ -613,6 +638,7 @@ APPSEC_FAILURE_ACTION=passthrough  # default
 Behavior when the AppSec Component return a 500. Can let the request passthrough or deny it.
 
 ### `ALWAYS_SEND_TO_APPSEC`
+
 > boolean
 
 ```bash
@@ -622,6 +648,7 @@ ALWAYS_SEND_TO_APPSEC=false  # default
 Send the request to the AppSec Component even if there is a decision for the IP.
 
 ### `SSL_VERIFY`
+
 > boolean
 
 ```bash
@@ -631,6 +658,7 @@ SSL_VERIFY=false  # default
 Verify the AppSec Component SSL certificate validity.
 
 ### `APPSEC_CONNECT_TIMEOUT`
+
 > int (milliseconds)
 
 ```bash
@@ -639,8 +667,8 @@ APPSEC_CONNECT_TIMEOUT=100  # default
 
 The timeout of the connection between the Remediation Component and AppSec Component.
 
-
 ### `APPSEC_SEND_TIMEOUT`
+
 > int (milliseconds)
 
 ```bash
@@ -650,6 +678,7 @@ APPSEC_SEND_TIMEOUT=100  # default
 The timeout to send data from the Remediation Component to the AppSec Component.
 
 ### `APPSEC_PROCESS_TIMEOUT`
+
 > int (milliseconds)
 
 ```bash
@@ -658,8 +687,23 @@ APPSEC_PROCESS_TIMEOUT=500  # default
 
 The timeout to process the request from the Remediation Component to the AppSec Component.
 
+### `APPSEC_DROP_UNREADABLE_BODY`
+
+> bool
+
+```bash
+APPSEC_DROP_UNREADABLE_BODY=false #default
+```
+
+If the bouncer cannot read the request body (eg, HTTP2 without Content-Length header), drop or not the request without forwarding it to the WAF.
+
+If set to `false` (the default), the request will be evaluated by the WAF without the body content.
+If set to `true`, the request will be blocked directly by nginx.
+
 ### Nginx variables
+
 Nginx variables can be used to adapt behaviour and or more flexible configurations:
-* ngx.var.cs_disable_bouncer: set to 1, it will disable the bouncer
-* ngx.var.enable_appsec: set to 1, it will enable the appsec even if it's disabled by configuration or if bouncer is disabled
-* ngx.var.disable_appsec: set to 1, it will disable the appsec
+
+- ngx.var.cs_disable_bouncer: set to 1, it will disable the bouncer
+- ngx.var.enable_appsec: set to 1, it will enable the appsec even if it's disabled by configuration or if bouncer is disabled
+- ngx.var.disable_appsec: set to 1, it will disable the appsec
