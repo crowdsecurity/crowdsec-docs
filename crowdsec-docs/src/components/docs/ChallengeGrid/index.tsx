@@ -1,16 +1,16 @@
-import { CIcon } from "@coreui/icons-react";
 import {
-	cilSearch,
 	cilBarChart,
-	cilLayers,
-	cilShieldAlt,
-	cilCompass,
-	cilSpeedometer,
-	cilGlobeAlt,
-	cilLockLocked,
 	cilBell,
+	cilCompass,
+	cilGlobeAlt,
+	cilLayers,
+	cilLockLocked,
 	cilRss,
+	cilSearch,
+	cilShieldAlt,
+	cilSpeedometer,
 } from "@coreui/icons";
+import { CIcon } from "@coreui/icons-react";
 import React from "react";
 
 const CUI: Record<string, object> = {
@@ -49,9 +49,11 @@ export default function ChallengeGrid({ challenges }: Props) {
 			}}
 		>
 			{challenges.map((c, i) => {
-				const iconEl = c.icon ?? (c.iconName && CUI[c.iconName] ? (
-					<CIcon icon={CUI[c.iconName] as Parameters<typeof CIcon>[0]["icon"]} aria-hidden="true" />
-				) : null);
+				const iconEl =
+					c.icon ??
+					(c.iconName && CUI[c.iconName] ? (
+						<CIcon icon={CUI[c.iconName] as Parameters<typeof CIcon>[0]["icon"]} aria-hidden="true" />
+					) : null);
 				return (
 					<div
 						// biome-ignore lint/suspicious/noArrayIndexKey: challenges have no stable id

@@ -1,6 +1,5 @@
+import { cilBolt, cilCompass } from "@coreui/icons";
 import { CIcon } from "@coreui/icons-react";
-import { cilCompass, cilBolt } from "@coreui/icons";
-import React from "react";
 
 type Cta = { label: string; href: string };
 

@@ -1,6 +1,5 @@
+import { cilArrowRight, cilBell, cilGlobeAlt, cilRss, cilShieldAlt, cilSpeedometer } from "@coreui/icons";
 import { CIcon } from "@coreui/icons-react";
-import { cilRss, cilBell, cilSpeedometer, cilGlobeAlt, cilShieldAlt, cilArrowRight } from "@coreui/icons";
-import React from "react";
 import styles from "./index.module.css";
 
 export type PromoVariant = "console" | "cti" | "engine";
@@ -115,8 +114,7 @@ export default function PromoCard({ variant = "console" }: Props) {
 					))}
 				</div>
 				<a href={data.ctaHref} className={styles.cta} style={{ background: data.color, color: "var(--cs-btn-text)" }}>
-					{data.ctaLabel}{" "}
-					<CIcon icon={cilArrowRight} style={{ width: 13, height: 13 }} aria-hidden="true" />
+					{data.ctaLabel} <CIcon icon={cilArrowRight} style={{ width: 13, height: 13 }} aria-hidden="true" />
 				</a>
 			</div>
 		</div>
