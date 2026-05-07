@@ -1,3 +1,5 @@
+import { cilBarChart, cilCompass, cilGlobeAlt, cilRss, cilShieldAlt, cilSpeedometer } from "@coreui/icons";
+import { CIcon } from "@coreui/icons-react";
 import Layout from "@theme/Layout";
 import SearchBar from "@theme/SearchBar";
 import { useEffect } from "react";
@@ -5,7 +7,7 @@ import GuidedSetupCard from "../components/docs/GuidedSetupCard";
 import PathCard from "../components/docs/PathCard";
 import PathCards from "../components/docs/PathCards";
 import PathwayRow from "../components/docs/PathwayRow";
-import PopularChips from "../components/docs/PopularChips";
+import QuickStrip from "../components/docs/QuickStrip";
 import RunningStrip from "../components/docs/RunningStrip";
 
 /* ── Colour vars — reference CSS tokens (work in dark + light) */
@@ -14,115 +16,7 @@ const CS_TEAL = "var(--cs-teal)";
 const CS_VIOLET = "var(--cs-violet)";
 const CS_BLUE = "var(--cs-blue)";
 
-/* ── Small inline icons for the RunningStrip */
-function IconCompass() {
-	return (
-		<svg
-			width="20"
-			height="20"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<circle cx="12" cy="12" r="9" />
-			<path d="M15 9l-2 5-5 2 2-5 5-2z" />
-		</svg>
-	);
-}
-function IconShield() {
-	return (
-		<svg
-			width="20"
-			height="20"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M12 3l8 3v6c0 4.5-3.4 8.4-8 9-4.6-.6-8-4.5-8-9V6l8-3z" />
-		</svg>
-	);
-}
-function IconGauge() {
-	return (
-		<svg
-			width="20"
-			height="20"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M3 14a9 9 0 0 1 18 0" />
-			<path d="M12 14l4-4" />
-			<circle cx="12" cy="14" r="1.5" />
-		</svg>
-	);
-}
-function IconPulse() {
-	return (
-		<svg
-			width="20"
-			height="20"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M3 12h4l2-6 4 12 2-6h6" />
-		</svg>
-	);
-}
-function IconFeed() {
-	return (
-		<svg
-			width="20"
-			height="20"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<circle cx="6" cy="18" r="2" />
-			<path d="M4 4a16 16 0 0 1 16 16" />
-			<path d="M4 11a9 9 0 0 1 9 9" />
-		</svg>
-	);
-}
-function IconGlobe() {
-	return (
-		<svg
-			width="20"
-			height="20"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<circle cx="12" cy="12" r="9" />
-			<path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
-		</svg>
-	);
-}
+const ICON_SM = { width: 16, height: 16 };
 
 const securityEngineSteps = [
 	{
@@ -168,19 +62,45 @@ const ctiSteps = [
 ];
 
 const alreadyRunningLinks = [
-	{ icon: <IconCompass />, label: "Open the Console", href: "https://app.crowdsec.net", color: CS_ORANGE, ext: true },
-	{ icon: <IconShield />, label: "Activate the WAF", href: "/docs/next/appsec/intro", color: CS_TEAL },
-	{ icon: <IconGauge />, label: "Measure what is being blocked", href: "/u/console/remediation_metrics", color: CS_VIOLET },
-	{ icon: <IconPulse />, label: "Check my Stack Health", href: "/u/console/stackhealth", color: CS_BLUE },
+	{
+		icon: <CIcon icon={cilCompass} style={ICON_SM} aria-hidden="true" />,
+		label: "Open the Console",
+		href: "https://app.crowdsec.net",
+		color: CS_ORANGE,
+		ext: true,
+	},
+	{
+		icon: <CIcon icon={cilShieldAlt} style={ICON_SM} aria-hidden="true" />,
+		label: "Activate the WAF",
+		href: "/docs/next/appsec/intro",
+		color: CS_TEAL,
+	},
+	{
+		icon: <CIcon icon={cilSpeedometer} style={ICON_SM} aria-hidden="true" />,
+		label: "Measure what is being blocked",
+		href: "/u/console/remediation_metrics",
+		color: CS_VIOLET,
+	},
+	{
+		icon: <CIcon icon={cilBarChart} style={ICON_SM} aria-hidden="true" />,
+		label: "Check my Stack Health",
+		href: "/u/console/stackhealth",
+		color: CS_BLUE,
+	},
 ];
 
-const popularChips = [
-	{ label: "🖥️ Console", href: "/u/console/intro" },
-	{ label: "🛡️ AppSec / WAF", href: "/docs/next/appsec/intro" },
-	{ label: "💻 CLI Reference", href: "/docs/next/cscli/" },
-	{ label: "🔑 CTI API Keys", href: "/u/console/ip_reputation/api_keys" },
-	{ label: "❓ Troubleshooting", href: "/u/troubleshooting/intro" },
-	{ label: "🌐 CrowdSec.net", href: "https://www.crowdsec.net" },
+const popularLinks = [
+	{ icon: <CIcon icon={cilCompass} style={ICON_SM} aria-hidden="true" />, label: "Console", href: "/u/console/intro", color: CS_ORANGE },
+	{
+		icon: <CIcon icon={cilShieldAlt} style={ICON_SM} aria-hidden="true" />,
+		label: "AppSec / WAF",
+		href: "/docs/next/appsec/intro",
+		color: CS_TEAL,
+	},
+	{ label: "CLI Reference", href: "/docs/next/cscli/" },
+	{ label: "CTI API Keys", href: "/u/console/ip_reputation/api_keys" },
+	{ label: "Troubleshooting", href: "/u/troubleshooting/intro" },
+	{ label: "CrowdSec.net", href: "https://www.crowdsec.net", external: true },
 ];
 
 export default function HomePage() {
@@ -327,21 +247,7 @@ export default function HomePage() {
 						<PathCard
 							eyebrow="01 · DETECT"
 							color={CS_ORANGE}
-							icon={
-								<svg
-									width="20"
-									height="20"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth={1.6}
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									aria-hidden="true"
-								>
-									<path d="M12 3l8 3v6c0 4.5-3.4 8.4-8 9-4.6-.6-8-4.5-8-9V6l8-3z" />
-								</svg>
-							}
+							icon={<CIcon icon={cilShieldAlt} style={{ width: 20, height: 20 }} aria-hidden="true" />}
 							title="Detect & block attacks on my servers"
 							desc="Identify and ban bad-behaving IPs from your logs and requests using CrowdSec Detection Scenarios and Virtual-Patching collections."
 							tag="Security Engine"
@@ -352,7 +258,7 @@ export default function HomePage() {
 						<PathCard
 							eyebrow="02 · PROTECT"
 							color={CS_TEAL}
-							icon={<IconFeed />}
+							icon={<CIcon icon={cilRss} style={{ width: 20, height: 20 }} aria-hidden="true" />}
 							title="Push blocklists into my firewall, CDN or WAF"
 							desc="Manage network-perimeter devices and want a URL to subscribe to — no agent to install, just curated feeds your equipment can pull."
 							tag="Blocklist Endpoint"
@@ -363,7 +269,7 @@ export default function HomePage() {
 						<PathCard
 							eyebrow="03 · INVESTIGATE"
 							color={CS_VIOLET}
-							icon={<IconGlobe />}
+							icon={<CIcon icon={cilGlobeAlt} style={{ width: 20, height: 20 }} aria-hidden="true" />}
 							title="Investigate IP behaviors & enrich alerts"
 							desc="Security analyst or developer who wants IP context, behaviors, CVEs, aggressivity… in a browser or via REST API."
 							tag="IP Reputation & CTI"
@@ -436,12 +342,12 @@ export default function HomePage() {
 					<GuidedSetupCard
 						title="Not sure where to start?"
 						desc="Answer a few questions and get a recommended path with install steps for your stack."
-						primaryCta={{ label: "🧭 Use Case Questionnaire", href: "https://start.crowdsec.net/" }}
-						secondaryCta={{ label: "⚡ Try in Sandbox", href: "https://killercoda.com/iiamloz/scenario/crowdsec-setup" }}
+						primaryCta={{ label: "Use Case Questionnaire", href: "https://start.crowdsec.net/" }}
+						secondaryCta={{ label: "Try in Sandbox", href: "https://killercoda.com/iiamloz/scenario/crowdsec-setup" }}
 					/>
 
 					{/* ── Popular docs ── */}
-					<PopularChips chips={popularChips} />
+					<QuickStrip label="Popular docs" links={popularLinks} />
 				</div>
 			</main>
 		</Layout>

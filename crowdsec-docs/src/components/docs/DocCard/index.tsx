@@ -1,222 +1,61 @@
+import { CIcon } from "@coreui/icons-react";
+import {
+	cilSearch,
+	cilLockLocked,
+	cilTerminal,
+	cilGlobeAlt,
+	cilShieldAlt,
+	cilRss,
+	cilCompass,
+	cilBook,
+	cilPuzzle,
+	cilWarning,
+	cilSpeedometer,
+	cilBell,
+	cilCheckCircle,
+	cilBarChart,
+	cilPeople,
+	cilCode,
+	cilLayers,
+	cilStar,
+	cilInfo,
+	cilNotes,
+	cilBriefcase,
+	cilArrowRight,
+} from "@coreui/icons";
 import React from "react";
 
-/* Shared icon set — same as ChallengeGrid. Pass iconName="search" */
-const ICONS: Record<string, React.ReactNode> = {
-	search: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<circle cx="11" cy="11" r="7" />
-			<path d="M20 20l-3.5-3.5" />
-		</svg>
-	),
-	key: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<circle cx="8" cy="14" r="4" />
-			<path d="M11 11l8-8M16 6l3 3M14 8l3 3" />
-		</svg>
-	),
-	terminal: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<rect x="3" y="4" width="18" height="16" rx="2" />
-			<path d="M7 10l3 2-3 2M13 14h4" />
-		</svg>
-	),
-	globe: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<circle cx="12" cy="12" r="9" />
-			<path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
-		</svg>
-	),
-	shield: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M12 3l8 3v6c0 4.5-3.4 8.4-8 9-4.6-.6-8-4.5-8-9V6l8-3z" />
-		</svg>
-	),
-	feed: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<circle cx="6" cy="18" r="2" />
-			<path d="M4 4a16 16 0 0 1 16 16" />
-			<path d="M4 11a9 9 0 0 1 9 9" />
-		</svg>
-	),
-	compass: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<circle cx="12" cy="12" r="9" />
-			<path d="M15 9l-2 5-5 2 2-5 5-2z" />
-		</svg>
-	),
-	book: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M4 5a3 3 0 0 1 3-3h11v18H7a3 3 0 0 0-3 3V5z" />
-			<path d="M4 5v18" />
-		</svg>
-	),
-	plug: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-12 0V8z" />
-			<path d="M12 18v4" />
-		</svg>
-	),
-	alert: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-			<line x1="12" y1="9" x2="12" y2="13" />
-			<line x1="12" y1="17" x2="12.01" y2="17" />
-		</svg>
-	),
-	gauge: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M3 14a9 9 0 0 1 18 0" />
-			<path d="M12 14l4-4" />
-			<circle cx="12" cy="14" r="1.5" />
-		</svg>
-	),
-	lock: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<rect x="4" y="11" width="16" height="10" rx="2" />
-			<path d="M8 11V7a4 4 0 0 1 8 0v4" />
-		</svg>
-	),
-	box: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M3 7l9-4 9 4-9 4-9-4z" />
-			<path d="M3 7v10l9 4 9-4V7" />
-			<path d="M12 11v10" />
-		</svg>
-	),
-	pulse: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M3 12h4l2-6 4 12 2-6h6" />
-		</svg>
-	),
-	users: (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-			<circle cx="9" cy="7" r="4" />
-			<path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-			<path d="M16 3.13a4 4 0 0 1 0 7.75" />
-		</svg>
-	),
+/* Shared icon set — use CoreUI icons throughout */
+const CUI: Record<string, object> = {
+	search: cilSearch,
+	key: cilLockLocked,
+	terminal: cilTerminal,
+	globe: cilGlobeAlt,
+	shield: cilShieldAlt,
+	feed: cilRss,
+	compass: cilCompass,
+	book: cilBook,
+	plug: cilPuzzle,
+	alert: cilWarning,
+	gauge: cilSpeedometer,
+	lock: cilLockLocked,
+	box: cilLayers,
+	pulse: cilBarChart,
+	users: cilPeople,
+	bell: cilBell,
+	check: cilCheckCircle,
+	code: cilCode,
+	star: cilStar,
+	info: cilInfo,
+	notes: cilNotes,
+	briefcase: cilBriefcase,
 };
+
+function renderIcon(name: string) {
+	const icon = CUI[name];
+	if (!icon) return null;
+	return <CIcon icon={icon as Parameters<typeof CIcon>[0]["icon"]} aria-hidden="true" />;
+}
 
 export type DocCardLink = {
 	label: string;
@@ -225,27 +64,16 @@ export type DocCardLink = {
 };
 
 export type DocCardProps = {
-	/* Content */
 	title: string;
 	desc?: string;
 	badge?: string;
-
-	/* Icon — pass either iconName (string key) or a ReactNode */
 	iconName?: string;
 	icon?: React.ReactNode;
-
-	/* Color — must be a CSS var or valid CSS color. Defaults to --cs-orange */
 	color?: string;
-
-	/* CTA */
 	href?: string;
 	ctaLabel?: string;
 	links?: DocCardLink[];
-
-	/* Optional shell command */
 	command?: string;
-
-	/* Misc */
 	premium?: boolean;
 	children?: React.ReactNode;
 };
@@ -254,41 +82,16 @@ const mix = (c: string, pct: number) => `color-mix(in srgb, ${c} ${pct}%, transp
 
 function ExternalArrow() {
 	return (
-		<svg
-			width="11"
-			height="11"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
+		<CIcon
+			icon={cilArrowRight}
+			style={{ width: 11, height: 11, opacity: 0.5, flexShrink: 0, transform: "rotate(-45deg)" }}
 			aria-hidden="true"
-			style={{ opacity: 0.5, flexShrink: 0 }}
-		>
-			<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-			<polyline points="15 3 21 3 21 9" />
-			<line x1="10" y1="14" x2="21" y2="3" />
-		</svg>
+		/>
 	);
 }
 
 function ArrowRight() {
-	return (
-		<svg
-			width="12"
-			height="12"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M5 12h14M13 6l6 6-6 6" />
-		</svg>
-	);
+	return <CIcon icon={cilArrowRight} style={{ width: 12, height: 12 }} aria-hidden="true" />;
 }
 
 export default function DocCard({
@@ -305,7 +108,7 @@ export default function DocCard({
 	premium,
 	children,
 }: DocCardProps) {
-	const resolvedIcon = icon ?? (iconName ? ICONS[iconName] : null);
+	const resolvedIcon = icon ?? (iconName ? renderIcon(iconName) : null);
 
 	const card = (
 		<div
@@ -313,7 +116,7 @@ export default function DocCard({
 				padding: 20,
 				borderRadius: 12,
 				background: "var(--cs-surface)",
-				border: `1px solid var(--cs-border)`,
+				border: "1px solid var(--cs-border)",
 				display: "flex",
 				flexDirection: "column",
 				gap: 12,
@@ -411,14 +214,22 @@ export default function DocCard({
 						border: "1px solid var(--cs-border)",
 						fontFamily: "var(--cs-font-mono)",
 						fontSize: 12,
-						color: color,
+						color,
 						display: "flex",
 						alignItems: "center",
 						gap: 10,
 					}}
 				>
 					<span style={{ color: "var(--cs-ink-mute)", userSelect: "none" }}>$</span>
-					<span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: "var(--cs-ink)" }}>
+					<span
+						style={{
+							flex: 1,
+							overflow: "hidden",
+							textOverflow: "ellipsis",
+							whiteSpace: "nowrap",
+							color: "var(--cs-ink)",
+						}}
+					>
 						{command}
 					</span>
 				</div>

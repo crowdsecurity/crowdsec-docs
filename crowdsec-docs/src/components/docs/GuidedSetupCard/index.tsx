@@ -1,5 +1,6 @@
+import { CIcon } from "@coreui/icons-react";
+import { cilCompass, cilBolt } from "@coreui/icons";
 import React from "react";
-import styles from "./index.module.css";
 
 type Cta = { label: string; href: string };
 
@@ -8,41 +9,114 @@ type Props = {
 	desc: string;
 	primaryCta: Cta;
 	secondaryCta?: Cta;
-	icon?: React.ReactNode;
 };
 
-function DefaultIcon() {
+export default function GuidedSetupCard({ title, desc, primaryCta, secondaryCta }: Props) {
 	return (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={1.6}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
+		<div
+			style={{
+				position: "relative",
+				padding: "24px 28px",
+				borderRadius: 14,
+				background: "var(--cs-surface)",
+				border: "1px solid var(--cs-border)",
+				overflow: "hidden",
+				display: "flex",
+				alignItems: "center",
+				gap: 24,
+				margin: "28px 0",
+				flexWrap: "wrap",
+			}}
 		>
-			<circle cx="12" cy="12" r="10" />
-			<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-			<line x1="12" y1="17" x2="12.01" y2="17" />
-		</svg>
-	);
-}
+			{/* Corner glow */}
+			<div
+				style={{
+					position: "absolute",
+					top: -60,
+					left: -60,
+					width: 220,
+					height: 220,
+					borderRadius: "50%",
+					background: "var(--cs-violet)",
+					filter: "blur(80px)",
+					opacity: 0.1,
+					pointerEvents: "none",
+				}}
+				aria-hidden="true"
+			/>
 
-export default function GuidedSetupCard({ title, desc, primaryCta, secondaryCta, icon }: Props) {
-	return (
-		<div className={styles.card}>
-			<div className={styles.top}>
-				<div className={styles.iconWrap}>{icon ?? <DefaultIcon />}</div>
-				<div className={styles.title}>{title}</div>
+			{/* Icon */}
+			<div
+				style={{
+					width: 56,
+					height: 56,
+					borderRadius: 14,
+					background: "color-mix(in srgb, var(--cs-violet) 14%, transparent)",
+					border: "1px solid color-mix(in srgb, var(--cs-violet) 30%, transparent)",
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					flexShrink: 0,
+					color: "var(--cs-violet)",
+				}}
+			>
+				<CIcon icon={cilCompass} style={{ width: 26, height: 26 }} />
 			</div>
-			<p className={styles.desc}>{desc}</p>
-			<div className={styles.actions}>
-				<a href={primaryCta.href} className={styles.primaryCta}>
-					{primaryCta.label} →
+
+			{/* Text */}
+			<div style={{ flex: 1, minWidth: 200 }}>
+				<div
+					style={{
+						fontSize: 17,
+						fontWeight: 600,
+						color: "var(--cs-ink)",
+						marginBottom: 4,
+					}}
+				>
+					{title}
+				</div>
+				<div style={{ fontSize: 13.5, color: "var(--cs-ink-dim)" }}>{desc}</div>
+			</div>
+
+			{/* Actions */}
+			<div style={{ display: "flex", gap: 10, flexWrap: "wrap", flexShrink: 0 }}>
+				<a
+					href={primaryCta.href}
+					style={{
+						padding: "10px 16px",
+						borderRadius: 9,
+						background: "var(--cs-violet)",
+						color: "var(--cs-btn-text)",
+						fontWeight: 600,
+						fontSize: 13.5,
+						textDecoration: "none",
+						display: "inline-flex",
+						alignItems: "center",
+						gap: 8,
+						boxShadow: "0 8px 24px color-mix(in srgb, var(--cs-violet) 30%, transparent)",
+					}}
+				>
+					<CIcon icon={cilCompass} style={{ width: 14, height: 14 }} />
+					{primaryCta.label}
 				</a>
 				{secondaryCta && (
-					<a href={secondaryCta.href} className={styles.secondaryCta}>
+					<a
+						href={secondaryCta.href}
+						style={{
+							padding: "10px 16px",
+							borderRadius: 9,
+							background: "var(--cs-surface-2)",
+							color: "var(--cs-ink)",
+							fontWeight: 600,
+							fontSize: 13.5,
+							border: "1px solid var(--cs-border-hi)",
+							textDecoration: "none",
+							display: "inline-flex",
+							alignItems: "center",
+							gap: 8,
+						}}
+					>
+						<CIcon icon={cilBolt} style={{ width: 14, height: 14 }} />
 						{secondaryCta.label}
 					</a>
 				)}

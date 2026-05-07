@@ -104,14 +104,14 @@ export default function QuickStrip({ label, title, subtitle, links }: QuickStrip
 						}}
 						onMouseEnter={(e) => {
 							const el = e.currentTarget as HTMLAnchorElement;
-							el.style.borderColor = l.color || "var(--cs-orange)";
-							el.style.color = l.color || "var(--cs-orange)";
+							el.style.borderColor = l.color ?? "var(--cs-border-hi)";
+							if (l.color) el.style.color = l.color;
 							el.style.background = "var(--cs-surface-2)";
 						}}
 						onMouseLeave={(e) => {
 							const el = e.currentTarget as HTMLAnchorElement;
 							el.style.borderColor = "";
-							el.style.color = "";
+							el.style.color = "var(--cs-ink)";
 							el.style.background = "";
 						}}
 					>

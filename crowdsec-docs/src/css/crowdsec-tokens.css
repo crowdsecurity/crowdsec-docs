@@ -158,10 +158,18 @@
 
 /* ── Sidebar ──────────────────────────────────────────────────────────────── */
 
-/* Container background */
+/* Container background — no border, no dividers, spacing does the job */
+.theme-doc-sidebar-container,
 .theme-doc-sidebar-container aside {
 	background: var(--cs-bg-soft) !important;
-	border-right: none !important;
+	border-right: 1px solid var(--cs-border) !important;
+	box-shadow: none !important;
+}
+
+/* Remove any horizontal dividers Infima might render between groups */
+.menu__list-item-divider,
+.menu__divider {
+	display: none !important;
 }
 
 /* All menu links: base style */

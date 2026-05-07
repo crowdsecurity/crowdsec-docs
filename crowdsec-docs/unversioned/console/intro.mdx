@@ -6,8 +6,9 @@ rightRailPromo: console
 ---
 
 import AccessCard from '@site/src/components/docs/AccessCard';
-import ChallengeGrid from '@site/src/components/docs/ChallengeGrid';
 import ConsoleMockup from '@site/src/components/docs/ConsoleMockup';
+import DocCard from '@site/src/components/docs/DocCard';
+import DocCardGrid from '@site/src/components/docs/DocCardGrid';
 
 CrowdSec is an open-source and collaborative cybersecurity solution that protects websites, servers, and IT infrastructures from attacks. It leverages the power of the community to create a continuously updated security model that adapts to emerging threats. By analyzing users' logs in real-time, CrowdSec identifies and blocks malicious behavior across the entire network. The participatory approach ensures that the intelligence gathered is shared across the community when one user is attacked, enabling all users to block potential threats without external intervention.
 
@@ -21,14 +22,14 @@ The CrowdSec Console is a central component of the CrowdSec ecosystem, offering 
 
 The CrowdSec Console addresses several key cybersecurity challenges:
 
-<ChallengeGrid challenges={[
-  { iconName: "search",  color: "var(--cs-orange)", title: "Complexity of Threat Detection",   body: "By providing a unified interface for monitoring and analysis, it simplifies the process of identifying and understanding security threats." },
-  { iconName: "pulse",   color: "var(--cs-teal)",   title: "Response Time",                    body: "Enhances the ability to quickly respond to and mitigate detected threats, reducing potential damage." },
-  { iconName: "box",     color: "var(--cs-violet)", title: "Scalability and Management",        body: "Offers a scalable solution that can manage security data across multiple installations, ideal for small and large businesses." },
-  { iconName: "shield",  color: "var(--cs-blue)",   title: "Proactive Threat Blocking",         body: "Enables users to leverage dynamically updated blocklists, crucial for preemptively blocking known malicious IP addresses before they can attack." },
-  { iconName: "compass", color: "var(--cs-pink)",   title: "Informed Decision-Making",          body: "Access to detailed CTI data enables administrators to make informed decisions about their security posture, improving response strategies." },
-  { iconName: "gauge",   color: "var(--cs-teal)",   title: "Visibility & Metrics",              body: "Track remediation metrics, alert trends, and community contributions to continuously improve your security posture." }
-]} />
+<DocCardGrid cols={2}>
+  <DocCard iconName="search"  color="var(--cs-orange)" title="Complexity of Threat Detection"  desc="By providing a unified interface for monitoring and analysis, it simplifies the process of identifying and understanding security threats." />
+  <DocCard iconName="pulse"   color="var(--cs-teal)"   title="Response Time"                   desc="Enhances the ability to quickly respond to and mitigate detected threats, reducing potential damage." />
+  <DocCard iconName="box"     color="var(--cs-violet)" title="Scalability and Management"       desc="Offers a scalable solution that can manage security data across multiple installations, ideal for small and large businesses." />
+  <DocCard iconName="shield"  color="var(--cs-blue)"   title="Proactive Threat Blocking"        desc="Enables users to leverage dynamically updated blocklists, crucial for preemptively blocking known malicious IP addresses before they can attack." />
+  <DocCard iconName="compass" color="var(--cs-pink)"   title="Informed Decision-Making"         desc="Access to detailed CTI data enables administrators to make informed decisions about their security posture, improving response strategies." />
+  <DocCard iconName="gauge"   color="var(--cs-teal)"   title="Visibility & Metrics"             desc="Track remediation metrics, alert trends, and community contributions to continuously improve your security posture." />
+</DocCardGrid>
 
 ## Accessing the Console
 
