@@ -24,7 +24,6 @@
 .theme-doc-markdown > p,
 .theme-doc-markdown > ul > li,
 .theme-doc-markdown > ol > li {
-	max-width: 720px;
 	line-height: 1.65;
 }
 

@@ -50,11 +50,7 @@
 }
 
 nav.theme-doc-breadcrumbs {
-	font-family: var(--cs-font-mono);
-	font-size: 12px;
-	letter-spacing: 0.04em;
-	color: var(--cs-ink-mute);
-	margin-bottom: 20px;
+	display: none;
 }
 
 .breadcrumbs__item {
