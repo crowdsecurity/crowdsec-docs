@@ -91,6 +91,13 @@ lapi:
           key: BOUNCER_KEY_nginx_ingress_waf
 ```
 
+:::note
+Although this is the same bouncer key value, you need two `Secret` objects here:
+one in `crowdsec` and one in `ingress-nginx`. Kubernetes secrets are
+namespace-scoped, so the ingress controller cannot read a secret from the
+`crowdsec` namespace.
+:::
+
 Create the secret holding the same key in the `ingress-nginx` namespace:
 
 ```yaml title="crowdsec-ingress-bouncer-secret.yaml"
@@ -101,7 +108,7 @@ metadata:
   namespace: ingress-nginx
 type: Opaque
 stringData:
-  api-key: "<same-value-as-BOUNCER_KEY_nginx_ingress_waf>"
+  api-key: "<choose-a-long-random-key>"
 ```
 
 Apply it:

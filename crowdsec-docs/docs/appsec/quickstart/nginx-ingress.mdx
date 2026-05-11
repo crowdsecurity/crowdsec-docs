@@ -105,6 +105,13 @@ lapi:
           key: BOUNCER_KEY_nginx_ingress_waf
 ```
 
+:::note
+Although this is the same bouncer key value, you need two `Secret` objects here:
+one in `crowdsec` and one in `ingress-nginx`. Kubernetes secrets are
+namespace-scoped, so the ingress controller cannot read a secret from the
+`crowdsec` namespace.
+:::
+
 This YAML configuration snippet exposes the important configuration items:
      * `listen_addr: 0.0.0.0:7422` exposes the AppSec API inside the cluster.
      * `appsec_configs` loads the [AppSec configuration(s)](/appsec/configuration.md) that define which rules are evaluated (in-band vs out-of-band).
@@ -156,8 +163,8 @@ controller:
   image:
     registry: docker.io
     image: crowdsecurity/controller
-    tag: v1.13.2
-    digest: sha256:4575be24781cad35f8e58437db6a3f492df2a3167fed2b6759a6ff0dc3488d56
+    tag: v1.14.3
+    digest: sha256:9ab8791635f4cde9964ab2562fb8b15faf72fe0205f0fe288089a87e1455675d
   extraVolumes:
     - name: crowdsec-bouncer-plugin
       emptyDir: {}
@@ -236,8 +243,8 @@ controller:
   image:
     registry: docker.io
     image: crowdsecurity/controller
-    tag: v1.13.2
-    digest: sha256:...
+    tag: v1.14.3
+    digest: sha256:9ab8791635f4cde9964ab2562fb8b15faf72fe0205f0fe288089a87e1455675d
 ```
 
 The controller image is replaced with a CrowdSec-enabled build that includes the

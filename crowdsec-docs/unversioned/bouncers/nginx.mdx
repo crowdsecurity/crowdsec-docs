@@ -23,30 +23,14 @@ import RemediationSupportBadges from "@site/src/components/remediation-support-b
   <img src="https://img.shields.io/badge/tests-pass-green" />
 </p>
 <p align="center">
-  &#x1F4DA; <a href="#install-the-nginx-bouncer">Documentation</a>
+  &#x1F4DA; <a href="#installation/">Documentation</a>
   &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
   &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
 <RemediationSupportBadges Mode Appsec Metrics MTLS />
 
-# CrowdSec Remediation QuickStart for NGINX
-
-## Objectives
-
-This quickstart shows how to deploy the CrowdSec NGINX bouncer on a Linux host
-and protect traffic served through [NGINX](https://nginx.com/) using the Lua
-remediation component.
-
-At the end, you will have:
-
-- A working NGINX bouncer querying CrowdSec LAPI
-- The bouncer loaded in NGINX request processing
-- A dedicated bouncer API key registered in CrowdSec
-- A safer secret-management pattern that keeps the API key in
-  `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf.local`
-
-This bouncer is a Lua remediation component for NGINX.
+A lua Remediation Component for nginx.
 
 :::tip Enable the WAF for optimal protection
 After installing the bouncer, enable the [AppSec (WAF) Component](/docs/next/appsec/intro) to get virtual patching and defense against known CVEs, SQL injection, XSS, and other application-layer attacks.
@@ -54,22 +38,7 @@ After installing the bouncer, enable the [AppSec (WAF) Component](/docs/next/app
 Follow the dedicated [AppSec Quickstart for Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty) — it picks up right where this page ends.
 :::
 
-## Prerequisites
-
-1. It is assumed that you already have:
-   - A working CrowdSec [Security Engine](/intro) installation. For a
-     Linux install quickstart, refer to
-     [/u/getting_started/installation/linux](/u/getting_started/installation/linux).
-   - A working NGINX installation serving traffic on this host.
-   - NGINX access logs acquired by CrowdSec, so remediation decisions are
-     created from the real traffic hitting NGINX.
-
-:::warning
-This bouncer depends on the NGINX Lua module and has only been tested on
-Debian/Ubuntu based distributions.
-:::
-
-## How does it work?
+## How does it work ?
 
 This component leverages nginx lua's API, namely `access_by_lua_block` to check the IP address against the local API.
 
@@ -85,28 +54,7 @@ Supported features:
 
 At the back, this component uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
-## Source IPs
-
-For remediation to work correctly, CrowdSec must detect and decide on the same
-client IP that NGINX evaluates at request time.
-
-If NGINX is behind a load balancer, CDN, or another reverse proxy, configure
-the real IP module so `remote_addr` is rewritten to the original client IP
-before the CrowdSec Lua hook runs:
-
-```nginx title="/etc/nginx/conf.d/realip.conf"
-set_real_ip_from 10.0.0.0/8;
-set_real_ip_from 192.168.0.0/16;
-real_ip_header X-Forwarded-For;
-real_ip_recursive on;
-```
-
-Replace the trusted ranges and header with the values used by your upstream.
-
-If NGINX only sees the proxy IP, CrowdSec will create decisions for the wrong
-source and bouncing will not work as expected.
-
-## Install the NGINX bouncer
+## Installation
 
 ### Dependencies
 
@@ -117,13 +65,13 @@ sudo apt install nginx lua5.1 libnginx-mod-http-lua luarocks gettext-base lua-cj
 ```
 
 ::::warning
-If you have Ubuntu 22.xx, you may have an issue with `lua` module in nginx.  
+If you have Unbuntu 22.xx, you may have an issue with `lua` module in nginx.  
 Look at [FAQ for more information](#ubuntu-22xx-getting-lua-error).
 ::::
 
 ### Using packages
 
-First, [setup CrowdSec repositories](/u/getting_started/installation/linux#repository-installation).
+First, [setup crowdsec repositories](/u/getting_started/installation/linux#repository-installation).
 
 <Tabs
   defaultValue="nginx_debian"
@@ -161,9 +109,9 @@ cd crowdsec-nginx-bouncer-v*/
 ./install.sh
 ```
 
-Note: Don't run the script with `sudo` (the script already uses `sudo` to install dependencies).
+Note: Don't run the script with `sudo` (the script already use `sudo` to install dependencies).
 
-If you are on a mono-machine setup, the `crowdsec-nginx-bouncer` install script can register directly to the local CrowdSec LAPI. The safer operational pattern is still to manage the API key explicitly as shown below.
+If you are on a mono-machine setup, the `crowdsec-nginx-bouncer` install script will register directly to the local crowdsec, so you're good to go !
 
 :warning: the installation script will take care of dependencies for Debian/Ubuntu
 
@@ -178,81 +126,43 @@ If you are on a mono-machine setup, the `crowdsec-nginx-bouncer` install script 
 
 </details>
 
-## Register the bouncer key and store it outside the base config
+## Enable the WAF (AppSec Component)
 
-As with the Envoy and Traefik guides, the practical approach is to choose a
-fixed key, register it in CrowdSec, and keep it in a dedicated secret location
-instead of editing the package-managed base file.
+For real-time WAF protection — virtual patching, defense against known CVEs, SQLi, XSS, and other application-layer attacks — turn on the AppSec Component after installing the bouncer.
 
-Generate a key and register the bouncer:
-
-```bash
-BOUNCER_KEY="$(openssl rand -hex 32)"
-sudo cscli bouncers add nginx-bouncer --key "$BOUNCER_KEY"
-```
-
-Then store only the override in
-`/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf.local`:
-
-```bash
-sudo install -m 600 /dev/null /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf.local
-sudo tee /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf.local > /dev/null <<EOF
-API_KEY=$BOUNCER_KEY
-EOF
-unset BOUNCER_KEY
-```
-
-:::important
-`/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf.local` takes precedence
-over `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`.
-
-Use this `.local` file for secrets and local overrides. Avoid committing a real
-`API_KEY=` value in automation, Git repositories, or image templates.
+:::tip Recommended: enable the WAF for optimal protection
+Follow the [AppSec Quickstart for Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty) to enable the WAF. It's a few copy-paste commands and picks up right where this installation ends.
 :::
 
-If your NGINX host does not talk to a local LAPI, also override `API_URL` in
-the same file:
+The AppSec-related knobs in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf` are documented in the [Configuration Reference](#configuration-reference) below (all `APPSEC_*` entries).
 
-```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf.local"
-API_URL=http://<lapi-host>:8080
-API_KEY=<your-fixed-bouncer-key>
-```
+## Upgrade
 
-## Verify CrowdSec LAPI access
-
-Make sure the bouncer appears in CrowdSec and that NGINX can load the bouncer
-configuration:
+### From package
 
 ```bash
-sudo cscli bouncers list
-sudo nginx -t
+sudo apt-get update
+sudo apt-get install crowdsec-nginx-bouncer
+```
+
+:::warning
+Upgrade from v0 to v1 introduce many changes. Pick up the maintainer configuration to avoid anything breaking. Configuration migration might not be trivial.
+:::
+
+### Manual Upgrade
+
+If you already have `crowdsec-nginx-bouncer` installed, please download the [latest release](https://github.com/crowdsecurity/cs-nginx-bouncer/releases) and run the following commands:
+
+```bash
+tar xzvf crowdsec-nginx-bouncer.tgz
+cd crowdsec-nginx-bouncer-v*/
+sudo ./upgrade.sh
 sudo systemctl restart nginx
 ```
 
-You should see:
-
-- An `nginx-bouncer` entry in `cscli bouncers list`
-- `nginx -t` returning a successful configuration test
-- NGINX restarting cleanly
-
-## Validate remediation
-
-Create a temporary decision for your client IP and confirm NGINX enforces it:
-
-```bash
-sudo cscli decisions add -i <IP_TO_TEST> -t ban
-curl -I http://<your-nginx-host>/
-```
-
-You should get a ban response, typically `403 Forbidden`, or your configured
-redirect/custom ban page.
-
-## NGINX bouncer configuration
+## Configuration
 
 ### Component configuration
-
-The main bouncer configuration is located in
-`/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`.
 
 ```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
 API_URL=<CROWDSEC_LAPI_URL>
@@ -309,10 +219,9 @@ Any `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf.local` content will take
 precedence over `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`. All fields
 don't have to be present in this `.local.` file.
 
-### NGINX configuration
+### NGINX Configuration
 
-The remediation component NGINX configuration is located in
-`/etc/nginx/conf.d/crowdsec_nginx.conf`:
+The Remediation Component NGINX configuration is located in `/etc/nginx/conf.d/crowdsec_nginx.conf` :
 
 ```bash title="/etc/nginx/conf.d/crowdsec_nginx.conf"
 lua_package_path '/usr/local/lua/crowdsec/?.lua;;';
@@ -379,42 +288,61 @@ You can also change this with a valid one :
   - /etc/ssl/cert.pem (OpenBSD, Alpine)
 ```
 
-## Enable the WAF (AppSec Component)
+### Application Security Component Configuration
 
-For real-time WAF protection — virtual patching, defense against known CVEs, SQLi, XSS, and other application-layer attacks — turn on the AppSec Component after installing the bouncer.
+To turn on the WAF, follow the [AppSec Quickstart for Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty).
 
-:::tip Recommended: enable the WAF for optimal protection
-Follow the [AppSec Quickstart for Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty) to enable the WAF. It's a few copy-paste commands and picks up right where this installation ends.
-:::
+The AppSec-related options in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`:
 
-The AppSec-related knobs in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf` are documented in the [Configuration Reference](#configuration-reference) below (all `APPSEC_*` entries).
+```bash title="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
+# Mandatory - set to enable AppSec
+APPSEC_URL=http://127.0.0.1:7422
 
-## Upgrade
-
-### From package
-
-```bash
-sudo apt-get update
-sudo apt-get install crowdsec-nginx-bouncer
+# Optional
+APPSEC_FAILURE_ACTION=passthrough  # default
+APPSEC_CONNECT_TIMEOUT=100         # default
+APPSEC_SEND_TIMEOUT=100            # default
+APPSEC_PROCESS_TIMEOUT=1000        # default
+ALWAYS_SEND_TO_APPSEC=false        # default
+APPSEC_DROP_UNREADABLE_BODY=false  # default
+SSL_VERIFY=true                    # default
 ```
 
 :::warning
-Upgrade from v0 to v1 introduces many changes. Pick up the maintainer
-configuration to avoid anything breaking. Configuration migration might not be
-trivial.
+
+Due to limitations in the underlying library used by the remediation component, by default, the body of any HTTP2/HTTP3 request without a Content-Length will not be analyzed.
+To avoid potential bypasses of the WAF, you can set the option `APPSEC_DROP_UNREADABLE_BODY` to `true` to drop any request whose body cannot be inspected.
+
 :::
 
-### Manual upgrade
+### Setup captcha
 
-If you already have `crowdsec-nginx-bouncer` installed, download the
-[latest release](https://github.com/crowdsecurity/cs-nginx-bouncer/releases)
-and run:
+> Currently, we have support for 3 providers: recaptcha, hcaptcha or turnstile
+
+If you want to use captcha with your Nginx, you must provide a Site key and Secret key in your component configuration. If you wish to use any other provider than recaptcha you must also provide a Captcha provider.
+
+([recaptcha documentation](https://developers.google.com/recaptcha/intro)).
+
+([tunstile documentation](https://developers.cloudflare.com/turnstile/)).
+
+([hcaptcha documentation](https://docs.hcaptcha.com/))
+
+Edit `etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf` and configure the following options:
 
 ```bash
-tar xzvf crowdsec-nginx-bouncer.tgz
-cd crowdsec-nginx-bouncer-v*/
-sudo ./upgrade.sh
-sudo systemctl restart nginx
+CAPTCHA_PROVIDER=
+SECRET_KEY=
+SITE_KEY=
+CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
+CAPTCHA_EXPIRATION=3600
+```
+
+Restart Nginx.
+
+You can add a decisions with a type `captcha` to check if it works correctly:
+
+```bash
+sudo cscli decisions add -i <IP_TO_TEST> -t captcha
 ```
 
 ## FAQ
@@ -468,10 +396,6 @@ API_KEY=<API_KEY>
 CrowdSec Local API key.
 
 Generated with [`sudo cscli bouncers add`](/u/getting_started/installation/linux) command.
-
-For secret-management best practice, keep the real key in
-`/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf.local` rather than
-modifying the package-managed base file.
 
 ### `API_URL`
 
