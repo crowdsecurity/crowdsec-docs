@@ -8,9 +8,7 @@ import sidebarsUnversioned from "./sidebarsUnversioned";
 
 const extractPreprocessor = require("./plugins/extract-preprocessor");
 
-const generateCurrentAndNextRedirects = (
-	s: string,
-): { from: string; to: string }[] => [
+const generateCurrentAndNextRedirects = (s: string): { from: string; to: string }[] => [
 	{
 		from: `/docs/${s}`,
 		to: `/u/${s}`,
@@ -21,7 +19,9 @@ const generateCurrentAndNextRedirects = (
 	},
 ];
 
-function handleSidebarItems(items: any[]): any[] {
+type SidebarItem = string | { id?: string; link?: { id?: string }; items?: SidebarItem[] };
+
+function handleSidebarItems(items: SidebarItem[]): { from: string; to: string }[] {
 	const arr = [];
 	for (const item of items) {
 		if (typeof item === "string") {
@@ -34,7 +34,7 @@ function handleSidebarItems(items: any[]): any[] {
 }
 
 // This function generates redirects for all items in the unversioned sidebars, so that if we move a doc from versioned to unversioned, we don't break existing links. It handles both string items (doc ids) and nested objects (categories with their own items).
-const backportRedirect = (s: any): any[] => {
+const backportRedirect = (s: SidebarItem): { from: string; to: string }[] => {
 	const arr = [];
 	if (typeof s === "string") {
 		arr.push(...generateCurrentAndNextRedirects(s));
@@ -56,9 +56,7 @@ const backportRedirect = (s: any): any[] => {
 const currentYear = new Date().getFullYear();
 
 const ACADEMY_URL = `https://academy.crowdsec.net/courses?${
-	process.env.NODE_ENV === "production"
-		? "utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs"
-		: ""
+	process.env.NODE_ENV === "production" ? "utm_source=docs&utm_medium=menu&utm_campaign=top-menu&utm_id=academydocs" : ""
 }`;
 
 /** IF you make significant changes to the nav bar or side bars
@@ -241,11 +239,7 @@ const redirects = [
 function redirectsGlobalDataPlugin() {
 	return {
 		name: "redirects-global-data",
-		async contentLoaded({
-			actions,
-		}: {
-			actions: { setGlobalData: (data: unknown) => void };
-		}) {
+		async contentLoaded({ actions }: { actions: { setGlobalData: (data: unknown) => void } }) {
 			actions.setGlobalData({ redirects });
 		},
 	};
@@ -259,8 +253,7 @@ const config: Config = {
 		experimental_faster: true,
 	},
 	title: "CrowdSec",
-	tagline:
-		"CrowdSec - Real-time & crowdsourced protection against aggressive IPs",
+	tagline: "CrowdSec - Real-time & crowdsourced protection against aggressive IPs",
 	url: "https://docs.crowdsec.net",
 	baseUrl: "/",
 	onBrokenLinks: "warn",
@@ -341,8 +334,7 @@ const config: Config = {
 			{
 				docs: {
 					sidebarPath: "./sidebars.ts",
-					editUrl:
-						"https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/",
+					editUrl: "https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/",
 					lastVersion: "current",
 					versions: {
 						"v1.7": {
@@ -360,8 +352,7 @@ const config: Config = {
 				},
 				blog: {
 					showReadingTime: true,
-					editUrl:
-						"https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/",
+					editUrl: "https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/",
 				},
 				theme: {
 					customCss: "./src/css/custom.css",
@@ -412,14 +403,12 @@ const config: Config = {
 					{
 						title: "CrowdSec Hub",
 						url: "https://hub.crowdsec.net/",
-						description:
-							"Browse and install parsers, scenarios, collections, and remediation components",
+						description: "Browse and install parsers, scenarios, collections, and remediation components",
 					},
 					{
 						title: "CrowdSec Console",
 						url: "https://app.crowdsec.net/",
-						description:
-							"Manage your CrowdSec deployments and access the community blocklist",
+						description: "Manage your CrowdSec deployments and access the community blocklist",
 					},
 					{
 						title: "GitHub Repository",

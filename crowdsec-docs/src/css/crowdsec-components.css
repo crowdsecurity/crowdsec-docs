@@ -635,7 +635,31 @@ div[class*="tabItem"] {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   6. PAGINATION NAV (prev / next at bottom of doc pages)
+   6. BUTTON ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════ */
+.cs-btn {
+	transition:
+		transform 0.12s ease,
+		filter 0.12s ease,
+		box-shadow 0.12s ease !important;
+	will-change: transform;
+}
+
+.cs-btn:hover {
+	transform: translateY(-1px) !important;
+	filter: brightness(1.08) !important;
+	text-decoration: none !important;
+	color: inherit !important;
+}
+
+.cs-btn:active {
+	transform: translateY(1px) !important;
+	filter: brightness(0.94) !important;
+	transition-duration: 0.06s !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   7. PAGINATION NAV (prev / next at bottom of doc pages)
    ═══════════════════════════════════════════════════════════════════ */
 .pagination-nav {
 	gap: 14px !important;

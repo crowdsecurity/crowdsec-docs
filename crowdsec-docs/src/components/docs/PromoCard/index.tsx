@@ -126,7 +126,7 @@ export default function PromoCard({ variant = "console" }: Props) {
 				</div>
 				<a
 					href={data.ctaHref}
-					className="inline-flex items-center justify-center w-full py-[10px] px-[14px] rounded-lg text-[13px] font-bold no-underline transition-opacity duration-150 mt-1 tracking-[0.01em] hover:opacity-[0.88] hover:no-underline"
+					className="cs-btn inline-flex items-center justify-center w-full py-[10px] px-[14px] rounded-lg text-[13px] font-bold no-underline mt-1 tracking-[0.01em] hover:no-underline"
 					style={{ background: data.color, color: "var(--cs-btn-text)" }}
 				>
 					{data.ctaLabel} <CIcon icon={cilArrowRight} style={{ width: 13, height: 13 }} aria-hidden="true" />

@@ -8,7 +8,7 @@ export default function CookieConsent() {
 	if (dismissed) return null;
 
 	return (
-		<div className="fixed bottom-6 right-6 w-80 rounded-[14px] bg-cs-surface border border-cs-border-hi z-[9999] flex flex-col gap-3.5 p-5 pb-4"
+		<div className="fixed bottom-6 left-6 w-80 rounded-[14px] bg-cs-surface border border-cs-border-hi z-[9999] flex flex-col gap-3.5 p-5 pb-4"
 			style={{ boxShadow: "0 16px 48px rgba(0,0,0,0.35), 0 0 0 1px rgba(148,163,184,0.06)" }}
 		>
 			{/* Eyebrow */}

@@ -1,15 +1,8 @@
-import {
-	cilBarChart,
-	cilCompass,
-	cilGlobeAlt,
-	cilRss,
-	cilShieldAlt,
-	cilSpeedometer,
-} from "@coreui/icons";
+import { cilBarChart, cilCompass, cilGlobeAlt, cilRss, cilShieldAlt, cilSpeedometer } from "@coreui/icons";
 import { CIcon } from "@coreui/icons-react";
 import Layout from "@theme/Layout";
 import SearchBar from "@theme/SearchBar";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import GuidedSetupCard from "../components/docs/GuidedSetupCard";
 import PathCard from "../components/docs/PathCard";
 import PathCards from "../components/docs/PathCards";
@@ -135,10 +128,7 @@ export default function HomePage() {
 	}, []);
 
 	return (
-		<Layout
-			title="Documentation"
-			description="CrowdSec — the open-source & participative IPS"
-		>
+		<Layout title="Documentation" description="CrowdSec — the open-source & participative IPS">
 			<main>
 				{/* ── Hero ── full-width so grid bg spans the viewport ── */}
 				<section
@@ -169,17 +159,14 @@ export default function HomePage() {
 							backgroundImage:
 								"linear-gradient(var(--cs-border-hi) 1px, transparent 1px), linear-gradient(90deg, var(--cs-border-hi) 1px, transparent 1px)",
 							backgroundSize: "64px 64px",
-							maskImage:
-								"radial-gradient(ellipse 700px 320px at 50% 30%, black 30%, transparent 75%)",
+							maskImage: "radial-gradient(ellipse 700px 320px at 50% 30%, black 30%, transparent 75%)",
 							opacity: 0.4,
 							pointerEvents: "none",
 						}}
 						aria-hidden="true"
 					/>
 
-					<div
-						style={{ position: "relative", maxWidth: 760, margin: "0 auto" }}
-					>
+					<div style={{ position: "relative", maxWidth: 760, margin: "0 auto" }}>
 						{/* Badge */}
 						<div
 							style={{
@@ -188,10 +175,8 @@ export default function HomePage() {
 								gap: 8,
 								padding: "5px 12px",
 								borderRadius: 999,
-								background:
-									"color-mix(in srgb, var(--cs-orange) 12%, transparent)",
-								border:
-									"1px solid color-mix(in srgb, var(--cs-orange) 33%, transparent)",
+								background: "color-mix(in srgb, var(--cs-orange) 12%, transparent)",
+								border: "1px solid color-mix(in srgb, var(--cs-orange) 33%, transparent)",
 								marginBottom: 28,
 								fontFamily: "var(--cs-font-mono)",
 								fontSize: 11.5,
@@ -228,8 +213,7 @@ export default function HomePage() {
 							<br />
 							<span
 								style={{
-									background:
-										"linear-gradient(120deg, var(--cs-ink) 30%, var(--cs-orange) 70%, var(--cs-ink))",
+									background: "linear-gradient(120deg, var(--cs-ink) 30%, var(--cs-orange) 70%, var(--cs-ink))",
 									WebkitBackgroundClip: "text",
 									WebkitTextFillColor: "transparent",
 									backgroundClip: "text",
@@ -251,23 +235,18 @@ export default function HomePage() {
 								marginRight: "auto",
 							}}
 						>
-							Three paths — one platform. Detect attacks at the edge, push
-							curated threat feeds into your stack, or query intel on demand.
+							Three paths — one platform. Detect attacks at the edge, push curated threat feeds into your stack, or query
+							intel on demand.
 						</p>
 
 						{/* Search */}
-						<div
-							className="homepage-search"
-							style={{ marginTop: 36, maxWidth: 560, margin: "36px auto 0" }}
-						>
+						<div className="homepage-search" style={{ marginTop: 36, maxWidth: 560, margin: "36px auto 0" }}>
 							<SearchBar />
 						</div>
 					</div>
 				</section>
 
-				<div
-					style={{ maxWidth: 1080, margin: "0 auto", padding: "0 24px 80px" }}
-				>
+				<div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 24px 80px" }}>
 					{/* ── "I want to…" eyebrow ── */}
 					<div
 						style={{
@@ -289,13 +268,7 @@ export default function HomePage() {
 						<PathCard
 							// eyebrow="01 · DETECT"
 							color={CS_ORANGE}
-							icon={
-								<CIcon
-									icon={cilShieldAlt}
-									style={{ width: 20, height: 20 }}
-									aria-hidden="true"
-								/>
-							}
+							icon={<CIcon icon={cilShieldAlt} style={{ width: 20, height: 20 }} aria-hidden="true" />}
 							title="Detect & block attacks on servers"
 							desc="Identify and ban bad-behaving IPs from your logs and requests using CrowdSec Detection Scenarios and Virtual-Patching collections."
 							tag="Security Engine"
@@ -306,16 +279,10 @@ export default function HomePage() {
 						<PathCard
 							// eyebrow="02 · PROTECT"
 							color={CS_TEAL}
-							icon={
-								<CIcon
-									icon={cilRss}
-									style={{ width: 20, height: 20 }}
-									aria-hidden="true"
-								/>
-							}
+							icon={<CIcon icon={cilRss} style={{ width: 20, height: 20 }} aria-hidden="true" />}
 							title="Plug CrowdSec blocklists into a firewall, CDN or WAF"
 							desc="Manage network-perimeter devices and want a URL to subscribe to — no agent to install, just curated feeds your equipment can pull."
-							tag="Blocklist Endpoint"
+							tag="Blocklist Integration Endpoint"
 							tags={["Threat Feeds", "IOC Streams", "Deny-list"]}
 							audience="Network · Platform teams"
 							href="/blocklists"
@@ -323,17 +290,11 @@ export default function HomePage() {
 						<PathCard
 							// eyebrow="03 · INVESTIGATE"
 							color={CS_VIOLET}
-							icon={
-								<CIcon
-									icon={cilGlobeAlt}
-									style={{ width: 20, height: 20 }}
-									aria-hidden="true"
-								/>
-							}
+							icon={<CIcon icon={cilGlobeAlt} style={{ width: 20, height: 20 }} aria-hidden="true" />}
 							title="Investigate IP behaviors and enrich alerts"
 							desc="Security analyst or developer who wants IP context, behaviors, CVEs, aggressivity… in a browser or via REST API."
 							tag="IP Reputation & CTI"
-							tags={["IOC Lookup", "Threat Intel", "API Access"]}
+							tags={["IOC Lookup", "Threat Intel", "CTI API"]}
 							audience="SOC · Threat Intel"
 							href="/u/cti_api/intro"
 						/>
@@ -353,9 +314,7 @@ export default function HomePage() {
 							justifyContent: "center",
 						}}
 					>
-						<div
-							style={{ height: 1, flex: 1, background: "var(--cs-border)" }}
-						/>
+						<div style={{ height: 1, flex: 1, background: "var(--cs-border)" }} />
 						<div
 							style={{
 								fontFamily: "var(--cs-font-mono)",
@@ -368,9 +327,7 @@ export default function HomePage() {
 						>
 							How each path works
 						</div>
-						<div
-							style={{ height: 1, flex: 1, background: "var(--cs-border)" }}
-						/>
+						<div style={{ height: 1, flex: 1, background: "var(--cs-border)" }} />
 					</div>
 
 					<PathwayRow

@@ -63,7 +63,7 @@ export default function DocCard({
 
 	const card = (
 		<div
-			className={`p-5 rounded-xl bg-cs-surface border border-cs-border flex flex-col gap-3 h-full${href ? " transition-[border-color,box-shadow] duration-150" : ""}`}
+			className={`p-5 rounded-xl ease-in-out bg-cs-surface border border-cs-border no-underline hover:no-underline flex flex-col gap-3 h-full${href ? " transition-[border-color,box-shadow] duration-150" : ""}`}
 		>
 			<div className="flex items-start gap-3">
 				{resolvedIcon && (
@@ -119,7 +119,7 @@ export default function DocCard({
 						<a
 							key={l.href}
 							href={l.href}
-							className="text-[12.5px] font-semibold no-underline inline-flex items-center gap-1"
+							className="text-[12.5px] font-semibold no-underline hover:no-underline inline-flex items-center gap-1"
 							style={{ color }}
 						>
 							{l.label}
@@ -131,7 +131,7 @@ export default function DocCard({
 
 			{/* CTA — explicit label, or auto arrow footer for href-only clickable cards */}
 			{href && (ctaLabel || (!links?.length && !command)) && (
-				<div className="mt-auto pt-3 border-t border-dashed border-cs-border flex items-center justify-between">
+				<div className="mt-auto pt-3 border-t border-cs-border flex items-center justify-between">
 					<span className="text-[12.5px] font-semibold inline-flex items-center gap-[5px]" style={{ color }}>
 						{ctaLabel ?? title} <ArrowRight />
 					</span>
@@ -142,7 +142,7 @@ export default function DocCard({
 
 	if (href && !ctaLabel && !links) {
 		return (
-			<a href={href} className="no-underline block">
+			<a href={href} className="no-underline hover:no-underline block">
 				{card}
 			</a>
 		);

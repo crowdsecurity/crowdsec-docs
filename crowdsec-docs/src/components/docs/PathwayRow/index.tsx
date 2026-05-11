@@ -98,7 +98,7 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 					<a
 						href={ctaHref}
 						onClick={(e) => e.stopPropagation()}
-						className="py-2 px-[14px] rounded-lg font-semibold text-[13px] inline-flex items-center gap-1.5 no-underline shrink-0 whitespace-nowrap"
+						className="cs-btn py-2 px-[14px] rounded-lg font-semibold text-[13px] inline-flex items-center gap-1.5 no-underline hover:no-underline shrink-0 whitespace-nowrap"
 						style={{
 							background: color,
 							color: "var(--cs-btn-text)",
@@ -169,7 +169,7 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 					{/* CTA in content when OPEN */}
 					<a
 						href={ctaHref}
-						className="inline-flex items-center gap-1.5 py-2 px-[18px] rounded-[7px] text-[13px] font-semibold no-underline whitespace-nowrap"
+						className="cs-btn inline-flex items-center gap-1.5 py-2 px-[18px] rounded-[7px] text-[13px] font-semibold no-underline hover:no-underline whitespace-nowrap"
 						style={{
 							background: color,
 							color: "var(--cs-btn-text)",

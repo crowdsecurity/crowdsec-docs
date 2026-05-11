@@ -451,11 +451,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 						tag: "otherSection",
 					},
 				},
-				{
-					type: "doc",
-					label: "IP Reputation Report",
-					id: "console/ip_reputation/ip_report",
-				},
 			],
 		},
 		{

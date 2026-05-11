@@ -95,13 +95,12 @@ export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags 
 			)}
 
 			{audience && (
-					<div className="font-cs-mono text-[10.5px] text-cs-ink-mute tracking-[0.06em] leading-[1.4] min-w-0 overflow-hidden mt-4">
-						{audience}
-					</div>
-				)}
+				<div className="font-cs-mono text-[10.5px] text-cs-ink-mute tracking-[0.06em] leading-[1.4] min-w-0 overflow-hidden mt-4">
+					{audience}
+				</div>
+			)}
 
 			<div className="mt-3 pt-4 border-t border-cs-border flex items-center justify-between">
-
 				<div
 					className="inline-flex items-center gap-1.5 font-semibold text-[13px] ml-auto whitespace-nowrap shrink-0 transition-[gap] duration-[160ms]"
 					style={{ color }}

@@ -64,7 +64,7 @@ article h3,
 }
 
 .theme-doc-markdown > h2::before {
-	content: "§ " counter(cs-section, decimal-leading-zero);
+	content: counter(cs-section, decimal-leading-zero);
 	font: 600 12px / 1 var(--cs-font-mono);
 	color: var(--cs-orange);
 	letter-spacing: 0.16em;

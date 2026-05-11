@@ -34,7 +34,7 @@ export default function GuidedSetupCard({ title, desc, primaryCta, secondaryCta 
 			<div className="flex gap-[10px] flex-wrap shrink-0">
 				<a
 					href={primaryCta.href}
-					className="py-[10px] px-4 rounded-[9px] bg-cs-violet text-cs-btn-text font-semibold text-[13.5px] no-underline inline-flex items-center gap-2 shadow-[0_8px_24px_color-mix(in_srgb,var(--cs-violet)_30%,transparent)]"
+					className="cs-btn py-[10px] px-4 rounded-[9px] bg-cs-violet text-cs-btn-text font-semibold text-[13.5px] no-underline hover:no-underline hover:text-cs-btn-text inline-flex items-center gap-2 shadow-[0_8px_24px_color-mix(in_srgb,var(--cs-violet)_30%,transparent)]"
 				>
 					<CIcon icon={cilCompass} style={{ width: 14, height: 14 }} />
 					{primaryCta.label}
@@ -42,7 +42,7 @@ export default function GuidedSetupCard({ title, desc, primaryCta, secondaryCta 
 				{secondaryCta && (
 					<a
 						href={secondaryCta.href}
-						className="py-[10px] px-4 rounded-[9px] bg-cs-surface-2 text-cs-ink font-semibold text-[13.5px] border border-cs-border-hi no-underline inline-flex items-center gap-2"
+						className="cs-btn py-[10px] px-4 rounded-[9px] bg-cs-surface-2 text-cs-ink font-semibold text-[13.5px] border border-cs-border-hi no-underline hover:no-underline hover:text-cs-ink inline-flex items-center gap-2"
 					>
 						<CIcon icon={cilBolt} style={{ width: 14, height: 14 }} />
 						{secondaryCta.label}

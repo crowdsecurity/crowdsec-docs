@@ -42,7 +42,7 @@ export default function AccessCard({ icon, title, command, ctaLabel, ctaHref }: 
 			)}
 			<a
 				href={ctaHref}
-				className="inline-flex items-center gap-1.5 py-2 px-[18px] rounded-[7px] bg-cs-orange text-[#0a1120] text-[13px] font-semibold no-underline transition-opacity duration-150 self-start hover:opacity-[0.85] hover:no-underline hover:text-[#0a1120]"
+				className="cs-btn inline-flex items-center gap-1.5 py-2 px-[18px] rounded-[7px] bg-cs-orange text-cs-btn-text text-[13px] font-semibold no-underline self-start hover:no-underline hover:text-cs-btn-text"
 			>
 				{ctaLabel} →
 			</a>

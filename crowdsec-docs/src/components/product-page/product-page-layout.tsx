@@ -76,7 +76,7 @@ export const ProductPageLayout = ({
 											<a
 												key={btn.label}
 												href={btn.link}
-												className="py-[9px] px-5 rounded-lg border border-cs-border-hi bg-transparent text-cs-ink-dim text-sm font-semibold no-underline transition-[border-color,color] duration-150 hover:border-cs-orange hover:text-cs-orange"
+												className="cs-btn py-[9px] px-5 rounded-lg border border-cs-border-hi bg-transparent text-cs-ink-dim text-sm font-semibold no-underline transition-[border-color,color] duration-150 hover:border-cs-orange hover:text-cs-orange"
 											>
 												{btn.label}
 											</a>
@@ -84,7 +84,7 @@ export const ProductPageLayout = ({
 											<a
 												key={btn.label}
 												href={btn.link}
-												className="py-[9px] px-5 rounded-lg bg-cs-orange text-cs-btn-text text-sm font-semibold no-underline transition-opacity duration-150 hover:opacity-[0.88] shadow-[0_4px_16px_color-mix(in_srgb,var(--cs-orange)_28%,transparent)]"
+												className="cs-btn py-[9px] px-5 rounded-lg bg-cs-orange text-cs-btn-text text-sm font-semibold no-underline hover:no-underline hover:text-cs-btn-text shadow-[0_4px_16px_color-mix(in_srgb,var(--cs-orange)_28%,transparent)]"
 											>
 												{btn.label}
 											</a>
