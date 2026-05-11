@@ -7,11 +7,14 @@ sidebar_position: 1
 import Link from "@docusaurus/Link";
 import { ExternalLink } from "lucide-react";
 import CtiIntegrationTile, { ctiIntegrations } from '@site/src/components/cti-integration-tile';
+import DocCard from '@site/src/components/docs/DocCard';
+import DocCardGrid from '@site/src/components/docs/DocCardGrid';
+import QuickStrip from '@site/src/components/docs/QuickStrip';
 
-export const BLUE = "#60a5fa";
-export const ORANGE = "#f97316";
-export const PURPLE = "#a78bfa";
-export const GREEN = "#22d3a0";
+export const BLUE = "var(--cs-blue)";
+export const ORANGE = "var(--cs-orange)";
+export const PURPLE = "var(--cs-violet)";
+export const GREEN = "var(--cs-teal)";
 
 {/* ── Hero ─────────────────────────────────────────────────────────────── */}
 
@@ -23,55 +26,55 @@ export const GREEN = "#22d3a0";
   <br />Every lookup gives you <strong>behavioral context</strong>: what the IP was doing, where, and when.</p>
 </p>
 
-{/* Quick access strip - same pattern as "Already running CrowdSec?" on the homepage */}
-<div className="doc-quick-strip">
-  <span className="doc-quick-strip__label">Quick access</span>
-  <div className="doc-quick-strip__pills">
-    <Link href="https://app.crowdsec.net/cti" className="doc-quick-strip__pill"><span>🔍 Look up an IP</span><ExternalLink size={11} style={{ opacity: 0.5, flexShrink: 0 }} /></Link>
-    <Link href="/u/console/ip_reputation/api_keys" className="doc-quick-strip__pill"><span>🔑 Get an API key</span></Link>
-    <Link href="/u/tracker_api/intro" className="doc-quick-strip__pill"><span>🎯 Hunt for threats</span></Link>
-  </div>
-</div>
+<QuickStrip
+  label="Quick access"
+  links={[
+    { label: "🔍 Look up an IP", href: "https://app.crowdsec.net/cti", external: true },
+    { label: "🔑 Get an API key", href: "/u/console/ip_reputation/api_keys" },
+    { label: "🎯 Hunt for threats", href: "/u/tracker_api/intro" },
+  ]}
+/>
 
 {/* ── How do you want to use it? ──────────────────────────────────────── */}
 
 <div style={{ marginBottom: "2.5rem" }}>
   <div className="doc-eyebrow">Entry points</div>
   <div className="doc-section-title">How do you want to use it?</div>
-  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
-    {[
-      {
-        badge: "🔍 No setup needed", icon: "🖥️", accent: BLUE,
-        title: "Web UI investigation - in the Console",
-        desc: "Search any IP instantly. Explore threat history and the top aggressive IPs in the last 24h. No API key needed.",
-        links: [{ label: "Web UI guide →", href: "/u/console/ip_reputation/intro" }, { label: "IP Report →", href: "/u/console/ip_reputation/ip_report" }],
-      },
-      {
-        badge: "⚙️ Developer / SecOps", icon: "🔌", accent: ORANGE,
-        title: "Enrich Alerts via API",
-        desc: "Use the CTI API to add CrowdSec IP context to SIEM alerts, SOAR workflows, TIPs, scripts, and internal tools.",
-        links: [{ label: "API quickstart →", href: "/u/cti_api/api_introduction" }, { label: "All integrations →", href: "/u/cti_api/api_integration/integration_intro" }],
-      },
-      {
-        badge: "🎯 Threat hunter", icon: "🚨", accent: PURPLE,
-        title: "Hunt active threats",
-        desc: "Advanced Search with live faceted filters (behavior, country, AS, CVE) to find campaigns or build blocklists.",
-        links: [{ label: "Advanced search →", href: "/u/console/ip_reputation/search_ui_advanced" }, { label: "Live Exploit Tracker →", href: "/u/tracker_api/intro" }],
-      },
-    ].map(({ badge, icon, accent, title, desc, links }) => (
-      <div key={title} className="doc-card" style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "inline-flex", alignSelf: "flex-start", padding: "2px 8px", borderRadius: "100px", fontFamily: "var(--ifm-font-family-monospace)", fontSize: "9.5px", letterSpacing: "0.5px", fontWeight: 600, color: accent, border: `1px solid ${accent}44`, background: `${accent}11`, marginBottom: "10px" }}>{badge}</div>
-        <div style={{ fontSize: "22px", marginBottom: "8px" }}>{icon}</div>
-        <div style={{ fontWeight: 700, fontSize: "13.5px", marginBottom: "6px" }}>{title}</div>
-        <div style={{ fontSize: "12px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6, flexGrow: 1, marginBottom: "12px" }}>{desc}</div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-          {links.map(({ label, href }) => (
-            <Link key={label} href={href} style={{ fontSize: "12px", fontWeight: 600, color: accent, textDecoration: "none" }}>{label}</Link>
-          ))}
-        </div>
-      </div>
-    ))}
-  </div>
+  <DocCardGrid cols={3}>
+    <DocCard
+      iconName="search"
+      color={BLUE}
+      badge="No setup needed"
+      title="Web UI investigation"
+      desc="Search any IP instantly. Explore threat history and the top aggressive IPs in the last 24h. No API key needed."
+      links={[
+        { label: "Web UI guide", href: "/u/console/ip_reputation/intro" },
+        { label: "IP Report", href: "/u/console/ip_reputation/ip_report" },
+      ]}
+    />
+    <DocCard
+      iconName="plug"
+      color={ORANGE}
+      badge="Developer / SecOps"
+      title="Enrich Alerts via API"
+      desc="Use the CTI API to add CrowdSec IP context to SIEM alerts, SOAR workflows, TIPs, scripts, and internal tools."
+      links={[
+        { label: "API quickstart", href: "/u/cti_api/api_introduction" },
+        { label: "All integrations", href: "/u/cti_api/api_integration/integration_intro" },
+      ]}
+    />
+    <DocCard
+      iconName="alert"
+      color={PURPLE}
+      badge="Threat hunter"
+      title="Hunt active threats"
+      desc="Advanced Search with live faceted filters (behavior, country, AS, CVE) to find campaigns or build blocklists."
+      links={[
+        { label: "Advanced search", href: "/u/console/ip_reputation/search_ui_advanced" },
+        { label: "Live Exploit Tracker", href: "/u/tracker_api/intro" },
+      ]}
+    />
+  </DocCardGrid>
 </div>
 
 {/* ── Why CrowdSec CTI (informational, de-emphasized) ────────────────── */}
@@ -136,35 +139,21 @@ export const GREEN = "#22d3a0";
 
 <div style={{ marginBottom: "2.5rem" }}>
   <div className="doc-section-sep">Technical details</div>
-  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
-    {[
-      { icon: "📊", title: "Data Taxonomy", desc: "CTI Data structure, scores, behaviors and classifications", href: "/u/cti_api/taxonomy/intro" },
-      { icon: "📚", title: "API Reference", desc: "Full endpoint reference with request/response schemas.", href: "https://crowdsecurity.github.io/cti-api/", external: true },
-      { icon: "❓", title: "FAQ", desc: "Common questions about access, quotas, and data.", href: "/u/cti_api/faq" },
-    ].map(({ icon, title, desc, href, external }) => (
-      <Link key={title} href={href} className="doc-card" style={{ display: "flex", gap: "12px", textDecoration: "none", color: "inherit" }}>
-        <span style={{ fontSize: "18px", flexShrink: 0, lineHeight: 1.4 }}>{icon}</span>
-        <div>
-          <div style={{ fontWeight: 700, fontSize: "13px", marginBottom: "3px", display: "flex", alignItems: "center", gap: "5px" }}>
-            {title}{external && <ExternalLink size={11} style={{ opacity: 0.5 }} />}
-          </div>
-          <div style={{ fontSize: "11.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.55 }}>{desc}</div>
-        </div>
-      </Link>
-    ))}
-  </div>
+  <DocCardGrid cols={3}>
+    <DocCard iconName="book" color={BLUE} title="Data Taxonomy" desc="CTI Data structure, scores, behaviors and classifications" href="/u/cti_api/taxonomy/intro" />
+    <DocCard iconName="terminal" color={ORANGE} title="API Reference" desc="Full endpoint reference with request/response schemas." links={[{ label: "Open API docs", href: "https://crowdsecurity.github.io/cti-api/", external: true }]} />
+    <DocCard iconName="compass" color={PURPLE} title="FAQ" desc="Common questions about access, quotas, and data." href="/u/cti_api/faq" />
+  </DocCardGrid>
 </div>
 
 {/* ── Need help ───────────────────────────────────────────────────────── */}
 
-<div className="doc-quick-strip" style={{ justifyContent: "space-between" }}>
-  <div>
-    <div style={{ fontWeight: 700, fontSize: "13px", marginBottom: "2px" }}>Need help?</div>
-    <div style={{ fontSize: "12px", color: "var(--ifm-color-emphasis-600)" }}>Get answers in Discord or check the FAQ.</div>
-  </div>
-  <div className="doc-quick-strip__pills">
-    <Link href="https://discord.gg/crowdsec" className="doc-quick-strip__pill"><span>💬 Join Discord</span><ExternalLink size={11} style={{ opacity: 0.5, flexShrink: 0 }} /></Link>
-    <Link href="/u/cti_api/faq" className="doc-quick-strip__pill"><span>❓ View FAQ</span></Link>
-    <Link href="https://crowdsecurity.github.io/cti-api/" className="doc-quick-strip__pill"><span>📚 API Reference</span><ExternalLink size={11} style={{ opacity: 0.5, flexShrink: 0 }} /></Link>
-  </div>
-</div>
+<QuickStrip
+  title="Need help?"
+  subtitle="Get answers in Discord or check the FAQ."
+  links={[
+    { label: "💬 Join Discord", href: "https://discord.gg/crowdsec", external: true },
+    { label: "❓ View FAQ", href: "/u/cti_api/faq" },
+    { label: "📚 API Reference", href: "https://crowdsecurity.github.io/cti-api/", external: true },
+  ]}
+/>

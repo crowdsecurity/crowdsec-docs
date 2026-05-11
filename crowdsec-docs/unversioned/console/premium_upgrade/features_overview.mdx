@@ -6,6 +6,7 @@ toc_max_heading_level: 2
 ---
 
 import { FeatureCard, HighlightCard } from '@site/src/components/premium-upgrade/feature-card';
+import DocCardGrid from '@site/src/components/docs/DocCardGrid';
 
 Premium features enable multiple use cases.
 Make the best use of the premium features for your needs in: **Scaling, Multi-tenancy, Enhanced proactive protection, Centralized management, Team collaboration, Integration and automation, Enhanced threat intelligence, and improved support.**
@@ -14,7 +15,7 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 
 ## Scaling, Automation & Multi-Tenancy
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<DocCardGrid cols={2}>
 
 <FeatureCard
 	title="Remediation Sync"
@@ -93,13 +94,13 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 	link="/u/console/organizations/intro"
 />
 
-</div>
+</DocCardGrid>
 
 ---
 
 ## Extra Protection
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<DocCardGrid cols={2}>
 
 <FeatureCard
 	title="Threat Forecast Blocklist"
@@ -145,13 +146,13 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 	link="/u/blocklists/intro#crowdsec-blocklist-tiers"
 />
 
-</div>
+</DocCardGrid>
 
 ---
 
 ## Reactivity & Monitoring
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<DocCardGrid cols={2}>
 
 <FeatureCard
 	title="Am I Under Attack"
@@ -221,4 +222,4 @@ Make the best use of the premium features for your needs in: **Scaling, Multi-te
 	link="/u/cti_api/api_integration/integration_intro"
 />
 
-</div>
+</DocCardGrid>

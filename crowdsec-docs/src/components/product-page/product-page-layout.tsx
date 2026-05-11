@@ -1,7 +1,6 @@
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
 import React from "react";
-import { Button } from "../../ui/button";
 
 type HeroButton = {
 	label: string;
@@ -40,31 +39,55 @@ export const ProductPageLayout = ({
 	return (
 		<Layout title={title} description={metaDescription}>
 			<main className="flex-1">
-				{/* Hero Section */}
-				<section className="py-10 md:py-16 px-4 border-b border-border">
-					<div className="container max-w-5xl mx-auto">
-						<Link to="/" className="text-sm text-gray-500 dark:text-gray-600 hover:text-primary mb-4 inline-block">
+				{/* ── Hero ── */}
+				<section className="py-10 px-6 pb-12 border-b border-cs-border bg-cs-bg relative overflow-hidden">
+					{/* Subtle radial glow */}
+					<div
+						className="absolute inset-0 pointer-events-none"
+						style={{
+							background:
+								"radial-gradient(ellipse 600px 300px at 60% 50%, color-mix(in srgb, var(--cs-orange) 6%, transparent), transparent 70%)",
+						}}
+						aria-hidden="true"
+					/>
+
+					<div className="max-w-[960px] mx-auto relative">
+						<Link
+							to="/"
+							className="text-xs font-cs-mono text-cs-ink-mute tracking-[0.06em] inline-flex items-center gap-1.5 mb-6 no-underline"
+						>
 							← Back to Documentation
 						</Link>
-						<div className="flex flex-col md:flex-row md:items-center gap-6">
-							<div className="flex-1">
-								<div className="flex items-center gap-3 mb-4">
-									<div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center overflow-hidden">
-										<img src={icon} className="h-9 w-9 border-0" alt={title} />
-									</div>
-									<h1 className="text-3xl md:text-4xl font-bold m-0 text-gray-900 dark:text-gray-900">{title}</h1>
-								</div>
-								<p className="text-lg text-gray-600 dark:text-gray-700 mb-6 max-w-2xl">{description}</p>
-								<div className="flex gap-3">
+
+						<div className="flex items-start gap-6">
+							<div className="w-14 h-14 rounded-[14px] shrink-0 bg-[color-mix(in_srgb,var(--cs-orange)_14%,transparent)] border border-[color-mix(in_srgb,var(--cs-orange)_25%,transparent)] flex items-center justify-center overflow-hidden">
+								<img src={icon} alt={title} className="w-9 h-9 border-none" />
+							</div>
+
+							<div className="flex-1 min-w-0">
+								<h1 className="text-[clamp(28px,4vw,40px)] font-bold tracking-[-0.025em] leading-[1.1] text-cs-ink m-0 mb-3">
+									{title}
+								</h1>
+								<p className="text-base text-cs-ink-dim leading-[1.65] max-w-[640px] m-0 mb-6">{description}</p>
+
+								<div className="flex gap-[10px] flex-wrap">
 									{heroButtons.map((btn) =>
 										btn.variant === "outline" ? (
-											<Link key={btn.label} to={btn.link}>
-												<Button variant="outline">{btn.label}</Button>
-											</Link>
+											<a
+												key={btn.label}
+												href={btn.link}
+												className="cs-btn py-[9px] px-5 rounded-lg border border-cs-border-hi bg-transparent text-cs-ink-dim text-sm font-semibold no-underline transition-[border-color,color] duration-150 hover:border-cs-orange hover:text-cs-orange"
+											>
+												{btn.label}
+											</a>
 										) : (
-											<Link key={btn.label} to={btn.link}>
-												<Button color="primary">{btn.label}</Button>
-											</Link>
+											<a
+												key={btn.label}
+												href={btn.link}
+												className="cs-btn py-[9px] px-5 rounded-lg bg-cs-orange text-cs-btn-text text-sm font-semibold no-underline hover:no-underline hover:text-cs-btn-text shadow-[0_4px_16px_color-mix(in_srgb,var(--cs-orange)_28%,transparent)]"
+											>
+												{btn.label}
+											</a>
 										)
 									)}
 								</div>
@@ -75,18 +98,23 @@ export const ProductPageLayout = ({
 
 				{children}
 
-				{/* Help Section */}
-				<section className="py-10 md:py-14 px-4 bg-primary/5 border-t border-border">
-					<div className="container max-w-3xl mx-auto text-center">
-						<h2 className="text-xl md:text-2xl font-semibold mb-3 text-gray-900 dark:text-gray-900">{helpTitle}</h2>
-						{helpDescription && <p className="text-gray-600 dark:text-gray-700 mb-6">{helpDescription}</p>}
-						<div className="flex flex-col sm:flex-row gap-3 justify-center">
+				{/* ── Help Section ── */}
+				<section
+					className="py-12 px-6 border-t border-cs-border"
+					style={{ background: "color-mix(in srgb, var(--cs-orange) 4%, var(--cs-bg))" }}
+				>
+					<div className="max-w-[600px] mx-auto text-center">
+						<h2 className="text-[22px] font-bold tracking-[-0.01em] text-cs-ink m-0 mb-[10px]">{helpTitle}</h2>
+						{helpDescription && <p className="text-[14.5px] text-cs-ink-dim m-0 mb-[22px] leading-[1.6]">{helpDescription}</p>}
+						<div className="flex gap-[10px] justify-center flex-wrap">
 							{helpButtons.map((btn) => (
-								<Link key={btn.label} to={btn.link}>
-									<Button size="lg" variant="outline">
-										{btn.label}
-									</Button>
-								</Link>
+								<a
+									key={btn.label}
+									href={btn.link}
+									className="py-[9px] px-5 rounded-lg border border-cs-border-hi bg-cs-surface text-cs-ink-dim text-sm font-semibold no-underline transition-[border-color,color] duration-150 hover:border-cs-orange hover:text-cs-orange"
+								>
+									{btn.label}
+								</a>
 							))}
 						</div>
 					</div>
