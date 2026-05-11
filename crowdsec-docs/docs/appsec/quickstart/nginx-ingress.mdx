@@ -105,6 +105,21 @@ lapi:
           key: BOUNCER_KEY_nginx_ingress_waf
 ```
 
+:::warning
+The Helm chart still enables the CrowdSec agent by default. If you do not want
+the agent, disable it explicitly.
+:::
+
+<details>
+<summary>Snippet to disable the agent</summary>
+
+```yaml title="values.yaml"
+agent:
+  enabled: false
+```
+
+</details>
+
 :::note
 Although this is the same bouncer key value, you need two `Secret` objects here:
 one in `crowdsec` and one in `ingress-nginx`. Kubernetes secrets are
