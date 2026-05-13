@@ -700,6 +700,7 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/configuration_creation_testing" },
 				{ type: "doc", id: "appsec/configuration_rule_management" },
 				{ type: "doc", id: "appsec/hooks" },
+				{ type: "doc", id: "appsec/api_validation" },
 			],
 		},
 		{
