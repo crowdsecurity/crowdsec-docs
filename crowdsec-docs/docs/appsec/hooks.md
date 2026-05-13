@@ -54,6 +54,9 @@ This hook is intended to be used to disable rules at loading (eg, to temporarily
 | `SetRemediationByTag`     | `func(tag str, remediation string)`  | Change the remediation of the in-band rule identified by the tag (multiple rules can have the same tag) |
 | `SetRemediationByID`      | `func(id int, remediation string)`   | Change the remediation of the in-band rule identified by the ID                                         |
 | `SetRemediationByName`    | `func(name str, remediation string)` | Change the remediation of the in-band rule identified by the name                                       |
+| `LoadAPISchemaWithName`   | `func(ref str, filename str)`        | Load an OpenAPI schema from `<data_dir>/schemas/<filename>` and register it under `ref`. See [OpenAPI Schema Validation](api_validation.md). |
+| `LoadAPISchemaWithOptions` | `func(ref str, filename str, opts map)` | Same as `LoadAPISchemaWithName` but accepts per-schema policy overrides (`on_route_not_found`, `on_method_not_allowed`). |
+| `RegisterAPISchemaBodyDecoder` | `func(content_type str, decoder str)` | Enable a non-default body decoder for a Content-Type. See [available decoders](api_validation.md#body-decoders). |
 
 ##### Example
 
@@ -90,6 +93,8 @@ This hook is intended to be used to disable rules only for this particular reque
 | `SetRemediationByName`    | `func(name str, remediation string)` | Change the remediation of the in-band rule identified by the name                                       |
 | `req`                     | `http.Request`                       | Original HTTP request received by the remediation component                                             |
 | `DropRequest`             | `func(reason str)`                   | Stop processing the request immediately and instruct the remediation component to block the request     |
+| `ValidateRequestWithSchema` | `func(ref str) bool`               | Validate the current request against an OpenAPI schema previously loaded under `ref` (returns `true` on success). On failure, structured details are published to `hook_vars` (see [OpenAPI Schema Validation](api_validation.md#validation-result-variables)). |
+| `hook_vars`               | `map[string]string`                  | Per-request scratch space shared with later hooks and propagated to the resulting event. Helpers such as `ValidateRequestWithSchema` publish their results here. |
 
 #### Example
 
