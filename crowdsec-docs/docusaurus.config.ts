@@ -8,7 +8,7 @@ import sidebarsUnversioned from "./sidebarsUnversioned";
 
 const extractPreprocessor = require("./plugins/extract-preprocessor");
 
-const generateCurrentAndNextRedirects = (s) => [
+const generateCurrentAndNextRedirects = (s: string): { from: string; to: string }[] => [
 	{
 		from: `/docs/${s}`,
 		to: `/u/${s}`,
@@ -19,7 +19,9 @@ const generateCurrentAndNextRedirects = (s) => [
 	},
 ];
 
-function handleSidebarItems(items) {
+type SidebarItem = string | { id?: string; link?: { id?: string }; items?: SidebarItem[] };
+
+function handleSidebarItems(items: SidebarItem[]): { from: string; to: string }[] {
 	const arr = [];
 	for (const item of items) {
 		if (typeof item === "string") {
@@ -32,7 +34,7 @@ function handleSidebarItems(items) {
 }
 
 // This function generates redirects for all items in the unversioned sidebars, so that if we move a doc from versioned to unversioned, we don't break existing links. It handles both string items (doc ids) and nested objects (categories with their own items).
-const backportRedirect = (s) => {
+const backportRedirect = (s: SidebarItem): { from: string; to: string }[] => {
 	const arr = [];
 	if (typeof s === "string") {
 		arr.push(...generateCurrentAndNextRedirects(s));
@@ -153,7 +155,7 @@ const FOOTER_LINKS = [
 			},
 			{ label: "Discourse", href: "https://discourse.crowdsec.net/" },
 			{ label: "Discord", href: "https://discord.gg/crowdsec" },
-			{ label: "Twitter", href: "https://twitter.com/crowd_security" },
+			{ label: "X", href: "https://x.com/crowd_security" },
 			{ label: "LinkedIn", href: "https://www.linkedin.com/company/crowdsec/" },
 			{ label: "YouTube", href: "https://www.youtube.com/@crowdsec" },
 		],
@@ -169,7 +171,10 @@ const FOOTER_LINKS = [
 				href: "https://crowdsec.net/blog/category/tutorial/",
 			},
 			{ label: "Academy", href: "https://academy.crowdsec.net/" },
-			{ label: "Custom GPT", href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation" },
+			{
+				label: "Custom GPT",
+				href: "https://chatgpt.com/g/g-682c3a61a78081918417571116c2b563-crowdsec-documentation",
+			},
 		],
 	},
 ];
@@ -202,15 +207,33 @@ const redirects = [
 	},
 	// CTI Web UI pages moved to console/ip_reputation
 	{ from: "/u/cti_api/getting_started", to: "/u/console/ip_reputation/intro" },
-	{ from: "/u/cti_api/api_getting_started", to: "/u/console/ip_reputation/api_keys" },
+	{
+		from: "/u/cti_api/api_getting_started",
+		to: "/u/console/ip_reputation/api_keys",
+	},
 	{ from: "/u/cti_api/ip_report", to: "/u/console/ip_reputation/ip_report" },
-	{ from: "/u/cti_api/search_queries", to: "/u/console/ip_reputation/search_ui" },
-	{ from: "/u/cti_api/advanced_search", to: "/u/console/ip_reputation/search_ui_advanced" },
-	{ from: "/u/cti_api/cve_explorer", to: "/u/console/ip_reputation/intro#live-exploit-tracker" },
+	{
+		from: "/u/cti_api/search_queries",
+		to: "/u/console/ip_reputation/search_ui",
+	},
+	{
+		from: "/u/cti_api/advanced_search",
+		to: "/u/console/ip_reputation/search_ui_advanced",
+	},
+	{
+		from: "/u/cti_api/cve_explorer",
+		to: "/u/console/ip_reputation/intro#live-exploit-tracker",
+	},
 	// other CTI pages redirect / fixes
 	{ from: "/next/cti_api/intro", to: "/u/console/ip_reputation/api_keys" },
-	{ from: "/next/cti_api/getting_started", to: "/u/console/ip_reputation/api_keys" },
-	{ from: "/u/console/ip_reputation/api_keys_premium", to: "/u/console/ip_reputation/api_keys" },
+	{
+		from: "/next/cti_api/getting_started",
+		to: "/u/console/ip_reputation/api_keys",
+	},
+	{
+		from: "/u/console/ip_reputation/api_keys_premium",
+		to: "/u/console/ip_reputation/api_keys",
+	},
 ];
 
 function redirectsGlobalDataPlugin() {
@@ -251,6 +274,10 @@ const config: Config = {
 		{
 			href: "https://fonts.googleapis.com/icon?family=Material+Icons",
 		},
+		{
+			href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap",
+			rel: "stylesheet",
+		},
 	],
 	themes: ["@docusaurus/theme-mermaid"],
 	themeConfig: {
@@ -258,7 +285,7 @@ const config: Config = {
 		colorMode: {
 			defaultMode: "dark",
 			disableSwitch: false,
-			respectPrefersColorScheme: true,
+			respectPrefersColorScheme: false,
 		},
 		announcementBar: {
 			id: "banner_docs",
@@ -318,6 +345,10 @@ const config: Config = {
 							path: "/next",
 						},
 					},
+					admonitions: {
+						keywords: ["premium"],
+						extendDefaults: true,
+					},
 				},
 				blog: {
 					showReadingTime: true,
@@ -338,6 +369,10 @@ const config: Config = {
 				path: "unversioned",
 				routeBasePath: "u",
 				sidebarPath: "./sidebarsUnversioned.ts",
+				admonitions: {
+					keywords: ["premium"],
+					extendDefaults: true,
+				},
 			},
 		],
 

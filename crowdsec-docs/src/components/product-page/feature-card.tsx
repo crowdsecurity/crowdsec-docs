@@ -8,17 +8,22 @@ export type FeatureCardProps = {
 	icon: string;
 };
 
-export const FeatureCard = ({ title, description, link, icon }: FeatureCardProps): React.JSX.Element => (
-	<Link href={link} className="hover:no-underline group">
-		<div className="h-full border border-solid border-border rounded-lg p-5 bg-card hover:shadow-md hover:border-primary/30 transition-all duration-200">
-			<div className="text-3xl mb-3">{icon.startsWith("/") ? <img src={icon} alt={title} className="h-8 w-8" /> : icon}</div>
-			<h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors">
+export const FeatureCard = ({ title, description, link, icon }: FeatureCardProps): React.JSX.Element => {
+	return (
+		<Link
+			href={link}
+			className="no-underline block h-full border border-cs-border hover:border-[color-mix(in_srgb,var(--cs-orange)_40%,transparent)] rounded-xl p-[18px_18px_20px] bg-cs-surface hover:bg-cs-surface-2 transition-[border-color,background] duration-150 cursor-pointer group"
+		>
+			<div className="text-[28px] mb-3 leading-none">
+				{icon.startsWith("/") ? <img src={icon} alt={title} className="h-8 w-8 border-none" /> : icon}
+			</div>
+			<div className="text-[14.5px] font-semibold mb-1.5 text-cs-ink group-hover:text-cs-orange transition-colors duration-150">
 				{title}
-			</h3>
-			<p className="text-sm text-gray-600 dark:text-gray-700 mb-0">{description}</p>
-		</div>
-	</Link>
-);
+			</div>
+			<p className="text-[13px] text-cs-ink-dim m-0 leading-[1.55]">{description}</p>
+		</Link>
+	);
+};
 
 export type IntegrationCardProps = {
 	title: string;
@@ -27,29 +32,37 @@ export type IntegrationCardProps = {
 	icon: React.ReactNode;
 };
 
-export const IntegrationCard = ({ title, description, link, icon }: IntegrationCardProps): React.JSX.Element => (
-	<Link href={link} className="hover:no-underline group">
-		<div className="h-full border border-solid border-border rounded-lg p-4 bg-card hover:shadow-md hover:border-primary/30 transition-all duration-200 flex items-center gap-4">
-			<div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">{icon}</div>
-			<div>
-				<h3 className="text-base font-semibold text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors mb-1">
-					{title}
-				</h3>
-				<p className="text-sm text-gray-600 dark:text-gray-700 mb-0">{description}</p>
+export const IntegrationCard = ({ title, description, link, icon }: IntegrationCardProps): React.JSX.Element => {
+	return (
+		<Link
+			href={link}
+			className="no-underline flex items-center gap-[14px] border border-cs-border hover:border-[color-mix(in_srgb,var(--cs-orange)_40%,transparent)] rounded-xl py-[14px] px-4 bg-cs-surface hover:bg-cs-surface-2 transition-[border-color,background] duration-150 cursor-pointer group"
+		>
+			<div className="w-11 h-11 rounded-[10px] shrink-0 bg-[color-mix(in_srgb,var(--cs-orange)_12%,transparent)] border border-[color-mix(in_srgb,var(--cs-orange)_22%,transparent)] flex items-center justify-center text-cs-orange">
+				{icon}
 			</div>
-		</div>
-	</Link>
-);
+			<div>
+				<div className="text-[14.5px] font-semibold mb-[3px] text-cs-ink group-hover:text-cs-orange transition-colors duration-150">
+					{title}
+				</div>
+				<p className="text-[13px] text-cs-ink-dim m-0">{description}</p>
+			</div>
+		</Link>
+	);
+};
 
 export type IntegrationItemProps = {
 	title: string;
 	link: string;
 };
 
-export const IntegrationItem = ({ title, link }: IntegrationItemProps): React.JSX.Element => (
-	<Link href={link} className="hover:no-underline group">
-		<div className="border border-solid border-border rounded-lg px-4 py-3 bg-card hover:shadow-md hover:border-primary/30 transition-all duration-200">
-			<span className="text-sm font-medium text-gray-900 dark:text-gray-900 group-hover:text-primary transition-colors">{title}</span>
-		</div>
-	</Link>
-);
+export const IntegrationItem = ({ title, link }: IntegrationItemProps): React.JSX.Element => {
+	return (
+		<Link
+			href={link}
+			className="no-underline block border border-cs-border hover:border-[color-mix(in_srgb,var(--cs-orange)_40%,transparent)] rounded-lg py-[10px] px-[14px] bg-cs-surface hover:bg-cs-surface-2 transition-[border-color,background] duration-150 cursor-pointer group"
+		>
+			<span className="text-[13.5px] font-medium text-cs-ink group-hover:text-cs-orange transition-colors duration-150">{title}</span>
+		</Link>
+	);
+};

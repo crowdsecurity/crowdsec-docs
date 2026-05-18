@@ -14,7 +14,7 @@ import UnderlineTooltip from '@site/src/components/underline-tooltip';
 import IntegrationTile, { firewallIntegrations } from '@site/src/components/integration-tile';
 
 
-CrowdSec Blocklist Integrations — also known as **Blocklist as a Service** — give you a secure, hosted HTTPS endpoint serving live blocklists that you configure your firewall or security tool to pull from.   
+CrowdSec Blocklist Integrations (also known as **Blocklist as a Service**) give you a secure, hosted HTTPS endpoint serving live blocklists that you configure your firewall or security tool to pull from.   
 You don't host anything: CrowdSec updates the blocklists multiple times per day, and your device fetches them on a schedule you control.
 
 Each integration represents a unique endpoint protected by Basic Authentication (username + password), consumable by any HTTP-capable device or software.
@@ -24,8 +24,8 @@ Each integration represents a unique endpoint protected by Basic Authentication 
 | Your situation | Recommended integration |
 |---|---|
 | Your firewall supports external IP list ingestion | Use the dedicated page for your vendor in the [table below](#firewall-integrations) |
-| Any HTTP-capable device not listed | [Raw IP List](integrations/rawiplist.mdx) — one IP per line, works in the vast majority of cases |
-| Platforms without native IP list ingestion (Cloudflare, AWS WAF, etc.) | [Remediation Component](integrations/remediationcomponent.mdx) — CrowdSec's own integration layer |
+| Any HTTP-capable device not listed | [Raw IP List](integrations/rawiplist.mdx) (one IP per line), works in the vast majority of cases |
+| Platforms without native IP list ingestion (Cloudflare, AWS WAF, etc.) | [Remediation Component](integrations/remediationcomponent.mdx) (CrowdSec's own integration layer) |
 
 ## Refresh frequency
 
@@ -67,7 +67,7 @@ Each vendor page explains how to create the integration in the CrowdSec Console 
   margin: '1.5rem 0',
 }}>
   <IntegrationTile name="Raw IP List" slug="rawiplist" href="/u/integrations/rawiplist" color="#6c757d">
-    One IP per line — compatible with virtually any firewall, router, or HTTP-capable device
+    One IP per line: compatible with virtually any firewall, router, or HTTP-capable device
   </IntegrationTile>
   <IntegrationTile name="Remediation Component" slug="remediationcomponent" href="/u/integrations/remediationcomponent" color="#f97316">
     Integrate blocklists to platforms without native ingestion (Cloudflare, AWS WAF, …) via Remediation Components
@@ -89,7 +89,7 @@ Each vendor page explains how to create the integration in the CrowdSec Console 
 <div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
 <div style={{flex: '1'}}>
 
-### Step 1 — Create an integration in the CrowdSec Console
+### Step 1 - Create an integration in the CrowdSec Console
 
 In your CrowdSec Console account, navigate to the **Blocklist** tab in the top menu bar, then select the **Integrations** sub-menu.
 Choose the integration type you need, then click **Connect**.
@@ -118,7 +118,7 @@ On mobile, use the menu icon in the top-right corner, tap **Blocklist**, then **
 <div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
 <div style={{flex: '1'}}>
 
-### Step 2 — Fill in integration details
+### Step 2 - Fill in integration details
 
 Name the integration *(must be unique to your account)*
 Optionally, add a description and tags to help you identify it later.
@@ -139,7 +139,7 @@ Then click **Create**.
 
     <TabItem value="step3">
 
-### Step 3 — Copy your credentials
+### Step 3 - Copy your credentials
 
 :::warning
 The credentials shown next are displayed **only once**. Copy them before closing this screen.
@@ -200,7 +200,7 @@ The Remediation Component integration provides you with an API key to copy into 
 <div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
 <div style={{flex: '1'}}>
 
-### Step 4 — Subscribe to Blocklists
+### Step 4 - Subscribe to Blocklists
 
 The integration endpoint will serve the deduplicated blocklists it's subscribed to.
 After creation, a subscription pop-up appears automatically.

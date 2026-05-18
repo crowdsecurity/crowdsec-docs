@@ -8,7 +8,7 @@ sidebar_position: 1
 
 ## Web UI
 
-The [ipdex web app](https://ipdex.crowdsec.net/) lets you upload a list of IPs or a log file and instantly get a reputation report — no installation required.
+The [ipdex web app](https://ipdex.crowdsec.net/) lets you upload a list of IPs or a log file and instantly get a reputation report: no installation required.
 
 ![ipdex web UI](/img/ipdex_demo.png)
 
