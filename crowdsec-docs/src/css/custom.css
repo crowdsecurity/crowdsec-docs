@@ -1,10 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Roboto+Mono:wght@400;500&display=swap");
 
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
 @import url("colors.css"); /* SHOULD BE ON TOP */
+@import url("crowdsec-tokens.css");
+@import url("crowdsec-typography.css");
+@import url("crowdsec-algolia.css");
+@import url("crowdsec-components.css");
 @import url("alerts.css");
 @import url("code.css");
 @import url("navbar.css");
@@ -27,32 +31,10 @@ body,
 }
 
 .theme-doc-sidebar-container {
-	@apply bg-card;
+	background: var(--cs-bg-soft) !important;
 }
 
-html[data-theme="light"] .menu__link--active {
-	--ifm-menu-color-active: rgb(var(--primary));
-}
-html[data-theme="light"] .navbar-sidebar__item .menu__list .menu__link--active {
-	--ifm-menu-color-active: rgb(var(--secondary));
-}
-
-html[data-theme="light"] .tabs__item--active {
-	--ifm-color-primary: rgb(var(--primary));
-	--ifm-tabs-color-active: rgb(var(--primary));
-	border-bottom: 2px solid rgb(var(--primary));
-}
-html[data-theme="light"] .table-of-contents__link:hover {
-	--ifm-color-primary: rgb(var(--primary));
-}
-html[data-theme="light"] .breadcrumbs__link {
-	--ifm-breadcrumb-color-active: rgb(var(--primary));
-	--ifm-link-hover-color: rgb(var(--primary));
-}
-html[data-theme="light"] .dropdown__link--active,
-html[data-theme="light"] .dropdown__link--active:hover {
-	--ifm-link-color: rgb(var(--primary));
-}
+/* Infima active state overrides are now handled by crowdsec-tokens.css */
 
 html[data-theme="dark"] {
 	--docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.1);
@@ -113,7 +95,7 @@ div.markdown {
 	padding: 14px 16px;
 }
 
-/* Quick-access strip — label + pill buttons in a row (matches homepage "Already running?" strip) */
+/* Quick-access strip - label + pill buttons in a row (matches homepage "Already running?" strip) */
 .doc-quick-strip {
 	display: flex;
 	align-items: center;
@@ -189,11 +171,11 @@ div.markdown .doc-quick-strip__pill {
 }
 
 a {
-	@apply text-primary;
+	color: var(--ifm-link-color);
 }
 
 blockquote {
-	--ifm-blockquote-border-color: rgb(var(--primary));
+	--ifm-blockquote-border-color: var(--cs-orange);
 	--ifm-blockquote-background-color: transparent;
 }
 
@@ -209,7 +191,7 @@ div[class^="announcementBar"] {
 
 @media screen and (max-width: 996px) {
 	:root {
-		--ifm-font-size-base: 1rem;
+		--ifm-font-size-base: 14px;
 	}
 	article header h1 {
 		font-size: 1.5rem !important;
@@ -221,7 +203,7 @@ div[class^="announcementBar"] {
 
 @media screen and (min-width: 997px) {
 	:root {
-		--ifm-font-size-base: 1rem;
+		--ifm-font-size-base: 15px;
 	}
 	article header h1 {
 		font-size: 2rem !important;
@@ -383,43 +365,7 @@ html:has(.homepage-search) [class*="navbarSearchContainer"] {
 	}
 }
 
-/* Algolia DocSearch modal theming */
-[data-theme="light"] .DocSearch {
-	--docsearch-primary-color: rgb(var(--primary));
-	--docsearch-text-color: rgb(var(--foreground));
-	--docsearch-muted-color: rgb(var(--muted-foreground));
-	--docsearch-container-background: rgb(var(--color-gray-900) / 0.55);
-	--docsearch-modal-background: rgb(var(--card));
-	--docsearch-searchbox-background: rgb(var(--input));
-	--docsearch-searchbox-focus-background: rgb(var(--card));
-	--docsearch-hit-color: rgb(var(--foreground));
-	--docsearch-hit-active-color: rgb(var(--primary-foreground));
-	--docsearch-hit-background: rgb(var(--background));
-	--docsearch-footer-background: rgb(var(--muted));
-	--docsearch-key-gradient: linear-gradient(180deg, rgb(var(--background)), rgb(var(--muted)));
-	--docsearch-key-shadow: 0 1px 0 rgb(var(--border)), 0 1px 3px rgba(0, 0, 0, 0.15);
-}
-
-[data-theme="light"] .DocSearch-Commands-Key {
-	background: rgb(var(--color-gray-200));
-	box-shadow: 0 1px 0 rgb(var(--color-gray-300));
-}
-
-[data-theme="dark"] .DocSearch {
-	--docsearch-primary-color: rgb(var(--primary));
-	--docsearch-text-color: rgb(var(--foreground));
-	--docsearch-muted-color: rgb(var(--muted-foreground));
-	--docsearch-container-background: rgb(var(--color-gray-950) / 0.72);
-	--docsearch-modal-background: rgb(var(--card));
-	--docsearch-searchbox-background: rgb(var(--input));
-	--docsearch-searchbox-focus-background: rgb(var(--card));
-	--docsearch-hit-color: rgb(var(--foreground));
-	--docsearch-hit-active-color: rgb(var(--primary-foreground));
-	--docsearch-hit-background: rgb(var(--background));
-	--docsearch-footer-background: rgb(var(--background));
-	--docsearch-key-gradient: linear-gradient(180deg, rgb(var(--background)), rgb(var(--muted)));
-	--docsearch-key-shadow: 0 1px 0 rgb(var(--border)), 0 1px 3px rgba(0, 0, 0, 0.35);
-}
+/* Algolia DocSearch modal theming is in crowdsec-algolia.css */
 
 /* Quick guide specific CSS /u/getting_started/... */
 .sideBarItemRecommended a::after {

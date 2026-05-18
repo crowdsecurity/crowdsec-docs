@@ -4,8 +4,6 @@ import { translate } from "@docusaurus/Translate";
 import { Collapsible, ThemeClassNames, useCollapsible, usePrevious, useThemeConfig } from "@docusaurus/theme-common";
 import { isSamePath } from "@docusaurus/theme-common/internal";
 import useIsBrowser from "@docusaurus/useIsBrowser";
-import { Badge } from "@site/src/ui/badge";
-import { Tooltip } from "@site/src/ui/tooltip";
 import type { Props } from "@theme/DocSidebarItem/Category";
 import DocSidebarItems from "@theme/DocSidebarItems";
 import clsx from "clsx";
@@ -196,11 +194,23 @@ export default function DocSidebarItemCategory({
 				>
 					{label}
 					{isPremium && (
-						<Tooltip>
-							<Badge className="m-1" variant="premium">
-								Premium
-							</Badge>
-						</Tooltip>
+						<span
+							style={{
+								fontFamily: "var(--cs-font-mono)",
+								fontSize: 9.5,
+								letterSpacing: "0.08em",
+								textTransform: "uppercase" as const,
+								padding: "2px 6px",
+								borderRadius: 4,
+								background: "color-mix(in srgb, var(--cs-orange) 14%, transparent)",
+								color: "var(--cs-orange)",
+								fontWeight: 600,
+								flexShrink: 0,
+								marginLeft: "auto",
+							}}
+						>
+							Premium
+						</span>
 					)}
 				</Link>
 

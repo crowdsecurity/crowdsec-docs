@@ -1,0 +1,706 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   CrowdSec Component Styles
+   Inline code · Admonitions · Code blocks · Tables
+   All colours via --cs-* tokens — no hex in this file.
+───────────────────────────────────────────────────────────────────────────── */
+
+/* Extra tokens needed here */
+:root,
+[data-theme="dark"] {
+	--cs-red: #f87171;
+	--syn-keyword: var(--cs-pink);
+	--syn-string: #fbbf24;
+	--syn-fn: var(--cs-blue);
+	--syn-number: var(--cs-violet);
+	--syn-comment: var(--cs-ink-mute);
+	--syn-punct: var(--cs-ink-dim);
+	--syn-text: #e2e8f0;
+	--syn-flag: var(--cs-pink);
+}
+
+[data-theme="light"] {
+	--cs-red: #dc2626;
+	--syn-keyword: var(--cs-pink);
+	--syn-string: #b45309;
+	--syn-fn: var(--cs-blue);
+	--syn-number: var(--cs-violet);
+	--syn-comment: #94a3b8;
+	--syn-punct: var(--cs-ink-dim);
+	--syn-text: #1e293b;
+	--syn-flag: var(--cs-pink);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   1. INLINE CODE
+   ═══════════════════════════════════════════════════════════════════ */
+code:not(pre code):not(.cs-ic) {
+	font-family: var(--cs-font-mono) !important;
+	font-size: 0.88em;
+	padding: 1px 6px 2px !important;
+	border-radius: 5px !important;
+	background: color-mix(in srgb, rgb(var(--primary)) 10%, transparent) !important;
+	color: rgb(var(--primary)) !important;
+	border: 1px solid color-mix(in srgb, rgb(var(--primary)) 22%, transparent) !important;
+	white-space: nowrap;
+	font-weight: 500 !important;
+}
+
+/* Semantic variants — applied via JSX className or remark plugin */
+.cs-ic {
+	font-family: var(--cs-font-mono);
+	font-size: 0.88em;
+	padding: 1px 6px 2px;
+	border-radius: 5px;
+	white-space: nowrap;
+	font-weight: 500;
+	background: color-mix(in srgb, rgb(var(--primary)) 10%, transparent);
+	color: rgb(var(--primary));
+	border: 1px solid color-mix(in srgb, rgb(var(--primary)) 22%, transparent);
+}
+.cs-ic--path {
+	background: color-mix(in srgb, var(--cs-blue) 12%, transparent);
+	color: var(--cs-blue);
+	border-color: color-mix(in srgb, var(--cs-blue) 22%, transparent);
+}
+.cs-ic--kw {
+	background: color-mix(in srgb, var(--cs-violet) 12%, transparent);
+	color: var(--cs-violet);
+	border-color: color-mix(in srgb, var(--cs-violet) 22%, transparent);
+}
+.cs-ic--val {
+	background: color-mix(in srgb, var(--cs-teal) 12%, transparent);
+	color: var(--cs-teal);
+	border-color: color-mix(in srgb, var(--cs-teal) 22%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   2. ADMONITIONS
+   ═══════════════════════════════════════════════════════════════════ */
+.cs-admon {
+	--tone: var(--cs-blue);
+	margin: 18px 0;
+	padding: 14px 16px 14px 14px;
+	border-radius: 10px;
+	background:
+		linear-gradient(0deg, color-mix(in srgb, var(--tone) 5%, transparent), color-mix(in srgb, var(--tone) 5%, transparent)),
+		var(--cs-surface);
+	border: 1px solid color-mix(in srgb, var(--tone) 24%, var(--cs-border)) !important;
+	border-left: 4px solid var(--tone) !important;
+	display: grid;
+	grid-template-columns: 22px 1fr;
+	gap: 12px;
+	align-items: start;
+}
+
+.cs-admon__icon {
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: color-mix(in srgb, var(--tone) 18%, transparent);
+	color: var(--tone);
+	flex-shrink: 0;
+	margin-top: 2px;
+}
+
+.cs-admon__icon svg {
+	width: 13px;
+	height: 13px;
+}
+
+.cs-admon__body {
+	min-width: 0;
+}
+
+.cs-admon__title {
+	font-family: var(--cs-font-mono);
+	font-size: 10.5px;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--tone);
+	margin-bottom: 4px;
+}
+
+.cs-admon__content {
+	font-size: 14.5px;
+	line-height: 1.55;
+	color: var(--cs-ink);
+}
+
+.cs-admon__content > *:last-child {
+	margin-bottom: 0;
+}
+.cs-admon__content a,
+.cs-admon__content a:hover {
+	color: var(--tone) !important;
+	font-weight: 600;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	text-decoration-thickness: 1.5px;
+	opacity: 1 !important;
+}
+
+/* Type tones */
+.cs-admon.note {
+	--tone: var(--cs-blue);
+}
+.cs-admon.tip {
+	--tone: var(--cs-teal);
+}
+.cs-admon.info {
+	--tone: var(--cs-blue);
+}
+.cs-admon.warning {
+	--tone: var(--cs-orange);
+}
+.cs-admon.danger {
+	--tone: var(--cs-red);
+}
+.cs-admon.premium {
+	--tone: var(--cs-violet);
+}
+.cs-admon.caution {
+	--tone: var(--cs-orange);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   3. CODE BLOCKS
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Zero Infima's pre-padding token so the .codeBlock_hash module class
+   contributes 0 padding; only our chrome and .prism-code set sizing */
+:root,
+[data-theme="dark"],
+[data-theme="light"] {
+	--ifm-pre-padding: 0;
+}
+
+/* Outer container */
+.theme-code-block,
+[class*="codeBlockContainer"] {
+	border: 1px solid var(--cs-border) !important;
+	border-radius: 10px !important;
+	overflow: hidden !important;
+	background: var(--cs-surface) !important;
+	box-shadow: none !important;
+	margin: 18px 0 !important;
+}
+
+/* Hide the default Docusaurus title bar — chrome swizzle handles it */
+[class*="codeBlockTitle"] {
+	display: none !important;
+}
+
+/* Hide the default button group — chrome swizzle handles copy */
+[class*="buttonGroup"],
+[class*="codeBlockButtons"] {
+	display: none !important;
+}
+
+/* ── Chrome bar (injected by CodeBlock/Content swizzle) ─────────── */
+.cs-codeblock-outer {
+	display: flex;
+	flex-direction: column;
+}
+
+.cs-codeblock-chrome {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 8px 10px 8px 14px;
+	border-bottom: 1px solid var(--cs-border);
+	background: var(--cs-bg-soft);
+	min-height: 38px;
+}
+
+.cs-codeblock-lang {
+	font-family: var(--cs-font-mono);
+	font-size: 10.5px;
+	font-weight: 600;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--cs-ink-dim);
+	flex-shrink: 0;
+}
+
+.cs-codeblock-title {
+	font-family: var(--cs-font-mono);
+	font-size: 12px;
+	color: var(--cs-ink-dim);
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Position COPY button at right in chrome */
+.cs-codeblock-chrome .cs-codeblock__copy {
+	margin-left: auto;
+}
+
+/* ── Code area ─────────────────────────────────────────────────── */
+/* Zero any wrapper padding — only .prism-code sets it */
+[class*="codeBlockContent"],
+[class*="codeBlockScrollbarWrapper"],
+[class*="codeBlockLines"],
+.cs-codeblock-body {
+	padding: 0 !important;
+}
+
+/* Pre / code area — single source of padding */
+.prism-code {
+	background: var(--cs-surface) !important;
+	border: none !important;
+	border-radius: 0 !important;
+	margin: 0 !important;
+	padding: 14px 16px !important;
+	font-family: var(--cs-font-mono) !important;
+	font-size: 13px !important;
+	line-height: 1.65 !important;
+	color: var(--syn-text) !important;
+}
+
+/* Line numbers column */
+.prism-code .token-line .linenumber,
+.prism-code span[class*="lineNumber"] {
+	display: inline-block !important;
+	min-width: 2.2em !important;
+	color: var(--cs-ink-mute) !important;
+	user-select: none;
+	text-align: right;
+	padding-right: 14px !important;
+	border-right: 1px solid var(--cs-border) !important;
+	margin-right: 14px !important;
+	font-size: 12.5px !important;
+}
+
+/* Line highlighting */
+.docusaurus-highlight-code-line,
+.theme-code-block-highlighted-line {
+	background: color-mix(in srgb, var(--cs-orange) 10%, transparent) !important;
+	border-left: 2px solid var(--cs-orange) !important;
+	margin-left: -16px !important;
+	padding-left: 14px !important;
+	display: block;
+}
+
+/* ── Prism token overrides ─────────────────────────────────────── */
+.token.keyword,
+.token.operator,
+.token.selector {
+	color: var(--syn-keyword) !important;
+}
+
+.token.string,
+.token.char,
+.token.url,
+.token.regex {
+	color: var(--syn-string) !important;
+}
+
+.token.function,
+.token.method {
+	color: var(--syn-fn) !important;
+}
+
+.token.number,
+.token.boolean {
+	color: var(--syn-number) !important;
+}
+
+.token.comment,
+.token.block-comment,
+.token.prolog,
+.token.doctype {
+	color: var(--syn-comment) !important;
+	font-style: italic;
+}
+
+.token.tag,
+.token.attr-name,
+.token.namespace {
+	color: var(--cs-blue) !important;
+}
+
+.token.punctuation,
+.token.delimiter {
+	color: var(--syn-punct) !important;
+}
+
+.token.property,
+.token.variable {
+	color: var(--cs-orange) !important;
+}
+
+.token.important {
+	color: var(--syn-flag) !important;
+}
+
+/* Diff support */
+.token-line.inserted,
+[class*="codeLine"].inserted,
+.diff.added {
+	background: color-mix(in srgb, var(--cs-teal) 8%, transparent) !important;
+}
+
+.token-line.deleted,
+[class*="codeLine"].deleted,
+.diff.removed {
+	background: color-mix(in srgb, var(--cs-red) 8%, transparent) !important;
+	text-decoration: line-through;
+}
+
+/* Copy button — styled by swizzle, but add fallback via CSS */
+[class*="copyButton"],
+[class*="buttonGroup"] button {
+	background: transparent !important;
+	border: 1px solid var(--cs-border-hi) !important;
+	color: var(--cs-ink-dim) !important;
+	border-radius: 5px !important;
+	transition:
+		color 0.15s,
+		border-color 0.15s,
+		background 0.15s !important;
+}
+
+[class*="copyButton"]:hover,
+[class*="buttonGroup"] button:hover {
+	color: var(--cs-orange) !important;
+	border-color: color-mix(in srgb, var(--cs-orange) 40%, transparent) !important;
+	background: color-mix(in srgb, var(--cs-orange) 8%, transparent) !important;
+}
+
+/* Custom copy button class */
+.cs-codeblock__copy {
+	background: transparent;
+	border: 1px solid var(--cs-border-hi);
+	color: var(--cs-ink-dim);
+	font-family: var(--cs-font-mono);
+	font-size: 10.5px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	padding: 4px 9px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition:
+		color 0.15s,
+		border-color 0.15s,
+		background 0.15s;
+}
+
+.cs-codeblock__copy:hover {
+	color: var(--cs-orange);
+	border-color: color-mix(in srgb, var(--cs-orange) 40%, transparent);
+	background: color-mix(in srgb, var(--cs-orange) 8%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   4. TABLES
+   CSS-only approach — works on both Markdown and HTML tables.
+   Uses border-collapse:separate + corner-radius on cells for rounded
+   table appearance without needing a wrapper div.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Wrapper added by MDXComponents table override (Markdown tables) */
+.cs-table-wrap {
+	margin: 18px 0;
+	border: 1px solid var(--cs-border);
+	border-radius: 10px;
+	overflow: hidden;
+	background: var(--cs-surface);
+}
+
+/* ── Direct table targeting (catches HTML tables too) ─────────── */
+
+/* Infima sets display:block on tables inside .markdown — undo it so width works */
+.theme-doc-markdown table,
+article table,
+.markdown table {
+	display: table !important;
+	width: 100% !important;
+	min-width: 100% !important;
+	border-collapse: separate !important;
+	border-spacing: 0 !important;
+	font-size: 14px !important;
+	background: var(--cs-surface) !important;
+	border: 1px solid var(--cs-border) !important;
+	border-radius: 10px !important;
+	margin: 18px 0 !important;
+	overflow: hidden !important;
+	table-layout: auto !important;
+}
+
+/* thead and tbody must also be display:table-header-group etc. for width to propagate */
+.theme-doc-markdown table thead,
+article table thead,
+.markdown table thead {
+	display: table-header-group !important;
+	width: 100% !important;
+}
+
+.theme-doc-markdown table tbody,
+article table tbody,
+.markdown table tbody {
+	display: table-row-group !important;
+	width: 100% !important;
+}
+
+.theme-doc-markdown table tr,
+article table tr,
+.markdown table tr {
+	display: table-row !important;
+	width: 100% !important;
+}
+
+.theme-doc-markdown table thead th,
+article table thead th {
+	text-align: left !important;
+	padding: 10px 16px !important;
+	font-family: var(--cs-font-mono) !important;
+	font-size: 10.5px !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.14em !important;
+	text-transform: uppercase !important;
+	color: var(--cs-ink-dim) !important;
+	background: var(--cs-bg-soft) !important;
+	border-bottom: 1px solid var(--cs-border) !important;
+	/* rounded top corners via first/last th */
+}
+
+.theme-doc-markdown table thead tr:first-child th:first-child,
+article table thead tr:first-child th:first-child {
+	border-radius: 10px 0 0 0 !important;
+}
+
+.theme-doc-markdown table thead tr:first-child th:last-child,
+article table thead tr:first-child th:last-child {
+	border-radius: 0 10px 0 0 !important;
+}
+
+.theme-doc-markdown table tbody td,
+article table tbody td {
+	padding: 12px 16px !important;
+	border-bottom: 1px solid var(--cs-border) !important;
+	color: var(--cs-ink) !important;
+	line-height: 1.5 !important;
+	vertical-align: top !important;
+	background: var(--cs-surface) !important;
+}
+
+.theme-doc-markdown table tbody tr:last-child td,
+article table tbody tr:last-child td {
+	border-bottom: none !important;
+}
+
+.theme-doc-markdown table tbody tr:last-child td:first-child,
+article table tbody tr:last-child td:first-child {
+	border-radius: 0 0 0 10px !important;
+}
+
+.theme-doc-markdown table tbody tr:last-child td:last-child,
+article table tbody tr:last-child td:last-child {
+	border-radius: 0 0 10px 0 !important;
+}
+
+.theme-doc-markdown table tbody tr:hover td,
+article table tbody tr:hover td {
+	background: color-mix(in srgb, var(--cs-orange) 4%, transparent) !important;
+}
+
+/* ── Reset table styles when inside cs-table-wrap (after all general rules so this wins) */
+.cs-table-wrap table {
+	margin: 0 !important;
+	border: none !important;
+	border-radius: 0 !important;
+	overflow: visible !important;
+}
+
+/* ── Pill component ─────────────────────────────────────────────── */
+.cs-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-family: var(--cs-font-mono);
+	font-size: 10.5px;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	background: color-mix(in srgb, var(--cs-violet) 14%, transparent);
+	color: var(--cs-violet);
+	border: 1px solid color-mix(in srgb, var(--cs-violet) 28%, transparent);
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.cs-pill.community,
+.cs-pill[data-variant="community"] {
+	background: color-mix(in srgb, var(--cs-teal) 14%, transparent);
+	color: var(--cs-teal);
+	border-color: color-mix(in srgb, var(--cs-teal) 28%, transparent);
+}
+
+.cs-pill.platinum,
+.cs-pill[data-variant="platinum"] {
+	background: color-mix(in srgb, var(--cs-orange) 14%, transparent);
+	color: var(--cs-orange);
+	border-color: color-mix(in srgb, var(--cs-orange) 28%, transparent);
+}
+
+.cs-pill.info,
+.cs-pill[data-variant="info"] {
+	background: color-mix(in srgb, var(--cs-blue) 14%, transparent);
+	color: var(--cs-blue);
+	border-color: color-mix(in srgb, var(--cs-blue) 28%, transparent);
+}
+
+.cs-pill.success,
+.cs-pill[data-variant="success"] {
+	background: color-mix(in srgb, var(--cs-teal) 14%, transparent);
+	color: var(--cs-teal);
+	border-color: color-mix(in srgb, var(--cs-teal) 28%, transparent);
+}
+
+.cs-pill.warning,
+.cs-pill[data-variant="warning"] {
+	background: color-mix(in srgb, var(--cs-orange) 14%, transparent);
+	color: var(--cs-orange);
+	border-color: color-mix(in srgb, var(--cs-orange) 28%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   5. TABS
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Tab bar */
+.tabs {
+	border-bottom: 1px solid var(--cs-border) !important;
+	margin-bottom: 0 !important;
+	gap: 8px !important;
+	flex-wrap: nowrap !important;
+	overflow-x: auto !important;
+	scrollbar-width: none !important;
+}
+
+.tabs::-webkit-scrollbar {
+	display: none !important;
+}
+
+/* Individual tab items */
+.tabs__item {
+	font-family: var(--cs-font-mono) !important;
+	font-size: 11.5px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+	color: var(--cs-ink-mute) !important;
+	padding: 10px 18px !important;
+	border-radius: 6px 6px 0 0 !important;
+	border: none !important;
+	border-bottom: 2px solid transparent !important;
+	white-space: nowrap !important;
+	flex-shrink: 0 !important;
+	transition:
+		color 0.12s,
+		background 0.12s,
+		border-color 0.12s !important;
+	margin-bottom: -1px !important;
+}
+
+.tabs__item:hover {
+	color: var(--cs-ink-dim) !important;
+	background: color-mix(in srgb, var(--cs-ink) 4%, transparent) !important;
+}
+
+/* Active tab */
+.tabs__item--active {
+	color: var(--cs-orange) !important;
+	background: color-mix(in srgb, var(--cs-orange) 6%, transparent) !important;
+	border-bottom-color: var(--cs-orange) !important;
+}
+
+/* Tab panel container */
+.tabs-container [role="tabpanel"] {
+	padding: 20px 0 !important;
+}
+
+/* Tab panel content — scope to div only so li.tabs__item buttons are not zeroed */
+div[class*="tabItem"] {
+	padding: 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   6. BUTTON ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════ */
+.cs-btn {
+	transition:
+		transform 0.12s ease,
+		filter 0.12s ease,
+		box-shadow 0.12s ease !important;
+	will-change: transform;
+}
+
+.cs-btn:hover {
+	transform: translateY(-1px) !important;
+	filter: brightness(1.08) !important;
+	text-decoration: none !important;
+	color: inherit !important;
+}
+
+.cs-btn:active {
+	transform: translateY(1px) !important;
+	filter: brightness(0.94) !important;
+	transition-duration: 0.06s !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   7. PAGINATION NAV (prev / next at bottom of doc pages)
+   ═══════════════════════════════════════════════════════════════════ */
+.pagination-nav {
+	gap: 14px !important;
+}
+
+.pagination-nav__link {
+	background: var(--cs-surface) !important;
+	border: 1px solid var(--cs-border) !important;
+	border-radius: 10px !important;
+	padding: 16px 20px !important;
+	text-decoration: none !important;
+	transition:
+		border-color 0.15s,
+		background 0.15s !important;
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 4px !important;
+}
+
+.pagination-nav__link:hover {
+	border-color: color-mix(in srgb, var(--cs-orange) 45%, transparent) !important;
+	background: var(--cs-surface-2) !important;
+	text-decoration: none !important;
+}
+
+.pagination-nav__sublabel {
+	font-family: var(--cs-font-mono) !important;
+	font-size: 10px !important;
+	text-transform: uppercase !important;
+	letter-spacing: 0.14em !important;
+	font-weight: 600 !important;
+	color: var(--cs-ink-mute) !important;
+}
+
+.pagination-nav__label {
+	font-size: 14px !important;
+	font-weight: 600 !important;
+	color: var(--cs-ink) !important;
+	line-height: 1.3 !important;
+}
+
+.pagination-nav__link:hover .pagination-nav__label {
+	color: var(--cs-orange) !important;
+}

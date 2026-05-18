@@ -40,7 +40,7 @@ labels:
 
 Once the rule behaves as expected, the remaining steps package it for CrowdSec, wire it into the acquisition pipeline, and test it end to end.
 
-## Step 1 — Stage the Rule File
+## Step 1 - Stage the Rule File
 
 CrowdSec loads AppSec rules from `/etc/crowdsec/appsec-rules/`. Copy your YAML rule into that directory (create a `custom/` subfolder to keep things tidy if you manage several rules):
 
@@ -56,7 +56,7 @@ Make sure the `name` inside the rule file matches the file name convention you p
 If you run CrowdSec in a container, copy the file into the volume that is mounted at `/etc/crowdsec/appsec-rules/` inside the container.
 :::
 
-## Step 2 — Create an AppSec Configuration
+## Step 2 - Create an AppSec Configuration
 
 An AppSec configuration lists which rules to load and how to handle matches. Create a new file under `/etc/crowdsec/appsec-configs/` that targets your custom rule:
 
@@ -73,7 +73,7 @@ Key points:
 - `inband_rules` (and/or `outofband_rules`) accept glob patterns, so you can load multiple rules with a single entry such as `custom/block-*`.
 - During the reload step CrowdSec validates the syntax; if anything is off, the reload fails and the service logs the parsing error.
 
-## Step 3 — Reference the Configuration in the Acquisition File
+## Step 3 - Reference the Configuration in the Acquisition File
 
 The AppSec acquisition file (`/etc/crowdsec/acquis.d/appsec.yaml`) controls which configurations are active for the WAF component. Add your configuration to the `appsec_configs` list. Order matters: later entries override conflicting defaults such as `default_remediation`.
 
@@ -89,7 +89,7 @@ source: appsec
 
 If you only want to run your custom configuration, remove other entries and keep the list with a single item.
 
-## Step 4 — Reload CrowdSec and Validate the Load
+## Step 4 - Reload CrowdSec and Validate the Load
 
 Apply the changes by reloading the CrowdSec service:
 
@@ -106,7 +106,7 @@ sudo cscli appsec-configs list | grep block-nonnumeric-user-id
 
 The rule should appear as `enabled`, and the configuration should show up in the list. CrowdSec logs confirm the configuration was loaded without errors.
 
-## Step 5 — Functional Test with `curl`
+## Step 5 - Functional Test with `curl`
 
 Trigger the behaviour your rule is meant to catch to ensure it blocks as expected. For the example rule, send a request with a non-numeric `user_id` value:
 

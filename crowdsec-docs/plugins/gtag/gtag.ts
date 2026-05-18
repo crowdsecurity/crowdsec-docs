@@ -24,8 +24,10 @@ const clientModule = {
             setTimeout(() => {
                 // Always refer to the variable on window in case it gets overridden
                 // elsewhere.
-                window.gtag("set", "page_path", location.pathname + location.search + location.hash)
-                window.gtag("event", "page_view")
+                if (typeof window.gtag === "function") {
+                    window.gtag("set", "page_path", location.pathname + location.search + location.hash)
+                    window.gtag("event", "page_view")
+                }
             })
         }
     },

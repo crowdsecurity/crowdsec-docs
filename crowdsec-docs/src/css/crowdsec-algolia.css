@@ -1,0 +1,60 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   CrowdSec Algolia DocSearch theming
+   Maps --docsearch-* vars to --cs-* tokens for dark and light modes.
+───────────────────────────────────────────────────────────────────────────── */
+
+[data-theme="dark"] .DocSearch,
+:root .DocSearch {
+	--docsearch-primary-color: var(--cs-orange);
+	--docsearch-text-color: var(--cs-ink);
+	--docsearch-muted-color: var(--cs-ink-mute);
+	--docsearch-container-background: rgba(10, 17, 32, 0.8);
+	--docsearch-modal-background: var(--cs-surface);
+	--docsearch-searchbox-background: var(--cs-bg);
+	--docsearch-searchbox-focus-background: var(--cs-bg-soft);
+	--docsearch-hit-color: var(--cs-ink);
+	--docsearch-hit-active-color: var(--cs-bg);
+	--docsearch-hit-background: var(--cs-surface-2);
+	--docsearch-footer-background: var(--cs-bg-soft);
+	--docsearch-key-gradient: linear-gradient(180deg, var(--cs-surface) 0%, var(--cs-bg) 100%);
+	--docsearch-key-shadow: 0 1px 0 var(--cs-border-hi), 0 1px 3px rgba(0, 0, 0, 0.35);
+	--docsearch-searchbox-shadow: inset 0 0 0 1px var(--cs-orange);
+	--docsearch-modal-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .DocSearch {
+	--docsearch-primary-color: var(--cs-orange);
+	--docsearch-text-color: var(--cs-ink);
+	--docsearch-muted-color: var(--cs-ink-mute);
+	--docsearch-container-background: rgba(15, 23, 42, 0.55);
+	--docsearch-modal-background: var(--cs-surface);
+	--docsearch-searchbox-background: var(--cs-surface-2);
+	--docsearch-searchbox-focus-background: var(--cs-bg-soft);
+	--docsearch-hit-color: var(--cs-ink);
+	--docsearch-hit-active-color: #ffffff;
+	--docsearch-hit-background: var(--cs-bg-soft);
+	--docsearch-footer-background: var(--cs-surface-2);
+	--docsearch-key-gradient: linear-gradient(180deg, var(--cs-bg-soft) 0%, var(--cs-surface-2) 100%);
+	--docsearch-key-shadow: 0 1px 0 var(--cs-border-hi), 0 1px 3px rgba(0, 0, 0, 0.15);
+	--docsearch-searchbox-shadow: inset 0 0 0 1px var(--cs-orange);
+	--docsearch-modal-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Homepage search bar override — use token vars */
+.homepage-search .DocSearch-Button {
+	background: var(--cs-surface) !important;
+	border-color: var(--cs-border-hi) !important;
+}
+
+.homepage-search .DocSearch-Button:hover {
+	border-color: var(--cs-orange) !important;
+	box-shadow: 0 0 0 1px var(--cs-orange) !important;
+}
+
+.homepage-search .DocSearch-Button-Placeholder {
+	color: var(--cs-ink-mute) !important;
+}
+
+.homepage-search .DocSearch-Search-Icon {
+	color: var(--cs-ink-mute) !important;
+}

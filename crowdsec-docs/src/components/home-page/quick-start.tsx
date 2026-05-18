@@ -10,11 +10,11 @@ import cibWindows from "@site/static/img/logo/windows-colored.svg";
 import opnsenseLogo from "@site/static/img/logo-opnsense.svg";
 import pfSenseLogo from "@site/static/img/logo-pfsense.svg";
 import whmLogo from "@site/static/img/logo-whm.svg";
-import React from "react";
+import type React from "react";
 import { HomePageItem } from "./home-item";
 
 type StaticData = {
-	icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+	icon: React.ElementType | React.ReactNode;
 	text: string;
 	link: string;
 	description?: string;

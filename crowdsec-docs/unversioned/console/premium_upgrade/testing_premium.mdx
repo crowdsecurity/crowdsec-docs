@@ -6,6 +6,9 @@ toc_max_heading_level: 2
 ---
 
 import { FeatureCard, HighlightCard } from '@site/src/components/premium-upgrade/feature-card';
+import DocCard from '@site/src/components/docs/DocCard';
+import DocCardGrid from '@site/src/components/docs/DocCardGrid';
+import QuickStrip from '@site/src/components/docs/QuickStrip';
 
 <div className="p-6 rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 border border-solid border-primary/20 mb-8">
 
@@ -33,45 +36,11 @@ Premium protection features are automatically enabled when you upgrade:
 
 </div>
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-
-<div className="border border-solid border-border rounded-lg p-6 bg-card">
-
-### 📊 Metric 1: Remediation Ratio
-
-**How to measure:**
-Check your Console dashboard for proactive vs reactive blocking ratio.
-
-**Expected result:**
-2× more proactive blocking (blocklist hits vs real-time decisions)
-
-</div>
-
-<div className="border border-solid border-border rounded-lg p-6 bg-card">
-
-### 💻 Metric 2: Server Resources
-
-**How to measure:**
-Monitor CPU, memory, and bandwidth usage on your Security Engines before and after.
-
-**Expected result:**
-75-92% reduction in malicious traffic reaching your servers
-
-</div>
-
-<div className="border border-solid border-border rounded-lg p-6 bg-card">
-
-### 📝 Metric 3: Log Volume
-
-**How to measure:**
-Check your SIEM or log aggregator for alert volume changes.
-
-**Expected result:**
-Cleaner logs, reduced alert fatigue, fewer false positives
-
-</div>
-
-</div>
+<DocCardGrid cols={3}>
+  <DocCard iconName="gauge" color="var(--cs-orange)" title="Metric 1: Remediation Ratio" desc="Check your Console dashboard for proactive vs reactive blocking ratio. Expected: 2× more proactive blocking (blocklist hits vs real-time decisions)." />
+  <DocCard iconName="pulse" color="var(--cs-teal)" title="Metric 2: Server Resources" desc="Monitor CPU, memory, and bandwidth on your Security Engines before and after. Expected: 75–92% reduction in malicious traffic reaching your servers." />
+  <DocCard iconName="book" color="var(--cs-violet)" title="Metric 3: Log Volume" desc="Check your SIEM or log aggregator for alert volume changes. Expected: cleaner logs, reduced alert fatigue, fewer false positives." />
+</DocCardGrid>
 
 <HighlightCard
 	title="Quick Test: Background Noise Filtering"
@@ -101,7 +70,7 @@ Enable team features to see collaboration improvements:
 
 </div>
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<DocCardGrid cols={2}>
 
 <FeatureCard
 	title="Test: Long-Term Trend Analysis"
@@ -134,7 +103,7 @@ Enable team features to see collaboration improvements:
 	link="/u/console/notification_integrations/overview"
 />
 
-</div>
+</DocCardGrid>
 
 <div className="p-6 rounded-lg bg-gray-50 dark:bg-gray-900/30 border border-solid border-border mb-8">
 
@@ -164,7 +133,7 @@ Test multi-tenant and automation capabilities:
 
 </div>
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<DocCardGrid cols={2}>
 
 <FeatureCard
 	title="Test: Multi-Tenant Isolation"
@@ -198,7 +167,7 @@ Test multi-tenant and automation capabilities:
 	link="/u/console/service_api/getting_started"
 />
 
-</div>
+</DocCardGrid>
 
 <div className="p-6 rounded-lg bg-gray-50 dark:bg-gray-900/30 border border-solid border-border mb-8">
 
@@ -215,67 +184,24 @@ Test multi-tenant and automation capabilities:
 
 ## 🎓 Recommended Trial Timeline
 
-<div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 text-sm">
-
-<div className="border-2 border-solid border-primary/30 rounded-lg p-6 bg-card">
-
-### Week 1: Protection
-
-- Enable all blocklists
-- Activate Background Noise
-- Turn on Remediation Sync
-- Measure baseline metrics
-
-</div>
-
-<div className="border border-solid border-border rounded-lg p-6 bg-card">
-
-### Week 2: Team
-
-- Invite team members
-- Test CTI lookups
-- Configure push notifications
-- Analyze historical trends
-
-</div>
-
-<div className="border border-solid border-border rounded-lg p-6 bg-card">
-
-### Week 3: Scale
-
-- Create test organizations
-- Test SAPI endpoints
-- Try Auto Enroll
-- Custom blocklist sharing
-
-</div>
-
-<div className="border border-solid border-border rounded-lg p-6 bg-card">
-
-### Week 4: Review
-
-- Compare metrics vs Week 1
-- Document value realized
-- Plan production rollout
-- Prepare upgrade decision
-
-</div>
-
-</div>
+<DocCardGrid cols={2}>
+  <DocCard iconName="shield" color="var(--cs-orange)" title="Week 1: Protection" desc="Enable all blocklists · Activate Background Noise · Turn on Remediation Sync · Measure baseline metrics." />
+  <DocCard iconName="users" color="var(--cs-teal)" title="Week 2: Team" desc="Invite team members · Test CTI lookups · Configure push notifications · Analyze historical trends." />
+  <DocCard iconName="box" color="var(--cs-violet)" title="Week 3: Scale" desc="Create test organizations · Test SAPI endpoints · Try Auto Enroll · Custom blocklist sharing." />
+  <DocCard iconName="gauge" color="var(--cs-blue)" title="Week 4: Review" desc="Compare metrics vs Week 1 · Document value realized · Plan production rollout · Prepare upgrade decision." />
+</DocCardGrid>
 
 ---
 
 ## 💡 Need Help Testing?
 
-<div className="p-6 rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 border border-solid border-primary/20">
-
-### Questions about your trial?
-
 Our team can help you set up proper testing and measure the value in your specific environment.
 
-<div style={{display: 'flex', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap'}}>
-	<a href="https://www.crowdsec.net/contact-crowdsec" className="button button--primary button--lg">Contact Support</a>
-	<a href="/u/console/premium_upgrade/features_overview" className="button button--secondary button--lg">View All Features →</a>
-</div>
-
-</div>
+<QuickStrip
+  title="Questions about your trial?"
+  subtitle="Our team can help you measure the value in your environment."
+  links={[
+    { label: "Contact Support", href: "https://www.crowdsec.net/contact-crowdsec", external: true },
+    { label: "View All Features →", href: "/u/console/premium_upgrade/features_overview" },
+  ]}
+/>
