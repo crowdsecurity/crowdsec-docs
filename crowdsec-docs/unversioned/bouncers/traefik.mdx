@@ -212,7 +212,7 @@ metadata:
 type: Opaque
 stringData:
   ENROLL_KEY: "<your-existing-enroll-key>"
-  BOUNCER_KEY_traefik: "<choose-a-long-random-key>"
+  BOUNCER_KEY_traefik: "<your-shared-traefik-bouncer-key>"
 ---
 apiVersion: v1
 kind: Secret
@@ -221,7 +221,7 @@ metadata:
   namespace: traefik
 type: Opaque
 stringData:
-  BOUNCER_KEY_traefik: "<same-value-as-BOUNCER_KEY_traefik-above>"
+  BOUNCER_KEY_traefik: "<your-shared-traefik-bouncer-key>"
 ```
 
 Apply it:
@@ -285,9 +285,6 @@ Avoid committing a middleware manifest with `crowdsecLapiKey:
 <real-secret-value>` in Git.
 :::
 
-<Tabs>
-<TabItem value="mounted" label="Mounted Secret File" default>
-
 Mount the Traefik-side secret into the pod and let the middleware read it from a
 file.
 
@@ -343,9 +340,6 @@ kubectl apply -f bouncer-middleware.yaml
 This keeps the source-of-truth key in Kubernetes secrets and avoids storing the
 literal key in the middleware manifest.
 
-</TabItem>
-<TabItem value="inline" label="Direct Key Example">
-
 <details>
 <summary>Show direct <code>crowdsecLapiKey</code> example</summary>
 
@@ -366,7 +360,7 @@ spec:
       crowdsecLapiScheme: http
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
       crowdsecLapiPath: /
-      crowdsecLapiKey: <same-value-as-BOUNCER_KEY_traefik>
+      crowdsecLapiKey: <your-shared-traefik-bouncer-key>
 ```
 
 Apply it:
@@ -379,9 +373,6 @@ This is useful for quick validation, but `crowdsecLapiKeyFile` with a mounted
 Kubernetes secret is the recommended approach for production.
 
 </details>
-
-</TabItem>
-</Tabs>
 
 Once the middleware exists, attach it to your `IngressRoute` or other Traefik
 route resources.
@@ -437,9 +428,34 @@ helm upgrade --install crowdsec crowdsec/crowdsec \
   -f crowdsec-values.yaml
 ```
 
-Then use an AppSec-enabled middleware template:
+Traefik must also mount the `crowdsec-bouncer-key` secret so the middleware can
+read the bouncer key from a file:
 
-```yaml title="bouncer-middleware.tmpl.yaml"
+```yaml title="traefik-values.yaml"
+experimental:
+  plugins:
+    bouncer:
+      moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+      version: v1.4.5
+volumes:
+  - name: crowdsec-bouncer-key
+    mountPath: /etc/traefik/crowdsec
+    type: secret
+    secretName: crowdsec-bouncer-key
+```
+
+If needed, upgrade the Traefik release as well:
+
+```bash
+helm upgrade --install traefik traefik/traefik \
+  -n traefik \
+  --create-namespace \
+  -f traefik-values.yaml
+```
+
+Then use an AppSec-enabled middleware:
+
+```yaml title="bouncer-middleware.yaml"
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
@@ -453,7 +469,7 @@ spec:
       crowdsecLapiScheme: http
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
       crowdsecLapiPath: /
-      crowdsecLapiKey: ${BOUNCER_KEY_TRAEFIK}
+      crowdsecLapiKeyFile: /etc/traefik/crowdsec/BOUNCER_KEY_traefik
       crowdsecAppsecEnabled: true
       crowdsecAppsecHost: crowdsec-appsec-service.crowdsec.svc.cluster.local:7422
       crowdsecAppsecPath: /
@@ -462,15 +478,10 @@ spec:
       crowdsecAppsecBodyLimit: 10485760
 ```
 
-Render and apply it the same way:
+Apply it:
 
 ```bash
-export BOUNCER_KEY_TRAEFIK="$(
-  kubectl -n crowdsec get secret crowdsec-keys \
-    -o jsonpath='{.data.BOUNCER_KEY_traefik}' | base64 -d
-)"
-
-envsubst < bouncer-middleware.tmpl.yaml | kubectl apply -f -
+kubectl apply -f bouncer-middleware.yaml
 ```
 
 #### Validate AppSec
