@@ -46,6 +46,7 @@ At the end, you will have:
 - CrowdSec LAPI running in-cluster and reachable from Traefik
 - A Traefik middleware enforcing CrowdSec remediation decisions
 - A Kubernetes secret storing the shared bouncer key
+- The bouncer key mounted into the Traefik pod as a file
 - An operational pattern that avoids committing the LAPI key in plaintext
 
 :::tip AppSec Support
@@ -175,9 +176,14 @@ also enable experimental plugin loading in the Traefik chart values:
 ```yaml title="traefik-values.yaml"
 experimental:
   plugins:
-    crowdsec-bouncer-traefik-plugin:
+    bouncer:
       moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
       version: v1.4.5
+volumes:
+  - name: crowdsec-bouncer-key
+    mountPath: /etc/traefik/crowdsec
+    type: secret
+    secretName: crowdsec-bouncer-key
 ```
 
 Apply or upgrade your Traefik release:
@@ -195,7 +201,7 @@ As with the Envoy guide, the practical approach is to choose a fixed key, store
 it in a Kubernetes secret, and force `BOUNCER_KEY_traefik` from `lapi.env` with
 `valueFrom.secretKeyRef`.
 
-Create or update the secret used by CrowdSec LAPI:
+Create or update the secrets used by CrowdSec LAPI and Traefik:
 
 ```yaml title="crowdsec-keys.yaml"
 apiVersion: v1
@@ -207,6 +213,15 @@ type: Opaque
 stringData:
   ENROLL_KEY: "<your-existing-enroll-key>"
   BOUNCER_KEY_traefik: "<choose-a-long-random-key>"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-bouncer-key
+  namespace: traefik
+type: Opaque
+stringData:
+  BOUNCER_KEY_traefik: "<same-value-as-BOUNCER_KEY_traefik-above>"
 ```
 
 Apply it:
@@ -239,8 +254,9 @@ helm upgrade --install crowdsec crowdsec/crowdsec \
 ## Verify CrowdSec LAPI access
 
 The Traefik middleware only needs access to CrowdSec LAPI. Make sure the
-CrowdSec release exposes the LAPI service and that the bouncer key is available
-through `lapi.env`.
+CrowdSec release exposes the LAPI service, that the bouncer key is available
+through `lapi.env`, and that Traefik has the same key mounted from the
+`crowdsec-bouncer-key` secret.
 
 Verify the CrowdSec pods and services:
 
@@ -261,23 +277,47 @@ resource.
 
 :::important
 Unlike the Envoy bouncer deployment, the Traefik `Middleware` CRD does not have
-a native `secretKeyRef` field for the plugin configuration. In practice, you
-should still keep the key in a Kubernetes `Secret`, and inject it only when the
-manifest is rendered or applied.
+a native `secretKeyRef` field for the plugin configuration. In Kubernetes, the
+recommended pattern is to mount the key from a `Secret` into the Traefik pod and
+reference it with `crowdsecLapiKeyFile`.
 
 Avoid committing a middleware manifest with `crowdsecLapiKey:
 <real-secret-value>` in Git.
 :::
 
 <Tabs>
-<TabItem value="templated" label="Templated Manifest" default>
+<TabItem value="mounted" label="Mounted Secret File" default>
 
-Keep the real key in the `crowdsec-keys` secret and inject it when you apply
-the middleware.
+Mount the Traefik-side secret into the pod and let the middleware read it from a
+file.
 
-Create a template file:
+Use a Traefik chart values file like this:
 
-```yaml title="bouncer-middleware.tmpl.yaml"
+```yaml title="traefik-values.yaml"
+experimental:
+  plugins:
+    bouncer:
+      moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+      version: v1.4.5
+volumes:
+  - name: crowdsec-bouncer-key
+    mountPath: /etc/traefik/crowdsec
+    type: secret
+    secretName: crowdsec-bouncer-key
+```
+
+Apply or upgrade your Traefik release:
+
+```bash
+helm upgrade --install traefik traefik/traefik \
+  -n traefik \
+  --create-namespace \
+  -f traefik-values.yaml
+```
+
+Then create the middleware:
+
+```yaml title="bouncer-middleware.yaml"
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
@@ -291,28 +331,26 @@ spec:
       crowdsecLapiScheme: http
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
       crowdsecLapiPath: /
-      crowdsecLapiKey: ${BOUNCER_KEY_TRAEFIK}
+      crowdsecLapiKeyFile: /etc/traefik/crowdsec/BOUNCER_KEY_traefik
 ```
 
-Then render and apply it from the Kubernetes secret:
+Apply it:
 
 ```bash
-export BOUNCER_KEY_TRAEFIK="$(
-  kubectl -n crowdsec get secret crowdsec-keys \
-    -o jsonpath='{.data.BOUNCER_KEY_traefik}' | base64 -d
-)"
-
-envsubst < bouncer-middleware.tmpl.yaml | kubectl apply -f -
+kubectl apply -f bouncer-middleware.yaml
 ```
 
-This keeps the source-of-truth key in the Kubernetes secret and avoids storing
-the literal key in the manifest file.
+This keeps the source-of-truth key in Kubernetes secrets and avoids storing the
+literal key in the middleware manifest.
 
 </TabItem>
-<TabItem value="inline" label="Inline Manifest">
+<TabItem value="inline" label="Direct Key Example">
 
-If you only need a quick functional test, you can apply a middleware manifest
-with the key inline:
+<details>
+<summary>Show direct <code>crowdsecLapiKey</code> example</summary>
+
+If you only need a quick functional test, you can still apply a middleware
+manifest with the key inline:
 
 ```yaml title="bouncer-middleware.yaml"
 apiVersion: traefik.io/v1alpha1
@@ -337,8 +375,10 @@ Apply it:
 kubectl apply -f bouncer-middleware.yaml
 ```
 
-This is useful for quick validation, but the templated or GitOps-rendered
-approach is the recommended one for production.
+This is useful for quick validation, but `crowdsecLapiKeyFile` with a mounted
+Kubernetes secret is the recommended approach for production.
+
+</details>
 
 </TabItem>
 </Tabs>
