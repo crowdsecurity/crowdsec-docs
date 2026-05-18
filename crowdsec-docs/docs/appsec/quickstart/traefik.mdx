@@ -325,7 +325,7 @@ http:
           crowdsecAppsecHost: crowdsec:7422
           crowdsecAppsecFailureBlock: true
           crowdsecAppsecUnreachableBlock: true
-          crowdsecLapiKey: privateKey-foo
+          crowdsecLapiKey: <your-shared-traefik-bouncer-key>
 ```
 
 
@@ -336,11 +336,30 @@ Instead if you define the configuration using labels on the containers you can a
       - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.enabled=true"
       - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecAppsecEnabled=true"
       - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecAppsecHost=crowdsec:7422"
-      - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecLapiKey=privateKey-foo"
+      - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecLapiKey=<your-shared-traefik-bouncer-key>"
 ```
 </TabItem>
 <TabItem value="kubernetes">
-Here's a Traefik Middleware ressource you can apply with
+For Kubernetes, keep the Traefik bouncer key in a `Secret`, mount it into the
+Traefik pod, and reference it with `crowdsecLapiKeyFile`.
+
+Use a Traefik values file like this:
+
+```yaml title="traefik-values.yaml"
+experimental:
+  plugins:
+    bouncer:
+      moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+      version: v1.4.5
+volumes:
+  - name: crowdsec-bouncer-key
+    mountPath: /etc/traefik/crowdsec
+    type: secret
+    secretName: crowdsec-bouncer-key
+```
+
+Then create a Traefik Middleware resource:
+
 ```bash
 kubectl apply -f traefik-middleware.yaml
 ```
@@ -358,7 +377,7 @@ spec:
       crowdsecMode: stream
       crowdsecLapiScheme: http
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
-      crowdsecLapiKey: <shadowed>
+      crowdsecLapiKeyFile: /etc/traefik/crowdsec/BOUNCER_KEY_traefik
       htttTimeoutSeconds: 60
       forwardedheaderstrustedips:
         - 10.0.0.0/8
@@ -370,6 +389,37 @@ spec:
       crowdsecAppsecFailureBlock: true
       crowdsecAppsecUnreachableBlock: true
 ```
+
+<details>
+<summary>Show direct <code>crowdsecLapiKey</code> example</summary>
+
+```yaml values="traefik-middleware.yaml"
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: crowdsec
+  namespace: traefik
+spec:
+  plugin:
+    crowdsec-bouncer-traefik-plugin:
+      enabled: true
+      crowdsecMode: stream
+      crowdsecLapiScheme: http
+      crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
+      crowdsecLapiKey: <your-shared-traefik-bouncer-key>
+      htttTimeoutSeconds: 60
+      forwardedheaderstrustedips:
+        - 10.0.0.0/8
+        - 192.168.0.0/16
+        - 134.209.137.94
+        - 2a03:b0c0:2:f0::f557:a001
+      crowdsecAppsecEnabled: false
+      crowdsecAppsecHost: crowdsec:7422
+      crowdsecAppsecFailureBlock: true
+      crowdsecAppsecUnreachableBlock: true
+```
+
+</details>
 
 You can still add some route configuration through
 [IngressRoute](https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/crd/http/ingressroute/)
