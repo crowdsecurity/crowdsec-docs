@@ -196,9 +196,18 @@ helm upgrade --install traefik traefik/traefik -n traefik --create-namespace -f 
 
 ## Store the Traefik bouncer key in a Kubernetes secret
 
-The practical approach is to choose a fixed key, store it in a Kubernetes
-secret, and force `BOUNCER_KEY_traefik` from `lapi.env` with
-`valueFrom.secretKeyRef`.
+The practical approach is to choose a fixed shared key and store it in
+Kubernetes secrets instead of hardcoding it in Helm values.
+
+Two secrets are needed because CrowdSec and Traefik run in different
+namespaces:
+
+- In the `crowdsec` namespace, CrowdSec LAPI reads `BOUNCER_KEY_traefik` from
+  the `crowdsec-keys` secret.
+- In the `traefik` namespace, Traefik mounts the same key from the
+  `crowdsec-bouncer-key` secret as a file.
+
+Both secrets must contain the same `BOUNCER_KEY_traefik` value.
 
 Create or update the secrets used by CrowdSec LAPI and Traefik:
 
@@ -247,8 +256,8 @@ Apply the CrowdSec release again:
 helm upgrade --install crowdsec crowdsec/crowdsec --namespace crowdsec --create-namespace -f crowdsec-values.yaml
 ```
 
-The second secret of the `crowdsec-keys.yaml` is meant for further use in the
-traefik configuration. It will be described later on.
+The `crowdsec-bouncer-key` secret in the `traefik` namespace is used later when
+mounting the key into the Traefik pod.
 
 ## Verify CrowdSec LAPI access
 
