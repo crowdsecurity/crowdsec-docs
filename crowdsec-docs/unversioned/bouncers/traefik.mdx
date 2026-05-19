@@ -155,9 +155,7 @@ Install the Traefik CRDs via Helm:
 ```bash
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
-helm upgrade --install traefik-crds traefik/traefik-crds \
-  -n traefik \
-  --create-namespace
+helm upgrade --install traefik-crds traefik/traefik-crds -n traefik --create-namespace
 ```
 
 </TabItem>
@@ -193,10 +191,7 @@ volumes:
 Apply or upgrade your Traefik release:
 
 ```bash
-helm upgrade --install traefik traefik/traefik \
-  -n traefik \
-  --create-namespace \
-  -f traefik-values.yaml
+helm upgrade --install traefik traefik/traefik -n traefik --create-namespace -f traefik-values.yaml
 ```
 
 ## Store the Traefik bouncer key in a Kubernetes secret
@@ -249,10 +244,7 @@ lapi:
 Apply the CrowdSec release again:
 
 ```bash
-helm upgrade --install crowdsec crowdsec/crowdsec \
-  --namespace crowdsec \
-  --create-namespace \
-  -f crowdsec-values.yaml
+helm upgrade --install crowdsec crowdsec/crowdsec --namespace crowdsec --create-namespace -f crowdsec-values.yaml
 ```
 
 The second secret of the `crowdsec-keys.yaml` is meant for further use in the
@@ -309,10 +301,7 @@ volumes:
 Apply or upgrade your Traefik release:
 
 ```bash
-helm upgrade --install traefik traefik/traefik \
-  -n traefik \
-  --create-namespace \
-  -f traefik-values.yaml
+helm upgrade --install traefik traefik/traefik -n traefik --create-namespace -f traefik-values.yaml
 ```
 
 Then create the middleware:
@@ -449,10 +438,7 @@ volumes:
 If needed, upgrade the Traefik release as well:
 
 ```bash
-helm upgrade --install traefik traefik/traefik \
-  -n traefik \
-  --create-namespace \
-  -f traefik-values.yaml
+helm upgrade --install traefik traefik/traefik -n traefik --create-namespace -f traefik-values.yaml
 ```
 
 Then use an AppSec-enabled middleware:
