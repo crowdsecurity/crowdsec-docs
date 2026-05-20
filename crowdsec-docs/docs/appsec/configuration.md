@@ -168,6 +168,10 @@ inband_options:
   request_body_in_memory_limit: 1048576
 ```
 
+:::note
+`request_body_in_memory_limit` is a Coraza-level setting. It is distinct from the engine's overall maximum body size, which bounds how much of the body CrowdSec buffers before any rule runs (defaults to 10MB). See [Request body size handling](hooks.md#request-body-size-handling) to tune it.
+:::
+
 ### outofband_options
 
 > object

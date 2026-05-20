@@ -12,7 +12,7 @@ Please refer to [ent.](https://entgo.io/) [supported database](https://entgo.io/
 
  - MySQL `5.6.35`, `5.7.26` and `8`
  - MariaDB `10.2`, `10.3` and latest
- - PostgreSQL `11`, `12`, `13`, `14` and `15`
+ - PostgreSQL `13`, `14`, `15`, `16`, and `17`.
  - SQLite
  - Gremlin
 

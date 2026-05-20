@@ -507,6 +507,29 @@ label=aaa\u0027%2b#request.get(\u0027.KEY_velocity.struts2.context\u0027).intern
 
 Hooks allow you to customize WAF behavior at different execution phases. This section demonstrates key hook capabilities organized by execution phase.
 
+## Load Phase (on_load)
+
+Load hooks run once when the configuration is loaded, and are typically used to apply global settings.
+
+### 1. Tune Request Body Size Handling
+
+#### Description
+
+Change the maximum request body size buffered and inspected by the engine, and what happens when a request exceeds it.
+
+#### Hook Example
+
+```yaml
+on_load:
+  - apply:
+      - SetMaxBodySize(20971520) # 20MB
+      - SetBodySizeExceededAction("partial")
+```
+
+#### Use Case
+
+Allow larger uploads on this configuration while still bounding memory usage, and inspect the first 20MB of oversized bodies instead of dropping the request outright. See [Request body size handling](hooks.md#request-body-size-handling) for the available actions (`drop`, `partial`, `allow`).
+
 ## Pre-Evaluation Phase (pre_eval)
 
 Pre-evaluation hooks run before rules are evaluated, allowing you to modify rule behavior dynamically per request.
@@ -616,6 +639,25 @@ pre_eval:
 #### Use Case
 
 Automatically block traffic from unwanted countries.
+
+### 6. Disable Body Inspection for Specific Requests
+
+#### Description
+
+Skip request body inspection for the current request, for example on endpoints that legitimately receive large uploads.
+
+#### Hook Example
+
+```yaml
+pre_eval:
+  - filter: req.URL.Path startsWith "/upload"
+    apply:
+      - DisableBodyInspection()
+```
+
+#### Use Case
+
+Avoid buffering and inspecting large file uploads on trusted endpoints. This also bypasses the [maximum body size check](hooks.md#request-body-size-handling), so requests exceeding the limit are allowed through instead of being dropped.
 
 ## Post-Evaluation Phase (post_eval)
 
