@@ -57,6 +57,12 @@ Number of routines to use to process the requests. Defaults to 1.
 How long to cache the auth token for. Accepts value supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
 Defaults to 1m.
 
+### `body_read_timeout`
+
+How long to wait for the remediation component to finish sending the request body before giving up and processing whatever was received. Accepts value supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
+Set to `0` to disable the timeout.
+Defaults to 1s.
+
 ### `cert_file`
 
 Path to the cert file to allow HTTPS communication between the remediation component and the appsec component.
