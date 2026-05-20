@@ -43,20 +43,22 @@ This hook is intended to be used to disable rules at loading (eg, to temporarily
 
 #### Available helpers
 
-| Helper Name               | Type                                 | Description                                                                                             |
-| ------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| `RemoveInBandRuleByName`  | `func(tag str)`                      | Disable the named in-band rule                                                                          |
-| `RemoveInBandRuleByTag`   | `func(tag str)`                      | Disable the in-band rule identified by the tag (multiple rules can have the same tag)                   |
-| `RemoveInBandRuleByID`    | `func(id int)`                       | Disable the in-band rule identified by the ID                                                           |
-| `RemoveOutBandRuleByName` | `func(tag str)`                      | Disable the named out-of-band rule                                                                      |
-| `RemoveOutBandRuleByTag`  | `func(tag str)`                      | Disable the out-of-band rule identified by the tag (multiple rules can have the same tag)               |
-| `RemoveOutBandRuleByID`   | `func(id int)`                       | Disable the out-of-band rule identified by the ID                                                       |
-| `SetRemediationByTag`     | `func(tag str, remediation string)`  | Change the remediation of the in-band rule identified by the tag (multiple rules can have the same tag) |
-| `SetRemediationByID`      | `func(id int, remediation string)`   | Change the remediation of the in-band rule identified by the ID                                         |
-| `SetRemediationByName`    | `func(name str, remediation string)` | Change the remediation of the in-band rule identified by the name                                       |
-| `LoadAPISchemaWithName`   | `func(ref str, filename str)`        | Load an OpenAPI schema from `<data_dir>/schemas/<filename>` and register it under `ref`. See [OpenAPI Schema Validation](api_validation.md). |
-| `LoadAPISchemaWithOptions` | `func(ref str, filename str, opts map)` | Same as `LoadAPISchemaWithName` but accepts per-schema policy overrides (`on_route_not_found`, `on_method_not_allowed`). |
-| `RegisterAPISchemaBodyDecoder` | `func(content_type str, decoder str)` | Enable a non-default body decoder for a Content-Type. See [available decoders](api_validation.md#body-decoders). |
+| Helper Name                    | Type                                    | Description                                                                                                                                                           |
+| ------------------------------ | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `RemoveInBandRuleByName`       | `func(tag str)`                         | Disable the named in-band rule                                                                                                                                        |
+| `RemoveInBandRuleByTag`        | `func(tag str)`                         | Disable the in-band rule identified by the tag (multiple rules can have the same tag)                                                                                 |
+| `RemoveInBandRuleByID`         | `func(id int)`                          | Disable the in-band rule identified by the ID                                                                                                                         |
+| `RemoveOutBandRuleByName`      | `func(tag str)`                         | Disable the named out-of-band rule                                                                                                                                    |
+| `RemoveOutBandRuleByTag`       | `func(tag str)`                         | Disable the out-of-band rule identified by the tag (multiple rules can have the same tag)                                                                             |
+| `RemoveOutBandRuleByID`        | `func(id int)`                          | Disable the out-of-band rule identified by the ID                                                                                                                     |
+| `SetRemediationByTag`          | `func(tag str, remediation string)`     | Change the remediation of the in-band rule identified by the tag (multiple rules can have the same tag)                                                               |
+| `SetRemediationByID`           | `func(id int, remediation string)`      | Change the remediation of the in-band rule identified by the ID                                                                                                       |
+| `SetRemediationByName`         | `func(name str, remediation string)`    | Change the remediation of the in-band rule identified by the name                                                                                                     |
+| `LoadAPISchemaWithName`        | `func(ref str, filename str)`           | Load an OpenAPI schema from `<data_dir>/schemas/<filename>` and register it under `ref`. See [OpenAPI Schema Validation](api_validation.md).                          |
+| `LoadAPISchemaWithOptions`     | `func(ref str, filename str, opts map)` | Same as `LoadAPISchemaWithName` but accepts per-schema policy overrides (`on_route_not_found`, `on_method_not_allowed`).                                              |
+| `RegisterAPISchemaBodyDecoder` | `func(content_type str, decoder str)`   | Enable a non-default body decoder for a Content-Type. See [available decoders](api_validation.md#body-decoders).                                                      |
+| `SetMaxBodySize`               | `func(size int)`                        | Set the maximum request body size (in bytes) buffered and inspected by the engine. Defaults to 10MB. See [Request body size handling](#request-body-size-handling)    |
+| `SetBodySizeExceededAction`    | `func(action str)`                      | Set what happens when a request body exceeds the maximum size: `drop` (default), `partial`, or `allow`. See [Request body size handling](#request-body-size-handling) |
 
 ##### Example
 
@@ -78,23 +80,24 @@ This hook is intended to be used to disable rules only for this particular reque
 
 #### Available helpers
 
-| Helper Name               | Type                                 | Description                                                                                             |
-| ------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| `RemoveInBandRuleByName`  | `func(tag str)`                      | Disable the named in-band rule                                                                          |
-| `RemoveInBandRuleByTag`   | `func(tag str)`                      | Disable the in-band rule identified by the tag (multiple rules can have the same tag)                   |
-| `RemoveInBandRuleByID`    | `func(id int)`                       | Disable the in-band rule identified by the ID                                                           |
-| `RemoveOutBandRuleByName` | `func(tag str)`                      | Disable the named out-of-band rule                                                                      |
-| `RemoveOutBandRuleByTag`  | `func(tag str)`                      | Disable the out-of-band rule identified by the tag (multiple rules can have the same tag)               |
-| `RemoveOutBandRuleByID`   | `func(id int)`                       | Disable the out-of-band rule identified by the ID                                                       |
-| `IsInBand`                | `bool`                               | `true` if the request is in the in-band processing phase                                                |
-| `IsOutBand`               | `bool`                               | `true` if the request is in the out-of-band processing phase                                            |
-| `SetRemediationByTag`     | `func(tag str, remediation string)`  | Change the remediation of the in-band rule identified by the tag (multiple rules can have the same tag) |
-| `SetRemediationByID`      | `func(id int, remediation string)`   | Change the remediation of the in-band rule identified by the ID                                         |
-| `SetRemediationByName`    | `func(name str, remediation string)` | Change the remediation of the in-band rule identified by the name                                       |
-| `req`                     | `http.Request`                       | Original HTTP request received by the remediation component                                             |
-| `DropRequest`             | `func(reason str)`                   | Stop processing the request immediately and instruct the remediation component to block the request     |
-| `ValidateRequestWithSchema` | `func(ref str) bool`               | Validate the current request against an OpenAPI schema previously loaded under `ref` (returns `true` on success). On failure, structured details are published to `hook_vars` (see [OpenAPI Schema Validation](api_validation.md#validation-result-variables)). |
-| `hook_vars`               | `map[string]string`                  | Per-request scratch space shared with later hooks and propagated to the resulting event. Helpers such as `ValidateRequestWithSchema` publish their results here. |
+| Helper Name                 | Type                                 | Description                                                                                                                                                                                                                                                     |
+| --------------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `RemoveInBandRuleByName`    | `func(tag str)`                      | Disable the named in-band rule                                                                                                                                                                                                                                  |
+| `RemoveInBandRuleByTag`     | `func(tag str)`                      | Disable the in-band rule identified by the tag (multiple rules can have the same tag)                                                                                                                                                                           |
+| `RemoveInBandRuleByID`      | `func(id int)`                       | Disable the in-band rule identified by the ID                                                                                                                                                                                                                   |
+| `RemoveOutBandRuleByName`   | `func(tag str)`                      | Disable the named out-of-band rule                                                                                                                                                                                                                              |
+| `RemoveOutBandRuleByTag`    | `func(tag str)`                      | Disable the out-of-band rule identified by the tag (multiple rules can have the same tag)                                                                                                                                                                       |
+| `RemoveOutBandRuleByID`     | `func(id int)`                       | Disable the out-of-band rule identified by the ID                                                                                                                                                                                                               |
+| `IsInBand`                  | `bool`                               | `true` if the request is in the in-band processing phase                                                                                                                                                                                                        |
+| `IsOutBand`                 | `bool`                               | `true` if the request is in the out-of-band processing phase                                                                                                                                                                                                    |
+| `SetRemediationByTag`       | `func(tag str, remediation string)`  | Change the remediation of the in-band rule identified by the tag (multiple rules can have the same tag)                                                                                                                                                         |
+| `SetRemediationByID`        | `func(id int, remediation string)`   | Change the remediation of the in-band rule identified by the ID                                                                                                                                                                                                 |
+| `SetRemediationByName`      | `func(name str, remediation string)` | Change the remediation of the in-band rule identified by the name                                                                                                                                                                                               |
+| `req`                       | `http.Request`                       | Original HTTP request received by the remediation component                                                                                                                                                                                                     |
+| `DropRequest`               | `func(reason str)`                   | Stop processing the request immediately and instruct the remediation component to block the request                                                                                                                                                             |
+| `DisableBodyInspection`     | `func()`                             | Skip body inspection for the current request (also bypasses the maximum body size check). See [Request body size handling](#request-body-size-handling)                                                                                                         |
+| `ValidateRequestWithSchema` | `func(ref str) bool`                 | Validate the current request against an OpenAPI schema previously loaded under `ref` (returns `true` on success). On failure, structured details are published to `hook_vars` (see [OpenAPI Schema Validation](api_validation.md#validation-result-variables)). |
+| `hook_vars`                 | `map[string]string`                  | Per-request scratch space shared with later hooks and propagated to the resulting event. Helpers such as `ValidateRequestWithSchema` publish their results here.                                                                                                |
 
 #### Example
 
@@ -215,6 +218,48 @@ on_match:
 
 When using `SetRemediation*` helpers, the only special value is `allow`: the remediation component won't block the request.
 Any other values (including `ban` and `captcha`) are transmitted as-is to the remediation component.
+
+### Request body size handling
+
+Before the request body is handed over to the rules engine, the Application Security Component reads it into memory itself. To protect the engine from oversized requests, the body is bounded by a maximum size (defaults to **10MB**).
+
+This limit is independent from the Coraza-level [`request_body_in_memory_limit`](configuration.md#inband_options) option: it controls how much of the body CrowdSec buffers in the first place, before any rule is evaluated.
+
+You can tune this behavior from an `on_load` hook:
+
+- `SetMaxBodySize(size)` sets the maximum body size, in bytes. The value must be a positive integer.
+- `SetBodySizeExceededAction(action)` controls what happens when a body exceeds the maximum size:
+
+  | Action           | Behavior                                                                                                                                                   |
+  | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `drop` (default) | The request is blocked using the default remediation, without inspecting the body.                                                                         |
+  | `partial`        | The body is truncated to the maximum size and the kept portion is inspected. Content beyond the truncation point is discarded and will not match any rule. |
+  | `allow`          | The body is not inspected and the request is allowed to proceed (other zones are still evaluated).                                                         |
+
+```yaml
+name: crowdsecurity/my-appsec-config
+default_remediation: ban
+inband_rules:
+  - crowdsecurity/base-config
+on_load:
+  - apply:
+      - SetMaxBodySize(20971520) # 20MB
+      - SetBodySizeExceededAction("partial")
+```
+
+#### `DisableBodyInspection`
+
+`DisableBodyInspection()` can be called from a `pre_eval` hook to skip body inspection for the current request only. When body inspection is disabled:
+
+- the request body is not read or processed, so body-based zones (`BODY_ARGS`, `RAW_BODY`, …) won't match;
+- the maximum body size check is bypassed as well: a request that would otherwise be dropped for exceeding the limit is allowed through, because the operator has explicitly accepted that this body won't be processed.
+
+```yaml
+pre_eval:
+  - filter: req.URL.Path startsWith "/upload"
+    apply:
+      - DisableBodyInspection()
+```
 
 ### `req` object
 
