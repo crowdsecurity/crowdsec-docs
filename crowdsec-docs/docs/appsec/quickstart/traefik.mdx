@@ -487,11 +487,24 @@ spec:
         - 192.168.0.0/16
         - 134.209.137.94
         - 2a03:b0c0:2:f0::f557:a001
-      crowdsecAppsecEnabled: false
-      crowdsecAppsecHost: crowdsec:7422
+      crowdsecAppsecEnabled: true
+      crowdsecAppsecHost: crowdsec-appsec-service.crowdsec.svc.cluster.local:7422
       crowdsecAppsecFailureBlock: true
       crowdsecAppsecUnreachableBlock: true
 ```
+
+<details>
+<summary>How is the AppSec hostname derived?</summary>
+
+The Helm chart creates a Service named `<release>-appsec-service` in the namespace where CrowdSec is installed. With the default release name `crowdsec` in namespace `crowdsec`, the in-cluster DNS name is:
+
+```
+crowdsec-appsec-service.crowdsec.svc.cluster.local:7422
+```
+
+If you used a different release name or namespace, adjust accordingly: `<release>-appsec-service.<namespace>.svc.cluster.local:7422`.
+
+</details>
 
 <details>
 <summary>Less secure alternative: define the Traefik bouncer key inline with <code>crowdsecLapiKey</code> instead of mounting <code>crowdsecLapiKeyFile</code></summary>
@@ -516,8 +529,8 @@ spec:
         - 192.168.0.0/16
         - 134.209.137.94
         - 2a03:b0c0:2:f0::f557:a001
-      crowdsecAppsecEnabled: false
-      crowdsecAppsecHost: crowdsec:7422
+      crowdsecAppsecEnabled: true
+      crowdsecAppsecHost: crowdsec-appsec-service.crowdsec.svc.cluster.local:7422
       crowdsecAppsecFailureBlock: true
       crowdsecAppsecUnreachableBlock: true
 ```
