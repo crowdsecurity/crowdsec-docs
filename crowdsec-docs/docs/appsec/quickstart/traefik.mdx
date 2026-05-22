@@ -133,9 +133,20 @@ appsec:
 Please note the spaces between the collection names (hence why the double quotes are needed).
 :::
 
-Now you can apply it with:
+:::note
+If your `values.yaml` does not already configure the CrowdSec **agent** (via `agent.acquisition` or `agent.additionalAcquisition`), you must explicitly disable it — otherwise the Helm chart will fail with `No acquisition or additionalAcquisition configured`:
+
+```yaml
+agent:
+  enabled: false
 ```
-helm upgrade crowdsec crowdsec/crowdsec -n crowdsec --create-namespace -f ./crowdsec-values.yaml
+
+If you are running a full CrowdSec stack (agent + LAPI + AppSec), configure `agent.acquisition` with your actual log sources instead.
+:::
+
+Now you can apply it with:
+```bash
+helm upgrade --install crowdsec crowdsec/crowdsec -n crowdsec --create-namespace -f ./crowdsec-values.yaml
 ```
 
 This `values.yaml` modification adds the required Hub configuration items.
@@ -255,9 +266,12 @@ The previous compose commands presume the container is named `crowdsec`. If you 
 
 </TabItem>
 <TabItem value="kubernetes">
-With kubernetes the acquisition setup is twofolds:
-We have to add 
+With Kubernetes the acquisition setup is done via `values.yaml`.
+Add the following to your CrowdSec `values.yaml`:
+
 ```yaml title="values.yaml"
+agent:
+  enabled: false   # required if you have no agent.acquisition configured; replace with your log sources for a full stack
 appsec:
   acquisitions:
     - appsec_configs:
@@ -270,6 +284,11 @@ appsec:
   enabled: true
 ```
 
+Then apply with:
+
+```bash
+helm upgrade --install crowdsec crowdsec/crowdsec -n crowdsec --create-namespace -f ./crowdsec-values.yaml
+```
 
 </TabItem>
 </Tabs> 
