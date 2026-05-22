@@ -463,6 +463,10 @@ Then create a Traefik Middleware resource:
 kubectl apply -f traefik-middleware.yaml
 ```
 
+:::note
+The `spec.plugin.<key>` in the Middleware **must match** the key you registered under `experimental.plugins.<key>` in Traefik's configuration — not the module name (`crowdsec-bouncer-traefik-plugin`). Since the `traefik-values.yaml` above registers the plugin under the key `bouncer`, use `bouncer:` here.
+:::
+
 ```yaml values="traefik-middleware.yaml"
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
@@ -471,7 +475,7 @@ metadata:
   namespace: traefik
 spec:
   plugin:
-    crowdsec-bouncer-traefik-plugin:
+    bouncer:
       enabled: true
       crowdsecMode: stream
       crowdsecLapiScheme: http
@@ -500,7 +504,7 @@ metadata:
   namespace: traefik
 spec:
   plugin:
-    crowdsec-bouncer-traefik-plugin:
+    bouncer:
       enabled: true
       crowdsecMode: stream
       crowdsecLapiScheme: http
