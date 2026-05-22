@@ -375,6 +375,14 @@ namespaces:
 Both secrets must contain the same `BOUNCER_KEY_traefik` value. If you already
 created them for the base bouncer setup, you can reuse them here.
 
+If you haven't created the bouncer key yet, generate one with:
+
+```bash
+kubectl exec -n crowdsec deploy/crowdsec-lapi -c crowdsec-lapi -- cscli bouncers add traefik -o raw
+```
+
+Copy the printed key — you will use it as `<your-shared-traefik-bouncer-key>` below.
+
 Create or update the secrets:
 
 ```yaml title="crowdsec-keys.yaml"
@@ -481,7 +489,7 @@ spec:
       crowdsecLapiScheme: http
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
       crowdsecLapiKeyFile: /etc/traefik/crowdsec/BOUNCER_KEY_traefik
-      htttTimeoutSeconds: 60
+      httpTimeoutSeconds: 60
       forwardedheaderstrustedips:
         - 10.0.0.0/8
         - 192.168.0.0/16
@@ -523,7 +531,7 @@ spec:
       crowdsecLapiScheme: http
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
       crowdsecLapiKey: <your-shared-traefik-bouncer-key>
-      htttTimeoutSeconds: 60
+      httpTimeoutSeconds: 60
       forwardedheaderstrustedips:
         - 10.0.0.0/8
         - 192.168.0.0/16
