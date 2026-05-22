@@ -441,6 +441,22 @@ volumes:
     secretName: crowdsec-bouncer-key
 ```
 
+:::note
+The Traefik Helm chart uses a read-only root filesystem by default. The plugin loader needs a writable directory to cache downloaded plugins. Add an `emptyDir` volume for `/plugins-storage` alongside the secret volume above:
+
+```yaml title="traefik-values.yaml (addition)"
+deployment:
+  additionalVolumes:
+    - name: plugins-storage
+      emptyDir: {}
+additionalVolumeMounts:
+  - name: plugins-storage
+    mountPath: /plugins-storage
+```
+
+Without this, Traefik will fail to start with `unable to create directory /plugins-storage/sources: read-only file system`.
+:::
+
 Then create a Traefik Middleware resource:
 
 ```bash
