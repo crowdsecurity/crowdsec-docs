@@ -524,6 +524,16 @@ spec:
 
 </details>
 
+:::note
+If your IngressRoute lives in a different namespace than the Middleware (e.g. `default` vs `traefik`), Traefik's Kubernetes CRD provider blocks cross-namespace references by default. Either place the Middleware in the same namespace as the IngressRoute, or add the following to your Traefik Helm values:
+
+```yaml title="traefik-values.yaml (addition)"
+providers:
+  kubernetesCRD:
+    allowCrossNamespace: true
+```
+:::
+
 You can still add some route configuration through
 [IngressRoute](https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/crd/http/ingressroute/)
 and attach the middleware to those routes.
