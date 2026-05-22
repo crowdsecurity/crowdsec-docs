@@ -594,21 +594,33 @@ If the AppSec Component is unreachable should the request be blocked.
 ## Testing the AppSec Component + Remediation Component
 
 :::note
-We're assuming the web server is installed on the same machine and is listening on port 80. Please adjust your testing accordingly if this is not the case.
+For bare-metal/Docker, the web server is assumed to be listening on port 80 on the same host — adjust the URL if needed. For Kubernetes, send the test request through your Ingress (e.g. `http://<node-ip>/<path>`) rather than directly to the AppSec port.
 :::
 
 If you try to access `http://localhost/.env` from a browser, your request will be blocked, resulting in the display of the following HTML page:
 
 ![appsec-denied](/img/appsec_denied.png)
 
-We can also look at the metrics from `cscli metrics show appsec` it will display:
+We can also look at the metrics from `cscli metrics show appsec` — it will display:
  - the number of requests processed by the AppSec Component
  - Individual rule matches
+
+The command to run depends on your environment:
+
+```bash title="Bare-metal / Docker"
+sudo cscli metrics show appsec
+```
+
+```bash title="Kubernetes"
+kubectl exec -n crowdsec \
+  $(kubectl get pod -n crowdsec -l type=appsec -o name | head -1) \
+  -c crowdsec-appsec -- cscli metrics show appsec
+```
 
  <details>
   <summary>Example Output</summary>
 
-```bash title="sudo cscli metrics show appsec"
+```bash title="Bare-metal output (listen_addr: 127.0.0.1:7422)"
 Appsec Metrics:
 ╭─────────────────┬───────────┬─────────╮
 │  Appsec Engine  │ Processed │ Blocked │
@@ -617,6 +629,22 @@ Appsec Metrics:
 ╰─────────────────┴───────────┴─────────╯
 
 Appsec '127.0.0.1:7422/' Rules Metrics:
+╭─────────────────────────────────┬───────────╮
+│             Rule ID             │ Triggered │
+├─────────────────────────────────┼───────────┤
+│ crowdsecurity/vpatch-env-access │ 1         │
+╰─────────────────────────────────┴───────────╯
+```
+
+```bash title="Kubernetes output (listen_addr: 0.0.0.0:7422)"
+Appsec Metrics:
+╭─────────────────┬───────────┬─────────╮
+│  Appsec Engine  │ Processed │ Blocked │
+├─────────────────┼───────────┼─────────┤
+│ 0.0.0.0:7422/   │ 2         │ 1       │
+╰─────────────────┴───────────┴─────────╯
+
+Appsec '0.0.0.0:7422/' Rules Metrics:
 ╭─────────────────────────────────┬───────────╮
 │             Rule ID             │ Triggered │
 ├─────────────────────────────────┼───────────┤
