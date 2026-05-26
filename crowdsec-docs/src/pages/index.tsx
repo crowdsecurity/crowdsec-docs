@@ -8,8 +8,8 @@ import PathCard from "../components/docs/PathCard";
 import PathCards from "../components/docs/PathCards";
 import PathwayRow from "../components/docs/PathwayRow";
 import QuickStrip from "../components/docs/QuickStrip";
-import SkillSplitCard from "../components/docs/SkillPromo/SplitCard";
 import RunningStrip from "../components/docs/RunningStrip";
+import SkillSplitCard from "../components/docs/SkillPromo/SplitCard";
 
 /* ── Colour vars — reference CSS tokens (work in dark + light) */
 const CS_ORANGE = "var(--cs-orange)";
