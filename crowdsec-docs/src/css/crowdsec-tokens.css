@@ -311,6 +311,7 @@ article a {
 	color: rgb(var(--primary));
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: intentional override for doc prose links */
 .theme-doc-markdown a:hover,
 article a:hover {
 	color: rgb(var(--primary));
