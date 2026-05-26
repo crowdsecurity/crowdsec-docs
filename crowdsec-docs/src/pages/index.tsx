@@ -9,6 +9,7 @@ import PathCards from "../components/docs/PathCards";
 import PathwayRow from "../components/docs/PathwayRow";
 import QuickStrip from "../components/docs/QuickStrip";
 import RunningStrip from "../components/docs/RunningStrip";
+import SkillSplitCard from "../components/docs/SkillPromo/SplitCard";
 
 /* ── Colour vars — reference CSS tokens (work in dark + light) */
 const CS_ORANGE = "var(--cs-orange)";
@@ -243,6 +244,9 @@ export default function HomePage() {
 						<div className="homepage-search" style={{ marginTop: 36, maxWidth: 560, margin: "36px auto 0" }}>
 							<SearchBar />
 						</div>
+
+						{/* ── AI skill promo — "ask or operate, don't search" ── */}
+						<SkillSplitCard />
 					</div>
 				</section>
 

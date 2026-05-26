@@ -242,6 +242,27 @@ code:not(pre code):not(.cs-ic) {
 	margin-left: auto;
 }
 
+/* Compact variant (skill promo card): drop the chrome bar, float COPY over the code */
+.skill-code .cs-codeblock-outer {
+	position: relative;
+}
+.skill-code .cs-codeblock-chrome {
+	position: absolute;
+	top: 0;
+	right: 0;
+	min-height: 0;
+	padding: 6px;
+	border-bottom: none;
+	background: transparent;
+	z-index: 1;
+}
+.skill-code .cs-codeblock-lang {
+	display: none;
+}
+.skill-code .prism-code {
+	padding: 10px 56px 10px 14px !important;
+}
+
 /* ── Code area ─────────────────────────────────────────────────── */
 /* Zero any wrapper padding — only .prism-code sets it */
 [class*="codeBlockContent"],
