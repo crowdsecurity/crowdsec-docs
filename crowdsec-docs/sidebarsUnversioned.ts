@@ -826,6 +826,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			id: "troubleshooting/cti",
 			label: "CTI",
 		},
+		{
+			type: "doc",
+			id: "troubleshooting/billing_faq",
+			label: "Billing & Plans FAQ",
+		},
 	],
 
 	guidesSideBar: [

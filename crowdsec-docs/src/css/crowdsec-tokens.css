@@ -274,8 +274,8 @@ nav.theme-doc-breadcrumbs {
 		background 0.12s;
 }
 
-.dropdown__link:hover,
-.dropdown__menu a:hover {
+.dropdown__menu a:hover,
+.dropdown__link:hover {
 	color: var(--cs-orange) !important;
 	background: color-mix(in srgb, var(--cs-orange) 12%, transparent) !important;
 }
@@ -311,7 +311,6 @@ article a {
 	color: rgb(var(--primary));
 }
 
-/* biome-ignore lint/style/noDescendingSpecificity: intentional override for doc prose links */
 .theme-doc-markdown a:hover,
 article a:hover {
 	color: rgb(var(--primary));

@@ -234,6 +234,8 @@ const redirects = [
 		from: "/u/console/ip_reputation/api_keys_premium",
 		to: "/u/console/ip_reputation/api_keys",
 	},
+	// redirecting old hidden invoice page to new faq billing
+	{ from: "/u/console/premium_upgrade/premium_invoices/", to: "/u/troubleshooting/billing_faq" },
 ];
 
 function redirectsGlobalDataPlugin() {
