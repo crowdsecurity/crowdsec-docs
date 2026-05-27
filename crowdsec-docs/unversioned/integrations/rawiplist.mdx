@@ -35,7 +35,7 @@ It can be used as the default choice or when no vendor-specific integration exis
   defaultValue="step1"
   values={[
     {label: '1- Create an integration', value: 'step1'},
-    {label: '2- Remediation Component', value: 'step2'},
+    {label: '2- Configure Endpoint', value: 'step2'},
     {label: '3- Save your credentials', value: 'step3'},
     {label: '4- Subscribe to blocklists', value: 'step4'},
   ]}>
@@ -77,7 +77,12 @@ On mobile, use the menu icon in the top-right corner, tap **Blocklist**, then **
 
 Name the integration *(must be unique to your account)*
 Optionally, add a description and tags to help you identify it later.
-Then click **Create**.
+
+You can also configure:
+- **Enable IP aggregation** — aggregate IPs into CIDR blocks to reduce list size
+- **Pull limit** — maximum number of IPs returned per pull (default: 10,000)
+
+Then click **Create** or **Save**.
 
 </div>
 <div style={{flex: '0 0 30%'}}>

@@ -180,7 +180,9 @@ rules:
 
 > array of strings
 
-Optional list of variable names to restrict the [match](#match) to specific keys (only relevant for `ARGS`, `BODY_ARGS` and `HEADERS`).
+Optional list of variable names to restrict the [match](#match) to specific keys (only relevant for keyed zones such as `ARGS`, `BODY_ARGS`, `HEADERS` and `COOKIES`).
+
+A variable name can either be a literal key (e.g. `foo`) or a regular expression. To match keys by pattern, wrap the expression between slashes (e.g. `/pattern_.*/`); the enclosed value is evaluated as a [RE2](https://github.com/google/re2/wiki/Syntax) regexp against the available key names.
 
 :::info
 
@@ -202,6 +204,7 @@ rules:
     variables:
       - foo
       - bar
+      - '/something[0-9]/'
     match:
       type: contains
       value: admin
