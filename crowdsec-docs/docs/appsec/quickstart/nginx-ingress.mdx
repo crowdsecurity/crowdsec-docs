@@ -8,6 +8,16 @@ import TabItem from '@theme/TabItem';
 
 # CrowdSec WAF QuickStart for NGINX Ingress (Helm)
 
+:::danger Deprecated and not recommended
+This CrowdSec integration for `ingress-nginx` is being deprecated. `ingress-nginx`
+has known security issues, and upstream removed Lua support in version `1.12`,
+which this integration depends on.
+
+Do not use this for new deployments. If you are already using it, plan a migration
+to another supported integration such as [Traefik](/docs/next/appsec/quickstart/traefik)
+or [Envoy Gateway](/docs/next/appsec/quickstart/envoy-gateway).
+:::
+
 ## Objectives
 
 This quickstart shows how to deploy the CrowdSec AppSec Component with the
