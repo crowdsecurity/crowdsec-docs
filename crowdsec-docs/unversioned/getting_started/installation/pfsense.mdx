@@ -46,6 +46,18 @@ Open an SSH connection to your pfSense box and run:
 The script will ask three confirmations — answer **y** to each to proceed with the download and
 installation.
 
+By default the script fetches the **latest stable release** automatically. To pin to a specific
+version, pass `--release` with the tag from the [release page](https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases):
+
+```console
+# sh install-crowdsec.sh --release v0.1.7-1.7.8-34
+```
+
+:::note Release tag format
+The tag encodes all three component versions: `v<plugin>-<engine>-<bouncer>`.  
+`v0.1.7-1.7.8-34` means `pfSense-pkg-crowdsec` **0.1.7**, `crowdsec` **1.7.8**, and `crowdsec-firewall-bouncer` **0.0.34** (the `34` is the minor of `0.0.x`).
+:::
+
 When the script finishes you will see:
 
 ```

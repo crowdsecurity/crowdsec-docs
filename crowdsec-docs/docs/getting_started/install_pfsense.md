@@ -44,12 +44,20 @@ The script is interactive and will ask three confirmations — answer **y** to e
 2. Confirmation to download the release archive from GitHub.
 3. Confirmation to install the packages.
 
-If you want to install a beta or an older version, refer to [the release page](https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases)
-and pass the `--release` option:
+By default the script fetches the **latest stable release** automatically. To pin to a specific
+version (beta or older), pass `--release` with the tag from the [release page](https://github.com/crowdsecurity/pfSense-pkg-crowdsec/releases):
 
 ```console
 # sh install-crowdsec.sh --release v0.1.7-1.7.8-34
 ```
+
+:::note Release tag format
+The tag encodes all three component versions: `v<plugin>-<engine>-<bouncer>`.  
+For example, `v0.1.7-1.7.8-34` means:
+- `pfSense-pkg-crowdsec` **0.1.7** — the pfSense plugin
+- `crowdsec` **1.7.8** — the Security Engine
+- `crowdsec-firewall-bouncer` **0.0.34** — the `34` is the minor of `0.0.x`
+:::
 
 When the script completes you will see:
 
@@ -103,10 +111,16 @@ If you need a RAM disk, you can still use the Log Processor and Remediation by c
 to a remote CrowdSec instance.
 :::
 
-CrowdSec on pfSense is fully functional from the command line, but the web interface is
-read-only with the exception of decision revocation (unban). Most other actions require the
-shell or the [CrowdSec Console](https://app.crowdsec.net).
-For simple commands, `Diagnostics` → `Command Prompt` works as well as SSH.
+The `Services` → `CrowdSec` configuration page lets you manage all key settings: enable/disable
+each component, set log levels, configure LAPI connectivity, and control which interfaces the
+firewall rules apply to.
+
+The **status and metrics pages are read-only**, with one exception: you can revoke individual
+decisions (unban an IP) from `Status` → `CrowdSec Status`.
+
+For anything not exposed in the UI — hub management, acquiring new log sources, custom
+scenarios — use the shell or the [CrowdSec Console](https://app.crowdsec.net).
+`Diagnostics` → `Command Prompt` works as well as SSH for quick commands.
 
 ![Command Prompt](/img/pfsense/command-prompt.png)
 
