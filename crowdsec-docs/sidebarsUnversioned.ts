@@ -565,7 +565,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				{
 					type: "link",
 					label: "Redoc",
-					href: "https://admin.api.crowdsec.net/v1/docs#/",
+					href: "https://admin.api.crowdsec.net/v1/docs",
 				},
 				{
 					type: "doc",
