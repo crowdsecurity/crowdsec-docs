@@ -28,6 +28,19 @@ Three setup modes are supported:
 | **Medium** | Remediation + Log Processor | pfSense reports attacks to a remote LAPI |
 | **Small** | Remediation only | pfSense enforces blocklists from a remote LAPI |
 
+For **Medium** or **Small**, you must pre-register the pfSense machine on the remote LAPI before saving the pfSense config. Run these commands on the remote machine:
+
+```console
+# Medium — register both the log processor and the bouncer:
+$ cscli machines add pfsense --auto -f -   # note the login + password printed to stdout
+$ cscli bouncers add pfsense-firewall      # note the API key
+
+# Small — register the bouncer only:
+$ cscli bouncers add pfsense-firewall      # note the API key
+```
+
+Then in `Services` → `CrowdSec`, disable *Local API* (and for Small, also *Log Processor*) and fill in the *Remote LAPI* section with the URL, credentials, and API key obtained above.
+
 :::caution
 Unless you disable Local API, ensure you are **not using a RAM disk** for `/var`
 (`System` → `Advanced` → `Misc` → `RAM Disk Settings`). The CrowdSec database and GeoIP

@@ -98,11 +98,30 @@ Go to `Services` → `CrowdSec`. The options *Remediation Component*, *Log Proce
 
 The default is a "Large", autonomous installation.
 
-For a "Medium", disable *Local API* and fill in the *Remote LAPI* section.
+For a "Medium" or "Small" setup, you need credentials from the remote LAPI machine first.
+
+### Medium and Small: pre-registering on the remote LAPI
+
+Before saving the pfSense config, run the following on the **remote machine** running the LAPI:
+
+```console
+# For Medium (log processor + bouncer):
+$ cscli machines add pfsense --auto -f -    # outputs login + password to stdout
+$ cscli bouncers add pfsense-firewall       # outputs an API key
+
+# For Small (bouncer only):
+$ cscli bouncers add pfsense-firewall       # outputs an API key
+```
+
+Then in the pfSense GUI, disable *Local API* (and for Small, also *Log Processor*) and fill in the *Remote LAPI* section:
+
+- **Remote LAPI URL** — e.g. `http://remote-address:8080/`
+- **Login / Password** — from the `cscli machines add` output (Medium only)
+- **Firewall bouncer API key** — from the `cscli bouncers add` output
 
 ![Config part 2](/img/pfsense/config-2-remote.png)
 
-For a "Small", also disable *Log Processor*.
+For a "Small", also disable *Log Processor* — no machine registration is needed in that case, only the bouncer API key.
 
 :::caution
 **RAM Disk**: unless you disable Local API, ensure you are [not using a RAM disk](https://docs.netgate.com/pfsense/en/latest/config/advanced-misc.html#ram-disk-settings)
