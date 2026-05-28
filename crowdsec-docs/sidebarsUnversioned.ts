@@ -564,13 +564,8 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "link",
-					label: "Swagger",
-					href: "https://admin.api.crowdsec.net/v1/docs#/",
-				},
-				{
-					type: "link",
 					label: "Redoc",
-					href: "https://admin.api.crowdsec.net/v1/redoc",
+					href: "https://admin.api.crowdsec.net/v1/docs",
 				},
 				{
 					type: "doc",
