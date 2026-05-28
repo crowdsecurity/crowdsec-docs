@@ -9,6 +9,79 @@ pagination_next: getting_started/health_check
 
 New to CrowdSec? Start with the [introduction](/unversioned/getting_started/introduction.mdx) to understand the components and prerequisites.
 
-The CrowdSec package for pfSense is not installed from the official repositories yet.
+The CrowdSec package for pfSense is not yet in the official pfSense Package Manager. Installation
+is done via a shell script that downloads and installs the packages from a GitHub release.
 
-Follow the [detailed documentation](/docs/next/getting_started/install_crowdsec_pfsense) to install or update it from a release archive.
+It deploys three packages:
+
+- `crowdsec` — the Security Engine and `cscli` CLI
+- `crowdsec-firewall-bouncer` — the Remediation Component (blocks IPs via pfSense Packet Filter)
+- `pfSense-pkg-crowdsec` — the pfSense plugin (web UI, service management)
+
+Do not start or configure services from the terminal — the pfSense plugin manages them for you.
+
+Three setup modes are supported:
+
+| Mode | Components | Use when |
+|---|---|---|
+| **Large** (default) | Remediation + Log Processor + Local API | Standalone, no existing CrowdSec instance |
+| **Medium** | Remediation + Log Processor | pfSense reports attacks to a remote LAPI |
+| **Small** | Remediation only | pfSense enforces blocklists from a remote LAPI |
+
+:::caution
+Unless you disable Local API, ensure you are **not using a RAM disk** for `/var`
+(`System` → `Advanced` → `Misc` → `RAM Disk Settings`). The CrowdSec database and GeoIP
+tables live in `/var/db/crowdsec` and would be lost on every reboot.
+:::
+
+## Install the package
+
+Open an SSH connection to your pfSense box and run:
+
+```console
+# fetch https://raw.githubusercontent.com/crowdsecurity/pfSense-pkg-crowdsec/refs/heads/main/install-crowdsec.sh
+# sh install-crowdsec.sh
+```
+
+The script will ask three confirmations — answer **y** to each to proceed with the download and
+installation.
+
+When the script finishes you will see:
+
+```
+Installation complete.
+You can configure and activate CrowdSec on your pfSense admin page (Package / Services: CrowdSec).
+```
+
+## Activate via the web UI
+
+After installation, **the services are not yet running**. Open the pfSense web UI:
+
+1. Go to `Services` → `CrowdSec`.
+2. Verify that *Remediation Component*, *Log Processor*, and *Local API* are enabled (all on by default).
+3. Click **Save**.
+
+Saving triggers the plugin to write configuration files, register the Security Engine and bouncer
+with the local API, install the pfSense hub collection, and start both services.
+
+## Verify the installation
+
+From the pfSense shell or `Diagnostics` → `Command Prompt`:
+
+```console
+# service crowdsec status          # crowdsec is running as pid <n>
+# service crowdsec_firewall status  # crowdsec_firewall is running as pid <n>
+# cscli lapi status                 # You can successfully interact with Local API (LAPI)
+# cscli capi status                 # You can successfully interact with Central API (CAPI)
+# cscli bouncers list               # pfsense-firewall  127.0.0.1  ✔️
+```
+
+You can also check service status in `Status` → `Services` and the full CrowdSec status
+(registered agents, hub items, alerts, decisions) in `Status` → `CrowdSec Status`.
+
+## Next steps
+
+CrowdSec is now installed and protecting your pfSense box. Continue with the
+[post-installation steps](/getting_started/next_steps.mdx) to finish setup, or read the
+[full pfSense documentation](/docs/next/getting_started/install_crowdsec_pfsense) for
+advanced configuration, diagnostics, log acquisition, and testing.
