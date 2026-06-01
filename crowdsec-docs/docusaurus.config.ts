@@ -87,7 +87,6 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 		position: "left",
 		label: "Blocklists",
 	},
-	{ to: "/u/cti_api/intro", position: "left", label: "IP Reputation & CTI" },
 	{ to: "/u/console/intro", position: "left", label: "Console" },
 	{
 		type: "html",
@@ -95,9 +94,11 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 		position: "left",
 	},
 	{
-		label: "Resources",
+		label: "APIs & Resources",
 		position: "left",
 		items: [
+			{ to: "/u/cti_api/api_introduction", label: "CTI API" },
+			{ to: "/u/console/service_api/getting_started", label: "Service API" },
 			{
 				to: "/u/user_guides/intro",
 				label: "Guides",
