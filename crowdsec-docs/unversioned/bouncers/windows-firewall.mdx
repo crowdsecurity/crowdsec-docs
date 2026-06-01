@@ -3,23 +3,28 @@ id: windows_firewall
 title: Windows Firewall
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import RemediationSupportBadges from "@site/src/components/remediation-support-badge";
 
 <p align="center">
-<img src={useBaseUrl('/img/cs-windows-firewall-bouncer-logo.png')} alt="CrowdSec" title="CrowdSec" width="300" height="300" />
+  <img
+    src={useBaseUrl("/img/cs-windows-firewall-bouncer-logo.png")}
+    alt="CrowdSec"
+    title="CrowdSec"
+    width="300"
+    height="300"
+  />
 </p>
 
 <p align="center">
-&#x1F4DA; <a href="#installation/">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+  &#x1F4DA; <a href="#installation/">Documentation</a>
+  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
+  &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
 </p>
 
-<RemediationSupportBadges
-/>
+<RemediationSupportBadges />
 
 ## Overview
 
@@ -33,11 +38,11 @@ The rules are created on startup and automatically deleted when the component st
 
 :::warning
 
-The .NET 6 runtime is required for the component to work !
+The .NET 10 runtime is required for the component to work !
 
 :::
 
-You can download either a MSI (containing only the component) or a setup bundle (containing the component and the .NET 6 runtime) from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
+You can download the MSI installer from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
 
 You can also install the component with [Chocolatey](https://chocolatey.org/) (this will automatically install the .NET runtime):
 
@@ -53,13 +58,13 @@ The configuration is stored in `C:\ProgramData\CrowdSec\bouncers\cs-windows-fire
 
 ```yaml
 api_key: <your-api-key>
-api_url: http://127.0.0.1:8080
+api_endpoint: http://127.0.0.1:8080
 log_level: info
 update_frequency: 10
 log_media: file
 log_dir: C:\\ProgramData\\CrowdSec\\log\\
 fw_profiles:
- - domain
+  - domain
 ```
 
 ---
@@ -67,16 +72,19 @@ fw_profiles:
 ### Configuration reference
 
 #### `api_key`
-> string 
+
+> string
 
 API key to use for communication with LAPI.
 
-#### `api_url`
+#### `api_endpoint`
+
 > string
 
 URL of LAPI.
 
 #### `update_frequency`
+
 > int
 
 How often the component will contact LAPI to update its content in seconds.
@@ -84,6 +92,7 @@ How often the component will contact LAPI to update its content in seconds.
 Defaults to `10`.
 
 #### `log_media`
+
 > file | console
 
 Wether to log to file or to the console.
@@ -91,6 +100,7 @@ Wether to log to file or to the console.
 Defaults to file when running as service and console when running in interactive mode.
 
 #### `log_dir`
+
 > string
 
 Location of the log file.
@@ -98,6 +108,7 @@ Location of the log file.
 Defaults to `C:\ProgramData\CrowdSec\log\`.
 
 #### `log_level`
+
 > trace | debug | info | warn | error | fatal
 
 Log level.
@@ -105,6 +116,7 @@ Log level.
 Defaults to `info`.
 
 #### fw_profiles
+
 > [ ]string
 
 The firewall profile the rules will be associated with.
@@ -112,9 +124,69 @@ The firewall profile the rules will be associated with.
 The component automatically select the current profile, but you can override this behaviour with this parameter.
 
 Allowed values are:
- - `domain`
- - `private`
- - `public`
 
+- `domain`
+- `private`
+- `public`
 
+#### `cert_path`
 
+> string
+
+Path to the TLS client certificate used to authenticate to LAPI with mutual TLS instead of an API key.
+
+Must be set together with `key_path`.
+
+#### `key_path`
+
+> string
+
+Path to the TLS client key matching `cert_path`.
+
+#### `ca_cert_path`
+
+> string
+
+Path to a custom CA certificate used to validate the LAPI server certificate.
+
+#### `insecure_skip_verify`
+
+> bool
+
+Skip verification of the LAPI TLS certificate.
+
+Defaults to `false`.
+
+#### `scopes`
+
+> [ ]string
+
+Only fetch decisions matching the provided scopes.
+
+Defaults to `ip` and `range`.
+
+#### `scenarios_containing`
+
+> [ ]string
+
+Only fetch decisions linked to scenarios containing one of the provided strings.
+
+#### `scenarios_not_containing`
+
+> [ ]string
+
+Only fetch decisions linked to scenarios that do not contain any of the provided strings.
+
+#### `origins`
+
+> [ ]string
+
+Only fetch decisions originating from the provided sources (for example `crowdsec`, `cscli` or `lists`).
+
+#### `supported_decision_type`
+
+> string
+
+Only fetch decisions of the provided type (for example `ban`).
+
+By default, all decision types are fetched.
