@@ -234,3 +234,40 @@ The blocklist name(s) will appear in the integration tile once subscribed.
 </div>
     </TabItem>
 </Tabs>
+
+## Troubleshooting
+
+When an integration doesn't behave as expected, here is what to check.
+
+### Truncated / incomplete blocklist
+
+To keep responses small, the integration endpoint prefers **compression**. When a client doesn't support compression and the response is too large, the response is **truncated**, so your device only receives part of the blocklist.
+
+If you are not receiving the full list, you have two options:
+
+- **Enable compression (recommended).** Request a compressed response so the endpoint returns the full list in a compact form.
+
+  :::warning
+  Make sure your software actually handles compression **before** enabling it. Sending an `Accept-Encoding: gzip` header is not enough on its own: the client must also decompress the response, otherwise you get unreadable (compressed) data instead of a usable blocklist.
+  :::
+
+  With `curl`, use `--compressed` rather than setting the header manually. It both advertises the supported encodings and decompresses the response for you:
+
+  <CodeBlock language="bash">{`curl --compressed -u 'usr:pass' https://admin.api.crowdsec.net/v1/integrations/$integID/content`}</CodeBlock>
+
+  Many devices support compression natively. For instance, the [Mikrotik integration](integrations/mikrotik.mdx) sets `http-header-field="Accept-Encoding:gzip"`.
+
+- **Use pagination.** If your client cannot handle compression, fetch the list in smaller chunks using the `page` and `page_size` query parameters. See [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination).
+
+:::info
+A warning on **stack health** will soon surface when an integration is receiving truncated data, making this easier to detect.
+:::
+
+### HTTP 429 (rate limited)
+
+An `HTTP 429` response means your integration is being **rate limited** because it is pulling more frequently than your plan allows:
+
+- **Community**: 1 pull every 24 hours.
+- **Enterprise / paid**: no pull limit.
+
+Adjust your device's refresh schedule to respect the [allowed interval for your plan](#refresh-frequency).
