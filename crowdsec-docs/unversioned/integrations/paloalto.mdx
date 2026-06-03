@@ -81,6 +81,8 @@ Click **Commit** to apply the configuration.
 
 If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
 
+This integration uses the plain text format. When pulling **without compression**, keep `page_size` at or below **~300,000** entries to stay under the ~5 MB response limit; beyond that the response is truncated. Enabling compression avoids this limit entirely.
+
 ## References
 
 - [Palo Alto — External Dynamic Lists documentation](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/policy/use-an-external-dynamic-list-in-policy/external-dynamic-list)
