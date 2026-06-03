@@ -241,7 +241,7 @@ When an integration doesn't behave as expected, here is what to check.
 
 ### Truncated / incomplete blocklist
 
-To keep responses small, the integration endpoint prefers **compression**. When a client doesn't support compression and the response is too large, the response is **truncated**, so your device only receives part of the blocklist.
+To keep responses small, the integration endpoint prefers **compression**. When a client doesn't support compression and the response exceeds the API gateway limit (around **5 MB**), the response is **truncated**, so your device only receives part of the blocklist.
 
 If you are not receiving the full list, you have two options:
 
@@ -259,15 +259,21 @@ If you are not receiving the full list, you have two options:
 
 - **Use pagination.** If your client cannot handle compression, fetch the list in smaller chunks using the `page` and `page_size` query parameters. See [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination).
 
+  When pulling **without compression**, keep each page under the ~5 MB limit by capping `page_size` (or by setting a `pull_limit` on the integration so every pull stays bounded). The safe value depends on your format, because each format produces a different number of bytes per entry. As a reference point, the plain text format truncates at roughly **350,000 IPv4 entries** at the 5 MB limit:
+
+  | Format | Approx. bytes per entry | Suggested `page_size` (uncompressed) |
+  |---|---|---|
+  | Plain text (Palo Alto, Cisco, FortiGate, Juniper, OPNsense, pfSense, Sophos) | ~15 | 300,000 |
+  | F5 | ~55 | 90,000 |
+  | Checkpoint | ~85 | 60,000 |
+  | MikroTik | ~125 | 35,000 |
+
+  These values assume IPv4 entries; IPv6 entries and longer integration names take more bytes, so leave headroom. As a rule of thumb, `page_size ≈ 5,000,000 / bytes_per_entry`.
+
 :::info
 A warning on **stack health** will soon surface when an integration is receiving truncated data, making this easier to detect.
 :::
 
 ### HTTP 429 (rate limited)
 
-An `HTTP 429` response means your integration is being **rate limited** because it is pulling more frequently than your plan allows:
-
-- **Community**: 1 pull every 24 hours.
-- **Enterprise / paid**: no pull limit.
-
-Adjust your device's refresh schedule to respect the [allowed interval for your plan](#refresh-frequency).
+An `HTTP 429` response means your integration is being **rate limited** because it is pulling more frequently than your plan allows (Community: 1 pull every 24 hours; Enterprise: no limit). See [Refresh frequency](#refresh-frequency) above and adjust your device's refresh schedule to respect the allowed interval for your plan.
