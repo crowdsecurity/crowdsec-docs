@@ -324,18 +324,27 @@ The next time the sync worker runs, it will clear all existing decisions and rep
 
 ### Metrics
 
-If your Cloudflare token has permission on D1, the remediation component will automatically create a database to track:
+The worker writes metric data points to a [Workers Analytics Engine](https://developers.cloudflare.com/analytics/analytics-engine/) dataset, tracking:
  - Number of requests processed
  - Number of requests blocked
+ - Number of requests that threw an exception in the worker
+ - Average request processing latency
 
-Metrics are stored in a D1 database. If your token does not have access to D1, a warning will be logged and metrics will be disabled.
+:::info
+Since `v0.0.18`, metrics are stored in a **Workers Analytics Engine** dataset instead of a **D1** database. Make sure your Cloudflare token has the `Account Analytics: Read` permission (see [the permissions table](#generating-a-cloudflare-api-token)). Without it the metric poll returns a `403` and metrics are disabled, but remediation enforcement is unaffected.
+
+If you are upgrading from an older version, the legacy `CROWDSECCFBOUNCERDB` D1 database is no longer used and can be deleted manually from the Cloudflare dashboard.
+:::
+
+The dataset name defaults to `crowdsec_cloudflare_bouncer` and can be customized with the [`worker.analytics_dataset`](#workeranalytics_dataset) option.
 
 **In Daemon Mode**, the running process:
+- Polls the Analytics Engine SQL API on the regular push schedule
 - Exposes metrics through the Prometheus endpoint
 - Automatically pushes metrics to CrowdSec for visualization with `cscli`
 
 **In Autonomous Mode**, since there is no running daemon process:
-- Metrics are collected and stored in the D1 database
+- Metrics are collected in the Analytics Engine dataset
 - Metrics are **NOT pushed to CrowdSec**
 
 ## Configuration explained
@@ -372,10 +381,19 @@ cloudflare_config:
     worker:
       log_only: false # If true, allow all requests, but still keep track of what would have been blocked in the metrics
       script_name: ""
+      kv_namespace_name: "" # KV namespace title; change when running multiple bouncers on the same Cloudflare account
+      decisions_sync_script_name: "" # Decisions sync worker script name; change when running multiple bouncers on the same Cloudflare account
+      analytics_dataset: "" # Workers Analytics Engine dataset name for metrics (default: crowdsec_cloudflare_bouncer)
       logpush: null
       tags: []
       compatibility_date: ""
       compatibility_flags: []
+      observability: # Optional Workers Observability (logs/traces); omit to leave Cloudflare defaults in place
+        enabled: true
+        head_sampling_rate: 1.0
+        traces:
+          enabled: true
+          head_sampling_rate: 1.0
     decisions_sync_worker: # Configuration for autonomous decisions sync worker
         cron: '*/5 * * * *' # Cron schedule for syncing decisions (e.g., "*/5 * * * *" for every 5 minutes)
 
@@ -405,7 +423,7 @@ Ensure the `token` you are generating is a **user** API token these are found vi
 
 1. Sign in as a user who has access to the desired account.
 
-Then click [this link](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%2C%20%7B%22key%22%3A%20%22dns%22%2C%20%22type%22%3A%22read%22%7D%2C%20%7B%22key%22%3A%22d1%22%2C%20%22type%22%3A%22edit%22%7D%5D&name=) and create the token. 
+Then click [this link](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22dns%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&name=) and create the token. 
 
 Alternatively, you can go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. 
 
@@ -417,7 +435,7 @@ The Remediation Component requires the following permissions to function:
 | Account          | Workers KV Storage | Edit       |
 | Account          | Workers Scripts    | Edit       |
 | Account          | Account Settings   | Read       |
-| Account          | D1                 | Edit       |
+| Account          | Account Analytics  | Read       |
 | User             | User Details       | Read       |
 | Zone             | DNS                | Read       |
 | Zone             | Workers Routes     | Edit       |
@@ -690,6 +708,33 @@ Name to use for the worker script.
 
 Default to `crowdsec-cloudflare-worker-bouncer`.
 
+#### `worker.kv_namespace_name`
+> string
+
+Title of the Worker KV namespace used to create/locate the decision store.
+
+Change this when running multiple bouncer instances on the same Cloudflare account so each instance uses its own KV namespace.
+
+Default to `CROWDSECCFBOUNCERNS`.
+
+#### `worker.decisions_sync_script_name`
+> string
+
+Name to use for the autonomous decisions sync worker script.
+
+Change this when running multiple bouncer instances on the same Cloudflare account so each instance uses its own sync worker.
+
+Default to `crowdsec-decisions-sync-worker`.
+
+#### `worker.analytics_dataset`
+> string
+
+Name of the [Workers Analytics Engine](https://developers.cloudflare.com/analytics/analytics-engine/) dataset the worker writes metric data points to. See the [Metrics](#metrics) section.
+
+Must match `^[a-zA-Z_][a-zA-Z0-9_]{0,63}$`.
+
+Default to `crowdsec_cloudflare_bouncer`.
+
 #### `worker.logpush`
 > bool
 
@@ -710,6 +755,22 @@ Default to no value
 See https://developers.cloudflare.com/workers/configuration/compatibility-flags/.
 
 Default to no value.
+
+#### `worker.observability`
+> object
+
+Optional [Workers Observability](https://developers.cloudflare.com/workers/observability/logs/workers-logs/) (logs and traces) configuration. Omit the block to leave the Cloudflare defaults in place.
+
+If a deployed worker cannot have observability applied, a warning is logged but the deploy is not aborted.
+
+```yaml title="Example"
+observability:
+  enabled: true
+  head_sampling_rate: 1.0 # Sampling rate for head-based observability (0.0 to 1.0)
+  traces:
+    enabled: true
+    head_sampling_rate: 1.0
+```
 
 #### `decisions_sync_worker.cron`
 > string
