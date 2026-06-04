@@ -22,6 +22,7 @@ If you received a health check alert from the CrowdSec Console, check out the [*
 ## Troubleshooting by Topic
 
 * [Security Engine Troubleshooting](/u/troubleshooting/security_engine)
+* [Central API 403 / CAPI rate limiting](/u/troubleshooting/capi_403)
 * [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components)
 * [CTI Troubleshooting](/u/troubleshooting/cti)
 
