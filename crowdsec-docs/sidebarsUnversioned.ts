@@ -813,6 +813,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
+			id: "troubleshooting/capi_403",
+			label: "Central API 403 / Rate Limiting",
+		},
+		{
+			type: "doc",
 			id: "troubleshooting/remediation_components",
 			label: "Remediation Components",
 		},
