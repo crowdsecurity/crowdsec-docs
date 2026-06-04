@@ -716,8 +716,8 @@ const sidebarsConfig: SidebarConfig = {
 		{
 			type: "category",
 			label: "Bot detection",
-			link: { type: "doc", id: "appsec/bot_detection/intro" },
 			items: [
+				{ type: "doc", id: "appsec/bot_detection/intro" },
 				{ type: "doc", id: "appsec/bot_detection/configuration" },
 				{ type: "doc", id: "appsec/bot_detection/challenge_protocol" },
 			],
