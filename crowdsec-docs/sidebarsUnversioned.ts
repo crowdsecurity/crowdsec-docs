@@ -70,6 +70,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				"cti_api/api_integration/integration_thehive",
 			],
 		},
+		{
+			type: "doc",
+			label: "Offline Replicas",
+			id: "cti_api/offline_replicas",
+		},
 		// ── TECHNICAL DOC ─────────────────────────────────────────────────────
 		{
 			type: "html",
