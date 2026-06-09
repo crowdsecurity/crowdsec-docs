@@ -75,6 +75,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			label: "Offline Replicas",
 			id: "cti_api/offline_replicas",
 		},
+		{
+			type: "doc",
+			label: "TAXII",
+			id: "cti_api/taxii",
+		},
 		// ── TECHNICAL DOC ─────────────────────────────────────────────────────
 		{
 			type: "html",
