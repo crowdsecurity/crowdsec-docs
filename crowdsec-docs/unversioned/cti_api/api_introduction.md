@@ -5,7 +5,7 @@ title: APIs Overview
 
 CrowdSec exposes three ways to programmatically access its threat intelligence. They serve different use cases and scale requirements — pick the one that fits your workflow, or combine them.
 
-## REST CTI API
+## Enrichment API
 
 The standard HTTP/JSON API. Send a request, get a response — ideal for on-demand lookups, scripts, and real-time enrichment inside a SIEM, SOAR, or TIP.
 
@@ -14,7 +14,7 @@ The standard HTTP/JSON API. Send a request, get a response — ideal for on-dema
 - **Auth**: API key via `x-api-key` header
 - **Formats**: JSON
 
-[REST CTI API →](/u/cti_api/enrichment_api)
+[Enrichment API →](/u/cti_api/enrichment_api)
 
 ## Offline Replicas
 
@@ -40,11 +40,10 @@ A TAXII 2.1 / STIX 2.1 feed for continuous, incremental synchronization. Poll th
 
 ## Which one to choose?
 
-| | REST CTI API | Offline Replica | TAXII |
+| | Enrichment API | Offline Replica | TAXII |
 |---|---|---|---|
-| On-demand IP lookup | ✅ | ❌ | ❌ |
 | High-volume / bulk enrichment | ⚠️ (per IP requests) | ✅ | ✅ |
-| Air-gapped / no outbound calls | ❌ | ✅ | ❌ |
-| Native TAXII/STIX integration | ❌ | ❌ | ✅ |
+| Data access model | Call when you need it | Download periodically, query locally | Poll periodically, query locally |
+| Format | `json` | `json`, `mmdb`, `parquet`  | `STIX` |
 | Incremental updates | ❌ | ❌ | ✅ |
-| Available on free plan | ✅ | ❌ | ❌ |
+| Available In self service | ✅ | ❌ *(contact sales)* | ❌ *(contact sales)*|
