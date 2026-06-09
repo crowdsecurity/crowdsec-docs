@@ -1,41 +1,50 @@
 ---
 id: api_introduction
-title: API Introduction
-sidebar_position: 1
+title: APIs Overview
 ---
 
-The CrowdSec CTI API gives you programmatic access to IP reputation data collected from CrowdSec deployments worldwide. Use it to enrich your own security workflows, whether that's a quick manual lookup, a script that checks IPs at ingestion, or a fully automated enrichment pipeline inside a SIEM, SOAR, or TIP.
+CrowdSec exposes three ways to programmatically access its threat intelligence. They serve different use cases and scale requirements — pick the one that fits your workflow, or combine them.
 
-## Authentication
+## REST CTI API
 
-All requests require a CTI API key passed in the `x-api-key` header.
+The standard HTTP/JSON API. Send a request, get a response — ideal for on-demand lookups, scripts, and real-time enrichment inside a SIEM, SOAR, or TIP.
 
-Keys are created and managed in the Console under **Settings → CTI API Keys**.
-[Create your API key →](/u/console/ip_reputation/api_keys)
+- **Best for**: per-IP lookups, real-time enrichment pipelines, integrations with security platforms
+- **Rate limits**: apply per API key (see your plan quota)
+- **Auth**: API key via `x-api-key` header
+- **Formats**: JSON
 
-## Ways to Use the API
+[REST CTI API →](/u/cti_api/enrichment_api)
 
-### Integrations
+## Offline Replicas
 
-CrowdSec maintains ready-made integrations for common security platforms: Splunk, QRadar, Microsoft Sentinel, MISP, OpenCTI, Palo Alto XSOAR, TheHive, and more. If you use one of these, it's the fastest path to enrichment.
+A full, periodically refreshed snapshot of the CrowdSec CTI database delivered as a downloadable file. No per-request latency, no rate limits — you run the data locally.
 
-[Browse all integrations →](/u/cti_api/api_integration/integration_intro)
+- **Best for**: high-volume enrichment, air-gapped environments, bulk ingestion into a data lake or TIP
+- **Rate limits**: none (bulk download)
+- **Auth**: dedicated API key (premium)
+- **Formats**: `mmdb`, `parquet`, `json`
 
-### cURL
+[Offline Replicas →](/u/cti_api/offline_replicas)
 
-For quick lookups or scripting, query the API directly:
+## TAXII
 
-```shell
-curl -H "x-api-key: $API_KEY" https://cti.api.crowdsec.net/v2/smoke/1.2.3.4 | jq .
-```
+A TAXII 2.1 / STIX 2.1 feed for continuous, incremental synchronization. Poll the feed periodically and pull only what changed since your last poll — native integration with any TAXII-compatible platform.
 
-### IPDEX
+- **Best for**: TIPs and platforms that speak TAXII natively (OpenCTI, MISP, Anomali, …), continuous feed synchronization
+- **Rate limits**: none beyond polling cadence
+- **Auth**: dedicated API key (premium)
+- **Protocol**: TAXII 2.1 over HTTPS, indicators as STIX 2.1 objects
 
-Available in [Web UI](https://ipdex.crowdsec.net/) or [CLI](https://github.com/crowdsecurity/ipdex), this tool provides a detailed IP reputation report from a list of IPs or logs you provide.   
-This is a useful Proof of Value tool to see the coverage of CrowdSec Threat Intel for both Blocklists and Threat Intel.
+[TAXII →](/u/cti_api/taxii)
 
-[IPDEX →](/u/cti_api/api_integration/integration_ipdex)
+## Which one to choose?
 
-## API Reference
-
-Full endpoint documentation is available via [Swagger](https://crowdsecurity.github.io/cti-api/).
+| | REST CTI API | Offline Replica | TAXII |
+|---|---|---|---|
+| On-demand IP lookup | ✅ | ❌ | ❌ |
+| High-volume / bulk enrichment | ⚠️ (per IP requests) | ✅ | ✅ |
+| Air-gapped / no outbound calls | ❌ | ✅ | ❌ |
+| Native TAXII/STIX integration | ❌ | ❌ | ✅ |
+| Incremental updates | ❌ | ❌ | ✅ |
+| Available on free plan | ✅ | ❌ | ❌ |
