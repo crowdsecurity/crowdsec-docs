@@ -98,7 +98,7 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 		label: "APIs & Resources",
 		position: "left",
 		items: [
-			{ to: "/u/cti_api/api_introduction", label: "CTI API" },
+			{ to: "/u/cti_api/api_introduction", label: "CTI APIs" },
 			{ to: "/u/console/service_api/getting_started", label: "Service API" },
 			{
 				to: "/u/user_guides/intro",
