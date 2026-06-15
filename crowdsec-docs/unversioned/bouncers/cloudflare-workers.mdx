@@ -75,6 +75,10 @@ This mode is recommended if you want a **minimal footprint** deployment, without
 
 *It can also be plugged to a Security Engine, but woould require an open connection from Cloudflare to your LAPI. We recommend using [Daemon mode](#daemon-mode) in a usecase where a Security Engine is involved.*
 
+:::tip Web Installer available
+Looking for a no-CLI setup? The **[Cloudflare Worker Bouncer Installer](/u/bouncers/cloudflare-worker-installer)** is a browser-based GUI that deploys the bouncer in Autonomous Mode with a step-by-step wizard — no YAML or command line required.
+:::
+
 #### ⚙️ Init / Removal on CloudFlare
 
 Creation of necessary **Cloudflare Workers** and **KV stores** is done once at init time.  
@@ -423,7 +427,7 @@ Ensure the `token` you are generating is a **user** API token these are found vi
 
 1. Sign in as a user who has access to the desired account.
 
-Then click [this link](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22dns%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&name=) and create the token. 
+Then click [**this link**](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22dns%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&name=) and create the token. 
 
 Alternatively, you can go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. 
 

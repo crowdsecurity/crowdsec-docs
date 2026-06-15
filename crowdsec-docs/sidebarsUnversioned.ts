@@ -662,6 +662,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
+			label: "Cloudflare Worker Installer (GUI)",
+			id: "bouncers/cloudflare-worker-installer",
+		},
+		{
+			type: "doc",
 			label: "Custom",
 			id: "bouncers/custom",
 		},
