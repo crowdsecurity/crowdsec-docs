@@ -652,18 +652,8 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "Cloudflare",
-			id: "bouncers/cloudflare",
-		},
-		{
-			type: "doc",
 			label: "Cloudflare Workers",
-			id: "bouncers/cloudflare-workers",
-		},
-		{
-			type: "doc",
-			label: "Cloudflare Worker Installer (GUI)",
-			id: "bouncers/cloudflare-worker-installer",
+			id: "bouncers/cloudflare",
 		},
 		{
 			type: "doc",

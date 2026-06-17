@@ -238,6 +238,8 @@ const redirects = [
 	},
 	// redirecting old hidden invoice page to new faq billing
 	{ from: "/u/console/premium_upgrade/premium_invoices/", to: "/u/troubleshooting/billing_faq" },
+	// unified Cloudflare bouncer page, cloudflare-workers content moved to cloudflare page (and that one  became deprecated)
+	{ from: "/u/bouncers/cloudflare-workers", to: "/u/bouncers/cloudflare" },
 ];
 
 function redirectsGlobalDataPlugin() {

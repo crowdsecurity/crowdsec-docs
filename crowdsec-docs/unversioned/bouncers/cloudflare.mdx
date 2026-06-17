@@ -1,13 +1,13 @@
 ---
 id: cloudflare
-title: Cloudflare
+title: CrowdSec Cloudflare Worker Bouncer
+toc_max_heading_level: 3
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
-
 
 <p align="center">
   <img src={useBaseUrl('/img/crowdsec_cloudfare.svg')} width="400" height="300" />
@@ -19,505 +19,780 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
 </p>
 
 <p align="center">
-&#x1F4DA; <a href="#installation">Documentation</a>
+&#x1F4DA; <a href="#overview">Documentation</a>
 &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
+&#128172; <a href="https://discourse.crowdsec.net">Discourse</a>
 </p>
 
 <RemediationSupportBadges
   MTLS
   Prometheus
+  Metrics
 />
 
-:::danger
+<RemediationSupportBadges
+  MTLS
+  Prometheus
+  Metrics
+/>
 
-This bouncer isn't actively supported anymore, due to changes to Cloudflare's API rate limitations.
+## Overview
 
-You should instead look at the [Cloudflare Workers Bouncer](/u/bouncers/cloudflare-workers).
+This **Remediation Component** uses **Cloudflare Workers** to block or challenge incoming traffic on your Cloudflare zones.
 
+**How it works:**
+- One or more **Cloudflare zones** are bound to a **Remediation Worker** that filters every incoming request.
+- The Remediation Worker looks up the requesting IP in a **Cloudflare KV store** and applies the associated remediation: **ban** (hard block with a custom HTML page) or **Turnstile** (Cloudflare CAPTCHA challenge).
+- A **Sync Worker** periodically fetches the list of IPs to block and keeps the KV store up to date.
+
+**Where do the IPs come from?**
+
+The Sync Worker can pull decisions from two sources — choose the one that fits your setup:
+
+- A **[Blocklist Integration Endpoint](/u/integrations/remediationcomponent)**: a URL served by CrowdSec, no infrastructure required on your side. This is the simplest option.
+- A **[Security Engine](/u/bouncers/intro)** you run in your own infrastructure: the Sync Worker connects to your LAPI to pull decisions directly.
+
+:::warning
+This Remediation Component relies on Cloudflare Workers and the KV store. It works best on a paid Workers subscription. See [Appendix: Cloudflare Free Plan](#appendix-test-with-cloudflare-free-plan) for details.
 :::
 
-A Remediation Component that syncs the decisions made by CrowdSec with CloudFlare's firewall. Manages multi user, multi account, multi zone setup. Supports IP, Country and AS scoped decisions.
+## Setup Methods
 
+There are two ways to deploy this bouncer. Both end up with the same Remediation Worker and Sync Worker running inside your Cloudflare account — they differ only in how you install and manage them.
 
+### Self-Hosted GUI (Recommended) {#self-hosted}
 
-## Installation
+A third **Installer Worker** is deployed alongside the other two, hosting a browser-based GUI. You use this GUI for all setup and configuration actions: deploying the workers, binding zones, configuring Turnstile, and updating your CrowdSec endpoint.
 
-### Repository
+**Best for:** Blocklist Integration setups, minimal footprint, no server to maintain.
 
-Packages for crowdsec-cloudflare-bouncer [are available on our repositories](/u/getting_started/installation/linux#repository-installation). You need to pick the package accord to your firewall system :
+→ [Jump to Self-Hosted Setup](#self-hosted-setup)
+
+### CLI Bouncer {#cli-bouncer}
+
+A Go binary (`crowdsec-cloudflare-worker-bouncer`) handles deployment and configuration via YAML and command-line flags. It can run in two modes:
+
+- **Daemon Mode**: the Go process runs continuously alongside your Security Engine, syncing decisions directly.
+- **Autonomous Mode**: the Go process deploys the workers once and exits; the Sync Worker then runs on its own inside Cloudflare.
+
+**Best for:** Security Engine setups, Prometheus metrics, advanced configuration (multiple instances, custom resource names).
+
+→ [Jump to CLI Bouncer Setup](#cli-bouncer-setup)
+
+## Cloudflare API Token
+
+Both setup methods require a Cloudflare **user** API token with the following permissions.
+
+:::warning
+Generate a **user** API token via **My Profile → API Tokens** — not the Account API Tokens section, which has different rate limits and will cause issues.
+:::
+
+Click [**this link**](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22dns%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&name=) to open the Cloudflare token creation page with the required permissions pre-selected, or create one manually at [Tokens](https://dash.cloudflare.com/profile/api-tokens) with:
+
+| Permission Group | Item               | Permission |
+| ---------------- | ------------------ | ---------- |
+| Account          | Turnstile          | Edit       |
+| Account          | Workers KV Storage | Edit       |
+| Account          | Workers Scripts    | Edit       |
+| Account          | Account Settings   | Read       |
+| Account          | Account Analytics  | Read       |
+| User             | User Details       | Read       |
+| Zone             | DNS                | Read       |
+| Zone             | Workers Routes     | Edit       |
+| Zone             | Zone               | Read       |
+
+:::info
+By default the token is scoped to all accounts and zones you have access to. We recommend scoping it only to the accounts and zones you intend to protect.
+:::
+
+:::warning
+Each configured zone must have at least one `A` or `AAAA` DNS record. Zones with only `CNAME` records should be excluded from the scope — the bouncer tries to ignore them automatically, but failure to do so may result in higher KV storage charges.
+:::
+
+---
+
+## Self-Hosted Setup
+
+The self-hosted setup deploys three Cloudflare Workers to your account:
+
+- **Installer Worker** — hosts the configuration GUI in your browser.
+- **Sync Worker** — runs on a cron schedule, fetching decisions and updating the KV store.
+- **Remediation Worker** — bound to your zones, filters every incoming request.
+
+Everything runs inside Cloudflare. No server, no daemon, no YAML files.
+
+### Deploy the Installer
+
+Click the button below to clone the installer into your GitHub or GitLab account and deploy it as a Cloudflare Worker:
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer-install)
+
+:::note
+The Cloudflare deploy flow forks the repository into your GitHub or GitLab account before deploying — you need an account on one of these platforms.
+:::
+
+Once deployed, Cloudflare gives you the URL of your Installer Worker. Open it in your browser.
+
+:::info
+The Installer Worker never stores your API token or credentials. They are held only in your browser session.
+:::
+
+### Configure via the Installer UI
+
+The UI is a three-step wizard. Work through each section top to bottom.
+
+{/* ADD SCREENSHOT: Full installer UI with all three sections visible, showing step numbers 1–3 */}
+
+---
+
+#### Step 1 — Cloudflare API Token
+
+Paste your Cloudflare API token. The installer validates it immediately and confirms all required permissions are present.
+
+If you don't have a token yet, click **Create token ↗** in the UI — it opens the Cloudflare dashboard with the exact permission set pre-selected (see [Cloudflare API Token](#cloudflare-api-token) above for the full list).
+
+{/* ADD SCREENSHOT: Step 1 expanded with a valid token — green checkmark, "Token valid — permissions confirmed" */}
+
+---
+
+#### Step 2 — CrowdSec Integration Endpoint
+
+Paste the URL of your CrowdSec decision source:
+
+- **Blocklist Integration Endpoint** — from the [CrowdSec Console](https://app.crowdsec.net) under your Remediation Component integration. See [Blocklist as a Service](/u/integrations/remediationcomponent).
+- **Security Engine LAPI URL** — the URL of your self-hosted LAPI, reachable from Cloudflare's network.
+
+The installer displays the currently saved endpoint so you can confirm it is correct before proceeding.
+
+{/* ADD SCREENSHOT: Step 2 expanded, endpoint URL field filled in, "Current endpoint used for protection" label visible below */}
+
+To update the endpoint later without reinstalling, paste the new URL and click **Edit** — the Sync Worker's configuration is updated in the KV store immediately.
+
+---
+
+#### Step 3 — Zone Protection
+
+This section lists every zone in your Cloudflare account with its current status.
+
+{/* ADD SCREENSHOT: Step 3 zone list showing one zone "PROTECTED" and one "UNPROTECTED" with Install / Remove buttons */}
+
+**Installing a zone:**
+
+Select one or more unprotected zones and click **Install**. The installer creates the KV namespace (if absent), uploads the Remediation and Sync Workers, sets up the cron trigger, creates the Worker Route for the zone, and optionally creates a Turnstile widget. You can watch each step complete in real time.
+
+{/* ADD SCREENSHOT: Installation in progress — real-time step log with green checkmarks appearing one by one */}
+
+**Turnstile (CAPTCHA):**
+
+Before installing, toggle **Supports CAPTCHA** on a zone to enable Turnstile for it. Protected zones with Turnstile show a **SUPPORTS CAPTCHA** badge. You can toggle it on or off after installation as well.
+
+{/* ADD SCREENSHOT: Protected zone row showing both "PROTECTED" and "SUPPORTS CAPTCHA" badges */}
+
+**Removing a zone:**
+
+Click **Remove** next to a protected zone to unbind the Remediation Worker from that zone and delete its Turnstile widget. The shared KV namespace and worker scripts remain in place for other protected zones.
+
+Click **Uninstall all** to remove all bouncer infrastructure at once (workers, KV, all routes, all Turnstile widgets).
+
+---
+
+## CLI Bouncer Setup
+
+The CLI bouncer is a Go binary (`crowdsec-cloudflare-worker-bouncer`) that manages Cloudflare infrastructure from the command line using a YAML configuration file.
+
+It supports two modes:
+
+- **Daemon Mode** — the process runs continuously, syncing decisions from your Security Engine to the KV store on a regular interval. Workers and KV are cleaned up automatically when the daemon stops.
+- **Autonomous Mode** — the process deploys the Sync and Remediation Workers once and exits. All subsequent decision syncing is handled by the Sync Worker inside Cloudflare on a cron schedule.
+
+:::warning
+After installation, configure the [Worker Route Fail Mode](#setting-up-the-worker-route-fail-mode) to avoid service outages if the worker encounters errors.
+:::
+
+### Installing the CLI Bouncer
+
+#### From CrowdSec Repositories
+
+Packages for `crowdsec-cloudflare-worker-bouncer` are [available on our repositories](/u/getting_started/installation/linux#repository-installation):
 
 <Tabs
   defaultValue="debian"
   values={[
-    { label: 'Debian/Ubuntu', value: 'debian' ,},
-    { label: 'RHEL/Centos/Fedora', value: 'rhel', },
-  ]
-}>
+    { label: 'Debian/Ubuntu', value: 'debian' },
+    { label: 'RHEL/Centos/Fedora', value: 'rhel' },
+  ]}
+>
 <TabItem value="debian">
 
 ```bash
-sudo apt install crowdsec-cloudflare-bouncer
+sudo apt install crowdsec-cloudflare-worker-bouncer
 ```
 
 </TabItem>
 <TabItem value="rhel">
 
 ```bash
-sudo yum install crowdsec-cloudflare-bouncer
+sudo yum install crowdsec-cloudflare-worker-bouncer
 ```
 
 </TabItem>
 </Tabs>
 
+Then set up the bouncer:
 
-Then run the following commands to setup your bouncer:
-
+<Tabs
+  defaultValue="daemon"
+  values={[
+    { label: 'Daemon Mode', value: 'daemon' },
+    { label: 'Autonomous Mode', value: 'autonomous' },
+  ]}
+>
+<TabItem value="daemon">
 
 ```bash
-sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml # auto-generate cloudflare config for provided space separated tokens 
-sudo crowdsec-cloudflare-bouncer -s # this sets up IP lists and firewall rules at cloudflare for the provided config. 
-sudo systemctl start crowdsec-cloudflare-bouncer # the bouncer now syncs the crowdsec decisions with cloudflare components.
+# Auto-generate config from your Cloudflare tokens
+sudo crowdsec-cloudflare-worker-bouncer -g <TOKEN1>,<TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+# Review config and set crowdsec_config.lapi_key
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+# Start the daemon
+sudo systemctl start crowdsec-cloudflare-worker-bouncer
 ```
 
+</TabItem>
+<TabItem value="autonomous">
+
+```bash
+# Auto-generate config from your Cloudflare tokens
+sudo crowdsec-cloudflare-worker-bouncer -g <TOKEN1>,<TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+# Review config and set crowdsec_config.lapi_key
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+# Deploy workers to Cloudflare and exit — no daemon needed
+sudo crowdsec-cloudflare-worker-bouncer -S -c /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+```
+
+In autonomous mode the Go process deploys the configuration to Cloudflare and exits. All decision synchronization is handled by Cloudflare scheduled workers.
+
+</TabItem>
+</Tabs>
+
 :::warning
-
-Please configure your server to emit real IPs rather than cloudflare IPs in logs, so crowdsec can function properly. See how to [here](https://support.cloudflare.com/hc/en-us/articles/200170786-Restoring-original-visitor-IPs)
-
+Configure your origin server to emit real visitor IPs rather than Cloudflare IPs in logs, so CrowdSec can function properly. See [Restoring original visitor IPs](https://support.cloudflare.com/hc/en-us/articles/200170786-Restoring-original-visitor-IPs).
 :::
 
 :::info
-
-If your component is not installed on the same machine than LAPI, don't forget to set the `crowdsec_lapi_url` and `crowdsec_lapi_key` in the configuration file `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
-
+If the bouncer is not installed on the same machine as LAPI, set `crowdsec_config.lapi_url` and `crowdsec_config.lapi_key` in the configuration file.
 :::
 
 :::note
-
-You need to run `sudo crowdsec-cloudflare-bouncer -d` to cleanup exisiting cloudflare components created by component before editing the config files.
-
+Run `sudo crowdsec-cloudflare-worker-bouncer -d` to clean up existing Cloudflare infrastructure before editing the config file.
 :::
 
-:::note
+#### Manual Installation
 
-You can run `sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml` to generate the configuration by discovering all the accounts and the zones associated with the provided tokens.
+Download the [latest release](https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer/releases).
 
-:::
-
-
-### Manual
-
-#### Assisted
-
-Download the [latest release](https://github.com/crowdsecurity/cs-cloudflare-bouncer/releases).
+<Tabs
+  defaultValue="daemon"
+  values={[
+    { label: 'Daemon Mode', value: 'daemon' },
+    { label: 'Autonomous Mode', value: 'autonomous' },
+  ]}
+>
+<TabItem value="daemon">
 
 ```bash
-tar xzvf crowdsec-cloudflare-bouncer.tgz
-cd crowdsec-cloudflare-bouncer/
+tar xzvf crowdsec-cloudflare-worker-bouncer.tgz
+cd crowdsec-cloudflare-worker-bouncer/
 sudo ./install.sh
-sudo crowdsec-cloudflare-bouncer -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml # auto-generate cloudflare config for provided tokens 
-sudo crowdsec-cloudflare-bouncer -s # this sets up IP lists and firewall rules at cloudflare for the provided config. 
-sudo systemctl start crowdsec-cloudflare-bouncer # the bouncer now syncs the crowdsec decisions with cloudflare components.
+sudo crowdsec-cloudflare-worker-bouncer -g <TOKEN1>,<TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+sudo systemctl start crowdsec-cloudflare-worker-bouncer
 ```
 
-#### From source
+</TabItem>
+<TabItem value="autonomous">
 
 ```bash
+tar xzvf crowdsec-cloudflare-worker-bouncer.tgz
+cd crowdsec-cloudflare-worker-bouncer/
+sudo ./install.sh
+sudo crowdsec-cloudflare-worker-bouncer -g <TOKEN1>,<TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+sudo crowdsec-cloudflare-worker-bouncer -S -c /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+```
+
+</TabItem>
+</Tabs>
+
+#### From Source
+
+:::note
+Requires Go >= 1.23
+:::
+
+<Tabs
+  defaultValue="daemon"
+  values={[
+    { label: 'Daemon Mode', value: 'daemon' },
+    { label: 'Autonomous Mode', value: 'autonomous' },
+  ]}
+>
+<TabItem value="daemon">
+
+```bash
+git clone https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer
+cd cs-cloudflare-worker-bouncer
 make release
-cd crowdsec-cloudflare-bouncer-vX.X.X
-sudo ./install.sh
+cd crowdsec-cloudflare-worker-bouncer-*
+./crowdsec-cloudflare-worker-bouncer -g <TOKEN1>,<TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+sudo systemctl start crowdsec-cloudflare-worker-bouncer
 ```
-Rest of the steps are same as of the above method.
 
-
-## Container
-
-Make sure you have docker or podman installed. In this guide we will use docker, but podman would work as a drop in replacement too.
-
-### Setup
+</TabItem>
+<TabItem value="autonomous">
 
 ```bash
-docker run crowdsecurity/cloudflare-bouncer \
- -g <CLOUDFLARE_TOKEN1>,<CLOUDFLARE_TOKEN2> > cfg.yaml # auto-generate cloudflare config for provided space separated tokens 
+git clone https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer
+cd cs-cloudflare-worker-bouncer
+make release
+cd crowdsec-cloudflare-worker-bouncer-*
+./crowdsec-cloudflare-worker-bouncer -g <TOKEN1>,<TOKEN2> -o /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+sudo vi /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
+./crowdsec-cloudflare-worker-bouncer -S -c /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
 ```
 
-You can then review the contents of the file `cfg.yaml` and make any necessary changes.
+</TabItem>
+</Tabs>
 
-```
-vim cfg.yaml # review config and set `crowdsec_lapi_key`
-```
+### Daemon Mode
 
-The `crowdsec_lapi_key` can be obtained by running the following:
+The Go process runs continuously and:
+
+1. Creates a Cloudflare Worker and a KV namespace per configured account.
+2. Creates Worker Routes per configured zone — all matching requests are handled by the worker.
+3. Periodically polls your Security Engine or Blocklist Integration and updates the KV store with the latest decisions.
+4. For every incoming request, the Remediation Worker checks the IP, country, and AS against the KV store and applies the matching remediation.
+
+*A Blocklist Integration endpoint can be substituted for the Security Engine in the diagram below.*
+
+![Daemon Mode Architecture](/img/bouncer/cloudflare-worker/cfworkerarch.png)
+
+:::info
+The Workers and KV created by the bouncer are cleaned up from Cloudflare automatically on daemon stop or launch error.
+:::
+
+### Autonomous Mode
+
+The Go process deploys the infrastructure once and exits. No persistent daemon is needed.
+
+Two Cloudflare Workers are deployed:
+
+- `crowdsec-cloudflare-worker-bouncer` (Remediation Worker) — applies cached decisions to incoming requests.
+- `decisions-sync-worker` (Sync Worker) — periodically fetches decisions from CrowdSec using Cloudflare scheduled tasks.
+
+<img src={useBaseUrl('/img/bouncer/cloudflare-worker/cf-autonomous-init.png')} width="50%" alt="Autonomous mode init"/>
+
+Once deployed, the Sync Worker runs on the configured cron schedule and keeps the KV store current.
+
+<img src={useBaseUrl('/img/bouncer/cloudflare-worker/cf-autonomous-sync.png')} width="50%" alt="Autonomous mode sync"/>
+
+<img src={useBaseUrl('/img/bouncer/cloudflare-worker/cf-autonomous-architecture.png')} width="100%" alt="Autonomous mode full architecture"/>
+
+#### Resetting Decisions
+
+To reset all decisions in the KV store without redeploying the infrastructure, add a `RESET` key with value `true` to the KV namespace via the Cloudflare dashboard. On the next sync cycle the worker will clear all existing decisions and repopulate from CrowdSec.
+
+### Metrics
+
+The Remediation Worker writes metric data points to a [Workers Analytics Engine](https://developers.cloudflare.com/analytics/analytics-engine/) dataset, tracking:
+
+- Number of requests processed
+- Number of requests blocked
+- Number of requests that threw an exception
+- Average request processing latency
+
+:::info
+Since `v0.0.18`, metrics are stored in a Workers Analytics Engine dataset instead of a D1 database. Make sure your Cloudflare token has `Account Analytics: Read` permission (see the [permissions table](#cloudflare-api-token)). Without it the metric poll returns a `403` and metrics are disabled, but remediation enforcement is unaffected.
+
+If upgrading from an older version, the legacy `CROWDSECCFBOUNCERDB` D1 database is no longer used and can be deleted manually from the Cloudflare dashboard.
+:::
+
+The dataset name defaults to `crowdsec_cloudflare_bouncer` and can be customized with [`worker.analytics_dataset`](#workeranalytics_dataset).
+
+**In Daemon Mode**, the running process polls the Analytics Engine SQL API, exposes metrics via Prometheus, and pushes them to CrowdSec for `cscli` visualization.
+
+**In Autonomous Mode**, metrics are collected in the Analytics Engine dataset but are **not pushed to CrowdSec**.
+
+### CLI Helpers
+
+#### Auto Config Generator
+
+Generates a configuration file by discovering all accounts and zones associated with your tokens:
 
 ```bash
-sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for human friendly output.
+sudo crowdsec-cloudflare-worker-bouncer -g <TOKEN1>,<TOKEN2> -o cfg.yaml
+cat cfg.yaml > /etc/crowdsec/bouncers/crowdsec-cloudflare-worker-bouncer.yaml
 ```
 
-The `crowdsec_lapi_url` must be accessible from the container.
+:::note
+This only generates Cloudflare-related config. CrowdSec LAPI config must be set manually in the output file.
+:::
 
-### Runtime
+Using a custom config path:
 
 ```bash
-  docker run \
-  -v $PWD/cfg.yaml:/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml \
-  -p 2112:2112 \
-  crowdsecurity/cloudflare-bouncer
+sudo crowdsec-cloudflare-worker-bouncer -c ./cfg.yaml -g <TOKEN1>,<TOKEN2>
 ```
 
+#### Cloudflare Cleanup
 
-## Configuration
+Deletes all Cloudflare infrastructure created by the bouncer:
 
-Configuration file can be found at `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
+```bash
+sudo crowdsec-cloudflare-worker-bouncer -d
+```
+
+---
+
+## Setting Up the Worker Route Fail Mode
+
+Worker routes are created with **Fail Closed** mode by default. In this mode, any worker error results in a Cloudflare 1027 error page shown to visitors — including errors caused by plan quota overruns.
+
+There is no public Cloudflare API to change this. **We recommend manually switching all bouncer-created routes to Fail Open**, so that if the worker encounters an error, traffic bypasses it and reaches your origin server normally.
+
+1. Log in to the Cloudflare dashboard and select your account.
+2. Open the website's Overview page.
+3. Click **Worker Routes** in the left menu.
+
+![Worker Route tab](/img/bouncer/cloudflare-worker/cfsitedashboard.png)
+
+4. Click the route created by the bouncer, then click **Edit**.
+5. Under **Request limit failure mode**, select **Fail open**.
+
+![Fail Open setting](/img/bouncer/cloudflare-worker/cffailmode.png)
+
+---
+
+## Appendix: Test with Cloudflare Free Plan
+
+Using the free plan is feasible but requires understanding its constraints.
+
+### Free Plan Limitations
+
+| Limit | Value | Impact |
+|---|---|---|
+| KV writes | 1,000 / day | Initial blocklist population is truncated to 1K IPs |
+| Worker requests | 100K / day or 1K / min | Heavy traffic may exhaust quota |
+
+The KV write limit is the primary constraint — large blocklists (tens of thousands of IPs) will be truncated on first sync. Incremental updates still flow in over time, so coverage grows gradually.
+
+When the request quota is exhausted, the worker stops applying remediation. This makes [setting Fail Open](#setting-up-the-worker-route-fail-mode) essential — without it your site returns error pages to all visitors once the quota is hit.
+
+### Recommended Free Plan Configuration
+
+1. **Auto-generate config**: [use the config generator](#auto-config-generator).
+2. **Limit decision sources** to your local Security Engine only:
 
 ```yaml
-# CrowdSec Config
-crowdsec_lapi_url: http://localhost:8080/
-crowdsec_lapi_key: ${API_KEY}
-crowdsec_update_frequency: 10s
-include_scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word, eg ["ssh", "http"]
-exclude_scenarios_containing: [] # ignore IPs banned for triggering scenarios containing either of provided word
-only_include_decisions_from: [] # only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+crowdsec_config:
+  only_include_decisions_from: ["cscli", "crowdsec"]
+```
 
-#Cloudflare Config. 
+3. **Set Fail Open** on all worker routes: [instructions above](#setting-up-the-worker-route-fail-mode).
+4. **Test with a manual decision**:
+
+```bash
+sudo cscli decisions add --ip 192.168.1.1 --type captcha
+sudo cscli decisions list --origin cscli
+```
+
+Within a few seconds the decision appears in the KV store and the remediation is enforced.
+
+---
+
+## Configuration Reference
+
+### `crowdsec_config`
+
+```yaml
+crowdsec_config:
+  lapi_key: ${API_KEY}
+  lapi_url: ${CROWDSEC_LAPI_URL}
+  update_frequency: 10s
+  include_scenarios_containing: []
+  exclude_scenarios_containing: []
+  only_include_decisions_from: []
+  insecure_skip_verify: false
+  key_path: ""     # TLS client key for LAPI authentication
+  cert_path: ""    # TLS client cert for LAPI authentication
+  ca_cert_path: "" # CA cert to trust the LAPI certificate
+
 cloudflare_config:
-  accounts: 
-  - id: 
-    token: 
-    ip_list_prefix: crowdsec
-    default_action: managed_challenge
-    total_ip_list_capacity: # only this many latest ip scoped decisions would be kept
+  accounts:
+    - id: <ACCOUNT_ID>
+      zones:
+        - zone_id: <ZONE_ID>
+          actions:
+            - captcha
+          default_action: captcha # captcha | ban | none
+          routes_to_protect: []
+          turnstile:
+            enabled: true
+            rotate_secret_key: true
+            rotate_secret_key_every: 168h0m0s
+            mode: managed # managed | invisible | non-interactive
+      token: <CLOUDFLARE_ACCOUNT_TOKEN>
+      account_name: owner@example.com
+  worker:
+    log_only: false
+    script_name: ""
+    kv_namespace_name: ""
+    decisions_sync_script_name: ""
+    analytics_dataset: ""
+    logpush: null
+    tags: []
+    compatibility_date: ""
+    compatibility_flags: []
+    observability:
+      enabled: true
+      head_sampling_rate: 1.0
+      traces:
+        enabled: true
+        head_sampling_rate: 1.0
+  decisions_sync_worker:
+    cron: '*/5 * * * *'
 
-    zones:
-    - actions: 
-      - managed_challenge # valid choices are either of managed_challenge, js_challenge, block
-      zone_id:
-    
-  update_frequency: 30s # the frequency to update the cloudflare IP list 
-
-# Component Config
-daemon: true
-log_mode: file
-log_dir: /var/log/ 
-log_level: info # valid choices are either debug, info, error 
-log_max_size: 40
-log_max_age: 30
-log_max_backups: 3
-compress_logs: true
+log_level: info
+log_media: "stdout"
+log_dir: "/var/log/"
+ban_template_path: ""
 
 prometheus:
   enabled: true
   listen_addr: 127.0.0.1
-  listen_port: 2112
+  listen_port: "2112"
 ```
 
-## Making changes to configuration
-
-The component creates Cloudflare infra (IP lists, rules etc) according to your config file. 
-
-Before changing the config, always run the following command to clear old infra:
-
-```
-sudo crowdsec-cloudflare-bouncer -d 
-```
-
-### Upgrading from v0.0.X to v0.1.Y
-
-During v0.0.X there was no `managed_challenge` action, instead `challenge` action was used by bouncer. This is deprecated since v0.1.0 .
-
-This section assumes you used the default config (generated via `crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>` )
-
-After upgrading the component from v0.0.X to v0.1.Y , run the following commands to migrate to `managed_challenge`.
-
-```bash
-sudo crowdsec-cloudflare-bouncer -d
-sudo crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2> -o <path_to_config_file>
-sudo systemctl restart crowdsec-cloudflare-bouncer
-```
-
-
-## Cloudflare Configuration
-
-**Background:** In Cloudflare, each user can have access to multiple accounts. Each account can own/access multiple zones. In this context a zone can be considered as a domain. Each domain registered with cloudflare gets a distinct `zone_id`.
-
-
-For obtaining the `token`:
-1. Sign in as a user who has access to the desired account.
-2. Go to [Tokens](https://dash.cloudflare.com/profile/api-tokens) and create the token. The component requires the following permissions to function.
-![image](https://raw.githubusercontent.com/crowdsecurity/cs-cloudflare-bouncer/main/docs/assets/token_permissions.png)
-
-To automatically generate config for cloudflare check the helper section below.
-
-
-:::note
-If the zone is subscribed to a paid Cloudflare plan then it can be configured to support multiple types of actions. For free plan zones only one action is supported. The first action is applied as default action.
-:::
-
-## Helpers
-
-The component binary has built in helper scripts to do various operations.
-
-### Auto config generator
-
-Generates component config by discovering all the accounts and the zones associated with provided list of tokens. 
-
-Example Usage:
-
-```bash
-sudo crowdsec-cloudflare-bouncer -g <TOKEN_1>,<TOKEN_2>... -o /etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml
-```
-
-:::note
-This script only generates cloudflare related config. By default it refers to the config at `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml` for crowdsec configuration. 
-:::
-
-Using custom config:
-
-```bash
-sudo crowdsec-cloudflare-bouncer -c /path/to/config/file -g <TOKEN_1>,<TOKEN_2>... 
-```
-
-### Cloudflare Setup
-
-This only creates the required IP lists and firewall rules at cloudflare and exits.
-
-Example Usage:
-```bash
-sudo  crowdsec-cloudflare-bouncer -s 
-```
-
-### Cloudflare Cleanup
-
-This deletes all IP lists and firewall rules at cloudflare which were created by the component.
-
-Example Usage:
-```bash
-sudo crowdsec-cloudflare-bouncer -d 
-```
-
-## How it works
-
-The service polls the CrowdSec Local API for new / deleted decisions. It then makes API calls to Cloudflare to update IP lists and firewall rules depending upon the decision.
-
-## Configuration Reference
-
-### `crowdsec_lapi_url`
+#### `crowdsec_config.lapi_url`
 > string
 
-The URL of CrowdSec LAPI. It should be accessible from the component.
+URL of CrowdSec LAPI. Must be accessible from the bouncer.
 
-### `crowdsec_lapi_key`
+#### `crowdsec_config.lapi_key`
 > string
 
-API key to authenticate with the LAPI.
+Bouncer API key. Obtain it by running on the LAPI machine:
 
-### `cert_path`
-> string
+```bash
+sudo cscli -oraw bouncers add cloudflarebouncer
+```
 
-Path to the certificate file used to authenticate with the LAPI.
+#### `crowdsec_config.update_frequency`
+> string (parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
 
-### `key_path`
-> string
+How often the bouncer polls CrowdSec. Default: `10s`.
 
-Path to the key file used to authenticate with the LAPI.
+#### `crowdsec_config.include_scenarios_containing`
+> []string
 
-### `ca_path_file`
-> string
-
-Path to the CA file used to trust the LAPI certificate.
-
-### `crowdsec_update_frequency`
-> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
-
-The component will poll the CrowdSec every `update_frequency` interval.
-
-### `include_scenarios_containing`
-> [ ]string
-
-Ignore IPs banned for triggering scenarios not containing either of provided word.
+Only include decisions for IPs that triggered scenarios containing one of these words.
 
 ```yaml title="Example"
 include_scenarios_containing: ["ssh", "http"]
 ```
 
-### `exclude_scenarios_containing`
-> [ ]string
+#### `crowdsec_config.exclude_scenarios_containing`
+> []string
 
-Ignore IPs banned for triggering scenarios containing either of provided word.
+Exclude decisions for IPs that triggered scenarios containing one of these words.
 
 ```yaml title="Example"
 exclude_scenarios_containing: ["ssh", "http"]
 ```
 
-### `only_include_decisions_from`
-> [ ]string
+#### `crowdsec_config.only_include_decisions_from`
+> []string
 
-Only include IPs banned due to decisions orginating from provided sources.
+Only include decisions originating from these sources.
 
 ```yaml title="Example"
 only_include_decisions_from: ["cscli", "crowdsec"]
 ```
 
-### `cloudflare_config`
-> [CloudflareConfig](https://github.com/crowdsecurity/cs-cloudflare-bouncer/blob/20c902ee1e95fe13135dd493d7e96840bafc931b/pkg/cfg/config.go#L34-L37)
-
-This block contains cloudflare specific config.
-
-#### `update_frequency`
-> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
-
-The frequency at which to update the cloudflare resources.
-
-```yaml title="Example"
-update_frequency: "10s"
-```
-
-#### `accounts`
-> [ ][AccountConfig](https://github.com/crowdsecurity/cs-cloudflare-bouncer/blob/20c902ee1e95fe13135dd493d7e96840bafc931b/pkg/cfg/config.go#L26-L33)
-
-List of account of configs
-
-##### `id`
-> string
-
-id of cloudflare account
-
-##### `token`
-> string
-
-cloudflare token to use to access the account.
-
-##### `ip_list_prefix`
-> string
-
-The prefix to use for naming the IP lists created by the bouncer. The name of IP list will be of the form `ip_list_prefix`+`action`.
-
-##### `total_ip_list_capacity`
-> int
-
-Limit the number of items in IP lists. This is required for avoiding limit of 10k items for lists.
-
-##### `default_action`
-> `managed_challenge` | `block` | `js_challenge` | `challenge` | `none`
-
-The action to be applied for a decision, if the decision's action is not supported by a zone. 
-
-`default_action` must be supported by all zones.
-
-**Example:**
-
-Consider your zone config supports the actions `managed_challenge` and `js_challenge`. Your `default_action` is `managed_action`. If you create the following decision:
-
-```
-sudo cscli decisions add --ip 192.168.1.1 --type ban
-```
-
-Since the zone doesn't support `ban` decision type, it'll be inserted into the IP list given by `default_action`. In this case it'll be the list for `managed_challenge`.
-
-You can completely ignore such decisions by setting `default_action` to `none`. It won't be inserted into any list then.
-
-**Note:**
-
-Following table is mapping of decision type to it's destination IP list.
-
-| Decision Type | Default Action    |
-| ------------- | ----------------- |
-| captcha       | managed_challenge |
-| ban           | block             |
-| js_challenge  | js_challenge      |
-
-
-:::warning
-`challenge` action is deprecated in favour of `managed_challenge`.
-:::
-
-#### `zones`
-> [ ][ZoneConfig](https://github.com/crowdsecurity/cs-cloudflare-bouncer/blob/20c902ee1e95fe13135dd493d7e96840bafc931b/pkg/cfg/config.go#L21-L25)
-
-This block contains config for each zone to be managed by the component. The zone must be accessible from the parent account.
-
-##### `zone_id`
-> string
-
-The id of the zone.
-
-##### `actions`
-> [ ]string
-
-List of actions to be supported by this zone. If the zone is not subscribed to premium plan, then only a single action can be given.
-
-The supported action must include the `default_action` of the parent account.
-
-Valid choice includes either of 
-- `block`
-- `js_challenge`
-- `challenge`
-- `managed_challenge`. 
-
-The component creates an IP list for each action. IP list is at account level, so multiple zones with same parent account will share lists for particular action.
-
-:::warning 
-`challenge` action is deprecated in favour of `managed_challenge`
-:::
-
-**Note:**
-
-Following table is mapping of decision type to it's destination IP list, which are created according to zone actions
-
-
-| Decision Type | Zone Action       |
-| ------------- | ----------------- |
-| captcha       | managed_challenge |
-| ban           | block             |
-| js_challenge  | js_challenge      |
-
-
-
-### `daemon`
+#### `crowdsec_config.insecure_skip_verify`
 > boolean
 
-:::warning
-This field has now been deprecated and is ignored within the component
-:::
+Skip TLS certificate verification for LAPI. Use for self-signed certificates.
 
-Run the component as a daemon.
-
-### `log_mode`
-> `stdout` | `file`
-
-Where the log contents are written (With `file` it will be written to `log_dir` with the name `crowdsec-cloudflare-bouncer.log`)
-
-### `log_dir`
+#### `crowdsec_config.key_path` / `cert_path` / `ca_cert_path`
 > string
 
-Relevant if `log_mode` is `file`. This determines where to create log file.
+Paths to TLS client key, certificate, and CA certificate for mutual TLS authentication with LAPI.
 
-### `log_level`
-> `trace` | `debug` | `info` | `error`
+### `cloudflare_config`
 
-Log level for the component.
+#### `accounts[].id`
+> string
 
-### `compress_logs`
-> `true` | `false`
+Cloudflare account ID.
 
-Compress log files on rotation
+#### `accounts[].zones[].zone_id`
+> string
 
-### `log_max_size`
-> int (in MB)
+Cloudflare zone ID.
 
-Max size of log files before rotation
+#### `accounts[].zones[].actions`
+> `captcha` | `ban`
 
-### `log_max_backups`
-> int
+Remediations supported by this zone.
 
-How many backup log files to keep before deletion (can happen before `log_max_age` is reached)
+#### `accounts[].zones[].default_action`
+> `captcha` | `ban` | `none`
 
-### `log_max_age`
-> int (in days)
+Remediation applied when a decision's type is not in `actions`. Set to `none` to ignore such decisions.
 
-Max age of backup files before deletion (can happen before `log_max_backups` is reached)
+#### `accounts[].zones[].routes_to_protect`
+> []string
+
+Routes within the zone to protect. Example: `["*example.com/*"]`
+
+#### `accounts[].zones[].turnstile.enabled`
+> boolean
+
+Enable Turnstile (CAPTCHA) for this zone.
+
+#### `accounts[].zones[].turnstile.rotate_secret_key`
+> boolean
+
+Automatically rotate the Turnstile secret key.
+
+#### `accounts[].zones[].turnstile.rotate_secret_key_every`
+> string (parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+
+Rotation interval. Example: `168h0m0s` (7 days).
+
+#### `accounts[].zones[].turnstile.mode`
+> `managed` | `invisible` | `non-interactive`
+
+Turnstile widget mode. See [Cloudflare docs](https://developers.cloudflare.com/turnstile/reference/widget-types/).
+
+#### `accounts[].token`
+> string
+
+Cloudflare API token for this account.
+
+#### `accounts[].account_name`
+> string
+
+Human-readable account name.
+
+#### `worker.log_only`
+> bool
+
+If `true`, allow all requests but record what would have been blocked in metrics. Default: `false`.
+
+#### `worker.script_name`
+> string
+
+Name of the Remediation Worker script. Default: `crowdsec-cloudflare-worker-bouncer`.
+
+#### `worker.kv_namespace_name`
+> string
+
+Name of the KV namespace. Change this when running multiple bouncer instances on the same account. Default: `CROWDSECCFBOUNCERNS`.
+
+#### `worker.decisions_sync_script_name`
+> string
+
+Name of the Sync Worker script. Change when running multiple instances. Default: `crowdsec-decisions-sync-worker`.
+
+#### `worker.analytics_dataset`
+> string
+
+Workers Analytics Engine dataset name for metrics. Must match `^[a-zA-Z_][a-zA-Z0-9_]{0,63}$`. Default: `crowdsec_cloudflare_bouncer`.
+
+#### `worker.logpush`
+> bool
+
+Enable log push for the worker.
+
+#### `worker.compatibility_date`
+> string
+
+See [Cloudflare compatibility dates](https://developers.cloudflare.com/workers/configuration/compatibility-dates/).
+
+#### `worker.compatibility_flags`
+> []string
+
+See [Cloudflare compatibility flags](https://developers.cloudflare.com/workers/configuration/compatibility-flags/).
+
+#### `worker.observability`
+> object
+
+Optional [Workers Observability](https://developers.cloudflare.com/workers/observability/logs/workers-logs/) configuration. Omit to leave Cloudflare defaults in place.
+
+```yaml title="Example"
+observability:
+  enabled: true
+  head_sampling_rate: 1.0
+  traces:
+    enabled: true
+    head_sampling_rate: 1.0
+```
+
+#### `decisions_sync_worker.cron`
+> string
+
+Cron schedule for the Sync Worker in autonomous mode. Standard 5-field cron syntax.
+
+Examples:
+- `*/1 * * * *` — every minute
+- `*/5 * * * *` — every 5 minutes (default)
+- `*/10 * * * *` — every 10 minutes
+
+:::note
+Applies only to autonomous mode. In daemon mode, `crowdsec_config.update_frequency` controls sync frequency.
+:::
+
+### `prometheus`
+
+#### `enabled`
+> boolean
+
+Enable Prometheus metrics endpoint.
+
+#### `listen_addr`
+> string
+
+Address to bind. Example: `127.0.0.1`.
+
+#### `listen_port`
+> string
+
+Port to bind. Example: `2112`.
+
+### Others
+
+#### `ban_template_path`
+> string
+
+Path to a custom HTML template rendered for banned requests. Leave empty to use the default.
+
+#### `log_level`
+> `info` | `debug` | `error` | `warning` | `trace`
+
+#### `log_media`
+> `stdout` | `file`
+
+With `file`, logs are written to `log_dir/crowdsec-cloudflare-worker-bouncer.log`.
+
+#### `log_dir`
+> string
+
+Log directory when `log_media` is `file`.
 
 ## Troubleshooting
- - Metrics can be seen at http://localhost:2112/metrics
- - Logs are in `/var/log/crowdsec-cloudflare-bouncer.log` (Default unless changed in config)
- - You can view/interact directly in the ban list either with `cscli`
- - Service can be started/stopped with `systemctl start/stop crowdsec-cloudflare-bouncer`
+
+- Prometheus metrics: `http://localhost:2112/metrics`
+
