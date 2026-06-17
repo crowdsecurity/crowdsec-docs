@@ -25,8 +25,6 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
 </p>
 
 <RemediationSupportBadges
-  MTLS
-  Prometheus
   Metrics
 />
 
@@ -36,18 +34,33 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
   Metrics
 />
 
+:::tip
+  We recommend using the **Self-Hosted GUI** setup method for most users. It is simpler to install and maintain, and it supports both Blocklist Integration and Security Engine setups.
+
+  Jump directly to the Setup section for your preferred method:  
+  [Self-Hosted GUI](#self-hosted-setup)  **_(Recommended)_**  
+  [CLI Bouncer Daemon](#cli-bouncer-setup)
+:::
+
 ## Overview
 
 This **Remediation Component** uses **Cloudflare Workers** to block or challenge incoming traffic on your Cloudflare zones.
 
 **How it works:**
-- One or more **Cloudflare zones** are bound to a **Remediation Worker** that filters every incoming request.
-- The Remediation Worker looks up the requesting IP in a **Cloudflare KV store** and applies the associated remediation: **ban** (hard block with a custom HTML page) or **Turnstile** (Cloudflare CAPTCHA challenge).
-- A **Sync Worker** periodically fetches the list of IPs to block and keeps the KV store up to date.
+- A list of IPs to remediate _(aka decisions)_ is stored in a **Cloudflare KV store**, each IP associated with an action, either:
+  - **Ban** (hard block with a custom HTML page) 
+  - **Captcha** (Cloudflare turnstile challenge)
+- This list is kept up to date either by:
+  - A **Sync Worker** that periodically fetches decisions from CrowdSec.
+  - An installed bouncer script that pushes decisions to the KV store via Cloudflare's API.
+
+**There are two ways to deploy this bouncer:**
+- A fully **Self-Hosted** version with a browser-based GUI **_(recommended)_**
+- A daemon **CLI Bouncer** running beside your Security Engine or as a standalone process.
 
 **Where do the IPs come from?**
 
-The Sync Worker can pull decisions from two sources — choose the one that fits your setup:
+The source of those decisions
 
 - A **[Blocklist Integration Endpoint](/u/integrations/remediationcomponent)**: a URL served by CrowdSec, no infrastructure required on your side. This is the simplest option.
 - A **[Security Engine](/u/bouncers/intro)** you run in your own infrastructure: the Sync Worker connects to your LAPI to pull decisions directly.
