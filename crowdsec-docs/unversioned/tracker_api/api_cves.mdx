@@ -26,9 +26,10 @@ GET /v1/cves
 |---|---|---|---|
 | `page` | integer | 1 | Page number |
 | `size` | integer | 50 | Items per page (max 100) |
+| `query` | string | — | Free-text search across CVE name, title, and affected components (e.g. `wordpress`) |
 | `sort_by` | string | `rule_release_date` | Sort field: `rule_release_date`, `trending`, `nb_ips`, `name`, `first_seen` |
 | `sort_order` | string | `desc` | Sort direction: `asc`, `desc` |
-| `filter_by` | string | — | Filter: `is_public` (only CVEs with public exploits) |
+| `exploitation_phase` | string | — | Filter by exploitation phase: `insufficient_data`, `early_exploitation`, `fresh_and_popular`, `targeted_exploitation`, `mass_exploitation`, `background_noise`, `unpopular`, `wearing_out`, `unclassified` |
 
 <Tabs
   defaultValue="curl"
@@ -80,6 +81,7 @@ Each CVE in the list includes:
 | Field | Type | Description |
 |---|---|---|
 | `id` | string | CVE identifier (e.g., `CVE-2024-25600`) |
+| `name` | string | CVE name (same as `id`) |
 | `title` | string | Human-readable title (e.g., "Bricks Builder - RCE") |
 | `affected_components` | array | Vendor and product names |
 | `crowdsec_score` | integer | Composite severity score (0–10) |
@@ -159,6 +161,32 @@ In addition to all the list fields, the detail response includes:
 | `events` | array | Key events: CVE published, rule released, first seen, CISA KEV, etc. |
 | `tags` | array | Category tags (e.g., `wordpress`, `cms`, `enterprise_software`) |
 
+## Get CVE Protect Rules
+
+Retrieve the protection/detection rules associated with a specific CVE (e.g. WAF or scenario rules that mitigate it).
+
+```
+GET /v1/cves/{cve_id}/protect-rules
+```
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/protect-rules' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+The response contains a `protect_rules` array. Each rule includes:
+
+| Field | Type | Description |
+|---|---|---|
+| `link` | string | URL to the rule source |
+| `name` | string | Rule name |
+| `label` | string | Human-readable rule label |
+| `published_date` | datetime | Date the rule was published (nullable) |
+| `content` | string | Rule content/definition (nullable) |
+| `tags` | array | Tags associated with the rule, each with `tag` and `label` |
+
 ## Get CVE Timeline
 
 Retrieve exploitation activity over time for a specific CVE. This powers the activity chart in the web interface.
@@ -171,7 +199,7 @@ GET /v1/cves/{cve_id}/timeline
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `interval` | string | `day` | Time bucket size: `hour`, `day`, `week` |
+| `since_days` | integer | 7 | Time range in days: `1` (1 day), `7` (1 week), or `30` (1 month) |
 
 <Tabs
   defaultValue="curl"
@@ -185,7 +213,7 @@ GET /v1/cves/{cve_id}/timeline
 
 ```bash
 curl -X 'GET' \
-  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/timeline?interval=week' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/timeline?since_days=7' \
   -H 'accept: application/json' \
   -H 'x-api-key: ${KEY}'
 ```
@@ -208,6 +236,38 @@ The response is an array of timeline items:
 | `timestamp` | datetime | Start of the time bucket |
 | `count` | integer | Number of exploitation events in this bucket |
 
+## Get Top Indicators
+
+Retrieve the top indicators of compromise (IOCs) observed for a specific CVE. Each item is tagged with its `indicator_type`. Today the only type is `http_path` — the HTTP request line (`<METHOD> <PATH>`) seen targeting the vulnerability.
+
+```
+GET /v1/cves/{cve_id}/indicators
+```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `sort_by` | string | `popular` | Ranking of the returned list: `popular` (most reported) or `most_recent` (newly discovered variations) |
+| `indicator_type` | string | — | Restrict to one or more IOC types. Repeat the parameter to pass several. Currently only `http_path` is available. |
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/indicators?sort_by=popular&indicator_type=http_path' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+The response is an array of indicator items:
+
+| Field | Type | Description |
+|---|---|---|
+| `indicator_type` | string | IOC type (e.g. `http_path`) |
+| `value` | string | The indicator value. For `http_path`, the HTTP request line, e.g. `POST /wp-login.php` |
+| `first_seen` | datetime | When this indicator was first observed |
+| `last_seen` | datetime | Most recent observation of this indicator |
+| `nb_ips` | integer | Number of IPs observed using this indicator |
+
 ## Get IPs Exploiting a CVE
 
 Retrieve the list of IP addresses observed exploiting a specific CVE, enriched with CTI data.
@@ -222,7 +282,7 @@ GET /v1/cves/{cve_id}/ips-details
 |---|---|---|---|
 | `page` | integer | 1 | Page number |
 | `size` | integer | 50 | Items per page |
-| `since` | integer | — | Only IPs seen in the last N days: `1`, `7`, or `30` |
+| `since` | string | `14d` | Only IPs seen within this duration window. Format `<number><unit>` where unit is `h` (hours) or `d` (days), e.g. `24h`, `7d`. Maximum `90d`. |
 
 <Tabs
   defaultValue="curl"
@@ -237,7 +297,7 @@ GET /v1/cves/{cve_id}/ips-details
 ```bash
 # Get IPs seen exploiting CVE-2024-25600 in the last 7 days
 curl -X 'GET' \
-  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/ips-details?page=1&size=10&since=7' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/ips-details?page=1&size=10&since=7d' \
   -H 'accept: application/json' \
   -H 'x-api-key: ${KEY}'
 ```
@@ -294,6 +354,38 @@ Each IP item includes [CTI data](https://doc.crowdsec.net/u/cti_api/taxonomy/cti
 | `target_countries` | object | Countries targeted by this IP (country code → percentage) |
 | `references` | array | External references |
 | `history` | object | `first_seen`, `last_seen`, `full_age`, `days_age` |
+
+## Get IP Stats
+
+Retrieve aggregated statistics about the IPs exploiting a specific CVE — useful for charts and summaries without paging through every IP.
+
+```
+GET /v1/cves/{cve_id}/ips-details-stats
+```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `since` | string | `14d` | Only count IPs seen within this duration window. Format `<number><unit>` where unit is `h` (hours) or `d` (days), e.g. `24h`, `7d`. Maximum `90d`. |
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves/CVE-2024-25600/ips-details-stats?since=7d' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+The response contains a total and several facet breakdowns. Each facet is an array of `{value, count}` buckets:
+
+| Field | Type | Description |
+|---|---|---|
+| `total` | integer | Total number of matching IPs |
+| `reputation` | array | IP count by reputation (`malicious`, `suspicious`, `known`, `safe`) |
+| `country` | array | IP count by country (top 5) |
+| `as_name` | array | IP count by Autonomous System name (top 5) |
+| `cves` | array | IP count by CVE (top 5) |
+| `classifications` | array | IP count by classification (top 5) |
 
 ## Download IPs (Raw)
 
