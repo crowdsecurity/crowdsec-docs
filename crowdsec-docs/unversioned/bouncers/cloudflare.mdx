@@ -24,22 +24,16 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
 &#128172; <a href="https://discourse.crowdsec.net">Discourse</a>
 </p>
 
-<RemediationSupportBadges
-  Metrics
-/>
-
-<RemediationSupportBadges
-  MTLS
-  Prometheus
-  Metrics
-/>
-
 :::tip
-  We recommend using the **Self-Hosted GUI** setup method for most users. It is simpler to install and maintain, and it supports both Blocklist Integration and Security Engine setups.
+  We recommend using the **Self-Hosted GUI** setup method for most users. It is simpler to install and maintain.  
+  For comparative details, see the [Setup Methods](#setup-methods) section below.
 
   Jump directly to the Setup section for your preferred method:  
   [Self-Hosted GUI](#self-hosted-setup)  **_(Recommended)_**  
   [CLI Bouncer Daemon](#cli-bouncer-setup)
+:::
+:::tip
+  Direct link to generate the necessary Cloudflare token needed for this bouncer: [Cloudflare API Token](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22dns%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&name=)
 :::
 
 ## Overview
@@ -71,9 +65,21 @@ This Remediation Component relies on Cloudflare Workers and the KV store. It wor
 
 ## Setup Methods
 
-There are two ways to deploy this bouncer. Both end up with the same Remediation Worker and Sync Worker running inside your Cloudflare account — they differ only in how you install and manage them.
+There are two ways to deploy this bouncer. Both end up with the **same Remediation Worker** and **Sync Worker(*)** running inside your Cloudflare account.  
+Here's a quick comparative overview:
 
-### Self-Hosted GUI (Recommended) {#self-hosted}
+|   | Self-Hosted Installer | CLI Bouncer Daemon |
+|---|---|---|
+| **Initial install** | Github Cloudflare integration | Host-based package install |
+| **Setup** | WebUI | config.yaml auto generation and manual edits |
+| **Decision source** | CrowdSec Blocklist Integration or Security Engine | CrowdSec Blocklist Integration or Security Engine |
+| **Decision sync** | Sync Worker | Bouncer daemon or possibility to use Sync Worker |
+| **Metrics** | Cloudflare Analytics Engine Queries | Prometheus metrics & pushed to CrowdSec Console |
+| **Auth to decisions source** | Basic Auth | Basic Auth or MTLS |
+
+
+
+### Self-Hosted installer (Recommended) {#self-hosted}
 
 A third **Installer Worker** is deployed alongside the other two, hosting a browser-based GUI. You use this GUI for all setup and configuration actions: deploying the workers, binding zones, configuring Turnstile, and updating your CrowdSec endpoint.
 
