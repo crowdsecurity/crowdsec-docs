@@ -28,6 +28,7 @@ GET /v1/fingerprints
 |---|---|---|---|
 | `page` | integer | 1 | Page number |
 | `size` | integer | 50 | Items per page |
+| `query` | string | — | Free-text search across rule name, title, and affected components (e.g. `apache`) |
 | `sort_by` | string | `rule_release_date` | Sort field: `rule_release_date`, `trending`, `nb_ips`, `name`, `first_seen` |
 | `sort_order` | string | `desc` | Sort direction: `asc`, `desc` |
 
@@ -154,11 +155,12 @@ GET /v1/fingerprints/{fingerprint}/timeline
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `interval` | string | `day` | Time bucket: `hour`, `day`, `week` |
+| `since_days` | integer | 7 | Time range in days: `1` (1 day), `7` (1 week), or `30` (1 month) |
+| `interval` | string | auto | Time bucket: `hour`, `day`, `week`. Defaults to a bucket size adapted to `since_days`. |
 
 ```bash
 curl -X 'GET' \
-  'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/timeline?interval=week' \
+  'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/timeline?since_days=7&interval=day' \
   -H 'accept: application/json' \
   -H 'x-api-key: ${KEY}'
 ```
@@ -177,16 +179,63 @@ GET /v1/fingerprints/{fingerprint}/ips-details
 |---|---|---|---|
 | `page` | integer | 1 | Page number |
 | `size` | integer | 50 | Items per page |
-| `since` | integer | — | Only IPs seen in the last N days: `1`, `7`, or `30` |
+| `since` | string | `14d` | Only IPs seen within this duration window. Format `<number><unit>` where unit is `h` (hours) or `d` (days), e.g. `24h`, `7d`. Maximum `90d`. |
 
 ```bash
 curl -X 'GET' \
-  'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/ips-details?page=1&size=10&since=7' \
+  'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/ips-details?page=1&size=10&since=7d' \
   -H 'accept: application/json' \
   -H 'x-api-key: ${KEY}'
 ```
 
 The response format is identical to [CVE IP details](./api_cves#ip-response-fields).
+
+## Get IP Stats
+
+Retrieve aggregated statistics about the IPs matching a fingerprint rule.
+
+```
+GET /v1/fingerprints/{fingerprint}/ips-details-stats
+```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `since` | string | `14d` | Only count IPs seen within this duration window. Format `<number><unit>` where unit is `h` (hours) or `d` (days), e.g. `24h`, `7d`. Maximum `90d`. |
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/ips-details-stats?since=7d' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+The response format is identical to [CVE IP Stats](./api_cves#get-ip-stats): a `total` plus `reputation`, `country`, `as_name`, `cves`, and `classifications` facet breakdowns.
+
+## Get Top Indicators
+
+Retrieve the top indicators of compromise (IOCs) observed for a fingerprint rule. Each item is tagged with its `indicator_type`. Today the only type is `http_path` — the HTTP request line (`<METHOD> <PATH>`) seen probing the matching products.
+
+```
+GET /v1/fingerprints/{fingerprint}/indicators
+```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `sort_by` | string | `popular` | Ranking of the returned list: `popular` (most reported) or `most_recent` (newly discovered variations) |
+| `indicator_type` | string | — | Restrict to one or more IOC types. Repeat the parameter to pass several. Currently only `http_path` is available. |
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchange/indicators?sort_by=most_recent&indicator_type=http_path' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+
+The response format is identical to [CVE Top Indicators](./api_cves#get-top-indicators): an array of `{indicator_type, value, first_seen, last_seen, nb_ips}` items.
 
 ## Download IPs (Raw)
 
