@@ -25,11 +25,11 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
 </p>
 
 :::tip
-  We recommend using the **Self-Hosted GUI** setup method for most users. It is simpler to install and maintain.  
+  We recommend using the **Self-Hosted Installer** setup method for most users. It is simpler to install and maintain.  
   For comparative details, see the [Setup Methods](#setup-methods) section below.
 
   Jump directly to the Setup section for your preferred method:  
-  [Self-Hosted GUI](#self-hosted-setup)  **_(Recommended)_**  
+  [Self-Hosted Installer](#self-hosted-setup)  **_(Recommended)_**  
   [CLI Bouncer Daemon](#cli-bouncer-setup)
 :::
 :::tip
@@ -49,7 +49,7 @@ This **Remediation Component** uses **Cloudflare Workers** to block or challenge
   - An installed bouncer script that pushes decisions to the KV store via Cloudflare's API.
 
 **There are two ways to deploy this bouncer:**
-- A fully **Self-Hosted** version with a browser-based GUI **_(recommended)_**
+- A fully **Self-Hosted** version with a browser-based Install&Config GUI **_(recommended)_**
 - A daemon **CLI Bouncer** running beside your Security Engine or as a standalone process.
 
 **Where do the IPs come from?**
@@ -66,6 +66,14 @@ This Remediation Component relies on Cloudflare Workers and the KV store. It wor
 ## Setup Methods
 
 There are two ways to deploy this bouncer. Both end up with the **same Remediation Worker** and **Sync Worker(*)** running inside your Cloudflare account.  
+- [Self-Hosted Installer](#self-hosted-setup)  **_(Recommended)_**  
+  - **Best For:** Blocklist Integration setups, minimal footprint, no server to maintain.
+  - **Setup:** WebUI, no YAML files, no daemon.
+- [CLI Bouncer Daemon](#cli-bouncer-setup)
+  - **Best For:** Security Engine setups, Prometheus metrics, advanced/IAC configuration (multiple instances, custom resource names).
+  - **Setup:** YAML config file, command-line flags, runs as a daemon or one-shot process.  
+
+
 Here's a quick comparative overview:
 
 |   | Self-Hosted Installer | CLI Bouncer Daemon |
@@ -77,36 +85,15 @@ Here's a quick comparative overview:
 | **Metrics** | Cloudflare Analytics Engine Queries | Prometheus metrics & pushed to CrowdSec Console |
 | **Auth to decisions source** | Basic Auth | Basic Auth or MTLS |
 
-
-
-### Self-Hosted installer (Recommended) {#self-hosted}
-
-A third **Installer Worker** is deployed alongside the other two, hosting a browser-based GUI. You use this GUI for all setup and configuration actions: deploying the workers, binding zones, configuring Turnstile, and updating your CrowdSec endpoint.
-
-**Best for:** Blocklist Integration setups, minimal footprint, no server to maintain.
-
-→ [Jump to Self-Hosted Setup](#self-hosted-setup)
-
-### CLI Bouncer {#cli-bouncer}
-
-A Go binary (`crowdsec-cloudflare-worker-bouncer`) handles deployment and configuration via YAML and command-line flags. It can run in two modes:
-
-- **Daemon Mode**: the Go process runs continuously alongside your Security Engine, syncing decisions directly.
-- **Autonomous Mode**: the Go process deploys the workers once and exits; the Sync Worker then runs on its own inside Cloudflare.
-
-**Best for:** Security Engine setups, Prometheus metrics, advanced configuration (multiple instances, custom resource names).
-
-→ [Jump to CLI Bouncer Setup](#cli-bouncer-setup)
+:::warning
+After installation, configure the [Worker Route Fail Mode](#setting-up-the-worker-route-fail-mode) to FAIL OPEN to avoid service outages if the worker encounters errors or Cloudflare plan quota overruns.
+:::
 
 ## Cloudflare API Token
 
 Both setup methods require a Cloudflare **user** API token with the following permissions.
 
-:::warning
-Generate a **user** API token via **My Profile → API Tokens** — not the Account API Tokens section, which has different rate limits and will cause issues.
-:::
-
-Click [**this link**](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22dns%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&name=) to open the Cloudflare token creation page with the required permissions pre-selected, or create one manually at [Tokens](https://dash.cloudflare.com/profile/api-tokens) with:
+Click [**🔑 this link**](https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22challenge_widgets%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_routes%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22dns%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&name=) to open the Cloudflare token creation page with the required permissions pre-selected, or create one manually at [Tokens](https://dash.cloudflare.com/profile/api-tokens) with:
 
 | Permission Group | Item               | Permission |
 | ---------------- | ------------------ | ---------- |
@@ -132,11 +119,15 @@ Each configured zone must have at least one `A` or `AAAA` DNS record. Zones with
 
 ## Self-Hosted Setup
 
-The self-hosted setup deploys three Cloudflare Workers to your account:
+The self-hosted setup uses a Cloudflare github integration to deploy a worker acting as the central install and configuration GUI for the Cloudflare bouncer elements.
 
-- **Installer Worker** — hosts the configuration GUI in your browser.
-- **Sync Worker** — runs on a cron schedule, fetching decisions and updating the KV store.
-- **Remediation Worker** — bound to your zones, filters every incoming request.
+The steps are:
+- [Deploying the Installer Worker](#deploy-the-installer) to your Cloudflare account via GitHub or Gitlab
+  - One time action
+  - The installer will update automatically when the repository is updated
+- [Installing the bouncer and binding your zones via the Installer GUI](#configure-via-the-installer-ui)
+  - Easy One click or batch actions on you select zones
+  - Easy install/cleanup process
 
 Everything runs inside Cloudflare. No server, no daemon, no YAML files.
 
@@ -150,15 +141,19 @@ Click the button below to clone the installer into your GitHub or GitLab account
 The Cloudflare deploy flow forks the repository into your GitHub or GitLab account before deploying — you need an account on one of these platforms.
 :::
 
-Once deployed, Cloudflare gives you the URL of your Installer Worker. Open it in your browser.
+Once deployed the Installer Worker will appear in the Workers & Pages section of your Cloudflare dashboard.  
+Cloudflare gives you the URL of your Installer Worker. Open it to reach the installer GUI.
 
-:::info
-The Installer Worker never stores your API token or credentials. They are held only in your browser session.
-:::
+![Install Worker](/img/bouncer/cloudflare-worker/cf-installer-worker-preview.png)
+
+{/* TODO: test if it does really clone, or explain how to deploy their own fork */}
 
 ### Configure via the Installer UI
 
+Click on your Installer Worker URL to open the installer GUI.  
 The UI is a three-step wizard. Work through each section top to bottom.
+
+![Installer UI](/img/bouncer/cloudflare-worker/cf-installer-init.png)
 
 {/* ADD SCREENSHOT: Full installer UI with all three sections visible, showing step numbers 1–3 */}
 
@@ -166,11 +161,19 @@ The UI is a three-step wizard. Work through each section top to bottom.
 
 #### Step 1 — Cloudflare API Token
 
-Paste your Cloudflare API token. The installer validates it immediately and confirms all required permissions are present.
+:::info
+The Installer never stores your API token or credentials. They are held only in your browser session.
+_If you don't have a token yet, click **Create token ↗** in the UI. (see [Cloudflare API Token](#cloudflare-api-token) above for the permission list)._
+:::
 
-If you don't have a token yet, click **Create token ↗** in the UI — it opens the Cloudflare dashboard with the exact permission set pre-selected (see [Cloudflare API Token](#cloudflare-api-token) above for the full list).
+Paste your Cloudflare API token. The installer **validates** it immediately and confirms all required permissions are present.  
+Upon validation, the installer fetches a list of all zones in your account and their current protection status.  
 
-{/* ADD SCREENSHOT: Step 1 expanded with a valid token — green checkmark, "Token valid — permissions confirmed" */}
+In the following step, you can then select which zones to protect.
+
+![Valid Token Lists Zones](/img/bouncer/cloudflare-worker/cf-installer-init-valid-token.png)
+
+{/* ADD SCREENSHOT: Step 1 expanded, valid token entered, "Token is valid" message visible, list of zones below */}
 
 ---
 
@@ -178,14 +181,14 @@ If you don't have a token yet, click **Create token ↗** in the UI — it opens
 
 Paste the URL of your CrowdSec decision source:
 
-- **Blocklist Integration Endpoint** — from the [CrowdSec Console](https://app.crowdsec.net) under your Remediation Component integration. See [Blocklist as a Service](/u/integrations/remediationcomponent).
-- **Security Engine LAPI URL** — the URL of your self-hosted LAPI, reachable from Cloudflare's network.
+- **Blocklist Integration Endpoint** — from the CrowdSec Console under your [Remediation Component integration](/u/integrations/remediationcomponent).
+- **Security Engine LAPI URL** — the URL of your self-hosted LAPI, reachable from Cloudflare's network. And [API key generated for the bouncer](/u/bouncers/intro#generate-an-api-key-for-your-bouncer).
 
-The installer displays the currently saved endpoint so you can confirm it is correct before proceeding.
+If you had a previous installation, the installer will pre-fill the field with the currently saved endpoint.  
+You can edit it to change the endpoint without reinstalling by clicking **edit** and then **update now**.
 
-{/* ADD SCREENSHOT: Step 2 expanded, endpoint URL field filled in, "Current endpoint used for protection" label visible below */}
-
-To update the endpoint later without reinstalling, paste the new URL and click **Edit** — the Sync Worker's configuration is updated in the KV store immediately.
+![Decisions Endpoint Info](/img/bouncer/cloudflare-worker/cf-installer-decisions-endpoint-info.png)
+![Decisions Endpoint Edit](/img/bouncer/cloudflare-worker/cf-installer-decisions-endpoint-edit.png)
 
 ---
 
@@ -193,25 +196,29 @@ To update the endpoint later without reinstalling, paste the new URL and click *
 
 This section lists every zone in your Cloudflare account with its current status.
 
-{/* ADD SCREENSHOT: Step 3 zone list showing one zone "PROTECTED" and one "UNPROTECTED" with Install / Remove buttons */}
-
 **Installing a zone:**
 
-Select one or more unprotected zones and click **Install**. The installer creates the KV namespace (if absent), uploads the Remediation and Sync Workers, sets up the cron trigger, creates the Worker Route for the zone, and optionally creates a Turnstile widget. You can watch each step complete in real time.
+You can install/uninstall individual zones or select multiple zones for batch install/uninstall.
 
-{/* ADD SCREENSHOT: Installation in progress — real-time step log with green checkmarks appearing one by one */}
+![Zone Install](/img/bouncer/cloudflare-worker/cf-installer-zone-bind.png)
 
 **Turnstile (CAPTCHA):**
 
-Before installing, toggle **Supports CAPTCHA** on a zone to enable Turnstile for it. Protected zones with Turnstile show a **SUPPORTS CAPTCHA** badge. You can toggle it on or off after installation as well.
+On installed zones you can activate the ability to have CAPTCHA decisions handled.  
+Toggle **Supports CAPTCHA** on a zone enable a style of Turnstile for it (managed, non-interactive, invisible). Protected zones with Turnstile show a **SUPPORTS CAPTCHA** badge. You can toggle it on or off after installation as well.
 
-{/* ADD SCREENSHOT: Protected zone row showing both "PROTECTED" and "SUPPORTS CAPTCHA" badges */}
+![Captcha settings](/img/bouncer/cloudflare-worker/cf-installer-set-captcha.png)
 
 **Removing a zone:**
 
 Click **Remove** next to a protected zone to unbind the Remediation Worker from that zone and delete its Turnstile widget. The shared KV namespace and worker scripts remain in place for other protected zones.
 
-Click **Uninstall all** to remove all bouncer infrastructure at once (workers, KV, all routes, all Turnstile widgets).
+**Cleaning up all infrastructure:**
+
+Click **Uninstall all** to remove all bouncer infrastructure at once: unbind all zones, delete the shared KV namespace, and remove the worker scripts.   
+The installer will prompt for confirmation before proceeding.
+
+_The uninstall all also removes infrastructure components from older versions of the cloudflare bouncer (D1 database)_
 
 ---
 
@@ -223,10 +230,6 @@ It supports two modes:
 
 - **Daemon Mode** — the process runs continuously, syncing decisions from your Security Engine to the KV store on a regular interval. Workers and KV are cleaned up automatically when the daemon stops.
 - **Autonomous Mode** — the process deploys the Sync and Remediation Workers once and exits. All subsequent decision syncing is handled by the Sync Worker inside Cloudflare on a cron schedule.
-
-:::warning
-After installation, configure the [Worker Route Fail Mode](#setting-up-the-worker-route-fail-mode) to avoid service outages if the worker encounters errors.
-:::
 
 ### Installing the CLI Bouncer
 
