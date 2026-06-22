@@ -30,6 +30,7 @@ GET /v1/cves
 | `sort_by` | string | `rule_release_date` | Sort field: `rule_release_date`, `trending`, `nb_ips`, `name`, `first_seen` |
 | `sort_order` | string | `desc` | Sort direction: `asc`, `desc` |
 | `exploitation_phase` | string | — | Filter by exploitation phase: `insufficient_data`, `early_exploitation`, `fresh_and_popular`, `targeted_exploitation`, `mass_exploitation`, `background_noise`, `unpopular`, `wearing_out`, `unclassified` |
+| `detailed` | boolean | `false` | When `true`, also include the heavy detail fields (`description`, `crowdsec_analysis`, `cwes`, `references`, `events`, `tags`) for every CVE in the list. Omitted by default to keep responses lightweight. |
 
 <Tabs
   defaultValue="curl"
@@ -98,6 +99,17 @@ Each CVE in the list includes:
 | `adjustment_score` | object | Score adjustments: `total`, `recency`, `low_info` |
 | `threat_context` | object | Contextual threat intelligence: `attacker_countries`, `defender_countries`, `industry_types`, `industry_risk_profiles`, `attacker_objectives`. See [Threat Context](./threat_context) for field details and interpretation. May be `null` or contain empty sub-objects for low-activity CVEs. |
 
+:::tip Get detail fields in the list
+By default the list returns only the lightweight fields above. Pass `detailed=true` to additionally include `description`, `crowdsec_analysis`, `cwes`, `references`, `events`, and `tags` for every CVE in a single call — the same fields documented in [Get CVE Details](#get-cve-details) below. This avoids a follow-up request per CVE, at the cost of a larger response.
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/cves?page=1&size=10&detailed=true' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+:::
+
 ## Get CVE Details
 
 Retrieve full intelligence for a specific CVE, including the CrowdSec Analysis narrative, CWE classifications, references, events timeline, and tags.
@@ -148,9 +160,9 @@ except HTTPStatusError as e:
 </TabItem>
 </Tabs>
 
-### Additional Fields (Detail Only)
+### Additional Fields
 
-In addition to all the list fields, the detail response includes:
+In addition to all the list fields, the detail response includes the following. These same fields can also be returned for every CVE by the [list endpoint](#list-tracked-cves) when called with `detailed=true`.
 
 | Field | Type | Description |
 |---|---|---|
