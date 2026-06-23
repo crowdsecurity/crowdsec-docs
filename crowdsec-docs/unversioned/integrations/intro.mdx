@@ -70,7 +70,26 @@ Each vendor page explains how to create the integration in the CrowdSec Console 
     One IP per line: compatible with virtually any firewall, router, or HTTP-capable device
   </IntegrationTile>
   <IntegrationTile name="Remediation Component" slug="remediationcomponent" href="/u/integrations/remediationcomponent" color="#f97316">
-    Integrate blocklists to platforms without native ingestion (Cloudflare, AWS WAF, …) via Remediation Components
+    <span style={{color: 'var(--ifm-color-emphasis-600)'}}>For platforms without native IP list ingestion:</span>
+    <span style={{display: 'flex', gap: '0.35rem', flexWrap: 'wrap', marginTop: '0.35rem'}}>
+      {[
+        { label: 'Cloudflare', src: '/img/crowdsec_cloudfare.svg', bg: '#fff7f0' },
+        { label: 'AWS WAF', src: '/img/aws-waf-bouncer-logo.png', bg: '#fff7f0' },
+        { label: 'WordPress', src: '/img/WordPress-logotype-wmark.png', bg: '#fff7f0' },
+        { label: 'and more', src: '/img/crowdsec_logo.png', bg: '#fff7f0' },
+      ].map(({ label, src, bg }) => (
+        <span key={label} style={{
+          display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
+          background: bg, border: '1px solid #f97316',
+          borderRadius: '999px', padding: '2px 8px',
+          fontSize: '0.68rem', fontWeight: 600, color: '#c2410c',
+          whiteSpace: 'nowrap',
+        }}>
+          <img src={src} style={{width: '11px', height: '11px', objectFit: 'contain', flexShrink: 0}} />
+          {label}
+        </span>
+      ))}
+    </span>
   </IntegrationTile>
 </div>
 

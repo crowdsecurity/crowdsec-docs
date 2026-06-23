@@ -23,7 +23,24 @@ import UnderlineTooltip from '@site/src/components/underline-tooltip';
 <div style={{flex: '1'}}>
 The CrowdSec [Remediation Component](bouncers/intro.md) integration allows you to feed a Remediation Component directly from a CrowdSec blocklist, without requiring a local [Security Engine](blocklists/security_engine.mdx).
 
-This is the integration to use for platforms that do not support native IP list ingestion from an external URL. Such as Cloudflare, AWS WAF, and others. Remediation Components act as the bridge between CrowdSec's blocklist endpoint and those platforms. See the [full list of available Remediation Components](bouncers/intro.md) to find the one matching your platform.
+This is the integration to use for platforms that do not support native IP list ingestion from an external URL. Remediation Components act as the bridge between CrowdSec's blocklist endpoint and those platforms.
+
+<div style={{display: 'flex', gap: '1.5rem', alignItems: 'center', margin: '1rem 0'}}>
+  <a href="/u/bouncers/cloudflare-workers" style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', textDecoration: 'none', color: 'inherit'}}>
+    <img src={useBaseUrl('/img/crowdsec_cloudfare.svg')} alt="Cloudflare" style={{height: '40px', width: 'auto'}} />
+    <span style={{fontSize: '0.75rem', fontWeight: 600}}>Cloudflare <span style={{fontSize: '0.65rem', color: '#16a34a', fontWeight: 700}}>★ Self Hosted</span></span>
+  </a>
+  <a href="/u/bouncers/aws_waf" style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', textDecoration: 'none', color: 'inherit'}}>
+    <img src={useBaseUrl('/img/aws-waf-bouncer-logo.png')} alt="AWS WAF" style={{height: '40px', width: 'auto'}} />
+    <span style={{fontSize: '0.75rem', fontWeight: 600}}>AWS WAF</span>
+  </a>
+  <a href="/u/bouncers/wordpress" style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', textDecoration: 'none', color: 'inherit'}}>
+    <img src={useBaseUrl('/img/crowdsec_logo.png')} alt="WordPress" style={{height: '40px', width: 'auto'}} />
+    <span style={{fontSize: '0.75rem', fontWeight: 600}}>WordPress</span>
+  </a>
+</div>
+
+See the [full list of available Remediation Components](bouncers/intro.md) to find the one matching your platform.
 </div>
 </div>
 
