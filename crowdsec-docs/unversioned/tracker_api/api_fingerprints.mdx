@@ -31,6 +31,7 @@ GET /v1/fingerprints
 | `query` | string | — | Free-text search across rule name, title, and affected components (e.g. `apache`) |
 | `sort_by` | string | `rule_release_date` | Sort field: `rule_release_date`, `trending`, `nb_ips`, `name`, `first_seen` |
 | `sort_order` | string | `desc` | Sort direction: `asc`, `desc` |
+| `detailed` | boolean | `false` | When `true`, also include the heavy detail fields (`description`, `crowdsec_analysis`, `references`, `events`, `tags`) for every rule in the list. Omitted by default to keep responses lightweight. Note: fingerprints have no `cwes` field. |
 
 <Tabs
   defaultValue="curl"
@@ -93,9 +94,20 @@ for rule in data["items"]:
 | `adjustment_score` | object | Score adjustments: `total`, `recency`, `low_info` |
 | `threat_context` | object | Contextual threat intelligence: `attacker_countries`, `defender_countries`, `industry_types`, `industry_risk_profiles`, `attacker_objectives`. See [Threat Context](./threat_context). May be `null` for rules with insufficient data. |
 
+:::tip Get detail fields in the list
+By default the list returns only the lightweight fields above. Pass `detailed=true` to additionally include `description`, `crowdsec_analysis`, `references`, `events`, and `tags` for every rule in a single call — the same fields returned by [Get Fingerprint Rule Details](#get-fingerprint-rule-details). This avoids a follow-up request per rule, at the cost of a larger response.
+
+```bash
+curl -X 'GET' \
+  'https://admin.api.crowdsec.net/v1/fingerprints?page=1&size=10&detailed=true' \
+  -H 'accept: application/json' \
+  -H 'x-api-key: ${KEY}'
+```
+:::
+
 ## Get Fingerprint Rule Details
 
-Returns the full detail for a fingerprint rule. The response includes the same list fields plus: `description`, `crowdsec_analysis`, `events`, `tags`, `references`, and `threat_context`.
+Returns the full detail for a fingerprint rule. In addition to all the list fields, the response includes `description`, `crowdsec_analysis`, `references`, `events`, and `tags`. These same fields can also be returned for every rule by the [list endpoint](#list-fingerprint-rules) when called with `detailed=true`.
 
 :::info
 Unlike CVE details, fingerprint details do **not** include `cvss_score`, `published_date`, `has_public_exploit`, or `cwes` — these are CVE-specific fields.
