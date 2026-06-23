@@ -277,3 +277,40 @@ A warning on **stack health** will soon surface when an integration is receiving
 ### HTTP 429 (rate limited)
 
 An `HTTP 429` response means your integration is being **rate limited** because it is pulling more frequently than your plan allows (Community: 1 pull every 24 hours; Enterprise: no limit). See [Refresh frequency](#refresh-frequency) above and adjust your device's refresh schedule to respect the allowed interval for your plan.
+
+### Firewall cannot pull the blocklist
+
+If your firewall or device fails to fetch the integration endpoint, work through the following two checks in order.
+
+**1. Verify the endpoint and credentials**
+
+Test the endpoint directly from a machine that has internet access:
+
+```bash
+curl -u 'USERNAME:PASSWORD' https://admin.api.crowdsec.net/v1/integrations/<INTEGRATION_ID>/content
+```
+
+Replace `USERNAME`, `PASSWORD`, and `INTEGRATION_ID` with the values from your integration's credential screen in the CrowdSec Console.
+
+- If `curl` **fails** (HTTP 401 or connection error) — the credentials are wrong or expired. Regenerate them via **Configure → Regenerate Credentials** on the integration page, then update the configuration on your device.
+- If `curl` **succeeds** and returns a list of IPs — the endpoint and credentials are correct. The issue is on the device side; continue to check 2.
+
+:::note
+The endpoint requires Basic Auth and cannot be opened directly in a browser without a plugin or extension that supports it.
+:::
+
+**2. Check TLS certificate trust on the device**
+
+The integration endpoint is hosted on AWS infrastructure and uses a certificate signed by **Amazon Root CA 1**. Some firewalls and security appliances do not include Amazon's root certificates in their default trust store and will refuse the TLS connection silently or report a certificate error.
+
+If your device's pull fails even though `curl` succeeds, you likely need to import the Amazon Root CA 1 certificate into your device's certificate trust store and configure the integration to use it.
+
+The certificate is available at:
+
+```
+https://www.amazontrust.com/repository/AmazonRootCA1.pem
+```
+
+The full Amazon certificate repository is at [amazontrust.com/repository](https://www.amazontrust.com/repository/).
+
+Refer to your device's documentation for how to import a root certificate and how to associate it with an external IP list or URL feed. The exact steps vary by vendor and firmware version.
