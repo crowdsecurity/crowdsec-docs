@@ -6,12 +6,14 @@ sidebar_position: 4
 
 The Application Security Component lets you hook into different stages to change behavior at runtime.
 
-Hooks run in four phases:
+Hooks run in six phases:
 
 - `on_load`: Called just after the rules have been loaded into the engine.
 - `pre_eval`: Called after a request has been received but before the rules are evaluated.
 - `post_eval`: Called after the rules have been evaluated.
 - `on_match`: Called after a successful match of a rule. If multiple rules, this hook will be called only once.
+- `on_challenge`: Called for in-band requests carrying a valid challenge cookie, with the decoded `fingerprint` object available. See [Bot detection](bot_detection/intro.md). (In-band only.)
+- `on_challenge_submit`: Called when a client POSTs a challenge response to `/crowdsec-internal/challenge/submit`, after crypto validation and fingerprint decryption. See [Bot detection](bot_detection/intro.md). (In-band only.)
 
 ## Using hooks
 
@@ -98,6 +100,9 @@ This hook is intended to be used to disable rules only for this particular reque
 | `DisableBodyInspection`     | `func()`                             | Skip body inspection for the current request (also bypasses the maximum body size check). See [Request body size handling](#request-body-size-handling)                                                                                                         |
 | `ValidateRequestWithSchema` | `func(ref str) bool`                 | Validate the current request against an OpenAPI schema previously loaded under `ref` (returns `true` on success). On failure, structured details are published to `hook_vars` (see [OpenAPI Schema Validation](api_validation.md#validation-result-variables)). |
 | `hook_vars`                 | `map[string]string`                  | Per-request scratch space shared with later hooks and propagated to the resulting event. Helpers such as `ValidateRequestWithSchema` publish their results here.                                                                                                |
+| `SendChallenge`             | `func()`                             | Instruct the AppSec component to serve a JavaScript challenge for this request. No-op if the request already carries a valid challenge cookie. See [Bot detection](bot_detection/intro.md).                                                                     |
+| `GrantChallengeCookie`      | `func(reason str, ttl str?)`         | Mint a valid challenge cookie for this client (allowlist escape hatch for trusted user-agents or internal probes). `reason` is recorded in logs (≤256 bytes); optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                 |
+| `SetChallengeDifficulty`    | `func(level str)`                    | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](#challenge-difficulty-levels).                                                    |
 
 #### Example
 
@@ -119,12 +124,15 @@ This hook is mostly intended for debugging or threat-hunting purposes.
 
 #### Available helpers
 
-| Helper Name   | Type           | Description                                                  |
-| ------------- | -------------- | ------------------------------------------------------------ |
-| `IsInBand`    | `bool`         | `true` if the request is in the in-band processing phase     |
-| `IsOutBand`   | `bool`         | `true` if the request is in the out-of-band processing phase |
-| `DumpRequest` | `func()`       | Dump the request to a file                                   |
-| `req`         | `http.Request` | Original HTTP request received by the remediation component  |
+| Helper Name              | Type                          | Description                                                                                                                                                                                                                                                     |
+| ------------------------ | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `IsInBand`               | `bool`                        | `true` if the request is in the in-band processing phase                                                                                                                                                                                                        |
+| `IsOutBand`              | `bool`                        | `true` if the request is in the out-of-band processing phase                                                                                                                                                                                                    |
+| `DumpRequest`            | `func()`                      | Dump the request to a file                                                                                                                                                                                                                                      |
+| `req`                    | `http.Request`                | Original HTTP request received by the remediation component                                                                                                                                                                                                     |
+| `SendChallenge`          | `func()`                      | Instruct the AppSec component to serve a JavaScript challenge for this request. No-op if the request already carries a valid challenge cookie. See [Bot detection](bot_detection/intro.md).                                                                     |
+| `GrantChallengeCookie`   | `func(reason str, ttl str?)`  | Mint a valid challenge cookie for this client (allowlist escape hatch for trusted user-agents or internal probes). `reason` is recorded in logs (≤256 bytes); optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                 |
+| `SetChallengeDifficulty` | `func(level str)`             | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](#challenge-difficulty-levels).                                                    |
 
 #### DumpRequest
 
@@ -212,6 +220,58 @@ on_match:
      - SetRemediation("allow")
 ```
 
+### `on_challenge`
+
+This hook fires for in-band requests that carry a valid `__crowdsec_challenge` cookie — i.e. clients that have already passed the JavaScript challenge once. The decoded device `fingerprint` is available, so this is the right place to apply per-request decisions based on what the challenge learned about the client. Skipped if the request has no valid challenge cookie. **In-band only.**
+
+See [Bot detection](bot_detection/intro.md) for the broader picture.
+
+#### Available helpers
+
+| Helper Name                            | Type                                  | Description                                                                                                                                                                                                                                                |
+| -------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SendChallenge`                        | `func()`                              | Force a re-challenge for this request even though the client already has a cookie (e.g. when fingerprint mismatches indicate the cookie may have been replayed).                                                                                           |
+| `SetChallengeDifficulty`               | `func(level str)`                     | Override the proof-of-work difficulty for the next challenge issued. See [Challenge difficulty levels](#challenge-difficulty-levels).                                                                                                                      |
+| `EvaluateMismatches`                   | `func() MismatchReport`               | Run the configured mismatch checks against the fingerprint and return a structured report. Result is cached per request. See [The `MismatchReport` object](#the-mismatchreport-object).                                                                    |
+| `fingerprint`                          | `FingerprintData`                     | The decoded fingerprint object. See [The `fingerprint` object](#the-fingerprint-object).                                                                                                                                                                   |
+| `fingerprint.UAMobileMismatch`         | `func() bool`                         | `true` if the mobile signals carried by the fingerprint contradict the User-Agent header.                                                                                                                                                                  |
+| `fingerprint.AcceptLanguageMismatch`   | `func(req http.Request) bool`         | `true` if the `Accept-Language` header is inconsistent with the languages reported by the fingerprint.                                                                                                                                                     |
+| `fingerprint.TimezoneCountryMismatch`  | `func(country str) bool`              | `true` if the timezone reported by the fingerprint is inconsistent with the given country code (typically obtained from a GeoIP lookup on the client IP).                                                                                                  |
+
+#### Example
+
+```yaml
+on_challenge:
+  - filter: EvaluateMismatches().High() >= 1
+    apply:
+      - SendChallenge()
+```
+
+### `on_challenge_submit`
+
+This hook fires when a client POSTs a challenge response to `/crowdsec-internal/challenge/submit`, **after** the AppSec component has cryptographically validated the submission and decrypted the fingerprint, but **before** the success cookie is issued. This is the right place to refuse cookies to clients the challenge has positively identified as automation. **In-band only.**
+
+#### Available helpers
+
+| Helper Name             | Type                                       | Description                                                                                                                                                                                                                            |
+| ----------------------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `RejectSubmission`      | `func(reason str, verbosity str?)`         | Refuse to issue a challenge cookie despite a valid crypto submission. `reason` is recorded in logs. Optional `verbosity`: `"minimal"`, `"info"` (default), `"verbose"` — controls how much fingerprint detail is logged.               |
+| `GrantChallengeCookie`  | `func(reason str, ttl str?)`               | Issue the challenge cookie inline as part of the submit response (no 307 redirect). `reason` is recorded in logs; optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                                  |
+| `LogAccepted`           | `func(msg str, verbosity str?)`            | Emit a structured "submission accepted" log line. Same `verbosity` semantics as `RejectSubmission`.                                                                                                                                    |
+| `EvaluateMismatches`    | `func() MismatchReport`                    | Same as in `on_challenge` — run the mismatch checks against the just-decrypted fingerprint.                                                                                                                                            |
+| `fingerprint`           | `FingerprintData`                          | The decoded fingerprint object — see [The `fingerprint` object](#the-fingerprint-object).                                                                                                                                              |
+
+#### Example
+
+```yaml
+on_challenge_submit:
+  - filter: fingerprint.FastBotDetection.Bool() == true
+    apply:
+      - RejectSubmission("fast-bot-detection")
+  - apply:
+      - LogAccepted("challenge submission accepted")
+```
+
 ## Detailed Helpers Information
 
 ### `SetRemediation*`
@@ -273,3 +333,52 @@ For example:
 - To get the client IP: `req.RemoteAddr`
 - To get the HTTP method: `req.Method`
 - To get the FQDN: `req.Host`
+
+### Challenge difficulty levels
+
+`SetChallengeDifficulty(level)` accepts the following levels. Numbers are approximate proof-of-work iteration counts and rough wall-clock solve times on a modern desktop browser; mobile is meaningfully slower.
+
+| Level          | Approx. iterations | Approx. solve time | When to use                                                                                                                  |
+| -------------- | ------------------ | ------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `"disabled"`   | 0 (any nonce wins) | instant            | Functional smoke testing or when you only care about the fingerprint, not the proof-of-work.                                |
+| `"low"`        | ~1 024             | 0.2 – 2 s          | Latency-sensitive endpoints, mobile-heavy traffic.                                                                           |
+| `"medium"`     | ~4 096             | 1 – 8 s            | **Default.** Reasonable trade-off between user experience and attacker cost.                                                 |
+| `"high"`       | ~32 768            | 7 – 60 s           | Routes under active abuse; clients you already suspect.                                                                      |
+| `"impossible"` | unsolvable         | n/a                | Hard block: the AppSec component rejects the submission server-side. Use to fully block a client without leaking the reason. |
+
+### The `fingerprint` object
+
+In `on_challenge` and `on_challenge_submit` hooks, `fingerprint` exposes the device data collected by the in-browser library. The most commonly used fields:
+
+| Field                       | Type     | Description                                                                                                                                          |
+| --------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fingerprint.FastBotDetection.Bool()` | `bool`   | `true` if the in-browser fast-bot-detection library raised any signal (CDP, headless, automation framework, impossible device profile, …). |
+| `fingerprint.Signals`       | object   | Raw category roll-ups: device, browser, automation, graphics, codecs, locale.                                                                       |
+| `fingerprint.Bot`           | object   | Convenience accessor for the individual bot signals.                                                                                                |
+| `fingerprint.Allowlisted`   | `bool`   | `true` if the cookie was minted via `GrantChallengeCookie(...)` rather than a real challenge submission.                                            |
+| `fingerprint.AllowlistReason` | `str`  | Operator-supplied reason from `GrantChallengeCookie(reason, ...)`, copied through to logs.                                                          |
+| `fingerprint.FSID`          | `str`    | Per-fingerprint identifier, stable across the cookie's lifetime. Useful for correlating logs.                                                       |
+
+For the higher-level bot detection workflow (what the library actually detects, how to allowlist legitimate bots, behavioral scenarios), see [Bot detection](bot_detection/intro.md).
+
+### The `MismatchReport` object
+
+`EvaluateMismatches()` returns a cached-per-request `MismatchReport` summarising every mismatch signal that fired against the current fingerprint.
+
+| Method                       | Returns    | Description                                                                |
+| ---------------------------- | ---------- | -------------------------------------------------------------------------- |
+| `.Count()`                   | `int`      | Total number of signals fired.                                             |
+| `.Empty()`                   | `bool`     | `true` if no signal fired.                                                 |
+| `.High() / .Medium() / .Low()` | `int`    | Count of fired signals by severity.                                        |
+| `.Has(reason str)`           | `bool`     | `true` if the specific signal `reason` fired.                              |
+| `.Reasons()`                 | `[]string` | Stable-ordered list of fired reason keys.                                  |
+| `.String()`                  | `str`      | Compact human-readable form: `"reason1(sev),reason2(sev)"`. Useful in logs. |
+
+Example:
+
+```yaml
+on_challenge_submit:
+  - filter: EvaluateMismatches().High() >= 1 && EvaluateMismatches().Has("cdp")
+    apply:
+      - RejectSubmission("high-severity-mismatch")
+```
