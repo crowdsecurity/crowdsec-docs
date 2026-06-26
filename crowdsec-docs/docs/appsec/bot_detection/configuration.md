@@ -87,6 +87,20 @@ The AppSec component serves two JavaScript artefacts to the client during a chal
 Don't enable `library_runtime_obfuscation_enabled` on a small or shared host — the obfuscator is CPU-heavy and runs every `library_obfuscation_refresh_interval`. The build-time obfuscation is enough for most deployments; only turn this on if you specifically need rotating byte-level library variants in addition to the build-time bundle.
 :::
 
+## DNS cache
+
+Identity-verified bots (see [Legitimate bots it lets through](intro.md#legitimate-bots-it-lets-through)) are confirmed with a forward-confirmed reverse-DNS lookup. To keep that off the request hot path, the engine caches DNS results. Unlike the fields above, this is **not** part of the `challenge:` block — it is global engine configuration, set under `crowdsec_service` in the main `config.yaml`:
+
+```yaml
+crowdsec_service:
+  dns_cache:
+    ttl: 1h            # how long positive lookups are cached
+    negative_ttl: 5m   # how long failures are cached
+    size: 16384        # max number of cached entries (LRU)
+```
+
+The defaults shown above are fine for most deployments. Raise `size` if you verify a large, diverse set of bot IPs; lower `ttl` if a vendor rotates its DNS aggressively and you want exemptions to follow more quickly.
+
 ## Applying changes
 
 Most fields take effect on the next CrowdSec reload:

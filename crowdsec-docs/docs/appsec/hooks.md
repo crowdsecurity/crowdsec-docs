@@ -103,6 +103,8 @@ This hook is intended to be used to disable rules only for this particular reque
 | `SendChallenge`             | `func()`                             | Instruct the AppSec component to serve a JavaScript challenge for this request. No-op if the request already carries a valid challenge cookie. See [Bot detection](bot_detection/intro.md).                                                                     |
 | `GrantChallengeCookie`      | `func(reason str, ttl str?)`         | Mint a valid challenge cookie for this client (allowlist escape hatch for trusted user-agents or internal probes). `reason` is recorded in logs (≤256 bytes); optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                 |
 | `SetChallengeDifficulty`    | `func(level str)`                    | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](#challenge-difficulty-levels).                                                    |
+| `IsLegitimateBot`           | `func(ip str, ua str, path str) bool` | `true` if the request matches a curated legitimate-bot definition (verified by IP range or forward-confirmed reverse DNS). Used to skip the challenge for known-good crawlers. See [Legitimate bots](#legitimate-bots).                                          |
+| `ExemptFromChallenge`       | `func()`                             | Exempt the current request from the challenge without minting a cookie (the exemption applies to this request only). See [Legitimate bots](#legitimate-bots).                                                                                                    |
 
 #### Example
 
@@ -133,6 +135,8 @@ This hook is mostly intended for debugging or threat-hunting purposes.
 | `SendChallenge`          | `func()`                      | Instruct the AppSec component to serve a JavaScript challenge for this request. No-op if the request already carries a valid challenge cookie. See [Bot detection](bot_detection/intro.md).                                                                     |
 | `GrantChallengeCookie`   | `func(reason str, ttl str?)`  | Mint a valid challenge cookie for this client (allowlist escape hatch for trusted user-agents or internal probes). `reason` is recorded in logs (≤256 bytes); optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                 |
 | `SetChallengeDifficulty` | `func(level str)`             | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](#challenge-difficulty-levels).                                                    |
+| `IsLegitimateBot`        | `func(ip str, ua str, path str) bool` | `true` if the request matches a curated legitimate-bot definition (verified by IP range or forward-confirmed reverse DNS). See [Legitimate bots](#legitimate-bots).                                                                                     |
+| `ExemptFromChallenge`    | `func()`                      | Exempt the current request from the challenge without minting a cookie (this request only). See [Legitimate bots](#legitimate-bots).                                                                                                                            |
 
 #### DumpRequest
 
@@ -196,6 +200,8 @@ This hook is intended to be used to change the behavior of the engine after a ma
 | `IsOutBand`      | `bool`                     | `true` if the request is in the out-of-band processing phase                                                  |
 | `evt`            | `types.Event`              | [The event that has been generated](/docs/expr/event.md#appsec-helpers) by the Application Security Component |
 | `req`            | `http.Request`             | Original HTTP request received by the remediation component                                                   |
+| `IsLegitimateBot` | `func(ip str, ua str, path str) bool` | `true` if the request matches a curated legitimate-bot definition. See [Legitimate bots](#legitimate-bots).                  |
+| `ExemptFromChallenge` | `func()`              | Exempt the current request from the challenge without minting a cookie (this request only). See [Legitimate bots](#legitimate-bots). |
 
 #### Example
 
@@ -278,6 +284,34 @@ on_challenge_submit:
 
 When using `SetRemediation*` helpers, the only special value is `allow`: the remediation component won't block the request.
 Any other values (including `ban` and `captcha`) are transmitted as-is to the remediation component.
+
+### Legitimate bots
+
+Two helpers, available in `pre_eval`, `post_eval` and `on_match`, let you keep legitimate non-browser clients out of the challenge flow.
+
+#### `IsLegitimateBot`
+
+`IsLegitimateBot(ip, ua, path)` returns `true` when the request matches a curated bot definition. Matching a User-Agent alone is never enough: the source IP must also match the vendor's published ranges or pass a forward-confirmed reverse-DNS check (FCrDNS). The helper is **fail-closed** — an unparseable address or a DNS failure returns `false`, so the request falls through to the normal challenge.
+
+The bot definitions are loaded from `<datadir>/legit_bots/*.json`. The hub ships and updates them via the `crowdsecurity/legit-bots` appsec-rule, and you can add your own — see [Authoring your own legitimate-bot files](bot_detection/intro.md#authoring-your-own-legitimate-bot-files) for the file format. The shipped bot-detection appsec-config uses it to gate the challenge:
+
+```yaml
+post_eval:
+  - filter: '!IsLegitimateBot(req.RemoteAddr, req.UserAgent(), req.URL.Path)'
+    apply:
+      - SendChallenge()
+```
+
+Once `ExemptFromChallenge()` has been called for a request, `IsLegitimateBot()` short-circuits to `true` for the rest of that request.
+
+#### `ExemptFromChallenge` vs `GrantChallengeCookie`
+
+Both keep a client out of the challenge, but at different scopes:
+
+| Helper                  | Scope                          | Cookie | Use for                                                                              |
+| ----------------------- | ------------------------------ | ------ | ----------------------------------------------------------------------------------- |
+| `ExemptFromChallenge()` | The current request only       | no     | Well-known paths (`robots.txt`, `/.well-known/*`, feeds, webhooks) and per-request allowlisting where no state should persist. |
+| `GrantChallengeCookie(reason, ttl?)` | Persists across requests (until the cookie expires) | yes | Trusted user-agents or internal probes you want to let through for a whole session. |
 
 ### Request body size handling
 

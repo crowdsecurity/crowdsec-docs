@@ -84,14 +84,63 @@ challenge:
 
 For a **single-instance** deployment you can use this as-is. For **multi-instance / HA** deployments you must set `master_secret` (and keep `key_rotation_interval` consistent) across all WAF instances — see [Key management](configuration.md#key-management).
 
-### Legitimate bots it allowlists
+### Legitimate bots it lets through
 
-The collection ships hooks that proactively grant a challenge cookie to common, well-known bots — Googlebot, Bingbot, and similar — so they never see the challenge page. Internally they call `GrantChallengeCookie("<bot-name>")`, which mints a signed cookie marked as allowlisted and short-circuits the challenge flow.
+Some non-browser clients are legitimate and must not be challenged — search-engine crawlers, uptime probes, AI crawlers, and the like. The collection recognises them per-request and simply skips the challenge for them. Nothing is allowlisted with a persistent cookie: the decision is re-evaluated on every request, so a client only gets through for as long as it keeps looking legitimate.
 
-Two kinds of allowlist entries are shipped:
+The appsec-config gates the challenge on the `IsLegitimateBot()` helper — it only challenges requests that are *not* a known-good bot:
 
-- **Path-based** — well-known endpoints that legitimate non-browser clients hit by design (e.g. `/.well-known/*`, `robots.txt`, ACME challenge paths). Anything matching one of those paths is granted a cookie without further checks.
-- **User-agent + identity-verified** — for declared bots like Googlebot, the User-Agent is necessary but not sufficient: the hook also verifies the client's identity via a reverse-DNS lookup (and forward-DNS confirmation) and/or a check against the vendor's published IP ranges. A spoofed UA on an IP that does not resolve back to the vendor is **not** granted a cookie and goes through the normal challenge flow.
+```yaml
+inband:
+  post_eval:
+    - filter: '!IsLegitimateBot(req.RemoteAddr, req.UserAgent(), req.URL.Path)'
+      apply:
+        - SendChallenge()
+```
+
+Two kinds of exemption are shipped:
+
+- **Identity-verified bots** — for declared crawlers (Googlebot, Bingbot, Applebot, Amazonbot, GPTBot), the User-Agent is necessary but not sufficient. `IsLegitimateBot()` also checks the client IP against the vendor's published ranges and/or a forward-confirmed reverse-DNS lookup (FCrDNS). A spoofed UA on an IP that does not belong to the vendor is **not** recognised and goes through the normal challenge flow. The bot definitions live in [bot-description files](#authoring-your-own-legitimate-bot-files) shipped by the hub.
+- **Path-based** — well-known endpoints that legitimate non-browser clients hit by design (e.g. `/.well-known/*`, `robots.txt`, feeds, webhooks). Hooks shipped by the collection call `ExemptFromChallenge()` for those paths, which skips the challenge for that single request without minting a cookie.
+
+:::note
+`IsLegitimateBot()` and `ExemptFromChallenge()` exempt the **current request only** — they do not issue a cookie. `GrantChallengeCookie()` is the separate escape hatch that persists across requests; see the [Hooks reference](../hooks.md#legitimate-bots) for when to use each.
+:::
+
+#### Authoring your own legitimate-bot files
+
+`IsLegitimateBot()` matches a request against bot-description files in `<datadir>/legit_bots/*.json` (typically `/var/lib/crowdsec/data/legit_bots/`). The hub keeps the built-in definitions up to date through the `crowdsecurity/legit-bots` appsec-rule; to recognise a bot of your own, drop an extra `.json` file in the same directory.
+
+Each file is one or more newline-delimited JSON objects with these fields:
+
+| Field        | Type        | Required | Meaning                                                                                                  |
+| ------------ | ----------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `name`       | string      | yes      | Identifier for the bot, used in logs.                                                                    |
+| `user_agent` | string      | no       | Case-insensitive regex the request User-Agent must match.                                                |
+| `paths`      | `[]string`  | no       | Regexes; the request path must match at least one if present.                                            |
+| `ips`        | `[]string`  | no\*     | Exact source IPs (IPv4 or IPv6).                                                                         |
+| `ranges`     | `[]string`  | no\*     | Source CIDR ranges.                                                                                      |
+| `rdns`       | `[]string`  | no\*     | Regexes matched against the **forward-confirmed** reverse-DNS name of the source IP. Anchor them (e.g. `\\.googlebot\\.com$`) to avoid false positives. |
+
+\* At least one of `ips`, `ranges`, or `rdns` is required — a definition that only matches on `user_agent` is rejected at load time, since a User-Agent alone is trivial to spoof.
+
+A request is recognised as a legitimate bot when:
+
+```
+(user_agent matches  AND  at least one path matches)  AND  (exact IP  OR  CIDR range  OR  FCrDNS)
+```
+
+The helper is **fail-closed**: an unparseable address or a DNS failure means "not a legitimate bot", never an error, so the request falls through to the normal challenge.
+
+Example file:
+
+```json
+{"name":"googlebot","user_agent":"googlebot","rdns":["(^|\\.)googlebot\\.com$","\\.google\\.com$"]}
+{"name":"uptimerobot","user_agent":"uptimerobot","paths":["^/health(/|$)","^/status$"],"ranges":["69.162.124.224/28"],"ips":["216.144.250.150"]}
+{"name":"internal-scanner","ips":["10.1.2.3","2001:db8::42"]}
+```
+
+The reverse-DNS confirmation used by `rdns` goes through the engine's DNS cache; see [DNS cache](configuration.md#dns-cache) if you need to tune its TTL or size.
 
 ### Bad bots it rejects
 
@@ -140,7 +189,7 @@ Tail the CrowdSec log and trigger a failed submission (e.g. with `curl` against 
 
 ## Recipes
 
-The snippets below are **advanced** — for the helpers (`SendChallenge`, `GrantChallengeCookie`, `RejectSubmission`, …) and the `fingerprint` object, see the [Hooks reference](../hooks.md).
+The snippets below are **advanced** — for the helpers (`SendChallenge`, `GrantChallengeCookie`, `IsLegitimateBot`, `ExemptFromChallenge`, `RejectSubmission`, …) and the `fingerprint` object, see the [Hooks reference](../hooks.md).
 
 ### Restrict the challenge to a specific path
 
@@ -216,16 +265,16 @@ See the [Hooks reference](../hooks.md#the-fingerprint-object) for the full list 
 
 ### From a scenario
 
-Every step of the challenge lifecycle (requested / submitted / failed / solved) emits a CrowdSec event with `source: crowdsec-appsec-challenge`, distinct from `crowdsec-appsec` events emitted by WAF rule matches. The most important fingerprint signals are also flattened into `evt.Parsed` so scenario `filter` expressions can match on them cheaply, and the full fingerprint object is available under `evt.Unmarshaled.fingerprint` for richer queries.
+Every step of the challenge lifecycle (requested / submitted / failed / rejected / solved) emits a CrowdSec event with `source: crowdsec-appsec-challenge`, distinct from `crowdsec-appsec` events emitted by WAF rule matches. The most important fingerprint signals are also flattened into `evt.Parsed` so scenario `filter` expressions can match on them cheaply, and the full fingerprint object is available under `evt.Unmarshaled.fingerprint` for richer queries.
 
 Flat fields exposed in `evt.Parsed`:
 
 | Field                                  | Values                              | Meaning                                                                                                   |
 | -------------------------------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | `source`                               | `crowdsec-appsec-challenge`         | Distinguishes challenge events from WAF rule events.                                                      |
-| `challenge_event`                      | `requested` / `submitted` / `failed` / `solved` | Which step of the lifecycle produced the event.                                                |
+| `challenge_event`                      | `requested` / `submitted` / `failed` / `rejected` / `solved` | Which step of the lifecycle produced the event. `failed` is a crypto/PoW failure; `rejected` is an `on_challenge_submit` hook calling `RejectSubmission(reason)`. |
 | `challenge_difficulty`                 | integer string                      | The PoW difficulty applied to this moment.                                                                |
-| `challenge_fail_reason`                | string (only on `failed`)           | Why a submission was rejected (`fast-bot-detection`, operator-supplied reason from `RejectSubmission()`). |
+| `challenge_fail_reason`                | string (on `failed` or `rejected`)  | On `failed`, the raw protocol error (`invalid HMAC`, `invalid proof-of-work`, …). On `rejected`, the operator-supplied reason from `RejectSubmission()`. |
 | `fsid`                                 | string                              | Per-fingerprint identifier. Stable across the cookie's lifetime — useful for `groupby`.                   |
 | `fingerprint_bot`                      | `"true"` / `"false"`                | Set when a fingerprint was attached to the event.                                                         |
 | `fingerprint_allowlisted`              | `"true"` / `"false"`                | Whether this cookie was issued via `GrantChallengeCookie(...)` rather than a real submission.             |
@@ -255,7 +304,7 @@ type: leaky
 name: mycorp/appsec-automation-repeat
 filter: |
   evt.Parsed.source == "crowdsec-appsec-challenge" &&
-  evt.Parsed.challenge_event == "failed" &&
+  evt.Parsed.challenge_event == "rejected" &&
   evt.Parsed.challenge_fail_reason == "fast-bot-detection"
 groupby: evt.Meta.source_ip
 capacity: 5
@@ -270,8 +319,31 @@ filter: |
   evt.Unmarshaled.fingerprint.HasAutomationSignal()
 ```
 
+## Metrics
+
+Bot detection exposes the challenge lifecycle as Prometheus counters and surfaces a summary in `cscli`. The funnel is `requested` → `submitted` → `accepted` (`solved` or `granted`) or `rejected` (`protocol`, `submission`, or `cookie`).
+
+The dedicated `bot-detection` section shows the per-engine breakdown:
+
+```
+$ sudo cscli metrics show bot-detection
+```
+
+<!-- TODO: paste real `cscli metrics show bot-detection` output once captured against a running stack -->
+
+The top-level appsec table also gains a three-column challenge summary:
+
+```
+$ sudo cscli metrics show appsec-engine
+```
+
+<!-- TODO: paste real `cscli metrics show appsec-engine` output showing the new Ch. Requested / Ch. Accepted / Ch. Rejected columns -->
+
+The full list of Prometheus metric names and labels lives in the [Application Security Engine section of the Prometheus reference](../../observability/prometheus.md#application-security-engine).
+
 ## Next steps
 
 - [Bot detection configuration](configuration.md) — tune the master secret, key rotation, cookie TTL, and JS obfuscation pool sizes.
 - [Hooks reference](../hooks.md) — full list of helpers and the new `on_challenge` / `on_challenge_submit` stages.
 - [Request lifecycle](../request-lifecycle.md) — where the challenge runs relative to WAF rules.
+- [Metrics](#metrics) — Prometheus counters and the `cscli metrics show bot-detection` table.
