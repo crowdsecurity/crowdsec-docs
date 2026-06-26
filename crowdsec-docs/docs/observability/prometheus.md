@@ -101,6 +101,10 @@ cs_node_hits_ko_total{name="crowdsecurity/http-logs",source="/var/log/nginx/erro
 -   `cs_appsec_parsing_time_seconds` : time spent processing a request by the Application Security Engine (Histogram, labels: `source`, `appsec_engine`)
 -   `cs_appsec_inband_parsing_time_seconds` : time spent processing a request by the inband Application Security Engine (Histogram, labels: `source`, `appsec_engine`)
 -   `cs_appsec_outband_parsing_time_seconds` : time spent processing a request by the outband Application Security Engine (Histogram, labels: `source`, `appsec_engine`)
+-   `cs_appsec_challenge_requested_total` : challenges served by the AppSec component (Counter, labels: `source`, `appsec_engine`)
+-   `cs_appsec_challenge_submitted_total` : challenge responses received by the AppSec component (Counter, labels: `source`, `appsec_engine`)
+-   `cs_appsec_challenge_accepted_total` : challenge cookies issued — `kind=solved` for valid submissions (empty `reason`), `kind=granted` for `GrantChallengeCookie(reason)` (Counter, labels: `source`, `appsec_engine`, `kind`, `reason`)
+-   `cs_appsec_challenge_rejected_total` : challenge / cookie rejections — `kind=protocol` for crypto-PoW failures, `kind=submission` for `RejectSubmission(reason)`, `kind=cookie` for invalid incoming cookies (Counter, labels: `source`, `appsec_engine`, `kind`, `reason`)
 
 #### Acquisition
 

@@ -8,6 +8,7 @@ type RemediationSupportBadgesProps = {
 	Mode: boolean; // Mode is a boolean that controls the color of the Mode bubble
 	Metrics: boolean; // Metrics is a boolean that controls the color of the Metrics bubble
 	Appsec?: boolean; // Appsec is a boolean that controls the color of the AppSec bubble
+	BotDetection?: boolean; // BotDetection is a boolean that controls the color of the Bot Detection bubble
 };
 
 const RemediationSupportBadge = ({ title, description, support }: { title: string; description: string; support: string }) => {
@@ -38,12 +39,14 @@ export default function RemediationSupportBadges({
 	Prometheus,
 	Mode,
 	Appsec,
+	BotDetection,
 }: Readonly<RemediationSupportBadgesProps>): React.JSX.Element {
 	const mtlsSupport = MTLS ? "Supported" : "Unsupported";
 	const metricsSupport = Metrics ? "Supported" : "Unsupported";
 	const prometheusSupport = Prometheus ? "Supported" : "Unsupported";
 	const modeSupport = Mode ? "Live & Stream" : "Stream only";
 	const appsecSupport = Appsec !== undefined && Appsec ? "Supported" : "Unsupported";
+	const botDetectionSupport = BotDetection !== undefined && BotDetection ? "Supported" : "Unsupported";
 
 	return (
 		<div className="flex justify-center flex-wrap mb-4 gap-2 sm:gap-3">
@@ -52,6 +55,13 @@ export default function RemediationSupportBadges({
 					title="AppSec"
 					description="Can forward HTTP requests to the AppSec Component"
 					support={appsecSupport}
+				/>
+			)}
+			{BotDetection !== undefined && (
+				<RemediationSupportBadge
+					title="Bot Detection"
+					description="Can serve the AppSec Component's JavaScript bot-detection challenge to clients"
+					support={botDetectionSupport}
 				/>
 			)}
 			<RemediationSupportBadge
