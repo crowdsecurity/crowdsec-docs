@@ -1,5 +1,5 @@
 ---
-title: Central API 403 (Forbidden)
+title: Central API 403 / CAPI rate limiting
 id: capi_403
 ---
 
@@ -19,7 +19,7 @@ CAPI restrictions apply only to free users. Enterprise users are not impacted.
 ## Common Root Causes
 
 - **CrowdSec containers restart loop**: CrowdSec containers stuck in a restart loop.
-- **`cscli capi status` spam**: Integrations or 3rd party software using `cscli capi status` too often.
+- **Using `cscli capi status` too often**: `capi status` forces a **relogin**, calling it often will trigger the **rate limit**.
 - **Misconfiguration or multiple instances**: Duplicate engines or invalid tokens trigger repeated logins.
 
 ## Diagnosis & Resolution
@@ -66,19 +66,27 @@ docker compose up
 
 Crash loops can trigger repeated logins, resulting in 403s.
 
-#### 🛠️ Wait for ban expiry and reduce login frequency
+#### 🛠️ Fix the root cause, then stop the service for 1 hour
 
-Wait **1 hour** for the ban to expire, then ensure the engine is not repeatedly re-authenticating.
-
-If you run multiple instances behind the same NAT, consider using **one LAPI instance** or reducing reconnection frequency to avoid bursts.
-
-#### 🛠️ Stabilize the engine
-
-Resolve the underlying crash or restart loop before retrying CAPI:
+:::warning
+**Stopping the service is required.** If CrowdSec keeps running while blocked, every retry resets the cooldown timer and prolongs the ban. You must stop it completely for at least 1 hour after fixing the root cause.
+:::
 
 ```bash
-sudo systemctl restart crowdsec
+sudo systemctl stop crowdsec
+# fix the underlying issue, then wait 1 hour before starting again
+sudo systemctl start crowdsec
 ```
+
+For Docker: `docker compose down`, fix, wait 1 hour, then `docker compose up -d`.
+
+If you run multiple instances behind the same NAT, consider consolidating under [one LAPI instance](/u/user_guides/multiserver_setup).
+
+### Health check calling `cscli capi status` too frequently
+
+Some third-party stacks configure a Docker health check that runs `cscli capi status` on a short interval. This authenticates against CAPI on every check and quickly exhausts the login threshold.
+
+See [Docker installation — Health checks](/u/getting_started/installation/docker#health-checks) for the recommended `cscli lapi status` health check configuration.
 
 ### Misconfiguration or multiple instances
 
@@ -86,21 +94,22 @@ Running multiple instances from the same public IP can trigger rate limiting.
 
 ## Verify Resolution
 
-After making changes:
+After fixing the root cause and waiting 1 hour:
 
-Restart or reload CrowdSec: `sudo systemctl restart crowdsec`
+1. Check CAPI connectivity and start the service
 
-1. Check engine status:
-   ```bash
-   sudo cscli console status
-   ```
+```bash
+sudo cscli capi status
+```
 
-2. Check CAPI connectivity:
-   ```bash
-   sudo cscli capi status
-   ```
+If it returns `You can successfully interact with Central API (CAPI)`, the ban is lifted.
 
-If CAPI returns 200/204 and your console status is OK, the 403 is resolved.
+You can then start CrowdSec again
+```bash
+sudo systemctl start crowdsec
+```
+
+If still blocked, contact [security@crowdsec.net](mailto:security@crowdsec.net) with your source IP and relevant logs.
 
 ## Known Issues
 
