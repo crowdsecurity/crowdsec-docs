@@ -19,7 +19,7 @@ CAPI restrictions apply only to free users. Enterprise users are not impacted.
 ## Common Root Causes
 
 - **CrowdSec containers restart loop**: CrowdSec containers stuck in a restart loop.
-- **`cscli capi status` spam**: Integrations or 3rd party software using `cscli capi status` too often.
+- **Using `cscli capi status` too often**: `capi status` forces a **relogin**, calling it often will trigger the **rate limit**.
 - **Misconfiguration or multiple instances**: Duplicate engines or invalid tokens trigger repeated logins.
 
 ## Diagnosis & Resolution
@@ -96,14 +96,18 @@ Running multiple instances from the same public IP can trigger rate limiting.
 
 After fixing the root cause and waiting 1 hour:
 
-1. Start the service and check CAPI connectivity:
+1. Check CAPI connectivity and start the service
 
 ```bash
-sudo systemctl start crowdsec
 sudo cscli capi status
 ```
 
 If it returns `You can successfully interact with Central API (CAPI)`, the ban is lifted.
+
+You can then start CrowdSec again
+```bash
+sudo systemctl start crowdsec
+```
 
 If still blocked, contact [security@crowdsec.net](mailto:security@crowdsec.net) with your source IP and relevant logs.
 
