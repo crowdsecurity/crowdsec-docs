@@ -79,7 +79,6 @@ repositories](/u/getting_started/installation/linux).
   values={[
     { label: 'Debian/Ubuntu', value: 'haproxy_debian' ,},
     { label: 'RHEL/Centos/Fedora', value: 'haproxy_rhel' ,},
-    { label: 'Docker Compose', value: 'docker_compose' ,},
   ]
 }>
 <TabItem value="haproxy_debian">
@@ -99,104 +98,6 @@ sudo dnf install crowdsec-haproxy-spoa-bouncer
 </TabItem>
 
 </Tabs>
-
-### Container
-
-The container image runs the SPOA bouncer (it does not bundle HAProxy): `crowdsecurity/spoa-bouncer`.
-
-:::warning
-The container examples below are not a complete HAProxy setup. For production, pin HAProxy to a stable version (rather than `:latest`) and adapt `haproxy.cfg` to your environment (TLS, backends, logging, timeouts, etc.).
-:::
-
-Quick start:
-
-```bash
-docker run -d \
-  --name crowdsec-spoa-bouncer \
-  -e CROWDSEC_KEY="<your-lapi-api-key>" \
-  -e CROWDSEC_URL="http://crowdsec:8080/" \
-  -p 9000:9000 \
-  -p 6060:6060 \
-  crowdsecurity/spoa-bouncer
-```
-
-If HAProxy runs in another container (for example in Docker Compose), point the SPOA backend to `crowdsec-spoa-bouncer:9000`.
-
-#### Docker Compose example
-
-```yaml
-services:
-  crowdsec:
-    image: crowdsecurity/crowdsec:latest
-    restart: unless-stopped
-    ports:
-      - 127.0.0.1:8080:8080
-    environment:
-      COLLECTIONS: "crowdsecurity/haproxy"
-      BOUNCER_KEY_SPOA: "${BOUNCER_KEY_SPOA}"
-      GID: "${GID-1000}"
-    volumes:
-      - crowdsec-db:/var/lib/crowdsec/data/
-      - crowdsec-config:/etc/crowdsec/
-      # Optional: configure log acquisition for your setup
-      # - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
-    networks:
-      - crowdsec
-
-  crowdsec-spoa-bouncer:
-    image: crowdsecurity/spoa-bouncer:latest
-    restart: unless-stopped
-    depends_on:
-      - crowdsec
-    environment:
-      CROWDSEC_KEY: "${BOUNCER_KEY_SPOA}"
-      CROWDSEC_URL: "http://crowdsec:8080/"
-    volumes:
-      - templates:/var/lib/crowdsec-haproxy-spoa-bouncer/html/
-    networks:
-      - crowdsec
-
-  haproxy:
-    image: haproxy:latest
-    restart: unless-stopped
-    volumes:
-      - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-      - ./config/crowdsec.cfg:/etc/haproxy/crowdsec.cfg:ro
-      - templates:/var/lib/crowdsec-haproxy-spoa-bouncer/html/:ro
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - crowdsec-spoa-bouncer
-    networks:
-      - crowdsec
-
-volumes:
-  crowdsec-db:
-  crowdsec-config:
-  templates:
-
-networks:
-  crowdsec:
-```
-
-Create `./config/haproxy.cfg` and `./config/crowdsec.cfg` from the “HAProxy Configuration” section below (in Compose, the SPOA backend server should target `crowdsec-spoa-bouncer:9000`). Set `BOUNCER_KEY_SPOA` in a `.env` file or your shell environment, and persist CrowdSec directories (at least `/var/lib/crowdsec/data/`) as described in the [Docker getting started guide](/getting_started/installation/docker.mdx).
-
-To use a custom configuration file:
-
-```bash
-docker run -d \
-  --name crowdsec-spoa-bouncer \
-  -v $PWD/crowdsec-spoa-bouncer.yaml:/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml:ro \
-  -p 9000:9000 \
-  crowdsecurity/spoa-bouncer
-```
-
-:::info
-The HTML templates (`/var/lib/crowdsec-haproxy-spoa-bouncer/html/`) are needed by the non-Lua `lf-file` HAProxy directives. If you run HAProxy without the package, mount or copy the `html/` directory from the image into your HAProxy environment. The Lua scripts (`/usr/lib/crowdsec-haproxy-spoa-bouncer/lua/`) are only required if you choose the [optional Lua rendering approach](#optional-lua-based-template-rendering).
-:::
-
-For all container options and environment variables, see: https://github.com/crowdsecurity/cs-haproxy-spoa-bouncer/blob/main/docker/README.md
 
 ## Bouncer configuration
 
@@ -395,6 +296,104 @@ If you rely on headers like `X-Real-IP` / `X-Forwarded-For`, ensure only your tr
 
 :::
 
+### Container
+
+The container image runs the SPOA bouncer (it does not bundle HAProxy): `crowdsecurity/spoa-bouncer`.
+
+:::warning
+The container examples below are not a complete HAProxy setup. For production, pin HAProxy to a stable version (rather than `:latest`) and adapt `haproxy.cfg` to your environment (TLS, backends, logging, timeouts, etc.).
+:::
+
+Quick start:
+
+```bash
+docker run -d \
+  --name crowdsec-spoa-bouncer \
+  -e CROWDSEC_KEY="<your-lapi-api-key>" \
+  -e CROWDSEC_URL="http://crowdsec:8080/" \
+  -p 9000:9000 \
+  -p 6060:6060 \
+  crowdsecurity/spoa-bouncer
+```
+
+If HAProxy runs in another container (for example in Docker Compose), point the SPOA backend to `crowdsec-spoa-bouncer:9000`.
+
+#### Docker Compose example
+
+```yaml
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:8080:8080
+    environment:
+      COLLECTIONS: "crowdsecurity/haproxy"
+      BOUNCER_KEY_SPOA: "${BOUNCER_KEY_SPOA}"
+      GID: "${GID-1000}"
+    volumes:
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - crowdsec-config:/etc/crowdsec/
+      # Optional: configure log acquisition for your setup
+      # - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
+    networks:
+      - crowdsec
+
+  crowdsec-spoa-bouncer:
+    image: crowdsecurity/spoa-bouncer:latest
+    restart: unless-stopped
+    depends_on:
+      - crowdsec
+    environment:
+      CROWDSEC_KEY: "${BOUNCER_KEY_SPOA}"
+      CROWDSEC_URL: "http://crowdsec:8080/"
+    volumes:
+      - templates:/var/lib/crowdsec-haproxy-spoa-bouncer/html/
+    networks:
+      - crowdsec
+
+  haproxy:
+    image: haproxy:latest
+    restart: unless-stopped
+    volumes:
+      - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./config/crowdsec.cfg:/etc/haproxy/crowdsec.cfg:ro
+      - templates:/var/lib/crowdsec-haproxy-spoa-bouncer/html/:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - crowdsec-spoa-bouncer
+    networks:
+      - crowdsec
+
+volumes:
+  crowdsec-db:
+  crowdsec-config:
+  templates:
+
+networks:
+  crowdsec:
+```
+
+Create `./config/haproxy.cfg` and `./config/crowdsec.cfg` from the “HAProxy Configuration” section below (in Compose, the SPOA backend server should target `crowdsec-spoa-bouncer:9000`). Set `BOUNCER_KEY_SPOA` in a `.env` file or your shell environment, and persist CrowdSec directories (at least `/var/lib/crowdsec/data/`) as described in the [Docker getting started guide](/getting_started/installation/docker.mdx).
+
+To use a custom configuration file:
+
+```bash
+docker run -d \
+  --name crowdsec-spoa-bouncer \
+  -v $PWD/crowdsec-spoa-bouncer.yaml:/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml:ro \
+  -p 9000:9000 \
+  crowdsecurity/spoa-bouncer
+```
+
+:::info
+The HTML templates (`/var/lib/crowdsec-haproxy-spoa-bouncer/html/`) are needed by the non-Lua `lf-file` HAProxy directives. If you run HAProxy without the package, mount or copy the `html/` directory from the image into your HAProxy environment. The Lua scripts (`/usr/lib/crowdsec-haproxy-spoa-bouncer/lua/`) are only required if you choose the [optional Lua rendering approach](#optional-lua-based-template-rendering).
+:::
+
+For all container options and environment variables, see: https://github.com/crowdsecurity/cs-haproxy-spoa-bouncer/blob/main/docker/README.md
+
 #### Common CDN headers
 
 | CDN Provider        | Header Name                 | HAProxy Function                    |
@@ -448,10 +447,11 @@ turnstile
 ```
 
 :::note Provider registration
+
 - **hCaptcha** — register at https://www.hcaptcha.com
 - **reCAPTCHA** — register at https://www.google.com/recaptcha/admin (use **reCAPTCHA v2 "I'm not a robot"**)
 - **Turnstile** — register at https://dash.cloudflare.com/?to=/:account/turnstile
-:::
+  :::
 
 ### AppSec (WAF) forwarding — configuration reference
 
