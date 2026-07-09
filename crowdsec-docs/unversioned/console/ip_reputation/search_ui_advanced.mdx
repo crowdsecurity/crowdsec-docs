@@ -3,11 +3,20 @@ title: Advanced Search
 description: Learn how to use advanced search features in CrowdSec's Cyber Threat Intelligence (CTI) platform.
 ---
 
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
 # Advanced Search
 
 The **Advanced Search Page** in **CrowdSec CTI** allows you to dynamically and precisely explore CrowdSec’s threat intelligence database. You will be able to refine your searches, analyze specific IPs, and discover detailed information using **Lucene queries**.
 
-![CTI Advanced Search](/img/console/cti/advanced_search/page.png)
+<ThemedImage
+    alt="CrowdSec Advanced Search Page"
+    sources={{
+        light: useBaseUrl("/img/console/cti/advanced_search/page-light.png"),
+        dark: useBaseUrl("/img/console/cti/advanced_search/page-dark.png"),
+    }}
+/>
 
 > Example in the screenshot: [`classifications.classifications.name:"crowdsec:ai_vpn_proxy" AND (reputation:malicious OR reputation:suspicious)](<https://app.crowdsec.net/cti?q=classifications.classifications.name:%22crowdsec:ai_vpn_proxy%22+AND+(reputation:malicious+OR+reputation:suspicious)&page=1>)
 

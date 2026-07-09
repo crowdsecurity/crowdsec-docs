@@ -4,6 +4,8 @@ title: Notification rule
 ---
 
 import { Badge } from "@site/src/ui/badge";
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
 <div className="mb-4">
     <Badge variant="premium">CrowdSec Premium Feature</Badge>
@@ -18,35 +20,76 @@ This guide will walk you through the process of creating a notification rule for
 
 ## Create a notification rule
 
-1. In the [CrowdSec Console](https://app.crowdsec.net), navigate to **Settings > Notifications** or **Settings > Integrations > (integration of your choice)** and click on add rule.
+1. In the [CrowdSec Console](https://app.crowdsec.net), navigate to **Notification Rules** and click on **Add Rule**.
 
-![](/img/console/notification_integrations/notification-rule-list.png)
+<ThemedImage
+    alt="CrowdSec Notification Rule"
+    sources={{
+        light: useBaseUrl("/img/console/notification_integrations/notification-rule-light.png"),
+        dark: useBaseUrl("/img/console/notification_integrations/notification-rule-dark.png"),
+    }}
+/>
 
 2. Select the events you want to be notified about. You can only select one of the three category at the time (Threat Hunting, Stack or Admin). Each of these categories contains a list of [events](overview.mdx) that you can choose from. (Threat hunting category let you select only one event due to its conditions variance).
 
-![](/img/console/notification_integrations/events-selection.png)
+<ThemedImage
+    alt="CrowdSec Notification Rule Events Selection"
+    sources={{
+        light: useBaseUrl("/img/console/notification_integrations/events-selection-light.png"),
+        dark: useBaseUrl("/img/console/notification_integrations/events-selection-dark.png"),
+    }}
+/>
 
 3. (Optional) Select a conditions. **Stack** category allows you to filter on Security Engine(s). **Threat Hunting > Alert trigger event** allows you to select specific scenarios.
 
 **Engine condition:**
 
-![](/img/console/notification_integrations/engine-condition-selection.png)
+<ThemedImage
+    alt="CrowdSec Notification Rule Engine Condition Selection"
+    sources={{
+        light: useBaseUrl("/img/console/notification_integrations/engine-condition-selection-light.png"),
+        dark: useBaseUrl("/img/console/notification_integrations/engine-condition-selection-dark.png"),
+    }}
+/>
 
 **Installed scenarios:**
-
-{/* ![](/img/console/notification_integrations/scenario-condition-selection.png) */}
-
+<ThemedImage
+    alt="CrowdSec Notification Rule Scenario Condition Selection"
+    sources={{
+        light: useBaseUrl("/img/console/notification_integrations/scenario-condition-selection-light.png"),
+        dark: useBaseUrl("/img/console/notification_integrations/scenario-condition-selection-dark.png"),
+    }}
+/>
 4. Select destination, which is the integration you want to use for this rule. You can select multiple destination for one rule. Destination input varies depending on the integration you selected. For example, Slack integration let you select a channel, while Webhook integration let you select a URL.
 
-![](/img/console/notification_integrations/slack-destination-selection.png)
+<ThemedImage
+    alt="CrowdSec Notification Rule Destination Selection"
+    sources={{
+        light: useBaseUrl("/img/console/notification_integrations/slack-destination-selection-light.png"),
+        dark: useBaseUrl("/img/console/notification_integrations/slack-destination-selection-dark.png"),
+    }}
+/>
 
 5. Name and describe your rule.
 
-![](/img/console/notification_integrations/rule-information.png)
+<ThemedImage
+    alt="CrowdSec Notification Rule Information"
+    sources={{
+        light: useBaseUrl("/img/console/notification_integrations/rule-information-light.png"),
+        dark: useBaseUrl("/img/console/notification_integrations/rule-information-dark.png"),
+    }}
+/>
 
 6. Click on **Create** to save your rule.
 
 7. Your rule will now appear in the list of notification rules for your integration. You can edit or delete it at any time.
 
-![](/img/console/notification_integrations/notification-rule-list.png)
+
+<ThemedImage
+    alt="CrowdSec Notification Rule"
+    sources={{
+        light: useBaseUrl("/img/console/notification_integrations/notification-rule-light.png"),
+        dark: useBaseUrl("/img/console/notification_integrations/notification-rule-dark.png"),
+    }}
+/>
 

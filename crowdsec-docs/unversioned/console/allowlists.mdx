@@ -4,6 +4,8 @@ title: Centralized Allowlists
 ---
 
 import { Badge } from "@site/src/ui/badge";
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
 <div className="mb-4">
     <Badge variant="premium">CrowdSec Premium Feature</Badge>
@@ -20,15 +22,33 @@ Allowlists are a list of IP addresses or IP ranges that you trust and want to by
 
 Proceed to the `Blocklist` tab located on the top menu bar. From there, you can select the Allowlists sub-menu
 
-![](/img/console/allowlists/allowlists-menu.png)
+<ThemedImage
+    alt="CrowdSec Allowlists Menu"
+    sources={{
+        light: useBaseUrl("/img/console/allowlists/allowlists-menu-light.png"),
+        dark: useBaseUrl("/img/console/allowlists/allowlists-menu-dark.png"),
+    }}
+/>
 
 The first step is to create an allowlist. Click on the "Add an Allowlist" button and fill out the form with the details of the allowlist.
 
-![](/img/console/allowlists/allowlists-create.png)
+<ThemedImage
+    alt="CrowdSec Allowlists Create"
+    sources={{
+        light: useBaseUrl("/img/console/allowlists/allowlists-create-light.png"),
+        dark: useBaseUrl("/img/console/allowlists/allowlists-create-dark.png"),
+    }}
+/>
 
 Congratulations! You have created your first allowlist. You can now see it in the list of allowlists with some basic information like the number of items (IP addresses, IP ranges) in the allowlist, the number of subscribers, and the date it was created. You can delete or click on the allowlist to view it more closely.
 
-![](/img/console/allowlists/allowlists-list.png)
+<ThemedImage
+    alt="CrowdSec Allowlists List"
+    sources={{
+        light: useBaseUrl("/img/console/allowlists/allowlists-list-light.png"),
+        dark: useBaseUrl("/img/console/allowlists/allowlists-list-dark.png"),
+    }}
+/>
 
 :::warning Important: Subscribe Entities After Creation
 
@@ -42,11 +62,23 @@ To add IPs or IP ranges to an allowlist, click on the allowlist to which you wan
 The description field in the form is mandatory and will help you identify the item later.
 Expiration allows you to set a date when the item will be automatically removed from the allowlist. This is useful when allowing an IP for a limited time. We suggest predefined expiration times like 1 week, 30 days... but you can also define your expiration date.
 
-![](/img/console/allowlists/allowlists-add-items.png)
+<ThemedImage
+    alt="CrowdSec Allowlists Add Items"
+    sources={{
+        light: useBaseUrl("/img/console/allowlists/allowlists-add-items-light.png"),
+        dark: useBaseUrl("/img/console/allowlists/allowlists-add-items-dark.png"),
+    }}
+/>
 
 
 ## Subscribe to an allowlist
 
 Click on the "Subscribe" button and select the integration for which you want to subscribe to the allowlist. You can subscribe to multiple integrations, security engines, or the whole organization to the same allowlist. At the top of the subscription windows, you can choose between the different types of subscriptions and then select the subscribers you want to add.
 
-![](/img/console/allowlists/allowlists-subscription.png)
+<ThemedImage
+    alt="CrowdSec Allowlists Subscription"
+    sources={{
+        light: useBaseUrl("/img/console/allowlists/allowlists-subscription-light.png"),
+        dark: useBaseUrl("/img/console/allowlists/allowlists-subscription-dark.png"),
+    }}
+/>
