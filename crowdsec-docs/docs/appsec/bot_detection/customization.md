@@ -10,18 +10,19 @@ The snippets below are **advanced** — for the helpers (`SendChallenge`, `Grant
 
 ### Restrict the challenge to a specific path
 
-By default the appsec-config shipped by the collection challenges every request without a valid cookie. If you'd rather narrow the challenge to one section of your application — say a checkout flow — gate the `SendChallenge()` call with a path filter:
+By default the appsec-config shipped by the collection challenges every request that isn't a [legitimate bot](../hooks.md#legitimate-bots). To narrow the challenge to one section of your application — say a checkout flow — you don't need to touch that shipped `SendChallenge()` gate. Add a `pre_eval` hook that exempts every request **outside** the path you care about:
 
 ```yaml
-inband:
-  post_eval:
-    - filter: req.URL.Path startsWith "/checkout/"
-      apply:
-        - SendChallenge()
+pre_eval:
+  - filter: '!(req.URL.Path startsWith "/checkout/")'
+    apply:
+      - ExemptFromChallenge()
 ```
 
+`ExemptFromChallenge()` short-circuits `IsLegitimateBot()` to `true` for the rest of the request, so the collection's `!IsLegitimateBot(...)` gate on `SendChallenge()` becomes a no-op and no challenge is served. Because the exemption is additive, the shipped config stays untouched — only `/checkout/` is left to be challenged.
+
 :::note
-A client that has already obtained a cookie via `GrantChallengeCookie(...)` is exempted from `SendChallenge()` **regardless of the path** — the allowlist cookie short-circuits the challenge globally, not per-route.
+`ExemptFromChallenge()` mints no cookie, so the exemption is re-evaluated on every request. To let a trusted client through for a whole session instead, use `GrantChallengeCookie(...)` — see [ExemptFromChallenge vs GrantChallengeCookie](../hooks.md#exemptfromchallenge-vs-grantchallengecookie).
 :::
 
 ### Allowlist an internal probe by header
@@ -40,16 +41,22 @@ inband:
 This recipe trusts whoever knows the shared secret. If `my-shared-secret` ever leaks — into a log, a screenshot, a public dashboard — anyone who learns it can present that header and bypass bot detection entirely. Prefer pairing the header check with a source-IP filter (`req.RemoteAddr`) or rotating the secret regularly.
 :::
 
-### Reject submissions flagged by the fast-bot-detection library
+### Block on a weak signal the default ignores
 
-This is what the collection ships by default — shown here so you can adapt it (e.g. tighten / loosen the filter, change the reject reason):
+The collection already rejects submissions where `fingerprint.IsBot()` is true — the high-confidence fast-bot-detection verdict. Weaker heuristic signals are collected too, but the default leaves them alone because they carry false positives. If your traffic profile makes one of them worth enforcing, you can opt in.
+
+For example, the Accept-Language mismatch fires when the `Accept-Language` header disagrees with the browser's `navigator.language`. It's a medium-severity heuristic — legitimate for some multilingual or proxied setups, but unusual for a normal browser — so the default ignores it. To reject on it:
 
 ```yaml
 on_challenge_submit:
-  - filter: "fingerprint.IsBot()"
+  - filter: fingerprint.AcceptLanguageMismatch(req)
     apply:
-      - RejectSubmission("known bot (fast bot detection)")
+      - RejectSubmission("accept-language mismatch")
 ```
+
+:::warning
+Weak signals trade precision for recall. Validate one against your real traffic — [dump the fingerprints](#dump-fingerprints-for-offline-analysis) it would have rejected, or start by alerting instead of rejecting — before you enforce it.
+:::
 
 ### Dump fingerprints for offline analysis
 
