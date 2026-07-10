@@ -4,11 +4,6 @@ title: Bot detection configuration
 sidebar_position: 2
 ---
 
-<!--
-  Hub item names below ending in `_XX_..._XX_` are placeholders pending
-  publication. See the bot detection intro for the canonical placeholder list.
--->
-
 This page covers the configuration of the bot detection feature: the signing keys and their rotation, cookie lifetime, and JavaScript bundle obfuscation.
 
 ## Where to set these values
@@ -19,7 +14,7 @@ A minimal overlay looks like this — every field below is optional, see the res
 
 ```yaml
 # /etc/crowdsec/appsec-configs/mycorp-overlay.yaml
-name: _XX_APPSEC_CONFIG_OVERLAY_XX_
+name: mycorp/appsec-bot-challenge-overlay
 
 challenge:
   master_secret: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
@@ -72,24 +67,31 @@ Passphrases are accepted too, but must be at least 32 bytes of UTF-8. An invalid
 
 ## JS obfuscation
 
-The AppSec component serves two JavaScript artefacts to the client during a challenge: a **static library bundle** (the fingerprinting + proof-of-work runner) and a **dynamic per-epoch key module** (which embeds the current signing key). Both are obfuscated, and you can tune how many distinct obfuscated variants are kept in memory and how often new ones are produced.
+During a challenge the AppSec component serves the client three pieces of JavaScript, and only one of them is worth tuning:
 
-**Why this matters.** Code running inside an attacker-controlled browser can always be reverse-engineered eventually; obfuscation buys time and cost, not invisibility.
+- The **fingerprinting library** — the open-source [fpscanner](https://github.com/antoinevastel/fpscanner) by Antoine Vastel, which collects the device signals. It is served **unobfuscated**, as public and cacheable code on its own `<script>` tag. This is deliberate: fpscanner is not secret, there is nothing to hide in it, and there is no knob to obfuscate it.
+- The **crypto/glue bundle** — the small block that runs the proof-of-work, XORs the fingerprint, and posts the submission. It is obfuscated **once at build time** into a single static variant and injected inline. Nothing to tune.
+- The **per-epoch signing-key module** — the only sensitive artefact, because it carries the live signing key. It is re-obfuscated **at runtime**, and you can control how many distinct variants are kept per epoch.
+
+**Why this matters.** Code running inside an attacker-controlled browser can always be reverse-engineered eventually; obfuscation buys time and cost, not invisibility. That is why only the key module — the piece that actually protects cryptographic material — carries a runtime obfuscation knob.
 
 | Key | Default | Recommended | What it controls |
 |---|---|---|---|
 | `crypto_obfuscation_pool_size` | `1` | `3` | Number of distinct obfuscations of the per-epoch sign-key module kept per live epoch. Each variant costs ~5 s of CPU per rotation. A pool size of 3 is recommended in production: different clients see different obfuscations of the same key, which materially raises the cost of an attacker reverse-engineering the module. The default of `1` exists to keep tests cheap. |
-| `library_runtime_obfuscation_enabled` | `false` | `false` | When `false`, the AppSec component serves only the library bundle baked at build time (no runtime cost). When `true`, a background goroutine produces additional obfuscations of the static library bundle on a cadence. Enable only on hosts with CPU budget to spare — the build-time bundle is already obfuscated and is sufficient for most deployments. |
-| `library_obfuscation_pool_size` | `1` | `1` | Maximum number of obfuscated library-bundle variants kept. Has no effect unless `library_runtime_obfuscation_enabled` is `true` — values >1 are clamped to 1 with a startup warning otherwise. |
-| `library_obfuscation_refresh_interval` | `1h` | `1h` | How often the background obfuscator produces one new library-bundle variant. Each pass costs roughly one minute of CPU. Ignored when runtime obfuscation is disabled. |
 
-:::tip
-Don't enable `library_runtime_obfuscation_enabled` on a small or shared host — the obfuscator is CPU-heavy and runs every `library_obfuscation_refresh_interval`. The build-time obfuscation is enough for most deployments; only turn this on if you specifically need rotating byte-level library variants in addition to the build-time bundle.
-:::
+## Advanced tuning
+
+These `challenge:` fields are safety backstops sized for correctness and DoS resistance. Leave them at their defaults unless you have a specific, measured reason to change them.
+
+| Key | Default | What it controls |
+|---|---|---|
+| `max_cookie_size` | `4096` | Upper bound, in bytes, on the sealed challenge cookie — enforced on both seal and open. It caps the memory allocated from the attacker-supplied fingerprint envelope, closing an over-allocation DoS. `4096` is the per-cookie size browsers guarantee; raise it only if a non-browser client you control tolerates larger cookies. |
+| `spent_set_max_entries` | `1000000` | Maximum number of entries in the replay-protection set that stops a solved challenge from being submitted twice. A deep DoS backstop — steady-state usage stays far below it. |
+| `log_level` | inherits global | Log verbosity for the challenge runtime alone, independent of the global CrowdSec log level (`debug`, `info`, `warning`, `error`). Lets you turn up challenge diagnostics without making the rest of CrowdSec noisy. |
 
 ## DNS cache
 
-Identity-verified bots (see [Legitimate bots it lets through](intro.md#legitimate-bots-it-lets-through)) are confirmed with a forward-confirmed reverse-DNS lookup. To keep that off the request hot path, the engine caches DNS results. Unlike the fields above, this is **not** part of the `challenge:` block — it is global engine configuration, set under `crowdsec_service` in the main `config.yaml`:
+Identity-verified bots (see [Legitimate bots it lets through](whats_included.md#legitimate-bots-it-lets-through)) are confirmed with a forward-confirmed reverse-DNS lookup. To keep that off the request hot path, the engine caches DNS results. Unlike the fields above, this is **not** part of the `challenge:` block — it is global engine configuration, set under `crowdsec_service` in the main `config.yaml`:
 
 ```yaml
 crowdsec_service:
@@ -114,7 +116,7 @@ Specifically:
 - Changing `master_secret` **invalidates all in-flight challenges** (clients mid-challenge will be re-challenged) and **invalidates every already-issued cookie**. Plan a rotation as described in [Multi-instance / HA deployments](#multi-instance--ha-deployments).
 - Changing `key_rotation_interval` or `max_live_epochs` invalidates in-flight challenges but does **not** invalidate already-issued cookies — they remain valid until their own `not_after` timestamp.
 - Changing `cookie_ttl` affects only cookies issued **after** the reload; cookies already in the wild keep their original lifetime.
-- Changing the JS obfuscation fields takes effect on the next rotation tick / refresh tick.
+- Changing `crypto_obfuscation_pool_size` takes effect on the next key-rotation tick.
 
 ## Verification
 

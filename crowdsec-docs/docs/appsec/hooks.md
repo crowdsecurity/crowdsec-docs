@@ -100,7 +100,6 @@ This hook is intended to be used to disable rules only for this particular reque
 | `DisableBodyInspection`     | `func()`                             | Skip body inspection for the current request (also bypasses the maximum body size check). See [Request body size handling](#request-body-size-handling)                                                                                                         |
 | `ValidateRequestWithSchema` | `func(ref str) bool`                 | Validate the current request against an OpenAPI schema previously loaded under `ref` (returns `true` on success). On failure, structured details are published to `hook_vars` (see [OpenAPI Schema Validation](api_validation.md#validation-result-variables)). |
 | `hook_vars`                 | `map[string]string`                  | Per-request scratch space shared with later hooks and propagated to the resulting event. Helpers such as `ValidateRequestWithSchema` publish their results here.                                                                                                |
-| `SendChallenge`             | `func()`                             | Instruct the AppSec component to serve a JavaScript challenge for this request. No-op if the request already carries a valid challenge cookie. See [Bot detection](bot_detection/intro.md).                                                                     |
 | `GrantChallengeCookie`      | `func(reason str, ttl str?)`         | Mint a valid challenge cookie for this client (allowlist escape hatch for trusted user-agents or internal probes). `reason` is recorded in logs (≤256 bytes); optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                 |
 | `SetChallengeDifficulty`    | `func(level str)`                    | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](#challenge-difficulty-levels).                                                    |
 | `IsLegitimateBot`           | `func(ip str, ua str, path str) bool` | `true` if the request matches a curated legitimate-bot definition (verified by IP range or forward-confirmed reverse DNS). Used to skip the challenge for known-good crawlers. See [Legitimate bots](#legitimate-bots).                                          |
@@ -131,6 +130,7 @@ This hook is mostly intended for debugging or threat-hunting purposes.
 | `IsInBand`               | `bool`                        | `true` if the request is in the in-band processing phase                                                                                                                                                                                                        |
 | `IsOutBand`              | `bool`                        | `true` if the request is in the out-of-band processing phase                                                                                                                                                                                                    |
 | `DumpRequest`            | `func()`                      | Dump the request to a file                                                                                                                                                                                                                                      |
+| `DumpFingerprint`        | `func(label str) str`         | Append the decoded challenge fingerprint (plus request context) as one JSONL line to a dump file, for offline analysis. Returns the file path. See [DumpFingerprint](#dumpfingerprint).                                                                          |
 | `req`                    | `http.Request`                | Original HTTP request received by the remediation component                                                                                                                                                                                                     |
 | `SendChallenge`          | `func()`                      | Instruct the AppSec component to serve a JavaScript challenge for this request. No-op if the request already carries a valid challenge cookie. See [Bot detection](bot_detection/intro.md).                                                                     |
 | `GrantChallengeCookie`   | `func(reason str, ttl str?)`  | Mint a valid challenge cookie for this client (allowlist escape hatch for trusted user-agents or internal probes). `reason` is recorded in logs (≤256 bytes); optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                 |
@@ -266,6 +266,7 @@ This hook fires when a client POSTs a challenge response to `/crowdsec-internal/
 | `LogAccepted`           | `func(msg str, verbosity str?)`            | Emit a structured "submission accepted" log line. Same `verbosity` semantics as `RejectSubmission`.                                                                                                                                    |
 | `EvaluateMismatches`    | `func() MismatchReport`                    | Same as in `on_challenge` — run the mismatch checks against the just-decrypted fingerprint.                                                                                                                                            |
 | `fingerprint`           | `FingerprintData`                          | The decoded fingerprint object — see [The `fingerprint` object](#the-fingerprint-object).                                                                                                                                              |
+| `DumpFingerprint`       | `func(label str) str`                      | Append the just-decrypted fingerprint (plus request context) as one JSONL line to a dump file, for offline analysis. Returns the file path. See [DumpFingerprint](#dumpfingerprint).                                                    |
 
 #### Example
 
@@ -285,6 +286,25 @@ on_challenge_submit:
 When using `SetRemediation*` helpers, the only special value is `allow`: the remediation component won't block the request.
 Any other values (including `ban` and `captcha`) are transmitted as-is to the remediation component.
 
+### DumpFingerprint
+
+`DumpFingerprint(label)` is the fingerprint counterpart of [`DumpRequest`](#dumprequest): a threat-hunting aid that writes the decoded challenge fingerprint to disk so you can inspect it offline. It is available in the `post_eval` and `on_challenge_submit` hooks (the phases where a fingerprint is present).
+
+Each call appends one JSON object per line (JSONL) — the fingerprint plus request context (client IP, remote address, User-Agent, host, URI, method, and a UTC timestamp) — to:
+
+```
+<datadir>/fingerprint_dumps/crowdsec_fp_dump_<label>.jsonl
+```
+
+The `label` names the file (so you can separate dumps by purpose, e.g. `"suspected-automation"`), and the call returns the path it wrote to. No configuration is required — the directory is created automatically. The call is a no-op (it logs a warning and returns an empty string) if no fingerprint is attached to the request or the dump directory cannot be created.
+
+```yaml
+on_challenge_submit:
+  - filter: fingerprint.FastBotDetection.Bool() == true
+    apply:
+      - DumpFingerprint("fast-bot-detection")
+```
+
 ### Legitimate bots
 
 Two helpers, available in `pre_eval`, `post_eval` and `on_match`, let you keep legitimate non-browser clients out of the challenge flow.
@@ -293,7 +313,7 @@ Two helpers, available in `pre_eval`, `post_eval` and `on_match`, let you keep l
 
 `IsLegitimateBot(ip, ua, path)` returns `true` when the request matches a curated bot definition. Matching a User-Agent alone is never enough: the source IP must also match the vendor's published ranges or pass a forward-confirmed reverse-DNS check (FCrDNS). The helper is **fail-closed** — an unparseable address or a DNS failure returns `false`, so the request falls through to the normal challenge.
 
-The bot definitions are loaded from `<datadir>/legit_bots/*.json`. The hub ships and updates them via the `crowdsecurity/legit-bots` appsec-rule, and you can add your own — see [Authoring your own legitimate-bot files](bot_detection/intro.md#authoring-your-own-legitimate-bot-files) for the file format. The shipped bot-detection appsec-config uses it to gate the challenge:
+The bot definitions are loaded from `<datadir>/legit_bots/*.json`. The hub ships and updates them via the `crowdsecurity/appsec-bot-legit-*` appsec-rules (search-engines, ai-crawlers, social, monitoring), and you can add your own — see [Authoring your own legitimate-bot files](bot_detection/whats_included.md#authoring-your-own-legitimate-bot-files) for the file format. The shipped bot-detection appsec-config uses it to gate the challenge:
 
 ```yaml
 post_eval:
