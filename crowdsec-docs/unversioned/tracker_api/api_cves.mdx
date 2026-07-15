@@ -29,7 +29,7 @@ GET /v1/cves
 | `query` | string | — | Free-text search across CVE name, title, and affected components (e.g. `wordpress`) |
 | `sort_by` | string | `rule_release_date` | Sort field: `rule_release_date`, `trending`, `nb_ips`, `name`, `first_seen` |
 | `sort_order` | string | `desc` | Sort direction: `asc`, `desc` |
-| `exploitation_phase` | string | — | Filter by exploitation phase: `insufficient_data`, `early_exploitation`, `fresh_and_popular`, `targeted_exploitation`, `mass_exploitation`, `background_noise`, `unpopular`, `wearing_out`, `unclassified` |
+| `exploitation_phase` | string | — | Filter by exploitation phase: `insufficient_data`, `early_exploitation`, `rapid_escalation`, `active_exploitation`, `background_noise`, `limited_exploitation` |
 | `detailed` | boolean | `false` | When `true`, also include the heavy detail fields (`description`, `crowdsec_analysis`, `cwes`, `references`, `events`, `tags`) for every CVE in the list. Omitted by default to keep responses lightweight. |
 
 <Tabs
