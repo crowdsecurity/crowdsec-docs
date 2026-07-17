@@ -41,6 +41,10 @@ inband:
 This recipe trusts whoever knows the shared secret. If `my-shared-secret` ever leaks — into a log, a screenshot, a public dashboard — anyone who learns it can present that header and bypass bot detection entirely. Prefer pairing the header check with a source-IP filter (`req.RemoteAddr`) or rotating the secret regularly.
 :::
 
+### Allowlist by IPs
+
+If the trusted client has a stable source IP or range, a native [CrowdSec allowlist](/local_api/allowlists.md) is simpler and safer than a shared-secret header: an allowlisted IP bypasses AppSec entirely, so it is never challenged and never issued a cookie. Allowlists are keyed on source IP/range and managed centrally at the LAPI (`cscli allowlists`), so reach for the hook recipes on this page only when the client can't be pinned to an IP.
+
 ### Block on a weak signal the default ignores
 
 The collection already rejects submissions where `fingerprint.IsBot()` is true — the high-confidence fast-bot-detection verdict. Weaker heuristic signals are collected too, but the default leaves them alone because they carry false positives. If your traffic profile makes one of them worth enforcing, you can opt in.
