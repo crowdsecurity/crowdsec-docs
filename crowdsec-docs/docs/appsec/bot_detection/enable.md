@@ -14,18 +14,20 @@ Install the collection that bundles everything (appsec-configs + scenarios + par
 sudo cscli collections install crowdsecurity/appsec-bot-challenge
 ```
 
-Then make sure the bundled appsec-configs are actually loaded by your AppSec acquisition. Open the AppSec datasource file (typically `/etc/crowdsec/acquis.d/appsec.yaml`). The recommended setup loads the challenge config **and** the exclude-configs together with an `appsec-bot-*` wildcard:
+Then make sure the bundled appsec-configs are actually loaded by your AppSec acquisition. Open the AppSec datasource file (typically `/etc/crowdsec/acquis.d/appsec.yaml`) to add the challenge config **and** the exclude-configs together with an `appsec-bot-*` wildcard:
 
 ```yaml
 listen_addr: 127.0.0.1:7422
 appsec_configs:
-  - crowdsecurity/appsec-default
-  - crowdsecurity/appsec-bot-*
+ ...
+ ...
+ - crowdsecurity/appsec-bot-*
 labels:
   type: appsec
 ```
 
-The `crowdsecurity/appsec-bot-*` wildcard picks up `appsec-bot-challenge-simple` (the config that serves the challenge) plus every `appsec-bot-challenge-exclude-*` config — both the identity exclude-configs (verified search-engine, AI, social and monitoring bots) and the path exclude-configs. Keeping the exclusions on is the recommended default: they stop verified bots and machine-facing routes — crawler files, feeds, webhooks, static assets, API endpoints — from being challenged, which would otherwise break legitimate non-browser clients that can't solve it. See [Known bots it lets through](whats_included.md#known-bots-it-lets-through) and [Path-exclusion configs](whats_included.md#path-exclusion-configs) for exactly what each one covers.
+The `crowdsecurity/appsec-bot-*` wildcard picks up `appsec-bot-challenge-simple` (the config that serves the challenge) plus every `appsec-bot-challenge-exclude-*` config. Exclusion config covers bots (verified search-engine, AI, social and monitoring bots) and path exclusions. See [Known bots it lets through](whats_included.md#known-bots-it-lets-through) and [Path-exclusion configs](whats_included.md#path-exclusion-configs) for exactly what each one covers.
+
 
 If some of those exclusions don't apply to your app, list the configs you want explicitly instead of using the wildcard:
 
@@ -50,14 +52,14 @@ sudo systemctl reload crowdsec
 ```
 
 :::info
-If your acquisition already loads appsec-configs via a `crowdsecurity/*` wildcard, no acquisition change is needed — installing the collection is enough.
+If your acquisition already loads appsec-configs via a `crowdsecurity/*` wildcard, no acquisition change is needed, installing the collection is enough.
 :::
 
 Once installed, see [What the collection ships](whats_included.md) for a tour of the behavior you just enabled — none of it requires an extra install step.
 
 ## Verification
 
-Hit a protected route from a clean client (no cookie) — you should receive the challenge HTML rather than the real response:
+Hit a protected route from a clean client (no cookie): you should receive the challenge HTML:
 
 ```bash
 curl -i https://your-protected-site.example/some/page
@@ -69,7 +71,7 @@ Tail the CrowdSec log and trigger a failed submission (e.g. with `curl` against 
 
 ### Get rejected as a bot (CDP)
 
-To see the bad-bot rejection path end to end, visit a protected route with a browser driven over the **Chrome DevTools Protocol (CDP)** — the fingerprint library flags CDP as a high-severity automation signal, and the shipped `on_challenge_submit` hook rejects it. Any CDP-based automation triggers it: [Puppeteer](https://pptr.dev/), [Playwright](https://playwright.dev/) with Chromium, Selenium-over-CDP, or plain Chrome launched with `--remote-debugging-port`.
+To see the bad-bot rejection path end to end, visit a protected route with a browser driven over the **Chrome DevTools Protocol (CDP)**. The fingerprint library flags CDP as a high-severity automation signal, rejecting it. Any CDP-based automation triggers it: [Puppeteer](https://pptr.dev/), [Playwright](https://playwright.dev/) with Chromium, or plain Chrome launched with `--remote-debugging-port` (or open debug-tools).
 
 <details>
 <summary>Example Puppeteer script</summary>
@@ -91,7 +93,7 @@ const puppeteer = require("puppeteer");
 The browser solves the proof-of-work and submits a valid challenge, but because the fingerprint carries the `cdp` signal it is **not** granted a cookie. Tail the log and you should see the rejection with the `cdp` signal:
 
 ```
-level=info msg="on_challenge_submit rejected" source=203.0.113.7 is_bot=true reason="known bot (fast bot detection)" signals="[cdp]"
+level=info msg="on_challenge_submit rejected" source=X.X.X.X is_bot=true reason="known bot (fast bot detection)" signals="[cdp]"
 ```
 
 A clean browser (no automation, no DevTools attached) visiting the same route gets the cookie and passes.
