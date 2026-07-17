@@ -42,6 +42,22 @@ EOF
 sudo systemctl restart crowdsec
 ```
 
+On FreeBSD, use `/usr/local/etc/crowdsec/acquis.d/appsec.yaml` and reload the
+rc.d service instead:
+
+```bash
+sudo mkdir -p /usr/local/etc/crowdsec/acquis.d
+sudo tee /usr/local/etc/crowdsec/acquis.d/appsec.yaml > /dev/null <<'EOF'
+appsec_configs:
+  - crowdsecurity/appsec-default
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+EOF
+sudo service crowdsec reload
+```
+
 :::warning
 Keep `listen_addr` on `127.0.0.1` — the AppSec Component must only be reachable from your reverse proxy.
 :::
@@ -65,6 +81,14 @@ Restart the bouncer:
 
 ```bash
 sudo systemctl restart crowdsec-spoa-bouncer
+```
+
+On FreeBSD, edit
+`/usr/local/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` and restart the
+rc.d service:
+
+```bash
+sudo service crowdsec_spoa_bouncer restart
 ```
 
 :::note

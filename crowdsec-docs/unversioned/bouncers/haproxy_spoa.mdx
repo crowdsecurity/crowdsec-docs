@@ -79,6 +79,7 @@ repositories](/u/getting_started/installation/linux).
   values={[
     { label: 'Debian/Ubuntu', value: 'haproxy_debian' ,},
     { label: 'RHEL/Centos/Fedora', value: 'haproxy_rhel' ,},
+    { label: 'FreeBSD', value: 'haproxy_freebsd' ,},
   ]
 }>
 <TabItem value="haproxy_debian">
@@ -94,6 +95,16 @@ sudo apt install crowdsec-haproxy-spoa-bouncer
 ```bash
 sudo dnf install crowdsec-haproxy-spoa-bouncer
 ```
+
+</TabItem>
+
+<TabItem value="haproxy_freebsd">
+
+```bash
+sudo pkg install crowdsec haproxy crowdsec-haproxy-spoa-bouncer
+```
+
+The FreeBSD package installs an rc.d service named `crowdsec_spoa_bouncer`.
 
 </TabItem>
 
@@ -120,6 +131,67 @@ package on the condition that `/etc/haproxy` exists.
 
 If you are using packages, you will find the haproxy configuration
 snippets in `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`.
+
+### FreeBSD paths and service names
+
+FreeBSD packages use the `/usr/local` prefix and rc.d services. Replace the
+Linux paths and commands in the examples as follows:
+
+| Item | Linux package path or service | FreeBSD package path or service |
+| ---- | ----------------------------- | ------------------------------- |
+| Bouncer config | `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` | `/usr/local/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` |
+| SPOE config | `/etc/haproxy/crowdsec.cfg` | `/usr/local/etc/haproxy/crowdsec.cfg` |
+| Main HAProxy config | `/etc/haproxy/haproxy.cfg` | `/usr/local/etc/haproxy.conf` |
+| Example configs | `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples` | `/usr/local/share/doc/crowdsec-haproxy-spoa-bouncer/examples` |
+| HTML templates for `lf-file` | `/var/lib/crowdsec-haproxy-spoa-bouncer/html` | `/usr/local/share/crowdsec-haproxy-spoa-bouncer/html` |
+| Bouncer service | `crowdsec-spoa-bouncer` | `crowdsec_spoa_bouncer` |
+
+Enable the services:
+
+```bash
+sudo sysrc crowdsec_enable=YES
+sudo sysrc crowdsec_spoa_bouncer_enable=YES
+sudo sysrc haproxy_enable=YES
+```
+
+If the HAProxy rc.d script does not daemonize the process in your environment,
+set explicit flags:
+
+```bash
+sudo sysrc haproxy_flags="-D -q -f /usr/local/etc/haproxy.conf -p /var/run/haproxy.pid"
+```
+
+Copy the packaged SPOE example into the FreeBSD HAProxy configuration directory:
+
+```bash
+sudo install -d -m 0755 /usr/local/etc/haproxy
+sudo cp /usr/local/share/doc/crowdsec-haproxy-spoa-bouncer/examples/crowdsec.cfg \
+  /usr/local/etc/haproxy/crowdsec.cfg
+```
+
+When using the non-Lua `lf-file` remediation block on FreeBSD, point HAProxy at
+the FreeBSD template directory:
+
+```haproxy
+filter spoe engine crowdsec config /usr/local/etc/haproxy/crowdsec.cfg
+
+http-request return status 200 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /usr/local/share/crowdsec-haproxy-spoa-bouncer/html/captcha.html if { var(txn.crowdsec.remediation) -m str "captcha" } render_html !html_rejected
+http-request return status 403 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /usr/local/share/crowdsec-haproxy-spoa-bouncer/html/ban-with-contact.html if { var(txn.crowdsec.remediation) -m str "ban" } render_html !html_rejected has_contact_url !empty_contact_url
+http-request return status 403 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /usr/local/share/crowdsec-haproxy-spoa-bouncer/html/ban.html if { var(txn.crowdsec.remediation) -m str "ban" } render_html !html_rejected !has_contact_url
+http-request return status 403 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /usr/local/share/crowdsec-haproxy-spoa-bouncer/html/ban.html if { var(txn.crowdsec.remediation) -m str "ban" } render_html !html_rejected empty_contact_url
+```
+
+Start and validate the services:
+
+```bash
+sudo service crowdsec start
+sudo service crowdsec_spoa_bouncer start
+sudo service haproxy configtest
+sudo service haproxy start
+
+sockstat -4l | egrep '(:80|:8080|:9000)'
+sudo cscli bouncers list
+```
 
 ### SPOE Filter
 
