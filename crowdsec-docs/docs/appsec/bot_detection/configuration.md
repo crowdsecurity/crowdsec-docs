@@ -91,7 +91,7 @@ These `challenge:` fields are safety backstops sized for correctness and DoS res
 
 ## DNS cache
 
-Identity-verified bots (see [Legitimate bots it lets through](whats_included.md#legitimate-bots-it-lets-through)) are confirmed with a forward-confirmed reverse-DNS lookup. To keep that off the request hot path, the engine caches DNS results. Unlike the fields above, this is **not** part of the `challenge:` block — it is global engine configuration, set under `crowdsec_service` in the main `config.yaml`:
+Identity-verified bots (see [Known bots it lets through](whats_included.md#known-bots-it-lets-through)) are confirmed with a forward-confirmed reverse-DNS lookup. To keep that off the request hot path, the engine caches DNS results. Unlike the fields above, this is **not** part of the `challenge:` block — it is global engine configuration, set under `crowdsec_service` in the main `config.yaml`:
 
 ```yaml
 crowdsec_service:

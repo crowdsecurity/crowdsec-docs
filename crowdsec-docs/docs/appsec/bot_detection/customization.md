@@ -4,25 +4,25 @@ title: Customization & recipes
 sidebar_position: 4
 ---
 
-The snippets below are **advanced** — for the helpers (`SendChallenge`, `GrantChallengeCookie`, `IsLegitimateBot`, `ExemptFromChallenge`, `RejectSubmission`, `DumpFingerprint`, …) and the `fingerprint` object, see the [Hooks reference](../hooks.md).
+The snippets below are **advanced** — for the helpers (`SendChallenge`, `GrantChallengeCookie`, `MatchKnownBot`, `ExemptFromChallenge`, `RejectSubmission`, `DumpFingerprint`, …) and the `fingerprint` object, see the [Hooks reference](../hooks.md).
 
 ## Recipes
 
 ### Restrict the challenge to a specific path
 
-By default the appsec-config shipped by the collection challenges every request that isn't a [legitimate bot](../hooks.md#legitimate-bots). To narrow the challenge to one section of your application — say a checkout flow — you don't need to touch that shipped `SendChallenge()` gate. Add a `pre_eval` hook that exempts every request **outside** the path you care about:
+By default the appsec-config shipped by the collection challenges every request except [known bots](../hooks.md#known-bots) and well-known paths. To narrow the challenge to one section of your application — say a checkout flow — you don't need to touch that shipped `SendChallenge()` gate. Add a `pre_eval` hook that exempts every request **outside** the path you care about:
 
 ```yaml
 pre_eval:
   - filter: '!(req.URL.Path startsWith "/checkout/")'
     apply:
-      - ExemptFromChallenge()
+      - ExemptFromChallenge("outside-checkout")
 ```
 
-`ExemptFromChallenge()` short-circuits `IsLegitimateBot()` to `true` for the rest of the request, so the collection's `!IsLegitimateBot(...)` gate on `SendChallenge()` becomes a no-op and no challenge is served. Because the exemption is additive, the shipped config stays untouched — only `/checkout/` is left to be challenged.
+`ExemptFromChallenge(reason)` flags the request as exempt, so `SendChallenge()` becomes a no-op for it and no challenge is served. Because the exemption is additive, the shipped config stays untouched — only `/checkout/` is left to be challenged.
 
 :::note
-`ExemptFromChallenge()` mints no cookie, so the exemption is re-evaluated on every request. To let a trusted client through for a whole session instead, use `GrantChallengeCookie(...)` — see [ExemptFromChallenge vs GrantChallengeCookie](../hooks.md#exemptfromchallenge-vs-grantchallengecookie).
+`ExemptFromChallenge(reason)` mints no cookie, so the exemption is re-evaluated on every request. To let a trusted client through for a whole session instead, use `GrantChallengeCookie(...)` — see [ExemptFromChallenge vs GrantChallengeCookie](../hooks.md#exemptfromchallenge-vs-grantchallengecookie).
 :::
 
 ### Allowlist an internal probe by header

@@ -102,8 +102,8 @@ This hook is intended to be used to disable rules only for this particular reque
 | `hook_vars`                 | `map[string]string`                  | Per-request scratch space shared with later hooks and propagated to the resulting event. Helpers such as `ValidateRequestWithSchema` publish their results here.                                                                                                |
 | `GrantChallengeCookie`      | `func(reason str, ttl str?)`         | Mint a valid challenge cookie for this client (allowlist escape hatch for trusted user-agents or internal probes). `reason` is recorded in logs (≤256 bytes); optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                 |
 | `SetChallengeDifficulty`    | `func(level str)`                    | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](#challenge-difficulty-levels).                                                    |
-| `IsLegitimateBot`           | `func(ip str, ua str, path str) bool` | `true` if the request matches a curated legitimate-bot definition (verified by IP range or forward-confirmed reverse DNS). Used to skip the challenge for known-good crawlers. See [Legitimate bots](#legitimate-bots).                                          |
-| `ExemptFromChallenge`       | `func()`                             | Exempt the current request from the challenge without minting a cookie (the exemption applies to this request only). See [Legitimate bots](#legitimate-bots).                                                                                                    |
+| `MatchKnownBot`             | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files` (verified by IP range or forward-confirmed reverse DNS). Used to skip the challenge for known-good crawlers. See [Known bots](#known-bots).                          |
+| `ExemptFromChallenge`       | `func(reason str)`                   | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](#known-bots).                                                                                    |
 
 #### Example
 
@@ -135,8 +135,8 @@ This hook is mostly intended for debugging or threat-hunting purposes.
 | `SendChallenge`          | `func()`                      | Instruct the AppSec component to serve a JavaScript challenge for this request. No-op if the request already carries a valid challenge cookie. See [Bot detection](bot_detection/intro.md).                                                                     |
 | `GrantChallengeCookie`   | `func(reason str, ttl str?)`  | Mint a valid challenge cookie for this client (allowlist escape hatch for trusted user-agents or internal probes). `reason` is recorded in logs (≤256 bytes); optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                 |
 | `SetChallengeDifficulty` | `func(level str)`             | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](#challenge-difficulty-levels).                                                    |
-| `IsLegitimateBot`        | `func(ip str, ua str, path str) bool` | `true` if the request matches a curated legitimate-bot definition (verified by IP range or forward-confirmed reverse DNS). See [Legitimate bots](#legitimate-bots).                                                                                     |
-| `ExemptFromChallenge`    | `func()`                      | Exempt the current request from the challenge without minting a cookie (this request only). See [Legitimate bots](#legitimate-bots).                                                                                                                            |
+| `MatchKnownBot`          | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files` (verified by IP range or forward-confirmed reverse DNS). See [Known bots](#known-bots).                                                                       |
+| `ExemptFromChallenge`    | `func(reason str)`            | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](#known-bots).                                                                                    |
 
 #### DumpRequest
 
@@ -200,8 +200,8 @@ This hook is intended to be used to change the behavior of the engine after a ma
 | `IsOutBand`      | `bool`                     | `true` if the request is in the out-of-band processing phase                                                  |
 | `evt`            | `types.Event`              | [The event that has been generated](/docs/expr/event.md#appsec-helpers) by the Application Security Component |
 | `req`            | `http.Request`             | Original HTTP request received by the remediation component                                                   |
-| `IsLegitimateBot` | `func(ip str, ua str, path str) bool` | `true` if the request matches a curated legitimate-bot definition. See [Legitimate bots](#legitimate-bots).                  |
-| `ExemptFromChallenge` | `func()`              | Exempt the current request from the challenge without minting a cookie (this request only). See [Legitimate bots](#legitimate-bots). |
+| `MatchKnownBot` | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files`. See [Known bots](#known-bots).                  |
+| `ExemptFromChallenge` | `func(reason str)`    | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](#known-bots). |
 
 #### Example
 
@@ -306,24 +306,24 @@ on_challenge_submit:
       - DumpFingerprint("fast-bot-detection")
 ```
 
-### Legitimate bots
+### Known bots
 
 Two helpers, available in `pre_eval`, `post_eval` and `on_match`, let you keep legitimate non-browser clients out of the challenge flow.
 
-#### `IsLegitimateBot`
+#### `MatchKnownBot`
 
-`IsLegitimateBot(ip, ua, path)` returns `true` when the request matches a curated bot definition. Matching a User-Agent alone is never enough: the source IP must also match the vendor's published ranges or pass a forward-confirmed reverse-DNS check (FCrDNS). The helper is **fail-closed** — an unparseable address or a DNS failure returns `false`, so the request falls through to the normal challenge.
+`MatchKnownBot(ip, ua, path, ...files)` returns `true` when the request matches a bot definition in one of the named `files`. You pass the bot files to consult explicitly (e.g. `"legit_bots/gptbot.json"`); the helper only queries those, and matches if **any** of them matches. Matching a User-Agent alone is never enough: the source IP must also match the vendor's published ranges or pass a forward-confirmed reverse-DNS check (FCrDNS). The helper is **fail-closed** — an unparseable address, a DNS failure, or an unknown file returns `false`, so the request falls through to the normal challenge.
 
-The bot definitions are loaded from `<datadir>/legit_bots/*.json`. The hub ships and updates them via the `crowdsecurity/appsec-bot-legit-*` appsec-rules (search-engines, ai-crawlers, social, monitoring), and you can add your own — see [Authoring your own legitimate-bot files](bot_detection/whats_included.md#authoring-your-own-legitimate-bot-files) for the file format. The shipped bot-detection appsec-config uses it to gate the challenge:
+The bot definitions are loaded from `<datadir>/legit_bots/*.json`. The hub ships and updates them via the `crowdsecurity/appsec-bot-challenge-exclude-*` appsec-configs (search-engines, ai-crawlers, social, monitoring), which both call `MatchKnownBot` and declare the files they need in their `data:` section; you can add your own — see [Authoring your own known-bot files](bot_detection/whats_included.md#authoring-your-own-known-bot-files) for the file format. The shipped exclude-configs use it in `pre_eval` to exempt verified bots before the challenge is served:
 
 ```yaml
-post_eval:
-  - filter: '!IsLegitimateBot(req.RemoteAddr, req.UserAgent(), req.URL.Path)'
+pre_eval:
+  - filter: MatchKnownBot(req.RemoteAddr, req.UserAgent(), req.URL.Path, "legit_bots/gptbot.json")
     apply:
-      - SendChallenge()
+      - ExemptFromChallenge("gptbot")
 ```
 
-Once `ExemptFromChallenge()` has been called for a request, `IsLegitimateBot()` short-circuits to `true` for the rest of that request.
+Once `ExemptFromChallenge(reason)` has flagged a request, `SendChallenge()` becomes a no-op for the rest of that request, so the exempted client is never challenged.
 
 #### `ExemptFromChallenge` vs `GrantChallengeCookie`
 
@@ -331,7 +331,7 @@ Both keep a client out of the challenge, but at different scopes:
 
 | Helper                  | Scope                          | Cookie | Use for                                                                              |
 | ----------------------- | ------------------------------ | ------ | ----------------------------------------------------------------------------------- |
-| `ExemptFromChallenge()` | The current request only       | no     | Well-known paths (`robots.txt`, `/.well-known/*`, feeds, webhooks) and per-request allowlisting where no state should persist. |
+| `ExemptFromChallenge(reason)` | The current request only       | no     | Verified known bots, well-known paths (`robots.txt`, `/.well-known/*`, feeds, webhooks) and per-request allowlisting where no state should persist. `reason` labels the exemption in logs and the `cs_appsec_challenge_exempt_total` metric. |
 | `GrantChallengeCookie(reason, ttl?)` | Persists across requests (until the cookie expires) | yes | Trusted user-agents or internal probes you want to let through for a whole session. |
 
 ### Request body size handling

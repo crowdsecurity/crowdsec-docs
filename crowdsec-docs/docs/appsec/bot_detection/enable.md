@@ -8,13 +8,13 @@ This page covers turning bot detection on: installing the collection, making sur
 
 ## Install the collection
 
-Install the collection that bundles everything (appsec-configs + legit-bot rules + scenarios + parsers):
+Install the collection that bundles everything (appsec-configs + scenarios + parsers):
 
 ```bash
 sudo cscli collections install crowdsecurity/appsec-bot-challenge
 ```
 
-Then make sure the bundled appsec-configs are actually loaded by your AppSec acquisition. Open the AppSec datasource file (typically `/etc/crowdsec/acquis.d/appsec.yaml`). The recommended setup loads the challenge config **and** the path-exclusion configs together with an `appsec-bot-*` wildcard:
+Then make sure the bundled appsec-configs are actually loaded by your AppSec acquisition. Open the AppSec datasource file (typically `/etc/crowdsec/acquis.d/appsec.yaml`). The recommended setup loads the challenge config **and** the exclude-configs together with an `appsec-bot-*` wildcard:
 
 ```yaml
 listen_addr: 127.0.0.1:7422
@@ -25,7 +25,7 @@ labels:
   type: appsec
 ```
 
-The `crowdsecurity/appsec-bot-*` wildcard picks up `appsec-bot-challenge-simple` (the config that serves the challenge) plus all five `appsec-bot-challenge-exclude-*` configs. Keeping the exclusions on is the recommended default: they stop machine-facing routes — crawler files, feeds, webhooks, static assets, API endpoints — from being challenged, which would otherwise break legitimate non-browser clients that can't solve it. See [Path-exclusion configs](whats_included.md#path-exclusion-configs) for exactly what each one covers.
+The `crowdsecurity/appsec-bot-*` wildcard picks up `appsec-bot-challenge-simple` (the config that serves the challenge) plus every `appsec-bot-challenge-exclude-*` config — both the identity exclude-configs (verified search-engine, AI, social and monitoring bots) and the path exclude-configs. Keeping the exclusions on is the recommended default: they stop verified bots and machine-facing routes — crawler files, feeds, webhooks, static assets, API endpoints — from being challenged, which would otherwise break legitimate non-browser clients that can't solve it. See [Known bots it lets through](whats_included.md#known-bots-it-lets-through) and [Path-exclusion configs](whats_included.md#path-exclusion-configs) for exactly what each one covers.
 
 If some of those exclusions don't apply to your app, list the configs you want explicitly instead of using the wildcard:
 

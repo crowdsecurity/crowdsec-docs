@@ -14,8 +14,9 @@ The collection ships `crowdsecurity/appsec-bot-challenge-simple`, the appsec-con
 name: crowdsecurity/appsec-bot-challenge-simple
 inband:
   post_eval:
-    # Challenge every request that is not a verified good bot.
-    - filter: "!IsLegitimateBot(req.RemoteAddr, req.UserAgent(), req.URL.Path)"
+    # Challenge every request. Verified bots and well-known paths are flagged by
+    # the exclude-configs' pre_eval hooks and skipped by SendChallenge itself.
+    - filter: "true"
       apply:
         - SendChallenge()
   on_challenge_submit:
@@ -27,43 +28,52 @@ inband:
 
 It carries **no** `challenge:` settings block, so the runtime settings (master secret, key rotation, cookie TTL, JS obfuscation) all run on their defaults. That is fine for a **single-instance** deployment. For **multi-instance / HA** deployments you must set `master_secret` (and keep `key_rotation_interval` consistent) across all WAF instances by shipping your own overlay — see [Key management](configuration.md#key-management) and [Where to set these values](configuration.md#where-to-set-these-values).
 
-## Legitimate bots it lets through
+## Known bots it lets through
 
 Some non-browser clients are legitimate and must not be challenged — search-engine crawlers, uptime probes, AI crawlers, and the like. The collection recognises them per-request and simply skips the challenge for them. Nothing is allowlisted with a persistent cookie: the decision is re-evaluated on every request, so a client only gets through for as long as it keeps looking legitimate.
 
-The appsec-config gates the challenge on the `IsLegitimateBot()` helper — it only challenges requests that are *not* a known-good bot:
+The exemptions are shipped as opt-in `appsec-bot-challenge-exclude-*` appsec-configs. Each one runs a `pre_eval` hook that matches a verified bot with `MatchKnownBot()` and flags it with `ExemptFromChallenge(reason)`; once flagged, `SendChallenge()` (in `appsec-bot-challenge-simple`) skips that request. For example, the AI-crawler exclude-config:
 
 ```yaml
 inband:
-  post_eval:
-    - filter: '!IsLegitimateBot(req.RemoteAddr, req.UserAgent(), req.URL.Path)'
+  pre_eval:
+    - filter: MatchKnownBot(req.RemoteAddr, req.UserAgent(), req.URL.Path, "legit_bots/gptbot.json")
       apply:
-        - SendChallenge()
+        - ExemptFromChallenge("gptbot")
 ```
 
-Two kinds of exemption are shipped:
-
-- **Identity-verified bots** — for declared crawlers the User-Agent is necessary but not sufficient. `IsLegitimateBot()` also checks the client IP against the vendor's published ranges and/or a forward-confirmed reverse-DNS lookup (FCrDNS); a bot is exempted **only** when it can be network-verified. A spoofed UA on an IP that does not belong to the vendor is **not** recognised and goes through the normal challenge flow. The bot definitions live in [bot-description files](#authoring-your-own-legitimate-bot-files) that the collection's appsec-rules keep up to date (see below).
-- **Path-based** — well-known endpoints that legitimate non-browser clients hit by design (e.g. `/.well-known/*`, `robots.txt`, feeds, webhooks). The collection ships opt-in [path-exclusion appsec-configs](#path-exclusion-configs) whose `pre_eval` calls `ExemptFromChallenge()` for those paths, which skips the challenge for that single request without minting a cookie.
+For declared crawlers the User-Agent is necessary but not sufficient. `MatchKnownBot()` also checks the client IP against the vendor's published ranges and/or a forward-confirmed reverse-DNS lookup (FCrDNS); a bot is exempted **only** when it can be network-verified. A spoofed UA on an IP that does not belong to the vendor is **not** recognised and goes through the normal challenge flow. The bot definitions live in [bot-description files](#authoring-your-own-known-bot-files) that each exclude-config declares in its own `data:` section (see below).
 
 :::note
-`IsLegitimateBot()` and `ExemptFromChallenge()` exempt the **current request only** — they do not issue a cookie. `GrantChallengeCookie()` is the separate escape hatch that persists across requests; see the [Hooks reference](../hooks.md#legitimate-bots) for when to use each.
+`ExemptFromChallenge(reason)` exempts the **current request only** — it does not issue a cookie. `GrantChallengeCookie()` is the separate escape hatch that persists across requests; see the [Hooks reference](../hooks.md#known-bots) for when to use each.
 :::
 
-The built-in bot families are split across four appsec-rules, so you can install only the ones you need:
+The built-in bot families are split across four identity exclude-configs, so you can install only the ones you need:
 
-| Appsec-rule | Bots it verifies |
+| Appsec-config | Bots it verifies |
 |---|---|
-| `crowdsecurity/appsec-bot-legit-search-engines` | googlebot, bingbot, applebot, amazonbot, yandex, baidu, yahoo, sogou, qwant, babbar, duckduckbot |
-| `crowdsecurity/appsec-bot-legit-ai-crawlers` | gptbot, openai-searchbot, openai-chatgpt-user, perplexitybot |
-| `crowdsecurity/appsec-bot-legit-social` | meta, discord, telegram, twitterbot, pinterest |
-| `crowdsecurity/appsec-bot-legit-monitoring` | uptimerobot, cookiebot, datadog, pagerduty |
+| `crowdsecurity/appsec-bot-challenge-exclude-search-engines` | googlebot, bingbot, applebot, amazonbot, yandex, baidu, yahoo, sogou, qwant, babbar, duckduckbot |
+| `crowdsecurity/appsec-bot-challenge-exclude-ai-crawlers` | gptbot, openai-searchbot, openai-chatgpt-user, perplexitybot |
+| `crowdsecurity/appsec-bot-challenge-exclude-social` | meta, discord, telegram, twitterbot, pinterest |
+| `crowdsecurity/appsec-bot-challenge-exclude-monitoring` | uptimerobot, cookiebot, datadog, pagerduty |
 
-Each appsec-rule just declares the datafiles CrowdSec should download into `<datadir>/legit_bots/`; `IsLegitimateBot()` reads them at match time.
+Each config declares the datafiles CrowdSec should download into `<datadir>/legit_bots/` in its `data:` section, and `MatchKnownBot()` reads them at match time.
 
-### Authoring your own legitimate-bot files
+### Authoring your own known-bot files
 
-`IsLegitimateBot()` matches a request against bot-description files in `<datadir>/legit_bots/*.json` (typically `/var/lib/crowdsec/data/legit_bots/`). The appsec-rules above keep the built-in definitions up to date; to recognise a bot of your own, drop an extra `.json` file in the same directory.
+`MatchKnownBot()` matches a request against the bot-description files you name, under `<datadir>/legit_bots/` (typically `/var/lib/crowdsec/data/legit_bots/`). The exclude-configs above keep the built-in definitions up to date; to recognise a bot of your own, ship a custom appsec-config that both calls `MatchKnownBot(..., "legit_bots/mybot.json")` and declares that file in its `data:` section:
+
+```yaml
+inband:
+  pre_eval:
+    - filter: MatchKnownBot(req.RemoteAddr, req.UserAgent(), req.URL.Path, "legit_bots/mybot.json")
+      apply:
+        - ExemptFromChallenge("mybot")
+data:
+  - source_url: https://example.com/mybot.json
+    dest_file: legit_bots/mybot.json
+    type: bots
+```
 
 Each file is one or more newline-delimited JSON objects with these fields:
 
@@ -78,13 +88,13 @@ Each file is one or more newline-delimited JSON objects with these fields:
 
 \* At least one of `ips`, `ranges`, or `rdns` is required — a definition that only matches on `user_agent` is rejected at load time, since a User-Agent alone is trivial to spoof.
 
-A request is recognised as a legitimate bot when:
+A request is recognised as a known bot when:
 
 ```
 (user_agent matches  AND  at least one path matches)  AND  (exact IP  OR  CIDR range  OR  FCrDNS)
 ```
 
-The helper is **fail-closed**: an unparseable address or a DNS failure means "not a legitimate bot", never an error, so the request falls through to the normal challenge.
+The helper is **fail-closed**: an unparseable address, a DNS failure, or an unknown file means "not a known bot", never an error, so the request falls through to the normal challenge.
 
 Example file:
 
@@ -119,7 +129,9 @@ Accepted submissions get a matching `challenge submission accepted` line for the
 
 ## Path-exclusion configs
 
-Some routes are hit by design by clients that will never solve a challenge — crawler metadata files, syndication feeds, third-party webhooks, static assets, and programmatic API endpoints. Challenging them just produces false positives. The collection ships five opt-in appsec-configs whose `pre_eval` calls `ExemptFromChallenge()` for those paths (exempting the single request, no cookie minted):
+The `appsec-bot-challenge-exclude-*` family has two kinds of members: the identity exclude-configs above (which match verified bots with `MatchKnownBot`), and the path exclude-configs described here (which match on the request path). Both flag the request with `ExemptFromChallenge(reason)`.
+
+Some routes are hit by design by clients that will never solve a challenge — crawler metadata files, syndication feeds, third-party webhooks, static assets, and programmatic API endpoints. Challenging them just produces false positives. The collection ships five opt-in path exclude-configs whose `pre_eval` calls `ExemptFromChallenge(reason)` for those paths (exempting the single request, no cookie minted):
 
 | Appsec-config | Exempts |
 |---|---|
