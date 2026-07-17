@@ -31,7 +31,7 @@ It carries **no** `challenge:` settings block, so the runtime settings (master s
 
 Some non-browser clients are legitimate and must not be challenged — search-engine crawlers, uptime probes, AI crawlers, and the like. The collection recognises them per-request and simply skips the challenge for them. Nothing is allowlisted with a persistent cookie: the decision is re-evaluated on every request, so a client only gets through for as long as it keeps looking legitimate.
 
-The appsec-config gates the challenge on the `IsLegitimateBot()` helper — it only challenges requests that are *not* a known-good bot:
+The appsec-config gates the challenge on the `MatchKnownBot()` helper — it only challenges requests that are *not* a known-good bot:
 
 ```yaml
 inband:
@@ -43,11 +43,11 @@ inband:
 
 Two kinds of exemption are shipped:
 
-- **Identity-verified bots** — for declared crawlers the User-Agent is necessary but not sufficient. `IsLegitimateBot()` also checks the client IP against the vendor's published ranges and/or a forward-confirmed reverse-DNS lookup (FCrDNS); a bot is exempted **only** when it can be network-verified. A spoofed UA on an IP that does not belong to the vendor is **not** recognised and goes through the normal challenge flow. The bot definitions live in [bot-description files](#authoring-your-own-legitimate-bot-files) that the collection's appsec-rules keep up to date (see below).
+- **Identity-verified bots** — for declared crawlers the User-Agent is necessary but not sufficient. `MatchKnownBot()` also checks the client IP against the vendor's published ranges and/or a forward-confirmed reverse-DNS lookup (FCrDNS); a bot is exempted **only** when it can be network-verified. A spoofed UA on an IP that does not belong to the vendor is **not** recognised and goes through the normal challenge flow. The bot definitions live in [bot-description files](#authoring-your-own-legitimate-bot-files) that the collection's appsec-rules keep up to date (see below).
 - **Path-based** — well-known endpoints that legitimate non-browser clients hit by design (e.g. `/.well-known/*`, `robots.txt`, feeds, webhooks). The collection ships opt-in [path-exclusion appsec-configs](#path-exclusion-configs) whose `pre_eval` calls `ExemptFromChallenge()` for those paths, which skips the challenge for that single request without minting a cookie.
 
 :::note
-`IsLegitimateBot()` and `ExemptFromChallenge()` exempt the **current request only** — they do not issue a cookie. `GrantChallengeCookie()` is the separate escape hatch that persists across requests; see the [Hooks reference](../hooks.md#legitimate-bots) for when to use each.
+`MatchKnownBot()` and `ExemptFromChallenge()` exempt the **current request only** — they do not issue a cookie. `GrantChallengeCookie()` is the separate escape hatch that persists across requests; see the [Hooks reference](../hooks.md#legitimate-bots) for when to use each.
 :::
 
 The built-in bot families are split across four appsec-rules, so you can install only the ones you need:
@@ -59,11 +59,11 @@ The built-in bot families are split across four appsec-rules, so you can install
 | `crowdsecurity/appsec-bot-legit-social` | meta, discord, telegram, twitterbot, pinterest |
 | `crowdsecurity/appsec-bot-legit-monitoring` | uptimerobot, cookiebot, datadog, pagerduty |
 
-Each appsec-rule just declares the datafiles CrowdSec should download into `<datadir>/legit_bots/`; `IsLegitimateBot()` reads them at match time.
+Each appsec-rule just declares the datafiles CrowdSec should download into `<datadir>/legit_bots/`; `MatchKnownBot()` reads them at match time.
 
 ### Authoring your own legitimate-bot files
 
-`IsLegitimateBot()` matches a request against bot-description files in `<datadir>/legit_bots/*.json` (typically `/var/lib/crowdsec/data/legit_bots/`). The appsec-rules above keep the built-in definitions up to date; to recognise a bot of your own, drop an extra `.json` file in the same directory.
+`MatchKnownBot()` matches a request against bot-description files in `<datadir>/legit_bots/*.json` (typically `/var/lib/crowdsec/data/legit_bots/`). The appsec-rules above keep the built-in definitions up to date; to recognise a bot of your own, drop an extra `.json` file in the same directory.
 
 Each file is one or more newline-delimited JSON objects with these fields:
 

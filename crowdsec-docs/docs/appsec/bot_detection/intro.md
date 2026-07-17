@@ -49,7 +49,7 @@ Step by step:
 4. The AppSec component cryptographically validates the submission and decrypts the fingerprint. The client will be rejected if it identifies as automation, or let them through.
 5. On acceptance, the client receives a **sealed success cookie** carrying the fingerprint and an expiry timestamp. Subsequent requests present the cookie and will pass — without re-challenging.
 6. Signing keys rotate on a schedule (`key_rotation_interval`), but the cookie is sealed under a separate long-lived key, so rotation does not invalidate already-issued cookies. A single `master_secret` roots every key and must be shared across instances in an HA deployment — see [Key management](configuration.md#key-management).
-7. Legitimate non-browser clients (search crawlers, uptime probes, …) are recognised per request via `IsLegitimateBot()` — IP-range or forward-confirmed reverse-DNS verified — and skipped, with no cookie minted. See [Legitimate bots it lets through](whats_included.md#legitimate-bots-it-lets-through).
+7. Legitimate non-browser clients (search crawlers, uptime probes, …) are recognised per request via `MatchKnownBot()` — IP-range or forward-confirmed reverse-DNS verified — and skipped, with no cookie minted. See [Legitimate bots it lets through](whats_included.md#legitimate-bots-it-lets-through).
 8. Per-request hooks only see one request at a time. The [behavioral scenarios](whats_included.md#behavioral-scenarios-it-installs) shipped by the collection watch across requests (too many challenge requests, too many submissions, never-submits) and create decisions that block repeat offenders at the bouncer.
 
 :::note

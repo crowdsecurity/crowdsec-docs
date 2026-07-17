@@ -19,7 +19,7 @@ pre_eval:
       - ExemptFromChallenge()
 ```
 
-`ExemptFromChallenge()` short-circuits `IsLegitimateBot()` to `true` for the rest of the request, so the collection's `!IsLegitimateBot(...)` gate on `SendChallenge()` becomes a no-op and no challenge is served. Because the exemption is additive, the shipped config stays untouched — only `/checkout/` is left to be challenged.
+`ExemptFromChallenge()` short-circuits `MatchKnownBot()` to `true` for the rest of the request, so the collection's `!IsLegitimateBot(...)` gate on `SendChallenge()` becomes a no-op and no challenge is served. Because the exemption is additive, the shipped config stays untouched — only `/checkout/` is left to be challenged.
 
 :::note
 `ExemptFromChallenge()` mints no cookie, so the exemption is re-evaluated on every request. To let a trusted client through for a whole session instead, use `GrantChallengeCookie(...)` — see [ExemptFromChallenge vs GrantChallengeCookie](../hooks.md#exemptfromchallenge-vs-grantchallengecookie).

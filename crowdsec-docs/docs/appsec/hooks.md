@@ -323,7 +323,7 @@ post_eval:
       - SendChallenge()
 ```
 
-Once `ExemptFromChallenge()` has been called for a request, `IsLegitimateBot()` short-circuits to `true` for the rest of that request.
+Once `ExemptFromChallenge()` has been called for a request, `MatchKnownBot()` short-circuits to `true` for the rest of that request.
 
 #### `ExemptFromChallenge` vs `GrantChallengeCookie`
 
