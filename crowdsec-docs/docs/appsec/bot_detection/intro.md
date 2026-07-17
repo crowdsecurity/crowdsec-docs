@@ -4,6 +4,10 @@ title: Bot detection
 sidebar_position: 1
 ---
 
+:::info Alpha feature
+Bot detection is currently in **alpha**. It's ready to try and we'd love your feedback, but the configuration, helpers and shipped rules may still change between releases.
+:::
+
 Bot detection blocks automated traffic before it reaches your application. Where the rest of the WAF reacts to *what a user does* (the payloads they send, the patterns they trigger) bot detection answers a different question: *what a user is*, a real browser or a script pretending to be one.
 
 :::tip Ready to turn it on?
@@ -32,6 +36,7 @@ For the full request flow, see [How it works](whats_included.md#how-it-works).
 - A working AppSec setup. If you don't have one yet, follow the [general AppSec quickstart](../quickstart/general.mdx).
 - A **compatible bouncer**. The currently compatible ones (look for the **Bot Detection** badge at the top of their page) are:
   - [Nginx](/u/bouncers/nginx)
+  - [OpenResty](/u/bouncers/openresty)
   - [HAProxy SPOA](/u/bouncers/haproxy_spoa)
   - [Traefik](/u/bouncers/traefik)
   - [Envoy](/u/bouncers/envoy)
