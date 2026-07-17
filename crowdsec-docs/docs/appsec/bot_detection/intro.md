@@ -16,7 +16,7 @@ You can head straight to [Enable bot detection](enable.md) for the install-and-v
 
 ## Objectives
 
-- **Real users are unaffected.** Legitimate browsers clear the check transparently and continue as usual. We try to avoid impacting their experience.
+- **Real users are unaffected.** Legitimate browsers clear the check automatically and continue as usual. We try to avoid impacting their experience.
 - **Automation is stopped at the edge.** Headless browsers, clients that don't run JavaScript, and known automation frameworks are filtered by the AppSec component before they reach the origin.
 - **Repeat offenders are blocked at the bouncer.** Persistent probing is turned into CrowdSec decisions by the shipped [behavioral scenarios](whats_included.md#behavioral-scenarios-it-installs), so the bouncer blocks them over time, not just the one request.
 - **Good bots are unaffected.** Verified search-engine crawlers, uptime probes and the like are [recognised and let past](whats_included.md#known-bots-it-lets-through) without a challenge.
@@ -29,7 +29,7 @@ Bot detection interposes a **browser-side proof-of-work + device-fingerprint che
  - If PoW is correct and Fingerprint accepted, client receives a cooking, granting them access.
  - If the Device fingerprint is rejected, Pow is incorrect or no challenge is submited, client is filtered out.
 
-For the full request flow, see [How it works](whats_included.md#how-it-works).
+For the full request flow, see [How it works](how_it_works.md).
 
 ## Prerequisites
 
@@ -44,7 +44,7 @@ For the full request flow, see [How it works](whats_included.md#how-it-works).
 ## Next steps
 
 - [Enable bot detection](enable.md) — install the collection, wire the acquisition, and verify it.
-- [What the collection ships](whats_included.md) — the request flow, the appsec-config, known-bot handling, and behavioral scenarios you just enabled.
+- [See default collection](whats_included.md) — the request flow, the appsec-config, known-bot handling, and behavioral scenarios you just enabled.
 - [Customization & recipes](customization.md) — narrow the challenge to a path, allowlist a probe, and react to the bot signal in your own scenarios.
 - [Configuration](configuration.md) — master secret, key rotation, cookie TTL, and JS obfuscation.
 - [Hooks reference](../hooks.md) — full list of helpers and the `on_challenge` / `on_challenge_submit` stages.

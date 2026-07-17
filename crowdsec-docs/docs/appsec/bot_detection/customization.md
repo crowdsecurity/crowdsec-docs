@@ -27,7 +27,9 @@ pre_eval:
 
 ### Allowlist an internal probe by header
 
-Useful for synthetic monitoring or internal health checks that don't run JavaScript:
+Useful for synthetic monitoring or internal health checks that don't run JavaScript. Which helper to use depends on whether the probe can carry a cookie — see [ExemptFromChallenge vs GrantChallengeCookie](../hooks.md#exemptfromchallenge-vs-grantchallengecookie) for the full distinction.
+
+**Session allow (cookie).** If the probe is a cookie-capable client that stores and re-sends `__crowdsec_challenge`, mint a session cookie so it's waved through for the whole window without re-checking the header each time:
 
 ```yaml
 inband:
@@ -37,8 +39,18 @@ inband:
         - GrantChallengeCookie("internal-probe", "24h")
 ```
 
+**Per-request allow (no cookie).** If the probe can't hold a cookie — a plain `curl` health check, most uptime monitors — exempt the request itself instead. This mints no cookie, so the header is re-checked on every request:
+
+```yaml
+inband:
+  pre_eval:
+    - filter: req.Header.Get("X-Internal-Probe") == "my-shared-secret"
+      apply:
+        - ExemptFromChallenge("internal-probe")
+```
+
 :::warning
-This recipe trusts whoever knows the shared secret. If `my-shared-secret` ever leaks — into a log, a screenshot, a public dashboard — anyone who learns it can present that header and bypass bot detection entirely. Prefer pairing the header check with a source-IP filter (`req.RemoteAddr`) or rotating the secret regularly.
+Both variants are purely technical examples and shouldn't be used as-is. If `my-shared-secret` ever leaks anyone who learns it can present that header and bypass bot detection entirely. Prefer pairing the header check with a source-IP filter (`req.RemoteAddr`).
 :::
 
 ### Allowlist by IPs
@@ -59,7 +71,7 @@ on_challenge_submit:
 ```
 
 :::warning
-Weak signals trade precision for recall. Validate one against your real traffic — [dump the fingerprints](#dump-fingerprints-for-offline-analysis) it would have rejected, or start by alerting instead of rejecting — before you enforce it.
+Weak signals are too specific to be part of default rules. Validate one against your real traffic — [dump the fingerprints](#dump-fingerprints-for-offline-analysis) it would have rejected, or start by alerting instead of rejecting — before you enforce it.
 :::
 
 ### Dump fingerprints for offline analysis
@@ -93,6 +105,8 @@ Inside `on_challenge` and `on_challenge_submit` hooks, the in-flight challenge e
 | `fingerprint.HasMismatchSignal()`           | `bool`  | Cross-context inconsistencies (UA vs platform, language vs timezone, …).                                 |
 | `fingerprint.HasImpossibleDeviceSignal()`   | `bool`  | Device specs that don't exist in the wild (e.g. 256 cores, 0 GB RAM).                                    |
 | `fingerprint.BotSignals()`                  | `[]str` | The full list of signal names that fired, for logging.                                                   |
+
+These helpers are methods on the exported `FingerprintData` object. For the full set of methods and the raw fields each one reads, see the Go API docs: [`FingerprintData`](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/appsec/challenge#FingerprintData).
 
 Example — reject only clients with multiple, independent signals so you don't punish a flaky headless screenshot bot for tripping a single check:
 

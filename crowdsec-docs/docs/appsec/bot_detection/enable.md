@@ -55,7 +55,7 @@ sudo systemctl reload crowdsec
 If your acquisition already loads appsec-configs via a `crowdsecurity/*` wildcard, no acquisition change is needed, installing the collection is enough.
 :::
 
-Once installed, see [What the collection ships](whats_included.md) for a tour of the behavior you just enabled — none of it requires an extra install step.
+Once installed, see [default configuration](whats_included.md) for a tour of the behavior you just enabled — none of it requires an extra install step.
 
 ## Verification
 

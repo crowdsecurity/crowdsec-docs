@@ -438,6 +438,10 @@ crowdsec_service:
   parser_routines: "<number_of_parser_routines>"
   buckets_routines: "<number_of_buckets_routines>"
   output_routines: "<number_of_output_routines>"
+  dns_cache:
+    ttl: 1h
+    negative_ttl: 5m
+    size: 16384
 ```
 
 #### `enable`
@@ -475,6 +479,20 @@ Path to the yaml file containing logs that needs to be read.
 
 (>1.0.7) Path to a directory where each yaml is considered as a acquisition configuration file containing logs that needs to be read.
 If both `acquisition_dir` and `acquisition_path` are specified, the entries are merged alltogether.
+
+#### `dns_cache`
+
+Caches DNS lookups. All three keys are optional; omitting one uses its default.
+
+```yaml
+crowdsec_service:
+  dns_cache:
+    ttl: 1h            # how long positive lookups are cached
+    negative_ttl: 5m   # how long failures are cached
+    size: 16384        # max number of cached entries (LRU)
+```
+
+The defaults above suit most deployments. Raise `size` if you resolve a large, diverse set of addresses; lower `ttl` if a vendor rotates its DNS aggressively and you want cache entries to follow more quickly.
 
 
 ### `cscli`

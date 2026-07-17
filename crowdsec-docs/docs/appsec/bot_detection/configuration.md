@@ -70,14 +70,14 @@ Passphrases are accepted too, but must be at least 32 bytes of UTF-8. An invalid
 During a challenge the AppSec component serves the client three pieces of JavaScript, and only one of them is worth tuning:
 
 - The **fingerprinting library** — the open-source [fpscanner](https://github.com/antoinevastel/fpscanner) by Antoine Vastel, which collects the device signals. It is served **unobfuscated**, as public and cacheable code on its own `<script>` tag. This is deliberate: fpscanner is not secret, there is nothing to hide in it, and there is no knob to obfuscate it.
-- The **crypto/glue bundle** — the small block that runs the proof-of-work, XORs the fingerprint, and posts the submission. It is obfuscated **once at build time** into a single static variant and injected inline. Nothing to tune.
+- The **crypto/glue bundle** — the small block that runs the proof-of-work, XORs the fingerprint, and posts the submission.
 - The **per-epoch signing-key module** — the only sensitive artefact, because it carries the live signing key. It is re-obfuscated **at runtime**, and you can control how many distinct variants are kept per epoch.
 
-**Why this matters.** Code running inside an attacker-controlled browser can always be reverse-engineered eventually; obfuscation buys time and cost, not invisibility. That is why only the key module — the piece that actually protects cryptographic material — carries a runtime obfuscation knob.
+Code running inside an attacker-controlled browser can always be reverse-engineered eventually; obfuscation buys time and cost, not invisibility.
 
-| Key | Default | Recommended | What it controls |
-|---|---|---|---|
-| `crypto_obfuscation_pool_size` | `1` | `3` | Number of distinct obfuscations of the per-epoch sign-key module kept per live epoch. Each variant costs ~5 s of CPU per rotation. A pool size of 3 is recommended in production: different clients see different obfuscations of the same key, which materially raises the cost of an attacker reverse-engineering the module. The default of `1` exists to keep tests cheap. |
+| Key | Default | What it controls |
+|---|---|---|
+| `crypto_obfuscation_pool_size` | `1` |  Number of distinct obfuscations of the per-epoch sign-key module kept per live epoch. Each variant costs ~5 s of CPU per rotation. |
 
 ## Advanced tuning
 
@@ -89,19 +89,10 @@ These `challenge:` fields are safety backstops sized for correctness and DoS res
 | `spent_set_max_entries` | `1000000` | Maximum number of entries in the replay-protection set that stops a solved challenge from being submitted twice. A deep DoS backstop — steady-state usage stays far below it. |
 | `log_level` | inherits global | Log verbosity for the challenge runtime alone, independent of the global CrowdSec log level (`debug`, `info`, `warning`, `error`). Lets you turn up challenge diagnostics without making the rest of CrowdSec noisy. |
 
+
 ## DNS cache
 
-Identity-verified bots (see [Known bots it lets through](whats_included.md#known-bots-it-lets-through)) are confirmed with a forward-confirmed reverse-DNS lookup. To keep that off the request hot path, the engine caches DNS results. Unlike the fields above, this is **not** part of the `challenge:` block — it is global engine configuration, set under `crowdsec_service` in the main `config.yaml`:
-
-```yaml
-crowdsec_service:
-  dns_cache:
-    ttl: 1h            # how long positive lookups are cached
-    negative_ttl: 5m   # how long failures are cached
-    size: 16384        # max number of cached entries (LRU)
-```
-
-The defaults shown above are fine for most deployments. Raise `size` if you verify a large, diverse set of bot IPs; lower `ttl` if a vendor rotates its DNS aggressively and you want exemptions to follow more quickly.
+Identity-verified bots (see [Known bots it lets through](whats_included.md#known-bots-it-lets-through)) are confirmed with a forward-confirmed reverse-DNS lookup, and results are kept in cache. DNS cache configuration is global engine configuration under `crowdsec_service`. See [`dns_cache`](/configuration/crowdsec_configuration.md#dns_cache) in the CrowdSec configuration reference to tune its TTL or size.
 
 ## Applying changes
 
