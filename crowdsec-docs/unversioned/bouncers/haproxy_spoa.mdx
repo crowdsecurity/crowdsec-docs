@@ -129,22 +129,46 @@ this. The second file is /etc/haproxy/crowdsec.cfg, which contains the SPOE
 agent configuration. This file is automatically installed along with the bouncer
 package on the condition that `/etc/haproxy` exists.
 
-If you are using packages, you will find the haproxy configuration
-snippets in `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`.
+Use the tab for your operating system before applying the configuration snippets
+below.
 
-### FreeBSD paths and service names
+<Tabs
+  groupId="haproxy-spoa-os"
+  defaultValue="linux"
+  values={[
+    { label: "Linux", value: "linux" },
+    { label: "FreeBSD", value: "freebsd" },
+  ]}
+>
+<TabItem value="linux">
 
-FreeBSD packages use the `/usr/local` prefix and rc.d services. Replace the
-Linux paths and commands in the examples as follows:
+If you are using packages, you will find the HAProxy configuration snippets in
+`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`.
 
-| Item | Linux package path or service | FreeBSD package path or service |
-| ---- | ----------------------------- | ------------------------------- |
-| Bouncer config | `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` | `/usr/local/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` |
-| SPOE config | `/etc/haproxy/crowdsec.cfg` | `/usr/local/etc/haproxy/crowdsec.cfg` |
-| Main HAProxy config | `/etc/haproxy/haproxy.cfg` | `/usr/local/etc/haproxy.conf` |
-| Example configs | `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples` | `/usr/local/share/doc/crowdsec-haproxy-spoa-bouncer/examples` |
-| HTML templates for `lf-file` | `/var/lib/crowdsec-haproxy-spoa-bouncer/html` | `/usr/local/share/crowdsec-haproxy-spoa-bouncer/html` |
-| Bouncer service | `crowdsec-spoa-bouncer` | `crowdsec_spoa_bouncer` |
+The examples below use these Linux package paths and services:
+
+| Item | Linux package path or service |
+| ---- | ----------------------------- |
+| Bouncer config | `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` |
+| SPOE config | `/etc/haproxy/crowdsec.cfg` |
+| Main HAProxy config | `/etc/haproxy/haproxy.cfg` |
+| Example configs | `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples` |
+| HTML templates for `lf-file` | `/var/lib/crowdsec-haproxy-spoa-bouncer/html` |
+| Bouncer service | `crowdsec-spoa-bouncer` |
+
+</TabItem>
+<TabItem value="freebsd">
+
+FreeBSD packages use the `/usr/local` prefix and rc.d services.
+
+| Item | FreeBSD package path or service |
+| ---- | ------------------------------- |
+| Bouncer config | `/usr/local/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` |
+| SPOE config | `/usr/local/etc/haproxy/crowdsec.cfg` |
+| Main HAProxy config | `/usr/local/etc/haproxy.conf` |
+| Example configs | `/usr/local/share/doc/crowdsec-haproxy-spoa-bouncer/examples` |
+| HTML templates for `lf-file` | `/usr/local/share/crowdsec-haproxy-spoa-bouncer/html` |
+| Bouncer service | `crowdsec_spoa_bouncer` |
 
 Enable the services:
 
@@ -192,6 +216,9 @@ sudo service haproxy start
 sockstat -4l | egrep '(:80|:8080|:9000)'
 sudo cscli bouncers list
 ```
+
+</TabItem>
+</Tabs>
 
 ### SPOE Filter
 
