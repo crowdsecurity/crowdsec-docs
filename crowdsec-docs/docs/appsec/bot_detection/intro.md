@@ -25,9 +25,9 @@ You can head straight to [Enable bot detection](enable.md) for the install-and-v
 ## How it works
 
 Bot detection interposes a **browser-side proof-of-work + device-fingerprint check** between a visitor and your application:
- - Proof of work and collected device fingerprint are sent back to CrowdSec WAF
- - If PoW is correct and Fingerprint accepted, client receives a cooking, granting them access.
- - If the Device fingerprint is rejected, Pow is incorrect or no challenge is submited, client is filtered out.
+ - The browser sends its proof-of-work and collected device fingerprint back to the CrowdSec WAF.
+ - If the PoW is correct and the fingerprint is accepted, the client receives a cookie granting it access.
+ - If the fingerprint is rejected, the PoW is incorrect, or no challenge is submitted, the client is filtered out.
 
 For the full request flow, see [How it works](how_it_works.md).
 

@@ -61,6 +61,7 @@ This hook is intended to be used to disable rules at loading (eg, to temporarily
 | `RegisterAPISchemaBodyDecoder` | `func(content_type str, decoder str)`   | Enable a non-default body decoder for a Content-Type. See [available decoders](api_validation.md#body-decoders).                                                      |
 | `SetMaxBodySize`               | `func(size int)`                        | Set the maximum request body size (in bytes) buffered and inspected by the engine. Defaults to 10MB. See [Request body size handling](#request-body-size-handling)    |
 | `SetBodySizeExceededAction`    | `func(action str)`                      | Set what happens when a request body exceeds the maximum size: `drop` (default), `partial`, or `allow`. See [Request body size handling](#request-body-size-handling) |
+| `SetChallengeDifficulty`       | `func(level str)`                       | Set the default proof-of-work difficulty for every challenge served by this config. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](#challenge-difficulty-levels). Per-request overrides are available in `pre_eval` / `post_eval` / `on_challenge`. |
 
 ##### Example
 
@@ -238,6 +239,11 @@ See [Bot detection](bot_detection/intro.md) for the broader picture.
 | -------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `SendChallenge`                        | `func()`                              | Force a re-challenge for this request even though the client already has a cookie (e.g. when fingerprint mismatches indicate the cookie may have been replayed).                                                                                           |
 | `SetChallengeDifficulty`               | `func(level str)`                     | Override the proof-of-work difficulty for the next challenge issued. See [Challenge difficulty levels](#challenge-difficulty-levels).                                                                                                                      |
+| `SetRemediation`                       | `func(action str)`                    | Set the remediation returned to the bouncer for this request. The only special value is `allow` (don't block); any other value is passed through as-is. See [`SetRemediation*`](#setremediation).                                                          |
+| `SetReturnCode`                        | `func(code int)`                      | Set the HTTP status code returned to the bouncer for this request.                                                                                                                                                                                        |
+| `DropRequest`                          | `func(reason str)`                    | Block this request immediately (using the config's default remediation) based on what the fingerprint revealed. `reason` is recorded in logs.                                                                                                              |
+| `req`                                  | `http.Request`                        | Original HTTP request received by the remediation component. See [`req` object](#req-object).                                                                                                                                                             |
+| `IsInBand`                             | `bool`                                | `true` if the request is in the in-band processing phase (always `true` here — `on_challenge` is in-band only).                                                                                                                                            |
 | `EvaluateMismatches`                   | `func() MismatchReport`               | Run the configured mismatch checks against the fingerprint and return a structured report. Result is cached per request. See [The `MismatchReport` object](#the-mismatchreport-object).                                                                    |
 | `fingerprint`                          | `FingerprintData`                     | The decoded fingerprint object. See [The `fingerprint` object](#the-fingerprint-object).                                                                                                                                                                   |
 | `fingerprint.UAMobileMismatch`         | `func() bool`                         | `true` if the mobile signals carried by the fingerprint contradict the User-Agent header.                                                                                                                                                                  |
@@ -273,7 +279,7 @@ This hook fires when a client POSTs a challenge response to `/crowdsec-internal/
 
 ```yaml
 on_challenge_submit:
-  - filter: fingerprint.FastBotDetection.Bool() == true
+  - filter: fingerprint.IsBot()
     apply:
       - RejectSubmission("fast-bot-detection")
   - apply:
@@ -301,7 +307,7 @@ The `label` names the file (so you can separate dumps by purpose, e.g. `"suspect
 
 ```yaml
 on_challenge_submit:
-  - filter: fingerprint.FastBotDetection.Bool() == true
+  - filter: fingerprint.IsBot()
     apply:
       - DumpFingerprint("fast-bot-detection")
 ```
@@ -403,16 +409,41 @@ For example:
 
 ### The `fingerprint` object
 
-In `on_challenge` and `on_challenge_submit` hooks, `fingerprint` exposes the device data collected by the in-browser library. The most commonly used fields:
+In `on_challenge` and `on_challenge_submit` hooks, `fingerprint` exposes the device data collected by the in-browser library. It has two layers: a set of **high-level helpers** for the common decisions, and the **raw fields** underneath them when you need to branch on one specific signal.
 
-| Field                       | Type     | Description                                                                                                                                          |
-| --------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fingerprint.FastBotDetection.Bool()` | `bool`   | `true` if the in-browser fast-bot-detection library raised any signal (CDP, headless, automation framework, impossible device profile, …). |
-| `fingerprint.Signals`       | object   | Raw category roll-ups: device, browser, automation, graphics, codecs, locale.                                                                       |
-| `fingerprint.Bot`           | object   | Convenience accessor for the individual bot signals.                                                                                                |
-| `fingerprint.Allowlisted`   | `bool`   | `true` if the cookie was minted via `GrantChallengeCookie(...)` rather than a real challenge submission.                                            |
-| `fingerprint.AllowlistReason` | `str`  | Operator-supplied reason from `GrantChallengeCookie(reason, ...)`, copied through to logs.                                                          |
-| `fingerprint.FSID`          | `str`    | Per-fingerprint identifier, stable across the cookie's lifetime. Useful for correlating logs.                                                       |
+#### Verdict and signal helpers (recommended)
+
+These methods roll the raw signals up into the decisions rules usually need:
+
+| Helper                                     | Returns | Description                                                                                                            |
+| ------------------------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------- |
+| `fingerprint.IsBot()`                      | `bool`  | The recommended verdict: `true` if the in-browser fast-bot-detection library flagged the client. |
+| `fingerprint.HasBotSignal()`               | `bool`  | `true` if any fast-bot-detection signal fired.                                                                        |
+| `fingerprint.BotSignalCount()`             | `int`   | How many distinct signals fired.                                                |
+| `fingerprint.BotSignals()`                 | `[]str` | The names of the signals that fired.                                                                    |
+| `fingerprint.HasAutomationSignal()`        | `bool`  | A webdriver / Selenium / CDP / Playwright / bot-UA indicator was seen.                                                |
+| `fingerprint.HasHeadlessSignal()`          | `bool`  | Headless-browser indicators (missing Chrome object, Swiftshader renderer, ...).                                        |
+| `fingerprint.HasMismatchSignal()`          | `bool`  | Cross-context / cross-API inconsistencies (iframe/worker, platform, WebGL, languages).                               |
+| `fingerprint.HasImpossibleDeviceSignal()`  | `bool`  | Device specs outside plausible bounds (impossible memory / CPU count).                                          |
+
+The three atomic mismatch checks (`fingerprint.UAMobileMismatch()`, `fingerprint.AcceptLanguageMismatch(req)`, `fingerprint.TimezoneCountryMismatch(country)`) are documented in the [`on_challenge`](#on_challenge) table above; [`EvaluateMismatches()`](#the-mismatchreport-object) aggregates all mismatch signals into one report.
+
+#### Raw fingerprint fields
+
+Reach for these when a helper isn't specific enough (to reject on a specific signal):
+
+| Field                                 | Type    | Description                                                                                                                                     |
+| ------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fingerprint.FastBotDetection.Bool()` | `bool`  | The raw library verdict `IsBot()` wraps.                                                                                                       |
+| `fingerprint.Bot.<Signal>`            | `bool`  | Each individual fast-bot signal as a bool, e.g. `fingerprint.Bot.CDP`, `fingerprint.Bot.Webdriver`, `fingerprint.Bot.MismatchWebGLInWorker`. The `Has*Signal()` helpers above are roll-ups over these. |
+| `fingerprint.Signals.<category>.<field>` | mixed | The full collected fingerprint tree, grouped by category (`Automation`, `Device`, `Browser`, `Graphics`, `Codecs`, `Locale`, `Contexts`), e.g. `fingerprint.Signals.Automation.Webdriver`. |
+| `fingerprint.Allowlisted`             | `bool`  | `true` if the cookie was minted via `GrantChallengeCookie(...)` rather than a real challenge submission.                                       |
+| `fingerprint.AllowlistReason`         | `str`   | Operator-supplied reason from `GrantChallengeCookie(reason, ...)`, copied through to logs.                                                     |
+| `fingerprint.FSID`                    | `str`   | Per-fingerprint identifier, stable across the cookie's lifetime. Useful for correlating logs.                                                  |
+
+:::note fpscanner tracks a moving target
+The individual `fingerprint.Bot.*` and `fingerprint.Signals.*` field names come from the open-source [fpscanner](https://github.com/antoinevastel/fpscanner) library and evolve as it adds detections and browsers change. Treat the examples above as the current shape, not a stable contract. For the always-current list, see the exported Go type [`FingerprintData`](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/appsec/challenge#FingerprintData).
+:::
 
 For the higher-level bot detection workflow (what the library actually detects, how to allowlist legitimate bots, behavioral scenarios), see [Bot detection](bot_detection/intro.md).
 
@@ -425,9 +456,16 @@ For the higher-level bot detection workflow (what the library actually detects, 
 | `.Count()`                   | `int`      | Total number of signals fired.                                             |
 | `.Empty()`                   | `bool`     | `true` if no signal fired.                                                 |
 | `.High() / .Medium() / .Low()` | `int`    | Count of fired signals by severity.                                        |
+| `.BySeverity(sev str)`       | `int`      | Count of fired signals at the given severity (`"high"`, `"medium"`, `"low"`) — the generic form of `.High()` / `.Medium()` / `.Low()`. |
 | `.Has(reason str)`           | `bool`     | `true` if the specific signal `reason` fired.                              |
 | `.Reasons()`                 | `[]string` | Stable-ordered list of fired reason keys.                                  |
 | `.String()`                  | `str`      | Compact human-readable form: `"reason1(sev),reason2(sev)"`. Useful in logs. |
+
+The `reason` keys accepted by `.Has(reason)` and returned by `.Reasons()` are, at the time of writing: `cdp`, `webdriver`, `webdriver_writable`, `selenium`, `playwright`, `webdriver_iframe`, `webdriver_worker`, `headless_screen_resolution`, `missing_chrome_object`, `impossible_memory`, `high_cpu_count`, `mismatch_webgl_worker`, `mismatch_platform_iframe`, `mismatch_platform_worker`, `platform_mismatch`, `gpu_mismatch`, `bot_user_agent`, `inconsistent_etsl`, `ua_mobile`, `utc_timezone`, `accept_language`, `swiftshader_renderer`, `mismatch_languages`, `timezone_country`.
+
+:::note The reason set evolves
+These reasons derive from the [fpscanner](https://github.com/antoinevastel/fpscanner) signals and may change as it and browsers evolve — treat the list above as the current shape, not a stable contract. The always-current source of truth is the exported Go API: [`KnownReasons()`](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/appsec/challenge#KnownReasons) returns the full set the aggregator may emit, and each key has a matching `Reason*` constant (with [`SeverityFor(reason)`](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/appsec/challenge#SeverityFor) giving its severity).
+:::
 
 Example:
 

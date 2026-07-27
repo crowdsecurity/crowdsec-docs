@@ -94,19 +94,7 @@ The information the challenge collects about a client is not locked inside the b
 
 ### From an appsec-config
 
-Inside `on_challenge` and `on_challenge_submit` hooks, the in-flight challenge exposes a `fingerprint` object you can branch on. The most useful entry point is the high-level boolean and its companion counters / helpers:
-
-| Expression                                  | Returns | Description                                                                                              |
-| ------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------- |
-| `fingerprint.IsBot()`                       | `bool`  | The bottom-line verdict: `true` if any bot-detection signal fired (automation, headless, impossible device…). |
-| `fingerprint.BotSignalCount()`              | `int`   | How many distinct signals fired — useful for "more than N" thresholds.                                   |
-| `fingerprint.HasAutomationSignal()`         | `bool`  | A webdriver / Selenium / Playwright / CDP indicator was seen.                                            |
-| `fingerprint.HasHeadlessSignal()`           | `bool`  | Headless-browser indicators (no GPU, no real plugins, …).                                                |
-| `fingerprint.HasMismatchSignal()`           | `bool`  | Cross-context inconsistencies (UA vs platform, language vs timezone, …).                                 |
-| `fingerprint.HasImpossibleDeviceSignal()`   | `bool`  | Device specs that don't exist in the wild (e.g. 256 cores, 0 GB RAM).                                    |
-| `fingerprint.BotSignals()`                  | `[]str` | The full list of signal names that fired, for logging.                                                   |
-
-These helpers are methods on the exported `FingerprintData` object. For the full set of methods and the raw fields each one reads, see the Go API docs: [`FingerprintData`](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/appsec/challenge#FingerprintData).
+Inside `on_challenge` and `on_challenge_submit` hooks, the in-flight challenge exposes a `fingerprint` object. The object exposes both high-level helpers such as `fingerprint.IsBot()` or `BotSignals()`, but also weak signals. See [Hooks reference](../hooks.md#the-fingerprint-object) for detailed properties.
 
 Example — reject only clients with multiple, independent signals so you don't punish a flaky headless screenshot bot for tripping a single check:
 
