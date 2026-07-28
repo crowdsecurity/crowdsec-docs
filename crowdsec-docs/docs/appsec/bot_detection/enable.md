@@ -6,6 +6,12 @@ sidebar_position: 2
 
 This page covers turning bot detection on: installing the collection, making sure your AppSec acquisition loads it, and verifying that the challenge is served. Make sure you meet the [prerequisites](intro.md#prerequisites) first — in particular, a bot-detection-compatible bouncer.
 
+:::warning
+
+Before moving forward, ensure that your bouncer supports bot-detection feature. Enabling bot detection on a non-compatible bouncer leads to unexpected behavior, most likely silently refusing any client. At the time of writing, only Nginx & Openresty bouncers version >= 1.2.0 support bot-detection.
+
+:::
+
 ## Install the collection
 
 Install the collection that bundles everything (appsec-configs + scenarios + parsers):
