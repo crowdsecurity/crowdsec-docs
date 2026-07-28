@@ -1,6 +1,6 @@
 ---
 id: premium_upgrade
-title: CrowdSec Premium
+title: 🏅 CrowdSec Premium
 description: Protect more infrastructure, centralize security operations, and automate CrowdSec across your organization.
 toc_max_heading_level: 2
 ---
@@ -9,15 +9,17 @@ import Link from '@docusaurus/Link';
 
 ## What Premium helps you achieve
 
-CrowdSec Premium extends your organization with advanced protection, team collaboration, operational automation, and deeper threat intelligence. It applies at the organization level — all Security Engines in the organization share its entitlements.
+:::info
+CrowdSec Premium extends the protection provided by the open-source Security Engine with additional proactive blocking capabilities, centralized management and enhanced tooling.
+:::
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
 
 <div className="border border-solid border-border rounded-lg p-6 bg-card">
 
 ### Improve proactive protection
 
-Block attackers before they reach your infrastructure. Premium expands the Community Blocklist from 3k to 50k IPs, generates an organization-specific Threat Forecast from your own shared signals, and removes scanner noise from your alert view.
+Premium expands the Community Blocklist from 3k to 50k IPs, generates an organization-specific Threat Forecast from your own shared signals, and gives you access to premium tier blocklists. Every Premium user benefits from this automatically.
 
 [Feature reference →](/u/console/premium_upgrade/features_overview)
 
@@ -25,9 +27,9 @@ Block attackers before they reach your infrastructure. Premium expands the Commu
 
 <div className="border border-solid border-border rounded-lg p-6 bg-card">
 
-### Centralize security management
+### Centralize management
 
-Manage decisions, allowlists, and blocklist subscriptions from one place and propagate them to every Security Engine and integration automatically. No manual per-engine configuration.
+Manage decisions, allowlists, and blocklist subscriptions from one place and propagate them to every Security Engine and integration automatically.
 
 [Remediation Sync →](/u/console/remediation_sync)
 
@@ -35,21 +37,11 @@ Manage decisions, allowlists, and blocklist subscriptions from one place and pro
 
 <div className="border border-solid border-border rounded-lg p-6 bg-card">
 
-### Investigate and monitor at scale
+### Investigate, monitor, and automate
 
-Retain up to one year of alerts, investigate IP reputation directly in the Console, and receive real-time notifications when attack patterns change or engines go offline.
+Retain up to one year of alerts, investigate IP reputation directly in the Console, and receive real-time notifications when attack patterns change. Use the Service API and Auto Enroll to manage deployments programmatically.
 
 [Alerts and retention →](/u/console/alerts/quotas)
-
-</div>
-
-<div className="border border-solid border-border rounded-lg p-6 bg-card">
-
-### Automate multi-environment operations
-
-Use the Service API to manage enrollments, decisions, and custom blocklists programmatically. Deploy Security Engines at scale with Auto Enroll and infrastructure-as-code tooling.
-
-[Service API →](/u/console/service_api/getting_started)
 
 </div>
 
@@ -57,41 +49,15 @@ Use the Service API to manage enrollments, decisions, and custom blocklists prog
 
 ---
 
-## Is Premium appropriate for you?
+## When Premium is relevant
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+Premium is relevant if you want stronger proactive protection, manage several Security Engines or integrations, or actively investigate and monitor what happens on your infrastructure.
 
-<div className="border border-solid border-border rounded-lg p-6 bg-card">
+**You want stronger proactive protection.** Whether you run a personal server or a production fleet, the expanded Community Blocklist, Threat Forecast, and Background Noise filtering apply immediately with no additional configuration. The improvement is automatic.
 
-### DevOps / small infrastructure
+**You manage several Security Engines or integrations.** Propagating decisions, allowlists, and blocklist subscriptions manually across multiple engines does not scale. Remediation Sync, centralized allowlists, and Console decision management let you control everything from one place. Auto Enroll removes the manual step when deploying new engines.
 
-You manage a handful of servers or containers and want better blocking coverage with less alert noise and no manual remediation work.
-
-Key features: expanded blocklist, Threat Forecast, Background Noise filtering, Remediation Sync, Auto Enroll.
-
-</div>
-
-<div className="border border-solid border-border rounded-lg p-6 bg-card">
-
-### Security operations team
-
-Your team investigates incidents, needs historical data for audits, and must collaborate without stepping on each other in a shared console.
-
-Key features: 5 seats, 365-day retention, IP investigation quotas, CTI API, push notifications, centralized allowlists.
-
-</div>
-
-<div className="border border-solid border-border rounded-lg p-6 bg-card">
-
-### MSP / multi-tenant environment
-
-You manage security for multiple clients or isolated environments and need complete data separation, API-driven automation, and the ability to share custom threat intelligence.
-
-Key features: unlimited organizations, Service API, blocklist creation and sharing, Auto Enroll.
-
-</div>
-
-</div>
+**You actively investigate and monitor your infrastructure.** If you need to understand attack patterns over time, investigate specific IPs during an incident, receive proactive alerts, or feed CrowdSec data into a SIEM or SOAR, Premium increases retention, investigation quotas, and API access to support that workflow.
 
 ---
 
