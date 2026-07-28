@@ -1,0 +1,193 @@
+---
+id: upgrade_configure
+title: Upgrade and configure Premium
+description: How to upgrade your organization to Premium, what changes immediately, and what requires configuration.
+toc_max_heading_level: 2
+---
+
+This guide covers the upgrade process itself and the configuration steps that follow. Complete [Plan your Premium deployment](/u/console/premium_upgrade/optimal_setup) before you start here.
+
+---
+
+## Before you begin
+
+| Requirement | Detail |
+|---|---|
+| Organization role | Organization Admin |
+| Billing | A valid payment method on the account |
+| Scope | The upgrade applies to one organization; repeat for each organization you want on Premium |
+| Recommended engine version | Latest stable release of CrowdSec Agent |
+
+---
+
+## Upgrade your organization
+
+1. Log in to the [CrowdSec Console](https://app.crowdsec.net).
+2. Switch to the organization you want to upgrade using the organization switcher in the top-left corner.
+3. Navigate to **Organization Settings → Plan**.
+4. Select **Upgrade to Premium** and choose your plan.
+5. Enter payment details or confirm the 30-day trial.
+6. Confirm the upgrade.
+
+Premium entitlements are active immediately after confirmation.
+
+---
+
+## What changes immediately
+
+The following entitlements are unlocked automatically the moment you upgrade. No additional configuration is needed for them to take effect.
+
+| Feature | What changes |
+|---|---|
+| Community Blocklist (Premium) | Your enrolled Security Engines begin receiving the top 50k IP list instead of 3k |
+| Alert quota | Raised to 10k alerts per Security Engine per month |
+| Alert retention | Extended to 365 days |
+| Threat Forecast Blocklist | Generated automatically from your organization's shared signals; no action required |
+| Console IP investigations | Raised to 100 per week |
+| CTI API calls | Raised to 1,500 per month |
+| Organization seats | Expanded to 5 included seats |
+| Am I Under Attack | Available in the Console immediately |
+
+---
+
+## What requires configuration
+
+These features are available after upgrading but do not become active until you configure them.
+
+### Subscribe to Premium blocklists
+
+Premium tier blocklists and unlimited subscriptions are unlocked, but you must subscribe to each list you want.
+
+1. Go to **Blocklists** in the Console.
+2. Browse the Premium-tier lists.
+3. Subscribe to the lists relevant to your infrastructure (bruteforce, botnets, TOR, scanners, proxies, and so on).
+
+[Blocklist subscriptions →](/u/blocklists/intro)
+
+### Enable Remediation Sync
+
+Remediation Sync propagates decisions from the Console to all enrolled Security Engines and blocklist integration endpoints. It is off by default.
+
+1. Go to **Organization Settings → Remediation Sync**.
+2. Enable Remediation Sync for the organization.
+3. Verify that your Security Engines are enrolled and reachable.
+
+[Remediation Sync →](/u/console/remediation_sync)
+
+### Enable Background Noise filtering
+
+Background Noise filtering removes mass-scanner and crawler traffic from your alert view. Choose a level (Low, Medium, or High) based on how aggressively you want to suppress background activity.
+
+1. Go to **Alerts → Background Noise**.
+2. Select a filtering level.
+3. Apply.
+
+[Background Noise filtering →](/u/console/alerts/background_noise)
+
+### Invite team members
+
+Premium includes 5 seats. Add team members with appropriate roles.
+
+1. Go to **Organization Settings → Members**.
+2. Invite members by email.
+3. Assign roles: Viewer, Editor, or Admin.
+
+[Organization seats and roles →](/u/console/organizations/intro)
+
+### Configure notifications
+
+Set up push notifications so your team receives alerts when Security Engines go offline, become outdated, or when abnormal attack surges are detected.
+
+1. Go to **Organization Settings → Notifications**.
+2. Connect integrations (Slack, PagerDuty, webhooks, or others).
+3. Configure which events trigger each notification channel.
+
+[Notification integrations →](/u/console/notification_integrations/overview)
+
+### Create Service API credentials
+
+The Service API allows programmatic management of blocklists, decisions, and enrollments. Access requires credentials scoped to your organization.
+
+1. Go to **Organization Settings → Service API**.
+2. Create a new API key.
+3. Note the key — it is shown only once.
+
+[Service API →](/u/console/service_api/getting_started)
+
+### Enable Auto Enroll
+
+Auto Enroll lets new Security Engines join your organization automatically when they are deployed with your enrollment key, without manual approval in the Console.
+
+1. Go to **Organization Settings → Auto Enroll**.
+2. Enable Auto Enroll.
+3. Use the organization enrollment key in your deployment configuration.
+
+### Configure centralized allowlists
+
+Create organization-wide allowlists that apply to all enrolled Security Engines and integrations. These replace per-engine allowlists.
+
+1. Go to **Allowlists** in the Console.
+2. Create allowlist entries.
+3. Set expiration dates for temporary allowlisting if needed.
+
+[Centralized allowlists →](/u/console/allowlists)
+
+---
+
+## Feature states at a glance
+
+| Feature | State after upgrading |
+|---|---|
+| Community Blocklist (50k) | Automatic |
+| Threat Forecast Blocklist | Automatic |
+| Extended alert quota | Automatic |
+| 365-day retention | Automatic |
+| Increased Console IP investigations | Automatic |
+| Increased CTI API quota | Automatic |
+| Am I Under Attack | Automatic — check Console for alerts |
+| Premium blocklist subscriptions | Requires subscribing to each list |
+| Remediation Sync | Requires enabling |
+| Background Noise filtering | Requires enabling and selecting a level |
+| Additional team seats | Requires inviting members |
+| Push notifications | Requires connecting integrations |
+| Service API | Requires creating API credentials |
+| Auto Enroll | Requires enabling |
+| Centralized allowlists | Requires creating entries |
+
+---
+
+## Verify your upgrade
+
+After completing configuration, confirm the following.
+
+- [ ] Organization plan shows Premium in **Organization Settings → Plan**
+- [ ] Security Engines show the Premium Community Blocklist in their active blocklists
+- [ ] Alert quota and retention settings reflect Premium limits (check **Alerts → Quotas**)
+- [ ] Remediation Sync is enabled and shows enrolled engines as reachable
+- [ ] At least one team member has been invited (if applicable)
+- [ ] Notifications are connected and receiving test events
+
+---
+
+## Downgrading or ending a trial
+
+If you downgrade or let a trial expire without converting:
+
+| Item | What happens |
+|---|---|
+| Community Blocklist | Reverts to top 3k IPs |
+| Alert quota | Returns to 500 per month |
+| Alert retention | Returns to 60 days; alerts older than 60 days become inaccessible |
+| Remediation Sync | Disabled; engines stop receiving centralized decisions |
+| Background Noise | Disabled |
+| Am I Under Attack | Disabled |
+| Premium blocklist subscriptions | Reverted to 3 maximum; excess subscriptions are deactivated |
+| Service API credentials | Deactivated |
+| Team seats above 1 | Members above the Community limit lose access |
+| Historical alert data | Data beyond the Community retention window is not deleted immediately but becomes inaccessible until you re-upgrade |
+
+Contact [CrowdSec support](https://www.crowdsec.net/contact-crowdsec) if you have questions about data retention during a plan change.
+
+---
+
+Continue to [Evaluate your Premium trial →](/u/console/premium_upgrade/testing_premium)

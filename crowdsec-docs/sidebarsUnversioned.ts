@@ -606,7 +606,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "category",
-			label: "🏅 Premium Upgrade",
+			label: "🏅 CrowdSec Premium",
 			link: {
 				type: "doc",
 				id: "console/premium_upgrade",
@@ -614,18 +614,33 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			items: [
 				{
 					type: "doc",
-					label: "Optimal Setup",
+					label: "Plan your deployment",
 					id: "console/premium_upgrade/optimal_setup",
 				},
 				{
 					type: "doc",
-					label: "Testing Premium",
+					label: "Upgrade and configure",
+					id: "console/premium_upgrade/upgrade_configure",
+				},
+				{
+					type: "doc",
+					label: "Evaluate your trial",
 					id: "console/premium_upgrade/testing_premium",
 				},
 				{
 					type: "doc",
-					label: "Features Overview",
+					label: "Feature reference",
 					id: "console/premium_upgrade/features_overview",
+				},
+				{
+					type: "doc",
+					label: "Quotas and plan limits",
+					id: "console/premium_upgrade/quotas_limits",
+				},
+				{
+					type: "doc",
+					label: "FAQ and troubleshooting",
+					id: "console/premium_upgrade/faq_troubleshooting",
 				},
 			],
 		},

@@ -1,542 +1,93 @@
 ---
 id: premium_upgrade
-title: Premium Upgrade
-description: Find Premium features tailored to your role - DevOps, SecOps, or MSP
+title: CrowdSec Premium
+description: Protect more infrastructure, centralize security operations, and automate CrowdSec across your organization.
 toc_max_heading_level: 2
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import Link from '@docusaurus/Link';
-import { FeatureCard, HighlightCard } from '@site/src/components/premium-upgrade/feature-card';
-import { TabsWithPersona } from '@site/src/components/premium-upgrade/tabs-with-persona';
 
-export const personaOptions = [
-	{
-		value: "devops",
-		icon: "⚙️",
-		label: "DevOps / SRE",
-		description: "Managing solo-infra or in small teams, focused on reducing noise and blocking more threats.",
-		tag: "Solo · SMB"
-	},
-	{
-		value: "secops",
-		icon: "🛡️",
-		label: "SecOps / Blue Team",
-		description: "Team needs collaboration, investigation capabilities, and data retention for audits.",
-		tag: "Team · Enterprise"
-	},
-	{
-		value: "msp",
-		icon: "🏢",
-		label: "MSP / Integrator",
-		description: "Managing security for multiple clients, requiring isolation and automation capabilities.",
-		tag: "Multi-tenant · API"
-	}
-];
+## What Premium helps you achieve
 
-<div style={{marginBottom: '2rem'}}>
+CrowdSec Premium extends your organization with advanced protection, team collaboration, operational automation, and deeper threat intelligence. It applies at the organization level — all Security Engines in the organization share its entitlements.
 
-## Find Premium Features **Made for You**
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
 
-**Premium** is designed if you're seeking **enhanced protection** or want to unlock **commercial use** with advanced features.  
-**Community** covers the basics, **Premium** scales with your projects' needs.
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
 
-**Select your profile below** to see only the features that matter most to you.   
-*Or directly browse all premium features in the [**Features Overview**](/u/console/premium_upgrade/features_overview).*
+### Improve proactive protection
+
+Block attackers before they reach your infrastructure. Premium expands the Community Blocklist from 3k to 50k IPs, generates an organization-specific Threat Forecast from your own shared signals, and removes scanner noise from your alert view.
+
+[Feature reference →](/u/console/premium_upgrade/features_overview)
 
 </div>
 
-<TabsWithPersona
-	options={personaOptions}
-	defaultValue="devops"
-	groupId="user-persona"
-	headerLabel="Your Profile"
->
-<TabItem value="devops">
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
 
-### Solo or Small Team Infrastructure Management
+### Centralize security management
 
-**Best for:** Individual engineers or small teams managing infrastructure, focused on reducing noise and blocking more threats efficiently.
+Manage decisions, allowlists, and blocklist subscriptions from one place and propagate them to every Security Engine and integration automatically. No manual per-engine configuration.
 
----
+[Remediation Sync →](/u/console/remediation_sync)
 
-#### 🛡️ Enhanced Protection
+</div>
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
 
-<FeatureCard
-	title="Expanded Community Blocklist Coverage"
-	metric="3k → 50k IPs"
-	category="protection"
-	description="Receive the top 50k most aggressive attackers targeting services like yours (up from 3k in Community). More attackers blocked before they reach your servers."
-	comparison={{
-		before: "Community: top 3k",
-		after: "Premium: top 50k (×16)"
-	}}
-	link="/docs/central_api/community_blocklist/#community-blocklist-premium"
-/>
+### Investigate and monitor at scale
 
-<FeatureCard
-	title="Threat Forecast Blocklist"
-	metric="Up to 40% more blocks"
-	category="protection"
-	description="Automatically generated blocklist from signals shared by your organization. Complements the community blocklist for extra protection tailored to your infrastructure."
-	comparison={{
-		before: "Community: unavailable",
-		after: "Premium: tailor-made blocklist"
-	}}
-	link="/u/console/threat_forecast"
-/>
+Retain up to one year of alerts, investigate IP reputation directly in the Console, and receive real-time notifications when attack patterns change or engines go offline.
 
-<FeatureCard
-	title="Background Noise Filtering"
-	metric="60~90% noise reduction"
-	category="protection"
-	description="Filter out background noise from your alert board (mass scanners, crawlers) to focus on real threats. Configurable levels: Low, Medium, High."
-	comparison={{
-		before: "Community: all signals",
-		after: "Premium: real threats only"
-	}}
-	link="/u/console/alerts/background_noise"
-/>
+[Alerts and retention →](/u/console/alerts/quotas)
 
-<FeatureCard
-	title="Unlimited Blocklist Subscriptions"
-	metric="3 → ∞"
-	category="protection"
-	description="Subscribe to as many specialized blocklists as needed without limits: bruteforce, botnets, tor, scanners, proxies..."
-	comparison={{
-		before: "Community: 3 max",
-		after: "Premium: unlimited"
-	}}
-	link="/u/blocklists/intro#crowdsec-blocklist-tiers"
-/>
+</div>
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### Automate multi-environment operations
+
+Use the Service API to manage enrollments, decisions, and custom blocklists programmatically. Deploy Security Engines at scale with Auto Enroll and infrastructure-as-code tooling.
+
+[Service API →](/u/console/service_api/getting_started)
+
+</div>
 
 </div>
 
 ---
 
-#### ⚡ Automation & Sync
-
-<HighlightCard
-	title="Remediation Sync"
-	metric="Streamlined"
-	category="protection"
-	description="Automatically sync security decisions to all Security Engines and integrations. One blocklist update propagates everywhere, zero manual work."
-	stats={[
-		{ value: "2×", label: "more proactive blocking" },
-		{ value: "0", label: "manual propagation" }
-	]}
-	link="/u/console/remediation_sync"
-/>
-
-<div className="mt-4">
-<FeatureCard
-	title="Auto Enroll"
-	metric="Streamlined"
-	category="scale"
-	description="Automatically enroll new Security Engines into your organization as they're deployed. Perfect for infrastructure-as-code (Terraform, Ansible, K8s)."
-	comparison={{
-		before: "Community: manual enrollment",
-		after: "Premium: automatic enrollment"
-	}}
-/>
-</div>
-
----
-
-#### 📊 Monitoring
-
-<FeatureCard
-	title="Am I Under Attack"
-	metric="Real-time"
-	category="monitoring"
-	description="Get alerted when abnormal attack surges are detected on your infrastructure. Compares current traffic to historical baselines. Includes webhook + email notifications."
-	link="/u/console/security_engines/am_i_under_attack"
-/>
-
----
-
-#### 💡 Why Premium for DevOps/SRE?
-
-- **Less noise, more signal**: Filter out scanner noise and focus on real threats
-- **Automation-first**: Sync decisions automatically, enroll engines without manual steps
-- **Better blocking**: Access to 50k+ IPs and organization-specific threat intel
-- **Peace of mind**: Get alerted when attacks surge
-
-</TabItem>
-
-<TabItem value="secops" label="🛡️ SecOps / Blue Team">
-
-### Team Collaboration & Investigation
-
-**Best for:** Security teams that need to collaborate, investigate incidents, and maintain data retention for compliance and audits.
-
----
-
-#### 👥 Team Collaboration & Access Control
-
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-
-<FeatureCard
-	title="Expanded Organization Seats"
-	metric="3 seats included"
-	category="scale"
-	description="Give view/edit/admin access to your team. Multiple members work simultaneously without access conflicts. Add more seats as needed."
-	comparison={{
-		before: "Community: 1 user only",
-		after: "Premium: full team"
-	}}
-	link="/u/console/organizations/intro"
-/>
-
-<FeatureCard
-	title="Centralized Allowlists"
-	metric="Organization-wide"
-	category="scale"
-	description="Manage allowlists from one place and apply across all Security Engines and integrations. Supports automatic expiration for temporary allowlists."
-	comparison={{
-		before: "Community: per-engine",
-		after: "Premium: centralized + expiration"
-	}}
-	link="/u/console/allowlists"
-/>
-
-<FeatureCard
-	title="Blocklist Creation & Sharing"
-	metric="Custom via API"
-	category="scale"
-	description="Create and distribute custom blocklists across multiple organizations or partners. Enable coordinated security operations across your ecosystem."
-	link="/u/console/service_api/blocklists"
-/>
-
-<FeatureCard
-	title="Service API (SAPI)"
-	metric="REST + webhooks"
-	category="scale"
-	badges={["API"]}
-	description="Automate Console management: create and share custom blocklists, manage decisions and enrollments via API. Integrate into CI/CD or SOAR pipelines."
-	comparison={{
-		before: "Community: no API access",
-		after: "Premium: full SAPI"
-	}}
-	link="/u/console/service_api/getting_started"
-/>
-
-</div>
-
----
-
-#### 🔍 Investigation & Forensics
-
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-
-<FeatureCard
-	title="Increased Alert Quotas and Extended Retention"
-	metric="2 months → 1 year"
-	category="monitoring"
-	description="Keep up to 1 year of alerts with custom quotas (up to millions/month). Essential for audits, forensic investigation, and trend analysis."
-	comparison={{
-		before: "Community: 500/month, 2 months",
-		after: "Premium: millions/month, 365 days"
-	}}
-	link="/u/console/alerts/quotas#why-upgrade-to-premium-"
-/>
-
-<FeatureCard
-	title="IP Reputation Investigation"
-	metric="30 → 100/week"
-	category="intelligence"
-	description="View complete IP profiles: reputation, behavior, fingerprint, MITRE ATT&CK. Direct from Console for investigations."
-	comparison={{
-		before: "Community: 30 lookups/week",
-		after: "Premium: 100 lookups/week"
-	}}
-/>
-
-<FeatureCard
-	title="CTI API Access"
-	metric="120 → 1500 calls/month"
-	category="intelligence"
-	description="Query CrowdSec IP reputation from your SIEM, SOAR or custom tools. Includes MITRE ATT&CK mappings for contextual threat qualification."
-	comparison={{
-		before: "Community: 120 calls/month",
-		after: "Premium: 1500 calls/month"
-	}}
-	link="/u/cti_api/api_integration/integration_intro"
-/>
-
-<FeatureCard
-	title="Background Noise Filtering"
-	metric="60~90% noise reduction"
-	category="monitoring"
-	description="Filter internet background radiation automatically. Configurable levels (Low, Medium, High) to match security requirements."
-	link="/u/console/alerts/background_noise"
-/>
-
-</div>
-
----
-
-#### 🔔 Monitoring & Alerting
-
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-
-<FeatureCard
-	title="Am I Under Attack"
-	metric="Real-time"
-	category="monitoring"
-	description="Alert when attack surges are detected on your infrastructure. Compares current traffic vs. historical baselines. Webhook + email included."
-	link="/u/console/security_engines/am_i_under_attack"
-/>
-
-<FeatureCard
-	title="Push Notifications Integrations"
-	metric="Messaging & Webhooks"
-	category="monitoring"
-	description="Receive alerts in existing tools when Security Engines go offline or become outdated. Native integrations with major SecOps tools."
-	comparison={{
-		before: "Community: email only",
-		after: "Premium: webhooks + integrations"
-	}}
-	link="/u/console/notification_integrations/overview"
-/>
-
-</div>
-
----
-
-#### 🛡️ Enhanced Protection
-
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-
-<FeatureCard
-	title="Expanded Community Blocklist Coverage"
-	metric="3k → 50k IPs"
-	category="protection"
-	description="Top 50k most aggressive attackers (up from 3,000 in Community)."
-	link="/u/console/blocklists/intro"
-/>
-
-<FeatureCard
-	title="Threat Forecast Blocklist"
-	metric="Up to 40% more blocks"
-	category="protection"
-	description="Automatically generated blocklist from signals shared by your organization. Complements the community blocklist for extra protection tailored to your infrastructure."
-	link="/u/console/threat_forecast"
-/>
-
-<FeatureCard
-	title="Remediation Sync"
-	metric="Streamlined"
-	category="protection"
-	description="Sync security decisions across all engines and integrations automatically."
-	link="/u/console/remediation_sync"
-/>
-
-</div>
-
----
-
-#### 💡 Why Premium for SecOps/Blue Team?
-
-- **Team collaboration**: Multiple seats with role-based access
-- **Long-term retention**: 1 year of alerts for compliance and forensics
-- **Rich investigation**: 100 CTI lookups/week with MITRE ATT&CK context
-- **Integration-ready**: Push to Slack, PagerDuty, SIEM tools
-
-</TabItem>
-
-<TabItem value="msp" label="🏢 MSP / Integrator">
-
-### Multi-Tenant Management & Automation
-
-**Best for:** MSPs and integrators managing security for multiple clients, requiring isolation, automation, and API-driven workflows.
-
----
-
-#### 🏗️ Multi-Tenancy & Isolation
-
-<HighlightCard
-	title="Multi-Organization"
-	category="scale"
-	description="Segment client environments into separate organizations. Each client sees only their data. Manage all clients from a single account."
-	stats={[
-		{ value: "∞", label: "organizations" },
-		{ value: "100%", label: "isolation" }
-	]}
-/>
-
----
-
-#### 🤖 Automation & API
-
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-
-<FeatureCard
-	title="Service API (SAPI)"
-	metric="REST + webhooks"
-	category="scale"
-	badges={["API"]}
-	description="Automate Console management: create and share custom blocklists, manage decisions and enrollments via API. Integrate into CI/CD or SOAR pipelines."
-	comparison={{
-		before: "Community: no API access",
-		after: "Premium: full SAPI"
-	}}
-	link="/u/console/service_api/getting_started"
-/>
-
-<FeatureCard
-	title="Auto Enroll"
-	metric="Streamlined"
-	category="scale"
-	description="Automatically enroll new Security Engines into your organization as deployed. Perfect for infrastructure-as-code deployments (Terraform, Ansible, K8s)."
-	comparison={{
-		before: "Community: manual enrollment",
-		after: "Premium: automatic enrollment"
-	}}
-/>
-
-<FeatureCard
-	title="Blocklist Creation & Sharing"
-	metric="Custom via API"
-	category="scale"
-	description="Create and distribute custom blocklists across multiple organizations or partners. Enable coordinated security operations across your ecosystem."
-	link="/u/console/service_api/blocklists"
-/>
-
-<FeatureCard
-	title="Remediation Sync"
-	metric="Streamlined"
-	category="protection"
-	description="Sync security decisions across all client engines and integrations automatically."
-	link="/u/console/remediation_sync"
-/>
-
-</div>
-
----
-
-#### 👥 Team & Client Management
-
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-
-<FeatureCard
-	title="Expanded Organization Seats"
-	metric="3 seats included"
-	category="scale"
-	description="Provide view/edit/admin access to team members or clients. Add seats as your business grows."
-	link="/u/console/organizations/intro"
-/>
-
-<FeatureCard
-	title="Centralized Allowlists"
-	metric="Organization-wide"
-	category="scale"
-	description="Manage allowlists centrally and apply across all Security Engines. Supports expiration for temporary allowlisting."
-	link="/u/console/allowlists"
-/>
-
-</div>
-
----
-
-#### 🛡️ Protection at Scale
-
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-
-<FeatureCard
-	title="Expanded Community Blocklist Coverage"
-	metric="3k → 50k IPs"
-	category="protection"
-	description="Access to 50k most aggressive IPs (vs 3k in Community)."
-	link="/u/console/blocklists/intro"
-/>
-
-<FeatureCard
-	title="Unlimited Blocklist Subscriptions"
-	metric="3 → ∞"
-	category="protection"
-	description="Subscribe to unlimited specialized blocklists per organization."
-/>
-
-<FeatureCard
-	title="Threat Forecast Blocklist"
-	metric="Up to 40% more blocks"
-	category="protection"
-	description="Automatically generated blocklist from signals shared by your organization. Complements the community blocklist for extra protection tailored to your infrastructure."
-	link="/u/console/threat_forecast"
-/>
-
-<FeatureCard
-	title="Background Noise Filtering"
-	metric="60~90% noise reduction"
-	category="monitoring"
-	description="Filter internet noise automatically across all client organizations."
-	link="/u/console/alerts/background_noise"
-/>
-
-</div>
-
----
-
-#### 💡 Why Premium for MSPs?
-
-- **Multi-tenant architecture**: Complete client isolation with unlimited organizations
-- **API-first**: Full Service API for automation and integration
-- **Scalability**: Auto-enroll, remediation sync, unlimited blocklists
-- **White-label ready**: Manage all clients from single dashboard
-
-</TabItem>
-</TabsWithPersona>
-
----
-
-## Community vs Premium: Key Differences
-
-| Feature | Community | Premium |
-|---------|-----------|---------|
-| **Community Blocklist** | Top 3k IPs | Top 50k IPs |
-| **Blocklist Subscriptions** | 3 max | Unlimited |
-| **Alerts per Month** | 500 | Up to millions |
-| **Alert Retention** | 2 months | 12 months |
-| **Remediation Sync** | ✗ | ✓ |
-| **Background Noise Filter** | ✗ | ✓ |
-| **Am I Under Attack** | ✗ | ✓ |
-| **Threat Forecast Blocklist** | ✗ | ✓ |
-| **Organization Seats** | 1 | 5 included + more |
-| **CTI API Lookups/Week** | 30 | 100 + more |
-| **Service API (SAPI)** | ✗ | ✓ |
-| **Multi-Organization (MSP)** | ✗ | ✓ |
-
----
-
-## How to Upgrade to Premium
+## Is Premium appropriate for you?
 
 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
 
 <div className="border border-solid border-border rounded-lg p-6 bg-card">
 
-### 1️⃣ Compare Plans
+### DevOps / small infrastructure
 
-Review available plans and pricing based on your volume and requirements.
+You manage a handful of servers or containers and want better blocking coverage with less alert noise and no manual remediation work.
 
-</div>
-
-<div className="border border-solid border-border rounded-lg p-6 bg-card">
-
-### 2️⃣ Upgrade or Contact
-
-[Upgrade self-service](https://app.crowdsec.net/pricing) with 30 days free trial, or contact our team for custom plans (enterprise, MSP, volume).
+Key features: expanded blocklist, Threat Forecast, Background Noise filtering, Remediation Sync, Auto Enroll.
 
 </div>
 
 <div className="border border-solid border-border rounded-lg p-6 bg-card">
 
-### 3️⃣ Immediate Access
+### Security operations team
 
-Premium features available instantly in your organization. No migration required.
+Your team investigates incidents, needs historical data for audits, and must collaborate without stepping on each other in a shared console.
+
+Key features: 5 seats, 365-day retention, IP investigation quotas, CTI API, push notifications, centralized allowlists.
+
+</div>
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### MSP / multi-tenant environment
+
+You manage security for multiple clients or isolated environments and need complete data separation, API-driven automation, and the ability to share custom threat intelligence.
+
+Key features: unlimited organizations, Service API, blocklist creation and sharing, Auto Enroll.
 
 </div>
 
@@ -544,27 +95,77 @@ Premium features available instantly in your organization. No migration required
 
 ---
 
-## Ready to Go Further?
+## Community vs Premium
 
-<div className="p-8 rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 border border-solid border-primary/20">
+| Entitlement | Community | Premium |
+|---|---|---|
+| Community Blocklist | Top 3k IPs | Top 50k IPs |
+| Blocklist subscriptions | 3 | Unlimited |
+| Alert quota | 500 / month | 10k per Security Engine / month |
+| Alert retention | 60 days | 365 days |
+| Organization seats | 1 | 5 included |
+| Console IP investigations | 30 / week | 100 / week |
+| CTI API calls | 120 / month | 1,500 / month |
+| Remediation Sync | — | Yes |
+| Background Noise filtering | — | Yes |
+| Am I Under Attack | — | Yes |
+| Threat Forecast Blocklist | — | Yes |
+| Service API | — | Yes |
+| Multiple organizations | — | Yes |
 
-### Start with a trial or discuss your needs with our team
-
-No immediate commitment required. Premium features available instantly upon upgrade.
-
-<div style={{display: 'flex', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap'}}>
-	<a href="https://app.crowdsec.net/pricing" className="button button--primary button--lg">View Pricing →</a>
-	<a href="https://www.crowdsec.net/contact-crowdsec" className="button button--secondary button--lg">Contact Team</a>
-</div>
-
-</div>
+For full entitlement details and expandable limits, see [Quotas and plan limits](/u/console/premium_upgrade/quotas_limits).
 
 ---
 
-## Need more help deciding?
+## Your Premium journey
 
-To help you make the most of your Premium upgrade, explore these guides:
+Follow these steps in order. Each guide links to the next.
 
-- [**Optimal Setup**](/u/console/premium_upgrade/optimal_setup) - Organize your Security Engines before migrating to maximize value
-- [**Testing Premium**](/u/console/premium_upgrade/testing_premium) - Measure the value concretely during your trial period
-- [**All Features Reference**](/u/console/premium_upgrade/features_overview) - Complete catalog of Premium features
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### 1. Plan your deployment
+
+Decide which organization model fits your environment before you upgrade. Understand what moves when you transfer a Security Engine and what does not.
+
+[Plan your Premium deployment →](/u/console/premium_upgrade/optimal_setup)
+
+</div>
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### 2. Upgrade and configure
+
+Upgrade your organization, then configure the features that require setup. Know which entitlements are automatic and which need action.
+
+[Upgrade and configure Premium →](/u/console/premium_upgrade/upgrade_configure)
+
+</div>
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### 3. Evaluate your trial
+
+Establish a baseline before you activate Premium, then run structured tests to measure the concrete improvement in your environment.
+
+[Evaluate your Premium trial →](/u/console/premium_upgrade/testing_premium)
+
+</div>
+
+<div className="border border-solid border-border rounded-lg p-6 bg-card">
+
+### 4. Explore all features
+
+Review every Premium entitlement, its scope, its default state, and links to detailed configuration guides.
+
+[Premium feature reference →](/u/console/premium_upgrade/features_overview)
+
+</div>
+
+</div>
+
+<div style={{display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap'}}>
+  <a href="https://app.crowdsec.net/pricing" className="button button--primary button--lg">View pricing and start a trial →</a>
+  <a href="https://www.crowdsec.net/contact-crowdsec" className="button button--secondary button--lg">Contact the team</a>
+</div>

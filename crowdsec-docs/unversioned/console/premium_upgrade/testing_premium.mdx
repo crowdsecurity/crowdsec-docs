@@ -1,207 +1,255 @@
 ---
 id: testing_premium
-title: Test Premium Value in Your Environment
-description: Practical ways to measure and experience Premium value during your trial
+title: Evaluate your Premium trial
+description: A structured evaluation methodology for measuring the concrete impact of Premium in your environment.
 toc_max_heading_level: 2
 ---
 
-import { FeatureCard, HighlightCard } from '@site/src/components/premium-upgrade/feature-card';
-import DocCard from '@site/src/components/docs/DocCard';
-import DocCardGrid from '@site/src/components/docs/DocCardGrid';
-import QuickStrip from '@site/src/components/docs/QuickStrip';
+This guide is an evaluation worksheet, not a product tour. Its purpose is to help you measure what Premium actually changes in your environment — so your upgrade decision is based on evidence, not expectations.
 
-<div className="p-6 rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 border border-solid border-primary/20 mb-8">
-
-## 🧪 Measure Premium Value During Your Trial
-
-Before exploring all Premium features, use this guide to measure and experience the value in your environment. These practical tests help you assess the concrete benefits of Premium during your trial period.
-
-</div>
+Complete [Upgrade and configure Premium](/u/console/premium_upgrade/upgrade_configure) before running these tests.
 
 ---
 
-## 🎯 Test 1: Measure Improved Protection
+## Before activating Premium features
 
-<div className="border-l-4 border-solid border-primary p-6 bg-card mb-6">
+Record baseline values before you enable any Premium features. You cannot compare results without a starting point.
 
-### What to Activate
+| Metric | Baseline (before) | Trial result (after) | Change |
+|---|---|---|---|
+| Proactive remediations per day (blocklist hits) | | | |
+| Reactive remediations per day (real-time decisions) | | | |
+| Alert volume per week | | | |
+| Alerts classified as scanner or crawler noise | | | |
+| Time spent manually propagating decisions (hours/week) | | | |
+| Console IP investigations per week | | | |
+| Security Engine health incidents per month | | | |
 
-Premium protection features are automatically enabled when you upgrade:
-
-- **Community Blocklist (Premium):** Automatically sent to enrolled engines (50k IPs vs 3k)
-- **[Threat Forecast Blocklist](/u/console/threat_forecast):** Generated automatically from your organization's shared signals
-- **Premium Tier Blocklists:** Subscribe to unlimited specialized blocklists
-- **[Remediation Sync](/u/console/remediation_sync):** Propagate decisions across all Security Engines
-- **Am I Under Attack:** Get alerted on traffic surges
-
-</div>
-
-<DocCardGrid cols={3}>
-  <DocCard iconName="gauge" color="var(--cs-orange)" title="Metric 1: Remediation Ratio" desc="Check your Console dashboard for proactive vs reactive blocking ratio. Expected: 2× more proactive blocking (blocklist hits vs real-time decisions)." />
-  <DocCard iconName="pulse" color="var(--cs-teal)" title="Metric 2: Server Resources" desc="Monitor CPU, memory, and bandwidth on your Security Engines before and after. Expected: 75–92% reduction in malicious traffic reaching your servers." />
-  <DocCard iconName="book" color="var(--cs-violet)" title="Metric 3: Log Volume" desc="Check your SIEM or log aggregator for alert volume changes. Expected: cleaner logs, reduced alert fatigue, fewer false positives." />
-</DocCardGrid>
-
-<HighlightCard
-	title="Quick Test: Background Noise Filtering"
-	category="monitoring"
-	description="Enable Background Noise Filtering (Low/Medium/High) and compare your alert dashboard before/after. You should see 75-92% fewer scanner and crawler alerts within 24 hours."
-	stats={[
-		{ value: "24h", label: "to see results" },
-		{ value: "60~90%", label: "noise reduction" }
-	]}
-	link="/u/console/alerts/background_noise"
-/>
+Record these numbers before enabling Remediation Sync, Background Noise, or any additional blocklist subscriptions.
 
 ---
 
-## 👥 Test 2: Enable Team Collaboration
+## Evaluation timeline
 
-<div className="border-l-4 border-solid border-primary p-6 bg-card mb-6">
+| Phase | Focus |
+|---|---|
+| Before trial | Establish baseline |
+| First 48 hours | Verify activation and data flow |
+| Week 1 | Protection and noise reduction |
+| Weeks 2–3 | Operations, collaboration, and automation |
+| Final week | Review evidence and decide |
 
-### What to Activate
-
-Enable team features to see collaboration improvements:
-
-- **Multi-Seat Access:** Invite team members (view/edit/admin roles)
-- **Extended Alert Retention:** 365 days of historical data (vs 60 days)
-- **Increased CTI Quotas:** 100 IP lookups/week (vs 30)
-- **[Push Notification Integrations](/u/console/notification_integrations/overview):** Slack, PagerDuty, webhooks
-
-</div>
-
-<DocCardGrid cols={2}>
-
-<FeatureCard
-	title="Test: Long-Term Trend Analysis"
-	metric="365 days"
-	category="monitoring"
-	description="Access your Console's Alerts page and analyze attack patterns over the past year. Look for recurring threats, seasonal patterns, or evolving attack vectors. This is impossible with Community's 60-day retention."
-	link="/u/console/alerts/quotas#why-upgrade-to-premium-"
-/>
-
-<FeatureCard
-	title="Test: CTI Investigation Workflow"
-	metric="100 lookups/week"
-	category="intelligence"
-	description="Investigate suspicious IPs directly in the Console. View complete profiles: reputation, behavior, fingerprint, MITRE ATT&CK mappings. Perfect for incident response workflows without leaving the Console."
-/>
-
-<FeatureCard
-	title="Test: Simultaneous Access"
-	metric="3+ seats"
-	category="scale"
-	description="Have multiple team members work in the Console at the same time. Test concurrent operations: one person investigates alerts, another manages allowlists, a third reviews metrics. No access conflicts."
-	link="/u/console/organizations/intro"
-/>
-
-<FeatureCard
-	title="Test: Alerting Integration"
-	metric="Real-time"
-	category="monitoring"
-	description="Connect your Slack or PagerDuty account and test notifications when a Security Engine goes offline or becomes outdated. Verify your team receives alerts in their existing tools."
-	link="/u/console/notification_integrations/overview"
-/>
-
-</DocCardGrid>
-
-<div className="p-6 rounded-lg bg-gray-50 dark:bg-gray-900/30 border border-solid border-border mb-8">
-
-**Expected Results:**
-
-- ⚡ Faster incident investigations (direct CTI access in Console)
-- 🔍 Better threat attribution (1-year retention for pattern analysis)
-- 🤝 Reduced tool sprawl (team works in one place)
-- 📢 Proactive alerting (issues detected before users complain)
-
-</div>
+Skip sections that do not apply to your environment. A small DevOps team does not need the MSP isolation tests. An MSP can start directly with the multi-organization and API tests.
 
 ---
 
-## 🏢 Test 3: Scale for MSPs & Enterprises
+## Test: Expanded Community Blocklist coverage
 
-<div className="border-l-4 border-solid border-primary p-6 bg-card mb-6">
+**Outcome:** Confirm that your Security Engines are receiving and applying the 50k-IP Premium blocklist instead of the 3k Community list.
 
-### What to Activate
+**Prerequisites:** At least one Security Engine enrolled in the Premium organization.
 
-Test multi-tenant and automation capabilities:
+**Procedure:**
 
-- **Multi-Organization:** Create separate organizations for each client/environment
-- **[Service API (SAPI)](/u/console/service_api/getting_started):** Automate console management
-- **Blocklist Creation & Sharing:** Distribute custom threat intel via API
-- **Auto Enroll:** Zero-touch engine enrollment
+1. On a Security Engine, run `cscli decisions list --origin lists` and note the number of active entries from the Community Blocklist before and after the upgrade.
+2. Compare the count. The Premium list should contain significantly more entries than the Community list.
 
-</div>
+**What to look for:** An increase in proactive remediations (blocklist-sourced decisions) visible on the Console dashboard. The ratio of proactive-to-reactive remediations should shift toward proactive.
 
-<DocCardGrid cols={2}>
-
-<FeatureCard
-	title="Test: Multi-Tenant Isolation"
-	metric="100% isolated"
-	category="scale"
-	description="Create 2-3 test organizations for different clients. Verify complete data isolation: each org sees only its engines, alerts, and decisions. Test switching between orgs from a single account."
-/>
-
-<FeatureCard
-	title="Test: Custom Blocklist via API"
-	metric="API-driven"
-	category="scale"
-	badges={["API"]}
-	description="Use SAPI to create a custom blocklist with 10-20 IPs from your SIEM. Subscribe multiple organizations to it. Verify the IPs are blocked across all client environments within minutes."
-	link="/u/console/service_api/blocklists"
-/>
-
-<FeatureCard
-	title="Test: Automated Enrollment"
-	metric="Zero-touch"
-	category="scale"
-	description="Enable Auto Enroll, then deploy a new Security Engine with your org's enrollment key. It should automatically join your organization without manual approval. Perfect for Terraform/Ansible/K8s deployments."
-/>
-
-<FeatureCard
-	title="Test: Decision Management via API"
-	metric="Programmatic"
-	category="scale"
-	badges={["API"]}
-	description="Use SAPI to add/remove decisions from the Console. Test forcing a blocklist pull after subscription. Integrate this into your incident response playbooks or SOAR platform."
-	link="/u/console/service_api/getting_started"
-/>
-
-</DocCardGrid>
-
-<div className="p-6 rounded-lg bg-gray-50 dark:bg-gray-900/30 border border-solid border-border mb-8">
-
-**Expected Results:**
-
-- 🏗️ Clear tenant isolation (one org per client)
-- 🤖 Streamlined multi-customer operations (API automation)
-- 📊 Custom visibility per client (each org has its own dashboard)
-- ⚙️ Infrastructure-as-code ready (zero-touch enrollment)
-
-</div>
+:::note Observed benchmark
+Customers in the CrowdSec network who move from the Community to the Premium blocklist tier report increased proactive blocking coverage. Actual improvement depends on your traffic profile, the services you expose, and the attack types prevalent in your region. Establish your own baseline.
+:::
 
 ---
 
-## 🎓 Recommended Trial Timeline
+## Test: Threat Forecast Blocklist
 
-<DocCardGrid cols={2}>
-  <DocCard iconName="shield" color="var(--cs-orange)" title="Week 1: Protection" desc="Enable all blocklists · Activate Background Noise · Turn on Remediation Sync · Measure baseline metrics." />
-  <DocCard iconName="users" color="var(--cs-teal)" title="Week 2: Team" desc="Invite team members · Test CTI lookups · Configure push notifications · Analyze historical trends." />
-  <DocCard iconName="box" color="var(--cs-violet)" title="Week 3: Scale" desc="Create test organizations · Test SAPI endpoints · Try Auto Enroll · Custom blocklist sharing." />
-  <DocCard iconName="gauge" color="var(--cs-blue)" title="Week 4: Review" desc="Compare metrics vs Week 1 · Document value realized · Plan production rollout · Prepare upgrade decision." />
-</DocCardGrid>
+**Outcome:** Confirm that a Threat Forecast blocklist has been generated for your organization and is being applied.
+
+**Prerequisites:** At least one Security Engine actively sharing signals in the Premium organization.
+
+**Procedure:**
+
+1. Navigate to **Blocklists → Threat Forecast** in the Console.
+2. Confirm the list is present and contains entries.
+3. Check that enrolled Security Engines have it in their active decision set (`cscli decisions list --origin lists`).
+4. Return after 7 days and note whether the list has updated.
+
+**What to look for:** Entries tailored to the attack patterns your organization is actually seeing — different from the general Community Blocklist. The list updates periodically as your engines share new signals.
 
 ---
 
-## 💡 Need Help Testing?
+## Test: Background Noise filtering
 
-Our team can help you set up proper testing and measure the value in your specific environment.
+**Outcome:** Confirm that scanner and crawler traffic is being removed from your alert view.
 
-<QuickStrip
-  title="Questions about your trial?"
-  subtitle="Our team can help you measure the value in your environment."
-  links={[
-    { label: "Contact Support", href: "https://www.crowdsec.net/contact-crowdsec", external: true },
-    { label: "View All Features →", href: "/u/console/premium_upgrade/features_overview" },
-  ]}
-/>
+**Prerequisites:** Background Noise filtering enabled (Upgrade and configure guide, step: Enable Background Noise filtering).
+
+**Activate:** Enable at Low, Medium, or High. Start at Low or Medium.
+
+**Procedure:**
+
+1. Record the number of alerts classified as "background noise" on the **Alerts** page before enabling.
+2. Enable filtering at your chosen level.
+3. Return after 24 hours and record the new alert count.
+4. Note how many alerts remain that are not classified as background noise.
+
+**Measure:**
+- Alerts before filtering
+- Alerts after filtering
+- Percentage reduction
+
+**Success criteria:** A visible reduction in scanner and crawler alerts without removing alerts from IPs that are relevant to your infrastructure.
+
+---
+
+## Test: Remediation Sync
+
+**Outcome:** Confirm that a decision created in one place is applied to all enrolled Security Engines and integrations automatically.
+
+**Prerequisites:** At least two enrolled Security Engines or one Engine and one blocklist integration. Remediation Sync enabled.
+
+**Procedure:**
+
+1. In the Console, go to **Decisions** and add a temporary test decision for an IP you control (for example, a test server IP).
+2. Wait 2–5 minutes.
+3. On each enrolled Security Engine, run `cscli decisions list` and confirm the test IP appears.
+4. Remove the decision from the Console.
+5. Confirm removal on each engine.
+
+**Measure:**
+- Propagation time (minutes)
+- Number of engines reached without manual action
+- Any engines that did not receive the decision (investigate connectivity)
+
+**Success criteria:** The decision reaches all expected endpoints without any manual per-engine action.
+
+---
+
+## Test: Alert retention and historical analysis
+
+**Outcome:** Confirm that 365-day retention is active and that historical data is accessible for investigation.
+
+**Prerequisites:** Premium plan active.
+
+**Procedure:**
+
+1. Go to **Alerts** in the Console and set the date range to the maximum available.
+2. Confirm the range now extends to 365 days (or to the date you upgraded, whichever is shorter — historical data from before the upgrade is not backfilled to Premium retention).
+3. Filter by a specific attack type or Security Engine and look for patterns over time.
+
+**What to look for:** Whether you can identify recurring attackers, seasonal patterns, or evolving attack vectors that were not visible under the 60-day Community retention window.
+
+:::warning
+Premium retention applies from the upgrade date forward. Data that existed before the upgrade under Community retention (60 days) is not retroactively extended. Plan your evaluation accordingly.
+:::
+
+---
+
+## Test: IP investigation workflow
+
+**Outcome:** Confirm that the increased Console investigation quota (100/week) is sufficient for your investigation workload.
+
+**Prerequisites:** Premium plan active.
+
+**Procedure:**
+
+1. Identify 5–10 suspicious IPs from your current alert view.
+2. Investigate each one directly in the Console using the IP reputation panel.
+3. Note the reputation, behavior classification, MITRE ATT&CK tags, and any fingerprint data.
+4. Compare the investigation experience with your previous workflow (external CTI tools, manual lookups).
+
+**What to look for:** Whether the in-Console investigation covers what you previously needed external tools for, and whether the quota (100/week) is enough for your team's investigation pace.
+
+---
+
+## Test: Team access and collaboration
+
+**Outcome:** Confirm that multiple team members can work in the Console simultaneously without access conflicts.
+
+**Prerequisites:** At least one additional team member invited (Upgrade and configure guide, step: Invite team members).
+
+**Procedure:**
+
+1. Have two team members log in simultaneously.
+2. Have one investigate alerts while the other manages allowlists or reviews the dashboard.
+3. Confirm changes made by one member are visible to the other without delay.
+
+**Success criteria:** No access conflicts. Role-based permissions (Viewer, Editor, Admin) enforce the correct boundaries.
+
+---
+
+## Test: Push notifications
+
+**Outcome:** Confirm that your team receives notifications in existing tools when Security Engine health events occur.
+
+**Prerequisites:** At least one notification integration connected.
+
+**Procedure:**
+
+1. Connect a Slack channel, PagerDuty service, or webhook endpoint.
+2. Take one enrolled Security Engine offline or stop its service temporarily.
+3. Confirm a notification arrives in the connected tool within the expected time.
+4. Restart the engine and confirm the recovery notification (if configured).
+
+**Success criteria:** Notification received without polling the Console.
+
+---
+
+## Test: Service API and automation (MSP / enterprise)
+
+**Outcome:** Confirm that Console operations can be performed programmatically via the Service API.
+
+**Prerequisites:** Service API credentials created.
+
+**Procedure:**
+
+1. Use the SAPI to retrieve the list of enrolled Security Engines.
+2. Use the SAPI to create a custom blocklist with 5–10 test IPs.
+3. Subscribe the organization to the custom blocklist via API.
+4. Confirm the IPs appear in active decisions on enrolled engines.
+5. Delete the custom blocklist via API and confirm removal.
+
+[Service API reference →](/u/console/service_api/getting_started)
+
+---
+
+## Test: Multi-organization isolation (MSP)
+
+**Outcome:** Confirm that separate organizations provide complete data isolation.
+
+**Prerequisites:** At least two Premium organizations created.
+
+**Procedure:**
+
+1. Enroll one Security Engine in each organization.
+2. Switch between organizations in the Console.
+3. Confirm that alerts, decisions, and engines from Organization A are not visible when viewing Organization B.
+4. Create a decision in Organization A and confirm it does not appear in Organization B.
+
+**Success criteria:** Complete isolation. No data leaks between organizations.
+
+---
+
+## Evaluation scorecard
+
+Fill this in during the final week of your trial.
+
+| Goal | Baseline | Trial result | Evidence collected | Valuable? |
+|---|---|---|---|---|
+| Increase proactive blocks | | | | |
+| Reduce irrelevant alerts | | | | |
+| Reduce manual decision propagation | | | | |
+| Improve investigation speed | | | | |
+| Team collaboration without conflicts | | | | |
+| Receive proactive health notifications | | | | |
+| Automate engine enrollment | | | | |
+| Isolate client or environment data | | | | |
+
+Use this scorecard when presenting results to stakeholders or making the upgrade decision.
+
+---
+
+If you need help setting up a specific test or interpreting results, contact [CrowdSec support](https://www.crowdsec.net/contact-crowdsec).
+
+Continue to [Premium feature reference →](/u/console/premium_upgrade/features_overview)

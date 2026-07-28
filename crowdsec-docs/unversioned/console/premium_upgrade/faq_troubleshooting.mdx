@@ -1,0 +1,141 @@
+---
+id: faq_troubleshooting
+title: FAQ and troubleshooting
+description: Common questions and troubleshooting steps for CrowdSec Premium.
+toc_max_heading_level: 2
+---
+
+import { Badge } from "@site/src/ui/badge";
+
+## Frequently asked questions
+
+### Does upgrading affect Security Engines that are currently running?
+
+No. The upgrade applies to the organization in the Console. Security Engines continue running without interruption. The Premium Community Blocklist (50k IPs) begins propagating to enrolled engines automatically after the upgrade. No agent restart is required.
+
+### Does historical alert data carry over if I transfer a Security Engine?
+
+No. When you transfer a Security Engine to a different organization, its historical alerts remain in the source organization. Only the engine itself and its active local decisions move. Plan your organization structure before transferring engines if alert history continuity matters.
+
+### Can I upgrade only some Security Engines, not all of them?
+
+Not directly — Premium applies to the entire organization. The supported approach is to create a separate organization for the engines that need Premium and upgrade that organization. Engines that should stay on Community remain in a different organization. See [Plan your Premium deployment](/u/console/premium_upgrade/optimal_setup).
+
+### What happens to data if I downgrade or let a trial expire?
+
+Alert data beyond the Community retention window (60 days) becomes inaccessible but is not immediately deleted. If you re-upgrade, data within the Premium retention window that has not been purged may become accessible again. Blocklist subscriptions above the Community limit (3) are deactivated. Service API credentials are deactivated. Contact [CrowdSec support](https://www.crowdsec.net/contact-crowdsec) if you have concerns about a specific scenario.
+
+### Is Remediation Sync on by default after upgrading?
+
+No. Remediation Sync must be explicitly enabled in **Organization Settings → Remediation Sync**. The entitlement is unlocked automatically, but the feature does not activate without your action.
+
+### Why does the Threat Forecast Blocklist not appear or appear empty?
+
+The Threat Forecast Blocklist is generated from signals shared by your organization's Security Engines. If engines are newly enrolled or have not yet shared a sufficient volume of signals, the list may take time to populate. Ensure that at least one engine is actively detecting and sharing events.
+
+### What is the difference between Console IP investigations and CTI API calls?
+
+These are two distinct entitlements:
+
+- **Console IP investigations** — lookups performed through the Console UI when you click on an IP to view its reputation, behavior, and MITRE ATT&CK context. Quota is per organization per week.
+- **CTI API calls** — programmatic queries to the CrowdSec CTI API from your own tools (SIEM, SOAR, scripts). Quota is per API key per month.
+
+Using one does not consume the other. See [Quotas and plan limits](/u/console/premium_upgrade/quotas_limits) for current values.
+
+### Can I have multiple Premium organizations under one account?
+
+Yes. Premium accounts can create unlimited organizations. Each organization has its own plan, entitlements, members, and billing. This is the recommended model for MSPs managing multiple clients or for teams that need isolated environments.
+
+### Do seats apply per organization or per account?
+
+Seats apply per organization. A user can be a member of multiple organizations without using an additional seat in each one — they consume one seat per organization they belong to.
+
+---
+
+## Troubleshooting
+
+### Security Engines are not receiving the Premium Community Blocklist
+
+1. Confirm the organization is on a Premium plan (**Organization Settings → Plan**).
+2. Confirm the Security Engine is enrolled in the Premium organization (`cscli console status`).
+3. Check that the engine can reach the CrowdSec Central API (`cscli capi status`).
+4. Run `cscli blocklists list` and look for the Community Blocklist entry.
+5. If absent, force a pull: `cscli hub update && cscli decisions import` or restart the CrowdSec service.
+
+### Remediation Sync is enabled but decisions are not propagating
+
+1. Confirm Remediation Sync is enabled in **Organization Settings → Remediation Sync**.
+2. Confirm each Security Engine shows as reachable in the Console (**Security Engines** list).
+3. Check agent connectivity to the Console API.
+4. Review Security Engine logs for sync errors: `journalctl -u crowdsec -n 100`.
+
+### Background Noise filtering is enabled but alert count has not changed
+
+1. Confirm the filtering level is set and saved (Low, Medium, or High).
+2. Allow at least 24 hours — the filter applies to incoming alerts, not retroactively to historical ones.
+3. If alert volume is still high, consider raising the filtering level.
+
+### Push notifications are not arriving
+
+1. Confirm the integration is connected and shows as active in **Organization Settings → Notifications**.
+2. Test the webhook endpoint independently (for example, using `curl`) to confirm it is reachable.
+3. Check that the notification event type (engine offline, outdated engine, attack surge) is enabled for the integration.
+
+### I cannot invite a team member — seats appear full
+
+1. Check the current seat count in **Organization Settings → Members**.
+2. Remove members who no longer need access, or contact [CrowdSec](https://www.crowdsec.net/contact-crowdsec) to expand your seat limit beyond 5.
+
+---
+
+## Premium Support
+
+<div className="mb-4">
+  <Badge variant="premium">CrowdSec Premium Feature</Badge>
+</div>
+
+Premium and Advance plan customers can contact support directly via the Console chat.
+
+### Access chat support
+
+1. Log in to the Console.
+2. Switch to your Premium organization using the organization switcher.
+3. Click the chat icon in the bottom-right corner of the interface.
+
+### Support plans
+
+| | Premium | Advance |
+|---|---|---|
+| Channel | Console chat | Console chat |
+| First contact SLA | 3 business days | 1 business day |
+| Workaround / solution SLA | 5 business days | 3 business days |
+| Hours | 8 AM–5 PM CET, business days | 8 AM–5 PM CET + out-of-hours for critical |
+| Scope | Console platform | Console + Engines + Integrations + all CrowdSec products |
+
+### Severity levels
+
+| Level | Description |
+|---|---|
+| High | Business operations impacted — systems down or significantly impaired |
+| Medium | Partial disruption — systems remain online but functionality is affected |
+| Low | General questions, feature requests, or non-urgent inquiries |
+
+SLA response times apply to all requests regardless of severity.
+
+### Support scope
+
+| Area | Premium | Advance |
+|---|---|---|
+| Console platform troubleshooting and configuration | Yes | Yes |
+| Security Engine configuration and troubleshooting | No | Yes |
+| Firewall integration and bouncer setup | No | Yes |
+| Blocklist integration support | No | Yes |
+| Log processor configuration and troubleshooting | No | Yes |
+| Custom scenario and parser development assistance | No | Yes |
+| Architecture and deployment recommendations | No | Yes |
+
+### Community support
+
+Community support (Discourse forum and Discord) is available to all users regardless of plan.
+
+[Community support and troubleshooting →](/u/troubleshooting/intro)
