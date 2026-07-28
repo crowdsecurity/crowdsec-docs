@@ -73,7 +73,7 @@ inband:
         - ExemptFromChallenge("gptbot")
 ```
 
-`MatchKnownBot()` checks the client IP against the vendor's published ranges and/or a forward-confirmed reverse-DNS lookup (FCrDNS); a bot is exempted **only** when it can be network-verified. A spoofed UA on an IP that does not belong to the vendor is **not** recognised and goes through the normal challenge flow. The bot definitions live in [bot-description files](#authoring-your-own-known-bot-files) that each exclude-config declares in its own `data:` section (see below).
+`MatchKnownBot()` checks the client IP against the vendor's published ranges and/or a forward-confirmed reverse-DNS lookup (FCrDNS); a bot is exempted **only** when it can be network-verified. A spoofed UA on an IP that does not belong to the vendor is **not** recognised and goes through the normal challenge flow. The bot definitions live in [bot-description files](customization.md#authoring-your-own-known-bot-files) that each exclude-config declares in its own `data:` section.
 
 :::note
 `ExemptFromChallenge(reason)` exempts the **current request only**, it does not issue a cookie.
@@ -88,54 +88,7 @@ The built-in bot families are split across four identity exclude-configs, so you
 | `crowdsecurity/appsec-bot-challenge-exclude-social` | meta, discord, telegram, twitterbot, pinterest |
 | `crowdsecurity/appsec-bot-challenge-exclude-monitoring` | uptimerobot, cookiebot, datadog, pagerduty |
 
-Each config declares the datafiles CrowdSec should download into `<datadir>/legit_bots/` in its `data:` section, and `MatchKnownBot()` reads them at match time.
-
-### Authoring your own known-bot files
-
-`MatchKnownBot()` matches a request against the bot-description files you name, under `<datadir>/legit_bots/` (typically `/var/lib/crowdsec/data/legit_bots/`). The exclude-configs above keep the built-in definitions up to date; to recognise a bot of your own, ship a custom appsec-config that both calls `MatchKnownBot(..., "legit_bots/mybot.json")` and declares that file in its `data:` section:
-
-```yaml
-inband:
-  pre_eval:
-    - filter: MatchKnownBot(req.RemoteAddr, req.UserAgent(), req.URL.Path, "legit_bots/mybot.json")
-      apply:
-        - ExemptFromChallenge("mybot")
-data:
-  - source_url: https://example.com/mybot.json
-    dest_file: legit_bots/mybot.json
-    type: bots
-```
-
-Each file is one or more newline-delimited JSON objects with these fields:
-
-| Field        | Type        | Required | Meaning                                                                                                  |
-| ------------ | ----------- | -------- | ------------------------------------------------------------------------------------------------------- |
-| `name`       | string      | yes      | Identifier for the bot, used in logs.                                                                    |
-| `user_agent` | string      | no       | Case-insensitive regex the request User-Agent must match.                                                |
-| `paths`      | `[]string`  | no       | Regexes; the request path must match at least one if present.                                            |
-| `ips`        | `[]string`  | no\*     | Exact source IPs (IPv4 or IPv6).                                                                         |
-| `ranges`     | `[]string`  | no\*     | Source CIDR ranges.                                                                                      |
-| `rdns`       | `[]string`  | no\*     | Regexes matched against the **forward-confirmed** reverse-DNS name of the source IP. Anchor them (e.g. `\\.googlebot\\.com$`) to avoid false positives. |
-
-\* At least one of `ips`, `ranges`, or `rdns` is required — a definition that only matches on `user_agent` is rejected at load time, since a User-Agent alone is trivial to spoof.
-
-A request is recognised as a known bot when:
-
-```
-(user_agent matches  AND  at least one path matches)  AND  (exact IP  OR  CIDR range  OR  FCrDNS)
-```
-
-The helper is **fail-closed**: an unparseable address, a DNS failure, or an unknown file means "not a known bot", never an error, so the request falls through to the normal challenge.
-
-Example file:
-
-```json
-{"name":"googlebot","user_agent":"googlebot","rdns":["(^|\\.)googlebot\\.com$","\\.google\\.com$"]}
-{"name":"uptimerobot","user_agent":"uptimerobot","paths":["^/health(/|$)","^/status$"],"ranges":["69.162.124.224/28"],"ips":["216.144.250.150"]}
-{"name":"internal-scanner","ips":["10.1.2.3","2001:db8::42"]}
-```
-
-The reverse-DNS confirmation used by `rdns` goes through the engine's DNS cache; see [`dns_cache`](/configuration/crowdsec_configuration.md#dns_cache) if you need to tune its TTL or size.
+Each config declares the datafiles CrowdSec should download into `<datadir>/legit_bots/` in its `data:` section, and `MatchKnownBot()` reads them at match time. To recognise a bot of your own, see [Authoring your own known-bot files](customization.md#authoring-your-own-known-bot-files).
 
 ## Path-exclusion configs
 

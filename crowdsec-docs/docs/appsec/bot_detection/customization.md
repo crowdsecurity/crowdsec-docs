@@ -55,6 +55,53 @@ Both variants are purely technical examples and shouldn't be used as-is. If `my-
 
 If the trusted client has a stable source IP or range, a native [CrowdSec allowlist](/local_api/allowlists.md) is simpler and safer than a shared-secret header: an allowlisted IP bypasses AppSec entirely, so it is never challenged and never issued a cookie. Allowlists are keyed on source IP/range and managed centrally at the LAPI (`cscli allowlists`), so reach for the hook recipes on this page only when the client can't be pinned to an IP.
 
+### Authoring your own known-bot files
+
+`MatchKnownBot()` matches a request against the bot-description files you name, under `<datadir>/legit_bots/` (typically `/var/lib/crowdsec/data/legit_bots/`). The shipped exclude-configs (see [Known bots it lets through](whats_included.md#known-bots-it-lets-through)) keep the built-in definitions up to date; to recognise a bot of your own, ship a custom appsec-config that both calls `MatchKnownBot(..., "legit_bots/mybot.json")` and declares that file in its `data:` section:
+
+```yaml
+inband:
+  pre_eval:
+    - filter: MatchKnownBot(req.RemoteAddr, req.UserAgent(), req.URL.Path, "legit_bots/mybot.json")
+      apply:
+        - ExemptFromChallenge("mybot")
+data:
+  - source_url: https://example.com/mybot.json
+    dest_file: legit_bots/mybot.json
+    type: bots
+```
+
+Each file is one or more newline-delimited JSON objects with these fields:
+
+| Field        | Type        | Required | Meaning                                                                                                  |
+| ------------ | ----------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `name`       | string      | yes      | Identifier for the bot, used in logs.                                                                    |
+| `user_agent` | string      | no       | Case-insensitive regex the request User-Agent must match.                                                |
+| `paths`      | `[]string`  | no       | Regexes; the request path must match at least one if present.                                            |
+| `ips`        | `[]string`  | no\*     | Exact source IPs (IPv4 or IPv6).                                                                         |
+| `ranges`     | `[]string`  | no\*     | Source CIDR ranges.                                                                                      |
+| `rdns`       | `[]string`  | no\*     | Regexes matched against the **forward-confirmed** reverse-DNS name of the source IP. Anchor them (e.g. `\\.googlebot\\.com$`) to avoid false positives. |
+
+\* At least one of `ips`, `ranges`, or `rdns` is required — a definition that only matches on `user_agent` is rejected at load time, since a User-Agent alone is trivial to spoof.
+
+A request is recognised as a known bot when:
+
+```
+(user_agent matches  AND  at least one path matches)  AND  (exact IP  OR  CIDR range  OR  FCrDNS)
+```
+
+The helper is **fail-closed**: an unparseable address, a DNS failure, or an unknown file means "not a known bot", never an error, so the request falls through to the normal challenge.
+
+Example file:
+
+```json
+{"name":"googlebot","user_agent":"googlebot","rdns":["(^|\\.)googlebot\\.com$","\\.google\\.com$"]}
+{"name":"uptimerobot","user_agent":"uptimerobot","paths":["^/health(/|$)","^/status$"],"ranges":["69.162.124.224/28"],"ips":["216.144.250.150"]}
+{"name":"internal-scanner","ips":["10.1.2.3","2001:db8::42"]}
+```
+
+The reverse-DNS confirmation used by `rdns` goes through the engine's DNS cache; see [`dns_cache`](/configuration/crowdsec_configuration.md#dns_cache) if you need to tune its TTL or size.
+
 ### Block on a weak signal the default ignores
 
 The collection already rejects submissions where `fingerprint.IsBot()` is true — the high-confidence fast-bot-detection verdict. Weaker heuristic signals are collected too, but the default leaves them alone because they carry false positives. If your traffic profile makes one of them worth enforcing, you can opt in.
