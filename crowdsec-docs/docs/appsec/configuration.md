@@ -255,7 +255,7 @@ For complete hook documentation, see [AppSec Hooks](hooks.md).
 
 > array
 
-Declares datafiles the appsec-config needs. When the config is installed from the hub, `cscli` downloads each `source_url` into `dest_file` (relative to the data directory). The bot-detection exclude-configs use this to ship the known-bot definitions consulted by [`MatchKnownBot`](hooks.md#known-bots), with `type: bots`.
+Declares datafiles the appsec-config needs. When the config is installed from the hub, `cscli` downloads each `source_url` into `dest_file` (relative to the data directory). The bot-detection exclude-configs use this to ship the known-bot definitions consulted by [`MatchKnownBot`](bot_detection/hooks.md#known-bots), with `type: bots`.
 
 ```yaml
 data:

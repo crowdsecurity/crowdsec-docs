@@ -723,6 +723,7 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/bot_detection/how_it_works" },
 				{ type: "doc", id: "appsec/bot_detection/customization" },
 				{ type: "doc", id: "appsec/bot_detection/configuration" },
+				{ type: "doc", id: "appsec/bot_detection/hooks" },
 			],
 		},
 		{

@@ -4,13 +4,11 @@ title: Customization & recipes
 sidebar_position: 4
 ---
 
-The snippets below are **advanced** — for the helpers (`SendChallenge`, `GrantChallengeCookie`, `MatchKnownBot`, `ExemptFromChallenge`, `RejectSubmission`, `DumpFingerprint`, …) and the `fingerprint` object, see the [Hooks reference](../hooks.md).
-
 ## Recipes
 
 ### Restrict the challenge to a specific path
 
-By default the appsec-config shipped by the collection challenges every request except [known bots](../hooks.md#known-bots) and well-known paths. To narrow the challenge to one section of your application — say a checkout flow — you don't need to touch that shipped `SendChallenge()` gate. Add a `pre_eval` hook that exempts every request **outside** the path you care about:
+By default the appsec-config shipped by the collection challenges every request except [known bots](hooks.md#known-bots) and well-known paths. To narrow the challenge to one section of your application, do not edit default config: Add a `pre_eval` hook that exempts every request **outside** the path you care about:
 
 ```yaml
 pre_eval:
@@ -22,12 +20,12 @@ pre_eval:
 `ExemptFromChallenge(reason)` flags the request as exempt, so `SendChallenge()` becomes a no-op for it and no challenge is served. Because the exemption is additive, the shipped config stays untouched — only `/checkout/` is left to be challenged.
 
 :::note
-`ExemptFromChallenge(reason)` mints no cookie, so the exemption is re-evaluated on every request. To let a trusted client through for a whole session instead, use `GrantChallengeCookie(...)` — see [ExemptFromChallenge vs GrantChallengeCookie](../hooks.md#exemptfromchallenge-vs-grantchallengecookie).
+`ExemptFromChallenge(reason)` mints no cookie, so the exemption is re-evaluated on every request. To let a trusted client through for a whole session instead, use `GrantChallengeCookie(...)` — see [ExemptFromChallenge vs GrantChallengeCookie](hooks.md#exemptfromchallenge-vs-grantchallengecookie).
 :::
 
 ### Allowlist an internal probe by header
 
-Useful for synthetic monitoring or internal health checks that don't run JavaScript. Which helper to use depends on whether the probe can carry a cookie — see [ExemptFromChallenge vs GrantChallengeCookie](../hooks.md#exemptfromchallenge-vs-grantchallengecookie) for the full distinction.
+Useful for synthetic monitoring or internal health checks that don't run JavaScript. Which helper to use depends on whether the probe can carry a cookie. See [ExemptFromChallenge vs GrantChallengeCookie](hooks.md#exemptfromchallenge-vs-grantchallengecookie) for the full distinction.
 
 **Session allow (cookie).** If the probe is a cookie-capable client that stores and re-sends `__crowdsec_challenge`, mint a session cookie so it's waved through for the whole window without re-checking the header each time:
 
@@ -86,7 +84,7 @@ on_challenge_submit:
       - RejectSubmission("known bot (fast bot detection)")
 ```
 
-See [DumpFingerprint](../hooks.md#dumpfingerprint) in the Hooks reference for the file format and behavior.
+See [DumpFingerprint](hooks.md#dumpfingerprint) in the Hooks reference for the file format and behavior.
 
 ## Using the bot signal in appsec-configs and scenarios
 
@@ -94,7 +92,7 @@ The information the challenge collects about a client is not locked inside the b
 
 ### From an appsec-config
 
-Inside `on_challenge` and `on_challenge_submit` hooks, the in-flight challenge exposes a `fingerprint` object. The object exposes both high-level helpers such as `fingerprint.IsBot()` or `BotSignals()`, but also weak signals. See [Hooks reference](../hooks.md#the-fingerprint-object) for detailed properties.
+Inside `on_challenge` and `on_challenge_submit` hooks, the in-flight challenge exposes a `fingerprint` object. The object exposes both high-level helpers such as `fingerprint.IsBot()` or `BotSignals()`, but also weak signals. See [Hooks reference](hooks.md#the-fingerprint-object) for detailed properties.
 
 Example — reject only clients with multiple, independent signals so you don't punish a flaky headless screenshot bot for tripping a single check:
 
@@ -104,8 +102,6 @@ on_challenge_submit:
     apply:
       - RejectSubmission("multiple bot signals")
 ```
-
-See the [Hooks reference](../hooks.md#the-fingerprint-object) for the full list of fingerprint methods.
 
 ### From a scenario
 
