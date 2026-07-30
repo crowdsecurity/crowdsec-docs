@@ -25,7 +25,7 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
 </p>
 
 :::tip
-  We recommend using the **Self-Hosted Installer** setup method for most users. It is simpler to install and maintain.  
+  We recommend using the **Self-Hosted Installer** setup method for most users wanting to connect CrowdSec [Blocklist Integration Endpoint](/u/integrations/remediationcomponent) into Cloudflare without any install on their part. It is simpler to install and maintain.  
   For comparative details, see the [Setup Methods](#setup-methods) section below.
 
   Jump directly to the Setup section for your preferred method:  
@@ -84,6 +84,14 @@ Here's a quick comparative overview:
 | **Decision sync** | Sync Worker | Bouncer daemon or possibility to use Sync Worker |
 | **Metrics** | Cloudflare Analytics Engine Queries | Prometheus metrics & pushed to CrowdSec Console |
 | **Auth to decisions source** | Basic Auth | Basic Auth or MTLS |
+
+:::info Decision source and setup method
+**Self-Hosted Installer** works best with a **Blocklist Integration Endpoint** — no infrastructure to expose, the Sync Worker pulls decisions directly from CrowdSec.
+
+Using a **self-hosted Security Engine (LAPI)** as the decision source requires the LAPI to be reachable from Cloudflare's network, which means exposing it publicly. If that's a concern:
+- **Premium users** can enable [Remediation Sync](/u/console/integrations/intro) on their Console integration — decisions are forwarded from the LAPI without exposing it to the internet.
+- Alternatively, use the **CLI Bouncer Daemon** running alongside your LAPI, so the bouncer pulls decisions locally and pushes them to Cloudflare without any inbound exposure.
+:::
 
 :::warning
 After installation, configure the [Worker Route Fail Mode](#setting-up-the-worker-route-fail-mode) to FAIL OPEN to avoid service outages if the worker encounters errors or Cloudflare plan quota overruns.
