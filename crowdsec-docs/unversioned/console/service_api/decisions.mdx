@@ -10,7 +10,7 @@ title: Decisions
 
 An org-level **decision** is a single remediation (e.g. a `ban`) on one value, applied to a scope you
 choose with the `target` field. Use it for targeted, one-off actions; for maintained IP feeds prefer
-[blocklists](/console/service_api/blocklists.md).
+[blocklists](/u/console/service_api/blocklists).
 
 ### Create a decision
 
@@ -23,7 +23,7 @@ A decision requires `duration`, `origin`, `scenario`, `scope`, `type`, `value` a
 | A specific engine | `{ "type": "entity", "value": "<engine_id>" }` |
 | A tag | `{ "type": "tag", "value": "<tag>" }` (one call per tag) |
 
-Your `<org_id>` is returned by [`/info`](/u/console/service_api/quickstart/authentication). An
+Your `<org_id>` is returned by [`/info`](/u/console/service_api/authentication). An
 `<engine_id>` is the engine's machine id (Security Engines page); a `<tag>` is simply the tag string
 you assigned to your engines (e.g. `env:prod`). The Service API does not enumerate them.
 
@@ -72,7 +72,7 @@ A Security Engine enforces a decision targeted at it (via `entity`, a `tag`, or 
 **enrolled** in the org and has **`console_management` enabled** locally
 (`cscli console enable console_management`) — the decision is pushed over PAPI and applied within
 seconds. See [enrolling your engine in the Console](/u/getting_started/post_installation/console).
-Reach for a [blocklist](/console/service_api/blocklists.md) instead when you want a maintained IP feed
+Reach for a [blocklist](/u/console/service_api/blocklists) instead when you want a maintained IP feed
 rather than one-off decisions.
 :::
 

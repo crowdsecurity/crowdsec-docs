@@ -276,7 +276,7 @@ If you are not receiving the full list, you have two options:
 
   Many devices support compression natively. For instance, the [Mikrotik integration](integrations/mikrotik.mdx) sets `http-header-field="Accept-Encoding:gzip"`.
 
-- **Use pagination.** If your client cannot handle compression, fetch the list in smaller chunks using the `page` and `page_size` query parameters. See [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination).
+- **Use pagination.** If your client cannot handle compression, fetch the list in smaller chunks using the `page` and `page_size` query parameters. See [Managing integrations size limits with pagination](/u/console/service_api/integrations#managing-integrations-size-limits-with-pagination).
 
   When pulling **without compression**, keep each page under the ~5 MB limit by capping `page_size` (or by setting a `pull_limit` on the integration so every pull stays bounded). The safe value depends on your format, because each format produces a different number of bytes per entry. As a reference point, the plain text format truncates at roughly **350,000 IPv4 entries** at the 5 MB limit:
 
