@@ -558,6 +558,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 						"console/service_api/quickstart/blocklists",
 						"console/service_api/quickstart/integrations",
 						"console/service_api/quickstart/allowlists",
+						"console/service_api/quickstart/decisions",
 						"console/service_api/quickstart/metrics",
 					],
 				},

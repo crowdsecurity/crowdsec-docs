@@ -437,7 +437,11 @@ print(response)
 
 ### Subscribe to a blocklist
 
-You can see details about the [subscriber's logic here](/console/service_api/blocklists.md#blocklist-subscription-mechanism).
+Subscribing makes the target pull and enforce the list. Choose who to target with `entity_type`:
+the **whole org** (no `ids`), **specific engines**, or **a set of tags**. Engine and tag ids come
+from the Console — see the
+[subscription mechanism](/console/service_api/blocklists.md#blocklist-subscription-mechanism) for
+details and the `{ "updated": [...], "errors": [...] }` response.
 
 <Tabs
   defaultValue="curl"
@@ -450,9 +454,20 @@ You can see details about the [subscriber's logic here](/console/service_api/blo
 <TabItem value="curl">
 
 ```bash
+# Whole org — every engine enrolled in the org, now and in the future (no ids)
 curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
-https://admin.api.crowdsec.net/v1//blocklists/1234MYBLOCKLISTID/subscribers \
--d '{ "ids": ["SECENGINEID5678"], "entity_type": "engine", "remediation": "ban" }'
+https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/subscribers \
+-d '{ "entity_type": "org", "remediation": "ban" }'
+
+# One or several specific Security Engines
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/subscribers \
+-d '{ "entity_type": "engine", "ids": ["SECENGINEID5678"], "remediation": "ban" }'
+
+# A set of tags — every engine carrying one of these tags (now and in the future)
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/subscribers \
+-d '{ "entity_type": "tag", "ids": ["env:prod"], "remediation": "ban" }'
 ```
 
 </TabItem>

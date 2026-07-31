@@ -1,0 +1,103 @@
+---
+id: decisions
+title: Decisions
+---
+
+:::info
+ - We're assuming your API key is set in the environment variable `$KEY` with the necessary permissions.
+ - The `decisions` endpoints require a key with **decision** scope; a blocklist-only key returns `403 Forbidden`.
+:::
+
+An org-level **decision** is a single remediation (e.g. a `ban`) on one value, applied to a scope you
+choose with the `target` field. Use it for targeted, one-off actions; for maintained IP feeds prefer
+[blocklists](/console/service_api/blocklists.md).
+
+### Create a decision
+
+A decision requires `duration`, `origin`, `scenario`, `scope`, `type`, `value` and a `target`. The
+`target` decides **who enforces it**:
+
+| Target | `target` object |
+|---|---|
+| Whole org | `{ "type": "org", "value": "<org_id>" }` |
+| A specific engine | `{ "type": "entity", "value": "<engine_id>" }` |
+| A tag | `{ "type": "tag", "value": "<tag>" }` (one call per tag) |
+
+Your `<org_id>` is returned by [`/info`](/u/console/service_api/quickstart/authentication). An
+`<engine_id>` is the engine's machine id (Security Engines page); a `<tag>` is simply the tag string
+you assigned to your engines (e.g. `env:prod`). The Service API does not enumerate them.
+
+```bash
+# Ban 1.2.3.4 for 4h across the whole organization
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/decisions \
+-d '{
+  "duration": "4h", "origin": "cscli", "scenario": "manual",
+  "scope": "Ip", "type": "ban", "value": "1.2.3.4",
+  "target": { "type": "org", "value": "MY-ORG-ID-abcdef1234" }
+}'
+
+# Same ban, but only on one specific Security Engine
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/decisions \
+-d '{
+  "duration": "4h", "origin": "cscli", "scenario": "manual",
+  "scope": "Ip", "type": "ban", "value": "1.2.3.4",
+  "target": { "type": "entity", "value": "SECENGINEID5678" }
+}'
+
+# Same ban, applied to every engine carrying a tag
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/decisions \
+-d '{
+  "duration": "4h", "origin": "cscli", "scenario": "manual",
+  "scope": "Ip", "type": "ban", "value": "1.2.3.4",
+  "target": { "type": "tag", "value": "env:prod" }
+}'
+```
+
+ - [Redoc method link](https://admin.api.crowdsec.net/v1/docs#tag/Decisions/operation/createDecision)
+
+<details>
+  <summary>answer on success</summary>
+
+```json
+{ "uuid": "65b6a73e-f32e-49dd-a78b-85c7466c1bd4" }
+```
+
+</details>
+
+:::note Enforcement is a closed loop
+A Security Engine enforces a decision targeted at it (via `entity`, a `tag`, or the `org`) once it is
+**enrolled** in the org and has **`console_management` enabled** locally
+(`cscli console enable console_management`) — the decision is pushed over PAPI and applied within
+seconds. See [enrolling your engine in the Console](/u/getting_started/post_installation/console).
+Reach for a [blocklist](/console/service_api/blocklists.md) instead when you want a maintained IP feed
+rather than one-off decisions.
+:::
+
+### List decisions
+
+```bash
+# All org decisions
+curl -i -H "x-api-key: ${KEY}" -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/decisions?page=1&size=50
+
+# Decisions for one IP
+curl -i -H "x-api-key: ${KEY}" -H "Content-Type: application/json" \
+"https://admin.api.crowdsec.net/v1/decisions?ips=1.2.3.4"
+```
+
+ - [Redoc method link](https://admin.api.crowdsec.net/v1/docs#tag/Decisions/operation/getDecisions)
+
+Results are paginated as `{ "items": [...], "total": N, "page": 1, "size": 50, "links": {...} }`; each
+item carries `uuid`, `origin`, `scenario`, `scope`, `type`, `value`, `duration` and `target`.
+
+### View aggregated decisions
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/decisions/aggregated
+```
+
+ - [Redoc method link](https://admin.api.crowdsec.net/v1/docs#tag/Decisions/operation/getAggregatedDecisions)

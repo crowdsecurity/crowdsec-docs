@@ -23,6 +23,59 @@ When [subscribing to blocklists](https://admin.api.crowdsec.net/v1/docs#tag/Bloc
  - You can as well subscribe via a `tag` (entity_type `tag`). This means that future Security Engines <!-- or Integrations  @hes --> associated to this tag will **automatically** be subscribed to the blocklist.
  - You can also subscribe via an `org` directly. This means that future Security Engines <!-- and Integrations @hes --> enrolled in this org will **automatically** be subscribed to the blocklist.
 
+### Targeting the whole org, specific engines, or a set of tags
+
+Every subscription sets an `entity_type` and a `remediation` (the action subscribers apply, e.g. `ban`).
+Whether you pass `ids` depends on the `entity_type`:
+
+| Target | Request body | `ids` |
+|---|---|---|
+| Whole org | `{ "entity_type": "org", "remediation": "ban" }` | must be omitted |
+| Specific engine(s) | `{ "entity_type": "engine", "ids": ["<engine_id>", …], "remediation": "ban" }` | required |
+| A set of tag(s) | `{ "entity_type": "tag", "ids": ["<tag>", …], "remediation": "ban" }` | required |
+
+For blocklist `1234MYBLOCKLISTID`:
+
+```bash
+# Whole org — every engine enrolled in the org, now and in the future (no ids)
+curl -H "x-api-key: ${KEY}" -H "Content-Type: application/json" -X POST \
+https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/subscribers \
+-d '{ "entity_type": "org", "remediation": "ban" }'
+
+# One or several specific Security Engines
+curl -H "x-api-key: ${KEY}" -H "Content-Type: application/json" -X POST \
+https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/subscribers \
+-d '{ "entity_type": "engine", "ids": ["ENGINEID1", "ENGINEID2"], "remediation": "ban" }'
+
+# A set of tags — every Security Engine carrying one of these tags (now and in the future)
+curl -H "x-api-key: ${KEY}" -H "Content-Type: application/json" -X POST \
+https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/subscribers \
+-d '{ "entity_type": "tag", "ids": ["env:prod", "region:eu"], "remediation": "ban" }'
+```
+
+Each id is validated independently; the response reports which subscribed and which failed:
+
+```json
+{ "updated": ["ENGINEID1"], "errors": [ { "ENGINEID2": "Entity not found" } ] }
+```
+
+:::info Where do engine and tag ids come from?
+The Service API does not enumerate your engines or tags.
+
+- An **engine** id is the engine's machine id (shown on the Security Engines page).
+- A **tag** id is simply the [tag string](/u/console/security_engines/name_and_tags) you assigned to
+  your engines (e.g. `env:prod`), at enrollment with `cscli console enroll --tags …` or from the
+  Console.
+- An `org` subscription needs no id.
+:::
+
+:::note Subscription alone is not enough
+A targeted engine only starts enforcing the blocklist once it is **enrolled** in the org,
+**subscribed** (directly or through its org/tag), and has **`console_management` enabled** locally
+(`cscli console enable console_management`). See
+[enrolling your engine in the Console](/u/getting_started/post_installation/console).
+:::
+
 ## Sharing private blocklists with other organizations
 
 The [`/blocklists/{blocklist_id}/shares`](https://admin.api.crowdsec.net/v1/docs#tag/Blocklists/operation/shareBlocklist) endpoint allows you to share a private blocklist with other organizations.
