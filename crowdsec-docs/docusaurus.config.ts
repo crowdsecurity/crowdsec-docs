@@ -187,6 +187,13 @@ const redirects = [
 	{ from: "/docs/next/troubleshooting", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/faq", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/next/faq", to: "/u/troubleshooting/intro" },
+	// Service API docs flattened: quickstart/<resource> -> <resource>
+	{ from: "/u/console/service_api/quickstart/authentication", to: "/u/console/service_api/authentication" },
+	{ from: "/u/console/service_api/quickstart/blocklists", to: "/u/console/service_api/blocklists" },
+	{ from: "/u/console/service_api/quickstart/allowlists", to: "/u/console/service_api/allowlists" },
+	{ from: "/u/console/service_api/quickstart/integrations", to: "/u/console/service_api/integrations" },
+	{ from: "/u/console/service_api/quickstart/decisions", to: "/u/console/service_api/decisions" },
+	{ from: "/u/console/service_api/quickstart/metrics", to: "/u/console/service_api/metrics" },
 	{
 		from: "/docs/next/getting_started/install_crowdsec",
 		to: "/u/getting_started/installation/linux",

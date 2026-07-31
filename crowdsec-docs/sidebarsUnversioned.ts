@@ -550,28 +550,12 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				tag: "premium",
 			},
 			items: [
-				{
-					type: "category",
-					label: "Quickstart",
-					items: [
-						"console/service_api/quickstart/authentication",
-						"console/service_api/quickstart/blocklists",
-						"console/service_api/quickstart/integrations",
-						"console/service_api/quickstart/allowlists",
-						"console/service_api/quickstart/decisions",
-						"console/service_api/quickstart/metrics",
-					],
-				},
-				{
-					type: "doc",
-					label: "Blocklists",
-					id: "console/service_api/blocklists",
-				},
-				{
-					type: "doc",
-					label: "Integrations",
-					id: "console/service_api/integrations",
-				},
+				"console/service_api/authentication",
+				"console/service_api/blocklists",
+				"console/service_api/allowlists",
+				"console/service_api/integrations",
+				"console/service_api/decisions",
+				"console/service_api/metrics",
 				{
 					type: "category",
 					label: "SDKs",
