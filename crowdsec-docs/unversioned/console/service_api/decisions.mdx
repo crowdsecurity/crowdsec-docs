@@ -69,8 +69,8 @@ https://admin.api.crowdsec.net/v1/decisions \
 
 :::note Enforcement is a closed loop
 A Security Engine enforces a decision targeted at it (via `entity`, a `tag`, or the `org`) once it is
-**enrolled** in the org and has **`console_management` enabled** locally
-(`cscli console enable console_management`) — the decision is pushed over PAPI and applied within
+enrolled in the org and has `console_management` enabled locally
+(`cscli console enable console_management`). The decision is then pushed over PAPI and applied within
 seconds. See [enrolling your engine in the Console](/u/getting_started/post_installation/console).
 Reach for a [blocklist](/u/console/service_api/blocklists) instead when you want a maintained IP feed
 rather than one-off decisions.

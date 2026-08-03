@@ -87,8 +87,8 @@ print(response.model_dump_json())
 
 ### Scope the metrics (engine, tag, or integration)
 
-By default the metrics cover your whole organization. Narrow them with these **repeatable** query
-parameters, which filter server-side:
+By default the metrics cover your whole organization. Narrow them with these repeatable query
+parameters; they filter server-side:
 
 | Parameter | Scopes the metrics to… |
 |---|---|
@@ -110,10 +110,9 @@ Repeat a parameter to pass several values (they combine as a union); the filter 
 `raw` and `computed` sections.
 
 :::note The breakdown is by origin, not by engine
-Inside the response, each metric's `data` is grouped by **origin** — a string such as `CAPI`,
-`crowdsec`, `ipset`, `unknown`, or a blocklist object (with its `label`/`id`) — **not** per engine.
-To get a single engine's numbers, request with that engine's `engine_ids`; a single response never
-splits the totals per engine.
+Each metric's `data` is grouped by origin: `CAPI`, `crowdsec`, `ipset`, `unknown`, or a blocklist
+object (with its `label`/`id`). It is never split per engine. To get one engine's numbers, ask for
+that engine's `engine_ids`.
 :::
 
 ### Metrics definitions
