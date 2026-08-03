@@ -88,6 +88,8 @@ address-name crowdsec-feed {
 
 If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
 
+This integration uses the plain text format. When pulling **without compression**, keep `page_size` at or below **~300,000** entries to stay under the ~5 MB response limit; beyond that the response is truncated. Enabling compression avoids this limit entirely.
+
 ## References
 
 - [Juniper — Security Dynamic Address feeds documentation (JunOS)](https://www.juniper.net/documentation/us/en/software/nm-apps23.1/policy-enforcer-user-guide/topics/task/dynamic-example.html)

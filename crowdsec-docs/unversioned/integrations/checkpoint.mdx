@@ -83,6 +83,8 @@ Format: `UNIQ-NAME, VALUE, TYPE, CONFIDENCE, SEVERITY, PRODUCT, COMMENT`
 
 If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
 
+The Checkpoint format is verbose. When pulling **without compression**, keep `page_size` at or below **~60,000** entries to stay under the ~5 MB response limit; larger pages return an error. Enabling compression avoids this limit entirely.
+
 ## References
 
 - [Check Point — Custom Intelligence (IoC) Feeds documentation](https://support.checkpoint.com/results/sk/sk132193)

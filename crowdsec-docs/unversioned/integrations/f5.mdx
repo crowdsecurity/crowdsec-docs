@@ -51,6 +51,8 @@ Format: `IP, Mask, WL/BL, Category`
 
 If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
 
+The F5 format produces larger entries. When pulling **without compression**, keep `page_size` at or below **~90,000** entries to stay under the ~5 MB response limit; beyond that the response is truncated. Enabling compression avoids this limit entirely.
+
 ## References
 
 - [F5 — External IP blocklist documentation](https://techdocs.f5.com/en-us/bigip-16-1-0/big-ip-access-policy-manager-per-request-policies/using-http-connector/creating-http-connector-request-external-IP-blocklist.html)

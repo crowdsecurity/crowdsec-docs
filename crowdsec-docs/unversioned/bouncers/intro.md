@@ -42,6 +42,8 @@ Remediation Components interact with [crowdsec's Local API](/docs/next/local_api
 
 For your remediation components to communicate with the local API, you have to generate an API token with `cscli` and put it in the associated configuration file:
 
+### Generate an API Key for your Bouncer
+
 ```bash
 sudo cscli bouncers add testBouncer
 Api key for 'testBouncer':

@@ -46,9 +46,9 @@ The score alone doesn't tell the full story. Check these fields to understand *w
 
 ### Exploitation Phase
 
-- **Mass Exploitation** or **Targeted Exploitation**: The threat is active and real. Treat as urgent.
+- **Active Exploitation**: The threat is active and real. Treat as urgent.
 - **Background Noise**: Ongoing but low-level. Standard patching is appropriate.
-- **Unpopular** or **Insufficient Data**: Limited attacker interest. Low urgency.
+- **Limited Exploitation** or **Insufficient Data**: Limited attacker interest. Low urgency.
 
 ## Step 4: Read the CrowdSec Analysis
 
@@ -78,9 +78,9 @@ Based on what you've found:
 | Finding | Recommended Action |
 |---------|-------------------|
 | High CrowdSec Score + Targeted + Growing | **Emergency patch.** Deploy blocklist immediately. Investigate for compromise. |
-| High CrowdSec Score + Mass exploitation | **Urgent patch.** Deploy blocklist. Check all instances of affected software. |
+| High CrowdSec Score + Active exploitation | **Urgent patch.** Deploy blocklist. Check all instances of affected software. |
 | Moderate score + Background noise | **Prioritize patch** within days, not weeks. Blocklist optional. |
-| Low score + Unpopular | **Standard patch** cycle. Monitor for phase changes. |
+| Low score + Limited Exploitation | **Standard patch** cycle. Monitor for phase changes. |
 | Insufficient data | **Fall back to CVSS** and vendor advisory. Check back for updates. |
 
 ## Step 7: Deploy Mitigation (If Needed)
@@ -116,7 +116,7 @@ def triage_cve(cve_id: str) -> str:
     score = cve.crowdsec_score
     phase = cve.exploitation_phase.name
 
-    if score >= 7 or phase in ("mass_exploitation", "targeted_exploitation"):
+    if score >= 7 or phase in ("mass_exploitation",):
         return f"CRITICAL — Score {score}, Phase: {phase}"
     elif score >= 4:
         return f"HIGH — Score {score}, Phase: {phase}"

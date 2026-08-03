@@ -3,17 +3,32 @@ title: Dashboard
 description: Security Engines Dashboard page
 ---
 
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
 This section displays all the CrowdSec Security Engines available in an Organization. This feature provides a quick overview of the organization's security status and allows the management of all the Security Engines remotely.
 
 If you haven't signed up for Security Engines, check out the ["Getting Started"](/getting_started/post_installation/console.mdx) guide.
 
-![Security_engines_page](/img/console/security_engines/page.png)
+<ThemedImage
+    alt="CrowdSec Security Engines Dashboard"
+    sources={{
+        light: useBaseUrl("/img/console/security_engines/dashboard_light.png"),
+        dark: useBaseUrl("/img/console/security_engines/dashboard_dark.png"),
+    }}
+/>
 
 ## Table view
 
 Different views are available based on the number of engines in an organization. If an organization have more than four engines, table views work best. (See below)
 
-![Table_view](/img/console/security_engines/table-view.png)
+<ThemedImage
+    alt="CrowdSec Security Engines Table View"
+    sources={{
+        light: useBaseUrl("/img/console/security_engines/table-view-light.png"),
+        dark: useBaseUrl("/img/console/security_engines/table-view-dark.png"),
+    }}
+/>
 
 ## Security Engine Card
 
@@ -29,11 +44,13 @@ Each Security Engine has a card that displays essential details to facilitate mo
 
 ### Basic Card
 
-![Basic_card](/img/console/security_engines/basic-card.png)
-
-### Distributed Setup Card
-
-![Distributed_setup_card](/img/console/security_engines/distributed-setup-card.png)
+<ThemedImage
+    alt="CrowdSec Security Engines Basic Card"
+    sources={{
+        light: useBaseUrl("/img/console/security_engines/basic-card-light.png"),
+        dark: useBaseUrl("/img/console/security_engines/basic-card-dark.png"),
+    }}
+/>
 
 ## Security Engines Inactivity
 

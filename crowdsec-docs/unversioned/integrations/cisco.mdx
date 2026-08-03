@@ -38,6 +38,8 @@ The vendor documentation is available in the [References](#references) section b
 
 If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
 
+This integration uses the plain text format. When pulling **without compression**, keep `page_size` at or below **~300,000** entries to stay under the ~5 MB response limit; beyond that the response is truncated. Enabling compression avoids this limit entirely.
+
 ## References
 
 - [Cisco — Security Intelligence feeds documentation](https://www.cisco.com/c/en/us/td/docs/security/secure-firewall/management-center/device-config/710/management-center-device-config-71/objects-object-mgmt.html#ID-2243-00000291)
