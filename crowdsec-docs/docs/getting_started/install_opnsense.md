@@ -31,6 +31,56 @@ Great, you now have CrowdSec installed on your system. Have a look at the [post 
 these recommendations are valid for any system.
 
 
+## Building the plugin package
+
+OPNsense plugins are built as FreeBSD packages, but the supported build path is the OPNsense `tools.git` build system rather than invoking `poudriere` directly.
+
+On a FreeBSD or OPNsense build host, fetch the OPNsense build repositories:
+
+```console
+# pkg install git
+# cd /usr
+# git clone https://github.com/opnsense/tools
+# cd /usr/tools
+# make update
+```
+
+Then replace `/usr/plugins` with the fork or branch that contains your changes:
+
+```console
+# rm -rf /usr/plugins
+# git clone https://github.com/crowdsecurity/plugins /usr/plugins
+# cd /usr/plugins
+# git checkout <your-branch>
+```
+
+Build only the CrowdSec plugin:
+
+```console
+# cd /usr/tools
+# make plugins PLUGINSLIST="security/crowdsec"
+```
+
+You can also build from the plugin directory:
+
+```console
+# cd /usr/plugins/security/crowdsec
+# make package
+```
+
+If the build environment cannot find the OPNsense PHP or Python binaries, you may see warnings like `Cannot build without PLUGIN_PHP set` or `Cannot build without PLUGIN_PYTHON set`. Pass the values explicitly for the OPNsense release you are building against. For OPNsense 26.7:
+
+```console
+# make plugins PLUGINSLIST="security/crowdsec" PLUGIN_ABI=26.7 PLUGIN_PHP=84 PLUGIN_PYTHON=313
+```
+
+The generated package is named `os-crowdsec-<version>.pkg`. You can locate and install it on a test OPNsense system with:
+
+```console
+# find /usr/obj -name 'os-crowdsec-*.pkg'
+# pkg add /path/to/os-crowdsec-<version>.pkg
+```
+
 ## Plugin Configuration
 
 You will find some options under `Services > CrowdSec > Settings`. You will see the first three are enabled by default: Log Processor (previously known as IDS), LAPI and Remediation Component (previously known as IPS).
@@ -127,4 +177,3 @@ For more information on the topic:
  - How to set up a CrowdSec multi-server installation ([tutorial on crowdsec.net](https://www.crowdsec.net/blog/multi-server-setup) or [Linux Journal](https://www.linuxjournal.com/content/how-set-crowdsec-multi-server-installation))
 
  - [Improve The CrowdSec Multi-Server Installation With HTTPS Between Agents](https://www.linuxjournal.com/content/improve-crowdsec-multi-server-installation-https-between-agents) (Linux Journal)
-
