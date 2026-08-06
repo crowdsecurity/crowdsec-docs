@@ -792,6 +792,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			items: [
 				"integrations/rawiplist",
 				"integrations/remediationcomponent",
+				"integrations/cloudflare",
 				{
 					type: "html",
 					value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",

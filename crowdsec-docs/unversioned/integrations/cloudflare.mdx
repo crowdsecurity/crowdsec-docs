@@ -1,0 +1,84 @@
+---
+id: cloudflare
+title: Cloudflare
+---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '0 0 20%'}}>
+  <img src={useBaseUrl('/img/crowdsec_cloudfare.svg')} alt="Cloudflare" style={{width: '100%'}} />
+</div>
+<div style={{flex: '1'}}>
+
+The recommended way to integrate CrowdSec with Cloudflare is the **Self-Hosted Cloudflare Bouncer**, connected to a **Blocklist Integration Endpoint**.
+
+The Blocklist Integration Endpoint is a hosted URL served by CrowdSec — no infrastructure required on your side. A Sync Worker deployed inside your Cloudflare account pulls decisions from it on a schedule, stores them in a KV store, and the Remediation Worker enforces them on every incoming request.
+
+:::info
+For other integration methods (Security Engine LAPI, CLI Bouncer Daemon, advanced config), see the full [Cloudflare Bouncer documentation](/u/bouncers/cloudflare).
+:::
+
+</div>
+</div>
+
+---
+
+## Step 1 — Create a Blocklist Integration Endpoint
+
+<snippet-extract data-extract-copy="remediationcomponent:bl_integ_setup_rc"></snippet-extract>
+
+<hr />
+
+## Step 2 — Deploy the Self-Hosted Installer
+
+Click the button below to clone the installer into your GitHub or GitLab account and deploy it as a Cloudflare Worker:
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer-install)
+
+:::note
+The Cloudflare deploy flow copies the repository into your GitHub or GitLab account before deploying — you need an account on one of these platforms.
+:::
+
+Once deployed, the Installer Worker appears in **Workers & Pages** in your Cloudflare dashboard. Open its URL to reach the installer GUI.
+
+![Install Worker](/img/bouncer/cloudflare-worker/cf-installer-worker-preview.png)
+
+---
+
+## Step 3 — Configure via the Installer UI
+
+The installer is a three-step wizard. Work through each section top to bottom.
+
+![Installer UI](/img/bouncer/cloudflare-worker/cf-installer-init.png)
+
+### 1 — Cloudflare API Token
+
+Paste your Cloudflare API token. The installer validates it immediately and fetches all zones in your account.  
+If you don't have a token yet, click **Create token ↗** in the UI — the required permissions are listed in the [Cloudflare Bouncer documentation](/u/bouncers/cloudflare#cloudflare-api-token).
+
+![Valid Token Lists Zones](/img/bouncer/cloudflare-worker/cf-installer-init-valid-token.png)
+
+### 2 — CrowdSec Integration Endpoint
+
+Paste the **Blocklist Integration Endpoint URL** from Step 1.
+
+![Decisions Endpoint Edit](/img/bouncer/cloudflare-worker/cf-installer-decisions-endpoint-edit.png)
+
+### 3 — Zone Protection
+
+Select which zones to protect. You can install zones individually or in batch.  
+Toggle **Supports CAPTCHA** to enable Turnstile challenges on a zone.
+
+![Zone Install](/img/bouncer/cloudflare-worker/cf-installer-zone-bind.png)
+
+---
+
+## Next Steps
+
+- Subscribe to blocklists in the [Blocklist Catalog](console/blocklists/catalog.md) to populate your integration.
+- For advanced configuration, metrics, CLI Bouncer Daemon setup, and more, see the [Cloudflare Bouncer documentation](/u/bouncers/cloudflare).
