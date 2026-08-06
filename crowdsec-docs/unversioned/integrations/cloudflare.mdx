@@ -15,9 +15,8 @@ import CodeBlock from '@theme/CodeBlock';
 </div>
 <div style={{flex: '1'}}>
 
-The recommended way to integrate CrowdSec with Cloudflare is the **Self-Hosted Cloudflare Bouncer**, connected to a **Blocklist Integration Endpoint**.
-
-The Blocklist Integration Endpoint is a hosted URL served by CrowdSec — no infrastructure required on your side. A Sync Worker deployed inside your Cloudflare account pulls decisions from it on a schedule, stores them in a KV store, and the Remediation Worker enforces them on every incoming request.
+The recommended way to integrate CrowdSec Blocklists with Cloudflare is the **Self-Hosted Cloudflare Bouncer**, connected to a **Blocklist Integration Endpoint**.
+You don't need to deploy anything on your servers and you are able to choose the **type of remediation** for each blocklist: **Ban** or **Captcha**, resulting in a **Block** or **Turnstile** challenge for the end-user.
 
 :::info
 For other integration methods (Security Engine LAPI, CLI Bouncer Daemon, advanced config), see the full [Cloudflare Bouncer documentation](/u/bouncers/cloudflare).
@@ -34,45 +33,13 @@ For other integration methods (Security Engine LAPI, CLI Bouncer Daemon, advance
 
 <hr />
 
-## Step 2 — Deploy the Self-Hosted Installer
+## Step 2 — Deploy and Configure the Cloudflare Bouncer
 
-Click the button below to clone the installer into your GitHub or GitLab account and deploy it as a Cloudflare Worker:
+For Cloudflare, the [Cloudflare Bouncer](/u/bouncers/cloudflare#self-hosted-setup) acts as the intermediary: it pulls decisions from the Blocklist Integration Endpoint and enforces remediations directly inside your Cloudflare account via Workers and a KV store — no server required on your side.
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer-install)
+Follow the [Self-Hosted Setup](/u/bouncers/cloudflare#self-hosted-setup) instructions to deploy the installer and configure it. When prompted for a **CrowdSec Integration Endpoint**, paste the URL from Step 1.
 
-:::note
-The Cloudflare deploy flow copies the repository into your GitHub or GitLab account before deploying — you need an account on one of these platforms.
-:::
-
-Once deployed, the Installer Worker appears in **Workers & Pages** in your Cloudflare dashboard. Open its URL to reach the installer GUI.
-
-![Install Worker](/img/bouncer/cloudflare-worker/cf-installer-worker-preview.png)
-
----
-
-## Step 3 — Configure via the Installer UI
-
-The installer is a three-step wizard. Work through each section top to bottom.
-
-![Installer UI](/img/bouncer/cloudflare-worker/cf-installer-init.png)
-
-### 1 — Cloudflare API Token
-
-Paste your Cloudflare API token. The installer validates it immediately and fetches all zones in your account.  
-If you don't have a token yet, click **Create token ↗** in the UI — the required permissions are listed in the [Cloudflare Bouncer documentation](/u/bouncers/cloudflare#cloudflare-api-token).
-
-![Valid Token Lists Zones](/img/bouncer/cloudflare-worker/cf-installer-init-valid-token.png)
-
-### 2 — CrowdSec Integration Endpoint
-
-Paste the **Blocklist Integration Endpoint URL** from Step 1.
-
-![Decisions Endpoint Edit](/img/bouncer/cloudflare-worker/cf-installer-decisions-endpoint-edit.png)
-
-### 3 — Zone Protection
-
-Select which zones to protect. You can install zones individually or in batch.  
-Toggle **Supports CAPTCHA** to enable Turnstile challenges on a zone.
+Once your zones are protected, the installer UI will show them as installed:
 
 ![Zone Install](/img/bouncer/cloudflare-worker/cf-installer-zone-bind.png)
 
@@ -80,5 +47,5 @@ Toggle **Supports CAPTCHA** to enable Turnstile challenges on a zone.
 
 ## Next Steps
 
-- Subscribe to blocklists in the [Blocklist Catalog](console/blocklists/catalog.md) to populate your integration.
+- Subscribe to more blocklists in the [Blocklist Catalog](console/blocklists/catalog.md) to populate your integration.
 - For advanced configuration, metrics, CLI Bouncer Daemon setup, and more, see the [Cloudflare Bouncer documentation](/u/bouncers/cloudflare).
