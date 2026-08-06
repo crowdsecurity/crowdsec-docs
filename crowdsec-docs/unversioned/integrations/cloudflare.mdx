@@ -1,6 +1,7 @@
 ---
 id: cloudflare
 title: Cloudflare
+toc_max_heading_level: 2
 ---
 
 import ThemedImage from "@theme/ThemedImage";
@@ -27,13 +28,13 @@ For other integration methods (Security Engine LAPI, CLI Bouncer Daemon, advance
 
 ---
 
-## Step 1 — Create a Blocklist Integration Endpoint
+## Create a Blocklist Integration Endpoint
 
 <snippet-extract data-extract-copy="remediationcomponent:bl_integ_setup_rc"></snippet-extract>
 
 <hr />
 
-## Step 2 — Deploy and Configure the Cloudflare Bouncer
+## Deploy and Configure the Cloudflare Bouncer
 
 For Cloudflare, the [Cloudflare Bouncer](/u/bouncers/cloudflare#self-hosted-setup) acts as the intermediary: it pulls decisions from the Blocklist Integration Endpoint and enforces remediations directly inside your Cloudflare account via Workers and a KV store — no server required on your side.
 
@@ -45,7 +46,7 @@ Once your zones are protected, the installer UI will show them as installed:
 
 ---
 
-## Next Steps
+## Go further
 
 - Subscribe to more blocklists in the [Blocklist Catalog](console/blocklists/catalog.md) to populate your integration.
 - For advanced configuration, metrics, CLI Bouncer Daemon setup, and more, see the [Cloudflare Bouncer documentation](/u/bouncers/cloudflare).
