@@ -637,13 +637,13 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "AWS WAF",
-			id: "bouncers/aws_waf",
+			label: "Apache",
+			id: "bouncers/apache_bouncer",
 		},
 		{
 			type: "doc",
-			label: "Apache",
-			id: "bouncers/apache_bouncer",
+			label: "AWS WAF",
+			id: "bouncers/aws_waf",
 		},
 		{
 			type: "doc",
@@ -738,7 +738,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		{
 			type: "link",
 			label: "Third Party",
-			href: "https://hub.crowdsec.net/browse/#bouncers",
+			href: "https://app.crowdsec.net/hub/remediation-components",
 		},
 		// {
 		//     "type": "doc",
