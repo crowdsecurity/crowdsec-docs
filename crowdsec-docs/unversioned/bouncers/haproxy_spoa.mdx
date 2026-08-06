@@ -5,29 +5,18 @@ title: HAProxy SPOA
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import useBaseUrl from "@docusaurus/useBaseUrl";
-import RemediationSupportBadges from "@site/src/components/remediation-support-badge";
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-  <img
-    src={useBaseUrl("/img/crowdsec_haproxy.svg")}
-    alt="CrowdSec"
-    title="CrowdSec"
-    width="400"
-    height="300"
-  />
-</p>
-<p align="center">
-  <img src="https://img.shields.io/badge/build-pass-green" />
-  <img src="https://img.shields.io/badge/tests-pass-green" />
-</p>
-<p align="center">
-  &#x1F4DA; <a href="#installation/">Documentation</a>
-  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-  &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-
-<RemediationSupportBadges MTLS Mode={false} Appsec Metrics Prometheus />
+<BouncerHeader
+  title="HAProxy SPOA"
+  imgSrc="/img/crowdsec_haproxy.svg"
+  description="Go-based SPOA bouncer for HAProxy with AppSec (WAF) support — the recommended HAProxy integration."
+  MTLS
+  Mode={false}
+  Appsec
+  Metrics
+  Prometheus
+/>
 
 # A remediation component for HAProxy
 

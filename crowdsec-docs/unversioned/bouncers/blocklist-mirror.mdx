@@ -6,25 +6,12 @@ sidebar_position: 7
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<div align="center">
-  <img src={useBaseUrl('/img/crowdsec_http.svg')} width="400" height="300" />
-</div>
-
-<div align="center">
-  <img src="https://img.shields.io/badge/build-pass-green" />
-  <img src="https://img.shields.io/badge/tests-pass-green" />
-</div>
-
-<div align="center">
-  &#x1F4DA; <a href="#installation-from-repositories">Documentation</a>
-  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-  &#128172; <a href="https://discourse.crowdsec.net">Discourse</a>
-</div>
-
-<RemediationSupportBadges
+<BouncerHeader
+  title="Blocklist Mirror"
+  imgSrc="/img/crowdsec_http.svg"
+  description="Exposes CrowdSec decisions via HTTP(S) endpoints in pre-defined formats for network appliances."
   MTLS
   Prometheus
 />

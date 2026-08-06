@@ -5,26 +5,14 @@ title: Windows Firewall
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import useBaseUrl from "@docusaurus/useBaseUrl";
-import RemediationSupportBadges from "@site/src/components/remediation-support-badge";
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-  <img
-    src={useBaseUrl("/img/cs-windows-firewall-bouncer-logo.png")}
-    alt="CrowdSec"
-    title="CrowdSec"
-    width="300"
-    height="300"
-  />
-</p>
-
-<p align="center">
-  &#x1F4DA; <a href="#installation/">Documentation</a>
-  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-  &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-
-<RemediationSupportBadges MTLS />
+<BouncerHeader
+  title="Windows Firewall"
+  imgSrc="/img/cs-windows-firewall-bouncer-logo.png"
+  description="Interacts with the Windows Firewall to block IPs banned by CrowdSec."
+  MTLS
+/>
 
 ## Overview
 

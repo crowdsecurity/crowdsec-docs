@@ -5,14 +5,12 @@ title: WordPress Plugin
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-<img src={useBaseUrl('/img/crowdsec_wp.png')} alt="CrowdSec" title="CrowdSec" />
-</p>
-
-<RemediationSupportBadges
+<BouncerHeader
+  title="WordPress Plugin"
+  imgSrc="/img/crowdsec_wp.png"
+  description="Protects WordPress sites against malicious traffic using CrowdSec detection and blocklists."
   Mode
   MTLS
   Appsec

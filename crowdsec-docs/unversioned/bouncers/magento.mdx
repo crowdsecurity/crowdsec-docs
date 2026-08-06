@@ -6,19 +6,12 @@ sidebar_position: 1
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-<img src={useBaseUrl('/img/bouncer/magento/crowdsec_magento_bouncer.png')} alt="CrowdSec" title="CrowdSec" />
-</p>
-
-<p align="center">
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-
-<RemediationSupportBadges
+<BouncerHeader
+  title="Magento 2"
+  imgSrc="/img/bouncer/magento/crowdsec_magento_bouncer.png"
+  description="Magento 2 extension that protects stores against malicious traffic using CrowdSec."
   Mode
   MTLS
 />

@@ -6,23 +6,13 @@ toc_max_heading_level: 3
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-  <img src={useBaseUrl('/img/crowdsec_cloudfare.svg')} width="400" height="300" />
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/build-pass-green"></img>
-  <img src="https://img.shields.io/badge/tests-pass-green"></img>
-</p>
-
-<p align="center">
-&#x1F4DA; <a href="#overview">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse</a>
-</p>
+<BouncerHeader
+  title="Cloudflare Worker Bouncer"
+  imgSrc="/img/crowdsec_cloudfare.svg"
+  description="Syncs CrowdSec decisions with Cloudflare Workers to block or challenge traffic on your zones."
+/>
 
 :::tip
   We recommend using the **Self-Hosted Installer** setup method for most users who want to connect a CrowdSec [Blocklist Integration Endpoint](/u/integrations/remediationcomponent) to Cloudflare without installing anything on their infrastructure. It is simpler to install and maintain.  
