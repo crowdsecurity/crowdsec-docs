@@ -42,12 +42,6 @@ type FeatureBadgeDef = {
 };
 
 const BADGE_DEFS: Record<BadgeKey, FeatureBadgeDef> = {
-	waf: {
-		label: "WAF",
-		tooltip: "Supports Web Application Firewall (WAF) functionality",
-		linkedFeatures: ["waf"] as FeatureKey[],
-		displayText: (bouncerSupportedFeatures: Record<FeatureKey, FeatureDef>) => (bouncerSupportedFeatures.waf ? FEATURE_DEFS.waf.displayText(true) : FEATURE_DEFS.waf.displayText(false)),
-	},
 	updatemode: {
 		label: "UpdateMode",
 		tooltip: "Supported decisions update mode",
@@ -67,6 +61,12 @@ const BADGE_DEFS: Record<BadgeKey, FeatureBadgeDef> = {
 			
 			return modes.join(" | ");
 		},
+	},
+	waf: {
+		label: "WAF",
+		tooltip: "Supports Web Application Firewall (WAF) functionality",
+		linkedFeatures: ["waf"] as FeatureKey[],
+		displayText: (bouncerSupportedFeatures: Record<FeatureKey, FeatureDef>) => (bouncerSupportedFeatures.waf ? FEATURE_DEFS.waf.displayText(true) : FEATURE_DEFS.waf.displayText(false)),
 	},
 	metrics: {
 		label: "Metrics",

@@ -677,18 +677,8 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "HAProxy",
-			id: "bouncers/haproxy",
-		},
-		{
-			type: "doc",
 			label: "HAProxy SPOA",
 			id: "bouncers/haproxy_spoa",
-		},
-		{
-			type: "doc",
-			label: "Ingress Nginx",
-			id: "bouncers/ingress-nginx",
 		},
 		{
 			type: "doc",
@@ -736,15 +726,47 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			id: "bouncers/traefik",
 		},
 		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		// ── More ──────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>More</span>",
+			defaultStyle: false,
+		},
+		{
 			type: "link",
 			label: "Third Party",
 			href: "https://app.crowdsec.net/hub/remediation-components",
 		},
-		// {
-		//     "type": "doc",
-		//     "label": "Contributing",
-		//     "id": "bouncers/contributing/contributing_bouncers"
-		// },
+		{
+		     "type": "link",
+		     "label": "Contributing",
+		     "href": "/docs/next/contributing/contributing_bouncers"
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		// ── Deprecated ──────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Deprecated</span>",
+			defaultStyle: false,
+		},
+		{
+			type: "doc",
+			label: "HAProxy",
+			id: "bouncers/haproxy",
+		},
+		{
+			type: "doc",
+			label: "Ingress Nginx",
+			id: "bouncers/ingress-nginx",
+		},
 	],
 	blocklistsSideBar: [
 		{
