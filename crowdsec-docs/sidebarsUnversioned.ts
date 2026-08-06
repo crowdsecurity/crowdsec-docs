@@ -790,11 +790,39 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 			label: "Integrations",
 			items: [
+				// ── Generic ──────────────────────────────────────────────────────────
+				{
+					type: "html",
+					value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Generic</span>",
+					defaultStyle: false,
+				},
 				"integrations/rawiplist",
 				"integrations/remediationcomponent",
 				{
 					type: "html",
 					value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+					defaultStyle: false,
+				},
+				// ── Cloud & Edge ──────────────────────────────────────────────────────────
+				{
+					type: "html",
+					value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Cloud & Edge</span>",
+					defaultStyle: false,
+				},
+				{
+					type: "doc",
+					label: "Cloudflare",
+					id: "integrations/cloudflare",
+				},
+				{
+					type: "html",
+					value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+					defaultStyle: false,
+				},
+				// ── Network Security ──────────────────────────────────────────────────────────
+				{
+					type: "html",
+					value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Network & Security</span>",
 					defaultStyle: false,
 				},
 				"integrations/checkpoint",

@@ -26,7 +26,7 @@ The CrowdSec [Remediation Component](bouncers/intro.md) integration allows you t
 This is the integration to use for platforms that do not support native IP list ingestion from an external URL. Remediation Components act as the bridge between CrowdSec's blocklist endpoint and those platforms.
 
 <div style={{display: 'flex', gap: '1.5rem', alignItems: 'center', margin: '1rem 0'}}>
-  <a href="/u/bouncers/cloudflare" style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', textDecoration: 'none', color: 'inherit'}}>
+  <a href="/u/integrations/cloudflare" style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', textDecoration: 'none', color: 'inherit'}}>
     <img src={useBaseUrl('/img/crowdsec_cloudfare.svg')} alt="Cloudflare" style={{height: '40px', width: 'auto'}} />
     <span style={{fontSize: '0.75rem', fontWeight: 600}}>Cloudflare <span style={{fontSize: '0.65rem', color: '#16a34a', fontWeight: 700}}>★ Self Hosted</span></span>
   </a>
@@ -45,6 +45,7 @@ See the [full list of available Remediation Components](bouncers/intro.md) to fi
 </div>
 
 ## Create a Remediation Component Integration Endpoint
+<snippet-extract data-extract="bl_integ_setup_rc">
 <Tabs
   defaultValue="step1"
   values={[
@@ -172,6 +173,7 @@ The blocklist name(s) will appear in the integration tile once subscribed.
 </div>
     </TabItem>
 </Tabs>
+</snippet-extract>
 <hr />
 
 ## Configure the Remediation Component
