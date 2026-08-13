@@ -18,7 +18,7 @@ type BouncerHeaderProps = {
 	featuresSupport?: string;
 };
 
-type FeatureKey = "waf" | "mtls" | "metrics" | "prometheus" | "livemode" | "streammode" | "apimode";
+type FeatureKey = "waf" | "mtls" | "metrics" | "prometheus" | "livemode" | "streammode";
 type BadgeKey = "waf" | "metrics" | "mtls" | "prometheus" | "updatemode";
 
 type FeatureDef = {
@@ -43,9 +43,9 @@ type FeatureBadgeDef = {
 
 const BADGE_DEFS: Record<BadgeKey, FeatureBadgeDef> = {
 	updatemode: {
-		label: "UpdateMode",
+		label: "Update Mode",
 		tooltip: "Supported decisions update mode",
-		linkedFeatures: ["livemode", "streammode", "apimode"] as FeatureKey[],
+		linkedFeatures: ["livemode", "streammode"] as FeatureKey[],
 		displayText: (bouncerSupportedFeatures: Record<FeatureKey, FeatureDef>) => {
 			//aggregate the display text of linked features separated by "|" , if they are present only
 			let modes: string[] = [];
@@ -55,10 +55,7 @@ const BADGE_DEFS: Record<BadgeKey, FeatureBadgeDef> = {
 			if (bouncerSupportedFeatures.streammode) {
 				modes.push(FEATURE_DEFS.streammode.displayText(true));
 			}
-			if (bouncerSupportedFeatures.apimode) {
-				modes.push(FEATURE_DEFS.apimode.displayText(true));
-			}
-			
+
 			return modes.join(" | ");
 		},
 	},
@@ -94,7 +91,7 @@ const FEATURE_DEFS: Record<FeatureKey, FeatureDef> = {
 		displayText: (supported: boolean) => (supported ? "Supported" : "Unsupported"),
 	},
 	metrics: {
-		label: "Metrics",
+		label: "Remediation Metrics",
 		displayText: (supported: boolean) => (supported ? "Supported" : "Unsupported"),
 	},
 	mtls: {
@@ -114,10 +111,6 @@ const FEATURE_DEFS: Record<FeatureKey, FeatureDef> = {
 	streammode: {
 		label: "Stream Mode",
 		displayText: (supported: boolean) => "Stream",
-	},
-	apimode: {
-		label: "API Mode",
-		displayText: (supported: boolean) => "API",
 	},
 };
 

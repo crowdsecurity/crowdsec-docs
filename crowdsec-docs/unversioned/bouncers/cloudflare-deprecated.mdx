@@ -6,8 +6,7 @@ title: Cloudflare DEPRECATED BOUNCER
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
-
+import BouncerHeader from "@site/src/components/bouncer-header";
 
 <p align="center">
   <img src={useBaseUrl('/img/crowdsec_cloudfare.svg')} width="400" height="300" />
@@ -18,9 +17,11 @@ import RemediationSupportBadges from '@site/src/components/remediation-support-b
   <img src="https://img.shields.io/badge/tests-pass-green"></img>
 </p>
 
-<RemediationSupportBadges
-  MTLS
-  Prometheus
+<BouncerHeader
+  title="Cloudflare Bouncer (Deprecated)"
+  imgSrc="/img/crowdsec_cloudfare.svg"
+  description="Syncs CrowdSec decisions with Cloudflare Workers to block or challenge traffic on your zones."
+  featuresSupport="streammode"
 />
 
 :::danger
