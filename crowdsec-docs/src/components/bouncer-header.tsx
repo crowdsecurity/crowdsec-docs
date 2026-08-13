@@ -46,11 +46,11 @@ const BADGE_LABELS: Record<(typeof BADGE_ORDER)[number], string> = {
 
 const BADGE_TOOLTIPS: Record<(typeof BADGE_ORDER)[number], string> = {
 	waf: "Has WAF capabilities",
-	challenge: "Can present challenges to users",
-	metrics: "Can send detailed metrics to LAPI",
+	challenge: "Can present challenges to users as an alternative to blocking",
+	metrics: "Send detailed metrics about remediations. Visible in cscli and CrowdSec Console",
 	mtls: "Can do mutual TLS authentication to LAPI",
 	prometheus: "Can expose metrics to Prometheus",
-	updatemode: "Decision polling mode(s) supported by this bouncer",
+	updatemode: "Supported decision polling mode(s) supported by this bouncer",
 };
 
 // ---------------------------------------------------------------------------
