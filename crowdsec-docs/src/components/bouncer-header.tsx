@@ -312,15 +312,17 @@ export default function BouncerHeader({
 								GitHub
 							</a>
 							<span aria-hidden="true" style={{ color: "var(--ifm-color-emphasis-300)" }}>·</span>
-							<a
-								href={hubUrl ?? PLACEHOLDER_HUB}
-								target="_blank"
-								rel="noopener noreferrer"
-								style={styles.link}
-								title="CrowdSec Hub page"
-							>
-								Hub
-							</a>
+							{ hubUrl && (
+								<a
+									href={hubUrl ?? PLACEHOLDER_HUB}
+									target="_blank"
+									rel="noopener noreferrer"
+									style={styles.link}
+									title="CrowdSec Hub page"
+								>
+									Hub
+								</a>
+							)}
 						</span>
 					</li>
 				</ul>

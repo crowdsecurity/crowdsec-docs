@@ -712,6 +712,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
+			label: "Traefik (Kubernetes)",
+			id: "bouncers/traefik",
+		},
+		{
+			type: "doc",
 			label: "Windows Firewall",
 			id: "bouncers/windows_firewall",
 		},
@@ -719,11 +724,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			type: "doc",
 			label: "Wordpress",
 			id: "bouncers/wordpress",
-		},
-		{
-			type: "doc",
-			label: "Traefik (Kubernetes)",
-			id: "bouncers/traefik",
 		},
 		{
 			type: "html",
