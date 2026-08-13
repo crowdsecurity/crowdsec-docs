@@ -150,7 +150,7 @@ const SupportBadge = ({
 						<span className={clsx("px-2.5 sm:px-4 py-1 sm:py-1.5 text-white", colorClass)}>{displayText}</span>
 					</div>
 				</TooltipTrigger>
-				<TooltipContent>
+				<TooltipContent side="bottom">
 					<p>{tooltip}</p>
 					<ToolTipArrow className="dark:fill-white" />
 				</TooltipContent>
