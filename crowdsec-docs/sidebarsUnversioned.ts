@@ -742,9 +742,9 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			href: "https://app.crowdsec.net/hub/remediation-components",
 		},
 		{
-		     "type": "link",
-		     "label": "Contributing",
-		     "href": "/docs/next/contributing/contributing_bouncers"
+			type: "link",
+			label: "Contributing",
+			href: "/docs/next/contributing/contributing_bouncers",
 		},
 		{
 			type: "html",

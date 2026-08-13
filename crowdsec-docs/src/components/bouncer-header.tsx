@@ -33,16 +33,9 @@ type BouncerHeaderProps = {
 // ---------------------------------------------------------------------------
 
 // Canonical badge order rendered in the strip (update mode last so it can be wider)
-const BADGE_ORDER: Array<BadgeKey> = [
-	"updatemode",
-	"waf",
-	"challenge",
-	"metrics",
-	"mtls",
-	"prometheus",
-];
+const BADGE_ORDER: Array<BadgeKey> = ["updatemode", "waf", "challenge", "metrics", "mtls", "prometheus"];
 
-const BADGE_LABELS: Record<typeof BADGE_ORDER[number], string> = {
+const BADGE_LABELS: Record<(typeof BADGE_ORDER)[number], string> = {
 	updatemode: "Update Mode",
 	waf: "WAF",
 	challenge: "Challenge",
@@ -51,7 +44,7 @@ const BADGE_LABELS: Record<typeof BADGE_ORDER[number], string> = {
 	prometheus: "Prometheus",
 };
 
-const BADGE_TOOLTIPS: Record<typeof BADGE_ORDER[number], string> = {
+const BADGE_TOOLTIPS: Record<(typeof BADGE_ORDER)[number], string> = {
 	waf: "Has WAF capabilities",
 	challenge: "Can present challenges to users",
 	metrics: "Can send detailed metrics to LAPI",
@@ -215,13 +208,17 @@ const LABEL_COLOR: Record<ChipVariant, string> = {
 
 function Chip({ variant, label, title }: { variant: ChipVariant; label: string; title: string }) {
 	return (
-		<li
-			style={{ display: "inline-flex", alignItems: "center", gap: 4, whiteSpace: "nowrap" as const }}
-			title={title}
-		>
+		<li style={{ display: "inline-flex", alignItems: "center", gap: 4, whiteSpace: "nowrap" as const }} title={title}>
 			<span
 				aria-label={variant === "supported" ? "supported" : variant === "unsupported" ? "not supported" : "mode"}
-				style={{ fontSize: "0.7rem", fontWeight: 700, color: GLYPH_COLOR[variant], lineHeight: 1, width: 10, textAlign: "center" as const }}
+				style={{
+					fontSize: "0.7rem",
+					fontWeight: 700,
+					color: GLYPH_COLOR[variant],
+					lineHeight: 1,
+					width: 10,
+					textAlign: "center" as const,
+				}}
 			>
 				{GLYPH[variant]}
 			</span>
@@ -311,8 +308,10 @@ export default function BouncerHeader({
 							>
 								GitHub
 							</a>
-							<span aria-hidden="true" style={{ color: "var(--ifm-color-emphasis-300)" }}>·</span>
-							{ hubUrl && (
+							<span aria-hidden="true" style={{ color: "var(--ifm-color-emphasis-300)" }}>
+								·
+							</span>
+							{hubUrl && (
 								<a
 									href={hubUrl ?? PLACEHOLDER_HUB}
 									target="_blank"
