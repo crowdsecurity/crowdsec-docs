@@ -60,7 +60,7 @@ const BADGE_TOOLTIPS: Record<(typeof BADGE_ORDER)[number], string> = {
 function parseFeatures(featuresSupport: string | undefined): Set<FeatureKey> {
 	const set = new Set<FeatureKey>();
 	if (!featuresSupport) return set;
-	const valid = new Set<string>(["waf", "mtls", "metrics", "prometheus", "livemode", "streammode"]);
+	const valid = new Set<string>(["waf", "mtls", "metrics", "prometheus", "livemode", "streammode", "challenge"]);
 	for (const token of featuresSupport.split(",")) {
 		const key = token.trim().toLowerCase();
 		if (valid.has(key)) set.add(key as FeatureKey);
