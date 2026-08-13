@@ -9,9 +9,11 @@ import BouncerHeader from "@site/src/components/bouncer-header";
 
 <BouncerHeader
   title="Envoy Gateway (Kubernetes)"
+  typeLabel="Third Party Bouncer"
   imgSrc="/img/crowdsec_http.svg"
-  description="Third Party Bouncer - External authorization bouncer for Envoy Gateway with AppSec support."
+  description="External authorization bouncer for Envoy Gateway with WAF support."
   featuresSupport="streammode, metrics, prometheus, waf"
+  githubUrl="https://github.com/kdwils/envoy-proxy-crowdsec-bouncer"
 />
 
 # CrowdSec Remediation QuickStart for Envoy Gateway
@@ -29,8 +31,8 @@ At the end, you will have:
 - `SecurityPolicy` resources attached to your `HTTPRoute` objects
 - CrowdSec remediation decisions enforced before traffic reaches your backends
 
-:::tip AppSec Support
-This bouncer supports the [AppSec Component](/docs/next/appsec/intro) for
+:::tip WAF Support
+This bouncer supports [WAF capabilities](/docs/next/appsec/intro) for
 real-time WAF protection.
 
 This page focuses on remediation-only deployment. If you want Envoy Gateway
@@ -447,4 +449,4 @@ your platform is not supported, you will need a custom build.
 - Review the upstream configuration guide:
   [docs/CONFIGURATION.md](https://github.com/kdwils/envoy-proxy-crowdsec-bouncer/blob/main/docs/CONFIGURATION.md)
 - If you want WAF and virtual patching instead of remediation only, follow the
-  [AppSec QuickStart for Envoy Gateway](/docs/next/appsec/quickstart/envoy-gateway)
+  [WAF QuickStart for Envoy Gateway](/docs/next/appsec/quickstart/envoy-gateway)
