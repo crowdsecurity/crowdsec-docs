@@ -1,6 +1,6 @@
 ---
 title: Am I Under Attack
-description: Alerting you when a surge of attack is hitting you
+description: Detect attack surges across your Security Engines and investigate the contributing alerts
 ---
 
 import { Badge } from "@site/src/ui/badge";
@@ -9,53 +9,65 @@ import { Badge } from "@site/src/ui/badge";
     <Badge variant="premium">CrowdSec Premium Feature</Badge>
 </div>
 
-The **"Am I Under Attack?"** feature enables enterprise organizations’ owners to receive real-time alerts about potential cyber threats and attack surges. By detecting unusual attack patterns and notifying security teams immediately, this feature helps mitigate risks and reduce response time, ensuring that your team focuses on significant anomalies without being overwhelmed by routine notifications.
+**Am I Under Attack?** detects concentrated attack activity across your Security Engines and groups it into **Attack Surges**. When a surge is detected, the CrowdSec Console notifies your team and provides a dashboard for reviewing its scope, sources, behaviors, and contributing alerts.
 
-This feature can be easily enabled or disabled, and once activated, it will continuously monitor and alert you of attack surges detected in your infrastructure.
+The dashboard is available to Premium organizations. Organization Admins and Owners can enable or disable attack alerting.
 
-## How to Activate the "Am I Under Attack?" Feature
+## Enable attack notifications
 
-To begin receiving alerts from the **Am I Under Attack?** feature, follow these steps:
+1. In the CrowdSec Console, open **Alerts**.
+2. Find the **Instant Attack Notification** card.
+3. Select **Enable**.
 
-1. Navigate to the **Alerts** section on the Console.
-2. Locate the **"Am I Under Attack?"** switch, shown below, and toggle it to the "on" position to enable notifications.
+The button changes to **Enabled** when attack alerting is active for the organization.
 
-![Am I Under Attack? Switch](/img/console/alerts/am-i-under-attack-switch.png)
+![Enable Instant Attack Notification from the Alerts page](/img/console/alerts/am-i-under-attack-enable-wide.png)
 
-Once the feature is activated, you will start receiving real-time notifications for targeted attack surges against your organization.
+## Receive an attack notification
 
-### Console notification in global Alerts view
+When CrowdSec detects an Attack Surge, the Console adds an in-app notification for the affected organization. Open the notification center to review the alert, or follow the attack notification to open the **Attack Surges** dashboard.
 
-When an attack is detected, the Console will display a red banner at the top of the screen, as shown in the screenshot below, indicating that a targeted attack has been identified. This serves as an immediate visual cue to investigate further.
+![Attack Surge notification in the CrowdSec Console](/img/console/alerts/am-i-under-attack-notification-wide.png)
 
-![Global Alerts View](/img/console/alerts/am-i-under-attack-global-alerts-view.png)
+## Review the Attack Surges dashboard
 
-The **Visualizer** will help you analyze these attacks based on source IPs, targeted security engines, and specific scenarios, allowing you to dive into the attack patterns.
+Open **Attack Surges** from the Security Stack navigation. The dashboard provides:
 
-## How it Works (Detailed)
+- **Detected Attack Surges**: Number of surges in the selected period.
+- **Contributing Alerts**: Total alerts grouped into those surges.
+- **Affected engines**: Number of Security Engines involved.
+- **Latest Attack Surge**: Date of the most recent surge.
+- **Attack Surge History**: Alert volume for each surge over time.
+- **Attack Surges details**: Start and end times, alert count, variation, affected engines, notification status, and alert drill-downs.
 
-The **"Am I Under Attack?"** feature continuously monitors the attack signal stream in your organization and analyzes signal surges. These surges are defined by comparing current signal rates to historical data, using a 15-minute observation window against a 4-hour reference window. When the volume of signals exceeds the expected threshold (four times the interquartile range), an alert is triggered.
+Use the Security Engine and date filters to narrow the dashboard to the infrastructure and period you want to investigate.
 
-Alerts can be delivered through various channels, including email and future integrations with EventBridge-compatible services like Slack, Splunk, and more.
+![Populated Attack Surges dashboard](/img/console/alerts/attack-surges-overview-wide.png)
 
-### Benefits
+## Inspect an Attack Surge
 
-- **Enhanced Reaction Time**: Immediate alerts enable faster response to attacks.
-- **Reduced Manual Oversight**: Automated detection of attack surges reduces the need for constant monitoring.
-- **Seamless Integration**: Alerts can be integrated into existing security systems, simplifying management.
+Select the expand control next to an Attack Surge to inspect:
 
-### Notifications and Integrations
+- **Top attacking IPs**, including the reputation CrowdSec observed during the surge.
+- **Top behaviors** and their contributing alert counts.
+- **Affected Security Engines** and the alert count attributed to each engine.
 
-- **Email Notifications**: By default, email alerts will be sent to the organization’s owner and admins.
-- **EventBridge**: Future releases will support additional integrations with systems such as Coralogix, Datadog, MongoDB, Slack, and more, offering flexibility in managing alerts. (contact us if you're interested in a specific integration)
+For an attacking IP, open the actions menu to view its alerts. Organization Editors, Admins, and Owners can also create a one-week or one-month ban decision from this menu.
 
-## Key Considerations
+![Expanded Attack Surge with IP actions, behaviors, and affected engines](/img/console/alerts/attack-surges-details-wide.png)
 
-There are a few limitations and upcoming improvements to be aware of:
+## Drill down into contributing alerts
 
-- **Delay in Alerts**: Attack surge alerts are triggered after a 10-15 minute delay to minimize false positives.
-- **Non-Configurable Sensitivity**: The detection algorithm’s sensitivity is fixed in this version but will be adjustable in future releases.
-- **Seasonality**: The system does not yet account for recurring seasonal attack patterns, which could trigger unnecessary alerts.
+Use **View alerts** on an Attack Surge to open the Alerts page with the surge period and affected Security Engines preselected. You can also select an attacking IP, behavior, or Security Engine from the expanded details to investigate that specific facet.
 
----
+The applied filters remain visible above the Alerts visualizer and table. In the following example, the **http:scan** behavior contains 33 contributing alerts.
 
+![Alerts page filtered by an Attack Surge behavior](/img/console/alerts/attack-surges-alerts-drilldown-wide.png)
+
+## Disable attack notifications
+
+To stop receiving Attack Surge notifications:
+
+1. Open **Attack Surges**.
+2. Select **Disable attack alerting**.
+3. Confirm the action.
