@@ -121,7 +121,7 @@ Each configured zone must have at least one `A` or `AAAA` DNS record. Zones with
 
 ---
 
-## Self-Hosted Setup
+## 🔌 Self-Hosted Setup
 
 The self-hosted setup uses a Cloudflare github integration to deploy a worker acting as the central install and configuration GUI for the Cloudflare bouncer elements.
 
@@ -252,7 +252,7 @@ git push --force origin main
 
 ---
 
-## CLI Bouncer Setup
+## 🔧 CLI Bouncer Setup
 
 The CLI bouncer is a Go binary (`crowdsec-cloudflare-worker-bouncer`) that manages Cloudflare infrastructure from the command line using a YAML configuration file.
 
@@ -507,7 +507,7 @@ sudo crowdsec-cloudflare-worker-bouncer -d
 
 ---
 
-## Setting Up the Worker Route Fail Mode
+## ⚙️ Setting Up the Worker Route Fail Mode
 
 Worker routes are created with **Fail Closed** mode by default. In this mode, any worker error results in a Cloudflare 1027 error page shown to visitors — including errors caused by plan quota overruns.
 
