@@ -32,7 +32,7 @@ const BADGE_ORDER: BadgeKey[] = ["updatemode", "waf", "challenge", "metrics", "m
 
 const BADGE_LABELS: Record<BadgeKey, string> = {
 	updatemode: "Update Mode",
-	waf: "WAF",
+	waf: "WAF / AppSec",
 	challenge: "Challenge",
 	metrics: "Remediation Metrics",
 	mtls: "mTLS",
@@ -41,7 +41,7 @@ const BADGE_LABELS: Record<BadgeKey, string> = {
 
 const BADGE_TOOLTIPS: Record<BadgeKey, string> = {
 	updatemode: "Decision polling mode(s) supported by this bouncer",
-	waf: "Has WAF capabilities",
+	waf: "Supports CrowdSec WAF / AppSec capabilities",
 	challenge: "Can present challenges to users as an alternative to blocking",
 	metrics: "Send detailed metrics about remediations. Visible in cscli and CrowdSec Console",
 	mtls: "Can do mutual TLS authentication to LAPI",
@@ -63,7 +63,7 @@ function parseFeatures(featuresSupport: string | undefined): Set<FeatureKey> {
 	return set;
 }
 
-function updateModeLabel(features: Set<FeatureKey>): string | null {
+function extrapolateModeLabel(features: Set<FeatureKey>): string | null {
 	const parts: string[] = [];
 	if (features.has("livemode")) parts.push("Live");
 	if (features.has("streammode")) parts.push("Stream");
@@ -213,7 +213,7 @@ export default function BouncerHeader({
 }: Readonly<BouncerHeaderProps>): React.JSX.Element {
 	const resolvedImg = useBaseUrl(imgSrc);
 	const features = parseFeatures(featuresSupport);
-	const modeLabel = updateModeLabel(features);
+	const modeLabel = extrapolateModeLabel(features);
 
 	return (
 		<div style={styles.root}>
