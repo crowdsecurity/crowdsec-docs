@@ -1,10 +1,11 @@
 ---
 id: intro
-title: Introduction
+title: CrowdSec Remediation Components (aka Bouncers)
+sidebar_label: Presentation 
 sidebar_position: 1
 ---
 
-# Remediation Components
+# Remediation Components - aka Bouncers
 
 :::info
 You may see Remediation Components referred to as "bouncers" in the documentation and/or within cscli commands.

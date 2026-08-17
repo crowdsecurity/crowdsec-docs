@@ -1,22 +1,22 @@
 ---
 id: stormshield
-title: Stormshield
+title: "Stormshield IP Blocking with CrowdSec"
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-<img src={useBaseUrl('/img/bouncer/stormshield/logo.png')} alt="CrowdSec" title="CrowdSec" width="300" height="300" />
-</p>
+<BouncerHeader
+  title="Stormshield"
+  imgSrc="/img/bouncer/stormshield/logo.png"
+  description="Syncs IP bans from CrowdSec with Stormshield network appliances."
+  featuresSupport="mtls, streammode"
+  githubUrl="https://github.com/crowdsecurity/cs-stormshield-bouncer"
+/>
 
-<p align="center">
-&#x1F4DA; <a href="#installation/">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-
+# Sync CrowdSec IP Bans to Stormshield Appliances
 ## Overview
 
 The Stormshield Remediation syncs IP bans from Crowdsec with Stormshield appliances.

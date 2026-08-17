@@ -1,28 +1,23 @@
 ---
 id: magento
-title: Magento 2
+title: "Magento 2 IP Blocking & CAPTCHA with CrowdSec"
 sidebar_position: 1
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-<img src={useBaseUrl('/img/bouncer/magento/crowdsec_magento_bouncer.png')} alt="CrowdSec" title="CrowdSec" />
-</p>
-
-<p align="center">
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-
-<RemediationSupportBadges
-  Mode
-  MTLS
+<BouncerHeader
+  title="Magento 2"
+  imgSrc="/img/bouncer/magento/crowdsec_magento_bouncer.png"
+  description="Magento 2 extension that protects stores against malicious traffic using CrowdSec."
+  featuresSupport="livemode, streammode, mtls, captcha"
+  githubUrl="https://github.com/crowdsecurity/cs-magento-bouncer"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-magento-bouncer"
 />
-
+# Protect Magento 2 Stores with CrowdSec IP Blocking & CAPTCHA
 ## Introduction
 
 The `CrowdSec Bouncer` extension for Magento 2 has been designed to protect Magento 2 websites from all kinds of attacks by using [CrowdSec](https://www.crowdsec.net/) technology.
