@@ -138,14 +138,17 @@ $ sudo cscli alerts inspect 2019 -d
 
 `fingerprint_id` (the `fsid`) is stable per device profile, so it correlates submissions from the same client across IP changes.
 
-The same alert in the Console:
+The same alert in the Console, where most people will actually read it. Expanding the context shows the same fields as tags, with `score_reasons` spelling out how the client reached 115:
 
-<!-- SHOT 1: Console alerts list filtered on kind=bot-detection, showing rejected-browser-submission rows -->
-<!-- SHOT 2: Console alert detail with the context panel open on request_score / score_reasons -->
+![Score breakdown on a bot-detection alert in the Console](/img/appsec/bot_detection/console-alert-context.png)
+
+:::tip
+The context column is hidden by default in the Console. If you don't see these tags, enable it (or switch on Comfort view) as described in [Alerts Context](/u/console/alerts/alerts_contexts). Without it, a rejection shows up but not the score that caused it.
+:::
 
 ### Fields available to a custom context
 
-The context above is what the shipped file exposes. The event carries more, and you can surface any of it with your own [alert context](/user_guides/alert_context.md):
+The context above is what the shipped file exposes. The event carries more, and you can surface any of it with your own [alert context](/log_processor/alert_context/intro.md):
 
 | Meta key | Contains |
 |---|---|

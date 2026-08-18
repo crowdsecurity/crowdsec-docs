@@ -163,6 +163,8 @@ Most leaves under `fingerprint.Signals.*` are wrapped so a malformed value from 
 
 This page enumerates the fields; the always-current source of truth is the exported Go type [`FingerprintData`](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/appsec/challenge#FingerprintData).
 
+Most of what this object exposes is also reachable as a scored reason key. If you are deciding whether to allow a client rather than inspecting one, [Request scoring](#request-scoring) and the [reason table](#reasons-and-severities) are usually the better entry point.
+
 ### Top-level fields
 
 | Field                          | Access   | Description                                                                                             |
@@ -222,6 +224,8 @@ Reach for `EvaluateMismatches().Has("accept_language")` rather than the atomic f
 ### Bot signals
 
 `fingerprint.Bot.*` exposes each individual fast-bot-detection signal as a boolean (read directly). The `Has*Signal()` helpers above are roll-ups over these; reach here to branch on one specific signal.
+
+Most of these signals also have a reason key and a point value under the shipped scoring config: `fingerprint.Bot.CDP` is the same measurement as the `cdp` reason worth 100 points. See [Reasons and severities](#reasons-and-severities) for the mapping. Prefer the reason key in rules, since it is what `EvaluateMismatches()`, `score_reasons` and your alerts all speak.
 
 **Automation frameworks**
 
@@ -472,34 +476,38 @@ For the higher-level bot detection workflow (what the library actually detects, 
 
 ### Reasons and severities
 
-The reason keys accepted by `.Has(reason)` and returned by `.Reasons()`, with their severity:
+The reason keys accepted by `.Has(reason)` and returned by `.Reasons()`, with their severity and the points the shipped scoring config gives them.
 
-| Reason                        | Severity | Meaning                                                                   |
-| ----------------------------- | -------- | ------------------------------------------------------------------------- |
-| `cdp`                         | high     | Chrome DevTools Protocol detected.                                        |
-| `webdriver`                   | high     | `navigator.webdriver` present.                                            |
-| `webdriver_writable`          | high     | `navigator.webdriver` is writable.                                        |
-| `selenium`                    | high     | Selenium property detected.                                               |
-| `playwright`                  | high     | Playwright detected.                                                      |
-| `webdriver_iframe`            | high     | An iframe context reports `webdriver`.                                    |
-| `webdriver_worker`            | high     | A web-worker context reports `webdriver`.                                 |
-| `headless_screen_resolution` | high     | Screen resolution matches headless Chrome.                               |
-| `missing_chrome_object`       | high     | `window.chrome` object missing.                                          |
-| `impossible_memory`           | high     | Reported device memory outside plausible bounds.                          |
-| `high_cpu_count`              | high     | CPU count implausibly high.                                              |
-| `mismatch_webgl_worker`       | high     | WebGL output differs between main context and worker.                    |
-| `mismatch_platform_iframe`    | high     | Platform string differs inside an iframe.                                |
-| `mismatch_platform_worker`    | high     | Platform string differs inside a worker.                                 |
-| `platform_mismatch`           | high     | UA-reported platform disagrees with `navigator.platform`.                |
-| `gpu_mismatch`                | high     | GPU vendor/renderer differs between contexts.                            |
-| `bot_user_agent`              | high     | User-Agent matches a known-bot regex.                                    |
-| `inconsistent_etsl`           | high     | `toString().length` probe disagrees with the claimed browser family.     |
-| `utc_timezone`                | medium   | Timezone is UTC (more common on VMs / headless).                         |
-| `ua_mobile`                   | medium   | Mobile UA but implausibly wide viewport (see `UAMobileMismatch()`).      |
-| `accept_language`             | medium   | `Accept-Language` header disagrees with `navigator.language`.            |
-| `swiftshader_renderer`        | low      | GPU renderer is SwiftShader (software rendering).                        |
-| `mismatch_languages`          | low      | `navigator.languages` is internally inconsistent.                       |
-| `timezone_country`            | low      | Timezone implausible for the geolocated country. Soft signal.           |
+Severity and points are two different things. Severity is fixed in the engine and describes how confident the signal is. Points come from [`crowdsecurity/appsec-bot-challenge-scoring`](whats_included.md#how-a-request-is-scored) and describe how much that confidence should count against a client, which is a judgement call you can [re-weight](customization.md#re-weight-a-signal-for-your-traffic). That is why several high-severity signals are worth 30 rather than 100: they are reliable readings that odd-but-real setups still produce.
+
+| Reason                        | Severity | Points | Meaning                                                                   |
+| ----------------------------- | -------- | ------ | ------------------------------------------------------------------------- |
+| `cdp`                         | high     | 100    | Chrome DevTools Protocol detected.                                        |
+| `webdriver`                   | high     | 100    | `navigator.webdriver` present.                                            |
+| `webdriver_writable`          | high     | 100    | `navigator.webdriver` is writable.                                        |
+| `selenium`                    | high     | 100    | Selenium property detected.                                               |
+| `playwright`                  | high     | 100    | Playwright detected.                                                      |
+| `webdriver_iframe`            | high     | 100    | An iframe context reports `webdriver`.                                    |
+| `webdriver_worker`            | high     | 100    | A web-worker context reports `webdriver`.                                 |
+| `headless_screen_resolution` | high     | 50     | Screen resolution matches headless Chrome.                               |
+| `missing_chrome_object`       | high     | 50     | `window.chrome` object missing.                                          |
+| `impossible_memory`           | high     | 50     | Reported device memory outside plausible bounds.                          |
+| `inconsistent_etsl`           | high     | 50     | `toString().length` probe disagrees with the claimed browser family.     |
+| `mismatch_webgl_worker`       | high     | 50     | WebGL output differs between main context and worker.                    |
+| `mismatch_platform_iframe`    | high     | 50     | Platform string differs inside an iframe.                                |
+| `mismatch_platform_worker`    | high     | 50     | Platform string differs inside a worker.                                 |
+| `platform_mismatch`           | high     | 30     | UA-reported platform disagrees with `navigator.platform`.                |
+| `gpu_mismatch`                | high     | 30     | GPU vendor/renderer differs between contexts.                            |
+| `high_cpu_count`              | high     | 30     | CPU count implausibly high.                                              |
+| `bot_user_agent`              | high     | 30     | User-Agent matches a known-bot regex.                                    |
+| `utc_timezone`                | medium   | 15     | Timezone is UTC (more common on VMs / headless).                         |
+| `ua_mobile`                   | medium   | 15     | Mobile UA but implausibly wide viewport (see `UAMobileMismatch()`).      |
+| `accept_language`             | medium   | 15     | `Accept-Language` header disagrees with `navigator.language`.            |
+| `swiftshader_renderer`        | low      | 5      | GPU renderer is SwiftShader (software rendering).                        |
+| `mismatch_languages`          | low      | 5      | `navigator.languages` is internally inconsistent.                       |
+| `timezone_country`            | low      | 5      | Timezone implausible for the geolocated country. Soft signal.           |
+
+The points column applies only when a scoring config is loaded. Severity is always available through `.High()`, `.Medium()` and `.Low()`, whatever else you have installed.
 
 :::note The reason set evolves
 These reasons derive from the [fpscanner](https://github.com/antoinevastel/fpscanner) signals plus a few CrowdSec-authored checks, and may change as fpscanner and browsers evolve — treat the table above as the current shape, not a stable contract. The always-current source of truth is the exported Go API: [`KnownReasons()`](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/appsec/challenge#KnownReasons) returns the full set the aggregator may emit, and [`SeverityFor(reason)`](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/appsec/challenge#SeverityFor) gives each key's severity.
