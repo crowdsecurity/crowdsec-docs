@@ -30,7 +30,7 @@ The vendor documentation is available in the [References](#references) section b
 :::
 </div>
 </div>
-## Setup a F5 Integration Endpoint
+## Create a F5 Integration Endpoint
 <snippet-extract data-extract-copy="rawiplist:bl_integ_setup"></snippet-extract>
 <hr />
 
@@ -49,7 +49,7 @@ Format: `IP, Mask, WL/BL, Category`
 
 ## Manage integration size limits with pagination
 
-If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
+If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](/u/console/service_api/integrations#managing-integrations-size-limits-with-pagination) section.
 
 The F5 format produces larger entries. When pulling **without compression**, keep `page_size` at or below **~90,000** entries to stay under the ~5 MB response limit; beyond that the response is truncated. Enabling compression avoids this limit entirely.
 

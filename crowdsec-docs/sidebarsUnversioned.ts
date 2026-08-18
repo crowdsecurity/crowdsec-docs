@@ -550,27 +550,12 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				tag: "premium",
 			},
 			items: [
-				{
-					type: "category",
-					label: "Quickstart",
-					items: [
-						"console/service_api/quickstart/authentication",
-						"console/service_api/quickstart/blocklists",
-						"console/service_api/quickstart/integrations",
-						"console/service_api/quickstart/allowlists",
-						"console/service_api/quickstart/metrics",
-					],
-				},
-				{
-					type: "doc",
-					label: "Blocklists",
-					id: "console/service_api/blocklists",
-				},
-				{
-					type: "doc",
-					label: "Integrations",
-					id: "console/service_api/integrations",
-				},
+				"console/service_api/authentication",
+				"console/service_api/blocklists",
+				"console/service_api/allowlists",
+				"console/service_api/integrations",
+				"console/service_api/decisions",
+				"console/service_api/metrics",
 				{
 					type: "category",
 					label: "SDKs",
@@ -637,13 +622,13 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "AWS WAF",
-			id: "bouncers/aws_waf",
+			label: "Apache",
+			id: "bouncers/apache_bouncer",
 		},
 		{
 			type: "doc",
-			label: "Apache",
-			id: "bouncers/apache_bouncer",
+			label: "AWS WAF",
+			id: "bouncers/aws_waf",
 		},
 		{
 			type: "doc",
@@ -677,18 +662,8 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "HAProxy",
-			id: "bouncers/haproxy",
-		},
-		{
-			type: "doc",
 			label: "HAProxy SPOA",
 			id: "bouncers/haproxy_spoa",
-		},
-		{
-			type: "doc",
-			label: "Ingress Nginx",
-			id: "bouncers/ingress-nginx",
 		},
 		{
 			type: "doc",
@@ -722,6 +697,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
+			label: "Traefik (Kubernetes)",
+			id: "bouncers/traefik",
+		},
+		{
+			type: "doc",
 			label: "Windows Firewall",
 			id: "bouncers/windows_firewall",
 		},
@@ -731,20 +711,47 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			id: "bouncers/wordpress",
 		},
 		{
-			type: "doc",
-			label: "Traefik (Kubernetes)",
-			id: "bouncers/traefik",
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		// ── More ──────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>More</span>",
+			defaultStyle: false,
 		},
 		{
 			type: "link",
 			label: "Third Party",
-			href: "https://hub.crowdsec.net/browse/#bouncers",
+			href: "https://app.crowdsec.net/hub/remediation-components",
 		},
-		// {
-		//     "type": "doc",
-		//     "label": "Contributing",
-		//     "id": "bouncers/contributing/contributing_bouncers"
-		// },
+		{
+			type: "link",
+			label: "Contributing",
+			href: "/docs/next/contributing/contributing_bouncers",
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		// ── Deprecated ──────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Deprecated</span>",
+			defaultStyle: false,
+		},
+		{
+			type: "doc",
+			label: "HAProxy",
+			id: "bouncers/haproxy",
+		},
+		{
+			type: "doc",
+			label: "Ingress Nginx",
+			id: "bouncers/ingress-nginx",
+		},
 	],
 	blocklistsSideBar: [
 		{
@@ -790,11 +797,39 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 			label: "Integrations",
 			items: [
+				// ── Generic ──────────────────────────────────────────────────────────
+				{
+					type: "html",
+					value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Generic</span>",
+					defaultStyle: false,
+				},
 				"integrations/rawiplist",
 				"integrations/remediationcomponent",
 				{
 					type: "html",
 					value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+					defaultStyle: false,
+				},
+				// ── Cloud & Edge ──────────────────────────────────────────────────────────
+				{
+					type: "html",
+					value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Cloud & Edge</span>",
+					defaultStyle: false,
+				},
+				{
+					type: "doc",
+					label: "Cloudflare",
+					id: "integrations/cloudflare",
+				},
+				{
+					type: "html",
+					value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+					defaultStyle: false,
+				},
+				// ── Network Security ──────────────────────────────────────────────────────────
+				{
+					type: "html",
+					value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Network & Security</span>",
 					defaultStyle: false,
 				},
 				"integrations/checkpoint",

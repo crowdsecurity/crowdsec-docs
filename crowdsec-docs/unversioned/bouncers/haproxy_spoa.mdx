@@ -1,35 +1,22 @@
 ---
 id: haproxy_spoa
-title: HAProxy SPOA
+title: "HAProxy IP Blocking & WAF with CrowdSec"
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import useBaseUrl from "@docusaurus/useBaseUrl";
-import RemediationSupportBadges from "@site/src/components/remediation-support-badge";
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-  <img
-    src={useBaseUrl("/img/crowdsec_haproxy.svg")}
-    alt="CrowdSec"
-    title="CrowdSec"
-    width="400"
-    height="300"
-  />
-</p>
-<p align="center">
-  <img src="https://img.shields.io/badge/build-pass-green" />
-  <img src="https://img.shields.io/badge/tests-pass-green" />
-</p>
-<p align="center">
-  &#x1F4DA; <a href="#installation/">Documentation</a>
-  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-  &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
+<BouncerHeader
+  title="HAProxy SPOA"
+  imgSrc="/img/crowdsec_haproxy.svg"
+  description="Go-based SPOA bouncer for HAProxy with WAF (AppSec) support — the recommended HAProxy integration."
+  featuresSupport="mtls, streammode, metrics, prometheus, waf, captcha, botdetection"
+  githubUrl="https://github.com/crowdsecurity/cs-haproxy-spoa-bouncer"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-haproxy-spoa-bouncer"
+/>
 
-<RemediationSupportBadges MTLS Mode={false} Appsec Metrics Prometheus />
-
-# A remediation component for HAProxy
+# Protect HAProxy with IP Blocking & WAF
 
 :::warning
 
@@ -38,9 +25,9 @@ Beta Remediation Component, please report any issues on GitHub
 :::
 
 :::tip Enable the WAF for optimal protection
-This is the **only HAProxy bouncer with AppSec support**. After installing the bouncer, enable the [AppSec (WAF) Component](/docs/next/appsec/intro) for real-time WAF protection, virtual patching, and defense against known CVEs.
+This is the **only HAProxy bouncer with WAF (AppSec) support**. After installing the bouncer, enable the [WAF (AppSec) Component](/docs/next/appsec/intro) for real-time WAF protection, virtual patching, and defense against known CVEs.
 
-Follow the dedicated [AppSec Quickstart for HAProxy](/docs/next/appsec/quickstart/haproxy_spoa) — it picks up right where this page ends.
+Follow the dedicated [WAF Quickstart for HAProxy](/docs/next/appsec/quickstart/haproxy_spoa) — it picks up right where this page ends.
 :::
 
 ## What it does
@@ -62,7 +49,7 @@ Supported features:
 - Ban remediation (custom HTML / redirects)
 - CAPTCHA remediation (hCaptcha / reCAPTCHA / Turnstile)
 - GeoIP headers (ASN / Country)
-- AppSec (WAF evaluation via CrowdSec AppSec)
+- WAF (WAF evaluation via CrowdSec AppSec)
 - Prometheus metrics
 
 ## Installation

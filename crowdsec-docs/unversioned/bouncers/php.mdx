@@ -1,31 +1,24 @@
 ---
 id: php
-title: PHP Standalone
+title: "PHP IP Blocking, CAPTCHA & WAF with CrowdSec"
 sidebar_position: 1
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-<img src={useBaseUrl('/img/crowdsec_bouncer_php.png')} alt="CrowdSec" title="CrowdSec" width="300" height="300" />
-</p>
-
-<p align="center">
-&#x1F4DA; <a href="#installation/">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-
-<RemediationSupportBadges
-  Mode
-  MTLS
-  Appsec
-  Metrics
+<BouncerHeader
+  title="PHP Standalone"
+  imgSrc="/img/crowdsec_bouncer_php.png"
+  description="PHP-based standalone remediation component with live & stream mode and AppSec support."
+  featuresSupport="livemode, streammode, mtls, waf, metrics, captcha"
+  githubUrl="https://github.com/crowdsecurity/cs-standalone-php-bouncer"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-php-bouncer"
 />
 
+# Protect PHP Applications with IP Blocking, CAPTCHA & WAF
 ## Overview
 
 This Remediation Component allows you to protect your PHP application from IPs that have been detected by CrowdSec. Depending on

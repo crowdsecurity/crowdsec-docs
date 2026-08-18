@@ -1,23 +1,23 @@
 ---
 id: wordpress
-title: WordPress Plugin
+title: "WordPress IP Blocking, CAPTCHA & WAF with CrowdSec"
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-<img src={useBaseUrl('/img/crowdsec_wp.png')} alt="CrowdSec" title="CrowdSec" />
-</p>
-
-<RemediationSupportBadges
-  Mode
-  MTLS
-  Appsec
-  Metrics
+<BouncerHeader
+  title="WordPress Plugin"
+  imgSrc="/img/crowdsec_wp.png"
+  description="Protects WordPress sites against malicious traffic using CrowdSec detection and blocklists."
+  featuresSupport="livemode, streammode, mtls, waf, metrics, captcha"
+  githubUrl="https://github.com/crowdsecurity/cs-wordpress-bouncer"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-wordpress-bouncer"
 />
+
+# Protect WordPress with IP Blocking, CAPTCHA & WAF
 
 ## What can you do with this plugin?
 The CrowdSec WordPress plugin enables you to protect your WordPress site against malicious traffic using CrowdSec's advanced threat detection and blocklist capabilities.

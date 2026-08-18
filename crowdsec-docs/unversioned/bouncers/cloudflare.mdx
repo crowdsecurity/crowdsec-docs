@@ -1,28 +1,24 @@
 ---
 id: cloudflare
-title: CrowdSec Cloudflare Worker Bouncer
+title: "Cloudflare IP Blocking with CrowdSec"
 toc_max_heading_level: 3
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-  <img src={useBaseUrl('/img/crowdsec_cloudfare.svg')} width="400" height="300" />
-</p>
+<BouncerHeader
+  title="Cloudflare Worker Bouncer"
+  imgSrc="/img/crowdsec_cloudflare.svg"
+  description="Syncs CrowdSec decisions with Cloudflare Workers to block or challenge traffic on your zones."
+  featuresSupport="mtls, streammode, captcha"
+  githubUrl="https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer-install"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-cloudflare-worker-bouncer"
+/>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/build-pass-green"></img>
-  <img src="https://img.shields.io/badge/tests-pass-green"></img>
-</p>
-
-<p align="center">
-&#x1F4DA; <a href="#overview">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse</a>
-</p>
+# Block Malicious IPs on Cloudflare with CrowdSec
 
 :::tip
   We recommend using the **Self-Hosted Installer** setup method for most users who want to connect a CrowdSec [Blocklist Integration Endpoint](/u/integrations/remediationcomponent) to Cloudflare without installing anything on their infrastructure. It is simpler to install and maintain.  
@@ -125,7 +121,7 @@ Each configured zone must have at least one `A` or `AAAA` DNS record. Zones with
 
 ---
 
-## Self-Hosted Setup
+## 🔌 Self-Hosted Setup
 
 The self-hosted setup uses a Cloudflare github integration to deploy a worker acting as the central install and configuration GUI for the Cloudflare bouncer elements.
 
@@ -256,7 +252,7 @@ git push --force origin main
 
 ---
 
-## CLI Bouncer Setup
+## 🔧 CLI Bouncer Setup
 
 The CLI bouncer is a Go binary (`crowdsec-cloudflare-worker-bouncer`) that manages Cloudflare infrastructure from the command line using a YAML configuration file.
 
@@ -511,7 +507,7 @@ sudo crowdsec-cloudflare-worker-bouncer -d
 
 ---
 
-## Setting Up the Worker Route Fail Mode
+## ⚙️ Setting Up the Worker Route Fail Mode
 
 Worker routes are created with **Fail Closed** mode by default. In this mode, any worker error results in a Cloudflare 1027 error page shown to visitors — including errors caused by plan quota overruns.
 

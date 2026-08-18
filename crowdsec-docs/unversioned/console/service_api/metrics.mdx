@@ -85,6 +85,36 @@ print(response.model_dump_json())
 
 </details>
 
+### Scope the metrics (engine, tag, or integration)
+
+By default the metrics cover your whole organization. Narrow them with these repeatable query
+parameters; they filter server-side:
+
+| Parameter | Scopes the metrics to… |
+|---|---|
+| `engine_ids` | one or more Security Engines (an engine id is its machine id) |
+| `tags` | Security Engines carrying the given tag(s) |
+| `integration_ids` | one or more firewall/appliance integrations |
+
+```bash
+# Only the drops attributed to two specific engines
+curl -i -H "x-api-key: ${KEY}" -X GET \
+"https://admin.api.crowdsec.net/v1/metrics/remediation?start_date=2025-03-19T00:00:00Z&end_date=2025-03-27T00:00:00Z&engine_ids=ENGINEID1&engine_ids=ENGINEID2"
+
+# Everything on engines tagged env:prod
+curl -i -H "x-api-key: ${KEY}" -X GET \
+"https://admin.api.crowdsec.net/v1/metrics/remediation?start_date=2025-03-19T00:00:00Z&end_date=2025-03-27T00:00:00Z&tags=env:prod"
+```
+
+Repeat a parameter to pass several values (they combine as a union); the filter applies to both the
+`raw` and `computed` sections.
+
+:::note The breakdown is by origin, not by engine
+Each metric's `data` is grouped by origin: `CAPI`, `crowdsec`, `ipset`, `unknown`, or a blocklist
+object (with its `label`/`id`). It is never split per engine. To get one engine's numbers, ask for
+that engine's `engine_ids`.
+:::
+
 ### Metrics definitions
 
 - `raw`: Raw metrics are the metrics that are directly collected from the crowdsec engine.
