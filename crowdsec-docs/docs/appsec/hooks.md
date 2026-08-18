@@ -105,6 +105,7 @@ This hook is intended to be used to disable rules only for this particular reque
 | `SetChallengeDifficulty`    | `func(level str)`                    | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](bot_detection/hooks.md#challenge-difficulty-levels).                                                    |
 | `MatchKnownBot`             | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files` (verified by IP range or forward-confirmed reverse DNS). Used to skip the challenge for known-good crawlers. See [Known bots](bot_detection/hooks.md#known-bots).                          |
 | `ExemptFromChallenge`       | `func(reason str)`                   | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](bot_detection/hooks.md#known-bots).                                                                                    |
+| Score helpers               |                                      | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring).                                                                   |
 
 #### Example
 
@@ -138,6 +139,7 @@ This hook is mostly intended for debugging or threat-hunting purposes.
 | `SetChallengeDifficulty` | `func(level str)`             | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](bot_detection/hooks.md#challenge-difficulty-levels).                                                    |
 | `MatchKnownBot`          | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files` (verified by IP range or forward-confirmed reverse DNS). See [Known bots](bot_detection/hooks.md#known-bots).                                                                       |
 | `ExemptFromChallenge`    | `func(reason str)`            | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](bot_detection/hooks.md#known-bots).                                                                                    |
+| Score helpers            |                               | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring).                                                                   |
 
 #### DumpRequest
 
@@ -203,6 +205,7 @@ This hook is intended to be used to change the behavior of the engine after a ma
 | `req`            | `http.Request`             | Original HTTP request received by the remediation component                                                   |
 | `MatchKnownBot` | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files`. See [Known bots](bot_detection/hooks.md#known-bots).                  |
 | `ExemptFromChallenge` | `func(reason str)`    | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](bot_detection/hooks.md#known-bots). |
+| Score helpers | | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring). |
 
 #### Example
 

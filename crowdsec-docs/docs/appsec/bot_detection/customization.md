@@ -26,7 +26,7 @@ To deploy any recipe below:
 3. **Reload:** `sudo systemctl reload crowdsec`.
 
 :::note Which block hooks go under
-The challenge runs in the **in-band** phase, so bot-detection hooks live under an `inband:` block — `pre_eval`, `post_eval`, `on_challenge`, and `on_challenge_submit`. This matches the shipped `appsec-bot-challenge-simple` config. Each phase exposes a different set of helpers (for example `SendChallenge()` is available in `post_eval` but not `pre_eval`; `SetChallengeDifficulty()` is not available in `on_challenge_submit`); see the [Hooks reference](hooks.md) for the per-hook helper tables.
+The challenge runs in the **in-band** phase, so bot-detection hooks live under an `inband:` block — `pre_eval`, `post_eval`, `on_challenge`, and `on_challenge_submit`. This matches the shipped `appsec-bot-challenge-scoring` config. Each phase exposes a different set of helpers (for example `SendChallenge()` is available in `post_eval` but not `pre_eval`; `SetChallengeDifficulty()` is not available in `on_challenge_submit`); see the [Hooks reference](hooks.md) for the per-hook helper tables.
 :::
 
 ### Restrict the challenge to a specific path
@@ -219,23 +219,67 @@ The reverse-DNS confirmation used by `rdns` goes through the engine's DNS cache;
 
 ### Block on a weak signal the default ignores
 
-The collection already rejects submissions where `fingerprint.IsBot()` is true — the high-confidence fast-bot-detection verdict. Weaker heuristic signals are collected too, but the default leaves them alone because they carry false positives. If your traffic profile makes one of them worth enforcing, you can opt in.
-
-For example, the Accept-Language mismatch fires when the `Accept-Language` header disagrees with the browser's `navigator.language`. It's a medium-severity heuristic — legitimate for some multilingual or proxied setups, but unusual for a normal browser — so the default ignores it. To reject on it:
+The collection scores weak signals but weights them low on purpose, so none can cross the threshold alone. `accept_language` is worth 15 points against a default threshold of 75. It fires when the `Accept-Language` header disagrees with the browser's `navigator.language`: legitimate for some multilingual or proxied setups, unusual for a normal browser. If your traffic makes it worth enforcing, reject on it directly:
 
 ```yaml
 # /etc/crowdsec/appsec-configs/mycorp-reject-accept-language.yaml
 name: mycorp/appsec-bot-challenge-reject-accept-language
 inband:
   on_challenge_submit:
-    - filter: fingerprint.AcceptLanguageMismatch(req)
+    - filter: EvaluateMismatches().Has("accept_language")
       apply:
         - RejectSubmission("accept-language mismatch")
 ```
 
-:::warning
-Weak signals are too specific to be part of default rules. Validate one against your real traffic — [dump the fingerprints](#dump-fingerprints-for-offline-analysis) it would have rejected, or start by alerting instead of rejecting — before you enforce it.
+:::tip
+Prefer `EvaluateMismatches().Has("...")` over the atomic helper for a signal that already has a reason key. The report is computed once per request and cached, so a second `.Has()` is free, and evaluating it bumps the per-signal Prometheus counters. Calling `fingerprint.AcceptLanguageMismatch(req)` directly runs the same check but skips that bookkeeping. Reason keys are also what `score_reasons` reports, so your rule and your alerts use the same names.
 :::
+
+:::warning
+Weak signals are too specific to be part of default rules. Validate one against your real traffic before you enforce it: [dump the fingerprints](#dump-fingerprints-for-offline-analysis) it would have rejected, or start by alerting instead of rejecting.
+:::
+
+### Re-weight a signal for your traffic
+
+Rejecting outright on a weak signal is blunt. Adding points to it is usually better, because the signal then only matters when it stacks with something else.
+
+Load your config **after** `crowdsecurity/appsec-bot-challenge-scoring` and **before** the threshold config. Scores accumulate, so this adds to what the shipped engine already gave:
+
+```yaml
+# /etc/crowdsec/appsec-configs/mycorp-reweight.yaml
+name: mycorp/appsec-bot-challenge-reweight
+inband:
+  on_challenge_submit:
+    # Our users are never on a VPN, so a UTC timezone is worth more than the
+    # default 15 points. 15 + 45 = 60, still short of 75 on its own.
+    - filter: EvaluateMismatches().Has("utc_timezone")
+      apply:
+        - AddRequestScore(45, "utc_timezone_mycorp")
+    # Our mobile app sets its own UA, so ua_mobile is expected here. Cancel it.
+    - filter: EvaluateMismatches().Has("ua_mobile")
+      apply:
+        - AddRequestScore(-15, "ua_mobile_expected")
+```
+
+Use a distinct reason string rather than reusing the shipped one, so the breakdown in `score_reasons` still tells you which config contributed what.
+
+### Score on something only you know
+
+`AddRequestScore` takes any reason you like, so you can fold application knowledge into the same total the threshold reads:
+
+```yaml
+# /etc/crowdsec/appsec-configs/mycorp-app-signals.yaml
+name: mycorp/appsec-bot-challenge-app-signals
+inband:
+  on_challenge_submit:
+    # Nobody reaches checkout without having browsed first, so a checkout hit
+    # with no referer is suspicious enough to push a borderline client over.
+    - filter: req.URL.Path startsWith "/checkout" && req.Header.Get("Referer") == ""
+      apply:
+        - AddRequestScore(30, "checkout_no_referer")
+```
+
+The reason shows up in the alert exactly like a built-in one, which keeps rejections explainable.
 
 ### Reject only when several soft signals stack up
 
@@ -306,8 +350,9 @@ inband:
     - filter: "fingerprint.IsBot()"
       apply:
         - DumpFingerprint("suspected-automation")
-        - RejectSubmission("known bot (fast bot detection)")
 ```
+
+Load it before the threshold config: `RejectSubmission()` halts the remaining `on_challenge_submit` rules, so a dump placed after it never runs.
 
 See [DumpFingerprint](hooks.md#dumpfingerprint) in the Hooks reference for the file format and behavior.
 
@@ -349,6 +394,8 @@ Flat fields exposed in `evt.Parsed`:
 | `fingerprint_allowlist_reason`         | string                              | The reason argument passed to `GrantChallengeCookie(...)` (only set when allowlisted).                    |
 | `platform`                             | string                              | The platform the fingerprint reported (e.g. `Linux`, `Windows`), when a fingerprint was attached.         |
 | `user_agent`                           | string                              | The client's User-Agent at the time of the event.                                                         |
+| `request_score`                        | integer string                      | The total request score, when a scoring config ran.                                                       |
+| `request_score_reasons`                | string                              | The per-signal breakdown, `cdp=100,utc_timezone=15`. Empty when no scoring config ran.                     |
 
 This makes it straightforward to write your own scenarios on top of the built-in ones. Save the scenario to `/etc/crowdsec/scenarios/` and reload. For example, alerting on any client the challenge identified as automation:
 
@@ -374,11 +421,11 @@ Or, more targeted, alerting on repeat offenders that fail submission for the sam
 # /etc/crowdsec/scenarios/mycorp-appsec-automation-repeat.yaml
 type: leaky
 name: mycorp/appsec-automation-repeat
-description: "Repeated challenge rejections for the fast-bot-detection reason from one IP"
+description: "Repeated challenge rejections on a decisive automation signal from one IP"
 filter: |
   evt.Parsed.source == "crowdsec-appsec-challenge" &&
   evt.Parsed.challenge_event == "rejected" &&
-  evt.Parsed.challenge_fail_reason == "known bot (fast bot detection)"
+  evt.Parsed.request_score_reasons contains "cdp="
 groupby: evt.Meta.source_ip
 capacity: 5
 leakspeed: 10m

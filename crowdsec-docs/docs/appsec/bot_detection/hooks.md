@@ -27,17 +27,41 @@ Note that the default behavior is to accept (grant cookie) to client that submit
 | `fingerprint`           | `object`                                   | The decoded fingerprint object — see [The `fingerprint` object](#the-fingerprint-object).                                                                                                                                              |
 | `req`                   | `http.Request`                             | Original HTTP request received by the remediation component. Needed by fingerprint helpers that compare against request headers, e.g. `fingerprint.AcceptLanguageMismatch(req)`.                                                        |
 | `DumpFingerprint`       | `func(label str) str`                      | Append the just-decrypted fingerprint (plus request context) as one JSONL line to a dump file, for offline analysis. Returns the file path. See [DumpFingerprint](#dumpfingerprint).                                                    |
+| `CancelAlert`           | `func()`                                   | Suppress the alert this rejection would otherwise produce. The cookie is still refused, only the alert is dropped.                                                                                                                      |
+| `SendAlert`             | `func()`                                   | Re-enable the alert after a previous `CancelAlert()`.                                                                                                                                                                                  |
+| Score helpers           |                                            | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor`. See [Request scoring](#request-scoring).                                                                                             |
+
+`RejectSubmission()` and `GrantChallengeCookie()` are terminal: both halt the remaining `on_challenge_submit` rules, so a later catch-all cannot undo the decision.
 
 ### Example
 
 ```yaml
 on_challenge_submit:
-  - filter: fingerprint.IsBot()
+  - filter: EvaluateMismatches().Has("cdp")
     apply:
-      - RejectSubmission("fast-bot-detection")
+      - AddRequestScore(100, "cdp")
+  - filter: RequestScore() >= 75
+    apply:
+      - RejectSubmission("request score " + string(RequestScore()), "verbose")
   - apply:
       - LogAccepted("challenge submission accepted") #this is optional, LogAccepted isn't needed to grant a cookie to the client.
 ```
+
+## Request scoring
+
+Rather than accepting or rejecting on a single signal, you can accumulate points across signals and act on the total. This is how the shipped [bot-challenge collection](whats_included.md#how-a-request-is-scored) works: one config adds the points, another decides the threshold.
+
+The score is per request, starts at zero, and is available in `pre_eval`, `post_eval`, `on_match`, `on_challenge` and `on_challenge_submit`.
+
+| Helper Name            | Type                        | Description                                                                                                              |
+| ---------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `AddRequestScore`      | `func(points int, reason str)` | Add `points` to the request score under `reason`. Adding the same reason twice accumulates. Points may be negative.     |
+| `RequestScore`         | `func() int`                | The current total.                                                                                                        |
+| `RequestScoreReasons`  | `func() []str`              | The reasons that contributed, in the order they were added.                                                               |
+| `RequestScoreDetail`   | `func() str`                | The breakdown as a stable string, `"cdp=100,utc_timezone=15"`. This is what lands in the alert as `request_score_reasons`. |
+| `RequestScoreFor`      | `func(reason str) int`      | The points recorded under one reason, `0` if it never fired.                                                              |
+
+The score and its breakdown are attached to any alert the request produces, so a rejection stays explainable after the fact. See [Reading a rejection](whats_included.md#reading-a-rejection).
 
 
 ## `on_challenge`
@@ -185,7 +209,9 @@ Shortcuts that read one field out of the signal tree and hand back a native valu
 
 ### Atomic mismatch checks
 
-These three predicates compare the fingerprint against request or geo context. [`EvaluateMismatches()`](#the-mismatchreport-object) aggregates them (and every library signal) into one report; call these directly when you only care about one.
+These three predicates compare the fingerprint against request or geo context. [`EvaluateMismatches()`](#the-mismatchreport-object) aggregates them (and every library signal) into one report, under the reason keys `ua_mobile`, `accept_language` and `timezone_country`.
+
+Reach for `EvaluateMismatches().Has("accept_language")` rather than the atomic form in most rules: the report is cached per request and evaluating it bumps the per-signal Prometheus counters, which calling the predicate directly does not. The atomic checks are there for when you want the raw answer without touching the report.
 
 | Helper                                          | Returns | Description                                                                                                                    |
 | ----------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------- |
