@@ -1,5 +1,5 @@
 ---
-title: Am I Under Attack
+title: Attack Surge - Am I Under Attack?
 description: Detect attack surges across your Security Engines and investigate the contributing alerts
 ---
 
@@ -9,65 +9,160 @@ import { Badge } from "@site/src/ui/badge";
     <Badge variant="premium">CrowdSec Premium Feature</Badge>
 </div>
 
-**Am I Under Attack?** detects concentrated attack activity across your Security Engines and groups it into **Attack Surges**. When a surge is detected, the CrowdSec Console notifies your team and provides a dashboard for reviewing its scope, sources, behaviors, and contributing alerts.
+Toggling this feature enables **tracking of unusual attack activity** across your Security Engines.  
+When the beginning of a surge is detected, you are notified by email and in-app, and can investigate the contributing alerts from a dedicated dashboard.
 
-The dashboard is available to Premium organizations. Organization Admins and Owners can enable or disable attack alerting.
+## Enabling attack surge monitoring
 
-## Enable attack notifications
+The feature can be toggled from two places in the **Security Stack** section:
+- **Alerts dashboard**
+- **Attack Surge Dashboard**
 
-1. In the CrowdSec Console, open **Alerts**.
-2. Find the **Instant Attack Notification** card.
-3. Select **Enable**.
+![Enable Instant Attack Notification from the Alerts page](/img/console/alerts/am-i-under-attack-switch.png)
 
-The button changes to **Enabled** when attack alerting is active for the organization.
+The button shows the current toggle status; clicking it changes the state and updates the button text accordingly.
 
-![Enable Instant Attack Notification from the Alerts page](/img/console/alerts/am-i-under-attack-enable-wide.png)
 
-## Receive an attack notification
+## What happens when a surge is detected
 
-When CrowdSec detects an Attack Surge, the Console adds an in-app notification for the affected organization. Open the notification center to review the alert, or follow the attack notification to open the **Attack Surges** dashboard.
+When a surge is detected, two notifications are sent simultaneously:
+
+- **Email to the organization owner's account**: summarizes the surge with a direct link to the Attack Surge Dashboard.
+- **In-app notification**: visible in the notification center; click it to open the dashboard immediately.
 
 ![Attack Surge notification in the CrowdSec Console](/img/console/alerts/am-i-under-attack-notification-wide.png)
 
-## Review the Attack Surges dashboard
+## Review the Attack Surge Dashboard
 
-Open **Attack Surges** from the Security Stack navigation. The dashboard provides:
-
-- **Detected Attack Surges**: Number of surges in the selected period.
-- **Contributing Alerts**: Total alerts grouped into those surges.
-- **Affected engines**: Number of Security Engines involved.
-- **Latest Attack Surge**: Date of the most recent surge.
-- **Attack Surge History**: Alert volume for each surge over time.
-- **Attack Surges details**: Start and end times, alert count, variation, affected engines, notification status, and alert drill-downs.
-
-Use the Security Engine and date filters to narrow the dashboard to the infrastructure and period you want to investigate.
-
+You'll find **Attack Surges** in the side menu of the **Security Stack** section.
+:::tip
+All data on this dashboard is scoped to a **selected time period**.  
+Set the period first using the date picker (top-right), and optionally pick a Security Engine, so every number you see is already scoped to the context you want to investigate.
+:::
 ![Populated Attack Surges dashboard](/img/console/alerts/attack-surges-overview-wide.png)
+
+The four KPI cards reflect counts for the **selected period**:
+
+| Metric | Description |
+|---|---|
+| **Detected Attack Surges** | Number of surges identified |
+| **Contributing Alerts** | Total alerts grouped into those surges |
+| **Affected Engines** | Number of Security Engines involved |
+| **Latest Attack Surge** | Date of the most recent surge |
+
+The **Attack Surge History** bar chart shows alert volume for each surge over time.  
+:::tip
+**Click and drag across a range of bars** to zoom into a sub-period; the dashboard updates to show only the surges within that selection.
+:::
 
 ## Inspect an Attack Surge
 
-Select the expand control next to an Attack Surge to inspect:
-
-- **Top attacking IPs**, including the reputation CrowdSec observed during the surge.
-- **Top behaviors** and their contributing alert counts.
-- **Affected Security Engines** and the alert count attributed to each engine.
-
-For an attacking IP, open the actions menu to view its alerts. Organization Editors, Admins, and Owners can also create a one-week or one-month ban decision from this menu.
+The **Attack Surges details** table lists each surge with start/end times, alert count, variation, affected engines, and notification status.  
+Click the expand arrow on any row in the details table to open the breakdown for that surge.
 
 ![Expanded Attack Surge with IP actions, behaviors, and affected engines](/img/console/alerts/attack-surges-details-wide.png)
 
+The breakdown has three panels:
+
+- **Top attacking IPs**: the most active source IPs and the reputation CrowdSec observed during the surge.
+- **Top behaviors**: the most observed attack patterns and their contributing alert counts.
+- **Affected Security Engines**: each engine and the number of alerts it received.
+
+**IP quick actions**: open the three-dot menu next to any attacking IP to:
+
+- **View IP on CrowdSec CTI**: jump to the IP's full threat intelligence page.
+- **Ban for 1 week** or **Ban for 1 month**: create a block decision immediately (available to Editors, Admins, and Owners).
+
 ## Drill down into contributing alerts
 
-Use **View alerts** on an Attack Surge to open the Alerts page with the surge period and affected Security Engines preselected. You can also select an attacking IP, behavior, or Security Engine from the expanded details to investigate that specific facet.
+From an expanded surge, click **View alerts**, the Alerts page opens with the surge's time period and involved Security Engines **applied automatically as filters**, placing you directly on the relevant alerts.
 
-The applied filters remain visible above the Alerts visualizer and table. In the following example, the **http:scan** behavior contains 33 contributing alerts.
+You can also click any individual attacking IP, behavior, or Security Engine in the expanded details to add it as an extra filter and focus the view further.  
+The active filters appear above the Alerts visualizer and table so you always see exactly what is scoped in.
 
 ![Alerts page filtered by an Attack Surge behavior](/img/console/alerts/attack-surges-alerts-drilldown-wide.png)
 
-## Disable attack notifications
+## Investigate a surge 💡
 
-To stop receiving Attack Surge notifications:
+Use the following checks to quickly understand what happened and decide whether further action is needed.
 
-1. Open **Attack Surges**.
-2. Select **Disable attack alerting**.
-3. Confirm the action.
+### 1. Understand the scope
+
+Start with the high-level numbers before going deeper:
+
+- **How many Security Engines are affected?** A surge limited to one host may indicate a targeted service; activity across several engines can point to a broader campaign.
+- **How many source IPs are involved?** A large number of signals from a single IP differs significantly from the same volume spread across hundreds of distributed sources.
+- **How long has the activity lasted?** Check whether the surge was short-lived or whether the signal rate remains elevated.
+- **How unusual is it?** Compare current activity with the volume and attack types normally seen on the affected Security Engine.
+
+### 2. Identify what attackers are trying to do
+
+Review the scenarios responsible for the surge and the services they target. Look for:
+
+- a single scenario suddenly generating most of the activity;
+- attack types that are unusual for this Security Engine;
+- several related scenarios that may represent different stages of the same attack;
+- repeated targeting of a specific service, application, port, hostname, or path.
+
+The type of activity should guide the rest of your investigation.
+
+### 3. Check whether sources are being remediated
+
+Verify that CrowdSec has active decisions for the IPs involved, and that your remediation component is connected, healthy, and applying those decisions. A CrowdSec decision alone does not guarantee that traffic is blocked at the target.
+
+Pay particular attention to:
+
+- source IPs without an active decision;
+- decisions that expired while activity is still ongoing;
+- Security Engines without an associated remediation component;
+- unusual differences between detected signals and the remediation you expect to be in place.
+
+If some attacking sources are not covered, investigate why before deciding whether additional remediation is necessary.
+
+### 4. Look for signs that an attack succeeded
+
+CrowdSec detects malicious behavior but cannot confirm whether it had an effect. Use your application, authentication, system, WAF, proxy, or SIEM logs to determine whether any attack resulted in a successful action.
+
+| Activity observed | Useful follow-up checks |
+|---|---|
+| Brute force / credential stuffing | Successful logins from attacking IPs, new accounts, password or MFA changes, suspicious sessions |
+| Web crawling / reconnaissance | Sensitive paths accessed, admin endpoints, config or backup files, unexpected HTTP 200 responses |
+| Vulnerability exploitation | Targeted product/version in your stack, successful requests, unusual processes, file changes, errors after requests |
+| Scanning / probing | Exposed services or ports that should not be public, unexpected responses from internal services |
+| API abuse | Successful requests, unusual tokens or users, rate spikes, enumeration of objects, unexpected data access |
+| Bot activity / scraping | High-value endpoints scraped, unusual request rates, resource consumption, bypass of auth or rate limits |
+
+### 5. Compare with your usual attack profile
+
+An increase in familiar background activity may need less attention than a completely new pattern. Ask yourself:
+
+- Is this scenario normally seen on this Security Engine?
+- Is the proportion of this attack type significantly higher than usual?
+- Are attackers targeting a service that is rarely attacked?
+- Is the same activity appearing simultaneously across several systems?
+
+A change in attack type can sometimes be more significant than a change in raw signal volume.
+
+### 6. Prioritize the most relevant sources
+
+You do not need to inspect every source individually. Prioritize IPs that:
+
+- generated the most signals;
+- triggered several different scenarios;
+- are still active;
+- are not currently covered by remediation;
+- targeted particularly sensitive services;
+- appear repeatedly across several Security Engines.
+
+Use **CrowdSec CTI** (via the IP quick-action menu) or your usual threat-intelligence sources when additional context about a source can help qualify the activity.
+
+### 7. Continue monitoring after the surge
+
+After taking any necessary action, continue monitoring the affected systems. Check whether:
+
+- the signal rate returns to its normal level;
+- the same sources return after remediation expires;
+- the attack changes technique or moves to another service;
+- similar activity appears on other Security Engines.
+
+If the surge persists, changes behavior, or you find evidence of successful access, escalate using your normal incident-response process.
