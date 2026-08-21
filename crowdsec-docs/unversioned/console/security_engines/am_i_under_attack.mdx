@@ -84,38 +84,51 @@ The active filters appear above the Alerts visualizer and table so you always se
 
 ## Investigate a surge 💡
 
-Use the following checks to quickly understand what happened and decide whether further action is needed.
+Use the following checks to quickly understand what happened and decide whether further action is needed.  
+Identifying something unusual may help you check if your services are in danger or if it's just a temporary spike in background activity.  
+
+**For example**: 
+- **Unusual bruteforce?** Check your user activity logs don't show weird behaviors.
+- **Unusual scanning?** Check the targeted paths are not known for vulnerabilities or sensitive data.
 
 ### 1. Understand the scope
 
 Start with the high-level numbers before going deeper:
 
-- **How many Security Engines are affected?** A surge limited to one host may indicate a targeted service; activity across several engines can point to a broader campaign.
-- **How many source IPs are involved?** A large number of signals from a single IP differs significantly from the same volume spread across hundreds of distributed sources.
-- **How long has the activity lasted?** Check whether the surge was short-lived or whether the signal rate remains elevated.
-- **How unusual is it?** Compare current activity with the volume and attack types normally seen on the affected Security Engine.
+- **How unusual is it?**
+  - Compare **surge activity** with the **attack types** and eventually **context** of the alerts you normally see on this/these Security Engine(s).
+  - Is it performing bruteforce when you usually only see scanning activity? 
+  - Is it scanning a path that is sensitive or rarely accessed?
+- **How many source IPs are involved? And How many Security Engines are affected?** 
+  - Is there a similarity in the affected services you're protecting ? (all your websites, specifically wordpress ...) 
+  - Is it a single source IP or a large number of them responsible for this surge?
+- **How long has the activity lasted?**
+  - Check whether the surge was short-lived or whether the signal rate remains elevated.
+  - A surge instance represents a period of unusual activity, uninterrupted for at least 15 minutes.
+  - Keep an eye as the surge period might still be going on.
 
 ### 2. Identify what attackers are trying to do
 
-Review the scenarios responsible for the surge and the services they target. Look for:
+Review the scenarios responsible for the surge and the services/context they target. Look for:
 
-- a single scenario suddenly generating most of the activity;
-- attack types that are unusual for this Security Engine;
-- several related scenarios that may represent different stages of the same attack;
-- repeated targeting of a specific service, application, port, hostname, or path.
+- A single scenario suddenly generating most of the activity;
+- Attack types that are unusual for this Security Engine;
+- Several related scenarios that may represent different stages of the same attack;
+- Repeated targeting of a specific service, application, port, hostname, or path.
+- Context information that may be critical: recognizing a username in a bruteforce attempt...
 
 The type of activity should guide the rest of your investigation.
 
 ### 3. Check whether sources are being remediated
 
-Verify that CrowdSec has active decisions for the IPs involved, and that your remediation component is connected, healthy, and applying those decisions. A CrowdSec decision alone does not guarantee that traffic is blocked at the target.
+Verify that CrowdSec has **active decisions** for the IPs involved, and that your remediation component is connected, healthy, and applying those decisions. A CrowdSec decision alone does not guarantee that traffic is blocked at the target.
 
 Pay particular attention to:
 
-- source IPs without an active decision;
-- decisions that expired while activity is still ongoing;
 - Security Engines without an associated remediation component;
-- unusual differences between detected signals and the remediation you expect to be in place.
+- Source IPs without an active decision;
+- Decisions that expired while activity is still ongoing;
+- Unusual differences between detected signals and the remediation you expect to be in place.
 
 If some attacking sources are not covered, investigate why before deciding whether additional remediation is necessary.
 
