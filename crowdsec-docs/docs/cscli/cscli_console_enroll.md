@@ -22,12 +22,13 @@ cscli console enroll [enroll-key] [flags]
 
 ```
 cscli console enroll YOUR-ENROLL-KEY
+cscli console enroll --quick
+cscli console enroll --quick --name [instance_name]
 cscli console enroll --name [instance_name] YOUR-ENROLL-KEY
 cscli console enroll --name [instance_name] --tags [tag_1] --tags [tag_2] YOUR-ENROLL-KEY
-cscli console enroll --enable console_management YOUR-ENROLL-KEY
 cscli console enroll --disable context YOUR-ENROLL-KEY
 
-valid options are : custom,manual,tainted,context,console_management,all (see 'cscli console status' for details)
+valid options are : custom,manual,tainted,context,all (see 'cscli console status' for details)
 ```
 
 ### Options
@@ -36,8 +37,9 @@ valid options are : custom,manual,tainted,context,console_management,all (see 'c
   -d, --disable strings   Disable console options
   -e, --enable strings    Enable console options
   -h, --help              help for enroll
-  -n, --name string       Name to display in the console
+  -n, --name string       Name to display in the console (default current hostname)
       --overwrite         Force enroll the instance
+  -q, --quick             Enrolls the instance without an enroll key by visiting a link to the CrowdSec console.
   -t, --tags strings      Tags to display in the console
 ```
 
