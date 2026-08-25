@@ -94,6 +94,45 @@ In this example, we check if there are at least 5 events in the queue, calculate
 The cache are usually populated by [parser's stash section](/log_processor/parsers/format.md#stash).
 An empty string if the key doesn't exist (or has been evicted), and error is raised if the `cache` doesn't exist.
 
+## HTTP Helpers
+
+:::warning
+These helpers perform a blocking network call: the routine evaluating the expression waits until the remote host answers or the 10s timeout expires. Prefer using them in postoverflows, and never build the URL from untrusted user input.
+:::
+
+All the HTTP helpers return an `HTTPResponse` object:
+
+ - `StatusCode` (`int`) : the status code of the response
+ - `Body` (`string`) : the body of the response, truncated to 10MB
+ - `Headers` (`http.Header`) : the headers of the response, ie. `Headers.Get("Content-Type")`
+
+If the request cannot be performed (unreachable host, timeout, invalid URL), the expression fails.
+A default `User-Agent` is sent unless you set one yourself.
+
+### `HTTPGet(url string) *HTTPResponse`
+
+Performs a GET request.
+
+> `HTTPGet("https://example.net/api/reputation").StatusCode == 200`
+
+### `HTTPHead(url string) *HTTPResponse`
+
+Performs a HEAD request.
+
+> `HTTPHead("https://example.net/").Headers.Get("Server")`
+
+### `HTTPPost(url string, contentType string, body string) *HTTPResponse`
+
+Performs a POST request, sending `body` with the `Content-Type` header set to `contentType`.
+
+> `HTTPPost("https://example.net/api/check", "application/json", '{"ip": "1.2.3.4"}').Body`
+
+### `HTTPRequest(method string, url string, headers map[string]any, body string) *HTTPResponse`
+
+Performs a request with an arbitrary method and headers. An empty `body` sends no body at all.
+
+> `HTTPRequest("PUT", "https://example.net/api/check", {"Authorization": "Bearer token"}, '{"ip": "1.2.3.4"}').StatusCode`
+
 ## Others
 
 ### `IsIPV4(ip string) bool`
