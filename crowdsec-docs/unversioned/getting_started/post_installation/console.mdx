@@ -101,6 +101,49 @@ After accepting the enrollment, restart the CrowdSec service.
 Restarting is not critical immediately, but it ensures metadata is fully synchronized.
 :::
 
+## Verify the connection
+
+`cscli console status` reports the state of the link between the engine and the Console:
+
+```bash
+$ sudo cscli console status
+╭─────────────────────┬───────────────────────────────╮
+│ Console connection  │                               │
+├─────────────────────┼───────────────────────────────┤
+│ Central API (CAPI)  │ ✅ authenticated              │
+│ Enrolled            │ ✅ enrolled                   │
+│ Plan                │ SECOPS                        │
+│ Decision management │ ✅ active                     │
+│ Last order received │ 2026-08-25 10:12:03 +0000 UTC │
+│ PAPI subscriptions  │ blocklist, management         │
+╰─────────────────────┴───────────────────────────────╯
+```
+
+| Row | Meaning |
+|---|---|
+| `Central API (CAPI)` | the engine is registered and can authenticate against the Central API |
+| `Enrolled` | the engine is attached to a Console organization |
+| `Plan` | the plan of the organization the engine belongs to |
+| `Decision management` | the Console can push decisions to this engine, which requires a `SECOPS` or `ENTERPRISE` plan |
+| `Last order received`, `PAPI subscriptions` | last order pulled from the Polling API, and the categories the engine is subscribed to |
+
+The command then lists the sharing options, which you can change with `cscli console enable/disable` (see [alert context](/u/user_guides/alert_context)).
+
+If the engine is not registered against CAPI, or if CAPI cannot be reached, the command says so and only prints the local options:
+
+```bash
+$ sudo cscli console status
+╭────────────────────┬──────────────────────────────────────────────╮
+│ Console connection │                                              │
+├────────────────────┼──────────────────────────────────────────────┤
+│ Central API (CAPI) │ ❌ not registered, see 'cscli capi register' │
+╰────────────────────┴──────────────────────────────────────────────╯
+```
+
+:::info
+The connection table requires CrowdSec v1.8.0 or later. Earlier versions only display the sharing options.
+:::
+
 ## Next steps
 
 Now that your first engine is enrolled, explore the Console features:
