@@ -40,6 +40,8 @@ For the full request flow, see [How it works](how_it_works.md).
   - [HAProxy SPOA](/u/bouncers/haproxy_spoa)
   - [Traefik](/u/bouncers/traefik)
   - [Envoy](/u/bouncers/envoy)
+- An **engine host able to run the challenge runtime**. Obfuscating the challenge JavaScript needs a WebAssembly runtime in compiler mode: `arm64`, or `amd64` with SSE4.1 support. The host must also let CrowdSec map executable memory, which W^X hardening, a seccomp profile or a SELinux policy can deny. If either is missing, the AppSec datasource fails to load with `wasm compiler mode unavailable` or `failed to create wasm runtime in compiler mode` and CrowdSec does not start.
+- **Clients that run JavaScript and accept cookies**, since the challenge is solved in the browser and its outcome is carried by a cookie. A browser with cookies disabled is shown an explicit error instead of being challenged over and over. Legitimate non-browser clients (API consumers, monitoring, …) must be [excluded from the challenge](whats_included.md#path-exclusion-configs) or allowlisted.
 
 ## Next steps
 
