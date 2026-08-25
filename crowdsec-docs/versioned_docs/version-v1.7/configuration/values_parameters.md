@@ -366,8 +366,11 @@ configuration values, their defaults, and their purpose.
 | `appsec.replicas`<a id="appsec-replicas"></a>                                | Number of replicas for the AppSec Deployment                                               | `1`     |
 | `appsec.strategy`<a id="appsec-strategy"></a>                                | Deployment strategy for AppSec                                                             | `{}`    |
 | `appsec.acquisitions`<a id="appsec-acquisitions"></a>                            | AppSec acquisitions (datasource listeners), e.g. appsec listener on 7422                   | `[]`    |
-| `appsec.configs`<a id="appsec-configs"></a>                                 | AppSec configs (key = filename, value = file content)                                      | `{}`    |
-| `appsec.rules`<a id="appsec-rules"></a>                                   | AppSec rule files (key = filename, value = file content)                                   | `{}`    |
+| `appsec.scenarios`<a id="appsec-scenarios"></a>                               | AppSec scenario files (key = filename, value = file content; `.yaml` / `.yml` suffix optional, chart normalizes keys to Kubernetes-safe volume names) | `{}`    |
+| `appsec.postoverflows.s00-enrich`<a id="appsec-postoverflows-s00-enrich"></a>         | AppSec postoverflow enrichment files (key = filename, value = file content; chart normalizes keys to Kubernetes-safe volume names) | `{}`    |
+| `appsec.postoverflows.s01-whitelist`<a id="appsec-postoverflows-s01-whitelist"></a>      | AppSec postoverflow whitelist files (key = filename, value = file content; chart normalizes keys to Kubernetes-safe volume names) | `{}`    |
+| `appsec.configs`<a id="appsec-configs"></a>                                 | AppSec configs (key = filename, value = file content; `.yaml` / `.yml` suffix optional, chart normalizes keys to Kubernetes-safe volume names) | `{}`    |
+| `appsec.rules`<a id="appsec-rules"></a>                                   | AppSec rule files (key = filename, value = file content; `.yaml` / `.yml` suffix optional, chart normalizes keys to Kubernetes-safe volume names) | `{}`    |
 | `appsec.priorityClassName`<a id="appsec-priorityclassname"></a>                       | Priority class name for AppSec pods                                                        | `""`    |
 | `appsec.deployAnnotations`<a id="appsec-deployannotations"></a>                       | Annotations added to the AppSec Deployment                                                 | `{}`    |
 | `appsec.podAnnotations`<a id="appsec-podannotations"></a>                          | Annotations added to AppSec pods                                                           | `{}`    |
