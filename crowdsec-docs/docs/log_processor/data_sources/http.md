@@ -206,9 +206,9 @@ Optional.
 
 ### `max_body_size`
 
-The maximum body size to accept.
+The maximum body size to accept, in bytes, measured after decompression for compressed requests. Requests announcing or sending a bigger body are rejected with a `413` status code.
 
-Optional.
+Optional, defaults to `10485760` (10MB).
 
 ### `timeout`
 
