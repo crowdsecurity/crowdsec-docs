@@ -29,13 +29,15 @@ Since CrowdSec v1.6.9, this flag is no longer required. CrowdSec will automatica
 
 It may take up to 30 minutes for CrowdSec to detect a plan upgrade or downgrade.
 
+Since CrowdSec v1.8.0, the `console_management` option has been removed.
+
 :::
 
-We need to enable the option on the LAPI side:
+On versions before v1.6.9, the option has to be enabled on the LAPI side:
 
 ```bash
 sudo cscli console enable console_management
 sudo systemctl restart crowdsec
 ```
 
-The console_management is now enabled and our CrowdSec Security Engine is ready to receive orders from the CrowdSec Console.
+Your CrowdSec Security Engine is now ready to receive orders from the CrowdSec Console.

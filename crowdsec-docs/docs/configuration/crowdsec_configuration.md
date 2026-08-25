@@ -43,7 +43,6 @@ Collections currently installed on the Log Processor.
 ### `/etc/crowdsec/console.yaml`
 
 Console specific flags:
- - enable/disable decisions management from the console
  - enable/disable sharing of manual decisions with the console
  - enable/disable sharing of custom/tainted scenarios related decisions with the console
  - enable/disable sharing of alert context data with the console.

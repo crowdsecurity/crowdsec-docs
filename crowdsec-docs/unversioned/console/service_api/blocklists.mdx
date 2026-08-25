@@ -271,9 +271,10 @@ The Service API does not enumerate your engines or tags.
 :::
 
 :::note Subscription alone is not enough
-A targeted engine only starts enforcing the blocklist once it is enrolled in the org,
-subscribed (directly or through its org/tag), and has `console_management` enabled locally
-(`cscli console enable console_management`). See
+A targeted engine only starts enforcing the blocklist once it is enrolled in the org and
+subscribed (directly or through its org/tag). Decision management itself is enabled automatically
+from your Console plan since CrowdSec v1.6.9 (on older versions, enable it locally with
+`cscli console enable console_management`). See
 [enrolling your engine in the Console](/u/getting_started/post_installation/console).
 :::
 
