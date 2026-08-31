@@ -133,9 +133,20 @@ appsec:
 Please note the spaces between the collection names (hence why the double quotes are needed).
 :::
 
-Now you can apply it with:
+:::note
+If your `values.yaml` does not already configure the CrowdSec **agent** (via `agent.acquisition` or `agent.additionalAcquisition`), you must explicitly disable it — otherwise the Helm chart will fail with `No acquisition or additionalAcquisition configured`:
+
+```yaml
+agent:
+  enabled: false
 ```
-helm upgrade crowdsec crowdsec/crowdsec -n crowdsec --create-namespace -f ./crowdsec-values.yaml
+
+If you are running a full CrowdSec stack (agent + LAPI + AppSec), configure `agent.acquisition` with your actual log sources instead.
+:::
+
+Now you can apply it with:
+```bash
+helm upgrade --install crowdsec crowdsec/crowdsec -n crowdsec --create-namespace -f ./crowdsec-values.yaml
 ```
 
 This `values.yaml` modification adds the required Hub configuration items.
@@ -255,9 +266,12 @@ The previous compose commands presume the container is named `crowdsec`. If you 
 
 </TabItem>
 <TabItem value="kubernetes">
-With kubernetes the acquisition setup is twofolds:
-We have to add 
+With Kubernetes the acquisition setup is done via `values.yaml`.
+Add the following to your CrowdSec `values.yaml`:
+
 ```yaml title="values.yaml"
+agent:
+  enabled: false   # required if you have no agent.acquisition configured; replace with your log sources for a full stack
 appsec:
   acquisitions:
     - appsec_configs:
@@ -270,6 +284,11 @@ appsec:
   enabled: true
 ```
 
+Then apply with:
+
+```bash
+helm upgrade --install crowdsec crowdsec/crowdsec -n crowdsec --create-namespace -f ./crowdsec-values.yaml
+```
 
 </TabItem>
 </Tabs> 
@@ -325,7 +344,7 @@ http:
           crowdsecAppsecHost: crowdsec:7422
           crowdsecAppsecFailureBlock: true
           crowdsecAppsecUnreachableBlock: true
-          crowdsecLapiKey: privateKey-foo
+          crowdsecLapiKey: <your-shared-traefik-bouncer-key>
 ```
 
 
@@ -336,14 +355,125 @@ Instead if you define the configuration using labels on the containers you can a
       - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.enabled=true"
       - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecAppsecEnabled=true"
       - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecAppsecHost=crowdsec:7422"
-      - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecLapiKey=privateKey-foo"
+      - "traefik.http.middlewares.crowdsec-bar.plugin.bouncer.crowdsecLapiKey=<your-shared-traefik-bouncer-key>"
 ```
 </TabItem>
 <TabItem value="kubernetes">
-Here's a Traefik Middleware ressource you can apply with
+For Kubernetes, use the same secret management pattern as in the [Traefik
+bouncer setup](/u/bouncers/traefik#store-the-traefik-bouncer-key-in-a-kubernetes-secret):
+store the shared bouncer key in Kubernetes secrets and reference it from both
+CrowdSec and Traefik.
+
+Two secrets are needed because CrowdSec and Traefik run in different
+namespaces:
+
+- In the `crowdsec` namespace, CrowdSec LAPI reads `BOUNCER_KEY_traefik` from
+  the `crowdsec-keys` secret.
+- In the `traefik` namespace, Traefik mounts the same key from the
+  `crowdsec-bouncer-key` secret as a file.
+
+Both secrets must contain the same `BOUNCER_KEY_traefik` value. If you already
+created them for the base bouncer setup, you can reuse them here.
+
+If you haven't created the bouncer key yet, generate one with:
+
+```bash
+kubectl exec -n crowdsec deploy/crowdsec-lapi -c crowdsec-lapi -- cscli bouncers add traefik -o raw
+```
+
+Copy the printed key — you will use it as `<your-shared-traefik-bouncer-key>` below.
+
+Create or update the secrets:
+
+```yaml title="crowdsec-keys.yaml"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-keys
+  namespace: crowdsec
+type: Opaque
+stringData:
+  ENROLL_KEY: "<your-existing-enroll-key>"
+  BOUNCER_KEY_traefik: "<your-shared-traefik-bouncer-key>"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crowdsec-bouncer-key
+  namespace: traefik
+type: Opaque
+stringData:
+  BOUNCER_KEY_traefik: "<your-shared-traefik-bouncer-key>"
+```
+
+Apply it:
+
+```bash
+kubectl apply -f crowdsec-keys.yaml
+```
+
+Then make sure the CrowdSec Helm values reference `BOUNCER_KEY_traefik` from
+the `crowdsec-keys` secret:
+
+```yaml title="crowdsec-values.yaml"
+lapi:
+  env:
+    - name: BOUNCER_KEY_traefik
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-keys
+          key: BOUNCER_KEY_traefik
+```
+
+Apply the CrowdSec release again:
+
+```bash
+helm upgrade --install crowdsec crowdsec/crowdsec --namespace crowdsec --create-namespace -f crowdsec-values.yaml
+```
+
+Then configure Traefik to mount the `crowdsec-bouncer-key` secret and
+reference it with `crowdsecLapiKeyFile`.
+
+Use a Traefik values file like this:
+
+```yaml title="traefik-values.yaml"
+experimental:
+  plugins:
+    bouncer:
+      moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+      version: v1.4.5
+volumes:
+  - name: crowdsec-bouncer-key
+    mountPath: /etc/traefik/crowdsec
+    type: secret
+    secretName: crowdsec-bouncer-key
+```
+
+:::note
+The Traefik Helm chart uses a read-only root filesystem by default. The plugin loader needs a writable directory to cache downloaded plugins. Add an `emptyDir` volume for `/plugins-storage` alongside the secret volume above:
+
+```yaml title="traefik-values.yaml (addition)"
+deployment:
+  additionalVolumes:
+    - name: plugins-storage
+      emptyDir: {}
+additionalVolumeMounts:
+  - name: plugins-storage
+    mountPath: /plugins-storage
+```
+
+Without this, Traefik will fail to start with `unable to create directory /plugins-storage/sources: read-only file system`.
+:::
+
+Then create a Traefik Middleware resource:
+
 ```bash
 kubectl apply -f traefik-middleware.yaml
 ```
+
+:::note
+The `spec.plugin.<key>` in the Middleware **must match** the key you registered under `experimental.plugins.<key>` in Traefik's configuration — not the module name (`crowdsec-bouncer-traefik-plugin`). Since the `traefik-values.yaml` above registers the plugin under the key `bouncer`, use `bouncer:` here.
+:::
 
 ```yaml values="traefik-middleware.yaml"
 apiVersion: traefik.io/v1alpha1
@@ -353,23 +483,77 @@ metadata:
   namespace: traefik
 spec:
   plugin:
-    crowdsec-bouncer-traefik-plugin:
+    bouncer:
       enabled: true
       crowdsecMode: stream
       crowdsecLapiScheme: http
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
-      crowdsecLapiKey: <shadowed>
-      htttTimeoutSeconds: 60
+      crowdsecLapiKeyFile: /etc/traefik/crowdsec/BOUNCER_KEY_traefik
+      httpTimeoutSeconds: 60
       forwardedheaderstrustedips:
         - 10.0.0.0/8
         - 192.168.0.0/16
-        - 134.209.137.94
-        - 2a03:b0c0:2:f0::f557:a001
-      crowdsecAppsecEnabled: false
-      crowdsecAppsecHost: crowdsec:7422
+        - 203.0.113.0/24
+        - 2001:db8::/32
+      crowdsecAppsecEnabled: true
+      crowdsecAppsecHost: crowdsec-appsec-service.crowdsec.svc.cluster.local:7422
       crowdsecAppsecFailureBlock: true
       crowdsecAppsecUnreachableBlock: true
 ```
+
+<details>
+<summary>How is the AppSec hostname derived?</summary>
+
+The Helm chart creates a Service named `<release>-appsec-service` in the namespace where CrowdSec is installed. With the default release name `crowdsec` in namespace `crowdsec`, the in-cluster DNS name is:
+
+```
+crowdsec-appsec-service.crowdsec.svc.cluster.local:7422
+```
+
+If you used a different release name or namespace, adjust accordingly: `<release>-appsec-service.<namespace>.svc.cluster.local:7422`.
+
+</details>
+
+<details>
+<summary>Less secure alternative: define the Traefik bouncer key inline with <code>crowdsecLapiKey</code> instead of mounting <code>crowdsecLapiKeyFile</code></summary>
+
+```yaml values="traefik-middleware.yaml"
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: crowdsec
+  namespace: traefik
+spec:
+  plugin:
+    bouncer:
+      enabled: true
+      crowdsecMode: stream
+      crowdsecLapiScheme: http
+      crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
+      crowdsecLapiKey: <your-shared-traefik-bouncer-key>
+      httpTimeoutSeconds: 60
+      forwardedheaderstrustedips:
+        - 10.0.0.0/8
+        - 192.168.0.0/16
+        - 203.0.113.0/24
+        - 2001:db8::/32
+      crowdsecAppsecEnabled: true
+      crowdsecAppsecHost: crowdsec-appsec-service.crowdsec.svc.cluster.local:7422
+      crowdsecAppsecFailureBlock: true
+      crowdsecAppsecUnreachableBlock: true
+```
+
+</details>
+
+:::note
+If your IngressRoute lives in a different namespace than the Middleware (e.g. `default` vs `traefik`), Traefik's Kubernetes CRD provider blocks cross-namespace references by default. Either place the Middleware in the same namespace as the IngressRoute, or add the following to your Traefik Helm values:
+
+```yaml title="traefik-values.yaml (addition)"
+providers:
+  kubernetesCRD:
+    allowCrossNamespace: true
+```
+:::
 
 You can still add some route configuration through
 [IngressRoute](https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/crd/http/ingressroute/)
@@ -410,21 +594,33 @@ If the AppSec Component is unreachable should the request be blocked.
 ## Testing the AppSec Component + Remediation Component
 
 :::note
-We're assuming the web server is installed on the same machine and is listening on port 80. Please adjust your testing accordingly if this is not the case.
+For bare-metal/Docker, the web server is assumed to be listening on port 80 on the same host — adjust the URL if needed. For Kubernetes, send the test request through your Ingress (e.g. `http://<node-ip>/<path>`) rather than directly to the AppSec port.
 :::
 
 If you try to access `http://localhost/.env` from a browser, your request will be blocked, resulting in the display of the following HTML page:
 
 ![appsec-denied](/img/appsec_denied.png)
 
-We can also look at the metrics from `cscli metrics show appsec` it will display:
+We can also look at the metrics from `cscli metrics show appsec` — it will display:
  - the number of requests processed by the AppSec Component
  - Individual rule matches
+
+The command to run depends on your environment:
+
+```bash title="Bare-metal / Docker"
+sudo cscli metrics show appsec
+```
+
+```bash title="Kubernetes"
+kubectl exec -n crowdsec \
+  $(kubectl get pod -n crowdsec -l type=appsec -o name | head -1) \
+  -c crowdsec-appsec -- cscli metrics show appsec
+```
 
  <details>
   <summary>Example Output</summary>
 
-```bash title="sudo cscli metrics show appsec"
+```bash title="Bare-metal output (listen_addr: 127.0.0.1:7422)"
 Appsec Metrics:
 ╭─────────────────┬───────────┬─────────╮
 │  Appsec Engine  │ Processed │ Blocked │
@@ -433,6 +629,22 @@ Appsec Metrics:
 ╰─────────────────┴───────────┴─────────╯
 
 Appsec '127.0.0.1:7422/' Rules Metrics:
+╭─────────────────────────────────┬───────────╮
+│             Rule ID             │ Triggered │
+├─────────────────────────────────┼───────────┤
+│ crowdsecurity/vpatch-env-access │ 1         │
+╰─────────────────────────────────┴───────────╯
+```
+
+```bash title="Kubernetes output (listen_addr: 0.0.0.0:7422)"
+Appsec Metrics:
+╭─────────────────┬───────────┬─────────╮
+│  Appsec Engine  │ Processed │ Blocked │
+├─────────────────┼───────────┼─────────┤
+│ 0.0.0.0:7422/   │ 2         │ 1       │
+╰─────────────────┴───────────┴─────────╯
+
+Appsec '0.0.0.0:7422/' Rules Metrics:
 ╭─────────────────────────────────┬───────────╮
 │             Rule ID             │ Triggered │
 ├─────────────────────────────────┼───────────┤
