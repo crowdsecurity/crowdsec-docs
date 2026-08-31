@@ -6,12 +6,14 @@ sidebar_position: 4
 
 The Application Security Component lets you hook into different stages to change behavior at runtime.
 
-Hooks run in four phases:
+Hooks run in six phases:
 
 - `on_load`: Called just after the rules have been loaded into the engine.
 - `pre_eval`: Called after a request has been received but before the rules are evaluated.
 - `post_eval`: Called after the rules have been evaluated.
 - `on_match`: Called after a successful match of a rule. If multiple rules, this hook will be called only once.
+- `on_challenge`: Called for in-band requests carrying a valid challenge cookie, with the decoded `fingerprint` object available. See [Bot detection hooks reference](bot_detection/hooks.md#on_challenge). (In-band only.)
+- `on_challenge_submit`: Called when a client POSTs a challenge response to `/crowdsec-internal/challenge/submit`, after crypto validation and fingerprint decryption. See [Bot detection hooks reference](bot_detection/hooks.md#on_challenge_submit). (In-band only.)
 
 ## Using hooks
 
@@ -59,6 +61,7 @@ This hook is intended to be used to disable rules at loading (eg, to temporarily
 | `RegisterAPISchemaBodyDecoder` | `func(content_type str, decoder str)`   | Enable a non-default body decoder for a Content-Type. See [available decoders](api_validation.md#body-decoders).                                                      |
 | `SetMaxBodySize`               | `func(size int)`                        | Set the maximum request body size (in bytes) buffered and inspected by the engine. Defaults to 10MB. See [Request body size handling](#request-body-size-handling)    |
 | `SetBodySizeExceededAction`    | `func(action str)`                      | Set what happens when a request body exceeds the maximum size: `drop` (default), `partial`, or `allow`. See [Request body size handling](#request-body-size-handling) |
+| `SetChallengeDifficulty`       | `func(level str)`                       | Set the default proof-of-work difficulty for every challenge served by this config. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](bot_detection/hooks.md#challenge-difficulty-levels). Per-request overrides are available in `pre_eval` / `post_eval` / `on_challenge`. |
 
 ##### Example
 
@@ -98,6 +101,14 @@ This hook is intended to be used to disable rules only for this particular reque
 | `DisableBodyInspection`     | `func()`                             | Skip body inspection for the current request (also bypasses the maximum body size check). See [Request body size handling](#request-body-size-handling)                                                                                                         |
 | `ValidateRequestWithSchema` | `func(ref str) bool`                 | Validate the current request against an OpenAPI schema previously loaded under `ref` (returns `true` on success). On failure, structured details are published to `hook_vars` (see [OpenAPI Schema Validation](api_validation.md#validation-result-variables)). |
 | `hook_vars`                 | `map[string]string`                  | Per-request scratch space shared with later hooks and propagated to the resulting event. Helpers such as `ValidateRequestWithSchema` publish their results here.                                                                                                |
+| `GrantChallengeCookie`      | `func(reason str, ttl str?)`         | Mint a valid challenge cookie for this client (allowlist escape hatch for trusted user-agents or internal probes). `reason` is recorded in logs (≤256 bytes); optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                 |
+| `SetChallengeDifficulty`    | `func(level str)`                    | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](bot_detection/hooks.md#challenge-difficulty-levels).                                                    |
+| `MatchKnownBot`             | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files` (verified by IP range or forward-confirmed reverse DNS). Used to skip the challenge for known-good crawlers. See [Known bots](bot_detection/hooks.md#known-bots).                          |
+| `ExemptFromChallenge`       | `func(reason str)`                   | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](bot_detection/hooks.md#known-bots).                                                                                    |
+| `SetRemediation`            | `func(remediation str)`              | Pre-set the remediation applied **if** this request ends up being blocked (a rule matches, or `DropRequest()` fires). It does not block the request on its own. See [`SetRemediation*`](#setremediation)                                                                          |
+| `SetReturnCode`             | `func(code int)`                     | Pre-set, in the same way, the HTTP code returned to the user if the request ends up being blocked                                                                                                                                                                                |
+| `fingerprint`               | `object`                             | The decoded challenge fingerprint when the request carries a valid challenge cookie (`on_challenge` runs before `pre_eval` and populates it), `nil` otherwise. See [The `fingerprint` object](bot_detection/hooks.md#the-fingerprint-object).                                     |
+| Score helpers               |                                      | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring).                                                                   |
 
 #### Example
 
@@ -119,12 +130,21 @@ This hook is mostly intended for debugging or threat-hunting purposes.
 
 #### Available helpers
 
-| Helper Name   | Type           | Description                                                  |
-| ------------- | -------------- | ------------------------------------------------------------ |
-| `IsInBand`    | `bool`         | `true` if the request is in the in-band processing phase     |
-| `IsOutBand`   | `bool`         | `true` if the request is in the out-of-band processing phase |
-| `DumpRequest` | `func()`       | Dump the request to a file                                   |
-| `req`         | `http.Request` | Original HTTP request received by the remediation component  |
+| Helper Name              | Type                          | Description                                                                                                                                                                                                                                                     |
+| ------------------------ | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `IsInBand`               | `bool`                        | `true` if the request is in the in-band processing phase                                                                                                                                                                                                        |
+| `IsOutBand`              | `bool`                        | `true` if the request is in the out-of-band processing phase                                                                                                                                                                                                    |
+| `DumpRequest`            | `func()`                      | Dump the request to a file                                                                                                                                                                                                                                      |
+| `DumpFingerprint`        | `func(label str) str`         | Append the decoded challenge fingerprint (plus request context) as one JSONL line to a dump file, for offline analysis. Returns the file path. See [DumpFingerprint](bot_detection/hooks.md#dumpfingerprint).                                                                          |
+| `req`                    | `http.Request`                | Original HTTP request received by the remediation component                                                                                                                                                                                                     |
+| `SendChallenge`          | `func()`                      | Instruct the AppSec component to serve a JavaScript challenge for this request. No-op if the request already carries a valid challenge cookie. See [Bot detection](bot_detection/intro.md).                                                                     |
+| `GrantChallengeCookie`   | `func(reason str, ttl str?)`  | Mint a valid challenge cookie for this client (allowlist escape hatch for trusted user-agents or internal probes). `reason` is recorded in logs (≤256 bytes); optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                 |
+| `SetChallengeDifficulty` | `func(level str)`             | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](bot_detection/hooks.md#challenge-difficulty-levels).                                                    |
+| `MatchKnownBot`          | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files` (verified by IP range or forward-confirmed reverse DNS). See [Known bots](bot_detection/hooks.md#known-bots).                                                                       |
+| `ExemptFromChallenge`    | `func(reason str)`            | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](bot_detection/hooks.md#known-bots).                                                                                    |
+| `fingerprint`            | `object`                      | The decoded challenge fingerprint when the request carries a valid challenge cookie, `nil` otherwise. See [The `fingerprint` object](bot_detection/hooks.md#the-fingerprint-object).                                                                                             |
+| `hook_vars`              | `map[string]string`           | Per-request scratch space shared with the other hooks and propagated to the resulting event                                                                                                                                                                                     |
+| Score helpers            |                               | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring).                                                                   |
 
 #### DumpRequest
 
@@ -188,6 +208,10 @@ This hook is intended to be used to change the behavior of the engine after a ma
 | `IsOutBand`      | `bool`                     | `true` if the request is in the out-of-band processing phase                                                  |
 | `evt`            | `types.Event`              | [The event that has been generated](/docs/expr/event.md#appsec-helpers) by the Application Security Component |
 | `req`            | `http.Request`             | Original HTTP request received by the remediation component                                                   |
+| `MatchKnownBot` | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files`. See [Known bots](bot_detection/hooks.md#known-bots).                  |
+| `ExemptFromChallenge` | `func(reason str)`    | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](bot_detection/hooks.md#known-bots). |
+| `hook_vars`     | `map[string]string`        | Per-request scratch space shared with the other hooks and propagated to the resulting event                                                                   |
+| Score helpers | | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring). |
 
 #### Example
 
@@ -211,6 +235,18 @@ on_match:
     apply:
      - SetRemediation("allow")
 ```
+
+### `on_challenge`
+
+Called for in-band requests carrying a valid `__crowdsec_challenge` cookie, with the decoded `fingerprint` object available — the right place to apply per-request decisions based on what the challenge learned about the client. **In-band only.**
+
+See [Bot detection → Hooks reference → `on_challenge`](bot_detection/hooks.md#on_challenge) for the available helpers, the `fingerprint` object, and examples.
+
+### `on_challenge_submit`
+
+Called when a client POSTs a challenge response to `/crowdsec-internal/challenge/submit`, after crypto validation and fingerprint decryption but before the success cookie is issued — the right place to refuse cookies to clients identified as automation. **In-band only.**
+
+See [Bot detection → Hooks reference → `on_challenge_submit`](bot_detection/hooks.md#on_challenge_submit) for the available helpers and examples.
 
 ## Detailed Helpers Information
 

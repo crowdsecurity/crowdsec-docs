@@ -100,8 +100,14 @@ According to the result of the processing of the HTTP request, the application s
 | HTTP Code | Description                                                                                                                                             | Body                                                                                     |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | `200`     | The HTTP request is allowed                                                                                                                             | `{"action" : "allow"}`                                                                   |
-| `403`     | The HTTP request triggered one or more application security component rules                                                                             | `{"action" : "ban", "http_status": 403}` or `{"action" : "captcha", "http_status": 403}` |
+| `403`     | The HTTP request triggered one or more application security component rules                                                                             | `{"action" : "ban", "http_status": 403}`, `{"action" : "captcha", "http_status": 403}` or `{"action" : "challenge", ...}` |
 | `500`     | An error occurred in the application security component. The remediation component must support a `APPSEC_FAILURE_ACTION` parameter to handle this case | `null`                                                                                   |
 | `401`     | The remediation component is not authenticated. It must use the same API Key that was generated to pull the local API request                           | `null`                                                                                   |
 
 In case of a `403` response, the body will contain the action to take and the HTTP status code to return to the client.
+
+## Bot detection
+
+When [bot detection](bot_detection/intro.md) is enabled, the application security component can also answer a `403` with `{"action": "challenge"}`. Unlike `ban` and `captcha`, that envelope carries a complete response — body, headers and cookies — that the remediation component relays to the browser, and the exchange continues over a set of internal URLs the component must forward.
+
+See the [challenge protocol](bot_detection/challenge_protocol.md) for the full contract.

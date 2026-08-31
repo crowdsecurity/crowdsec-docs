@@ -14,6 +14,8 @@ The best way to get an overview of the available metrics is to use `cscli metric
 ---------------|------------------------------|-------------
 acquisition	 | Acquisition Metrics | 	Measures the lines read, parsed, and unparsed per datasource. Zero read lines indicate a misconfigured or inactive datasource. Zero parsed lines means the parser(s) failed. Non-zero parsed lines are fine as crowdsec selects relevant lines.
 alerts	 | Local API Alerts	 | Tracks the total number of past and present alerts for the installed scenarios.
+appsec-challenge	 | Bot Detection Metrics	 | Measures the challenge lifecycle of the AppSec component.
+appsec-challenge-infra	 | Bot Detection Infrastructure Metrics	 | Tracks the internal upkeep of the AppSec challenge runtime: signing-key rotation, JS re-obfuscation and cache eviction.
 appsec-engine	 | Appsec Metrics	 | Measures the number of parsed and blocked requests by the AppSec Component.
 appsec-rule	 | Appsec Rule Metrics	 | Provides “per AppSec Component” information about the number of matches for loaded AppSec Rules.
 bouncers	 | Bouncer Metrics	 | Network traffic blocked by bouncers.
@@ -33,7 +35,8 @@ You can use aliases to view metrics related to specific areas (`cscli metrics sh
 
  - `engine` : Security Engine dedicated metrics (acquisition, parsers, scenarios, whitelists)
  - `lapi` : local api dedicated metrics (bouncer api calls, local api decisions, machines decisions etc.)
- - `appsec` : application Security Engine - WAF specifics (requests processed, rules evaluated and triggered)
+ - `appsec` : application Security Engine - WAF specifics (requests processed, rules evaluated and triggered, challenges served)
+ - `bot-detection` : bot detection specifics (challenge lifecycle and challenge runtime upkeep)
 
 You can as well combine various metrics sections (listed in `cscli metrics list`).
 
