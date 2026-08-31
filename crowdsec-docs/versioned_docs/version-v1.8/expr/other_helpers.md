@@ -1,0 +1,252 @@
+---
+id: other_helpers
+title: Other helpers
+sidebar_position: 2
+---
+
+## Time Helpers
+
+### `TimeNow() string`
+
+Return RFC3339 formatted time 
+
+> `TimeNow()`
+
+### `ParseUnix(unix string) string`
+```
+ParseUnix("1672239773.3590894") -> "2022-12-28T15:02:53Z"
+ParseUnix("1672239773") -> "2022-12-28T15:02:53Z"
+ParseUnix("notatimestamp") -> ""
+```
+Parses unix timestamp string and returns RFC3339 formatted time
+
+### `AverageInterval(timestamps []time.Time) time.Duration`
+
+Calculates the average interval (time duration) between consecutive timestamps in a slice.
+
+**Use case:** Detecting consistent timing patterns over time, such as slow brute-force attacks or rate anomalies.
+
+**Example:**
+
+```yaml
+type: conditional
+name: me/slow-http
+debug: true
+description: "Detect slow HTTP requests returning 404"
+filter: "evt.Meta.log_type in ['http_access-log', 'http_error-log'] && evt.Parsed.static_ressource == 'false' && evt.Parsed.verb in ['GET', 'HEAD']"
+groupby: "evt.Meta.source_ip + '/' + evt.Parsed.target_fqdn"
+capacity: -1
+condition: |
+    len(queue.Queue) >= 3 &&
+    AverageInterval(map(queue.Queue[-3:], { #.Time })) > duration("5m") &&
+    all(queue.Queue, #.Meta.http_status == '404')
+leakspeed: 1h
+labels:
+  remediation: true
+```
+
+In this example, we check if the queue has at least 3 items, compute the average interval between the last 3 requests, and trigger if the average time between requests exceeds 5 minutes and all responses are 404s (indicating a slow scan).
+
+**Notes:**
+- Timestamps are automatically sorted internally for correctness
+- Requires at least two timestamps
+- Useful for detecting consistent behavior patterns over time
+
+### `MedianInterval(timestamps []time.Time) time.Duration`
+
+Calculates the median interval (time duration) between consecutive timestamps in a slice.
+
+**Use case:** Detecting typical timing patterns when intervals vary widely. The median is more robust against outliers than the average, making it ideal for identifying timing anomalies in irregular patterns.
+
+**Example:**
+
+```yaml
+type: conditional
+name: me/slow-http-median
+debug: true
+description: "Detect slow HTTP requests returning 404"
+filter: "evt.Meta.log_type in ['http_access-log', 'http_error-log'] && evt.Parsed.static_ressource == 'false' && evt.Parsed.verb in ['GET', 'HEAD']"
+groupby: "evt.Meta.source_ip + '/' + evt.Parsed.target_fqdn"
+capacity: -1
+condition: |
+    len(queue.Queue) >= 5 &&
+    MedianInterval(map(queue.Queue[-5:], { #.Time })) > duration("10m") &&
+    all(queue.Queue, #.Meta.http_status == '404')
+leakspeed: 1h
+labels:
+  remediation: true
+```
+
+In this example, we check if there are at least 5 events in the queue, calculate the median interval between the last 5 requests, and trigger if the median interval exceeds 10 minutes and all responses are 404s.
+
+**Notes:**
+- Timestamps are automatically sorted internally for correctness
+- Handles both even and odd numbers of intervals correctly
+- Requires at least two timestamps
+- More robust against outliers compared to `AverageInterval`
+- Useful for capturing typical timing patterns in skewed data
+
+## Stash Helpers
+
+### `GetFromStash(cache string, key string)`
+
+`GetFromStash` retrieves the value for `key` in the named `cache`.
+The cache are usually populated by [parser's stash section](/log_processor/parsers/format.md#stash).
+An empty string if the key doesn't exist (or has been evicted), and error is raised if the `cache` doesn't exist.
+
+## HTTP Helpers
+
+:::warning
+These helpers perform a blocking network call: the routine evaluating the expression waits until the remote host answers or the 10s timeout expires. Prefer using them in postoverflows, and never build the URL from untrusted user input.
+:::
+
+All the HTTP helpers return an `HTTPResponse` object:
+
+ - `StatusCode` (`int`) : the status code of the response
+ - `Body` (`string`) : the body of the response, truncated to 10MB
+ - `Headers` (`http.Header`) : the headers of the response, ie. `Headers.Get("Content-Type")`
+
+If the request cannot be performed (unreachable host, timeout, invalid URL), the expression fails.
+A default `User-Agent` is sent unless you set one yourself.
+
+### `HTTPGet(url string) *HTTPResponse`
+
+Performs a GET request.
+
+> `HTTPGet("https://example.net/api/reputation").StatusCode == 200`
+
+### `HTTPHead(url string) *HTTPResponse`
+
+Performs a HEAD request.
+
+> `HTTPHead("https://example.net/").Headers.Get("Server")`
+
+### `HTTPPost(url string, contentType string, body string) *HTTPResponse`
+
+Performs a POST request, sending `body` with the `Content-Type` header set to `contentType`.
+
+> `HTTPPost("https://example.net/api/check", "application/json", '{"ip": "1.2.3.4"}').Body`
+
+### `HTTPRequest(method string, url string, headers map[string]any, body string) *HTTPResponse`
+
+Performs a request with an arbitrary method and headers. An empty `body` sends no body at all.
+
+> `HTTPRequest("PUT", "https://example.net/api/check", {"Authorization": "Bearer token"}, '{"ip": "1.2.3.4"}').StatusCode`
+
+## Others
+
+### `IsIPV4(ip string) bool`
+
+Returns true if it's a valid IPv4.
+
+> `IsIPV4("192.168.1.1")`
+
+> `IsIPV4(Alert.GetValue())`
+
+### `IsIP(ip string) bool`
+
+Returns true if it's a valid IP (v4 or v6).
+
+> `IsIP("2001:0db8:85a3:0000:0000:8a2e:0370:7334")`
+
+> `IsIP("192.168.1.1")`
+
+> `IsIP(Alert.GetValue())`
+
+### `GetDecisionsCount(value string) int`
+
+Returns the number of existing decisions in the database with the same value.
+This can return expired decisions if they have not been flushed yet.
+
+> `GetDecisionsCount("192.168.1.1")`
+
+> `GetDecisionsCount(Alert.GetValue())`
+
+### `GetDecisionsSinceCount(value string, since string) int`
+
+Returns the number of existing decisions in the database with the same value since duration string (valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".).
+This can return expired decisions if they have not been flushed yet.
+
+> `GetDecisionsSinceCount("192.168.1.1", "7h")`
+
+> `GetDecisionsSinceCount(Alert.GetValue(), "30min")`
+
+### `GetActiveDecisionsCount(value string) int`
+
+Returns the number of active decisions in the database with the same value.
+
+> `GetActiveDecisionsCount(Alert.GetValue())`
+
+
+### `GetActiveDecisionsTimeLeft(value string) time.Duration`
+
+Returns the time left for the longest decision associated with the value.
+
+The returned value type is `time.Duration`, so you can use all the [time.Duration methods](https://pkg.go.dev/time#Duration).
+
+> `GetActiveDecisionsTimeLeft(Alert.GetValue())`
+
+> `GetActiveDecisionsTimeLeft(Alert.GetValue()).Hours() > 1"
+
+### `KeyExists(key string, map map[string]interface{}) bool`
+
+Return true if the `key` exists in the map.
+
+### `Get(arr []string, index int) string`
+
+Returns the index'th entry of arr, or `""`.
+
+
+### `Distance(lat1 string, long1 string, lat2 string, long2 string) float64`
+
+Computes the distance in kilometers between the set of coordinates represented by lat1/long1 and lat2/long2.
+Designed to implement impossible travel and similar scenarios:
+
+```yaml
+type: conditional
+name: demo/impossible-travel
+description: "test"
+filter: "evt.Meta.log_type == 'fake_ok'"
+groupby: evt.Meta.user
+capacity: -1
+condition: |
+  len(queue.Queue) >= 2 
+  and Distance(queue.Queue[-1].Enriched.Latitude, queue.Queue[-1].Enriched.Longitude,
+  queue.Queue[-2].Enriched.Latitude, queue.Queue[-2].Enriched.Longitude) > 100
+leakspeed: 3h
+labels:
+  type: fraud
+```
+Notes:
+ - Will return `0` if either set of coordinates is nil (ie. IP couldn't be geoloc)
+ - Assumes that the earth is spherical and uses the haversine formula.
+
+### `Hostname() string`
+
+Returns the hostname of the machine.
+
+## Alert specific helpers
+
+### `Alert.Remediation bool`
+
+Is `true` if the alert asks for a remediation. Will be true for alerts from scenarios with `remediation: true` flag. Will be false for alerts from manual `cscli decisions add` commands (as they come with their own decision).
+
+### `Alert.GetScenario() string`
+
+Returns the name of the scenario that triggered the alert.
+
+### `Alert.GetScope() string`
+
+Returns the scope of an alert. Most common value is `Ip`. `Country` and `As` are generally used for more distributed attacks detection/remediation.
+
+### `Alert.GetValue() string`
+
+Returns the value of an alert. field value of a `Source`, most common value can be a IPv4, IPv6 or other if the Scope is different than `Ip`.
+
+### `Alert.GetSources() []string`
+
+Return the list of IP addresses in the alert sources.
+
+### `Alert.GetEventsCount() int32`
+
+Return the number of events in the bucket.

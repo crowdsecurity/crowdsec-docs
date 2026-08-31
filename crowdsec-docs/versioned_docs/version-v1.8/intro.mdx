@@ -1,0 +1,84 @@
+---
+title: Introduction
+id: intro
+---
+
+import useBaseUrl from "@docusaurus/useBaseUrl"
+import AcademyPromo from "@site/src/components/academy-promo"
+
+# Security Engine Overview
+
+The [CrowdSec Security Engine](https://github.com/crowdsecurity/crowdsec) is an open-source, lightweight security engine that detects and blocks malicious actors. It analyzes logs and HTTP requests using behavior-based patterns called scenarios.
+
+CrowdSec is modular: it provides [behavior-based detection](https://app.crowdsec.net/hub/collections), including [AppSec rules](https://app.crowdsec.net/hub/appsec-rules), and optional [Remediation Components](https://app.crowdsec.net/hub/bouncers) that enforce blocks.
+
+<div style={{ display: "flex" }}>
+    <div style={{ textAlign: "center", flex: "1" }}>
+        <img
+            width="auto"
+            height="auto"
+            src={useBaseUrl("/img/simplified_SE_overview.svg")}
+        />
+    </div>
+</div>
+&nbsp; &nbsp;
+
+CrowdSec is crowdsourced: when you participate, you share the attacks you detect and block. In return, the Security Engine automatically downloads a curated list of validated attackers (the community blocklist), so you can take action sooner against known threats.
+
+## Main Features
+
+In addition to the core "detect and react" mechanism, CrowdSec is committed to several other key aspects:
+
+-   **Easy Installation**: Get started quickly on all [supported platforms](/u/getting_started/intro).
+-   **Simplified Daily Operations**: Manage and maintain your setup from the [CrowdSec Console](http://app.crowdsec.net) (Web UI) or with the [cscli command-line tool](/cscli/cscli.md).
+-   **Reproducibility**: Analyze live logs and [cold logs](/u/user_guides/replay_mode) to validate detections, run forensic analysis, or generate reports.
+-   **Versatile**: Protect your perimeter by analyzing [system logs](/log_processor/data_sources/introduction.md) and [HTTP requests](/appsec/intro.md).
+-   **Observability**: Providing valuable insights into the system's activity:
+    -   View and manage alerts in the [Console](https://app.crowdsec.net/signup).
+    -   Expose detailed [Prometheus metrics](/observability/prometheus.md).
+    -   Use the [cscli CLI](/observability/cscli.md) for administration.
+-   **API-Centric**: All components communicate via an [HTTP API](/local_api/intro.md), facilitating multi-machine setups.
+
+## Architecture
+
+<div style={{ display: "flex" }}>
+    <div style={{ textAlign: "center", flex: "1" }}>
+        <img src={useBaseUrl("/img/simplified_SE_underthehood.svg")}></img>
+    </div>
+</div>
+
+Under the hood, the Security Engine has various components:
+
+-   The [Log Processor](/log_processor/intro.mdx) handles detection. It analyzes logs from [various data sources](/log_processor/data_sources/introduction.md) and [HTTP requests](/appsec/intro.md) from compatible web servers.
+-   The [Appsec](appsec/intro) feature is part of the Log Processor. It filters HTTP requests from compatible web servers.
+-   The [Local API](local_api/intro.md) acts as a middleman:
+    -   Between the [Log Processors](/log_processor/intro.mdx) and the [Remediation Components](/u/bouncers/intro) which are in charge of enforcing decisions.
+    -   And with the [Central API](/central_api/intro.md) to share alerts and receive blocklists.
+-   The [Remediation Components](/u/bouncers/intro) (also called bouncers) block malicious IPs at your chosen level: IpTables, firewalls, web servers, or reverse proxies. [See the full list on the CrowdSec Hub.](https://app.crowdsec.net/hub/remediation-components)
+
+## Deployment options
+
+This architecture supports simple standalone setups and more distributed deployments:
+
+-   Single machine: Follow the [getting started guide](/u/getting_started/intro).
+-   Multiple machines: Use the [distributed setup guide](/u/user_guides/multiserver_setup).
+-   Centralized logs (rsyslog, Loki, ...): [Run CrowdSec next to your log pipeline](/u/user_guides/log_centralization), not on production workloads.
+-   Kubernetes: See [our Helm chart](/u/getting_started/installation/kubernetes).
+-   Containers: Use the [Docker data source](/log_processor/data_sources/docker.md).
+-   WAF only: Start with the [AppSec quickstart](appsec/intro).
+
+Distributed architecture example:
+
+<div style={{ display: "flex" }}>
+    <div style={{ textAlign: "center", flex: "1" }}>
+        <img src={useBaseUrl("/img/distributed_SE_setup.svg")}></img>
+    </div>
+</div>
+
+<AcademyPromo
+    image="crowdsec_fundamentals.svg"
+    description="Watch a short series of videos on how to install CrowdSec and protect your infrastructure"
+    title="More ways to learn"
+    course="crowdsec-fundamentals"
+    utm="?utm_source=docs&utm_medium=banner&utm_campaign=intro-page&utm_id=academydocs"
+/>

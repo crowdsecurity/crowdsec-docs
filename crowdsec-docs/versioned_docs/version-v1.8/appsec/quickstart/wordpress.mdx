@@ -1,0 +1,134 @@
+---
+id: wordpress
+title: QuickStart - WordPress
+---
+
+# CrowdSec WAF QuickStart for WordPress
+
+Protect a [WordPress](https://wordpress.org) site with CrowdSec's [AppSec (WAF) Component](/appsec/intro.md#introduction). The WordPress bouncer is a WordPress plugin, so step 3 is a short click-through in `wp-admin`; everything else is copy-paste on the host running CrowdSec.
+
+## Prerequisites
+
+Make sure the following are already done (each is a single-page install guide):
+
+1. **CrowdSec Security Engine** installed and running — see the [Linux quickstart](/u/getting_started/installation/linux).
+2. **WordPress bouncer plugin** installed and registered against the CrowdSec LAPI — see the [WordPress bouncer guide](/u/bouncers/wordpress).
+
+## 1. Install the AppSec rule collections
+
+```bash
+sudo cscli collections install \
+    crowdsecurity/appsec-virtual-patching \
+    crowdsecurity/appsec-generic-rules
+```
+
+This pulls the [`appsec-virtual-patching`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) collection (rules for known CVEs, auto-updated daily) and the [`appsec-generic-rules`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) collection (common attack patterns), plus the default AppSec configuration.
+
+## 2. Turn on the AppSec Component
+
+Create the acquisition file, then restart CrowdSec:
+
+```bash
+sudo mkdir -p /etc/crowdsec/acquis.d
+sudo tee /etc/crowdsec/acquis.d/appsec.yaml > /dev/null <<'EOF'
+appsec_configs:
+  - crowdsecurity/appsec-default
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+EOF
+sudo systemctl restart crowdsec
+```
+
+:::warning
+Keep `listen_addr` on `127.0.0.1` — the AppSec Component must not be reachable from the internet. It should only be queried by your local WordPress instance.
+:::
+
+## 3. Enable AppSec in the WordPress plugin
+
+This step uses the plugin's admin UI (no shell command):
+
+1. Log in to your WordPress admin panel.
+2. Open **CrowdSec** in your admin menu and go to the **Advanced** section.
+3. In the **AppSec component** block:
+   - **Enable AppSec**: check the box.
+   - **URL**: `http://127.0.0.1:7422` (or your AppSec Component address if CrowdSec runs elsewhere).
+   - **Request timeout**: `400` ms (default).
+   - **Fallback to**: `captcha` (recommended).
+   - **Maximum body size**: `1024` KB (default).
+   - **Body size exceeded action**: `headers_only` (recommended).
+4. Save the settings.
+
+![appsec-config](/img/bouncer/wordpress/screenshots/config-appsec.png)
+
+:::info
+AppSec requires the WordPress plugin to use API-key authentication (not TLS certificates). The AppSec Component is only consulted when LAPI returns a bypass decision.
+:::
+
+## 4. Verify
+
+From any machine, send a request with a malicious body through WordPress — this example trips the [`vpatch-CVE-2022-22965`](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-CVE-2022-22965) rule (Spring4Shell):
+
+```bash
+curl -X POST https://<your-wordpress-url>/ \
+    -d "class.module.classLoader.resources." \
+    -o /dev/null -s -w "%{http_code}\n"
+```
+
+You should get `403` printed.
+
+Check that CrowdSec recorded the block:
+
+```bash
+sudo cscli metrics show appsec
+```
+
+<details>
+<summary>Example metrics output</summary>
+
+```bash title="sudo cscli metrics show appsec"
+Appsec Metrics:
+╭─────────────────┬───────────┬─────────╮
+│  Appsec Engine  │ Processed │ Blocked │
+├─────────────────┼───────────┼─────────┤
+│ 127.0.0.1:7422/ │ 2         │ 1       │
+╰─────────────────┴───────────┴─────────╯
+
+Appsec '127.0.0.1:7422/' Rules Metrics:
+╭─────────────────────────────────────┬───────────╮
+│             Rule ID                 │ Triggered │
+├─────────────────────────────────────┼───────────┤
+│ crowdsecurity/vpatch-CVE-2022-22965 │ 1         │
+╰─────────────────────────────────────┴───────────╯
+```
+
+</details>
+
+<details>
+<summary>What just happened?</summary>
+
+1. `curl` sent a request with a malicious payload to WordPress.
+2. The CrowdSec plugin intercepted the request inside the WordPress loading process.
+3. LAPI had no existing ban, so the plugin forwarded the request to the AppSec Component at `http://127.0.0.1:7422`.
+4. The request matched the `vpatch-CVE-2022-22965` rule.
+5. AppSec answered `403`; the plugin served the configured ban page.
+
+</details>
+
+## WordPress-specific limits
+
+- The plugin only protects requests that go through the WordPress core loading process. Direct hits to PHP files outside WordPress — and any non-PHP file like `.env` or `.sql` — bypass it.
+- For broader coverage, enable [auto prepend file mode](/u/bouncers/wordpress#auto-prepend-file-mode) in the plugin settings.
+
+## Monitor in the Console
+
+If you haven't enrolled the Security Engine yet, follow [how to enroll in the Console](/u/getting_started/post_installation/console). Once enrolled, AppSec alerts appear alongside the rest of your alerts:
+
+![appsec-console](/img/appsec_console.png)
+
+## Next steps
+
+- Monitor WAF alerts with `sudo cscli alerts list` or in the [CrowdSec Console](https://app.crowdsec.net).
+- Review the [AppSec troubleshooting guide](/appsec/troubleshooting.md) and the [WordPress bouncer docs](/u/bouncers/wordpress) if you need to investigate or refine the deployment.
+- Explore [WAF deployment strategies](/appsec/advanced_deployments.mdx), [rules syntax](/appsec/rules_syntax.md), [rule creation](/appsec/create_rules.md), and [benchmarks](/appsec/benchmark.md) to go further.
