@@ -136,6 +136,10 @@ Acquisition metrics are split by datasource. They only appear when the correspon
 -   `cs_kinesis_stream_hits_total` : number of events read per stream (Counter, labels: `stream`)
 -   `cs_kinesis_shards_hits_total` : number of events read per shard (Counter, labels: `stream`, `shard`)
 
+##### Kubernetes
+
+-   `cs_kubernetessource_hits_total` : total lines that were read (Counter, labels: `source`, `datasource_type`, `acquis_type`)
+
 ##### Kubernetes Audit
 
 -   `cs_k8sauditsource_hits_total` : total number of events received by k8s-audit source (Counter, labels: `source`)
@@ -172,6 +176,7 @@ Acquisition metrics are split by datasource. They only appear when the correspon
 -   `cs_lapi_decisions_ko_total` : number of calls to /decisions that returned nil result (Counter, labels: `bouncer`)
 -   `cs_lapi_decisions_ok_total` : number of calls to /decisions that returned non-nil result (Counter, labels: `bouncer`)
 -   `cs_lapi_request_duration_seconds` : response time of LAPI (Histogram, labels: `endpoint`, `method`)
+-   `cs_machines_last_heartbeat_timestamp` : unix timestamp of the last heartbeat received from a machine (Gauge, labels: `machine`)
 
 #### Cache
 
