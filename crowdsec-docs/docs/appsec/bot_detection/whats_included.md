@@ -45,9 +45,9 @@ Every signal that fires adds points. Scores accumulate, so a client tripping two
 
 | Points | Signals | Why this weight |
 |---|---|---|
-| 100 | `cdp`, `webdriver`, `webdriver_writable`, `selenium`, `playwright`, `webdriver_iframe`, `webdriver_worker` | An automation framework is driving the browser. There is no honest reason for these to be present. |
+| 100 | `cdp`, `webdriver`, `webdriver_writable`, `selenium`, `playwright`, `webdriver_iframe`, `webdriver_worker`, `bot_user_agent` | An automation framework is driving the browser, or the client declares itself a bot in its User-Agent. There is no honest reason for these to be present on a client that solved the challenge. |
 | 50 | `headless_screen_resolution`, `missing_chrome_object`, `impossible_memory`, `inconsistent_etsl`, `mismatch_webgl_worker`, `mismatch_platform_iframe`, `mismatch_platform_worker` | Headless environments and cross-context inconsistencies. Hard to fake away, but each has a thin tail of real clients. |
-| 30 | `platform_mismatch`, `gpu_mismatch`, `high_cpu_count`, `bot_user_agent` | Suspicious, but reachable by odd-but-real setups: VMs, remote desktops, self-declared crawlers you have not excluded. |
+| 30 | `platform_mismatch`, `gpu_mismatch`, `high_cpu_count` | Suspicious, but reachable by odd-but-real setups: VMs and remote desktops. |
 | 15 | `utc_timezone`, `ua_mobile`, `accept_language` | Common enough among real visitors that acting on one alone would be a false positive. Servers, VPNs and privacy tooling all produce a UTC timezone. |
 | 5 | `swiftshader_renderer`, `mismatch_languages`, `timezone_country` | Only meaningful in aggregate. `timezone_country` fires on any traveller or VPN user. |
 
@@ -156,11 +156,12 @@ The context above is what the shipped file exposes. The event carries more, and 
 | `challenge_fail_reason` | The reason string passed to `RejectSubmission()` |
 | `request_score` | The total score |
 | `request_score_reasons` | Per-signal breakdown, `cdp=100,utc_timezone=15` |
-| `bot_signals` | Comma-separated signal names, not mapped by the shipped context |
+| `challenge_difficulty` | The proof-of-work difficulty applied to this moment |
 | `fsid` | Fingerprint id |
 | `fingerprint_bot` | The in-browser fast-bot verdict |
-| `fingerprint_allowlisted` | Set when the cookie came from `GrantChallengeCookie()` |
-| `os`, `http_user_agent`, `source_ip`, `target_host`, `target_uri`, `method`, `request_uuid` | Request identity |
+| `os`, `http_user_agent`, `source_ip`, `target_host`, `target_uri`, `request_uuid` | Request identity |
+
+A few event fields are not promoted to `evt.Meta` by the shipped parser — `method`, `platform`, `fingerprint_allowlisted` and `fingerprint_allowlist_reason`. A context expression can still read them from `evt.Parsed`, and the whole decoded fingerprint is available under `evt.Unmarshaled.fingerprint`. See [From a scenario](customization.md#from-a-scenario) for the full list of flat fields.
 
 ## Behavioral scenarios it installs
 

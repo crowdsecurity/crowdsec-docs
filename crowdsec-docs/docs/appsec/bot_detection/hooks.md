@@ -489,6 +489,7 @@ Severity and points are two different things. Severity is fixed in the engine an
 | `playwright`                  | high     | 100    | Playwright detected.                                                      |
 | `webdriver_iframe`            | high     | 100    | An iframe context reports `webdriver`.                                    |
 | `webdriver_worker`            | high     | 100    | A web-worker context reports `webdriver`.                                 |
+| `bot_user_agent`              | high     | 100    | User-Agent matches a known-bot regex.                                    |
 | `headless_screen_resolution` | high     | 50     | Screen resolution matches headless Chrome.                               |
 | `missing_chrome_object`       | high     | 50     | `window.chrome` object missing.                                          |
 | `impossible_memory`           | high     | 50     | Reported device memory outside plausible bounds.                          |
@@ -499,7 +500,6 @@ Severity and points are two different things. Severity is fixed in the engine an
 | `platform_mismatch`           | high     | 30     | UA-reported platform disagrees with `navigator.platform`.                |
 | `gpu_mismatch`                | high     | 30     | GPU vendor/renderer differs between contexts.                            |
 | `high_cpu_count`              | high     | 30     | CPU count implausibly high.                                              |
-| `bot_user_agent`              | high     | 30     | User-Agent matches a known-bot regex.                                    |
 | `utc_timezone`                | medium   | 15     | Timezone is UTC (more common on VMs / headless).                         |
 | `ua_mobile`                   | medium   | 15     | Mobile UA but implausibly wide viewport (see `UAMobileMismatch()`).      |
 | `accept_language`             | medium   | 15     | `Accept-Language` header disagrees with `navigator.language`.            |
