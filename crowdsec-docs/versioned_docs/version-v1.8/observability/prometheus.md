@@ -101,6 +101,19 @@ cs_node_hits_ko_total{name="crowdsecurity/http-logs",source="/var/log/nginx/erro
 -   `cs_appsec_parsing_time_seconds` : time spent processing a request by the Application Security Engine (Histogram, labels: `source`, `appsec_engine`)
 -   `cs_appsec_inband_parsing_time_seconds` : time spent processing a request by the inband Application Security Engine (Histogram, labels: `source`, `appsec_engine`)
 -   `cs_appsec_outband_parsing_time_seconds` : time spent processing a request by the outband Application Security Engine (Histogram, labels: `source`, `appsec_engine`)
+-   `cs_appsec_challenge_requested_total` : challenges served by the AppSec component (Counter, labels: `source`, `appsec_engine`)
+-   `cs_appsec_challenge_submitted_total` : challenge responses received by the AppSec component (Counter, labels: `source`, `appsec_engine`)
+-   `cs_appsec_challenge_accepted_total` : challenge cookies issued — `kind=solved` for valid submissions (empty `reason`), `kind=granted` for `GrantChallengeCookie(reason)` (Counter, labels: `source`, `appsec_engine`, `kind`, `reason`)
+-   `cs_appsec_challenge_rejected_total` : challenge / cookie rejections — `kind=protocol` for crypto-PoW failures, `kind=submission` for `RejectSubmission(reason)`, `kind=cookie` for invalid incoming cookies (Counter, labels: `source`, `appsec_engine`, `kind`, `reason`)
+-   `cs_appsec_challenge_exempt_total` : requests exempted from the challenge by `ExemptFromChallenge(reason)` — a verified known bot (e.g. `gptbot`) or a well-known path class. Counted once per request (Counter, labels: `source`, `appsec_engine`, `reason`)
+-   `cs_appsec_fingerprint_mismatch_total` : fingerprint mismatch signals fired, as reported by `EvaluateMismatches()` (Counter, labels: `reason`, `severity`, `appsec_engine`)
+
+The following counters track the internals of the challenge runtime rather than the traffic itself, and are mostly useful to troubleshoot its CPU and memory usage:
+
+-   `cs_appsec_challenge_kepoch_generated_total` : per-epoch challenge signing keys derived (Counter)
+-   `cs_appsec_challenge_kepoch_evicted_total` : per-epoch challenge signing keys evicted from the keyring cache — generated minus evicted is the live cache size (Counter)
+-   `cs_appsec_challenge_reobfuscation_total` : JS obfuscation passes run by the challenge runtime, `bundle=dynamic` being the per-epoch sign-key module (Counter, labels: `bundle`)
+-   `cs_appsec_challenge_dynamic_module_evicted_total` : per-epoch dynamic modules evicted once their epoch left the keyring live window (Counter)
 
 #### Acquisition
 

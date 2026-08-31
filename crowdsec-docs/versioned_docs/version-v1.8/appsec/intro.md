@@ -26,6 +26,7 @@ The **AppSec Component** offers:
 -   Low-effort **virtual patching**.
 -   Support for legacy **ModSecurity** rules.
 -   Classic WAF protection plus CrowdSec features for **advanced behavior detection**.
+-   **Bot detection** to filter automated traffic with a browser challenge.
 -   **Full integration** with the CrowdSec stack, including the console and remediation components.
 
 <!-- xx :  links -->
@@ -149,6 +150,7 @@ Or consider learning more about the AppSec capabilities:
 
 -   **Rules**: [How to read, write and debug rules](rules_syntax.md)
 -   **Scenarios**: [How to create scenarios that leverage the AppSec Component events](alerts_and_scenarios.md)
+-   **Bot detection**: [Filter automated traffic with a browser challenge](bot_detection/intro.md)
 -   **Hooks**: [To customise behavior of the AppSec at runtime](hooks.md)
 -   **Troubleshoot**: [How to troubleshoot the behavior of the AppSec Component](troubleshooting.md)
 -   **AppSec Technical Details**: [For developers integrating with the AppSec Component](protocol.md)
