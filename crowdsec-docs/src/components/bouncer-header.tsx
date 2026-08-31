@@ -1,8 +1,8 @@
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import React from "react";
 
-type FeatureKey = "waf" | "captcha" | "botdetection" | "mtls" | "metrics" | "prometheus" | "livemode" | "streammode";
-type BadgeKey = "waf" | "mtls" | "metrics" | "prometheus" | "updatemode" | "captcha" | "botdetection";
+type FeatureKey = "waf" | "captcha" | "mtls" | "metrics" | "prometheus" | "livemode" | "streammode";
+type BadgeKey = "waf" | "mtls" | "metrics" | "prometheus" | "updatemode" | "captcha";
 
 type BouncerHeaderProps = {
 	title: string;
@@ -10,7 +10,7 @@ type BouncerHeaderProps = {
 	description: string;
 	/**
 	 * Comma-separated list of supported features (case-insensitive).
-	 * Known keys: waf, captcha, botdetection, mtls, metrics, prometheus, livemode, streammode
+	 * Known keys: waf, captcha, mtls, metrics, prometheus, livemode, streammode
 	 * Features absent from this string are shown as unsupported.
 	 * livemode / streammode are merged into a single "Update Mode" chip.
 	 * Example: featuresSupport="waf, mtls, livemode, streammode"
@@ -28,13 +28,12 @@ type BouncerHeaderProps = {
 // Feature catalogue
 // ---------------------------------------------------------------------------
 
-const BADGE_ORDER: BadgeKey[] = ["updatemode", "waf", "captcha", "botdetection", "metrics", "mtls", "prometheus"];
+const BADGE_ORDER: BadgeKey[] = ["updatemode", "waf", "captcha", "metrics", "mtls", "prometheus"];
 
 const BADGE_LABELS: Record<BadgeKey, string> = {
 	updatemode: "Update Mode",
 	waf: "WAF / AppSec",
 	captcha: "Captcha",
-	botdetection: "Bot Detection",
 	metrics: "Remediation Metrics",
 	mtls: "mTLS",
 	prometheus: "Prometheus",
@@ -44,7 +43,6 @@ const BADGE_TOOLTIPS: Record<BadgeKey, string> = {
 	updatemode: "Decision polling mode(s) supported by this bouncer",
 	waf: "Supports CrowdSec WAF / AppSec capabilities",
 	captcha: "Can present captcha (or turnstile when applicable) to users as an alternative to blocking",
-	botdetection: "Can serve the AppSec Component's JavaScript bot-detection challenge to clients",
 	metrics: "Send detailed metrics about remediations. Visible in cscli and CrowdSec Console",
 	mtls: "Can do mutual TLS authentication to LAPI",
 	prometheus: "Can expose metrics to Prometheus",
@@ -57,7 +55,7 @@ const BADGE_TOOLTIPS: Record<BadgeKey, string> = {
 function parseFeatures(featuresSupport: string | undefined): Set<FeatureKey> {
 	const set = new Set<FeatureKey>();
 	if (!featuresSupport) return set;
-	const valid = new Set<FeatureKey>(["waf", "captcha", "botdetection", "mtls", "metrics", "prometheus", "livemode", "streammode"]);
+	const valid = new Set<FeatureKey>(["waf", "captcha", "mtls", "metrics", "prometheus", "livemode", "streammode"]);
 	for (const token of featuresSupport.split(",")) {
 		const key = token.trim().toLowerCase() as FeatureKey;
 		if (valid.has(key)) set.add(key);
