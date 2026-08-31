@@ -10,11 +10,11 @@ sidebar_position: 1
 sudo cscli hub list
 ```
 
-This lists installed parsers, scenarios and/or collections. 
+This lists the items installed on your setup: collections first, with the items they pull in nested underneath, then the standalone items you installed yourself.
 
-They represent what your CrowdSec setup can parse (logs) and detect (scenarios). 
+They represent what your CrowdSec setup can parse (logs) and detect (scenarios).
 
-Adding `-a` will list all the available configurations in the hub.
+Adding `-a` will list all the configurations available in the hub, and `cscli hub search <terms>` looks up items by name or description.
 
 See more [here](/u/user_guides/hub_mgmt).
 
@@ -23,40 +23,19 @@ See more [here](/u/user_guides/hub_mgmt).
 
 ```bash
 sudo cscli hub list
-INFO[0000] Loaded 13 collecs, 17 parsers, 21 scenarios, 3 post-overflow parsers 
-INFO[0000] unmanaged items : 23 local, 0 tainted        
-INFO[0000] PARSERS:                                     
---------------------------------------------------------------------------------------------------------------
- NAME                            📦 STATUS    VERSION  LOCAL PATH                                             
---------------------------------------------------------------------------------------------------------------
- crowdsecurity/mysql-logs        ✔️  enabled  0.1      /etc/crowdsec/parsers/s01-parse/mysql-logs.yaml        
- crowdsecurity/sshd-logs         ✔️  enabled  0.1      /etc/crowdsec/parsers/s01-parse/sshd-logs.yaml         
- crowdsecurity/dateparse-enrich  ✔️  enabled  0.1      /etc/crowdsec/parsers/s02-enrich/dateparse-enrich.yaml 
- crowdsecurity/whitelists        ✔️  enabled  0.1      /etc/crowdsec/parsers/s02-enrich/whitelists.yaml       
- crowdsecurity/geoip-enrich      ✔️  enabled  0.2      /etc/crowdsec/parsers/s02-enrich/geoip-enrich.yaml     
- crowdsecurity/syslog-logs       ✔️  enabled  0.1      /etc/crowdsec/parsers/s00-raw/syslog-logs.yaml         
---------------------------------------------------------------------------------------------------------------
-INFO[0000] SCENARIOS:                                   
--------------------------------------------------------------------------------------
- NAME                    📦 STATUS    VERSION  LOCAL PATH                            
--------------------------------------------------------------------------------------
- crowdsecurity/mysql-bf  ✔️  enabled  0.1      /etc/crowdsec/scenarios/mysql-bf.yaml 
- crowdsecurity/ssh-bf    ✔️  enabled  0.1      /etc/crowdsec/scenarios/ssh-bf.yaml   
--------------------------------------------------------------------------------------
-INFO[0000] COLLECTIONS:                                 
----------------------------------------------------------------------------------
- NAME                 📦 STATUS    VERSION  LOCAL PATH                           
----------------------------------------------------------------------------------
- crowdsecurity/mysql  ✔️  enabled  0.1      /etc/crowdsec/collections/mysql.yaml 
- crowdsecurity/sshd   ✔️  enabled  0.1      /etc/crowdsec/collections/sshd.yaml  
- crowdsecurity/linux  ✔️  enabled  0.2      /etc/crowdsec/collections/linux.yaml 
----------------------------------------------------------------------------------
-INFO[0000] POSTOVERFLOWS:                               
---------------------------------------
- NAME  📦 STATUS  VERSION  LOCAL PATH 
---------------------------------------
---------------------------------------
-
+Loaded: 164 parsers, 12 postoverflows, 783 scenarios, 9 contexts, 5 appsec-configs, 222 appsec-rules, 164 collections
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ Type         Name                                    📦 Status      Version  Details                                                       
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ collections  crowdsecurity/linux                     ✔️  up-to-date  0.4      3 parser(s) / 2 collection(s)                                 
+ collections  ├─ crowdsecurity/sshd                   ✔️  up-to-date  0.9      2 parser(s) / 6 scenario(s) / 1 context(s)                    
+ collections  └─ crowdsecurity/whitelist-good-actors  ✔️  up-to-date  0.4      1 parser(s) / 4 postoverflow(s)                               
+ collections  crowdsecurity/nginx                     ✔️  up-to-date  0.3      1 parser(s) / 1 scenario(s) / 1 collection(s)                 
+ collections  └─ crowdsecurity/base-http-scenarios    ✔️  up-to-date  1.4      1 parser(s) / 17 scenario(s) / 1 context(s) / 1 collection(s) 
+ collections     └─ crowdsecurity/http-cve            ✔️  up-to-date  3.0      30 scenario(s)                                                
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ parsers      crowdsecurity/mysql-logs                ✔️  up-to-date  0.4                                                                    
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ```
 </details>
 
