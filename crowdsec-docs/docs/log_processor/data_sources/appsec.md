@@ -40,6 +40,8 @@ Defaults to `/`.
 
 The list of appsec-configs to use (as seen in `cscli appsec-configs list`).
 
+An entry can also be a glob pattern (`*` and `?`), which is expanded to all the *installed* appsec-configs matching it, for example `crowdsecurity/appsec-bot-challenge-exclude-*`. A pattern matching no installed appsec-config is an error.
+
 ### `appsec_config`
 
 **Deprecated**, use [`appsec_configs`](#appsec_configs)
@@ -56,6 +58,13 @@ Number of routines to use to process the requests. Defaults to 1.
 
 How long to cache the auth token for. Accepts value supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
 Defaults to 1m.
+
+### `auth_timeout`
+
+How long to wait for the local API to validate the API key of a remediation component. Accepts value supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
+Set to `0` to disable the timeout.
+Increase it if your local API is not on the same machine or is a few network hops away.
+Defaults to 200ms.
 
 ### `body_read_timeout`
 
