@@ -1,27 +1,32 @@
 ---
-id: cscli_hub_list
-title: cscli hub list
+id: cscli_hub_search
+title: cscli hub search
 ---
-## cscli hub list
+## cscli hub search
 
-List relevant installed items
+Search the local hub index by name and description
 
 ### Synopsis
 
-List installed relevant items (collections, standalone items) and shows their status.
-Use --all to list all items, including those not installed.
-Use --full to list every installed item individually, instead of summarizing collection contents.
+Search the local hub index.
+An item matches when its name or description contains all the given terms.
 
 ```
-cscli hub list [-a] [flags]
+cscli hub search <term>... [flags]
+```
+
+### Examples
+
+```
+cscli hub search nginx
+cscli hub search http cve
+cscli hub search ssh --status installed
 ```
 
 ### Options
 
 ```
-  -a, --all              List all available items, including those not installed
-      --full             List every installed item individually instead of summarizing collection contents
-  -h, --help             help for list
+  -h, --help             help for search
       --status strings   Filter by status (installed, not-installed, up-to-date, outdated, tainted, local)
 ```
 
