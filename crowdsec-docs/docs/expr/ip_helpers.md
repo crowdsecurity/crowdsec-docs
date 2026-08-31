@@ -88,3 +88,9 @@ Performs a geo lookup for IP and returns the associated [geoip2.ASN](https://pkg
 ### `GeoIPRangeEnrich(ip string) net.IPNet`
 
 Returns the `net.IPNet` object associated to the IP if possible.
+
+### `IPToCountry(ip string) string`
+
+Returns the ISO code of the country associated to the IP, or an empty string if the IP is invalid, unknown, or if the GeoIP database is not available.
+
+> `IPToCountry("1.2.3.4")` returns `AU`
