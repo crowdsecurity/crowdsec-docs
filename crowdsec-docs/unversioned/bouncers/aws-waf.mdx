@@ -1,32 +1,22 @@
 ---
 id: aws_waf
-title: AWS WAF
+title: "AWS WAF IP Blocking with CrowdSec"
 sidebar_position: 1
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import useBaseUrl from "@docusaurus/useBaseUrl";
-import RemediationSupportBadges from "@site/src/components/remediation-support-badge";
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-  <img
-    src={useBaseUrl("/img/aws-waf-bouncer-logo.png")}
-    alt="CrowdSec"
-    title="CrowdSec"
-    width="300"
-    height="300"
-  />
-</p>
-
-<p align="center">
-  &#x1F4DA; <a href="#installation/">Documentation</a>
-  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-  &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-
-<RemediationSupportBadges MTLS />
-
+<BouncerHeader
+  title="AWS WAF"
+  imgSrc="/img/aws-waf-bouncer-logo.png"
+  description="Automatically adds rules to AWS WAF ACLs and manages IPSets based on CrowdSec decisions."
+  featuresSupport="mtls, streammode, captcha"
+  githubUrl="https://github.com/crowdsecurity/cs-aws-waf-bouncer"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-aws-waf-bouncer"
+/>
+# Block Malicious IPs on AWS WAF with CrowdSec
 ## Overview
 
 The `crowdsec-awf-waf-bouncer` automatically adds rules to an AWS WAF ACL and manages IPSets content to apply decisions taken by crowdsec.

@@ -95,9 +95,11 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 		position: "left",
 	},
 	{
-		label: "Resources",
+		label: "APIs & Resources",
 		position: "left",
 		items: [
+			{ to: "/u/cti_api/api_introduction", label: "CTI APIs" },
+			{ to: "/u/console/service_api/getting_started", label: "Service API" },
 			{
 				to: "/u/user_guides/intro",
 				label: "Guides",
@@ -185,6 +187,13 @@ const redirects = [
 	{ from: "/docs/next/troubleshooting", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/faq", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/next/faq", to: "/u/troubleshooting/intro" },
+	// Service API docs flattened: quickstart/<resource> -> <resource>
+	{ from: "/u/console/service_api/quickstart/authentication", to: "/u/console/service_api/authentication" },
+	{ from: "/u/console/service_api/quickstart/blocklists", to: "/u/console/service_api/blocklists" },
+	{ from: "/u/console/service_api/quickstart/allowlists", to: "/u/console/service_api/allowlists" },
+	{ from: "/u/console/service_api/quickstart/integrations", to: "/u/console/service_api/integrations" },
+	{ from: "/u/console/service_api/quickstart/decisions", to: "/u/console/service_api/decisions" },
+	{ from: "/u/console/service_api/quickstart/metrics", to: "/u/console/service_api/metrics" },
 	{
 		from: "/docs/next/getting_started/install_crowdsec",
 		to: "/u/getting_started/installation/linux",
@@ -236,6 +245,8 @@ const redirects = [
 	},
 	// redirecting old hidden invoice page to new faq billing
 	{ from: "/u/console/premium_upgrade/premium_invoices/", to: "/u/troubleshooting/billing_faq" },
+	// unified Cloudflare bouncer page, cloudflare-workers content moved to cloudflare page (and that one  became deprecated)
+	{ from: "/u/bouncers/cloudflare-workers", to: "/u/bouncers/cloudflare" },
 ];
 
 function redirectsGlobalDataPlugin() {

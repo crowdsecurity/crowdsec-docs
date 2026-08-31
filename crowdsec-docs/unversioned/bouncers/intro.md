@@ -1,10 +1,11 @@
 ---
 id: intro
-title: Introduction
+title: CrowdSec Remediation Components (aka Bouncers)
+sidebar_label: Presentation 
 sidebar_position: 1
 ---
 
-# Remediation Components
+# Remediation Components - aka Bouncers
 
 :::info
 You may see Remediation Components referred to as "bouncers" in the documentation and/or within cscli commands.
@@ -41,6 +42,8 @@ Don't know which component suits your needs? Then join our [discord](https://dis
 Remediation Components interact with [crowdsec's Local API](/docs/next/local_api/intro) to retrieve active decisions and remediate appropriately.
 
 For your remediation components to communicate with the local API, you have to generate an API token with `cscli` and put it in the associated configuration file:
+
+### Generate an API Key for your Bouncer
 
 ```bash
 sudo cscli bouncers add testBouncer

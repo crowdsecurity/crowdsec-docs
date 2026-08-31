@@ -1,33 +1,23 @@
 ---
 id: misp-feed-generator
-title: MISP Feed Generator
+title: "CrowdSec MISP Feed Generator"
 sidebar_position: 7
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-<img src={useBaseUrl('/img/bouncer/misp_feed_generator/logo.png')} alt="CrowdSec" title="CrowdSec" />
-</p>
-
-
-<p align="center">
-<p align="center">
-<img src="https://img.shields.io/badge/build-pass-green"></img>
-<img src="https://img.shields.io/badge/tests-pass-green"></img>
-</p>
-<p align="center">
-&#x1F4DA; <a href="#installation/">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-</p>
-
-<RemediationSupportBadges
+<BouncerHeader
+  title="MISP Feed Generator"
+  typeLabel="decisions feeder"
+  imgSrc="/img/bouncer/misp_feed_generator/logo.png"
+  description="Generates a MISP Feed from CrowdSec decisions and exposes it over HTTP/S."
+  featuresSupport="streammode, mtls"
+  githubUrl="https://github.com/crowdsecurity/misp-feed-generation"
 />
+
+# Generate a MISP Feed from CrowdSec Decisions
 
 This Remediation Component generates MISP Feed from CrowdSec decisions. It exposes this Feed over HTTP/S.
 This can be used to feed CrowdSec decisions to MISP using the "Feeds" functionality of MISP.

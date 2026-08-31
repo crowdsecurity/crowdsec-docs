@@ -22,8 +22,8 @@ export const PremiumBadge = () => (
 
 <div style={{ display: "flex", flexDirection: "column", gap: "6px", margin: "1.25rem 0", borderLeft: "2px solid var(--ifm-color-emphasis-200)", paddingLeft: "14px" }}>
   {[
-    { label: "Community Plan Free Key", quota: "40 / month", desc: "Testing integrations, personal servers, ad-hoc lookups", color: GREEN },
-    { label: "Premium Plan Free Key", quota: "120 / month", desc: "Regular enrichment, small SOC teams, recurring automation", color: BLUE },
+    { label: "Community Plan Free Key", quota: "120 / month", desc: "Testing integrations, personal servers, ad-hoc lookups", color: GREEN },
+    { label: "Premium Plan Free Key", quota: "1500 / month", desc: "Regular enrichment, small SOC teams, recurring automation", color: BLUE },
     { label: "Premium Keys Options", quota: "5K · 25K · 100K / month", desc: "Production SIEMs, SOARs, high-volume pipelines. Requires Premium", color: PURPLE },
   ].map(({ label, quota, desc, color }) => (
     <div key={label} style={{ fontSize: "12.5px", color: "var(--ifm-color-emphasis-600)", lineHeight: 1.6 }}>

@@ -1,0 +1,52 @@
+---
+id: cloudflare
+title: Cloudflare
+toc_max_heading_level: 2
+---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<div style={{display: 'flex', gap: '2rem', alignItems: 'flex-start'}}>
+<div style={{flex: '0 0 20%'}}>
+  <img src={useBaseUrl('/img/crowdsec_cloudfare.svg')} alt="Cloudflare" style={{width: '100%'}} />
+</div>
+<div style={{flex: '1'}}>
+
+The recommended way to integrate CrowdSec Blocklists with Cloudflare is the **Self-Hosted Cloudflare Bouncer**, connected to a **Blocklist Integration Endpoint**.
+You don't need to deploy anything on your servers and you are able to choose the **type of remediation** for each blocklist: **Ban** or **Captcha**, resulting in a **Block** or **Turnstile** challenge for the end-user.
+
+:::info
+For other integration methods (Security Engine LAPI, CLI Bouncer Daemon, advanced config), see the full [Cloudflare Bouncer documentation](/u/bouncers/cloudflare).
+:::
+
+</div>
+</div>
+
+---
+
+## Create a Blocklist Integration Endpoint
+
+<snippet-extract data-extract-copy="remediationcomponent:bl_integ_setup_rc"></snippet-extract>
+
+<hr />
+
+## Deploy and Configure the Cloudflare Bouncer
+
+For Cloudflare, the [Cloudflare Bouncer](/u/bouncers/cloudflare#self-hosted-setup) acts as the intermediary: it pulls decisions from the Blocklist Integration Endpoint and enforces remediations directly inside your Cloudflare account via Workers and a KV store — no server required on your side.
+
+Follow the [Self-Hosted Setup](/u/bouncers/cloudflare#self-hosted-setup) instructions to deploy the installer and configure it. When prompted for a **CrowdSec Integration Endpoint**, paste the URL from Step 1.
+
+Once your zones are protected, the installer UI will show them as installed:
+
+![Zone Install](/img/bouncer/cloudflare-worker/cf-installer-zone-bind.png)
+
+---
+
+## Go further
+
+- Subscribe to more blocklists in the [Blocklist Catalog](console/blocklists/catalog.md) to populate your integration.
+- For advanced configuration, metrics, CLI Bouncer Daemon setup, and more, see the [Cloudflare Bouncer documentation](/u/bouncers/cloudflare).

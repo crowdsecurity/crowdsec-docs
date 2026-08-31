@@ -1,31 +1,23 @@
 ---
 id: php-lib
-title: PHP Remediation Library
+title: "PHP Remediation Library — Build CrowdSec Bouncers"
 sidebar_position: 1
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-<img src={useBaseUrl('/img/crowdsec_bouncer_php.png')} alt="CrowdSec" title="CrowdSec" width="300" height="300" />
-</p>
-
-<p align="center">
-&#x1F4DA; <a href="#installation/">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-
-<RemediationSupportBadges
-  Mode
-  MTLS
-  Appsec
-  Metrics
+<BouncerHeader
+  title="PHP Remediation Library"
+  imgSrc="/img/crowdsec_bouncer_php.png"
+  description="PHP library for building custom CrowdSec bouncers with live & stream mode and AppSec support."
+  featuresSupport="livemode, streammode, mtls, waf, metrics, captcha"
+  githubUrl="https://github.com/crowdsecurity/php-cs-bouncer"
 />
 
+# Build PHP Applications Protected by CrowdSec
 ## Overview
 
 This library allows you to create CrowdSec bouncers for PHP applications or frameworks like e-commerce, blog or other exposed applications.

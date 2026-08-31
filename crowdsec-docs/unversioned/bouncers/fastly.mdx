@@ -1,34 +1,23 @@
 ---
 id: fastly
-title: Fastly
+title: "Fastly IP Blocking with CrowdSec"
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-  <img src={useBaseUrl('/img/crowdsec_fastly.png')} width="280" height="300" />
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/build-pass-green"></img>
-  <img src="https://img.shields.io/badge/tests-pass-green"></img>
-</p>
-
-<p align="center">
-&#x1F4DA; <a href="#installation">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-
-<RemediationSupportBadges
+<BouncerHeader
+  title="Fastly"
+  imgSrc="/img/crowdsec_fastly.png"
+  description="Syncs CrowdSec decisions with Fastly's VCL. Supports IP, Range, Country and AS scoped decisions."
+  featuresSupport="mtls, streammode, captcha"
+  githubUrl="https://github.com/crowdsecurity/cs-fastly-bouncer"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-fastly-bouncer"
 />
 
-# Fastly bouncer
+# Block Malicious IPs on Fastly with CrowdSec
 
 A Remediation Component that syncs the decisions made by CrowdSec with Fastly's VCL. Manages multi account, multi service setup. Supports IP, Range, Country and AS scoped decisions.
 To learn how to set up crowdsec to consume Fastly logs see [this](/u/user_guides/consuming_fastly_logs)
-
 
 ## Installation
 

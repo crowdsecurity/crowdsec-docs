@@ -1,0 +1,362 @@
+---
+id: blocklists
+title: Blocklists
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+:::info
+ - We're assuming your API key is set in the environment variable `$KEY` with the necessary permissions.
+:::
+
+The `blocklists` feature of the Service API lets you create, populate, subscribe to and share blocklists.
+
+## Create a blocklist
+
+> Create a new private blocklist named `my_test_blocklist`.
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/blocklists \
+-d '{ "name":"my_test_blocklist", "description": "testing blocklists feature" }'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Blocklists,
+    Server,
+    ApiKeyAuth,
+)
+from crowdsec_service_api.models import BlocklistCreateRequest
+
+auth = ApiKeyAuth(api_key=KEY)
+client = Blocklists(base_url=Server.production_server.value, auth=auth)
+request = BlocklistCreateRequest(
+        name='my_test_blocklist',
+        description='testing blocklists feature',
+)
+response = client.create_blocklist(request=request)
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
+ - [Redoc method link](https://admin.api.crowdsec.net/v1/docs#tag/Blocklists/operation/createBlocklist)
+
+:::info
+The `id` element of the response payload is the identifier used by all future operations targeting this blocklist.
+:::
+
+## Populate the blocklist
+
+Two strategies are available to fill a blocklist:
+
+- [`/ips`](https://admin.api.crowdsec.net/v1/docs#tag/Blocklists/operation/addIpsToBlocklist) and
+  [`/ips/delete`](https://admin.api.crowdsec.net/v1/docs#tag/Blocklists/operation/deleteIpsFromBlocklist)
+  perform incremental changes by adding or removing IPs in batches.
+- [`/upload`](https://admin.api.crowdsec.net/v1/docs#tag/Blocklists/operation/uploadBlocklistContent)
+  replaces the entire content of the blocklist in one call.
+
+> Add IPs `1.2.3.4` and `5.6.7.8` to the blocklist for the next 24h.
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/ips \
+-d '{ "ips": ["1.2.3.4", "5.6.7.8"], "expiration": "'`date --date='tomorrow' '+%FT%T'`'"}'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+from datetime import datetime, UTC, timedelta
+
+KEY = os.getenv('KEY')
+EXPIRATION = datetime.now(UTC) + timedelta(days=1)
+
+from crowdsec_service_api import (
+    Blocklists,
+    Server,
+    ApiKeyAuth,
+)
+from crowdsec_service_api.models import BlocklistAddIPsRequest
+
+auth = ApiKeyAuth(api_key=KEY)
+client = Blocklists(base_url=Server.production_server.value, auth=auth)
+request = BlocklistAddIPsRequest(
+        ips=["1.2.3.4", "5.6.7.8"],
+        expiration=EXPIRATION,
+)
+response = client.add_ips_to_blocklist(request=request, blocklist_id='1234MYBLOCKLISTID')
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
+ - [Redoc method link](https://admin.api.crowdsec.net/v1/docs#tag/Blocklists/operation/addIpsToBlocklist)
+
+:::note
+The `expiration` field is mandatory and indicates when the IP should be removed from the blocklist.
+:::
+
+### Download blocklist content
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/download
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Blocklists,
+    Server,
+    ApiKeyAuth,
+)
+auth = ApiKeyAuth(api_key=KEY)
+client = Blocklists(base_url=Server.production_server.value, auth=auth)
+response = client.download_blocklist_content(blocklist_id='1234MYBLOCKLISTID')
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>answer on success</summary>
+```text
+1.2.3.4
+5.6.7.8
+```
+</details>
+
+## Subscribe to a blocklist
+
+Subscribing an entity to a blocklist makes that entity pull and enforce the list. The `entity_type`
+field selects what you target:
+
+- A [Security Engine](https://doc.crowdsec.net/docs/next/intro) (`engine`). [Remediation Components (Bouncers)](https://doc.crowdsec.net/u/bouncers/intro) connected to it enforce the blocklist.
+- A [Firewall Integration](/u/integrations/intro) (`firewall_integration`): use blocklists directly on existing firewall appliances (Cisco, F5, Palo Alto…) without a Security Engine or bouncer.
+- A [Remediation Component](https://doc.crowdsec.net/u/bouncers/intro) (`remediation_component_integration`): use a bouncer directly without a Security Engine.
+- A `tag`: every Security Engine carrying that tag is subscribed **automatically**, including future ones.
+- An `org`: every Security Engine enrolled in the org is subscribed **automatically**, including future ones.
+
+Every subscription sets an `entity_type` and a `remediation` (the action subscribers apply, e.g.
+`ban`). Whether you pass `ids` depends on the `entity_type`:
+
+| Target | Request body | `ids` |
+|---|---|---|
+| Whole org | `{ "entity_type": "org", "remediation": "ban" }` | must be omitted |
+| Specific engine(s) | `{ "entity_type": "engine", "ids": ["<engine_id>", …], "remediation": "ban" }` | required |
+| A set of tag(s) | `{ "entity_type": "tag", "ids": ["<tag>", …], "remediation": "ban" }` | required |
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+# Whole org — every engine enrolled in the org, now and in the future (no ids)
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/subscribers \
+-d '{ "entity_type": "org", "remediation": "ban" }'
+
+# One or several specific Security Engines
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/subscribers \
+-d '{ "entity_type": "engine", "ids": ["SECENGINEID5678"], "remediation": "ban" }'
+
+# A set of tags — every engine carrying one of these tags (now and in the future)
+curl -i -H "x-api-key: ${KEY}" -X POST -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID/subscribers \
+-d '{ "entity_type": "tag", "ids": ["env:prod", "region:eu"], "remediation": "ban" }'
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Blocklists,
+    Server,
+    ApiKeyAuth,
+)
+from crowdsec_service_api.models import BlocklistSubscriptionRequest
+
+auth = ApiKeyAuth(api_key=KEY)
+client = Blocklists(base_url=Server.production_server.value, auth=auth)
+request = BlocklistSubscriptionRequest(
+        ids=['SECENGINEID5678'],
+        entity_type='engine',
+        remediation="ban",
+)
+response = client.subscribe_blocklist(request=request, blocklist_id='1234MYBLOCKLISTID')
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
+ - [Redoc method link](https://admin.api.crowdsec.net/v1/docs#tag/Blocklists/operation/subscribeBlocklist)
+
+Each id is validated independently; the response reports which subscribed and which failed:
+
+```json
+{ "updated": ["SECENGINEID5678"], "errors": [ { "BADID": "Entity not found" } ] }
+```
+
+:::info Where do engine and tag ids come from?
+The Service API does not enumerate your engines or tags.
+
+- An **engine** id is the engine's machine id (shown on the Security Engines page).
+- A **tag** id is simply the [tag string](/u/console/security_engines/name_and_tags) you assigned to
+  your engines (e.g. `env:prod`), at enrollment with `cscli console enroll --tags …` or from the
+  Console.
+- An `org` subscription needs no id.
+:::
+
+:::note Subscription alone is not enough
+A targeted engine only starts enforcing the blocklist once it is enrolled in the org,
+subscribed (directly or through its org/tag), and has `console_management` enabled locally
+(`cscli console enable console_management`). See
+[enrolling your engine in the Console](/u/getting_started/post_installation/console).
+:::
+
+## Share private blocklists with other organizations
+
+The [`/blocklists/{blocklist_id}/shares`](https://admin.api.crowdsec.net/v1/docs#tag/Blocklists/operation/shareBlocklist)
+endpoint shares a private blocklist with other organizations. Choose the `permission` you grant:
+
+- `read`: they can subscribe to the blocklist, download its content and view its statistics.
+- `write`: they can also add and remove IPs.
+
+## Delete a blocklist
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X DELETE https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID
+```
+
+Deleting a blocklist that still has subscribers returns `409 Conflict`. Either unsubscribe everyone
+first, or force it with `?force=true` (which drops the list and all of its subscriptions):
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X DELETE "https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID?force=true"
+```
+
+## Statistics
+
+Querying [`GET /blocklists/{blocklist_id}`](https://admin.api.crowdsec.net/v1/docs#tag/Blocklists/operation/getBlocklist)
+returns a `stats` block. Statistics are computed on list modification and refreshed every 6 hours.
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" https://admin.api.crowdsec.net/v1/blocklists/1234MYBLOCKLISTID
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Blocklists,
+    Server,
+    ApiKeyAuth,
+)
+auth = ApiKeyAuth(api_key=KEY)
+client = Blocklists(base_url=Server.production_server.value, auth=auth)
+response = client.get_blocklist(blocklist_id='1234MYBLOCKLISTID')
+print(response)
+```
+
+</TabItem>
+</Tabs>
+
+The `stats` block has two parts. `content_stats` describes the IPs currently in the list (how they
+are known to the CrowdSec CTI); the top-level fields describe the list itself and how it changes over
+time.
+
+- `stats.content_stats.total_seen`: number of IPs that were seen by the CrowdSec network.
+- `stats.content_stats.total_fire`: number of IPs currently in the CrowdSec Community Blocklist.
+- `stats.content_stats.total_seen_1m`: number of IPs seen by the CrowdSec network in the past 30 days.
+- `stats.content_stats.total_in_other_lists`: number of IPs also present in other public blocklists.
+- `stats.content_stats.total_false_positive`: number of false positives (CDNs, scanners…) identified in the blocklist. CrowdSec-provided blocklists have these removed automatically, so this is non-zero only for custom blocklists.
+- `stats.content_stats.false_positive_removed_by_crowdsec`: number of false positives our system removed from the blocklist.
+- `stats.content_stats.most_present_behaviors`: top 10 behaviors (`http:exploit`, `ssh:bruteforce`…) for IPs in the blocklist.
+- `stats.content_stats.most_present_categories`: top 10 categories (`insecure_services`…) for IPs in the blocklist.
+- `stats.content_stats.most_present_scenarios`: top 10 scenarios the IPs were reported for (publicly available hub scenarios only).
+- `stats.content_stats.top_as`: top 10 autonomous systems (AS) for IPs in the blocklist.
+- `stats.content_stats.top_attacking_countries`: top 10 countries of origin for IPs in the blocklist.
+- `stats.content_stats.top_ips`: top 10 most reported IPs in the blocklist.
+- `stats.addition_2days` / `stats.addition_month`: IPs added over the last 2 / 30 days.
+- `stats.suppression_2days` / `stats.suppression_month`: IPs removed (by expiration) over the last 2 / 30 days.
+- `stats.change_2days_percentage` / `stats.change_month_percentage`: percentage of IPs changed (added or deleted) over the last 2 days / month.
+- `stats.count`: number of IPs in the blocklist.
+- `stats.updated_at`: when these stats were last computed.

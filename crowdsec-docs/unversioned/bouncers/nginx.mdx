@@ -1,34 +1,23 @@
 ---
 id: nginx
-title: Nginx
+title: "NGINX IP Blocking, CAPTCHA & WAF with CrowdSec"
 sidebar_position: 1
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import useBaseUrl from "@docusaurus/useBaseUrl";
-import RemediationSupportBadges from "@site/src/components/remediation-support-badge";
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-  <img
-    src={useBaseUrl("/img/crowdsec_nginx.svg")}
-    alt="CrowdSec"
-    title="CrowdSec"
-    width="400"
-    height="300"
-  />
-</p>
-<p align="center">
-  <img src="https://img.shields.io/badge/build-pass-green" />
-  <img src="https://img.shields.io/badge/tests-pass-green" />
-</p>
-<p align="center">
-  &#x1F4DA; <a href="#installation/">Documentation</a>
-  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-  &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
+<BouncerHeader
+  title="Nginx"
+  imgSrc="/img/crowdsec_nginx.svg"
+  description="Lua-based reverse-proxy bouncer with live & stream remediation and built-in AppSec (WAF) support."
+  featuresSupport="waf, livemode, streammode, metrics, mtls, captcha, botdetection"
+  githubUrl="https://github.com/crowdsecurity/cs-nginx-bouncer"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-nginx-bouncer"
+/>
 
-<RemediationSupportBadges Mode Appsec BotDetection Metrics MTLS />
+# Protect NGINX with IP Blocking, CAPTCHA & WAF
 
 A lua Remediation Component for nginx.
 

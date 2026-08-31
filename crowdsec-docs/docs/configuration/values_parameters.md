@@ -366,6 +366,9 @@ configuration values, their defaults, and their purpose.
 | `appsec.replicas`<a id="appsec-replicas"></a>                                | Number of replicas for the AppSec Deployment                                               | `1`     |
 | `appsec.strategy`<a id="appsec-strategy"></a>                                | Deployment strategy for AppSec                                                             | `{}`    |
 | `appsec.acquisitions`<a id="appsec-acquisitions"></a>                            | AppSec acquisitions (datasource listeners), e.g. appsec listener on 7422                   | `[]`    |
+| `appsec.scenarios`<a id="appsec-scenarios"></a>                               | Custom scenario files for the appsec pod (key = filename, value = file content)            | `{}`    |
+| `appsec.postoverflows.s00-enrich`<a id="appsec-postoverflows-s00-enrich"></a>                | Custom postoverflow enrichment files for the appsec pod                                    | `{}`    |
+| `appsec.postoverflows.s01-whitelist`<a id="appsec-postoverflows-s01-whitelist"></a>             | Custom postoverflow whitelist files for the appsec pod                                     | `{}`    |
 | `appsec.configs`<a id="appsec-configs"></a>                                 | AppSec configs (key = filename, value = file content)                                      | `{}`    |
 | `appsec.rules`<a id="appsec-rules"></a>                                   | AppSec rule files (key = filename, value = file content)                                   | `{}`    |
 | `appsec.priorityClassName`<a id="appsec-priorityclassname"></a>                       | Priority class name for AppSec pods                                                        | `""`    |
