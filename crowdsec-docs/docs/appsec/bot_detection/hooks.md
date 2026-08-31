@@ -124,15 +124,15 @@ Both keep a client out of the challenge, but at different scopes:
 
 ## Challenge difficulty levels
 
-`SetChallengeDifficulty(level)` accepts the following levels. Numbers are approximate proof-of-work iteration counts and rough wall-clock solve times on a modern desktop browser; mobile is meaningfully slower.
+`SetChallengeDifficulty(level)` accepts the following levels. Each level is a number of leading zero bits the client has to find, so the expected work doubles with every bit. Hash counts are the average a client has to compute, solve times are rough wall-clock measurements on a modern desktop browser and on a low-end mobile device.
 
-| Level          | Approx. iterations | Approx. solve time | When to use                                                                                                                  |
-| -------------- | ------------------ | ------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
-| `"disabled"`   | 0 (any nonce wins) | instant            | Functional smoke testing or when you only care about the fingerprint, not the proof-of-work.                                |
-| `"low"`        | ~1 024             | 0.2 – 2 s          | Latency-sensitive endpoints, mobile-heavy traffic.                                                                           |
-| `"medium"`     | ~4 096             | 1 – 8 s            | **Default.** Reasonable trade-off between user experience and attacker cost.                                                 |
-| `"high"`       | ~32 768            | 7 – 60 s           | Routes under active abuse; clients you already suspect.                                                                      |
-| `"impossible"` | unsolvable         | n/a                | Hard block: the AppSec component rejects the submission server-side. Use to fully block a client without leaking the reason. |
+| Level          | Difficulty | Approx. hashes         | Approx. solve time (desktop / low-end mobile) | When to use                                                                                                                  |
+| -------------- | ---------- | ---------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `"disabled"`   | 0 bits     | 0 (any nonce wins)     | instant                                       | Functional smoke testing or when you only care about the fingerprint, not the proof-of-work.                                |
+| `"low"`        | 18 bits    | 2^18, ~262 000         | 0.03 s / 0.5 s                                | Latency-sensitive endpoints, mobile-heavy traffic.                                                                           |
+| `"medium"`     | 20 bits    | 2^20, ~1 050 000       | 0.10 s / 2 s                                  | **Default.** Reasonable trade-off between user experience and attacker cost.                                                 |
+| `"high"`       | 22 bits    | 2^22, ~4 190 000       | 0.41 s / 8 s                                  | Routes under active abuse; clients you already suspect.                                                                      |
+| `"impossible"` | 256 bits   | unsolvable             | n/a                                           | Hard block: the AppSec component rejects the submission server-side. Use to fully block a client without leaking the reason. |
 
 ## DumpFingerprint
 
