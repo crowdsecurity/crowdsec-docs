@@ -1,0 +1,145 @@
+---
+id: nginxopenresty
+title: QuickStart - Nginx / OpenResty
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# CrowdSec WAF QuickStart for Nginx / OpenResty
+
+Protect an [Nginx](https://nginx.com) or [OpenResty](https://openresty.org/en/) server with CrowdSec's [AppSec (WAF) Component](/appsec/intro.md#introduction). After the prerequisites below, every step is a single copy-paste command. Most steps are the same for both engines — only step 3 differs, and the tabs there let you pick the right variant.
+
+## Prerequisites
+
+Make sure the following are already done on the machine running your web server (all are single-page install guides):
+
+1. **CrowdSec Security Engine** installed and running — see the [Linux quickstart](/u/getting_started/installation/linux).
+2. **Nginx or OpenResty bouncer** installed and registered against the CrowdSec LAPI:
+    - Nginx: [`crowdsec-nginx-bouncer`](/u/bouncers/nginx#installation)
+    - OpenResty: [`crowdsec-openresty-bouncer`](/u/bouncers/openresty#installation)
+3. Nginx or OpenResty is currently serving traffic on port 80 (used by the verification step at the end).
+
+## 1. Install the AppSec rule collections
+
+```bash
+sudo cscli collections install \
+    crowdsecurity/appsec-virtual-patching \
+    crowdsecurity/appsec-generic-rules
+```
+
+This pulls the [`appsec-virtual-patching`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) collection (rules for known CVEs, auto-updated daily) and the [`appsec-generic-rules`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) collection (common attack patterns), plus the default AppSec configuration.
+
+## 2. Turn on the AppSec Component
+
+Create the acquisition file, then restart CrowdSec:
+
+```bash
+sudo mkdir -p /etc/crowdsec/acquis.d
+sudo tee /etc/crowdsec/acquis.d/appsec.yaml > /dev/null <<'EOF'
+appsec_configs:
+  - crowdsecurity/appsec-default
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+EOF
+sudo systemctl restart crowdsec
+```
+
+:::warning
+Keep `listen_addr` on `127.0.0.1` — the AppSec Component must not be reachable from the internet. It should only be queried by your local web server / reverse proxy.
+:::
+
+## 3. Point the bouncer at the AppSec Component
+
+<Tabs groupId="engine" defaultValue="nginx" values={[
+  {label: 'Nginx', value: 'nginx'},
+  {label: 'OpenResty', value: 'openresty'},
+]}>
+  <TabItem value="nginx">
+
+```bash
+sudo sed -i 's|^APPSEC_URL=.*|APPSEC_URL=http://127.0.0.1:7422|' \
+    /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
+sudo systemctl restart nginx
+```
+
+  </TabItem>
+  <TabItem value="openresty">
+
+```bash
+sudo sed -i 's|^APPSEC_URL=.*|APPSEC_URL=http://127.0.0.1:7422|' \
+    /etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf
+sudo systemctl restart openresty
+```
+
+  </TabItem>
+</Tabs>
+
+The default bouncer config already contains an empty `APPSEC_URL=` line, so `sed -i` replaces it in place — the command is idempotent and safe to re-run.
+
+## 4. Verify
+
+Send a request that should trip an AppSec rule:
+
+```bash
+curl -I http://localhost/.env
+```
+
+You should get an `HTTP/1.1 403 Forbidden` response.
+
+We're hitting a `.env` file, a [common way to retrieve credentials left by mistake](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access) — the AppSec Component detects and blocks it.
+
+Check that CrowdSec recorded the block:
+
+```bash
+sudo cscli metrics show appsec
+```
+
+<details>
+<summary>Example metrics output</summary>
+
+```bash title="sudo cscli metrics show appsec"
+Appsec Metrics:
+╭─────────────────┬───────────┬─────────╮
+│  Appsec Engine  │ Processed │ Blocked │
+├─────────────────┼───────────┼─────────┤
+│ 127.0.0.1:7422/ │ 2         │ 1       │
+╰─────────────────┴───────────┴─────────╯
+
+Appsec '127.0.0.1:7422/' Rules Metrics:
+╭─────────────────────────────────┬───────────╮
+│             Rule ID             │ Triggered │
+├─────────────────────────────────┼───────────┤
+│ crowdsecurity/vpatch-env-access │ 1         │
+╰─────────────────────────────────┴───────────╯
+```
+
+</details>
+
+<details>
+<summary>What just happened?</summary>
+
+1. `curl` hit your web server at `/.env`.
+2. The bouncer forwarded the request to the AppSec Component on `127.0.0.1:7422`.
+3. The request matched the [`vpatch-env-access`](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access) rule.
+4. The AppSec Component answered `403`, the bouncer enforced it, and the web server returned the CrowdSec ban page.
+
+</details>
+
+If you'd rather see the block in a browser, visit `http://<your-host>/.env` — you'll get the CrowdSec ban page:
+
+![appsec-denied](/img/appsec_denied.png)
+
+## Monitor in the Console
+
+If you haven't enrolled the Security Engine yet, follow [how to enroll in the Console](/u/getting_started/post_installation/console). Once enrolled, AppSec alerts show up alongside the rest of your alerts:
+
+![appsec-console](/img/appsec_console.png)
+
+## Next steps
+
+- Monitor WAF alerts with `sudo cscli alerts list` or in the [CrowdSec Console](https://app.crowdsec.net).
+- Review the [AppSec troubleshooting guide](/appsec/troubleshooting.md) if you need to investigate or refine the deployment.
+- Explore [WAF deployment strategies](/appsec/advanced_deployments.mdx), [rules syntax](/appsec/rules_syntax.md), [rule creation](/appsec/create_rules.md), and [benchmarks](/appsec/benchmark.md) to go further.
