@@ -50,3 +50,4 @@ For the full request flow, see [How it works](how_it_works.md).
 - [Customization & recipes](customization.md) — narrow the challenge to a path, allowlist a probe, and react to the bot signal in your own scenarios.
 - [Configuration](configuration.md) — master secret, key rotation, cookie TTL, and JS obfuscation.
 - [Hooks reference](hooks.md) — full list of helpers and the `on_challenge` / `on_challenge_submit` stages.
+- [Challenge protocol](challenge_protocol.md) — the wire contract, for anyone adding challenge support to a remediation component.
