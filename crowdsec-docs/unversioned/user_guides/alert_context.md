@@ -30,15 +30,14 @@ You can view the current status of your console options with:
 
 ```bash
 $ sudo cscli console status
-╭────────────────────┬───────────┬───────────────────────────────────────────────────╮
-│ Option Name        │ Activated │ Description                                       │
-├────────────────────┼───────────┼───────────────────────────────────────────────────┤
-│ custom             │ ✅        │ Send alerts from custom scenarios to the console  │
-│ manual             │ ❌        │ Send manual decisions to the console              │
-│ tainted            │ ✅        │ Send alerts from tainted scenarios to the console │
-│ context            │ ✅        │ Send context with alerts to the console           │
-│ console_management │ ❌        │ Receive decisions from console                    │
-╰────────────────────┴───────────┴───────────────────────────────────────────────────╯
+╭─────────────┬───────────┬──────────────────────────────────────────────────────╮
+│ Option Name │ Activated │ Description                                          │
+├─────────────┼───────────┼──────────────────────────────────────────────────────┤
+│ custom      │ ✅        │ Forward alerts from custom scenarios to the console  │
+│ manual      │ ❌        │ Forward manual decisions to the console              │
+│ tainted     │ ✅        │ Forward alerts from tainted scenarios to the console │
+│ context     │ ✅        │ Forward context with alerts to the console           │
+╰─────────────┴───────────┴──────────────────────────────────────────────────────╯
 ```
 
 You can enable alert context with:
