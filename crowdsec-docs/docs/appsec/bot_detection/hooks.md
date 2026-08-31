@@ -4,7 +4,7 @@ title: Hooks reference
 sidebar_position: 6
 ---
 
-This page references available expr helpers in the dedicated bot detection hooks (`on_challenge_submit` and `on_challenge`), alongside with the `fingerprint` object.
+This page references available expr helpers in the dedicated bot detection hooks (`on_challenge_submit` and `on_challenge`), along with the `fingerprint` object.
 
 
 For the generic hook phases (`on_load`, `pre_eval`, `post_eval`, `on_match`) and generic helpers,
