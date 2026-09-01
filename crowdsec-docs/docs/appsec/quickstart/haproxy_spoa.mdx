@@ -3,6 +3,9 @@ id: haproxy_spoa
 title: QuickStart - HAProxy (SPOA)
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # CrowdSec WAF QuickStart for HAProxy (SPOA)
 
 Protect web applications running behind [HAProxy](https://www.haproxy.org/) with CrowdSec's [AppSec (WAF) Component](/appsec/intro.md#introduction), using the HAProxy SPOA remediation component to forward HTTP requests.
@@ -29,6 +32,16 @@ This pulls the [`appsec-virtual-patching`](https://app.crowdsec.net/hub/author/c
 
 Create the acquisition file, then restart CrowdSec:
 
+<Tabs
+  groupId="haproxy-spoa-os"
+  defaultValue="linux"
+  values={[
+    { label: "Linux", value: "linux" },
+    { label: "FreeBSD", value: "freebsd" },
+  ]}
+>
+<TabItem value="linux">
+
 ```bash
 sudo mkdir -p /etc/crowdsec/acquis.d
 sudo tee /etc/crowdsec/acquis.d/appsec.yaml > /dev/null <<'EOF'
@@ -42,13 +55,42 @@ EOF
 sudo systemctl restart crowdsec
 ```
 
+</TabItem>
+<TabItem value="freebsd">
+
+```bash
+sudo mkdir -p /usr/local/etc/crowdsec/acquis.d
+sudo tee /usr/local/etc/crowdsec/acquis.d/appsec.yaml > /dev/null <<'EOF'
+appsec_configs:
+  - crowdsecurity/appsec-default
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+EOF
+sudo service crowdsec reload
+```
+
+</TabItem>
+</Tabs>
+
 :::warning
 Keep `listen_addr` on `127.0.0.1` — the AppSec Component must only be reachable from your reverse proxy.
 :::
 
 ## 3. Enable AppSec forwarding in the SPOA bouncer
 
-Edit `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` and add the `appsec_url` plus the `appsec` block under your host(s):
+Edit the SPOA bouncer configuration and add the `appsec_url` plus the `appsec` block under your host(s):
+
+<Tabs
+  groupId="haproxy-spoa-os"
+  defaultValue="linux"
+  values={[
+    { label: "Linux", value: "linux" },
+    { label: "FreeBSD", value: "freebsd" },
+  ]}
+>
+<TabItem value="linux">
 
 ```yaml title="/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml"
 # AppSec (WAF forwarding)
@@ -66,6 +108,27 @@ Restart the bouncer:
 ```bash
 sudo systemctl restart crowdsec-spoa-bouncer
 ```
+
+</TabItem>
+<TabItem value="freebsd">
+
+```yaml title="/usr/local/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml"
+# AppSec (WAF forwarding)
+appsec_url: "http://127.0.0.1:7422"
+appsec_timeout: "200ms"
+
+hosts:
+  - host: "*"
+    appsec:
+      always_send: false
+```
+
+```bash
+sudo service crowdsec_spoa_bouncer restart
+```
+
+</TabItem>
+</Tabs>
 
 :::note
 If AppSec runs on a different host (or in containers), update `appsec_url` to the correct reachable address.
