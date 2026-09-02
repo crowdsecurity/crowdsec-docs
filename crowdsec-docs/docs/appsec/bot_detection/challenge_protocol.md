@@ -40,7 +40,7 @@ When the AppSec component decides to challenge a request, it answers the remedia
 | `action` | Always `challenge` here. A `403` carrying any other action is that other remediation. |
 | `http_status` | The status code to return **to the browser** — not the `403` the remediation component received. Defaults to `200` if absent or zero. |
 | `user_body_content` | The body to write to the browser: the challenge HTML, a JavaScript asset, or a small JSON status document. |
-| `user_headers` | Response headers to set on the browser response. A `Content-Security-Policy` is always present — the AppSec component injects a permissive default when no hook set one, because the challenge needs inline script and blob workers to run. |
+| `user_headers` | Response headers to set on the browser response, **replacing** any header of the same name the component or the origin would otherwise send. A `Content-Security-Policy` is always present — the AppSec component sets a fixed permissive policy, because the challenge needs inline script and blob workers to run. |
 | `user_cookies` | Ready-to-send `Set-Cookie` values. Each entry is one header. |
 
 :::note
@@ -78,7 +78,8 @@ The remediation component never parses, validates or mints challenge cookies. Th
 
 - Forward `/crowdsec-internal/challenge/*` to the AppSec component, unmodified, and never to the origin.
 - Return `http_status` to the browser, not the `403` received from the AppSec component.
-- Set every `user_headers` entry, and emit each `user_cookies` entry as a **separate** `Set-Cookie` header — never joined with commas.
+- Set every `user_headers` entry, **replacing** any header of the same name already set on the response, and emit each `user_cookies` entry as a **separate** `Set-Cookie` header — never joined with commas.
+  `Content-Security-Policy` is the one that matters most here: browsers enforce every policy they receive, so a site-wide CSP left next to the challenge's blocks the challenge page's inline script and blob worker. Operators must also make sure their web server does not add its own next to it — see [Content-Security-Policy](enable.md#content-security-policy).
 - Forward the request body on `POST` submissions.
 - Send the real client IP in `X-Crowdsec-Appsec-Ip` on *every* request, challenge assets and submissions included. The AppSec component uses it as the client IP for Coraza, allowlists, country rules and the `client_ip` of every event it emits, so a proxy address here silently attributes all challenge traffic to your own infrastructure.
 - Fail closed: if the challenge cannot be served, treat the request as `ban`.
