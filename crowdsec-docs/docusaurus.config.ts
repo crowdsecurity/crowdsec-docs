@@ -350,7 +350,7 @@ const config: Config = {
 					editUrl: "https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/",
 					lastVersion: "current",
 					versions: {
-						"v1.7": {
+						"v1.8": {
 							banner: "none",
 							path: "/",
 						},
