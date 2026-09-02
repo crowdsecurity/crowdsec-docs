@@ -51,15 +51,78 @@ sudo systemctl reload crowdsec
 
 The collection installed above rejects a submission scoring 75 or more. To be stricter or more forgiving, install a different bundle and point the acquisition at its threshold config:
 
-| Collection | Threshold config to load | Rejects at |
-|---|---|---|
-| `crowdsecurity/appsec-bot-challenge` | `crowdsecurity/appsec-bot-challenge-scoring-balanced` | `>= 75` |
-| `crowdsecurity/appsec-bot-challenge-strict` | `crowdsecurity/appsec-bot-challenge-scoring-strict` | `>= 45` |
-| `crowdsecurity/appsec-bot-challenge-permissive` | `crowdsecurity/appsec-bot-challenge-scoring-permissive` | `>= 100` |
+| Collection                                      | Threshold config to load                                | Rejects at |
+| ----------------------------------------------- | ------------------------------------------------------- | ---------- |
+| `crowdsecurity/appsec-bot-challenge`            | `crowdsecurity/appsec-bot-challenge-scoring-balanced`   | `>= 75`    |
+| `crowdsecurity/appsec-bot-challenge-strict`     | `crowdsecurity/appsec-bot-challenge-scoring-strict`     | `>= 45`    |
+| `crowdsecurity/appsec-bot-challenge-permissive` | `crowdsecurity/appsec-bot-challenge-scoring-permissive` | `>= 100`   |
 
 Start with the default, then read `score_reasons` on real rejections before you move it. [How a request is scored](whats_included.md#how-a-request-is-scored) covers what each threshold buys you.
 
 Once installed, see [default configuration](whats_included.md) for a tour of the behavior you just enabled — none of it requires an extra install step.
+
+## Content-Security-Policy
+
+Every challenge response carries its own `Content-Security-Policy` header. The challenge page runs an inline script and an inline style, and starts the proof-of-work worker from a `blob:` URL, so it needs a policy that allows all three. The AppSec component always sets the same permissive one:
+
+```
+default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; worker-src 'self' blob:;
+```
+
+:::note
+This policy is fixed: there is currently no configuration option or hook helper to change the challenge's `Content-Security-Policy`, so a conflict with your own has to be solved on the web server side.
+:::
+
+If your web server also sets a `Content-Security-Policy`, that policy is _added_ next to the challenge's instead of replacing it. The browser then receives **two** policies and enforces both: something is only allowed if _every_ policy allows it. A site policy without `'unsafe-inline'` or without `blob:` therefore blocks the challenge page even though the challenge shipped a permissive policy of its own, and the visitor is stuck on a page that can never solve anything.
+
+The symptom is a blank or frozen challenge page with `Refused to execute inline script …` or `Refused to create a worker …` in the browser console, while [the metrics](#metrics) show challenges being requested but never submitted.
+
+The fix is to **set your own policy only when the response does not already carry one**, so that the challenge's header is the one the browser gets. In nginx, map the policy already set on the response to your own, and add the header from that map:
+
+```nginx
+http {
+    # ... your policy when the response has no CSP yet, empty otherwise
+    map $sent_http_content_security_policy $hdr_csp {
+        ""  "default-src 'self'; script-src 'self'; object-src 'none'";
+    }
+
+    server {
+        # ...
+        add_header Content-Security-Policy $hdr_csp;
+    }
+}
+```
+
+The map has no `default`, so `$hdr_csp` is empty for any response that already carries a policy — the challenge page among them — and nginx does not add a header whose value is empty.
+
+If you serve several sites with different policies, feed `$hdr_csp` from a second map keyed on `$host` instead of a literal:
+
+```nginx
+http {
+    # the policy each site wants
+    map $host $host_csp {
+        "www.example.com"   "default-src 'self'; script-src 'self'; object-src 'none'";
+        "shop.example.com"  "default-src 'self'; img-src 'self' data:";
+        default             "default-src 'self'";
+    }
+
+    # ... but only on a response that has no CSP yet
+    map $sent_http_content_security_policy $hdr_csp {
+        ""  $host_csp;
+    }
+
+    server {
+        # ...
+        add_header Content-Security-Policy $hdr_csp;
+    }
+}
+```
+
+Since an empty value means no header at all, `default ""` in the first map is how you leave a host without any site policy.
+
+:::note
+Side effect: an application of yours that sets its own `Content-Security-Policy` also keeps it, since nginx no longer adds the site policy on top of it.
+:::
 
 ## Verification
 
@@ -86,7 +149,9 @@ const puppeteer = require("puppeteer");
 (async () => {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
-  await page.goto("https://your-protected-site.example/some/page", { waitUntil: "networkidle0" });
+  await page.goto("https://your-protected-site.example/some/page", {
+    waitUntil: "networkidle0",
+  });
   console.log("status:", (await page.content()).length, "bytes");
   await browser.close();
 })();
@@ -147,6 +212,7 @@ If you don't see any challenge activity after a reload, double-check that:
 
 - The new appsec-config is listed in your AppSec datasource (`appsec_configs:`).
 - The bouncer is forwarding `/crowdsec-internal/challenge/*` paths unchanged.
+- Your web server is not adding a `Content-Security-Policy` of its own on top of the challenge's, see [Content-Security-Policy](#content-security-policy).
 
 ## Metrics
 
