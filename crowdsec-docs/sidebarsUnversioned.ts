@@ -302,7 +302,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "doc",
-					label: "Attack Surge Notifications",
+					label: "Attack Surge Detection",
 					id: "console/security_engines/am_i_under_attack",
 					customProps: {
 						tag: "premium",
