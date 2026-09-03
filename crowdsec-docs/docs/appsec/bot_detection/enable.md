@@ -23,6 +23,7 @@ sudo cscli collections install crowdsecurity/appsec-bot-challenge
 Then make sure the bundled appsec-configs are actually loaded by your AppSec acquisition. Open the AppSec datasource file (typically `/etc/crowdsec/acquis.d/appsec.yaml`):
 
 ```yaml
+source: appsec
 listen_addr: 127.0.0.1:7422
 appsec_configs:
   - crowdsecurity/appsec-default
