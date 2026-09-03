@@ -29,6 +29,7 @@ This page lists all possible health check issues, their trigger conditions, and 
 | **Security Engine No RC** | 💡 Reco. | Security Engine has no Remediation Component registered | [Troubleshooting](/u/troubleshooting/issue_se_no_rc) |
 | **Security Engine No Active RC** | 🔥 Critical | All registered Remediation Components have been inactive for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_se_no_active_rc) |
 | **Security Engine Offline** | 🔥 Critical | Security Engine has not reported to Console for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_se_offline) |
+| **Security Engine Self-Report** | 🔥 Critical | Security Engine reported a loopback address or its own IP as an attacker | [Troubleshooting](/u/troubleshooting/issue_se_self_report) |
 | **Security Engine Too Many Alerts** | ⚠️ High | More than 250,000 alerts in 6 hours | [Troubleshooting](/u/troubleshooting/issue_se_too_many_alerts) |
 
 </snippet-extract>
