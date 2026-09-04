@@ -45,7 +45,7 @@ Step by step:
 8. Per-request hooks only see one request at a time. The [behavioral scenarios](whats_included.md#behavioral-scenarios-it-installs) shipped by the collection watch across requests (too many challenge requests, too many submissions) and create decisions that block repeat offenders at the bouncer.
 
 :::note
-The challenge runtime is built **lazily** — it only spins up if a loaded hook references `SendChallenge()`, `GrantChallengeCookie()`, or `RejectSubmission()`. Installing the [bot-detection collection](enable.md) is what turns it on.
+The challenge runtime is built **lazily** — it only spins up if a loaded hook references `SendChallenge()`, `GrantChallengeCookie()`, `RejectSubmission()`, or [`HasValidChallengeCookie()`](hooks.md#hasvalidchallengecookie). Installing the [bot-detection collection](enable.md) is what turns it on.
 :::
 
 :::info Credits
