@@ -122,6 +122,50 @@ Both keep a client out of the challenge, but at different scopes:
 | `ExemptFromChallenge(reason)` | The current request only       | no     | Verified known bots, well-known paths (`robots.txt`, `/.well-known/*`, feeds, webhooks) and per-request allowlisting where no state should persist. `reason` labels the exemption in logs and the `cs_appsec_challenge_exempt_total` metric. |
 | `GrantChallengeCookie(reason, ttl?)` | Persists across requests (until the cookie expires) | yes | Trusted user-agents or internal probes you want to let through for a whole session. |
 
+## `HasValidChallengeCookie`
+
+`HasValidChallengeCookie()` returns `true` when the request has **already** cleared the bot challenge — either it presented a valid `__crowdsec_challenge` cookie, or an earlier hook in the same request called [`ExemptFromChallenge(reason)`](#exemptfromchallenge-vs-grantchallengecookie).
+
+It is available in `pre_eval`, `post_eval` and `on_match`, in-band and out-of-band alike. The cookie is validated before `pre_eval` runs, so the value is already meaningful in the earliest hook and does not change for the rest of the request. It is not exposed in `on_challenge` (that hook only runs for requests that carry a valid cookie, so it would always be `true`) nor in `on_challenge_submit`.
+
+### A cookie minted during the request doesn't count
+
+The helper describes the cookie the client **sent**, not the one it is about to receive. It stays `false` on the request that solves the challenge, and on a request where a hook called [`GrantChallengeCookie(...)`](#exemptfromchallenge-vs-grantchallengecookie): in both cases the cookie is set on the response, and the client only presents it on its next request.
+
+| Situation                                                                    | `HasValidChallengeCookie()`                    |
+| ---------------------------------------------------------------------------- | ---------------------------------------------- |
+| The request carries a valid `__crowdsec_challenge` cookie                     | `true`                                         |
+| A hook called `ExemptFromChallenge(reason)` earlier in this request           | `true`                                         |
+| The request carries no cookie, or a tampered / expired / replayed one         | `false`                                        |
+| A hook called `GrantChallengeCookie(reason)` in this request                  | `false` — the cookie is minted on the response |
+| The challenge submission itself (`/crowdsec-internal/challenge/submit`)       | `false` — the success cookie is minted on the response |
+
+:::note
+You don't need this helper to avoid re-challenging a visitor: `SendChallenge()` is already a no-op for a client that holds a valid cookie or has been exempted. It is meant for the *other* decisions you may want to take differently for a client that has passed the challenge — which rules to run, how to score the request, what remediation to return.
+:::
+
+### Examples
+
+Skip a rule that is noisy but only misfires on real browsers, for clients that have passed the challenge:
+
+```yaml
+inband:
+ pre_eval:
+   - filter: HasValidChallengeCookie()
+     apply:
+       - RemoveInBandRuleByName("crowdsecurity/my-noisy-rule")
+```
+
+Or to force client to have solved a challenge before accessing a endpoint (eg, an API endpoint in a SPA app):
+```yaml
+inband:
+ pre_eval:
+   - filter: req.URL.Path startswith "/api" && !HasValidChallengeCookie()
+     apply:
+      - DropRequest("challenge must be solved before accessing the API")
+```
+
+
 ## Challenge difficulty levels
 
 `SetChallengeDifficulty(level)` accepts the following levels. Each level is a number of leading zero bits the client has to find, so the expected work doubles with every bit. Hash counts are the average a client has to compute, solve times are rough wall-clock measurements on a modern desktop browser and on a low-end mobile device.
