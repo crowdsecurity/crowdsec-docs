@@ -1,6 +1,8 @@
 ---
 id: hooks
-title: Hooks reference
+title: "Bot Detection Hooks Reference"
+sidebar_label: "Hooks reference"
+description: "Reference for the on_challenge and on_challenge_submit hooks and the fingerprint object, used to score and filter automated clients in the CrowdSec WAF."
 sidebar_position: 6
 ---
 

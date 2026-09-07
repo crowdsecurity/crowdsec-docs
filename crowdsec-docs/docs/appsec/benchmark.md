@@ -1,6 +1,7 @@
 ---
 id: benchmark
 title: WAF Component Benchmark
+description: "Performance benchmarks for the CrowdSec Web Application Firewall (WAF): throughput and latency measured with virtual patching rules and with the full OWASP CRS."
 sidebar_position: 80
 ---
 

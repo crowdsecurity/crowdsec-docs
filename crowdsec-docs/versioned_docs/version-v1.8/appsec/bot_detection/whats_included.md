@@ -1,6 +1,8 @@
 ---
 id: whats_included
-title: Default Configuration
+title: "Bot Detection Default Configuration"
+sidebar_label: "Default Configuration"
+description: "What the crowdsecurity/appsec-bot-challenge collection installs: the bot scoring and browser fingerprinting, with thresholds and the behavioral scenarios."
 sidebar_position: 3
 ---
 

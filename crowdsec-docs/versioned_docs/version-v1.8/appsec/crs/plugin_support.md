@@ -1,6 +1,8 @@
 ---
 id: plugin_support
-title: Plugin support
+title: "OWASP CRS Plugin Support"
+sidebar_label: "Plugin support"
+description: "Use OWASP CRS plugins with the CrowdSec WAF to extend or fine-tune the rule set per application, and where to place config and plugin files."
 sidebar_position: 1
 ---
 

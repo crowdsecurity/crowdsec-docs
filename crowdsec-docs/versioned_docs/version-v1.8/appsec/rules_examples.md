@@ -1,6 +1,8 @@
 ---
 id: rules_examples
-title: Examples
+title: "WAF Rules Examples"
+sidebar_label: "Examples"
+description: "CrowdSec WAF rule examples, each with the rule definition, a matching HTTP request, and an explanation of the capability it demonstrates."
 sidebar_position: 81
 ---
 

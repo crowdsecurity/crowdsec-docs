@@ -1,6 +1,7 @@
 ---
 id: api_validation
 title: OpenAPI Schema Validation
+description: "Validate incoming HTTP requests against an OpenAPI 3 schema with the CrowdSec WAF, rejecting anything that does not match your API."
 sidebar_position: 5
 ---
 

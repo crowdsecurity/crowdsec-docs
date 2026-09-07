@@ -1,6 +1,8 @@
 ---
 id: troubleshooting
-title: Troubleshooting
+title: "WAF Troubleshooting"
+sidebar_label: "Troubleshooting"
+description: "Troubleshoot the CrowdSec Web Application Firewall (WAF): read cscli appsec metrics, inspect rule triggers, and debug requests not matched as expected."
 sidebar_position: 81
 ---
 

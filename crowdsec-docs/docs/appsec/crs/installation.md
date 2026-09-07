@@ -1,6 +1,8 @@
 ---
 id: installation
-title: Installation
+title: "OWASP CRS Installation"
+sidebar_label: "Installation"
+description: "Install the OWASP Core Rule Set on the CrowdSec Web Application Firewall (WAF), in non-blocking out-of-band mode first or directly in blocking in-band mode."
 sidebar_position: 1
 ---
 

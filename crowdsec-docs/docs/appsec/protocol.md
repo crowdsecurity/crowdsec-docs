@@ -1,6 +1,7 @@
 ---
 id: protocol
 title: WAF / Bouncer Communication Protocol
+description: "HTTP protocol reference for talking to the CrowdSec WAF: required headers, request forwarding and response codes, for building your own remediation component."
 sidebar_position: 5
 ---
 

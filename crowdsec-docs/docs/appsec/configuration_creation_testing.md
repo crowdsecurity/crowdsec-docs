@@ -1,6 +1,8 @@
 ---
 id: configuration_creation_testing
-title: Creation & Testing
+title: "AppSec Configuration Creation & Testing"
+sidebar_label: "Creation & Testing"
+description: "Write and test CrowdSec WAF configurations: the AppSec acquisition file, loading multiple appsec-configs, and combining in-band and out-of-band rule sets."
 sidebar_position: 3
 ---
 

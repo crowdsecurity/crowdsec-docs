@@ -1,6 +1,8 @@
 ---
 id: how_it_works
-title: How it works
+title: "How Bot Detection Works"
+sidebar_label: "How it works"
+description: "How CrowdSec bot detection works: a browser-side proof-of-work and device fingerprint that filters headless browsers and scripts before they reach your app."
 sidebar_position: 5
 ---
 

@@ -1,6 +1,7 @@
 ---
 id: configuration_rule_management
 title: Allowlisting and Rule Overrides
+description: "Disable or override CrowdSec WAF rules at runtime by name, ID or tag, and allowlist requests by source IP or URI without tainting your hub configuration."
 sidebar_position: 3
 ---
 

@@ -1,6 +1,8 @@
 ---
 id: challenge_protocol
-title: Challenge protocol
+title: "Bot Detection Challenge Protocol"
+sidebar_label: "Challenge protocol"
+description: "Reference for the challenge action that extends the CrowdSec WAF bouncer protocol, for maintainers adding bot detection support to a remediation component."
 sidebar_position: 7
 ---
 

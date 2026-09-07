@@ -274,6 +274,24 @@ const config: Config = {
 	favicon: "img/crowdsec_no_txt.png",
 	organizationName: "CrowdSec",
 	projectName: "crowdsec-docs",
+	// Docusaurus only emits a single-item BreadcrumbList on its own; nothing tells
+	// search engines who publishes these docs.
+	headTags: [
+		{
+			tagName: "script",
+			attributes: {
+				type: "application/ld+json",
+			},
+			innerHTML: JSON.stringify({
+				"@context": "https://schema.org/",
+				"@type": "Organization",
+				name: "CrowdSec",
+				url: "https://www.crowdsec.net/",
+				logo: "https://docs.crowdsec.net/img/crowdsec_no_txt.png",
+				sameAs: ["https://github.com/crowdsecurity/crowdsec", "https://x.com/crowd_security"],
+			}),
+		},
+	],
 	markdown: {
 		mermaid: true,
 		mdx1Compat: {
@@ -295,6 +313,12 @@ const config: Config = {
 	themes: ["@docusaurus/theme-mermaid"],
 	themeConfig: {
 		image: "img/crowdsec_og_image.png",
+		// og:image and twitter:card are already emitted from `image` above; don't redeclare them.
+		metadata: [
+			{ property: "og:site_name", content: "CrowdSec Documentation" },
+			{ property: "og:type", content: "website" },
+			{ name: "twitter:site", content: "@crowd_security" },
+		],
 		colorMode: {
 			defaultMode: "dark",
 			disableSwitch: false,
@@ -302,8 +326,7 @@ const config: Config = {
 		},
 		announcementBar: {
 			id: "banner_docs",
-			content:
-				'<a target="_blank" href="https://doc.crowdsec.net/docs/next/appsec/intro" rel="noopener">Learn how to guard your webserver in real-time with the CrowdSec WAF</a>',
+			content: '<a href="/docs/next/appsec/intro">Learn how to guard your webserver in real-time with the CrowdSec WAF</a>',
 			backgroundColor: "#F8AB13",
 			textColor: "#131132",
 			isCloseable: true,
@@ -353,6 +376,11 @@ const config: Config = {
 						"v1.8": {
 							banner: "none",
 							path: "/",
+						},
+						// EOL: kept online for existing links, but out of the index.
+						// plugin-sitemap drops noindex routes too, so it also leaves sitemap.xml.
+						"v1.6": {
+							noIndex: true,
 						},
 						current: {
 							path: "/next",

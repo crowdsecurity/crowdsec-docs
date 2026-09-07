@@ -1,6 +1,8 @@
 ---
 id: configuration
-title: Syntax
+title: "AppSec Configuration Syntax"
+sidebar_label: "Syntax"
+description: "Full key reference for CrowdSec WAF appsec-config files: loading in-band and out-of-band rules, default remediation, and how multiple configs are merged."
 sidebar_position: 1
 ---
 
