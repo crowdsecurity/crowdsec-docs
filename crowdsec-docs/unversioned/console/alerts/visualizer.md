@@ -37,7 +37,7 @@ From an attacker's row:
 
 ## Adapt it to your own charts
 
-The walkthrough used the Behavior breakdown, but every step works on any dimension. Use **Add a breakdown** to bring in the charts your investigation needs: source countries, autonomous systems, scenarios, target engines... Each card can be zoomed, expanded, or removed, and the layout is yours - it stays as you left it.
+The walkthrough used the Behavior breakdown, but every step works on any dimension. Use **Add a breakdown** to bring in the charts your investigation needs: source countries, autonomous systems, IP reputation, scenarios, target engines... Each card can be zoomed, expanded, or removed, and the layout is yours - it stays as you left it.
 
 [capture: breakdown picker open showing available dimensions]
 
