@@ -3,7 +3,7 @@ title: Custom views
 description: Save the perspectives you use every day and pin them to your menu
 ---
 
-If you keep re-applying the same filters every morning, the Explorer can do it for you. This page shows you how to turn any combination of filters, period and layout into a named view, pin it to the navigation menu, and share it with your team. By the end, your Alerts page opens directly on what you monitor.
+If you keep re-applying the same filters every morning, the Explorer can do it for you: save any combination of filters, period and layout as a named view, pin it to the menu, share it with your team.
 
 ## Save what you are looking at
 

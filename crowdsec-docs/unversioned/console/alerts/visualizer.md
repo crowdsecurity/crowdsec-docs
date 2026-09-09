@@ -3,7 +3,7 @@ title: Investigate an attack wave
 description: Spot a new attack pattern in your alert activity, isolate it, and act on the attackers behind it
 ---
 
-This page walks through one investigation from start to finish. By the end you will know how to read the breakdown charts, isolate a suspicious pattern with one click, drill down to the attack sessions behind it, and ban the offenders - the same moves apply to any dimension the Explorer can break down.
+One investigation, start to finish: spot a pattern, isolate it in one click, find the attackers behind it, ban them. The same moves work on any dimension.
 
 ## The scenario
 

@@ -3,7 +3,7 @@ title: Search and filter
 description: Go from a clue - an IP, a CVE, a scenario name - to every matching alert in your environment
 ---
 
-An investigation rarely starts from a blank page: it starts from a clue. An IP address in an incident report, a CVE from a vulnerability scan, a scenario name from a colleague's message. This page shows you how to go from that clue to the full picture. By the end you will know how to use the smart search shortcuts, combine include and exclude filters, and match whole families of scenarios at once.
+An investigation rarely starts from a blank page: it starts from a clue - an IP in an incident report, a CVE from a scan, a scenario name in a colleague's message. Paste the clue, get the full picture.
 
 ## Paste the clue
 

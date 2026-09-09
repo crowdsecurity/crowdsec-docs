@@ -3,7 +3,7 @@ title: The WAF view
 description: See what your application firewall actually blocks, in one dedicated view
 ---
 
-Your AppSec rules block exploitation attempts before they reach your applications - but that work is invisible until you look at it. The WAF view is a preset of the Alert Explorer focused on application-layer activity. By the end of this page you will know how to read it, and what to do when it is empty.
+Your AppSec rules block exploitation attempts before they reach your applications - but that work is invisible until you look at it. The WAF view is the Explorer preset that shows it.
 
 ## Open the WAF view
 

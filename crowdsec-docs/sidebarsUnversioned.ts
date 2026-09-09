@@ -302,14 +302,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "doc",
-					label: "Attack Surge Detection",
-					id: "console/security_engines/am_i_under_attack",
-					customProps: {
-						tag: "premium",
-					},
-				},
-				{
-					type: "doc",
 					label: "Select multiple organizations 🧪",
 					id: "console/security_engines/select_multiple_organizations",
 				},
@@ -322,7 +314,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "category",
-			label: "Alerts",
+			label: "Alert Explorer",
 			link: {
 				type: "doc",
 				id: "console/alerts/intro",
@@ -352,6 +344,14 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 					type: "doc",
 					label: "The WAF view",
 					id: "console/alerts/waf",
+				},
+				{
+					type: "doc",
+					label: "Attack Surge Detection",
+					id: "console/security_engines/am_i_under_attack",
+					customProps: {
+						tag: "premium",
+					},
 				},
 				{
 					type: "doc",
