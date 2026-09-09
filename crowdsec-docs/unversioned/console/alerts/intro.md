@@ -3,7 +3,7 @@ title: Overview
 description: What the Alert Explorer is for, and what you will be able to do with it in five minutes
 ---
 
-Every Security Engine you enroll reports the attacks it blocks to the Console. The Alert Explorer turns that stream into something you can actually investigate: it groups alerts into attack sessions, breaks them down by behavior, source or target, and lets you isolate exactly the activity you care about.
+Every Security Engine you enroll reports the attacks it blocks to the Console. The Alert Explorer turns that stream into something you can actually investigate: it groups alerts by attacking IP, breaks them down by behavior, source or target, and lets you isolate exactly the activity you care about.
 
 By the end of this page you will know how the Explorer is organised, and which page answers which question.
 
