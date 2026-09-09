@@ -32,6 +32,15 @@ More quotas and extended retention periods are essential for several reasons:
 
 Understanding the limitations of the Community Plan is crucial for setting realistic expectations regarding alert volume and retention. If you frequently approach or exceed these limits, it may be time to consider upgrading to our Premium Plan.
 
+### Quotas in the Alert Explorer
+
+The Explorer shows your quota status where it matters:
+
+- The **usage badge** next to the page title shows your current consumption against your quota.
+- Periods where your organization exceeded its quota appear as greyed **"Out of quota"** bands in the breakdown charts: alerts in those windows were not retained, so the charts stay honest about the gap.
+
+[capture: breakdown chart with a greyed out-of-quota band]
+
 ### Monitor usage
 
 The quota is readily accessible on the **"Billing and Plans"** page in the organization settings, located within the **"Usage"** section.

@@ -330,18 +330,28 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			items: [
 				{
 					type: "doc",
-					label: "Introduction",
+					label: "Overview",
 					id: "console/alerts/intro",
 				},
 				{
 					type: "doc",
-					label: "Visualizer",
+					label: "Investigate an attack wave",
 					id: "console/alerts/visualizer",
 				},
 				{
 					type: "doc",
-					label: "Alerts analysis",
-					id: "console/alerts/alerts_analysis",
+					label: "Search and filter",
+					id: "console/alerts/search",
+				},
+				{
+					type: "doc",
+					label: "Custom views",
+					id: "console/alerts/views",
+				},
+				{
+					type: "doc",
+					label: "The WAF view",
+					id: "console/alerts/waf",
 				},
 				{
 					type: "doc",

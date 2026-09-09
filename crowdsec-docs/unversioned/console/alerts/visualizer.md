@@ -1,45 +1,48 @@
 ---
-title: Visualizer
-description: Visualizer for the Alerts page of the CrowdSec Console
+title: Investigate an attack wave
+description: Spot a new attack pattern in your alert activity, isolate it, and act on the attackers behind it
 ---
 
-## Introduction
+This page walks through one investigation from start to finish. By the end you will know how to read the breakdown charts, isolate a suspicious pattern with one click, drill down to the attack sessions behind it, and ban the offenders - the same moves apply to any dimension the Explorer can break down.
 
-The alerts page will provide a detailed analysis of the threats to your network. Here, we are going to talk about the Visualizer. It offers two main perspectives: a Summary view and an Extended view.
+## The scenario
 
-## Usage
+You open the Alert Explorer after a quiet week and glance at the **Behavior** breakdown. Most of the activity is the usual background noise, but one behavior shows a clear ramp-up over the last three days: `ssh-bruteforce`, barely present before, now dominates the chart.
 
-### Summary View
+[capture: behaviors breakdown chart with a visible ssh-bf wave starting 3 days ago]
 
-The **Summary** view presents a synthesis of critical information that allows for quick identification of trends and essential points of network security:
+## Step 1 - Isolate the wave
 
-- **Most Active IPs**: Identify the IP addresses that generate the most alerts.
-- **Common Attack Scenarios**: Discover the most frequent types of attacks and the tactics used by attackers.
-- **Target Security Engines**: Specify the Security Engines that are the focus of the attacks.
-- **Source AS**: Determine the Autonomous Systems responsible for originating the network traffic.
+Click the suspicious area of the chart. The Explorer applies the matching filter: every chart and the table below now only show `ssh-bruteforce` activity. The filter appears as a chip above the table, ready to be removed when you are done.
 
-![Alerts Summary](/img/console/alerts/visualizer-summary.png)
+You can also zoom in time: drag a range on any chart to narrow the period to the wave itself.
 
-### Extended View
+[capture: filtered state, filter chip visible, period zoomed on the wave]
 
-The **Extended** view provides in-depth analysis through interactive visualizations.
-Each section displays the top ten in each category. Opening the bar chart will display all related info.
+## Step 2 - Find who is behind it
 
-![Alerts extended](/img/console/alerts/visualizer-extended.png)
+The table groups alerts by attacking IP: what looked like hundreds of alerts collapses into a handful of attackers, each with its session count, targets and time range. Expand a row to see the individual attack sessions - when each burst started, which engines were hit, how many decisions were taken.
 
-### Good to know
+[capture: grouped table expanded on one attacker row]
 
-Numerous items on the page have multiple actions available when clicking on them. For example, clicking on an IP can:
+## Step 3 - Understand and act
 
-- **Open the CrowdSec CTI** to get more information related to IP behavior on our network
-- **Filter** on all the alerts triggered by this IP alone.
-- **Exclude** this IP from the current page filters. Helpful when doing tests and your IP could be displayed.
-- **Copy** the following IP in your clipboard.
+From an attacker's row:
 
-![Alerts actions](/img/console/alerts/visualizer-actions.png)
+- **Pivot to CTI** - open the IP's full CrowdSec threat intelligence profile: reputation, history across the network, associated behaviors.
+- **Ban the IP** - push a decision to all your Security Engines, or a subset, directly from the context menu.
+- **Report a false positive** - if the traffic turns out to be legitimate, report it to improve the network's consensus.
 
-### Navigation
+[capture: row context menu open with CTI / ban / report entries]
 
-Navigation through the view can be easily accomplished using the button above.
+## Adapt it to your own charts
 
-![Alerts actions](/img/console/alerts/visualizer-navigation.png)
+The walkthrough used the Behavior breakdown, but every step works on any dimension. Use **Add a breakdown** to bring in the charts your investigation needs: source countries, autonomous systems, scenarios, target engines... Each card can be zoomed, expanded, or removed, and the layout is yours - it stays as you left it.
+
+[capture: breakdown picker open showing available dimensions]
+
+## Key considerations
+
+- Grouping by IP merges alerts into 30-minute attack sessions; switch grouping off in the table header to work on raw alerts.
+- Greyed "Out of quota" bands in the charts mark periods your organization exceeded its [alert quota](/u/console/alerts/quotas): alerts in those periods were not retained.
+- Charts show the period selected in the top bar; the arrows navigate window by window, and "Last visit" jumps to everything since you last looked.
