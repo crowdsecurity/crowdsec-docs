@@ -17,6 +17,16 @@ By the end of this page you will know how the Explorer is organised, and which p
 
 **"What does my WAF actually block?"** The dedicated WAF view breaks down inbound exploitation attempts caught at the application layer. See [The WAF view](/u/console/alerts/waf).
 
+## The pivot points
+
+Every investigation in the Explorer pivots around the same three families of dimensions, and you will meet them everywhere - as sections of the filter drawer, and as breakdown charts:
+
+- **Where it comes from** - source IP or range, country, autonomous system, and the reputation the CrowdSec network assigns to each attacker.
+- **What it does** - the behavior, the attack scenario, the CVE being exploited, the MITRE technique.
+- **What it targets** - your Security Engines, by name or tag, and the targeted IPs.
+
+Learn the three families once, and both [filtering](/u/console/alerts/search) and [building breakdowns](/u/console/alerts/visualizer) become the same gesture: pick a family, pick a dimension, pivot.
+
 ## The anatomy of the page
 
 [capture: /alerts full page, All view, breakdowns + grouped table visible]
