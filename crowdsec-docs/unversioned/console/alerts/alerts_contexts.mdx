@@ -3,13 +3,22 @@ title: Alerts Context
 description: Enrich your alerts with your own contextual data and use it in the Explorer
 ---
 
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
 CrowdSec does not keep raw logs once processing is done - so by default, an alert tells you what happened but not the request details around it. The alert context feature lets your Security Engines attach chosen fields (a user-agent, a target path, a username...) to the alerts they send. This page shows how that context surfaces in the Alert Explorer once [configured on your engines](/user_guides/alert_context.md).
 
 ## Context in the table
 
 Context tags appear in the alert detail, and can be promoted to their own table columns: pick **Add as column** on a context tag and the table gains a dedicated, sortable column for it. Columns you add are encoded in the URL, so a shared link carries them.
 
-[capture: alerts table with a context tag promoted to a column]
+<ThemedImage
+    alt="The Context column in the alerts table, showing the tags attached to each alert"
+    sources={{
+        light: useBaseUrl("/img/console/alert-explorer/context-column-light.png"),
+        dark: useBaseUrl("/img/console/alert-explorer/context-column-dark.png"),
+    }}
+/>
 
 ## Filter on context
 

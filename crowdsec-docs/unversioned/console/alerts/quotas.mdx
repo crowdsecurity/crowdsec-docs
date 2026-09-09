@@ -3,6 +3,9 @@ title: Quotas
 description: Understanding alerts quotas in the CrowdSec Console`
 ---
 
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
 At CrowdSec, we're committed to providing a range of cybersecurity solutions tailored to meet the needs of diverse users, from individual enthusiasts to large organizations. Our pricing plans, including the Community and Premium options, are designed to scale with your requirements, ensuring you have the tools and capabilities to monitor and respond to threats effectively.
 
 ### Community Plan: Starting Point for Cybersecurity Monitoring
@@ -39,7 +42,13 @@ The Explorer shows your quota status where it matters:
 - The **usage badge** next to the page title shows your current consumption against your quota.
 - Periods where your organization exceeded its quota appear as greyed **"Out of quota"** bands in the breakdown charts: alerts in those windows were not retained, so the charts stay honest about the gap.
 
-[capture: breakdown chart with a greyed out-of-quota band]
+<ThemedImage
+    alt="A breakdown chart with a greyed Out of quota band over an exceeded period"
+    sources={{
+        light: useBaseUrl("/img/console/alert-explorer/quota-band-light.png"),
+        dark: useBaseUrl("/img/console/alert-explorer/quota-band-dark.png"),
+    }}
+/>
 
 ### Monitor usage
 

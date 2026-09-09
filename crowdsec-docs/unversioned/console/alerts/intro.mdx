@@ -3,6 +3,9 @@ title: Overview
 description: What the Alert Explorer is for, and what you will be able to do with it in five minutes
 ---
 
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
 Every Security Engine you enroll reports the attacks it blocks to the Console. The Alert Explorer turns that stream into something you can actually investigate: it groups alerts by attacking IP and lets you pivot across the key dimensions of an attack - the source, the attacker's behavior, or the reputation of the IPs involved.
 
 By the end of this page you will know how the Explorer is organised, and which page answers which question.
@@ -29,7 +32,13 @@ Learn the three families once, and both [filtering](/u/console/alerts/search) an
 
 ## The anatomy of the page
 
-[capture: /alerts full page, All view, breakdowns + grouped table visible]
+<ThemedImage
+    alt="The Alert Explorer: breakdown charts on top, filters and views bar, and the alerts table grouped by attacking IP"
+    sources={{
+        light: useBaseUrl("/img/console/alert-explorer/overview-full-light.png"),
+        dark: useBaseUrl("/img/console/alert-explorer/overview-full-dark.png"),
+    }}
+/>
 
 Three layers, top to bottom:
 

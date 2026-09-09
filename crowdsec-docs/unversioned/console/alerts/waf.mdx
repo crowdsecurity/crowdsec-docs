@@ -3,13 +3,22 @@ title: The WAF view
 description: See what your application firewall actually blocks, in one dedicated view
 ---
 
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
 Your AppSec rules block exploitation attempts before they reach your applications - but that work is invisible until you look at it. The WAF view is the Explorer preset that shows it.
 
 ## Open the WAF view
 
 Click the **WAF** pill in the views bar. Everything you know from the Explorer applies - breakdowns, filters, grouping - but scoped to WAF signals: inbound requests your AppSec component flagged or blocked.
 
-[capture: WAF view with rule breakdowns visible]
+<ThemedImage
+    alt="The WAF view: application-layer signals broken down by rule"
+    sources={{
+        light: useBaseUrl("/img/console/alert-explorer/waf-view-light.png"),
+        dark: useBaseUrl("/img/console/alert-explorer/waf-view-dark.png"),
+    }}
+/>
 
 Use it to answer questions like: which rules fire the most, which paths are being probed, which sources keep coming back after being blocked.
 
