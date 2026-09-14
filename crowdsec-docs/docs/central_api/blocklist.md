@@ -62,7 +62,7 @@ The *Community Blocklist* contains 15 thousand malicious IP's based on your repo
 Paying users' Security Engine are automatically subscribed to the *Community Blocklist (Premium)*, which contains IPs that mirror their installed scenarios.
 Paying users' do not need to contribute to the network to be eligible to the blocklist.
 
-The *Community Blocklist (Premium)* blocklist content has no size limit, unlike free users.
+The *Community Blocklist (Premium)* blocklist content is up to 60 thousand malicious IP's based on your scenarios.
 
 ## Community Blocklist (Lite)
 
