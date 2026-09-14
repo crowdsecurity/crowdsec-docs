@@ -55,14 +55,14 @@ Free users that are actively contributing to the network (sending signals on a r
 
 The content of the blocklist is unique to each Security Engine, as it mirrors the behaviours they report. For example, suppose you're running the Security Engine on a web server with WordPress. In that case, you will receive IPs performing generic attacks against web servers *and* IPs engaging in wordpress-specific attacks.
 
-The *Community Blocklist* contains 15 thousand malicious IP's based on your reported scenarios.
+The *Community Blocklist* contains 15 thousand malicious IPs based on your reported scenarios.
 
 ## Community Blocklist (Premium)
 
 Paying users' Security Engine are automatically subscribed to the *Community Blocklist (Premium)*, which contains IPs that mirror their installed scenarios.
 Paying users' do not need to contribute to the network to be eligible to the blocklist.
 
-The *Community Blocklist (Premium)* blocklist content is up to 60 thousand malicious IP's based on your scenarios.
+The *Community Blocklist (Premium)* blocklist content is up to 60 thousand malicious IPs based on your scenarios.
 
 ## Community Blocklist (Lite)
 
