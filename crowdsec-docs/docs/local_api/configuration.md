@@ -58,6 +58,30 @@ If you would like your Local API to be used by a remote CrowdSec installation, y
 
 Modify the [`listen_uri`](/configuration/crowdsec_configuration.md#listen_uri) option in the `config.yaml`.
 
+#### Listen on a unix socket
+
+If all the Log Processors and Remediation Components run on the same machine as the Local API, you can have it listen on a unix socket instead of (or in addition to) a TCP port, with the [`listen_socket`](/configuration/crowdsec_configuration.md#listen_socket) option:
+
+```yaml
+api:
+  server:
+    listen_socket: /run/crowdsec/crowdsec_api.sock
+```
+
+The clients then use the socket path as their local API `url`:
+
+```yaml
+url: /run/crowdsec/crowdsec_api.sock
+login: <machine_id>
+password: <password>
+```
+
+:::warning
+
+Communication over the unix socket is never encrypted, and client certificate authentication does not apply to it: access is controlled by the filesystem permissions of the socket.
+
+:::
+
 #### Enable SSL
 
 If your Local API is exposed to the internet, it is recommended to enable SSL or at least use a reverse proxy with SSL termination to secure the communication between the Log Processors / Remediation Components and the Local API.

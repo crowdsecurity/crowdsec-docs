@@ -249,6 +249,7 @@ api:
     enable: <true|false> # enable or disable local API
     log_level: "(error|info|debug|trace>")"
     listen_uri: "<listen_uri>" # host:port
+    listen_socket: "<path_to_socket>" # path to a unix socket
     profiles_path: "<path_to_profile_file>"
     use_forwarded_for_headers: "<true|false>"
     console_path: <path_to_console_file>
@@ -821,6 +822,7 @@ api:
     enable: <true|false>
     log_level: "(error|info|debug|trace>"
     listen_uri: "<listen_uri>" # host:port
+    listen_socket: "<path_to_socket>" # path to a unix socket
     profiles_path: "<path_to_profile_file>"
     use_forwarded_for_headers: "(true|false)"
     console_path: <path_to_console_file>
@@ -935,6 +937,7 @@ server:
   enable: <true|false>
   log_level: (error|info|debug|trace)
   listen_uri: <listen_uri> # host:port
+  listen_socket: <path_to_socket> # path to a unix socket
   profiles_path: <path_to_profile_file>
   use_forwarded_for_headers: (true|false)
   trusted_ips: # IPs or IP ranges which should have admin API access
@@ -978,6 +981,31 @@ Enable or disable the CrowdSec Local API (`true` by default).
 > string
 
 Address and port listen configuration, the form `host:port`.
+
+##### `listen_socket`
+> string
+
+Path to a unix socket the Local API will listen on, for example `/run/crowdsec/crowdsec_api.sock`.
+
+It can be used instead of, or together with, `listen_uri`: if both are set, the Local API accepts connections on both. At least one of the two must be set, otherwise CrowdSec refuses to start.
+
+The socket is created when CrowdSec starts (replacing any existing file at this path) and removed when it stops. The parent directory must already exist, and the socket permissions are those allowed by the umask of the CrowdSec process.
+
+To use it, set the `url` of the local API to the socket path (instead of an HTTP URL) in the credentials of the log processors and remediation components running on the same machine:
+
+```yaml
+url: /run/crowdsec/crowdsec_api.sock
+login: <machine_id>
+password: <password>
+```
+
+`cscli lapi register -u /run/crowdsec/crowdsec_api.sock` also accepts a socket path.
+
+:::warning
+
+TLS is never used on the unix socket, even if the `tls` section is configured. Client certificate authentication (`client_verification`, `agents_allowed_ou`, `bouncers_allowed_ou`) does not apply to connections coming from the socket, so make sure its permissions only allow the intended local users to reach it.
+
+:::
 
 ##### `profiles_path`
 > string
