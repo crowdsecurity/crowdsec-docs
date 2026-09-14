@@ -37,27 +37,36 @@ Understanding the limitations of the Community Plan is crucial for setting reali
 
 ### Quotas in the Alert Explorer
 
-The Explorer shows your quota status where it matters:
+The Explorer tells you where you stand before you run out. The **usage counter** next to the refresh button shows the alerts ingested this cycle against your quota, and a band appears under the page title as you get close:
 
-- The **usage badge** next to the page title shows your current consumption against your quota.
-- Periods where your organization exceeded its quota appear as greyed **"Out of quota"** bands in the breakdown charts: alerts in those windows were not retained, so the charts stay honest about the gap.
+- from **80%**, an amber band shows your consumption and the date the quota resets;
 
 <ThemedImage
-    alt="A breakdown chart with a greyed Out of quota band over an exceeded period"
+    alt="The amber quota band in the Alert Explorer at 85% of the monthly quota"
+    sources={{
+        light: useBaseUrl("/img/console/alert-explorer/quota-warning-light.png"),
+        dark: useBaseUrl("/img/console/alert-explorer/quota-warning-dark.png"),
+    }}
+/>
+
+- at **100%**, the band turns red and counts the alerts hidden this cycle. New alerts stay hidden until the reset, and upgrading restores them from your history.
+
+<ThemedImage
+    alt="The red quota band in the Alert Explorer once the monthly quota is reached"
+    sources={{
+        light: useBaseUrl("/img/console/alert-explorer/quota-exceeded-light.png"),
+        dark: useBaseUrl("/img/console/alert-explorer/quota-exceeded-dark.png"),
+    }}
+/>
+
+Past periods where your organization went over its quota show up in the breakdown charts as greyed **"Out of quota"** areas. Alerts from those windows were not kept, so a gap in the chart there means missing data, not a quiet period.
+
+<ThemedImage
+    alt="A breakdown chart with a greyed Out of quota area over an exceeded period"
     sources={{
         light: useBaseUrl("/img/console/alert-explorer/quota-band-light.png"),
         dark: useBaseUrl("/img/console/alert-explorer/quota-band-dark.png"),
     }}
 />
 
-### Monitor usage
-
-The full picture lives on the **"Billing and Plans"** page of the organization settings, under the **"Usage"** section.
-
-<ThemedImage
-    alt="The Usage section of the Billing and Plans page, showing the alert quota consumption"
-    sources={{
-        light: useBaseUrl("/img/console/alert-explorer/quotas-usage-light.png"),
-        dark: useBaseUrl("/img/console/alert-explorer/quotas-usage-dark.png"),
-    }}
-/>
+The detailed consumption, per engine and per option, is on the **Billing and Plans** page of the organization settings, under **Usage**.
