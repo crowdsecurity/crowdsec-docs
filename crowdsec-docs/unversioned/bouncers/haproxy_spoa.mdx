@@ -468,8 +468,33 @@ Because request-body forwarding is constrained by HAProxy/SPOE/SPOP limits, keep
 ### Bot detection challenge plumbing
 
 :::tip Prerequisites
-Bot detection is an AppSec feature. First enable AppSec forwarding as described above, then follow the [bot detection guide](/docs/next/appsec/bot_detection/intro) to install `crowdsecurity/appsec-bot-challenge` and load the `crowdsecurity/appsec-bot-*` AppSec configs.
+Bot detection is an AppSec feature. First enable AppSec forwarding as described above, then follow the [bot detection guide](/docs/next/appsec/bot_detection/intro).
 :::
+
+Install the AppSec collections used by bot detection:
+
+```bash
+sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules crowdsecurity/appsec-bot-challenge
+```
+
+Then configure an AppSec acquisition, for example in
+`/etc/crowdsec/acquis.d/appsec.yaml`:
+
+```yaml
+source: appsec
+listen_addr: 127.0.0.1:7422
+path: /
+appsec_configs:
+  - crowdsecurity/appsec-default
+  - crowdsecurity/appsec-bot-*
+labels:
+  type: appsec
+```
+
+`crowdsecurity/appsec-default` already loads the virtual patching and generic
+rule families. Do not also list `crowdsecurity/virtual-patching` and
+`crowdsecurity/generic-rules` in the same acquisition, otherwise rules may be
+loaded twice.
 
 HAProxy cannot receive the full bot-detection challenge page through the SPOE
 frame: the challenge response is large and spans follow-up requests for
@@ -488,32 +513,37 @@ the bouncer-provided challenge URL and route it to that listener. The same
 backend must also receive the internal challenge paths used by the browser:
 `/crowdsec-internal/challenge/*`.
 
-Add the challenge ACL, response routing, and backend alongside your regular SPOE
-configuration:
+If you installed the bouncer from packages, start from the packaged examples in
+`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples/`. In particular,
+`haproxy.cfg.gz` contains the challenge-enabled HAProxy example and
+`crowdsec-spoa-bouncer.yaml.challenge` contains the bouncer keys above.
+
+For an existing HAProxy configuration, add the challenge ACL, path rewrite,
+routing rule, trusted source header, and challenge backend alongside your
+regular SPOE configuration:
 
 ```haproxy
 frontend http-in
+    mode http
     bind *:80
     option http-buffer-request
+
     unique-id-format %[uuid()]
     unique-id-header X-Unique-ID
     filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
 
-    acl crowdsec_challenge_backend_path path_beg /crowdsec-challenge/ /crowdsec-internal/challenge/
-
-    # Keep challenge follow-up requests out of the normal SPOE groups. They are
-    # handled by the bouncer's challenge HTTP listener instead.
-    acl body_within_limit req.body_size -m int le 51200
-    http-request send-spoe-group crowdsec crowdsec-http-body if !crowdsec_challenge_backend_path body_within_limit || !crowdsec_challenge_backend_path !{ req.body_size -m found }
-    http-request send-spoe-group crowdsec crowdsec-http-no-body if !crowdsec_challenge_backend_path !body_within_limit { req.body_size -m found }
-
+    acl crowdsec_challenge_backend_path path_beg /crowdsec-internal/challenge/
     acl is_challenge var(txn.crowdsec.remediation) -m str "challenge"
-    http-request set-path %[var(txn.crowdsec.challenge_url)] if is_challenge { var(txn.crowdsec.challenge_url) -m found }
 
-    # Required for /crowdsec-internal/challenge/*: this path bypasses SPOE, so
-    # the bouncer needs HAProxy to pass the real client IP explicitly.
+    acl body_within_limit req.body_size -m int le 51200
+    http-request send-spoe-group crowdsec crowdsec-http-body if body_within_limit || !{ req.body_size -m found }
+    http-request send-spoe-group crowdsec crowdsec-http-no-body if !body_within_limit { req.body_size -m found }
+
+    # Required for challenge follow-up requests: this path bypasses SPOE, so the
+    # bouncer needs HAProxy to pass the real client IP explicitly.
     http-request set-header X-Crowdsec-Real-Src %[src] if crowdsec_challenge_backend_path
 
+    http-request set-path %[var(txn.crowdsec.challenge_url)] if is_challenge { var(txn.crowdsec.challenge_url) -m found }
     use_backend crowdsec-challenge if is_challenge { var(txn.crowdsec.challenge_url) -m found }
     use_backend crowdsec-challenge if crowdsec_challenge_backend_path
     use_backend app
@@ -556,7 +586,10 @@ routing rules.
 Verify the plumbing through HAProxy, not by calling the AppSec listener directly:
 
 ```bash
-curl -I -H 'Accept: text/html' http://<your-haproxy-url>/
+sudo crowdsec -t -c /etc/crowdsec/config.yaml
+sudo crowdsec-spoa-bouncer -c /etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml -t
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+curl -i -H 'Accept: text/html' http://<your-haproxy-url>/
 sudo cscli metrics show appsec
 ```
 
