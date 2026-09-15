@@ -1,24 +1,28 @@
 ---
-title: Overview
+title: Alert Explorer Overview
 description: What the Alert Explorer is for, and what you will be able to do with it in five minutes
 ---
 
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
-Every Security Engine you enroll reports the attacks it blocks to the Console. The Alert Explorer turns that stream into something you can actually investigate: it groups alerts by attacking IP and lets you pivot across the key dimensions of an attack - the source, the attacker's behavior, or the reputation of the IPs involved.
+Enrolled Security Engines report the attacks they detect and block to the Console.  
+The Alert Explorer helps you better understand and monitor the activity in your environment: **Group** by IP, **Breakdown** by the key dimensions, **Filter** by any attribute...
 
-By the end of this page you will know how the Explorer is organised, and which page answers which question.
+## Some questions the Alert Explorer can answer
 
-## What kind of question brings you here?
+**"Is something new attacking my stack?"**  
+> The **breakdown** charts at the top of the page show your alert activity over time, by **behavior**, **source IP** or any **other dimension**.   
+> A spike that was not there last week stands out immediately, and one click on the chart isolates it. Walk through a full example in [Investigate an attack wave](/u/console/alerts/visualizer).
 
-**"Is something new attacking my stack?"** The breakdown charts at the top of the page show your alert activity over time, by behavior, source IP or any other dimension. A wave that was not there last week stands out immediately, and one click on the chart isolates it. Walk through a full example in [Investigate an attack wave](/u/console/alerts/visualizer).
+**"This IP showed up in a report. Did it hit me?"** 
+> Paste an IP, a CIDR range or a CVE identifier straight into the filter search: the Explorer recognizes it and offers to show every matching alert. See [Search and filter](/u/console/alerts/search).
 
-**"This IP showed up in a report. Did it hit me?"** Paste an IP, a CIDR range or a CVE identifier straight into the filter search: the Explorer recognises it and offers to show every matching alert. See [Search and filter](/u/console/alerts/search).
+**"I only care about one part of my infrastructure."** 
+> Filter down to the engines, targets or behaviors you monitor, then save that perspective as a view pinned to your menu. See [Custom views](/u/console/alerts/views).
 
-**"I only care about one part of my infrastructure."** Filter down to the engines, targets or behaviors you monitor, then save that perspective as a view pinned to your menu. See [Custom views](/u/console/alerts/views).
-
-**"What does my WAF actually block?"** The dedicated WAF view breaks down inbound exploitation attempts caught at the application layer. See [The WAF view](/u/console/alerts/waf).
+**"What does my WAF actually block?"** 
+> The dedicated WAF view breaks down inbound exploitation attempts caught at the application layer. See [The WAF view](/u/console/alerts/waf).
 
 ## The pivot points
 
