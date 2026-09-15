@@ -347,14 +347,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "doc",
-					label: "Attack Surge Detection",
-					id: "console/security_engines/am_i_under_attack",
-					customProps: {
-						tag: "premium",
-					},
-				},
-				{
-					type: "doc",
 					label: "Alerts contexts",
 					id: "console/alerts/alerts_contexts",
 				},
@@ -374,17 +366,12 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
-			id: "console/remediation_sync",
 			type: "doc",
-			label: "Remediation Sync",
+			label: "Attack Surge Detection",
+			id: "console/security_engines/am_i_under_attack",
 			customProps: {
 				tag: "premium",
 			},
-		},
-		{
-			type: "doc",
-			label: "Remediation Metrics",
-			id: "console/remediation_metrics",
 		},
 		{
 			type: "category",
@@ -403,6 +390,19 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 					},
 				},
 			],
+		},
+		{
+			id: "console/remediation_sync",
+			type: "doc",
+			label: "Remediation Sync",
+			customProps: {
+				tag: "premium",
+			},
+		},
+		{
+			type: "doc",
+			label: "Remediation Metrics",
+			id: "console/remediation_metrics",
 		},
 		{
 			type: "html",
