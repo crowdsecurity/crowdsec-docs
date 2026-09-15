@@ -406,6 +406,7 @@ http-request set-src hdr_ip(X-Forwarded-For,-1) if { req.hdr(X-Forwarded-For) -m
 
 - CAPTCHA: enable per domain
 - AppSec: forward requests for WAF evaluation
+- Bot detection: route challenge responses and internal challenge assets
 - Prometheus: expose metrics endpoint
 
 ### Enable CAPTCHA for a domain
@@ -463,6 +464,137 @@ HAProxy requirements when using AppSec (and/or captcha):
 - Use the `crowdsec-http-body` group when the body is available (see the `body_within_limit` + `send-spoe-group` example above)
 
 Because request-body forwarding is constrained by HAProxy/SPOE/SPOP limits, keep an explicit body size limit (for example `51200`) and consider a layered approach (IP remediation at HAProxy, deeper inspection downstream).
+
+### Bot detection challenge plumbing
+
+:::tip Prerequisites
+Bot detection is an AppSec feature. First enable AppSec forwarding as described above, then follow the [bot detection guide](/docs/next/appsec/bot_detection/intro).
+:::
+
+Install the AppSec collections used by bot detection:
+
+```bash
+sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules crowdsecurity/appsec-bot-challenge
+```
+
+Then configure an AppSec acquisition, for example in
+`/etc/crowdsec/acquis.d/appsec.yaml`:
+
+```yaml
+source: appsec
+listen_addr: 127.0.0.1:7422
+path: /
+appsec_configs:
+  - crowdsecurity/appsec-default
+  - crowdsecurity/appsec-bot-*
+labels:
+  type: appsec
+```
+
+`crowdsecurity/appsec-default` already loads the virtual patching and generic
+rule families. Do not also list `crowdsecurity/virtual-patching` and
+`crowdsecurity/generic-rules` in the same acquisition, otherwise rules may be
+loaded twice.
+
+HAProxy cannot receive the full bot-detection challenge page through the SPOE
+frame: the challenge response is large and spans follow-up requests for
+JavaScript assets and submissions. The SPOA bouncer therefore exposes a small
+HTTP listener for challenge traffic, controlled by `challenge_http_listen`:
+
+```yaml
+# /etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml
+appsec_url: http://127.0.0.1:7422
+appsec_timeout: 200ms
+challenge_http_listen: 127.0.0.1:9100
+```
+
+When AppSec returns the `challenge` action, HAProxy must rewrite the request to
+the bouncer-provided challenge URL and route it to that listener. The same
+backend must also receive the internal challenge paths used by the browser:
+`/crowdsec-internal/challenge/*`.
+
+If you installed the bouncer from packages, start from the packaged examples in
+`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples/`. In particular,
+`haproxy.cfg.gz` contains the challenge-enabled HAProxy example and
+`crowdsec-spoa-bouncer.yaml.challenge` contains the bouncer keys above.
+
+For an existing HAProxy configuration, add the challenge ACL, path rewrite,
+routing rule, trusted source header, and challenge backend alongside your
+regular SPOE configuration:
+
+```haproxy
+frontend http-in
+    mode http
+    bind *:80
+    option http-buffer-request
+
+    unique-id-format %[uuid()]
+    unique-id-header X-Unique-ID
+    filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
+
+    acl crowdsec_challenge_backend_path path_beg /crowdsec-internal/challenge/
+    acl is_challenge var(txn.crowdsec.remediation) -m str "challenge"
+
+    acl body_within_limit req.body_size -m int le 51200
+    http-request send-spoe-group crowdsec crowdsec-http-body if body_within_limit || !{ req.body_size -m found }
+    http-request send-spoe-group crowdsec crowdsec-http-no-body if !body_within_limit { req.body_size -m found }
+
+    # Required for challenge follow-up requests: this path bypasses SPOE, so the
+    # bouncer needs HAProxy to pass the real client IP explicitly.
+    http-request set-header X-Crowdsec-Real-Src %[src] if crowdsec_challenge_backend_path
+
+    http-request set-path %[var(txn.crowdsec.challenge_url)] if is_challenge { var(txn.crowdsec.challenge_url) -m found }
+    use_backend crowdsec-challenge if is_challenge { var(txn.crowdsec.challenge_url) -m found }
+    use_backend crowdsec-challenge if crowdsec_challenge_backend_path
+    use_backend app
+
+backend app
+    mode http
+    server app1 127.0.0.1:8080
+
+backend crowdsec-spoa
+    mode tcp
+    timeout connect 2s
+    timeout server 60s
+    server spoa1 127.0.0.1:9000
+
+backend crowdsec-challenge
+    mode http
+    option forwardfor
+    timeout connect 2s
+    timeout server 60s
+    server challenge1 127.0.0.1:9100
+```
+
+You can also add a small rate limit on the internal challenge paths so asset and
+submission requests cannot bypass your normal application rate limits:
+
+```haproxy
+frontend http-in
+    stick-table type ip size 100k expire 10s store http_req_rate(10s)
+    http-request track-sc0 src if crowdsec_challenge_backend_path
+    http-request deny status 429 if crowdsec_challenge_backend_path { sc_http_req_rate(0) gt 20 }
+```
+
+:::warning Preserve the trusted source IP
+Always overwrite `X-Crowdsec-Real-Src` from HAProxy with `%[src]`; do not trust a
+client-supplied value. If HAProxy is behind a CDN or another trusted proxy, set
+the source IP with `http-request set-src ...` before the SPOE and challenge
+routing rules.
+:::
+
+Verify the plumbing through HAProxy, not by calling the AppSec listener directly:
+
+```bash
+sudo crowdsec -t -c /etc/crowdsec/config.yaml
+sudo crowdsec-spoa-bouncer -c /etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml -t
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+curl -i -H 'Accept: text/html' http://<your-haproxy-url>/
+sudo cscli metrics show appsec
+```
+
+The response should be the CrowdSec challenge page, and the metrics should show
+bot-detection challenge requests.
 
 ### Expose Prometheus metrics
 
