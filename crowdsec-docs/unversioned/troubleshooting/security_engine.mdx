@@ -50,6 +50,10 @@ time="2024-01-08 14:08:22" level=info msg="You can successfully interact with Ce
 This command should **ONLY** be run on the parent node.
 :::
 
+:::warning
+Do **not** use `cscli capi status` as a container health check — it authenticates against the Central API on every call and can trigger rate limiting. Use `cscli lapi status` instead. If this command returns `403 Forbidden`, see [Central API 403 / CAPI rate limiting](/u/troubleshooting/capi_403).
+:::
+
 
 ### How do I know if my setup is working correctly? Are some unparsed logs normal?
 
