@@ -1,3 +1,4 @@
+import { execSync } from "node:child_process";
 import type * as Preset from "@docusaurus/preset-classic";
 import type { NavbarItem } from "@docusaurus/theme-common";
 import type { Config } from "@docusaurus/types";
@@ -260,6 +261,19 @@ function redirectsGlobalDataPlugin() {
 	};
 }
 
+// A shallow clone dates every file to the last commit, which would give every sitemap URL the same <lastmod>.
+function hasFullGitHistory(): boolean {
+	try {
+		return (
+			execSync("git rev-parse --is-shallow-repository", { stdio: ["ignore", "pipe", "ignore"] })
+				.toString()
+				.trim() === "false"
+		);
+	} catch {
+		return false;
+	}
+}
+
 const config: Config = {
 	future: {
 		v4: {
@@ -410,6 +424,9 @@ const config: Config = {
 					customCss: "./src/css/custom.css",
 				},
 				sitemap: {
+					lastmod: hasFullGitHistory() ? "datetime" : null,
+					changefreq: null,
+					priority: null,
 					// Docs of the version served at /docs/ declare their /docs/next/ copy as canonical (src/theme/DocRoot/Layout).
 					createSitemapItems: async ({ defaultCreateSitemapItems, ...params }) =>
 						(await defaultCreateSitemapItems(params)).filter(
