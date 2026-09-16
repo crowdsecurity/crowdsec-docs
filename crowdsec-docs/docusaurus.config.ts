@@ -73,6 +73,12 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 				to: "/docs/next/appsec/intro",
 				label: "Web Application Firewall (AppSec)",
 			},
+			{
+				type: "docsVersion",
+				to: "/docs/next/appsec/bot_detection/intro",
+				label: "Bot Detection",
+				className: "navbar-item-new",
+			},
 			{ type: "doc", docId: "cscli/cscli", label: "Cscli" },
 			{ to: "/u/user_guides/intro", label: "Guides" },
 			{
@@ -325,8 +331,11 @@ const config: Config = {
 			respectPrefersColorScheme: false,
 		},
 		announcementBar: {
-			id: "banner_docs",
-			content: '<a href="/docs/next/appsec/intro">Learn how to guard your webserver in real-time with the CrowdSec WAF</a>',
+			// Dismissal is persisted per id, so bump it whenever the message changes
+			// or nobody who dismissed the previous banner will ever see the new one.
+			id: "banner_botdetection",
+			content:
+				'<a href="/docs/next/appsec/bot_detection/intro">Stop scrapers and headless browsers — discover CrowdSec Bot Detection</a>',
 			backgroundColor: "#F8AB13",
 			textColor: "#131132",
 			isCloseable: true,
