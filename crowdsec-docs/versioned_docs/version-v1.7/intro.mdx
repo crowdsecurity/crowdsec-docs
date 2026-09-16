@@ -50,7 +50,7 @@ In addition to the core "detect and react" mechanism, CrowdSec is committed to s
 Under the hood, the Security Engine has various components:
 
 -   The [Log Processor](/log_processor/intro.mdx) handles detection. It analyzes logs from [various data sources](/log_processor/data_sources/introduction.md) and [HTTP requests](/appsec/intro.md) from compatible web servers.
--   The [Appsec](appsec/intro) feature is part of the Log Processor. It filters HTTP requests from compatible web servers.
+-   The [Appsec](appsec/intro.md) feature is part of the Log Processor. It filters HTTP requests from compatible web servers.
 -   The [Local API](local_api/intro.md) acts as a middleman:
     -   Between the [Log Processors](/log_processor/intro.mdx) and the [Remediation Components](/u/bouncers/intro) which are in charge of enforcing decisions.
     -   And with the [Central API](/central_api/intro.md) to share alerts and receive blocklists.
@@ -65,7 +65,7 @@ This architecture supports simple standalone setups and more distributed deploym
 -   Centralized logs (rsyslog, Loki, ...): [Run CrowdSec next to your log pipeline](/u/user_guides/log_centralization), not on production workloads.
 -   Kubernetes: See [our Helm chart](/u/getting_started/installation/kubernetes).
 -   Containers: Use the [Docker data source](/log_processor/data_sources/docker.md).
--   WAF only: Start with the [AppSec quickstart](appsec/intro).
+-   WAF only: Start with the [AppSec quickstart](appsec/intro.md).
 
 Distributed architecture example:
 

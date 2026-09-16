@@ -30,9 +30,9 @@ Not all CVEs deserve the same urgency. The Live Exploit Tracker provides **two c
 
 Each tracked CVE also includes a **CrowdSec Analysis** — a human-readable intelligence narrative describing the vulnerability, observed exploitation patterns, and specific indicators like targeted endpoints.
 
-→ [Learn more about Scores & Ratings](./scores)
+→ [Learn more about Scores & Ratings](./scores.mdx)
 
-→ [Learn more about Exploitation Phases](./exploitation_phases)
+→ [Learn more about Exploitation Phases](./exploitation_phases.mdx)
 
 ### Mitigate
 
@@ -45,14 +45,14 @@ Once you've identified a threat, the tracker lets you act on it:
 
 Not all threats map to a single CVE. The tracker also monitors **Reconnaissance rules** (called "fingerprint rules" in the API) — detection patterns for product-level probing activity. For example, "Microsoft Exchange Probing" catches reconnaissance targeting Exchange servers regardless of which specific vulnerability the attacker intends to exploit.
 
-→ [Learn more about Reconnaissance Rules vs CVEs](./fingerprints_vs_cves)
+→ [Learn more about Reconnaissance Rules vs CVEs](./fingerprints_vs_cves.mdx)
 
 ## How to Access
 
 The Live Exploit Tracker is available through two interfaces:
 
 - **[Web Interface](https://tracker.crowdsec.net)**: A dashboard for browsing CVEs, viewing timelines and attacker IPs, managing integrations, and reading CrowdSec Analysis reports. Ideal for SOC analysts and security managers.
-- **[REST API](./api_authentication)**: Programmatic access for automation, SIEM/SOAR integration, and custom tooling. A [Python SDK](https://github.com/crowdsecurity/crowdsec-service-api-sdk-python) is also available.
+- **[REST API](./api_authentication.mdx)**: Programmatic access for automation, SIEM/SOAR integration, and custom tooling. A [Python SDK](https://github.com/crowdsecurity/crowdsec-service-api-sdk-python) is also available.
 
 Both interfaces require an API key. Contact the CrowdSec team to obtain yours if you haven't already.
 
@@ -60,10 +60,10 @@ Both interfaces require an API key. Contact the CrowdSec team to obtain yours if
 
 | I want to... | Start here |
 |---|---|
-| Protect my technology stack by vendor | [Vendor Subscriptions](./api_lookups#subscribe-an-integration-to-a-vendor) |
-| Understand what the scores mean | [Scores & Ratings](./scores) |
-| Browse CVEs and assess threats | [Web Interface Guide](./web_interface) |
-| Automate with the API | [API Authentication & Setup](./api_authentication) |
-| Block attacker IPs on my firewall | [Integrations & Blocklists](./api_integrations) |
-| Investigate a specific alert | [Triage Workflow Guide](./guide_triage) |
-| Set up proactive monitoring | [Proactive Monitoring Guide](./guide_proactive) |
+| Protect my technology stack by vendor | [Vendor Subscriptions](./api_lookups.mdx#subscribe-an-integration-to-a-vendor) |
+| Understand what the scores mean | [Scores & Ratings](./scores.mdx) |
+| Browse CVEs and assess threats | [Web Interface Guide](./web_interface.mdx) |
+| Automate with the API | [API Authentication & Setup](./api_authentication.mdx) |
+| Block attacker IPs on my firewall | [Integrations & Blocklists](./api_integrations.mdx) |
+| Investigate a specific alert | [Triage Workflow Guide](./guide_triage.mdx) |
+| Set up proactive monitoring | [Proactive Monitoring Guide](./guide_proactive.mdx) |
