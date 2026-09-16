@@ -575,7 +575,7 @@ It is useful when you want to have further scenarios that will rely on past-over
 cache_size: 5
 ```
 
-By default, a bucket holds [capacity](format#capacity) events "in memory".
+By default, a bucket holds [capacity](#capacity) events "in memory".
 However, for a number of cases, you don't want this, as it might lead to excessive memory consumption.
 
 By setting `cache_size` to a positive integer, we can control the maximum in-memory cache size of the bucket, without changing its capacity and such. It is useful when buckets are likely to stay alive for a long time or ingest a lot of events to avoid storing a lot of events in memory.
