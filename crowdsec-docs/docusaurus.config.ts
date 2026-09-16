@@ -275,7 +275,7 @@ const config: Config = {
 	tagline: "CrowdSec - Real-time & crowdsourced protection against aggressive IPs",
 	url: "https://docs.crowdsec.net",
 	baseUrl: "/",
-	onBrokenLinks: "warn",
+	onBrokenLinks: "throw",
 	onBrokenMarkdownLinks: "warn",
 	favicon: "img/crowdsec_no_txt.png",
 	organizationName: "CrowdSec",
