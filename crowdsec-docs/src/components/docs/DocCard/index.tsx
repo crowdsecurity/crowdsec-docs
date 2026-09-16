@@ -1,5 +1,6 @@
 import { cilArrowRight } from "@coreui/icons";
 import { CIcon } from "@coreui/icons-react";
+import Link from "@docusaurus/Link";
 import React from "react";
 import { mix } from "../../../utils/colorMix";
 import { CUI } from "../icons/cuiMap";
@@ -116,7 +117,7 @@ export default function DocCard({
 			{links && links.length > 0 && (
 				<div className="flex flex-col gap-[5px] mt-1">
 					{links.map((l) => (
-						<a
+						<Link
 							key={l.href}
 							href={l.href}
 							className="text-[12.5px] font-semibold no-underline hover:no-underline inline-flex items-center gap-1"
@@ -124,7 +125,7 @@ export default function DocCard({
 						>
 							{l.label}
 							{l.external ? <ExternalArrow /> : <ArrowRight />}
-						</a>
+						</Link>
 					))}
 				</div>
 			)}
@@ -142,9 +143,9 @@ export default function DocCard({
 
 	if (href && !ctaLabel && !links) {
 		return (
-			<a href={href} className="no-underline hover:no-underline block">
+			<Link href={href} className="no-underline hover:no-underline block">
 				{card}
-			</a>
+			</Link>
 		);
 	}
 

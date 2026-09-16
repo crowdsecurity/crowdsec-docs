@@ -1,3 +1,4 @@
+import Link from "@docusaurus/Link";
 import React, { useState } from "react";
 import { mix } from "../../../utils/colorMix";
 
@@ -35,7 +36,7 @@ export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags 
 	const [hover, setHover] = useState(false);
 
 	return (
-		<a
+		<Link
 			href={href}
 			onMouseEnter={() => setHover(true)}
 			onMouseLeave={() => setHover(false)}
@@ -109,6 +110,6 @@ export default function PathCard({ eyebrow, color, icon, title, desc, tag, tags 
 					<ArrowRight />
 				</div>
 			</div>
-		</a>
+		</Link>
 	);
 }

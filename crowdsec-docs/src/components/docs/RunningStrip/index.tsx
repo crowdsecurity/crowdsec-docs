@@ -1,12 +1,13 @@
 import { cilArrowRight } from "@coreui/icons";
 import { CIcon } from "@coreui/icons-react";
+import Link from "@docusaurus/Link";
 import React from "react";
 
-type Link = { icon?: React.ReactNode; label: string; href: string; color?: string; external?: boolean };
+type StripLink = { icon?: React.ReactNode; label: string; href: string; color?: string; external?: boolean };
 
 type Props = {
 	label?: string;
-	links: Link[];
+	links: StripLink[];
 };
 
 export default function RunningStrip({ label = "Already running CrowdSec?", links }: Props) {
@@ -23,7 +24,7 @@ export default function RunningStrip({ label = "Already running CrowdSec?", link
 
 			<div className="flex flex-wrap gap-2">
 				{links.map((l) => (
-					<a
+					<Link
 						key={l.href}
 						href={l.href}
 						className="inline-flex items-center gap-2 py-[7px] px-3 rounded-lg border border-cs-border-hi bg-cs-surface text-cs-ink text-[13px] font-medium no-underline transition-[border-color,background] duration-150"
@@ -49,7 +50,7 @@ export default function RunningStrip({ label = "Already running CrowdSec?", link
 								aria-hidden="true"
 							/>
 						)}
-					</a>
+					</Link>
 				))}
 			</div>
 		</div>
