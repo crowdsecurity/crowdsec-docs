@@ -442,6 +442,24 @@ turnstile
 To enable the WAF end-to-end, follow the [AppSec Quickstart for HAProxy](/docs/next/appsec/quickstart/haproxy_spoa) — it picks up after the bouncer install and walks through collections, acquisition, and enabling forwarding.
 :::
 
+HAProxy requirements when using AppSec (and/or captcha):
+
+- Increase HAProxy buffer size (max 64KB): `tune.bufsize 65536` (see in the example below)
+- Enable request buffering: `option http-buffer-request` (see in the example below)
+- Use the `crowdsec-http-body` group when the body is available (see the `body_within_limit` + `send-spoe-group` example above)
+
+For example:
+
+```haproxy
+[...]
+
+global
+    tune.bufsize 65536
+    option http-buffer-request
+
+[...]
+```
+
 Relevant bouncer keys in `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml`:
 
 ```yaml
@@ -456,12 +474,6 @@ hosts:
       # url: http://custom-appsec:7422  # optional per-host override
       # api_key: custom-key             # optional per-host override
 ```
-
-HAProxy requirements when using AppSec (and/or captcha):
-
-- Enable request buffering: `option http-buffer-request`
-- Increase HAProxy buffer size (max 64KB): `tune.bufsize 65536`
-- Use the `crowdsec-http-body` group when the body is available (see the `body_within_limit` + `send-spoe-group` example above)
 
 Because request-body forwarding is constrained by HAProxy/SPOE/SPOP limits, keep an explicit body size limit (for example `51200`) and consider a layered approach (IP remediation at HAProxy, deeper inspection downstream).
 
