@@ -384,6 +384,10 @@ const config: Config = {
 							banner: "none",
 							path: "/",
 						},
+						// Near-duplicate of the newer versions: indexing it only splits ranking signals.
+						"v1.7": {
+							noIndex: true,
+						},
 						// EOL: kept online for existing links, but out of the index.
 						// plugin-sitemap drops noindex routes too, so it also leaves sitemap.xml.
 						"v1.6": {
@@ -404,6 +408,13 @@ const config: Config = {
 				},
 				theme: {
 					customCss: "./src/css/custom.css",
+				},
+				sitemap: {
+					// Docs of the version served at /docs/ declare their /docs/next/ copy as canonical (src/theme/DocRoot/Layout).
+					createSitemapItems: async ({ defaultCreateSitemapItems, ...params }) =>
+						(await defaultCreateSitemapItems(params)).filter(
+							(item) => !/^\/docs\/(?!next\/|v\d)/.test(new URL(item.url).pathname)
+						),
 				},
 			} satisfies Preset.Options,
 		],
