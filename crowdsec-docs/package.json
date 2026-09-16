@@ -11,6 +11,7 @@
         "clear": "docusaurus clear",
         "serve": "docusaurus serve",
         "lint": "biome check",
+        "typecheck": "tsc",
         "format": "biome format",
         "migrate": "biome migrate --write",
         "write-translations": "docusaurus write-translations",
