@@ -6,7 +6,7 @@ title: Reconnaissance / Fingerprint Rules
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-This page covers the API endpoints for **Reconnaissance rules** (called "fingerprint rules" or "fingerprints" in the API) — detection patterns for product-level probing activity. See [Reconnaissance Rules vs CVEs](./fingerprints_vs_cves) for an explanation of the concept.
+This page covers the API endpoints for **Reconnaissance rules** (called "fingerprint rules" or "fingerprints" in the API) — detection patterns for product-level probing activity. See [Reconnaissance Rules vs CVEs](./fingerprints_vs_cves.mdx) for an explanation of the concept.
 
 :::info Terminology
 The web interface calls these **Reconnaissance rules** (or "Recon Rules"). The API uses **fingerprints** in all endpoint paths and field names. They are the same thing.
@@ -92,7 +92,7 @@ for rule in data["items"]:
 | `last_seen` | datetime | Most recent observation |
 | `rule_release_date` | datetime | When the detection rule was released |
 | `adjustment_score` | object | Score adjustments: `total`, `recency`, `low_info` |
-| `threat_context` | object | Contextual threat intelligence: `attacker_countries`, `defender_countries`, `industry_types`, `industry_risk_profiles`, `attacker_objectives`. See [Threat Context](./threat_context). May be `null` for rules with insufficient data. |
+| `threat_context` | object | Contextual threat intelligence: `attacker_countries`, `defender_countries`, `industry_types`, `industry_risk_profiles`, `attacker_objectives`. See [Threat Context](./threat_context.mdx). May be `null` for rules with insufficient data. |
 
 :::tip Get detail fields in the list
 By default the list returns only the lightweight fields above. Pass `detailed=true` to additionally include `description`, `crowdsec_analysis`, `references`, `events`, and `tags` for every rule in a single call — the same fields returned by [Get Fingerprint Rule Details](#get-fingerprint-rule-details). This avoids a follow-up request per rule, at the cost of a larger response.
@@ -200,7 +200,7 @@ curl -X 'GET' \
   -H 'x-api-key: ${KEY}'
 ```
 
-The response format is identical to [CVE IP details](./api_cves#ip-response-fields).
+The response format is identical to [CVE IP details](./api_cves.mdx#ip-response-fields).
 
 ## Get IP Stats
 
@@ -223,7 +223,7 @@ curl -X 'GET' \
   -H 'x-api-key: ${KEY}'
 ```
 
-The response format is identical to [CVE IP Stats](./api_cves#get-ip-stats): a `total` plus `reputation`, `country`, `as_name`, `cves`, and `classifications` facet breakdowns.
+The response format is identical to [CVE IP Stats](./api_cves.mdx#get-ip-stats): a `total` plus `reputation`, `country`, `as_name`, `cves`, and `classifications` facet breakdowns.
 
 ## Get Top Indicators
 
@@ -247,7 +247,7 @@ curl -X 'GET' \
   -H 'x-api-key: ${KEY}'
 ```
 
-The response format is identical to [CVE Top Indicators](./api_cves#get-top-indicators): an array of `{indicator_type, value, first_seen, last_seen, nb_ips}` items.
+The response format is identical to [CVE Top Indicators](./api_cves.mdx#get-top-indicators): an array of `{indicator_type, value, first_seen, last_seen, nb_ips}` items.
 
 ## Download IPs (Raw)
 
@@ -266,7 +266,7 @@ curl -X 'GET' \
 ## Manage Fingerprint Integration Subscriptions
 
 :::tip
-For broader coverage, consider subscribing to a **vendor** instead of individual fingerprint rules. A vendor subscription automatically covers all current and future CVEs and reconnaissance rules for that vendor's products. See [Vendor Subscriptions](./api_lookups#subscribe-an-integration-to-a-vendor).
+For broader coverage, consider subscribing to a **vendor** instead of individual fingerprint rules. A vendor subscription automatically covers all current and future CVEs and reconnaissance rules for that vendor's products. See [Vendor Subscriptions](./api_lookups.mdx#subscribe-an-integration-to-a-vendor).
 :::
 
 ### Subscribe an Integration

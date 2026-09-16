@@ -5,11 +5,13 @@
  * This override injects a custom SecondaryNavbar above that content, which adds:
  *   - A breadcrumb trail (Home > Section > [current page path])
  *   - A version dropdown (when multiple doc versions exist)
+ * On older versions it also points the canonical URL at the current version's copy of the page.
  *
  * Docusaurus picks this file automatically because it lives at
  * src/theme/DocRoot/Layout/index.tsx, shadowing the original in node_modules.
  */
 
+import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
 import type { PropSidebarBreadcrumbsItem } from "@docusaurus/plugin-content-docs";
 import {
@@ -21,6 +23,8 @@ import {
 	useVersions,
 } from "@docusaurus/plugin-content-docs/client";
 import { useHistorySelector } from "@docusaurus/theme-common";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import { applyTrailingSlash } from "@docusaurus/utils-common";
 import { SECTION_MAP } from "@site/src/sectionMap";
 import BackToTopButton from "@theme/BackToTopButton";
 import type { Props } from "@theme/DocRoot/Layout";
@@ -31,6 +35,21 @@ import { ChevronRight, House } from "lucide-react";
 import React, { type ReactNode, useState } from "react";
 
 import styles from "./styles.module.css";
+
+// Older versions duplicate the current docs; without this, each copy competes for the same searches.
+function CanonicalToCurrentDoc({ pluginId }: { pluginId: string }): ReactNode {
+	const { siteConfig } = useDocusaurusContext();
+	const { activeVersion, alternateDocVersions } = useActiveDocContext(pluginId);
+	const currentDoc = alternateDocVersions.current;
+	if (!activeVersion || activeVersion.name === "current" || !currentDoc) return null;
+
+	const path = applyTrailingSlash(currentDoc.path, { trailingSlash: siteConfig.trailingSlash, baseUrl: siteConfig.baseUrl });
+	return (
+		<Head>
+			<link rel="canonical" href={`${siteConfig.url}${path}`} />
+		</Head>
+	);
+}
 
 function VersionDropdown({ pluginId }: { pluginId: string }): ReactNode {
 	const versions = useVersions(pluginId);
@@ -133,10 +152,12 @@ function SecondaryNavbar(): ReactNode {
 
 export default function DocRootLayout({ children }: Props): ReactNode {
 	const sidebar = useDocsSidebar();
+	const activePlugin = useActivePlugin();
 	const [hiddenSidebarContainer, setHiddenSidebarContainer] = useState(false);
 
 	return (
 		<div className={styles.docsWrapper}>
+			<CanonicalToCurrentDoc pluginId={activePlugin?.pluginId ?? "default"} />
 			<BackToTopButton />
 			<SecondaryNavbar />
 			<div className={styles.docRoot}>

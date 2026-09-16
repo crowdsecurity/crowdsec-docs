@@ -5,7 +5,7 @@ title: Threat Context
 
 ## Overview
 
-The `threat_context` object provides geographic and industry-level intelligence about exploitation activity for a given CVE or reconnaissance rule. While [scores](./scores) tell you *how urgent* a threat is and [exploitation phases](./exploitation_phases) tell you *where in the lifecycle* it sits, threat context answers a different set of questions:
+The `threat_context` object provides geographic and industry-level intelligence about exploitation activity for a given CVE or reconnaissance rule. While [scores](./scores.mdx) tell you *how urgent* a threat is and [exploitation phases](./exploitation_phases.mdx) tell you *where in the lifecycle* it sits, threat context answers a different set of questions:
 
 - **Where are attacks coming from?** (attacker countries)
 - **Who is being targeted?** (defender countries, industry types, risk profiles)
@@ -157,4 +157,4 @@ This tells a SOC analyst: if you operate PAN-OS in a tech company in France or H
 ## Accessing Threat Context
 
 - **Web Interface**: Available on each CVE and Reconnaissance Rule detail page in the [Live Exploit Tracker](https://tracker.crowdsec.net).
-- **API**: Returned in the `threat_context` field of the [CVE endpoints](./api_cves) (`/v1/cves` and `/v1/cves/{cve_id}`) and [Fingerprint endpoints](./api_fingerprints) (`/v1/fingerprints` and `/v1/fingerprints/{fingerprint}`).
+- **API**: Returned in the `threat_context` field of the [CVE endpoints](./api_cves.mdx) (`/v1/cves` and `/v1/cves/{cve_id}`) and [Fingerprint endpoints](./api_fingerprints.mdx) (`/v1/fingerprints` and `/v1/fingerprints/{fingerprint}`).
