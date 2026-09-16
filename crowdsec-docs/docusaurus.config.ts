@@ -287,7 +287,7 @@ const config: Config = {
 	baseUrl: "/",
 	// Amplify serves `page/index.html` at `page/` and redirects `page` there, so canonical and sitemap URLs must end with a slash.
 	trailingSlash: true,
-	onBrokenLinks: "warn",
+	onBrokenLinks: "throw",
 	onBrokenMarkdownLinks: "warn",
 	favicon: "img/crowdsec_no_txt.png",
 	organizationName: "CrowdSec",

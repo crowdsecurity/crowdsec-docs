@@ -87,7 +87,7 @@ Check the `source_ip` value in the parsed output.
 
 1. Configure the proxy to send the client address, usually through the `X-Forwarded-For` or `X-Real-IP` header.
 2. Configure the backend to replace the connecting address with the forwarded one before logging. With nginx use the `set_real_ip_from` and `real_ip_header` directives of the `ngx_http_realip_module`. With Apache use `mod_remoteip` with `RemoteIPHeader` and `RemoteIPTrustedProxy`.
-3. If the **Local API** itself is behind a proxy, set `use_forwarded_for_headers` and `trusted_proxies` in `config.yaml`. See [Local API behind a reverse proxy](/local_api/configuration#server).
+3. If the **Local API** itself is behind a proxy, set `use_forwarded_for_headers` and `trusted_proxies` in `config.yaml`. See [Local API behind a reverse proxy](/docs/next/local_api/configuration#server).
 
 CrowdSec parsers read the client address field of the standard log formats (`remote_addr` for nginx, `%h` or `%a` for Apache). They do not read the `X-Forwarded-For` header themselves, so the real IP must already be substituted in that field when the line is written.
 
@@ -106,8 +106,8 @@ Look at the timing and the scenario in the alert details. Regular intervals poin
 
 Prefer whitelisting the specific behaviour over the loopback address:
 
-- Point the probe at a dedicated health endpoint and exclude that path in a [parser whitelist](/log_processor/whitelist/create_expr) using an expression such as `evt.Meta.http_path startsWith "/healthz"`.
-- Run scanners from a known IP and add it to a [centralized allowlist](/local_api/allowlists):
+- Point the probe at a dedicated health endpoint and exclude that path in a [parser whitelist](/docs/next/log_processor/whitelist/create_expr) using an expression such as `evt.Meta.http_path startsWith "/healthz"`.
+- Run scanners from a known IP and add it to a [centralized allowlist](/docs/next/local_api/centralized_allowlists):
 
 ```bash
 sudo cscli allowlists create internal_tools -d "monitoring and scanners"
@@ -144,7 +144,7 @@ sudo cscli parsers install crowdsecurity/whitelists
 sudo systemctl reload crowdsec
 ```
 
-If you removed it on purpose because you need to detect attacks from your internal network, keep it removed and rely on a narrower [whitelist](/log_processor/whitelist/create_ip) that only excludes loopback addresses.
+If you removed it on purpose because you need to detect attacks from your internal network, keep it removed and rely on a narrower [whitelist](/docs/next/log_processor/whitelist/create_ip) that only excludes loopback addresses.
 
 ### Manual test decision
 

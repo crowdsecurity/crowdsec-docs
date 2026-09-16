@@ -50,7 +50,7 @@ kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name
 
 Compare your installed collections against your actual services (nginx, apache, ssh, etc.). Missing collections means no detection rules for those services.
 
-You can try to run a test on your logs to spot issues. See the [cscli explain documentation](/cscli/cscli_explain/)
+You can try to run a test on your logs to spot issues. See the [cscli explain documentation](/docs/next/cscli/cscli_explain)
 
 #### 🛠️ Install required collections for your services
 

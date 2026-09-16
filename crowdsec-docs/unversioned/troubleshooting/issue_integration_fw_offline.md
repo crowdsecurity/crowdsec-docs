@@ -120,7 +120,7 @@ After making changes:
 
 For detailed setup and configuration specific to your firewall vendor:
 
-- [Blocklist Integration Setup Guide](/u/integrations/blocklists/intro)
+- [Blocklist Integration Setup Guide](/u/integrations/intro)
 - Vendor-specific integration pages (FortiGate, Palo Alto, pfSense, OPNsense, etc.)
 
 ## Related Issues
@@ -132,7 +132,7 @@ For detailed setup and configuration specific to your firewall vendor:
 
 If your firewall integration still shows as offline after following these steps:
 
-- Consult your [firewall's integration documentation](/u/integrations/blocklists/intro)
+- Consult your [firewall's integration documentation](/u/integrations/intro)
 - Share firewall logs on [Discourse](https://discourse.crowdsec.net/)
 - Ask on [Discord](https://discord.gg/crowdsec) with firewall model and error messages
 - Contact CrowdSec support via Console if BLaaS endpoint issues persist
