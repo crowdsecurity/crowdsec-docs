@@ -302,6 +302,9 @@ If HAProxy runs in another container (for example in Docker Compose), point the 
 
 #### Docker Compose example
 
+<details>
+<summary>Docker Compose example</summary>
+
 ```yaml
 services:
   crowdsec:
@@ -357,6 +360,8 @@ volumes:
 networks:
   crowdsec:
 ```
+
+</details>
 
 Create `./config/haproxy.cfg` and `./config/crowdsec.cfg` from the “HAProxy Configuration” section below (in Compose, the SPOA backend server should target `crowdsec-spoa-bouncer:9000`). Set `BOUNCER_KEY_SPOA` in a `.env` file or your shell environment, and persist CrowdSec directories (at least `/var/lib/crowdsec/data/`) as described in the [Docker getting started guide](/getting_started/installation/docker.mdx).
 
