@@ -131,7 +131,7 @@ These will trigger a ban on the attacking IP (4 hours by default) and report it 
 Community Blocklist.
 
 You can add scenarios to detect other types of attack on the pfSense server, or
-[connect several log processors](https://doc.crowdsec.net/docs/next/user_guides/multiserver_setup)
+[connect several log processors](https://docs.crowdsec.net/u/user_guides/multiserver_setup/)
 to the same LAPI node.
 Other types of remediation are possible (ex. captcha test for scraping attempts).
 

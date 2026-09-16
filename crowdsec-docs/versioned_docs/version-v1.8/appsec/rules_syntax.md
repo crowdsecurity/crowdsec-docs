@@ -30,7 +30,7 @@ The rule files share some common directives with the scenarios:
 
 - a [`name`](#name) and [`description`](#description)
 - a [`rules`](#rules) section describing the rule to match the HTTP request
-- a [`labels`](#labels) section for metadata (see [labels format](https://doc.crowdsec.net/docs/next/scenarios/format/#labels))
+- a [`labels`](#labels) section for metadata (see [labels format](https://docs.crowdsec.net/docs/next/log_processor/scenarios/format/#labels))
 
 ```yaml
 name: crowdsecurity/example-rule
@@ -85,7 +85,7 @@ rules: []
 
 > object
 
-Extra metadata used by scenarios and the Hub (optional). The format follows the [labels schema](https://doc.crowdsec.net/docs/next/scenarios/format/#labels).
+Extra metadata used by scenarios and the Hub (optional). The format follows the [labels schema](https://docs.crowdsec.net/docs/next/log_processor/scenarios/format/#labels).
 
 ```yaml {4-7}
 name: crowdsecurity/example-rule

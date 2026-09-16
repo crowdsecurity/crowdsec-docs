@@ -5,10 +5,10 @@ title: Acquisition
 
 # Acquisition
 
-By default, CrowdSec tries to [detect running services](https://docs.crowdsec.net/next/log_processor/service-discovery-setup/intro) (CrowdSec >= 1.7.0) and install the appropriate log sources and [Collections](https://docs.crowdsec.net/docs/next/collections/intro).
+By default, CrowdSec tries to [detect running services](https://docs.crowdsec.net/docs/next/log_processor/service-discovery-setup/intro/) (CrowdSec >= 1.7.0) and install the appropriate log sources and [Collections](https://docs.crowdsec.net/docs/next/log_processor/collections/intro/).
 
 You should verify detection worked and that log paths are correct.
-If a service was not detected, install additional [Collections](https://docs.crowdsec.net/docs/next/collections/intro) manually.
+If a service was not detected, install additional [Collections](https://docs.crowdsec.net/docs/next/log_processor/collections/intro/) manually.
 
 ## What log sources are already detected?
 
@@ -49,14 +49,14 @@ Here is a short explanation of the columns:
 - `Lines poured to bucket` - The number of lines that were not parsed and were sent to the bucket.
 - `Lines whitelisted` - The number of lines that were successfully parsed and were whitelisted before being sent to the bucket.
 
-In some cases you will see more unparsed lines than parsed lines. This can happen when a [Collection](https://docs.crowdsec.net/docs/next/collections/intro) only targets a subset of log lines.
+In some cases you will see more unparsed lines than parsed lines. This can happen when a [Collection](https://docs.crowdsec.net/docs/next/log_processor/collections/intro/) only targets a subset of log lines.
 
 ## What services are currently supported?
 
-You can find a list of [Collections](https://docs.crowdsec.net/docs/next/collections/intro) on the [Hub](https://hub.crowdsec.net/).
+You can find a list of [Collections](https://docs.crowdsec.net/docs/next/log_processor/collections/intro/) on the [Hub](https://hub.crowdsec.net/).
 
 :::info
-Collections are a group of [Parsers](https://docs.crowdsec.net/docs/next/parsers/intro) and [Scenarios](https://docs.crowdsec.net/docs/next/scenarios/intro).
+Collections are a group of [Parsers](https://docs.crowdsec.net/docs/next/log_processor/parsers/intro/) and [Scenarios](https://docs.crowdsec.net/docs/next/log_processor/scenarios/intro/).
 :::
 
 ## Next steps
