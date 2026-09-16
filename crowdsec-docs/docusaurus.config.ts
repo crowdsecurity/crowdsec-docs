@@ -228,10 +228,6 @@ const redirects = [
 	},
 	{ from: "/u/cti_api/ip_report", to: "/u/console/ip_reputation/ip_report" },
 	{
-		from: "/u/cti_api/search_queries",
-		to: "/u/console/ip_reputation/search_ui",
-	},
-	{
 		from: "/u/cti_api/advanced_search",
 		to: "/u/console/ip_reputation/search_ui_advanced",
 	},
@@ -275,6 +271,8 @@ const config: Config = {
 	tagline: "CrowdSec - Real-time & crowdsourced protection against aggressive IPs",
 	url: "https://docs.crowdsec.net",
 	baseUrl: "/",
+	// Amplify serves `page/index.html` at `page/` and redirects `page` there, so canonical and sitemap URLs must end with a slash.
+	trailingSlash: true,
 	onBrokenLinks: "warn",
 	onBrokenMarkdownLinks: "warn",
 	favicon: "img/crowdsec_no_txt.png",
@@ -335,7 +333,7 @@ const config: Config = {
 			// or nobody who dismissed the previous banner will ever see the new one.
 			id: "banner_botdetection",
 			content:
-				'<a href="/docs/next/appsec/bot_detection/intro">Stop scrapers and headless browsers — discover CrowdSec Bot Detection</a>',
+				'<a href="/docs/next/appsec/bot_detection/intro/">Stop scrapers and headless browsers — discover CrowdSec Bot Detection</a>',
 			backgroundColor: "#F8AB13",
 			textColor: "#131132",
 			isCloseable: true,

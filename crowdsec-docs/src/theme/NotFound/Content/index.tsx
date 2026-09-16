@@ -15,8 +15,10 @@ export default function NotFoundContent({ className }: Props): ReactNode {
 
 	useEffect(() => {
 		if (!pluginData?.redirects) return;
-		const path = window.location.pathname.replace(siteConfig.baseUrl.replace(/\/$/, ""), "") || "/";
-		const match = pluginData.redirects.find((r) => r.from === path);
+		// Amplify appends a trailing slash before serving the 404 page, while most `from` paths have none.
+		const withoutTrailingSlash = (p: string) => p.replace(/(.)\/$/, "$1");
+		const path = withoutTrailingSlash(window.location.pathname.replace(siteConfig.baseUrl.replace(/\/$/, ""), "") || "/");
+		const match = pluginData.redirects.find((r) => withoutTrailingSlash(r.from) === path);
 		if (match) {
 			window.location.replace(match.to);
 		}

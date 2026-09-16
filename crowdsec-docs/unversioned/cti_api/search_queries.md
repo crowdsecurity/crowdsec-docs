@@ -58,10 +58,10 @@ It is possible to search any field available in the JSON document below:
 
 We provide all the possible values for each of the following fields:
 
--   [`behaviors`](taxonomy/behaviors)
--   [`classifications.classifications`](taxonomy/classifications)
--   [`classifications.false_positives`](taxonomy/false_positives)
--   [`attack_details`](taxonomy/scenarios)
+-   [`behaviors`](taxonomy/behaviors.mdx)
+-   [`classifications.classifications`](taxonomy/classifications.mdx)
+-   [`classifications.false_positives`](taxonomy/false_positives.mdx)
+-   [`attack_details`](taxonomy/scenarios.mdx)
 
 To perform a search query, specify the field from the JSON document you wish to search followed by a colon `:` and the value you are looking for between double quotes.
 
