@@ -302,14 +302,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "doc",
-					label: "Attack Surge Detection",
-					id: "console/security_engines/am_i_under_attack",
-					customProps: {
-						tag: "premium",
-					},
-				},
-				{
-					type: "doc",
 					label: "Select multiple organizations 🧪",
 					id: "console/security_engines/select_multiple_organizations",
 				},
@@ -322,7 +314,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "category",
-			label: "Alerts",
+			label: "Alert Explorer",
 			link: {
 				type: "doc",
 				id: "console/alerts/intro",
@@ -330,18 +322,28 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			items: [
 				{
 					type: "doc",
-					label: "Introduction",
+					label: "Overview",
 					id: "console/alerts/intro",
 				},
 				{
 					type: "doc",
-					label: "Visualizer",
+					label: "Investigate an attack wave",
 					id: "console/alerts/visualizer",
 				},
 				{
 					type: "doc",
-					label: "Alerts analysis",
-					id: "console/alerts/alerts_analysis",
+					label: "Search and filter",
+					id: "console/alerts/search",
+				},
+				{
+					type: "doc",
+					label: "Custom views",
+					id: "console/alerts/views",
+				},
+				{
+					type: "doc",
+					label: "The WAF view",
+					id: "console/alerts/waf",
 				},
 				{
 					type: "doc",
@@ -364,17 +366,12 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
-			id: "console/remediation_sync",
 			type: "doc",
-			label: "Remediation Sync",
+			label: "Attack Surge Detection",
+			id: "console/security_engines/am_i_under_attack",
 			customProps: {
 				tag: "premium",
 			},
-		},
-		{
-			type: "doc",
-			label: "Remediation Metrics",
-			id: "console/remediation_metrics",
 		},
 		{
 			type: "category",
@@ -393,6 +390,19 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 					},
 				},
 			],
+		},
+		{
+			id: "console/remediation_sync",
+			type: "doc",
+			label: "Remediation Sync",
+			customProps: {
+				tag: "premium",
+			},
+		},
+		{
+			type: "doc",
+			label: "Remediation Metrics",
+			id: "console/remediation_metrics",
 		},
 		{
 			type: "html",

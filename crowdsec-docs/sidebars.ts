@@ -717,6 +717,9 @@ const sidebarsConfig: SidebarConfig = {
 		{
 			type: "category",
 			label: "Bot detection",
+			customProps: {
+				tag: "new",
+			},
 			link: { type: "doc", id: "appsec/bot_detection/intro" },
 			items: [
 				{ type: "doc", id: "appsec/bot_detection/enable" },

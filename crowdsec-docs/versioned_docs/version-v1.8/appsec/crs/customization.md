@@ -1,6 +1,8 @@
 ---
 id: crs_config
-title: Customization
+title: "OWASP CRS Customization"
+sidebar_label: "Customization"
+description: "Tune the OWASP Core Rule Set running on the CrowdSec WAF through the plugin system, so you can fix false positives without editing any shipped CRS file."
 sidebar_position: 2
 ---
 

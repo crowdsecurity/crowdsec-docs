@@ -70,7 +70,7 @@ inband_rules:
 
 AppSec configuration files declare **which rules to load** in **in-band** *(blocking)* and/or **out-of-band** *(non-blocking)* mode, define how matches are handled (for example, default remediation), and let you tweak processing via hooks like `on_load`, `pre_eval`, `post_eval`, and `on_match`.
 
-For the full list of keys, see [Configuration Syntax](configuration).
+For the full list of keys, see [Configuration Syntax](configuration.md).
 
 :::info
 When loading multiple AppSec configs, _hooks_ and _appsec rules_ are appended, and for conflicting options (for example, `default_remediation`), the last one takes precedence.

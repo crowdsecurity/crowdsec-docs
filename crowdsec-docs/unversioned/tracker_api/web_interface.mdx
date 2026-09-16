@@ -7,7 +7,7 @@ title: Web Interface
 
 The [Live Exploit Tracker web interface](https://tracker.crowdsec.net) provides a dashboard for browsing tracked vulnerabilities, assessing their severity, viewing attacker IPs, and managing firewall integrations — all without writing a line of code.
 
-It exposes the same data as the [API](./api_authentication) in a visual format designed for SOC analysts and security managers.
+It exposes the same data as the [API](./api_authentication.mdx) in a visual format designed for SOC analysts and security managers.
 
 ### Getting Access
 
@@ -64,7 +64,7 @@ Use the **search bar** to find CVEs by ID, name, product, or vendor. Use the **S
 
 ### Reconnaissance Tab
 
-Displays all Reconnaissance rules — detection patterns for product-level probing activity. See [Fingerprints vs CVEs](./fingerprints_vs_cves) for the difference between CVEs and Reconnaissance rules.
+Displays all Reconnaissance rules — detection patterns for product-level probing activity. See [Fingerprints vs CVEs](./fingerprints_vs_cves.mdx) for the difference between CVEs and Reconnaissance rules.
 
 Cards use the same layout as CVEs but with a "RECON" badge and a rule ID (e.g., `microsoft-exchange`). Titles follow the pattern "[Product] Probing" (e.g., "Matomo Panel Probing", "Oracle Enterprise Manager Console Probing").
 
@@ -102,7 +102,7 @@ A dedicated panel on the right side of the header displays:
 - **Momentum** (0–5): How fast attacks are growing. Shown with a progress bar.
 - **Targeted** (0–5): How targeted vs. opportunistic the attacks are ("Low = mass scanning, High = targeted"). Shown with a progress bar.
 
-See [Scores & Ratings](./scores) for detailed interpretation of these values.
+See [Scores & Ratings](./scores.mdx) for detailed interpretation of these values.
 
 :::info Terminology note
 The **Targeted** score in the web interface corresponds to the **Opportunity Score** in the API. They measure the same thing — how deliberately attackers are selecting their targets.
@@ -115,7 +115,7 @@ Displayed side by side below the header:
 - **Description**: The official CVE description from the NVD
 - **CrowdSec Analysis**: A human-readable intelligence narrative covering the vulnerability's nature, observed exploitation patterns, trend analysis, and specific technical indicators. Click "Show more" to expand the full analysis.
 
-See [CrowdSec Analysis](./crowdsec_analysis) for how to use this in triage and reporting.
+See [CrowdSec Analysis](./crowdsec_analysis.mdx) for how to use this in triage and reporting.
 
 ### Exploit Timeline
 

@@ -52,7 +52,7 @@ curl -X 'GET' \
 
 The simplest way to get broad, ongoing coverage is to subscribe your integration to the **vendors** in your technology stack. A vendor subscription automatically covers all current and future CVEs and reconnaissance rules for that vendor's products — when a new threat is added, your blocklist is updated without any action on your part.
 
-1. Create a firewall integration (if you don't have one) — see [Integrations & Blocklists](./api_integrations)
+1. Create a firewall integration (if you don't have one) — see [Integrations & Blocklists](./api_integrations.mdx)
 2. Subscribe the integration to each vendor you rely on
 
 ```bash
@@ -73,7 +73,7 @@ curl -X 'POST' \
   -d '{"name": "production_firewall"}'
 ```
 
-For threats outside your subscribed vendors, you can also subscribe to individual [fingerprint rules](./fingerprints_vs_cves) or CVEs:
+For threats outside your subscribed vendors, you can also subscribe to individual [fingerprint rules](./fingerprints_vs_cves.mdx) or CVEs:
 
 ```bash
 # Subscribe to a specific reconnaissance rule

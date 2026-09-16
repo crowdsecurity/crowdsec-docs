@@ -1,3 +1,4 @@
+import { execSync } from "node:child_process";
 import type * as Preset from "@docusaurus/preset-classic";
 import type { NavbarItem } from "@docusaurus/theme-common";
 import type { Config } from "@docusaurus/types";
@@ -72,6 +73,12 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 				type: "docsVersion",
 				to: "/docs/next/appsec/intro",
 				label: "Web Application Firewall (AppSec)",
+			},
+			{
+				type: "docsVersion",
+				to: "/docs/next/appsec/bot_detection/intro",
+				label: "Bot Detection",
+				className: "navbar-item-new",
 			},
 			{ type: "doc", docId: "cscli/cscli", label: "Cscli" },
 			{ to: "/u/user_guides/intro", label: "Guides" },
@@ -222,10 +229,6 @@ const redirects = [
 	},
 	{ from: "/u/cti_api/ip_report", to: "/u/console/ip_reputation/ip_report" },
 	{
-		from: "/u/cti_api/search_queries",
-		to: "/u/console/ip_reputation/search_ui",
-	},
-	{
 		from: "/u/cti_api/advanced_search",
 		to: "/u/console/ip_reputation/search_ui_advanced",
 	},
@@ -258,6 +261,19 @@ function redirectsGlobalDataPlugin() {
 	};
 }
 
+// A shallow clone dates every file to the last commit, which would give every sitemap URL the same <lastmod>.
+function hasFullGitHistory(): boolean {
+	try {
+		return (
+			execSync("git rev-parse --is-shallow-repository", { stdio: ["ignore", "pipe", "ignore"] })
+				.toString()
+				.trim() === "false"
+		);
+	} catch {
+		return false;
+	}
+}
+
 const config: Config = {
 	future: {
 		v4: {
@@ -269,11 +285,31 @@ const config: Config = {
 	tagline: "CrowdSec - Real-time & crowdsourced protection against aggressive IPs",
 	url: "https://docs.crowdsec.net",
 	baseUrl: "/",
-	onBrokenLinks: "warn",
+	// Amplify serves `page/index.html` at `page/` and redirects `page` there, so canonical and sitemap URLs must end with a slash.
+	trailingSlash: true,
+	onBrokenLinks: "throw",
 	onBrokenMarkdownLinks: "warn",
 	favicon: "img/crowdsec_no_txt.png",
 	organizationName: "CrowdSec",
 	projectName: "crowdsec-docs",
+	// Docusaurus only emits a single-item BreadcrumbList on its own; nothing tells
+	// search engines who publishes these docs.
+	headTags: [
+		{
+			tagName: "script",
+			attributes: {
+				type: "application/ld+json",
+			},
+			innerHTML: JSON.stringify({
+				"@context": "https://schema.org/",
+				"@type": "Organization",
+				name: "CrowdSec",
+				url: "https://www.crowdsec.net/",
+				logo: "https://docs.crowdsec.net/img/crowdsec_no_txt.png",
+				sameAs: ["https://github.com/crowdsecurity/crowdsec", "https://x.com/crowd_security"],
+			}),
+		},
+	],
 	markdown: {
 		mermaid: true,
 		mdx1Compat: {
@@ -295,15 +331,23 @@ const config: Config = {
 	themes: ["@docusaurus/theme-mermaid"],
 	themeConfig: {
 		image: "img/crowdsec_og_image.png",
+		// og:image and twitter:card are already emitted from `image` above; don't redeclare them.
+		metadata: [
+			{ property: "og:site_name", content: "CrowdSec Documentation" },
+			{ property: "og:type", content: "website" },
+			{ name: "twitter:site", content: "@crowd_security" },
+		],
 		colorMode: {
 			defaultMode: "dark",
 			disableSwitch: false,
 			respectPrefersColorScheme: false,
 		},
 		announcementBar: {
-			id: "banner_docs",
+			// Dismissal is persisted per id, so bump it whenever the message changes
+			// or nobody who dismissed the previous banner will ever see the new one.
+			id: "banner_botdetection",
 			content:
-				'<a target="_blank" href="https://doc.crowdsec.net/docs/next/appsec/intro" rel="noopener">Learn how to guard your webserver in real-time with the CrowdSec WAF</a>',
+				'<a href="/docs/next/appsec/bot_detection/intro/">Stop scrapers and headless browsers — discover CrowdSec Bot Detection</a>',
 			backgroundColor: "#F8AB13",
 			textColor: "#131132",
 			isCloseable: true,
@@ -354,6 +398,15 @@ const config: Config = {
 							banner: "none",
 							path: "/",
 						},
+						// Near-duplicate of the newer versions: indexing it only splits ranking signals.
+						"v1.7": {
+							noIndex: true,
+						},
+						// EOL: kept online for existing links, but out of the index.
+						// plugin-sitemap drops noindex routes too, so it also leaves sitemap.xml.
+						"v1.6": {
+							noIndex: true,
+						},
 						current: {
 							path: "/next",
 						},
@@ -369,6 +422,16 @@ const config: Config = {
 				},
 				theme: {
 					customCss: "./src/css/custom.css",
+				},
+				sitemap: {
+					lastmod: hasFullGitHistory() ? "datetime" : null,
+					changefreq: null,
+					priority: null,
+					// Docs of the version served at /docs/ declare their /docs/next/ copy as canonical (src/theme/DocRoot/Layout).
+					createSitemapItems: async ({ defaultCreateSitemapItems, ...params }) =>
+						(await defaultCreateSitemapItems(params)).filter(
+							(item) => !/^\/docs\/(?!next\/|v\d)/.test(new URL(item.url).pathname)
+						),
 				},
 			} satisfies Preset.Options,
 		],

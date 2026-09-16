@@ -1,6 +1,7 @@
 ---
 id: intro
 title: AppSec Component - CrowdSec WAF
+description: "CrowdSec's AppSec Component is an open-source Web Application Firewall (WAF) that inspects HTTP requests in real time, with virtual patching and OWASP CRS."
 sidebar_position: 1
 ---
 

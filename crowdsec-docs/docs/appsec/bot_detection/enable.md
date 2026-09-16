@@ -1,6 +1,8 @@
 ---
 id: enable
-title: Enable bot detection
+title: "Enable Bot Detection"
+sidebar_label: "Enable bot detection"
+description: "Turn on CrowdSec bot detection: install the appsec-bot-challenge collection, make your AppSec acquisition load it, and verify that the challenge is served."
 sidebar_position: 2
 ---
 

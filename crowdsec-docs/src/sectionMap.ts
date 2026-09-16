@@ -34,7 +34,7 @@ export const SECTION_MAP: Record<string, SectionInfo> = {
 	},
 	cscliSidebar: {
 		label: "Cscli",
-		introPath: "/docs/cscli/cscli",
+		introPath: "/docs/next/cscli",
 		parent: { label: "Security Engine", introPath: "/docs/intro" },
 	},
 	sdkSideBar: {

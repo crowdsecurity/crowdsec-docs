@@ -1,6 +1,8 @@
 ---
 id: rules_deploy
-title: Deployment
+title: "WAF Rules Deployment"
+sidebar_label: "Deployment"
+description: "Deploy a custom CrowdSec WAF rule on your host, from a local YAML file to a loaded and verified rule."
 sidebar_position: 81
 ---
 

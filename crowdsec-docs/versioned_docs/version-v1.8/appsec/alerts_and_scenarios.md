@@ -1,6 +1,8 @@
 ---
 id: alerts_and_scenarios
-title: Alerts & Scenarios
+title: "WAF Alerts & Scenarios"
+sidebar_label: "Alerts & Scenarios"
+description: "How CrowdSec WAF rule matches become events, alerts and decisions: the appsec-logs parser, the event layout, and the scenarios that turn them into bans."
 sidebar_position: 5
 ---
 

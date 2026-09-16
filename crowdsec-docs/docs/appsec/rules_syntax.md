@@ -1,6 +1,8 @@
 ---
 id: rules_syntax
-title: Syntax
+title: "WAF Rules Syntax"
+sidebar_label: "Syntax"
+description: "Full syntax reference for CrowdSec WAF rules: in-band and out-of-band evaluation, zones, transforms, match operators, and the remediation a match triggers."
 sidebar_position: 8
 ---
 

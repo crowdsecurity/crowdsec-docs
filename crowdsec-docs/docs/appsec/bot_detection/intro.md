@@ -1,6 +1,8 @@
 ---
 id: intro
-title: Bot detection
+title: "Bot Detection"
+sidebar_label: "Bot detection"
+description: "Block scrapers, headless browsers and automation at the edge with CrowdSec bot detection, part of the open-source Web Application Firewall (WAF)."
 sidebar_position: 1
 ---
 

@@ -3,6 +3,9 @@ title: Quotas
 description: Understanding alerts quotas in the CrowdSec Console`
 ---
 
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
 At CrowdSec, we're committed to providing a range of cybersecurity solutions tailored to meet the needs of diverse users, from individual enthusiasts to large organizations. Our pricing plans, including the Community and Premium options, are designed to scale with your requirements, ensuring you have the tools and capabilities to monitor and respond to threats effectively.
 
 ### Community Plan: Starting Point for Cybersecurity Monitoring
@@ -32,8 +35,38 @@ More quotas and extended retention periods are essential for several reasons:
 
 Understanding the limitations of the Community Plan is crucial for setting realistic expectations regarding alert volume and retention. If you frequently approach or exceed these limits, it may be time to consider upgrading to our Premium Plan.
 
-### Monitor usage
+### Quotas in the Alert Explorer
 
-The quota is readily accessible on the **"Billing and Plans"** page in the organization settings, located within the **"Usage"** section.
+The Explorer tells you where you stand before you run out. The **usage counter** next to the refresh button shows the alerts ingested this cycle against your quota, and a band appears under the page title as you get close:
 
-![Quotas](/img/console/alerts/quotas.png)
+- from **80%**, an amber band shows your consumption and the date the quota resets;
+
+<ThemedImage
+    alt="The amber quota band in the Alert Explorer at 85% of the monthly quota"
+    sources={{
+        light: useBaseUrl("/img/console/alert-explorer/quota-warning-light.png"),
+        dark: useBaseUrl("/img/console/alert-explorer/quota-warning-dark.png"),
+    }}
+/>
+
+- at **100%**, the band turns red and counts the alerts hidden this cycle. New alerts stay hidden until the reset, and upgrading restores them from your history.
+
+<ThemedImage
+    alt="The red quota band in the Alert Explorer once the monthly quota is reached"
+    sources={{
+        light: useBaseUrl("/img/console/alert-explorer/quota-exceeded-light.png"),
+        dark: useBaseUrl("/img/console/alert-explorer/quota-exceeded-dark.png"),
+    }}
+/>
+
+Past periods where your organization went over its quota show up in the breakdown charts as greyed **"Out of quota"** areas. Alerts from those windows were not kept, so a gap in the chart there means missing data, not a quiet period.
+
+<ThemedImage
+    alt="A breakdown chart with a greyed Out of quota area over an exceeded period"
+    sources={{
+        light: useBaseUrl("/img/console/alert-explorer/quota-band-light.png"),
+        dark: useBaseUrl("/img/console/alert-explorer/quota-band-dark.png"),
+    }}
+/>
+
+The detailed consumption, per engine and per option, is on the **Billing and Plans** page of the organization settings, under **Usage**.

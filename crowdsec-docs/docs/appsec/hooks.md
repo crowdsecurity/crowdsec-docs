@@ -1,6 +1,8 @@
 ---
 id: hooks
-title: Hooks
+title: "AppSec Hooks"
+sidebar_label: "Hooks"
+description: "Hook into the CrowdSec WAF at runtime with the on_load, pre_eval, post_eval and on_match phases to change rule behavior, enrich events and control remediation."
 sidebar_position: 4
 ---
 

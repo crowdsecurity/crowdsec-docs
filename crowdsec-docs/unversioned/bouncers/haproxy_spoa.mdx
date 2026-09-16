@@ -1,6 +1,7 @@
 ---
 id: haproxy_spoa
 title: "HAProxy IP Blocking & WAF with CrowdSec"
+description: "Wire HAProxy to CrowdSec over SPOP: the SPOA agent checks each connection against live decisions and hands HTTP requests to the AppSec (WAF) engine."
 ---
 
 import Tabs from "@theme/Tabs";
@@ -17,12 +18,6 @@ import BouncerHeader from "@site/src/components/bouncer-header";
 />
 
 # Protect HAProxy with IP Blocking & WAF
-
-:::warning
-
-Beta Remediation Component, please report any issues on GitHub
-
-:::
 
 :::tip Enable the WAF for optimal protection
 This is the **only HAProxy bouncer with WAF (AppSec) support**. After installing the bouncer, enable the [WAF (AppSec) Component](/docs/next/appsec/intro) for real-time WAF protection, virtual patching, and defense against known CVEs.

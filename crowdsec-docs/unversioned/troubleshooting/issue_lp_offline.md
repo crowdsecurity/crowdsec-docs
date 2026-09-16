@@ -82,7 +82,7 @@ Check that the `Last Update` timestamp is recent (within last few minutes).
 
 💡 If your Log Processors are clones (common in orchestrated environments like Kubernetes), some LPs can remain registered after instances are removed. *This is a known issue that will be addressed in future CrowdSec versions.*
 
-If you're facing such an issue, consider running the [cscli machines prune](/cscli/cscli_machines_prune/) command and even cron this pruning every so often if the issue re-appears often.
+If you're facing such an issue, consider running the [cscli machines prune](/docs/next/cscli/cscli_machines_prune) command and even cron this pruning every so often if the issue re-appears often.
 
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli machines prune --duration 1h

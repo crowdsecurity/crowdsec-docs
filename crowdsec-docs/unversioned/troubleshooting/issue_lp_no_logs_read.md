@@ -77,8 +77,8 @@ kubectl exec -n crowdsec -it <agent-pod> -- cscli metrics show acquisition
 
 The acquisition configuration tells CrowdSec which logs to read. Configuration varies by deployment:
 
-- For [file based logs](/log_processor/data_sources/file)
-- Or [any other type of *datasource*](/log_processor/data_sources/intro)
+- For [file based logs](/docs/next/log_processor/data_sources/file)
+- Or [any other type of *datasource*](/docs/next/log_processor/data_sources/intro)
 
 ### File Permission Issues
 

@@ -56,7 +56,9 @@ const TabList = ({ className, block, selectedValue, selectValue, tabValues }): R
 					tabIndex={selectedValue === value ? 0 : -1}
 					aria-selected={selectedValue === value}
 					key={value}
-					ref={(tabControl) => tabRefs.push(tabControl)}
+					ref={(tabControl) => {
+						tabRefs.push(tabControl);
+					}}
 					onKeyDown={handleKeydown}
 					onClick={handleTabChange}
 					{...attributes}
@@ -99,7 +101,7 @@ function TabsComponent(props) {
 		<div
 			className={clsx("tabs-container")}
 			style={{
-				marginBottom: "var(--ifm-leading);", // Ensure the tabs container has a bottom margin to avoid overlap with the content below
+				marginBottom: "var(--ifm-leading)", // Ensure the tabs container has a bottom margin to avoid overlap with the content below
 			}}
 		>
 			<TabList {...props} {...tabs} />
