@@ -82,14 +82,14 @@ If you identify a problematic scenario, try the following:
 
 ##### Tuning the scenario threshold
 
-If the scenario is triggering too easily, you can create a custom version with adjusted thresholds. See the [scenario documentation](/docs/scenarios/intro) for details on customizing scenarios.
+If the scenario is triggering too easily, you can create a custom version with adjusted thresholds. See the [scenario documentation](/docs/next/log_processor/scenarios/intro) for details on customizing scenarios.
 
 ##### Disabling the scenario temporarily
 
 You have multiple ways to do this, among which the following 2:
 
 * Removing the scenario
-* Whitelisting it in [postoverflow](/log_processor/whitelist/create_postoverflow/#allow-event-for-a-specific-scenario)
+* Whitelisting it in [postoverflow](/docs/next/log_processor/whitelist/create_postoverflow#allow-event-for-a-specific-scenario)
 
 ### Parser Creating Duplicate Events
 

@@ -85,7 +85,7 @@ Here's a quick comparative overview:
 **Self-Hosted Installer** works best with a **Blocklist Integration Endpoint** — no infrastructure to expose, the Sync Worker pulls decisions directly from CrowdSec.
 
 Using a **self-hosted Security Engine (LAPI)** as the decision source requires the LAPI to be reachable from Cloudflare's network, which means exposing it publicly. If that's a concern:
-- **Premium users** can enable [Remediation Sync](/u/console/integrations/intro) on their Console integration — decisions are forwarded from the LAPI without exposing it to the internet.
+- **Premium users** can enable [Remediation Sync](/u/console/remediation_sync) on their Console integration — decisions are forwarded from the LAPI without exposing it to the internet.
 - Alternatively, use the **CLI Bouncer Daemon** running alongside your LAPI, so the bouncer pulls decisions locally and pushes them to Cloudflare without any inbound exposure.
 :::
 
