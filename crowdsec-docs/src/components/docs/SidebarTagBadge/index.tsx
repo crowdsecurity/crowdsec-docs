@@ -11,10 +11,10 @@ const TAG_LABELS: Record<SidebarTag, { label: string; color: string }> = {
 /** Sidebar badge driven by a `customProps.tag` on a sidebar item.
  * Shared by DocSidebarItem/Link and DocSidebarItem/Category so both render identically.
  * Unknown tags (e.g. "otherSection", which renders an icon instead) return nothing. */
-export default function SidebarTagBadge({ tag }: { tag?: string }): React.JSX.Element | null {
+export default function SidebarTagBadge({ tag }: { tag?: unknown }): React.JSX.Element | null {
+	if (typeof tag !== "string") return null;
 	const def = TAG_LABELS[tag as SidebarTag];
 	if (!def) return null;
-
 	return (
 		<span
 			style={{
