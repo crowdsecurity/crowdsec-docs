@@ -42,7 +42,7 @@ export default function DocSidebarItemLink({ item, onItemClick, activePath, leve
 				{...props}
 			>
 				{label}
-				<SidebarTagBadge tag={tag} />
+				<SidebarTagBadge tag={typeof tag === "string" ? tag : undefined} />
 				{tag === "otherSection" && <Signpost className="ml-1 h-4 text-foreground/80" />}
 				{!isInternalLink && <ExternalLinkIcon className="ml-1 h-4 text-foreground/80" />}
 			</Link>
