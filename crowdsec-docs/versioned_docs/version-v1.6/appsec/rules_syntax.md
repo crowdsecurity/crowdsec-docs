@@ -28,7 +28,7 @@ The rule files share some common directives with the scenarios:
 
 - a `name` and `description`
 - a `rules` section describing the rule to match the HTTP request
-- [a label section](https://doc.crowdsec.net/docs/next/scenarios/format/#labels)
+- [a label section](https://docs.crowdsec.net/docs/next/log_processor/scenarios/format/#labels)
 
 ```yaml
 name: crowdsecurity/example-rule

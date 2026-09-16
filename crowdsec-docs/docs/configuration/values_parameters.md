@@ -315,7 +315,7 @@ configuration values, their defaults, and their purpose.
 | `agent.replicas`<a id="agent-replicas"></a>                                 | Number of replicas when deploying as a Deployment                                          | `1`     |
 | `agent.strategy`<a id="agent-strategy"></a>                                 | Deployment strategy when `isDeployment` is true                                            | `{}`    |
 | `agent.ports`<a id="agent-ports"></a>                                    | Custom container ports to expose (default: metrics port 6060 if enabled)                   | `[]`    |
-| `agent.additionalAcquisition`<a id="agent-additionalacquisition"></a>                    | Extra log acquisition sources (see https://docs.crowdsec.net/docs/next/data_sources/intro) | `[]`    |
+| `agent.additionalAcquisition`<a id="agent-additionalacquisition"></a>                    | Extra log acquisition sources (see https://docs.crowdsec.net/docs/next/log_processor/data_sources/intro/) | `[]`    |
 | `agent.acquisition`<a id="agent-acquisition"></a>                              | Pod log acquisition definitions (namespace, podName, program, etc.)                        | `[]`    |
 | `agent.priorityClassName`<a id="agent-priorityclassname"></a>                        | Priority class name for agent pods                                                         | `""`    |
 | `agent.daemonsetAnnotations`<a id="agent-daemonsetannotations"></a>                     | Annotations applied to the agent DaemonSet                                                 | `{}`    |
