@@ -522,24 +522,12 @@ For an existing HAProxy configuration, add the challenge ACL, path rewrite,
 routing rule, trusted source header, and challenge backend alongside your
 regular SPOE configuration:
 
-```haproxy
-# https://www.haproxy.com/documentation/haproxy-configuration-manual/latest/
-global
-    log stdout format raw local0
-    tune.bufsize 65536
-    stats socket /tmp/haproxy.sock mode 660 level admin
-    stats timeout 30s
+<details>
+<summary>Challenge-enabled <code>/etc/haproxy/haproxy.cfg</code></summary>
 
-defaults
-    mode http
-    log global
-    option httplog
-    timeout client 1m
-    timeout server 1m
-    timeout connect 10s
-    timeout http-keep-alive 2m
-    timeout queue 15s
-    timeout tunnel 4h
+```haproxy
+
+[...]
 
 frontend http-in
     mode http
@@ -580,6 +568,7 @@ frontend http-in
     http-request return status 403 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Forbidden\n" if { var(txn.crowdsec.remediation) -m str "ban" } !render_html
     http-request return status 403 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Forbidden\n" if { var(txn.crowdsec.remediation) -m str "ban" } html_rejected
 
+    # Captcha cookie management
     http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_status) -m found } { var(txn.crowdsec.captcha_cookie) -m found }
     http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_cookie) -m found } !{ var(txn.crowdsec.captcha_status) -m found }
 
@@ -609,6 +598,8 @@ backend crowdsec-challenge
     timeout server 60s
     server challenge1 127.0.0.1:9100
 ```
+
+</details>
 
 You can also add a small rate limit on the internal challenge paths so asset and
 submission requests cannot bypass your normal application rate limits:
