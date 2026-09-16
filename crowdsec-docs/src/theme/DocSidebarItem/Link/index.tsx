@@ -2,24 +2,11 @@ import isInternalUrl from "@docusaurus/isInternalUrl";
 import Link from "@docusaurus/Link";
 import { isActiveSidebarItem } from "@docusaurus/plugin-content-docs/client";
 import { ThemeClassNames } from "@docusaurus/theme-common";
+import SidebarTagBadge from "@site/src/components/docs/SidebarTagBadge";
 import type { Props } from "@theme/DocSidebarItem/Link";
 import clsx from "clsx";
 import { ExternalLinkIcon, Signpost } from "lucide-react";
 import React from "react";
-
-const premiumBadge: React.CSSProperties = {
-	fontFamily: "var(--cs-font-mono)",
-	fontSize: 9.5,
-	letterSpacing: "0.08em",
-	textTransform: "uppercase",
-	padding: "2px 6px",
-	borderRadius: 4,
-	background: "color-mix(in srgb, var(--cs-orange) 14%, transparent)",
-	color: "var(--cs-orange)",
-	fontWeight: 600,
-	flexShrink: 0,
-	marginLeft: "auto",
-};
 
 export default function DocSidebarItemLink({ item, onItemClick, activePath, level, index, ...props }: Readonly<Props>): React.JSX.Element {
 	const { href, label, className, autoAddBaseUrl, customProps } = item;
@@ -55,7 +42,7 @@ export default function DocSidebarItemLink({ item, onItemClick, activePath, leve
 				{...props}
 			>
 				{label}
-				{tag === "premium" && <span style={premiumBadge}>Premium</span>}
+				<SidebarTagBadge tag={typeof tag === "string" ? tag : undefined} />
 				{tag === "otherSection" && <Signpost className="ml-1 h-4 text-foreground/80" />}
 				{!isInternalLink && <ExternalLinkIcon className="ml-1 h-4 text-foreground/80" />}
 			</Link>
