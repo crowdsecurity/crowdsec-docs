@@ -465,7 +465,7 @@ HAProxy requirements when using AppSec (and/or captcha):
 
 Because request-body forwarding is constrained by HAProxy/SPOE/SPOP limits, keep an explicit body size limit (for example `51200`) and consider a layered approach (IP remediation at HAProxy, deeper inspection downstream).
 
-### Bot detection challenge plumbing
+### Bot detection challenge
 
 :::tip Prerequisites
 Bot detection is an AppSec feature. First enable AppSec forwarding as described above, then follow the [bot detection guide](/docs/next/appsec/bot_detection/intro).
@@ -523,6 +523,24 @@ routing rule, trusted source header, and challenge backend alongside your
 regular SPOE configuration:
 
 ```haproxy
+# https://www.haproxy.com/documentation/haproxy-configuration-manual/latest/
+global
+    log stdout format raw local0
+    tune.bufsize 65536
+    stats socket /tmp/haproxy.sock mode 660 level admin
+    stats timeout 30s
+
+defaults
+    mode http
+    log global
+    option httplog
+    timeout client 1m
+    timeout server 1m
+    timeout connect 10s
+    timeout http-keep-alive 2m
+    timeout queue 15s
+    timeout tunnel 4h
+
 frontend http-in
     mode http
     bind *:80
@@ -536,8 +554,34 @@ frontend http-in
     acl is_challenge var(txn.crowdsec.remediation) -m str "challenge"
 
     acl body_within_limit req.body_size -m int le 51200
+
+    acl render_html req.hdr_cnt(Accept) eq 0
+    acl render_html req.hdr(Accept) -m sub text/html
+    acl render_html req.hdr(Accept) -m sub */*
+    acl html_rejected req.hdr(Accept) -m reg "text/html;q=0"
+
+    acl has_contact_url var(txn.crowdsec.contact_us_url) -m found
+    acl empty_contact_url var(txn.crowdsec.contact_us_url) -m str ""
+
     http-request send-spoe-group crowdsec crowdsec-http-body if body_within_limit || !{ req.body_size -m found }
     http-request send-spoe-group crowdsec crowdsec-http-no-body if !body_within_limit { req.body_size -m found }
+
+    http-request set-header X-Crowdsec-Remediation %[var(txn.crowdsec.remediation)] if { var(txn.crowdsec.remediation) -m found }
+    http-request set-header X-Crowdsec-IsoCode %[var(txn.crowdsec.isocode)] if { var(txn.crowdsec.isocode) -m found }
+
+    http-request redirect code 302 location %[url] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
+
+    http-request return status 200 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /var/lib/crowdsec-haproxy-spoa-bouncer/html/captcha.html if { var(txn.crowdsec.remediation) -m str "captcha" } render_html !html_rejected
+    http-request return status 403 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban-with-contact.html if { var(txn.crowdsec.remediation) -m str "ban" } render_html !html_rejected has_contact_url !empty_contact_url
+    http-request return status 403 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban.html if { var(txn.crowdsec.remediation) -m str "ban" } render_html !html_rejected !has_contact_url
+    http-request return status 403 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban.html if { var(txn.crowdsec.remediation) -m str "ban" } render_html !html_rejected empty_contact_url
+    http-request return status 200 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Captcha required\n" if { var(txn.crowdsec.remediation) -m str "captcha" } !render_html
+    http-request return status 200 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Captcha required\n" if { var(txn.crowdsec.remediation) -m str "captcha" } html_rejected
+    http-request return status 403 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Forbidden\n" if { var(txn.crowdsec.remediation) -m str "ban" } !render_html
+    http-request return status 403 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Forbidden\n" if { var(txn.crowdsec.remediation) -m str "ban" } html_rejected
+
+    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_status) -m found } { var(txn.crowdsec.captcha_cookie) -m found }
+    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_cookie) -m found } !{ var(txn.crowdsec.captcha_status) -m found }
 
     # Required for challenge follow-up requests: this path bypasses SPOE, so the
     # bouncer needs HAProxy to pass the real client IP explicitly.
