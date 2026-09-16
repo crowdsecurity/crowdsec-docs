@@ -193,7 +193,7 @@ export default function DocSidebarItemCategory({
 					{...props}
 				>
 					{label}
-					<SidebarTagBadge tag={tag} />
+					<SidebarTagBadge tag={typeof tag === "string" ? tag : undefined} />
 				</Link>
 
 				{collapsible && (
