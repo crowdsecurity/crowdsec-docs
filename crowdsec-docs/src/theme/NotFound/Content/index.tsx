@@ -1,5 +1,6 @@
 import Link from "@docusaurus/Link";
 import Translate from "@docusaurus/Translate";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import useGlobalData from "@docusaurus/useGlobalData";
 import { Button } from "@site/src/ui/button";
@@ -11,6 +12,7 @@ import { type ReactNode, useEffect } from "react";
 export default function NotFoundContent({ className }: Props): ReactNode {
 	const { siteConfig } = useDocusaurusContext();
 	const globalData = useGlobalData();
+	const illustrationSrc = useBaseUrl("/img/404.webp");
 	const pluginData = globalData["redirects-global-data"]?.default as { redirects: { from: string; to: string }[] } | undefined;
 
 	useEffect(() => {
@@ -27,8 +29,15 @@ export default function NotFoundContent({ className }: Props): ReactNode {
 	return (
 		<main className={clsx("container margin-vert--xl", className)}>
 			<div className="row">
-				<div className="col col--6 col--offset-3">
-					<Heading as="h1" className="hero__title">
+				<div className="col col--8 col--offset-2 text-center">
+					<img
+						src={illustrationSrc}
+						alt="A lost llama holding a map next to a 404 Page not found sign"
+						width={1290}
+						height={740}
+						className="block w-full h-auto rounded-2xl border border-solid border-cs-border bg-white mb-8"
+					/>
+					<Heading as="h1" className="sr-only">
 						<Translate id="theme.NotFound.title" description="The title of the 404 page">
 							Page Not Found
 						</Translate>
