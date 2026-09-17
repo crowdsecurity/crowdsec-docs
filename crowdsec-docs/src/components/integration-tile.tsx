@@ -1,3 +1,4 @@
+import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import React from "react";
 
@@ -51,7 +52,7 @@ export default function IntegrationTile({ name, slug, href, desc, color, childre
 					background: `linear-gradient(to bottom, ${color}, transparent)`,
 				}}
 			/>
-			<a
+			<Link
 				href={href}
 				style={{
 					display: "flex",
@@ -113,7 +114,7 @@ export default function IntegrationTile({ name, slug, href, desc, color, childre
 						{children || desc}
 					</span>
 				</div>
-			</a>
+			</Link>
 		</div>
 	);
 }

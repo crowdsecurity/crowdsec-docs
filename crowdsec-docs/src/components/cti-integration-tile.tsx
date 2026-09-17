@@ -1,3 +1,4 @@
+import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 // biome-ignore lint/correctness/noUnusedImports: React is needed for JSX
 import React, { useRef, useState } from "react";
@@ -36,7 +37,7 @@ export default function CtiIntegrationTile({ name, slug, href, plugin, desc, col
 					pointerEvents: "none",
 				}}
 			/>
-			<a
+			<Link
 				href={href}
 				style={{
 					display: "flex",
@@ -107,7 +108,7 @@ export default function CtiIntegrationTile({ name, slug, href, plugin, desc, col
 						{plugin}
 					</span>
 				</div>
-			</a>
+			</Link>
 
 			{/* Hover tooltip */}
 			{tooltip && (
