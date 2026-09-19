@@ -39,6 +39,11 @@ real-time WAF protection.
 This page focuses on remediation-only deployment. If you want Envoy Gateway
 with WAF and virtual patching, follow the
 [CrowdSec WAF QuickStart for Envoy Gateway](/docs/next/appsec/quickstart/envoy-gateway).
+
+If you enable [bot detection](/docs/next/appsec/bot_detection/intro), Envoy
+Gateway must forward challenge submission request bodies to the external auth
+service. The WAF quickstart shows the required
+`SecurityPolicy.spec.extAuth.bodyToExtAuth.maxRequestBytes` setting.
 :::
 
 ## Prerequisites
