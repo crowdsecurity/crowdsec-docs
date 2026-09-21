@@ -32,6 +32,7 @@ At the end, you will have:
   matched and forwarded to your backend `Service`.
 - Virtual patching and generic AppSec rules inspecting requests before they
   reach your backends
+- Optional bot detection challenges for browsers and automated clients.
 
 ## Prerequisites
 
@@ -176,6 +177,51 @@ You should see:
 - `crowdsec-appsec` in `Running`
 - `crowdsec-service` exposing port `8080`
 - `crowdsec-appsec-service` exposing port `7422`
+
+### Enable bot detection
+
+To enable bot detection in the same deployment, install the bot detection
+collection and load its AppSec configs from the AppSec acquisition:
+
+```yaml title="crowdsec-values.yaml"
+appsec:
+  acquisitions:
+    - appsec_configs:
+        - crowdsecurity/appsec-default
+        - crowdsecurity/appsec-bot-*
+      labels:
+        type: appsec
+      listen_addr: 0.0.0.0:7422
+      path: /
+      source: appsec
+  env:
+    - name: COLLECTIONS
+      value: crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules crowdsecurity/appsec-bot-challenge
+```
+
+The `crowdsecurity/appsec-bot-*` wildcard loads the configs installed by the
+`crowdsecurity/appsec-bot-challenge` collection: scoring, threshold, and
+exclusions for known-good bots and common paths. See
+[Enable bot detection](/appsec/bot_detection/enable.md) for the full feature
+reference.
+
+:::note
+The bot detection runtime and the AppSec rule set need more memory than the
+CrowdSec Helm chart's default AppSec limit in small local clusters. If the
+`crowdsec-appsec` pod is `OOMKilled`, raise the AppSec resources, for example:
+
+```yaml title="crowdsec-values.yaml"
+appsec:
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+```
+
+:::
 
 ## Deploy the Envoy external auth bouncer
 
@@ -375,6 +421,8 @@ spec:
       kind: HTTPRoute
       name: "<app-route>"
   extAuth:
+    bodyToExtAuth:
+      maxRequestBytes: 65536
     failOpen: true
     grpc:
       backendRefs:
@@ -390,6 +438,13 @@ Apply them:
 ```bash
 kubectl apply -f app-securitypolicy.yaml
 ```
+
+`bodyToExtAuth.maxRequestBytes` is required when bot detection is enabled.
+Challenge submissions are `POST` requests to
+`/crowdsec-internal/challenge/submit`; Envoy must forward their body to the
+external authorization service so the bouncer can relay it to the AppSec
+component. Without this setting, the browser can receive the challenge page but
+the submission is rejected.
 
 ## Allow cross-namespace references
 
@@ -462,6 +517,31 @@ kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l k8s-app=crowdsec 
 If you trigger this scenario from a private ip, you won't see it trigger as it will be dismissed by the whitelist parser.
 :::
 
+### Test bot detection
+
+If you enabled bot detection, a clean browser should receive the challenge page,
+solve it, receive the `__crowdsec_challenge` cookie, and then reach the
+application.
+
+For command-line smoke tests, `curl` cannot solve the challenge. It is still
+useful to verify that the challenge is served:
+
+```bash
+curl -i http://<your-service-url>/
+```
+
+You should receive a `200` response with an HTML page titled
+`CrowdSec Challenge`.
+
+Then check AppSec metrics from the AppSec pod:
+
+```bash
+kubectl -n crowdsec exec deploy/crowdsec-appsec -- cscli metrics show appsec
+```
+
+The bot detection table should show `Requested` increasing. After testing with
+a real browser, `Submitted`, `Solved`, or `Granted` should also increase.
+
 ## Important Notes
 
 ### Attach `SecurityPolicy` to `HTTPRoute`s, not just to the `Gateway`
@@ -489,6 +569,36 @@ Envoy will start rejecting traffic with `403`
 
 The community bouncer image is published for amd64. For other architectures you
 will need a custom build.
+
+### Bot detection challenge submissions need request bodies
+
+If a browser shows `Verification failed`, check AppSec metrics:
+
+```bash
+kubectl -n crowdsec exec deploy/crowdsec-appsec -- cscli metrics show appsec
+```
+
+If `Protocol Failures` and `Ch. Rejected` increase, inspect the AppSec logs:
+
+```bash
+kubectl -n crowdsec logs deploy/crowdsec-appsec --tail=100
+```
+
+This log line means Envoy did not forward the challenge submission body to the
+external auth service:
+
+```text
+challenge validation failed: missing required fields in challenge response
+```
+
+Add or confirm this field on the `SecurityPolicy`:
+
+```yaml
+spec:
+  extAuth:
+    bodyToExtAuth:
+      maxRequestBytes: 65536
+```
 
 ## Next steps
 
