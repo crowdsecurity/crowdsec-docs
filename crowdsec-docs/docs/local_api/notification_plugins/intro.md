@@ -149,7 +149,7 @@ Under the hood, the main CrowdSec process dispatches the plugins as gRPC service
 
 Currently only `notification` plugins are supported. Whenever CrowdSec receives any alert and if this alert satisfies the owner profile, then the same alert will be dispatched to such plugin.
 
-[See](https://github.com/crowdsecurity/crowdsec/blob/plugins/pkg/protobufs/notifier.proto) the gRPC protocol for `notification` plugins.
+[See](https://github.com/crowdsecurity/crowdsec/blob/master/pkg/protobufs/notifier.proto) the gRPC protocol for `notification` plugins.
 
 In the following sections we use `/etc/crowdsec/config.yaml` for configuration file paths. However depending on your platform the paths can be interchanged with the following:
 
