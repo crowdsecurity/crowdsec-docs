@@ -25,14 +25,6 @@ export const ctiIntegrations: CtiIntegrationData[] = [
 		color: "#4285f4",
 	},
 	{
-		name: "Gigasheet",
-		slug: "gigasheet",
-		href: "/u/cti_api/api_integration/integration_gigasheet",
-		plugin: "No-Code API Enrichment",
-		desc: "Enrich spreadsheet columns with CTI data using Gigasheet's no-code API enrichment feature. No scripting required.",
-		color: "#00b4d8",
-	},
-	{
 		name: "IntelOwl",
 		slug: "intelowl",
 		href: "/u/cti_api/api_integration/integration_intelowl",
