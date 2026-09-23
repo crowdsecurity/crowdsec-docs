@@ -44,7 +44,7 @@ In the same modal, you can view the active decisions. This section provides info
 
 #### Inactive remediation components
 
-Remediation components are meant to block attackers. Having inactive remediation component can compromise the security of your Security Engine, as they cannot apply decisions.
+Remediation components are meant to block attackers. Having inactive remediation components can compromise the security of your Security Engine, as they cannot apply decisions.
 
 ![Security Engine details page](/img/console/security_engines/details-page-inactive-bouncer.png)
 

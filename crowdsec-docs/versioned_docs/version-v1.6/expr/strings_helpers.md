@@ -175,7 +175,7 @@ TrimSuffix returns s without the provided trailing suffix string. If s doesn't e
 
 ### `ToString(s) string`
 
-Returns the string representation of s, if available (does a `s.(sttring)`).
+Returns the string representation of s, if available (does a `s.(string)`).
 
 ### `LogInfo(format string, ...)`
 

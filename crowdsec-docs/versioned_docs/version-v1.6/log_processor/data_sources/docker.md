@@ -19,7 +19,7 @@ labels:
   type: log_type
 ```
 
-To monitor containers name or ID matching a regex:
+To monitor containers whose name or ID matches a regex:
 
 ```yaml
 source: docker
@@ -38,7 +38,7 @@ Look at the `configuration parameters` to view all supported options.
 
 ### `container_name`
 
-List of containers names to monitor.
+List of container names to monitor.
 
 ### `container_id`
 
@@ -104,7 +104,7 @@ labels:
   type: nginx
 ```
 
-Here is an example of running a nginx container with the labels:
+Here is an example of running an nginx container with the labels:
 
 ```bash
 docker run -d --label crowdsec.enable=true --label crowdsec.labels.type=nginx nginx:alpine
@@ -140,7 +140,7 @@ crowdsec -type nginx -dsn 'docker://my_nginx_container_name?log_level=debug'
 
 ### Containers watching
 
-This module will automatically read the logs of containers specified in the configuration, even if they have been started after crowdsec start.
+This module will automatically read the logs of containers specified in the configuration, even if they were started after CrowdSec started.
 
 ### Reading podman containers
 

@@ -23,7 +23,7 @@ sudo cscli lapi register -u http://<remote_api>:<port>
 
 
 ```bash
-sudo cscli machines list # to get the name of the new registered machine
+sudo cscli machines list # to get the name of the newly registered machine
 ```
 
 ```bash
@@ -38,7 +38,7 @@ sudo systemctl restart crowdsec
 
 #### Disable the registered machine Local API
 
-On the machine you ran `cscli lapi register`, it optimal to disable the Local API component to save on resources since it is now forwarding all alerts/decisions to the Local API server.
+On the machine where you ran `cscli lapi register`, it is best to disable the Local API component to save on resources since it is now forwarding all alerts/decisions to the Local API server.
 
 Within the `config.yaml` file, set `enable` under `api.server` to `false`:
 
@@ -86,7 +86,7 @@ Communication over the unix socket is never encrypted, and client certificate au
 
 If your Local API is exposed to the internet, it is recommended to enable SSL or at least use a reverse proxy with SSL termination to secure the communication between the Log Processors / Remediation Components and the Local API.
 
-If your Log Processors and Remediation Components are apart of the same LAN or VPN, then this is not necessary step.
+If your Log Processors and Remediation Components are part of the same LAN or VPN, this step is not necessary.
 
 ##### Local API SSL
 

@@ -55,11 +55,11 @@ The [VictoriaLogs query](https://docs.victoriametrics.com/victorialogs/logsql/).
 
 Required.
 
-Note that `tail` requests have limitations for operators used query. See [this doc](https://docs.victoriametrics.com/victorialogs/querying/#live-tailing) for the details.
+Note that `tail` requests limit which operators can be used in the query. See [this doc](https://docs.victoriametrics.com/victorialogs/querying/#live-tailing) for the details.
 
 ### `limit`
 
-The maximum number of messages to be retried from VictoriaLogs at once.
+The maximum number of messages to retrieve from VictoriaLogs at once.
 
 ### `headers`
 
@@ -76,7 +76,7 @@ See this doc for more information: [VictoriaLogs headers](https://docs.victoriam
 
 ### `wait_for_ready`
 
-The retry interval at startup before giving on VictoriaLogs.
+How long to wait at startup for VictoriaLogs to be ready before giving up.
 
 Defaults to `10 seconds`.
 
@@ -94,12 +94,12 @@ auth:
 
 The maximum duration VictoriaLogs is allowed to be unavailable (once startup is successful) before giving up on the data source.
 
-Default to `30 seconds`.
+Defaults to `30 seconds`.
 
 
 ## DSN and command-line
 
-All the parameters above are available via DNS (one-shot mode), plus the following ones:
+All the parameters above are available via DSN (one-shot mode), plus the following ones:
 
 ### `ssl`
 

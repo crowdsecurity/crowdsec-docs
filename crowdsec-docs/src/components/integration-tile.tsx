@@ -13,7 +13,7 @@ interface IntegrationTileProps {
 
 export const firewallIntegrations = [
 	{
-		name: "Checkpoint",
+		name: "Check Point",
 		slug: "checkpoint",
 		href: "/u/integrations/checkpoint",
 		desc: "Custom Intelligence (IoC) Feeds",
@@ -23,7 +23,7 @@ export const firewallIntegrations = [
 	{ name: "F5", slug: "f5", href: "/u/integrations/f5", desc: "External IP blocklist / Feed lists", color: "#e4002b" },
 	{ name: "Fortinet", slug: "fortinet", href: "/u/integrations/fortinet", desc: "IP address Threat Feeds", color: "#ee3124" },
 	{ name: "Juniper", slug: "juniper", href: "/u/integrations/juniper", desc: "Security Dynamic Address feeds", color: "#84b135" },
-	{ name: "Mikrotik", slug: "mikrotik", href: "/u/integrations/mikrotik", desc: "IP blocklist ingestion", color: "#9f1d20" },
+	{ name: "MikroTik", slug: "mikrotik", href: "/u/integrations/mikrotik", desc: "IP blocklist ingestion", color: "#9f1d20" },
 	{ name: "OPNsense", slug: "opnsense", href: "/u/integrations/opnsense", desc: "URL Table (IPs) aliases", color: "#d94f00" },
 	{ name: "Palo Alto", slug: "paloalto", href: "/u/integrations/paloalto", desc: "External Dynamic Lists (EDL)", color: "#fa582d" },
 	{ name: "pfSense", slug: "pfsense", href: "/u/integrations/pfsense", desc: "URL Table (IPs) aliases", color: "#212d6e" },

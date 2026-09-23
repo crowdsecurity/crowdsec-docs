@@ -56,7 +56,7 @@ You can try to run a test on your logs to spot issues. See the [cscli explain do
 
 Visit the [CrowdSec Hub](https://hub.crowdsec.net/) to find collections for your stack by browsing or searching. A collection bundles parsers and scenarios for a given service. For example, the NGINX collection includes NGINX parsers and scenarios for common HTTP attacks.
 
-Collections are packaged for various type of services:
+Collections are packaged for various types of services:
 
 - **Web servers**: `crowdsecurity/nginx`, `crowdsecurity/apache2`, `crowdsecurity/caddy`
 - **SSH**: `crowdsecurity/sshd`
@@ -133,7 +133,7 @@ kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name
 ╰──────────┴────────────┴──────────────┴────────────────┴────────────────────────┴───────────────────╯
 ```
 
-#### 🛠️ Make sure the IP in your logs are public IPs
+#### 🛠️ Make sure the IPs in your logs are public IPs
 
 Due to misconfiguration or log source choice, source IPs can be private/internal addresses instead of **X-Forwarded-For** client IPs.
 

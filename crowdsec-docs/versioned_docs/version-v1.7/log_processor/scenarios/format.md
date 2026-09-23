@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Scenario configuration example
 
-A way to detect a http scanner might be to track the number of distinct non-existing pages it's requesting. The scenario might look like this:
+A way to detect an HTTP scanner might be to track the number of distinct non-existing pages it's requesting. The scenario might look like this:
 
 ```yaml
 type: leaky
@@ -44,7 +44,7 @@ Defines the type of the bucket. Currently five types are supported :
 
  - `leaky` : a [leaky bucket](https://en.wikipedia.org/wiki/Leaky_bucket) that must be configured with a [capacity](#capacity) and a [leakspeed](#leakspeed)
  - `trigger` : a bucket that overflows as soon as an event is poured
-   (it is like a leaky bucket is a capacity of 0)
+   (it is like a leaky bucket with a capacity of 0)
  - `counter` : a bucket that only overflows every
    [duration](#duration). It is especially useful to count things.
  - `conditional`: a bucket that overflows when the expression given in
@@ -52,12 +52,12 @@ Defines the type of the bucket. Currently five types are supported :
    previous events that were poured to the bucket (to detect
    impossible travel or more behavioral patterns for example). It
    can't overflow like a leaky bucket and its capacity is
-   ignored. Incase the conditional bucket is meant to be used to hold
-   a large number of events, consider use the cashe_size field.
+   ignored. In case the conditional bucket is meant to be used to hold
+   a large number of events, consider using the [`cache_size`](#cache_size) field.
  - `bayesian` : a bucket that runs bayesian inference internally. The
    overflow will trigger when the posterior probability reaches the
-   threshold. This is useful for instance if the behaivor is a
-   combination of events which alone wouldn't be worthy of suspicious.
+   threshold. This is useful, for instance, if the behavior is a
+   combination of events which alone wouldn't be suspicious.
 
 
 #### Examples:
@@ -119,7 +119,7 @@ duration: 20s
 
 ---
 ##### Conditional
-This bucket will overflow when the condition is true. In this example it will overflow if a user sucessfully authenticates after failing 5 times previously. For a more in depth look, check out [our blogpost](https://www.crowdsec.net/blog/detecting-successful-ssh-brute-force) on the topic.
+This bucket will overflow when the condition is true. In this example it will overflow if a user successfully authenticates after failing 5 times previously. For a more in depth look, check out [our blogpost](https://www.crowdsec.net/blog/detecting-successful-ssh-brute-force) on the topic.
 
 ```yaml
 type: conditional
@@ -216,7 +216,7 @@ filter: expression
 
 `filter` must be a valid [expr](/expr/intro.md) expression that will be evaluated against the event.
 
-If `filter` evaluation returns true or is absent, event will be pour in the bucket.
+If `filter` evaluation returns true or is absent, the event will be poured into the bucket.
 
 If `filter` returns `false` or a non-boolean, the event will be skipped for this bucket.
 
@@ -335,7 +335,7 @@ capacity: 5
 Only applies to `leaky` buckets.
 
 A positive integer representing the bucket capacity.
-If there are more than `capacity` item in the bucket, it will overflow.
+If there are more than `capacity` items in the bucket, it will overflow.
 Should be set to `-1` in most situations for `conditional` buckets.
 
 ---
@@ -347,7 +347,7 @@ leakspeed: "10s"
 
 Only applies to `leaky` and  `conditional` buckets.
 
-A duration that represent how often an event will be leaking from the bucket.
+A duration that represents how often an event will be leaking from the bucket.
 
 Must be compatible with [golang ParseDuration format](https://golang.org/pkg/time/#ParseDuration).
 
@@ -400,11 +400,11 @@ bayesian_conditions:
 
 Only applies to `bayesian` buckets.
 
-Bayesian conditions are the heart of the bayesian bucket. Every `condition` represents an event we want to do a bayesian update for. Every time the inference is ran we evaluate the `condition`. The two parameters `prob_given_evil` and `prob_given_benign` are called likelihoods and are used during the update. They represent the two conditional probabilities `P(condition == true | IP is evil)` and `P(condition == true | IP is benign)` respectively.  
+Bayesian conditions are the heart of the bayesian bucket. Every `condition` represents an event we want to do a bayesian update for. Every time the inference is run, we evaluate the `condition`. The two parameters `prob_given_evil` and `prob_given_benign` are called likelihoods and are used during the update. They represent the two conditional probabilities `P(condition == true | IP is evil)` and `P(condition == true | IP is benign)` respectively.  
 
 A good estimate for the likelihoods is to look at all events in your logs and use the ratios `#evil_ips_satisfying_condition/#evil_ips` resp. `#benign_ips_satisfying_condition/#benign_ips`. If the results of the scenario are imprecise one should either add more conditions or play around with the threshold. It is not recommended to individually adjust the likelihoods as this leads to overfitting.  
 
-If the evalutaion of the `condition` is particularly expensive, one can add a `guillotine`. This will prevent the condition from being evaluated after the first time it evaluates to `true`. The bayesian updates will from then on out only consider the case `condition == true`.  
+If the evaluation of the `condition` is particularly expensive, one can add a `guillotine`. This will prevent the condition from being evaluated after the first time it evaluates to `true`. The bayesian updates will from then on out only consider the case `condition == true`.  
 
 Note: `prob_given_evil` and `prob_given_benign` do not have to sum up to 1 as they describe different events.
 
@@ -428,12 +428,12 @@ Labels is a list of `label: values` that provide context to an alert.
 The `value` can be of any type (string, list, object ...).
 Some labels are required, but other labels can be added.
 
-note: the labels are (currently) not stored in the database, nor they are sent to the API.
+note: the labels are (currently) not stored in the database, nor are they sent to the API.
 
 #### `remediation`
 >type: bool
 
-The **remediation** label, if set to `true` indicate if the originating IP should be banned.
+The **remediation** label, if set to `true`, indicates that the originating IP should be banned.
 
 
 #### `classification`
@@ -539,7 +539,7 @@ debug: true|false
 _default: false_
 
 
-If set to to `true`, enabled scenario level debugging.
+If set to `true`, enables scenario-level debugging.
 It is meant to help understanding scenario  behavior by providing contextual logging :
 
 <details>
@@ -663,7 +663,7 @@ Since 1.5, it is possible to configure additional cache for `RegexpInFile()` :
  - ttl: expiration of elements
  - cache: boolean (true by default if one of the fields is set)
 
-This is typically useful for scenarios that needs to check on a lot of regexps.
+This is typically useful for scenarios that need to check a lot of regexps.
 
 Example configuration:
 

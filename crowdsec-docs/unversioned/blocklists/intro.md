@@ -16,11 +16,11 @@ In most cases you will use these lists to block malicious IP addresses from acce
 
 ## Zero False Positives
 
-Whilst we check for [Safe Classifications](/cti_api/taxonomy/false_positives.mdx) within **all** blocklist we provide (Third Party, CrowdSec Premium and CrowdSec Platinum), we cannot guarantee that **Third Party** blocklists are free from false positives as the data is not curated by CrowdSec. 
+Whilst we check for [Safe Classifications](/cti_api/taxonomy/false_positives.mdx) within **all** blocklists we provide (Third Party, CrowdSec Premium and CrowdSec Platinum), we cannot guarantee that **Third Party** blocklists are free from false positives as the data is not curated by CrowdSec. 
 
 ## How do CrowdSec Blocklists work?
 
-CrowdSec Blocklists are updated in real time and are available in various formats. We provide Blocklists in different categories such as Industry, Technology (Wordpress, VPN / Proxy) and Threat Intelligence (Botnet, Malware, etc.).
+CrowdSec Blocklists are updated in real time and are available in various formats. We provide Blocklists in different categories such as Industry, Technology (WordPress, VPN / Proxy) and Threat Intelligence (Botnet, Malware, etc.).
 
 ### CrowdSec Blocklist Tiers
 
@@ -37,7 +37,7 @@ CrowdSec Blocklists are available in three tiers:
     - Includes Premium tier
     - Includes additional Blocklists that are not available in the Premium tier (Platinum Blocklists).
 
-> Question: Why is platinum tier an additional paid tier?
+> Question: Why is the Platinum tier an additional paid tier?
 
 The Platinum tier offers additional Blocklists that are meticulously curated and tailored for specific purposes. The extra cost covers the curation and maintenance of these Blocklists, as we utilize AI and ML models to identify malicious IP addresses.
 

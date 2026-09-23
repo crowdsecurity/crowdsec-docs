@@ -212,7 +212,7 @@ Choose if you want to enable the `stream mode` or stay in `live mode`.
 
 By default, the `live mode` is enabled. The first time a stranger connects to your website, this mode means that the IP will be checked directly by the CrowdSec API. The rest of your user’s browsing will be even more transparent thanks to the fully customizable cache system.
 
-But you can also activate the `stream mode`. This mode allows you to constantly feed the bouncer with the malicious IP list via a background task (CRON), making it to be even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
+But you can also activate the `stream mode`. This mode allows you to constantly feed the bouncer with the malicious IP list via a background task (CRON), making it even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
 
 ***
 
@@ -236,7 +236,7 @@ Choose the cache technology that will use your CrowdSec Local API.
 
 The File system cache is faster than calling Local API. Redis or Memcached is faster than the File System cache.
 
-**N.B** : There are also a clear cache button fo all cache technologies and a prune cache button dedicated to the
+**N.B** : There is also a clear cache button for all cache technologies and a prune cache button dedicated to the
 file system cache.
 
 ***
@@ -266,7 +266,7 @@ Only if you choose Memcached cache as technology. Example of DSN: memcached://lo
 
 The duration between re-asking Local API about an already checked clean IP.
 
-Minimum 1 second.  Note that this setting can not be apply in stream mode.
+Minimum 1 second.  Note that this setting cannot be applied in stream mode.
 
 ***
 
@@ -274,7 +274,7 @@ Minimum 1 second.  Note that this setting can not be apply in stream mode.
 
 The duration between re-asking Local API about an already checked bad IP.
 
-Minimum 1 second.  Note that this setting can not be apply in stream mode.
+Minimum 1 second.  Note that this setting cannot be applied in stream mode.
 
 ***
 
@@ -308,7 +308,7 @@ Enable if you want to handle CrowdSec country scoped decisions.
 
 `Geolocation → Save geolocation country result in cache` (`global` scope)
 
-Enabling this option will avoid multiple call to the geolocation system (e.g. MaxMind database).
+Enabling this option will avoid multiple calls to the geolocation system (e.g. MaxMind database).
 
 ***
 
@@ -367,7 +367,7 @@ Enable if you want to see some debug information in a specific log file.
 
 `Configure the debug mode → Display bouncings errors` (`global` scope)
 
-When this mode is enabled, you will see every unexpected bouncing errors in the browser.
+When this mode is enabled, you will see every unexpected bouncing error in the browser.
 
 ***
 
@@ -419,7 +419,7 @@ Will be used to detect credential stuffing.
 
 `Logging → Track admin user login` (`global` scope)
 
-Will be used to detect admin brute attacks.
+Will be used to detect admin brute-force attacks.
 
 ***
 
@@ -448,7 +448,7 @@ To enable the `auto prepend file` mode, you have to:
 - configure your server by adding an `auto_prepend_file` directive for your php setup.
 
 **N.B:**
-- Beware that you have to copy the file before modifying your PHP configuration,or you will get a PHP fatal error.
+- Beware that you have to copy the file before modifying your PHP configuration, or you will get a PHP fatal error.
 - Note that if you upgrade the bouncer module, you should have to copy the file again. To make this copy
   automatically, you should modify the root `composer.json` of your Magento 2 projects by adding `post-install-cmd`
   and `post-update-cmd` to the scripts parts:
@@ -514,7 +514,7 @@ Use `Composer` by simply adding `crowdsec/magento2-module-bouncer` as a dependen
 
 #### Enable the module
 
-After the installment of the module source code, the module has to be enabled by the Magento 2 CLI.
+After the installation of the module source code, the module has to be enabled by the Magento 2 CLI.
 
     bin/magento module:enable CrowdSec_Bouncer
 
@@ -551,7 +551,7 @@ At last, you have to deploy the static content:
 #### Higher matching error
 
 If a new version `y.y.y` has been published in Packagist and the Marketplace review process of this version is still in progress,
-you could encounter the following error during installation on update:
+you could encounter the following error during installation or update:
 
 > Higher matching version y.y.y of crowdsec/magento2-module-bouncer was found in public repository packagist.org
 > than x.x.x in private https://repo.magento.com. Public package might've been taken over by a malicious entity,

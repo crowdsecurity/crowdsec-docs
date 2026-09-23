@@ -1,6 +1,6 @@
 ---
 id: integration_paloalto_xsoar
-title: PaloAlto Cortex XSOAR Cortex Plugin
+title: Palo Alto Cortex XSOAR Plugin
 sidebar_position: 2
 ---
 

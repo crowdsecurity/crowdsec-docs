@@ -8,10 +8,10 @@ import AcademyPromo from '@site/src/components/academy-promo';
 
 ## Foreword
 
-This documentation assumes you're trying to create a parser for crowdsec with the intent of submitting to the hub, and thus create the associated functional testing.
+This documentation assumes you're trying to create a parser for CrowdSec with the intent of submitting it to the Hub, and thus create the associated functional testing.
 The creation of said functional testing will guide our process and will make it easier.
 
-We're going to create a parser for the imaginary service "myservice" that produce three types of logs via syslog :
+We're going to create a parser for the imaginary service "myservice" that produces three types of logs via syslog :
 
 ```
 Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'toto' from '192.168.1.1'
@@ -26,20 +26,20 @@ available](https://github.com/crowdsecurity/crowdsec-yaml-schemas/blob/main/pars
 for the parser and linked at
 [SchemaStore](https://github.com/SchemaStore/schemastore/blob/master/src/api/json/catalog.json)
 for general public availability inside most common editors. You will
-be able see if the parser comply to the schema directly in your
+be able to see if the parser complies with the schema directly in your
 editor, and you will have some kind of syntax highlighting and
 suggestions. The only requirement for this is to write your parser
-using the directory structure of the hub to make the editor detects
+using the directory structure of the hub to make the editor detect
 that the file has to comply to the yaml schema. This means that you
 will have to write the parser in one subdirectory of the
 `parsers/s00-raw`, `parsers/s01-parse`, `parsers/s02-enrich`,
 `postoverflows/s00-enrich`, `postoverflows/s01-whitelist`. This
 subdirectory is named after your name, or your organization name. As
 an example `parsers/s01-parse/crowdsecurity/sshd-logs.yaml` matches
-this directory structure. Note that extension of the parser has to
+this directory structure. Note that the parser file extension has to be
 `.yaml`.
 
-There're also mouseover description available
+Mouseover descriptions are also available:
 
 ![Possible integration](/img/parser_creation/mouseover.png)
 
@@ -78,7 +78,7 @@ From the root of the hub repository :
 
 ## Configure our test
 
-Let's add our parser to the test configuration (`.tests/myservice-logs/config.yaml`). He specify that we need syslog-logs parser (because myservice logs are shipped via syslog), and then our custom parser.
+Let's add our parser to the test configuration (`.tests/myservice-logs/config.yaml`). We specify that we need the syslog-logs parser (because myservice logs are shipped via syslog), and then our custom parser.
 
 ```yaml
 parsers:
@@ -224,7 +224,7 @@ Various changes have been made here :
 -   We keep track of the username and the source_ip (Please note that setting the source_ip in `evt.Meta.source_ip` and `evt.Parsed.source_ip` is important [1])
 -   We setup various [statics](/log_processor/parsers/format.md#statics) information to classify the log type [3]
 
-Let's run out tests again :
+Let's run our tests again:
 
 ```bash {13-20}
 ▶ cscli hubtest run myservice-logs
@@ -285,7 +285,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: accepted connection for user 't
 
 ## Closing word
 
-We have now a fully functional parser for myservice logs !
+We now have a fully functional parser for myservice logs!
 We can either deploy it to our production systems to do stuff, or even better, contribute to the hub !
 
 If you want to know more about directives and possibilities, take a look at [the parser reference documentation](/log_processor/parsers/format.md) !

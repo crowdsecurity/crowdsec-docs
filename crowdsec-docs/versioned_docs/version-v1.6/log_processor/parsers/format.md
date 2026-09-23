@@ -34,7 +34,7 @@ If the node is considered successful (grok is present and returned data or no gr
 ## Parser trees
 
 A parser node can contain sub-nodes, to provide proper branching (on top of stages).
-It can be useful when you want to apply different parsing based on different criterias, or when you have a set of candidates parsers that you want to apply to an event :
+It can be useful when you want to apply different parsing based on different criteria, or when you have a set of candidate parsers that you want to apply to an event :
 
 ```yaml
 #This first node will capture/extract some value
@@ -71,7 +71,7 @@ nodes:
 
 The `tests/base-grok-root` node will be processed first and will alter the event (here mostly by extracting some text from the `Line.Raw` field into `Parsed` thanks to the `grok` pattern and the `statics` directive).
 
-The event will then be parsed by the the following `tests/base-grok-leafs` node.
+The event will then be parsed by the following `tests/base-grok-leafs` node.
 This node has `onsuccess` set to `next_stage` which means that if the node is successful, the event will be moved to the next stage.
 
 A real-life example can be seen when it comes to parsing HTTP logs.
@@ -124,7 +124,7 @@ debug: true|false
 ```
 _default: false_
 
-If set to to `true`, enabled node level debugging.
+If set to `true`, enables node-level debugging.
 It is meant to help understanding parser node behavior by providing contextual logging :
   
 <details>
@@ -182,7 +182,7 @@ Here is the [expr documentation](https://github.com/antonmedv/expr/tree/master/d
 Examples :
 
  - `filter: "evt.Meta.foo == 'test'"`
- - `filter: "evt.Meta.bar == 'test' && evt.Meta.foo == 'test2'`
+ - `filter: "evt.Meta.bar == 'test' && evt.Meta.foo == 'test2'"`
 
 -----
 
@@ -194,7 +194,7 @@ A valid grok pattern
 
 #### `expression`
 
-A valid [expr](/expr/intro.md) expression that return a string to apply the pattern on.
+A valid [expr](/expr/intro.md) expression that returns a string to apply the pattern on.
 
 #### `apply_on`
 
@@ -220,14 +220,14 @@ grok:
   apply_on: source_field
 ```
 
-The `grok` structure in a node represent a regular expression with capture group (grok pattern) that must be applied on a field of event.
+The `grok` structure in a node represents a regular expression with capture group (grok pattern) that must be applied on a field of event.
 
 The pattern can : 
 
  - be imported by name (if present within the core of CrowdSec)
  - defined in place
 
-In both case, the pattern must be a valid RE2 expression.
+In both cases, the pattern must be a valid RE2 expression.
 The field(s) returned by the regular expression are going to be merged into the `Parsed` associative array of the `Event`.
 
 
@@ -316,7 +316,7 @@ Each entry of the list is composed of a `target` (where to write) and a `source`
 
 #### `target`
 
-The target can be defined by pointing directly a key in a dictionary (`Parsed`, `Enriched` or `Meta`), or by providing direct a `target` expression :
+The target can be defined by pointing directly to a key in a dictionary (`Parsed`, `Enriched` or `Meta`), or by providing a `target` expression directly:
 
 ```yaml
 meta: target_field
@@ -346,7 +346,7 @@ target: evt.Parsed.foobar
 method: GeoCoords
 ```
 
-> `method: GeoIPCity` will will use the GeoIPCity to populate some fields in the `Enriched` entry. See (Enrichers|parsers/enricher.md) for more information
+> `method: GeoIPCity` will use GeoIpCity to populate some fields in the `Enriched` entry. See (Enrichers|parsers/enricher.md) for more information
 
 #### `source`
 
@@ -434,7 +434,7 @@ Since 1.5, it is possible to configure additional cache for `RegexpInFile()` :
  - ttl: expiration of elements
  - cache: boolean (true by default if one of the fields is set)
 
-This is typically useful for scenarios that needs to check on a lot of regexps.
+This is typically useful for scenarios that need to check a lot of regexps.
 
 Example configuration:
 
@@ -471,7 +471,7 @@ The [expression](/expr/intro.md) that defines the string that will be used as a 
 
 #### `ttl`
 
-The time to leave of items. Default strategy is LRU.
+The time to live of items.
 
 #### `size`
 

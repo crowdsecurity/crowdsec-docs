@@ -25,9 +25,9 @@ Beta Remediation Component, please report any issues on [GitHub](https://github.
 
 :::
 
-## How does it work ?
+## How does it work?
 
-This component leverages Apache's module mecanism to provide IP address blocking capability.
+This component leverages Apache's module mechanism to provide IP address blocking capability.
 
 The module supports **Live mode** with a local (in-memory) cache.
 
@@ -39,7 +39,7 @@ At the back, this component uses `mod_proxy`, `mod_ssl` for requests to LAPI, an
 
 Packages are only available for debian and ubuntu systems.
 
-The module can be built and installed on other platform as well.
+The module can be built and installed on other platforms as well.
 
 Please keep in mind that this bouncer only supports live mode.
 
@@ -57,7 +57,7 @@ Please keep in mind that this bouncer only supports live mode.
 ### Repository configuration
 
 :::warning
-Please note that the repository for this package is not the same as the one holding CrowdSec's binary packages,
+Please note that the repository for this package is not the same as the one holding CrowdSec's binary packages.
 :::
 
 ```bash
@@ -103,7 +103,7 @@ Generate an API key for the bouncer [1]:
 sudo cscli bouncers add apache2
 ```
 
-Remediation Component config's is located in `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`:
+The Remediation Component configuration is located in `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`:
 
 ```bash
 ## Replace the API key with the newly generated one [1]
@@ -134,13 +134,13 @@ Enable or disable module globally:
  - `off` (**default**): Module has to be enabled per location.
  - `on`: Module is enabled by default.
 
-Behavior can be overriden in any location.
+Behavior can be overridden in any location.
 
 ### `CrowdsecFallback`
 
 > fail|block|allow
 
-How to respond if the Crowdsec API is not available:
+How to respond if the CrowdSec API is not available:
  - `fail`  returns a 500 Internal Server Error.
  - `block` returns a 302 Redirect (or 429 Too Many Requests if CrowdsecLocation is unset).
  - `allow` (**default**) will allow the request through.
@@ -175,7 +175,7 @@ Set the crowdsec cache timeout. Defaults to 60 seconds.
 
 ### Overriding HTTP Response
 
-If you want to return custom HTTP code and/or content, you can use `CrowdsecLocation` and `RewriteRules` :
+If you want to return custom HTTP code and/or content, you can use `CrowdsecLocation` and `RewriteRule`:
 
 ```bash
 CrowdsecLocation /one/

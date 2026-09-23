@@ -16,7 +16,7 @@ see the main [Hooks](../hooks.md) page.
 
 This hook fires when a client POSTs a challenge response to `/crowdsec-internal/challenge/submit`, **after** the AppSec component has cryptographically validated the submission and decrypted the fingerprint, but **before** the success cookie is issued. This is the right place to refuse cookies to clients the challenge has positively identified as automation. **In-band only.**
 
-Note that the default behavior is to accept (grant cookie) to client that submit a valid challenge response.
+By default, clients that submit a valid challenge response are accepted and granted a cookie.
 
 ### Available helpers
 
@@ -158,11 +158,11 @@ inband:
        - RemoveInBandRuleByName("crowdsecurity/my-noisy-rule")
 ```
 
-Or to force client to have solved a challenge before accessing a endpoint (eg, an API endpoint in a SPA app):
+Or, to require clients to solve a challenge before accessing an endpoint (e.g. an API endpoint of a single-page application):
 ```yaml
 inband:
  pre_eval:
-   - filter: req.URL.Path startswith "/api" && !HasValidChallengeCookie()
+   - filter: req.URL.Path startsWith "/api" && !HasValidChallengeCookie()
      apply:
       - DropRequest("challenge must be solved before accessing the API")
 ```

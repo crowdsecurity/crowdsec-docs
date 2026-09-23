@@ -13,7 +13,7 @@ Hub management, via `cscli` allows you to install, upgrade, remove and view inst
 
 ### Installation
 
-A collection contains parsers and scenarios to form a coherent ensemble. Most of the time, this is the only you will need to install. 
+A collection contains parsers and scenarios to form a coherent ensemble. Most of the time, this is the only thing you will need to install. 
 
 Have nginx running ? `cscli collections install crowdsecurity/nginx` should do the trick ! 
 
@@ -253,7 +253,7 @@ sudo cscli parsers inspect <parser_name>
 
 Parsers inspect will give you detailed information about a given parser, including versioning data *and* runtime metrics (fetched from prometheus).
 
-<!--TBD: refaire l'output apres avoir fix le 'parsers inspect XXXX'-->
+<!--TBD: (French TODO comment left in source) l'output apres avoir fix le 'parsers inspect XXXX'-->
 <details>
   <summary>Inspect <strong>crowdsecurity/sshd-logs</strong> parser</summary>
 
@@ -364,7 +364,7 @@ Use `--all` to list available parsers.
 
 :::
 
-[Scenario](/docs/next/log_processor/scenarios/intro) are yaml files in `/etc/crowdsec/scenarios/`.
+[Scenarios](/docs/next/log_processor/scenarios/intro) are YAML files in `/etc/crowdsec/scenarios/`.
 
 
 <details>

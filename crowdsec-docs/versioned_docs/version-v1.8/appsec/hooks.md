@@ -13,7 +13,7 @@ Hooks run in six phases:
 - `on_load`: Called just after the rules have been loaded into the engine.
 - `pre_eval`: Called after a request has been received but before the rules are evaluated.
 - `post_eval`: Called after the rules have been evaluated.
-- `on_match`: Called after a successful match of a rule. If multiple rules, this hook will be called only once.
+- `on_match`: Called after a successful match of a rule. If multiple rules match, this hook is called only once.
 - `on_challenge`: Called for in-band requests carrying a valid challenge cookie, with the decoded `fingerprint` object available. See [Bot detection hooks reference](bot_detection/hooks.md#on_challenge). (In-band only.)
 - `on_challenge_submit`: Called when a client POSTs a challenge response to `/crowdsec-internal/challenge/submit`, after crypto validation and fingerprint decryption. See [Bot detection hooks reference](bot_detection/hooks.md#on_challenge_submit). (In-band only.)
 
@@ -37,7 +37,7 @@ on_match:
       - valid expression
 ```
 
-If the filter returns `true`, each of the expressions in the `apply` section are executed.
+If the filter returns `true`, each expression in the `apply` section is executed.
 
 <!-- once https://github.com/crowdsecurity/crowdsec-docs/issues/555 is fixed, document on_success-->
 
@@ -49,7 +49,7 @@ This hook is intended to be used to disable rules at loading (eg, to temporarily
 
 | Helper Name                    | Type                                    | Description                                                                                                                                                           |
 | ------------------------------ | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `RemoveInBandRuleByName`       | `func(tag str)`                         | Disable the named in-band rule                                                                                                                                        |
+| `RemoveInBandRuleByName`       | `func(name str)`                         | Disable the named in-band rule                                                                                                                                        |
 | `RemoveInBandRuleByTag`        | `func(tag str)`                         | Disable the in-band rule identified by the tag (multiple rules can have the same tag)                                                                                 |
 | `RemoveInBandRuleByID`         | `func(id int)`                          | Disable the in-band rule identified by the ID                                                                                                                         |
 | `RemoveOutBandRuleByName`      | `func(tag str)`                         | Disable the named out-of-band rule                                                                                                                                    |
@@ -203,7 +203,7 @@ This hook is intended to be used to change the behavior of the engine after a ma
 | ---------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | `SetRemediation` | `func(remediation string)` | Change the remediation that will be returned to the remediation component                                     |
 | `SetReturnCode`  | `func(code int)`           | Change the HTTP code that will be returned to the remediation component                                       |
-| `CancelAlert`    | `func()`                   | Prevent the Application Security Component to create a crowdsec alert                                         |
+| `CancelAlert`    | `func()`                   | Prevent the Application Security Component from creating a CrowdSec alert                                         |
 | `SendAlert`      | `func()`                   | Force the Application Security Component to create a crowdsec alert                                           |
 | `CancelEvent`    | `func()`                   | Prevent the Application Security Component to create a crowdsec event                                         |
 | `SendEvent`      | `func()`                   | Force the Application Security Component to create a crowdsec event                                           |

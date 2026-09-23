@@ -19,7 +19,7 @@ This page lists all possible health check issues, their trigger conditions, and 
 | Issue | Criticality   | Summary | Resolution |
 |-------|---------------|---------|------------|
 | **Integration for Firewall Offline** | 🔥 Critical | Firewall has not pulled from BLaaS endpoint for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_integration_fw_offline) |
-| **Integration for Firewall Pulling Zero IPs** | ⚠️ High | Firewall BLaaS integration is content is empty | [Troubleshooting](/u/troubleshooting/issue_integration_fw_zero_ips) |
+| **Integration for Firewall Pulling Zero IPs** | ⚠️ High | Firewall BLaaS integration content is empty | [Troubleshooting](/u/troubleshooting/issue_integration_fw_zero_ips) |
 | **Integration for RC Offline** | 🔥 Critical | Remediation Component has not pulled from endpoint for 24+ hours | [Troubleshooting](/u/troubleshooting/issue_integration_rc_offline) |
 | **Log Processor No Alerts** | ⚠️ High | Log Processor has not generated alerts in 48 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_alerts) |
 | **Log Processor No Logs Parsed** | 🔥 Critical | Logs read but none parsed in the last 48 hours | [Troubleshooting](/u/troubleshooting/issue_lp_no_logs_parsed) |

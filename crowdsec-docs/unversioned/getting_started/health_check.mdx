@@ -202,7 +202,7 @@ Were all the tests related to your setup successful?
 
   **To troubleshoot:**
   - The detailed doc about the acquisition configuration can be found [here](https://docs.crowdsec.net/docs/next/log_processor/data_sources/intro/).
-  - Check your acquisition files exist and that the datasources are properly setup.
+  - Check that your acquisition files exist and that the datasources are properly set up.
   - 💡 Hint:
     - The hub page of the collection you installed provides an example of the acquisition configuration file to create.
     - For example:
@@ -603,8 +603,8 @@ OR do it from a device with a different public IP address than the client you're
 </Tabs>
 
 ⏳ *Wait a few seconds to ensure the decision is processed by the bouncer.*  
-3️⃣ Try accessing your service (e.g. website, API). from the same public IP address.
-  ➡️ You should be blocked by the bouncer. returning a forbidden response (HTTP 403) or a captcha challenge.
+3️⃣ Try accessing your service (e.g. website, API) from the same public IP address.
+  ➡️ You should be blocked by the bouncer, which returns a forbidden response (HTTP 403) or a captcha challenge.
 
 4️⃣ Wait for 1 minute, then check the decisions list to see if the decision has been removed
 
@@ -621,7 +621,7 @@ You might want to continue to the next recommended steps:
 <details>
     <summary>🐞 **Remediation Troubleshooting**</summary>
 
-  Before diving into troubleshooting, remember that a remediation components (AKA **bouncer**) is a separate component that connects to the Security Engine and regularly pulls decisions (like bans or captchas) to apply them at its level (firewall, web server, etc.). If remediation isn’t working, it’s often due to issues in this communication loop.  
+  Before diving into troubleshooting, remember that a remediation component (AKA **bouncer**) is a separate component that connects to the Security Engine and regularly pulls decisions (like bans or captchas) to apply them at its level (firewall, web server, etc.). If remediation isn’t working, it’s often due to issues in this communication loop.  
   You can find more information about bouncers in the [Bouncers documentation](https://docs.crowdsec.net/u/bouncers/intro/).
   The full list of available bouncers is available on the [CrowdSec Hub ↗️](https://app.crowdsec.net/hub/remediation-components).
 
@@ -686,7 +686,7 @@ You might want to continue to the next recommended steps:
   - **Register bouncer**:
     ```bash
     # Generate API key with a tool of your choice
-    # Then fill the values.yaml accordingly to dictates the bouncer name and api key use for this communication with LAPI
+    # Then fill in values.yaml with the bouncer name and the API key it uses to communicate with LAPI
     # values.yaml
     lapi:
       env:

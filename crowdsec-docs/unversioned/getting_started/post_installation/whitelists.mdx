@@ -34,7 +34,7 @@ Parser-based whitelists are applied while the event is being enriched. They prev
 
 Typically these files are located here, depending on your OS:
 - Linux: `/etc/crowdsec/parsers/s02-enrich/`
-- Freebsd: `/usr/local/etc/crowdsec/parsers/s02-enrich/`
+- FreeBSD: `/usr/local/etc/crowdsec/parsers/s02-enrich/`
 - Windows: `c:/programdata/crowdsec/config/parsers/s02-enrich/`
 
 ### Postoverflow
@@ -157,7 +157,7 @@ Example output:
 ───────────────────────────────────────────────────────────────
 ```
 
-You can see the full list of `allowlist` command via `cscli` [here](/docs/next/cscli/cscli_allowlists). 
+You can see the full list of `cscli allowlists` commands [here](/docs/next/cscli/cscli_allowlists). 
 
 #### Enricher file
 
@@ -181,7 +181,7 @@ sudo systemctl restart crowdsec
 If you want to whitelist a range of IP addresses, for example `192.168.1.0/24`, create a file in the Enricher folder with the following content:
 
 ```yaml title="/etc/crowdsec/parsers/s02-enrich/01-my-whitelist.yaml"
-name: my/whitelist ## Must be unqiue
+name: my/whitelist ## Must be unique
 description: "Whitelist events from my IP range"
 whitelist:
   reason: "My IP range"
@@ -223,7 +223,7 @@ Expression whitelists are very powerful and can be used to whitelist based on an
 
 ### Dynamic IP address
 
-If you want to whitelist an IP address that is not static, you need to use a external DDNS service to resolve the IP address and then use the Postoverflow whitelist to whitelist the resolved IP address.
+If you want to whitelist an IP address that is not static, you need to use an external DDNS service to resolve the IP address and then use the Postoverflow whitelist to whitelist the resolved IP address.
 
 :::note
 This is a postoverflow whitelist as it requires a network call to resolve the IP address.
@@ -247,7 +247,7 @@ Please read the [LookupHost](/docs/next/expr/ip_helpers/#lookuphosthost-string-s
 Once you have created your whitelist, you can test it by running a log line through the parser and checking the output.
 
 :::info
-In the example we using Nginx logs, you will need to adjust the testing to point towards your log file.
+This example uses Nginx logs; adjust the commands to point to your own log file.
 :::
 
 ```bash title="Test an IP/Range whitelist"
@@ -278,13 +278,13 @@ line: 192.168.1.1 - - [05/Sep/2024:18:07:25 +0000] "GET /health? HTTP/2.0" 200 4
 Currently postoverflows are not supported by `cscli explain` so you will need to check the logs to see if the whitelist is working.
 :::
 
-Example logs line you will see:
+Example log line you will see:
     
 ```bash title="Example logs"
 time="07-07-2020 17:11:09" level=info msg="Ban for 192.168.1.1 whitelisted, reason [My dynamic IP]" id=cold-sunset name=my/whitelist stage=s01
 ```
 
-## Whitelisted but there still a decision?
+## Whitelisted but there is still a decision?
 
 Whitelisting an IP address or event will prevent the events from triggering **new** decisions, however, any existing decisions will still be applied.
 
@@ -298,4 +298,4 @@ sudo cscli decisions delete --ip 192.168.1.1
 
 If you are still looking for examples on how to create a whitelist, you can find more detailed documentation [here](/docs/next/log_processor/whitelist/intro).
 
-If you have created your first whitelist, tested it and happy to continue then [click here](/getting_started/next_steps.mdx#2-whitelists-).
+If you have created and tested your first whitelist, [return to the post-installation steps](/getting_started/next_steps.mdx#2-whitelists-).

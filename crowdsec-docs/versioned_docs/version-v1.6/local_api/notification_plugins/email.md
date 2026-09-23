@@ -7,7 +7,7 @@ The Email plugin is shipped by default with CrowdSec. The following guide shows 
 
 ## Configuring the plugin
 
-By default the configuration for Email plugin is located at these default location per OS:
+By default, the Email plugin configuration is located at the following paths, depending on the OS:
 
 - **Linux** `/etc/crowdsec/notifications/email.yaml`
 - **FreeBSD** `/usr/local/etc/crowdsec/notifications/email.yaml`

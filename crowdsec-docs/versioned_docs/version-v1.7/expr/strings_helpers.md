@@ -56,7 +56,7 @@ Parses an URI into a map of string list.
 
 ### `ExtractQueryParam(query string, param string) []string`
 
-`ExtractQueryParam` extract the `param` parameter value from the URL query `query` and returns the list of values.
+`ExtractQueryParam` extracts the `param` parameter value from the URL query `query` and returns the list of values.
 
 > `any(ExtractQueryParam("/foo?id=1&b=2", "id"), { # == "1" })` returns true if at least one of the `id` parameter value is equal to `1`
 
@@ -181,7 +181,7 @@ TrimSuffix returns s without the provided trailing suffix string. If s doesn't e
 
 ### `ToString(s) string`
 
-Returns the string representation of s, if available (does a `s.(sttring)`).
+Returns the string representation of s, if available (does a `s.(string)`).
 
 ### `LogInfo(format string, ...)`
 

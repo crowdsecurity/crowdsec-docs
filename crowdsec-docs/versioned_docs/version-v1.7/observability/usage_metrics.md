@@ -7,10 +7,10 @@ sidebar_position: 6
 :::info
 Usage metrics require at least CrowdSec v1.6.3
 
-Support on Remediation Components are rolling out progressively. Please check the relevant [documentation](/u/bouncers/intro) to see if your Remediation Component has support.
+Support in Remediation Components is rolling out progressively. Please check the relevant [documentation](/u/bouncers/intro) to see if your Remediation Component has support.
 :::
 
-Logs processors and Remediation Components can provide detailed usage data to the [Local API (LAPI)](local_api/intro.md), allowing for a unified view of their behavior and better insights.
+Log Processors and Remediation Components can provide detailed usage data to the [Local API (LAPI)](local_api/intro.md), allowing for a unified view of their behavior and better insights.
 
 ## Remediation Components
 
@@ -38,7 +38,7 @@ Currently, CrowdSec supports the following origins:
 
 You can view the metrics locally using [`cscli metrics show bouncers`](cscli/cscli_metrics_show.md):
 
-![usage metrics csli](/img/usage_metrics_cscli_example.png)
+![usage metrics cscli](/img/usage_metrics_cscli_example.png)
 
 The Remediation Components will send the number of decisions that are actually enforced.
 
@@ -59,7 +59,7 @@ Log Processors are the underlying component within the Security Engine that proc
 Logs processors can also send more information about themselves to LAPI:
  - Operating system information (version, distribution/platform)
  - Number of [datasources](/log_processor/data_sources/introduction.md) configured per type
- - Enabled [features flags](configuration/feature_flags.md)
+ - Enabled [feature flags](configuration/feature_flags.md)
  - Installed Hub files (including [custom / tainted](/u/troubleshooting/security_engine#why-are-some-scenariosparsers-tainted-or-custom) files):
     - AppSec-Config
     - AppSec-Rules

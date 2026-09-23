@@ -143,7 +143,7 @@ The output will instruct you to restart the service, but we'll do that later.
 #### Reset LAPI (Local API) credentials
   - Remove the existing machine and create a new one in auto:
 ```bash
-cscli machines list  //ignore the warning it's normal for now
+cscli machines list  # ignore the warning, it is expected at this point
 ```
   - You should see something like this
 ```bash
@@ -174,7 +174,7 @@ The Detection collections include parsers config and bad behavior detection scen
 
 In our case we'll look at the nginx logs and apache2 logs.
 - We'll use wildcards to work with any application name of your application folder: ls /home/master/applications
-- Replace the content of the config/acquis.yaml file (with you editor of choice) with the following:
+- Replace the content of the config/acquis.yaml file (with your editor of choice) with the following:
 ```yaml
 filenames:
   - /home/master/applications/**/logs/nginx_*.log
@@ -195,8 +195,8 @@ You can find our catalog on our [Hub](https://hub.crowdsec.net).
 cscli collections install crowdsecurity/nginx crowdsecurity/apache2
 ```
 ### Making the collections auto update
-CrowdSec collection often get updated with the behavior detections.  
-CrowdSec teams create and currate community scenarios allowing its users to benefit from the latest vulnerabilities detection.
+CrowdSec collections are frequently updated with new behavior detections.  
+The CrowdSec team creates and curates community scenarios so that users benefit from the latest vulnerability detections.
 We'll allow hub auto-update with a cron:
 		- Create a hub_update.sh file in the crowdsec folder:
 ```bash
@@ -223,7 +223,7 @@ exit 0
 ```
 0 6 * * * sh /home/master/crowdsec/hub_update.sh
 ```
-### Make sure log rotation not breaking acquisition
+### Make sure log rotation does not break acquisition
 As CrowdSec is not running as root in our current context, there could be some race conditions with log rotation file creation making the acquisition fail.
 Future versions of CrowdSec might address this issue, but for now, we can use a simple script to ensure the acquisition is not broken.
 
@@ -277,7 +277,7 @@ We'll run it on the nginx access logs and the first archive of nginx access logs
 ```bash
 ./crowdsec -c config.yaml -dsn file:///home/master/applications/\*\*/logs/nginx_*.access.log --type nginx --no-api
 ```
-- Note that **dsn** parameter take the **file://***/ protocol and an **absolute path**
+- Note that the `dsn` parameter takes the `file://` protocol and an **absolute path**
 - After you ran the detection, detected alerts should be listed in:
 ```bash
 cscli alerts list
@@ -311,7 +311,7 @@ WantedBy=multi-user.target
 ```
 - Note that if you want to do it yourself the process is:
   - Get the service description file from https://github.com/crowdsecurity/crowdsec/blob/master/config/crowdsec.service
-  - Move it to the user systemd user folder
+  - Move it to the systemd user folder (`~/.config/systemd/user/`)
   - Modify this file to have the proper path to crowdsec executable and config
 
 ### Enable the service to run at boot
@@ -333,7 +333,7 @@ systemctl --user status crowdsec
 
 ### Checking that CrowdSec works
 We ran a behavior detection on the past logs so we might already have acquisition and parsing metrics. 
-But to check that its working, you can visit your website
+But to check that it's working, visit your website
   - It should generate lines of logs
   - As soon as new log lines arrive in any of those:
     - You should see the acquisition metrics appear/update
@@ -368,7 +368,7 @@ Parser Metrics:
 ```
 
 ## Bind it to the WP plugin to block the detected attackers
-Now that we have CrowdSec running and detecting bad behaviors.  
+Now that CrowdSec is running and detecting bad behaviors, alerts are raised and decisions to block bad actors are stored in the local database.  
 Alerts are raised and decisions to block bad actors are stored in the local DB.  
 To actually apply a remediation and ban the attackers from your website you need:
 - To create a bouncer API key:

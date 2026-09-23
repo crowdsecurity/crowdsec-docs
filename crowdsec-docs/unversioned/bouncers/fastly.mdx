@@ -17,7 +17,7 @@ import BouncerHeader from "@site/src/components/bouncer-header";
 # Block Malicious IPs on Fastly with CrowdSec
 
 A Remediation Component that syncs the decisions made by CrowdSec with Fastly's VCL. Manages multi account, multi service setup. Supports IP, Range, Country and AS scoped decisions.
-To learn how to set up crowdsec to consume Fastly logs see [this](/u/user_guides/consuming_fastly_logs)
+To learn how to set up CrowdSec to consume Fastly logs, see [this guide](/u/user_guides/consuming_fastly_logs)
 
 ## Installation
 
@@ -60,7 +60,7 @@ For more details on the config file, see the [Settings](#settings) section below
 
 The `lapi_key` can be obtained by running the following:
 ```bash
-sudo cscli -oraw bouncers add fastlybouncer # -oraw flag can discarded for human friendly output.
+sudo cscli -oraw bouncers add fastlybouncer # the -oraw flag can be omitted for human-friendly output.
 ```
 
 The `lapi_url` must be accessible from the container.
@@ -222,7 +222,7 @@ The `crowdsec_config` section configures the connection and filtering for the Cr
 
 ### Fastly Account Configuration
 
-The `fastly_account_configs`) section defines one or more Fastly accounts and their associated services. Each account requires a separate API token.
+The `fastly_account_configs` section defines one or more Fastly accounts and their associated services. Each account requires a separate API token.
 
 #### Account Level Parameters
 
@@ -318,7 +318,7 @@ log_file: /var/log/crowdsec-fastly-bouncer.log # Ignore if logging to stdout or 
 
 ## Python Helpers
 
-The component has few builtin helper features:
+The component has a few built-in helper features:
 
 ### Auto config generator
 
@@ -363,7 +363,7 @@ crowdsec-fastly-bouncer -r -c <PATH_TO_BASE_CONFIG>
 ```
 
 This refreshes the local cache file from Fastly without making any changes to the Fastly services.
-For each services in the config file, it fetches the current ACLs and their contents for the current active version (or last updated version if no active version exists).
+For each service in the config file, it fetches the current ACLs and their contents for the current active version (or last updated version if no active version exists).
 
 ###  Cleaner
 

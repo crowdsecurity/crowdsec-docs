@@ -73,7 +73,7 @@ Defaults to `false`.
 
 The AWS profile to use, relies on your `~/.aws/config/`.
 
-Optional, the data source will automatically the standard AWS env vars if present.
+Optional, the data source will automatically use the standard AWS env vars if present.
 
 ### `aws_config_dir`
 

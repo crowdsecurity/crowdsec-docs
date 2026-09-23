@@ -80,7 +80,7 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 				label: "Bot Detection",
 				className: "navbar-item-new",
 			},
-			{ type: "doc", docId: "cscli/cscli", label: "Cscli" },
+			{ type: "doc", docId: "cscli/cscli", label: "cscli" },
 			{ to: "/u/user_guides/intro", label: "Guides" },
 			{
 				type: "doc",

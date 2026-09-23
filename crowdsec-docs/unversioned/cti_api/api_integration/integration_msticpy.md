@@ -32,7 +32,7 @@ This assumes you've already installed MSTICpy and have a Jupyter Notebook runnin
 
 ### Using the TIProvider
 
-You can use the following code block to enrich multiple IP addresses using CrowdSec's TIProvider and browse the results. Make sure to replace the IPs with what you want to lookup.
+You can use the following code block to enrich multiple IP addresses using CrowdSec's TIProvider and browse the results. Make sure to replace the IPs with the ones you want to look up.
 
 ```python
 import msticpy as mp
@@ -49,9 +49,9 @@ mp.TILookup.browse(results_df)
 
 To use notebooks in Microsoft Sentinel, make sure that you have the required permissions. For more information, see [Manage access to Microsoft Sentinel notebooks](https://learn.microsoft.com/en-us/azure/sentinel/notebooks#manage-access-to-microsoft-sentinel-notebooks).
 
-Make sure your `msticpyconfig.yaml` file is configured to access the Azure Sentinnel Workspace. 
+Make sure your `msticpyconfig.yaml` file is configured to access the Azure Sentinel workspace. 
 
-In this example, we'll lookup IP IOCs from Azure Sentinel in CrowdSec CTI using the CrowdSec's TIProvider.
+In this example, we'll look up IP IOCs from Azure Sentinel in CrowdSec CTI using CrowdSec's TIProvider.
 
 ```python
 import msticpy as mp

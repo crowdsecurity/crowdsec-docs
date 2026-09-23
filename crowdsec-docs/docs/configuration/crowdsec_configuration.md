@@ -3,7 +3,7 @@ title: CrowdSec Configuration
 id: crowdsec_configuration
 ---
 
-# Crowdsec configuration
+# CrowdSec configuration
 
 CrowdSec has a main `yaml` configuration file, usually located in `/etc/crowdsec/config.yaml`.
 
@@ -19,7 +19,7 @@ You can find the default configurations on our GitHub repository:
 
 ### `/etc/crowdsec/`
 
-All CrowdSec configuration are living in this directory.
+All CrowdSec configuration files live in this directory.
 
 ### `/etc/crowdsec/config.yaml`
 
@@ -30,7 +30,7 @@ Main configuration file for Log Processor and Local API.
 Documents which log sources and datasources are processed by the Log Processor.
 
 `/etc/crowdsec/acquis.yaml` is the historical acquisition configuration file.
-`/etc/crowdsec/acquis.d/*.yaml` is prefered when possible.
+`/etc/crowdsec/acquis.d/*.yaml` is preferred when possible.
 
 ### `/etc/crowdsec/bouncers/*.yaml`
 
@@ -62,7 +62,7 @@ Credentials for Local API and Central API.
 ### `/etc/crowdsec/parsers`
 
 Contains all parsers enabled on the Log Processor, including local parsers, organised in stages:
- - `/etc/crowdsec/parsers/s00-raw/*.yaml` : parsers for based formats such as syslog.
+ - `/etc/crowdsec/parsers/s00-raw/*.yaml` : parsers for base formats such as syslog.
  - `/etc/crowdsec/parsers/s01-parse/*.yaml` : service specific parsers such as nginx or ssh.
  - `/etc/crowdsec/parsers/s02-enrich/*.yaml` : enrichment parsers and whitelists.
 
@@ -81,7 +81,7 @@ Contains notification plugins configuration (slack, email, splunk, etc.)
 
 ### `/etc/crowdsec/appsec-configs/*.yaml`
 
-Contains AppSec (WAF) configuration indicating which rules or loaded in `inband` and `outofband` files, as well as eventual `hooks` configuration.
+Contains AppSec (WAF) configuration indicating which rules are loaded in `inband` and `outofband` files, as well as optional `hooks` configuration.
 
 ### `/etc/crowdsec/appsec-rules/*.yaml`
 
@@ -477,8 +477,8 @@ Path to the yaml file containing logs that needs to be read.
 #### `acquisition_dir`
 > string
 
-(>1.0.7) Path to a directory where each yaml is considered as a acquisition configuration file containing logs that needs to be read.
-If both `acquisition_dir` and `acquisition_path` are specified, the entries are merged alltogether.
+(>1.0.7) Path to a directory where each YAML file is considered an acquisition configuration file containing logs that need to be read.
+If both `acquisition_dir` and `acquisition_path` are specified, the entries are merged together.
 
 #### `dns_cache`
 
@@ -807,7 +807,7 @@ Supported units are the same as for `max_age`
 
 ##### `cert`
 
-Agents authenticated using TLS certificate will be deleted after `duration` without any requests and if there is no active alerts for them.
+Agents authenticated using TLS certificate will be deleted after `duration` without any requests and if there are no active alerts for them.
 
 Supported units are the same as for `max_age`
 
@@ -821,7 +821,7 @@ Supported units are the same as for `max_age`
 
 ### `api`
 
-The api section is used by both `cscli`, `crowdsec` and the local API.
+The api section is used by `cscli`, `crowdsec` and the Local API.
 
 ```yaml
 api:
@@ -941,7 +941,7 @@ Path to the credential files (contains API url + login/password).
 ##### `unregister_on_exit`
 >bool
 
-If set to `true`, the log processor will remove delete itself from LAPI when stopping.
+If set to `true`, the log processor will delete itself from LAPI when stopping.
 
 Intended for use in dynamic environment such as Kubernetes.
 
@@ -997,7 +997,7 @@ Enable or disable the CrowdSec Local API (`true` by default).
 ##### `listen_uri`
 > string
 
-Address and port listen configuration, the form `host:port`.
+Address and port to listen on, in the form `host:port`.
 
 ##### `listen_socket`
 > string
@@ -1140,7 +1140,7 @@ Path to certificate file.
 ###### `key_file`
 > string
 
-Path to certficate key file.
+Path to certificate key file.
 
 ###### `client_verification`
 
@@ -1148,11 +1148,11 @@ Whether LAPI should require or not a client certificate for authentication.
 
 Supported values mirror the ones available in the [golang TLS library](https://pkg.go.dev/crypto/tls#ClientAuthType).
 
-Default to `VerifyClientCertIfGiven` which will allow connection without certificate or require a valid client certificate if one is provided
+Defaults to `VerifyClientCertIfGiven` which will allow connection without certificate or require a valid client certificate if one is provided
 
 :::warning
 
-Crowdsec supports all `ClientAuthType` value from the go TLS library for sake of completness, but using any value other than `NoClientCert` (completly disable authentication with certificates), `VerifyClientCertIfGiven` (only use the certificate if provided) or `RequireAndVerifyClientCert` (only allows certificate authentication and disable password/API key auth) is insecure and must not be used.
+Crowdsec supports all `ClientAuthType` value from the go TLS library for the sake of completeness, but using any value other than `NoClientCert` (completely disables authentication with certificates), `VerifyClientCertIfGiven` (only use the certificate if provided) or `RequireAndVerifyClientCert` (only allows certificate authentication and disable password/API key auth) is insecure and must not be used.
 
 :::
 
@@ -1184,7 +1184,7 @@ Optional. If not set, only OCSP revocation check will be performed (only if the 
 
 ##### cache_expiration
 
-How log to cache the result of a revocation check.
+How long to cache the result of a revocation check.
 
 Defaults to 1h.
 

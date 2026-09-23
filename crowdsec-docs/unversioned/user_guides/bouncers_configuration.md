@@ -13,7 +13,7 @@ This documentation should be relevant mostly for administrators that would like 
 
 :::
 
-There are two kind of access to the local api :
+There are two kinds of access to the Local API:
 
  - `machines`: a login/password authentication used by cscli and CrowdSec, it allows to post, get and delete decisions and alerts.
  - `bouncers`: a token authentication used by bouncers to query the decisions, it only allows to get decisions.

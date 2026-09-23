@@ -19,7 +19,7 @@ import BouncerHeader from "@site/src/components/bouncer-header";
 # Sync CrowdSec IP Bans to Stormshield Appliances
 ## Overview
 
-The Stormshield Remediation syncs IP bans from Crowdsec with Stormshield appliances.
+The Stormshield Remediation Component syncs IP bans from CrowdSec with Stormshield appliances.
 
 
 ## Installation 
@@ -53,7 +53,7 @@ The container will use SSH to connect to the firewall and the API to update the 
 Make sure the firewall is configured to allow SSH and API access from the machine running the container.
 
 
-See how to enable ssh access on the firewall [here](https://documentation.stormshield.eu/SNS/v4/en/Content/Basic_Command_Line_Interface_configurations/Enable_ssh_access_with_password.htm). Usually the username and password is the same as the web interface.
+See how to enable ssh access on the firewall [here](https://documentation.stormshield.eu/SNS/v4/en/Content/Basic_Command_Line_Interface_configurations/Enable_ssh_access_with_password.htm). Usually the username and password are the same as for the web interface.
 
 You can generate a LAPI key using the following command on the machine with CrowdSec installed.
 
@@ -104,7 +104,7 @@ crowdsec:
   exclude_scenarios_containing: []
   only_include_decisions_from: []
   insecure_skip_verify: false
-  key_path: ""  # Used for TLS authentification with CrowdSec LAPI
+  key_path: ""  # Used for TLS authentication with CrowdSec LAPI
   cert_path: "" # Used for TLS authentification with CrowdSec LAPI
   ca_cert_path: "" # Used for TLS authentification with CrowdSec LAPI
 
@@ -150,7 +150,7 @@ Value can be in seconds (eg 30s), minutes (eg 5m), hours (eg 1h), days (eg 1d), 
 
 ### `crowdsec.include_scenarios_containing`
 
-Ignore IPs banned for triggering scenarios not containing either of provided word. Example value ["ssh", "http"]
+Ignore IPs banned for triggering scenarios that do not contain any of the provided words. Example value ["ssh", "http"]
 
 ### `crowdsec.exclude_scenarios_containing`
 
@@ -158,7 +158,7 @@ Ignore IPs banned for triggering scenarios containing either of provided word. E
 
 ### `crowdsec.only_include_decisions_from`
 
-Only include IPs banned due to decisions orginating from provided sources. eg value ["cscli", "crowdsec"]
+Only include IPs banned due to decisions originating from the provided sources. eg value ["cscli", "crowdsec"]
 
 ### `crowdsec.insecure_skip_verify`
 

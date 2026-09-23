@@ -105,7 +105,7 @@ Test connectivity:
 curl -I https://api.crowdsec.net/
 ```
 
-For CAPI connectivity issues you can follow the [posts-install health check step for connectivity](/u/getting_started/health_check#-crowdsec-connectivity-checks).
+For CAPI connectivity issues you can follow the [post-install health check step for connectivity](/u/getting_started/health_check#-crowdsec-connectivity-checks).
 
 In the rare case you saw **zero machines** in your machines list, try:
 ```bash

@@ -32,7 +32,7 @@ The batching option cannot be used with free CTI API keys. Batching allows to qu
 
 ## Fields filtering
 
-`cssmoke` supports a `fields` argument to restrict outputed fields, separated by commas.
+`cssmoke` supports a `fields` argument to restrict the output fields (comma-separated).
 
 ```
 cssmoke ipfield="ip" fields="confidence,reputation,cves"
@@ -51,18 +51,18 @@ Profiles are optional presets that automatically select a predefined set of Crow
 
 - `iprange`: returns `ip`, `ip_range`, `ip_range_24`, `ip_range_24_score`.
 
-You can provide multiple profile in the same command:
+You can provide multiple profiles in the same command:
 
 ```
 | cssmoke ipfield="ip" profile="anonymous,iprange"
 ```
 
-The output will contains the columns for the `anonymous` and the `iprange` profiles.
+The output will contain the columns for the `anonymous` and the `iprange` profiles.
 
 
 ## Multiple IP fields
 
-All output fields have the prefix `crowdsec_{field}_`. For event with multiple IPs (ie. `ipsrc`, `ipdst`), the outputs will be in `crowdsec_ipsrc_reputation`, `crowdsec_ipdst_reputation` etc.
+All output fields have the prefix `crowdsec_{field}_`. For events with multiple IP fields (e.g. `ipsrc`, `ipdst`), the outputs will be in `crowdsec_ipsrc_reputation`, `crowdsec_ipdst_reputation` etc.
 
 ![Example Output (3)](/img/splunk_siem/splunk_siem_multiple_ips.png)
 
@@ -110,12 +110,12 @@ All output fields are prefixed with `crowdsec_{field}_`.
 
 * `behaviors`: A list of the attack categories for which the IP was reported
 * `mitre_techniques`: A list of Mitre techniques associated with the IP
-* `cves`: A list of CVEs for which the IP has been reported for
+* `cves`: A list of CVEs for which the IP has been reported
 * `attack_details`: A more exhaustive list of the scenarios for which a given IP was reported
 * `target_countries`: The top 10 countries targeted by the IP
 * `background_noise`: The level of background noise of an IP address is an indicator of its internet activity intensity
 * `background_noise_score`: CrowdSec intelligence calculated score
-* `references`: A list of the CrowdSec Blockists the IP belongs to
+* `references`: A list of the CrowdSec Blocklists the IP belongs to
 
 ### Activity History
 
@@ -230,5 +230,5 @@ Batch size used when `batching` is enabled.
 
 Enable offline replication mode (use the downloaded lookup databases).
 
-Lookup databases are download automatically every 24h.
+Lookup databases are downloaded automatically every 24h.
 

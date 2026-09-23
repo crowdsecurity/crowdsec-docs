@@ -62,7 +62,7 @@ Name of stream to monitor, exact match.
 
 ### `*_interval`
 
-> note : AWS SDK allows to identify streams according to the timestamp of the latest even within, and this is what we rely on.
+> note : The AWS SDK can identify streams by the timestamp of their latest event, and this is what we rely on.
 
  - poll_new_stream_interval : frequency to poll for new stream within given group (default `10s`)
  - max_stream_age : open only streams for which last event is at most this age (default `5m`)
@@ -71,7 +71,7 @@ Name of stream to monitor, exact match.
 
 ### `prepend_cloudwatch_timestamp`
 
-When set to `true` (default: `false`), prepend the cloudwatch event timestamp to the generated log string. This is intended for cases where you log itself wouldn't contain timestamp.
+When set to `true` (default: `false`), prepend the cloudwatch event timestamp to the generated log string. This is intended for cases where your log itself doesn't contain a timestamp.
 
 ### `aws_profile`
 
@@ -109,7 +109,7 @@ You can specify the `log_level` parameter to change the log level for the acquis
 crowdsec -type nginx -dsn 'cloudwatch:///<path_to_my_log_stream>?backlog=12h&profile=<my_aws_profile>&log_level=debug' 
 ```
 
-# Notes
+## Notes
 
 This data source lacks unit tests because mocking aws sdk is fastidious.
 

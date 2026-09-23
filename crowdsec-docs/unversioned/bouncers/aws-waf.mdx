@@ -20,7 +20,7 @@ import BouncerHeader from "@site/src/components/bouncer-header";
 # Block Malicious IPs on AWS WAF with CrowdSec
 ## Overview
 
-The `crowdsec-awf-waf-bouncer` automatically adds rules to an AWS WAF ACL and manages IPSets content to apply decisions taken by crowdsec.
+The `crowdsec-aws-waf-bouncer` automatically adds rules to an AWS WAF ACL and manages IPSet contents to apply decisions taken by CrowdSec.
 
 This allows to protect the following AWS resources with crowdsec:
 
@@ -79,7 +79,7 @@ docker run -e BOUNCER_CONFIG_FILE=/cs-aws-waf-bouncer.yaml -v $(PWD)/config.yaml
 
 The remediation component can take some time to delete all created resources on shutdown.
 
-The default docker timeout of 10s before sending a `SIGKILL` to the process might not always been enough.
+The default Docker timeout of 10s before sending a `SIGKILL` to the process might not always be enough.
 
 You can increase it by specifying `--stop-timeout` in your `run` command or by setting `stop_grace_period` when using compose.
 
@@ -171,7 +171,7 @@ If set from the environment, provide a comma-separated list: `ban,captcha,count`
 
 > Environment variable: `BOUNCER_WAF_CONFIG_`
 
-List of object with the following properties:
+List of objects with the following properties:
 
 ```
 waf_config:
@@ -247,7 +247,7 @@ Must match the scope of the WAF ACL.
 
 Region where all resources will be created.
 
-No required when scope is `CLOUDFRONT`
+Not required when scope is `CLOUDFRONT`.
 
 ### `ipset_prefix`
 
@@ -259,7 +259,7 @@ Prefix for all the ipsets the component will create.
 
 One ipset will be created per 10k IPs, and will be automatically deleted if it becomes empty.
 
-Differents ipsets are used for ban and captcha.
+Different IPSets are used for ban and captcha.
 
 :::warning
 All ipsets are deleted on shutdown.
@@ -304,7 +304,7 @@ Capacity of the rule group created by the component.
 
 If not set, default to 300 (this value is way higher than it needs to be, but this prevents any kind of issue regarding capacity of the rule group).
 
-For reference, a simple match on a IP with no custom header will cost 1 WCU per IPSet created by the bouncer, or 5 WCU if you are getting the source IP from a header.
+For reference, a simple match on an IP with no custom header will cost 1 WCU per IPSet created by the bouncer, or 5 WCU if you are getting the source IP from a header.
 
 See [AWS WAF documentation](https://docs.aws.amazon.com/waf/latest/developerguide/how-aws-waf-works.html#aws-waf-capacity-units) for more information.
 
@@ -344,7 +344,7 @@ Be careful if you are running multiple instances of the bouncer and using common
 
 ## IAM Permissions
 
-Because the component needs to interact with AWS resources, it need the proper permissions.
+Because the component needs to interact with AWS resources, it needs the proper permissions.
 
 Here is the set of required permissions:
 

@@ -55,7 +55,7 @@ Please note that first and foremost a CrowdSec agent must be installed on a serv
 - Large PHP matrix compatibility: 7.2, 7.3, 7.4, 8.0, 8.1 and 8.2
 - Built-in support for the most known cache systems Redis, Memcached and PhpFiles
   - Clear, prune and refresh the cache
-- Cap remediation level (ex: for sensitives websites: ban will be capped to captcha)
+- Cap remediation level (e.g. for sensitive websites, ban will be capped to captcha)
 
 ### Ban and captcha walls
 
@@ -69,7 +69,7 @@ A ban wall could look like:
 
 A captcha wall could look like:
 
-<img src={useBaseUrl('/img/bouncer/php-lib/screenshots/front-captcha.jpg')} alt="Ban wall" title="Captcha wall" />
+<img src={useBaseUrl('/img/bouncer/php-lib/screenshots/front-captcha.jpg')} alt="Captcha wall" title="Captcha wall" />
 
 Please note that it is possible to customize all the colors of these pages so that they integrate best with your design.
 
@@ -172,7 +172,7 @@ $bouncer->run();
 
 ### Test your component
 
-To test your component, you could add decision to ban your own IP for 5 minutes for example:
+To test your component, you could add a decision to ban your own IP for 5 minutes, for example:
 
 ```bash
 cscli decisions add --ip <YOUR_IP> --duration 5m --type ban
@@ -210,11 +210,11 @@ Below is the list of available settings:
 - `excluded_uris`: array of URIs that will not be bounced.
 
 
-- `stream_mode`: true to enable stream mode, false to enable the live mode. Default to false. By default, the `live mode` is enabled. The first time a stranger connects to your website, this mode means that the IP will be checked directly by the CrowdSec API. The rest of your user’s browsing will be even more transparent thanks to the fully customizable cache system. But you can also activate the `stream mode`. This mode allows you to constantly feed the bouncer with the malicious IP list via a background task (CRON), making it to be even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
+- `stream_mode`: true to enable stream mode, false to enable the live mode. Default to false. By default, the `live mode` is enabled. The first time a stranger connects to your website, this mode means that the IP will be checked directly by the CrowdSec API. The rest of your user’s browsing will be even more transparent thanks to the fully customizable cache system. But you can also activate the `stream mode`. This mode allows you to constantly feed the bouncer with the malicious IP list via a background task (CRON), making it even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
 
 ### Local API Connection
 
-- `auth_type`: Select from `api_key` and `tls`. Choose if you want to use an API-KEY or a TLS (pki) authentification.
+- `auth_type`: Select from `api_key` and `tls`. Choose if you want to use an API key or TLS (PKI) authentication.
   TLS authentication is only available if you use CrowdSec agent with a version superior to 1.4.0.
 
 
@@ -284,7 +284,7 @@ Below is the list of available settings:
   - `geolocation[type]`:  Geolocation system. Only 'maxmind' is available for the moment. Default to `maxmind`.
 
   - `geolocation[cache_duration]`: This setting will be used to set the lifetime (in seconds) of a cached country
-    associated to an IP. The purpose is to avoid multiple call to the geolocation system (e.g. maxmind database). Default to 86400. Set 0 to disable caching.
+    associated to an IP. The purpose is to avoid multiple calls to the geolocation system (e.g. MaxMind database). Default to 86400. Set 0 to disable caching.
 
   - `geolocation[maxmind]`: MaxMind settings.
 

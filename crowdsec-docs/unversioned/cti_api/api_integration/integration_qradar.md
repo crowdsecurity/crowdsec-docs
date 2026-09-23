@@ -17,8 +17,8 @@ This QRadar App leverages CrowdSec's CTI’s smoke endpoint to get information a
 
 ## Configuration
 
-Setup the App in two easy steps
-1. Generate your Crowdsec CTI API Key in CrowdSec's console. You can find the instructions to obtain it [here](/u/console/ip_reputation/api_keys)
+Set up the App in two easy steps:
+1. Generate your CrowdSec CTI API Key in CrowdSec's console. You can find the instructions to obtain it [here](/u/console/ip_reputation/api_keys)
 2. Put the API Key in the App as demonstrated below
 
 Within QRadar’s Admin page, navigate to the CrowdSec App and click on the app Setting icon

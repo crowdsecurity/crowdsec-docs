@@ -28,7 +28,7 @@ Mandatory.
 
 ### `listen_port`
 
-The port on which the datasource will liste.
+The port on which the datasource will listen.
 
 Mandatory.
 

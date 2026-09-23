@@ -7,7 +7,7 @@ import useBaseUrl from "@docusaurus/useBaseUrl"
 
 ## Context
 
-A **Remediation Component** *(aka **Bouncer**)* is enforcing **decisions** made by **CrowdSec Security Engine** based on detected malicious behaviors [\[See figure 1\]](#crowdsec-security-engine-diagram), or Directly with CrowdSec SaaS endpoint channeling public, crowdsec or user made blocklsits.
+A **Remediation Component** *(aka **Bouncer**)* is enforcing **decisions** made by **CrowdSec Security Engine** based on detected malicious behaviors [\[See figure 1\]](#crowdsec-security-engine-diagram), or directly by the CrowdSec SaaS endpoint serving public, CrowdSec or user-made blocklists.
 
 A **decision** dictates what action should be applied on incoming traffic from a specific **IP** or **IP-Range**. *(It could also be on the user scope or any other, but these specifications will focus on the IP and Range scopes)*
 
@@ -25,13 +25,13 @@ The Bouncer applies the appropriate remediation *(we’ll only focus on ban/bloc
   * Forwarding protocol  
 * [Config and support requirements](#extra-details-and-requirements)
 
-Here is an existing remediation components *(bouncers)* for Nginx and its lua dependency.
-It's one of the most complete bouncer with AppSec capabilities and Metrics. A good example to follow for your implementation.  
+Here is an existing remediation component *(bouncer)* for Nginx and its Lua dependency.
+It's one of the most complete bouncers, with AppSec capabilities and metrics. A good example to follow for your implementation.  
 [*cs-nginx-bouncer*](https://github.com/crowdsecurity/cs-nginx-bouncer) *\+  [lua-cs-bouncer](https://github.com/crowdsecurity/lua-cs-bouncer/)* (dependency)
 
 And a more recent and soon finalized [Node JS bouncer](https://github.com/crowdsecurity/nodejs-cs-bouncer) (for a different implementation, to be used in code)
 
-⚠️ **Your bouncer must always delete/clean it’s resources on shutdown**
+⚠️ **Your bouncer must always delete/clean its resources on shutdown**
 
 ## Basic Bouncer features
 
@@ -49,7 +49,7 @@ You can find the swagger here [https://crowdsecurity.github.io/api_doc/lapi/](ht
 Details about the endpoints parameters can be found [in the appendix](#appendix)
 
 * URL to Local API endpoint: configurable field **api_url**  
-  * Default value likely to be: `http://121.0.0.1:8080`
+  * Default value likely to be: `http://127.0.0.1:8080`
   * Security Engine Config : /etc/crowdsec/config.yaml // api.server.listen_url  
   * For now we only have a v1 of LAPI, bouncer states the version he’s using  
 * Authentication  
@@ -74,7 +74,7 @@ The live mode endpoint is **/decisions**
   *Only the following fields are to be considered for a basic bouncer implementation*  
   * **scope:** value **IP** (forced for live mode)  
   * **value:** the source IP making the request  
-  * **origins:** empty by default mean all origins are considered  
+  * **origins:** empty by default, meaning all origins are considered  
     * editable by the user to look in a specific origin: configurable field origins  
     * Origins are comma separated strings (e.g. crowdsec,capi,cscli)  
   * **contains**: empty by default mean *true*   
@@ -124,7 +124,7 @@ Allows to pull all decisions from LAPI and then periodically get a delta
   * The decisions format is the following:  
     * See [decisions example in appendix](#decision-example)  
     * There can be multiple decisions per IP  
-    * Store each decisions independently as they have their own remediation action and TTL  
+    * Store each decision independently, as each has its own remediation action and TTL  
     * Ranges are stored too  
       * ⚠️ do not transform the range into its containing IPS  
   * Pruning  
@@ -143,9 +143,9 @@ If a remediation is found and for the LAPI timeout fallback here are the remedia
       * Default page model [provided (single HTML file)](#ban-template-page)  
       * Page path configurable: configurable field ban_template_path  
   * **captcha**  
-    * Various type of captcha must be supported  
+    * Various types of captcha must be supported  
     * configurable fields:  
-      * captcha _provider  
+      * captcha_provider  
       * captcha_secret_key  
       * captcha_site_key  
       * captcha_template_path  
@@ -174,7 +174,7 @@ If a remediation is found and for the LAPI timeout fallback here are the remedia
 Remediation component can push information and internal metrics to LAPI about their configuration and the amount of requests/packets/bytes/… that have been blocked or allowed.
 
 The data is pushed on the `/usage-metrics` endpoint of LAPI.  
-Metrics push internal should be configurable, with a default value of 30 minutes and not allow intervals smaller than 10 minutes. Setting the interval to 0 disables the push.
+The metrics push interval should be configurable, with a default value of 30 minutes and not allow intervals smaller than 10 minutes. Setting the interval to 0 disables the push.
 
 The body will contain information about:
 
@@ -226,7 +226,7 @@ AppSec is disabled by default and activable if url exists configurable field app
 
 ## Installation / Documentation 
 
-Usually we (at CrowdSec) will deal with **documentation**, **install scripts** and **packaging**. But any pointers from the bouncer’s developper that can help those processes is welcome on the following:
+Usually we (at CrowdSec) will deal with **documentation**, **install scripts** and **packaging**. Any pointers from the bouncer's developer that can help with these processes are welcome:
 
 Let us know what minimum version of the service is required to run the bouncer
 
@@ -273,7 +273,7 @@ You can have decisions with various origins, here are a few ways to populate the
 
 #### Local decisions & Community blocklist 
 
-If you installed your CrowdSec on a server with internet access, and it’s able to communicate with our Central API, it will periodically retrieve the community blocklist. If you are in a situation here your crowdsec shares signal you’ll get between 10 and 50k decisions from the community blocklist (decisions origin will be CAPI), if not you’ll receive a fraction of that.
+If you installed your CrowdSec on a server with internet access, and it’s able to communicate with our Central API, it will periodically retrieve the community blocklist. If your CrowdSec instance shares signals, you'll get between 10k and 50k decisions from the community blocklist (decisions origin will be CAPI), if not you’ll receive a fraction of that.
 
 #### Manually populating decisions 
 
@@ -285,7 +285,7 @@ Public documentation [available here](https://doc.crowdsec.net/u/user_guides/dec
   * Those decisions origin will be “*cscli*”  
 * Via **cscli decisions import**.    
   * E.g. sudo cscli decisions import \-i ./myBl.txt \--format values  
-  * Those decisions origin will be “*cscli-impor*t”
+  * The origin of those decisions will be `cscli-import`
 
 #### Testing failures 
 
@@ -317,14 +317,14 @@ You can refer to the AppSec documentation to test request forwarding.
 **GET /decisions/stream**
 
 * **startup:** set it to **TRUE** for the **initial call** to get all decisions *(when False you’ll get the delta from your last call)*  
-* **scopes: “**ip,range” is the only relevant values when remediating on IPs  
+* **scopes:** “ip,range” is the only relevant value when remediating on IPs  
 * **origins:** Leave blank to allow all origins, test your configurable origins with [those tests](#decision-example)  
 * **scenarios_containing:** leave blank by default, allow change in config  
 * **scenarios_not_containing:** leave blank by default, allow change in config
 
 **GET /decisions**
 
-* **scope: “**ip” is the only relevant values when remediating on IPs  
+* **scope:** “ip” is the only relevant value when remediating on IPs  
 * **value:** the ip itself as a string  
 * **type:** filtering on type of decisions, leave blank by default to get any decisions  
 * **ip:** ignore/leave blank: shortcut for scope:ip \+ value  

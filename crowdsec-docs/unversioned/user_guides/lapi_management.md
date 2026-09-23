@@ -10,7 +10,7 @@ The Local API (LAPI) is a core component of CrowdSec and has a few essential mis
 
  - Allow CrowdSec machines to push alerts & decisions to a database
  - Allow bouncers to consume said alerts & decisions from database
- - Allow `cscli` to view add or delete decisions
+ - Allow `cscli` to view, add or delete decisions
 
 
 You can find the swagger documentation [here](https://crowdsecurity.github.io/api_doc/lapi/).
@@ -23,7 +23,7 @@ There are two kinds of authentication to the Local API :
 
  - Machines: they authenticate with a login and password and can not only read decisions, but create new ones too
 
-  - TLS client certificates: it allows you to connect new bouncers or agents to the local API without registring them first 
+  - TLS client certificates: it allows you to connect new bouncers or agents to the local API without registering them first 
 
 
 ### Bouncers
@@ -43,7 +43,7 @@ See [here](/docs/next/local_api/tls_auth) for the documentation about TLS authen
 
 To allow a machine to communicate with the Local API, the machine needs to be validated by an administrator of the Local API.
 
-There are two ways to register a CrowdSec to a Local API.
+There are two ways to register a CrowdSec agent with a Local API.
 
 * You can create a machine directly on the API server that will be automatically validated by running the following command on the server where the API is installed:
 

@@ -347,7 +347,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "doc",
-					label: "Alerts contexts",
+					label: "Alert Context",
 					id: "console/alerts/alerts_contexts",
 				},
 				{
@@ -412,7 +412,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		// ── Blocklist & Allowlists ──────────────────────────────────────────────────────────
 		{
 			type: "html",
-			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Blocklist & Allowlists</span>",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Blocklists & Allowlists</span>",
 			defaultStyle: false,
 		},
 		{
@@ -642,7 +642,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "BlockList Mirror",
+			label: "Blocklist Mirror",
 			id: "bouncers/blocklist-mirror",
 		},
 		{
@@ -717,7 +717,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "Wordpress",
+			label: "WordPress",
 			id: "bouncers/wordpress",
 		},
 		{

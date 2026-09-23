@@ -17,7 +17,7 @@ The MSI file will perform some basic setup:
 
 Contrary to Linux, the Security Engine does not yet support the automatic configuration at installation time. If you want to be able to detect something other than RDP or SMB bruteforce, then you will need to customize your acquisition configuration.
 
-The default configuration will catch brute force attacks against RDP and SMB or any kind of remote authentication that uses Windows authentification.
+The default configuration will catch brute force attacks against RDP and SMB or any kind of remote authentication that uses Windows authentication.
 
 We currently support the following Windows services:
  - RDP/SMB: Brute force detection
@@ -54,7 +54,7 @@ labels:
  type: eventlog
 ```
 
-Restart the CrowdSec service (using `net`, `sc` or the services app), and the `Security Engine` will now parse the SQL server authentification logs.
+Restart the CrowdSec service (using `net`, `sc` or the services app), and the `Security Engine` will now parse the SQL Server authentication logs.
 
 :::info
 
@@ -66,7 +66,7 @@ This scenario requires SQL Server to log failed authentication, which is the cas
 
 You will need to install the [`crowdsecurity/iis`](https://hub.crowdsec.net/author/crowdsecurity/collections/iis) collection.
 
-The collection contains a parser for IIS W3C log format (with the default fields) and an another collection containing all the basic HTTP scenarios.
+The collection contains a parser for IIS W3C log format (with the default fields) and another collection containing all the basic HTTP scenarios.
 
 To install the collection from an administrator powershell prompt, run `cscli.exe collections install crowdsecurity/iis`.
 
@@ -83,7 +83,7 @@ labels:
 
 Please note that `use_time_machine` is very important: By default IIS will flush the logs to a file every minute or if there is 64kB of logs to write.
 
-This means the `Security Engine` will see a influx of lines at the same time which can lead to false positive.
+This means the `Security Engine` will see an influx of lines at the same time, which can lead to false positives.
 
 The `use_time_machine` option enforces the use of the timestamp present in the line instead of the date of acquisition as the date of the event.
 
@@ -123,9 +123,9 @@ Restart the CrowdSec service and the `Security Engine` will now parse the firewa
 
 :::info
 
-Because the Windows Firewall operates in `stealth mode` by default, not all dropped packets will be logged. Only the one intented for port on which a service listens, which means that CrowdSec won't catch all network scans.
+Because the Windows Firewall operates in `stealth mode` by default, not all dropped packets will be logged. Only packets intended for ports on which a service listens are logged, which means that CrowdSec won't catch all network scans.
 
-Please note that we *DO NOT* recommand disabling stealth mode.
+Please note that we *DO NOT* recommend disabling stealth mode.
 
 :::
 
@@ -144,7 +144,7 @@ Now that you've got the `Security Engine` up and running, it's time to install a
 
 We will use the Windows Firewall Component, which manages some windows firewall rules to drop traffic from IP addresses blocked by the engine.
 
-You can download either a MSI (containing only the bouncer) or a setup bundle (containing the component and the .NET 6 runtime) from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
+You can download either an MSI (containing only the bouncer) or a setup bundle (containing the component and the .NET 6 runtime) from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
 
 :::warning
 
@@ -162,11 +162,11 @@ If you installed the previous alpha release that was distributed from `https://a
 :::
 
 
-When you run the MSI file, the Remediation Component will automatically register itself in the Security Engine and creates the Windows service, that will start the component on boot.
+When you run the MSI file, the Remediation Component will automatically register itself with the Security Engine and create the Windows service that starts the component on boot.
 
 The component works by adding a number of rules to the windows firewall (one rule per thousand blocked IPs).
 
-Those rules begins with `crowdsec-blocklist` and you should not manually update or delete them.
+These rules begin with `crowdsec-blocklist`; do not update or delete them manually.
 
 They will be automatically deleted when the component stops, and created at startup.
 

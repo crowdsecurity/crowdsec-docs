@@ -10,9 +10,9 @@ This document provides a comprehensive guide for developers to implement the "[R
 The remediation component should send the following data: 
 
 - "**dropped**" metrics: the total number of units (`byte`, `packet` or `request`) for which a remediation (`ban`, `captcha`, etc.) has been applied.
-  For this metrics, data should be split into origin/remediation pairs.
+  For this metric, data should be split into origin/remediation pairs.
 - "**processed**" metrics: the total number of units that has been processed by the remediation component.
-  It must also include the number of "bypass" (i.e. when no decision were applied).
+  It must also include the number of "bypass" remediations (i.e. when no decision was applied).
 - "**active_decisions**" metrics: it represents the number of decisions currently known by the remediation component.
 
 Additionally,  some relevant time values must be sent: 
@@ -21,7 +21,7 @@ Additionally,  some relevant time values must be sent:
   We recommend a minimum delay of 15 minutes between each transmission.
 - "**utc_startup_timestamp**": When the remediation component started. This can vary depending on implementation:
   - For daemon bouncers: timestamp when the daemon process started
-  - For "on-demand" bouncer like the PHP one: timestamp of the first LAPI call/pull
+  - For "on-demand" bouncers like the PHP one: timestamp of the first LAPI call/pull
 
 
 As an example, here is the kind of expected payload that you will have to build and send:
@@ -154,7 +154,7 @@ ORIGINS_COUNT = {
 
 Storing a `last_metrics_sent` value makes it easy to compute the  `window_size_seconds` value.
 
-#### 1.1 Metrics Tracking
+#### 1.2 Metrics Tracking
 
 Once you know the final remediation that has been applied, you should increment the count of the related "origin/remediation" pair.
 
@@ -176,7 +176,7 @@ function updateMetricsOriginsCount(origin: string, remediation: string, delta: i
 
 ### 2. Metrics Building Process
 
-In order to send metrics, you will have to retrieved cached values and build the required payload.
+In order to send metrics, you will have to retrieve cached values and build the required payload.
 
 #### 2.1 Build Metrics Items
 
@@ -362,7 +362,7 @@ catch Exception as e:
 
 ### Existing Implementations
 
-Remediation metrics have already been implemented in various languages and frameworks. You can use it as inspiration for your own implementation: 
+Remediation metrics have already been implemented in various languages and frameworks. You can use them as inspiration for your own implementation: 
 
 - The [LUA library](https://github.com/crowdsecurity/lua-cs-bouncer/) used by the [NGINX remediation component](https://docs.crowdsec.net/u/bouncers/nginx/)
 - The [PHP library](https://github.com/crowdsecurity/php-remediation-engine) used by the [WordPress remediation component](https://docs.crowdsec.net/u/bouncers/wordpress).

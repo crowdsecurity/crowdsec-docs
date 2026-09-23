@@ -6,7 +6,7 @@ sidebar_position: 2
 
 # Introduction
 
-An `Event` is the runtime representation of an item being processed by crowdsec. It can represent:
+An `Event` is the runtime representation of an item being processed by CrowdSec. It can represent:
 
  - a Log line being parsed: `Type` is set to `log`, and `Line`, `Parsed` and `Meta` are populated
  - an appsec rule match (`Appsec` holds the WAF rule match info)
@@ -39,7 +39,7 @@ When `Event` is an event from the WAF/Appsec engine, `evt.GetType()` returns `ap
 
 ### `Event.Time`
 
-The `event` object holds a `Time` field that is set to the date of the event (in time-machine mode) or the time of event acquisition (in live mode). As it is a golang's `time.Time` object, [all the time helpers are available](https://pkg.go.dev/time#Time), but only a few are showcased here.
+The `event` object holds a `Time` field that is set to the date of the event (in time-machine mode) or the time of event acquisition (in live mode). As it is a Go `time.Time` object, [all the time helpers are available](https://pkg.go.dev/time#Time), but only a few are showcased here.
 
 #### `Event.Time.Hour() int`
 
@@ -55,7 +55,7 @@ Returns the day of the week as a string (`Monday`, `Tuesday` etc.).
 
 > `filter: "evt.Meta.log_type == '...' && evt.Time.Weekday().String() in ['Saturday', 'Sunday']`
 
-Will detect if the event happend over the weekend (NWD).
+Will detect if the event happened over the weekend (NWD).
 
 ### `GetMeta(Key) Value`
 
@@ -67,7 +67,7 @@ Returns the first value for the `Key` Meta if it exists in the event.
 
 Sets the value of `key` to `value` in the Meta map.
 
-> `evt.SetMeta('foobar', 'toto)`
+> `evt.SetMeta('foobar', 'toto')`
 
 
 ### `GetType() String`
@@ -87,7 +87,7 @@ Sets the value of `key` to `value` in the Parsed map.
 
 ## Appsec Helpers
 
-If the `Event` is the result of a rule being, matched, `Event.Appsec` is present.
+If the `Event` is the result of a rule being matched, `Event.Appsec` is present.
 
 ### `Appsec.GetVar(name) value`
 

@@ -77,7 +77,7 @@ To filter Security Engines by activity:
 
 On the Security Engines page. Explore the variety of options at your disposal. Choose to organize by:
 
-- **Enroll data**
+- **Enroll date**
 - **Number of alerts**
 - **Activity**
 - **Name**

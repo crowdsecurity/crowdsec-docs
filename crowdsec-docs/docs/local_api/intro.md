@@ -22,7 +22,7 @@ For example if you wish to receive notifications then you will only need to conf
 
 ## Authentication
 
-LAPI offers multiple different authentication methods, which has their own restrictions based on the method used.
+LAPI offers multiple different authentication methods, each with its own restrictions.
 
 You can find more information about the authentication methods [here](local_api/authentication.md).
 

@@ -26,7 +26,7 @@ This Remediation Component allows you to protect your PHP application from IPs t
 the decision taken by CrowdSec, user will either get denied (403) or have to fill a captcha (401).
 
 It uses the [PHP `auto_prepend_file` mechanism](https://www.php.net/manual/en/ini.core.php#ini.auto-prepend-file) and 
-the [Crowdsec php remediation library](https://github.com/crowdsecurity/php-cs-bouncer) to offer remediation/IPS capability directly in your PHP application.
+the [CrowdSec PHP remediation library](https://github.com/crowdsecurity/php-cs-bouncer) to offer remediation/IPS capability directly in your PHP application.
 
 It supports "ban" and "captcha" remediations, and all decisions of type Ip, Range or Country (geolocation).
 
@@ -112,7 +112,7 @@ Please copy the `scripts/settings.php.dist` file to a `scripts/settings.php` fil
 (see [Configurations settings](#configurations) for more details).
 
 For a quick start, simply search for `YOUR_BOUNCER_API_KEY` in the `settings.php` file and set the API key.
-To obtain a API key, you can run the `cscli bouncers add` command:
+To obtain an API key, you can run the `cscli bouncers add` command:
 
 ```
 sudo cscli bouncers add standalone-bouncer
@@ -162,7 +162,7 @@ or modify your `Virtual Host` accordingly:
 
 #### Stream mode cron task
 
-To use the stream mode, you first have to set the `stream_mode` setting value to `true` in your `script/settings.php` file.
+To use the stream mode, you first have to set the `stream_mode` setting value to `true` in your `scripts/settings.php` file.
 
 Then, you could edit the web server user (e.g. `www-data`) crontab:
 
@@ -206,7 +206,7 @@ When a new release of the component is available, you may want to update sources
 
 To limit the risk of breaking your web application during upgrade, you can perform the following actions to disable bouncing:
 
-- Remove the `auto_prepend_file` directive that point to the `bounce.php` file  and restart your web server
+- Remove the `auto_prepend_file` directive that points to the `bounce.php` file  and restart your web server
 - Disable any scheduled cron task linked to remediation feature
 
 Alternatively, but a little more risky, you could disable bouncing by editing the `scripts/settings.php` file and set the value `'bouncing_disabled'` for the `'bouncing_level'` parameter.
@@ -230,7 +230,7 @@ If you get an error message about "detected dubious ownership", you can run
 git config --global --add safe.directory /var/www/crowdsec-standalone-bouncer
 ```
 
-You should see a list of tags (`vX.Y.Z` format )that have been published after your initial installation.
+You should see a list of tags (`vX.Y.Z` format) that have been published since your initial installation.
 
 ### Checkout to last tag and update sources
 
@@ -252,7 +252,7 @@ git checkout vX.Y.Z && composer update
 - Large PHP matrix compatibility: 7.2, 7.3, 7.4, 8.0, 8.1 and 8.2
 - Built-in support for the most known cache systems Redis, Memcached and PhpFiles
   - Clear, prune and refresh the cache
-- Cap remediation level (ex: for sensitives websites: ban will be capped to captcha)
+- Cap remediation level (e.g. for sensitive websites, ban will be capped to captcha)
 
 ### Ban and captcha walls
 
@@ -290,15 +290,15 @@ Here is the list of available settings that you could define in the `scripts/set
 - `excluded_uris`: array of URIs that will not be bounced.
 
 
-- `stream_mode`: true to enable stream mode, false to enable the live mode. Default to false. By default, the `live mode` is enabled. The first time a user connects to your website, this mode means that the IP will be checked directly by the CrowdSec API. The rest of your user’s browsing will be even more transparent thanks to the fully customizable cache system. But you can also activate the `stream mode`. This mode allows you to constantly feed the bouncer with the malicious IP list via a background task (CRON), making it to be even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
+- `stream_mode`: true to enable stream mode, false to enable the live mode. Default to false. By default, the `live mode` is enabled. The first time a user connects to your website, this mode means that the IP will be checked directly by the CrowdSec API. The rest of your user’s browsing will be even more transparent thanks to the fully customizable cache system. But you can also activate the `stream mode`. This mode allows you to constantly feed the bouncer with the malicious IP list via a background task (CRON), making it even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
 
 #### Local API Connection
 
-- `auth_type`: Select from `api_key` and `tls`. Choose if you want to use an API-KEY or a TLS (pki) authentification.
+- `auth_type`: Select from `api_key` and `tls`. Choose if you want to use an API key or TLS (PKI) authentication.
   TLS authentication is only available if you use CrowdSec agent with a version superior to 1.4.0.
 
 
-- `api_key`: Key generated by the cscli (CrowdSec cli) command like `cscli bouncers add standlone-php-bouncer`.
+- `api_key`: Key generated by the cscli (CrowdSec cli) command like `cscli bouncers add standalone-bouncer`.
   Only required if you choose `api_key` as `auth_type`.
 
 
@@ -332,8 +332,8 @@ Here is the list of available settings that you could define in the `scripts/set
   timeout will be unlimited.
 
 
-- `use_curl`: By default, this lib call the REST Local API using `file_get_contents` method (`allow_url_fopen` is required).
-  You can set `use_curl` to `true` in order to use `cURL` request instead (`ext-curl` is in then required)
+- `use_curl`: By default, this lib calls the REST Local API using the `file_get_contents` method (`allow_url_fopen` is required).
+  You can set `use_curl` to `true` in order to use `cURL` request instead (`ext-curl` is then required)
 
 #### Cache
 
@@ -369,7 +369,7 @@ Here is the list of available settings that you could define in the `scripts/set
   - `geolocation[type]`:  Geolocation system. Only 'maxmind' is available for the moment. Default to `maxmind`.
 
   - `geolocation[cache_duration]`: This setting will be used to set the lifetime (in seconds) of a cached country
-    associated to an IP. The purpose is to avoid multiple call to the geolocation system (e.g. maxmind database). Default to 86400. Set 0 to disable caching.
+    associated to an IP. The purpose is to avoid multiple calls to the geolocation system (e.g. MaxMind database). Default to 86400. Set 0 to disable caching.
 
   - `geolocation[maxmind]`: MaxMind settings.
 
@@ -525,7 +525,7 @@ To test the captcha remediation :
 
 ### Testing geolocation remediation
 
-The remediation is expecting decisions with a scope of `Country`, and 2-letters code value.
+The remediation expects decisions with a scope of `Country` and a 2-letter country code as value.
 
 To test the geolocation remediation :
 - identify or create simple php file (even a `<?php print("hello") ?>` would do)

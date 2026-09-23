@@ -225,7 +225,7 @@ Things didn't work as intended?
 
 ### Startup errors
 
-If your test doesn't work, chances are that something prevented it to run.
+If your test doesn't work, chances are that something prevented it from running.
 
 1. nuclei isn't in the standard PATH
 
@@ -244,7 +244,7 @@ note that you can always run your nuclei template "manually" to debug it: `nucle
 
 3. your AppSec rule isn't valid
 
-You will see crowdsec fataling at startup:
+CrowdSec will exit with a fatal error at startup:
 
 ```
 time="2023-12-21 15:42:10" level=info msg="loading inband rule crowdsecurity/*" component=appsec_config name=appsec-test type=appsec

@@ -6,7 +6,7 @@ description: "Tune the OWASP Core Rule Set running on the CrowdSec WAF through t
 sidebar_position: 2
 ---
 
-In most cases, CRS will need some custom configuration to work properly without false positives on any moderatly complex application.
+In most cases, CRS will need some custom configuration to work properly without false positives on any moderately complex application.
 
 In order to update the behaviour of the CRS, we will be using the plugin system to update the configuration without modifying any existing file.
 

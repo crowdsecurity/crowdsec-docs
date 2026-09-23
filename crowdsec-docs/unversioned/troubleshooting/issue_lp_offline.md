@@ -3,7 +3,7 @@ title: Log Processor Offline
 id: issue_lp_offline
 ---
 :::info
-LogProcessors are Security Engine used to read log in a distributed setup.  
+Log Processors are Security Engines used to read logs in a distributed setup.  
 In a standalone install your unique Security Engine registers itself as a LogProcessing machine.
 :::
 

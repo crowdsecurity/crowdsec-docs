@@ -120,7 +120,7 @@ tcp        0      0 127.0.0.1:7422            0.0.0.0:*               LISTEN    
 ```
 
 :::note
-The output may look differently depending on which command you used but as long as you see the port and the process `crowdsec`, it means the AppSec Component is running.
+The output may look different depending on which command you used, but as long as you see the port and the process `crowdsec`, it means the AppSec Component is running.
 :::
 
 </details>
@@ -159,7 +159,7 @@ Once your remediation component is in place, continue with:
 
 ### Testing Detection
 
-If you've enabled an WAF-capable bouncer with CrowdSec WAF, you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.
+If you've enabled a WAF-capable bouncer, you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.
 This scenario does not lead to a decision, but it is a good way to confirm the setup is working.
 
 Trigger the dummy scenario by accessing a probe path on your web server:

@@ -42,7 +42,7 @@ sudo cscli decisions list
  - `REASON` is the scenario that was triggered (or human-supplied reason)
  - `ACTION` is the type of the decision (`ban`, `captcha` ...)
  - `COUNTRY` and `AS` are provided by GeoIP enrichment if present
- - `EVENTS` number of events that triggered this decison
+ - `EVENTS` is the number of events that triggered this decision
  - `EXPIRATION` is the time left on remediation
  - `ALERT ID` is the ID of the corresponding alert
 
@@ -91,7 +91,7 @@ sudo cscli decisions add --range 1.2.3.0/24 --reason "web bruteforce"
 ```
 
 
-> Add a decision (captcha) the on IP address `192.168.1.1` for 4 hours, with reason 'web bruteforce'
+> Add a decision (captcha) on the IP address `192.168.1.1` for 4 hours, with reason 'web bruteforce'
 
 ```bash
 sudo cscli decisions add --ip 192.168.1.1 --reason "web bruteforce" --type captcha
@@ -136,7 +136,7 @@ This will as well remove local and community decisions.
 
 ## Import decisions
 
-::: warning
+:::warning
 Importing over 1000 decisions may impact the performance of the backend temporarily, `cscli` will split the import into batches to avoid this.
 :::
 
@@ -185,7 +185,7 @@ sudo cscli decisions import -i foo.json
 ### STDIN
 
 :::info
-In the example we command we show how to use `cat` to pipe the content of a file to `cscli`. However, you can use any command that outputs the contents to STDOUT.
+In this example, we show how to use `cat` to pipe the content of a file to `cscli`. However, you can use any command that outputs the contents to STDOUT.
 :::
 
 ```bash

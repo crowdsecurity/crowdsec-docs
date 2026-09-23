@@ -7,7 +7,7 @@ CrowdSec can forward Alerts to Gotify via the HTTP plugin. This guide will show 
 
 ## Configuring the plugin
 
-By default the configuration for HTTP plugin is located at these default location per OS:
+By default, the HTTP plugin configuration is located at the following paths, depending on the OS:
 
 - **Linux** `/etc/crowdsec/notifications/http.yaml`
 - **FreeBSD** `/usr/local/etc/crowdsec/notifications/http.yaml`
@@ -17,7 +17,7 @@ By default the configuration for HTTP plugin is located at these default locatio
 
 You can replace the file contents with the following configuration:
 
-Then replace the `<GOTFIY_URL>` and the `<GOTIFY_API_KEY>` of the plugin's config so that it send the events to your Gotify instance.
+Then replace `<GOTIFY_URL>` and `<GOTIFY_API_KEY>` in the plugin configuration so that it sends the events to your Gotify instance.
 
 ```yaml
 type: http          # Don't change
@@ -118,7 +118,7 @@ on_success: break
 
 ## Final Steps:
 
-Let's restart crowdsec
+Restart CrowdSec:
 
 ```bash
 sudo systemctl restart crowdsec

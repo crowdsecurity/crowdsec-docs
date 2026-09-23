@@ -66,9 +66,9 @@ user_agent:
 The context configuration can as well be found in `/etc/crowdsec/contexts/` as yaml files.
 :::
 
-## Vizualise alert context
+## Visualize alert context
 
-The alert context will be display when inspecting an alert:
+The alert context is displayed when inspecting an alert:
 
 ```bash
 $ sudo cscli alerts inspect 7
