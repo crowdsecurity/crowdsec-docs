@@ -221,9 +221,6 @@ const redirects = [
 		from: "/blog/crowdsec_firewall_freebsd",
 		to: "/u/bouncers/firewall#pf-setup-freebsd",
 	},
-	// Removed pages: ingress-nginx is archived upstream
-	{ from: "/u/bouncers/ingress-nginx", to: "/u/bouncers/intro" },
-	{ from: "/docs/next/bouncers/ingress-nginx", to: "/u/bouncers/intro" },
 	// CTI Web UI pages moved to console/ip_reputation
 	{ from: "/u/cti_api/getting_started", to: "/u/console/ip_reputation/intro" },
 	{

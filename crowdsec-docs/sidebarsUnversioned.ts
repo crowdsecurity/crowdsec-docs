@@ -757,6 +757,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			label: "HAProxy",
 			id: "bouncers/haproxy",
 		},
+		{
+			type: "doc",
+			label: "Ingress Nginx",
+			id: "bouncers/ingress-nginx",
+		},
 	],
 	blocklistsSideBar: [
 		{
