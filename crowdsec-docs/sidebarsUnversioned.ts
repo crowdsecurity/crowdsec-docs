@@ -62,6 +62,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 					items: [
 						"cti_api/api_integration/integration_ipdex",
 						"cti_api/api_integration/integration_chrome",
+						"cti_api/api_integration/integration_gigasheet",
 						"cti_api/api_integration/integration_intelowl",
 						"cti_api/api_integration/integration_maltego",
 						"cti_api/api_integration/integration_misp",
