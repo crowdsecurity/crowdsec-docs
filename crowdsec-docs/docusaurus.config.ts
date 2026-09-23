@@ -189,7 +189,12 @@ const FOOTER_LINKS = [
 ];
 
 const redirects = [
-	...Object.values(sidebarsUnversioned).flatMap(backportRedirect),
+	// A doc listed in several sidebars would otherwise yield duplicate redirects.
+	...new Map(
+		Object.values(sidebarsUnversioned)
+			.flatMap((sidebar) => handleSidebarItems(sidebar as SidebarItem[]))
+			.map((redirect) => [redirect.from, redirect] as const)
+	).values(),
 	{ from: "/docs/troubleshooting", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/next/troubleshooting", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/faq", to: "/u/troubleshooting/intro" },
@@ -237,11 +242,8 @@ const redirects = [
 		to: "/u/console/ip_reputation/intro#live-exploit-tracker",
 	},
 	// other CTI pages redirect / fixes
-	{ from: "/next/cti_api/intro", to: "/u/console/ip_reputation/api_keys" },
-	{
-		from: "/next/cti_api/getting_started",
-		to: "/u/console/ip_reputation/api_keys",
-	},
+	{ from: "/docs/cti_api/getting_started", to: "/u/console/ip_reputation/api_keys" },
+	{ from: "/docs/next/cti_api/getting_started", to: "/u/console/ip_reputation/api_keys" },
 	{
 		from: "/u/console/ip_reputation/api_keys_premium",
 		to: "/u/console/ip_reputation/api_keys",
@@ -250,7 +252,58 @@ const redirects = [
 	{ from: "/u/console/premium_upgrade/premium_invoices/", to: "/u/troubleshooting/billing_faq" },
 	// unified Cloudflare bouncer page, cloudflare-workers content moved to cloudflare page (and that one  became deprecated)
 	{ from: "/u/bouncers/cloudflare-workers", to: "/u/bouncers/cloudflare" },
+	// Old URLs still linked from the Console, cscli, integrations and bouncer READMEs
+	{ from: "/docs/console", to: "/u/console/intro" },
+	{ from: "/docs/getting_started", to: "/u/getting_started/intro" },
+	{ from: "/docs/services/service_api", to: "/u/console/service_api/getting_started" },
+	{ from: "/docs/next/bouncers/cloudflare-workers", to: "/u/bouncers/cloudflare" },
+	{ from: "/docs/next/bouncers/stormshield", to: "/u/bouncers/stormshield" },
+	{ from: "/docs/next/cti_api/integration_intro", to: "/u/cti_api/api_integration/integration_intro" },
+	{ from: "/docs/next/cti_api/taxonomy", to: "/u/cti_api/taxonomy/intro" },
+	{ from: "/u/console/blocklists/threat_forecast", to: "/u/console/threat_forecast" },
+	{ from: "/u/console/enterprise_plan/enterprise_support", to: "/u/console/premium_upgrade/premium_support" },
+	{ from: "/u/cti-api/getting_started", to: "/u/console/ip_reputation/intro" },
+	{ from: "/u/console/cti/cti_api_keys", to: "/u/console/ip_reputation/api_keys" },
+	{ from: "/u/integrations", to: "/u/integrations/intro" },
+	{ from: "/u/tracker_api/api_reference", to: "/u/tracker_api/intro" },
+	{ from: "/Crowdsec/v1/contributing", to: "/docs/contributing/getting_started" },
+	{ from: "/Crowdsec/v1/references/acquisition", to: "/docs/log_processor/data_sources/intro" },
+	{ from: "/Crowdsec/v1/getting_started/installation", to: "/u/getting_started/installation/linux" },
 ];
+
+// Docs versions dropped from the site; archived pages and old backlinks still point at them.
+const REMOVED_VERSIONS = ["v0.3", "v1.0", "v1.1", "v1.2", "v1.2.2", "v1.3.0", "v1.3.4", "v1.4.0", "v1.5.0"];
+
+const removedVersionRedirects = redirects.flatMap(({ from, to }) =>
+	/^\/docs\/(?!next\/|v\d)/.test(from)
+		? REMOVED_VERSIONS.map((version) => ({ from: from.replace(/^\/docs\//, `/docs/${version}/`), to }))
+		: []
+);
+
+// Security Engine folders were regrouped under log_processor/ and local_api/, and two /u/ sections moved.
+function oldPathsOf(existingPath: string): string[] {
+	const path = existingPath.replace(/\/$/, "");
+	const moved = path.match(/^\/u\/(?:cti_api\/api_integration\/(integration_[^/]+)|console\/service_api\/(.+))$/);
+	if (moved) return [moved[1] ? `/u/cti_api/${moved[1]}` : `/u/service_api/${moved[2]}`];
+	const doc = path.match(/^\/docs(\/next)?(?:\/(.*))?$/);
+	if (!doc || /^v\d/.test(doc[2] ?? "")) return [];
+	const [, next = "", rest = ""] = doc;
+	const flat = rest
+		.replace(
+			/^log_processor\/(data_sources|parsers|scenarios|whitelist|collections|alert_context|service-discovery-setup)(?=\/|$)/,
+			"$1"
+		)
+		.replace(/^local_api\/(notification_plugins|profiles)(?=\/|$)/, "$1");
+	const froms = flat === rest ? [] : [`/docs${next}/${flat}`];
+	if (!next) {
+		for (const version of REMOVED_VERSIONS) {
+			for (const suffix of flat === rest ? [rest] : [rest, flat]) {
+				froms.push(suffix ? `/docs/${version}/${suffix}` : `/docs/${version}`);
+			}
+		}
+	}
+	return froms;
+}
 
 function redirectsGlobalDataPlugin() {
 	return {
@@ -501,7 +554,7 @@ const config: Config = {
 				onRouteError: "warn",
 			},
 		],
-		["@docusaurus/plugin-client-redirects", { redirects }],
+		["@docusaurus/plugin-client-redirects", { redirects: [...redirects, ...removedVersionRedirects], createRedirects: oldPathsOf }],
 		redirectsGlobalDataPlugin,
 		tailwindPlugin,
 	],
