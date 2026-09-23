@@ -169,4 +169,4 @@ If parsing still fails:
 - Test your logs in [CrowdSec Playground](https://playground.crowdsec.net/)
 - Share your log samples and acquisition config on [Discourse](https://discourse.crowdsec.net/)
 - Ask on [Discord](https://discord.gg/crowdsec) with `cscli collections list` and `cscli parsers list` output
-- Check parser documentation on the [Hub](https://app.crowdsec.net/hub/parsers)
+- Check parser documentation on the [Hub](https://app.crowdsec.net/hub/log-parsers)

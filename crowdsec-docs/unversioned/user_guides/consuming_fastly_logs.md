@@ -12,7 +12,7 @@ In this guide we're going to:
 ## Transport fastly logs to linux server:
 
 ### Configuring Rsyslog with TLS
-To receive logs from Fastly, you'll need to generate server and client certificates (the server certificate for machine which receives logs and client for Fastly). See this [guide](https://www.rsyslog.com/doc/master/tutorials/tls.html#setting-up-the-system) on how to do this.
+To receive logs from Fastly, you'll need to generate server and client certificates (the server certificate for machine which receives logs and client for Fastly). See this [guide](https://docs.rsyslog.com/doc/tutorials/tls.html#setting-up-the-system) on how to do this.
 
 
 

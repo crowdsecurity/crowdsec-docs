@@ -157,7 +157,7 @@ Choose the "Console App" download.
 
 :::warning
 
-If you installed the previous alpha release that was distributed from https://alpha-packages.crowdsec.net/, you must uninstall the previous version first.
+If you installed the previous alpha release that was distributed from `https://alpha-packages.crowdsec.net/`, you must uninstall the previous version first.
 
 :::
 

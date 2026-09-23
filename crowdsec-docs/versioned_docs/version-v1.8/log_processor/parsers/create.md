@@ -220,8 +220,7 @@ statics:
 
 Various changes have been made here :
 
--   We created to patterns to capture the two relevant type of log lines, Using an [online grok debugger](https://grokdebug.herokuapp.com/) or an [online regex debugger](https://www.debuggex.com/) [2]
-    )
+-   We created to patterns to capture the two relevant type of log lines, Using an [online grok debugger](https://grokdebugger.com/) or an [online regex debugger](https://www.debuggex.com/) [2]. Online debuggers only know the standard grok patterns, so check the result with CrowdSec's own engine using `cscli hubtest explain`, as shown below.
 -   We keep track of the username and the source_ip (Please note that setting the source_ip in `evt.Meta.source_ip` and `evt.Parsed.source_ip` is important [1])
 -   We setup various [statics](/log_processor/parsers/format.md#statics) information to classify the log type [3]
 

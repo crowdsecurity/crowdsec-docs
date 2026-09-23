@@ -60,7 +60,7 @@ Logs processors can also send more information about themselves to LAPI:
  - Operating system information (version, distribution/platform)
  - Number of [datasources](/log_processor/data_sources/introduction.md) configured per type
  - Enabled [features flags](configuration/feature_flags.md)
- - Installed Hub files (including [custom / tainted](/u/troubleshooting/intro#why-are-some-scenariosparsers-tainted-or-custom-) files):
+ - Installed Hub files (including [custom / tainted](/u/troubleshooting/security_engine#why-are-some-scenariosparsers-tainted-or-custom) files):
     - AppSec-Config
     - AppSec-Rules
     - Collections

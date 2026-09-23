@@ -77,7 +77,7 @@ Done ! You can now share the Seed URL to maltego clients, and they'd be able to 
 
 #### Registering the Seed URL
 
-In your maltego client register the Seed URL we created in the above deployment guide  by following [this guide](https://docs.maltego.com/support/solutions/articles/15000011965-how-do-i-add-a-new-transform-seed-to-my-maltego-client-)
+In your maltego client register the Seed URL we created in the above deployment guide  by following [this guide](https://docs.maltego.com/en/support/solutions/articles/15000034133-seeds)
 
 #### Adding CrowdSec API key to the transforms
 

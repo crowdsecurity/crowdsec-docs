@@ -5,7 +5,7 @@ title: Writing Plugin in Go
 
 In this guide we will implement a plugin in Go, which dispatches an email with specificied body on receiving alerts.
 
-Full code for this plugin can be found in [crowdsec repo](https://github.com/crowdsecurity/crowdsec/tree/master/plugins/notifications/email)
+Full code for this plugin can be found in [crowdsec repo](https://github.com/crowdsecurity/crowdsec/tree/master/cmd/notification-email)
 
 Before we begin, make sure you read [intro](/local_api/notification_plugins/intro.md)
 
