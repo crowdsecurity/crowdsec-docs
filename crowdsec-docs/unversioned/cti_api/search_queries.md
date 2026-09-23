@@ -105,7 +105,7 @@ Always use `AND`, `OR`, `NOT` in uppercase to ensure correct results.
 
 ### `AND`
 
-The `AND` The `AND` operator requires the expressions on both sides to be `true`.
+The `AND` operator requires the expressions on both sides to be `true`.
 
 For example, if you want [to search for malicious IPs located in France](https://app.crowdsec.net/cti?q=reputation%3A%22malicious%22+AND+location.country%3A%22FR%22&page=1):
 
