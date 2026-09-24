@@ -18,6 +18,13 @@ The **Engine Too Many Alerts** issue appears when your Security Engine generates
 - [**Actual large-scale attack**](#legitimate-large-scale-attack): A genuine distributed attack (DDoS, brute force campaign) targeting your infrastructure.
 - [**Custom scenario misconfigured *blackhole***](#custom-scenario-missing-blackhole-param): A custom scenario without the proper [*`blackhole`*](https://doc.crowdsec.net/docs/next/log_processor/scenarios/format/#blackhole) setting may generate alert spam
 
+:::tip Try it with the CrowdSec Skill
+Use the [CrowdSec Skill](https://github.com/crowdsecurity/crowdsec-skill) to help you solve this issue.  
+
+Suggested Prompt
+> My Security Engine generated more than 250,000 alerts in 6 hours. Help me find out if a scenario is overly sensitive, or if this is a legitimate large-scale attack.
+:::
+
 ## Diagnosis & Resolution
 
 ### Misconfigured or Overly Sensitive Scenario
