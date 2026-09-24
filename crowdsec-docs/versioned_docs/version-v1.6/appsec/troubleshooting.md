@@ -154,7 +154,7 @@ rules:
 EOF
 ```
 
-When starting crowdsec, you will see the following lines in the logs:
+When starting CrowdSec, you will see the following lines in the logs:
 
 ```
 time="2023-12-20 13:39:29" level=info msg="loading inband rule crowdsecurity/test-rule" component=appsec_config name=crowdsecurity/test-appsec type=appsec

@@ -55,7 +55,7 @@ This command should **ONLY** be run on the parent node.
 
 Yes, Security Engine parsers only parse the logs that are relevant for scenarios.
 
-Take a look at `cscli metrics` [and understand what do they mean](/docs/next/observability/cscli) to know if your setup is correct.
+Take a look at `cscli metrics` [and understand what they mean](/docs/next/observability/cscli) to know if your setup is correct.
 
 You can take an extra step and use [`cscli explain` to understand what log lines are parsed, and how](/docs/next/cscli/cscli_explain):
 
@@ -92,7 +92,7 @@ This command shows how each parser behaves.
 
 :::warning
 Do **not** use `cscli explain` on big log files, as this command will buffer a lot of information in memory to achieve this.
-If you want to check crowdsec's behaviour on big log files, please see [replay mode](/u/user_guides/replay_mode/).
+If you want to check CrowdSec's behaviour on big log files, please see [replay mode](/u/user_guides/replay_mode/).
 :::
 
 ### I want to add collection X: how do I add log files and test that it works?
@@ -107,7 +107,7 @@ When adding a collection to your setup, the [hub](https://hub.crowdsec.net) will
 cscli decisions list
 ```
 
-Additional filtering is possible please read [cscli decisions list](/docs/next/cscli/cscli_decisions_list) for more information.
+Additional filtering is possible; see [cscli decisions list](/docs/next/cscli/cscli_decisions_list) for more information.
 
 ### How to remove a decision on an IP
 
@@ -308,7 +308,7 @@ CrowdSec Security Engine is written in [Golang](https://golang.org/).
 
 ### What resources are needed to run Security Engine?
 
-Security Engine itself is rather light, and in a small to medium setup should use less than 100Mb of memory.
+Security Engine itself is rather light, and in a small to medium setup should use less than 100 MB of memory.
 
 During intensive logs processing, CPU is going to be the most used resource, and memory should grow slightly.
 
@@ -371,7 +371,7 @@ Defaults        env_keep += "HTTP_PROXY HTTPS_PROXY NO_PROXY"
 
 You can configure `cscli` and `crowdsec` to use [tor](https://www.torproject.org/) to anonymously interact with our API.
 
-All (http) requests made to the central API to go through the [tor network](https://www.torproject.org/).
+All HTTP requests made to the Central API will then go through the [Tor network](https://www.torproject.org/).
 
 With tor installed, setting `HTTP_PROXY` and `HTTPS_PROXY` environment variables to your socks5 proxy, as well as setting `NO_PROXY` to local addresses to prevent LAPI errors, will do the trick.
 

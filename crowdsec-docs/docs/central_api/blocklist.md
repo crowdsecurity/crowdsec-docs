@@ -6,7 +6,7 @@ sidebar_position: 3
 
 # Introduction
 
-The "Community Blocklist" is a curated list of IP addresses identified as malicious by CrowdSec. CrowdSec proactively block the IP addresses of this blocklist, preventing malevolent IPs from reaching your systems.
+The "Community Blocklist" is a curated list of IP addresses identified as malicious by CrowdSec. CrowdSec proactively blocks the IP addresses of this blocklist, preventing malevolent IPs from reaching your systems.
 
 # Community Blocklist Variation and Eligibility
 
@@ -59,8 +59,8 @@ The *Community Blocklist* contains 15 thousand malicious IPs based on your repor
 
 ## Community Blocklist (Premium)
 
-Paying users' Security Engine are automatically subscribed to the *Community Blocklist (Premium)*, which contains IPs that mirror their installed scenarios.
-Paying users' do not need to contribute to the network to be eligible to the blocklist.
+Paying users' Security Engines are automatically subscribed to the *Community Blocklist (Premium)*, which contains IPs that mirror their installed scenarios.
+Paying users do not need to contribute to the network to be eligible for the blocklist.
 
 The *Community Blocklist (Premium)* blocklist content is up to 60 thousand malicious IPs based on your scenarios.
 
@@ -86,7 +86,7 @@ Your existing security measures reduce reliance on the Community Blocklist. Thes
 - VPN-only access
 - OAuth authentication (e.g., Authentik, Authelia, Keycloak)
 
-This simply a result of your security model and access requirements, its neither an issue with your setup nor a limitation on our end.
+This is simply a result of your security model and access requirements; it's neither an issue with your setup nor a limitation on our end.
 
 3. Incomplete CrowdSec Configuration
 

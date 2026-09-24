@@ -6,7 +6,7 @@ sidebar_position: 1
 
 # Expression Helpers Reference
 
-Various helpers are available for use in the `detect.yaml` file to determine how crowdsec should be configured.
+Various helpers are available for use in the `detect.yaml` file to determine how CrowdSec should be configured.
 
 ## Host
 
@@ -52,13 +52,13 @@ Various helpers are available for use in the `detect.yaml` file to determine how
 
 &nbsp;&nbsp;&nbsp;&nbsp;Returns the version of the OS or distribution (for linux, /etc/os-release)
 
-> `Host.PlatformVersion == "25.04"
+> `Host.PlatformVersion == "25.04"`
 
 ### `Host.KernelVersion`
 
 &nbsp;&nbsp;&nbsp;&nbsp;Returns the current kernel version as returned by `uname -r`
 
-> `Host.KernelVersion == "6.16.2"
+> `Host.KernelVersion == "6.16.2"`
 
 ### `Host.KernelArch`
 
@@ -84,7 +84,7 @@ Various helpers are available for use in the `detect.yaml` file to determine how
 
 ## Path
 
-This object exposes helpers functions for the filesystem
+This object exposes helper functions for the filesystem
 
 ### `Exists(path) bool`
 
@@ -110,7 +110,7 @@ This object exposes helpers functions for the filesystem
 
 ## Systemd
 
-&nbsp;&nbsp;&nbsp;&nbsp;This object exposes helpers to get informations about Systemd units.
+&nbsp;&nbsp;&nbsp;&nbsp;This object exposes helpers to get information about systemd units.
 
 &nbsp;&nbsp;&nbsp;&nbsp;Only available on Linux.
 
@@ -124,13 +124,13 @@ This object exposes helpers functions for the filesystem
 
 &nbsp;&nbsp;&nbsp;&nbsp;Returns the value of the specified key from the specified unit.
 
-&nbsp;&nbsp;&nbsp;&nbsp;Returns an empty value if the unit if not installed and an error if the key does not exist.
+&nbsp;&nbsp;&nbsp;&nbsp;Returns an empty value if the unit is not installed and an error if the key does not exist.
 
 > `Systemd.UnitConfig("nginx", "StandardOutput") == "journal"`
 
 ### `UnitLogsToJournal(unitName) bool`
 
-&nbsp;&nbsp;&nbsp;&nbsp;Returns `true` if unit stdout/stderr are redirect to journal or journal+console.
+&nbsp;&nbsp;&nbsp;&nbsp;Returns `true` if unit stdout/stderr are redirected to the journal or journal+console.
 
 > `Systemd.UnitLogsToJournal("nginx") == true`
 
@@ -144,7 +144,7 @@ This object exposes helpers functions for the filesystem
 
 &nbsp;&nbsp;&nbsp;&nbsp;Returns `true` if the specified service exists and is configured to start automatically on boot.
 
-> `Windows.ServiceEnabled("MSSSQLSERVER") == true`
+> `Windows.ServiceEnabled("MSSQLSERVER") == true`
 
 ## Version
 

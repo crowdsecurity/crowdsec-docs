@@ -39,7 +39,7 @@ Don't know which component suits your needs? Then join our [discord](https://dis
 
 **This is not an exhaustive list of remediation components. You can find more on the [hub](https://app.crowdsec.net/hub/remediation-components).**
 
-Remediation Components interact with [crowdsec's Local API](/docs/next/local_api/intro) to retrieve active decisions and remediate appropriately.
+Remediation Components interact with [CrowdSec's Local API](/docs/next/local_api/intro) to retrieve active decisions and remediate appropriately.
 
 For your remediation components to communicate with the local API, you have to generate an API token with `cscli` and put it in the associated configuration file:
 
@@ -67,7 +67,7 @@ As CrowdSec has evolved over the years we have added support for various technol
 | Badge | Description |
 | --- | --- |
 | AppSec | Can forward HTTP requests to the AppSec Component [more information](/docs/next/appsec/intro) |
-| Mode | Can be configured into different modes, typically live (send a request to LAPI for each remediation check) or stream (downloads all current decisions to a local cache and checks periodically for new / deleted ones) <br/><br/>**note these are the naming schemes live/stream are used by first party remediation components** |
+| Mode | Can be configured into different modes, typically live (send a request to LAPI for each remediation check) or stream (downloads all current decisions to a local cache and checks periodically for new / deleted ones) <br/><br/>**Note: live/stream is the naming scheme used by first-party remediation components.** |
 | Metrics | Can send detailed metrics to the LAPI [more information](/docs/next/observability/usage_metrics) |
 | MTLS | Supports Mutual TLS authentication to the LAPI [more information](/docs/next/local_api/tls_auth) |
 | Prometheus | Can expose Prometheus metrics |

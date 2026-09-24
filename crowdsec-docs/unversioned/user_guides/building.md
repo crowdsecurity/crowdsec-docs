@@ -78,7 +78,7 @@ This mode will emulate the interactive mode of the wizard where you answer **yes
 
 ## Building docker image
 
-Crowdsec provides a docker image and can simply built like this :
+CrowdSec provides a Docker image, which can simply be built like this:
 
 ```bash
 git clone https://github.com/crowdsecurity/crowdsec.git && cd crowdsec

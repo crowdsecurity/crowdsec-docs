@@ -12,15 +12,15 @@ This section is only relevant if you want to add support for the CrowdSec applic
 
 ## Introduction
 
-To interact with the CrowdSec application security component, a protocol need to be respected.
+To interact with the CrowdSec application security component, a protocol must be followed.
 
-The application security component expect some headers to be present in the HTTP request (in addition to the original HTTP headers and body) and according to the result, the application security component will respond differently.
+The application security component expects some headers to be present in the HTTP request (in addition to the original HTTP headers and body) and according to the result, the application security component will respond differently.
 
-This documentation can be useful in case you want to write your own remediation component that interact with the CrowdSec application security component, or if you want to improve your existing one.
+This documentation can be useful in case you want to write your own remediation component that interacts with the CrowdSec application security component, or if you want to improve your existing one.
 
 ## HTTP Headers
 
-To work with the CrowdSec application security component, some HTTP headers are require, in addition to the other HTTP headers and the body of the original request.
+To work with the CrowdSec application security component, some HTTP headers are required, in addition to the other HTTP headers and the body of the original request.
 
 | Header Name                      | Description                                                                           |
 | -------------------------------- | ------------------------------------------------------------------------------------- |
@@ -43,7 +43,7 @@ All requests forwarded by the remediation component must be sent via a `GET` req
 For this example:
 
 - A `POST` HTTP request has been made by the IP `192.168.1.1` to a website on `example.com`.
-- The Application Security Component listen on `http://localhost:4241/`.
+- The Application Security Component listens on `http://localhost:4241/`.
 
 <details>
 <summary>Original HTTP Request</summary>

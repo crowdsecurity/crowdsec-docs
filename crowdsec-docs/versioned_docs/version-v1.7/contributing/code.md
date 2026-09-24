@@ -43,7 +43,7 @@ You may also receive feedback from the CI scripts (directory [.github/workflows]
 
 ## Release branches
 
-When we decide to start working on a major or minor release (for example 1.5) we create a 1.5.x branch from master. New contributions are always on the master, but from time to time the master is merged to the release branch. The upcoming release branch does not receive code from anywhere than the master branch.
+When we decide to start working on a major or minor release (for example 1.5) we create a 1.5.x branch from master. New contributions are always on the master, but from time to time the master is merged to the release branch. The upcoming release branch only receives code from the master branch.
 
 As work progresses on the release branch, we eventually create pre-release tags (ex. 1.5.0-rc1) and finally a release tag (1.5.0). At this point, we create the Release (source tar, zip, binary and static), and push the button on the Goldberg Machine to publish the binary packages.
 

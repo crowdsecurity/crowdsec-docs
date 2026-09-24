@@ -66,7 +66,7 @@ We will utilize the
 collection, which offers a wide range of rules aimed at identifying and
 preventing the exploitation of known vulnerabilities.
 
-This <UnderlineTooltip tooltip="Collections are bundle of parsers, scenarios,
+This <UnderlineTooltip tooltip="Collections are bundles of parsers, scenarios and postoverflows that form a coherent package.">
 postoverflows that form a coherent package.">collection</UnderlineTooltip> is
 regularly updated to include protection against newly discovered
 vulnerabilities. Upon installation, it receives automatic daily updates to
@@ -175,7 +175,7 @@ Those needed hub configuration items are:
 Once you have updated Compose or installed via the command line, restart the container. Before you do, set up the
 acquisition for the AppSec Component.
 
-### Setup the Acquisition
+### Set up the Acquisition
 
 You now need to set up the acquisition for AppSec. The steps depend on how you run CrowdSec. For the complete acquisition reference, see the [AppSec datasource](/log_processor/data_sources/appsec.md).
 
@@ -305,7 +305,7 @@ As stated previously this guide already presumes you have the Traefik Plugin ins
 Depending on how you configured the Traefik Plugin, you will need to update the configuration to include the AppSec configuration.
 
 :::warning
-Currently AppSec does not support mTLS authentication for the AppSec Component. If you have mTLS enabled, and wish to use the AppSec Component, you can define seperate middlewares for the AppSec Component.
+Currently AppSec does not support mTLS authentication for the AppSec Component. If you have mTLS enabled, and wish to use the AppSec Component, you can define separate middlewares for the AppSec Component.
 :::
 
 <Tabs
@@ -477,7 +477,7 @@ kubectl apply -f traefik-middleware.yaml
 The `spec.plugin.<key>` in the Middleware **must match** the key you registered under `experimental.plugins.<key>` in Traefik's configuration — not the module name (`crowdsec-bouncer-traefik-plugin`). Since the `traefik-values.yaml` above registers the plugin under the key `bouncer`, use `bouncer:` here.
 :::
 
-```yaml values="traefik-middleware.yaml"
+```yaml title="traefik-middleware.yaml"
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
@@ -665,7 +665,7 @@ guide](/appsec/troubleshooting.md)
 What happened in the test that we just did is:
 
  1. We did a request (`localhost/.env`) to our local webserver
- 2. Thanks to the Remediation Component configuration, forwarded the request to `http://127.0.0.1:7422`
+ 2. Thanks to its configuration, the Remediation Component forwarded the request to the AppSec Component
  3. Our AppSec Component, listening on `http://127.0.0.1:7422` analyzed the request
  4. The request matches the [AppSec rule to detect .env access](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access)
  5. The AppSec Component thus answered with [HTTP 403](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403) to the Remediation Component, indicating that the request must be blocked

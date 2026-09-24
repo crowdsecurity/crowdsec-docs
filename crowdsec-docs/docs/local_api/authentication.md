@@ -15,7 +15,7 @@ There are three kinds of authentication to the Local API :
 3. TLS client certificates:
     - they are used to authenticate Remediation Components (bouncers) and Log Processors (machines)
     - based on the OU field of the certificate, the Local API will determine what permissions the client has as per the restrictions above (log processor or remediation components)
-    - this allows the Local API to authenticate clients without generating the clients before hand if you have a dynamic environment
+    - this allows the Local API to authenticate clients without creating credentials for the clients beforehand if you have a dynamic environment
 
 For TLS authentication please see our [dedicated documentation](/local_api/tls_auth.md).
 
@@ -31,7 +31,7 @@ and keep the generated API token to use it in your Remediation Component configu
 
 ### Log Processors (machines)
 
-To allow a log processor to communicate with the Local API, each instance will need it own set of credentials which is validated by an admin of the Local API.
+To allow a log processor to communicate with the Local API, each instance needs its own set of credentials which is validated by an admin of the Local API.
 
 There are two ways to register a CrowdSec to a Local API.
 
@@ -42,7 +42,7 @@ sudo cscli machines add testMachine
 ```
 
 :::warning
-if you are running this command on the local API server, most likely it will already have it own credentials file. If you are generating credentials for a remote machine you must pass the `-f` flag to generate the credentials to another file.
+If you are running this command on the Local API server, it most likely already has its own credentials file. If you are generating credentials for a remote machine you must pass the `-f` flag to generate the credentials to another file.
 
 ```bash
 sudo cscli machines add testMachine -f /path/to/credentials.yaml
@@ -53,7 +53,7 @@ sudo cscli machines add testMachine -f- > /path/to/credentials.yaml
 ```
 :::
 
-Upon installation of CrowdSec it will generate it own set of credentials to operate the log processor and local API server.
+Upon installation, CrowdSec generates its own set of credentials to operate the log processor and local API server.
 
 If you are installing these credentials on a remote machine, you must replace the `local_api_credentials.yaml` file within the configuration directory, you can find the location of this directory [here](/u/troubleshooting/security_engine#where-is-configuration-stored) based on your operating system.
 

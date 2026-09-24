@@ -105,7 +105,7 @@ Always use `AND`, `OR`, `NOT` in uppercase to ensure correct results.
 
 ### `AND`
 
-The `AND` operator requires expression from each side to be `true`.
+The `AND` operator requires the expressions on both sides to be `true`.
 
 For example, if you want [to search for malicious IPs located in France](https://app.crowdsec.net/cti?q=reputation%3A%22malicious%22+AND+location.country%3A%22FR%22&page=1):
 
@@ -191,7 +191,7 @@ Do not enclose regular expression queries between double quotes.
 
 :::
 
-Regular expression must be enclosed between `/`.
+Regular expressions must be enclosed in `/`.
 
 For example, you can [query any IPs reported for a CVE published in 2024](https://app.crowdsec.net/cti?q=cves%3A%2FCVE-2024-%5B0-9%5D%2B%2F&page=1):
 

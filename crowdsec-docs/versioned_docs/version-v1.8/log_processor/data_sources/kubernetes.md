@@ -35,7 +35,7 @@ Look at the `configuration parameters` to view all supported options.
 
 ### `selector`
 
-Label selector applied to pods in the target namespace. Supports the standard Kubernetes selector syntax (for example `app=caddy`, `component in (frontend,backend)` or `app!=nginx`); see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors) for the full grammar. This field is mandatory and prevents the datasource from tailling every pod in the namespace.
+Label selector applied to pods in the target namespace. Supports the standard Kubernetes selector syntax (for example `app=caddy`, `component in (frontend,backend)` or `app!=nginx`); see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors) for the full grammar. This field is mandatory and prevents the datasource from tailing every pod in the namespace.
 
 ### `namespace`
 

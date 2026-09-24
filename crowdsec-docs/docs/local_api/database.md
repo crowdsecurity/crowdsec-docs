@@ -4,9 +4,9 @@ title: Databases
 sidebar_position: 2
 ---
 
-By default, the CrowdSec Local API use `SQLite` as backend storage. In case you expect a lot of traffic on your Local API, you should use `MySQL`, `MariaDB` or `PostgreSQL`.
+By default, the CrowdSec Local API uses `SQLite` as backend storage. In case you expect a lot of traffic on your Local API, you should use `MySQL`, `MariaDB` or `PostgreSQL`.
 
-For `SQLite`, there is nothing to do to make it work with CrowdSec. For `MySQL`, `MariaDB` and `PostgreSQL` , you need to create a database and an user.
+For `SQLite`, there is nothing to do to make it work with CrowdSec. For `MySQL`, `MariaDB` and `PostgreSQL` , you need to create a database and a user.
 
 Please refer to [ent.](https://entgo.io/) [supported database](https://entgo.io/docs/dialects/). At the time of writing :
 

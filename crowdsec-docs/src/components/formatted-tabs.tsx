@@ -5,7 +5,7 @@ import Tabs from "@theme/Tabs";
 import React from "react";
 
 const windowsTerminalValues = [
-	{ label: "Powershell", value: "powershell", icon: cibPowershell },
+	{ label: "PowerShell", value: "powershell", icon: cibPowershell },
 	{ label: "CMD", value: "terminal", icon: cilShortText },
 ];
 
@@ -28,7 +28,7 @@ const FormattedTabs = ({ ...props }): React.JSX.Element => {
 
 	if (props.bash !== undefined) {
 		defaultValue = "nix";
-		values.push({ label: "Linux/Freebsd", value: "nix", icon: cibLinux });
+		values.push({ label: "Linux/FreeBSD", value: "nix", icon: cibLinux });
 	}
 	if (props.powershell !== undefined) {
 		if (defaultValue === "") {

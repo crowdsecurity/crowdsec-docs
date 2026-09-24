@@ -199,7 +199,7 @@ The possible values are:
 -   `suspicious` : Many CrowdSec users have reported the IP, but it is not aggressive enough to be considered malicious
 -   `known` : At this time, the CrowdSec network has identified the IP, but we still require additional information to make a decision
 -   `safe` : The IP address is safe and can be trusted (ex: Google DNS, Cloudflare DNS ...)
--   `benign` : The IP address belong to a known entity and is not dangerous (eg. Public Internet Scanners)
+-   `benign` : The IP address belongs to a known entity and is not dangerous (eg. Public Internet Scanners)
 -   `unknown`: The IP address is either unknown or its last report is from more than three months ago
 
 ## `ip_range_24`
@@ -262,7 +262,7 @@ The level of background noise of an IP address is an indicator of its internet a
 
 The possible values are:
 
--   `high` : IP is very noisy, validated as an untargeted mild-threat mass-attacks
+-   `high` : IP is very noisy and validated as a source of untargeted, mild-threat mass attacks
 -   `medium` : IP has been reported by many members of the CrowdSec network, but not enough to be considered as background noise
 -   `low` : IP has been reported by a few members of the CrowdSec network
 -   `none` : IP has never been reported or only by a very few members of the CrowdSec network
@@ -275,7 +275,7 @@ The possible values are:
 "background_noise_score" : 10
 ```
 
-CrowdSec intelligence calculated score: a high background noise scores highlights untargeted mild-threat mass-attacks.
+CrowdSec intelligence calculated score: a high background noise score highlights untargeted, mild-threat mass attacks.
 
 ## `confidence`
 
@@ -302,7 +302,7 @@ The possible values are:
 "ip_range_score" : 5
 ```
 
-The malevolence score of the IP range the IP belongs to. 0 is unknown, 1 is a couple of IP reported, 5 is the highest level for the most aggressive range. See "scoring" above.
+The malevolence score of the IP range the IP belongs to. 0 is unknown, 1 means a couple of reported IPs, 5 is the highest level for the most aggressive range. See "scoring" above.
 
 ## `as_name`
 
@@ -357,7 +357,7 @@ The geo location information about the IP address.
 "country" : "FR"
 ```
 
-The two letters country code of the IP following ISO 3166 format, when available.
+The two-letter country code of the IP (ISO 3166-1 alpha-2), when available.
 
 ### `city`
 
@@ -451,7 +451,7 @@ Delta in days between first seen and today.
 ```
 
 Either the IP is a proxy or a VPN.
-If `true`, more informations can be found in the `classifications`.
+If `true`, more information can be found in `classifications`.
 
 Delta in days between first and last seen timestamps.
 
@@ -470,7 +470,7 @@ Delta in days between first and last seen timestamps.
 ```
 
 A list of the attack categories for which the IP was reported.
-The possibles values of this field are listed [here](cti_api/taxonomy/behaviors.mdx).
+The possible values of this field are listed [here](cti_api/taxonomy/behaviors.mdx).
 
 ### `name`
 
@@ -634,7 +634,7 @@ Human-friendly description of the classification.
 ```
 
 A more exhaustive list of the scenarios for which a given IP was reported.
-The possibles values of this field are listed [here](cti_api/taxonomy/scenarios.mdx).
+The possible values of this field are listed [here](cti_api/taxonomy/scenarios.mdx).
 
 ### `name`
 
@@ -723,7 +723,7 @@ Mitre Technique description.
 ]
 ```
 
-A list of CVEs for which the IP has been reported for.
+A list of CVEs for which the IP has been reported.
 
 ## `target_countries`
 
@@ -1055,12 +1055,12 @@ The score of the _anomaly_ component (see [more here](cti_api/taxonomy/scores.md
   {
     "name" : "list_name",
     "label" : "List Label",
-    "description" : "List descrption"
+    "description" : "List description"
   }
 ]
 ```
 
-A list of the [CrowdSec Blockists](https://app.crowdsec.net/blocklists) the IP belongs to.
+A list of the [CrowdSec Blocklists](https://app.crowdsec.net/blocklists) the IP belongs to.
 
 ### `name`
 

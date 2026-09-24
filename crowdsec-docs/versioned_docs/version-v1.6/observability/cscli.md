@@ -6,7 +6,7 @@ sidebar_position: 2
 
 # Crowdsec Metrics
 
-Crowdsec is instrumented using [prometheus](https://prometheus.io/) to provide detailed metrics and tracability about what is going on.
+CrowdSec is instrumented using [Prometheus](https://prometheus.io/) to provide detailed metrics and traceability about what is going on.
 The `cscli metrics` allows you to see a subset of the metrics exposed by crowdsec. For a more industrial solution, look into the [Grafana](/docs/next/observability/prometheus) integration.
 
 The best way to get an overview of the available metrics is to use `cscli metrics list`:
@@ -22,7 +22,7 @@ lapi | 	Local API Metrics | 	Monitors the requests made to local API routes.
 lapi-bouncer	 | Local API Bouncers Metrics	 | Tracks total hits to remediation component related API routes.
 lapi-decisions | 	Local API Bouncers Decisions	 | Tracks the number of empty/non-empty answers from LAPI to bouncers that are working in "live" mode.
 lapi-machine	 | Local API Machines Metrics | 	Tracks the number of calls to the local API from each registered machine.
-parsers	 | Parser Metrics	 | Tracks the number of events processed by each parser and indicates success of failure. Zero parsed lines means the parser(s) failed. Non-zero unparsed lines are fine as crowdsec select relevant lines.
+parsers	 | Parser Metrics	 | Tracks the number of events processed by each parser and indicates success or failure. Zero parsed lines means the parser(s) failed. Non-zero unparsed lines are fine as crowdsec select relevant lines.
 scenarios	 | Scenario Metrics	 | Measure events in different scenarios. Current count is the number of buckets during metrics collection. Overflows are past event-producing buckets, while Expired are the ones that didn’t receive enough events to Overflow.
 stash	 | Parser Stash Metrics	 | Tracks the status of stashes that might be created by various parsers and scenarios.
 whitelists	 | Whitelist Metrics	 | Tracks the number of events processed and possibly whitelisted by each parser whitelist.

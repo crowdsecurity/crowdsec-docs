@@ -14,7 +14,7 @@ All the examples assume that you have read the [Creating parsers](/log_processor
 
 ## Foreword
 
-This documentation assumes you're trying to create a scenario for crowdsec with the intent of submitting to the hub, and thus create the associated functional testing.
+This documentation assumes you're trying to create a scenario for CrowdSec with the intent of submitting it to the Hub, and thus create the associated functional testing.
 The creation of said functional testing will guide our process and will make it easier.
 
 We're going to create a scenario for an imaginary service "myservice" from the following logs of failed authentication :
@@ -33,10 +33,10 @@ available](https://github.com/crowdsecurity/crowdsec-yaml-schemas/blob/main/scen
 for the scenario and linked at
 [SchemaStore](https://github.com/SchemaStore/schemastore/blob/master/src/api/json/catalog.json)
 for general public availability inside most common editors. You will
-be able see if the scenario comply to the schema directly in your
+be able to see if the scenario complies with the schema directly in your
 editor, and you will have some kind of syntax highlighting and
 suggestions. The only requirement for this is to write your scenario
-using the directory structure of the hub to make the editor detects
+using the directory structure of the hub to make the editor detect
 that the file has to comply to the yaml schema. This means that you
 will have to write the scenario in one subdirectory of the `scenarios`
 directory. This subdirectory is named after your name, or your
@@ -93,7 +93,7 @@ ignore_parsers: true
 
 ## Scenario creation
 
-Let's create a simple scenario to detect bruteforce attemp on `myservice`:
+Let's create a simple scenario to detect brute-force attempts on `myservice`:
 
 ```yaml
 # myservice bruteforce
@@ -172,7 +172,7 @@ Please fill your assert file(s) for test 'myservice-bf', exiting
 What happened here ?
 
 -   The scenario has been triggered and is generating some assertion (for functional test)
--   In production environment, an alert would have been send to the CrowdSec Local API.
+-   In production environment, an alert would have been sent to the CrowdSec Local API.
 
 We can again understand more of what is going on thanks to `cscli hubtest explain` :
 
@@ -249,7 +249,7 @@ line: Dec  8 06:28:43 mymachine myservice[2806]: bad password for user 'admin' f
 
 ## Closing word
 
-We have now a fully functional scenario for myservice to detect brute forces!
+We now have a fully functional scenario for myservice to detect brute forces!
 We can either deploy it to our production systems to do stuff, or even better, contribute to the hub !
 
 If you want to know more about directives and possibilities, take a look at [the scenario reference documentation](/log_processor/scenarios/format.md) !

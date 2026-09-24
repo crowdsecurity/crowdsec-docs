@@ -10,7 +10,7 @@ You can subscribe to a blocklist at the Organization, Security Engine, or Integr
 
 ### Organization Level
 
-The simplest way to subscribe to a blocklist is at the organization level. This will apply the blocklist to all Security Engines and Integrations within the organization this will include current and future Security Engines and Integrations.
+The simplest way to subscribe to a blocklist is at the organization level. This will apply the blocklist to all Security Engines and Integrations within the organization, including current and future Security Engines and Integrations.
 
 ![](/img/console/blocklists/org_subscribe_popup.png)
 
@@ -72,7 +72,7 @@ If your organization already has Integrations, a section at the bottom can also 
 
 ![](/img/console/blocklists/integrations/subscriptions.png)
 
-To subscribe to an integration to the current blocklist, click on the _Subscribe_ button from the desired integration.
+To subscribe an integration to the current blocklist, click on the _Subscribe_ button from the desired integration.
 You will now see a different border around the subscribed Integrations.
 
 ![](/img/console/blocklists/integrations/subscribed.png)

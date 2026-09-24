@@ -4,7 +4,7 @@ title: Security Copilot Plugin
 ---
 
 CrowdSec Intelligence Plugin for Microsoft Security Copilot allows you to get advanced insights on a malicious IP activity.  
-As part of the core plugins of Security copilot its setup and usage are very straight forward.
+As one of the core plugins of Security Copilot, its setup and usage are very straightforward.
 
 This documentation will lead you through an easy setup and lead you through some example usage and prompts.
 
@@ -48,6 +48,6 @@ For example:
 What does CrowdSec know about 184.178.172.25
 ```  
 
-The 3 steps copilot take will be: to select the plugin, do the request and format his response as shown below:  
+Copilot takes three steps: it selects the plugin, makes the request and formats its response, as shown below:  
 
 ![Basic result](/img/securitycopilot_basic_prompt_result.png)

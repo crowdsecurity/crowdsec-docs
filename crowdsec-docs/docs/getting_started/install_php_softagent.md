@@ -6,16 +6,16 @@ sidebar_position: 1
 
 # Using our PHP SDK
 
-With the help of our SDK, If you are developing security software that detects misbehaviors and does remediation on IPs, you can send signals about your detections and benefit from the community blocklist.
+If you are developing security software that detects misbehavior and remediates IPs, our SDK lets you send signals about your detections and benefit from the community blocklist.
 
-Our SDK do the heavy lifting of the CAPI connectivity so you can simply, sendSignals, getDecisions and getRemediationForIp, as well as enrolling your soft-agent into the console
+Our SDK does the heavy lifting of CAPI connectivity so you can simply push signals, getDecisions and getRemediationForIp, as well as enrolling your soft-agent into the console
 
 ![Possible integration](/img/php-libs-crowdsec-overview.jpg)
 
 ## PHP CAPI client + Remediation Engine
 
 The [php-capi-client](https://github.com/crowdsecurity/php-capi-client) will deal automatically with connecting to CAPI and renewing the token when necessary.  
-Provides the following public functions:
+It provides the following public functions:
 * pushSignals(array $signals)
 * getStreamDecisions()
 * enroll(...)
@@ -54,7 +54,7 @@ You will call the decisions-list/blocklist refresh via cron or schedulers.
 When you remediate locally a misbehavior, you would generate a signal for the corresponding scenario
 
 **There are 2 types of signals**:
-* decisions: when your security module triggers remediation on an IP (block or captcha) for some misbehaviors (brute force, spam, trying to access a file known for )
+* decisions: when your security module triggers remediation on an IP (block or captcha) for some misbehaviors (brute force, spam, trying to access a file known for a vulnerability)
 * whispers: behaviors that can seem trivial and may occur only once on your site but might result in identifying a malicious actor if he does the same action on hundreds of sites
 
 **Examples of decision signals:**

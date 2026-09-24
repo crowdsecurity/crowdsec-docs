@@ -8,7 +8,7 @@ sidebar_position: 4
 
 ## Overview
 
-In addition to the standard login/password (for agents) or API key (for bouncers), crowdsec also supports TLS client authentication for both.
+In addition to the standard login/password (for agents) or API key (for bouncers), CrowdSec also supports TLS client authentication for both.
 
 This allows you to bypass the requirement of generating a login/password or API keys before adding a new agent or bouncer to your setup. This is especially useful if you are using any kind of auto-scaling and agents or bouncers can appear at any time.
 
@@ -20,7 +20,7 @@ Please refer to the documentation of each bouncer to see how to configure them.
 
 ## Revocation checking
 
-Crowdsec will perform both OCSP and CRL revocation check.
+CrowdSec performs both OCSP and CRL revocation checks.
 
 #### CRL check
 
@@ -48,7 +48,7 @@ If the OCSP server returns a malformed response, this check will be ignored.
 
 For this example, we will be creating our PKI with [cfssl](https://github.com/cloudflare/cfssl) directly on the machine where crowdsec is running. In production, you will want to use your existing PKI infrastructure for obvious security reasons.
 
-For the sake of simplicity, we will be using the same CA for the server and client certificates (in production, you will likely use  differents CAs).
+For the sake of simplicity, we will be using the same CA for the server and client certificates (in production, you will likely use  different CAs).
 
 We will need some configuration files for cfssl.
 
@@ -257,7 +257,7 @@ cert_path: /tmp/agent.pem #Client cert
 ### Using the certificates
 
 
-Now when we restart crowdsec, we will see in the logs that a new agent was creating automatically:
+Now when we restart crowdsec, we will see in the logs that a new agent was created automatically:
 ```
 INFO[26-04-2022 13:42:36] TLSAuth: no OCSP Server present in client certificate, skipping OCSP verification  component=tls-auth type=agent
 WARN[26-04-2022 13:42:36] no crl_path, skipping CRL check               component=tls-auth type=agent
@@ -298,7 +298,7 @@ $ cscli bouncers list
 ----------------------------------------------------------------------------------------
 ```
 
-If we try to use the agent certificate with our fake bouncer, LAPI with return an error as the OU is not allowed for the bouncers:
+If we try to use the agent certificate with our fake bouncer, LAPI will return an error as the OU is not allowed for the bouncers:
 
 ```shell
 $ curl --cacert /tmp/inter.pem --cert /tmp/agent.pem --key /tmp/agent-key.pem https://localhost:8081/v1/decisions/stream\?startup\=true

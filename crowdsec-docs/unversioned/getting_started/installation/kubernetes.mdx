@@ -37,7 +37,7 @@ helm repo update
 ### Install the Security Engine
 
 Once the Helm repository is added, create a `crowdsec-values.yaml` file. This
-`values.yaml` different options are described [here](/docs/next/configuration/values_parameters) You can start with this
+The available `values.yaml` options are described [here](/docs/next/configuration/values_parameters). You can start with this
 example:
 
 ```yaml
@@ -69,7 +69,7 @@ config:
   config.yaml.local: |
     api:
       client:
-        # the log processor will remove delete itself from LAPI when stopping.    
+        # the log processor will unregister itself from LAPI when stopping.    
         unregister_on_exit: true
       server:
         # This is needed for agent autoregistration
@@ -106,7 +106,7 @@ automatically attach to the right pods and feed the logs into the right parsers.
     <summary>Why `program` and not `type` ?</summary>
 
 In standard standalone setups, documentation states that the labels should be
-name `type` with the type being the parsed log program (eg nginx, traefik). A
+named `type`, with the type being the parsed log program (e.g. nginx, traefik). A
 transformation from `type` to `program` is done by the first stage parser
 `crowdsecurity/syslog-logs` which is not relevant in a Kubernetes context.
 
@@ -193,7 +193,7 @@ lapi:
       value: "mysecretkey12345"
 ```
 
-To avoid having secrets stored in you `values.yaml` you can use secrets:
+To avoid storing secrets in your `values.yaml`, use Kubernetes secrets:
 
 ```bash
 kubectl create secret generic crowdsec-keys \

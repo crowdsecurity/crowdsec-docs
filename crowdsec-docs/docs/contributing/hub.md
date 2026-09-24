@@ -15,7 +15,7 @@ Sharing your parsers, scenarios, waf rules and collections on the hub allows oth
 The main communication channels for hub contributions are:
 
 - [Discord](https://discord.gg/crowdsec): Best for live interactions and quick questions about hub development
-- [GitHub Issues](https://github.com/crowdsecurity/hub/issues): Use for bug reports and feature requests. also  great for discussing ideas, suggesting improvements, or asking detailed questions
+- [GitHub Issues](https://github.com/crowdsecurity/hub/issues): Use for bug reports and feature requests. Also great for discussing ideas, suggesting improvements, or asking detailed questions
 
 ## Getting Started
 
@@ -186,7 +186,7 @@ Test creation is covered in [parsers creation](/log_processor/parsers/create.md)
 
 ### Documentation
 
-Please provide a `.md` file with the same name as each of your parser, scenario, collection, or WAF rule. The markdown is rendered in the [hub](https://hub.crowdsec.net).
+Please provide a `.md` file with the same name as each of your parsers, scenarios, collections, or WAF rules. The markdown is rendered in the [hub](https://hub.crowdsec.net).
 
 #### Collection Documentation
 

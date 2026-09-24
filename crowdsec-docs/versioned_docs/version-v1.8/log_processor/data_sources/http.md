@@ -71,9 +71,9 @@ The datasource expects to receive one or multiple JSON objects.
 
 The datasource will also automatically decompress any request body in `gzip` format, as long as the `Content-Encoding` header is set to `gzip`.
 
-The JSON object can be any format, crowdsec will pass it as-is to the parsers.
+The JSON object can have any format: CrowdSec passes it as-is to the parsers.
 
-If you are sending multiple JSON object in the same request, they must be separated by a newline (NDJSON format):
+If you are sending multiple JSON objects in the same request, they must be separated by a newline (NDJSON format):
 ```json
 {"log": "log line 1", "timestamp": "2021-01-01T00:00:00Z"}
 {"log": "log line 2", "timestamp": "2021-01-01T00:00:01Z"}

@@ -288,7 +288,7 @@ const sidebarsConfig: SidebarConfig = {
 						{
 							type: "doc",
 							id: "contributing/specs/bouncer_appsec_specs",
-							label: "Bouncer&AppSec",
+							label: "Bouncer & AppSec",
 						},
 						{
 							type: "doc",

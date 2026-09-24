@@ -6,12 +6,12 @@ sidebar_position: 6
 
 
 While CrowdSec can be used to monitor "live" logs, it can also be used to replay old log files (replay/forensic mode).
-It is a *great* way to test scenario, detect false positives & false negatives or simply generate reporting for a period in the past.
+It is a *great* way to test scenarios, detect false positives & false negatives or simply generate reporting for a period in the past.
 
 When doing so, CrowdSec will read the logs and extract timestamps from them, so that the scenarios/buckets can be evaluated with the log's timestamps. The resulting overflows will be pushed to the API like any other alert, but the timestamps will be taken from the logs, properly allowing you to view the alerts in their original time line.
 
 
-you can run:
+To replay a log file, run:
 
 ```bash
 sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///path/to/your/log/file.log -type log_file_type
@@ -22,7 +22,7 @@ Where `-dsn` points to the log file you want to process, and the `-type` is simi
 ```bash
 sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/nginx/2019.log -type nginx
 sudo crowdsec -c /etc/crowdsec/user.yaml -dsn file:///var/log/sshd-2019.log -type syslog
-sudo crowdsec -c /etc/crowdsec/user.yaml -dns "journalctl://filters=_SYSTEMD_UNIT=ssh.service" -type syslog
+sudo crowdsec -c /etc/crowdsec/user.yaml -dsn "journalctl://filters=_SYSTEMD_UNIT=ssh.service" -type syslog
 ```
 
 When running crowdsec in forensic mode, the alerts will be displayed to stdout, and as well pushed to database:
@@ -37,7 +37,7 @@ INFO[13-11-2020 13:05:24] (14baeedafc1e44c08b806fc0c1cd92c4/crowdsec) crowdsecur
 ...
 ```
 
-And since these alerts are also pushed to the database, it mean you can view them in metabase, or from cscli!
+And since these alerts are also pushed to the database, it means you can view them in Metabase or with cscli!
 
 When using metabase, simply use the time selector to view the appropriate period in the main dashboard:
 
@@ -63,7 +63,7 @@ It will parse the JSON array `Records` and generate one event per entry in the a
 
 ## Injecting alerts into an existing database
 
-If you already have a running crowdsec/Local API running and want to inject events into existing database, you can run crowdsec directly:
+If you already have CrowdSec/Local API running and want to inject events into the existing database, you can run crowdsec directly:
 
 ```bash
 sudo crowdsec -dsn file://logs/nginx/access.log -type nginx -no-api
@@ -166,7 +166,7 @@ INFO[0040] Metabase is ready
 	password  : ...
 ```
 
-## Injection alerts into new database - dev env
+## Injecting alerts into a new database - dev env
 
 From a fresh release:
 

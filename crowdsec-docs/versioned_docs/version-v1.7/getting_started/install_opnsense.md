@@ -27,7 +27,7 @@ Do not enable/start the services from the terminal like you would on a standard 
 
 Refresh the page and go to `Services > CrowdSec > Overview` to verify the running services and installed configurations.
 
-Great, you now have CrowdSec installed on your system. Have a look at the [post installation steps](/u/getting_started/next_steps) to see how to to configure and optimize it,
+Great, you now have CrowdSec installed on your system. Have a look at the [post installation steps](/u/getting_started/next_steps) to see how to configure and optimize it. These recommendations are valid for any system.
 these recommendations are valid for any system.
 
 
@@ -38,7 +38,7 @@ You can disable them for testing or if you have special requirements.
 
 The parsers, scenarios and all objects from the [CrowdSec Hub](https://hub.crowdsec.net/) are periodically upgraded. The [crowdsecurity/freebsd](https://hub.crowdsec.net/author/crowdsecurity/collections/freebsd) and [crowdsecurity/opnsense](https://hub.crowdsec.net/author/crowdsecurity/collections/opnsense) collections are installed by default.
 
-Since crowdsec 1.6.3, private IP networks are whitelisted by default as well. This means for example an IP from a LAN or WAN which is on 192.168.x.y won't get blocked by a local decision
+Since CrowdSec 1.6.3, private IP networks are whitelisted by default. This means for example an IP from a LAN or WAN which is on 192.168.x.y won't get blocked by a local decision
 (community blocklists don't contain private IPs).
 
 If you want to revert to the previous behavior, to block private IPs as well, you can remove the related parser.

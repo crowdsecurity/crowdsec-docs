@@ -27,7 +27,7 @@ The crowdsec-custom-bouncer will periodically fetch new, expired and removed dec
 
 ### Repository
 
-[Setup crowdsec repositories](/u/getting_started/installation/linux#repository-installation).
+[Set up the CrowdSec repositories](/u/getting_started/installation/linux#repository-installation).
 
 <Tabs
   defaultValue="debian"
@@ -92,7 +92,7 @@ Build the binary:
 make release && cd crowdsec-custom-bouncer-v*
 ```
 
-Install the build release:
+Install the built release:
 
 ```bash
 sudo ./install.sh
@@ -119,7 +119,7 @@ sudo vim /etc/crowdsec/bouncers/crowdsec-custom-bouncer.yaml
 ```yaml
 bin_path: <absolute_path_to_binary>
 bin_args: []
-feed_via_stdin: false # Invokes binary once and feeds incoming decisions to it's stdin.
+feed_via_stdin: false # Invokes the binary once and feeds incoming decisions to its stdin.
 total_retries: 0 
 scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word, eg ["ssh", "http"]
 scenarios_not_containing: [] # ignore IPs banned for triggering scenarios containing either of provided word
@@ -146,7 +146,7 @@ prometheus:
 
 ```
 
-`cache_retention_duration` : The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. If a decision is identical to some decision already present in the cache, then the custom script is not invoked. The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `192.168.1.1`,  `CH` etc).
+`cache_retention_duration` : The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. If a decision is identical to some decision already present in the cache, then the custom script is not invoked. The keys for hashing a decision are its `Type` (eg `ban`, `captcha` etc) and `Value` (eg `192.168.1.1`,  `CH` etc).
 
 You can then start the service:
 
@@ -163,11 +163,11 @@ Package upgrades may have good reasons to modify the configuration, so be carefu
 
 By default you can find the log file `/var/log/crowdsec-custom-bouncer.log`, however, this can change if you have changed the configuration.
 
-## Best pratices
+## Best practices
 
 We recommend using the [scopes](#scopes) configuration to filter the scope your script is interested in. This will ensure you get the expected values in your script.
 
-This is only applicable if you have configured your [profiles](/docs/next/local_api/profiles/format#decisions) to make use of scopes but is general best pratice to set it to `["Ip"]` by default if that is the script aim.
+This is only applicable if you have configured your [profiles](/docs/next/local_api/profiles/format#decisions) to make use of scopes but it is general best practice to set it to `["Ip"]` by default if that is the script's aim.
 
 The above will ensure you get values from LAPI to the script, however, you should double check the values in your script to ensure they are as expected.
 
@@ -226,7 +226,7 @@ The JSON object is:
 ```
 
  - `duration`: duration of the decision, in the [go time.Duration format](https://pkg.go.dev/time#Duration). Can be negative for delete decisions.
- - `origin`: origin the decision. Can be `crowdsec`, `cscli`, `cscli-import`, `CAPI`, `lists`.
+ - `origin`: origin of the decision. Can be `crowdsec`, `cscli`, `cscli-import`, `CAPI`, `lists`.
  - `scenario`: scenario that triggered the decision.
  - `scope`: Scope of the decision. Most likely `Ip` or `Range` with the default config, but can be any value set in your scenarios.
  - `type`: Type of the decision. Most likely `ban` or `captcha` with the default config, but can be any value set in your profiles.
@@ -245,14 +245,14 @@ Absolute path to the binary that will be invoked
 ### `bin_args`
 > [ ]string
 
-Array of argument to give to the script that will be invoked.
+Array of arguments to pass to the script that will be invoked.
 
 This option is only supported if `feed_via_stdin` is set to `true`.
 
 ### `feed_via_stdin`
 > boolean
 
-Indicate weither or not the script will will be feed via STDIN or via its arguments
+Indicates whether the script will be fed via STDIN or via its arguments.
 
 ### `total_retries`
 > int
@@ -263,7 +263,7 @@ Set to -1 for infinite retries.
 ### `scenarios_containing`
 > [ ]string
 
-Get only IPs banned for triggering scenarios containing either of provided word.
+Only get IPs banned for triggering scenarios containing any of the provided words.
 
 ```yaml title="Example"
 scenarios_containing: ["ssh", "http"]
@@ -302,13 +302,13 @@ origins: ["cscli", "crowdsec"]
 
 The component keeps track of all custom script invocations from the last `cache_retention_duration` interval. 
 If a decision is identical to some decision already present in the cache, then the custom script is not invoked. 
-The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `192.168.1.1`,  `CH` etc).
+The keys for hashing a decision are its `Type` (eg `ban`, `captcha` etc) and `Value` (eg `192.168.1.1`,  `CH` etc).
 
 ### `piddir`
 > string
 
 :::warning
-This field has been depreacted and is ignored by the component
+This field has been deprecated and is ignored by the component.
 :::
 
 Directory to drop the PID file

@@ -59,13 +59,13 @@ Choose and install a Remediation Component suited to your infrastructure:
 - **[cs-traefik-bouncer](https://docs.crowdsec.net/u/bouncers/traefik)** — blocks at the Traefik reverse proxy level
 - More options available on the [Remediation Components page](/u/bouncers/intro)
 
-Typical Remediation Component **auto-registers** during installation, verify registration:
+Most Remediation Components **auto-register** during installation. Verify the registration:
 
 ```bash
 sudo cscli bouncers list
 ```
 
-If it doesn't appear after installation follow the [**bouncer registration guide**](/u/bouncers/intro)
+If it doesn't appear after installation, follow the [**bouncer registration guide**](/u/bouncers/intro). Don't forget to update the credentials in the bouncer config and restart it.
 Don't forget to update the credentials in the bouncer config and restart it
 
 ### Intentional — this Security Engine is detection-only
@@ -79,7 +79,7 @@ If you knowingly have no Remediation Component on this Security Engine, this ale
 - **Other intentional reason** *(custom remediation pipeline, testing/staging environment, detection-only node, etc.)*: You know what you're doing — this alert does not indicate a problem.
 
 :::tip
-Did you know:  [Remediation Sync](/u/console/remediation_sync) lets you propagate decisions across all your Security Engines enrolled in the Console and to Blocklist Integrations too. It can be useful to remediate on the edge of your perimeter or make sure your SE protect each other.
+Did you know:  [Remediation Sync](/u/console/remediation_sync) lets you propagate decisions across all your Security Engines enrolled in the Console and to Blocklist Integrations too. It can be useful to remediate on the edge of your perimeter or make sure your Security Engines protect each other.
 :::
 
 ## Verify Resolution

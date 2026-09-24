@@ -6,7 +6,7 @@ sidebar_position: 5
 
 CrowdSec exposes a pprof endpoint on `http://127.0.0.1:6060/debug/pprof`. It  provides real-time state of the application. It is useful for finding issues like memory leaks, excessive CPU usage etc.
 
-Following are some of the common usage of this endpoint. Note that you need to have `golang` installed for the visualizations to work.
+Here are some common uses of this endpoint. Note that you need to have `golang` installed for the visualizations to work.
 
 ## Visualize goroutines:
 

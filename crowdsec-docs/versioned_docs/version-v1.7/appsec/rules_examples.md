@@ -12,7 +12,7 @@ This page showcases various WAF rule capabilities with real-world examples from 
 
 ### Description
 
-Header inspection with count transform. Note that empty user agent-agent field or absent user-agent field is equivalent.
+Header inspection with count transform. Note that an empty `User-Agent` header and a missing one are treated the same.
 
 ### Rule Example
 

@@ -30,7 +30,7 @@ To access the Troubleshooting feature, follow these steps:
 
 ### Summary view
 
-The summary view provides a quick overview of the issues detected on your Security Engines. By default, the Troubleshoot report is in an **"Extended"** view. You switch to a smaller view called **"Summary"**.
+The summary view provides a quick overview of the issues detected on your Security Engines. By default, the Troubleshoot report is in an **"Extended"** view. You can switch to a smaller view called **"Summary"**.
 
 1. Navigate to the **Security Engines** page.
 2. Click the icon in the top right corner of the report.

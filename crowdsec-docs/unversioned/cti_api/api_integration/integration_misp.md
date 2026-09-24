@@ -37,7 +37,7 @@ Thanks to the CrowdSec Threat Intelligence, you can enrich your IP attributes.
 
 Once enriched, you will find a `crowdsec-ip-context` object with all attributes retrieved from CrowdSec.
 
-For more details about this object, please refer to the [Misp project documentation](https://www.misp-project.org/objects.html#_crowdsec_ip_context).
+For more details about this object, please refer to the [MISP project documentation](https://www.misp-project.org/objects.html#_crowdsec_ip_context).
 
 
 ![Enriched IP part 1](/img/misp/enriched-ip-event.png)

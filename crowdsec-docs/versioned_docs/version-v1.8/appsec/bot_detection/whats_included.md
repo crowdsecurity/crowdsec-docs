@@ -180,7 +180,7 @@ These are regular scenarios, so they show up in `cscli alerts list`, in the Cons
 
 Some non-browser clients are legitimate and must not be challenged (search-engine crawlers, uptime probes, AI crawlers, and the like). The collection recognises them and skips the challenge for them.
 
-The exemptions are shipped as opt-in `appsec-bot-challenge-exclude-*` appsec-configs. Each one runs a hook that matches a verified bot with `MatchKnownBot()` and flags it with `ExemptFromChallenge(reason)`; For example, the AI-crawler exclude-config:
+The exemptions are shipped as opt-in `appsec-bot-challenge-exclude-*` appsec-configs. Each one runs a hook that matches a verified bot with `MatchKnownBot()` and flags it with `ExemptFromChallenge(reason)`. For example, the AI-crawler exclude-config:
 
 ```yaml
 inband:

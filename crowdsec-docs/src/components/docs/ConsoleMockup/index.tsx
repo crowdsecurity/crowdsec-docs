@@ -148,7 +148,7 @@ export default function ConsoleMockup() {
 					{ label: "Port Scan", pct: 61, color: "var(--cs-violet)" },
 					{ label: "HTTP Flood", pct: 45, color: "var(--cs-teal)" },
 					{ label: "CVE Exploit", pct: 34, color: "var(--cs-pink)" },
-					{ label: "Credential Stuff", pct: 22, color: "var(--cs-blue)" },
+					{ label: "Credential Stuffing", pct: 22, color: "var(--cs-blue)" },
 				].map((row, i) => (
 					<g key={row.label}>
 						<text x="588" y={182 + i * 34} fontSize="9" fill="var(--cs-ink-dim)">

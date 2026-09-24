@@ -24,7 +24,7 @@ This Remediation Component exposes CrowdSec's active decisions via provided HTTP
 
 ## Installation from repositories
 
-[Setup crowdsec repositories](/u/getting_started/installation/linux#repository-installation).
+[Set up the CrowdSec repositories](/u/getting_started/installation/linux#repository-installation).
 
 <Tabs
   defaultValue="debian"
@@ -113,7 +113,7 @@ crowdsec_config:
 #### `lapi_url`
 > string
 
-The URL of CrowdSec LAPI. It should be accessible from whichever network the component has access.
+The URL of CrowdSec LAPI. It should be accessible from whichever network the component has access to.
 
 #### `lapi_key`
 > string
@@ -121,7 +121,7 @@ The URL of CrowdSec LAPI. It should be accessible from whichever network the com
 It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
 
 ```bash
-sudo cscli -oraw bouncers add blocklistMirror # -oraw flag can discarded for human friendly output.
+sudo cscli -oraw bouncers add blocklistMirror # the -oraw flag can be omitted for human-friendly output.
 ```
 
 #### `cert_path`
@@ -355,7 +355,7 @@ Package upgrades may have good reasons to modify the configuration, so be carefu
 
 ## Formats
 
-The component can expose the blocklist in the following formats. You can configure the format of the blocklist by setting it's `format` parameter to any of the supported formats described below.
+The component can expose the blocklist in the following formats. You can configure the format of the blocklist by setting its `format` parameter to any of the supported formats described below.
 
 ### plain_text
 

@@ -8,13 +8,13 @@ import useBaseUrl from "@docusaurus/useBaseUrl"
 
 ## Introduction
 
-Crowdsec's [architecture](/docs/next/intro#architecture) allows distributed setups, as most components communicate via [HTTP API](/docs/next/local_api/intro).
+CrowdSec's [architecture](/docs/next/intro#architecture) allows distributed setups, as most components communicate via [HTTP API](/docs/next/local_api/intro).
 
-When doing such, a few considerations must be kept in mind to understand the role of each component:
+When doing so, a few considerations must be kept in mind to understand the role of each component:
  - The log processor is in charge of [processing the logs](/docs/next/log_processor/parsers/intro), matching them against [scenarios](/docs/next/log_processor/scenarios/intro), and sending the resulting alerts to the [local API](/docs/next/local_api/intro)
  - The local API (LAPI from now on) receives the alerts and converts them into decisions based on your profile
  - LAPI also takes care of communication with [CAPI](/docs/next/central_api/intro) to pull blocklists and push alerts to the console.
- - The remediation component query the LAPI to receive the decisions to be applied
+ - Remediation components query LAPI to receive the decisions to apply
 
  You can mix and match deployment methods and OS in the same setup, for example:
   - LAPI running on a Linux server
@@ -73,7 +73,7 @@ Because a log processor can push arbitrary alerts to LAPI (and hence can easily 
 
 Finally, restart crowdsec to apply the changes.
 
-Note that LAPI only receives the alerts and turn them into decisions, this means:
+Note that LAPI only receives the alerts and turns them into decisions. This means:
  - You do not have to install any parser or scenario on it, they must be installed on the log processors directly.
  - If you want to have custom decisions (custom duration for example), you need to modify the file `/etc/crowdsec/profiles.yaml` on the LAPI, not on the log processors.
 
@@ -129,7 +129,7 @@ Repeat this procedure for each log processor you want to add to LAPI.
 :::warning
 
 Log processors do not share any information between them.
-For example, if a load balancer randomly distributes traffic accross multiple web servers, it will take more time to detect bad traffic, as each log processor will only be seeing the logs from its respective server.
+For example, if a load balancer randomly distributes traffic across multiple web servers, it will take more time to detect bad traffic, as each log processor will only be seeing the logs from its respective server.
 
 In this case, we recommend using a centralized logging solution and have a single log processor reading the logs there.
 
@@ -139,13 +139,13 @@ In this case, we recommend using a centralized logging solution and have a singl
 
 :::info
 
-Since crowdsec v1.6.4, multiple remediations components running on different machines can use the same API key.
+Since crowdsec v1.6.4, multiple remediation components running on different machines can use the same API key.
 
 :::
 
-On installation, remediations components will try to automatically create an API key if they are installed on the same machine as LAPI, which likely won't be the case for a multi-server installation.
+On installation, remediation components will try to automatically create an API key if they are installed on the same machine as LAPI, which likely won't be the case for a multi-server installation.
 
-In this case, you will need to manually create an API key for you remediation component by running this command on your LAPI instance:
+In this case, you will need to manually create an API key for your remediation component by running this command on your LAPI instance:
 
 ```bash
 $ sudo cscli bouncers add MyBouncer

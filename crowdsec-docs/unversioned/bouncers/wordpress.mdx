@@ -30,7 +30,7 @@ In this documentation, you'll find detailed instructions for these main use case
 ***
 
 ## Blocklist as a Service Integration
-As an existing CrowdSec's console user you can send the blocklists you already have access to directly to your WordPress site without using a Security Engine:
+As an existing CrowdSec Console user, you can send the blocklists you already have access to directly to your WordPress site without using a Security Engine:
 
 ### Step-by-step Setup:
 #### Step 1: Create a Blocklist Integration
@@ -205,7 +205,7 @@ Here, you can choose to use `cURL` requests instead. Beware that in this case, y
 
 By default, the maximum allowed time to perform a Local API request is 120 seconds. You can change this setting here. If you set a negative value, request timeout will be unlimited.
 
-<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-bouncing.png')} alt="Connection details" 
+<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-bouncing.png')} alt="Bouncing" title="Bouncing" 
 title="Connection details" />
 
 ***
@@ -227,7 +227,7 @@ If enabled, Admin related requests are not protected.
 We recommend to leave this setting to OFF in order to apply protection to your WordPress admin:
 
 - WordPress admin is a frequent target of cyber attacks.
-- Also, some critical public endpoints are considered "admin" and would be unprotected If this setting was ON.
+- Also, some critical public endpoints are considered "admin" and would be unprotected if this setting was ON.
 
 ***
 
@@ -275,7 +275,7 @@ Choose if you want to enable the `stream mode` or stay in `live mode`.
 
 By default, the `live mode` is enabled. The first time a stranger connects to your website, this mode means that the IP will be checked directly by the CrowdSec API. The rest of your user’s browsing will be even more transparent thanks to the fully customizable cache system.
 
-But you can also activate the `stream mode`. This mode allows you to constantly feed the bouncer with the malicious IP list via a background task (CRON), making it to be even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
+But you can also activate the `stream mode`. This mode allows you to constantly feed the bouncer with the malicious IP list via a background task (CRON), making it even faster when checking the IP of your visitors. Besides, if your site has a lot of unique visitors at the same time, this will not influence the traffic to the API of your CrowdSec instance.
 
 ***
 
@@ -289,7 +289,7 @@ With the stream mode, every decision is retrieved in an asynchronous way. Here y
 
 ***
 
-<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-usage-metrics.png')} alt="Cache" title="Cache" />
+<img src={useBaseUrl('/img/bouncer/wordpress/screenshots/config-usage-metrics.png')} alt="Remediation metrics" title="Remediation metrics" />
 
 ***
 
@@ -324,7 +324,7 @@ The File system cache is faster than calling Local API. Redis or Memcached is fa
 
 The duration between re-asking Local API about an already checked clean IP.
 
-Minimum 1 second.  Note that this setting can not be apply in stream mode.
+Minimum 1 second.  Note that this setting cannot be applied in stream mode.
 
 ***
 
@@ -453,7 +453,7 @@ Enable if you want to hide CrowdSec mentions on the Ban and Captcha walls.
 `Geolocation → Enable geolocation feature`
 
 Enable if you want to use also CrowdSec country scoped decisions.
-If enabled, bounced IP will be geolocalized and the final remediation will take into account any country related decision.
+If enabled, bounced IPs will be geolocated and the final remediation will take into account any country related decision.
 
 ***
 
@@ -482,7 +482,7 @@ Example: `/var/crowdsec/geolocation/Geoloc-country.mmdb` folder.
 `Geolocation → Geolocation cache lifetime`
 
 The lifetime of cached country geolocation result for some IP. Default: 86400.
-Set 0 to disable caching. Enabling this will avoid multiple call to the geolocation system (e.g. MaxMind database)
+Set 0 to disable caching. Enabling this will avoid multiple calls to the geolocation system (e.g. MaxMind database).
 
 ***
 
@@ -518,7 +518,7 @@ By default, User-Agent used to call LAPI has the following format: `csphplapi_Wo
 
 You can use this field to add a custom suffix: `csphplapi_WordPress[custom-suffix]`.
 
-This can be useful to debug crowdsec logs when using multiple WordPress sites with multiple bouncer plugins.
+This can be useful to debug CrowdSec logs when using multiple WordPress sites with multiple bouncer plugins.
 
 Only alphanumeric characters (`[A-Za-z0-9]`) are allowed with a maximum of 5 characters.
 
@@ -527,7 +527,7 @@ Only alphanumeric characters (`[A-Za-z0-9]`) are allowed with a maximum of 5 cha
 
 `Display errors → Enable errors display`
 
-When this mode is enabled, you will see every unexpected bouncing errors in the browser.
+When this mode is enabled, you will see every unexpected bouncing error in the browser.
 Should be disabled in production.
 
 
@@ -603,7 +603,7 @@ server {
 
 #### Apache
 
-If you are using Apache, the plugin root folder already contain the required `.htaccess` file to protect log,  
+If you are using Apache, the plugin root folder already contains the required `.htaccess` file to protect log,  
 cache and standalone setting files:
 
 ```htaccess
@@ -614,8 +614,8 @@ Redirectmatch 403 wp-content/plugins/crowdsec/inc/standalone-settings
 
 ### Auto Prepend File mode
 
-By default, this extension will bounce every web requests that pass through the classical process of WordPress core loading.
-This implies that if another php public script is called (any of your custom public php script for example) or if you are using some plugin that bypass the WordPress core load process (as the [WP Super Cache plugin](https://wordpress.org/plugins/wp-super-cache/) in Simple mode for example), bouncing will not be effective.
+By default, this extension bounces every web request that goes through the standard WordPress core loading process.
+This implies that if another php public script is called (any of your custom public php script for example) or if you are using a plugin that bypasses the WordPress core loading process (as the [WP Super Cache plugin](https://wordpress.org/plugins/wp-super-cache/) in Simple mode for example), bouncing will not be effective.
 
 To ensure that any php script will be bounced if called from a browser, you should try the `auto prepend file` mode.
 
@@ -717,7 +717,7 @@ line:
 (crontab -l && echo "* * * * * wget -q -O - http://<host>:<port>/wp-cron.php?doing_wp_cron >/dev/null 2>&1") | crontab -
 ```
 
-> Note: replace `<host:<port>` with the local url of your website
+> Note: replace `<host>:<port>` with the local URL of your website
 
 More info [here](https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/).
 

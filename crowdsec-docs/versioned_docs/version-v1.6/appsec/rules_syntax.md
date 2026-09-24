@@ -165,7 +165,7 @@ We recommend using this format only to use existing rules you may have.
 
 **ModSecurity** syntax support is provided by [coraza](https://github.com/corazawaf/coraza/), and the reference documentation is available [here](https://coraza.io/docs/seclang/syntax/).
 
-There are 2 ways to provide crowdsec with seclang rules:
+There are 2 ways to provide CrowdSec with seclang rules:
 
 - Provide rules directly by using the `seclang_rules` parameter in your rule file
 - Provide a file containing the rules by using the `seclang_rules_file` parameter in your rule file. The file must be located inside CrowdSec data directory

@@ -50,7 +50,7 @@ This module does not support command-line acquisition.
 
 
 :::warning
-This syslog datasource is currently intended for small setups, and is at risk of losing messages over a few hundreds events/second.
+This syslog datasource is currently intended for small setups, and is at risk of losing messages above a few hundred events per second.
 To process significant amounts of logs, rely on dedicated syslog server such as [rsyslog](https://www.rsyslog.com/), with this server writting logs to files that Security Engine will read from.
 This page will be updated with further improvements of this data source.
 :::

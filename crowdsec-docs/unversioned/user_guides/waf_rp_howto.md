@@ -11,9 +11,9 @@ We will set up a reverse proxy (Nginx) protected with CrowdSec in front of our w
 
 **This article dives into the technical details of configuring CrowdSec WAF.**
 
-To achieve robust protection, we'll use two key components that work in tandem: the **Security Engine** and the **Web Application Firewall (WAF)** *– enabled by an WAF-capable Remediation Component aka **Bouncer**, in our case, CrowdSec’s NGINX Bouncer*
+To achieve robust protection, we'll use two key components that work in tandem: the **Security Engine** and the **Web Application Firewall (WAF)** *– enabled by a WAF-capable Remediation Component aka **Bouncer**, in our case, CrowdSec’s NGINX Bouncer*
 
-**The Security Engine**: excels at identifying persistent or recurring behaviours. It analyzes your web server/reverse proxy logs to identify suspicious patterns of behavior. For example, the http-probing scenario detects IPs rapidly requesting a large number of non-existent files – a common tactic used by vulnerability scanners searching known vulnerabilities, backdoors, or publicly exposed admin interfaces. While powerful and able to protect a large number service from various log sources, the Security Engine reacts **after** the request have been processed by your web server.  
+**The Security Engine**: excels at identifying persistent or recurring behaviours. It analyzes your web server/reverse proxy logs to identify suspicious patterns of behavior. For example, the http-probing scenario detects IPs rapidly requesting a large number of non-existent files – a common tactic used by vulnerability scanners searching known vulnerabilities, backdoors, or publicly exposed admin interfaces. While powerful and able to protect a large number of services from various log sources, the Security Engine reacts **after** the request has been processed by your web server.  
 
 **The Web Application Firewall (WAF):** The WAF acts as your immediate response, blocking malicious requests before they even reach your application or backend. With the help of the bouncer/remediation component relaying the requests to the AppSec engine, it will apply virtual patching rules to block requests that are, without a doubt, malevolent. A great example is the `vpatch-env-access` rule, which blocks requests attempting to access .env files (which should never be publicly accessible\!). Our vpatching collection has hundreds of rules tailored to precisely block vulnerability attempts.
 
@@ -118,7 +118,7 @@ A.B.C.D - - [22/May/2025:08:32:50 +0000] "GET /favicon.ico HTTP/1.1" 404 438 "ht
 
 :::warning
 
-At this stage, check that both Apache's and Nginx's logs are the real originating IP (ie. `A.B.C.D`)
+At this stage, check that both Apache's and Nginx's logs show the real originating IP (i.e. `A.B.C.D`)
 
 :::
 
@@ -205,7 +205,7 @@ However, this approach has a limit: CrowdSec reads logs and acts based on their 
 
 We follow [this quickstart guide](https://doc.crowdsec.net/docs/next/appsec/quickstart/nginxopenresty) :
 
-1) We install the appsec collection. They contain the WAF rules
+1) We install the AppSec collections. They contain the WAF rules.
 
 ```bash
 sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules

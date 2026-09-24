@@ -1,9 +1,9 @@
 ---
 id: writing_your_own_plugin
-title: Writing Plugin in Go
+title: Writing a Plugin in Go
 ---
 
-In this guide we will implement a plugin in Go, which dispatches an email with specificied body on receiving alerts.
+In this guide we will implement a plugin in Go, which sends an email with the specified body when it receives alerts.
 
 Full code for this plugin can be found in [crowdsec repo](https://github.com/crowdsecurity/crowdsec/tree/master/cmd/notification-email)
 
@@ -70,7 +70,7 @@ type PluginConfig struct {
 }
 ```
 
-The struct will be unmarshal target of a yaml configuration file, hence the `yaml`  hints.
+The struct is the unmarshalling target of a YAML configuration file, hence the `yaml`  hints.
 
 Next we need to implement the plugin interface `Notifier`.
 
@@ -156,14 +156,14 @@ func (n *EmailPlugin) Notify(ctx context.Context, notification *protobufs.Notifi
 }
 ```
 
-There are lot of things going on. Let's unpack:
+There are a lot of things going on. Let's unpack:
 
 1. In the first block we verify whether the `notification`'s configuration is present.
 2. Then we set the log level according to the configuration.
 3. In the second block we initiate a SMTP client using the `notification`'s configuration.
 4. In the third block we send the email with body equal to the `notification.Text`.
 
-Finally let's define the entrypoint `main` function which serves and hoists the plugin for CrowdSec main process.
+Finally let's define the entrypoint `main` function which serves and hosts the plugin for the CrowdSec main process.
 
 ```go
 func main() {
@@ -230,7 +230,7 @@ receiver_email: examplereceiver@gmail.com
 
 Replace the values as necessary and paste it in `/etc/crowdsec/notifications/email.yaml` .
 
-Now the final step, register the plugin in your crowdsec profile at `/etc/crowdsec/profiles.yaml`, by adding the following to desired config.
+Now the final step, register the plugin in your CrowdSec profile at `/etc/crowdsec/profiles.yaml` by adding the following to the desired profile.
 
 ```yaml
 notifications:
@@ -253,4 +253,4 @@ on_success: break
 
 ```
 
-Do the `sudo systemctl restart crowdsec` and we're done. You can try triggering alerts by creating manual decisions and verify whether you recive an email.
+Run `sudo systemctl restart crowdsec` and you're done. You can trigger alerts by creating manual decisions and check whether you receive an email.

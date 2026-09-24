@@ -10,7 +10,7 @@ sidebar_position: 2
 
 `UnmarshalJSON` allows to unmarshal a full json object into the `out` map, under the `targetKey` key.
 
-In most situation, the `evt.Unmarshaled` field will be used to store the unmarshaled json object.
+In most situations, the `evt.Unmarshaled` field is used to store the unmarshaled json object.
 
 ```yaml
 filter: |
@@ -43,7 +43,7 @@ Returns nil if the field does not exist or is not an array.
 
 Extract the JSON object in `FieldName` from `JsonBlob` and returns it as a go map.
 
-Returns `nil` if the field does not exist or does is not an object.
+Returns `nil` if the field does not exist or is not an object.
 
 > `JsonExtractObject(evt.Parsed.message, "params.user")["login"]`
 

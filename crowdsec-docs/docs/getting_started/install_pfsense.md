@@ -26,7 +26,7 @@ values to enable remediation, log processor and Local API.
 
 :::info
 The CrowdSec configuration is not transferred when you restore a pfSense backup, and you'll need
-to reconfigure it or backup separately. Major pfSense upgrades may also require you to re-install
+to reconfigure it or back it up separately. Major pfSense upgrades may also require you to re-install
 or re-configure CrowdSec so please verify that it's running afterwards. We have submitted the package
 for inclusion in the official repository which should smooth out these issues.
 :::
@@ -82,7 +82,7 @@ For simple things, `Diagnostics/Command Prompt` works as well as ssh.
 ![Command Prompt](/img/pfsense/command-prompt.png)
 
 
-You are free to edit the files in `/usr/local/etc/crowdsec`, although some setting may be overwritten by the pfSense package if they are mandatory.
+You are free to edit the files in `/usr/local/etc/crowdsec`, although some settings may be overwritten by the pfSense package if they are mandatory.
 
 :::caution
 *Ram Disk*: unless you disable Local API, ensure that you are [not using a RAM disk](https://docs.netgate.com/pfsense/en/latest/config/advanced-misc.html#ram-disk-settings)
@@ -127,7 +127,7 @@ If a Log Processor is running, the following scenarios are enabled by default:
  - HTTP vulnerability probing
 
 These will trigger a ban on the attacking IP (4 hours by default) and report it to the CrowdSec Central API
-(meaning [timestamp, scenario, attacking IP](https://docs.crowdsec.net/docs/concepts/), for inclusion in the
+(meaning [timestamp, scenario, attacking IP](https://docs.crowdsec.net/docs/concepts/)) for inclusion in the
 Community Blocklist.
 
 You can add scenarios to detect other types of attack on the pfSense server, or
@@ -167,7 +167,7 @@ events are triggered correctly.
 
 
 For real monitoring, you can fetch the same metrics with
-[Prometheus](https://docs.crowdsec.net/docs/observability/prometheus/) (Grafana dashboard included)
+[Prometheus](https://docs.crowdsec.net/docs/observability/prometheus/) (Grafana dashboard included),
 Telegraf or your favorite solution.
 
 If you are not running a LAPI or a Log Processor, some metrics are always empty.
@@ -234,7 +234,7 @@ If you need more CrowdSec tests you may want to temporarily disable Login Protec
 
 ## LAN / private networks whitelist
 
-Since crowdsec 1.6.3, private IP networks are whitelisted by default as well. This means for example an IP from a LAN or WAN which is on 192.168.x.y won't get blocked by a local decision
+Since CrowdSec 1.6.3, private IP networks are whitelisted by default. This means for example an IP from a LAN or WAN which is on 192.168.x.y won't get blocked by a local decision
 (community blocklists don't contain private IPs).
 
 If you want to revert to the previous behavior, to block private IPs as well, you can remove the related parser.

@@ -6,7 +6,7 @@ title: Application Security Component
 
 This module allows you to enable the `Application Security Component` as a data source.
 
-A more detailed documentation is available [here](/appsec/intro.md).
+More detailed documentation is available in the [AppSec documentation](/appsec/intro.md).
 
 A quickstart tutorial is available for [Nginx/OpenResty](/appsec/quickstart/nginxopenresty.mdx) and [Traefik](/appsec/quickstart/traefik.mdx).
 
@@ -54,7 +54,7 @@ Number of routines to use to process the requests. Defaults to 1.
 
 ### `auth_cache_duration`
 
-How long to cache the auth token for. Accepts value supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
+How long to cache the auth token for. Accepts values supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
 Defaults to 1m.
 
 ### `body_read_timeout`

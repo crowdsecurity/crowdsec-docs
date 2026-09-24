@@ -17,7 +17,7 @@ You can find the full tutorial there: [No-Code API with CrowdSec](https://suppor
 
 **Here's a quick preview of what to expect:**
 
-*The API-data-enrichment feature will parse a typical curl request to the CTI API: *
+*The API-data-enrichment feature will parse a typical curl request to the CTI API:*
 
 ```curl -X GET "https://cti.api.crowdsec.net/v2/smoke/<ip to lookup>" -H  "accept: application/json" -H  "x-api-key: <YOUR API KEY>"```
 

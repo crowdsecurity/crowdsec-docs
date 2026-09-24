@@ -91,8 +91,8 @@ In this example, we check if there are at least 5 events in the queue, calculate
 ### `GetFromStash(cache string, key string)`
 
 `GetFromStash` retrieves the value for `key` in the named `cache`.
-The cache are usually populated by [parser's stash section](/log_processor/parsers/format.md#stash).
-An empty string if the key doesn't exist (or has been evicted), and error is raised if the `cache` doesn't exist.
+Caches are usually populated by [parser's stash section](/log_processor/parsers/format.md#stash).
+It returns an empty string if the key doesn't exist (or has been evicted), and raises an error if the `cache` doesn't exist.
 
 ## HTTP Helpers
 
@@ -186,7 +186,7 @@ The returned value type is `time.Duration`, so you can use all the [time.Duratio
 
 > `GetActiveDecisionsTimeLeft(Alert.GetValue())`
 
-> `GetActiveDecisionsTimeLeft(Alert.GetValue()).Hours() > 1"
+> `GetActiveDecisionsTimeLeft(Alert.GetValue()).Hours() > 1`
 
 ### `KeyExists(key string, map map[string]interface{}) bool`
 
@@ -218,7 +218,7 @@ labels:
   type: fraud
 ```
 Notes:
- - Will return `0` if either set of coordinates is nil (ie. IP couldn't be geoloc)
+ - Will return `0` if either set of coordinates is nil (i.e. the IP couldn't be geolocated)
  - Assumes that the earth is spherical and uses the haversine formula.
 
 ### `Hostname() string`
@@ -241,7 +241,7 @@ Returns the scope of an alert. Most common value is `Ip`. `Country` and `As` are
 
 ### `Alert.GetValue() string`
 
-Returns the value of an alert. field value of a `Source`, most common value can be a IPv4, IPv6 or other if the Scope is different than `Ip`.
+Returns the value of the alert (the `Value` field of its `Source`): most commonly an IPv4 or IPv6 address, or another value if the scope is not `Ip`.
 
 ### `Alert.GetSources() []string`
 

@@ -1,6 +1,6 @@
 ---
 id: crowdsec_tour
-title: Crowdsec Tour
+title: CrowdSec Tour
 sidebar_position: 1
 ---
 
@@ -104,7 +104,7 @@ There are different decisions `SOURCE`:
 
   - `crowdsec` : decisions triggered locally by the crowdsec agent 
   - `CAPI` : decisions fetched from the Crowdsec Central API
-  - `csli` : decisions added via `sudo cscli decisions add`
+  - `cscli`: decisions added via `sudo cscli decisions add`
 
 ## Add/Remove decisions
 
@@ -149,8 +149,8 @@ sudo cscli metrics
 The metrics displayed are extracted from CrowdSec prometheus.
 The indicators are grouped by scope :
 
- - Buckets : Know which buckets are created and/or overflew (scenario efficiency)
- - Acquisition : Know which file produce logs and if thy are parsed (or end up in bucket)
+ - Buckets: which buckets were created and/or overflowed (scenario efficiency)
+ - Acquisition: which files produce logs and whether they are parsed (or end up in buckets)
  - Parser : Know how frequently the individual parsers are triggered and their success rate
  - Local Api Metrics : Know how often each endpoint of crowdsec's local API has been used
 
@@ -226,7 +226,7 @@ INFO[0000] Local Api Bouncers Metrics:
 
 Those metrics are a great way to know if your configuration is correct:
 
-The `Acquisition Metrics` is a great way to know if your parsers are setup correctly:
+The `Acquisition Metrics` table is a great way to check whether your parsers are set up correctly:
 
  - If you have 0 **LINES PARSED** for a source : You are probably *missing* a parser, or you have a custom log format that prevents the parser from understanding your logs.
  - However, it's perfectly OK to have a lot of **LINES UNPARSED** : Crowdsec is not a SIEM, and only parses the logs that are relevant to its scenarios. For example, [ssh parser](https://hub.crowdsec.net/author/crowdsecurity/configurations/sshd-logs),  only cares about failed authentication events (at the time of writing).
@@ -235,7 +235,7 @@ The `Acquisition Metrics` is a great way to know if your parsers are setup corre
 
 The `Parser Metrics` will let you troubleshoot eventual parser misconfigurations :
 
- - **HITS** is how many events where fed to this specific parser
+ - **HITS** is how many events were fed to this specific parser
 
  - **PARSED** and **UNPARSED** indicate how many events successfully come out of the parser
 
@@ -274,8 +274,8 @@ sudo tail -f /var/log/crowdsec.log
 
 ## Scalability
 
-CrowdSec uses go-routines for parsing and enriching logs, pouring events to buckets and manage outputs.
+CrowdSec uses go-routines for parsing and enriching logs, pouring events into buckets and managing outputs.
 
 By default, one routine of each exists (should be enough to handle ~1K EP/s), and can be changed in `crowdsec_service` of the main configuration file via the [parser_routines](/configuration/crowdsec_configuration.md#parser_routines), [buckets_routines](/configuration/crowdsec_configuration.md#buckets_routines) and [output_routines](/configuration/crowdsec_configuration.md#output_routines) directives.
 
-Please keep in mind that thanks to the [http API](https://crowdsecurity.github.io/api_doc/lapi/), the workload of log parsing can be splitted amongst several agents pushing to a single [LAPI](/local_api/intro.md).
+Please keep in mind that thanks to the [http API](https://crowdsecurity.github.io/api_doc/lapi/), the log parsing workload can be split among several agents pushing to a single [LAPI](/local_api/intro.md).

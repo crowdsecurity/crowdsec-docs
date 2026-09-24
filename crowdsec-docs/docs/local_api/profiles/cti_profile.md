@@ -71,7 +71,7 @@ on_success: break
 
 ### Potential False Triggers
 
-Send a notification about a potential false triggers and break the alert evaluation:
+Send a notification about a potential false trigger and break the alert evaluation:
 
 ```yaml
 name: false_positive

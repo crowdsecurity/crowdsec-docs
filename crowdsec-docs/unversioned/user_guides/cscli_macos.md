@@ -6,9 +6,9 @@ sidebar_position: 9
 
 ## Running cscli on macos
 
-While it does not make much sense to run crowdsec itself on MacOS, being able to run cscli to interact with remote crowdsec instances is very useful.
+While it does not make much sense to run CrowdSec itself on macOS, being able to run cscli to interact with remote crowdsec instances is very useful.
 
-We do not currently provide prebuilt binary for MacOS, but you can:
+We do not currently provide prebuilt binaries for macOS, but you can:
  - Build cscli yourself
  - Use our docker image
 

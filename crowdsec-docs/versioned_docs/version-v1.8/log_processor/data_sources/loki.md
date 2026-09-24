@@ -51,7 +51,7 @@ Required.
 
 ### `limit`
 
-The maximum number of messages to be retried from loki at once.
+The maximum number of messages to retrieve from Loki at once.
 
 Defaults to `100` in stream mode and `5000` in one-shot mode.
 
@@ -66,7 +66,7 @@ headers:
 
 ### `wait_for_ready`
 
-The retry interval at startup before giving on loki.
+How long to wait at startup for Loki to be ready before giving up.
 
 Defaults to `10 seconds`.
 
@@ -92,7 +92,7 @@ auth:
 
 The maximum duration loki is allowed to be unavailable (once startup is successful) before giving up on the data source.
 
-Default to `30 seconds`.
+Defaults to `30 seconds`.
 
 
 ## DSN and command-line

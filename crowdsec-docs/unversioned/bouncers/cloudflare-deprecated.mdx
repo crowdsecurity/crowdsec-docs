@@ -78,19 +78,19 @@ sudo systemctl start crowdsec-cloudflare-bouncer # the bouncer now syncs the cro
 
 :::warning
 
-Please configure your server to emit real IPs rather than cloudflare IPs in logs, so crowdsec can function properly. See how to [here](https://support.cloudflare.com/hc/en-us/articles/200170786-Restoring-original-visitor-IPs)
+Please configure your server to log real visitor IPs rather than Cloudflare IPs, so CrowdSec can function properly. See how [here](https://support.cloudflare.com/hc/en-us/articles/200170786-Restoring-original-visitor-IPs)
 
 :::
 
 :::info
 
-If your component is not installed on the same machine than LAPI, don't forget to set the `crowdsec_lapi_url` and `crowdsec_lapi_key` in the configuration file `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
+If your component is not installed on the same machine as LAPI, don't forget to set the `crowdsec_lapi_url` and `crowdsec_lapi_key` in the configuration file `/etc/crowdsec/bouncers/crowdsec-cloudflare-bouncer.yaml`
 
 :::
 
 :::note
 
-You need to run `sudo crowdsec-cloudflare-bouncer -d` to cleanup exisiting cloudflare components created by component before editing the config files.
+You need to run `sudo crowdsec-cloudflare-bouncer -d` to clean up existing Cloudflare components created by the component before editing the config files.
 
 :::
 
@@ -123,7 +123,7 @@ make release
 cd crowdsec-cloudflare-bouncer-vX.X.X
 sudo ./install.sh
 ```
-Rest of the steps are same as of the above method.
+The rest of the steps are the same as in the method above.
 
 
 ## Container
@@ -146,7 +146,7 @@ vim cfg.yaml # review config and set `crowdsec_lapi_key`
 The `crowdsec_lapi_key` can be obtained by running the following:
 
 ```bash
-sudo cscli -oraw bouncers add cloudflarebouncer # -oraw flag can discarded for human friendly output.
+sudo cscli -oraw bouncers add cloudflarebouncer # the -oraw flag can be omitted for human-friendly output.
 ```
 
 The `crowdsec_lapi_url` must be accessible from the container.
@@ -329,7 +329,7 @@ The component will poll the CrowdSec every `update_frequency` interval.
 ### `include_scenarios_containing`
 > [ ]string
 
-Ignore IPs banned for triggering scenarios not containing either of provided word.
+Ignore IPs banned for triggering scenarios that do not contain any of the provided words.
 
 ```yaml title="Example"
 include_scenarios_containing: ["ssh", "http"]
@@ -347,7 +347,7 @@ exclude_scenarios_containing: ["ssh", "http"]
 ### `only_include_decisions_from`
 > [ ]string
 
-Only include IPs banned due to decisions orginating from provided sources.
+Only include IPs banned due to decisions originating from the provided sources.
 
 ```yaml title="Example"
 only_include_decisions_from: ["cscli", "crowdsec"]
@@ -370,7 +370,7 @@ update_frequency: "10s"
 #### `accounts`
 > [ ][AccountConfig](https://github.com/crowdsecurity/cs-cloudflare-bouncer/blob/20c902ee1e95fe13135dd493d7e96840bafc931b/pkg/cfg/config.go#L26-L33)
 
-List of account of configs
+List of account configs
 
 ##### `id`
 > string
@@ -413,7 +413,7 @@ You can completely ignore such decisions by setting `default_action` to `none`. 
 
 **Note:**
 
-Following table is mapping of decision type to it's destination IP list.
+The following table maps each decision type to its destination IP list.
 
 | Decision Type | Default Action    |
 | ------------- | ----------------- |
@@ -443,7 +443,7 @@ List of actions to be supported by this zone. If the zone is not subscribed to p
 
 The supported action must include the `default_action` of the parent account.
 
-Valid choice includes either of 
+Valid choices are: 
 - `block`
 - `js_challenge`
 - `challenge`
@@ -457,7 +457,7 @@ The component creates an IP list for each action. IP list is at account level, s
 
 **Note:**
 
-Following table is mapping of decision type to it's destination IP list, which are created according to zone actions
+The following table maps each decision type to its destination IP list. Lists are created according to zone actions.
 
 
 | Decision Type | Zone Action       |

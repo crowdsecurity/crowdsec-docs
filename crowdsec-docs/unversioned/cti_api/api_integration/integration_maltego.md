@@ -4,10 +4,10 @@ title: Maltego Transforms
 sidebar_position: 4
 ---
 
-Maltego transforms, which allow users to enrich IP entities in maltego with CrowdSec CTI intelligence.In this documentation we'll answer the following questions:
+CrowdSec provides Maltego transforms that let users enrich IP entities in Maltego with CrowdSec CTI intelligence. In this documentation we'll answer the following questions:
 
 - How to create your private TDS (pTDS)
-- Where to install and configure the crowdsec transforms
+- Where to install and configure the CrowdSec transforms
 - What our 11 transforms do
 
 ## Deployment Guide
@@ -85,7 +85,7 @@ In your maltego client register the Seed URL we created in the above deployment 
 
 2. Follow [this guide](https://docs.maltego.com/support/solutions/articles/15000017851-setting-api-keys-for-all-transforms-inside-a-hub-item) except select CrowdSec Transform Server.
 
-3. Copy paste the API key in the `API key` field in the tranform properties
+3. Copy paste the API key in the `API key` field in the transform properties
 
 Done !
 
@@ -144,7 +144,7 @@ Creates Reverse DNS entity for an IP by leveraging CrowdSec CTI data
 
 ##### CrowdSecScenarios
 
-Creates entites for scenarios triggered by IP using CrowdSec CTI data.
+Creates entities for scenarios triggered by the IP using CrowdSec CTI data.
 
 ![Scenarios](/img/maltego/scenarios.png)
 

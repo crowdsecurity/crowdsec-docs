@@ -62,7 +62,7 @@ If the schema file is missing, malformed, or not a valid OpenAPI 3 document, the
 | -------------------------------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `on_route_not_found`             | `drop` / `ignore` | `drop`  | What to do when no path in the schema matches the request URL.                                                                                                     |
 | `on_method_not_allowed`          | `drop` / `ignore` | `drop`  | What to do when a path matches but the method does not (e.g. schema only declares `GET`, request is `POST`).                                                       |
-| `on_unsupported_security_scheme` | `drop` / `ignore` | `drop`  | What to do when an unsupported security schema is encountered (`openid`, `oauth2`). If `ignore`, the security schema will not be validated when checking a request |
+| `on_unsupported_security_scheme` | `drop` / `ignore` | `drop`  | What to do when an unsupported security scheme is encountered (`oauth2`, `openIdConnect`). If `ignore`, the security scheme is not validated when checking a request. |
 
 `drop` (the default) treats the unmatched route as a validation failure — `ValidateRequestWithSchema` returns `false` and the validation error is surfaced via `hook_vars`. `ignore` lets the request through the validator without inspection (the function returns `true`), which is useful when your schema only covers a subset of your API.
 

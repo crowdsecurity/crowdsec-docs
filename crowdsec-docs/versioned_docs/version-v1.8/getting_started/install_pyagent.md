@@ -63,14 +63,14 @@ signals = [
 client.add_signals(signals)
 
 # This sends all the unsent signals to the API.
-# You need to chron this call to send signals periodically.
+# Run this call periodically (for example with cron) to send signals.
 client.send_signals()
 
 # This enrolls the specified machines in the CrowdSec Console.
 # This is a one time operation for each machine id you want to enroll.
 client.enroll_machines(
     machine_ids=[generate_machine_id_from_key("<key>", prefix="mycompany")],
-    attachment_key="ckqlyuz9700000vji4xxxxxxz" 
+    attachment_key="ckqlyuz9700000vji4xxxxxxz", 
     name="mymachine", tags=["ssh-honeypot"]
 )
 
@@ -111,7 +111,7 @@ Constructor Parameters:
 
 - `scenarios`: A list of scenarios that you want to send signals for.
 - `max_retries`: Maximum number of retries to make when sending signals to the API.
-- `latency_offset`: Offset to calculate machin login expiration.
+- `latency_offset`: Offset used to calculate machine login expiration.
 - `user_agent_prefix`: Prefix for the user agent used to make calls to CrowdSec API.
 - `retry_delay`: Delay between retries when sending signals to the API
 
@@ -119,7 +119,7 @@ Constructor Parameters:
 
 This is the main class that you will use to interact with the CrowdSec API.
 
-Contructor Parameters:
+Constructor Parameters:
 
 - `storage`: An instance of a class that implements `StorageInterface`. This is used to store signals that are sent to the API.
 - `config`: An instance of `CAPIClientConfig` that contains configuration for the client.
@@ -152,7 +152,7 @@ This method creates a `cscapi.storage.SignalModel` instance from the provided pa
 
 #### `cscapi.utils.generate_machine_id_from_key(key: str, prefix: str)`
 
-This method generates a machine id from the provided key and prefix. Generated machine is is always same for a given key and prefix.
+This method generates a machine id from the provided key and prefix. The generated machine ID is always the same for a given key and prefix.
 
 #### `cscapi.storage.SQLStorage`
 

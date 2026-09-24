@@ -28,7 +28,7 @@ A single path to a file to tail. Globbing is supported. Required if `filenames` 
 
 ### `filenames`
 
-A list of path to files to tail. Globbing is supported. Required if `filename` is not provided.
+A list of paths to files to tail. Globbing is supported. Required if `filename` is not provided.
 
 ### `force_inotify`
 > default: `false`

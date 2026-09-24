@@ -143,7 +143,7 @@ mounting the key into the Traefik pod.
 
 ## Required traefik configuration items
 
-### Traefik configuration's on source IPs
+### Traefik configuration for source IPs
 
 To ensure remediation works correctly, Traefik must receive the real client IP
 for each request. When Traefik is deployed behind a load balancer, CDN, or
@@ -283,7 +283,7 @@ resource.
 :::important
 The Traefik `Middleware` CRD does not have a native `secretKeyRef` field for the
 plugin configuration. In Kubernetes, the key can be mounted from a `Secret` into
-the Traefik pod and reference it with `crowdsecLapiKeyFile`.
+the Traefik pod and referenced with `crowdsecLapiKeyFile`.
 :::
 
 Mount the Traefik-side secret into the pod and let the middleware read it from a

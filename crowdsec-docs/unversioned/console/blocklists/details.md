@@ -41,7 +41,7 @@ Hovering over the circled graph displays the precise percentage of items related
 
 * Top [behaviors](/cti_api/taxonomy/behaviors.mdx) in the list
 * Top [classifications](/cti_api/taxonomy/classifications.mdx) in the list
-* Most reported IP's in the blocklist (You can click on the IP to search for it in the CrowdSec CTI)
+* Most reported IPs in the blocklist (You can click on the IP to search for it in the CrowdSec CTI)
 * Most reported ASN's in the blocklist 
 
 The content of the blocklist is enriched against CrowdSec CTI to provide high-value meta-data about the most aggressive actors listed by the Blocklist.
