@@ -41,7 +41,7 @@ Open the file and verify the following fields are present and correctly set:
 - `api_key`: a valid API key generated with `cscli bouncers add`
 
 :::warning
-Properties may change slightly, check the specific [configuration for your bouncer](http://localhost:3000/u/bouncers/intro)
+Property names may vary slightly; check the [configuration for your bouncer](/u/bouncers/intro).
 :::
 
 #### 🛠️ Fix the configuration and restart the RC

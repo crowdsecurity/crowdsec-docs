@@ -358,7 +358,7 @@ networks:
   crowdsec:
 ```
 
-Create `./config/haproxy.cfg` and `./config/crowdsec.cfg` from the “HAProxy Configuration” section below (in Compose, the SPOA backend server should target `crowdsec-spoa-bouncer:9000`). Set `BOUNCER_KEY_SPOA` in a `.env` file or your shell environment, and persist CrowdSec directories (at least `/var/lib/crowdsec/data/`) as described in the [Docker getting started guide](/getting_started/installation/docker.mdx).
+Create `./config/haproxy.cfg` and `./config/crowdsec.cfg` from the “HAProxy Configuration” section above (in Compose, the SPOA backend server should target `crowdsec-spoa-bouncer:9000`). Set `BOUNCER_KEY_SPOA` in a `.env` file or your shell environment, and persist CrowdSec directories (at least `/var/lib/crowdsec/data/`) as described in the [Docker getting started guide](/getting_started/installation/docker.mdx).
 
 To use a custom configuration file:
 
@@ -679,7 +679,7 @@ scenarios_not_containing: ["whitelist"]
 Only pull decisions from these origins.
 
 ```yaml
-origins: ["crowdsecurity", "lists"]
+origins: ["crowdsec", "lists"]
 ```
 
 ### `listen_tcp`

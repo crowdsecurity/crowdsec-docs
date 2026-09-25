@@ -129,7 +129,7 @@ We have the following fields:
 -   a [type](/log_processor/scenarios/format.md#type): the type of bucket to use (trigger or leaky).
 -   a [name](/log_processor/scenarios/format.md#name)
 -   a [description](/log_processor/scenarios/format.md#description)
--   a [filter](/log_processor/scenarios/format.md#type): the filter to apply on events to be filled in this bucket.
+-   a [filter](/log_processor/scenarios/format.md#filter): the filter to apply on events to be filled in this bucket.
 -   a [leakspeed](/log_processor/scenarios/format.md#leakspeed)
 -   a [capacity](/log_processor/scenarios/format.md#capacity): the number of events in the bucket before it overflows.
 -   a [groupby](/log_processor/scenarios/format.md#groupby): a field from the event to partition the bucket. It is often the `source_ip` of the event.

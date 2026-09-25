@@ -178,7 +178,7 @@ Content-Type: text/plain; charset=utf-8
 3. Emit a malevolent request to the Appsec Component:
 
 :::info
-We're trying to access a `.env` file, a [common way to retrieve credentials left by mistake](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access).
+We're trying to access a `.env` file, a [common way to retrieve credentials left by mistake](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-env-access).
 :::
 
 ```bash
@@ -273,7 +273,7 @@ What happened in the test that we just did is:
  1. We did a request (`localhost/.env`) to our local webserver
  2. Thanks to the Remediation Component configuration, forwarded the request to `http://127.0.0.1:7422`
  3. Our AppSec Component, listening on `http://127.0.0.1:7422` analyzed the request
- 4. The request matches the [AppSec rule to detect .env access](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access)
+ 4. The request matches the [AppSec rule to detect .env access](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-env-access)
  5. The AppSec Component thus answered with [HTTP 403](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403) to the Remediation Component, indicating that the request must be blocked
  6. The web server then presented us with the default "request blocked" page.
 

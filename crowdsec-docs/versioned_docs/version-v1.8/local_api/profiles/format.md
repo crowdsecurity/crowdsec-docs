@@ -123,8 +123,8 @@ on_success: continue|break
 
 If the profile applies and `on_success` is set to `break`, decisions processing will stop here and it won't evaluate against following profiles.
 
-- `continue` will apply the profile even if the filter expression generates an error. (DEFAULT)
-- `break` will stop the processing of the alert if the filter expression generates an error.
+- `continue` will keep evaluating the following profiles after this profile applies. (DEFAULT)
+- `break` will stop evaluating the following profiles once this profile applies.
 ### `on_failure`
 
 ```yaml

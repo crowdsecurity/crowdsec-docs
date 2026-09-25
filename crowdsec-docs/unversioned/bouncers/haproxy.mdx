@@ -251,7 +251,7 @@ Edit `/etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf` and configure the fo
 ```bash
 SECRET_KEY=
 SITE_KEY=
-CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
+CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/haproxy/templates/captcha.html
 CAPTCHA_EXPIRATION=3600
 ```
 
@@ -284,7 +284,7 @@ API_KEY=<API_KEY>
 
 CrowdSec Local API key.
 
-Generated with [`sudo cscli bouncers add`](/u/getting_started/installation/linux) command.
+Generated with the [`sudo cscli bouncers add`](/docs/next/cscli/cscli_bouncers_add) command.
 
 ### `BOUNCING_ON_TYPE`
 > all | ban | captcha
@@ -362,7 +362,7 @@ BAN_TEMPLATE_PATH=<path_to_html_template>
 
 The path to a HTML page to return to IPs that trigger `ban` remediation.
 
-By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/ban.html`.
+By default, the HTML template is located in `/var/lib/crowdsec/lua/haproxy/templates/ban.html`.
 
 
 ### `RET_CODE`
@@ -415,7 +415,7 @@ The path to a captcha HTML template.
 
 The component will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
 
-By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/captcha.html`.
+By default, the HTML template is located in `/var/lib/crowdsec/lua/haproxy/templates/captcha.html`.
 
 
 ### `CAPTCHA_EXPIRATION`

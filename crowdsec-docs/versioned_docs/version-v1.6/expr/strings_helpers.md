@@ -94,8 +94,6 @@ If sep is empty, Split splits after each UTF-8 sequence. If both s and sep are e
 
 It is equivalent to SplitN with a count of -1.
 
-To split around the first instance of a separator, see Cut.
-
 ### `SplitAfter(s string, sep string) []string`
 
 SplitAfter slices s into all substrings after each instance of sep and returns a slice of those substrings.
@@ -134,8 +132,6 @@ n < 0: all substrings
 ```
 
 Edge cases for s and sep (for example, empty strings) are handled as described in the documentation for Split.
-
-To split around the first instance of a separator, see Cut.
 
 ### `Replace(s string, old string, new string, n int) string` 
 

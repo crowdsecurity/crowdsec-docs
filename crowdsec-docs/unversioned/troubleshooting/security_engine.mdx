@@ -144,13 +144,13 @@ When using `cscli` to list your parsers, scenarios, and collections, some might 
 - Originate from the hub
 - Were locally modified
 - Will not be automatically updated/upgraded by `cscli` operations (unless `--force` or similar is specified)
-- Won't be sent to Central API and won't appear in the Console (unless `cscli console enable tainted` has been specified)
+- Are sent to Central API and appear in the Console by default (unless `cscli console disable tainted` has been specified)
 
 "local" items:
 
 - Have been locally created by the user
 - Are not managed by `cscli` operations
-- Won't be sent to Central API and won't appear in the Console (unless `cscli console enable custom` has been specified)
+- Are sent to Central API and appear in the Console by default (unless `cscli console disable custom` has been specified)
 
 ### Scenario X keeps triggering, it's a false trigger
 
@@ -195,7 +195,7 @@ See [CrowdSec Configuration](/docs/next/configuration/crowdsec_configuration).
 
 ### Where is data stored?
 
-CrowdSec stores its data in `/var/lib/crowdsec/data/` folder for UNIX and `C:\ProgramData\CrowdSec\data\` for Windows.
+CrowdSec stores its data in `/var/lib/crowdsec/data/` on Linux, `/var/db/crowdsec/data/` on FreeBSD (including OPNsense and pfSense), and `C:\ProgramData\CrowdSec\data\` on Windows.
 
 This is where the default sqlite database and data files needed for scenarios are kept.
 
@@ -304,7 +304,7 @@ CrowdSec Security Engine is open-source security software. See the [overview](/d
 
 ### What language is it written in?
 
-CrowdSec Security Engine is written in [Golang](https://golang.org/).
+CrowdSec Security Engine is written in [Golang](https://go.dev/).
 
 ### What resources are needed to run Security Engine?
 
@@ -330,7 +330,7 @@ See [CAPI documentation](/docs/next/central_api/intro).
 
 ### How to set up a proxy
 
-Setting up a proxy works out of the box, the [net/http golang library](https://golang.org/src/net/http/transport.go) can handle those environment variables:
+Setting up a proxy works out of the box, the [net/http golang library](https://go.dev/src/net/http/transport.go) can handle those environment variables:
 
 -   `HTTP_PROXY`
 -   `HTTPS_PROXY`

@@ -75,7 +75,7 @@ docker.io/crowdsecurity/crowdsec:latest
 Now run the CrowdSec container.
 
 ```bash
-docker run -d --name crowdsec -v /var/run/docker.sock:/var/run/docker.sock -v /etc/crowdsec:/etc/crowdsec -v /var/log:/var/log crowdsecurity/crowdsec
+docker run -d --name crowdsec -v /var/run/docker.sock:/var/run/docker.sock -v /etc/crowdsec:/etc/crowdsec -v /var/lib/crowdsec/data:/var/lib/crowdsec/data -v /var/log:/var/log crowdsecurity/crowdsec
 ```
 
 :::warning

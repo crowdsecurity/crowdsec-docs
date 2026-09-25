@@ -248,7 +248,7 @@ api:
 We also need to update our agent configuration to use a certificate to login to LAPI in `/etc/crowdsec/local_api_credentials.yaml`:
 
 ```yaml
-url: https://localhost:8081
+url: https://localhost:8080
 ca_cert_path: /tmp/inter.pem #CA to trust the server certificate
 key_path: /tmp/agent-key.pem #Client key
 cert_path: /tmp/agent.pem #Client cert
@@ -283,7 +283,7 @@ We see that the agent name was automatically derived from the certificate Common
 We can simulate a bouncer request using `curl`:
 
 ```shell
-$ curl --cacert /tmp/inter.pem --cert /tmp/bouncer.pem --key /tmp/bouncer-key.pem https://localhost:8081/v1/decisions/stream?startup=true
+$ curl --cacert /tmp/inter.pem --cert /tmp/bouncer.pem --key /tmp/bouncer-key.pem https://localhost:8080/v1/decisions/stream?startup=true
 {"deleted":[{"duration":"-18h13m35.223932s","id":38,"origin":"crowdsec","scenario":"crowdsecurity/http-cve-2021-41773","scope":"Ip","type":"ban","value":"23.94.26.138"}],"new":null}
 ```
 
@@ -301,7 +301,7 @@ $ cscli bouncers list
 If we try to use the agent certificate with our fake bouncer, LAPI will return an error as the OU is not allowed for the bouncers:
 
 ```shell
-$ curl --cacert /tmp/inter.pem --cert /tmp/agent.pem --key /tmp/agent-key.pem https://localhost:8081/v1/decisions/stream\?startup\=true
+$ curl --cacert /tmp/inter.pem --cert /tmp/agent.pem --key /tmp/agent-key.pem https://localhost:8080/v1/decisions/stream\?startup\=true
 {"message":"access forbidden"}
 ```
 
@@ -327,7 +327,7 @@ api:
 
 Let's query the API again:
 ```shell
-$ curl --cacert /tmp/inter.pem --cert /tmp/bouncer.pem --key /tmp/bouncer-key.pem https://localhost:8081/v1/decisions/stream\?startup\=true
+$ curl --cacert /tmp/inter.pem --cert /tmp/bouncer.pem --key /tmp/bouncer-key.pem https://localhost:8080/v1/decisions/stream\?startup\=true
 {"message":"access forbidden"}
 ```
 

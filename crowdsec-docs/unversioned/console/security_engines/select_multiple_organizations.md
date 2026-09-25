@@ -25,10 +25,6 @@ To use the multi organization selection, these steps should be followed:
 
 ![Select multiple organizations modal](/img/console/security_engines/select-multiple-organizations-list.png)
 
-The [**"Troubleshooting"**](/u/console/security_engines/troubleshooting) feature is also applied to multiple organizations, allowing you to find issues across all selected organizations.
-
-![Select multiple organizations modal](/img/console/security_engines/select-multiple-organizations-troubleshooting.png)
-
 ### Good to know
 
 Foreign Security Engines are not updatable as they are not in the current Organization. To update them, you need to switch to the Organization where the engine is located.

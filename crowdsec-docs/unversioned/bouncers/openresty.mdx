@@ -186,9 +186,9 @@ SSL_VERIFY=true
 ################
 ```
 
-Any `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf.local` content will take
-precedence over `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`. All fields
-don't have to be present in this `.local.` file.
+Any `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf.local` content will take
+precedence over `/etc/crowdsec/bouncers/crowdsec-openresty-bouncer.conf`. Not all fields
+have to be present in this `.local` file.
 
 ### OpenResty Configuration
 
@@ -372,7 +372,7 @@ API_KEY=<API_KEY>
 
 CrowdSec Local API key.
 
-Generated with [`sudo cscli bouncers add`](/u/getting_started/installation/linux) command.
+Generated with the [`sudo cscli bouncers add`](/u/bouncers/intro#generate-an-api-key-for-your-bouncer) command.
 
 ### `API_URL`
 
@@ -642,7 +642,7 @@ Send the request to the AppSec Component even if there is a decision for the IP.
 > boolean
 
 ```bash
-SSL_VERIFY=false  # default
+SSL_VERIFY=true  # default
 ```
 
 Verify the AppSec Component SSL certificate validity.
@@ -694,6 +694,6 @@ If set to `true`, the request will be blocked directly by nginx.
 
 Nginx variables can be used to adapt behaviour and or more flexible configurations:
 
-- ngx.var.cs_disable_bouncer: set to 1, it will disable the bouncer
-- ngx.var.enable_appsec: set to 1, it will enable the appsec even if it's disabled by configuration or if bouncer is disabled
-- ngx.var.disable_appsec: set to 1, it will disable the appsec
+- ngx.var.crowdsec_disable_bouncer: set to 1, it will disable the bouncer
+- ngx.var.crowdsec_enable_appsec: set to 1, it will enable the appsec even if it's disabled by configuration or if bouncer is disabled
+- ngx.var.crowdsec_disable_appsec: set to 1, it will disable the appsec

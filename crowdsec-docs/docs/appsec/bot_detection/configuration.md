@@ -135,4 +135,4 @@ level=info msg="on_challenge_submit rejected" source=203.0.113.7 reason=fast-bot
 If you don't see any `challenge submission` lines at all after a reload, double-check that:
 
 - The new appsec-config is listed in your AppSec datasource (`appsec_configs:`) — see [Where to set these values](#where-to-set-these-values).
-- The bouncer is forwarding `/crowdsec-internal/challenge/*` paths unchanged — see [Prerequisites](intro.md#prerequisites) on the intro page.
+- The bouncer is forwarding `/crowdsec-internal/challenge/*` paths unchanged — see [Internal challenge endpoints](challenge_protocol.md#internal-challenge-endpoints).

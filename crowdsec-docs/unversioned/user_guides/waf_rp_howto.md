@@ -187,7 +187,7 @@ The bouncer installation detects a running CrowdSec on the same machine and in t
 From a 3rd-party machine, let’s try to trigger our newly deployed crowdsec. We're going to use the dedicated [crowdsecurity/http-generic-test](https://app.crowdsec.net/hub/author/crowdsecurity/scenarios/http-generic-test) to ensure our logs are properly processed:
 
 ```bash
-curl http://Y.Y.Y.Y/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
+curl http://X.X.X.X/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
 ```
 
 On our reverse-proxy logs, we can see in CrowdSec and nginx:
@@ -252,7 +252,7 @@ sudo systemctl restart nginx
 So now, we can try to trigger the WAF:
 
 ```bash
-$ curl -I Y.Y.Y.Y/.env
+$ curl -I X.X.X.X/.env
 HTTP/1.1 403 Forbidden
 Server: nginx/1.24.0 (Ubuntu)
 Date: Fri, 23 May 2025 12:18:24 GMT

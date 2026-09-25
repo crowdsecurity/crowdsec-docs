@@ -136,7 +136,7 @@ curl -i https://your-protected-site.example/some/page
 # and a Set-Cookie for __crowdsec_challenge once the challenge is solved.
 ```
 
-Tail the CrowdSec log and trigger a failed submission (e.g. with `curl` against `/crowdsec-internal/challenge/submit` with garbage payload) to see the `on_challenge_submit rejected` line. After enough failed submissions, the behavioral scenario should fire and appear in `cscli alerts list`.
+Tail the CrowdSec log and send a garbage payload to `/crowdsec-internal/challenge/submit` (e.g. with `curl`) to see a failed submission (`{"status":"failed"}`); to see the `on_challenge_submit rejected` line, use the CDP test below. After enough failed submissions, the behavioral scenario should fire and appear in `cscli alerts list`.
 
 ### Get rejected as a bot (CDP)
 

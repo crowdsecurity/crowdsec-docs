@@ -48,7 +48,7 @@ For the full request flow, see [How it works](how_it_works.md).
 ## Next steps
 
 - [Enable bot detection](enable.md) — install the collection, wire the acquisition, and verify it.
-- [See default collection](whats_included.md) — the request flow, the appsec-config, known-bot handling, and behavioral scenarios you just enabled.
+- [Default configuration](whats_included.md) — the scoring and threshold appsec-configs, known-bot and path exclusions, alerts, and behavioral scenarios you just enabled.
 - [Customization & recipes](customization.md) — narrow the challenge to a path, allowlist a probe, and react to the bot signal in your own scenarios.
 - [Configuration](configuration.md) — master secret, key rotation, cookie TTL, and JS obfuscation.
 - [Hooks reference](hooks.md) — full list of helpers and the `on_challenge` / `on_challenge_submit` stages.

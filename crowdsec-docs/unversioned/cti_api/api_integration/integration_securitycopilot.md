@@ -11,7 +11,7 @@ This documentation will lead you through an easy setup and lead you through some
 ## Configure the plugin
 
 ### Prerequisite: retrieve your API Key
-The plugin is using our CTI API to provide information on over 70M attackers recently reported by CrowdSec's network.  
+The plugin is using our CTI API to provide information on over 22M IPs reported by CrowdSec's network.  
 You can create a trial key or retrieve your existing keys in the [console](https://app.crowdsec.net/) in the "Settings" > "CTI API Keys" section.  
 If you need more details check out the [CTI API Key - getting started section](/u/console/ip_reputation/api_keys)
 

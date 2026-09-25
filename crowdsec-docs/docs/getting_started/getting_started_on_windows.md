@@ -144,13 +144,13 @@ Now that you've got the `Security Engine` up and running, it's time to install a
 
 We will use the Windows Firewall Component, which manages some windows firewall rules to drop traffic from IP addresses blocked by the engine.
 
-You can download either an MSI (containing only the bouncer) or a setup bundle (containing the component and the .NET 6 runtime) from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
+You can download the MSI installer from the github releases: https://github.com/crowdsecurity/cs-windows-firewall-bouncer/releases
 
 :::warning
 
-The Windows Firewall Remediation Component requires the .NET 6 runtime. Install it before running the Component or use our setup bundle to install it with the Component.
+The Windows Firewall Remediation Component requires the .NET 10 runtime. Install it before running the Component, or install the Component with Chocolatey (`choco install crowdsec-windows-firewall-bouncer`), which installs the runtime.
 
-The runtime can be downloaded from [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime).
+The runtime can be downloaded from [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/10.0/runtime).
 Choose the "Console App" download.
 
 :::
