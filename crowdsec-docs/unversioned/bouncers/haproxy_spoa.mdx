@@ -1,7 +1,7 @@
 ---
 id: haproxy_spoa
 title: "HAProxy IP Blocking & WAF with CrowdSec"
-description: "Wire HAProxy to CrowdSec over SPOP: the SPOA agent checks each connection against live decisions and hands HTTP requests to the AppSec (WAF) engine."
+description: "Wire HAProxy to CrowdSec over SPOA: the SPOA agent checks each connection against live decisions and hands HTTP requests to the AppSec (WAF) engine."
 ---
 
 import Tabs from "@theme/Tabs";
@@ -460,10 +460,16 @@ For example:
 
 global
     tune.bufsize 65536
+
+frontend http-in
     option http-buffer-request
 
 [...]
 ```
+
+`tune.bufsize` is a global setting. `option http-buffer-request` must be set in
+`defaults` or in each HTTP frontend that forwards requests to AppSec; it is not
+a `global` option.
 
 Relevant bouncer keys in `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml`:
 
@@ -480,7 +486,7 @@ hosts:
       # api_key: custom-key             # optional per-host override
 ```
 
-Because request-body forwarding is constrained by HAProxy/SPOE/SPOP limits, keep an explicit body size limit (for example `51200`) and consider a layered approach (IP remediation at HAProxy, deeper inspection downstream).
+Because request-body forwarding is constrained by HAProxy/SPOE/SPOA limits, keep an explicit body size limit (for example `51200`) and consider a layered approach (IP remediation at HAProxy, deeper inspection downstream).
 
 ### Bot detection challenge
 
@@ -500,7 +506,6 @@ Then configure an AppSec acquisition, for example in
 ```yaml
 source: appsec
 listen_addr: 127.0.0.1:7422
-path: /
 appsec_configs:
   - crowdsecurity/appsec-default
   - crowdsecurity/appsec-bot-*
@@ -514,9 +519,10 @@ rule families. Do not also list `crowdsecurity/virtual-patching` and
 loaded twice.
 
 HAProxy cannot receive the full bot-detection challenge page through the SPOE
-frame: the challenge response is large and spans follow-up requests for
-JavaScript assets and submissions. The SPOA bouncer therefore exposes a small
-HTTP listener for challenge traffic, controlled by `challenge_http_listen`:
+frame. The SPOA bouncer therefore exposes a small HTTP listener for challenge
+traffic, controlled by `challenge_http_listen`. The initial page is cached by
+the bouncer, while the browser fetches its JavaScript assets and submits proof
+through follow-up requests on the internal challenge paths:
 
 ```yaml
 # /etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml
@@ -529,6 +535,20 @@ When AppSec returns the `challenge` action, HAProxy must rewrite the request to
 the bouncer-provided challenge URL and route it to that listener. The same
 backend must also receive the internal challenge paths used by the browser:
 `/crowdsec-internal/challenge/*`.
+
+The request flow is:
+
+1. AppSec returns the `challenge` action through SPOA and the bouncer stores the
+   generated challenge under `/crowdsec-challenge/<token>`.
+2. HAProxy rewrites the original request to that URL and sends it to the
+   challenge HTTP listener. The client receives the challenge page with an HTTP
+   `200` response, not the original AppSec `403` response.
+3. The bouncer sets the `__crowdsec_challenge_relay` cookie. It is `HttpOnly`,
+   limited to `/crowdsec-internal/challenge/`, and expires after five minutes.
+4. The browser uses that cookie on the JavaScript and proof requests. HAProxy
+   routes those requests to the same listener and passes the source address in
+   `X-Crowdsec-Real-Src`. Missing, malformed, or expired relay cookies are
+   rejected with `404`.
 
 If you installed the bouncer from packages, start from the packaged examples in
 `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples/`. In particular,
@@ -600,7 +620,9 @@ frontend http-in
 
 backend app
     mode http
-    server app1 127.0.0.1:8080
+    # Replace the placeholder with your real application backend before use.
+    # Do not point this at CrowdSec LAPI (127.0.0.1:8080).
+    server app1 <your-app-host>:<your-app-port>
 
 backend crowdsec-spoa
     mode tcp
