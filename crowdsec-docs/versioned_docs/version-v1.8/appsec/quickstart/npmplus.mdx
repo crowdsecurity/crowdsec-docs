@@ -163,7 +163,7 @@ Appsec '0.0.0.0:7422/' Rules Metrics:
 
 1. `curl` hit NPMplus at `/.env`.
 2. The NPMplus bouncer forwarded the request to the AppSec Component inside the Docker network (on `crowdsec:7422`).
-3. AppSec matched the [`vpatch-env-access`](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access) rule and answered `403`.
+3. AppSec matched the [`vpatch-env-access`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-env-access) rule and answered `403`.
 4. NPMplus served the ban page.
 
 </details>

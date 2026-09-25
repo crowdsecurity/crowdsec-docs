@@ -207,7 +207,7 @@ custom_binary.sh del 192.168.1.1/32 3600 "test blacklist" <json_object>
 
 In this mode, the custom binary will be executed when the bouncer starts and is expected to read data from stdin.
 
-If the binary exits for any reason, it will be reinvoked up to `max_retries` times. If the maximum number of retries is exhausted, the bouncer will quit.
+If the binary exits for any reason, it will be reinvoked up to `total_retries` times. If the maximum number of retries is exhausted, the bouncer will quit.
 
 For each decision, the custom binary will be fed the serialized JSON object on stdin, one object per line.
 
@@ -314,7 +314,7 @@ This field has been deprecated and is ignored by the component.
 Directory to drop the PID file
 
 ### `update_frequency`
-> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+> string (That is parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 controls how often the component is going to query the local API
 

@@ -118,7 +118,7 @@ This object exposes helper functions for the filesystem
 
 &nbsp;&nbsp;&nbsp;&nbsp;Returns `true` if the provided unit is installed.
 
-> `Systemd.UnitInstalled("nginx") == true`
+> `Systemd.UnitInstalled("nginx.service") == true`
 
 ### `UnitConfig(unitName, key) string`
 
@@ -126,13 +126,13 @@ This object exposes helper functions for the filesystem
 
 &nbsp;&nbsp;&nbsp;&nbsp;Returns an empty value if the unit is not installed and an error if the key does not exist.
 
-> `Systemd.UnitConfig("nginx", "StandardOutput") == "journal"`
+> `Systemd.UnitConfig("nginx.service", "StandardOutput") == "journal"`
 
 ### `UnitLogsToJournal(unitName) bool`
 
 &nbsp;&nbsp;&nbsp;&nbsp;Returns `true` if unit stdout/stderr are redirected to the journal or journal+console.
 
-> `Systemd.UnitLogsToJournal("nginx") == true`
+> `Systemd.UnitLogsToJournal("nginx.service") == true`
 
 ## Windows
 

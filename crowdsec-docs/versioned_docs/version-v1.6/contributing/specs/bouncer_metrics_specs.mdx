@@ -40,7 +40,7 @@ As an example, here is the kind of expected payload that you will have to build 
             "name": "linux",
             "version": "5.4.0"
         },
-        "metrics": {
+        "metrics": [{
             "meta": {
                 "window_size_seconds": 1800,
                 "utc_now_timestamp": 1704069000
@@ -83,7 +83,7 @@ As an example, here is the kind of expected payload that you will have to build 
                     "value": 342010
                 }
             ]
-        }
+        }]
     }]
 }
 ```
@@ -271,10 +271,10 @@ function buildUsageMetrics(properties: object, meta: object, items: array): obje
     return {
         "remediation_components": [{
             ...bouncerProperties,
-            "metrics": {
+            "metrics": [{
                 "meta": metricsMetadata,
                 "items": items
-            }
+            }]
         }]
     }
 ```

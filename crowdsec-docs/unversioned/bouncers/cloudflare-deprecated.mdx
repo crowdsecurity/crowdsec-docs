@@ -322,7 +322,7 @@ Path to the key file used to authenticate with the LAPI.
 Path to the CA file used to trust the LAPI certificate.
 
 ### `crowdsec_update_frequency`
-> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+> string (That is parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 The component will poll the CrowdSec every `update_frequency` interval.
 
@@ -359,7 +359,7 @@ only_include_decisions_from: ["cscli", "crowdsec"]
 This block contains cloudflare specific config.
 
 #### `update_frequency`
-> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+> string (That is parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 The frequency at which to update the cloudflare resources.
 

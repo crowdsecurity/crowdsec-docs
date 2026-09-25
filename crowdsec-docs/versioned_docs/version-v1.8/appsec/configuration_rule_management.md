@@ -55,7 +55,7 @@ source: appsec
 
 If you want to ignore all rule matches for a specific IP or range, you can use a [centralized allowlist](/local_api/allowlists.md).
 
-Rules will be processed as usual, but the request will not be blocked even if a rule matches.
+The request bypasses AppSec entirely: no in-band or out-of-band rule is evaluated for that IP.
 
 ### Disable specific rules for a specific IP/range
 

@@ -29,16 +29,18 @@ Each integration represents a unique endpoint protected by Basic Authentication 
 
 ## Refresh frequency
 
-Blocklists are updated multiple times per day. Configure your device to pull on the following schedule according to your plan:
+Blocklists are updated multiple times per day. Configure your firewall to pull on the following schedule according to your plan:
 
 | Tier | Recommended refresh | Minimum allowed interval |
 |---|---|---|
 | Community | Every 24 hours | 24 hours |
-| Enterprise | Every hour | 1 hour |
+| Premium | Every hour | No limit |
 
 :::warning
-Pulling more frequently than the allowed interval for your plan will result in HTTP 429.
+For firewall integrations, pulling more frequently than the allowed interval for your plan will result in HTTP 429.
 :::
+
+These limits don't apply to [Remediation Component](integrations/remediationcomponent.mdx) integrations, which can poll at the bouncer's default interval on every plan.
 
 ## Available integrations
 
@@ -295,7 +297,7 @@ A warning on **stack health** will soon surface when an integration is receiving
 
 ### HTTP 429 (rate limited)
 
-An `HTTP 429` response means your integration is being **rate limited** because it is pulling more frequently than your plan allows (Community: 1 pull every 24 hours; Enterprise: no limit). See [Refresh frequency](#refresh-frequency) above and adjust your device's refresh schedule to respect the allowed interval for your plan.
+An `HTTP 429` response means your firewall integration is being **rate limited** because it is pulling more frequently than your plan allows (Community: 1 pull every 24 hours; Premium: no limit). Remediation Component integrations are not rate limited this way. See [Refresh frequency](#refresh-frequency) above and adjust your device's refresh schedule to respect the allowed interval for your plan.
 
 ### Firewall cannot pull the blocklist
 

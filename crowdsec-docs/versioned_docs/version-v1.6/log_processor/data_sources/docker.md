@@ -31,7 +31,7 @@ labels:
   type: log_type
 ```
 
-Look at the `configuration parameters` to view all supported options.
+See [Parameters](#parameters) for all supported options.
 
 ## Parameters
 

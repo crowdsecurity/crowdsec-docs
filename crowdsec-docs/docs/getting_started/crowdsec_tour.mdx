@@ -83,7 +83,7 @@ sudo cscli decisions list
 
 If you just deployed CrowdSec, the list might be empty, but don't worry, it simply means you haven't yet been attacked, congrats! Adding `-a` flag will as well list the decisions you received from the [community blocklist](/central_api/intro.md).
 
-Check [decisions](/u/user_guides/hub_mgmt) management for more !
+Check [decisions management](/u/user_guides/decisions_mgmt) for more!
 
 <details>
   <summary>Listing decisions example</summary>
@@ -245,22 +245,9 @@ For example, if you have a custom log format in nginx that is not supported by t
 For more advanced metrics understanding, [take a look at the dedicated prometheus documentation](/observability/prometheus.md).
 
 
-## Deploy dashboard
+## Dashboard
 
-
-:::caution
-
-Running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli dashboard setup`) [requires 1-2Gb of RAM](https://www.metabase.com/docs/latest/troubleshooting-guide/running.html). Metabase container is **only** available for amd64.
-
-:::
-
-
-```bash
-sudo cscli dashboard setup --listen 0.0.0.0
-```
-
-CrowdSec provides various observability tools including Prometheus metrics and command-line interfaces.
-It requires docker, [installation instructions are available here](https://docs.docker.com/engine/install/).
+The `cscli dashboard` command (Metabase) was removed in CrowdSec 1.7.0. To visualize alerts and decisions, use the [CrowdSec Console](https://app.crowdsec.net) or [Prometheus and Grafana](/observability/prometheus.md#exploitation-with-prometheus-server--grafana).
 
 ## Logs
 

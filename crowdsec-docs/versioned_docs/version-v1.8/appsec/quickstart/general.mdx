@@ -19,7 +19,7 @@ This guide covers the core AppSec Component setup that applies to all web server
 
 ## Prerequisites
 
-- **CrowdSec Security Engine** (>= 1.5.6) installed and running
+- **CrowdSec Security Engine** (>= 1.6.0) installed and running
 - A compatible remediation component (bouncer) for your web server or reverse proxy
 
 ## AppSec Component Setup
@@ -59,7 +59,7 @@ sudo mkdir -p /etc/crowdsec/acquis.d/
 2. Create the AppSec acquisition configuration:
 
 ```bash
-sudo cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
+sudo tee /etc/crowdsec/acquis.d/appsec.yaml > /dev/null << EOF
 appsec_configs:
   - crowdsecurity/appsec-default
 labels:
@@ -147,7 +147,6 @@ Now that the AppSec Component is configured and running, you need to:
 
 For specific remediation component configuration, see:
 - [Nginx/OpenResty Setup](nginxopenresty.mdx)
-- [OpenResty Setup](nginxopenresty.mdx)
 - [Traefik Setup](traefik.mdx)
 - [HAProxy (SPOA) Setup](haproxy_spoa.mdx)
 - [WordPress Setup](wordpress.mdx)

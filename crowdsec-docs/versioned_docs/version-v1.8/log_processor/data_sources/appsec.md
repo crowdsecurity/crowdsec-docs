@@ -56,19 +56,19 @@ Number of routines to use to process the requests. Defaults to 1.
 
 ### `auth_cache_duration`
 
-How long to cache the auth token for. Accepts values supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
+How long to cache the auth token for. Accepts values supported by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration).
 Defaults to 1m.
 
 ### `auth_timeout`
 
-How long to wait for the local API to validate the API key of a remediation component. Accepts value supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
+How long to wait for the local API to validate the API key of a remediation component. Accepts value supported by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration).
 Set to `0` to disable the timeout.
 Increase it if your local API is not on the same machine or is a few network hops away.
 Defaults to 200ms.
 
 ### `body_read_timeout`
 
-How long to wait for the remediation component to finish sending the request body before giving up and processing whatever was received. Accepts value supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
+How long to wait for the remediation component to finish sending the request body before giving up and processing whatever was received. Accepts value supported by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration).
 Set to `0` to disable the timeout.
 Defaults to 1s.
 

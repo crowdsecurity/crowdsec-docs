@@ -95,7 +95,7 @@ sudo cscli metrics show appsec
 1. `curl` hit HAProxy at `/.env`.
 2. HAProxy forwarded the request to the SPOA remediation component.
 3. The bouncer queried the AppSec Component at `appsec_url`.
-4. The request matched the [`vpatch-env-access`](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access) rule.
+4. The request matched the [`vpatch-env-access`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-env-access) rule.
 5. AppSec answered `403`; HAProxy blocked the request.
 
 </details>

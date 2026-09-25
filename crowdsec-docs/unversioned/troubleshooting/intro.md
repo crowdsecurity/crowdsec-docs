@@ -11,7 +11,7 @@ This is to better reflect the role of each component within the CrowdSec ecosyst
 # Troubleshooting
 
 We have extended our troubleshooting documentation to cover more common issues and questions.  
-If you have suggestions, please open an [issue here](https://github.com/crowdsecurity/crowdsec-docs).  
+If you have suggestions, please open an [issue here](https://github.com/crowdsecurity/crowdsec-docs/issues).  
 
 Also, check our 🩺 [**Stack Health-Check page**](/u/getting_started/health_check) to verify that **Detection**, **Community Sharing**, and **Remediation** are working properly.
 
@@ -32,9 +32,9 @@ Please try to resolve your issue by reading the documentation. If you're unable 
 -   [Discourse](https://discourse.crowdsec.net/)
 -   [Discord](https://discord.gg/crowdsec)
 
-## Enterprise plan
+## Premium plan
 
-If you are on an Enterprise plan, you can use dedicated support via the Console:
+If you are on a paid plan, you can use dedicated support via the Console:
 
 ### Stack Health issues list
 

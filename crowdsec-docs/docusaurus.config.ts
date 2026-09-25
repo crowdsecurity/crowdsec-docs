@@ -266,6 +266,10 @@ const redirects = [
 	{ from: "/u/console/cti/cti_api_keys", to: "/u/console/ip_reputation/api_keys" },
 	{ from: "/u/integrations", to: "/u/integrations/intro" },
 	{ from: "/u/tracker_api/api_reference", to: "/u/tracker_api/intro" },
+	// Security Engines "Troubleshooting Hints" report removed from the Console, replaced by Stack Health
+	{ from: "/u/console/security_engines/troubleshooting", to: "/u/console/stackhealth" },
+	{ from: "/docs/console/security_engines/troubleshooting", to: "/u/console/stackhealth" },
+	{ from: "/docs/next/console/security_engines/troubleshooting", to: "/u/console/stackhealth" },
 	{ from: "/Crowdsec/v1/contributing", to: "/docs/contributing/getting_started" },
 	{ from: "/Crowdsec/v1/references/acquisition", to: "/docs/log_processor/data_sources/intro" },
 	{ from: "/Crowdsec/v1/getting_started/installation", to: "/u/getting_started/installation/linux" },

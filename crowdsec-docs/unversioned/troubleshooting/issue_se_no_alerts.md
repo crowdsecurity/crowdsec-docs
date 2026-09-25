@@ -43,7 +43,7 @@ docker exec crowdsec cscli collections list
 ```
 
 ```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli collections list
+for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli collections list; done
 ```
 
 </details>
@@ -85,12 +85,17 @@ docker restart crowdsec
 ```
 
 **Kubernetes**
-```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli collections install crowdsecurity/nginx
+
+Add the collection to your Helm `values.yaml`:
+```yaml
+agent:
+  env:
+    - name: COLLECTIONS
+      value: "crowdsecurity/nginx"
 ```
 
 ```bash
-kubectl rollout restart deployment/crowdsec -n crowdsec
+helm upgrade crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml
 ```
 
 </details>
@@ -116,7 +121,7 @@ docker exec crowdsec cscli metrics show scenarios
 
 **Kubernetes**
 ```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli metrics show scenarios
+for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli metrics show scenarios; done
 ```
 
 </details>
@@ -163,7 +168,7 @@ docker exec crowdsec cscli simulation status
 
 **Kubernetes**
 ```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli simulation status
+for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli simulation status; done
 ```
 
 </details>
@@ -191,12 +196,18 @@ docker restart crowdsec
 ```
 
 **Kubernetes**
-```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli simulation disable --all
+
+Set the simulation configuration in your Helm `values.yaml`:
+```yaml
+config:
+  simulation.yaml: |
+    simulation: false
+    exclusions: []
 ```
 
 ```bash
-kubectl rollout restart deployment/crowdsec -n crowdsec
+helm upgrade crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml
+kubectl rollout restart daemonset/crowdsec-agent -n crowdsec
 ```
 
 </details>
@@ -234,7 +245,7 @@ docker exec crowdsec cscli metrics show acquisition parsers
 
 **Kubernetes**
 ```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli metrics show acquisition parsers
+for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli metrics show acquisition parsers; done
 ```
 
 </details>

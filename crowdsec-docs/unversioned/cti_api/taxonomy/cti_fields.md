@@ -302,7 +302,7 @@ The possible values are:
 "ip_range_score" : 5
 ```
 
-The malevolence score of the IP range the IP belongs to. 0 is unknown, 1 means a couple of reported IPs, 5 is the highest level for the most aggressive range. See "scoring" above.
+The malevolence score of the IP range the IP belongs to. 0 is unknown, 1 means a couple of reported IPs, 5 is the highest level for the most aggressive range. See [`ip_range_24_score`](#ip_range_24_score) above.
 
 ## `as_name`
 

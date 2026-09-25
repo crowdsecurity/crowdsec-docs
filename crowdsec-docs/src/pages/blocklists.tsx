@@ -65,7 +65,7 @@ const BlocklistsPage = () => {
 			icon="/img/icons/shield.webp"
 			description="Subscribe to curated threat intelligence feeds to block known malicious IPs across your infrastructure. Deploy in minutes to firewalls or alongside the Security Engine."
 			heroButtons={[
-				{ label: "Get Started", link: "/u/blocklists/intro" },
+				{ label: "Get Started", link: "/u/blocklists/getting_started" },
 				{ label: "Browse Catalog", link: "/u/console/blocklists/catalog", variant: "outline" },
 			]}
 			helpDescription="Get help in Discord or dive into Console docs for setup and monitoring."

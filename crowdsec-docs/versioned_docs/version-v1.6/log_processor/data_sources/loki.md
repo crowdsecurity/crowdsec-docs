@@ -26,7 +26,7 @@ labels:
 The reader will always start at "now".
 :::
 
-Look at the `configuration parameters` to view all supported options.
+See [Parameters](#parameters) for all supported options.
 
 ## Parameters
 
@@ -114,7 +114,7 @@ Allows to set the "since" duration for loki query.
 Expects a valid [Go duration](https://pkg.go.dev/time#ParseDuration)
 
 ```bash
-crowdsec -type foobar -dsn 'loki://login:password@localhost:3102/?query={server="demo"}&since=1d'
+crowdsec -type foobar -dsn 'loki://login:password@localhost:3102/?query={server="demo"}&since=24h'
 ```
 
 ### `log_level`

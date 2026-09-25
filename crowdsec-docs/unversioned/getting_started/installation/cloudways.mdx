@@ -155,7 +155,7 @@ cscli machines list  # ignore the warning, it is expected at this point
 ```
 		- Delete the test machine
 ```bash
-cscli machines delete test_env
+cscli machines delete test
 ```    
 		- Create a new default one with --force to override the existing credentials file
 ```bash
@@ -307,7 +307,7 @@ Restart=always
 RestartSec=60
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
 ```
 - Note that if you want to do it yourself the process is:
   - Get the service description file from https://github.com/crowdsecurity/crowdsec/blob/master/config/crowdsec.service
