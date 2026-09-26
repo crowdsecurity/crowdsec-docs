@@ -21,6 +21,13 @@ Registered but inactive Remediation Components mean your Security Engine's decis
 - [**RC service not running**](#rc-service-not-running): The bouncer process or module is stopped or crashed.
 - [**Other RC-specific issues**](#other-rc-specific-issues): Dependency, permission, or integration-specific problems.
 
+:::tip Try it with the CrowdSec Skill
+Use the [CrowdSec Skill](https://github.com/crowdsecurity/crowdsec-skill) to help you solve this issue.  
+
+Suggested Prompt
+> None of the Remediation Components registered on my Security Engine have sent a heartbeat in 24h; Help me find out why.
+:::
+
 ## Diagnosis & Resolution
 
 ### Configuration file errors

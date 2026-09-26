@@ -17,6 +17,13 @@ This means the acquisition is working, but parsers can't interpret the log forma
 - [**Missing collection or parsers**](#missing-collection-or-parsers): The required parser collection for your log format isn't installed.
 - [**Custom or unexpected log format**](#acquisition-typeprogram-mismatch): Logs don't match the format expected by the parser (custom format, version mismatch, etc.).
 
+:::tip Try it with the CrowdSec Skill
+Use the [CrowdSec Skill](https://github.com/crowdsecurity/crowdsec-skill) to help you solve this issue.  
+
+Suggested Prompt
+> Logs are being read by my Log Processor but none are being parsed; Help me find out why.
+:::
+
 ## Diagnosis & Resolution
 
 ### Missing Collection or Parsers

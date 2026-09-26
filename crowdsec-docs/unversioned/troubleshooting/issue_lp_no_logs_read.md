@@ -21,6 +21,13 @@ This is the first step in the detection pipeline and must work for CrowdSec to f
 - [**Acquisition type mismatch**](#detailed-acquisition-documentation): Wrong datasource type configured (e.g., using `file` instead of `journald`).
 - **Container/Kubernetes volume issues**: In containerized deployments, logs aren't mounted or accessible to the CrowdSec container.
 
+:::tip Try it with the CrowdSec Skill
+Use the [CrowdSec Skill](https://github.com/crowdsecurity/crowdsec-skill) to help you solve this issue.  
+
+Suggested Prompt
+> My Log Processor hasn't acquired any log lines in 24h; Help me find out why.
+:::
+
 ## Diagnosis & Resolution
 
 ### Missing Acquisition Configuration
