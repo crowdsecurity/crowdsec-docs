@@ -108,6 +108,19 @@ depends_on:
   - "reverse-proxy"
 ```
 
+##### Health checks
+
+If you add a health check, use `cscli lapi status` — not `cscli capi status`. The latter calls the Central API on every check and can trigger [CAPI rate limiting](/u/troubleshooting/capi_403) if the interval is short.
+
+```yaml
+healthcheck:
+  test: ["CMD", "cscli", "lapi", "status"]
+  interval: 30s
+  timeout: 5s
+  retries: 3
+  start_period: 30s
+```
+
 ## Environment variables
 
 You can find a full list of available environment variables in the [Docker image readme](https://github.com/crowdsecurity/crowdsec/blob/master/build/docker/README.md).
