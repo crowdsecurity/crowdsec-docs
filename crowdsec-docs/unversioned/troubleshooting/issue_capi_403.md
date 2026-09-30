@@ -22,6 +22,13 @@ CAPI restrictions apply only to free users. Enterprise users are not impacted.
 - **`cscli capi status` spam**: Integrations or 3rd party software using `cscli capi status` too often.
 - **Misconfiguration or multiple instances**: Duplicate engines or invalid tokens trigger repeated logins.
 
+:::tip Try it with the CrowdSec Skill
+Use the [CrowdSec Skill](https://github.com/crowdsecurity/crowdsec-skill) to help you solve this issue.  
+
+Suggested Prompt
+> My Security Engine is getting 403 (Forbidden) responses from CrowdSec Central API; Help me find out why.
+:::
+
 ## Diagnosis & Resolution
 
 ### Temporary ban due to login bursts

@@ -22,6 +22,13 @@ The **Engine No Alerts** issue appears when your Security Engine has been runnin
 - 🔗 **[No logs being read](/u/troubleshooting/issue_lp_no_logs_read)**: The acquisition configuration may be missing, disabled, or pointing to empty log sources.
 - 🔗 **[No logs being parsed](/u/troubleshooting/issue_lp_no_logs_parsed)**: Logs are being read but parsers can't process them due to format mismatches or missing collections.
 
+:::tip Try it with the CrowdSec Skill
+Use the [CrowdSec Skill](https://github.com/crowdsecurity/crowdsec-skill) to help you solve this issue.  
+
+Suggested Prompt
+> My Security Engine hasn't generated any alerts in 48h; Help me find out why.
+:::
+
 ## Diagnosis & Resolution
 
 If it is not due to [other issues](#other-issues), use the diagnosis and resolutions below.
