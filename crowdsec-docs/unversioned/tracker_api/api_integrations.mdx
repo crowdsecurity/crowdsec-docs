@@ -352,8 +352,7 @@ curl -X 'POST' 'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchang
   -d '{"name": "demo_blocklist"}'
 
 # 5. Fetch the blocklist (using integration credentials)
-curl 'https://admin.api.crowdsec.net/v1/integrations/INTEGRATION_ID/content' \
-  -H 'x-api-key: INTEGRATION_API_KEY'
+curl -u 'USERNAME:PASSWORD' 'https://admin.api.crowdsec.net/v1/integrations/INTEGRATION_ID/content'
 ```
 
 :::tip

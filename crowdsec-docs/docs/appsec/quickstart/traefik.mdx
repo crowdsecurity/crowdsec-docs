@@ -218,6 +218,7 @@ If a crowdsec container is already running, stop/remove it before re-running wit
 ```bash
 docker run -d --name crowdsec \
   -v /path/to/original:/etc/crowdsec \
+  -v crowdsec-data:/var/lib/crowdsec/data \
   -v ./appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml \
   crowdsecurity/crowdsec
 ```

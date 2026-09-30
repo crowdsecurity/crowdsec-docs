@@ -325,7 +325,7 @@ Log media. Can be `stdout` or `file`.
 
 Log level. Can be `error`, `info`, `debug`, `trace`.
 
-#### `log_folder`
+#### `log_dir`
 > string
 
 Folder to write log file.
@@ -955,7 +955,7 @@ server:
   tls:
     cert_file: <path_to_certificat_file>
     key_file: <path_to_certificat_key_file>
-    client_verification: "NoClientCert|RequestClientCert|RequireAnyClientCert|VerifyClientCertIfGiven|RequestAndVerifyClientCert"
+    client_verification: "NoClientCert|RequestClientCert|RequireAnyClientCert|VerifyClientCertIfGiven|RequireAndVerifyClientCert"
       ca_cert_path: "<path_to_ca_cert_file>"
       agents_allowed_ou: # List of allowed Organisational Unit for the agents
        - agents_ou

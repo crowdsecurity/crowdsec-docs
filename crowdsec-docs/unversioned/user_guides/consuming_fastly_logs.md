@@ -61,7 +61,7 @@ On the same machine, install CrowdSec as described in the [getting started guide
 
 ### Setup  acquisition
 
-Append this config to the file /etc/crowdsec/acquisition.yaml
+Append this config to /etc/crowdsec/acquis.yaml (or create /etc/crowdsec/acquis.d/fastly.yaml)
 
 ```yaml
 ---

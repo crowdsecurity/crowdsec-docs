@@ -332,11 +332,9 @@ The 3rd one will not be poured as the bucket already contains an event with `evt
 capacity: 5
 ```
 
-Only applies to `leaky` buckets.
-
-A positive integer representing the bucket capacity.
+For `leaky` buckets, a positive integer representing the bucket capacity.
 If there are more than `capacity` items in the bucket, it will overflow.
-Should be set to `-1` in most situations for `conditional` buckets.
+`trigger` buckets use `0`; `counter` and `bayesian` buckets must use `-1`, and `conditional` buckets should use `-1`.
 
 ---
 ### `leakspeed`

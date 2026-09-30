@@ -343,10 +343,10 @@ target: evt.Parsed.foobar
 > `target: evt.Meta.foobar` will set the value in the `Meta[foobar]` entry
 
 ```yaml
-method: GeoCoords
+method: GeoIpCity
 ```
 
-> `method: GeoIPCity` will use GeoIpCity to populate some fields in the `Enriched` entry. See (Enrichers|parsers/enricher.md) for more information
+> `method: GeoIpCity` will use GeoIpCity to populate some fields in the `Enriched` entry. See [Enrichers](/log_processor/parsers/enricher.md) for more information
 
 #### `source`
 
