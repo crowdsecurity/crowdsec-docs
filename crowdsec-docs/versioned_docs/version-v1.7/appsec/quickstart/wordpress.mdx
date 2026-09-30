@@ -68,7 +68,7 @@ AppSec requires the WordPress plugin to use API-key authentication (not TLS cert
 
 ## 4. Verify
 
-From any machine, send a request with a malicious body through WordPress — this example trips the [`vpatch-CVE-2022-22965`](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-CVE-2022-22965) rule (Spring4Shell):
+From any machine, send a request with a malicious body through WordPress — this example trips the [`vpatch-CVE-2022-22965`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-CVE-2022-22965) rule (Spring4Shell):
 
 ```bash
 curl -X POST https://<your-wordpress-url>/ \

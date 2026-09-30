@@ -318,7 +318,7 @@ You can refer to the AppSec documentation to test request forwarding.
 
 * **startup:** set it to **TRUE** for the **initial call** to get all decisions *(when False you’ll get the delta from your last call)*  
 * **scopes:** “ip,range” is the only relevant value when remediating on IPs  
-* **origins:** Leave blank to allow all origins, test your configurable origins with [those tests](#decision-example)  
+* **origins:** Leave blank to allow all origins, check your configurable origins against the [decision example](#decision-example)  
 * **scenarios_containing:** leave blank by default, allow change in config  
 * **scenarios_not_containing:** leave blank by default, allow change in config
 
@@ -330,7 +330,7 @@ You can refer to the AppSec documentation to test request forwarding.
 * **ip:** ignore/leave blank: shortcut for scope:ip \+ value  
 * **range:** ignore/leave blank: shortcut for scope:range \+ value  
 * **contains:** leave blank by default, configurable by user  
-* **origins:** Leave blank to allow all origins, test your configurable origins with [those tests](#decision-example)  
+* **origins:** Leave blank to allow all origins, check your configurable origins against the [decision example](#decision-example)  
 * **scenarios_containing:** leave blank by default, allow change in config  
 * **scenarios_not_containing:** leave blank by default, allow change in config
 
