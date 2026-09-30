@@ -33,10 +33,11 @@ export default function NotFoundContent({ className }: Props): ReactNode {
 				<div className="col col--8 col--offset-2 text-center">
 					<ThemedImage
 						sources={illustrationSources}
-						alt="A lost llama holding a map next to a 404 Page not found sign"
-						width={1290}
-						height={740}
-						className="w-full h-auto rounded-2xl border border-solid border-cs-border mb-8"
+						alt="The CrowdSec alpaca holding a map next to a 404 Page not found sign"
+						width={1656}
+						height={950}
+						className="w-full h-auto mb-8"
+						style={{ maxWidth: 828 }}
 					/>
 					<Heading as="h1" className="sr-only">
 						<Translate id="theme.NotFound.title" description="The title of the 404 page">
