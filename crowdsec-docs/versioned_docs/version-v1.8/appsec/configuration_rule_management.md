@@ -23,15 +23,16 @@ name: custom/my_config
 on_load:
  - apply:
     - RemoveInBandRuleByName("crowdsecurity/vpatch-env-access")
-pre_eval:
- - filter: IsInBand == true && req.URL.Path startsWith "/bar/"
-   apply:
-    - RemoveInBandRuleByName("crowdsecurity/generic-wordpress-uploads-php")
+inband:
+  pre_eval:
+    - filter: req.URL.Path startsWith "/bar/"
+      apply:
+        - RemoveInBandRuleByName("crowdsecurity/generic-wordpress-uploads-php")
 ```
 
 This example uses [hooks](hooks.md) to modify the configuration in 2 places:
  - `on_load`: Expressions here will be applied when CrowdSec loads the configuration, effectively disabling the rule `crowdsecurity/vpatch-env-access` globally.
- - `pre_eval`: Expressions here will be applied only if the provided filter matches. In this example, we are disabling the rule `crowdsecurity/generic-wordpress-uploads-php` only if the request URI starts with `/blog/` and if we are currently processing in-band rules.
+ - `inband.pre_eval`: Expressions here will be applied only if the provided filter matches, and only during the in-band pass. In this example, we are disabling the rule `crowdsecurity/generic-wordpress-uploads-php` only if the request URI starts with `/bar/`.
 
 You can also disable native (seclang) rules by providing their ID with the `RemoveInBandRuleByID` helper. See the [hooks](hooks.md) documentation for a list of available helpers.
 

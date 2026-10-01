@@ -623,19 +623,21 @@ This will block any requests not coming from the US or France.
 Note the empty value (`""`) in the list and the `?` after the call to `GeoIPEnrich`: this will allow IPs for which crowdsec was not able to get the country (eg, private IPs) and prevent the helper from returning `nil` which would break the evaluation.
 
 ```yaml
-pre_eval:
-  - filter: IsInBand == true && GeoIPEnrich(req.RemoteAddr)?.Country.IsoCode not in ["FR", "US", ""]
-    apply:
-      - DropRequest("Forbidden Country")
+inband:
+  pre_eval:
+    - filter: GeoIPEnrich(req.RemoteAddr)?.Country.IsoCode not in ["FR", "US", ""]
+      apply:
+        - DropRequest("Forbidden Country")
 ```
 
 If you want to disallow traffic from a specific country:
 
 ```yaml
-pre_eval:
-  - filter: IsInBand == true && GeoIPEnrich(req.RemoteAddr)?.Country.IsoCode == "FR"
-    apply:
-      - DropRequest("Forbidden Country")
+inband:
+  pre_eval:
+    - filter: GeoIPEnrich(req.RemoteAddr)?.Country.IsoCode == "FR"
+      apply:
+        - DropRequest("Forbidden Country")
 ```
 
 #### Use Case
@@ -674,10 +676,10 @@ Dump request details to file for debugging.
 #### Hook Example
 
 ```yaml
-post_eval:
-  - filter: IsInBand == true
-    apply:
-      - DumpRequest().WithBody().ToJSON()
+inband:
+  post_eval:
+    - apply:
+        - DumpRequest().WithBody().ToJSON()
 ```
 
 #### Use Case
@@ -697,10 +699,10 @@ Modify the HTTP status code returned to users when a rule matches.
 #### Hook Example
 
 ```yaml
-on_match:
-  - filter: IsInBand == true
-    apply:
-      - SetReturnCode(413)
+inband:
+  on_match:
+    - apply:
+        - SetReturnCode(413)
 ```
 
 #### Use Case
@@ -716,10 +718,10 @@ Dynamically change the remediation action from the default.
 #### Hook Example
 
 ```yaml
-on_match:
-  - filter: IsInBand == true
-    apply:
-      - SetRemediation('captcha')
+inband:
+  on_match:
+    - apply:
+        - SetRemediation('captcha')
 ```
 
 #### Use Case
@@ -735,10 +737,11 @@ Override blocking for trusted IP addresses.
 #### Hook Example
 
 ```yaml
-on_match:
-  - filter: IsInBand == true && req.RemoteAddr == "192.168.1.100"
-    apply:
-      - SetRemediation('allow')
+inband:
+  on_match:
+    - filter: req.RemoteAddr == "192.168.1.100"
+      apply:
+        - SetRemediation('allow')
 ```
 
 #### Use Case
@@ -754,10 +757,10 @@ Prevent alert creation while keeping the request blocked.
 #### Hook Example
 
 ```yaml
-on_match:
-  - filter: IsInBand == true
-    apply:
-      - CancelAlert()
+inband:
+  on_match:
+    - apply:
+        - CancelAlert()
 ```
 
 #### Use Case
@@ -773,10 +776,10 @@ Generate alerts for monitoring rules that normally only log.
 #### Hook Example
 
 ```yaml
-on_match:
-  - filter: IsOutBand == true
-    apply:
-      - SendAlert()
+outofband:
+  on_match:
+    - apply:
+        - SendAlert()
 ```
 
 #### Use Case
@@ -789,17 +792,19 @@ Create alerts for reconnaissance attempts detected by monitoring rules.
 
 Control execution of subsequent hooks with break/continue.
 
+`on_success` is only evaluated for hooks that have a `filter`, so a filterless hook never breaks.
+
 #### Hook Example
 
 ```yaml
-on_match:
-  - filter: IsInBand == true
-    apply:
-      - CancelEvent()
-    on_success: break
-  - filter: IsInBand == true
-    apply:
-      - SetRemediation('captcha')
+inband:
+  on_match:
+    - filter: req.URL.Path startsWith "/api/"
+      apply:
+        - CancelEvent()
+      on_success: break
+    - apply:
+        - SetRemediation('captcha')
 ```
 
 #### Use Case

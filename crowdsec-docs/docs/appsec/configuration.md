@@ -33,7 +33,8 @@ Configuration files share a common structure:
 - optional behavior keys like [`default_remediation`](#default_remediation) and [`default_pass_action`](#default_pass_action)
 - HTTP response codes (for example, [`blocked_http_code`](#blocked_http_code))
 - optional performance settings ([`inband_options`](#inband_options), [`outofband_options`](#outofband_options))
-- optional hooks ([`on_load`](#on_load), [`pre_eval`](#pre_eval), [`post_eval`](#post_eval), [`on_match`](#on_match))
+- optional hooks, scoped per phase ([`inband`](#inband), [`outofband`](#outofband)), plus [`on_load`](#on_load)
+- legacy top-level hooks ([`pre_eval`](#pre_eval), [`post_eval`](#post_eval), [`on_match`](#on_match))
 - optional logging ([`log_level`](#log_level))
 
 ```yaml
@@ -199,11 +200,41 @@ Logging verbosity for this configuration. Available levels: `debug`, `info`, `wa
 log_level: info
 ```
 
+### inband
+
+> object
+
+Rules, hooks and options scoped to the in-band pass. Accepted keys:
+
+- `rules` (array of strings): same as [`inband_rules`](#inband_rules); both lists are merged.
+- `pre_eval`, `post_eval`, `on_match` (arrays): hooks that run only during the in-band pass. See [AppSec Hooks](hooks.md).
+- `on_challenge`, `on_challenge_submit` (arrays): challenge hooks, which only exist in-band. See [Bot detection hooks](bot_detection/hooks.md).
+- `options` (object): same as [`inband_options`](#inband_options).
+- `variables_tracking` (array of strings): tracked variables. They are global, so scoping them to a phase has no effect.
+
+```yaml
+inband:
+  rules:
+    - crowdsecurity/base-config
+  pre_eval:
+    - filter: req.RemoteAddr == "192.168.1.100"
+      apply:
+        - RemoveInBandRuleByName("strict-rule")
+  options:
+    disable_body_inspection: false
+```
+
+### outofband
+
+> object
+
+Same keys as [`inband`](#inband), applied to the out-of-band pass, except `on_challenge` and `on_challenge_submit`: challenges are in-band only.
+
 ### on_load
 
 > array
 
-Executed when the configuration is loaded. Typically used for global rule changes.
+Executed when the configuration is loaded. Typically used for global rule changes. Not phase-scoped: it runs once at startup, so it has no `inband` / `outofband` equivalent.
 
 ```yaml
 on_load:
@@ -215,7 +246,7 @@ on_load:
 
 > array
 
-Executed before rule evaluation for each request. Supports conditional logic.
+Executed before rule evaluation for each request. Declared at the top level, it runs in both passes, hence the `IsInBand` filter below. Use [`inband`](#inband) / [`outofband`](#outofband) to target a single pass.
 
 ```yaml
 pre_eval:
@@ -228,7 +259,7 @@ pre_eval:
 
 > array
 
-Executed after rule evaluation. Useful for debugging and analysis.
+Executed after rule evaluation. Useful for debugging and analysis. Runs in both passes, like [`pre_eval`](#pre_eval).
 
 ```yaml
 post_eval:
@@ -241,7 +272,7 @@ post_eval:
 
 > array
 
-Executed when rules match. Used to adjust remediation or generate custom alerts.
+Executed when rules match. Used to adjust remediation or generate custom alerts. Runs in both passes, like [`pre_eval`](#pre_eval).
 
 ```yaml
 on_match:

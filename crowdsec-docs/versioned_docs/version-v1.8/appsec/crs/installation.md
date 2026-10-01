@@ -41,30 +41,6 @@ labels:
 If an IP triggers too many different rules in a very short timespan, the IP will be blocked, regardless of whether the CRS rules are in blocking mode or not.
 :::
 
-By default, non-blocking mode does not generate alerts. You can update the default configuration to generate an alert for every rule match.
-
-To do so, create a file `/etc/crowdsec/appsec-configs/crs-alerting.yaml` with the following content:
-
-```yaml
-name: custom/crs-alerting
-on_match:
-  - filter: IsOutBand == true
-    apply:
-      - SendAlert()
-      - CancelEvent() # This one is optional: if set, no event will be generated, meaning CrowdSec will never take a decision based on the rules that were matched.
-```
-
-Then add it to your acquisition configuration:
-
-```yaml
-source: appsec
-appsec-configs:
-  - crowdsecurity/crs
-  - custom/crs-alerting
-labels:
-  type: appsec
-```
-
 ### Blocking mode
 
 You can also configure the CRS in blocking mode.
