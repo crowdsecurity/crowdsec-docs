@@ -25,6 +25,16 @@ If you received a health check alert from the CrowdSec Console, check out the [*
 * [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components)
 * [CTI Troubleshooting](/u/troubleshooting/cti)
 
+## Debug with an AI agent
+
+The [CrowdSec skill](https://github.com/crowdsecurity/crowdsec-skill) lets Claude Code, Codex and Claude.ai work through these pages with you. It knows the `cscli` commands, the config layout and the usual failure modes — logs not parsed, no alerts firing, a bouncer that blocks nothing — on bare metal, Docker, pfSense/OPNsense and Kubernetes.
+
+```bash
+npx skills add crowdsecurity/crowdsec-skill
+```
+
+On Claude Code, run `/plugin marketplace add crowdsecurity/crowdsec-skill` then `/plugin install crowdsec@crowdsecurity` instead. The skill's [README](https://github.com/crowdsecurity/crowdsec-skill#install) covers the other agents.
+
 ## Community support
 
 Please try to resolve your issue by reading the documentation. If you're unable to find a solution, don't hesitate to seek assistance in:
