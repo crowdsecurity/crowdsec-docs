@@ -25,7 +25,7 @@ When `Event` is a log line, `evt.GetType()` returns `log`, and the following fie
 
 ## Event Object : Overflow
 
-When `Event` is an overflow being reprocessed (`reprocess: true` in the originating scenario), `evt.GetType()` returns `appsec`, and [the `Overflow` object is used.](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/types#RuntimeAlert)
+When `Event` is an overflow being reprocessed (`reprocess: true` in the originating scenario), `evt.GetType()` returns `overflow`, and [the `Overflow` object is used.](https://pkg.go.dev/github.com/crowdsecurity/crowdsec/pkg/types#RuntimeAlert)
 
 
 ## Event Object : Appsec

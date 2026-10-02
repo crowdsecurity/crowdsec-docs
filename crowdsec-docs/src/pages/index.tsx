@@ -357,7 +357,7 @@ export default function HomePage() {
 						color={CS_VIOLET}
 						eyebrow="IP REPUTATION & CTI"
 						title="Query threat intel — in the browser or via API in your tools"
-						sub="Search 1B+ observed IPs, enrich SIEM/SOAR alerts, hunt patterns across the community."
+						sub="Search 22M+ observed IPs, enrich SIEM/SOAR alerts, hunt patterns across the community."
 						steps={ctiSteps}
 						ctaLabel="Explore CTI"
 						ctaHref="/u/cti_api/intro"

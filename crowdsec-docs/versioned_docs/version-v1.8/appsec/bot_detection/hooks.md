@@ -74,7 +74,7 @@ This hook fires for in-band requests that carry a valid `__crowdsec_challenge` c
 
 | Helper Name                            | Type                                  | Description                                                                                                                                                                                                                                                |
 | -------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `SendChallenge`                        | `func()`                              | Force a re-challenge for this request even though the client already has a cookie (e.g. when fingerprint mismatches indicate the cookie may have been replayed).                                                                                           |
+| `SendChallenge`                        | `func()`                              | Re-challenge a cookie-bearing client; only takes effect when the target difficulty exceeds the one its cookie proved (see `SetChallengeDifficulty`).                                                                                                       |
 | `SetChallengeDifficulty`               | `func(level str)`                     | Override the proof-of-work difficulty for the next challenge issued. See [Challenge difficulty levels](#challenge-difficulty-levels).                                                                                                                      |
 | `SetRemediation`                       | `func(action str)`                    | Set the remediation returned to the bouncer for this request. The only special value is `allow` (don't block); any other value is passed through as-is. See [`SetRemediation*`](../hooks.md#setremediation).                                               |
 | `SetReturnCode`                        | `func(code int)`                      | Set the HTTP status code returned to the bouncer for this request.                                                                                                                                                                                        |
@@ -93,6 +93,7 @@ This hook fires for in-band requests that carry a valid `__crowdsec_challenge` c
 on_challenge:
   - filter: EvaluateMismatches().High() >= 1
     apply:
+      - SetChallengeDifficulty("high")
       - SendChallenge()
 ```
 
@@ -143,7 +144,7 @@ The helper describes the cookie the client **sent**, not the one it is about to 
 | The challenge submission itself (`/crowdsec-internal/challenge/submit`)       | `false` — the success cookie is minted on the response |
 
 :::note
-You don't need this helper to avoid re-challenging a visitor: `SendChallenge()` is already a no-op for a client that holds a valid cookie or has been exempted. It is meant for the *other* decisions you may want to take differently for a client that has passed the challenge — which rules to run, how to score the request, what remediation to return.
+You don't need this helper to avoid re-challenging a visitor: `SendChallenge()` is already a no-op for an exempted client, or one whose cookie proved at least the target difficulty. It is meant for the *other* decisions you may want to take differently for a client that has passed the challenge — which rules to run, how to score the request, what remediation to return.
 :::
 
 ### Examples

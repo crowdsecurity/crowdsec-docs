@@ -54,7 +54,7 @@ format: |
   {{ end -}}
 
 # The plugin will make requests to this url, eg:  https://www.example.com/
-url: https://<GOTFIY_URL>/message
+url: https://<GOTIFY_URL>/message
 
 # Any of the http verbs: "POST", "GET", "PUT"...
 method: POST

@@ -143,10 +143,10 @@ For example, you can [look for malicious IPs reported for HTTP exploitation or H
 reputation:"malicious" AND (behaviors.label:"http exploit" OR behaviors.label:"http scan")
 ```
 
-You can also [search for malicious IPs reported with high or medium confidence for HTTP exploitation and not located in France](https://app.crowdsec.net/cti?q=reputation%3A%22malicious%22+AND+%28confidence%3A%22high%22+OR+confidence%3A%22medium%22%29+AND+behaviors.label%3A%22http+exploit%22+AND+location.country%3A%22fr%22&page=1):
+You can also [search for malicious IPs reported with high or medium confidence for HTTP exploitation and not located in France](https://app.crowdsec.net/cti?q=reputation%3A%22malicious%22+AND+%28confidence%3A%22high%22+OR+confidence%3A%22medium%22%29+AND+behaviors.label%3A%22http+exploit%22+AND+NOT+location.country%3A%22FR%22&page=1):
 
 ```bash
-reputation:"malicious" AND (confidence:"high" OR confidence:"medium") AND behaviors.label:"http exploit" AND location.country:"fr"
+reputation:"malicious" AND (confidence:"high" OR confidence:"medium") AND behaviors.label:"http exploit" AND NOT location.country:"FR"
 ```
 
 It is possible [to search for malicious IPs reported for HTTP exploitation or HTTP scan but not SSH bruteforce](https://app.crowdsec.net/cti?q=reputation%3Amalicious+AND+%28%28behaviors.label%3A%22http+exploit%22+OR+behaviors.label%3A%22http+scan%22%29+AND+NOT+behaviors.label%3A%22ssh+bruteforce%22%29&page=1):

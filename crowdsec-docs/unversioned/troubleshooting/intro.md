@@ -32,9 +32,9 @@ Please try to resolve your issue by reading the documentation. If you're unable 
 -   [Discourse](https://discourse.crowdsec.net/)
 -   [Discord](https://discord.gg/crowdsec)
 
-## Enterprise plan
+## Premium plan
 
-If you are on an Enterprise plan, you can use dedicated support via the Console:
+If you are on a paid plan, you can use dedicated support via the Console:
 
 ### Stack Health issues list
 

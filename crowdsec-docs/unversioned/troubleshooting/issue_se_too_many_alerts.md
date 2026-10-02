@@ -69,7 +69,7 @@ docker exec crowdsec cscli metrics show scenarios
 ```
 
 ```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli metrics show scenarios
+for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli metrics show scenarios; done
 ```
 
 </details>

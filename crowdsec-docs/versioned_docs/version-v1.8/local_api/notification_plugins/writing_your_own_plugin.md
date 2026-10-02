@@ -192,11 +192,11 @@ is used to make sure that the right plugin is dispatched.
 The `plugin.Serve` is a method provided by `go-plugin` dependency we earlier defined. It creates a GRPC server which exposes the plugin interface.
 
 
-Now let's build the plugin and paste it in `/usr/local/lib/crowdsec/plugins/` so CrowdSec can discover it.
+Now let's build the plugin and copy it to the directory set in `config_paths.plugin_dir` (`/usr/lib/crowdsec/plugins/` on Debian/Ubuntu) so CrowdSec can discover it.
 
 ```bash
 go build
-sudo cp notification-email /var/lib/crowdsec/plugins/
+sudo cp notification-email /usr/lib/crowdsec/plugins/
 ```
 
 Next we need to write a configuration file for the plugin. Here's an example:
