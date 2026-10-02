@@ -112,7 +112,7 @@ For detailed setup, configuration, and troubleshooting specific to your bouncer 
 
 ## Related Issues
 
-- [Firewall Integration Offline](/u/troubleshooting/issue_integration_fw_offline) - Similar issue for firewall bouncers
+- [Firewall Integration Offline](/u/troubleshooting/issue_integration_fw_offline) - Similar issue for firewall integrations
 - [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components) - General bouncer issues
 
 ## Getting Help

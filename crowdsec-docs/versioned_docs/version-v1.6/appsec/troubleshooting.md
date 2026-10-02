@@ -175,7 +175,7 @@ To test that the AppSec Component is working correctly, you can send requests di
 
 
 We are going to test that the AppSec Component detects correctly CVE-2023-42793, which is part of the [virtual patching collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching), that should be installed for this to work (see `cscli appsec-rules list`).
-[This rule](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-CVE-2023-42793) is pretty straightforward and detects requests to an URI ending with `/rpc2`:
+[This rule](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-CVE-2023-42793) is pretty straightforward and detects requests to an URI ending with `/rpc2`:
 
 > cat /etc/crowdsec/appsec-rules/vpatch-CVE-2023-42793.yaml
 ```yaml

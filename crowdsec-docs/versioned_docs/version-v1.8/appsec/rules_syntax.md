@@ -135,7 +135,7 @@ rules:
           value: /crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
 ```
 
-See the [appsec-generic-test rule](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/appsec-generic-test) for a full example.
+See the [appsec-generic-test rule](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/appsec-generic-test) for a full example.
 
 ### Rule condition fields
 

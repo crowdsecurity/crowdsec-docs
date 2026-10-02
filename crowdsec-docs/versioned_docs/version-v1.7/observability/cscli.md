@@ -7,7 +7,7 @@ sidebar_position: 2
 # Crowdsec Metrics
 
 CrowdSec is instrumented using [Prometheus](https://prometheus.io/) to provide detailed metrics and traceability about what is going on.
-The `cscli metrics` allows you to see a subset of the metrics exposed by crowdsec. For a more industrial solution, look into the [Grafana](/docs/next/observability/prometheus) integration.
+The `cscli metrics` allows you to see a subset of the metrics exposed by crowdsec. For a more industrial solution, look into the [Grafana](/observability/prometheus.md) integration.
 
 The best way to get an overview of the available metrics is to use `cscli metrics list`:
  Type          | Title                        | Description 

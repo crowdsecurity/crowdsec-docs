@@ -181,9 +181,9 @@ print(response)
 Subscribing an entity to a blocklist makes that entity pull and enforce the list. The `entity_type`
 field selects what you target:
 
-- A [Security Engine](https://doc.crowdsec.net/docs/next/intro) (`engine`). [Remediation Components (Bouncers)](https://doc.crowdsec.net/u/bouncers/intro) connected to it enforce the blocklist.
+- A [Security Engine](/docs/next/intro) (`engine`). [Remediation Components (Bouncers)](/u/bouncers/intro) connected to it enforce the blocklist.
 - A [Firewall Integration](/u/integrations/intro) (`firewall_integration`): use blocklists directly on existing firewall appliances (Cisco, F5, Palo Alto…) without a Security Engine or bouncer.
-- A [Remediation Component](https://doc.crowdsec.net/u/bouncers/intro) (`remediation_component_integration`): use a bouncer directly without a Security Engine.
+- A [Remediation Component](/u/bouncers/intro) (`remediation_component_integration`): use a bouncer directly without a Security Engine.
 - A `tag`: every Security Engine carrying that tag is subscribed **automatically**, including future ones.
 - An `org`: every Security Engine enrolled in the org is subscribed **automatically**, including future ones.
 

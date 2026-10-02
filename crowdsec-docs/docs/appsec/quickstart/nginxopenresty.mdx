@@ -91,7 +91,7 @@ curl -I http://localhost/.env
 
 You should get an `HTTP/1.1 403 Forbidden` response.
 
-We're hitting a `.env` file, a [common way to retrieve credentials left by mistake](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access) — the AppSec Component detects and blocks it.
+We're hitting a `.env` file, a [common way to retrieve credentials left by mistake](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-env-access) — the AppSec Component detects and blocks it.
 
 Check that CrowdSec recorded the block:
 
@@ -125,7 +125,7 @@ Appsec '127.0.0.1:7422/' Rules Metrics:
 
 1. `curl` hit your web server at `/.env`.
 2. The bouncer forwarded the request to the AppSec Component on `127.0.0.1:7422`.
-3. The request matched the [`vpatch-env-access`](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access) rule.
+3. The request matched the [`vpatch-env-access`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-env-access) rule.
 4. The AppSec Component answered `403`, the bouncer enforced it, and the web server returned the CrowdSec ban page.
 
 </details>
