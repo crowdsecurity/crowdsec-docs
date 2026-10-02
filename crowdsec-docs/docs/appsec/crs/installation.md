@@ -47,11 +47,11 @@ To do so, create a file `/etc/crowdsec/appsec-configs/crs-alerting.yaml` with th
 
 ```yaml
 name: custom/crs-alerting
-on_match:
-  - filter: IsOutBand == true
-    apply:
-      - SendAlert()
-      - CancelEvent() # This one is optional: if set, no event will be generated, meaning CrowdSec will never take a decision based on the rules that were matched.
+outofband:
+  on_match:
+    - apply:
+        - SendAlert()
+        - CancelEvent() # This one is optional: if set, no event will be generated, meaning CrowdSec will never take a decision based on the rules that were matched.
 ```
 
 Then add it to your acquisition configuration:
