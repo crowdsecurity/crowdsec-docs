@@ -54,14 +54,11 @@ This was not the default for version 1.4.6 and below. So users upgrading to 1.5 
 If set to `true`, will poll the files using `os.Stat` instead of using inotify. This is useful if you want to watch files on a network share, for example. However, this will increase CPU usage significantly per file that is open.
 
 ### `discovery_poll_enable`
-
-:::info
-Available since 1.6.9.
-:::
-
 > default: `false`
 
 If set to `true`, will periodically rescan the configured filename patterns and tail files that are not already being tailed. This is useful when the filesystem does not emit create events, for example on NFS.
+
+Added in v1.6.9.
 
 ### `discovery_poll_interval`
 > default: `30s`
