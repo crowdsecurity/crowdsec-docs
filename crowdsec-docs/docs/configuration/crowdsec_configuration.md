@@ -1050,7 +1050,7 @@ If set to true, the Local API will not export usage metrics to the CrowdSec Web 
 ##### `decisions_stream_page_size`
 > int
 
-The number of decisions the Local API reads from the database at a time when answering `/v1/decisions/stream`. Defaults to `30000`. `0` or unset uses the default, and negative values are rejected at startup.
+The number of decisions the Local API reads from the database at a time when answering `/v1/decisions/stream`. Defaults to `30000`. `0`, unset or a negative value uses the default, and a negative value also logs a warning at startup.
 
 Each in-flight stream request holds one page in memory, so peak memory grows with the page size times the number of remediation components pulling at the same time. With a large fleet and a large blocklist, lowering it reduces that peak. The cost is more database queries per pull, one per page.
 
