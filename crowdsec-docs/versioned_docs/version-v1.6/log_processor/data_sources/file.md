@@ -53,6 +53,22 @@ This was not the default for version 1.4.6 and below. So users upgrading to 1.5 
 
 If set to `true`, will poll the files using `os.Stat` instead of using inotify. This is useful if you want to watch files on a network share, for example. However, this will increase CPU usage significantly per file that is open.
 
+### `discovery_poll_enable`
+
+:::info
+Available since 1.6.9.
+:::
+
+> default: `false`
+
+While streaming, if set to `true`, periodically rescan the configured filename patterns and tail files that are not already being followed. Use this when the filesystem does not emit create events, for example on NFS.
+
+### `discovery_poll_interval`
+
+> default: `30s`
+
+How often to rescan when `discovery_poll_enable` is `true`. A duration such as `30s`, `1m`, or `1h`. `0` uses the default of 30 seconds. Must be greater than or equal to zero.
+
 
 ## DSN and command-line
 
@@ -88,3 +104,4 @@ crowdsec -type syslog -dsn file:///var/log/*.log?max_buffer_size=42000
 
 By default, if a glob pattern does not match any files in an existing directory, this directory will not be watched for new files (ie, `/var/log/nginx/*.log` does not match, but `/var/log/nginx/` exists).
 You can override this behaviour with the `force_inotify` parameter, which will put a watch on the directory.
+If the filesystem does not notify CrowdSec of new files, set `discovery_poll_enable` to `true` instead. The patterns are rescanned every `discovery_poll_interval` (default `30s`).
