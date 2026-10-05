@@ -260,6 +260,8 @@ api:
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     disable_remote_lapi_registration: (true|false)
     disable_usage_metrics_export: (true|false)
+    decisions_stream:
+      page_size: <int>
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
     tls:
       cert_file: "<path_to_certificat_file>"
@@ -850,6 +852,8 @@ api:
         blocklists: "(true|false)"
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     disable_remote_lapi_registration: (true|false)
+    decisions_stream:
+      page_size: <int>
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
     tls:
       cert_file: "<path_to_certificat_file>"
@@ -970,6 +974,8 @@ server:
     credentials_path: <path_to_crowdsec_api_client_credential_file>
   disable_remote_lapi_registration: (true|false)
   disable_usage_metrics_export: (true|false)
+  decisions_stream:
+    page_size: <int>
   capi_whitelists_path: "<path_to_capi_whitelists_file>"
   tls:
     cert_file: <path_to_certificat_file>
@@ -1043,6 +1049,22 @@ This option will disable the registration of remote agents using `cscli lapi reg
 > bool
 
 If set to true, the Local API will not export usage metrics to the CrowdSec Web Console. Defaults to false.
+
+##### `decisions_stream`
+
+Tuning for `/v1/decisions/stream`, the endpoint remediation components poll in stream mode.
+
+```yaml
+decisions_stream:
+  page_size: <int>
+```
+
+###### `page_size`
+> int
+
+The number of decisions the Local API reads from the database at a time when answering `/v1/decisions/stream`. Defaults to `30000`, which is also used when it is unset or `0`. A negative value logs a warning at startup and uses the default.
+
+Each in-flight stream request holds one page in memory, so peak memory grows with the page size times the number of remediation components pulling at the same time. With a large fleet and a large blocklist, lowering it reduces that peak. The cost is more database queries per pull, one per page. Remediation components see no difference: a pull is still a single response with every decision in it.
 
 ##### `capi_whitelists_path`
 > string
