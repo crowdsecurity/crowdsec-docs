@@ -25,6 +25,13 @@ This is similar to [Security Engine No Alerts](/u/troubleshooting/issue_se_no_al
 
 If the issue is not caused by the items above, continue with the diagnosis and resolutions below.
 
+:::tip Try it with the CrowdSec Skill
+Use the [CrowdSec Skill](https://github.com/crowdsecurity/crowdsec-skill) to help you solve this issue.  
+
+Suggested Prompt
+> The Log Processor `<name/host>` is online but hasn't generated any alerts in 48h; Help me find out why.
+:::
+
 ## Diagnosis & Resolution
 
 Refer to the [Security Engine No Alerts](/u/troubleshooting/issue_se_no_alerts#diagnosis--resolution) section.
