@@ -58,8 +58,6 @@ If set to `true`, will poll the files using `os.Stat` instead of using inotify. 
 
 If set to `true`, will periodically rescan the configured filename patterns and tail files that are not already being tailed. This is useful when the filesystem does not emit create events, for example on NFS.
 
-Added in v1.6.9.
-
 ### `discovery_poll_interval`
 > default: `30s`
 
