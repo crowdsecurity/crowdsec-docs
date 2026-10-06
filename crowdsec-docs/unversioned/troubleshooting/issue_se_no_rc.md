@@ -66,7 +66,6 @@ sudo cscli bouncers list
 ```
 
 If it doesn't appear after installation, follow the [**bouncer registration guide**](/u/bouncers/intro). Don't forget to update the credentials in the bouncer config and restart it.
-Don't forget to update the credentials in the bouncer config and restart it
 
 ### Intentional — this Security Engine is detection-only
 
