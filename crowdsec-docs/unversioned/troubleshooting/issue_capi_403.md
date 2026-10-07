@@ -7,7 +7,7 @@ Getting a **403 (Forbidden)** from **CrowdSec Central API (CAPI)** means your Se
 This is commonly caused by misconfiguration and triggers a 1-hour ban from CrowdSec API.
 
 :::info
-CAPI restrictions apply only to free users. Enterprise users are not impacted.
+CAPI restrictions apply only to free users. Users on paid plans are not impacted.
 :::
 
 ## What Triggers This Issue

@@ -14,7 +14,7 @@ We do not currently provide prebuilt binaries for macOS, but you can:
 
 ### Building cscli
 
-In order to build cscli from source, you will need to have at least golang 1.16 installed.
+In order to build cscli from source, you will need the Go version required by the [go.mod file](https://github.com/crowdsecurity/crowdsec/blob/master/go.mod).
 
 You can build from the git master branch or download a source release [here](https://github.com/crowdsecurity/crowdsec/releases).
 
@@ -30,7 +30,7 @@ The `cscli` binary will be located in `crowdsec-$VERSION/cmd/crowdsec-cli/cscli`
 
 :::info
 
-We do not provide ARM64 images currently, but the x86 one works fine on ARM64 Macs.
+The image is multi-arch and includes a native ARM64 build for Apple Silicon Macs.
 
 :::
 

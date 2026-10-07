@@ -19,8 +19,8 @@ You can view the available collections on the [Hub](https://hub.crowdsec.net/).
 :::
 
 <FormattedTabs
-  bash="cscli collections add <collection_name>"
-  powershell="cscli.exe collections add <collection_name>"
+  bash="cscli collections install <collection_name>"
+  powershell="cscli.exe collections install <collection_name>"
   yaml={`# In your values.yml file
 agent:
   env:
@@ -35,7 +35,7 @@ Each collection on the [Hub](https://hub.crowdsec.net/) includes an example [Acq
 :::
 
 :::info
-Since version `1.5.0`, you can add acquisitions via the `acquis.d` directory, which avoids editing the main configuration file.
+You can add acquisitions via the `acquis.d` directory, which avoids editing the main configuration file.
 :::
 
 ### Create the directory if it does not exist
@@ -45,6 +45,10 @@ Since version `1.5.0`, you can add acquisitions via the `acquis.d` directory, wh
   cmd="mkdir C:\ProgramData\CrowdSec\Config\acquis.d\"
   powershell="New-Item -ItemType Directory -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\"
 />
+
+:::info
+On Windows, the `acquis.d` directory is not loaded by default: add `acquisition_dir: C:\ProgramData\CrowdSec\config\acquis.d` under `crowdsec_service` in `C:\ProgramData\CrowdSec\config\config.yaml`.
+:::
 
 ### Create the acquisition file
 
@@ -84,7 +88,7 @@ Once you have added the acquisitions, test the configuration and restart the ser
   bash="sudo crowdsec -t && sudo systemctl restart crowdsec"
   cmd="net stop crowdsec && net start crowdsec"
   powershell="Restart-Service crowdsec"
-  k8s="helm upgrade -f values.yaml crowdsec crowdsecurity/crowdsec"
+  k8s="helm upgrade --reset-then-reuse-values crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml"
 />
 
 ## Next steps

@@ -15,7 +15,7 @@ All plugins shipped with CrowdSec are included in the install package and can be
 
 Refer directly to each plugin's dedicated documentation and keep in mind that plugins need to be enabled at the [profile](/local_api/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`).
 
-Plugin binaries are present in `config_paths.plugin_dir` (defaults to `/var/lib/crowdsec/plugins/`), and their individual configuration are present in `config_paths.notification_dir` (defaults to `/etc/crowdsec/notifications/`)
+Plugin binaries are present in `config_paths.plugin_dir` (defaults to `/usr/lib/crowdsec/plugins/` for Debian/Ubuntu packages, `/usr/lib64/crowdsec/plugins/` for RPM packages, `/usr/local/lib/crowdsec/plugins/` for Docker or source installs), and their individual configuration are present in `config_paths.notification_dir` (defaults to `/etc/crowdsec/notifications/`)
 
 :::warning
 CrowdSec rejects the plugins binaries if one of the following is true :
@@ -164,7 +164,7 @@ Plugins are discovered from the directories specified in `/etc/crowdsec/config.y
 ```yaml title="/etc/crowdsec/config.yaml"
 config_paths:
   notification_dir: /etc/crowdsec/notifications/
-  plugin_dir: /var/lib/crowdsec/plugins/
+  plugin_dir: /usr/lib/crowdsec/plugins/
 ```
 
 #### Plugin Process Owner

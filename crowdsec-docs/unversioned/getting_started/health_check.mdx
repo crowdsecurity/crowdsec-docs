@@ -518,7 +518,7 @@ Were all the tests related to your setup successful?
     ```bash
     nslookup api.crowdsec.net
     ```
-  - **Proxy configuration**: If behind a proxy, configure in `/etc/crowdsec/config.yaml`
+  - **Proxy configuration**: If behind a proxy, set `HTTP_PROXY`/`HTTPS_PROXY` for the CrowdSec service (see [How to set up a proxy](/u/troubleshooting/security_engine#how-to-set-up-a-proxy))
 
   </TabItem>
   <TabItem value="docker" label="Docker">
