@@ -53,7 +53,7 @@ Number of routines to use to process the requests. Defaults to 1.
 
 ### `auth_cache_duration`
 
-How long to cache the auth token for. Accepts values supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
+How long to cache the auth token for. Accepts values supported by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration).
 Defaults to 1m.
 
 ### `cert_file`

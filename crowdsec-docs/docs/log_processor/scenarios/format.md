@@ -240,7 +240,7 @@ duration: 10m
 Only applies to `counter` buckets.
 
 A duration after which the bucket will overflow.
-The format must be compatible with [golang ParseDuration format](https://golang.org/pkg/time/#ParseDuration)
+The format must be compatible with [golang ParseDuration format](https://pkg.go.dev/time#ParseDuration)
 
 Examples :
 
@@ -347,7 +347,7 @@ Only applies to `leaky` and  `conditional` buckets.
 
 A duration that represents how often an event will be leaking from the bucket.
 
-Must be compatible with [golang ParseDuration format](https://golang.org/pkg/time/#ParseDuration).
+Must be compatible with [golang ParseDuration format](https://pkg.go.dev/time#ParseDuration).
 
 ---
 ### `condition`
@@ -513,7 +513,7 @@ This is intended to limit / avoid spam of buckets that might be very rapidly tri
 
 The blackhole only applies to the individual bucket rather than the whole scenario.
 
-Must be compatible with [golang ParseDuration format](https://golang.org/pkg/time/#ParseDuration).
+Must be compatible with [golang ParseDuration format](https://pkg.go.dev/time#ParseDuration).
 
 #### Example
 

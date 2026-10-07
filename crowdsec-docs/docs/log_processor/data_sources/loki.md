@@ -26,7 +26,7 @@ labels:
 The reader will always start at "now".
 :::
 
-Look at the `configuration parameters` to view all supported options.
+See [Parameters](#parameters) for all supported options.
 
 ## Parameters
 

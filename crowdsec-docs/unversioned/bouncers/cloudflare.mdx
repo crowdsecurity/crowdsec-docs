@@ -53,7 +53,7 @@ This **Remediation Component** uses **Cloudflare Workers** to block or challenge
 The source of those decisions
 
 - A **[Blocklist Integration Endpoint](/u/integrations/remediationcomponent)**: a URL served by CrowdSec, no infrastructure required on your side. This is the simplest option.
-- A **[Security Engine](/u/bouncers/intro)** you run in your own infrastructure: the Sync Worker connects to your LAPI to pull decisions directly.
+- A **[Security Engine](/docs/next/intro)** you run in your own infrastructure: the Sync Worker connects to your LAPI to pull decisions directly.
 
 :::warning
 This Remediation Component relies on Cloudflare Workers and the KV store. It works best on a paid Workers subscription. See [Appendix: Cloudflare Free Plan](#appendix-test-with-cloudflare-free-plan) for details.
@@ -641,7 +641,7 @@ sudo cscli -oraw bouncers add cloudflarebouncer
 ```
 
 #### `crowdsec_config.update_frequency`
-> string (parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+> string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 How often the bouncer polls CrowdSec. Default: `10s`.
 
@@ -720,7 +720,7 @@ Enable Turnstile (CAPTCHA) for this zone.
 Automatically rotate the Turnstile secret key.
 
 #### `accounts[].zones[].turnstile.rotate_secret_key_every`
-> string (parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+> string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 Rotation interval. Example: `168h0m0s` (7 days).
 

@@ -63,7 +63,7 @@ batch:
 The reader will always start from the latest offset.
 :::
 
-Look at the `configuration parameters` to view all supported options.
+See [Parameters](#parameters) for all supported options.
 
 ## Parameters
 

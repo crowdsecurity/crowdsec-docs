@@ -33,7 +33,7 @@ Often you will want multiple AppSec configurations to define groups of rules tha
 Use the `appsec_configs` *(with an S)* parameter to load multiple configurations that work together.  
 
 In the following example we have two configurations:
-- One with [CrowdSec default AppSec rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-configurations/appsec-default) running in in-band mode 
+- One with [CrowdSec default AppSec rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/waf-configurations/appsec-default) running in in-band mode 
 - The other for the [CRS rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs) that run in out-of-band mode by default.
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"

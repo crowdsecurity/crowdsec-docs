@@ -25,19 +25,20 @@ The `on_load` hook only supports `apply`, while other hooks support `filter` and
 
 Both `filter` and `apply` of the same phase have access to the same helpers.
 
-Except for `on_load`, hooks can be called twice per request: once for in-band processing and once for out-of-band processing. Use `IsInBand` and `IsOutBand` to filter the hook.
-
-Hooks have the following format:
+Request hooks are declared under the phase they belong to:
 
 ```yaml
-on_match:
-  - filter: IsInBand && 1 == 1
-    apply:
-      - valid expression
-      - valid expression
+inband:
+  on_match:
+    - filter: 1 == 1
+      apply:
+        - valid expression
+        - valid expression
 ```
 
 If the filter returns `true`, each expression in the `apply` section is executed.
+
+`pre_eval`, `post_eval` and `on_match` can be declared in the `inband` or the `outofband` block, and run only for the pass they belong to. `on_challenge` and `on_challenge_submit` are in-band only. `on_load` is not phase-scoped: it runs once at startup.
 
 <!-- once https://github.com/crowdsecurity/crowdsec-docs/issues/555 is fixed, document on_success-->
 
@@ -118,13 +119,14 @@ This hook is intended to be used to disable rules only for this particular reque
 ```yaml
 name: crowdsecurity/my-appsec-config
 default_remediation: ban
-inband_rules:
-  - crowdsecurity/base-config
-  - crowdsecurity/vpatch-*
-pre_eval:
-  - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
-    apply:
-      - RemoveInBandRuleByName("my_rule")
+inband:
+  rules:
+    - crowdsecurity/base-config
+    - crowdsecurity/vpatch-*
+  pre_eval:
+    - filter: req.RemoteAddr == "192.168.1.1"
+      apply:
+        - RemoveInBandRuleByName("my_rule")
 ```
 
 ### `post_eval`
@@ -184,13 +186,13 @@ This will discard the body of the request, remove the query parameters `var1` an
 ```yaml
 name: crowdsecurity/my-appsec-config
 default_remediation: ban
-inband_rules:
-  - crowdsecurity/base-config
-  - crowdsecurity/vpatch-*
-post_eval:
-  - filter: IsInBand == true
-    apply:
-      - DumpRequest().NoFilters().WithBody().ToJSON()
+inband:
+  rules:
+    - crowdsecurity/base-config
+    - crowdsecurity/vpatch-*
+  post_eval:
+    - apply:
+        - DumpRequest().NoFilters().WithBody().ToJSON()
 ```
 
 ### `on_match`
@@ -223,22 +225,23 @@ This hook is intended to be used to change the behavior of the engine after a ma
 ```yaml
 name: crowdsecurity/my-appsec-config
 default_remediation: ban
-inband_rules:
- - crowdsecurity/base-config
- - crowdsecurity/vpatch-*
-on_match:
-  - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
-   apply:
-    - CancelAlert()
-    - CancelEvent()
-  - filter: |
-      any( evt.Appsec.MatchedRules, #.name == "crowdsecurity/vpatch-env-access") and
-      req.RemoteAddr = "192.168.1.1"
-    apply:
-    - SetRemediation("allow")
-  - filter: evt.Appsec.MatchedRules.GetURI() contains "/foobar/"
-    apply:
-     - SetRemediation("allow")
+inband:
+  rules:
+    - crowdsecurity/base-config
+    - crowdsecurity/vpatch-*
+  on_match:
+    - filter: req.RemoteAddr == "192.168.1.1"
+      apply:
+        - CancelAlert()
+        - CancelEvent()
+    - filter: |
+        any(evt.Appsec.MatchedRules, #.name == "crowdsecurity/vpatch-env-access") and
+        req.RemoteAddr == "192.168.1.1"
+      apply:
+        - SetRemediation("allow")
+    - filter: evt.Appsec.MatchedRules.GetURI() contains "/foobar/"
+      apply:
+        - SetRemediation("allow")
 ```
 
 ### `on_challenge`
@@ -252,6 +255,19 @@ See [Bot detection → Hooks reference → `on_challenge`](bot_detection/hooks.m
 Called when a client POSTs a challenge response to `/crowdsec-internal/challenge/submit`, after crypto validation and fingerprint decryption but before the success cookie is issued — the right place to refuse cookies to clients identified as automation. **In-band only.**
 
 See [Bot detection → Hooks reference → `on_challenge_submit`](bot_detection/hooks.md#on_challenge_submit) for the available helpers and examples.
+
+### Legacy flat hooks
+
+Hooks can also be declared at the top level, outside any phase block. Those run in **both** passes, so they need `IsInBand` / `IsOutBand` to tell the passes apart:
+
+```yaml
+on_match:
+  - filter: IsInBand && req.RemoteAddr == "192.168.1.1"
+    apply:
+      - CancelAlert()
+```
+
+Both forms are supported and can be mixed: for a given phase, top-level hooks run first, then those of the matching block. Prefer the phase-scoped form.
 
 ## Detailed Helpers Information
 
