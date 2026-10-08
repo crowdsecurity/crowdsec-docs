@@ -262,6 +262,7 @@ api:
     disable_usage_metrics_export: (true|false)
     decisions_stream:
       page_size: <int>
+      max_concurrent_requests: <int>
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
     tls:
       cert_file: "<path_to_certificat_file>"
@@ -854,6 +855,7 @@ api:
     disable_remote_lapi_registration: (true|false)
     decisions_stream:
       page_size: <int>
+      max_concurrent_requests: <int>
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
     tls:
       cert_file: "<path_to_certificat_file>"
@@ -976,6 +978,7 @@ server:
   disable_usage_metrics_export: (true|false)
   decisions_stream:
     page_size: <int>
+    max_concurrent_requests: <int>
   capi_whitelists_path: "<path_to_capi_whitelists_file>"
   tls:
     cert_file: <path_to_certificat_file>
@@ -1057,6 +1060,7 @@ Tuning for `/v1/decisions/stream`, the endpoint remediation components poll in s
 ```yaml
 decisions_stream:
   page_size: <int>
+  max_concurrent_requests: <int>
 ```
 
 ###### `page_size`
@@ -1065,6 +1069,17 @@ decisions_stream:
 The number of decisions the Local API reads from the database at a time when answering `/v1/decisions/stream`. Defaults to `30000`, which is also used when it is unset or `0`. A negative value logs a warning at startup and uses the default.
 
 Each in-flight stream request holds one page in memory, so peak memory grows with the page size times the number of remediation components pulling at the same time. With a large fleet and a large blocklist, lowering it reduces that peak. The cost is more database queries per pull, one per page. Remediation components see no difference: a pull is still a single response with every decision in it.
+
+###### `max_concurrent_requests`
+> int
+
+The maximum number of `/v1/decisions/stream` requests the Local API serves at once. Requests beyond it wait for a free slot, and a slot is held until the response is fully written. Unset or `0` means no limit, which is the default. A negative value logs a warning at startup and also means no limit.
+
+Together with `page_size`, this bounds the memory the stream endpoint uses: roughly `max_concurrent_requests` times the memory of one page. It doesn't cover `/v1/decisions`, which remediation components use in live mode.
+
+Queued requests have no time limit of their own, so size it to keep queue waits well under the shortest stream timeout among your remediation components. The Lua-based ones (nginx, openresty) give up after `STREAM_REQUEST_TIMEOUT`, 15 seconds by default. A component that gives up tries again on its next poll and misses nothing, but its decisions stay stale while the queue is that long.
+
+A remediation component that keeps its connection open but stops reading holds its slot until that connection closes.
 
 ##### `capi_whitelists_path`
 > string
