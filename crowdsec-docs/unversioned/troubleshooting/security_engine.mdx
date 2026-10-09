@@ -101,75 +101,33 @@ When adding a collection to your setup, the [hub](https://hub.crowdsec.net) will
 
 ### My service is behind a CDN and I get no alerts
 
-If a CDN or reverse proxy terminates the connection in front of your service, your web server only ever sees the CDN's address. Every access log line then carries that address instead of the visitor's, and because the engine ships whitelists for the well-known CDN and good-actor ranges, the resulting alerts are silently discarded.
+If a CDN or reverse proxy terminates the connection in front of your service, your web server logs the CDN's address instead of the visitor's. Every event is then attributed to that address, and since the [`whitelist-good-actors`](https://app.crowdsec.net/hub?filters=search%3Dwhitelist-good-actors.yaml) postoverflows shipped with the base HTTP collection cover the major CDN ranges, the alerts are dropped before becoming decisions. You see the requests in your access logs, `cscli metrics` shows them parsed, but nothing reaches `cscli alerts list`.
 
-The symptom is characteristic: you see the malicious requests in your access logs and `cscli metrics` shows the lines being read and parsed, but nothing ever appears in `cscli alerts list` or in the Console.
+These whitelists are deliberate: without them one misbehaving visitor would get the whole CDN banned, along with all your legitimate traffic. The fix is to log the real client IP, not to remove the whitelists.
 
-The chain is:
+**To confirm this is your issue:**
 
-1. A CDN in proxied mode — Cloudflare's orange cloud, for example — sits in front of your service.
-2. Your web server logs the CDN's IP as the client address, so every event is attributed to that IP instead of the real visitor.
-3. The [`whitelist-good-actors`](https://app.crowdsec.net/hub?filters=search%3Dwhitelist-good-actors.yaml) postoverflow whitelists, installed with the base HTTP collection, cover the major CDN ranges. The alert is created and then dropped before it becomes a decision.
+- Check the client address field of your access log — if the same few addresses appear on every line, the visitor IP is not reaching you.
+- Run the [HTTP detection check](/u/getting_started/health_check#-detection-checks) from a device with a public IP and see whether the alert shows your IP or the CDN's.
+- Postoverflows are not evaluated by `cscli explain`, so grep the logs for the whitelist that fired (`sudo grep whitelisted /var/log/crowdsec.log`); it names both the IP and the whitelist responsible.
 
-These whitelists are deliberate and correct: without them, a single misbehaving visitor behind a CDN would get the whole CDN banned, taking down your legitimate traffic with it. The fix is to log the real client IP, not to remove the whitelists.
+**To fix it**, have your CDN forward the visitor address in a header, then configure your web server to substitute it into the client address field **before logging** — with nginx's [`ngx_http_realip_module`](https://nginx.org/en/docs/http/ngx_http_realip_module.html), Apache's [`mod_remoteip`](https://httpd.apache.org/docs/current/mod/mod_remoteip.html), or the equivalent trusted-proxy setting of your proxy. CrowdSec parsers read that field (`remote_addr`, `%h`), never the header itself.
 
-#### Confirm the whitelist is dropping your alerts
-
-Run the [HTTP detection check](/u/getting_started/health_check#-detection-checks) from a device with a public IP, then look for its source IP in the logs below: if it shows your CDN's address instead of the one you tested from, the real client IP is not reaching CrowdSec.
-
-Postoverflow whitelists are not evaluated by `cscli explain`, so check the logs instead:
-
-<FormattedTabs
-    bash='sudo grep whitelisted /var/log/crowdsec.log'
-    powershell='Select-String "whitelisted" C:\ProgramData\CrowdSec\log\crowdsec.log'
-    k8s='kubectl logs -n crowdsec crowdsec-agent-* | grep whitelisted'
-/>
-
-A match confirms the diagnosis, and names both the IP and the whitelist responsible:
-
-```bash title="Example logs"
-time="07-07-2020 17:11:09" level=info msg="Ban for 104.28.0.1 whitelisted, reason [CDN ip range]" id=cold-sunset name=crowdsecurity/whitelist-good-actors stage=s01
-```
-
-If the IP in that line is your CDN's rather than a visitor's, the real client IP is not reaching CrowdSec. You can also check the client address field of your access log directly: if the same handful of addresses appears on every line, that confirms it.
-
-#### Forward and log the real client IP
-
-CrowdSec parsers read the client address field of the standard log formats (`remote_addr` for nginx, `%h` or `%a` for Apache). They do not read the `X-Forwarded-For` header themselves, so the real IP must already be substituted into that field when the line is written.
-
-1. Make sure the CDN or proxy sends the visitor address in a header. Cloudflare sets `CF-Connecting-IP` and also populates `X-Forwarded-For`; most other proxies use `X-Forwarded-For` or `X-Real-IP`.
-2. Configure the web server to trust that proxy and replace the connecting address with the forwarded one **before logging**:
-   - **nginx**: the `set_real_ip_from` and `real_ip_header` directives of the [`ngx_http_realip_module`](https://nginx.org/en/docs/http/ngx_http_realip_module.html).
-   - **Apache**: `mod_remoteip` with `RemoteIPHeader` and `RemoteIPTrustedProxy`.
-   - **Traefik, HAProxy, Caddy**: their respective trusted-proxy settings, so the access log records the forwarded address.
-3. If the **Local API** itself is behind a proxy, also set `use_forwarded_for_headers` and `trusted_proxies` in `config.yaml`. See [Local API behind a reverse proxy](/docs/next/local_api/configuration#server).
-
-Example for nginx behind Cloudflare:
-
-```nginx title="/etc/nginx/conf.d/realip.conf"
-# Only trust your CDN or proxy addresses.
-# Cloudflare publishes its ranges at https://www.cloudflare.com/ips/
-set_real_ip_from 173.245.48.0/20;
-set_real_ip_from 103.21.244.0/22;
-# ... add every Cloudflare range (IPv4 and IPv6)
-
-real_ip_header CF-Connecting-IP;
-real_ip_recursive on;
-```
-
-For a reverse proxy on the same host or in a container network:
-
-```nginx title="/etc/nginx/conf.d/realip.conf"
-set_real_ip_from 10.0.0.0/8;
-real_ip_header X-Forwarded-For;
-real_ip_recursive on;
-```
+| Provider | Header | Documentation |
+| --- | --- | --- |
+| Cloudflare | `CF-Connecting-IP` | [Restoring original visitor IPs](https://developers.cloudflare.com/support/troubleshooting/restoring-visitor-ips/restoring-original-visitor-ips/) |
+| Fastly | `Fastly-Client-IP` | [Fastly-Client-IP](https://www.fastly.com/documentation/reference/http/http-headers/Fastly-Client-IP/) |
+| Akamai | `True-Client-IP` | [Origin Server behavior](https://techdocs.akamai.com/property-mgr/docs/origin-server) |
+| Amazon CloudFront | `CloudFront-Viewer-Address` | [Add CloudFront request headers](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/adding-cloudfront-headers.html) |
+| Other CDNs and reverse proxies | usually `X-Forwarded-For` or `X-Real-IP` | refer to your provider's documentation |
 
 :::warning
-Only list proxies you actually control in `set_real_ip_from`. Trusting arbitrary sources lets a client spoof its own address through the header, which would let an attacker evade detection or get an innocent IP banned.
+Only trust proxies you actually control, and keep the trusted ranges up to date from your provider's published list ([Cloudflare](https://www.cloudflare.com/ips/), [Fastly](https://api.fastly.com/public-ip-list), [AWS CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/LocationsOfEdgeServers.html)). Trusting arbitrary sources lets a client spoof its own address through the header, which would let an attacker evade detection or get an innocent IP banned.
 :::
 
-Reload the web server, then confirm that visitor addresses appear in your access log and that alerts start showing up in `cscli alerts list` with real source IPs.
+:::info
+If the **Local API** itself is behind a proxy, also set `use_forwarded_for_headers` and `trusted_proxies` in `config.yaml`. See [Local API behind a reverse proxy](/docs/next/local_api/configuration#server).
+:::
 
 ## Decisions
 
