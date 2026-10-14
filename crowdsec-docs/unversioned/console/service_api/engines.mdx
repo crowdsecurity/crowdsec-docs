@@ -1,0 +1,117 @@
+---
+id: engines
+title: Engines
+---
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+:::info
+ - We're assuming your API key is set in the environment variable `$KEY` with the necessary permissions.
+ - The `engines` endpoints require a key with **engines** scope, otherwise the api returns `403 Forbidden`.
+:::
+
+An `engine` exposes the informations related to Security Engines enrolled to your Organization.
+
+### Get Engines
+
+:::info
+ - Refer to the [Security Engines](#security_engines) section for context.
+:::
+
+<Tabs
+  defaultValue="curl"
+  groupId="service-api-selection"
+  values={[
+    { label: 'cURL', value: 'curl' ,},
+    { label: 'Python', value: 'python', },
+  ]
+}>
+<TabItem value="curl">
+
+```bash
+curl -i -H "x-api-key: ${KEY}" -X GET -H "Content-Type: application/json" \
+https://admin.api.crowdsec.net/v1/engines 
+```
+
+</TabItem>
+<TabItem value="python">
+
+```python
+import os
+
+KEY = os.getenv('KEY')
+
+from crowdsec_service_api import (
+    Engines,
+    Server,
+    ApiKeyAuth,
+)
+from httpx import HTTPStatusError
+
+auth = ApiKeyAuth(api_key=KEY)
+
+client = Engines(base_url=Server.production_server.value, auth=auth)
+try:
+    response = client.get_engines(
+        tag=None,
+        page=1,
+        size=50,
+    )
+    print(response.model_dump_json())
+except HTTPStatusError as e:
+    print(f"An error occurred: {e.response.status_code} - {e.response.text}")
+```
+
+</TabItem>
+</Tabs>
+
+ - [Redoc method link](https://admin.api.dev.crowdsec.net/v1/docs#tag/Engines/operation/getEngines)
+
+<details>
+  <summary>answer on success</summary>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organization_id": "string",
+      "created_at": "2019-08-24T14:15:22Z",
+      "entity_type": "engine",
+      "blocklists": [],
+      "allowlists": [],
+      "version": "string",
+      "enrolled_at": "2019-08-24T14:15:22Z",
+      "os": {
+        "name": "string",
+        "version": "string",
+        "family": "string"
+      },
+      "meta": {},
+      "last_pull": "2019-08-24T14:15:22Z",
+      "last_push": "2019-08-24T14:15:22Z",
+      "last_login": "2019-08-24T14:15:22Z",
+      "tags": [],
+      "scenarios": [
+        "string"
+      ]
+    }
+  ],
+  "total": 0,
+  "page": 1,
+  "size": 1,
+  "pages": 0,
+  "links": {
+    "first": "/api/v1/users?limit=1&offset1",
+    "last": "/api/v1/users?limit=1&offset1",
+    "self": "/api/v1/users?limit=1&offset1",
+    "next": "/api/v1/users?limit=1&offset1",
+    "prev": "/api/v1/users?limit=1&offset1"
+  }
+}
+```
+
+</details>

@@ -561,6 +561,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 			items: [
 				"console/service_api/authentication",
+				"console/service_api/engines",
 				"console/service_api/blocklists",
 				"console/service_api/allowlists",
 				"console/service_api/integrations",
