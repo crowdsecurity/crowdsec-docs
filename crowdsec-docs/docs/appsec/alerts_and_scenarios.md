@@ -29,6 +29,10 @@ The generated event looks like this:
 The [`crowdsecurity/appsec-logs` parser](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/appsec-logs) is already part of the generic AppSec/WAF collections and doesn't have to be manually installed.
 :::
 
+:::info
+Requests blocked by the [`RateLimit()` helper](rate_limiting.md) generate a different kind of event, parsed by the [`crowdsecurity/appsec-rate-limit-logs` parser](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/appsec-rate-limit-logs), with `evt.Meta.log_type` set to `appsec-rate-limit`. See [Rate Limiting](rate_limiting.md#events-and-alerts) for the fields available.
+:::
+
 
 ## Creating Scenario Based on AppSec/WAF Events
 
