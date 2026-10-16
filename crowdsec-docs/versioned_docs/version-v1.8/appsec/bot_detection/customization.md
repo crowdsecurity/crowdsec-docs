@@ -2,7 +2,7 @@
 id: customization
 title: "Bot Detection Customization & Recipes"
 sidebar_label: "Customization & recipes"
-description: "Ready-to-use appsec-config customization for CrowdSec bot detection: challenge specific routes, tune scoring, and allow verified crawlers."
+description: "Ready-to-use appsec-config overlays for CrowdSec bot detection: challenge specific routes, tune scoring, and allow verified crawlers without editing hub files."
 sidebar_position: 4
 ---
 

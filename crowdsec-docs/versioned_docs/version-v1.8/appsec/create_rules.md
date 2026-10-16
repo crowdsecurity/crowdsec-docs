@@ -2,7 +2,7 @@
 id: create_rules
 title: "Writing & Testing WAF Rules"
 sidebar_label: "Creation & Testing"
-description: "Write a CrowdSec WAF rule and its functional tests from scratch, with actual example you can follow through to a Hub submission."
+description: "Write a CrowdSec WAF rule and its functional tests from scratch, using a worked shell injection example you can follow through to a Hub submission."
 sidebar_position: 3
 ---
 
