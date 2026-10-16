@@ -31,7 +31,7 @@ By default, clients that submit a valid challenge response are accepted and gran
 | `DumpFingerprint`       | `func(label str) str`                      | Append the just-decrypted fingerprint (plus request context) as one JSONL line to a dump file, for offline analysis. Returns the file path. See [DumpFingerprint](#dumpfingerprint).                                                    |
 | `CancelAlert`           | `func()`                                   | Suppress the alert this rejection would otherwise produce. The cookie is still refused, only the alert is dropped.                                                                                                                      |
 | `SendAlert`             | `func()`                                   | Re-enable the alert after a previous `CancelAlert()`.                                                                                                                                                                                  |
-| Score helpers           |                                            | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor`. See [Request scoring](#request-scoring).                                                                                             |
+| Score helpers           |                                            | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor`, `RequestScoreCategories`, `SetRequestScore`. See [Request scoring](#request-scoring).                                                                                             |
 
 `RejectSubmission()` and `GrantChallengeCookie()` are terminal: both halt the remaining `on_challenge_submit` rules, so a later catch-all cannot undo the decision.
 
@@ -57,13 +57,37 @@ The score is per request, starts at zero, and is available in `pre_eval`, `post_
 
 | Helper Name            | Type                        | Description                                                                                                              |
 | ---------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `AddRequestScore`      | `func(points int, reason str)` | Add `points` to the request score under `reason`. Adding the same reason twice accumulates. Points may be negative.     |
+| `AddRequestScore`      | `func(points int, reason str, category str?)` | Add `points` to the request score under `reason`, and to `category` if given (see [Categories](#categories)). Adding the same reason twice accumulates. Points may be negative. |
 | `RequestScore`         | `func() int`                | The current total.                                                                                                        |
-| `RequestScoreReasons`  | `func() []str`              | The reasons that contributed, in the order they were added.                                                               |
+| `RequestScoreReasons`  | `func() []str`              | The reasons that contributed, in the order they were added. A reason added with a category is listed as `category:reason`. |
 | `RequestScoreDetail`   | `func() str`                | The breakdown as a stable string, `"cdp=100,utc_timezone=15"`. This is what lands in the alert as `request_score_reasons`. |
-| `RequestScoreFor`      | `func(reason str) int`      | The points recorded under one reason, `0` if it never fired.                                                              |
+| `RequestScoreFor`      | `func(category str) int`    | The points recorded under one category, `0` if it never fired. A reason added without a category is its own category, so this also works with a reason name. |
+| `RequestScoreCategories` | `func() []str`            | The categories that contributed, in the order they were first added.                                                     |
+| `SetRequestScore`      | `func(points int, category str)` | Replace the points of `category` with `points`, whatever was added to it so far. See [Categories](#categories).      |
 
 The score and its breakdown are attached to any alert the request produces, so a rejection stays explainable after the fact. See [Reading a rejection](whats_included.md#reading-a-rejection).
+
+### Categories
+
+By default, each reason counts on its own. Passing a category to `AddRequestScore` groups several reasons, so you can cap or cancel what a family of signals contributes without knowing each reason:
+
+```yaml
+on_challenge_submit:
+  - filter: EvaluateMismatches().Has("utc_timezone")
+    apply:
+      - AddRequestScore(15, "utc_timezone", "locale")
+  - filter: EvaluateMismatches().Has("accept_language")
+    apply:
+      - AddRequestScore(15, "accept_language", "locale")
+  # locale signals are unreliable for this audience: cap them
+  - filter: RequestScoreFor("locale") > 20
+    apply:
+      - SetRequestScore(20, "locale")
+```
+
+`RequestScore()` is the sum of all categories, so after `SetRequestScore` it reflects the new value. `SetRequestScore` doesn't change the reasons: `RequestScoreDetail()` still shows what fired, here `"locale:utc_timezone=15,locale:accept_language=15"`. Points added to the category after a `SetRequestScore` accumulate on top of the value it set.
+
+When categories are used, the per-category scores are also published in `hook_vars.request_score_categories`, for example `"locale=20(set),cdp=100"`, where `(set)` marks a category whose score was set by `SetRequestScore`.
 
 
 ## `on_challenge`
@@ -79,6 +103,7 @@ This hook fires for in-band requests that carry a valid `__crowdsec_challenge` c
 | `SetRemediation`                       | `func(action str)`                    | Set the remediation returned to the bouncer for this request. The only special value is `allow` (don't block); any other value is passed through as-is. See [`SetRemediation*`](../hooks.md#setremediation).                                               |
 | `SetReturnCode`                        | `func(code int)`                      | Set the HTTP status code returned to the bouncer for this request.                                                                                                                                                                                        |
 | `DropRequest`                          | `func(reason str)`                    | Block this request immediately (using the config's default remediation) based on what the fingerprint revealed. `reason` is recorded in logs.                                                                                                              |
+| `SkipProcessing`                       | `func(reason str)`                    | Let this request through without evaluating the in-band WAF rules, and without generating an event or an alert. See [`DropRequest` and `SkipProcessing`](../hooks.md#droprequest-and-skipprocessing).                                                      |
 | `req`                                  | `http.Request`                        | Original HTTP request received by the remediation component. See [`req` object](../hooks.md#req-object).                                                                                                                                                   |
 | `IsInBand`                             | `bool`                                | `true` if the request is in the in-band processing phase (always `true` here — `on_challenge` is in-band only).                                                                                                                                            |
 | `EvaluateMismatches`                   | `func() MismatchReport`               | Run the configured mismatch checks against the fingerprint and return a structured report. Result is cached per request. See [The `MismatchReport` object](#the-mismatchreport-object).                                                                    |
