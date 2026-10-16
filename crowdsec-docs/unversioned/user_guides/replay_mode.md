@@ -37,11 +37,7 @@ INFO[13-11-2020 13:05:24] (14baeedafc1e44c08b806fc0c1cd92c4/crowdsec) crowdsecur
 ...
 ```
 
-And since these alerts are also pushed to the database, it means you can view them in Metabase or with cscli!
-
-When using metabase, simply use the time selector to view the appropriate period in the main dashboard:
-
-![metabase-timeselector](/img/dashboard-timeselect.png)
+And since these alerts are also pushed to the database, it means you can view them with cscli!
 
 
 
@@ -149,23 +145,6 @@ INFO[15-11-2020 10:09:20] Ip y.y.y.y performed 'crowdsecurity/http-probing' (11 
 ...
 ```
 
-And we can even fire a dedicated dashboard to view the data:
-
-```bash
-$ cscli -c forensic.yaml dashboard setup
-INFO[0000] /var/lib/crowdsec/data/metabase.db exists, skip. 
-INFO[0000] Pulling docker image metabase/metabase:v0.37.0.2 
-...
-INFO[0001] creating container '/crowdsec-metabase'      
-INFO[0002] waiting for metabase to be up (can take up to a minute) 
-.........
-INFO[0040] Metabase is ready                            
-
-	URL       : 'http://127.0.0.1:3000'
-	username  : 'crowdsec@crowdsec.net'
-	password  : ...
-```
-
 ## Injecting alerts into a new database - dev env
 
 From a fresh release:
@@ -205,14 +184,3 @@ $ ./cscli -c dev.yaml alerts list
 |    |                    |                                       |         |              |           | +0200                          |
 
 ```
-
-Or even start a dashboard to view data:
-
-```bash
-$ sudo ./cscli dashboard setup
-...
-INFO[0002] waiting for metabase to be up (can take up to a minute) 
-........
-
-```
-

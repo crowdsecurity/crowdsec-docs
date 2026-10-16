@@ -58,4 +58,4 @@ Both components need proper configuration to run (we decide to keep this behavio
 
 ## Notes on proxy use
 
- - It's possible to use crowdsec through proxy, it will honor the `HTTP_PROXY` environment variable. More on the configuration how to use crowdsec through a proxy [here](/u/troubleshooting/security_engine#how-to-set-up-a-proxy)
+ - It's possible to use crowdsec through proxy, it honors the `HTTPS_PROXY`, `HTTP_PROXY` and `NO_PROXY` environment variables. More on the configuration how to use crowdsec through a proxy [here](/u/troubleshooting/security_engine#how-to-set-up-a-proxy)

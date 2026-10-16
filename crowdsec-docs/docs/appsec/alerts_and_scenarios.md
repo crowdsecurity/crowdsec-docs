@@ -69,22 +69,23 @@ This is our AppSec/WAF rule:
 name: crowdsecurity/foobar-access
 description: "Detect access to foobar files with the something header set"
 rules:
-  - zones:
-    - URI
-    transform:
-    - lowercase
-    match:
-      type: startsWith
-      value: /foobar/
-  - zones:
-    - HEADERS
-    variables:
-    - something
-    transform:
-    - lowercase
-    match:
-      type: contains
-      value: test
+  - and:
+    - zones:
+      - URI
+      transform:
+      - lowercase
+      match:
+        type: startsWith
+        value: /foobar/
+    - zones:
+      - HEADERS
+      variables:
+      - something
+      transform:
+      - lowercase
+      match:
+        type: contains
+        value: test
 ```
 
 Let's ensure it's loaded as an _Out-Of-Band_ rule by creating a new AppSec config:

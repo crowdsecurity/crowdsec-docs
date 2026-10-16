@@ -17,7 +17,7 @@ This guide covers the core AppSec Component setup that applies to all web server
 
 ## Prerequisites
 
-- **CrowdSec Security Engine** (>= 1.5.6) installed and running
+- **CrowdSec Security Engine** (>= 1.6.0) installed and running
 - A compatible remediation component (bouncer) for your web server or reverse proxy
 
 ## AppSec Component Setup
@@ -53,7 +53,7 @@ Configure CrowdSec to expose the AppSec Component by creating an acquisition fil
 
 2. Create the AppSec acquisition configuration:
    ```bash
-   sudo cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
+   sudo tee /etc/crowdsec/acquis.d/appsec.yaml > /dev/null << EOF
    appsec_config: crowdsecurity/appsec-default
    labels:
      type: appsec

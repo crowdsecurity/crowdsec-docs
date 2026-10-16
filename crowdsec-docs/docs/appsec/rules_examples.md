@@ -584,12 +584,12 @@ Modify the default remediation for specific rules.
 ```yaml
 pre_eval:
   - apply:
-      - SetRemediationByName('some-rule', 'log')
+      - SetRemediationByName('some-rule', 'allow')
 ```
 
 #### Use Case
 
-Change a blocking rule to log-only mode for testing.
+Let requests matching a blocking rule through while still generating alerts, for testing.
 
 ### 4. Disable Rules by ID
 

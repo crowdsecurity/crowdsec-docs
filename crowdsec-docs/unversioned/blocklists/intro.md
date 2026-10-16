@@ -20,7 +20,7 @@ Whilst we check for [Safe Classifications](/cti_api/taxonomy/false_positives.mdx
 
 ## How do CrowdSec Blocklists work?
 
-CrowdSec Blocklists are updated in real time and are available in various formats. We provide Blocklists in different categories such as Industry, Technology (WordPress, VPN / Proxy) and Threat Intelligence (Botnet, Malware, etc.).
+CrowdSec Blocklists are updated several times a day and are available in various formats. We provide Blocklists in different categories such as Industry, Technology (WordPress, VPN / Proxy) and Threat Intelligence (Botnet, Malware, etc.).
 
 ### CrowdSec Blocklist Tiers
 

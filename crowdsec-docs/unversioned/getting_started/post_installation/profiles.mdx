@@ -181,5 +181,5 @@ After modifying profiles, restart the CrowdSec service to apply changes:
 <FormattedTabs
   bash="sudo crowdsec -t && sudo systemctl restart crowdsec"
   powershell="Restart-Service crowdsec"
-  k8s="helm upgrade --install crowdsec crowdsecurity/crowdsec --namespace crowdsec -f values.yaml"
+  k8s="helm upgrade --reset-then-reuse-values --install crowdsec crowdsec/crowdsec --namespace crowdsec -f values.yaml"
 />

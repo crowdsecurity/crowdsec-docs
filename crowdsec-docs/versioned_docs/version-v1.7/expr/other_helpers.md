@@ -130,7 +130,7 @@ This can return expired decisions if they have not been flushed yet.
 
 > `GetDecisionsSinceCount("192.168.1.1", "7h")`
 
-> `GetDecisionsSinceCount(Alert.GetValue(), "30min")`
+> `GetDecisionsSinceCount(Alert.GetValue(), "30m")`
 
 ### `GetActiveDecisionsCount(value string) int`
 

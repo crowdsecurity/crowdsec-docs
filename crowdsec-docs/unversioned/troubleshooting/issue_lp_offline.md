@@ -65,7 +65,7 @@ docker restart crowdsec
 ```
 
 ```bash
-kubectl rollout restart deployment/crowdsec -n crowdsec
+kubectl rollout restart daemonset/crowdsec-agent -n crowdsec
 ```
 
 </details>
@@ -190,7 +190,7 @@ sudo firewall-cmd --reload
 ```
 
 If using TLS:
-- Update the agent trust store (`ca_cert` in `/etc/crowdsec/config.yaml`) if certificates were renewed
+- Update the CA the agent trusts (`ca_cert_path` in `/etc/crowdsec/local_api_credentials.yaml`) if certificates were renewed
 - Temporarily enable `insecure_skip_verify: true` for testing (then fix certificates properly)
 - Follow [TLS authentication](/docs/local_api/tls_auth) for proper setup
 

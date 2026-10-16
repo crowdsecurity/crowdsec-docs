@@ -12,7 +12,7 @@ The [Central API](https://crowdsecurity.github.io/api_doc/capi/) is the service 
 
 
 :::info
-This information is *only* going to be pushed when a scenario is coming from the hub and is unmodified. Custom scenarios, tainted scenarios and manual decisions are *not* pushed unless enrolled into the console.
+Alerts from custom and tainted scenarios are pushed by default (opt out with `cscli console disable custom` or `cscli console disable tainted`). Manual decisions are only pushed when the `manual` console option is enabled, which `cscli console enroll` does by default.
 :::
 
 When the Security Engine generates an alert, [unless you opt-out of it](/u/troubleshooting/security_engine#how-to-disable-the-central-api), it will push "signal meta-data". The meta-data are :
