@@ -498,7 +498,7 @@ More details about metrics in [Metrics specs](/contributing/specs/bouncer_metric
 		"name": "ubuntu",
 		"version": "22.04"
 	},
-	"feature_flags": [], //Always empty / invalid / ignored for bouncers
+	"feature_flags": [],
 	"utc_startup_timestamp": 123123,
 	"metrics": [{
 		"meta": {
@@ -511,7 +511,8 @@ More details about metrics in [Metrics specs](/contributing/specs/bouncer_metric
 				"value": 100,
 				"labels": {
 					"origin": "fire",
-					"remediation": "ban"
+					"remediation": "ban",
+					"ip_type": "ipv4"
 				},
 				"unit": "request"
 			},
@@ -520,7 +521,8 @@ More details about metrics in [Metrics specs](/contributing/specs/bouncer_metric
 				"value": 40,
 				"labels": {
 					"origin": "crowdsec",
-					"remediation": "ban"
+					"remediation": "ban",
+					"ip_type": "ipv4"
 				},
 				"unit": "request"
 			},
@@ -529,7 +531,8 @@ More details about metrics in [Metrics specs](/contributing/specs/bouncer_metric
 				"value": 60,
 				"labels": {
 					"origin": "crowdsec",
-					"remediation": "captcha"
+					"remediation": "captcha",
+					"ip_type": "ipv4"
 				},
 				"unit": "request"
 			},
@@ -538,13 +541,17 @@ More details about metrics in [Metrics specs](/contributing/specs/bouncer_metric
 				"value": 100,
 				"labels": {
 					"origin": "lists:tor",
-					"remediation": "ban"
+					"remediation": "ban",
+					"ip_type": "ipv4"
 				},
 				"unit": "request"
 			},
 			{
 				"name": "processed",
 				"value": 500,
+				"labels": {
+					"ip_type": "ipv4"
+				},
 				"unit": "request"
 			}
 		]
