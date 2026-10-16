@@ -136,7 +136,7 @@ curl -i https://your-protected-site.example/some/page
 # and a Set-Cookie for __crowdsec_challenge once the challenge is solved.
 ```
 
-Tail the CrowdSec log and send a garbage payload to `/crowdsec-internal/challenge/submit` (e.g. with `curl`) to see a failed submission (`{"status":"failed"}`); to see the `on_challenge_submit rejected` line, use the CDP test below. After enough failed submissions, the behavioral scenario should fire and appear in `cscli alerts list`.
+Tail the CrowdSec log and send a garbage payload to `/crowdsec-internal/challenge/submit` (e.g. with `curl`): the response body is `{"status":"failed"}` and the log shows a `challenge validation failed: …` line at error level. To see the `on_challenge_submit rejected` line, use the CDP test below. Each failed submission creates an alert on its own (see [What the alert looks like](#what-the-alert-looks-like)). The `crowdsecurity/appsec-bot-challenge-too-many-submissions` behavioral scenario fires on more than 5 submissions within seconds, failed or not, and appears in `cscli alerts list`.
 
 ### Get rejected as a bot (CDP)
 

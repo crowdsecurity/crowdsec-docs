@@ -12,9 +12,9 @@ Before we begin, make sure you read [intro](/local_api/notification_plugins/intr
 Let's start by creating a new go project in a fresh directory:
 
 ```bash
-mkdir notification-email
-cd notification-email
-go mod init notification-email
+mkdir notification-myemail
+cd notification-myemail
+go mod init notification-myemail
 touch main.go
 ```
 
@@ -176,7 +176,7 @@ func main() {
 	plugin.Serve(&plugin.ServeConfig{
 			HandshakeConfig: handshake,
 			Plugins: map[string]plugin.Plugin{
-					"email": &protobufs.NotifierPlugin{
+					"myemail": &protobufs.NotifierPlugin{
 							Impl: &EmailPlugin{ConfigByName: make(map[string]PluginConfig)},
 					},
 			},
@@ -196,16 +196,16 @@ Now let's build the plugin and copy it to the directory set in `config_paths.plu
 
 ```bash
 go build
-sudo cp notification-email /usr/lib/crowdsec/plugins/
+sudo cp notification-myemail /usr/lib/crowdsec/plugins/
 ```
 
 Next we need to write a configuration file for the plugin. Here's an example:
 
 ```yaml
 # Don't change this
-type: email
+type: myemail
 
-name: email_default # this must match with the registered plugin in the profile
+name: myemail_default # this must match with the registered plugin in the profile
 log_level: info # Options include: trace, debug, info, warn, error, off
 
 format: |  # This template receives list of models.Alert objects
@@ -228,13 +228,13 @@ receiver_email: examplereceiver@gmail.com
 
 ```
 
-Replace the values as necessary and paste it in `/etc/crowdsec/notifications/email.yaml` .
+Replace the values as necessary and paste it in `/etc/crowdsec/notifications/myemail.yaml` .
 
 Now the final step, register the plugin in your CrowdSec profile at `/etc/crowdsec/profiles.yaml` by adding the following to the desired profile.
 
 ```yaml
 notifications:
- - email_default
+ - myemail_default
 ```
 
 Example profile:
@@ -248,7 +248,7 @@ decisions:
  - type: ban
    duration: 4h
 notifications:
- - email_default
+ - myemail_default
 on_success: break
 
 ```

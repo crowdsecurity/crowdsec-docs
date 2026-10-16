@@ -132,7 +132,10 @@ docker exec crowdsec cscli parsers list | grep whitelists
 ```
 
 ```bash
-for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli parsers list | grep whitelists; done
+for pod in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec,type=agent -o name); do
+  echo "== $pod"
+  kubectl exec -n crowdsec "$pod" -c crowdsec-agent -- cscli parsers list | grep whitelists
+done
 ```
 
 </details>

@@ -324,7 +324,11 @@ inband:
         - SendChallenge()
 ```
 
-`SetChallengeDifficulty("high")` raises the target above the difficulty the client's cookie proved, which is what makes `SendChallenge()` re-issue the challenge, with a costly proof-of-work. Both helpers are available in `on_challenge` (but not in `on_challenge_submit`).
+The cookie records the difficulty the client solved: `medium` by default, or whatever `SetChallengeDifficulty()` set when the challenge was issued. `SendChallenge()` does not re-challenge a client whose cookie already covers the target: if the cookie's difficulty is greater than or equal to the target, it does nothing. Called alone on a returning client, it is a no-op.
+
+In `on_challenge`, `SetChallengeDifficulty("high")` raises the target for this request only (it doesn't change the difficulty for other clients), and must run before `SendChallenge()`. A client whose cookie proved `medium` is then re-challenged with a costlier proof-of-work. Both helpers are available in `on_challenge` (but not in `on_challenge_submit`).
+
+This has a limit: a client that already solved at `high` (for example on a route where you raised the difficulty with the [per-route recipe](#tune-the-challenge-difficulty-per-route)) is not re-challenged. `impossible` won't help either, since it's effectively a block. For that case, use `DropRequest()`, as in the next recipe.
 
 ### Block a returning client outright on a strong signal
 

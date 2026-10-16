@@ -3,12 +3,12 @@ title: Security Engine Offline
 id: issue_se_offline
 ---
 
-The **Security Engine Offline** issue indicates that an enrolled Security Engine has not reported to **CrowdSec Central API** for more than **24 hours**.  
+The **Security Engine Offline** issue indicates that an enrolled Security Engine has not reported to **CrowdSec Central API** for more than **48 hours**.  
 This usually means the core `crowdsec` service has stopped working or communicating with our infrastructure.
 
 ## What Triggers This Issue
 
-- **Trigger condition**: No contact with Console for 24 hours
+- **Trigger condition**: No contact with Console for 48 hours
 - **Criticality**: 🔥 Critical
 - **Impact**: Complete loss of visibility and protection coordination
 

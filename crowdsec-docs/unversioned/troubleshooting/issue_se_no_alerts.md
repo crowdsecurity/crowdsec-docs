@@ -43,7 +43,10 @@ docker exec crowdsec cscli collections list
 ```
 
 ```bash
-for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli collections list; done
+for pod in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec,type=agent -o name); do
+  echo "== $pod"
+  kubectl exec -n crowdsec "$pod" -c crowdsec-agent -- cscli collections list
+done
 ```
 
 </details>
@@ -95,7 +98,7 @@ agent:
 ```
 
 ```bash
-helm upgrade crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml
+helm upgrade --reset-then-reuse-values crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml
 ```
 
 </details>
@@ -121,7 +124,10 @@ docker exec crowdsec cscli metrics show scenarios
 
 **Kubernetes**
 ```bash
-for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli metrics show scenarios; done
+for pod in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec,type=agent -o name); do
+  echo "== $pod"
+  kubectl exec -n crowdsec "$pod" -c crowdsec-agent -- cscli metrics show scenarios
+done
 ```
 
 </details>
@@ -168,7 +174,10 @@ docker exec crowdsec cscli simulation status
 
 **Kubernetes**
 ```bash
-for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli simulation status; done
+for pod in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec,type=agent -o name); do
+  echo "== $pod"
+  kubectl exec -n crowdsec "$pod" -c crowdsec-agent -- cscli simulation status
+done
 ```
 
 </details>
@@ -206,7 +215,7 @@ config:
 ```
 
 ```bash
-helm upgrade crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml
+helm upgrade --reset-then-reuse-values crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml
 kubectl rollout restart daemonset/crowdsec-agent -n crowdsec
 ```
 
@@ -245,7 +254,10 @@ docker exec crowdsec cscli metrics show acquisition parsers
 
 **Kubernetes**
 ```bash
-for i in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec -l type=agent -o name); do kubectl exec -n crowdsec -it $i -- cscli metrics show acquisition parsers; done
+for pod in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec,type=agent -o name); do
+  echo "== $pod"
+  kubectl exec -n crowdsec "$pod" -c crowdsec-agent -- cscli metrics show acquisition parsers
+done
 ```
 
 </details>

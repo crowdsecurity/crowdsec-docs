@@ -188,8 +188,9 @@ The body will contain information about:
 
 The metrics track the number of dropped requests per decision origin, so the RC must track internally the origin of every decision (based on the `origin` field from the decision stream).  
 Each push must reset the internal counter for the metrics (i.e., we have only sent the number of dropped requests since the last push).  
-Each `dropped` metric must have an `origin` label whose value is the origin of the decision and a `remediation` label whose value is the type of remediation that was applied (e.g., `ban` or `captcha`).  
-A `processed` metric must also be present that counts the number of requests that were processed by the RC (regardless of whether they were blocked or not). This metric has no label.
+Each `dropped` metric must have an `origin` label whose value is the origin of the decision, and should have an `ip_type` label (`ipv4` or `ipv6`). Bouncers that apply several remediation types may add a `remediation` label whose value is the type of remediation that was applied (e.g., `ban` or `captcha`).  
+A `processed` metric must also be present that counts the number of requests that were processed by the RC (regardless of whether they were blocked or not). It should carry the `ip_type` label.  
+See [Metrics specs](/contributing/specs/bouncer_metrics_specs.mdx) for the full list of labels.
 
 A full sample payload can be found in the [appendix](#metrics-payload).
 
