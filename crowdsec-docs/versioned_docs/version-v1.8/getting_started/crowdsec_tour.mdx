@@ -139,6 +139,10 @@ sudo cscli alerts list --since 1h
 ```
 </details>
 
+:::tip
+`cscli` displays dates in the local time zone of the machine it runs on. To use another time zone, set the `TZ` environment variable, for example `sudo TZ=UTC cscli alerts list`.
+:::
+
 
 ## Monitor on-going activity (prometheus)
 
