@@ -15,6 +15,7 @@ The **Engine No Alerts** issue appears when your Security Engine has been runnin
 
 - [**Appropriate collections not installed**](#appropriate-collections-not-installed): Make sure you have detection scenarios and/or AppSec rules that cover your services
 - [**Events massively whitelisted**](#events-massively-whitelisted): Due to misconfiguration, proxying issues, or faulty custom whitelisting
+- [**Service behind a CDN, alerts whitelisted as good actors**](/u/troubleshooting/security_engine#my-service-is-behind-a-cdn-and-i-get-no-alerts): Your access logs record the CDN's IP instead of the visitor's, and the CDN ranges are whitelisted by default, so events are parsed but never become alerts. You need to log the real source IP.
 - [**Scenarios in simulation mode**](#scenarios-in-simulation-mode): Detection scenarios are installed but set to simulation mode, preventing actual alerts.
 - [**Legitimate low-activity environment**](#legitimate-low-activity-environment): Your proactive defenses might be good enough that you don't detect additional malicious behaviors (CrowdSec blocklists or other protections may already deflect all malicious activity)
 

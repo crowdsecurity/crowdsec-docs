@@ -99,6 +99,36 @@ If you want to check CrowdSec's behaviour on big log files, please see [replay m
 
 When adding a collection to your setup, the [hub](https://hub.crowdsec.net) will usually specify log files to add.
 
+### My service is behind a CDN and I get no alerts
+
+If a CDN or reverse proxy terminates the connection in front of your service, your web server logs the CDN's address instead of the visitor's. Every event is then attributed to that address, and since the [`whitelist-good-actors`](https://app.crowdsec.net/hub?filters=search%3Dwhitelist-good-actors.yaml) postoverflows shipped with the base HTTP collection cover the major CDN ranges, the alerts are dropped before becoming decisions. You see the requests in your access logs, `cscli metrics` shows them parsed, but nothing reaches `cscli alerts list`.
+
+These whitelists are deliberate: without them one misbehaving visitor would get the whole CDN banned, along with all your legitimate traffic. The fix is to log the real client IP, not to remove the whitelists.
+
+**To confirm this is your issue:**
+
+- Check the client address field of your access log — if the same few addresses appear on every line, the visitor IP is not reaching you.
+- Run the [HTTP detection check](/u/getting_started/health_check#-detection-checks) from a device with a public IP and see whether the alert shows your IP or the CDN's.
+- Postoverflows are not evaluated by `cscli explain`, so grep the logs for the whitelist that fired (`sudo grep whitelisted /var/log/crowdsec.log`); it names both the IP and the whitelist responsible.
+
+**To fix it**, have your CDN forward the visitor address in a header, then configure your web server to substitute it into the client address field **before logging** — with nginx's [`ngx_http_realip_module`](https://nginx.org/en/docs/http/ngx_http_realip_module.html), Apache's [`mod_remoteip`](https://httpd.apache.org/docs/current/mod/mod_remoteip.html), or the equivalent trusted-proxy setting of your proxy. CrowdSec parsers read that field (`remote_addr`, `%h`), never the header itself.
+
+| Provider | Header | Documentation |
+| --- | --- | --- |
+| Cloudflare | `CF-Connecting-IP` | [Restoring original visitor IPs](https://developers.cloudflare.com/support/troubleshooting/restoring-visitor-ips/restoring-original-visitor-ips/) |
+| Fastly | `Fastly-Client-IP` | [Fastly-Client-IP](https://www.fastly.com/documentation/reference/http/http-headers/Fastly-Client-IP/) |
+| Akamai | `True-Client-IP` | [Origin Server behavior](https://techdocs.akamai.com/property-mgr/docs/origin-server) |
+| Amazon CloudFront | `CloudFront-Viewer-Address` | [Add CloudFront request headers](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/adding-cloudfront-headers.html) |
+| Other CDNs and reverse proxies | usually `X-Forwarded-For` or `X-Real-IP` | refer to your provider's documentation |
+
+:::warning
+Only trust proxies you actually control, and keep the trusted ranges up to date from your provider's published list ([Cloudflare](https://www.cloudflare.com/ips/), [Fastly](https://api.fastly.com/public-ip-list), [AWS CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/LocationsOfEdgeServers.html)). Trusting arbitrary sources lets a client spoof its own address through the header, which would let an attacker evade detection or get an innocent IP banned.
+:::
+
+:::info
+If the **Local API** itself is behind a proxy, also set `use_forwarded_for_headers` and `trusted_proxies` in `config.yaml`. See [Local API behind a reverse proxy](/docs/next/local_api/configuration#server).
+:::
+
 ## Decisions
 
 ### How to list current decisions
