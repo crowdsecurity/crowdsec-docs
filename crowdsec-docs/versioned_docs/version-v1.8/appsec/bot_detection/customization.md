@@ -2,7 +2,7 @@
 id: customization
 title: "Bot Detection Customization & Recipes"
 sidebar_label: "Customization & recipes"
-description: "Ready-to-use appsec-config customization for CrowdSec bot detection: challenge specific routes, tune scoring, and allow verified crawlers."
+description: "Ready-to-use appsec-config overlays for CrowdSec bot detection: challenge specific routes, tune scoring, and allow verified crawlers without editing hub files."
 sidebar_position: 4
 ---
 
@@ -220,6 +220,15 @@ Example file:
 ```
 
 The reverse-DNS confirmation used by `rdns` goes through the engine's DNS cache; see [`dns_cache`](/configuration/crowdsec_configuration.md#dns_cache) if you need to tune its TTL or size.
+
+To check a definition without sending real traffic, use [`cscli bot match`](/cscli/cscli_bot_match.md). It runs the same matching against the `bots` files declared by your installed appsec-configs, or only by the ones you name, and tells you which definition matched and how:
+
+```bash
+$ sudo cscli bot match --ip 66.249.66.1 --user-agent "Googlebot/2.1" mycorp/appsec-bot-challenge-known-bot
+66.249.66.1 matches bot 'googlebot' (rdns: crawl-66-249-66-1.googlebot.com) from legit_bots/mybot.json
+```
+
+Reverse DNS is resolved from the machine you run it on, so run it where CrowdSec runs.
 
 ### Block on a weak signal the default ignores
 
