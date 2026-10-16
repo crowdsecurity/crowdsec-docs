@@ -54,6 +54,10 @@ An entry can also be a glob pattern (`*` and `?`), which is expanded to all the 
 
 Number of routines to use to process the requests. Defaults to 1.
 
+Each routine is a pair of workers: one evaluates the in-band rules and answers the remediation component, the other evaluates the out-of-band rules. Out-of-band work never delays the response or the next in-band request.
+
+Requests waiting for out-of-band evaluation go through a queue shared by all routines, holding up to 64 requests per routine. When it is full, new requests skip out-of-band evaluation: they are still answered in-band, but out-of-band rules and hooks don't run for them. Skipped requests are counted in the `cs_appsec_outofband_dropped_total` [metric](/observability/prometheus.md) and summarized in a warning at most once a minute. If you see drops, raise `routines` or reduce the out-of-band rule set.
+
 ### `auth_cache_duration`
 
 How long to cache the auth token for. Accepts values supported by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration).
