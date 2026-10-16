@@ -29,7 +29,7 @@ When the AppSec component decides to challenge a request, it answers the remedia
   "user_headers": {
     "Content-Type": ["text/html; charset=utf-8"],
     "Cache-Control": ["no-cache, no-store"],
-    "Content-Security-Policy": ["default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; worker-src 'self' blob:;"]
+    "Content-Security-Policy": ["default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; worker-src 'self' blob:;"]
   },
   "user_cookies": [
     "__crowdsec_challenge=...; Path=/; HttpOnly; SameSite=Lax"
@@ -59,9 +59,10 @@ The challenge runtime serves a handful of URLs itself. The remediation component
 |---|---|---|
 | `/crowdsec-internal/challenge/fpscanner.js` | `GET` | The fingerprinting bundle. |
 | `/crowdsec-internal/challenge/pow-worker.js` | `GET` | The proof-of-work worker. |
+| `/crowdsec-internal/challenge/custom.js` | `GET` | The [custom detection scripts](custom_js.md), only requested when some are loaded. |
 | `/crowdsec-internal/challenge/submit` | `POST` | Proof-of-work result and encrypted fingerprint. |
 
-All three come back in exactly the same envelope as the challenge page: HTTP `403` to the remediation component, `action: challenge`, `http_status: 200`. This is true **even when the submission succeeds** — a solved challenge is not an `allow`, it is a `challenge` envelope whose `user_cookies` carries the sealed success cookie, with one of these bodies:
+All of them come back in exactly the same envelope as the challenge page: HTTP `403` to the remediation component, `action: challenge`, `http_status: 200`. This is true **even when the submission succeeds** — a solved challenge is not an `allow`, it is a `challenge` envelope whose `user_cookies` carries the sealed success cookie, with one of these bodies:
 
 | Body | Meaning |
 |---|---|

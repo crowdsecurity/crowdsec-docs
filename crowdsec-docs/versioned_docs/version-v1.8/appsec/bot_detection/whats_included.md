@@ -2,7 +2,7 @@
 id: whats_included
 title: "Bot Detection Default Configuration"
 sidebar_label: "Default Configuration"
-description: "What the crowdsecurity/appsec-bot-challenge collection installs: the bot scoring and browser fingerprinting, with thresholds and the behavioral scenarios."
+description: "What the crowdsecurity/appsec-bot-challenge collection installs: the two scoring and threshold appsec-configs, plus the behavioral scenarios it ships with."
 sidebar_position: 3
 ---
 
@@ -97,6 +97,8 @@ Rejections do not stop at the log. They become alerts, which is how you see them
 
 Only the behavioral scenarios create decisions. A single rejected submission tells you what happened, it does not ban anyone.
 
+A hook can also accept a submission but flag it with [`FlagSubmission()`](hooks.md#flagging-a-submission). The client gets its cookie, and a per-submission alert is raised with the `crowdsecurity/suspicious-browser-submission` scenario instead.
+
 ```
 $ sudo cscli alerts list --kind bot-detection --limit 1
 +------+--------+-------------------------------------------+---------+----+-----------+----------------------+---------------+
@@ -156,6 +158,7 @@ The context above is what the shipped file exposes. The event carries more, and 
 |---|---|
 | `challenge_event` | `requested`, `submitted`, `failed`, `rejected` or `solved` |
 | `challenge_fail_reason` | The reason string passed to `RejectSubmission()` |
+| `challenge_flag_reason` | The reason string passed to `FlagSubmission()` |
 | `request_score` | The total score |
 | `request_score_reasons` | Per-signal breakdown, `cdp=100,utc_timezone=15` |
 | `challenge_difficulty` | The proof-of-work difficulty applied to this moment |

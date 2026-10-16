@@ -23,17 +23,31 @@ By default, clients that submit a valid challenge response are accepted and gran
 | Helper Name             | Type                                       | Description                                                                                                                                                                                                                            |
 | ----------------------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `RejectSubmission`      | `func(reason str, verbosity str?)`         | Refuse to issue a challenge cookie despite a valid crypto submission. `reason` is recorded in logs. Optional `verbosity`: `"minimal"`, `"info"` (default), `"verbose"` — controls how much fingerprint detail is logged.               |
+| `FlagSubmission`        | `func(reason str, verbosity str?)`         | Accept the submission and issue the cookie as usual, but raise an alert for it. `reason` is recorded in logs and in the alert. Same `verbosity` semantics as `RejectSubmission`. See [Flagging a submission](#flagging-a-submission).  |
 | `GrantChallengeCookie`  | `func(reason str, ttl str?)`               | Issue the challenge cookie inline as part of the submit response (no 307 redirect). `reason` is recorded in logs; optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                                  |
 | `LogAccepted`           | `func(msg str, verbosity str?)`            | Emit a structured "submission accepted" log line. Same `verbosity` semantics as `RejectSubmission`.                                                                                                                                    |
 | `EvaluateMismatches`    | `func() MismatchReport`                    | Same as in `on_challenge` — run the mismatch checks against the just-decrypted fingerprint.                                                                                                                                            |
 | `fingerprint`           | `object`                                   | The decoded fingerprint object — see [The `fingerprint` object](#the-fingerprint-object).                                                                                                                                              |
 | `req`                   | `http.Request`                             | Original HTTP request received by the remediation component. Needed by fingerprint helpers that compare against request headers, e.g. `fingerprint.AcceptLanguageMismatch(req)`.                                                        |
 | `DumpFingerprint`       | `func(label str) str`                      | Append the just-decrypted fingerprint (plus request context) as one JSONL line to a dump file, for offline analysis. Returns the file path. See [DumpFingerprint](#dumpfingerprint).                                                    |
-| `CancelAlert`           | `func()`                                   | Suppress the alert this rejection would otherwise produce. The cookie is still refused, only the alert is dropped.                                                                                                                      |
+| `CancelAlert`           | `func()`                                   | Suppress the alert this rejection (or flag) would otherwise produce. The decision on the cookie is unchanged, only the alert is dropped.                                                                                               |
 | `SendAlert`             | `func()`                                   | Re-enable the alert after a previous `CancelAlert()`.                                                                                                                                                                                  |
 | Score helpers           |                                            | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor`. See [Request scoring](#request-scoring).                                                                                             |
 
-`RejectSubmission()` and `GrantChallengeCookie()` are terminal: both halt the remaining `on_challenge_submit` rules, so a later catch-all cannot undo the decision.
+`RejectSubmission()` and `GrantChallengeCookie()` are terminal: both halt the remaining `on_challenge_submit` rules, so a later catch-all cannot undo the decision. `FlagSubmission()` is not: the following rules still run, and can still reject the submission.
+
+### Flagging a submission
+
+`FlagSubmission(reason)` sits between accepting and rejecting: the client gets its cookie and isn't slowed down, but the submission produces an alert, so you can watch a signal on real traffic before rejecting on it:
+
+```yaml
+on_challenge_submit:
+  - filter: fingerprint.Custom["mycorp_no_touch_on_mobile"].Bool
+    apply:
+      - FlagSubmission("mobile UA without touch support")
+```
+
+The alert uses the `crowdsecurity/suspicious-browser-submission` scenario, and carries the reason in `challenge_flag_reason` along with the request score. Like a rejection alert, it doesn't create a decision, and `CancelAlert()` suppresses it. If a later rule rejects the submission, the rejection alert replaces the flag one.
 
 ### Example
 
@@ -226,6 +240,9 @@ Most of what this object exposes is also reachable as a scored reason key. If yo
 | `fingerprint.AllowlistReason`  | `string` | Operator-supplied reason from `GrantChallengeCookie(reason, ...)`, copied through to logs.              |
 | `fingerprint.Signals`          | object   | The full collected fingerprint tree. See [Raw signal tree](#raw-signal-tree).                          |
 | `fingerprint.Bot`              | object   | Per-signal booleans, rolled up from the fast-bot-detection library. See [Bot signals](#bot-signals).  |
+| `fingerprint.Custom`           | map      | Signals reported by [custom detection scripts](custom_js.md), e.g. `fingerprint.Custom["key"].Bool`. See [Reading custom signals in hooks](custom_js.md#reading-custom-signals-in-hooks). |
+| `fingerprint.HasCustom`        | method   | `fingerprint.HasCustom(key)` is `true` if a custom detection script reported `key`, whatever its value. |
+| `fingerprint.CustomKeys`       | method   | `fingerprint.CustomKeys()` lists the keys reported by custom detection scripts, sorted.                 |
 
 ### Verdict and signal helpers
 

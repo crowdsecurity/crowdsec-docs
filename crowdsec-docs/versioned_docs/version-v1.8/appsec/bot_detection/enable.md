@@ -25,6 +25,7 @@ sudo cscli collections install crowdsecurity/appsec-bot-challenge
 Then make sure the bundled appsec-configs are actually loaded by your AppSec acquisition. Open the AppSec datasource file (typically `/etc/crowdsec/acquis.d/appsec.yaml`):
 
 ```yaml
+source: appsec
 listen_addr: 127.0.0.1:7422
 appsec_configs:
   - crowdsecurity/appsec-default
@@ -65,10 +66,10 @@ Once installed, see [default configuration](whats_included.md) for a tour of the
 
 ## Content-Security-Policy
 
-Every challenge response carries its own `Content-Security-Policy` header. The challenge page runs an inline script and an inline style, and starts the proof-of-work worker from a `blob:` URL, so it needs a policy that allows all three. The AppSec component always sets the same permissive one:
+Every challenge response carries its own `Content-Security-Policy` header. The challenge page runs an inline script and an inline style, and starts the proof-of-work worker from a `blob:` URL, so it needs a policy that allows all three. It also allows WebAssembly (`'wasm-unsafe-eval'`), which [custom detection scripts](custom_js.md) may use. The AppSec component always sets the same permissive one:
 
 ```
-default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; worker-src 'self' blob:;
+default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; worker-src 'self' blob:;
 ```
 
 :::note

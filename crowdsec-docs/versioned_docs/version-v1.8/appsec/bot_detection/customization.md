@@ -2,7 +2,7 @@
 id: customization
 title: "Bot Detection Customization & Recipes"
 sidebar_label: "Customization & recipes"
-description: "Ready-to-use appsec-config customization for CrowdSec bot detection: challenge specific routes, tune scoring, and allow verified crawlers."
+description: "Ready-to-use appsec-config overlays for CrowdSec bot detection: challenge specific routes, tune scoring, and allow verified crawlers without editing hub files."
 sidebar_position: 4
 ---
 
@@ -396,6 +396,7 @@ Flat fields exposed in `evt.Parsed`:
 | `challenge_event`                      | `requested` / `submitted` / `failed` / `rejected` / `solved` | Which step of the lifecycle produced the event. `failed` is a crypto/PoW failure; `rejected` is an `on_challenge_submit` hook calling `RejectSubmission(reason)`. |
 | `challenge_difficulty`                 | integer string                      | The PoW difficulty applied to this moment.                                                                |
 | `challenge_fail_reason`                | string (on `failed` or `rejected`)  | On `failed`, the raw protocol error (`invalid HMAC`, `invalid proof-of-work`, …). On `rejected`, the operator-supplied reason from `RejectSubmission()`. |
+| `challenge_flag_reason`                | string (on `solved`)                | The operator-supplied reason from `FlagSubmission()`, when the accepted submission was flagged.          |
 | `fsid`                                 | string                              | Per-fingerprint identifier. Stable across the cookie's lifetime — useful for `groupby`.                   |
 | `fingerprint_bot`                      | `"true"` / `"false"`                | Set when a fingerprint was attached to the event.                                                         |
 | `fingerprint_allowlisted`              | `"true"` / `"false"`                | Whether this cookie was issued via `GrantChallengeCookie(...)` rather than a real submission.             |
