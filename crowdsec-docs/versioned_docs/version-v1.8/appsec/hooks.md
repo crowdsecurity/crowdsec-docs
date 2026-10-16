@@ -38,7 +38,9 @@ inband:
 
 If the filter returns `true`, each expression in the `apply` section is executed.
 
-`pre_eval`, `post_eval` and `on_match` can be declared in the `inband` or the `outofband` block, and run only for the pass they belong to. `on_challenge` and `on_challenge_submit` are in-band only. `on_load` is not phase-scoped: it runs once at startup.
+`pre_eval`, `post_eval` and `on_match` can be declared in the `inband` or the `outofband` block, and run only for the pass they belong to. `on_challenge` and `on_challenge_submit` are in-band only. `on_load` is not phase-scoped: it runs once at startup and stays at the top level.
+
+Each hook is described once below, and behaves the same in either block.
 
 <!-- once https://github.com/crowdsecurity/crowdsec-docs/issues/555 is fixed, document on_success-->
 
@@ -267,7 +269,7 @@ on_match:
       - CancelAlert()
 ```
 
-Both forms are supported and can be mixed: for a given phase, top-level hooks run first, then those of the matching block. Prefer the phase-scoped form.
+Both forms are supported and can be mixed: for a given phase, top-level hooks run first, then those of the matching block. Prefer the phase-scoped form for new configurations.
 
 ## Detailed Helpers Information
 

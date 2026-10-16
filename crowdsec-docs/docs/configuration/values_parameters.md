@@ -1,9 +1,11 @@
 ---
 title: Helm's Parameters
+description: "Write a values file for the CrowdSec Helm chart, and look up every chart parameter: global, image, configuration, secrets, LAPI and agent settings."
+toc_max_heading_level: 4
 id: values_parameters
 ---
 
-# How to write a values parameter file
+## How to write a values parameter file
 
 The following configuration keeps the Helm chart close to its defaults while
 explicitly defining how CrowdSec discovers logs, which parsers and collections
@@ -166,20 +168,20 @@ config:
           login_password: 1h
 ```
 
-# Values parameters reference
+## Values parameters reference
 
 This page provides a complete, generated reference of all Helm chart
 configuration values, their defaults, and their purpose.
 
-## Parameters
+### Parameters
 
-### Global
+#### Global
 
 | Name                | Description                                        | Value    |
 | ------------------- | -------------------------------------------------- | -------- |
 | `container_runtime`<a id="container_runtime"></a> | [string] for raw logs format: docker or containerd | `docker` |
 
-### Image
+#### Image
 
 | Name                       | Description                                                                                                        | Value                    |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------ |
@@ -193,7 +195,7 @@ configuration values, their defaults, and their purpose.
 | `podAnnotations`<a id="podannotations"></a>           | podAnnotations to be added to pods (string:string map)                                                             | `{}`                     |
 | `podLabels`<a id="podlabels"></a>                | Labels to be added to pods (string:string map)                                                                     | `{}`                     |
 
-### Configuration
+#### Configuration
 
 | Name                                         | Description                                                                                                                         | Value   |
 | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------- |
@@ -232,7 +234,7 @@ configuration values, their defaults, and their purpose.
 | `tls.lapi.secret`<a id="tls-lapi-secret"></a>                            | Name of the Secret holding the lapidary's’s TLS certificate and key.                                                                | `""`    |
 | `tls.lapi.reflector.namespaces`<a id="tls-lapi-reflector-namespaces"></a>              | Namespaces where the LAPI TLS Secret can be reflected/synced.                                                                       | `[]`    |
 
-### secrets
+#### secrets
 
 | Name                                          | Description                                                                                                 | Value |
 | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----- |
@@ -242,7 +244,7 @@ configuration values, their defaults, and their purpose.
 | `secrets.externalSecret.csLapiSecretKey`<a id="secrets-externalsecret-cslapisecretkey"></a>      | The key in the external secret that holds the csLapiSecret                                                  | `""`  |
 | `secrets.externalSecret.registrationTokenKey`<a id="secrets-externalsecret-registrationtokenkey"></a> | The key in the external secret that holds the registrationToken                                             | `""`  |
 
-### lapi
+#### lapi
 
 | Name                                            | Description                                                                                                               | Value               |
 | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------- |
@@ -302,7 +304,7 @@ configuration values, their defaults, and their purpose.
 | `lapi.storeCAPICredentialsInSecret`<a id="lapi-storecapicredentialsinsecret"></a>             | [object] Store Central API credentials in a Secret (required if LAPI replicas > 1)                                        | `false`             |
 | `lapi.storeLAPICscliCredentialsInSecret`<a id="lapi-storelapicsclicredentialsinsecret"></a>        | [object] Store LAPI cscli credentials in a Secret. Useful if LAPI replicas > 1 or to setup LAPI with a persistent volume. | `false`             |
 
-### agent
+#### agent
 
 | Name                                             | Description                                                                                | Value   |
 | ------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------- |

@@ -228,7 +228,7 @@ inband:
 
 > object
 
-Same keys as [`inband`](#inband), applied to the out-of-band pass, except `on_challenge` and `on_challenge_submit`: challenges are in-band only, and using them here is a configuration error.
+Same keys as [`inband`](#inband), applied to the out-of-band pass, except `on_challenge` and `on_challenge_submit`: challenges are in-band only.
 
 ### on_load
 
