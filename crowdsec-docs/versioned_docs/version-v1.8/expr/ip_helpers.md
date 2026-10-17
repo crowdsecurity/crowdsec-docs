@@ -66,6 +66,8 @@ Returns true if it's a valid IPv6.
 * Do not use variables within the function as this can be untrusted user input
 :::
 Returns the IP addresses (`[]string`) that the hostname resolves to EG: `LookupHost('mydomain.tld') => ['1.2.3.4', '5.6.7.8']`
+
+Lookups go through the [DNS cache](/configuration/crowdsec_configuration.md#dns_cache), failed ones included. A hostname is only resolved again once its cache entry expires (after `ttl`, or `negative_ttl` for a failed lookup), so repeated calls are cheap, but a change to the DNS record can take up to `ttl` to be picked up.
 ```yaml
 name: me/my_cool_whitelist
 description: lets whitelist our own IP

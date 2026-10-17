@@ -162,14 +162,17 @@ This can return expired decisions if they have not been flushed yet.
 
 > `GetDecisionsCount(Alert.GetValue())`
 
-### `GetDecisionsSinceCount(value string, since string) int`
+### `GetDecisionsSinceCount(value string, since string, [scenario string]) int`
 
 Returns the number of existing decisions in the database with the same value since duration string (valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".).
+If `scenario` is given, only the decisions created by that scenario are counted.
 This can return expired decisions if they have not been flushed yet.
 
 > `GetDecisionsSinceCount("192.168.1.1", "7h")`
 
 > `GetDecisionsSinceCount(Alert.GetValue(), "30m")`
+
+> `GetDecisionsSinceCount(Alert.GetValue(), "24h", Alert.GetScenario())`
 
 ### `GetActiveDecisionsCount(value string) int`
 
