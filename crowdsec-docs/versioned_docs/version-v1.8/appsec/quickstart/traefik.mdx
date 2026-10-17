@@ -444,7 +444,7 @@ experimental:
   plugins:
     bouncer:
       moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
-      version: v1.4.5
+      version: v1.8.0-alpha
 volumes:
   - name: crowdsec-bouncer-key
     mountPath: /etc/traefik/crowdsec
@@ -587,12 +587,12 @@ The host and port where the AppSec Component is running.
 #### `crowdsecAppsecFailureBlock`
 > `bool`
 
-If the AppSec Component returns `500` status code should the request be blocked.
+If the AppSec Component returns a `500` status code, should the request be blocked. A `401` (API key rejected) or any other unexpected status always blocks the request, whatever this option says.
 
 #### `crowdsecAppsecUnreachableBlock`
 > `bool`
 
-If the AppSec Component is unreachable should the request be blocked.
+If the AppSec Component is unreachable, should the request be blocked. A `502`, `503` or `504` status counts as unreachable.
 
 ## Testing the AppSec Component + Remediation Component
 

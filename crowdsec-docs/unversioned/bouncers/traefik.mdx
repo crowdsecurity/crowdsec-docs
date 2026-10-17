@@ -12,11 +12,11 @@ import TabItem from "@theme/TabItem";
 import BouncerHeader from "@site/src/components/bouncer-header";
 
 <BouncerHeader
-  title="Traefik (Kubernetes)"
+  title="Traefik"
   typeLabel="Third Party Bouncer"
   imgSrc="/img/traefik.logo.png"
-  description="Traefik middleware plugin for Kubernetes that blocks IPs via CrowdSec decisions."
-  featuresSupport="waf, metrics, prometheus, mtls, streammode"
+  description="Traefik middleware plugin that blocks IPs via CrowdSec decisions and applies AppSec remediations."
+  featuresSupport="waf, metrics, prometheus, mtls, streammode, botdetection"
   githubUrl="https://github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
 />
 
@@ -31,6 +31,126 @@ CVEs, SQL injection, XSS, and other application-layer attacks.
 For a full walkthrough, see the
 [AppSec Quickstart for Traefik](/docs/next/appsec/quickstart/traefik).
 :::
+
+## Traefik with Docker Compose
+
+The plugin is loaded by Traefik from the [Traefik plugin catalog](https://plugins.traefik.io),
+and configured as a middleware through Docker labels.
+
+### Objectives
+
+- Run CrowdSec, Traefik and a demo service with Docker Compose.
+- Block the IPs CrowdSec has decisions for.
+- Inspect requests with the AppSec Component (WAF).
+
+### Configure the acquisition
+
+CrowdSec reads the Traefik access log and runs the AppSec Component on port `7422`:
+
+```yaml title="acquis.yaml"
+filenames:
+  - /var/log/traefik/access.log
+labels:
+  type: traefik
+---
+source: appsec
+listen_addr: 0.0.0.0:7422
+appsec_configs:
+  - crowdsecurity/appsec-default
+labels:
+  type: appsec
+```
+
+### Define the stack
+
+`BOUNCER_KEY_traefik` registers the bouncer key in CrowdSec at startup. Use
+the same value in the `crowdseclapikey` label:
+
+```yaml title="docker-compose.yml"
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:v1.8.1
+    environment:
+      COLLECTIONS: crowdsecurity/traefik crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules
+      BOUNCER_KEY_traefik: replace-with-a-long-random-key
+    volumes:
+      - ./acquis.yaml:/etc/crowdsec/acquis.yaml:ro
+      - traefik-logs:/var/log/traefik:ro
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - crowdsec-config:/etc/crowdsec/
+    healthcheck:
+      test: ["CMD", "cscli", "lapi", "status"]
+      interval: 5s
+      retries: 30
+
+  traefik:
+    image: traefik:v3.7
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--accesslog.filepath=/var/log/traefik/access.log"
+      - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+      - "--experimental.plugins.bouncer.version=v1.8.0-alpha"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-logs:/var/log/traefik
+    ports:
+      - "80:80"
+    depends_on:
+      crowdsec:
+        condition: service_healthy
+
+  whoami:
+    image: traefik/whoami
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+      - "traefik.http.routers.whoami.middlewares=crowdsec@docker"
+      - "traefik.http.middlewares.crowdsec.plugin.bouncer.enabled=true"
+      - "traefik.http.middlewares.crowdsec.plugin.bouncer.crowdseclapikey=replace-with-a-long-random-key"
+      - "traefik.http.middlewares.crowdsec.plugin.bouncer.crowdsecappsecenabled=true"
+
+volumes:
+  traefik-logs:
+  crowdsec-db:
+  crowdsec-config:
+```
+
+The plugin reaches the LAPI on `crowdsec:8080` and the AppSec Component on
+`crowdsec:7422` by default, which matches the service name above. Set
+`crowdsecLapiHost` and `crowdsecAppsecHost` otherwise.
+
+:::info
+Traefik downloads the plugin when it starts, so it needs access to
+`plugins.traefik.io`. Behind a reverse proxy or a load balancer, set
+`forwardedHeadersTrustedIps` so the plugin checks the client IP instead of the
+proxy's.
+:::
+
+### Validate
+
+```bash
+docker compose up -d
+curl -I http://localhost/
+# Expected: HTTP/1.1 200 OK
+
+curl -I http://localhost/.env
+# Expected: HTTP/1.1 403 Forbidden, blocked by AppSec
+
+```
+
+To check IP blocking, ban the client IP Traefik sees for your requests, which is
+the first field of its access log. From the Docker host itself, it is the
+gateway of the Docker network:
+
+```bash
+docker compose exec traefik tail -1 /var/log/traefik/access.log
+docker compose exec crowdsec cscli decisions add --ip <ip-from-the-log> --duration 2m
+curl -I http://localhost/
+# Expected: HTTP/1.1 403 Forbidden, once the plugin no longer has the IP cached as clean (60 seconds at most)
+```
 
 ## Traefik on kubernetes
 
@@ -243,7 +363,7 @@ experimental:
   plugins:
     bouncer:
       moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
-      version: v1.4.5
+      version: v1.8.0-alpha
 volumes:
   - name: crowdsec-bouncer-key
     mountPath: /etc/traefik/crowdsec
@@ -297,7 +417,7 @@ experimental:
   plugins:
     bouncer:
       moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
-      version: v1.4.5
+      version: v1.8.0-alpha
 volumes:
   - name: crowdsec-bouncer-key
     mountPath: /etc/traefik/crowdsec
@@ -434,7 +554,7 @@ experimental:
   plugins:
     bouncer:
       moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
-      version: v1.4.5
+      version: v1.8.0-alpha
 volumes:
   - name: crowdsec-bouncer-key
     mountPath: /etc/traefik/crowdsec
@@ -493,3 +613,65 @@ Once AppSec is enabled, use `cscli metrics show appsec` to view processed vs.
 blocked requests and individual rule triggers. These metrics also appear in the
 [CrowdSec Console](https://app.crowdsec.net) after enrollment.
 :::
+
+## Bot detection
+
+:::tip Prerequisites
+Bot detection is an AppSec feature that needs CrowdSec 1.8.0 or later and plugin
+v1.8.0 or later. First enable AppSec as described above, then follow the [bot
+detection guide](/docs/next/appsec/bot_detection/intro).
+:::
+
+Install the bot challenge collection next to the AppSec ones, for example with
+`COLLECTIONS: crowdsecurity/traefik crowdsecurity/appsec-virtual-patching
+crowdsecurity/appsec-generic-rules crowdsecurity/appsec-bot-challenge`, and load
+its configurations in the AppSec acquisition:
+
+```yaml title="acquis.yaml"
+source: appsec
+listen_addr: 0.0.0.0:7422
+appsec_configs:
+  - crowdsecurity/appsec-default
+  - crowdsecurity/appsec-bot-*
+labels:
+  type: appsec
+```
+
+The plugin relays the challenge returned by AppSec: the page, its headers and
+its cookies. Nothing else has to be enabled on the plugin side, but three
+settings can break the challenge without any error in the logs:
+
+- **The router must match `/crowdsec-internal`.** The challenge page loads its
+  scripts and posts its proof under `/crowdsec-internal/challenge/`. A router
+  scoped to your application prefix alone never sends these requests to the
+  plugin, so the challenge can never be solved:
+
+  ```yaml
+  - "traefik.http.routers.my-router.rule=PathPrefix(`/my-app`) || PathPrefix(`/crowdsec-internal`)"
+  ```
+
+- **List your Content-Security-Policy after the plugin.** Traefik's `headers`
+  middleware sets its headers when the response is written. Listed before the
+  plugin, it overwrites the challenge policy with yours, which usually forbids
+  the inline script and the `blob:` worker the challenge needs. Put your CSP in
+  a `headers` middleware listed after the plugin:
+
+  ```yaml
+  - "traefik.http.routers.my-router.middlewares=security-headers@docker,crowdsec@docker,csp@docker"
+  ```
+
+  See [Content-Security-Policy](/docs/next/appsec/bot_detection/enable#content-security-policy)
+  for the policy the challenge needs.
+
+- **Keep `crowdsecAppsecBodyLimit` above 0.** The proof is posted as a form, and
+  AppSec only validates it if it receives the whole body. With a limit of 0 the
+  plugin sends no body, and the visitor is challenged forever. The default of
+  10MB is enough.
+
+To check the setup, request a page with `curl`. It cannot solve the challenge,
+so it gets the challenge page instead of your application:
+
+```bash
+curl -s http://localhost/ | grep -o '<title>.*</title>'
+# Expected: <title>CrowdSec Challenge</title>
+```
