@@ -823,6 +823,10 @@
         },
         {
           "type": "doc",
+          "id": "appsec/bot_detection/custom_js"
+        },
+        {
+          "type": "doc",
           "id": "appsec/bot_detection/configuration"
         },
         {
