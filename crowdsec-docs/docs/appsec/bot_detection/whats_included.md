@@ -138,7 +138,7 @@ $ sudo cscli alerts inspect 2019 -d
 +------------------+--------------------------------------------------------------+
 ```
 
-`fingerprint_id` (the `fsid`) is stable per device profile, so it correlates submissions from the same client across IP changes.
+`fingerprint_id` (the `fsid`) is stable per device profile, so it correlates submissions from the same client across IP changes. [`cscli bot fsid`](/cscli/cscli_bot_fsid.md) decodes it back into what it encodes: the bot-signal bitmasks, screen geometry, CPU and memory, language and timezone. The other signals are only kept as truncated hashes.
 
 The same alert in the Console, where most people will actually read it. Expanding the context shows the same fields as tags, with `score_reasons` spelling out how the client reached 115:
 

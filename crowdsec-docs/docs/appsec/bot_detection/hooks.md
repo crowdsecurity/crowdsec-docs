@@ -116,6 +116,8 @@ pre_eval:
 
 Once `ExemptFromChallenge(reason)` has flagged a request, `SendChallenge()` becomes a no-op for the rest of that request, so the exempted client is never challenged.
 
+[`cscli bot match`](/cscli/cscli_bot_match.md) runs the same check from the command line, to find out whether a given IP and User-Agent would be recognized.
+
 ### `ExemptFromChallenge` vs `GrantChallengeCookie`
 
 Both keep a client out of the challenge, but at different scopes:
