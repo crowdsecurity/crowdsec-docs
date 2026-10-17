@@ -200,9 +200,14 @@ crowdsec_service:
   acquisition_path: "<acqusition_file_path>"
   acquisition_dir: "<acquisition_dir_path>"
   console_context_path: <path_to_context_file>
-  parser_routines: "<number_of_parser_routines>"
-  buckets_routines: "<number_of_buckets_routines>"
-  output_routines: "<number_of_output_routines>"
+  pipeline:
+    parser:
+      routines: <number_of_parser_routines>
+    bucket:
+      routines: <number_of_buckets_routines>
+    output:
+      routines: <number_of_output_routines>
+      queue_size: <postoverflow_queue_size>
 plugin_config:
   user: "<user_to_run_plugin_process_as>"
   group: "<group_to_run_plugin_process_as>"
@@ -435,9 +440,14 @@ crowdsec_service:
   acquisition_path: "<acqusition_file_path>"
   acquisition_dir: "<acqusition_dir_path>"
   console_context_path: <path_to_context_file>
-  parser_routines: "<number_of_parser_routines>"
-  buckets_routines: "<number_of_buckets_routines>"
-  output_routines: "<number_of_output_routines>"
+  pipeline:
+    parser:
+      routines: <number_of_parser_routines>
+    bucket:
+      routines: <number_of_buckets_routines>
+    output:
+      routines: <number_of_output_routines>
+      queue_size: <postoverflow_queue_size>
   dns_cache:
     ttl: 1h
     negative_ttl: 5m
@@ -449,20 +459,69 @@ crowdsec_service:
 
 Enable or disable the CrowdSec Agent (`true` by default).
 
+#### `pipeline`
+
+Sizes the three stages events go through: parsing, pouring into buckets, and output (postoverflow parsing and pushing alerts to the Local API). All keys are optional.
+
+```yaml
+crowdsec_service:
+  pipeline:
+    parser:
+      routines: 1
+    bucket:
+      routines: 1
+    output:
+      routines: 1
+      queue_size: 256
+```
+
+##### `parser.routines`
+> int
+
+Number of goroutines parsing events. Defaults to `1`.
+
+##### `bucket.routines`
+> int
+
+Number of goroutines pouring events into buckets. Defaults to `1`.
+
+##### `output.routines`
+> int
+
+Number of output goroutines. Each one receives overflows from the buckets, runs them through the postoverflow parsers and pushes the resulting alerts to the Local API. Defaults to `1`.
+
+##### `output.queue_size`
+> int
+
+Number of overflows each output routine can hold while they wait for postoverflow parsing. Defaults to `256`, which is also used when the value is `0` or negative.
+
+Postoverflow parsing runs in its own goroutine, so a slow postoverflow (typically one doing DNS lookups, such as `crowdsecurity/rdns` or a whitelist using `LookupHost`) doesn't block the rest of the engine. If it can't keep up, overflows accumulate in this queue:
+
+- when the queue goes over 75% full, CrowdSec logs a warning; it logs again once it falls back under 25%.
+- when the queue is full, new overflows are **dropped**: no alert is created for them. Drops are counted in the `cs_postoverflow_dropped_total` [metric](/observability/prometheus.md) and summarized in a warning at most once a minute.
+
+Dropping is deliberate: postoverflows run the whitelists, so pushing an overflow without them could ban a whitelisted IP. If you see drops, look for the slow postoverflow first; raising `queue_size` only helps with short bursts.
+
+The `cs_postoverflow_queue_depth` metric shows how full each queue is.
+
+When `-dsn` or `cscli explain` is used, postoverflows run inline and there is no queue.
+
 #### `parser_routines`
 > int
 
-Number of dedicated goroutines for parsing files.
+Number of dedicated goroutines for parsing files. Superseded by [`pipeline.parser.routines`](#parserroutines), and only used when it is unset.
 
 #### `buckets_routines`
 > int
 
-Number of dedicated goroutines for managing live buckets.
+Number of dedicated goroutines for managing live buckets. Superseded by [`pipeline.bucket.routines`](#bucketroutines), and only used when it is unset.
 
 #### `output_routines`
 > int
 
-Number of dedicated goroutines for pushing data to local api.
+Number of dedicated goroutines for pushing data to local api. Superseded by [`pipeline.output.routines`](#outputroutines), and only used when it is unset.
+
+When both a `pipeline` value and its legacy counterpart are set to different values, the `pipeline` value is used and CrowdSec logs a warning at startup.
 
 #### `console_context_path`
 > string
