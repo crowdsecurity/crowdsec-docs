@@ -437,14 +437,14 @@ helm upgrade --install crowdsec crowdsec/crowdsec --namespace crowdsec --create-
 Then configure Traefik to mount the `crowdsec-bouncer-key` secret and
 reference it with `crowdsecLapiKeyFile`.
 
-Use a Traefik values file like this:
+Use a Traefik values file like this one, which pins plugin `v1.8.1`. This guide applies to every 1.8.x release of the plugin:
 
 ```yaml title="traefik-values.yaml"
 experimental:
   plugins:
     bouncer:
       moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
-      version: v1.8.0
+      version: v1.8.1
 volumes:
   - name: crowdsec-bouncer-key
     mountPath: /etc/traefik/crowdsec
