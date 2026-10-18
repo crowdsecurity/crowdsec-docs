@@ -91,7 +91,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--accesslog.filepath=/var/log/traefik/access.log"
       - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
-      - "--experimental.plugins.bouncer.version=v1.8.0-alpha"
+      - "--experimental.plugins.bouncer.version=v1.8.0"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik-logs:/var/log/traefik
@@ -363,7 +363,7 @@ experimental:
   plugins:
     bouncer:
       moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
-      version: v1.8.0-alpha
+      version: v1.8.0
 volumes:
   - name: crowdsec-bouncer-key
     mountPath: /etc/traefik/crowdsec
@@ -417,7 +417,7 @@ experimental:
   plugins:
     bouncer:
       moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
-      version: v1.8.0-alpha
+      version: v1.8.0
 volumes:
   - name: crowdsec-bouncer-key
     mountPath: /etc/traefik/crowdsec
@@ -554,7 +554,7 @@ experimental:
   plugins:
     bouncer:
       moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
-      version: v1.8.0-alpha
+      version: v1.8.0
 volumes:
   - name: crowdsec-bouncer-key
     mountPath: /etc/traefik/crowdsec
@@ -663,10 +663,11 @@ settings can break the challenge without any error in the logs:
   See [Content-Security-Policy](/docs/next/appsec/bot_detection/enable#content-security-policy)
   for the policy the challenge needs.
 
-- **Keep `crowdsecAppsecBodyLimit` above 0.** The proof is posted as a form, and
-  AppSec only validates it if it receives the whole body. With a limit of 0 the
-  plugin sends no body, and the visitor is challenged forever. The default of
-  10MB is enough.
+- **Keep `crowdsecAppsecBodyLimit` above 0 and large enough for the proof.** The
+  proof is posted as a form, and AppSec only validates it if it receives the
+  whole body. With a limit of 0 the plugin sends no body, and with a smaller
+  limit the proof is cut short: either way the visitor is challenged forever.
+  The default of 10MB is enough.
 
 To check the setup, request a page with `curl`. It cannot solve the challenge,
 so it gets the challenge page instead of your application:
