@@ -225,11 +225,11 @@ To test if logs are correctly parsed and checked by scenarios, use:
 
 When a new rule is published on the hub (for example a virtual patching rule for a freshly disclosed CVE), you may not want to wait for the next scheduled hub update to get it.
 
-An emergency update is always the same three steps:
+Getting it right away always takes the same three steps:
 
 1. `cscli hub update` refreshes the hub index.
 2. `cscli hub upgrade` upgrades the installed items, and installs the new items added to the collections you already have.
-3. Reload CrowdSec so that it loads the new items.
+3. Restart CrowdSec so that it loads the new items.
 
 :::info
 Tainted items (locally modified) are not upgraded. See [Why are some scenarios/parsers "tainted" or "custom"?](#why-are-some-scenariosparsers-tainted-or-custom).
@@ -259,7 +259,7 @@ Or run the steps by hand:
 ```bash
 sudo cscli hub update
 sudo cscli hub upgrade
-sudo systemctl reload crowdsec
+sudo systemctl restart crowdsec
 ```
 
 </TabItem>
@@ -270,7 +270,7 @@ The package updates the hub every day at 3 AM with a cron job (`/usr/local/etc/c
 ```bash
 sudo cscli hub update
 sudo cscli hub upgrade
-sudo service crowdsec reload
+sudo service crowdsec restart
 ```
 
 </TabItem>
@@ -287,17 +287,17 @@ Restart-Service crowdsec
 </TabItem>
 <TabItem value="docker">
 
-There is no scheduled hub update in the container. The hub is only updated when the container starts, and only if `/etc/crowdsec` is in a volume, the index is more than 24 hours old, and `NO_HUB_UPGRADE` is not set. Restarting the container is therefore not enough to get a new item.
+There is no scheduled hub update in the container. When the container starts, it only updates the hub if `/etc/crowdsec` is in a volume and the hub index is more than 24 hours old, so restarting the container alone is usually not enough to get a new item.
 
-Run the update inside the running container, then reload CrowdSec:
+Run the update inside the running container, then restart it:
 
 ```bash
 docker exec crowdsec cscli hub update
 docker exec crowdsec cscli hub upgrade
-docker exec crowdsec sh -c 'kill -HUP "$(pidof crowdsec)"'
+docker restart crowdsec
 ```
 
-With Docker Compose, replace `docker exec crowdsec` with `docker compose exec crowdsec`.
+With Docker Compose, use `docker compose exec crowdsec` and `docker compose restart crowdsec` instead.
 
 :::warning
 If `/etc/crowdsec` is not in a volume, the upgraded items are lost when the container is recreated: the new container installs the items again at the versions listed in the hub index shipped in the image.
@@ -308,7 +308,7 @@ If `/etc/crowdsec` is not in a volume, the upgraded items are lost when the cont
 
 There is no scheduled hub update in the Helm chart, and by default the pods don't update the hub when they start: restarting them is not enough to get a new item.
 
-Run the update in every pod that uses the item: the agent pods for parsers and scenarios, the AppSec pods for AppSec rules. For example, for the AppSec pods:
+Run the update in every pod that uses the item: the agent pods for parsers and scenarios, the AppSec pods for AppSec rules. Don't restart the pods afterwards: a restarted container starts again from the image and loses the upgrade. Send a `SIGHUP` to CrowdSec instead, so that it reloads its configuration in place. For example, for the AppSec pods:
 
 ```bash
 for pod in $(kubectl get pods -n crowdsec -l type=appsec -o name); do
