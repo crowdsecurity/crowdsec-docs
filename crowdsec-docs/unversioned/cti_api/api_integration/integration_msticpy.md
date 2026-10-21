@@ -15,9 +15,10 @@ In your `msticpyconfig.yaml` file, add the following:
 
 ```yaml
 TIProviders:
-    CrowdSec:
+  CrowdSec:
     Args:
-        AuthKey: <your_api_key>
+      AuthKey: <your_api_key>
+    # Primary: True
     Provider: "CrowdSec"
 ```
 

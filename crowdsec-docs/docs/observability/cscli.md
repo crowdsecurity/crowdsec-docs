@@ -29,7 +29,7 @@ scenarios	 | Scenario Metrics	 | Measure events in different scenarios. Current 
 stash	 | Parser Stash Metrics	 | Tracks the status of stashes that might be created by various parsers and scenarios.
 whitelists	 | Whitelist Metrics	 | Tracks the number of events processed and possibly whitelisted by each parser whitelist.
 
-# Metrics sections
+## Metrics sections
 
 You can use aliases to view metrics related to specific areas (`cscli metrics show $alias`):
 
@@ -41,7 +41,7 @@ You can use aliases to view metrics related to specific areas (`cscli metrics sh
 You can as well combine various metrics sections (listed in `cscli metrics list`).
 
 
-## Example : Security Engine Metrics
+### Example : Security Engine Metrics
 
 Using `cscli metrics show engine` will display the metrics sections relative to the Security Engine itself : acquisition, parsers, scenarios, whitelists and stash.
 

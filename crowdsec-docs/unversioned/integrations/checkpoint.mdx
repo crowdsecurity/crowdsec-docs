@@ -1,6 +1,7 @@
 ---
 id: checkpoint
 title: Checkpoint
+description: "Feed CrowdSec blocklists to a Check Point firewall through Custom Intelligence (IoC) Feeds, using a blocklist integration endpoint from the CrowdSec Console."
 ---
 
 import ThemedImage from "@theme/ThemedImage";
@@ -54,7 +55,7 @@ Click **Custom Policy**, then **Indicators**. Add your feed information using th
 https://<username>:<password>@admin.api.crowdsec.net/v1/integrations/<integration_id>/content
 ```
 
-You can use the Raw IP List format and set the data column to `1`. Click **Test Feed**.
+Select the Check Point feed format (if you use a Raw IP List integration instead, select a custom CSV format and set the data column to `1`), then click **Test Feed**.
 
 ![](/img/checkpoint_step4.png)
 

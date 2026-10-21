@@ -1,6 +1,7 @@
 ---
 id: firewall
 title: "Linux Firewall IP Blocking with CrowdSec"
+description: "Block malicious IPs at the firewall with the CrowdSec firewall bouncer for iptables, nftables, ipset and pf. Covers installation, modes and configuration."
 sidebar_position: 1
 ---
 
@@ -161,7 +162,7 @@ sudo service pf status
 Generate an API key:
 
 ```bash
-sudo cscli bouncers add --name freebsd-pf-bouncer
+sudo cscli bouncers add freebsd-pf-bouncer
 ```
 
 Edit the bouncer configuration file on FreeBSD (`/usr/local/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml`) and set at least:

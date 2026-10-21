@@ -126,7 +126,7 @@ cves_service = Cves(auth=auth)
 MY_TAGS = {"wordpress", "cms", "enterprise_software"}
 
 # Get trending CVEs
-response = cves_service.get_cves(page=1, size=50)
+response = cves_service.get_cves(page=1, size=50, detailed=True)
 
 alerts = []
 for cve in response.items:

@@ -198,7 +198,7 @@ To avoid storing secrets in your `values.yaml`, use Kubernetes secrets:
 ```bash
 kubectl create secret generic crowdsec-keys \
   --from-literal=ENROLL_KEY=<enroll_key> \
-  --from-literal=BOUNCER_KEY_ingress=<bouncer_key> \
+  --from-literal=BOUNCER_KEY_traefik=<bouncer_key> \
   -n crowdsec
 ```
 
@@ -212,13 +212,11 @@ lapi:
         secretKeyRef:
           name: crowdsec-keys
           key: ENROLL_KEY
-      value: "<enroll-key>"
     - name: BOUNCER_KEY_traefik
       valueFrom:
         secretKeyRef:
           name: crowdsec-keys
           key: BOUNCER_KEY_traefik
-      value: "<bouncer_key>"```
 ````
 
 ### A word about databases

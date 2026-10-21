@@ -2,7 +2,7 @@
 id: haproxy_spoa
 title: "HAProxy WAF QuickStart (SPOA)"
 sidebar_label: "QuickStart - HAProxy (SPOA)"
-description: "Deploy and configure CrowdSec Open Source Web Application Firewall (WAF) to protect applications behind HAProxy, using the SPOA remediation component to forward requests."
+description: "Protect applications behind HAProxy with CrowdSec's open-source Web Application Firewall (WAF), using the SPOA remediation component to forward requests."
 ---
 
 # CrowdSec WAF QuickStart for HAProxy (SPOA)
@@ -102,9 +102,22 @@ sudo cscli metrics show appsec
 
 ## AppSec limitations with HAProxy SPOA
 
+:::danger Request bodies larger than ~50 KB are not inspected
+The SPOE protocol limits each message to a single frame, which cannot exceed
+HAProxy's buffer size (64 KB at most). This leaves about **50 KB** for the
+request body. Requests with a larger body are sent without it, so
+**body-dependent WAF rules cannot match**, and HAProxy forwards them to your
+backend by default.
+
+An attacker can bypass body inspection by padding a malicious payload past this
+limit. If you don't want uninspected bodies to reach your application, you
+must configure HAProxy to drop them: see [Request body size
+limit](/u/bouncers/haproxy_spoa#request-body-size-limit).
+:::
+
 HAProxy SPOA forwarding is constrained by HAProxy/SPOE/SPOA mechanics:
-- Request bodies are only available if you enable buffering (`option http-buffer-request`) and must fit within tight size limits (commonly capped at ~50 KB).
-- When the body is too large (uploads, large JSON, etc.), you typically fall back to a "no-body" SPOE group, which means **body-dependent WAF rules cannot match**.
+- Request bodies are only available if you enable buffering (`option http-buffer-request`) and must fit within the SPOE frame size (~50 KB once headers are accounted for). This limit cannot be raised.
+- When the body is too large (uploads, large JSON, etc.), the bouncer falls back to the "no-body" SPOE group: the request is evaluated on its headers only, and **body-dependent WAF rules cannot match**.
 - This is not full streaming inspection: SPOA works with what HAProxy can capture within buffer/frame limits.
 
 CrowdSec AppSec is a single source of truth for rules — you can point multiple WAF-capable integrations at the same AppSec endpoint so rule updates stay in sync.

@@ -2,7 +2,7 @@
 id: rules_syntax
 title: "WAF Rules Syntax"
 sidebar_label: "Syntax"
-description: "Full syntax reference for CrowdSec Web Application Firewall rules: in-band and out-of-band evaluation, zones, transforms, match operators."
+description: "Full syntax reference for CrowdSec WAF rules: in-band and out-of-band evaluation, zones, transforms, match operators, and the remediation a match triggers."
 sidebar_position: 8
 ---
 
@@ -326,7 +326,7 @@ We recommend using this format only to use existing rules you may have.
 There are 2 ways to provide CrowdSec with seclang rules:
 
 - Provide rules directly by using the `seclang_rules` parameter in your rule file
-- Provide a file containing the rules by using the `seclang_rules_file` parameter in your rule file. The file must be located inside CrowdSec data directory
+- Provide a file containing the rules by using the `seclang_files_rules` parameter in your rule file. The file must be located inside CrowdSec data directory
 
 The default paths for the data directory per OS:
 

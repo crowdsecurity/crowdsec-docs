@@ -219,7 +219,7 @@ With this configuration:
 - `POST /users` with `{"username": "ab", "email": "x"}` is dropped (`username` too short, `email` malformed).
 - `POST /users` with a valid body passes validation and is then evaluated by the WAF rules as usual.
 - `GET /users` is dropped with reason `method_not_allowed` (default policy).
-- `POST /admin` is dropped with reason `route_not_found` (default policy).
+- `POST /admin` is not validated by this hook because the filter only matches `/users` paths.
 
 ## Metrics
 

@@ -31,7 +31,7 @@ Then use it in your acquisition configuration, for example `/etc/crowdsec/acquis
 
 ```yaml
 source: appsec
-appsec-configs:
+appsec_configs:
   - crowdsecurity/crs
 labels:
   type: appsec
@@ -58,7 +58,7 @@ Then add it to your acquisition configuration:
 
 ```yaml
 source: appsec
-appsec-configs:
+appsec_configs:
   - crowdsecurity/crs
   - custom/crs-alerting
 labels:
@@ -80,7 +80,7 @@ Then load it in your configuration:
 
 ```yaml
 source: appsec
-appsec-configs:
+appsec_configs:
   - crowdsecurity/crs-inband
 labels:
   type: appsec

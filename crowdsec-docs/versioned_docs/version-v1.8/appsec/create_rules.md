@@ -2,7 +2,7 @@
 id: create_rules
 title: "Writing & Testing WAF Rules"
 sidebar_label: "Creation & Testing"
-description: "Write a CrowdSec WAF rule and its functional tests from scratch, with actual example you can follow through to a Hub submission."
+description: "Write a CrowdSec WAF rule and its functional tests from scratch, using a worked shell injection example you can follow through to a Hub submission."
 sidebar_position: 3
 ---
 
@@ -29,7 +29,7 @@ user_id=123;cat /etc/password&do=yes
 
 ## Prerequisites
 
-1. [Create a local test environment](https://doc.crowdsec.net/docs/contributing/contributing_test_env) or have CrowdSec (>= 1.5.6) installed locally
+1. [Create a local test environment](https://doc.crowdsec.net/docs/contributing/contributing_test_env) or have CrowdSec (>= 1.6.0) installed locally
 2. Have Docker installed locally to run the test web server
 3. Have [Nuclei installed](https://docs.projectdiscovery.io/tools/nuclei/install) (`go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest`)
 4. Clone the hub

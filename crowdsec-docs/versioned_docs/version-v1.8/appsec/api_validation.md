@@ -1,7 +1,7 @@
 ---
 id: api_validation
 title: OpenAPI Schema Validation
-description: "Validate incoming HTTP requests against an OpenAPI 3 schema with the CrowdSec WAF, rejecting anything that does not match your API."
+description: "Validate incoming HTTP requests against an OpenAPI 3 schema with the CrowdSec WAF, rejecting anything that does not match your API before it reaches the app."
 sidebar_position: 5
 ---
 
@@ -220,7 +220,7 @@ With this configuration:
 - `POST /users` with `{"username": "ab", "email": "x"}` is dropped (`username` too short, `email` malformed).
 - `POST /users` with a valid body passes validation and is then evaluated by the WAF rules as usual.
 - `GET /users` is dropped with reason `method_not_allowed` (default policy).
-- `POST /admin` is dropped with reason `route_not_found` (default policy).
+- `POST /admin` is not validated by this hook because the filter only matches `/users` paths.
 
 ## Metrics
 

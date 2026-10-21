@@ -47,6 +47,13 @@ Supported features:
 - WAF (WAF evaluation via CrowdSec AppSec)
 - Prometheus metrics
 
+:::warning WAF body inspection is limited to ~50 KB
+Because of SPOE protocol limits, the WAF cannot inspect request bodies larger
+than ~50 KB. Unless you configure HAProxy to drop these requests, they reach
+your backend without body inspection. See [Request body size
+limit](#request-body-size-limit).
+:::
+
 ## Installation
 
 We strongly encourage the use of our packages.
@@ -178,7 +185,11 @@ frontend http-in
     filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
 
     # Body size limit: stay safely under SPOE frame limit (~50 KB)
+    # Larger bodies are NOT inspected by the WAF, see "Request body size limit"
     acl body_within_limit req.body_size -m int le 51200
+
+    # Optional: reject bodies the WAF cannot inspect
+    # http-request deny deny_status 413 if { req.body_size -m found } !body_within_limit
 
     # HTML-capable client detection
     acl render_html req.hdr_cnt(Accept) eq 0
@@ -452,6 +463,7 @@ HAProxy requirements when using AppSec (and/or captcha):
 - Increase HAProxy buffer size (max 64KB): `tune.bufsize 65536` (see in the example below)
 - Enable request buffering: `option http-buffer-request` (see in the example below)
 - Use the `crowdsec-http-body` group when the body is available (see the `body_within_limit` + `send-spoe-group` example above)
+- Decide what to do with bodies larger than ~50 KB, which the WAF cannot inspect (see [Request body size limit](#request-body-size-limit))
 
 For example:
 
@@ -486,7 +498,56 @@ hosts:
       # api_key: custom-key             # optional per-host override
 ```
 
-Because request-body forwarding is constrained by HAProxy/SPOE/SPOA limits, keep an explicit body size limit (for example `51200`) and consider a layered approach (IP remediation at HAProxy, deeper inspection downstream).
+### Request body size limit
+
+:::danger Request bodies larger than ~50 KB are not inspected by the WAF
+The SPOE protocol carries each message in a single frame, and a frame cannot be
+bigger than HAProxy's buffer (`tune.bufsize`, 64 KB at most for SPOE). After
+the headers and the other message arguments, about **50 KB** is left for the
+request body. This is a protocol limit: neither the bouncer nor CrowdSec can
+work around it.
+
+With the example configuration above, requests with a body larger than
+`51200` bytes are sent through the `crowdsec-http-no-body` group. **The WAF
+never sees their body, so any rule that matches on the body cannot trigger.**
+IP, range and country decisions still apply.
+
+An attacker can use this to bypass the WAF: padding a malicious payload with
+~50 KB of junk data is enough to get it past body inspection.
+
+**By default, HAProxy forwards these requests to your backend. If you don't
+want uninspected bodies to reach your application, configure HAProxy to drop
+them.**
+:::
+
+To reject requests whose body is too large to be inspected, add a `deny` rule
+**before** the `send-spoe-group` rules:
+
+```haproxy
+frontend http-in
+    [...]
+    acl body_within_limit req.body_size -m int le 51200
+
+    # Reject bodies the WAF cannot inspect (413 Payload Too Large)
+    http-request deny deny_status 413 if { req.body_size -m found } !body_within_limit
+
+    http-request send-spoe-group crowdsec crowdsec-http-body if body_within_limit || !{ req.body_size -m found }
+    [...]
+```
+
+This also blocks legitimate large requests (file uploads, large JSON or form
+submissions). If your application needs them, scope the rule to the paths
+that don't, or allow large bodies only on known upload endpoints, for example:
+
+```haproxy
+    acl upload_path path_beg /api/upload /wp-admin/async-upload.php
+    http-request deny deny_status 413 if { req.body_size -m found } !body_within_limit !upload_path
+```
+
+Requests that are allowed through with a large body are not inspected by the
+WAF. To inspect them, put a WAF-capable integration with no such limit (for
+example [Nginx/OpenResty](/u/bouncers/nginx) or [Traefik](/u/bouncers/traefik))
+downstream of HAProxy, or protect the application directly.
 
 ### Bot detection challenge
 
@@ -885,7 +946,7 @@ scenarios_not_containing: ["whitelist"]
 Only pull decisions from these origins.
 
 ```yaml
-origins: ["crowdsecurity", "lists"]
+origins: ["crowdsec", "lists"]
 ```
 
 ### `listen_tcp`

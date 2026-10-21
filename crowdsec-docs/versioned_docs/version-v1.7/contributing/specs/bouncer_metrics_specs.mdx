@@ -51,62 +51,64 @@ As an example, here is the kind of expected payload that you will have to build 
         "name": "linux",
         "version": "5.4.0"
       },
-      "metrics": {
-        "meta": {
-          "window_size_seconds": 1800,
-          "utc_now_timestamp": 1704069000
-        },
-        "items": [
-          {
-            "name": "dropped",
-            "value": 150,
-            "unit": "request",
-            "labels": {
-              "origin": "CAPI",
-              "remediation": "ban"
-            }
+      "metrics": [
+        {
+          "meta": {
+            "window_size_seconds": 1800,
+            "utc_now_timestamp": 1704069000
           },
-          {
-            "name": "dropped",
-            "value": 25,
-            "unit": "request",
-            "labels": {
-              "origin": "cscli",
-              "remediation": "ban"
+          "items": [
+            {
+              "name": "dropped",
+              "value": 150,
+              "unit": "request",
+              "labels": {
+                "origin": "CAPI",
+                "remediation": "ban"
+              }
+            },
+            {
+              "name": "dropped",
+              "value": 25,
+              "unit": "request",
+              "labels": {
+                "origin": "cscli",
+                "remediation": "ban"
+              }
+            },
+            {
+              "name": "dropped",
+              "value": 12,
+              "unit": "request",
+              "labels": {
+                "origin": "cscli",
+                "remediation": "captcha"
+              }
+            },
+            {
+              "name": "processed",
+              "value": 1175,
+              "unit": "request"
+            },
+            {
+              "name": "active_decisions",
+              "value": 342010,
+              "unit": "ip",
+              "labels": {
+                "ip_type": "ipv4"
+              }
+            },
+            {
+              "name": "active_decisions",
+              "value": 123,
+              "unit": "ip",
+              "labels": {
+                "ip_type": "ipv6"
+              }
             }
-          },
-          {
-            "name": "dropped",
-            "value": 12,
-            "unit": "request",
-            "labels": {
-              "origin": "cscli",
-              "remediation": "captcha"
-            }
-          },
-          {
-            "name": "processed",
-            "value": 1175,
-            "unit": "request"
-          },
-          {
-            "name": "active_decisions",
-            "value": 342010,
-            "unit": "ip",
-            "labels": {
-              "ip_type": "ipv4"
-            }
-          },
-          {
-            "name": "active_decisions",
-            "value": 123,
-            "unit": "ip",
-            "labels": {
-              "ip_type": "ipv6"
-            }
-          }
-        ]
-      }
+          ]
+        }
+      ]
     }
   ]
 }
@@ -290,10 +292,10 @@ function buildUsageMetrics(properties: object, meta: object, items: array): obje
     return {
         "remediation_components": [{
             ...bouncerProperties,
-            "metrics": {
+            "metrics": [{
                 "meta": metricsMetadata,
                 "items": items
-            }
+            }]
         }]
     }
 ```

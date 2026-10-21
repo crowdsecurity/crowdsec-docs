@@ -2,7 +2,7 @@
 id: configuration
 title: "Bot Detection Configuration"
 sidebar_label: "Bot detection configuration"
-description: "Configure CrowdSec bot detection: signing keys and rotation, challenge cookie lifetime, and JavaScript bundle obfuscation."
+description: "Configure CrowdSec bot detection: signing keys and rotation, challenge cookie lifetime, and JavaScript bundle obfuscation, set from an appsec-config overlay."
 sidebar_position: 2
 ---
 

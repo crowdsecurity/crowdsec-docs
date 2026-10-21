@@ -32,7 +32,7 @@ const PROMO_DATA: Record<PromoVariant, PromoData> = {
 	cti: {
 		eyebrow: "CrowdSec",
 		title: "IP Reputation & CTI",
-		desc: "Query 13B+ observed IPs for behavioral context, CVEs, and threat intel.",
+		desc: "Query 22M+ observed IPs for behavioral context, CVEs, and threat intel.",
 		color: "var(--cs-violet)",
 		perks: [
 			{ label: "Real-time IP reputation scoring", icon: cilGlobeAlt },

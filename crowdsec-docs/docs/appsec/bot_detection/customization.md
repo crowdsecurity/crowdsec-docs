@@ -13,13 +13,15 @@ Every recipe on this page is a **complete overlay appsec-config** — a standalo
 To deploy any recipe below:
 
 1. **Save the file** to `/etc/crowdsec/appsec-configs/` — the filename is free, the `name:` inside is what identifies the config.
-2. **Load it from your acquisition.** Add its `name:` to `appsec_configs:` in your AppSec datasource (typically `/etc/crowdsec/acquis.d/appsec.yaml`). A custom name in your own namespace is **not** matched by the `crowdsecurity/appsec-bot-*` wildcard from [Enable bot detection](enable.md#install-the-collection), so list it explicitly alongside the wildcard:
+2. **Load it from your acquisition.** Add its `name:` to `appsec_configs:` in your AppSec datasource (typically `/etc/crowdsec/acquis.d/appsec.yaml`). A custom name in your own namespace is **not** matched by the `crowdsecurity/appsec-bot-*` wildcard from [Enable bot detection](enable.md#install-the-collection), so list it explicitly, before the wildcard:
 
    ```yaml
+   source: appsec
    listen_addr: 127.0.0.1:7422
    appsec_configs:
-     - crowdsecurity/appsec-bot-*
+     - crowdsecurity/appsec-default
      - mycorp/appsec-bot-challenge-checkout-only # your overlay, by name
+     - crowdsecurity/appsec-bot-*
    labels:
      type: appsec
    ```
@@ -322,7 +324,11 @@ inband:
         - SendChallenge()
 ```
 
-`SendChallenge()` here re-issues the challenge even though the client has a cookie; `SetChallengeDifficulty("high")` makes the re-issued proof-of-work costly. Both helpers are available in `on_challenge` (but not in `on_challenge_submit`).
+The cookie records the difficulty the client solved: `medium` by default, or whatever `SetChallengeDifficulty()` set when the challenge was issued. `SendChallenge()` does not re-challenge a client whose cookie already covers the target: if the cookie's difficulty is greater than or equal to the target, it does nothing. Called alone on a returning client, it is a no-op.
+
+In `on_challenge`, `SetChallengeDifficulty("high")` raises the target for this request only (it doesn't change the difficulty for other clients), and must run before `SendChallenge()`. A client whose cookie proved `medium` is then re-challenged with a costlier proof-of-work. Both helpers are available in `on_challenge` (but not in `on_challenge_submit`).
+
+This has a limit: a client that already solved at `high` (for example on a route where you raised the difficulty with the [per-route recipe](#tune-the-challenge-difficulty-per-route)) is not re-challenged. `impossible` won't help either, since it's effectively a block. For that case, use `DropRequest()`, as in the next recipe.
 
 ### Block a returning client outright on a strong signal
 

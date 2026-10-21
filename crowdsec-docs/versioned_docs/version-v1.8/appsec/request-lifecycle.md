@@ -2,7 +2,7 @@
 id: request_lifecycle
 title: "WAF Request Lifecycle"
 sidebar_label: "Request Lifecycle"
-description: "Follow an HTTP request through the CrowdSec WAF: in-band stateless inspection, out-of-band analysis, hooks, and the scenarios that turn matches into decisions."
+description: "Follow an HTTP request through the CrowdSec WAF: in-band and out-of-band inspection, hooks, and the scenarios that turn matches into decisions."
 sidebar_position: 5
 ---
 

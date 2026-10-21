@@ -1,16 +1,17 @@
 ---
 title: Network Management
+description: "Ports and network flows used by CrowdSec: Local API and metrics ports, outgoing connections, and traffic between bouncers, agents and the Local API."
 id: network_management
 ---
 
 
-# Ports inventory
+## Ports inventory
 
  - `tcp/8080` exposes a [REST API](https://crowdsecurity.github.io/api_doc/lapi/) for bouncers, `cscli` and communication between crowdsec agent and local api
  - `tcp/6060` (endpoint `/metrics`) exposes [prometheus metrics](/observability/prometheus.md)
  - `tcp/6060` (endpoint `/debug`) exposes pprof debugging metrics
 
-# Outgoing connections
+## Outgoing connections
 
  - Local API connects to `tcp/443` on `api.crowdsec.net` (signal push and blocklists pull)
  - Local API connects to `tcp/443` on `blocklists.api.crowdsec.net` (blocklists pull)
@@ -29,13 +30,13 @@ __(2) - This FQDN routes traffic to CrowdSec's GitHub repository through Cloudfl
 [Cloudflare publishes its IP ranges](https://www.cloudflare.com/ips/): [IPv4](https://cloudflare.com/ips-v4) and [IPv6](https://cloudflare.com/ips-v6).
 
 
-# Communication between components
+## Communication between components
 
-## Bouncers -> Local API
+### Bouncers -> Local API
 
  - Bouncers are using Local API on `tcp/8080` by default
 
-## Agents -> Local API
+### Agents -> Local API
 
  - Agents connect to local API on port `tcp/8080` (only relevant )
 
@@ -44,18 +45,18 @@ If there is an error in the agent configuration, it will also cause the Local AP
 Both components need proper configuration to run (we decide to keep this behavior to detect agent or local API errors on start).
 :::
 
-## Local API -> Central API
+### Local API -> Central API
 
  - Central API is reached on port `tcp/443` by Local API. The FQDN is `api.crowdsec.net`
 
-## Local API -> Database
+### Local API -> Database
 
  - When using a networked database (PostgreSQL or MySQL), only the local API needs to access the database, agents don't have to be able to communicate with it.
 
-## Prometheus -> Agents
+### Prometheus -> Agents
 
  - If you're scraping Prometheus metrics from your agents or your local API, you need to allow inbound connections to `tcp/6060`
 
-## Notes on proxy use
+### Notes on proxy use
 
- - It's possible to use crowdsec through proxy, it will honor the `HTTP_PROXY` environment variable. More on the configuration how to use crowdsec through a proxy [here](/u/troubleshooting/security_engine#how-to-set-up-a-proxy)
+ - It's possible to use crowdsec through proxy, it honors the `HTTPS_PROXY`, `HTTP_PROXY` and `NO_PROXY` environment variables. More on the configuration how to use crowdsec through a proxy [here](/u/troubleshooting/security_engine#how-to-set-up-a-proxy)

@@ -1,6 +1,7 @@
 ---
 id: magento
 title: "Magento 2 IP Blocking & CAPTCHA with CrowdSec"
+description: "Protect Magento 2 stores with the CrowdSec extension: block malicious IPs or show a CAPTCHA, using live or stream mode against the Local API."
 sidebar_position: 1
 ---
 
@@ -485,7 +486,7 @@ location ~ \.php$ {
     ...
     ...
     ...
-    fastcgi_param PHP_VALUE "/magento2-root-directory/app/etc/crowdsec-prepend.php";
+    fastcgi_param PHP_VALUE "auto_prepend_file=/magento2-root-directory/app/etc/crowdsec-prepend.php";
 }
 ```
 
