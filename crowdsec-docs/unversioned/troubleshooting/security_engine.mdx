@@ -4,6 +4,8 @@ id: security_engine
 ---
 
 import FormattedTabs from '@site/src/components/formatted-tabs';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 ## Community support
 
@@ -216,6 +218,114 @@ Please review your acquisition files and remove any duplicate log entries.
 To test if logs are correctly parsed and checked by scenarios, use:
  - [Replay mode](/u/user_guides/replay_mode/) allows you to process cold logs and see scenarios triggered.
  - [`cscli explain`](/docs/next/cscli/cscli_explain) allows you to inspect the parsing process for one or more log lines.
+
+## Hub
+
+### How to get a new hub item right now instead of waiting for the scheduled update
+
+When a new rule is published on the hub (for example a virtual patching rule for a freshly disclosed CVE), you may not want to wait for the next scheduled hub update to get it.
+
+An emergency update is always the same three steps:
+
+1. `cscli hub update` refreshes the hub index.
+2. `cscli hub upgrade` upgrades the installed items, and installs the new items added to the collections you already have.
+3. Reload CrowdSec so that it loads the new items.
+
+:::info
+Tainted items (locally modified) are not upgraded. See [Why are some scenarios/parsers "tainted" or "custom"?](#why-are-some-scenariosparsers-tainted-or-custom).
+:::
+
+<Tabs
+  defaultValue="linux"
+  values={[
+    { label: 'Linux', value: 'linux' },
+    { label: 'FreeBSD', value: 'freebsd' },
+    { label: 'Windows', value: 'windows' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Kubernetes', value: 'kubernetes' },
+  ]}>
+<TabItem value="linux">
+
+The packages update the hub once a day with the `crowdsec-hubupdate.timer` systemd timer (a `/etc/cron.daily/crowdsec` cron job before 1.7.2).
+
+Trigger the scheduled job immediately:
+
+```bash
+sudo systemctl start crowdsec-hubupdate.service
+```
+
+Or run the steps by hand:
+
+```bash
+sudo cscli hub update
+sudo cscli hub upgrade
+sudo systemctl reload crowdsec
+```
+
+</TabItem>
+<TabItem value="freebsd">
+
+The package updates the hub every day at 3 AM with a cron job (`/usr/local/etc/cron.d/crowdsec`).
+
+```bash
+sudo cscli hub update
+sudo cscli hub upgrade
+sudo service crowdsec reload
+```
+
+</TabItem>
+<TabItem value="windows">
+
+There is no scheduled hub update on Windows. From an administrator PowerShell:
+
+```powershell
+cscli.exe hub update
+cscli.exe hub upgrade
+Restart-Service crowdsec
+```
+
+</TabItem>
+<TabItem value="docker">
+
+There is no scheduled hub update in the container. The hub is only updated when the container starts, and only if `/etc/crowdsec` is in a volume, the index is more than 24 hours old, and `NO_HUB_UPGRADE` is not set. Restarting the container is therefore not enough to get a new item.
+
+Run the update inside the running container, then reload CrowdSec:
+
+```bash
+docker exec crowdsec cscli hub update
+docker exec crowdsec cscli hub upgrade
+docker exec crowdsec sh -c 'kill -HUP "$(pidof crowdsec)"'
+```
+
+With Docker Compose, replace `docker exec crowdsec` with `docker compose exec crowdsec`.
+
+:::warning
+If `/etc/crowdsec` is not in a volume, the upgraded items are lost when the container is recreated: the new container installs the items again at the versions listed in the hub index shipped in the image.
+:::
+
+</TabItem>
+<TabItem value="kubernetes">
+
+There is no scheduled hub update in the Helm chart, and by default the pods don't update the hub when they start: restarting them is not enough to get a new item.
+
+Run the update in every pod that uses the item: the agent pods for parsers and scenarios, the AppSec pods for AppSec rules. For example, for the AppSec pods:
+
+```bash
+for pod in $(kubectl get pods -n crowdsec -l type=appsec -o name); do
+  kubectl exec -n crowdsec "$pod" -- sh -c 'cscli hub update && cscli hub upgrade && kill -HUP "$(pidof crowdsec)"'
+done
+```
+
+Use `-l type=agent` for the agent pods. If you set custom `podLabels` in your values, adapt the selector.
+
+:::warning
+The upgraded items are lost when a pod is recreated (rollout, eviction, rescheduling, scaling): the new pod installs the items again at the versions listed in the hub index shipped in the image. Run the update again on the new pods until you upgrade to an image whose hub index includes the item.
+:::
+
+</TabItem>
+</Tabs>
+
+To check that the new item is installed and up to date, run `cscli hub list` (or the `docker exec` / `kubectl exec` equivalent).
 
 ## Configuration
 
