@@ -273,6 +273,7 @@ const redirects = [
 	{ from: "/Crowdsec/v1/contributing", to: "/docs/contributing/getting_started" },
 	{ from: "/Crowdsec/v1/references/acquisition", to: "/docs/log_processor/data_sources/intro" },
 	{ from: "/Crowdsec/v1/getting_started/installation", to: "/u/getting_started/installation/linux" },
+	{ from: "/docs/next/appsec/installation/", to: "/docs/next/appsec/quickstart/general_setup/" },
 ];
 
 // Docs versions dropped from the site; archived pages and old backlinks still point at them.
