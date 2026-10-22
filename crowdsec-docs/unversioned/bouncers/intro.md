@@ -20,12 +20,13 @@ Remediation Components are software packages in charge of acting upon decisions 
 CrowdSec offers two categories of remediation: **infrastructure-level** (Layer 3/4) and **application-level** (Layer 7). Choosing the right one depends on what you are protecting.
 
 :::tip Protecting a web application?
-Use a **WAF-capable** bouncer ([Nginx](/bouncers/nginx.mdx), [OpenResty](/bouncers/openresty.mdx), [Traefik](/bouncers/traefik.mdx), or [HAProxy SPOA](/bouncers/haproxy_spoa.mdx)) to get real-time WAF protection, virtual patching, and defense against application-layer attacks like SQL injection, XSS, and CVE exploitation. [Learn more about AppSec](/docs/next/appsec/intro).
+Use a **WAF-capable** bouncer ([Nginx](/bouncers/nginx.mdx), [OpenResty](/bouncers/openresty.mdx), [Apache](/bouncers/apache.mdx), [Traefik](/bouncers/traefik.mdx), or [HAProxy SPOA](/bouncers/haproxy_spoa.mdx)) to get real-time WAF protection, virtual patching, and defense against application-layer attacks like SQL injection, XSS, and CVE exploitation. [Learn more about AppSec](/docs/next/appsec/intro).
 :::
 
 | What are you protecting? | Recommended Component | Why? |
 | :--- | :--- | :--- |
 | **Web app behind Nginx** | [crowdsec-nginx-bouncer](/bouncers/nginx.mdx) | In-band WAF + virtual patching via AppSec |
+| **Web app behind Apache** | [crowdsec-apache2-bouncer](/bouncers/apache.mdx) | In-band WAF, virtual patching and bot detection via AppSec |
 | **Docker/K8s with Traefik** | [traefik-bouncer-plugin](/bouncers/traefik.mdx) | Native middleware integration + AppSec |
 | **High-performance proxy (HAProxy)** | [cs-haproxy-spoa-bouncer](/bouncers/haproxy_spoa.mdx) | SPOA offloading for L7 inspection + AppSec |
 | **Web app behind OpenResty** | [crowdsec-openresty-bouncer](/bouncers/openresty.mdx) | Built-in Lua support + AppSec |

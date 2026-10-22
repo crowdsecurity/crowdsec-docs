@@ -684,6 +684,7 @@ const sidebarsConfig: SidebarConfig = {
 			label: "Installation",
 			items: [
 				{ type: "doc", id: "appsec/quickstart/general_setup" },
+				{ type: "doc", id: "appsec/quickstart/apache" },
 				{ type: "doc", id: "appsec/quickstart/nginx-ingress" },
 				{ type: "doc", id: "appsec/quickstart/envoy-gateway" },
 				{ type: "doc", id: "appsec/quickstart/nginxopenresty" },
