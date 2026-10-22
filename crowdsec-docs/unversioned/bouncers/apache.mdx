@@ -37,7 +37,7 @@ Follow the dedicated [AppSec QuickStart for Apache](/docs/next/appsec/quickstart
 The component is an Apache module. It runs in-process in every Apache child, and does up to two things on the request path:
 
 1. **Decision lookup** — the client address is checked against the CrowdSec decisions, and the request is allowed, blocked or redirected.
-2. **AppSec inspection** (optional) — the request is forwarded to the [AppSec Component](/docs/next/appsec/intro) for WAF inspection, and its verdict decides the request. This is also what serves the [bot-detection](/docs/next/appsec/bot_detection/intro) challenge.
+2. **Request inspection** (optional) — the request is forwarded to the [AppSec Component](/docs/next/appsec/intro) for WAF inspection, and its verdict decides the request. This is also what serves the [bot-detection](/docs/next/appsec/bot_detection/intro) challenge.
 
 Decisions are obtained in one of two modes:
 
@@ -49,7 +49,7 @@ Supported features:
 - Ban remediation, returning a status code or redirecting to a page of your choice
 - Bot-detection challenge, served through AppSec
 - IPv4 and IPv6, single addresses and ranges
-- AppSec over TCP or a unix socket
+- WAF/AppSec over TCP or a unix socket
 - Usage metrics reported to the local API, so the component shows up in `cscli metrics show bouncers` and in the [Console](https://app.crowdsec.net)
 - A status handler for the module's own counters
 
@@ -291,7 +291,57 @@ LogLevel info crowdsec_module:info
 
 Request and decision counts are reported to the local API every `CrowdsecMetricsInterval`, which is what makes the component appear in `cscli metrics show bouncers` and in the Console. It is on by default wherever `CrowdsecURL` is set.
 
+Three counters are reported:
+
+| Counter | Unit | Meaning |
+| --- | --- | --- |
+| `processed` | request | Requests the module checked, one per request. |
+| `dropped` | request | Requests it refused, attributed to the origin of the decision behind each one. |
+| `active_decisions` | IP | Decisions currently held in the shared cache. Stream mode only — live mode keeps no local decision store. |
+
+Every counter is broken down by `ip_type` (`ipv4` or `ipv6`), and `dropped` and `active_decisions` also by `origin`: `crowdsec`, `CAPI`, `cscli`, `appsec`, `console`, `lists:<name>` and so on. [Usage metrics](/docs/next/observability/usage_metrics) explains what each origin means.
+
+#### Checking from the local API
+
+The package registers the component under a generated name, so take it from the list first:
+
+```bash
+sudo cscli bouncers list
+```
+
+`Type` is `crowdsec-apache2-bouncer` and `Version` is the module's own, both read from the User-Agent it sends — which makes this the quickest way to confirm which build a host is actually running. Then, for one component:
+
+```bash
+sudo cscli bouncers inspect cs-apache2-bouncer-1761134702
+```
+
+On top of the list's columns this reports the OS, which the module reads from `/etc/os-release`, along with the auth type and the last pull. Then the counters themselves:
+
+```bash
+sudo cscli metrics show bouncers
+```
+
+Add `--no-unit` for exact numbers instead of ones abbreviated with `k` and `M` suffixes, and `-o json` to script against them.
+
+:::info The first figures take a while to appear
+`cscli` shows what the local API has accepted, so nothing appears until the first push lands — up to `CrowdsecMetricsInterval`, which is 15 minutes by default. The [status handler](#status-handler) shows the window as it accumulates, so it is the faster way to confirm the counters are moving at all. To shorten the wait while testing, lower the interval and put it back afterwards; anything under a minute is warned about in the error log.
+:::
+
+Nothing is lost when a push fails. A successful one takes back exactly what it reported, and a rejected one leaves the window in place for the next to carry. `metrics_last_status` in the status handler is the HTTP status of the last attempt: anything other than `201`, alongside a growing `metrics_window_age_s`, means pushes are being refused and the figures in `cscli` are stale rather than flat.
+
+Expect `active_decisions` to disagree with the count from `cscli decisions list`: the local API filters and deduplicates the stream it sends, keeping only the longest-running decision for an address listed by several sources. See [Usage metrics](/docs/next/observability/usage_metrics) for the full explanation.
+
 Servers sharing a `CrowdsecURL` and `CrowdsecAPIKey` are one component as far as the local API is concerned, so they share one set of counters and one reporter. An AppSec-only vhost — `CrowdsecAppsecURL` with no `CrowdsecURL` — reports nothing, because `/v1/usage-metrics` is a local API endpoint and the AppSec datasource has none; the error log says so at startup.
+
+#### Checking the WAF and bot-detection side
+
+`dropped{origin=appsec}` is as much as the module can say about inspection: what the rules did is engine-side, and the engine is where to look for it.
+
+```bash
+sudo cscli metrics show appsec
+sudo cscli alerts list --kind waf
+sudo cscli alerts list --kind bot-detection
+```
 
 ## Known limits
 
@@ -305,11 +355,6 @@ Anyone can pad a request body past `CrowdsecAppsecBodyLimit` to skip inspection 
 - **`active_decisions` is reported in stream mode only.** Live mode keeps no local decision store, so there is nothing to count. Same as the NGINX component.
 - **`processed` counts one per request**, where the HAProxy SPOA component counts one per connection when its TCP stage runs. Comparing the two components' request volumes directly will mislead.
 - **A new decision is not instant**, and the delay differs by mode. In stream mode the worst case is `CrowdsecUpdateFrequency` + `CrowdsecLocalCacheTimeout`, so 12s with the defaults. In live mode it is `CrowdsecCacheTimeout` + `CrowdsecLocalCacheTimeout`, so 62s with the defaults. `CrowdsecLocalCacheTimeout` is the knob for propagation speed and costs only extra shared-cache reads; lowering `CrowdsecCacheTimeout` instead makes every child query the API more often.
-- **One child pays for the stream pull.** The child holding the polling lease allocates roughly 4.6× the stream body size while applying it and keeps that as a high-water mark: measured, a 27 MB body (about 185,000 entries) took it from 24 MB to 149 MB resident. Other children are unaffected. Budget for it on memory-constrained hosts with large blocklists.
-- **AppSec throughput is bound by the engine.** Measured on 2 vCPU with 202 rules loaded: 0.65 ms mean per inspection, capping throughput around 1,500 req/s, of which the module accounts for about 3%. Tune the rule set, not the component.
-- **The challenge interstitial is about 327 KB per unsolved visitor**, which on a public site is a bandwidth consideration before it is a CPU one.
-- **An internal redirect is inspected headers-only.** A request reaching a protected scope through `mod_rewrite` or `ErrorDocument` has already had its body consumed, so only its headers and URI go to AppSec. The decision lookup still applies in full.
-- **`CrowdsecAppsecInternalPath` has no working value but the default.** The engine has its challenge prefix compiled in, so changing this leaves challenged visitors stuck.
 
 ## Configuration reference
 
@@ -409,10 +454,4 @@ sudo cscli decisions delete --ip 127.0.0.1
 
 The request should be refused with `CrowdsecBlockedHTTPCode`, which the shipped configuration sets to `403`. In stream mode, allow up to `CrowdsecUpdateFrequency` for the decision to be picked up.
 
-Then check that the local API sees the component:
-
-```bash
-sudo cscli metrics show bouncers
-```
-
-The first report lands one `CrowdsecMetricsInterval` after Apache starts, so give it 15 minutes with the defaults, or read the [status handler](#status-handler) for the counters as they accumulate.
+That block should show up as a `dropped{origin=cscli}` in the [status handler](#status-handler) straight away, and in `cscli metrics show bouncers` once the first report lands — see [Checking from the local API](#checking-from-the-local-api).
