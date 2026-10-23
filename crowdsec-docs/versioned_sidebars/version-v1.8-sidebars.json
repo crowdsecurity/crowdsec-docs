@@ -718,6 +718,10 @@
         },
         {
           "type": "doc",
+          "id": "appsec/quickstart/apache"
+        },
+        {
+          "type": "doc",
           "id": "appsec/quickstart/nginx-ingress"
         },
         {

@@ -50,6 +50,14 @@ Reload CrowdSec for the change to take effect:
 sudo systemctl reload crowdsec
 ```
 
+Confirm the engine loaded a challenge:
+
+```bash
+sudo grep "WAF challenge runtime initialized" /var/log/crowdsec.log
+```
+
+Without that line the engine is inspecting requests but has no challenge to serve — most often because the appsec-configs above are not listed in the datasource.
+
 ## Choosing a threshold
 
 The collection installed above rejects a submission scoring 75 or more. To be stricter or more forgiving, install a different bundle and point the acquisition at its threshold config:

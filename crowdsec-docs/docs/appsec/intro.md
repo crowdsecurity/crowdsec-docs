@@ -78,6 +78,12 @@ The AppSec Component works seamlessly with modern web servers and reverse proxie
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
+<img src="/img/crowdsec_apache2.svg" alt="Apache" style={{height: '50px', objectFit: 'contain'}} />
+<strong>Apache</strong><br/>
+[Quick Start Guide →](quickstart/apache.mdx)
+</div>
+
+<div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/traefik.logo.png" alt="Traefik" style={{height: '50px', objectFit: 'contain'}} />
 <strong>Traefik</strong><br/>
 [Quick Start Guide →](quickstart/traefik.mdx)
@@ -141,6 +147,7 @@ This lets scenarios leverage WAF rule events, such as extending a ban for an IP 
 You can follow our quick start guides depending on your web server:
 
 -   [Nginx/OpenResty](quickstart/nginxopenresty.mdx)
+-   [Apache](quickstart/apache.mdx)
 -   [Envoy Gateway](quickstart/envoy-gateway.mdx)
 -   [Traefik](quickstart/traefik.mdx)
 -   [HAProxy (SPOA)](quickstart/haproxy_spoa.mdx)

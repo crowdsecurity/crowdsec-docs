@@ -1,0 +1,144 @@
+---
+id: apache
+title: "Apache WAF QuickStart"
+sidebar_label: "QuickStart - Apache"
+description: "Protect applications served by Apache with CrowdSec's open-source Web Application Firewall (WAF), using the mod_crowdsec remediation component to forward requests for inspection."
+---
+
+# CrowdSec WAF QuickStart for Apache
+
+Protect web applications served by [Apache](https://httpd.apache.org/) with CrowdSec's [AppSec (WAF) Component](/appsec/intro.md#introduction), using the `mod_crowdsec` remediation component to forward HTTP requests for inspection.
+
+## Prerequisites
+
+Make sure the following are already done on the machine running Apache (each is a single-page install guide):
+
+1. **CrowdSec Security Engine** installed and running — see the [Linux quickstart](/u/getting_started/installation/linux).
+2. **Apache 2.4.16 or later**, already serving your application(s).
+3. **Apache remediation component** (`crowdsec-apache2-bouncer`) installed and registered against the CrowdSec LAPI. See the [Apache component guide](/u/bouncers/apache_bouncer).
+
+:::warning Enterprise Linux: apply the SELinux boolean first
+`setsebool -P httpd_can_network_connect on`, as the component guide describes. SELinux gives `httpd_t` no outbound network access, so Apache cannot reach AppSec, and `CrowdsecAppsecFailureAction` — `passthrough` by default — lets every request through uninspected.
+
+Look for `crowdsec: appsec request to 'http://127.0.0.1:7422' failed (connect-fail)` in the httpd error log. The [log variables](/u/bouncers/apache_bouncer#log-variables) show the same thing per request: `CROWDSEC_APPSEC_STATUS` reads `connect-fail`.
+:::
+
+## 1. Install the AppSec rule collections
+
+```bash
+sudo cscli collections install \
+    crowdsecurity/appsec-virtual-patching \
+    crowdsecurity/appsec-generic-rules
+```
+
+This pulls the [`appsec-virtual-patching`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) collection (rules for known CVEs, auto-updated daily) and the [`appsec-generic-rules`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-generic-rules) collection (common attack patterns), plus the default AppSec configuration.
+
+## 2. Turn on the AppSec Component
+
+Create the acquisition file, then restart CrowdSec:
+
+```bash
+sudo mkdir -p /etc/crowdsec/acquis.d
+sudo tee /etc/crowdsec/acquis.d/appsec.yaml > /dev/null <<'EOF'
+appsec_configs:
+  - crowdsecurity/appsec-default
+labels:
+  type: appsec
+listen_addr: 127.0.0.1:7422
+source: appsec
+EOF
+sudo systemctl restart crowdsec
+```
+
+:::warning
+Keep `listen_addr` on `127.0.0.1` — the AppSec Component must only be reachable from your web server.
+:::
+
+## 3. Enable AppSec forwarding in Apache
+
+Both lines below are already in `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`, commented out. Uncomment them, at server level:
+
+```apache title="/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf"
+# AppSec (WAF forwarding)
+CrowdsecAppsecURL http://127.0.0.1:7422
+CrowdsecAppsec    On
+```
+
+`Crowdsec On` is already there too.
+
+Check the configuration and reload Apache:
+
+```bash
+sudo apachectl configtest
+sudo systemctl reload apache2
+```
+
+:::note
+On Enterprise Linux the service is `httpd` rather than `apache2`.
+
+`CrowdsecAppsec` is valid in `<Directory>` and `<Location>` as well as at server level, so you can inspect part of a site and leave the rest alone. Prefer server level for whole-site coverage rather than a `<Location />` block — see [Protect only part of a site](/u/bouncers/apache_bouncer#protect-only-part-of-a-site).
+
+If AppSec runs on another host or in a container, point `CrowdsecAppsecURL` at an address that Apache can actually reach; a unix socket works too, as `unix:/run/crowdsec/appsec.sock`.
+:::
+
+## 4. Verify
+
+Hit an endpoint that should trip an AppSec rule:
+
+```bash
+curl -I http://<your-apache-url>/.env
+```
+
+You should get an `HTTP/1.1 403 Forbidden` response — a blocked request is refused with `CrowdsecBlockedHTTPCode`, which the shipped configuration sets to `403`.
+
+:::warning Check that nothing else is producing that 403
+Two things routinely make this pass for the wrong reason. If you banned your own address while [verifying the component](/u/bouncers/apache_bouncer#verify-the-component-is-in-use), the request is refused on the decision before it ever reaches AppSec. And a configuration that denies dotfiles — `<FilesMatch "^\.">` with `Require all denied`, a common hardening snippet — answers `403` for `/.env` on its own.
+
+Configure the [log variables](/u/bouncers/apache_bouncer#log-variables) and read the verdict instead: an AppSec block logs `CROWDSEC_APPSEC_STATUS` as `ban`, where a decision-based block leaves it empty.
+:::
+
+Check that CrowdSec recorded the block:
+
+```bash
+sudo cscli metrics show appsec
+```
+
+<details>
+<summary>What just happened?</summary>
+
+1. `curl` hit Apache at `/.env`.
+2. `mod_crowdsec` forwarded the request to the AppSec Component at `CrowdsecAppsecURL`.
+3. The request matched the [`vpatch-env-access`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-env-access) rule.
+4. AppSec answered with a `ban` remediation; Apache refused the request without passing it to your application.
+
+</details>
+
+:::tip Getting a 404 from AppSec instead?
+`CrowdsecAppsecPath` has to match the `path` of the AppSec datasource. Both default to `/`, so leave both alone unless you have a reason to change them.
+:::
+
+## AppSec limitations with Apache
+
+- **Request bodies are forwarded up to `CrowdsecAppsecBodyLimit`** (1 MB by default). A larger body is blocked, since `CrowdsecAppsecBodyLimitAction` defaults to `drop`. Setting it to `bypass` lets oversized bodies through **uninspected**, which anyone can trigger by padding a request — see [Request body size limit](#request-body-size-limit).
+- **A gzipped request body is inspected compressed**, because the body is captured before Apache inflates it. Rules matching body content will not fire on it. Your application still receives correct plaintext. This is shared with the other remediation components.
+- **No captcha.** A `captcha` remediation is resolved through `CrowdsecRemediationFallback`, which blocks by default. The [bot-detection challenge](/appsec/bot_detection/intro.md) is supported and is the better fit for separating browsers from automated clients.
+- **An internal redirect is inspected against the URI the client asked for**, not the rewritten target, and inspected once: a redirect never re-runs a check its source scope already ran. A `mod_rewrite` rule into a protected scope is inspected in full, body included. The exception is an error document that lives in a protected scope and is reached from an error Apache raised itself — a 404, say — where Apache has already discarded the body, so only the headers and URI are forwarded and the method reads as `GET`.
+
+### Request body size limit
+
+The limit is buffered per request in flight, so the worst case memory cost is `CrowdsecAppsecBodyLimit` times `MaxRequestWorkers`. Raise it where your application accepts large uploads you want inspected, and account for that product:
+
+```apache
+<Location /upload>
+    Crowdsec                 On
+    CrowdsecAppsec           On
+    CrowdsecAppsecBodyLimit  5m
+</Location>
+```
+
+## Next steps
+
+- Turn on [bot detection](/appsec/bot_detection/intro.md) to separate real browsers from automated clients. Apache serves the challenge interstitial itself, so the component needs nothing beyond the `CrowdsecAppsec` you just enabled. [Enable bot detection](/appsec/bot_detection/enable.md) has the collection and the acquisition file to use.
+- Monitor WAF alerts with `sudo cscli alerts list --kind waf` — and `--kind bot-detection` once that is on — or in the [CrowdSec Console](https://app.crowdsec.net).
+- Review the [AppSec troubleshooting guide](/appsec/troubleshooting.md) and the [Apache component docs](/u/bouncers/apache_bouncer) if you need to investigate or refine the deployment.
+- Explore [WAF deployment strategies](/appsec/advanced_deployments.mdx) if you want to expand beyond this initial setup.
