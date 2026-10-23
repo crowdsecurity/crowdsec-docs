@@ -20,18 +20,18 @@ import BouncerHeader from "@site/src/components/bouncer-header";
 
 # Protect Apache with IP Blocking, WAF & Bot Detection
 
-:::info Packages come from the GitHub release, not the package repository
+:::info v1.0 packages available as github artifacts
 
-`mod_crowdsec` 1.0 is a full rewrite of 0.1. Its packages are attached to the [GitHub release](https://github.com/crowdsecurity/cs-apache2-bouncer/releases) and are not carried in the CrowdSec package repository, so installing by name with `apt install` or `dnf install` will not find them — download the file for your distribution, as below.
+`mod_crowdsec` 1.0 is a full rewrite of 0.1. Its packages are attached to the [GitHub release](https://github.com/crowdsecurity/cs-apache2-bouncer/releases).
 
-An existing 0.1 configuration stays valid and stays in live mode; see [Upgrading from 0.1](#upgrading-from-01). Please report anything you find on [GitHub](https://github.com/crowdsecurity/cs-apache2-bouncer/issues).
+1.0 configuration is backward compatible with 0.1; [Upgrade and adapt your existing configuration](#upgrading-from-01) to take advantage of the new features.
 
 :::
 
 :::tip Enable the WAF for optimal protection
 After installing the module, enable the [AppSec (WAF) Component](/docs/next/appsec/intro) to get virtual patching and defense against known CVEs, SQL injection, XSS and other application-layer attacks.
 
-Follow the dedicated [AppSec QuickStart for Apache](/docs/next/appsec/quickstart/apache) — it picks up right where this page ends.
+Follow the dedicated [AppSec QuickStart for Apache](/docs/next/appsec/quickstart/apache) after completing initial setup.
 :::
 
 ## How does it work?
@@ -108,10 +108,10 @@ Then let `httpd` open outbound connections, which SELinux forbids by default:
 sudo setsebool -P httpd_can_network_connect on
 ```
 
-:::danger Without that boolean the module fails open, and nothing says so
-SELinux gives `httpd_t` no outbound network access, so every call to the local API and to AppSec fails to connect and `CrowdsecFallback allow` — which the shipped configuration sets — lets the request through. Nothing is blocked.
+:::danger Check SELinux configuration
+SELinux gives `httpd_t` no outbound network access, preventing the bouncer to communicate with the local API/AppSec. The default `CrowdsecFallback allow` lets the request through.
 
-It is hard to spot: the policy writes no AVC, so `ausearch -m avc` is empty, and `curl` from your shell works because your shell is unconfined. The only evidence is `crowdsec: live query to 'http://127.0.0.1:8080' failed (connect-fail)` in the httpd error log. The package checks the boolean on install and prints a warning when it is off, but it does not change it: a system-wide SELinux setting is yours to make.
+Look for `crowdsec: live query to 'http://127.0.0.1:8080' failed (connect-fail)` in the httpd error log.
 :::
 
 :::warning
@@ -178,13 +178,13 @@ CrowdsecAPIKey <the key you just generated>
 
 ### Upgrading from 0.1
 
-The upgrade is additive: the eight directives 0.1 understood (`Crowdsec`, `CrowdsecURL`, `CrowdsecAPIKey`, `CrowdsecFallback`, `CrowdsecLocation`, `CrowdsecBlockedHTTPCode`, `CrowdsecCache`, `CrowdsecCacheTimeout`) keep their names and their meaning, so an existing configuration stays valid and stays in live mode. Stream mode, AppSec, bot detection and metrics are opt-in through the new directives below.
+The upgrade is backward compatible. Stream mode, AppSec, bot detection and metrics are opt-in through the new directives below.
 
 ## Configuration
 
-Configuration is plain Apache configuration. The package ships a commented default at `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`, which is where the API key is written, and which Apache reaches through a snippet of its own: `conf.d/crowdsec.conf` on Enterprise Linux, `mods-available/crowdsec.conf` on Debian and Ubuntu. The generated component name is kept beside it as `crowdsec-apache2-bouncer.conf.id`, which is what the package reads to deregister itself when you remove it.
+Configuration is plain Apache configuration. The package ships a commented default at `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`, which is where the API key is written, and which Apache reaches through a snippet of its own: `conf.d/crowdsec.conf` on Enterprise Linux, `mods-available/crowdsec.conf` on Debian and Ubuntu.
 
-Most directives are server-wide. The ones that decide whether a request is checked — `Crowdsec`, `CrowdsecAppsec` and the enforcement directives — are also valid in `<Directory>` and `<Location>`, so you can protect part of a site and not the rest. See the [configuration reference](#configuration-reference) for each directive's scope.
+Most directives are server-wide. The ones that decide whether a request is checked are also valid in `<Directory>` and `<Location>`, so you can protect part of a site and not the rest. See the [configuration reference](#configuration-reference) for each directive's scope.
 
 ### Stream mode
 
