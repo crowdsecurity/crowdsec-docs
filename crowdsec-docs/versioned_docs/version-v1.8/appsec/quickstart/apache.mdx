@@ -17,6 +17,10 @@ Make sure the following are already done on the machine running Apache (each is 
 2. **Apache 2.4.16 or later**, already serving your application(s).
 3. **Apache remediation component** (`crowdsec-apache2-bouncer`) installed and registered against the CrowdSec LAPI. See the [Apache component guide](/u/bouncers/apache_bouncer).
 
+:::warning Enterprise Linux: apply the SELinux boolean first
+`setsebool -P httpd_can_network_connect on`, as the component guide describes. Without it Apache cannot open a connection to AppSec, every request goes uninspected, and nothing in the audit log says why.
+:::
+
 ## 1. Install the AppSec rule collections
 
 ```bash
@@ -50,17 +54,15 @@ Keep `listen_addr` on `127.0.0.1` — the AppSec Component must only be reachabl
 
 ## 3. Enable AppSec forwarding in Apache
 
-Add the AppSec endpoint to `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`, then turn inspection on for the scopes you want covered:
+Add the AppSec endpoint to `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf` and turn inspection on, both at server level:
 
 ```apache title="/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf"
 # AppSec (WAF forwarding)
 CrowdsecAppsecURL http://127.0.0.1:7422
-
-<Location />
-    Crowdsec       On
-    CrowdsecAppsec On
-</Location>
+CrowdsecAppsec    On
 ```
+
+`Crowdsec On` is already there, from the shipped configuration.
 
 Check the configuration and reload Apache:
 
@@ -72,7 +74,9 @@ sudo systemctl reload apache2
 :::note
 On Enterprise Linux the service is `httpd` rather than `apache2`.
 
-`CrowdsecAppsec` is valid in `<Directory>` and `<Location>` as well as at server level, so you can inspect part of a site and leave the rest alone. If AppSec runs on another host or in a container, point `CrowdsecAppsecURL` at an address that Apache can actually reach; a unix socket works too, as `unix:/run/crowdsec/appsec.sock`.
+`CrowdsecAppsec` is valid in `<Directory>` and `<Location>` as well as at server level, so you can inspect part of a site and leave the rest alone. Prefer server level for whole-site coverage rather than a `<Location />` block: Apache merges `<Location>` sections in file order, so a `<Location />` would override a narrower scope that had turned itself off — a status handler or a health check — depending on which file is read first.
+
+If AppSec runs on another host or in a container, point `CrowdsecAppsecURL` at an address that Apache can actually reach; a unix socket works too, as `unix:/run/crowdsec/appsec.sock`.
 :::
 
 ## 4. Verify
@@ -84,6 +88,12 @@ curl -I http://<your-apache-url>/.env
 ```
 
 You should get an `HTTP/1.1 403 Forbidden` response — a blocked request is refused with `CrowdsecBlockedHTTPCode`, which the shipped configuration sets to `403`.
+
+:::warning Check that nothing else is producing that 403
+Two things routinely make this pass for the wrong reason. If you banned your own address while [verifying the component](/u/bouncers/apache_bouncer#verify-the-component-is-in-use), the request is refused on the decision before it ever reaches AppSec. And on Enterprise Linux a freshly installed `httpd` answers `403` for an empty `/var/www/html` regardless, from its `welcome.conf` test page.
+
+Configure the [log variables](/u/bouncers/apache_bouncer#log-variables) and read the verdict instead: an AppSec block logs `CROWDSEC_APPSEC_STATUS` as `ban`, where a decision-based block leaves it empty.
+:::
 
 Check that CrowdSec recorded the block:
 
@@ -110,7 +120,7 @@ sudo cscli metrics show appsec
 - **Request bodies are forwarded up to `CrowdsecAppsecBodyLimit`** (1 MB by default). A larger body is blocked, since `CrowdsecAppsecBodyLimitAction` defaults to `drop`. Setting it to `bypass` lets oversized bodies through **uninspected**, which anyone can trigger by padding a request — see [Request body size limit](#request-body-size-limit).
 - **A gzipped request body is inspected compressed**, because the body is captured before Apache inflates it. Rules matching body content will not fire on it. Your application still receives correct plaintext. This is shared with the other remediation components.
 - **No captcha.** A `captcha` remediation is resolved through `CrowdsecRemediationFallback`, which blocks by default. The [bot-detection challenge](/appsec/bot_detection/intro.md) is supported and is the better fit for separating browsers from automated clients.
-- **An internal redirect is inspected headers-only.** A request reaching a protected scope through `mod_rewrite` or `ErrorDocument` has already had its body consumed, so only its headers and URI are forwarded.
+- **An internal redirect is inspected headers-only, against the URI the client asked for.** A request reaching a protected scope through `mod_rewrite` or `ErrorDocument` has already had its body consumed.
 
 ### Request body size limit
 
@@ -126,7 +136,7 @@ The limit is buffered per request in flight, so the worst case memory cost is `C
 
 ## Next steps
 
-- Turn on [bot detection](/appsec/bot_detection/intro.md) to separate real browsers from automated clients. Apache serves the challenge interstitial itself, so there is nothing more to configure in the component than the `CrowdsecAppsec` you just enabled.
+- Turn on [bot detection](/appsec/bot_detection/intro.md) to separate real browsers from automated clients. Apache serves the challenge interstitial itself, so the component needs nothing beyond the `CrowdsecAppsec` you just enabled. [Bot detection](/u/bouncers/apache_bouncer#bot-detection) on the component page has the acquisition file to use.
 - Monitor WAF alerts with `sudo cscli alerts list` or in the [CrowdSec Console](https://app.crowdsec.net).
 - Review the [AppSec troubleshooting guide](/appsec/troubleshooting.md) and the [Apache component docs](/u/bouncers/apache_bouncer) if you need to investigate or refine the deployment.
 - Explore [WAF deployment strategies](/appsec/advanced_deployments.mdx) if you want to expand beyond this initial setup.
