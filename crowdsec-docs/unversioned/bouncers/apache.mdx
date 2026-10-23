@@ -28,7 +28,7 @@ import BouncerHeader from "@site/src/components/bouncer-header";
 
 :::
 
-:::tip Enable the WAF for optimal protection
+:::tip Enable the WAF and Bot Detection for optimal protection
 After installing the module, enable the [AppSec (WAF) Component](/docs/next/appsec/intro) to get virtual patching and defense against known CVEs, SQL injection, XSS and other application-layer attacks.
 
 Follow the dedicated [AppSec QuickStart for Apache](/docs/next/appsec/quickstart/apache) after completing initial setup.
@@ -202,10 +202,10 @@ CrowdsecCache           shmcb:crowdsec(16777216)
 CrowdsecFallback        allow
 ```
 
-The shipped configuration already sets `Crowdsec On` at server level, so that is all it takes to have it apply everywhere. To cover only part of a site, see [Protect only part of a site](#protect-only-part-of-a-site).
+The shipped configuration already sets `Crowdsec On` at server level, so that is all it takes to have it apply everywhere.
 
 :::warning Size the cache for your decision count
-`CrowdsecCache` is mandatory in stream mode and must be large enough to hold every decision you receive. Budget about 128 bytes per decision — generous on purpose, so that uneven distribution across the cache's internal buckets cannot start evicting early. The shipped `shmcb:crowdsec(16777216)` is the recommended floor and covers around 100,000 decisions; 1,000,000 wants 128 MB. Undersized, decisions are silently evicted and those clients stop being blocked — the error log reports it after each pull, and so does the [status handler](#status-handler). Size it for the blocklists you subscribe to, not for the decisions you have today.
+`CrowdsecCache` is mandatory in stream mode and must be large enough to hold every decision you receive. Budget about 128 bytes per decision. The shipped `shmcb:crowdsec(16777216)` is the recommended floor and covers around 100,000 decisions; 1,000,000 wants 128 MB. Undersized, decisions are silently evicted and those clients stop being blocked — the error log reports it after each pull, and so does the [status handler](#status-handler).
 :::
 
 ### Live mode
@@ -231,44 +231,27 @@ CrowdsecAppsec    On
 
 `Crowdsec On` is there already too.
 
-Prefer that to a `<Location />` block. It covers the same requests, and it leaves a narrower scope — a [status handler](#status-handler), a health check — free to turn itself off whatever order the configuration happens to be read in. Reach for `<Location>` when you want to inspect part of a site and not the rest: see [Protect only part of a site](#protect-only-part-of-a-site).
+Prefer that to a `<Location />` block. See [Protect only part of a site](#protect-only-part-of-a-site) if you need only partial activation.
 
-`CrowdsecAppsecPath` must match the `path` of the AppSec datasource. A 404 from AppSec nearly always means the two disagree.
+`CrowdsecAppsecPath` must match the `path` of the AppSec datasource.
 
 For the engine side of this — rules, acquisition, verification — follow the [AppSec QuickStart for Apache](/docs/next/appsec/quickstart/apache).
 
 ### Bot detection
 
-Bot detection is AppSec with the challenge configs loaded on the engine, so there is nothing to add on the Apache side beyond the `CrowdsecAppsec` you already have. The engine needs two things, not one.
+:::tip Prerequisites
+Bot detection is AppSec with the challenge configs loaded on the engine, so there is nothing to add on the Apache side beyond the `CrowdsecAppsec` you already have. Install the collection and point your AppSec datasource at its configs by following [Enable bot detection](/docs/next/appsec/bot_detection/enable), which also covers the thresholds.
+:::
 
-Install the collection:
-
-```bash
-sudo cscli collections install crowdsecurity/appsec-bot-challenge
-```
-
-Then list the challenge configs in the AppSec datasource. **Installing the collection on its own changes nothing** — the engine loads only the configs named here, so without the glob no request is ever challenged:
-
-```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
-appsec_configs:
-  - crowdsecurity/appsec-default
-  - crowdsecurity/appsec-bot-*
-labels:
-  type: appsec
-listen_addr: 127.0.0.1:7422
-source: appsec
-```
+The engine loads only the appsec-configs named in the datasource, so installing the collection on its own changes nothing and no request is ever challenged. Once both are done, this is the confirmation:
 
 ```bash
-sudo systemctl reload crowdsec
 sudo grep "WAF challenge runtime initialized" /var/log/crowdsec.log
 ```
 
-That log line is the confirmation. Without it the engine is inspecting requests but has no challenge to serve. The glob expands against installed configs only, and matching nothing is fatal, so install the collection first.
+Without that line the engine is inspecting requests but has no challenge to serve.
 
 The challenge serves its own assets and submissions under `CrowdsecAppsecInternalPath` (`/crowdsec-internal/challenge/` by default). Everything under that prefix is reserved for the engine: it is always sent to AppSec — including in scopes where `Crowdsec` is `Off`, since a challenged visitor cannot complete the challenge without it — and never reaches your application. A path under the prefix that the engine does not answer gets a 404.
-
-See [Enable bot detection](/docs/next/appsec/bot_detection/enable) for the engine configuration and the thresholds.
 
 ### Behind a reverse proxy or CDN
 
