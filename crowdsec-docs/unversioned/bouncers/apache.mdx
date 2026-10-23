@@ -20,9 +20,11 @@ import BouncerHeader from "@site/src/components/bouncer-header";
 
 # Protect Apache with IP Blocking, WAF & Bot Detection
 
-:::warning Release candidate
+:::info Packages come from the GitHub release, not the package repository
 
-`mod_crowdsec` 1.0 is a release candidate. Its packages are attached to the [GitHub release](https://github.com/crowdsecurity/cs-apache2-bouncer/releases) and are not in the APT repository yet — the repository still carries 0.1, which is live mode only. Please report anything you find on [GitHub](https://github.com/crowdsecurity/cs-apache2-bouncer/issues).
+`mod_crowdsec` 1.0 is a full rewrite of 0.1. Its packages are attached to the [GitHub release](https://github.com/crowdsecurity/cs-apache2-bouncer/releases) and are not carried in the CrowdSec package repository, so installing by name with `apt install` or `dnf install` will not find them — download the file for your distribution, as below.
+
+An existing 0.1 configuration stays valid and stays in live mode; see [Upgrading from 0.1](#upgrading-from-01). Please report anything you find on [GitHub](https://github.com/crowdsecurity/cs-apache2-bouncer/issues).
 
 :::
 
@@ -117,7 +119,7 @@ Enterprise Linux 7 and Amazon Linux 2 ship Apache 2.4.6, below the 2.4.16 this m
 :::
 
 :::note
-Release assets are not GPG-signed, so a host configured with `localpkg_gpgcheck=1` needs `--nogpgcheck` on that `dnf install`. Signed packages come with the repository, which carries 0.1 for now.
+Release assets are not GPG-signed, so a host configured with `localpkg_gpgcheck=1` needs `--nogpgcheck` on that `dnf install`.
 :::
 
 </TabItem>
