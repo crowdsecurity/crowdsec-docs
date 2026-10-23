@@ -88,7 +88,9 @@ Download the `.deb` matching your distribution and architecture from the [latest
 sudo apt install ./crowdsec-apache2-bouncer_*_amd64.deb
 ```
 
-The package registers a bouncer against the local API, writes the key into `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`, enables the module and reloads Apache. If no local API is reachable at install time, it says so and leaves the key placeholder in place — see [Register the bouncer by hand](#register-the-bouncer-by-hand).
+`apt` accepts a local path where `apt-get` does not, and it pulls in what the package needs: `apache2`, `libcurl` and `gettext-base`. `dpkg -i` works only once those are already installed — without `gettext-base` the package cannot write the API key into its configuration.
+
+If CrowdSec is installed on this host, the package registers a bouncer with it, writes the key into `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`, enables the module and reloads Apache. With no `cscli` on the host it says so and leaves an `<API_KEY>` placeholder, and it does not retry on a later upgrade — see [Register the bouncer by hand](#register-the-bouncer-by-hand).
 
 </TabItem>
 
@@ -100,7 +102,7 @@ Download the `.rpm` matching your release and architecture from the [latest rele
 sudo dnf install ./crowdsec-apache2-bouncer-*.x86_64.rpm
 ```
 
-The package registers a bouncer against the local API, writes the key into `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`, drops its `LoadModule` snippet into `conf.modules.d` and reloads `httpd` once `apachectl configtest` passes.
+If CrowdSec is installed on this host, the package registers a bouncer with it, writes the key into `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`, drops its `LoadModule` snippet into `conf.modules.d` and reloads `httpd` once `apachectl configtest` passes. With no `cscli` on the host it says so and leaves an `<API_KEY>` placeholder — see [Register the bouncer by hand](#register-the-bouncer-by-hand).
 
 Then let `httpd` open outbound connections, which SELinux forbids by default:
 
@@ -163,7 +165,7 @@ sudo systemctl restart apache2
 
 ### Register the bouncer by hand
 
-Only needed if the package could not reach a local API, or if you installed from source. On the local API server:
+Only needed if CrowdSec is not installed on this host, if the key could not be generated, or if you installed from source. On the local API server:
 
 ```bash
 sudo cscli bouncers add apache
@@ -203,7 +205,7 @@ CrowdsecFallback        allow
 The shipped configuration already sets `Crowdsec On` at server level, so that is all it takes to have it apply everywhere. To cover only part of a site, see [Protect only part of a site](#protect-only-part-of-a-site).
 
 :::warning Size the cache for your decision count
-`CrowdsecCache` is mandatory in stream mode and must be large enough to hold every decision you receive. Budget about 128 bytes per decision: 100,000 decisions need at least 6 MB, and 1,000,000 fit in 128 MB. Undersized, decisions are silently evicted and those clients stop being blocked — the error log reports it after each pull, and so does the [status handler](#status-handler). Size it for the blocklists you subscribe to, not for the decisions you have today.
+`CrowdsecCache` is mandatory in stream mode and must be large enough to hold every decision you receive. Budget about 128 bytes per decision — generous on purpose, so that uneven distribution across the cache's internal buckets cannot start evicting early. The shipped `shmcb:crowdsec(16777216)` is the recommended floor and covers around 100,000 decisions; 1,000,000 wants 128 MB. Undersized, decisions are silently evicted and those clients stop being blocked — the error log reports it after each pull, and so does the [status handler](#status-handler). Size it for the blocklists you subscribe to, not for the decisions you have today.
 :::
 
 ### Live mode
@@ -220,14 +222,14 @@ A `CrowdsecCache` is still worth setting in live mode: without it, every Apache 
 
 ### AppSec (WAF)
 
-Add the AppSec endpoint and turn inspection on, both at server level:
+Both lines are already in the shipped configuration, commented out. Uncomment them, at server level:
 
 ```apache
 CrowdsecAppsecURL http://127.0.0.1:7422
 CrowdsecAppsec    On
 ```
 
-`Crowdsec On` is there already, from the shipped configuration.
+`Crowdsec On` is there already too.
 
 Prefer that to a `<Location />` block. It covers the same requests, and it leaves a narrower scope — a [status handler](#status-handler), a health check — free to turn itself off whatever order the configuration happens to be read in. Reach for `<Location>` when you want to inspect part of a site and not the rest: see [Protect only part of a site](#protect-only-part-of-a-site).
 
@@ -381,11 +383,7 @@ Add `--no-unit` for exact numbers instead of ones abbreviated with `k` and `M` s
 `cscli` shows what the local API has accepted, so nothing appears until the first push lands — up to `CrowdsecMetricsInterval`, which is 15 minutes by default. The [status handler](#status-handler) shows the window as it accumulates, so it is the faster way to confirm the counters are moving at all. To shorten the wait while testing, lower the interval and put it back afterwards; anything under a minute is warned about in the error log.
 :::
 
-Nothing is lost when a push fails. A successful one takes back exactly what it reported, and a rejected one leaves the window in place for the next to carry. `metrics_last_status` in the status handler is the HTTP status of the last attempt: anything other than `201`, alongside a growing `metrics_window_age_s`, means pushes are being refused and the figures in `cscli` are stale rather than flat.
-
-Expect `active_decisions` to disagree with the count from `cscli decisions list`: the local API filters and deduplicates the stream it sends, keeping only the longest-running decision for an address listed by several sources. See [Usage metrics](/docs/next/observability/usage_metrics) for the full explanation.
-
-Servers sharing a `CrowdsecURL` and `CrowdsecAPIKey` are one component as far as the local API is concerned, so they share one set of counters and one reporter. An AppSec-only vhost — `CrowdsecAppsecURL` with no `CrowdsecURL` — reports nothing, because `/v1/usage-metrics` is a local API endpoint and the AppSec datasource has none; the error log says so at startup.
+Expect `active_decisions` to disagree with `cscli decisions list`: the local API deduplicates the stream it sends. [Usage metrics](/docs/next/observability/usage_metrics) explains why.
 
 #### Checking the WAF and bot-detection side
 
