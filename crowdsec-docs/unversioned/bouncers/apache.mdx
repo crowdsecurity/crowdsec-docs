@@ -485,20 +485,51 @@ ErrorDocument 403 /sorry.html
 
 ### Verify the component is in use
 
-Ban the address you are testing from, then hit a protected scope. From the Apache host itself, that address is `127.0.0.1`:
+The Hub ships two test items, both triggered by one probe path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`. Neither creates a decision, so it won't lock you out:
 
 ```bash
-sudo cscli decisions add --ip 127.0.0.1 --duration 10m
-curl -I http://127.0.0.1/
-sudo cscli decisions delete --ip 127.0.0.1
+curl -I https://<your-site>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
 ```
+
+The request is meant to go through: `crowdsecurity/appsec-generic-test` is an out-of-band rule, which reports without blocking. What matters is which alerts arrive:
+
+```bash
+sudo cscli alerts list -s crowdsecurity/http-generic-test
+sudo cscli alerts list -s crowdsecurity/appsec-generic-test
+```
+
+| Alert | What it tells you |
+| --- | --- |
+| `crowdsecurity/http-generic-test` | The log processor is reading Apache's logs. That is the detection side, and it says nothing about the bouncer. |
+| `crowdsecurity/appsec-generic-test` | The module forwarded the request to AppSec and got an answer back. Needs `CrowdsecAppsec On` in the scope you probed, and the [virtual patching collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) installed. |
+
+Send the probe from outside the host. The engine whitelists private source addresses by default, and a whitelisted event raises no alert. Each scenario also has a blackhole window, 5 minutes for the HTTP one and 1 minute for the AppSec one, so a second probe inside it produces nothing.
+
+#### Checking that it blocks
+
+Both test scenarios are declared `remediation: false`, so they prove the request reached the engine, not that the module enforces anything. Enforcing needs a decision — and a decision is not scoped to one component.
+
+The module polices the address `mod_remoteip` reports, so where a trusted proxy is already configured — see [Behind a reverse proxy or CDN](#behind-a-reverse-proxy-or-cdn) — send the forwarded header from the trusted hop:
+
+```bash
+sudo cscli decisions add --ip 192.0.2.1 --duration 10m
+curl -I -H 'X-Forwarded-For: 192.0.2.1' http://127.0.0.1/
+sudo cscli decisions delete --ip 192.0.2.1
+```
+
+Without `mod_remoteip` in the picture the header is ignored and the request is judged on the real peer, which is the whole point of [`CrowdsecTrustUseragentIP`](#enforcement). To run the test on a host that has no proxy, trust loopback for it:
+
+```apache
+RemoteIPHeader       X-Forwarded-For
+RemoteIPTrustedProxy 127.0.0.1
+```
+
+Take them back out when you are done. On a host where anything already proxies to Apache over loopback, leaving them in lets a client pick the address being policed — the evasion the [reverse proxy](#behind-a-reverse-proxy-or-cdn) warning is about.
 
 The request should be refused with `CrowdsecBlockedHTTPCode`, which the shipped configuration sets to `403`.
 
-Give the decision time to arrive before concluding anything. The shipped configuration is in live mode, where the worst case is `CrowdsecCacheTimeout` + `CrowdsecLocalCacheTimeout` — 62s with the defaults, which is why the ban above outlasts it. In stream mode it is `CrowdsecUpdateFrequency` + `CrowdsecLocalCacheTimeout` instead, so about 12s.
-
-:::warning The status code on its own proves little
-A bare `403` is a weak signal, and on Enterprise Linux it is no signal at all: a freshly installed `httpd` with an empty `/var/www/html` already answers `403` for `/`, from the `welcome.conf` test page. Put a real `index.html` in the docroot first, then read the verdict rather than the status — with the [log variables](#log-variables) configured, a blocked request logs `ban`, and `CROWDSEC_SOURCE` says whether it came from the stream cache or a live query.
-:::
+Give the decision time to arrive before concluding anything. The shipped configuration is in live mode, where the worst case is `CrowdsecCacheTimeout` + `CrowdsecLocalCacheTimeout` — 62s with the defaults, which is why the ban above outlasts it. In stream mode it is `CrowdsecUpdateFrequency` + `CrowdsecLocalCacheTimeout` instead, so about 12s. An address you have never sent a request as has nothing cached, so in practice the first probe after `decisions add` is already refused.
 
 That block should show up as a `dropped{origin=cscli}` in the [status handler](#status-handler) straight away, and in `cscli metrics show bouncers` once the first report lands — see [Checking from the local API](#checking-from-the-local-api).
+
+In stream mode you can also confirm the decision path without sending a request at all: ban `192.0.2.1` and watch `stored` and `active_decisions` climb in the [status handler](#status-handler). That tells you the module is pulling the stream, which is the half that breaks silently. Live mode keeps no local store, so it shows nothing there.
