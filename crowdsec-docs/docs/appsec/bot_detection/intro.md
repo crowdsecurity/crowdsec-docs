@@ -37,6 +37,7 @@ For the full request flow, see [How it works](how_it_works.md).
 
 - A working AppSec setup. If you don't have one yet, follow the [general AppSec quickstart](../quickstart/general.mdx).
 - A **compatible bouncer**. The currently compatible ones (look for the **Bot Detection** badge at the top of their page) are:
+  - [Apache](/u/bouncers/apache_bouncer)
   - [Nginx](/u/bouncers/nginx)
   - [OpenResty](/u/bouncers/openresty)
   - [HAProxy SPOA](/u/bouncers/haproxy_spoa)
