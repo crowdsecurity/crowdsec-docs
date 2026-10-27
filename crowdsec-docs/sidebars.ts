@@ -731,7 +731,13 @@ const sidebarsConfig: SidebarConfig = {
 			],
 		},
 		{ type: "doc", id: "appsec/api_validation" },
-		{ type: "doc", id: "appsec/rate_limiting" },
+		{
+			type: "doc",
+			id: "appsec/rate_limiting",
+			customProps: {
+				tag: "new",
+			},
+		},
 		{
 			type: "category",
 			label: "References",
