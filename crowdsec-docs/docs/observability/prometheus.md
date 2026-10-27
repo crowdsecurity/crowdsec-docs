@@ -87,6 +87,8 @@ cs_node_hits_ko_total{name="crowdsecurity/http-logs",source="/var/log/nginx/erro
 
 -   `cs_parsing_time_seconds` : time spent parsing a line (Histogram, labels: `type`, `source`)
 -   `cs_bucket_pour_seconds` : time spent pouring an event to buckets (Histogram, labels: `type`, `source`)
+-   `cs_postoverflow_queue_depth` : number of overflows waiting for postoverflow parsing, per output routine (Gauge, labels: `routine`). See [`output.queue_size`](/configuration/crowdsec_configuration.md#outputqueue_size).
+-   `cs_postoverflow_dropped_total` : number of overflows dropped because the postoverflow queue was full; no alert is created for them (Counter, labels: `routine`)
 
 #### Decisions & Alerts
 
