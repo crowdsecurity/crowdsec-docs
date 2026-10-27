@@ -129,7 +129,9 @@ This leads to two possible outcomes:
 
 ### Out-of-band rule processing
 
-In the background, the security engine will then evaluate the out-of-band rules. These rules do not impact performance or response time, as they are evaluated after the AppSec Component instructs the webserver to continue or stop processing the request.
+In the background, the security engine will then evaluate the out-of-band rules. These rules do not impact performance or response time, as they are evaluated by dedicated workers after the AppSec Component instructs the webserver to continue or stop processing the request.
+
+If the out-of-band workers can't keep up, requests are queued, and once the queue is full, new requests skip out-of-band evaluation. See the [`routines`](/log_processor/data_sources/appsec.md#routines) setting of the acquisition.
 
 They are usually meant to detect repetitive unwanted behavior (for example, application spam, resource enumeration, scalping). When these rules trigger, they emit an event that the Security Engine processes like a log line.
 
