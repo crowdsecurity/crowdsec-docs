@@ -702,7 +702,6 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/configuration_creation_testing" },
 				{ type: "doc", id: "appsec/configuration_rule_management" },
 				{ type: "doc", id: "appsec/hooks" },
-				{ type: "doc", id: "appsec/api_validation" },
 			],
 		},
 		{
@@ -731,6 +730,14 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/bot_detection/hooks" },
 				{ type: "doc", id: "appsec/bot_detection/challenge_protocol" },
 			],
+		},
+		{ type: "doc", id: "appsec/api_validation" },
+		{
+			type: "doc",
+			id: "appsec/rate_limiting",
+			customProps: {
+				tag: "new",
+			},
 		},
 		{
 			type: "category",
