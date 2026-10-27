@@ -175,6 +175,8 @@ Read logs until timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 
 
 Read logs since timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes).
 
+Only used in one-shot mode (e.g. with a DSN). In streaming mode, `since` is ignored with a warning: containers and services are read from the moment they are discovered, including when they restart, so the logs of their previous runs are not read again.
+
 ### `check_interval`
 
 Relative interval (e.g. 5s for 5 seconds) to check for new containers matching the configuration.
