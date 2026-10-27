@@ -394,6 +394,15 @@ const sidebarsConfig: SidebarConfig = {
 		},
 		{
 			type: "category",
+			label: "cscli bot",
+			link: {
+				type: "doc",
+				id: "cscli/cscli_bot",
+			},
+			items: ["cscli/cscli_bot_fsid", "cscli/cscli_bot_match"],
+		},
+		{
+			type: "category",
 			label: "cscli bouncers",
 			link: {
 				type: "doc",
