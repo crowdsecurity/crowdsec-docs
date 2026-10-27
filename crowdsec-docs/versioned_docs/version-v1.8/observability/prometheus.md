@@ -93,7 +93,7 @@ cs_node_hits_ko_total{name="crowdsecurity/http-logs",source="/var/log/nginx/erro
 #### Decisions & Alerts
 
 -   `cs_active_decisions` : number of active decisions (Gauge, labels: `reason`, `origin`, `action`)
--   `cs_alerts` : number of alerts, excluding CAPI (Gauge, labels: `reason`)
+-   `cs_alerts` : number of alerts, excluding CAPI, per scenario (`reason`) and alert kind (`kind`: `crowdsec`, `waf`, `bot-detection`, `papi` or `cscli`; empty for alerts created before CrowdSec recorded the kind) (Gauge, labels: `reason`, `kind`)
 
 #### Application Security Engine
 
@@ -193,6 +193,11 @@ Acquisition metrics are split by datasource. They only appear when the correspon
 -   `cs_lapi_decisions_ok_total` : number of calls to /decisions that returned non-nil result (Counter, labels: `bouncer`)
 -   `cs_lapi_request_duration_seconds` : response time of LAPI (Histogram, labels: `endpoint`, `method`)
 -   `cs_machines_last_heartbeat_timestamp` : unix timestamp of the last heartbeat received from a machine (Gauge, labels: `machine`)
+
+#### Central API
+
+-   `cs_capi_last_pull_timestamp` : unix timestamp of the last successful decisions pull from the Central API (Gauge). Alert on it growing old to detect a Local API that stopped receiving community decisions.
+-   `cs_capi_errors_total` : number of failed requests to the Central API (Counter, labels: `operation`: `pull` for the decisions pull, `push` for sending signals, `metrics` for sending usage metrics)
 
 #### Cache
 
