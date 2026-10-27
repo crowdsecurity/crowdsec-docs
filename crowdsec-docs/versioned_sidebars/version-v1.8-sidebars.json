@@ -290,7 +290,7 @@
             {
               "type": "doc",
               "id": "contributing/specs/bouncer_appsec_specs",
-              "label": "Bouncer&AppSec"
+              "label": "Bouncer & AppSec"
             },
             {
               "type": "doc",
@@ -781,10 +781,6 @@
         {
           "type": "doc",
           "id": "appsec/hooks"
-        },
-        {
-          "type": "doc",
-          "id": "appsec/api_validation"
         }
       ]
     },
@@ -854,6 +850,17 @@
           "id": "appsec/bot_detection/challenge_protocol"
         }
       ]
+    },
+    {
+      "type": "doc",
+      "id": "appsec/api_validation"
+    },
+    {
+      "type": "doc",
+      "id": "appsec/rate_limiting",
+      "customProps": {
+        "tag": "new"
+      }
     },
     {
       "type": "category",
