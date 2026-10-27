@@ -1201,6 +1201,10 @@ Path to certificate file.
 
 Path to certificate key file.
 
+The certificate and key are reloaded automatically when the files change, without reloading or restarting CrowdSec, so certificates renewed in place (cert-manager, Kubernetes, ACME clients, …) are picked up on their own. The files are checked at most every 10 seconds, on incoming TLS connections, and CrowdSec logs `(tls) reloaded server certificate` when it switches. If the new files can't be read or don't make a valid pair, for example while a renewal has written the certificate but not yet the key, the current certificate keeps being served and a warning is logged.
+
+This only applies to `cert_file` and `key_file`: a change to `ca_cert_path` still needs CrowdSec to be reloaded.
+
 ###### `client_verification`
 
 Whether LAPI should require or not a client certificate for authentication.
