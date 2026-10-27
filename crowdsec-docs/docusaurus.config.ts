@@ -70,13 +70,11 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 			{ type: "doc", docId: "intro", label: "Security Engine" },
 			{ to: "/u/bouncers/intro", label: "Remediation Components" },
 			{
-				type: "docsVersion",
-				to: "/docs/next/appsec/intro",
+				to: "/docs/appsec/intro",
 				label: "Web Application Firewall (AppSec)",
 			},
 			{
-				type: "docsVersion",
-				to: "/docs/next/appsec/bot_detection/intro",
+				to: "/docs/appsec/bot_detection/intro",
 				label: "Bot Detection",
 				className: "navbar-item-new",
 			},
@@ -273,7 +271,7 @@ const redirects = [
 	{ from: "/Crowdsec/v1/contributing", to: "/docs/contributing/getting_started" },
 	{ from: "/Crowdsec/v1/references/acquisition", to: "/docs/log_processor/data_sources/intro" },
 	{ from: "/Crowdsec/v1/getting_started/installation", to: "/u/getting_started/installation/linux" },
-	{ from: "/docs/next/appsec/installation/", to: "/docs/next/appsec/quickstart/general_setup/" },
+	{ from: "/docs/next/appsec/installation/", to: "/docs/appsec/quickstart/general_setup/" },
 ];
 
 // Docs versions dropped from the site; archived pages and old backlinks still point at them.
@@ -405,7 +403,7 @@ const config: Config = {
 			// or nobody who dismissed the previous banner will ever see the new one.
 			id: "banner_botdetection",
 			content:
-				'<a href="/docs/next/appsec/bot_detection/intro/">Stop scrapers and headless browsers — discover CrowdSec Bot Detection</a>',
+				'<a href="/docs/appsec/bot_detection/intro/">Stop scrapers and headless browsers — discover CrowdSec Bot Detection</a>',
 			backgroundColor: "#F8AB13",
 			textColor: "#131132",
 			isCloseable: true,
@@ -450,8 +448,12 @@ const config: Config = {
 				docs: {
 					sidebarPath: "./sidebars.ts",
 					editUrl: "https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/",
-					lastVersion: "current",
+					// The stable version is the default landing target (navbar doc links,
+					// Algolia search context); /docs/next/ is reachable via the dropdown only.
+					lastVersion: "v1.8",
 					versions: {
+						// The stable version is the one search engines should index; it
+						// self-canonicalizes (Docusaurus default) and fills the sitemap.
 						"v1.8": {
 							banner: "none",
 							path: "/",
@@ -465,8 +467,12 @@ const config: Config = {
 						"v1.6": {
 							noIndex: true,
 						},
+						// Duplicate of the stable docs (plus not-yet-released bits): indexing
+						// it would split ranking signals away from the stable pages.
 						current: {
 							path: "/next",
+							noIndex: true,
+							banner: "none",
 						},
 					},
 					admonitions: {
@@ -485,11 +491,8 @@ const config: Config = {
 					lastmod: hasFullGitHistory() ? "datetime" : null,
 					changefreq: null,
 					priority: null,
-					// Docs of the version served at /docs/ declare their /docs/next/ copy as canonical (src/theme/DocRoot/Layout).
-					createSitemapItems: async ({ defaultCreateSitemapItems, ...params }) =>
-						(await defaultCreateSitemapItems(params)).filter(
-							(item) => !/^\/docs\/(?!next\/|v\d)/.test(new URL(item.url).pathname)
-						),
+					// noIndex versions (next, v1.7, v1.6) are dropped by the plugin itself,
+					// so the sitemap only lists stable /docs/ and unversioned /u/ pages.
 				},
 			} satisfies Preset.Options,
 		],
@@ -527,10 +530,15 @@ const config: Config = {
 					includeBlog: false,
 					includePages: false,
 					includeDocs: true,
-					includeVersionedDocs: false, // Only include "next" version, exclude v1.6, v1.7, etc.
+					// llms.txt must hand AI crawlers the same URLs search engines index:
+					// the stable /docs/ version, not next/v1.7/v1.6.
+					includeVersionedDocs: true,
 					excludeRoutes: [
 						"/search", // Exclude search page
 						"**/tags/**", // Exclude tag pages
+						"/docs/next/**",
+						"/docs/v1.7/**",
+						"/docs/v1.6/**",
 					],
 				},
 				optionalLinks: [

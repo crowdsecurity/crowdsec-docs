@@ -94,7 +94,7 @@ Verify system time is synced (via NTP). Large clock drifts can invalidate consol
 
 Restore connectivity to the Console:
 
-1. Check that you can access crowdsec services and APIs listed in [network management](https://doc.crowdsec.net/docs/next/configuration/network_management/)
+1. Check that you can access crowdsec services and APIs listed in [network management](https://doc.crowdsec.net/docs/configuration/network_management/)
 
 2. If a proxy is required, set `HTTP_PROXY`/`HTTPS_PROXY` (and `NO_PROXY` if needed) for the crowdsec service (see [How to set up a proxy](/u/troubleshooting/security_engine#how-to-set-up-a-proxy)) and restart it.
 

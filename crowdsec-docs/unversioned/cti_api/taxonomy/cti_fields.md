@@ -1,6 +1,7 @@
 ---
 id: cti_object
-title: Format
+title: "CTI object: format"
+sidebar_label: Format
 sidebar_position: 2
 ---
 

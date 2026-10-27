@@ -1,6 +1,7 @@
 ---
 id: getting_started
-title: Getting Started
+title: "Contributing: getting started"
+sidebar_label: Getting Started
 sidebar_position: 1
 ---
 

@@ -20,9 +20,9 @@ import BouncerHeader from "@site/src/components/bouncer-header";
 # Protect HAProxy with IP Blocking & WAF
 
 :::tip Enable the WAF for optimal protection
-This is the **only HAProxy bouncer with WAF (AppSec) support**. After installing the bouncer, enable the [WAF (AppSec) Component](/docs/next/appsec/intro) for real-time WAF protection, virtual patching, and defense against known CVEs.
+This is the **only HAProxy bouncer with WAF (AppSec) support**. After installing the bouncer, enable the [WAF (AppSec) Component](/docs/appsec/intro) for real-time WAF protection, virtual patching, and defense against known CVEs.
 
-Follow the dedicated [WAF Quickstart for HAProxy](/docs/next/appsec/quickstart/haproxy_spoa) — it picks up right where this page ends.
+Follow the dedicated [WAF Quickstart for HAProxy](/docs/appsec/quickstart/haproxy_spoa) — it picks up right where this page ends.
 :::
 
 ## What it does
@@ -455,7 +455,7 @@ turnstile
 ### AppSec (WAF) forwarding — configuration reference
 
 :::tip Turning this on
-To enable the WAF end-to-end, follow the [AppSec Quickstart for HAProxy](/docs/next/appsec/quickstart/haproxy_spoa) — it picks up after the bouncer install and walks through collections, acquisition, and enabling forwarding.
+To enable the WAF end-to-end, follow the [AppSec Quickstart for HAProxy](/docs/appsec/quickstart/haproxy_spoa) — it picks up after the bouncer install and walks through collections, acquisition, and enabling forwarding.
 :::
 
 HAProxy requirements when using AppSec (and/or captcha):
@@ -552,7 +552,7 @@ downstream of HAProxy, or protect the application directly.
 ### Bot detection challenge
 
 :::tip Prerequisites
-Bot detection is an AppSec feature. First enable AppSec forwarding as described above, then follow the [bot detection guide](/docs/next/appsec/bot_detection/intro).
+Bot detection is an AppSec feature. First enable AppSec forwarding as described above, then follow the [bot detection guide](/docs/appsec/bot_detection/intro).
 :::
 
 Install the AppSec collections used by bot detection:

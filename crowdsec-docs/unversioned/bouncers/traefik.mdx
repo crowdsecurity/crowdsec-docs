@@ -23,13 +23,13 @@ import BouncerHeader from "@site/src/components/bouncer-header";
 # Protect Traefik with CrowdSec IP Blocking & WAF
 
 :::tip AppSec Support
-This bouncer supports the [AppSec Component](/docs/next/appsec/intro) for
+This bouncer supports the [AppSec Component](/docs/appsec/intro) for
 real-time WAF protection. Enable `crowdsecAppsecEnabled: true` in your
 middleware configuration to get virtual patching and defense against known
 CVEs, SQL injection, XSS, and other application-layer attacks.
 
 For a full walkthrough, see the
-[AppSec Quickstart for Traefik](/docs/next/appsec/quickstart/traefik).
+[AppSec Quickstart for Traefik](/docs/appsec/quickstart/traefik).
 :::
 
 ## Traefik on kubernetes
@@ -40,7 +40,7 @@ the configuration options in the [bouncer
 documentation](https://github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin).
 You can also refer to a [full traefik and CrowdSec stack on
 kubernetes](https://github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin/tree/main/examples/kubernetes)
-or our [Appsec Traefik Quickstart](/docs/next/appsec/quickstart/traefik).
+or our [Appsec Traefik Quickstart](/docs/appsec/quickstart/traefik).
 :::
 
 ### Objectives
@@ -61,7 +61,7 @@ At the end, you will have:
 
 It is assumed that you already have:
 
-- A working CrowdSec [Security Engine](/docs/next/intro) installation. For a
+- A working CrowdSec [Security Engine](/docs/intro) installation. For a
   Kubernetes install quickstart, refer to
   [/u/getting_started/installation/kubernetes](/u/getting_started/installation/kubernetes).
 - A working Traefik installation in Kubernetes.

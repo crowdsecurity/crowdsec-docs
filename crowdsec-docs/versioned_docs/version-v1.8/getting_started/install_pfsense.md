@@ -1,6 +1,7 @@
 ---
 id: install_crowdsec_pfsense
-title: pfSense
+title: "Install the Security Engine on pfSense: detailed guide"
+sidebar_label: pfSense
 ---
 
 The CrowdSec package for pfSense requires some manual installation steps, as it is not yet available in the official repositories.

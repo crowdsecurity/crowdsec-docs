@@ -29,12 +29,12 @@ export const SECTION_MAP: Record<string, SectionInfo> = {
 	},
 	appSecSideBar: {
 		label: "Web Application Firewall",
-		introPath: "/docs/next/appsec/intro",
+		introPath: "/docs/appsec/intro",
 		parent: { label: "Security Engine", introPath: "/docs/intro" },
 	},
 	cscliSidebar: {
 		label: "Cscli",
-		introPath: "/docs/next/cscli",
+		introPath: "/docs/cscli",
 		parent: { label: "Security Engine", introPath: "/docs/intro" },
 	},
 	sdkSideBar: {

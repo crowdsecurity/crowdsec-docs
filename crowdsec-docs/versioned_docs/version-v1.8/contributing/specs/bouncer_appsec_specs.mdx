@@ -207,7 +207,7 @@ AppSec is disabled by default and activable if url exists configurable field app
   * Default endpoint `http://127.0.0.1:7422`
   * Auth by API key passed in the header **X-Crowdsec-Appsec-Api-Key** (same value as the LAPI api_key)  
 * Request forwarding  
-  * You can find information about the forwarding protocol on this doc page: [https://docs.crowdsec.net/docs/next/appsec/protocol/](https://docs.crowdsec.net/docs/next/appsec/protocol/)  
+  * You can find information about the forwarding protocol on this doc page: [https://docs.crowdsec.net/docs/appsec/protocol/](https://docs.crowdsec.net/docs/appsec/protocol/)  
   * When forwarding the query to the AppSec endpoint, the security engine will evaluate the actions to do and return the appropriate response code that the remediation component should display.   
     * ⚠️ At the exception of codes **500** and **401** which mean that the forwarding or authentication to the endpoint failed. For those response codes you should trigger the fallback described there after..  
   * ⚠️ As stated earlier this is a blocking process  
@@ -297,7 +297,7 @@ Shutdown the *crowdsec service* to test the failure cases.
 
 You can refer to the AppSec documentation to test request forwarding.
 
-* AppSec [quickstart guide here](https://docs.crowdsec.net/docs/next/appsec/quickstart/general_setup/), [Testing example here](https://docs.crowdsec.net/docs/next/appsec/quickstart/general_setup/#testing-waf-component)  
+* AppSec [quickstart guide here](https://docs.crowdsec.net/docs/appsec/quickstart/general_setup/), [Testing example here](https://docs.crowdsec.net/docs/appsec/quickstart/general_setup/#testing-waf-component)  
 * E.g. Install virtual patching and try to query a */rpc2* or a *.env* file
 
 ## Appendix 

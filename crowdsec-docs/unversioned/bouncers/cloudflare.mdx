@@ -54,7 +54,7 @@ This **Remediation Component** uses **Cloudflare Workers** to block or challenge
 The source of those decisions
 
 - A **[Blocklist Integration Endpoint](/u/integrations/remediationcomponent)**: a URL served by CrowdSec, no infrastructure required on your side. This is the simplest option.
-- A **[Security Engine](/docs/next/intro)** you run in your own infrastructure: the Sync Worker connects to your LAPI to pull decisions directly.
+- A **[Security Engine](/docs/intro)** you run in your own infrastructure: the Sync Worker connects to your LAPI to pull decisions directly.
 
 :::warning
 This Remediation Component relies on Cloudflare Workers and the KV store. It works best on a paid Workers subscription. See [Appendix: Cloudflare Free Plan](#appendix-test-with-cloudflare-free-plan) for details.
