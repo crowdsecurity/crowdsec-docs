@@ -102,7 +102,8 @@ This hook is intended to be used to disable rules only for this particular reque
 | `SetRemediationByID`        | `func(id int, remediation string)`   | Change the remediation of the in-band rule identified by the ID                                                                                                                                                                                                 |
 | `SetRemediationByName`      | `func(name str, remediation string)` | Change the remediation of the in-band rule identified by the name                                                                                                                                                                                               |
 | `req`                       | `http.Request`                       | Original HTTP request received by the remediation component                                                                                                                                                                                                     |
-| `DropRequest`               | `func(reason str)`                   | Stop processing the request immediately and instruct the remediation component to block the request                                                                                                                                                             |
+| `DropRequest`               | `func(reason str)`                   | Stop processing the request immediately and instruct the remediation component to block the request. See [`DropRequest` and `SkipProcessing`](#droprequest-and-skipprocessing)                                                                                 |
+| `SkipProcessing`            | `func(reason str)`                   | Stop processing the request immediately and let it through, without generating an event or an alert. See [`DropRequest` and `SkipProcessing`](#droprequest-and-skipprocessing)                                                                                  |
 | `DisableBodyInspection`     | `func()`                             | Skip body inspection for the current request (also bypasses the maximum body size check). See [Request body size handling](#request-body-size-handling)                                                                                                         |
 | `ValidateRequestWithSchema` | `func(ref str) bool`                 | Validate the current request against an OpenAPI schema previously loaded under `ref` (returns `true` on success). On failure, structured details are published to `hook_vars` (see [OpenAPI Schema Validation](api_validation.md#validation-result-variables)). |
 | `RateLimit`                 | `func(key str, limit str, source str?) bool` | Rate limit the current request under `key` (eg, `"5/m"`), per client IP or per `source` value. Over the limit, the request is blocked with a `429` and `true` is returned. In-band only. See [Rate Limiting](rate_limiting.md).                                     |
@@ -115,7 +116,7 @@ This hook is intended to be used to disable rules only for this particular reque
 | `SetRemediation`            | `func(remediation str)`              | Pre-set the remediation applied **if** this request ends up being blocked (a rule matches, or `DropRequest()` fires). It does not block the request on its own. See [`SetRemediation*`](#setremediation)                                                                          |
 | `SetReturnCode`             | `func(code int)`                     | Pre-set, in the same way, the HTTP code returned to the user if the request ends up being blocked                                                                                                                                                                                |
 | `fingerprint`               | `object`                             | The decoded challenge fingerprint when the request carries a valid challenge cookie (`on_challenge` runs before `pre_eval` and populates it), `nil` otherwise. See [The `fingerprint` object](bot_detection/hooks.md#the-fingerprint-object).                                     |
-| Score helpers               |                                      | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring).                                                                   |
+| Score helpers               |                                      | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor`, `RequestScoreCategories`, `SetRequestScore` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring).                                                                   |
 
 #### Example
 
@@ -130,6 +131,31 @@ inband:
     - filter: req.RemoteAddr == "192.168.1.1"
       apply:
         - RemoveInBandRuleByName("my_rule")
+```
+
+#### `DropRequest` and `SkipProcessing`
+
+Both helpers end the current pass early: no WAF rule is evaluated for the request in this pass. `post_eval` hooks still run.
+
+- `DropRequest(reason)` blocks the request with the config's default remediation, and generates an event (and an alert, in-band) as a rule match would.
+- `SkipProcessing(reason)` lets the request through with the default pass response, and generates neither an event nor an alert. Use it to exclude requests you don't want inspected at all, for example health checks.
+
+Only the current pass is affected: skipping a request in-band doesn't prevent the out-of-band rules from evaluating it, and the other way round. Use `SkipProcessing` in both blocks to exclude a request entirely.
+
+The first decision wins: once a request has been dropped or skipped in a pass, further calls to either helper are ignored with a warning, and `SendChallenge()` becomes a no-op. `reason` is recorded in the debug logs.
+
+```yaml
+name: my/skip-health-checks
+inband:
+  pre_eval:
+    - filter: req.URL.Path == "/healthz"
+      apply:
+        - SkipProcessing("health check")
+outofband:
+  pre_eval:
+    - filter: req.URL.Path == "/healthz"
+      apply:
+        - SkipProcessing("health check")
 ```
 
 ### `post_eval`
@@ -153,7 +179,7 @@ This hook is mostly intended for debugging or threat-hunting purposes.
 | `HasValidChallengeCookie` | `func() bool`               | `true` if the request has already cleared the challenge: it presented a valid `__crowdsec_challenge` cookie, or an earlier hook exempted it. A cookie minted during this very request does not count. See [`HasValidChallengeCookie`](bot_detection/hooks.md#hasvalidchallengecookie).                          |
 | `fingerprint`            | `object`                      | The decoded challenge fingerprint when the request carries a valid challenge cookie, `nil` otherwise. See [The `fingerprint` object](bot_detection/hooks.md#the-fingerprint-object).                                                                                             |
 | `hook_vars`              | `map[string]string`           | Per-request scratch space shared with the other hooks and propagated to the resulting event                                                                                                                                                                                     |
-| Score helpers            |                               | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring).                                                                   |
+| Score helpers            |                               | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor`, `RequestScoreCategories`, `SetRequestScore` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring).                                                                   |
 
 #### DumpRequest
 
@@ -221,7 +247,7 @@ This hook is intended to be used to change the behavior of the engine after a ma
 | `ExemptFromChallenge` | `func(reason str)`    | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](bot_detection/hooks.md#known-bots). |
 | `HasValidChallengeCookie` | `func() bool`     | `true` if the request has already cleared the challenge: it presented a valid `__crowdsec_challenge` cookie, or an earlier hook exempted it. A cookie minted during this very request does not count. See [`HasValidChallengeCookie`](bot_detection/hooks.md#hasvalidchallengecookie). |
 | `hook_vars`     | `map[string]string`        | Per-request scratch space shared with the other hooks and propagated to the resulting event                                                                   |
-| Score helpers | | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring). |
+| Score helpers | | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor`, `RequestScoreCategories`, `SetRequestScore` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring). |
 
 #### Example
 
