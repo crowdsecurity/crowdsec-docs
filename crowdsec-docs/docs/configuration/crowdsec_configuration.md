@@ -265,6 +265,10 @@ api:
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     disable_remote_lapi_registration: (true|false)
     disable_usage_metrics_export: (true|false)
+    decisions_stream:
+      page_size: <int>
+      max_concurrent_requests: <int>
+      max_queue_wait: <duration>
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
     tls:
       cert_file: "<path_to_certificat_file>"
@@ -909,6 +913,10 @@ api:
         blocklists: "(true|false)"
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     disable_remote_lapi_registration: (true|false)
+    decisions_stream:
+      page_size: <int>
+      max_concurrent_requests: <int>
+      max_queue_wait: <duration>
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
     tls:
       cert_file: "<path_to_certificat_file>"
@@ -1029,6 +1037,10 @@ server:
     credentials_path: <path_to_crowdsec_api_client_credential_file>
   disable_remote_lapi_registration: (true|false)
   disable_usage_metrics_export: (true|false)
+  decisions_stream:
+    page_size: <int>
+    max_concurrent_requests: <int>
+    max_queue_wait: <duration>
   capi_whitelists_path: "<path_to_capi_whitelists_file>"
   tls:
     cert_file: <path_to_certificat_file>
@@ -1102,6 +1114,44 @@ This option will disable the registration of remote agents using `cscli lapi reg
 > bool
 
 If set to true, the Local API will not export usage metrics to the CrowdSec Web Console. Defaults to false.
+
+##### `decisions_stream`
+
+Tuning for `/v1/decisions/stream`, the endpoint remediation components poll in stream mode.
+
+```yaml
+decisions_stream:
+  page_size: <int>
+  max_concurrent_requests: <int>
+  max_queue_wait: <duration>
+```
+
+###### `page_size`
+> int
+
+The number of decisions the Local API reads from the database at a time when answering `/v1/decisions/stream`. Defaults to `30000`, which is also used when it is unset or `0`. A negative value logs a warning at startup and uses the default.
+
+Each in-flight stream request holds one page in memory, so peak memory grows with the page size times the number of remediation components pulling at the same time. With a large fleet and a large blocklist, lowering it reduces that peak. The cost is more database queries per pull, one per page. Remediation components see no difference: a pull is still a single response with every decision in it.
+
+###### `max_concurrent_requests`
+> int
+
+The maximum number of `/v1/decisions/stream` requests the Local API serves at once. Requests beyond it wait for a free slot, and a slot is held until the response is fully written. Unset or `0` means no limit, which is the default. A negative value logs a warning at startup and also means no limit.
+
+Together with `page_size`, this bounds the memory the stream endpoint uses: roughly `max_concurrent_requests` times the memory of one page. It doesn't cover `/v1/decisions`, which remediation components use in live mode.
+
+A queued request waits at most [`max_queue_wait`](#max_queue_wait) for a slot. A request that waited still gets an up-to-date answer: the decisions it receives are computed once it gets its slot.
+
+A remediation component that keeps its connection open but stops reading holds its slot until that connection closes.
+
+###### `max_queue_wait`
+> duration
+
+How long a `/v1/decisions/stream` request beyond `max_concurrent_requests` waits for a free slot. Defaults to `10s`, which is also used when it is unset, `0` or negative. Only used when `max_concurrent_requests` is set.
+
+When the wait is over, the Local API answers `503 Service Unavailable` and logs a warning naming the remediation component. Nothing was sent, so the component misses nothing: it gets the same decisions on its next successful pull, but they stay stale until then.
+
+Keep it below the shortest stream timeout among your remediation components, so they get the `503` (and can log it) rather than giving up on their own. If warnings are frequent, raise `max_concurrent_requests` or lower `page_size` so that each request is served faster.
 
 ##### `capi_whitelists_path`
 > string
