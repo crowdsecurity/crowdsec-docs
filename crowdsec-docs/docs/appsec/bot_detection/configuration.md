@@ -75,6 +75,8 @@ During a challenge the AppSec component serves the client three pieces of JavaSc
 - The **crypto/glue bundle** — the small block that runs the proof-of-work, XORs the fingerprint, and posts the submission.
 - The **per-epoch signing-key module** — the only sensitive artefact, because it carries the live signing key. It is re-obfuscated **at runtime**, and you can control how many distinct variants are kept per epoch.
 
+When [custom detection scripts](custom_js.md) are loaded, they are served as well, on their own `<script>` tag and unobfuscated.
+
 Code running inside an attacker-controlled browser can always be reverse-engineered eventually; obfuscation buys time and cost, not invisibility.
 
 | Key | Default | What it controls |
@@ -88,6 +90,7 @@ These `challenge:` fields are safety backstops sized for correctness and DoS res
 | Key | Default | What it controls |
 |---|---|---|
 | `max_cookie_size` | `4096` | Upper bound, in bytes, on the sealed challenge cookie — enforced on both seal and open. It caps the memory allocated from the attacker-supplied fingerprint envelope, closing an over-allocation DoS. `4096` is the per-cookie size browsers guarantee; raise it only if a non-browser client you control tolerates larger cookies. |
+| `custom_js_timeout` | `500ms` | Time budget shared by all the [custom detection scripts](custom_js.md) in the visitor's browser. Once it is spent, the challenge is submitted without waiting for the scripts still running. The visitor waits on the challenge page during this time, so keep it short. |
 | `spent_set_max_entries` | `1000000` | Maximum number of entries in the replay-protection set that stops a solved challenge from being submitted twice. A deep DoS backstop — steady-state usage stays far below it. |
 | `log_level` | inherits global | Log verbosity for the challenge runtime alone, independent of the global CrowdSec log level (`debug`, `info`, `warning`, `error`). Lets you turn up challenge diagnostics without making the rest of CrowdSec noisy. |
 

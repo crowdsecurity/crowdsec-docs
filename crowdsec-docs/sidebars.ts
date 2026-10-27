@@ -726,6 +726,7 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/bot_detection/whats_included" },
 				{ type: "doc", id: "appsec/bot_detection/how_it_works" },
 				{ type: "doc", id: "appsec/bot_detection/customization" },
+				{ type: "doc", id: "appsec/bot_detection/custom_js" },
 				{ type: "doc", id: "appsec/bot_detection/configuration" },
 				{ type: "doc", id: "appsec/bot_detection/hooks" },
 				{ type: "doc", id: "appsec/bot_detection/challenge_protocol" },
