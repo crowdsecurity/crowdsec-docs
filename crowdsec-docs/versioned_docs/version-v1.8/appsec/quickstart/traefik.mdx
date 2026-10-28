@@ -437,14 +437,14 @@ helm upgrade --install crowdsec crowdsec/crowdsec --namespace crowdsec --create-
 Then configure Traefik to mount the `crowdsec-bouncer-key` secret and
 reference it with `crowdsecLapiKeyFile`.
 
-Use a Traefik values file like this:
+Use a Traefik values file like this one, which pins plugin `v1.8.1`. This guide applies to every 1.8.x release of the plugin:
 
 ```yaml title="traefik-values.yaml"
 experimental:
   plugins:
     bouncer:
       moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
-      version: v1.4.5
+      version: v1.8.1
 volumes:
   - name: crowdsec-bouncer-key
     mountPath: /etc/traefik/crowdsec
@@ -587,12 +587,21 @@ The host and port where the AppSec Component is running.
 #### `crowdsecAppsecFailureBlock`
 > `bool`
 
-If the AppSec Component returns `500` status code should the request be blocked.
+If the AppSec Component returns a `500` status code, should the request be blocked. A `401` (API key rejected) or any other unexpected status always blocks the request, whatever this option says.
 
 #### `crowdsecAppsecUnreachableBlock`
 > `bool`
 
-If the AppSec Component is unreachable should the request be blocked.
+If the AppSec Component is unreachable, should the request be blocked. A `502`, `503` or `504` status counts as unreachable.
+
+#### `crowdsecAppsecBodyLimit`
+> `int64`
+
+How many bytes of the request body are sent to the AppSec Component, `10485760` (10MB) by default. If the body cannot be read while it is buffered, typically because the client aborted the upload, the request is answered with `499` when the client is gone or `400` otherwise, and is neither banned nor counted as blocked.
+
+:::note
+When the AppSec Component answers with a `captcha` action, the plugin shows the captcha configured with `captchaProvider`. Without a provider, the request is banned.
+:::
 
 ## Testing the AppSec Component + Remediation Component
 
