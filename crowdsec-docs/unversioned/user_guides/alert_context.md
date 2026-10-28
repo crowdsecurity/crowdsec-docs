@@ -167,7 +167,7 @@ And in the console:
 ![Alert Context Example](/img/alert_context_custom.png)
 
 
-More information [here](/docs/next/cscli/cscli_contexts) for managing the context from the Hub with `cscli`.
+More information [here](/docs/cscli/cscli_contexts) for managing the context from the Hub with `cscli`.
 
 ## Automagically detect possible alert context
 

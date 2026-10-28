@@ -1,6 +1,7 @@
 ---
 id: intro
-title: Introduction
+title: "Central API (CAPI): introduction"
+sidebar_label: Introduction
 sidebar_position: 1
 ---
 

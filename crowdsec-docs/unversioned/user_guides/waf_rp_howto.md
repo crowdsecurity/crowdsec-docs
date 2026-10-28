@@ -201,9 +201,9 @@ time="2025-08-06T13:06:44Z" level=info msg="(3ef52352a7e54c92b4394646a32bc095auA
 
 ## Going further - Web Application Firewall
 
-However, this approach has a limit: CrowdSec reads logs and acts based on their content, which means that you somehow react to an attack that has already happened. We want to intercept malevolent requests “on the fly” so that they never reach our backend server, Apache. This is the job of the [WAF](https://doc.crowdsec.net/docs/next/appsec/intro):
+However, this approach has a limit: CrowdSec reads logs and acts based on their content, which means that you somehow react to an attack that has already happened. We want to intercept malevolent requests “on the fly” so that they never reach our backend server, Apache. This is the job of the [WAF](https://doc.crowdsec.net/docs/appsec/intro):
 
-We follow [this quickstart guide](https://doc.crowdsec.net/docs/next/appsec/quickstart/nginxopenresty) :
+We follow [this quickstart guide](https://doc.crowdsec.net/docs/appsec/quickstart/nginxopenresty) :
 
 1) We install the AppSec collections. They contain the WAF rules.
 
@@ -224,7 +224,7 @@ EOF
 ```
 :::info
 
-See [dedicated page about configuration file directives](/docs/next/log_processor/data_sources/appsec)
+See [dedicated page about configuration file directives](/docs/log_processor/data_sources/appsec)
 
 :::
 3) We restart CrowdSec

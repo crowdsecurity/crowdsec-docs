@@ -1,6 +1,7 @@
 ---
 id: intro
-title: Introduction
+title: "Notification plugins: introduction"
+sidebar_label: Introduction
 ---
 
 ### Goal

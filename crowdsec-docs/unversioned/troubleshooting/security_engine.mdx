@@ -57,9 +57,9 @@ This command should **ONLY** be run on the parent node.
 
 Yes, Security Engine parsers only parse the logs that are relevant for scenarios.
 
-Take a look at `cscli metrics` [and understand what they mean](/docs/next/observability/cscli) to know if your setup is correct.
+Take a look at `cscli metrics` [and understand what they mean](/docs/observability/cscli) to know if your setup is correct.
 
-You can take an extra step and use [`cscli explain` to understand what log lines are parsed, and how](/docs/next/cscli/cscli_explain):
+You can take an extra step and use [`cscli explain` to understand what log lines are parsed, and how](/docs/cscli/cscli_explain):
 
 ![cscli-explain](/img/cscli_explain.png)
 
@@ -128,7 +128,7 @@ Only trust proxies you actually control, and keep the trusted ranges up to date 
 :::
 
 :::info
-If the **Local API** itself is behind a proxy, also set `use_forwarded_for_headers` and `trusted_proxies` in `config.yaml`. See [Local API behind a reverse proxy](/docs/next/local_api/configuration#server).
+If the **Local API** itself is behind a proxy, also set `use_forwarded_for_headers` and `trusted_proxies` in `config.yaml`. See [Local API behind a reverse proxy](/docs/local_api/configuration#server).
 :::
 
 ## Decisions
@@ -139,30 +139,30 @@ If the **Local API** itself is behind a proxy, also set `use_forwarded_for_heade
 cscli decisions list
 ```
 
-Additional filtering is possible; see [cscli decisions list](/docs/next/cscli/cscli_decisions_list) for more information.
+Additional filtering is possible; see [cscli decisions list](/docs/cscli/cscli_decisions_list) for more information.
 
 ### How to remove a decision on an IP
 
 ```bash
 cscli decisions delete -i x.x.x.x
 ```
-Additional filtering is possible please read [cscli decisions delete](/docs/next/cscli/cscli_decisions_delete) for more information.
+Additional filtering is possible please read [cscli decisions delete](/docs/cscli/cscli_decisions_delete) for more information.
 
 ### How to control granularity of decisions
 
 The Security Engine is designed to be as flexible as possible, and allows you to control the granularity of decisions.
 
-[Profiles](/docs/next/local_api/profiles/intro) allows you to control which decision will be applied to which alert.
+[Profiles](/docs/local_api/profiles/intro) allows you to control which decision will be applied to which alert.
 
 ### How to add whitelists or prevent the Security Engine from banning a given IP
 
 Recommended ways to prevent a specific IP from being banned:
- - [Use Centralized AllowLists](/docs/next/local_api/centralized_allowlists) - Works on local decisions, blocklists and can be controlled from the Console.
- - [Parser Whitelists](/docs/next/log_processor/whitelist/intro) - Applies directly on the log parsing pipeline.
+ - [Use Centralized AllowLists](/docs/local_api/centralized_allowlists) - Works on local decisions, blocklists and can be controlled from the Console.
+ - [Parser Whitelists](/docs/log_processor/whitelist/intro) - Applies directly on the log parsing pipeline.
 
 #### I need to whitelist an event pattern instead of a single IP address
 
-You can exclude specific events [using whitelist parsers](/docs/next/log_processor/whitelist/intro).
+You can exclude specific events [using whitelist parsers](/docs/log_processor/whitelist/intro).
 It can discard events based on a specific URL, source IP address, or any other condition.
 
 ## Scenarios
@@ -187,7 +187,7 @@ When using `cscli` to list your parsers, scenarios, and collections, some might 
 ### Scenario X keeps triggering, it's a false trigger
 
 To avoid false positives from a known scenario, you can use:
- - [Parser Whitelists](/docs/next/log_processor/whitelist/intro) - Applies directly on the log parsing pipeline.
+ - [Parser Whitelists](/docs/log_processor/whitelist/intro) - Applies directly on the log parsing pipeline.
 
 ### Set a custom/tainted scenario in simulation mode
 
@@ -217,7 +217,7 @@ Please review your acquisition files and remove any duplicate log entries.
 
 To test if logs are correctly parsed and checked by scenarios, use:
  - [Replay mode](/u/user_guides/replay_mode/) allows you to process cold logs and see scenarios triggered.
- - [`cscli explain`](/docs/next/cscli/cscli_explain) allows you to inspect the parsing process for one or more log lines.
+ - [`cscli explain`](/docs/cscli/cscli_explain) allows you to inspect the parsing process for one or more log lines.
 
 ## Hub
 
@@ -331,7 +331,7 @@ To check that the new item is installed and up to date, run `cscli hub list` (or
 
 ### Where is configuration stored?
 
-See [CrowdSec Configuration](/docs/next/configuration/crowdsec_configuration).
+See [CrowdSec Configuration](/docs/configuration/crowdsec_configuration).
 
 ### Where is data stored?
 
@@ -342,7 +342,7 @@ This is where the default sqlite database and data files needed for scenarios ar
 ### Which databases does the Security Engine support and how to switch?
 
 Security Engine supports SQLite (default), MySQL, and PostgreSQL databases.
-See [databases configuration](/docs/next/local_api/database) for relevant configuration. Thanks to the [Local API](/docs/next/local_api/intro), distributed architectures are resolved even with sqlite database.
+See [databases configuration](/docs/local_api/database) for relevant configuration. Thanks to the [Local API](/docs/local_api/intro), distributed architectures are resolved even with sqlite database.
 
 ### Multi-server setup
 
@@ -400,7 +400,7 @@ level=fatal msg="while serving local API: listen tcp 127.0.0.1:8080: bind: addre
 ```
 level=fatal msg="starting outputs error : authenticate watcher (fcb7303c4df44c03ada289dd7ec3dbe7cU3GaseSWdqUaVg6): API error: ent: machine not found"
 ```
-  - **solution** regenerate the credentials via [cscli machines](/docs/next/cscli/cscli_machines_add) command. If the local API is on the same machine you can run `sudo cscli machines add -a` (`-a` will automatically generate a random machine name and password). Then you can restart CrowdSec with `sudo systemctl restart crowdsec`.
+  - **solution** regenerate the credentials via [cscli machines](/docs/cscli/cscli_machines_add) command. If the local API is on the same machine you can run `sudo cscli machines add -a` (`-a` will automatically generate a random machine name and password). Then you can restart CrowdSec with `sudo systemctl restart crowdsec`.
 
 ### Cannot connect to the local API
   - **error** message might look like:
@@ -440,7 +440,7 @@ The Security Engine and Remediation Components are provided under the [MIT licen
 
 ### What is CrowdSec Security Engine?
 
-CrowdSec Security Engine is open-source security software. See the [overview](/docs/next/intro).
+CrowdSec Security Engine is open-source security software. See the [overview](/docs/intro).
 
 ### What language is it written in?
 
@@ -465,7 +465,7 @@ When it comes to [remediation components](/u/bouncers/intro), please refer to th
 
 ### Which information is sent to your services?
 
-See [CAPI documentation](/docs/next/central_api/intro).
+See [CAPI documentation](/docs/central_api/intro).
 
 
 ### How to set up a proxy
@@ -545,4 +545,4 @@ $ sudo HTTP_PROXY=socks5://127.0.0.1:9050 HTTPS_PROXY=socks5://127.0.0.1:9050 NO
 
 ### How to disable the central API
 
-To disable the central API, simply comment out the [`online_client` section of the configuration file](/docs/next/configuration/crowdsec_configuration#online_client).
+To disable the central API, simply comment out the [`online_client` section of the configuration file](/docs/configuration/crowdsec_configuration#online_client).

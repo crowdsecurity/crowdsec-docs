@@ -82,7 +82,7 @@ const alreadyRunningLinks = [
 	{
 		icon: <CIcon icon={cilShieldAlt} style={ICON_SM} aria-hidden="true" />,
 		label: "Activate the WAF",
-		href: "/docs/next/appsec/intro",
+		href: "/docs/appsec/intro",
 		color: CS_TEAL,
 	},
 	{
@@ -109,10 +109,10 @@ const popularLinks = [
 	{
 		icon: <CIcon icon={cilShieldAlt} style={ICON_SM} aria-hidden="true" />,
 		label: "AppSec / WAF",
-		href: "/docs/next/appsec/intro",
+		href: "/docs/appsec/intro",
 		color: CS_TEAL,
 	},
-	{ label: "CLI Reference", href: "/docs/next/cscli/" },
+	{ label: "CLI Reference", href: "/docs/cscli/" },
 	{ label: "CTI API Keys", href: "/u/console/ip_reputation/api_keys" },
 	{ label: "Troubleshooting", href: "/u/troubleshooting/intro" },
 	{ label: "CrowdSec.net", href: "https://www.crowdsec.net", external: true },

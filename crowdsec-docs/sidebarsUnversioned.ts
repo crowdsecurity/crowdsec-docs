@@ -735,7 +735,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		{
 			type: "link",
 			label: "Contributing",
-			href: "/docs/next/contributing/contributing_bouncers",
+			href: "/docs/contributing/contributing_bouncers",
 		},
 		{
 			type: "html",
@@ -1000,7 +1000,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		{
 			type: "link",
 			label: "🛠️ Technical Documentation",
-			href: "/docs/next/intro",
+			href: "/docs/intro",
 		},
 	],
 };

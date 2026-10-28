@@ -29,9 +29,9 @@ import BouncerHeader from "@site/src/components/bouncer-header";
 :::
 
 :::tip Enable the WAF and Bot Detection for optimal protection
-After installing the module, enable the [AppSec (WAF) Component](/docs/next/appsec/intro) to get virtual patching and defense against known CVEs, SQL injection, XSS and other application-layer attacks.
+After installing the module, enable the [AppSec (WAF) Component](/docs/appsec/intro) to get virtual patching and defense against known CVEs, SQL injection, XSS and other application-layer attacks.
 
-Follow the dedicated [AppSec QuickStart for Apache](/docs/next/appsec/quickstart/apache) after completing initial setup.
+Follow the dedicated [AppSec QuickStart for Apache](/docs/appsec/quickstart/apache) after completing initial setup.
 :::
 
 ## How does it work?
@@ -39,7 +39,7 @@ Follow the dedicated [AppSec QuickStart for Apache](/docs/next/appsec/quickstart
 The component is an Apache module. It runs in-process in every Apache child, and does up to two things on the request path:
 
 1. **Decision lookup** — the client address is checked against the CrowdSec decisions, and the request is allowed, blocked or redirected.
-2. **Request inspection** (optional) — the request is forwarded to the [AppSec Component](/docs/next/appsec/intro) for WAF inspection, and its verdict decides the request. This is also what serves the [bot-detection](/docs/next/appsec/bot_detection/intro) challenge.
+2. **Request inspection** (optional) — the request is forwarded to the [AppSec Component](/docs/appsec/intro) for WAF inspection, and its verdict decides the request. This is also what serves the [bot-detection](/docs/appsec/bot_detection/intro) challenge.
 
 Decisions are obtained in one of two modes:
 
@@ -64,7 +64,7 @@ At the back, the module uses `libcurl` for its API calls and `mod_socache` for t
 - Apache 2.4.16 or later
 - `mod_socache_shmcb`, for the shared decision cache (mandatory in stream mode)
 - libcurl 7.40 or later
-- A CrowdSec local API, and the [AppSec Component](/docs/next/appsec/intro) if you want WAF inspection or bot detection
+- A CrowdSec local API, and the [AppSec Component](/docs/appsec/intro) if you want WAF inspection or bot detection
 
 ## Installation
 
@@ -235,12 +235,12 @@ Prefer that to a `<Location />` block. See [Protect only part of a site](#protec
 
 `CrowdsecAppsecPath` must match the `path` of the AppSec datasource.
 
-For the engine side of this — rules, acquisition, verification — follow the [AppSec QuickStart for Apache](/docs/next/appsec/quickstart/apache).
+For the engine side of this — rules, acquisition, verification — follow the [AppSec QuickStart for Apache](/docs/appsec/quickstart/apache).
 
 ### Bot detection
 
 :::tip Prerequisites
-Bot detection is AppSec with the challenge configs loaded on the engine, so there is nothing to add on the Apache side beyond the `CrowdsecAppsec` you already have. Install the collection and point your AppSec datasource at its configs by following [Enable bot detection](/docs/next/appsec/bot_detection/enable), which also covers the thresholds.
+Bot detection is AppSec with the challenge configs loaded on the engine, so there is nothing to add on the Apache side beyond the `CrowdsecAppsec` you already have. Install the collection and point your AppSec datasource at its configs by following [Enable bot detection](/docs/appsec/bot_detection/enable), which also covers the thresholds.
 :::
 
 The engine loads only the appsec-configs named in the datasource, so installing the collection on its own changes nothing and no request is ever challenged. Once both are done, this is the confirmation:
@@ -338,7 +338,7 @@ Three counters are reported:
 | `dropped` | request | Requests it refused, attributed to the origin of the decision behind each one. |
 | `active_decisions` | IP | Decisions currently held in the shared cache. Stream mode only — live mode keeps no local decision store. |
 
-Every counter is broken down by `ip_type` (`ipv4` or `ipv6`), and `dropped` and `active_decisions` also by `origin`: `crowdsec`, `CAPI`, `cscli`, `appsec`, `console`, `lists:<name>` and so on. [Usage metrics](/docs/next/observability/usage_metrics) explains what each origin means.
+Every counter is broken down by `ip_type` (`ipv4` or `ipv6`), and `dropped` and `active_decisions` also by `origin`: `crowdsec`, `CAPI`, `cscli`, `appsec`, `console`, `lists:<name>` and so on. [Usage metrics](/docs/observability/usage_metrics) explains what each origin means.
 
 #### Checking from the local API
 
@@ -366,7 +366,7 @@ Add `--no-unit` for exact numbers instead of ones abbreviated with `k` and `M` s
 `cscli` shows what the local API has accepted, so nothing appears until the first push lands — up to `CrowdsecMetricsInterval`, which is 15 minutes by default. The [status handler](#status-handler) shows the window as it accumulates, so it is the faster way to confirm the counters are moving at all. To shorten the wait while testing, lower the interval and put it back afterwards; anything under a minute is warned about in the error log.
 :::
 
-Expect `active_decisions` to disagree with `cscli decisions list`: the local API deduplicates the stream it sends. [Usage metrics](/docs/next/observability/usage_metrics) explains why.
+Expect `active_decisions` to disagree with `cscli decisions list`: the local API deduplicates the stream it sends. [Usage metrics](/docs/observability/usage_metrics) explains why.
 
 #### Checking the WAF and bot-detection side
 

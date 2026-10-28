@@ -1,6 +1,7 @@
 ---
 id: intro
-title: Introduction
+title: "Whitelists: introduction"
+sidebar_label: Introduction
 sidebar_position: 1
 ---
 

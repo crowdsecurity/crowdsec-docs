@@ -37,7 +37,7 @@ helm repo update
 ### Install the Security Engine
 
 Once the Helm repository is added, create a `crowdsec-values.yaml` file. This
-The available `values.yaml` options are described [here](/docs/next/configuration/values_parameters). You can start with this
+The available `values.yaml` options are described [here](/docs/configuration/values_parameters). You can start with this
 example:
 
 ```yaml
@@ -124,7 +124,7 @@ if the tags fit.
 </details>
 
 For full configuration options, see the default
-[values.yaml](/docs/next/configuration/values_parameters)
+[values.yaml](/docs/configuration/values_parameters)
 
 :::warning
 Pay attention to the `bouncers_autodelete`, `agents_autodelete` and `unregister_on_exit` parameters, as they help avoid orphaned resources.
@@ -234,7 +234,7 @@ PostgreSQL. You can leverage existing operators to manage these databases:
 
 Crowdsec in kubernetes configuration for this database is made with the
 [config.config.yaml.local value in
-`values.yaml`](/docs/next/configuration/values_parameters).
+`values.yaml`](/docs/configuration/values_parameters).
 
 Configuration of those databases is out of scope of this documentation.
 
@@ -255,5 +255,5 @@ Great, you now have CrowdSec installed on your system!
 - Look at the [post
   installation steps](/getting_started/next_steps.mdx) to find the next
   steps to configure and optimize your installation.
-- Look at the [values.yaml](/docs/next/configuration/values_parameters) for available configuration parameters.
-- Look at the [ingress nginx](/docs/next/appsec/quickstart/nginx-ingress) and [traefik](/docs/next/appsec/quickstart/traefik) for AppSec (Web Application Firewall) configuration
+- Look at the [values.yaml](/docs/configuration/values_parameters) for available configuration parameters.
+- Look at the [ingress nginx](/docs/appsec/quickstart/nginx-ingress) and [traefik](/docs/appsec/quickstart/traefik) for AppSec (Web Application Firewall) configuration

@@ -1,6 +1,7 @@
 ---
 id: intro
-title: Introduction
+title: "Blocklists: introduction"
+sidebar_label: Introduction
 sidebar_position: 2
 ---
 

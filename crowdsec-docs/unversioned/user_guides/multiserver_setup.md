@@ -8,12 +8,12 @@ import useBaseUrl from "@docusaurus/useBaseUrl"
 
 ## Introduction
 
-CrowdSec's [architecture](/docs/next/intro#architecture) allows distributed setups, as most components communicate via [HTTP API](/docs/next/local_api/intro).
+CrowdSec's [architecture](/docs/intro#architecture) allows distributed setups, as most components communicate via [HTTP API](/docs/local_api/intro).
 
 When doing so, a few considerations must be kept in mind to understand the role of each component:
- - The log processor is in charge of [processing the logs](/docs/next/log_processor/parsers/intro), matching them against [scenarios](/docs/next/log_processor/scenarios/intro), and sending the resulting alerts to the [local API](/docs/next/local_api/intro)
+ - The log processor is in charge of [processing the logs](/docs/log_processor/parsers/intro), matching them against [scenarios](/docs/log_processor/scenarios/intro), and sending the resulting alerts to the [local API](/docs/local_api/intro)
  - The local API (LAPI from now on) receives the alerts and converts them into decisions based on your profile
- - LAPI also takes care of communication with [CAPI](/docs/next/central_api/intro) to pull blocklists and push alerts to the console.
+ - LAPI also takes care of communication with [CAPI](/docs/central_api/intro) to pull blocklists and push alerts to the console.
  - Remediation components query LAPI to receive the decisions to apply
 
  You can mix and match deployment methods and OS in the same setup, for example:
@@ -34,7 +34,7 @@ When doing so, a few considerations must be kept in mind to understand the role 
 
 This guide will focus on using login/password authentication for the log processors for simplicity.
 
-You can also use [TLS Authentication](/docs/next/local_api/tls_auth), which does not require to validate log processors but you will need to create a PKI.
+You can also use [TLS Authentication](/docs/local_api/tls_auth), which does not require to validate log processors but you will need to create a PKI.
 
 :::
 

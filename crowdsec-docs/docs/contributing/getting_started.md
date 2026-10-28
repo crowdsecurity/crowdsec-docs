@@ -1,6 +1,7 @@
 ---
 id: getting_started
-title: Getting Started
+title: "Contributing: getting started"
+sidebar_label: Getting Started
 sidebar_position: 1
 ---
 
@@ -41,6 +42,6 @@ There are multiple repositories within the Crowdsecurity organization. [Each rep
 
 The main components of the project have their dedicated contribution pages :
 
-- [hub](/docs/contributing/contributing_hub)
-- [crowdsec](/docs/contributing/contributing_crowdsec)
-- [documentation](/docs/contributing/contributing_doc)
+- [hub](/contributing/hub.md)
+- [crowdsec](/contributing/code.md)
+- [documentation](/contributing/documentation.md)

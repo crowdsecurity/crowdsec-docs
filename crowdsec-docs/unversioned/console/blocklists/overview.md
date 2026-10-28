@@ -1,3 +1,8 @@
+---
+title: "Blocklists in the Console: overview"
+sidebar_label: Blocklists
+---
+
 # Blocklists
 
 ## General overview

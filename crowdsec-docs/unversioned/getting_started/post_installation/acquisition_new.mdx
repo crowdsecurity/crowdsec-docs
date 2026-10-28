@@ -6,7 +6,7 @@ pagination_next: getting_started/post_installation/profiles
 ---
 
 :::info
-We will add a [file-based acquisition](/docs/next/log_processor/data_sources/file). If you need a different source, adjust the instructions to match your setup.
+We will add a [file-based acquisition](/docs/log_processor/data_sources/file). If you need a different source, adjust the instructions to match your setup.
 :::
 
 import FormattedTabs from '@site/src/components/formatted-tabs';
@@ -28,10 +28,10 @@ agent:
       value: '<collection_name>'`}
 />
 
-Once the collection is downloaded, add a new [Acquisition](/docs/next/log_processor/data_sources/intro) so CrowdSec knows where to find the log source.
+Once the collection is downloaded, add a new [Acquisition](/docs/log_processor/data_sources/intro) so CrowdSec knows where to find the log source.
 
 :::info
-Each collection on the [Hub](https://hub.crowdsec.net/) includes an example [Acquisition](/docs/next/log_processor/data_sources/intro), which helps you identify files to monitor and labels to assign.
+Each collection on the [Hub](https://hub.crowdsec.net/) includes an example [Acquisition](/docs/log_processor/data_sources/intro), which helps you identify files to monitor and labels to assign.
 :::
 
 :::info
@@ -58,7 +58,7 @@ On Windows, the `acquis.d` directory is not loaded by default: add `acquisition_
   cmd=".>C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml 2>NUL"
   yaml={`# In your values.yml file
 agent:
-# -- To add custom acquisitions using available datasources (https://docs.crowdsec.net/docs/next/log_processor/data_sources/intro)
+# -- To add custom acquisitions using available datasources (https://docs.crowdsec.net/docs/log_processor/data_sources/intro)
   additionalAcquisition:
     - source: file
       filenames:

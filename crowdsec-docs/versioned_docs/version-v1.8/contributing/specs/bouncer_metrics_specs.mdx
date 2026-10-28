@@ -5,7 +5,7 @@ title: Remediation Component Metrics
 
 ## Overview
 
-This document provides a comprehensive guide for developers to implement the "[Remediation Metrics](https://docs.crowdsec.net/docs/next/observability/usage_metrics)" feature in a remediation component. The remediation metrics feature allows remediation components to report [raw metrics](https://docs.crowdsec.net/u/console/service_api/metrics/#raw-metrics) about their activity to the Local API (LAPI), which can then be forwarded to the Central API (CAPI) for monitoring and analytics purposes.
+This document provides a comprehensive guide for developers to implement the "[Remediation Metrics](/observability/usage_metrics.md)" feature in a remediation component. The remediation metrics feature allows remediation components to report [raw metrics](/u/console/service_api/metrics/#raw-metrics) about their activity to the Local API (LAPI), which can then be forwarded to the Central API (CAPI) for monitoring and analytics purposes.
 
 The remediation component should send the following data:
 
@@ -385,6 +385,6 @@ catch Exception as e:
 
 Remediation metrics have already been implemented in various languages and frameworks. You can use them as inspiration for your own implementation:
 
-- The [LUA library](https://github.com/crowdsecurity/lua-cs-bouncer/) used by the [NGINX remediation component](https://docs.crowdsec.net/u/bouncers/nginx/)
-- The [PHP library](https://github.com/crowdsecurity/php-remediation-engine) used by the [WordPress remediation component](https://docs.crowdsec.net/u/bouncers/wordpress).
+- The [LUA library](https://github.com/crowdsecurity/lua-cs-bouncer/) used by the [NGINX remediation component](/u/bouncers/nginx/)
+- The [PHP library](https://github.com/crowdsecurity/php-remediation-engine) used by the [WordPress remediation component](/u/bouncers/wordpress).
 - The [Firewall Bouncer](https://github.com/crowdsecurity/cs-firewall-bouncer) written in Go. Used for nftables/iptables.

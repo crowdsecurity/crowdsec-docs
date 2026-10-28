@@ -23,9 +23,9 @@ import BouncerHeader from "@site/src/components/bouncer-header";
 A lua Remediation Component for nginx.
 
 :::tip Enable the WAF for optimal protection
-After installing the bouncer, enable the [AppSec (WAF) Component](/docs/next/appsec/intro) to get virtual patching and defense against known CVEs, SQL injection, XSS, and other application-layer attacks.
+After installing the bouncer, enable the [AppSec (WAF) Component](/docs/appsec/intro) to get virtual patching and defense against known CVEs, SQL injection, XSS, and other application-layer attacks.
 
-Follow the dedicated [AppSec Quickstart for Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty) — it picks up right where this page ends.
+Follow the dedicated [AppSec Quickstart for Nginx/OpenResty](/docs/appsec/quickstart/nginxopenresty) — it picks up right where this page ends.
 :::
 
 ## How does it work ?
@@ -121,7 +121,7 @@ If you are on a mono-machine setup, the `crowdsec-nginx-bouncer` install script 
 For real-time WAF protection — virtual patching, defense against known CVEs, SQLi, XSS, and other application-layer attacks — turn on the AppSec Component after installing the bouncer.
 
 :::tip Recommended: enable the WAF for optimal protection
-Follow the [AppSec Quickstart for Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty) to enable the WAF. It's a few copy-paste commands and picks up right where this installation ends.
+Follow the [AppSec Quickstart for Nginx/OpenResty](/docs/appsec/quickstart/nginxopenresty) to enable the WAF. It's a few copy-paste commands and picks up right where this installation ends.
 :::
 
 The AppSec-related knobs in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf` are documented in the [Configuration Reference](#configuration-reference) below (all `APPSEC_*` entries).
@@ -280,7 +280,7 @@ You can also change this with a valid one :
 
 ### Application Security Component Configuration
 
-To turn on the WAF, follow the [AppSec Quickstart for Nginx/OpenResty](/docs/next/appsec/quickstart/nginxopenresty).
+To turn on the WAF, follow the [AppSec Quickstart for Nginx/OpenResty](/docs/appsec/quickstart/nginxopenresty).
 
 The AppSec-related options in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`:
 

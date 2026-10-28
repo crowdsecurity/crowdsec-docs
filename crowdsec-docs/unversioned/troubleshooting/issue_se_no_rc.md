@@ -54,9 +54,9 @@ If the list is empty, it confirms that no Remediation Component is registered.
 
 Choose and install a Remediation Component suited to your infrastructure:
 
-- **[cs-firewall-bouncer](https://docs.crowdsec.net/u/bouncers/firewall)** — blocks IPs at the OS firewall level (nftables/iptables)
-- **[cs-nginx-bouncer](https://docs.crowdsec.net/u/bouncers/nginx)** — blocks at the NGINX web server level
-- **[cs-traefik-bouncer](https://docs.crowdsec.net/u/bouncers/traefik)** — blocks at the Traefik reverse proxy level
+- **[cs-firewall-bouncer](/bouncers/firewall.mdx)** — blocks IPs at the OS firewall level (nftables/iptables)
+- **[cs-nginx-bouncer](/bouncers/nginx.mdx)** — blocks at the NGINX web server level
+- **[cs-traefik-bouncer](/bouncers/traefik.mdx)** — blocks at the Traefik reverse proxy level
 - More options available on the [Remediation Components page](/u/bouncers/intro)
 
 Most Remediation Components **auto-register** during installation. Verify the registration:

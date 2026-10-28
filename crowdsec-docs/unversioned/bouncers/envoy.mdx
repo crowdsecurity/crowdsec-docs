@@ -33,14 +33,14 @@ At the end, you will have:
 - CrowdSec remediation decisions enforced before traffic reaches your backends
 
 :::tip WAF Support
-This bouncer supports [WAF capabilities](/docs/next/appsec/intro) for
+This bouncer supports [WAF capabilities](/docs/appsec/intro) for
 real-time WAF protection.
 
 This page focuses on remediation-only deployment. If you want Envoy Gateway
 with WAF and virtual patching, follow the
-[CrowdSec WAF QuickStart for Envoy Gateway](/docs/next/appsec/quickstart/envoy-gateway).
+[CrowdSec WAF QuickStart for Envoy Gateway](/docs/appsec/quickstart/envoy-gateway).
 
-If you enable [bot detection](/docs/next/appsec/bot_detection/intro), Envoy
+If you enable [bot detection](/docs/appsec/bot_detection/intro), Envoy
 Gateway must forward challenge submission request bodies to the external auth
 service. The WAF quickstart shows the required
 `SecurityPolicy.spec.extAuth.bodyToExtAuth.maxRequestBytes` setting.
@@ -50,7 +50,7 @@ service. The WAF quickstart shows the required
 
 1. It is assumed that you already have:
    - A working CrowdSec
-     [Security Engine](/docs/next/intro) installation. For a Kubernetes install
+     [Security Engine](/docs/intro) installation. For a Kubernetes install
      quickstart, refer to
      [/u/getting_started/installation/kubernetes](/u/getting_started/installation/kubernetes).
    - A working Envoy Gateway installation with the Gateway API CRDs and an
@@ -455,4 +455,4 @@ your platform is not supported, you will need a custom build.
 - Review the upstream configuration guide:
   [docs/CONFIGURATION.md](https://github.com/kdwils/envoy-proxy-crowdsec-bouncer/blob/main/docs/CONFIGURATION.md)
 - If you want WAF and virtual patching instead of remediation only, follow the
-  [WAF QuickStart for Envoy Gateway](/docs/next/appsec/quickstart/envoy-gateway)
+  [WAF QuickStart for Envoy Gateway](/docs/appsec/quickstart/envoy-gateway)

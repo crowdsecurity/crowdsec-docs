@@ -1,6 +1,7 @@
 ---
 id: install_crowdsec_opnsense
-title: OPNsense
+title: "Install the Security Engine on OPNsense: detailed guide"
+sidebar_label: OPNsense
 sidebar_position: 1
 ---
 

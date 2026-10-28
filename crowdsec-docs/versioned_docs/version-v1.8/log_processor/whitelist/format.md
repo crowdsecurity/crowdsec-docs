@@ -1,6 +1,7 @@
 ---
 id: format
-title: Format
+title: "Whitelists: file format"
+sidebar_label: Format
 sidebar_position: 2
 ---
 

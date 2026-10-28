@@ -157,7 +157,7 @@ sudo systemctl start crowdsec-custom-bouncer
 
 If you need to make changes to the configuration file and be sure they will never be modified or reverted
 by package upgrades, starting from v0.0.12 you can write them in a `crowdsec-custom-bouncer.yaml.local` file as described in
-[Overriding values](https://docs.crowdsec.net/docs/next/configuration/crowdsec_configuration#overriding-values).
+[Overriding values](/docs/configuration/crowdsec_configuration#overriding-values).
 Package upgrades may have good reasons to modify the configuration, so be careful if you use a `.local` file.
 
 ### Logs
@@ -168,7 +168,7 @@ By default you can find the log file `/var/log/crowdsec-custom-bouncer.log`, how
 
 We recommend using the [scopes](#scopes) configuration to filter the scope your script is interested in. This will ensure you get the expected values in your script.
 
-This is only applicable if you have configured your [profiles](/docs/next/local_api/profiles/format#decisions) to make use of scopes but it is general best practice to set it to `["Ip"]` by default if that is the script's aim.
+This is only applicable if you have configured your [profiles](/docs/local_api/profiles/format#decisions) to make use of scopes but it is general best practice to set it to `["Ip"]` by default if that is the script's aim.
 
 The above will ensure you get values from LAPI to the script, however, you should double check the values in your script to ensure they are as expected.
 

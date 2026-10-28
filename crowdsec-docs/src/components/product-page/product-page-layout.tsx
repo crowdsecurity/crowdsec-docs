@@ -15,6 +15,8 @@ type HelpButton = {
 
 type ProductPageLayoutProps = {
 	title: string;
+	// Descriptive <title> for search results; the short `title` stays as the hero heading.
+	metaTitle?: string;
 	metaDescription: string;
 	icon: string;
 	description: string;
@@ -27,6 +29,7 @@ type ProductPageLayoutProps = {
 
 export const ProductPageLayout = ({
 	title,
+	metaTitle,
 	metaDescription,
 	icon,
 	description,
@@ -37,7 +40,7 @@ export const ProductPageLayout = ({
 	children,
 }: ProductPageLayoutProps): React.JSX.Element => {
 	return (
-		<Layout title={title} description={metaDescription}>
+		<Layout title={metaTitle ?? title} description={metaDescription}>
 			<main className="flex-1">
 				{/* ── Hero ── */}
 				<section className="py-10 px-6 pb-12 border-b border-cs-border bg-cs-bg relative overflow-hidden">

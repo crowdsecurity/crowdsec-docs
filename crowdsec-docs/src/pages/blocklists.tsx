@@ -61,6 +61,7 @@ const BlocklistsPage = () => {
 	return (
 		<ProductPageLayout
 			title="Blocklists"
+			metaTitle="Blocklists: curated threat intelligence feeds"
 			metaDescription="Subscribe to curated threat intelligence blocklists"
 			icon="/img/icons/shield.webp"
 			description="Subscribe to curated threat intelligence feeds to block known malicious IPs across your infrastructure. Deploy in minutes to firewalls or alongside the Security Engine."
