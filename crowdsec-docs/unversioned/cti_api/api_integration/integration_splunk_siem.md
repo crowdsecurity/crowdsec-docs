@@ -75,7 +75,7 @@ Fields containing multiple IP values aren't supported.
 
 The following fields are automatically enriched using **CrowdSec** intelligence:
 
-(Please refer to the [CrowdSec CTI API documentation](https://docs.crowdsec.net/u/cti_api/taxonomy/cti_object/) for more details on each field.)
+(Please refer to the [CrowdSec CTI API documentation](/cti_api/taxonomy/cti_fields.md) for more details on each field.)
 
 :::info
 

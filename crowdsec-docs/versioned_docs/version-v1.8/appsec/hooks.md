@@ -240,7 +240,7 @@ This hook is intended to be used to change the behavior of the engine after a ma
 | `DumpRequest`    | `func()`                   | Dump the request to a file (see previous section for detailed usage)                                          |
 | `IsInBand`       | `bool`                     | `true` if the request is in the in-band processing phase                                                      |
 | `IsOutBand`      | `bool`                     | `true` if the request is in the out-of-band processing phase                                                  |
-| `evt`            | `types.Event`              | [The event that has been generated](/docs/expr/event.md#appsec-helpers) by the Application Security Component |
+| `evt`            | `types.Event`              | [The event that has been generated](/expr/event.md#appsec-helpers) by the Application Security Component |
 | `req`            | `http.Request`             | Original HTTP request received by the remediation component                                                   |
 | `MatchKnownBot` | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files`. See [Known bots](bot_detection/hooks.md#known-bots).                  |
 | `ExemptFromChallenge` | `func(reason str)`    | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](bot_detection/hooks.md#known-bots). |

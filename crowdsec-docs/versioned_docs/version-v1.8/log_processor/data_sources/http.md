@@ -81,7 +81,7 @@ If you are sending multiple JSON objects in the same request, they must be separ
 
 The objects will be processed by the parsers one-by-one.
 
-If you send multiple log lines in a single JSON object, you can use a [transform](/docs/log_processor/data_sources/introduction.md#transform) expression to generate multiple events:
+If you send multiple log lines in a single JSON object, you can use a [transform](/log_processor/data_sources/introduction.md#transform) expression to generate multiple events:
 
 ```json
 {

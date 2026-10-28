@@ -7,7 +7,7 @@ title: Windows
 
 You can download the MSI file from the [latest github release](https://github.com/crowdsecurity/crowdsec/releases/latest).
 
-Before installing the package, you might want to check [the ports that the security engine will use](/docs/configuration/network_management).
+Before installing the package, you might want to check [the ports that the security engine will use](/configuration/network_management.md).
 
 The MSI file will perform some basic setup:
  - Installation of the Security Engine

@@ -128,11 +128,11 @@ If a Log Processor is running, the following scenarios are enabled by default:
  - HTTP vulnerability probing
 
 These will trigger a ban on the attacking IP (4 hours by default) and report it to the CrowdSec Central API
-(meaning [timestamp, scenario, attacking IP](https://docs.crowdsec.net/docs/concepts/)) for inclusion in the
+(meaning [timestamp, scenario, attacking IP](/concepts.md)) for inclusion in the
 Community Blocklist.
 
 You can add scenarios to detect other types of attack on the pfSense server, or
-[connect several log processors](https://docs.crowdsec.net/u/user_guides/multiserver_setup/)
+[connect several log processors](/u/user_guides/multiserver_setup/)
 to the same LAPI node.
 Other types of remediation are possible (ex. captcha test for scraping attempts).
 
@@ -168,7 +168,7 @@ events are triggered correctly.
 
 
 For real monitoring, you can fetch the same metrics with
-[Prometheus](https://docs.crowdsec.net/docs/observability/prometheus/) (Grafana dashboard included),
+[Prometheus](/observability/prometheus.md) (Grafana dashboard included),
 Telegraf or your favorite solution.
 
 If you are not running a LAPI or a Log Processor, some metrics are always empty.
