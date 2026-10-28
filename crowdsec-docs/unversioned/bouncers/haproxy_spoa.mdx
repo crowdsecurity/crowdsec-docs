@@ -104,11 +104,18 @@ HAProxy requires two configuration files for integration with the bouncer. The
 primary file is /etc/haproxy/haproxy.cfg, which must be modified to enable
 communication with the SPOE engine—our documentation will guide you through
 this. The second file is /etc/haproxy/crowdsec.cfg, which contains the SPOE
-agent configuration. This file is automatically installed along with the bouncer
-package on the condition that `/etc/haproxy` exists.
+agent configuration.
 
-If you are using packages, you will find the haproxy configuration
-snippets in `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`.
+The packages don't install or modify any file in `/etc/haproxy`. Instead, they
+ship example haproxy configuration snippets in
+`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`. These are a starting
+point: copy the SPOE one and adapt it to your needs (timeouts, backend name,
+messages sent to the bouncer, etc.):
+
+```bash
+sudo cp /usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples/crowdsec.cfg /etc/haproxy/crowdsec.cfg
+sudo $EDITOR /etc/haproxy/crowdsec.cfg
+```
 
 ### SPOE Filter
 
@@ -160,8 +167,9 @@ spoe-group crowdsec-http-no-body
 
 </details>
 
-If you installed the haproxy spoe bouncer through package, you will find this
-configuration file in `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`
+This is the example shipped in
+`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples/crowdsec.cfg`; adjust it
+to match your HAProxy setup.
 
 This crowdsec spoe agent configuration is then referenced in the main haproxy
 configuration file `/etc/haproxy/haproxy.cfg` and may be added at the bottom of
