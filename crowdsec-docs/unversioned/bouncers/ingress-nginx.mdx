@@ -1,34 +1,24 @@
 ---
 id: ingress-nginx
-title: Ingress Nginx
+title: "Ingress Nginx (Deprecated)"
+description: "Deprecated CrowdSec integration for ingress-nginx, which removed Lua support in v1.12. Migrate to the Traefik or Envoy Gateway integrations instead."
 sidebar_position: 1
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import useBaseUrl from "@docusaurus/useBaseUrl";
-import RemediationSupportBadges from "@site/src/components/remediation-support-badge";
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-  <img
-    src={useBaseUrl("/img/crowdsec_nginx.svg")}
-    alt="CrowdSec"
-    title="CrowdSec"
-    width="400"
-    height="300"
-  />
-</p>
-<p align="center">
-  <img src="https://img.shields.io/badge/build-pass-green" />
-  <img src="https://img.shields.io/badge/tests-pass-green" />
-</p>
-<p align="center">
-  &#x1F4DA; <a href="#installation/">Documentation</a>
-  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-  &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
+<BouncerHeader
+  title="Ingress Nginx"
+  typeLabel="DEPRECATED"
+  imgSrc="/img/crowdsec_nginx.svg"
+  description="CrowdSec integration for ingress-nginx (deprecated — Lua support removed in v1.12)."
+  featuresSupport="livemode, streammode, metrics, mtls, waf"
+  githubUrl="https://github.com/crowdsecurity/lua-cs-bouncer"
+/>
 
-<RemediationSupportBadges Mode Appsec Metrics MTLS />
+# CrowdSec Integration for Ingress NGINX (Deprecated)
 
 :::danger Deprecated and not recommended
 This CrowdSec integration for `ingress-nginx` is being deprecated. `ingress-nginx`
@@ -36,21 +26,21 @@ has known security issues, and upstream removed Lua support in version `1.12`,
 which this integration depends on.
 
 Do not use this for new deployments. If you are already using it, plan a migration
-to another supported integration such as [Traefik](/docs/next/appsec/quickstart/traefik)
-or [Envoy Gateway](/docs/next/appsec/quickstart/envoy-gateway).
+to another supported integration such as [Traefik](/docs/appsec/quickstart/traefik)
+or [Envoy Gateway](/docs/appsec/quickstart/envoy-gateway).
 :::
 
 A lua Remediation Component for Ingress Nginx Controller.
 
 ## How does it work ?
 
-This component leverages OpenResty lua's API, used the ingress nginx controller as a [plugin](https://github.com/kubernetes/ingress-nginx/blob/main/rootfs/etc/nginx/lua/plugins/README.md).
+This component leverages OpenResty's Lua API and is loaded by the ingress-nginx controller as a [plugin](https://github.com/kubernetes/ingress-nginx/blob/controller-v1.11.8/rootfs/etc/nginx/lua/plugins/README.md).
 
 Supported features:
 
 - Live mode (query the local API for each request)
 - Stream mode (pull the local API for new/old decisions every X seconds)
-- Ban remediation (can ban an IP address by redirecting him or returning a custom HTML page)
+- Ban remediation (can ban an IP address by redirecting it or returning a custom HTML page)
 - CAPTCHA remediation (can return a captcha)
 - Works with IPv4/IPv6
 - Support IP ranges (can apply a remediation on an IP range)
@@ -65,7 +55,7 @@ The Ingress nginx controller should be installed using the [official helm chart]
 
 ### Using Helm
 
-First you need to create new ingress-nginx chart values file (`crowdsec-ingress-values.yaml`) to upgrade the ingress controller with the crowdsec plugin.
+First, you need to create a new ingress-nginx chart values file (`crowdsec-ingress-values.yaml`) to upgrade the ingress controller with the CrowdSec plugin.
 
 Store the CrowdSec bouncer key in Kubernetes Secrets instead of embedding it
 directly in the Helm values.
@@ -177,7 +167,7 @@ controller:
           value: "http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422" # if using our helm chart with "crowdsec" release name, and running the appsec in the "crowdsec" namespace
         - name: APPSEC_FAILURE_ACTION
           value: "passthrough" # What to do if the appsec is down, optional
-        - name: APPSEC_CONNECT_TIMEOUT # connection timeout to the appsec, in ms, optionial
+        - name: APPSEC_CONNECT_TIMEOUT # connection timeout to the appsec, in ms, optional
           value: "100"
         - name: APPSEC_SEND_TIMEOUT # write timeout to the appsec, in ms, optional
           value: "100"
@@ -271,7 +261,7 @@ API_KEY=<API_KEY>
 
 CrowdSec Local API key.
 
-Generated with [`sudo cscli bouncers add`](/u/getting_started/installation/linux) command.
+Generated with the [`sudo cscli bouncers add`](/u/bouncers/intro#generate-an-api-key-for-your-bouncer) command.
 
 ### `API_URL`
 
@@ -345,10 +335,10 @@ MODE=stream
 The component mode:
 
 - stream: The component will pull new/old decisions from the local API every X seconds (`UPDATE_FREQUENCY` parameter).
-- live: The component will query the local API for each requests (if IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
+- live: The component will query the local API for each request (if the IP is not in cache) and will store the IP in cache for X seconds (`CACHE_EXPIRATION` parameter).
 
 :::note
-The timer that pull the local API will be triggered after the first request.
+The timer that pulls the local API will be triggered after the first request.
 :::
 
 ### `REQUEST_TIMEOUT`
@@ -369,7 +359,7 @@ Timeout in milliseconds for the HTTP requests done by the component to query Cro
 EXCLUDE_LOCATION=/<path1>,/<path2>
 ```
 
-The locations to exclude while bouncing. It is a list of location, separated by commas.
+The locations to exclude while bouncing. It is a list of locations, separated by commas.
 
 :warning: It is not recommended to put `EXCLUDE_LOCATION=/`.
 
@@ -383,7 +373,7 @@ The locations to exclude while bouncing. It is a list of location, separated by 
 CACHE_EXPIRATION=120
 ```
 
-The cache expiration, in second, for IPs that the component store in cache in `live` mode.
+The cache expiration, in seconds, for IPs that the component stores in cache in `live` mode.
 
 ### `UPDATE_FREQUENCY`
 
@@ -395,7 +385,7 @@ The cache expiration, in second, for IPs that the component store in cache in `l
 UPDATE_FREQUENCY=10
 ```
 
-The frequency of update, in second, to pull new/old IPs from the CrowdSec local API.
+The update frequency, in seconds, to pull new/old IPs from the CrowdSec local API.
 
 ### `REDIRECT_LOCATION`
 
@@ -436,7 +426,7 @@ RET_CODE=403
 ```
 
 The HTTP code to return for IPs that trigger a `ban` remediation.
-If nothing specified, it will return a 403.
+If nothing is specified, it will return a 403.
 
 ### `CAPTCHA_PROVIDER`
 
@@ -502,7 +492,7 @@ By default, the HTML template is located in `/etc/nginx/lua/plugins/crowdsec/tem
 CAPTCHA_EXPIRATION=3600
 ```
 
-The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IPs address will get a captcha again.
+The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IP address will get a captcha again.
 
 ### `APPSEC_URL`
 
@@ -524,7 +514,7 @@ Use `http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422` if using ou
 APPSEC_FAILURE_ACTION=passthrough  # default
 ```
 
-Behavior when the AppSec Component return a 500. Can let the request passthrough or deny it.
+Behavior when the AppSec Component returns a 500: the request can either pass through or be denied.
 
 ### `ALWAYS_SEND_TO_APPSEC`
 

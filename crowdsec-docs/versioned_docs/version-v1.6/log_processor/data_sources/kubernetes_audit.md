@@ -16,7 +16,7 @@ labels:
  type: k8s-audit
 ```
 
-Look at the `configuration parameters` to view all supported options.
+See [Parameters](#parameters) for all supported options.
 
 ## Parameters
 
@@ -28,7 +28,7 @@ Mandatory.
 
 ### `listen_port`
 
-The port on which the datasource will liste.
+The port on which the datasource will listen.
 
 Mandatory.
 

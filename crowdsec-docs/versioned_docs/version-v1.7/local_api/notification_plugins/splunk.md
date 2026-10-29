@@ -7,7 +7,7 @@ The splunk plugin is by default shipped with your CrowdSec installation. The fol
 
 ## Configuring the plugin:
 
-By default the configuration for Splunk plugin is located at these default location per OS:
+By default, the Splunk plugin configuration is located at the following paths, depending on the OS:
 
 - **Linux** `/etc/crowdsec/notifications/splunk.yaml`
 - **FreeBSD** `/usr/local/etc/crowdsec/notifications/splunk.yaml`
@@ -99,7 +99,7 @@ on_success: break
 
 ## Final Steps:
 
-Let's restart crowdsec
+Restart CrowdSec:
 
 ```bash
 sudo systemctl restart crowdsec

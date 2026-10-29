@@ -34,8 +34,8 @@ sudo cscli parsers install crowdsecurity/geoip-enrich
 This method uses an Ip as an input, and tries to give information on
 this IP on return. It requires the maxmind database to be installed,
 which is done at the parser `crowdsecurity/geoip-enrich` installation.
-It will fill the fields `Enriched.Isocode` with county ISO code and
-`Enriched.IsInEU` with the string `true` of `false`. It fills also
+It will fill the fields `Enriched.Isocode` with the country ISO code and
+`Enriched.IsInEU` with the string `true` or `false`. It also fills
 `Enriched.Latitude` and `Enriched.Longitude` with the latitude and
 longitude.
 
@@ -44,13 +44,13 @@ longitude.
 This method uses an Ip as an input, and tries to give information on
 this IP on return. It requires the maxmind database to be installed,
 which is done at the parser `crowdsecurity/geoip-enrich` installation.
-This method fill the fields `Enriched.ASNNUMBER` and
+This method fills the fields `Enriched.ASNNUMBER` and
 `Enriched.ASNumber` with the AS Number and `Enriched.ASNOrg` with the
-AS organiszation name
+AS organization name.
 
 #### IpToRange
 
-This method uses an Ip as an input, and tries to corresponding
+This method uses an Ip as an input, and tries to return the corresponding
 registered range on return. It requires the maxmind database to be
 installed, which is done at the parser `crowdsecurity/geoip-enrich`
 installation. The field `Enriched.SourceRange` is filled with the
@@ -58,7 +58,7 @@ source range information.
 
 #### reverse_dns
 
-This methode uses an Ip as an input, and give the result of the
+This method uses an IP as input and gives the result of the
 reverse dns lookup. It fills the field `Enriched.reverse_dns` with the
 reverse dns information.
 
@@ -66,6 +66,6 @@ reverse dns information.
 
 This method uses a date string as an input and tries to understand the
 date. This is used by the `crowdsecurity/dateparse-enrich` enricher to
-make crowdsec understand when the event took place. In case the date
+make CrowdSec understand when the event took place. In case the date
 is not understood by crowdsec, the timestamp used is the time when the
 parsing is taking place.

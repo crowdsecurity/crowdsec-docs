@@ -63,14 +63,14 @@ batch:
 The reader will always start from the latest offset.
 :::
 
-Look at the `configuration parameters` to view all supported options.
+See [Parameters](#parameters) for all supported options.
 
 ## Parameters
 
 
 ### `brokers`
 
-The name of the kafka brockers to connect to.
+The list of Kafka brokers to connect to.
 
 Required.
 
@@ -87,7 +87,7 @@ The consumer group id to use.
 Cannot be used with `partition`.
 
 :::warning
-It is highly recommended to set this value, or crowdsec will only read logs from the 1st partition of the topic.
+It is highly recommended to set this value, or CrowdSec will only read logs from the first partition of the topic.
 :::
 
 ### `partition`

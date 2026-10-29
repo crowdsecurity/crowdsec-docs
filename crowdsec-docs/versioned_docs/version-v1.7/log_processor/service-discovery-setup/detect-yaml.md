@@ -34,7 +34,7 @@ detect:
 
 ### `when`
 
-A list of expression that must return a boolean.
+A list of expressions that must return a boolean.
 
 If multiple expressions are provided, they must all return `true` for the service to be included.
 
@@ -44,13 +44,13 @@ when:
  - Systemd.UnitInstalled("<unit>")
 ```
 
-You can use any of the helper referenced [here](/log_processor/service-discovery-setup/expr.md).
+You can use any of the helpers referenced [here](/log_processor/service-discovery-setup/expr.md).
 
 ### `hub_spec`
 
 A map of hub items to install.
 
-Specifying an invalid item type or item will log an error but will not prevent the detection to continue.
+Specifying an invalid item type or item will log an error but will not prevent the detection from continuing.
 
 ```yaml
 hub_spec:

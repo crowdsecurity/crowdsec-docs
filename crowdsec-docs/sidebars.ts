@@ -48,6 +48,7 @@ const sidebarsConfig: SidebarConfig = {
 						"log_processor/data_sources/http",
 						"log_processor/data_sources/journald",
 						"log_processor/data_sources/kafka",
+						"log_processor/data_sources/kubernetes",
 						"log_processor/data_sources/kubernetes_audit",
 						"log_processor/data_sources/loki",
 						"log_processor/data_sources/victorialogs",
@@ -287,7 +288,7 @@ const sidebarsConfig: SidebarConfig = {
 						{
 							type: "doc",
 							id: "contributing/specs/bouncer_appsec_specs",
-							label: "Bouncer&AppSec",
+							label: "Bouncer & AppSec",
 						},
 						{
 							type: "doc",
@@ -390,6 +391,15 @@ const sidebarsConfig: SidebarConfig = {
 				"cscli/cscli_appsec-rules_remove",
 				"cscli/cscli_appsec-rules_upgrade",
 			],
+		},
+		{
+			type: "category",
+			label: "cscli bot",
+			link: {
+				type: "doc",
+				id: "cscli/cscli_bot",
+			},
+			items: ["cscli/cscli_bot_fsid", "cscli/cscli_bot_match"],
 		},
 		{
 			type: "category",
@@ -683,6 +693,7 @@ const sidebarsConfig: SidebarConfig = {
 			label: "Installation",
 			items: [
 				{ type: "doc", id: "appsec/quickstart/general_setup" },
+				{ type: "doc", id: "appsec/quickstart/apache" },
 				{ type: "doc", id: "appsec/quickstart/nginx-ingress" },
 				{ type: "doc", id: "appsec/quickstart/envoy-gateway" },
 				{ type: "doc", id: "appsec/quickstart/nginxopenresty" },
@@ -700,7 +711,6 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/configuration_creation_testing" },
 				{ type: "doc", id: "appsec/configuration_rule_management" },
 				{ type: "doc", id: "appsec/hooks" },
-				{ type: "doc", id: "appsec/api_validation" },
 			],
 		},
 		{
@@ -712,6 +722,32 @@ const sidebarsConfig: SidebarConfig = {
 				{ type: "doc", id: "appsec/rules_deploy" },
 				{ type: "doc", id: "appsec/rules_examples" },
 			],
+		},
+		{
+			type: "category",
+			label: "Bot detection",
+			customProps: {
+				tag: "new",
+			},
+			link: { type: "doc", id: "appsec/bot_detection/intro" },
+			items: [
+				{ type: "doc", id: "appsec/bot_detection/enable" },
+				{ type: "doc", id: "appsec/bot_detection/whats_included" },
+				{ type: "doc", id: "appsec/bot_detection/how_it_works" },
+				{ type: "doc", id: "appsec/bot_detection/customization" },
+				{ type: "doc", id: "appsec/bot_detection/custom_js" },
+				{ type: "doc", id: "appsec/bot_detection/configuration" },
+				{ type: "doc", id: "appsec/bot_detection/hooks" },
+				{ type: "doc", id: "appsec/bot_detection/challenge_protocol" },
+			],
+		},
+		{ type: "doc", id: "appsec/api_validation" },
+		{
+			type: "doc",
+			id: "appsec/rate_limiting",
+			customProps: {
+				tag: "new",
+			},
 		},
 		{
 			type: "category",

@@ -82,7 +82,7 @@ const alreadyRunningLinks = [
 	{
 		icon: <CIcon icon={cilShieldAlt} style={ICON_SM} aria-hidden="true" />,
 		label: "Activate the WAF",
-		href: "/docs/next/appsec/intro",
+		href: "/docs/appsec/intro",
 		color: CS_TEAL,
 	},
 	{
@@ -109,10 +109,10 @@ const popularLinks = [
 	{
 		icon: <CIcon icon={cilShieldAlt} style={ICON_SM} aria-hidden="true" />,
 		label: "AppSec / WAF",
-		href: "/docs/next/appsec/intro",
+		href: "/docs/appsec/intro",
 		color: CS_TEAL,
 	},
-	{ label: "CLI Reference", href: "/docs/next/cscli/" },
+	{ label: "CLI Reference", href: "/docs/cscli/" },
 	{ label: "CTI API Keys", href: "/u/console/ip_reputation/api_keys" },
 	{ label: "Troubleshooting", href: "/u/troubleshooting/intro" },
 	{ label: "CrowdSec.net", href: "https://www.crowdsec.net", external: true },
@@ -357,7 +357,7 @@ export default function HomePage() {
 						color={CS_VIOLET}
 						eyebrow="IP REPUTATION & CTI"
 						title="Query threat intel — in the browser or via API in your tools"
-						sub="Search 1B+ observed IPs, enrich SIEM/SOAR alerts, hunt patterns across the community."
+						sub="Search 22M+ observed IPs, enrich SIEM/SOAR alerts, hunt patterns across the community."
 						steps={ctiSteps}
 						ctaLabel="Explore CTI"
 						ctaHref="/u/cti_api/intro"

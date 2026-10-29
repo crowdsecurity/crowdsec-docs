@@ -9,7 +9,7 @@ Every alert which would pass the profile's filter would be dispatched to `http_d
 
 ## Configuring the plugin
 
-By default the configuration for HTTP plugin is located at these default location per OS:
+By default, the HTTP plugin configuration is located at the following paths, depending on the OS:
 
 - **Linux** `/etc/crowdsec/notifications/http.yaml`
 - **FreeBSD** `/usr/local/etc/crowdsec/notifications/http.yaml`
@@ -110,7 +110,7 @@ on_success: break
 
 ## Final Steps:
 
-Let's restart crowdsec
+Restart CrowdSec:
 
 ```bash
 sudo systemctl restart crowdsec

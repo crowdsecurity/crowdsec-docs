@@ -6,13 +6,13 @@ title: Consuming Fastly Logs
 In this guide we're going to:
 
  1. Setup fastly to transport logs to a linux server with TLS configured.
- 2. Setup crowdsec on log server to consume fastly logs.
+ 2. Set up CrowdSec on the log server to consume Fastly logs.
 
 
 ## Transport fastly logs to linux server:
 
 ### Configuring Rsyslog with TLS
-To receive logs from Fastly, you'll need to generate server and client certificates (the server certificate for machine which receives logs and client for Fastly). See this [guide](https://www.rsyslog.com/doc/master/tutorials/tls.html#setting-up-the-system) on how to do this.
+To receive logs from Fastly, you'll need to generate server and client certificates (the server certificate for machine which receives logs and client for Fastly). See this [guide](https://docs.rsyslog.com/doc/tutorials/tls.html#setting-up-the-system) on how to do this.
 
 
 
@@ -57,11 +57,11 @@ We configure rsyslog to ignore local syslogs and keep only remote syslog. Then w
 
 ## Install crowdsec with fastly collection
 
-On the same machine, install crowdsec following as mentioned [here](/getting_started/introduction.mdx)
+On the same machine, install CrowdSec as described in the [getting started guide](/getting_started/introduction.mdx)
 
 ### Setup  acquisition
 
-Append this config to the file /etc/crowdsec/acquisition.yaml
+Append this config to /etc/crowdsec/acquis.yaml (or create /etc/crowdsec/acquis.d/fastly.yaml)
 
 ```yaml
 ---
@@ -79,7 +79,7 @@ Install  the fastly collection via:
 sudo cscli collections install crowdsecurity/fastly
 ```
 
-### Reload crowdec
+### Reload CrowdSec
 ```
 sudo systemctl reload crowdsec.service
 ```

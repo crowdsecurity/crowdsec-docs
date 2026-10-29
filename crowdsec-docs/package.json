@@ -11,6 +11,8 @@
         "clear": "docusaurus clear",
         "serve": "docusaurus serve",
         "lint": "biome check",
+        "typecheck": "tsc",
+        "check-versioned-docs": "node scripts/check-versioned-docs.mjs",
         "format": "biome format",
         "migrate": "biome migrate --write",
         "write-translations": "docusaurus write-translations",

@@ -1,6 +1,8 @@
 ---
 id: nginx-ingress
-title: QuickStart - NGINX Ingress (Helm)
+title: "NGINX Ingress WAF QuickStart (Helm)"
+sidebar_label: "QuickStart - NGINX Ingress (Helm)"
+description: "Install the CrowdSec Web Application Firewall (WAF) on Kubernetes with Helm and protect the services exposed through your NGINX Ingress Controller."
 ---
 
 import Tabs from '@theme/Tabs';
@@ -14,8 +16,8 @@ has known security issues, and upstream removed Lua support in version `1.12`,
 which this integration depends on.
 
 Do not use this for new deployments. If you are already using it, plan a migration
-to another supported integration such as [Traefik](/docs/next/appsec/quickstart/traefik)
-or [Envoy Gateway](/docs/next/appsec/quickstart/envoy-gateway).
+to another supported integration such as [Traefik](/appsec/quickstart/traefik.mdx)
+or [Envoy Gateway](/appsec/quickstart/envoy-gateway.mdx).
 :::
 
 ## Objectives
@@ -353,7 +355,7 @@ config:
     resolver local=on ipv6=off;
 ```
 
-This snippet enables the crowdsec Lua plugin, aAllocates shared memory for
+This snippet enables the CrowdSec Lua plugin, allocates shared memory for
 caching LAPI/AppSec results and ensures Lua HTTPS validation and DNS resolution
 work properly.
 
@@ -372,7 +374,7 @@ After the rollout, you can optionally check that the right container is deployed
 
 `kubectl -n ingress-nginx exec -ti <ingress-pod-name> -- find /etc/nginx/lua/plugins/crowdsec`
 
-This should give you a bunch of crowdsec lua files.
+This should list the CrowdSec Lua plugin files.
 
 :::
 
@@ -382,11 +384,11 @@ This should give you a bunch of crowdsec lua files.
 We're assuming the web server is installed on the same machine and is listening on port 80. Please adjust your testing accordingly if this is not the case.
 :::
 
-if you try to access `http://localhost/.env` from a browser, your request will be blocked, resulting in the display of the following HTML page:
+If you try to access `http://localhost/.env` from a browser, your request will be blocked, resulting in the display of the following HTML page:
 
 ![appsec-denied](/img/appsec_denied.png)
 
-We can also look at the metrics from `cscli metrics show appsec` on the appsec pod it will display:
+We can also look at the metrics from `cscli metrics show appsec` on the AppSec pod. It will display:
  - the number of requests processed by the AppSec Component
  - Individual rule matches
 

@@ -1,6 +1,8 @@
 ---
 id: rules_syntax
-title: Syntax
+title: "WAF Rules Syntax"
+sidebar_label: "Syntax"
+description: "Full syntax reference for CrowdSec WAF rules: in-band and out-of-band evaluation, zones, transforms, match operators, and the remediation a match triggers."
 sidebar_position: 8
 ---
 
@@ -28,7 +30,7 @@ The rule files share some common directives with the scenarios:
 
 - a [`name`](#name) and [`description`](#description)
 - a [`rules`](#rules) section describing the rule to match the HTTP request
-- a [`labels`](#labels) section for metadata (see [labels format](https://doc.crowdsec.net/docs/next/scenarios/format/#labels))
+- a [`labels`](#labels) section for metadata (see [labels format](/log_processor/scenarios/format.md#labels))
 
 ```yaml
 name: crowdsecurity/example-rule
@@ -83,7 +85,7 @@ rules: []
 
 > object
 
-Extra metadata used by scenarios and the Hub (optional). The format follows the [labels schema](https://doc.crowdsec.net/docs/next/scenarios/format/#labels).
+Extra metadata used by scenarios and the Hub (optional). The format follows the [labels schema](/log_processor/scenarios/format.md#labels).
 
 ```yaml {4-7}
 name: crowdsecurity/example-rule
@@ -133,7 +135,7 @@ rules:
           value: /crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
 ```
 
-See the [appsec-generic-test rule](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/appsec-generic-test) for a full example.
+See the [appsec-generic-test rule](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/appsec-generic-test) for a full example.
 
 ### Rule condition fields
 
@@ -321,10 +323,10 @@ We recommend using this format only to use existing rules you may have.
 
 **ModSecurity** syntax support is provided by [coraza](https://github.com/corazawaf/coraza/), and the reference documentation is available [here](https://coraza.io/docs/seclang/syntax/).
 
-There are 2 ways to provide crowdsec with seclang rules:
+There are 2 ways to provide CrowdSec with seclang rules:
 
 - Provide rules directly by using the `seclang_rules` parameter in your rule file
-- Provide a file containing the rules by using the `seclang_rules_file` parameter in your rule file. The file must be located inside CrowdSec data directory
+- Provide a file containing the rules by using the `seclang_files_rules` parameter in your rule file. The file must be located inside CrowdSec data directory
 
 The default paths for the data directory per OS:
 

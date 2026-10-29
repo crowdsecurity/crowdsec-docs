@@ -99,7 +99,7 @@ $ python3 crowdsec.py
 
 You'll find all config params in the repo's [User Guide](https://github.com/crowdsecurity/cs-opencti-internal-enrichment-connector/blob/main/docs/USER_GUIDE.md).  
 You can choose what enrichments will be added: 
-- Various labels base on reputation, behaviors, mitre attack and their colors
+- Various labels based on reputation, behaviors, MITRE ATT&CK and their colors
 - Sightings
 - Indicators and attack patterns
 - Details note
@@ -133,11 +133,11 @@ Labels can be activated and deactivated for various enrichment dimensions as wel
 
 ![OpenCTI enriched](/img/opencti_observables_list.png)
 
-There after you can see the kind of enrichments added to your observable:
+You can then see the enrichments added to your observable:
 - Labels of course
 - External reference
 - Various relationships like Indicators, Attack patterns ...
-- And a note mentionning important informations like the date of first and last seen, top target countries and more.
+- And a note mentioning important information such as the first and last seen dates, top target countries and more.
 
 ![OpenCTI enriched](/img/opencti_observable_details.png)
 

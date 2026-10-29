@@ -148,7 +148,7 @@ const SecurityEnginePage = () => {
 						color="var(--cs-orange)"
 						title="Parsers & Scenarios"
 						desc="Learn how CrowdSec parses logs and detects threats with community-maintained scenarios."
-						href="/docs/next/concepts"
+						href="/docs/concepts"
 					/>
 					<DocCard
 						iconName="shield"
@@ -169,7 +169,7 @@ const SecurityEnginePage = () => {
 						color="var(--cs-blue)"
 						title="AppSec / WAF"
 						desc="Protect web applications from OWASP Top 10 risks and custom attack patterns."
-						href="/docs/next/appsec/intro"
+						href="/docs/appsec/intro"
 					/>
 				</DocCardGrid>
 			</Section>
@@ -189,14 +189,14 @@ const SecurityEnginePage = () => {
 						color="var(--cs-orange)"
 						title="CLI Reference"
 						desc="Complete cscli command documentation."
-						href="/docs/next/cscli/"
+						href="/docs/cscli/"
 					/>
 					<DocCard
 						iconName="box"
 						color="var(--cs-violet)"
 						title="Configuration"
 						desc="Fine-tune your Security Engine settings."
-						href="/docs/next/configuration/crowdsec_configuration"
+						href="/docs/configuration/crowdsec_configuration"
 					/>
 					<DocCard
 						iconName="search"

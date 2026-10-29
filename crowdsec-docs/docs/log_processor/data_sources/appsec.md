@@ -6,7 +6,7 @@ title: Application Security Component
 
 This module allows you to enable the `Application Security Component` as a data source.
 
-A more detailed documentation is available [here](/appsec/intro.md).
+More detailed documentation is available in the [AppSec documentation](/appsec/intro.md).
 
 A quickstart tutorial is available for [Nginx/OpenResty](/appsec/quickstart/nginxopenresty.mdx) and [Traefik](/appsec/quickstart/traefik.mdx).
 
@@ -40,6 +40,8 @@ Defaults to `/`.
 
 The list of appsec-configs to use (as seen in `cscli appsec-configs list`).
 
+An entry can also be a glob pattern (`*` and `?`), which is expanded to all the *installed* appsec-configs matching it, for example `crowdsecurity/appsec-bot-challenge-exclude-*`. A pattern matching no installed appsec-config is an error.
+
 ### `appsec_config`
 
 **Deprecated**, use [`appsec_configs`](#appsec_configs)
@@ -52,14 +54,25 @@ The list of appsec-configs to use (as seen in `cscli appsec-configs list`).
 
 Number of routines to use to process the requests. Defaults to 1.
 
+Each routine is a pair of workers: one evaluates the in-band rules and answers the remediation component, the other evaluates the out-of-band rules. Out-of-band work never delays the response or the next in-band request.
+
+Requests waiting for out-of-band evaluation go through a queue shared by all routines, holding up to 64 requests per routine. When it is full, new requests skip out-of-band evaluation: they are still answered in-band, but out-of-band rules and hooks don't run for them. Skipped requests are counted in the `cs_appsec_outofband_dropped_total` [metric](/observability/prometheus.md) and summarized in a warning at most once a minute. If you see drops, raise `routines` or reduce the out-of-band rule set.
+
 ### `auth_cache_duration`
 
-How long to cache the auth token for. Accepts value supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
+How long to cache the auth token for. Accepts values supported by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration).
 Defaults to 1m.
+
+### `auth_timeout`
+
+How long to wait for the local API to validate the API key of a remediation component. Accepts value supported by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration).
+Set to `0` to disable the timeout.
+Increase it if your local API is not on the same machine or is a few network hops away.
+Defaults to 200ms.
 
 ### `body_read_timeout`
 
-How long to wait for the remediation component to finish sending the request body before giving up and processing whatever was received. Accepts value supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration).
+How long to wait for the remediation component to finish sending the request body before giving up and processing whatever was received. Accepts value supported by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration).
 Set to `0` to disable the timeout.
 Defaults to 1s.
 

@@ -6,7 +6,7 @@ sidebar_position: 7
 
 # AllowLists
 
-The AllowLists feature in CrowdSec lets you manage IP-based allowlists at the LAPI level. It affects both local decisions and blocklist pulls, giving you more flexibility to trust specific IPs while keeping CrowdSec security controls in place.
+The AllowLists feature in CrowdSec lets you manage IP-based allowlists at the LAPI level. It affects local decisions, blocklist pulls, and AppSec (WAF) processing, giving you more flexibility to trust specific IPs while keeping CrowdSec security controls in place.
 
 :::tip CrowdSec Premium: Centralized Console Management
 
@@ -21,11 +21,16 @@ AllowLists affect local decisions and blocklist pulls in different ways:
 |-------|------|------| 
 | Local alerts | Alert is dropped, action logged. | ✅ |
 | Blocklists | IP is removed before database insertion | ✅ |
-| WAF (AppSec) | Request not blocked, action logged. | Refreshed every minute |
+| WAF (AppSec) | Request bypasses AppSec entirely, action logged. | Refreshed every minute |
+| Bot Detection (AppSec) | Request bypasses Bot detection entirely. | Refreshed every minute |
 | cscli | Decision is blocked unless special flag is provided | ✅ |
 
 
 AllowLists are limited to IP/range-based rules. If you need rules based on log elements (such as URLs), [Parser Whitelists](/log_processor/whitelist/introduction.md) or [Profile Rules](/local_api/profiles/format.md) might be more relevant.
+
+:::note AppSec and bot detection
+Because an allowlisted IP skips AppSec processing completely, an allowlist is a convenient way to exempt trusted infrastructure from [bot detection](/appsec/bot_detection/intro.md): allowlisted clients are never served the proof-of-work challenge and never issued a challenge cookie.
+:::
 
 
 ## Creating an allowlist

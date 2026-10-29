@@ -4,6 +4,16 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import React from "react";
 
+const windowsTerminalValues = [
+	{ label: "PowerShell", value: "powershell", icon: cibPowershell },
+	{ label: "CMD", value: "terminal", icon: cilShortText },
+];
+
+const dockerValues = [
+	{ label: "Exec", value: "exec", icon: cilDollar },
+	{ label: "Compose", value: "compose", icon: cilShortText },
+];
+
 /*
  * This component is used to display code snippets for both Unix and Windows operating systems.
  * It uses the Docusaurus Tabs component to display the code snippets for both operating systems.
@@ -18,7 +28,7 @@ const FormattedTabs = ({ ...props }): React.JSX.Element => {
 
 	if (props.bash !== undefined) {
 		defaultValue = "nix";
-		values.push({ label: "Linux/Freebsd", value: "nix", icon: cibLinux });
+		values.push({ label: "Linux/FreeBSD", value: "nix", icon: cibLinux });
 	}
 	if (props.powershell !== undefined) {
 		if (defaultValue === "") {
@@ -58,22 +68,7 @@ const FormattedTabs = ({ ...props }): React.JSX.Element => {
 					<CodeBlock className="language-bash">{props.cmd}</CodeBlock>
 				) : null}
 				{props.cmd !== undefined && props.powershell !== undefined ? (
-					<Tabs
-						defaultValue="powershell"
-						groupId="windows-terminal"
-						values={[
-							{
-								label: "Powershell",
-								value: "powershell",
-								icon: cibPowershell,
-							},
-							{
-								label: "CMD",
-								value: "terminal",
-								icon: cilShortText,
-							},
-						]}
-					>
+					<Tabs defaultValue="powershell" groupId="windows-terminal" values={windowsTerminalValues}>
 						<TabItem value="powershell">
 							<CodeBlock className="language-bash">{props.powershell}</CodeBlock>
 						</TabItem>
@@ -93,22 +88,7 @@ const FormattedTabs = ({ ...props }): React.JSX.Element => {
 				) : null}
 
 				{props.dockerCompose !== undefined && props.docker !== undefined ? (
-					<Tabs
-						defaultValue="exec"
-						groupId="docker-selection"
-						values={[
-							{
-								label: "Exec",
-								value: "exec",
-								icon: cilDollar,
-							},
-							{
-								label: "Compose",
-								value: "compose",
-								icon: cilShortText,
-							},
-						]}
-					>
+					<Tabs defaultValue="exec" groupId="docker-selection" values={dockerValues}>
 						<TabItem value="exec">
 							<CodeBlock className="language-bash">{props.docker}</CodeBlock>
 						</TabItem>

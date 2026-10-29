@@ -6,16 +6,16 @@ sidebar_position: 1
 
 ## Getting Started
 
-You want to contribute to Crowdsec? Fantastic!
+You want to contribute to CrowdSec? Fantastic!
 
 In order to achieve this, this guide will provide you with all the needed information and guidance :+1:
 
 ### Communication
 
-The main comunication channels of the project are:
+The main communication channels of the project are:
 
 - [discord](https://discord.gg/crowdsec): [Discord](https://discord.com/) is the most common communication medium of the project, and is especially suitable for live interactions (chatting).
-- [discourse](https://discourse.crowdsec.net/): [Discourse](https://www.discourse.org/) is a forum and is very useful to expose ideas and suggestions, or simply to formulate a question to which you didn't find answer on discord.
+- [discourse](https://discourse.crowdsec.net/): [Discourse](https://www.discourse.org/) is a forum and is very useful to expose ideas and suggestions, or simply to formulate a question you couldn't find an answer to on Discord.
 - [github](https://github.com/crowdsecurity/): Issues and Pull Requests are used to expose bugs and suggestions in a more formal way.
 
 Do not hesitate to join & ask your questions!
@@ -24,7 +24,7 @@ Do not hesitate to join & ask your questions!
 
 ### Find something to work on
 
-The first step to getting starting is to find something to work on. Help is always welcome, and no contribution is too small!
+The first step to getting started is to find something to work on. Help is always welcome, and no contribution is too small!
 
 Here are some things you can do today to start contributing:
 

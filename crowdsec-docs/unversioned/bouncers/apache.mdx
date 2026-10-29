@@ -1,207 +1,535 @@
 ---
 id: apache_bouncer
-title: Apache
+title: "Apache IP Blocking, WAF & Bot Detection with CrowdSec"
+description: "Protect Apache with the CrowdSec module: block IPs from live or streamed decisions, forward requests to AppSec for WAF inspection, serve the bot-detection challenge, and report usage metrics."
 sidebar_position: 2
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import useBaseUrl from "@docusaurus/useBaseUrl";
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-  <img
-    src={useBaseUrl("/img/crowdsec_apache2.svg")}
-    alt="CrowdSec"
-    title="CrowdSec"
-    width="400"
-    height="300"
-  />
-</p>
-<p align="center">
-  <img src="https://img.shields.io/badge/build-pass-green" />
-  <img src="https://img.shields.io/badge/tests-pass-green" />
-</p>
-<p align="center">
-  &#x1F4DA; <a href="#installation/">Documentation</a>
-  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-  &#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
+<BouncerHeader
+  title="Apache"
+  imgSrc="/img/crowdsec_apache2.svg"
+  description="Apache module with live and stream remediation, AppSec (WAF) forwarding, bot-detection challenge and usage metrics."
+  featuresSupport="waf, livemode, streammode, metrics, botdetection"
+  githubUrl="https://github.com/crowdsecurity/cs-apache2-bouncer"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-apache2-bouncer"
+/>
 
-A Remediation Component for Apache.
+# Protect Apache with IP Blocking, WAF & Bot Detection
 
-:::warning
+:::info v1.0 packages available as github artifacts
 
-Beta Remediation Component, please report any issues on [GitHub](https://github.com/crowdsecurity/cs-apache2-bouncer/issues)
+`mod_crowdsec` 1.0 is a full rewrite of 0.1. Its packages are attached to the [GitHub release](https://github.com/crowdsecurity/cs-apache2-bouncer/releases).
+
+1.0 configuration is backward compatible with 0.1; [Upgrade and adapt your existing configuration](#upgrading-from-01) to take advantage of the new features.
 
 :::
 
-## How does it work ?
+:::tip Enable the WAF and Bot Detection for optimal protection
+After installing the module, enable the [AppSec (WAF) Component](/docs/appsec/intro) to get virtual patching and defense against known CVEs, SQL injection, XSS and other application-layer attacks.
 
-This component leverages Apache's module mecanism to provide IP address blocking capability.
+Follow the dedicated [AppSec QuickStart for Apache](/docs/appsec/quickstart/apache) after completing initial setup.
+:::
 
-The module supports **Live mode** with a local (in-memory) cache.
+## How does it work?
 
-At the back, this component uses `mod_proxy`, `mod_ssl` for requests to LAPI, and `mod_socache` for the caching feature.
+The component is an Apache module. It runs in-process in every Apache child, and does up to two things on the request path:
+
+1. **Decision lookup** — the client address is checked against the CrowdSec decisions, and the request is allowed, blocked or redirected.
+2. **Request inspection** (optional) — the request is forwarded to the [AppSec Component](/docs/appsec/intro) for WAF inspection, and its verdict decides the request. This is also what serves the [bot-detection](/docs/appsec/bot_detection/intro) challenge.
+
+Decisions are obtained in one of two modes:
+
+- **Stream mode** (recommended) — the decision set is polled in the background into a shared cache, so no request ever waits on the local API.
+- **Live mode** — the local API is queried per request, with a short-lived cache per address.
+
+Supported features:
+
+- Ban remediation, returning a status code or redirecting to a page of your choice
+- Bot-detection challenge, served through AppSec
+- IPv4 and IPv6, single addresses and ranges
+- WAF/AppSec over TCP or a unix socket
+- Usage metrics reported to the local API, so the component shows up in `cscli metrics show bouncers` and in the [Console](https://app.crowdsec.net)
+- A status handler for the module's own counters
+
+There is no captcha support: an AppSec `captcha` remediation is resolved through [`CrowdsecRemediationFallback`](#enforcement), which blocks by default. See [Known limits](#known-limits).
+
+At the back, the module uses `libcurl` for its API calls and `mod_socache` for the shared decision cache.
+
+### Requirements
+
+- Apache 2.4.16 or later
+- `mod_socache_shmcb`, for the shared decision cache (mandatory in stream mode)
+- libcurl 7.40 or later
+- A CrowdSec local API, and the [AppSec Component](/docs/appsec/intro) if you want WAF inspection or bot detection
 
 ## Installation
 
-:::warning
-
-Packages are only available for debian and ubuntu systems.
-
-The module can be built and installed on other platform as well.
-
-Please keep in mind that this bouncer only supports live mode.
-
+:::info
+Packages are built for Debian (bullseye, bookworm, trixie), Ubuntu (jammy, noble) and Enterprise Linux 8, 9 and 10, on `amd64`/`x86_64` and `arm64`/`aarch64`. On any other platform, build from source.
 :::
 
 <Tabs
   defaultValue="apache_debian"
   values={[
     { label: 'Debian/Ubuntu', value: 'apache_debian' ,},
+    { label: 'RHEL/Rocky/Alma', value: 'apache_el' ,},
     { label: 'Others (build from source)', value: 'others' ,},
   ]
 }>
 <TabItem value="apache_debian">
 
-### Repository configuration
+Download the `.deb` matching your distribution and architecture from the [latest release](https://github.com/crowdsecurity/cs-apache2-bouncer/releases), then:
 
-:::warning
-Please note that the repository for this package is not the same as the one holding CrowdSec's binary packages,
+```bash
+sudo apt install ./crowdsec-apache2-bouncer_*_amd64.deb
+```
+
+`apt` accepts a local path where `apt-get` does not, and it pulls in what the package needs: `apache2`, `libcurl` and `gettext-base`. `dpkg -i` works only once those are already installed — without `gettext-base` the package cannot write the API key into its configuration.
+
+If CrowdSec is installed on this host, the package registers a bouncer with it, writes the key into `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`, enables the module and reloads Apache. With no `cscli` on the host it says so and leaves an `<API_KEY>` placeholder, and it does not retry on a later upgrade — see [Register the bouncer by hand](#register-the-bouncer-by-hand).
+
+</TabItem>
+
+<TabItem value="apache_el">
+
+Download the `.rpm` matching your release and architecture from the [latest release](https://github.com/crowdsecurity/cs-apache2-bouncer/releases), then:
+
+```bash
+sudo dnf install ./crowdsec-apache2-bouncer-*.x86_64.rpm
+```
+
+If CrowdSec is installed on this host, the package registers a bouncer with it, writes the key into `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`, drops its `LoadModule` snippet into `conf.modules.d` and reloads `httpd` once `apachectl configtest` passes. With no `cscli` on the host it says so and leaves an `<API_KEY>` placeholder — see [Register the bouncer by hand](#register-the-bouncer-by-hand).
+
+Then let `httpd` open outbound connections, which SELinux forbids by default:
+
+```bash
+sudo setsebool -P httpd_can_network_connect on
+```
+
+:::danger Check SELinux configuration
+SELinux gives `httpd_t` no outbound network access, preventing the bouncer to communicate with the local API/AppSec. The default `CrowdsecFallback allow` lets the request through.
+
+Look for `crowdsec: live query to 'http://127.0.0.1:8080' failed (connect-fail)` in the httpd error log.
 :::
 
-```bash
-curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec-apache/script.deb.sh | sudo bash
-```
+:::warning
+Enterprise Linux 7 and Amazon Linux 2 ship Apache 2.4.6, below the 2.4.16 this module needs. They are not supported targets.
+:::
 
-### Installation
-
-```bash
-sudo apt-get install crowdsec-apache2-bouncer
-```
+:::note
+Release assets are not GPG-signed, so a host configured with `localpkg_gpgcheck=1` needs `--nogpgcheck` on that `dnf install`.
+:::
 
 </TabItem>
 
 <TabItem value="others">
 
-Clone or download directly [from our GitHub repository](https://github.com/crowdsecurity/cs-apache2-bouncer).
+Build dependencies are a C toolchain, the autotools, `pkg-config`, the Apache development package (`apache2-dev` or `httpd-devel`) and the libcurl development package. On Enterprise Linux add `redhat-rpm-config`: `apxs` links with the distribution's hardened linker spec, and without that package the link step fails with `cannot read spec file '/usr/lib/rpm/redhat/redhat-hardened-ld'`.
 
 ```bash
-aclocal
-autoconf
-autoheader
-automake --add-missing
+git clone https://github.com/crowdsecurity/cs-apache2-bouncer
+cd cs-apache2-bouncer
+autoreconf -fi
 ./configure
 make
 sudo make install
-sudo cp config/mod_crowdsec.* /etc/apache2/mods-available/
-sudo mkdir  -p /etc/crowdsec/bouncers/
-sudo cp ./config/crowdsec-apache2-bouncer.conf  /etc/crowdsec/bouncers/
 ```
 
-### Initial Configuration
-
-Enable the mod_crowdsec module:
+`configure` finds Apache through `apxs`, and derives the configuration layout from it: `apxs -q TARGET` reporting `apache2` means the Debian layout (`mods-available`), `httpd` means the Enterprise Linux one (`conf.modules.d`), anything else means no layout. Point it at a specific `apxs`, or override the layout, if the detection does not suit you:
 
 ```bash
-sudo a2enmod  mod_crowdsec
+./configure --with-apxs=/usr/bin/apxs2 --with-apache-layout=debian
 ```
 
-Generate an API key for the bouncer [1]:
+`make install` always writes the default configuration to `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`. With the `debian` or `el` layout it also installs the `LoadModule` snippet where Apache expects it. With `--with-apache-layout=none` it installs the module alone, and you wire it up yourself:
 
-```bash
-sudo cscli bouncers add apache2
+```apache
+LoadModule crowdsec_module /usr/lib/apache2/modules/mod_crowdsec.so
+LoadModule socache_shmcb_module /usr/lib/apache2/modules/mod_socache_shmcb.so
+Include /etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf
 ```
 
-Remediation Component config's is located in `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`:
+Then enable the module and restart Apache:
 
 ```bash
-## Replace the API key with the newly generated one [1]
-CrowdsecAPIKey this_is_a_bad_password
-```
-
-:::info
-If needed, edit `CrowdsecURL` (and other parameters)
-:::
-
-```bash
+sudo a2enmod crowdsec
 sudo systemctl restart apache2
 ```
 
 </TabItem>
 </Tabs>
 
+### Register the bouncer by hand
 
-## Configuration directives
-
-The configuration file is stored in `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf` by default.
-
-### `Crowdsec`
-
-> on|off
-
-Enable or disable module globally:
- - `off` (**default**): Module has to be enabled per location.
- - `on`: Module is enabled by default.
-
-Behavior can be overriden in any location.
-
-### `CrowdsecFallback`
-
-> fail|block|allow
-
-How to respond if the Crowdsec API is not available:
- - `fail`  returns a 500 Internal Server Error.
- - `block` returns a 302 Redirect (or 429 Too Many Requests if CrowdsecLocation is unset).
- - `allow` (**default**) will allow the request through.
-
-### `CrowdsecBlockedHTTPCode`
-
-> 500|403|429
-
-HTTP code to return when a request is blocked (default is `429`).
-
-### `CrowdsecLocation`
-
-Set to the URL to redirect to when the IP address is banned. As per RFC 7231 may be a path, or a full URL. For example: /sorry.html
-
-### `CrowdsecURL`
-
-Set to the URL of the Crowdsec API. For example: http://localhost:8080.
-
-### `CrowdsecAPIKey`
-
-Set to the API key of the Crowdsec API. Add an API key using 'cscli bouncers add'.
-
-### `CrowdsecCache`
-
-Enable the crowdsec cache. Defaults to 'none'. Options detailed here: https://httpd.apache.org/docs/2.4/socache.html.
-
-### `CrowdsecCacheTimeout`
-
-Set the crowdsec cache timeout. Defaults to 60 seconds.
-
-## Next steps
-
-### Overriding HTTP Response
-
-If you want to return custom HTTP code and/or content, you can use `CrowdsecLocation` and `RewriteRules` :
+Only needed if CrowdSec is not installed on this host, if the key could not be generated, or if you installed from source. On the local API server:
 
 ```bash
-CrowdsecLocation /one/
+sudo cscli bouncers add apache
 ```
 
+Then put the key in `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`:
+
+```apache
+CrowdsecURL    http://127.0.0.1:8080
+CrowdsecAPIKey <the key you just generated>
+```
+
+### Upgrading from 0.1
+
+The upgrade is backward compatible. Stream mode, AppSec, bot detection and metrics are opt-in through the new directives below.
+
+## Configuration
+
+Configuration is plain Apache configuration. The package ships a commented default at `/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf`, which is where the API key is written, and which Apache reaches through a snippet of its own: `conf.d/crowdsec.conf` on Enterprise Linux, `mods-available/crowdsec.conf` on Debian and Ubuntu.
+
+Most directives are server-wide. The ones that decide whether a request is checked are also valid in `<Directory>` and `<Location>`, so you can protect part of a site and not the rest. See the [configuration reference](#configuration-reference) for each directive's scope.
+
+### Stream mode
+
+Recommended: no request ever waits on the local API.
+
+```apache title="/etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf"
+CrowdsecURL    http://127.0.0.1:8080
+CrowdsecAPIKey <your key>
+
+CrowdsecMode            stream
+CrowdsecUpdateFrequency 10s
+CrowdsecCache           shmcb:crowdsec(16777216)
+CrowdsecFallback        allow
+```
+
+The shipped configuration already sets `Crowdsec On` at server level, so that is all it takes to have it apply everywhere.
+
+:::warning Size the cache for your decision count
+`CrowdsecCache` is mandatory in stream mode and must be large enough to hold every decision you receive. Budget about 128 bytes per decision. The shipped `shmcb:crowdsec(16777216)` is the recommended floor and covers around 100,000 decisions; 1,000,000 wants 128 MB. Undersized, decisions are silently evicted and those clients stop being blocked — the error log reports it after each pull, and so does the [status handler](#status-handler).
+:::
+
+### Live mode
+
+No shared cache required, at the cost of an API round trip for each client not already cached.
+
+```apache
+CrowdsecURL    http://127.0.0.1:8080
+CrowdsecAPIKey <your key>
+CrowdsecMode   live
+```
+
+A `CrowdsecCache` is still worth setting in live mode: without it, every Apache child queries the API separately for the same client.
+
+### AppSec (WAF)
+
+Both lines are already in the shipped configuration, commented out. Uncomment them, at server level:
+
+```apache
+CrowdsecAppsecURL http://127.0.0.1:7422
+CrowdsecAppsec    On
+```
+
+`Crowdsec On` is there already too.
+
+Prefer that to a `<Location />` block. See [Protect only part of a site](#protect-only-part-of-a-site) if you need only partial activation.
+
+`CrowdsecAppsecPath` must match the `path` of the AppSec datasource.
+
+For the engine side of this — rules, acquisition, verification — follow the [AppSec QuickStart for Apache](/docs/appsec/quickstart/apache).
+
+### Bot detection
+
+:::tip Prerequisites
+Bot detection is AppSec with the challenge configs loaded on the engine, so there is nothing to add on the Apache side beyond the `CrowdsecAppsec` you already have. Install the collection and point your AppSec datasource at its configs by following [Enable bot detection](/docs/appsec/bot_detection/enable), which also covers the thresholds.
+:::
+
+The engine loads only the appsec-configs named in the datasource, so installing the collection on its own changes nothing and no request is ever challenged. Once both are done, this is the confirmation:
+
 ```bash
-<Location /one/>
-  Crowdsec off
-  RewriteEngine On
-  RewriteRule .* - [R=403,L]
-  # Require all denied
-  ErrorDocument 403 "hell nooo"
+sudo grep "WAF challenge runtime initialized" /var/log/crowdsec.log
+```
+
+Without that line the engine is inspecting requests but has no challenge to serve.
+
+The challenge serves its own assets and submissions under `CrowdsecAppsecInternalPath` (`/crowdsec-internal/challenge/` by default). Everything under that prefix is reserved for the engine: it is always sent to AppSec — including in scopes where `Crowdsec` is `Off`, since a challenged visitor cannot complete the challenge without it — and never reaches your application. A path under the prefix that the engine does not answer gets a 404.
+
+### Behind a reverse proxy or CDN
+
+The module uses the client address Apache reports, so `mod_remoteip` has to be configured for it to police the real client:
+
+```apache
+RemoteIPHeader        X-Forwarded-For
+RemoteIPInternalProxy 10.0.0.0/8
+```
+
+:::danger
+With `RemoteIPHeader` set and **no** trusted-proxy list, any client can choose the address being policed, which is enough to evade a ban. Either set `RemoteIPInternalProxy`/`RemoteIPTrustedProxy` to your actual proxies, or set `CrowdsecTrustUseragentIP Off` to pin the module to the real TCP peer.
+
+The module cannot check this for you — `mod_remoteip` keeps its trusted-proxy list to itself — so nothing warns you about it.
+:::
+
+To see which address is being policed, log both. `%a` is the address the module acts on, and `%{c}a` is the real TCP peer — `%h` and `%a` both follow the rewrite, so only the `{c}` form shows you the peer.
+
+```apache
+LogFormat "%a (peer %{c}a) %t \"%r\" %>s %{CROWDSEC_STATUS}e" crowdsec
+```
+
+## Observability
+
+### Status handler
+
+The module exposes its own counters through a handler. Keep it private:
+
+```apache
+<Location /crowdsec-status>
+    SetHandler     crowdsec-status
+    Crowdsec       Off
+    CrowdsecAppsec Off
+    Require        ip 127.0.0.1
+</Location>
+```
+
+:::note `CrowdsecAppsec Off` matters as much as `Crowdsec Off`
+Left on with bot detection enabled, the status endpoint is served the challenge interstitial instead of its own counters.
+
+Apache merges `<Location>` sections in the order it reads them, so a `<Location />` that turns things on later in the configuration overrides this block and puts the endpoint back behind the WAF. Enabling `Crowdsec` and `CrowdsecAppsec` at server level instead — as the shipped configuration does — keeps that from happening whatever order your files are read in.
+:::
+
+It reports `mode`, `url`, `cache`, the usage-metrics counters, and in stream mode `primed`, `pulls`, `stored`, `retained`, `stored_age_s` and `last_pull_age_ms`.
+
+`stored` is what the last full pull wrote and `stored_age_s` is how long ago that was; incremental pulls leave both alone. `retained` estimates how much of that is still in the cache, extrapolated from a sample of keys re-read after every pull, so treat it as an indicator rather than a count. **`retained` below `stored` means the cache is evicting decisions and needs to be larger.** For what the cache holds right now, read the `active_decisions` counters in the metrics block instead: they move as decisions arrive and are withdrawn.
+
+### Log variables
+
+The module sets these in `subprocess_env`, for use in `LogFormat`:
+
+| Variable | Values |
+| --- | --- |
+| `CROWDSEC_STATUS` | `allow`, `ban`, `challenge`, or why it could not decide |
+| `CROWDSEC_SOURCE` | `memo`, `cache`, `live`, `unprimed` |
+| `CROWDSEC_APPSEC_STATUS` | the verdict action, `body-bypass`, `parse-fail`, `http-<code>`, or a transport error |
+
+```apache
+LogFormat "%h %l %u %t \"%r\" %>s %b %{CROWDSEC_STATUS}e %{CROWDSEC_SOURCE}e %{CROWDSEC_APPSEC_STATUS}e" crowdsec
+CustomLog /var/log/httpd/crowdsec_access_log crowdsec
+```
+
+`LogFormat` only names the format; the `CustomLog` is what writes it. The log directory is `/var/log/apache2/` on Debian and Ubuntu.
+
+:::note An `ErrorDocument` on the blocked status code hides these
+They belong to the request that was decided, and an `ErrorDocument` makes Apache log the internal redirect instead, where they are unset — so the line reads `-` for all three. Enterprise Linux ships exactly that: `ErrorDocument 403 /.noindex.html` in `conf.d/welcome.conf`. See [Return a custom page or status code](#return-a-custom-page-or-status-code).
+:::
+
+For the stream poller's own messages:
+
+```apache
+LogLevel info crowdsec_module:info
+```
+
+### Usage metrics
+
+Request and decision counts are reported to the local API every `CrowdsecMetricsInterval`, which is what makes the component appear in `cscli metrics show bouncers` and in the Console. It is on by default wherever `CrowdsecURL` is set.
+
+Three counters are reported:
+
+| Counter | Unit | Meaning |
+| --- | --- | --- |
+| `processed` | request | Requests the module checked, one per request. |
+| `dropped` | request | Requests it refused, attributed to the origin of the decision behind each one. |
+| `active_decisions` | IP | Decisions currently held in the shared cache. Stream mode only — live mode keeps no local decision store. |
+
+Every counter is broken down by `ip_type` (`ipv4` or `ipv6`), and `dropped` and `active_decisions` also by `origin`: `crowdsec`, `CAPI`, `cscli`, `appsec`, `console`, `lists:<name>` and so on. [Usage metrics](/docs/observability/usage_metrics) explains what each origin means.
+
+#### Checking from the local API
+
+The package registers the component under a generated name, so take it from the list first:
+
+```bash
+sudo cscli bouncers list
+```
+
+`Type` is `crowdsec-apache2-bouncer` and `Version` is the module's own, both read from the User-Agent it sends — which makes this the quickest way to confirm which build a host is actually running. Then, for one component:
+
+```bash
+sudo cscli bouncers inspect cs-apache2-bouncer-1761134702
+```
+
+On top of the list's columns this reports the OS, which the module reads from `/etc/os-release`, along with the auth type and the last pull. Then the counters themselves:
+
+```bash
+sudo cscli metrics show bouncers
+```
+
+Add `--no-unit` for exact numbers instead of ones abbreviated with `k` and `M` suffixes, and `-o json` to script against them.
+
+:::info The first figures take a while to appear
+`cscli` shows what the local API has accepted, so nothing appears until the first push lands — up to `CrowdsecMetricsInterval`, which is 15 minutes by default. The [status handler](#status-handler) shows the window as it accumulates, so it is the faster way to confirm the counters are moving at all. To shorten the wait while testing, lower the interval and put it back afterwards; anything under a minute is warned about in the error log.
+:::
+
+Expect `active_decisions` to disagree with `cscli decisions list`: the local API deduplicates the stream it sends. [Usage metrics](/docs/observability/usage_metrics) explains why.
+
+#### Checking the WAF and bot-detection side
+
+`dropped{origin=appsec}` is as much as the module can say about inspection: what the rules did is engine-side, and the engine is where to look for it.
+
+```bash
+sudo cscli metrics show appsec
+sudo cscli alerts list --kind waf
+sudo cscli alerts list --kind bot-detection
+```
+
+## Known limits
+
+:::danger `CrowdsecAppsecBodyLimitAction bypass` is a WAF bypass
+Anyone can pad a request body past `CrowdsecAppsecBodyLimit` to skip inspection entirely. Keep the default `drop` unless you have a specific reason not to.
+:::
+
+- **A gzipped request body is inspected compressed.** The body is captured before Apache inflates it, so AppSec sees the compressed bytes and rules matching body content do not fire. Your application still receives correct plaintext. This is shared with the other remediation components.
+- **No captcha.** An AppSec `captcha` remediation is resolved through `CrowdsecRemediationFallback`, which defaults to `ban`.
+- **Decisions from the stream are enforced as a ban.** The decision stream carries no interstitial, so a `challenge` or `captcha` decision coming from the local API becomes a ban rather than being served.
+- **`active_decisions` is reported in stream mode only.** Live mode keeps no local decision store, so there is nothing to count. Same as the NGINX component.
+- **`processed` counts one per request**, where the HAProxy SPOA component counts one per connection when its TCP stage runs. Comparing the two components' request volumes directly will mislead.
+- **A new decision is not instant**, and the delay differs by mode. In stream mode the worst case is `CrowdsecUpdateFrequency` + `CrowdsecLocalCacheTimeout`, so 12s with the defaults. In live mode it is `CrowdsecCacheTimeout` + `CrowdsecLocalCacheTimeout`, so 62s with the defaults. `CrowdsecLocalCacheTimeout` is the knob for propagation speed and costs only extra shared-cache reads; lowering `CrowdsecCacheTimeout` instead makes every child query the API more often.
+
+## Configuration reference
+
+Scope: **server** means server and virtual host configuration only; **server + directory** means it is also valid in `<Directory>` and `<Location>`.
+
+Durations take either spelling: Apache's (`200ms`, `5s`, `2min`, `3h`) or the Go one the rest of CrowdSec uses (`15m`, `1h30m`). A bare number is seconds.
+
+### Decision source
+
+| Directive | Scope | Default | Description |
+| --- | --- | --- | --- |
+| `CrowdsecURL` | server | — | Base URL of the local API, e.g. `http://localhost:8080`. |
+| `CrowdsecAPIKey` | server | — | Component key, from `cscli bouncers add`. |
+| `CrowdsecMode` | server | `live` | `live` or `stream`. `stream` requires `CrowdsecCache`. Servers sharing a cache must agree on the mode; a mismatch is refused at startup. |
+| `CrowdsecUpdateFrequency` | server | `10s` | How often to poll the decision stream. |
+| `CrowdsecCache` | server | — | Shared decision cache. Set it on the main server; virtual hosts inherit it. Required by stream mode. The shipped configuration sets `shmcb:crowdsec(16777216)`, which holds roughly 100,000 decisions — see the [sizing warning](#stream-mode). |
+| `CrowdsecCacheTimeout` | server | `60s` | How long one address's verdict is held in the shared cache. Live mode only: it is what stops every child querying the API for the same client. |
+| `CrowdsecLocalCacheTimeout` | server | `2s` | How long one address's verdict is held within a single Apache child, in front of the shared cache. Adds to the time a new decision takes to apply, so keep it small. Capped at `CrowdsecCacheTimeout`. |
+| `CrowdsecConnectTimeout` | server | `1s` | Connection timeout to the local API. |
+| `CrowdsecTimeout` | server | `5s` | Total budget for one API request. A stream pull is allowed a multiple of this. |
+
+### Enforcement
+
+| Directive | Scope | Default | Description |
+| --- | --- | --- | --- |
+| `Crowdsec` | server + directory | `Off` | Check requests in this scope. |
+| `CrowdsecBlockedHTTPCode` | server + directory | `429` | Status returned to a blocked client: `429`, `403` or `500`. The shipped configuration sets `403`. |
+| `CrowdsecLocation` | server + directory | — | Redirect a blocked client here instead. A path or a full URL, and it supports expressions, e.g. `/blocked?ip=%{REMOTE_ADDR}`. |
+| `CrowdsecFallback` | server + directory | `fail` | What to do when CrowdSec cannot be consulted, including before the stream has loaded: `fail` (500), `block`, or `allow`. The shipped configuration sets `allow`. |
+| `CrowdsecRemediationFallback` | server + directory | `ban` | What an AppSec remediation this component cannot serve (captcha, or one you defined) becomes: `ban` or `allow`. Does not apply to local API decisions, which are always enforced as a ban. |
+| `CrowdsecTrustUseragentIP` | server + directory | `On` | Trust the client address reported by modules such as `mod_remoteip`. `Off` uses the connection's real peer. |
+
+### AppSec
+
+| Directive | Scope | Default | Description |
+| --- | --- | --- | --- |
+| `CrowdsecAppsecURL` | server | — | AppSec address: `http://127.0.0.1:7422`, or `unix:/run/crowdsec/appsec.sock`. Unset disables AppSec entirely. |
+| `CrowdsecAppsecPath` | server | `/` | Path AppSec listens on, matching the datasource's `path`. A 404 from AppSec usually means this does not match. |
+| `CrowdsecAppsec` | server + directory | `Off` | Send requests in this scope to AppSec for inspection. |
+| `CrowdsecAppsecAlwaysSend` | server + directory | `Off` | Inspect even when the client is already blocked. |
+| `CrowdsecAppsecFailureAction` | server + directory | `passthrough` | What to do when AppSec cannot be consulted: `passthrough` or `deny`. An availability choice, not a security one. |
+| `CrowdsecAppsecConnectTimeout` | server | `200ms` | Connection timeout to AppSec. |
+| `CrowdsecAppsecTimeout` | server | `1s` | Total budget for one AppSec request, excluding the time spent reading the client's body. |
+| `CrowdsecAppsecBodyLimit` | server + directory | `1m` | How much request body to forward for inspection. `0` forwards none, leaving the WAF blind to anything carried in a body. Buffered per request in flight, so the worst case is this times `MaxRequestWorkers`. |
+| `CrowdsecAppsecBodyLimitAction` | server + directory | `drop` | What to do with a body over the limit: `drop` blocks the request, `bypass` lets it through **uninspected**. |
+| `CrowdsecAppsecInternalPath` | server | `/crowdsec-internal/challenge/` | Prefix the bot-detection challenge serves its assets and submissions from. Always sent to AppSec, never to the origin. Must match the engine, which has this path compiled in. |
+
+### Metrics
+
+| Directive | Scope | Default | Description |
+| --- | --- | --- | --- |
+| `CrowdsecMetrics` | server | `On` | Report usage metrics to `CrowdsecURL`'s `/v1/usage-metrics`. `Off` disables the counters as well, not just the reporting. |
+| `CrowdsecMetricsInterval` | server | `15m` | How often to report. Floored at `10s`; anything under a minute is for testing and is warned about in the error log. |
+
+## How-to guides
+
+### Protect only part of a site
+
+`Crowdsec` defaults to `Off`, and any scope can override what it inherits:
+
+```apache
+# Nothing is checked by default
+Crowdsec Off
+
+<Location /admin>
+    Crowdsec       On
+    CrowdsecAppsec On
 </Location>
 
+<Location /healthz>
+    Crowdsec Off
+</Location>
 ```
 
+### Return a custom page or status code
 
+Either send blocked clients elsewhere with `CrowdsecLocation`:
 
+```apache
+CrowdsecLocation /sorry.html
+```
 
+Or keep them where they are and pick the status:
+
+```apache
+CrowdsecBlockedHTTPCode 403
+ErrorDocument 403 /sorry.html
+```
+
+:::warning On Enterprise Linux something already answers 403
+`conf.d/welcome.conf` ships `ErrorDocument 403 /.noindex.html`, so a blocked client gets the distribution's test page — 1.4 MB of it — rather than anything of yours, and the [log variables](#log-variables) disappear from the access log line. Point `ErrorDocument` at your own page for whichever code you block with, or drop the directive from `welcome.conf`.
+:::
+
+### Verify the component is in use
+
+The Hub ships two test items, both triggered by one probe path: `/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl`. Neither creates a decision, so it won't lock you out:
+
+```bash
+curl -I https://<your-site>/crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
+```
+
+The request is meant to go through: `crowdsecurity/appsec-generic-test` is an out-of-band rule, which reports without blocking. What matters is which alerts arrive:
+
+```bash
+sudo cscli alerts list -s crowdsecurity/http-generic-test
+sudo cscli alerts list -s crowdsecurity/appsec-generic-test
+```
+
+| Alert | What it tells you |
+| --- | --- |
+| `crowdsecurity/http-generic-test` | The log processor is reading Apache's logs. That is the detection side, and it says nothing about the bouncer. |
+| `crowdsecurity/appsec-generic-test` | The module forwarded the request to AppSec and got an answer back. Needs `CrowdsecAppsec On` in the scope you probed, and the [virtual patching collection](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-virtual-patching) installed. |
+
+Send the probe from outside the host. The engine whitelists private source addresses by default, and a whitelisted event raises no alert. Each scenario also has a blackhole window, 5 minutes for the HTTP one and 1 minute for the AppSec one, so a second probe inside it produces nothing.
+
+#### Checking that it blocks
+
+Both test scenarios are declared `remediation: false`, so they prove the request reached the engine, not that the module enforces anything. Enforcing needs a decision — and a decision is not scoped to one component.
+
+The module polices the address `mod_remoteip` reports, so where a trusted proxy is already configured — see [Behind a reverse proxy or CDN](#behind-a-reverse-proxy-or-cdn) — send the forwarded header from the trusted hop:
+
+```bash
+sudo cscli decisions add --ip 192.0.2.1 --duration 10m
+curl -I -H 'X-Forwarded-For: 192.0.2.1' http://127.0.0.1/
+sudo cscli decisions delete --ip 192.0.2.1
+```
+
+Without `mod_remoteip` in the picture the header is ignored and the request is judged on the real peer, which is the whole point of [`CrowdsecTrustUseragentIP`](#enforcement). To run the test on a host that has no proxy, trust loopback for it:
+
+```apache
+RemoteIPHeader       X-Forwarded-For
+RemoteIPTrustedProxy 127.0.0.1
+```
+
+Take them back out when you are done. On a host where anything already proxies to Apache over loopback, leaving them in lets a client pick the address being policed — the evasion the [reverse proxy](#behind-a-reverse-proxy-or-cdn) warning is about.
+
+The request should be refused with `CrowdsecBlockedHTTPCode`, which the shipped configuration sets to `403`.
+
+Give the decision time to arrive before concluding anything. The shipped configuration is in live mode, where the worst case is `CrowdsecCacheTimeout` + `CrowdsecLocalCacheTimeout` — 62s with the defaults, which is why the ban above outlasts it. In stream mode it is `CrowdsecUpdateFrequency` + `CrowdsecLocalCacheTimeout` instead, so about 12s. An address you have never sent a request as has nothing cached, so in practice the first probe after `decisions add` is already refused.
+
+That block should show up as a `dropped{origin=cscli}` in the [status handler](#status-handler) straight away, and in `cscli metrics show bouncers` once the first report lands — see [Checking from the local API](#checking-from-the-local-api).
+
+In stream mode you can also confirm the decision path without sending a request at all: ban `192.0.2.1` and watch `stored` and `active_decisions` climb in the [status handler](#status-handler). That tells you the module is pulling the stream, which is the half that breaks silently. Live mode keeps no local store, so it shows nothing there.

@@ -15,7 +15,7 @@ Returns true if the IP `IPStr` is contained in the IP range `RangeStr` (uses `ne
 
 ### `IpToRange(IPStr, MaskStr) IpStr`
 
-Returns the subnet of the IP with the request cidr size.
+Returns the subnet of the IP with the requested CIDR size.
 It is intended for scenarios taking actions against the range of an IP, not the IP itself :
 
 ```yaml
@@ -61,11 +61,13 @@ Returns true if it's a valid IPv6.
 ### `LookupHost(host string) []string`
 
 :::warning
-* Only use this function within postoverflows as it is can be very slow
+* Only use this function within postoverflows as it can be very slow
 * Note if you whitelist a domain behind a CDN provider, all domains using the same CDN provider will also be whitelisted
 * Do not use variables within the function as this can be untrusted user input
 :::
-Returns []string ip addresses that resolvable to the hostname EG: `LookupHost('mydomain.tld') => ['1.2.3.4', '5.6.7.8']`
+Returns the IP addresses (`[]string`) that the hostname resolves to EG: `LookupHost('mydomain.tld') => ['1.2.3.4', '5.6.7.8']`
+
+Lookups go through the [DNS cache](/configuration/crowdsec_configuration.md#dns_cache), failed ones included. A hostname is only resolved again once its cache entry expires (after `ttl`, or `negative_ttl` for a failed lookup), so repeated calls are cheap, but a change to the DNS record can take up to `ttl` to be picked up.
 ```yaml
 name: me/my_cool_whitelist
 description: lets whitelist our own IP
@@ -88,3 +90,9 @@ Performs a geo lookup for IP and returns the associated [geoip2.ASN](https://pkg
 ### `GeoIPRangeEnrich(ip string) net.IPNet`
 
 Returns the `net.IPNet` object associated to the IP if possible.
+
+### `IPToCountry(ip string) string`
+
+Returns the ISO code of the country associated to the IP, or an empty string if the IP is invalid, unknown, or if the GeoIP database is not available.
+
+> `IPToCountry("1.2.3.4")` returns `AU`

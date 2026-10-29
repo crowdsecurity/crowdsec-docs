@@ -15,6 +15,8 @@ type HelpButton = {
 
 type ProductPageLayoutProps = {
 	title: string;
+	// Descriptive <title> for search results; the short `title` stays as the hero heading.
+	metaTitle?: string;
 	metaDescription: string;
 	icon: string;
 	description: string;
@@ -27,6 +29,7 @@ type ProductPageLayoutProps = {
 
 export const ProductPageLayout = ({
 	title,
+	metaTitle,
 	metaDescription,
 	icon,
 	description,
@@ -37,7 +40,7 @@ export const ProductPageLayout = ({
 	children,
 }: ProductPageLayoutProps): React.JSX.Element => {
 	return (
-		<Layout title={title} description={metaDescription}>
+		<Layout title={metaTitle ?? title} description={metaDescription}>
 			<main className="flex-1">
 				{/* ── Hero ── */}
 				<section className="py-10 px-6 pb-12 border-b border-cs-border bg-cs-bg relative overflow-hidden">
@@ -73,21 +76,21 @@ export const ProductPageLayout = ({
 								<div className="flex gap-[10px] flex-wrap">
 									{heroButtons.map((btn) =>
 										btn.variant === "outline" ? (
-											<a
+											<Link
 												key={btn.label}
 												href={btn.link}
 												className="cs-btn py-[9px] px-5 rounded-lg border border-cs-border-hi bg-transparent text-cs-ink-dim text-sm font-semibold no-underline transition-[border-color,color] duration-150 hover:border-cs-orange hover:text-cs-orange"
 											>
 												{btn.label}
-											</a>
+											</Link>
 										) : (
-											<a
+											<Link
 												key={btn.label}
 												href={btn.link}
 												className="cs-btn py-[9px] px-5 rounded-lg bg-cs-orange text-cs-btn-text text-sm font-semibold no-underline hover:no-underline hover:text-cs-btn-text shadow-[0_4px_16px_color-mix(in_srgb,var(--cs-orange)_28%,transparent)]"
 											>
 												{btn.label}
-											</a>
+											</Link>
 										)
 									)}
 								</div>
@@ -108,13 +111,13 @@ export const ProductPageLayout = ({
 						{helpDescription && <p className="text-[14.5px] text-cs-ink-dim m-0 mb-[22px] leading-[1.6]">{helpDescription}</p>}
 						<div className="flex gap-[10px] justify-center flex-wrap">
 							{helpButtons.map((btn) => (
-								<a
+								<Link
 									key={btn.label}
 									href={btn.link}
 									className="py-[9px] px-5 rounded-lg border border-cs-border-hi bg-cs-surface text-cs-ink-dim text-sm font-semibold no-underline transition-[border-color,color] duration-150 hover:border-cs-orange hover:text-cs-orange"
 								>
 									{btn.label}
-								</a>
+								</Link>
 							))}
 						</div>
 					</div>

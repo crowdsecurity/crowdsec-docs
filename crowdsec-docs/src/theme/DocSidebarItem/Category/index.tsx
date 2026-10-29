@@ -4,6 +4,7 @@ import { translate } from "@docusaurus/Translate";
 import { Collapsible, ThemeClassNames, useCollapsible, usePrevious, useThemeConfig } from "@docusaurus/theme-common";
 import { isSamePath } from "@docusaurus/theme-common/internal";
 import useIsBrowser from "@docusaurus/useIsBrowser";
+import SidebarTagBadge from "@site/src/components/docs/SidebarTagBadge";
 import type { Props } from "@theme/DocSidebarItem/Category";
 import DocSidebarItems from "@theme/DocSidebarItems";
 import clsx from "clsx";
@@ -108,7 +109,6 @@ export default function DocSidebarItemCategory({
 		},
 	} = useThemeConfig();
 	const tag = customProps?.tag;
-	const isPremium = tag === "premium";
 	const hrefWithSSRFallback = useCategoryHrefWithSSRFallback(item);
 
 	const isActive = isActiveSidebarItem(item, activePath);
@@ -193,25 +193,7 @@ export default function DocSidebarItemCategory({
 					{...props}
 				>
 					{label}
-					{isPremium && (
-						<span
-							style={{
-								fontFamily: "var(--cs-font-mono)",
-								fontSize: 9.5,
-								letterSpacing: "0.08em",
-								textTransform: "uppercase" as const,
-								padding: "2px 6px",
-								borderRadius: 4,
-								background: "color-mix(in srgb, var(--cs-orange) 14%, transparent)",
-								color: "var(--cs-orange)",
-								fontWeight: 600,
-								flexShrink: 0,
-								marginLeft: "auto",
-							}}
-						>
-							Premium
-						</span>
-					)}
+					<SidebarTagBadge tag={typeof tag === "string" ? tag : undefined} />
 				</Link>
 
 				{collapsible && (

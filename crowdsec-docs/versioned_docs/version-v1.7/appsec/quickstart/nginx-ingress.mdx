@@ -8,6 +8,16 @@ import TabItem from '@theme/TabItem';
 
 # CrowdSec WAF QuickStart for NGINX Ingress (Helm)
 
+:::danger Deprecated and not recommended
+This CrowdSec integration for `ingress-nginx` is being deprecated. `ingress-nginx`
+has known security issues, and upstream removed Lua support in version `1.12`,
+which this integration depends on.
+
+Do not use this for new deployments. If you are already using it, plan a migration
+to another supported integration such as [Traefik](/appsec/quickstart/traefik.mdx)
+or [Envoy Gateway](/appsec/quickstart/envoy-gateway.mdx).
+:::
+
 ## Objectives
 
 This quickstart shows how to deploy the CrowdSec AppSec Component with the
@@ -120,6 +130,13 @@ agent:
 
 </details>
 
+:::note
+Although this is the same bouncer key value, you need two `Secret` objects here:
+one in `crowdsec` and one in `ingress-nginx`. Kubernetes secrets are
+namespace-scoped, so the ingress controller cannot read a secret from the
+`crowdsec` namespace.
+:::
+
 This YAML configuration snippet exposes the important configuration items:
      * `listen_addr: 0.0.0.0:7422` exposes the AppSec API inside the cluster.
      * `appsec_configs` loads the [AppSec configuration(s)](/appsec/configuration.md) that define which rules are evaluated (in-band vs out-of-band).
@@ -171,8 +188,8 @@ controller:
   image:
     registry: docker.io
     image: crowdsecurity/controller
-    tag: v1.13.2
-    digest: sha256:4575be24781cad35f8e58437db6a3f492df2a3167fed2b6759a6ff0dc3488d56
+    tag: v1.14.3
+    digest: sha256:9ab8791635f4cde9964ab2562fb8b15faf72fe0205f0fe288089a87e1455675d
   extraVolumes:
     - name: crowdsec-bouncer-plugin
       emptyDir: {}
@@ -251,8 +268,8 @@ controller:
   image:
     registry: docker.io
     image: crowdsecurity/controller
-    tag: v1.13.2
-    digest: sha256:...
+    tag: v1.14.3
+    digest: sha256:9ab8791635f4cde9964ab2562fb8b15faf72fe0205f0fe288089a87e1455675d
 ```
 
 The controller image is replaced with a CrowdSec-enabled build that includes the
@@ -336,7 +353,7 @@ config:
     resolver local=on ipv6=off;
 ```
 
-This snippet enables the crowdsec Lua plugin, aAllocates shared memory for
+This snippet enables the CrowdSec Lua plugin, allocates shared memory for
 caching LAPI/AppSec results and ensures Lua HTTPS validation and DNS resolution
 work properly.
 
@@ -355,7 +372,7 @@ After the rollout, you can optionally check that the right container is deployed
 
 `kubectl -n ingress-nginx exec -ti <ingress-pod-name> -- find /etc/nginx/lua/plugins/crowdsec`
 
-This should give you a bunch of crowdsec lua files.
+This should list the CrowdSec Lua plugin files.
 
 :::
 
@@ -365,11 +382,11 @@ This should give you a bunch of crowdsec lua files.
 We're assuming the web server is installed on the same machine and is listening on port 80. Please adjust your testing accordingly if this is not the case.
 :::
 
-if you try to access `http://localhost/.env` from a browser, your request will be blocked, resulting in the display of the following HTML page:
+If you try to access `http://localhost/.env` from a browser, your request will be blocked, resulting in the display of the following HTML page:
 
 ![appsec-denied](/img/appsec_denied.png)
 
-We can also look at the metrics from `cscli metrics show appsec` on the appsec pod it will display:
+We can also look at the metrics from `cscli metrics show appsec` on the AppSec pod. It will display:
  - the number of requests processed by the AppSec Component
  - Individual rule matches
 

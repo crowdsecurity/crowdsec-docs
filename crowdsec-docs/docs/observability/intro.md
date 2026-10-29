@@ -1,10 +1,11 @@
 ---
 id: intro
-title: Introduction
+title: "Observability: introduction"
+sidebar_label: Introduction
 sidebar_position: 1
 ---
 
-Observability in security software is crucial, especially when this software might take important decision such as blocking IP addresses.
+Observability in security software is crucial, especially when this software might take important decisions such as blocking IP addresses.
 
 We attempt to provide good observability of CrowdSec's behavior :
 

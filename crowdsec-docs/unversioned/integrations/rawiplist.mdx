@@ -1,6 +1,7 @@
 ---
 id: rawiplist
 title: Raw IP List
+description: "Serve CrowdSec blocklists as a plain-text HTTPS list, one IP per line, for any device or software that can import an IP list from a URL."
 toc_max_heading_level: 2
 ---
 
@@ -23,12 +24,12 @@ import UnderlineTooltip from '@site/src/components/underline-tooltip';
 </div>
 <div style={{flex: '1'}}>
 The **Raw IP List** integration is a generic HTTPS endpoint serving Blocklists as plain text: one IP address per line.   
-It works with any HTTP-capable devices or software that supports ingesting IP lists from a URL.  
+It works with any HTTP-capable device or software that supports ingesting IP lists from a URL.  
 It can be used as the default choice or when no vendor-specific integration exists.
 </div>
 </div>
 
-## Setup a Raw IP List Integration Endpoint
+## Create a Raw IP List Integration Endpoint
 
 <snippet-extract data-extract="bl_integ_setup">
 <Tabs
@@ -75,7 +76,7 @@ On mobile, use the menu icon in the top-right corner, tap **Blocklist**, then **
 
 ### Step 2 - Fill in integration details
 
-Name the integration *(must be unique to your account)*
+Name the integration *(must be unique to your account)*.
 Optionally, add a description and tags to help you identify it later.
 
 You can also configure:
@@ -172,7 +173,7 @@ The blocklist name(s) will appear in the integration tile once subscribed.
 
 ## Manage integration size limits with pagination
 
-If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
+If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](/u/console/service_api/integrations#managing-integrations-size-limits-with-pagination) section.
 
 This integration uses the plain text format. When pulling **without compression**, keep `page_size` at or below **~300,000** entries to stay under the ~5 MB response limit; beyond that the response is truncated. Enabling compression avoids this limit entirely.
 

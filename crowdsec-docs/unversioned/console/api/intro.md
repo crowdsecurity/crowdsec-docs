@@ -1,5 +1,6 @@
 ---
-title: Introduction
+title: "Service API: overview"
+sidebar_label: Introduction
 description: Introduction to the CrowdSec Service API
 ---
 

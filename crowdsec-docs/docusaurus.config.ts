@@ -1,3 +1,4 @@
+import { execSync } from "node:child_process";
 import type * as Preset from "@docusaurus/preset-classic";
 import type { NavbarItem } from "@docusaurus/theme-common";
 import type { Config } from "@docusaurus/types";
@@ -69,11 +70,15 @@ const NAVBAR_ITEMS: NavbarItem[] = [
 			{ type: "doc", docId: "intro", label: "Security Engine" },
 			{ to: "/u/bouncers/intro", label: "Remediation Components" },
 			{
-				type: "docsVersion",
-				to: "/docs/next/appsec/intro",
+				to: "/docs/appsec/intro",
 				label: "Web Application Firewall (AppSec)",
 			},
-			{ type: "doc", docId: "cscli/cscli", label: "Cscli" },
+			{
+				to: "/docs/appsec/bot_detection/intro",
+				label: "Bot Detection",
+				className: "navbar-item-new",
+			},
+			{ type: "doc", docId: "cscli/cscli", label: "cscli" },
 			{ to: "/u/user_guides/intro", label: "Guides" },
 			{
 				type: "doc",
@@ -182,11 +187,23 @@ const FOOTER_LINKS = [
 ];
 
 const redirects = [
-	...Object.values(sidebarsUnversioned).flatMap(backportRedirect),
+	// A doc listed in several sidebars would otherwise yield duplicate redirects.
+	...new Map(
+		Object.values(sidebarsUnversioned)
+			.flatMap((sidebar) => handleSidebarItems(sidebar as SidebarItem[]))
+			.map((redirect) => [redirect.from, redirect] as const)
+	).values(),
 	{ from: "/docs/troubleshooting", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/next/troubleshooting", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/faq", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/next/faq", to: "/u/troubleshooting/intro" },
+	// Service API docs flattened: quickstart/<resource> -> <resource>
+	{ from: "/u/console/service_api/quickstart/authentication", to: "/u/console/service_api/authentication" },
+	{ from: "/u/console/service_api/quickstart/blocklists", to: "/u/console/service_api/blocklists" },
+	{ from: "/u/console/service_api/quickstart/allowlists", to: "/u/console/service_api/allowlists" },
+	{ from: "/u/console/service_api/quickstart/integrations", to: "/u/console/service_api/integrations" },
+	{ from: "/u/console/service_api/quickstart/decisions", to: "/u/console/service_api/decisions" },
+	{ from: "/u/console/service_api/quickstart/metrics", to: "/u/console/service_api/metrics" },
 	{
 		from: "/docs/next/getting_started/install_crowdsec",
 		to: "/u/getting_started/installation/linux",
@@ -215,10 +232,6 @@ const redirects = [
 	},
 	{ from: "/u/cti_api/ip_report", to: "/u/console/ip_reputation/ip_report" },
 	{
-		from: "/u/cti_api/search_queries",
-		to: "/u/console/ip_reputation/search_ui",
-	},
-	{
 		from: "/u/cti_api/advanced_search",
 		to: "/u/console/ip_reputation/search_ui_advanced",
 	},
@@ -227,11 +240,8 @@ const redirects = [
 		to: "/u/console/ip_reputation/intro#live-exploit-tracker",
 	},
 	// other CTI pages redirect / fixes
-	{ from: "/next/cti_api/intro", to: "/u/console/ip_reputation/api_keys" },
-	{
-		from: "/next/cti_api/getting_started",
-		to: "/u/console/ip_reputation/api_keys",
-	},
+	{ from: "/docs/cti_api/getting_started", to: "/u/console/ip_reputation/api_keys" },
+	{ from: "/docs/next/cti_api/getting_started", to: "/u/console/ip_reputation/api_keys" },
 	{
 		from: "/u/console/ip_reputation/api_keys_premium",
 		to: "/u/console/ip_reputation/api_keys",
@@ -240,7 +250,63 @@ const redirects = [
 	{ from: "/u/console/premium_upgrade/premium_invoices/", to: "/u/troubleshooting/billing_faq" },
 	// unified Cloudflare bouncer page, cloudflare-workers content moved to cloudflare page (and that one  became deprecated)
 	{ from: "/u/bouncers/cloudflare-workers", to: "/u/bouncers/cloudflare" },
+	// Old URLs still linked from the Console, cscli, integrations and bouncer READMEs
+	{ from: "/docs/console", to: "/u/console/intro" },
+	{ from: "/docs/getting_started", to: "/u/getting_started/intro" },
+	{ from: "/docs/services/service_api", to: "/u/console/service_api/getting_started" },
+	{ from: "/docs/next/bouncers/cloudflare-workers", to: "/u/bouncers/cloudflare" },
+	{ from: "/docs/next/bouncers/stormshield", to: "/u/bouncers/stormshield" },
+	{ from: "/docs/next/cti_api/integration_intro", to: "/u/cti_api/api_integration/integration_intro" },
+	{ from: "/docs/next/cti_api/taxonomy", to: "/u/cti_api/taxonomy/intro" },
+	{ from: "/u/console/blocklists/threat_forecast", to: "/u/console/threat_forecast" },
+	{ from: "/u/console/enterprise_plan/enterprise_support", to: "/u/console/premium_upgrade/premium_support" },
+	{ from: "/u/cti-api/getting_started", to: "/u/console/ip_reputation/intro" },
+	{ from: "/u/console/cti/cti_api_keys", to: "/u/console/ip_reputation/api_keys" },
+	{ from: "/u/integrations", to: "/u/integrations/intro" },
+	{ from: "/u/tracker_api/api_reference", to: "/u/tracker_api/intro" },
+	// Security Engines "Troubleshooting Hints" report removed from the Console, replaced by Stack Health
+	{ from: "/u/console/security_engines/troubleshooting", to: "/u/console/stackhealth" },
+	{ from: "/docs/console/security_engines/troubleshooting", to: "/u/console/stackhealth" },
+	{ from: "/docs/next/console/security_engines/troubleshooting", to: "/u/console/stackhealth" },
+	{ from: "/Crowdsec/v1/contributing", to: "/docs/contributing/getting_started" },
+	{ from: "/Crowdsec/v1/references/acquisition", to: "/docs/log_processor/data_sources/intro" },
+	{ from: "/Crowdsec/v1/getting_started/installation", to: "/u/getting_started/installation/linux" },
+	{ from: "/docs/next/appsec/installation/", to: "/docs/appsec/quickstart/general_setup/" },
 ];
+
+// Docs versions dropped from the site; archived pages and old backlinks still point at them.
+const REMOVED_VERSIONS = ["v0.3", "v1.0", "v1.1", "v1.2", "v1.2.2", "v1.3.0", "v1.3.4", "v1.4.0", "v1.5.0"];
+
+const removedVersionRedirects = redirects.flatMap(({ from, to }) =>
+	/^\/docs\/(?!next\/|v\d)/.test(from)
+		? REMOVED_VERSIONS.map((version) => ({ from: from.replace(/^\/docs\//, `/docs/${version}/`), to }))
+		: []
+);
+
+// Security Engine folders were regrouped under log_processor/ and local_api/, and two /u/ sections moved.
+function oldPathsOf(existingPath: string): string[] {
+	const path = existingPath.replace(/\/$/, "");
+	const moved = path.match(/^\/u\/(?:cti_api\/api_integration\/(integration_[^/]+)|console\/service_api\/(.+))$/);
+	if (moved) return [moved[1] ? `/u/cti_api/${moved[1]}` : `/u/service_api/${moved[2]}`];
+	const doc = path.match(/^\/docs(\/next)?(?:\/(.*))?$/);
+	if (!doc || /^v\d/.test(doc[2] ?? "")) return [];
+	const [, next = "", rest = ""] = doc;
+	const flat = rest
+		.replace(
+			/^log_processor\/(data_sources|parsers|scenarios|whitelist|collections|alert_context|service-discovery-setup)(?=\/|$)/,
+			"$1"
+		)
+		.replace(/^local_api\/(notification_plugins|profiles)(?=\/|$)/, "$1");
+	const froms = flat === rest ? [] : [`/docs${next}/${flat}`];
+	if (!next) {
+		for (const version of REMOVED_VERSIONS) {
+			for (const suffix of flat === rest ? [rest] : [rest, flat]) {
+				froms.push(suffix ? `/docs/${version}/${suffix}` : `/docs/${version}`);
+			}
+		}
+	}
+	return froms;
+}
 
 function redirectsGlobalDataPlugin() {
 	return {
@@ -249,6 +315,19 @@ function redirectsGlobalDataPlugin() {
 			actions.setGlobalData({ redirects });
 		},
 	};
+}
+
+// A shallow clone dates every file to the last commit, which would give every sitemap URL the same <lastmod>.
+function hasFullGitHistory(): boolean {
+	try {
+		return (
+			execSync("git rev-parse --is-shallow-repository", { stdio: ["ignore", "pipe", "ignore"] })
+				.toString()
+				.trim() === "false"
+		);
+	} catch {
+		return false;
+	}
 }
 
 const config: Config = {
@@ -262,11 +341,31 @@ const config: Config = {
 	tagline: "CrowdSec - Real-time & crowdsourced protection against aggressive IPs",
 	url: "https://docs.crowdsec.net",
 	baseUrl: "/",
-	onBrokenLinks: "warn",
+	// Amplify serves `page/index.html` at `page/` and redirects `page` there, so canonical and sitemap URLs must end with a slash.
+	trailingSlash: true,
+	onBrokenLinks: "throw",
 	onBrokenMarkdownLinks: "warn",
 	favicon: "img/crowdsec_no_txt.png",
 	organizationName: "CrowdSec",
 	projectName: "crowdsec-docs",
+	// Docusaurus only emits a single-item BreadcrumbList on its own; nothing tells
+	// search engines who publishes these docs.
+	headTags: [
+		{
+			tagName: "script",
+			attributes: {
+				type: "application/ld+json",
+			},
+			innerHTML: JSON.stringify({
+				"@context": "https://schema.org/",
+				"@type": "Organization",
+				name: "CrowdSec",
+				url: "https://www.crowdsec.net/",
+				logo: "https://docs.crowdsec.net/img/crowdsec_no_txt.png",
+				sameAs: ["https://github.com/crowdsecurity/crowdsec", "https://x.com/crowd_security"],
+			}),
+		},
+	],
 	markdown: {
 		mermaid: true,
 		mdx1Compat: {
@@ -288,15 +387,23 @@ const config: Config = {
 	themes: ["@docusaurus/theme-mermaid"],
 	themeConfig: {
 		image: "img/crowdsec_og_image.png",
+		// og:image and twitter:card are already emitted from `image` above; don't redeclare them.
+		metadata: [
+			{ property: "og:site_name", content: "CrowdSec Documentation" },
+			{ property: "og:type", content: "website" },
+			{ name: "twitter:site", content: "@crowd_security" },
+		],
 		colorMode: {
 			defaultMode: "dark",
 			disableSwitch: false,
 			respectPrefersColorScheme: false,
 		},
 		announcementBar: {
-			id: "banner_docs",
+			// Dismissal is persisted per id, so bump it whenever the message changes
+			// or nobody who dismissed the previous banner will ever see the new one.
+			id: "banner_botdetection",
 			content:
-				'<a target="_blank" href="https://doc.crowdsec.net/docs/next/appsec/intro" rel="noopener">Learn how to guard your webserver in real-time with the CrowdSec WAF</a>',
+				'<a href="/docs/appsec/bot_detection/intro/">Stop scrapers and headless browsers — discover CrowdSec Bot Detection</a>',
 			backgroundColor: "#F8AB13",
 			textColor: "#131132",
 			isCloseable: true,
@@ -341,14 +448,31 @@ const config: Config = {
 				docs: {
 					sidebarPath: "./sidebars.ts",
 					editUrl: "https://github.com/crowdsecurity/crowdsec-docs/edit/main/crowdsec-docs/",
-					lastVersion: "current",
+					// The stable version is the default landing target (navbar doc links,
+					// Algolia search context); /docs/next/ is reachable via the dropdown only.
+					lastVersion: "v1.8",
 					versions: {
-						"v1.7": {
+						// The stable version is the one search engines should index; it
+						// self-canonicalizes (Docusaurus default) and fills the sitemap.
+						"v1.8": {
 							banner: "none",
 							path: "/",
 						},
+						// Near-duplicate of the newer versions: indexing it only splits ranking signals.
+						"v1.7": {
+							noIndex: true,
+						},
+						// EOL: kept online for existing links, but out of the index.
+						// plugin-sitemap drops noindex routes too, so it also leaves sitemap.xml.
+						"v1.6": {
+							noIndex: true,
+						},
+						// Duplicate of the stable docs (plus not-yet-released bits): indexing
+						// it would split ranking signals away from the stable pages.
 						current: {
 							path: "/next",
+							noIndex: true,
+							banner: "none",
 						},
 					},
 					admonitions: {
@@ -362,6 +486,13 @@ const config: Config = {
 				},
 				theme: {
 					customCss: "./src/css/custom.css",
+				},
+				sitemap: {
+					lastmod: hasFullGitHistory() ? "datetime" : null,
+					changefreq: null,
+					priority: null,
+					// noIndex versions (next, v1.7, v1.6) are dropped by the plugin itself,
+					// so the sitemap only lists stable /docs/ and unversioned /u/ pages.
 				},
 			} satisfies Preset.Options,
 		],
@@ -399,10 +530,15 @@ const config: Config = {
 					includeBlog: false,
 					includePages: false,
 					includeDocs: true,
-					includeVersionedDocs: false, // Only include "next" version, exclude v1.6, v1.7, etc.
+					// llms.txt must hand AI crawlers the same URLs search engines index:
+					// the stable /docs/ version, not next/v1.7/v1.6.
+					includeVersionedDocs: true,
 					excludeRoutes: [
 						"/search", // Exclude search page
 						"**/tags/**", // Exclude tag pages
+						"/docs/next/**",
+						"/docs/v1.7/**",
+						"/docs/v1.6/**",
 					],
 				},
 				optionalLinks: [
@@ -431,7 +567,7 @@ const config: Config = {
 				onRouteError: "warn",
 			},
 		],
-		["@docusaurus/plugin-client-redirects", { redirects }],
+		["@docusaurus/plugin-client-redirects", { redirects: [...redirects, ...removedVersionRedirects], createRedirects: oldPathsOf }],
 		redirectsGlobalDataPlugin,
 		tailwindPlugin,
 	],

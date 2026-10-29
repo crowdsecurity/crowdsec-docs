@@ -14,7 +14,7 @@ The `profiles.yaml` file, situated at the root of the configuration directory, o
 Here is the default `profiles.yaml` path by platform:
 
 - **Linux** `/etc/crowdsec/profiles.yaml`
-- **Freebsd** `/usr/local/etc/crowdsec/profiles.yaml`
+- **FreeBSD** `/usr/local/etc/crowdsec/profiles.yaml`
 - **Windows** `C:\ProgramData\CrowdSec\config\profiles.yaml`
 - **Kubernetes** By default, in `/etc/crowdsec/profiles.yaml` in `crowdsec-lapi-*` pod. You can overwrite it in `values.yaml -> config.profiles.yaml`
 
@@ -35,7 +35,7 @@ decisions:
 on_success: break
 ```
 
-We do not cover every directive here. See the [profiles.yaml reference](/docs/next/local_api/profiles/format#profile-directives) for full details.
+We do not cover every directive here. See the [profiles.yaml reference](/docs/local_api/profiles/format#profile-directives) for full details.
 
 ## Example Modifications
 
@@ -53,7 +53,7 @@ This adjustment can be made by configuring the plugin files located under:
 - **Freebsd** `/usr/local/etc/crowdsec/notifications/`
 - **Windows** `C:\ProgramData\CrowdSec\config\notifications\`
 
-We do not cover configuration here. See the [notification plugins documentation](/docs/next/local_api/notification_plugins/intro). After configuring, remove the comment (`#`) from the [`notifications`](/docs/next/local_api/profiles/format#notifications) lines to enable them.
+We do not cover configuration here. See the [notification plugins documentation](/docs/local_api/notification_plugins/intro). After configuring, remove the comment (`#`) from the [`notifications`](/docs/local_api/profiles/format#notifications) lines to enable them.
 
 <details>
 
@@ -85,9 +85,9 @@ on_success: break
 duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
 ```
 
-Enable this by removing the comment (`#`) from the [`duration_expr`](/docs/next/local_api/profiles/format#duration_expr) line. The default formula uses [`GetDecisionsCount`](/docs/next/expr/other_helpers#getdecisionscountvalue-string-int) to determine how many times the value was detected. We add 1 so the first ban is always 4 hours.
+Enable this by removing the comment (`#`) from the [`duration_expr`](/docs/local_api/profiles/format#duration_expr) line. The default formula uses [`GetDecisionsCount`](/docs/expr/other_helpers#getdecisionscountvalue-string-int) to determine how many times the value was detected. We add 1 so the first ban is always 4 hours.
 
-The resulting duration is calculated by multiplying this count by 4, then the [`Sprintf`](/docs/next/expr/strings_helpers/#sprintfformat-string-a-interface-string) function formats the result into a string with the `h` suffix. The `h` suffix is used to denote hours within [Go's time package](https://pkg.go.dev/time#ParseDuration).
+The resulting duration is calculated by multiplying this count by 4, then the [`Sprintf`](/docs/expr/strings_helpers/#sprintfformat-string-a-interface-string) function formats the result into a string with the `h` suffix. The `h` suffix is used to denote hours within [Go's time package](https://pkg.go.dev/time#ParseDuration).
 
 For example, if an IP has been banned 3 times, the resulting string is `12h` (12 hours).
 
@@ -181,5 +181,5 @@ After modifying profiles, restart the CrowdSec service to apply changes:
 <FormattedTabs
   bash="sudo crowdsec -t && sudo systemctl restart crowdsec"
   powershell="Restart-Service crowdsec"
-  k8s="helm upgrade --install crowdsec crowdsecurity/crowdsec --namespace crowdsec -f values.yaml"
+  k8s="helm upgrade --reset-then-reuse-values --install crowdsec crowdsec/crowdsec --namespace crowdsec -f values.yaml"
 />

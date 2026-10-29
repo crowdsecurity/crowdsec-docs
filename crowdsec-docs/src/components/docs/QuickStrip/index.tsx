@@ -1,3 +1,4 @@
+import Link from "@docusaurus/Link";
 import React from "react";
 
 export type QuickStripLink = {
@@ -61,7 +62,7 @@ export default function QuickStrip({ label, title, subtitle, links }: QuickStrip
 			{/* Right: pill links */}
 			<div className="flex flex-wrap gap-2">
 				{links.map((l) => (
-					<a
+					<Link
 						key={l.href}
 						href={l.href}
 						className="inline-flex items-center gap-[7px] py-[6px] px-3 rounded-lg border border-cs-border-hi bg-cs-surface text-cs-ink text-[13px] font-medium no-underline transition-[border-color,color,background] duration-[120ms]"
@@ -85,7 +86,7 @@ export default function QuickStrip({ label, title, subtitle, links }: QuickStrip
 						)}
 						{l.label}
 						{l.external && <ExternalArrow />}
-					</a>
+					</Link>
 				))}
 			</div>
 		</div>

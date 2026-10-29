@@ -65,37 +65,37 @@ The AppSec Component works seamlessly with modern web servers and reverse proxie
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/nginx.svg" alt="Nginx" style={{height: '50px', objectFit: 'contain'}} />
-<strong>Nginx</strong>
-<a href="quickstart/nginxopenresty">Quick Start Guide →</a>
+<strong>Nginx</strong><br/>
+[Quick Start Guide →](quickstart/nginxopenresty.mdx)
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/openresty.png" alt="OpenResty" style={{height: '50px', objectFit: 'contain'}} />
-<strong>OpenResty</strong>
-<a href="quickstart/nginxopenresty">Quick Start Guide →</a>
+<strong>OpenResty</strong><br/>
+[Quick Start Guide →](quickstart/nginxopenresty.mdx)
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/traefik.logo.png" alt="Traefik" style={{height: '50px', objectFit: 'contain'}} />
-<strong>Traefik</strong>
-<a href="quickstart/traefik">Quick Start Guide →</a>
+<strong>Traefik</strong><br/>
+[Quick Start Guide →](quickstart/traefik.mdx)
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
-<strong>Envoy Gateway</strong>
-<a href="quickstart/envoy-gateway">Quick Start Guide →</a>
+<strong>Envoy Gateway</strong><br/>
+[Quick Start Guide →](quickstart/envoy-gateway.mdx)
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/haproxy-logo.png" alt="HAProxy" style={{height: '50px', objectFit: 'contain'}} />
-<strong>HAProxy</strong>
-<a href="quickstart/haproxy_spoa">Quick Start Guide →</a>
+<strong>HAProxy</strong><br/>
+[Quick Start Guide →](quickstart/haproxy_spoa.mdx)
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/WordPress-logotype-wmark.png" alt="WordPress" style={{height: '50px', objectFit: 'contain'}} />
-<strong>WordPress</strong>
-<a href="quickstart/wordpress">Quick Start Guide →</a>
+<strong>WordPress</strong><br/>
+[Quick Start Guide →](quickstart/wordpress.mdx)
 </div>
 
 </div>
@@ -138,11 +138,11 @@ This lets scenarios leverage WAF rule events, such as extending a ban for an IP 
 
 You can follow our quick start guides depending on your web server:
 
--   [Nginx/OpenResty](quickstart/nginxopenresty)
--   [Envoy Gateway](quickstart/envoy-gateway)
--   [Traefik](quickstart/traefik)
--   [HAProxy (SPOA)](quickstart/haproxy_spoa)
--   [WordPress](quickstart/wordpress)
+-   [Nginx/OpenResty](quickstart/nginxopenresty.mdx)
+-   [Envoy Gateway](quickstart/envoy-gateway.mdx)
+-   [Traefik](quickstart/traefik.mdx)
+-   [HAProxy (SPOA)](quickstart/haproxy_spoa.mdx)
+-   [WordPress](quickstart/wordpress.mdx)
 -   [CrowdSec WAF with Nginx Reverse Proxy](/u/user_guides/waf_rp_howto)
 
 Or consider learning more about the AppSec capabilities:

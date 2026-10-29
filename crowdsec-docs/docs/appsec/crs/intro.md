@@ -1,6 +1,8 @@
 ---
 id: intro
-title: CRS Support
+title: "OWASP CRS Support"
+sidebar_label: "CRS Support"
+description: "The CrowdSec Web Application Firewall (WAF) runs the OWASP Core Rule Set. How CRS generic detection compares with virtual patching, and when to use each."
 ---
 
 The CrowdSec WAF is compatible with the [OWASP CRS](https://coreruleset.org/) project.

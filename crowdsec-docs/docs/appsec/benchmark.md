@@ -1,6 +1,8 @@
 ---
 id: benchmark
 title: WAF Component Benchmark
+toc_max_heading_level: 4
+description: "Performance benchmarks for the CrowdSec Web Application Firewall (WAF): throughput and latency measured with virtual patching rules and with the full OWASP CRS."
 sidebar_position: 80
 ---
 
@@ -15,7 +17,7 @@ sidebar_position: 80
 
 -->
 
-# Basic Benchmark
+## Basic Benchmark
 
 The Application Security Component benchmarks were run on an AWS EC2 instance `t2.medium` (2vCPU/4GiB RAM).
 
@@ -44,29 +46,29 @@ On the system, we deployed:
 - CrowdSec `v1.6.0`
 - cs-openresty-bouncer `v1.0.1`
 
-## Basic GET request
+### Basic GET request
 
-### 5 concurrent connections / 1000 requests
+#### 5 concurrent connections / 1000 requests
 
 ![5 concurrent connections / 1000 requests](/img/appsec/bench/basic_get_appsec_one_routine_5_1000.png)
 
-### 15 concurrent connections / 1000 requests
+#### 15 concurrent connections / 1000 requests
 
 ![15 concurrent connections / 1000 requests](/img/appsec/bench/basic_get_appsec_one_routine_15_1000.png)
 
 <!--
-## POST request (50Ko body)
+### POST request (50Ko body)
 
-### 5 concurrent connections / 1000 requests
+#### 5 concurrent connections / 1000 requests
 
 ![5 concurrent connections / 1000 requests](/img/appsec/bench/big_post_appsec_one_routine_5_1000.png)
 
-### 15 concurrent connections / 1000 requests
+#### 15 concurrent connections / 1000 requests
 
 ![15 concurrent connections / 1000 requests](/img/appsec/bench/big_post_appsec_one_routine_15_1000.png)
 -->
 
-# Stress Test
+## Stress Test
 
 This test was run on a `c5a.4xlarge` EC2 instance (16CPU/32GiB RAM).
 
@@ -84,11 +86,11 @@ All tests were simulating 400 concurrent users, making requests as quickly as po
 
 Except for the baseline, all values in the tables are shown as a delta from the baseline performance.
 
-## Baseline
+### Baseline
 
 This test was run without loading the Openresty bouncer to get a baseline throughput of the system.
 
-### GET Requests
+#### GET Requests
 
 | Metric                | Value    |
 | --------------------- | -------- |
@@ -98,7 +100,7 @@ This test was run without loading the Openresty bouncer to get a baseline throug
 | Maximum Response Time | 255.16ms |
 | P90 Response Time     | 24.72ms  |
 
-### 10% POST Requests
+#### 10% POST Requests
 
 | Metric                | Value    |
 | --------------------- | -------- |
@@ -108,9 +110,9 @@ This test was run without loading the Openresty bouncer to get a baseline throug
 | Maximum Response Time | 331.08ms |
 | P90 Response Time     | 30.95ms  |
 
-## Virtual Patching Rules
+### Virtual Patching Rules
 
-### GET Requests - 10% malicious - InBand
+#### GET Requests - 10% malicious - InBand
 
 | Metric                | Delta    |
 | --------------------- | -------- |
@@ -120,7 +122,7 @@ This test was run without loading the Openresty bouncer to get a baseline throug
 | Maximum Response Time | +6.83ms  |
 | P90 Response Time     | +10.13ms |
 
-### Realistic Traffic - 70% GET - 25% POST - 5% malicious - Inband
+#### Realistic Traffic - 70% GET - 25% POST - 5% malicious - Inband
 
 | Metric                | Delta   |
 | --------------------- | ------- |
@@ -130,9 +132,9 @@ This test was run without loading the Openresty bouncer to get a baseline throug
 | Maximum Response Time | +6.79ms |
 | P90 Response Time     | +8.07ms |
 
-## CRS
+### CRS
 
-### GET Requests - 10% malicious - InBand
+#### GET Requests - 10% malicious - InBand
 
 | Metric                | Delta    |
 | --------------------- | -------- |
@@ -142,7 +144,7 @@ This test was run without loading the Openresty bouncer to get a baseline throug
 | Maximum Response Time | -64.45ms |
 | P90 Response Time     | +58.19ms |
 
-### POST Requests - 10% malicious - InBand
+#### POST Requests - 10% malicious - InBand
 
 | Metric                | Delta     |
 | --------------------- | --------- |
@@ -152,7 +154,7 @@ This test was run without loading the Openresty bouncer to get a baseline throug
 | Maximum Response Time | -106.76ms |
 | P90 Response Time     | +83.01ms  |
 
-### Realistic Traffic - 70% GET - 25% POST - 5% malicious - Inband
+#### Realistic Traffic - 70% GET - 25% POST - 5% malicious - Inband
 
 | Metric                | Delta    |
 | --------------------- | -------- |
@@ -162,9 +164,9 @@ This test was run without loading the Openresty bouncer to get a baseline throug
 | Maximum Response Time | -68.34ms |
 | P90 Response Time     | +53.83ms |
 
-## Virtual Patching Inband + CRS Out-of-band
+### Virtual Patching Inband + CRS Out-of-band
 
-### Realistic Traffic - 70% GET - 25% POST - 5% malicious
+#### Realistic Traffic - 70% GET - 25% POST - 5% malicious
 
 | Metric                | Delta     |
 | --------------------- | --------- |

@@ -41,7 +41,7 @@ Open the file and verify the following fields are present and correctly set:
 - `api_key`: a valid API key generated with `cscli bouncers add`
 
 :::warning
-Properties may change slightly, check the specific [configuration for your bouncer](http://localhost:3000/u/bouncers/intro)
+Property names may vary slightly; check the [configuration for your bouncer](/u/bouncers/intro).
 :::
 
 #### 🛠️ Fix the configuration and restart the RC
@@ -141,7 +141,7 @@ Beyond the common causes above, each RC type has its own specific failure modes.
 - **Missing system dependencies** (e.g. Lua packages for the Nginx bouncer): see [Nginx Bouncer](/u/bouncers/nginx)
 - **Web server module not loaded** (Nginx, Apache, HAProxy): see the respective RC documentation pages
 - **Elevated privilege requirements** (Firewall bouncer needing root to manage nftables/iptables): see [Firewall Bouncer](/u/bouncers/firewall)
-- **External service credentials** (Cloudflare API tokens, AWS IAM permissions): see [Cloudflare Workers Bouncer](/u/bouncers/cloudflare-workers) or [AWS WAF Bouncer](/u/bouncers/aws-waf)
+- **External service credentials** (Cloudflare API tokens, AWS IAM permissions): see [Cloudflare Workers Bouncer](/u/bouncers/cloudflare) or [AWS WAF Bouncer](/u/bouncers/aws_waf)
 - **PHP cache backend unavailable** (Redis or Memcached not running): see [PHP Bouncer](/u/bouncers/php)
 - **TLS/mTLS certificate issues** (invalid or expired client certificates): see your RC's documentation for TLS configuration
 - **General RC troubleshooting**: see [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components)

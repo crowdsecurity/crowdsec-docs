@@ -33,7 +33,7 @@ Often you will want multiple AppSec configurations to define groups of rules tha
 Use the `appsec_configs` *(with an S)* parameter to load multiple configurations that work together.  
 
 In the following example we have two configurations:
-- One with [CrowdSec default AppSec rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-configurations/appsec-default) running in in-band mode 
+- One with [CrowdSec default AppSec rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/waf-configurations/appsec-default) running in in-band mode 
 - The other for the [CRS rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs) that run in out-of-band mode by default.
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
@@ -92,7 +92,7 @@ When loading multiple AppSec configs, _hooks_ and _appsec rules_ are appended, a
 
 ### Configuration Processing Order
 
-When multiple AppSec configurations are loaded, they are processed in the order specified in the `appsec_configs` list. For details on how in-band and out-of-band rules work, see the [AppSec Introduction](/appsec/intro.md#inband-rules-and-out-of-band-rules).
+When multiple AppSec configurations are loaded, they are processed in the order specified in the `appsec_configs` list. For details on how in-band and out-of-band rules work, see the [AppSec Introduction](/appsec/intro.md#in-band-rules-and-out-of-band-rules).
 
 ### Multi-Config Rule Evaluation
 
@@ -118,7 +118,7 @@ name: custom/my-appsec-config
 ```
 
 #### `inband_rules` (optional)
-List of rule patterns to load as in-band rules. See [in-band rule processing](/appsec/intro.md#inband-rule-processing) for details.
+List of rule patterns to load as in-band rules. See [in-band rule processing](/appsec/intro.md#in-band-rule-processing) for details.
 
 ```yaml
 inband_rules:

@@ -18,7 +18,7 @@ labels:
   type: syslog
 ```
 
-Rather to specify each systemd service, you could also decide to acquire more informations from journald by referrencing a filter from _TRANSPORT
+Rather than specifying each systemd service, you can also acquire more information from journald by referencing a `_TRANSPORT` filter:
 
 ```yaml
 ---

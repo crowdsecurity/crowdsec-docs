@@ -4,6 +4,8 @@ id: security_engine
 ---
 
 import FormattedTabs from '@site/src/components/formatted-tabs';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 ## Community support
 
@@ -59,9 +61,9 @@ Do **not** use `cscli capi status` as a container health check — it authentica
 
 Yes, Security Engine parsers only parse the logs that are relevant for scenarios.
 
-Take a look at `cscli metrics` [and understand what do they mean](/docs/next/observability/cscli) to know if your setup is correct.
+Take a look at `cscli metrics` [and understand what they mean](/docs/observability/cscli) to know if your setup is correct.
 
-You can take an extra step and use [`cscli explain` to understand what log lines are parsed, and how](/docs/next/cscli/cscli_explain):
+You can take an extra step and use [`cscli explain` to understand what log lines are parsed, and how](/docs/cscli/cscli_explain):
 
 ![cscli-explain](/img/cscli_explain.png)
 
@@ -96,12 +98,42 @@ This command shows how each parser behaves.
 
 :::warning
 Do **not** use `cscli explain` on big log files, as this command will buffer a lot of information in memory to achieve this.
-If you want to check crowdsec's behaviour on big log files, please see [replay mode](/u/user_guides/replay_mode/).
+If you want to check CrowdSec's behaviour on big log files, please see [replay mode](/u/user_guides/replay_mode/).
 :::
 
 ### I want to add collection X: how do I add log files and test that it works?
 
 When adding a collection to your setup, the [hub](https://hub.crowdsec.net) will usually specify log files to add.
+
+### My service is behind a CDN and I get no alerts
+
+If a CDN or reverse proxy terminates the connection in front of your service, your web server logs the CDN's address instead of the visitor's. Every event is then attributed to that address, and since the [`whitelist-good-actors`](https://app.crowdsec.net/hub?filters=search%3Dwhitelist-good-actors.yaml) postoverflows shipped with the base HTTP collection cover the major CDN ranges, the alerts are dropped before becoming decisions. You see the requests in your access logs, `cscli metrics` shows them parsed, but nothing reaches `cscli alerts list`.
+
+These whitelists are deliberate: without them one misbehaving visitor would get the whole CDN banned, along with all your legitimate traffic. The fix is to log the real client IP, not to remove the whitelists.
+
+**To confirm this is your issue:**
+
+- Check the client address field of your access log — if the same few addresses appear on every line, the visitor IP is not reaching you.
+- Run the [HTTP detection check](/u/getting_started/health_check#-detection-checks) from a device with a public IP and see whether the alert shows your IP or the CDN's.
+- Postoverflows are not evaluated by `cscli explain`, so grep the logs for the whitelist that fired (`sudo grep whitelisted /var/log/crowdsec.log`); it names both the IP and the whitelist responsible.
+
+**To fix it**, have your CDN forward the visitor address in a header, then configure your web server to substitute it into the client address field **before logging** — with nginx's [`ngx_http_realip_module`](https://nginx.org/en/docs/http/ngx_http_realip_module.html), Apache's [`mod_remoteip`](https://httpd.apache.org/docs/current/mod/mod_remoteip.html), or the equivalent trusted-proxy setting of your proxy. CrowdSec parsers read that field (`remote_addr`, `%h`), never the header itself.
+
+| Provider | Header | Documentation |
+| --- | --- | --- |
+| Cloudflare | `CF-Connecting-IP` | [Restoring original visitor IPs](https://developers.cloudflare.com/support/troubleshooting/restoring-visitor-ips/restoring-original-visitor-ips/) |
+| Fastly | `Fastly-Client-IP` | [Fastly-Client-IP](https://www.fastly.com/documentation/reference/http/http-headers/Fastly-Client-IP/) |
+| Akamai | `True-Client-IP` | [Origin Server behavior](https://techdocs.akamai.com/property-mgr/docs/origin-server) |
+| Amazon CloudFront | `CloudFront-Viewer-Address` | [Add CloudFront request headers](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/adding-cloudfront-headers.html) |
+| Other CDNs and reverse proxies | usually `X-Forwarded-For` or `X-Real-IP` | refer to your provider's documentation |
+
+:::warning
+Only trust proxies you actually control, and keep the trusted ranges up to date from your provider's published list ([Cloudflare](https://www.cloudflare.com/ips/), [Fastly](https://api.fastly.com/public-ip-list), [AWS CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/LocationsOfEdgeServers.html)). Trusting arbitrary sources lets a client spoof its own address through the header, which would let an attacker evade detection or get an innocent IP banned.
+:::
+
+:::info
+If the **Local API** itself is behind a proxy, also set `use_forwarded_for_headers` and `trusted_proxies` in `config.yaml`. See [Local API behind a reverse proxy](/docs/local_api/configuration#server).
+:::
 
 ## Decisions
 
@@ -111,30 +143,30 @@ When adding a collection to your setup, the [hub](https://hub.crowdsec.net) will
 cscli decisions list
 ```
 
-Additional filtering is possible please read [cscli decisions list](/docs/next/cscli/cscli_decisions_list) for more information.
+Additional filtering is possible; see [cscli decisions list](/docs/cscli/cscli_decisions_list) for more information.
 
 ### How to remove a decision on an IP
 
 ```bash
 cscli decisions delete -i x.x.x.x
 ```
-Additional filtering is possible please read [cscli decisions delete](/docs/next/cscli/cscli_decisions_delete) for more information.
+Additional filtering is possible please read [cscli decisions delete](/docs/cscli/cscli_decisions_delete) for more information.
 
 ### How to control granularity of decisions
 
 The Security Engine is designed to be as flexible as possible, and allows you to control the granularity of decisions.
 
-[Profiles](/docs/next/local_api/profiles/intro) allows you to control which decision will be applied to which alert.
+[Profiles](/docs/local_api/profiles/intro) allows you to control which decision will be applied to which alert.
 
 ### How to add whitelists or prevent the Security Engine from banning a given IP
 
 Recommended ways to prevent a specific IP from being banned:
- - [Use Centralized AllowLists](/docs/next/local_api/centralized_allowlists) - Works on local decisions, blocklists and can be controlled from the Console.
- - [Parser Whitelists](/docs/next/log_processor/whitelist/intro) - Applies directly on the log parsing pipeline.
+ - [Use Centralized AllowLists](/docs/local_api/centralized_allowlists) - Works on local decisions, blocklists and can be controlled from the Console.
+ - [Parser Whitelists](/docs/log_processor/whitelist/intro) - Applies directly on the log parsing pipeline.
 
 #### I need to whitelist an event pattern instead of a single IP address
 
-You can exclude specific events [using whitelist parsers](/docs/next/log_processor/whitelist/intro).
+You can exclude specific events [using whitelist parsers](/docs/log_processor/whitelist/intro).
 It can discard events based on a specific URL, source IP address, or any other condition.
 
 ## Scenarios
@@ -148,18 +180,18 @@ When using `cscli` to list your parsers, scenarios, and collections, some might 
 - Originate from the hub
 - Were locally modified
 - Will not be automatically updated/upgraded by `cscli` operations (unless `--force` or similar is specified)
-- Won't be sent to Central API and won't appear in the Console (unless `cscli console enable tainted` has been specified)
+- Are sent to Central API and appear in the Console by default (unless `cscli console disable tainted` has been specified)
 
 "local" items:
 
 - Have been locally created by the user
 - Are not managed by `cscli` operations
-- Won't be sent to Central API and won't appear in the Console (unless `cscli console enable custom` has been specified)
+- Are sent to Central API and appear in the Console by default (unless `cscli console disable custom` has been specified)
 
 ### Scenario X keeps triggering, it's a false trigger
 
 To avoid false positives from a known scenario, you can use:
- - [Parser Whitelists](/docs/next/log_processor/whitelist/intro) - Applies directly on the log parsing pipeline.
+ - [Parser Whitelists](/docs/log_processor/whitelist/intro) - Applies directly on the log parsing pipeline.
 
 ### Set a custom/tainted scenario in simulation mode
 
@@ -189,24 +221,132 @@ Please review your acquisition files and remove any duplicate log entries.
 
 To test if logs are correctly parsed and checked by scenarios, use:
  - [Replay mode](/u/user_guides/replay_mode/) allows you to process cold logs and see scenarios triggered.
- - [`cscli explain`](/docs/next/cscli/cscli_explain) allows you to inspect the parsing process for one or more log lines.
+ - [`cscli explain`](/docs/cscli/cscli_explain) allows you to inspect the parsing process for one or more log lines.
+
+## Hub
+
+### How to get a new hub item right now instead of waiting for the scheduled update
+
+When a new rule is published on the hub (for example a virtual patching rule for a freshly disclosed CVE), you may not want to wait for the next scheduled hub update to get it.
+
+Getting it right away always takes the same three steps:
+
+1. `cscli hub update` refreshes the hub index.
+2. `cscli hub upgrade` upgrades the installed items, and installs the new items added to the collections you already have.
+3. Restart CrowdSec so that it loads the new items.
+
+:::info
+Tainted items (locally modified) are not upgraded. See [Why are some scenarios/parsers "tainted" or "custom"?](#why-are-some-scenariosparsers-tainted-or-custom).
+:::
+
+<Tabs
+  defaultValue="linux"
+  values={[
+    { label: 'Linux', value: 'linux' },
+    { label: 'FreeBSD', value: 'freebsd' },
+    { label: 'Windows', value: 'windows' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Kubernetes', value: 'kubernetes' },
+  ]}>
+<TabItem value="linux">
+
+The packages update the hub once a day with the `crowdsec-hubupdate.timer` systemd timer (a `/etc/cron.daily/crowdsec` cron job before 1.7.2).
+
+Trigger the scheduled job immediately:
+
+```bash
+sudo systemctl start crowdsec-hubupdate.service
+```
+
+Or run the steps by hand:
+
+```bash
+sudo cscli hub update
+sudo cscli hub upgrade
+sudo systemctl restart crowdsec
+```
+
+</TabItem>
+<TabItem value="freebsd">
+
+The package updates the hub every day at 3 AM with a cron job (`/usr/local/etc/cron.d/crowdsec`).
+
+```bash
+sudo cscli hub update
+sudo cscli hub upgrade
+sudo service crowdsec restart
+```
+
+</TabItem>
+<TabItem value="windows">
+
+There is no scheduled hub update on Windows. From an administrator PowerShell:
+
+```powershell
+cscli.exe hub update
+cscli.exe hub upgrade
+Restart-Service crowdsec
+```
+
+</TabItem>
+<TabItem value="docker">
+
+There is no scheduled hub update in the container. When the container starts, it only updates the hub if `/etc/crowdsec` is in a volume and the hub index is more than 24 hours old, so restarting the container alone is usually not enough to get a new item.
+
+Run the update inside the running container, then restart it:
+
+```bash
+docker exec crowdsec cscli hub update
+docker exec crowdsec cscli hub upgrade
+docker restart crowdsec
+```
+
+With Docker Compose, use `docker compose exec crowdsec` and `docker compose restart crowdsec` instead.
+
+:::warning
+If `/etc/crowdsec` is not in a volume, the upgraded items are lost when the container is recreated: the new container installs the items again at the versions listed in the hub index shipped in the image.
+:::
+
+</TabItem>
+<TabItem value="kubernetes">
+
+There is no scheduled hub update in the Helm chart, and by default the pods don't update the hub when they start: restarting them is not enough to get a new item.
+
+Run the update in every pod that uses the item: the agent pods for parsers and scenarios, the AppSec pods for AppSec rules. Don't restart the pods afterwards: a restarted container starts again from the image and loses the upgrade. Send a `SIGHUP` to CrowdSec instead, so that it reloads its configuration in place. For example, for the AppSec pods:
+
+```bash
+for pod in $(kubectl get pods -n crowdsec -l type=appsec -o name); do
+  kubectl exec -n crowdsec "$pod" -- sh -c 'cscli hub update && cscli hub upgrade && kill -HUP "$(pidof crowdsec)"'
+done
+```
+
+Use `-l type=agent` for the agent pods. If you set custom `podLabels` in your values, adapt the selector.
+
+:::warning
+The upgraded items are lost when a pod is recreated (rollout, eviction, rescheduling, scaling): the new pod installs the items again at the versions listed in the hub index shipped in the image. Run the update again on the new pods until you upgrade to an image whose hub index includes the item.
+:::
+
+</TabItem>
+</Tabs>
+
+To check that the new item is installed and up to date, run `cscli hub list` (or the `docker exec` / `kubectl exec` equivalent).
 
 ## Configuration
 
 ### Where is configuration stored?
 
-See [CrowdSec Configuration](/docs/next/configuration/crowdsec_configuration).
+See [CrowdSec Configuration](/docs/configuration/crowdsec_configuration).
 
 ### Where is data stored?
 
-CrowdSec stores its data in `/var/lib/crowdsec/data/` folder for UNIX and `C:\ProgramData\CrowdSec\data\` for Windows.
+CrowdSec stores its data in `/var/lib/crowdsec/data/` on Linux, `/var/db/crowdsec/data/` on FreeBSD (including OPNsense and pfSense), and `C:\ProgramData\CrowdSec\data\` on Windows.
 
 This is where the default sqlite database and data files needed for scenarios are kept.
 
 ### Which databases does the Security Engine support and how to switch?
 
 Security Engine supports SQLite (default), MySQL, and PostgreSQL databases.
-See [databases configuration](/docs/next/local_api/database) for relevant configuration. Thanks to the [Local API](/docs/next/local_api/intro), distributed architectures are resolved even with sqlite database.
+See [databases configuration](/docs/local_api/database) for relevant configuration. Thanks to the [Local API](/docs/local_api/intro), distributed architectures are resolved even with sqlite database.
 
 ### Multi-server setup
 
@@ -264,7 +404,7 @@ level=fatal msg="while serving local API: listen tcp 127.0.0.1:8080: bind: addre
 ```
 level=fatal msg="starting outputs error : authenticate watcher (fcb7303c4df44c03ada289dd7ec3dbe7cU3GaseSWdqUaVg6): API error: ent: machine not found"
 ```
-  - **solution** regenerate the credentials via [cscli machines](/docs/next/cscli/cscli_machines_add) command. If the local API is on the same machine you can run `sudo cscli machines add -a` (`-a` will automatically generate a random machine name and password). Then you can restart CrowdSec with `sudo systemctl restart crowdsec`.
+  - **solution** regenerate the credentials via [cscli machines](/docs/cscli/cscli_machines_add) command. If the local API is on the same machine you can run `sudo cscli machines add -a` (`-a` will automatically generate a random machine name and password). Then you can restart CrowdSec with `sudo systemctl restart crowdsec`.
 
 ### Cannot connect to the local API
   - **error** message might look like:
@@ -304,15 +444,15 @@ The Security Engine and Remediation Components are provided under the [MIT licen
 
 ### What is CrowdSec Security Engine?
 
-CrowdSec Security Engine is open-source security software. See the [overview](/docs/next/intro).
+CrowdSec Security Engine is open-source security software. See the [overview](/docs/intro).
 
 ### What language is it written in?
 
-CrowdSec Security Engine is written in [Golang](https://golang.org/).
+CrowdSec Security Engine is written in [Golang](https://go.dev/).
 
 ### What resources are needed to run Security Engine?
 
-Security Engine itself is rather light, and in a small to medium setup should use less than 100Mb of memory.
+Security Engine itself is rather light, and in a small to medium setup should use less than 100 MB of memory.
 
 During intensive logs processing, CPU is going to be the most used resource, and memory should grow slightly.
 
@@ -320,7 +460,7 @@ During intensive logs processing, CPU is going to be the most used resource, and
 
 The Security Engine can easily handle several thousands of events per second on a rich pipeline (multiple parsers, geoip enrichment, scenarios and so on). Logs are a good fit for sharding by default, so it is definitely the way to go if you need to handle higher throughput.
 
-If you need help with large-scale deployment, please contact us through this [form](https://contact.crowdsec.net/business-request).
+If you need help with large-scale deployment, please contact us through this [form](https://www.crowdsec.net/contact-crowdsec).
 
 #### What is the performance impact?
 
@@ -329,12 +469,12 @@ When it comes to [remediation components](/u/bouncers/intro), please refer to th
 
 ### Which information is sent to your services?
 
-See [CAPI documentation](/docs/next/central_api/intro).
+See [CAPI documentation](/docs/central_api/intro).
 
 
 ### How to set up a proxy
 
-Setting up a proxy works out of the box, the [net/http golang library](https://golang.org/src/net/http/transport.go) can handle those environment variables:
+Setting up a proxy works out of the box, the [net/http golang library](https://go.dev/src/net/http/transport.go) can handle those environment variables:
 
 -   `HTTP_PROXY`
 -   `HTTPS_PROXY`
@@ -375,7 +515,7 @@ Defaults        env_keep += "HTTP_PROXY HTTPS_PROXY NO_PROXY"
 
 You can configure `cscli` and `crowdsec` to use [tor](https://www.torproject.org/) to anonymously interact with our API.
 
-All (http) requests made to the central API to go through the [tor network](https://www.torproject.org/).
+All HTTP requests made to the Central API will then go through the [Tor network](https://www.torproject.org/).
 
 With tor installed, setting `HTTP_PROXY` and `HTTPS_PROXY` environment variables to your socks5 proxy, as well as setting `NO_PROXY` to local addresses to prevent LAPI errors, will do the trick.
 
@@ -409,4 +549,4 @@ $ sudo HTTP_PROXY=socks5://127.0.0.1:9050 HTTPS_PROXY=socks5://127.0.0.1:9050 NO
 
 ### How to disable the central API
 
-To disable the central API, simply comment out the [`online_client` section of the configuration file](/docs/next/configuration/crowdsec_configuration#online_client).
+To disable the central API, simply comment out the [`online_client` section of the configuration file](/docs/configuration/crowdsec_configuration#online_client).

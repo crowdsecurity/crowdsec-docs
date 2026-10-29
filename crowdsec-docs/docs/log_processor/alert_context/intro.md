@@ -11,7 +11,7 @@ When the alert is generated you can define additional Alert Context that can be 
 
 ### Format
 
-The format of Alert Context are key value pairs that are sent along with the alert. When you install some [Collections](/log_processor/collections/introduction.md) you will see that they come with Alert Context pre-configured.
+Alert Context is a set of key-value pairs that are sent along with the alert. When you install some [Collections](/log_processor/collections/introduction.md) you will see that they come with Alert Context pre-configured.
 
 For example if you install the `crowdsecurity/nginx` collection you will see that the `http_base` context is added:
 
@@ -34,7 +34,7 @@ Contexts are stored within the `contexts` directory within the root of the `conf
 As an example the default directory for linux is `/etc/crowdsec/` so the `contexts` directory would be `/etc/crowdsec/contexts/`
 :::
 
-Here a quick breakdown of the context file:
+Here is a quick breakdown of the context file:
 
 - `context` : This is the root key of the context file.
 - `target_uri` : This is the key that will be used as the "name" of the context.

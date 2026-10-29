@@ -1,6 +1,7 @@
 ---
 id: intro
-title: Integrations
+title: "Blocklist integrations: introduction"
+sidebar_label: Integrations
 sidebar_position: 1
 toc_max_heading_level: 2
 ---
@@ -29,16 +30,18 @@ Each integration represents a unique endpoint protected by Basic Authentication 
 
 ## Refresh frequency
 
-Blocklists are updated multiple times per day. Configure your device to pull on the following schedule according to your plan:
+Blocklists are updated multiple times per day. Configure your firewall to pull on the following schedule according to your plan:
 
 | Tier | Recommended refresh | Minimum allowed interval |
 |---|---|---|
 | Community | Every 24 hours | 24 hours |
-| Enterprise | Every hour | 1 hour |
+| Premium | Every hour | No limit |
 
 :::warning
-Pulling more frequently than the allowed interval for your plan will result in HTTP 429.
+For firewall integrations, pulling more frequently than the allowed interval for your plan will result in HTTP 429.
 :::
+
+These limits don't apply to [Remediation Component](integrations/remediationcomponent.mdx) integrations, which can poll at the bouncer's default interval on every plan.
 
 ## Available integrations
 
@@ -73,7 +76,7 @@ Each vendor page explains how to create the integration in the CrowdSec Console 
     <span style={{color: 'var(--ifm-color-emphasis-600)'}}>For platforms without native IP list ingestion:</span>
     <span style={{display: 'flex', gap: '0.35rem', flexWrap: 'wrap', marginTop: '0.35rem'}}>
       {[
-        { label: 'Cloudflare', src: '/img/crowdsec_cloudfare.svg', bg: '#fff7f0' },
+        { label: 'Cloudflare', src: '/img/crowdsec_cloudflare.svg', bg: '#fff7f0' },
         { label: 'AWS WAF', src: '/img/aws-waf-bouncer-logo.png', bg: '#fff7f0' },
         { label: 'WordPress', src: '/img/WordPress-logotype-wmark.png', bg: '#fff7f0' },
         { label: 'and more', src: '/img/crowdsec_logo.png', bg: '#fff7f0' },
@@ -93,7 +96,7 @@ Each vendor page explains how to create the integration in the CrowdSec Console 
   </IntegrationTile>
 </div>
 
-## Setup a Blocklist Integration Endpoint
+## Create a Blocklist Integration Endpoint
 
 <Tabs
   defaultValue="step1"
@@ -139,7 +142,7 @@ On mobile, use the menu icon in the top-right corner, tap **Blocklist**, then **
 
 ### Step 2 - Fill in integration details
 
-Name the integration *(must be unique to your account)*
+Name the integration *(must be unique to your account)*.
 Optionally, add a description and tags to help you identify it later.
 
 You can also configure:
@@ -276,7 +279,7 @@ If you are not receiving the full list, you have two options:
 
   Many devices support compression natively. For instance, the [Mikrotik integration](integrations/mikrotik.mdx) sets `http-header-field="Accept-Encoding:gzip"`.
 
-- **Use pagination.** If your client cannot handle compression, fetch the list in smaller chunks using the `page` and `page_size` query parameters. See [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination).
+- **Use pagination.** If your client cannot handle compression, fetch the list in smaller chunks using the `page` and `page_size` query parameters. See [Managing integrations size limits with pagination](/u/console/service_api/integrations#managing-integrations-size-limits-with-pagination).
 
   When pulling **without compression**, keep each page under the ~5 MB limit by capping `page_size` (or by setting a `pull_limit` on the integration so every pull stays bounded). The safe value depends on your format, because each format produces a different number of bytes per entry. As a reference point, the plain text format truncates at roughly **350,000 IPv4 entries** at the 5 MB limit:
 
@@ -295,4 +298,41 @@ A warning on **stack health** will soon surface when an integration is receiving
 
 ### HTTP 429 (rate limited)
 
-An `HTTP 429` response means your integration is being **rate limited** because it is pulling more frequently than your plan allows (Community: 1 pull every 24 hours; Enterprise: no limit). See [Refresh frequency](#refresh-frequency) above and adjust your device's refresh schedule to respect the allowed interval for your plan.
+An `HTTP 429` response means your firewall integration is being **rate limited** because it is pulling more frequently than your plan allows (Community: 1 pull every 24 hours; Premium: no limit). Remediation Component integrations are not rate limited this way. See [Refresh frequency](#refresh-frequency) above and adjust your device's refresh schedule to respect the allowed interval for your plan.
+
+### Firewall cannot pull the blocklist
+
+If your firewall or device fails to fetch the integration endpoint, work through the following two checks in order.
+
+**1. Verify the endpoint and credentials**
+
+Test the endpoint directly from a machine that has internet access:
+
+```bash
+curl -u 'USERNAME:PASSWORD' https://admin.api.crowdsec.net/v1/integrations/<INTEGRATION_ID>/content
+```
+
+Replace `USERNAME`, `PASSWORD`, and `INTEGRATION_ID` with the values from your integration's credential screen in the CrowdSec Console.
+
+- If `curl` **fails** (HTTP 401 or connection error) — the credentials are wrong or expired. Regenerate them via **Configure → Regenerate Credentials** on the integration page, then update the configuration on your device.
+- If `curl` **succeeds** and returns a list of IPs — the endpoint and credentials are correct. The issue is on the device side; continue to check 2.
+
+:::note
+The endpoint requires Basic Auth and cannot be opened directly in a browser without a plugin or extension that supports it.
+:::
+
+**2. Check TLS certificate trust on the device**
+
+The integration endpoint is hosted on AWS infrastructure and uses a certificate signed by **Amazon Root CA 1**. Some firewalls and security appliances do not include Amazon's root certificates in their default trust store and will refuse the TLS connection silently or report a certificate error.
+
+If your device's pull fails even though `curl` succeeds, you likely need to import the Amazon Root CA 1 certificate into your device's certificate trust store and configure the integration to use it.
+
+The certificate is available at:
+
+```
+https://www.amazontrust.com/repository/AmazonRootCA1.pem
+```
+
+The full Amazon certificate repository is at [amazontrust.com/repository](https://www.amazontrust.com/repository/).
+
+Refer to your device's documentation for how to import a root certificate and how to associate it with an external IP list or URL feed. The exact steps vary by vendor and firmware version.

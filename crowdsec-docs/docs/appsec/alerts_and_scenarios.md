@@ -1,6 +1,8 @@
 ---
 id: alerts_and_scenarios
-title: Alerts & Scenarios
+title: "WAF Alerts & Scenarios"
+sidebar_label: "Alerts & Scenarios"
+description: "How CrowdSec WAF rule matches become events, alerts and decisions: the appsec-logs parser, the event layout, and the scenarios that turn them into bans."
 sidebar_position: 5
 ---
 
@@ -25,6 +27,10 @@ The generated event looks like this:
 
 :::info
 The [`crowdsecurity/appsec-logs` parser](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/appsec-logs) is already part of the generic AppSec/WAF collections and doesn't have to be manually installed.
+:::
+
+:::info
+Requests blocked by the [`RateLimit()` helper](rate_limiting.md) generate a different kind of event, parsed by the [`crowdsecurity/appsec-rate-limit-logs` parser](https://app.crowdsec.net/hub/author/crowdsecurity/configurations/appsec-rate-limit-logs), with `evt.Meta.log_type` set to `appsec-rate-limit`. See [Rate Limiting](rate_limiting.md#events-and-alerts) for the fields available.
 :::
 
 
@@ -67,22 +73,23 @@ This is our AppSec/WAF rule:
 name: crowdsecurity/foobar-access
 description: "Detect access to foobar files with the something header set"
 rules:
-  - zones:
-    - URI
-    transform:
-    - lowercase
-    match:
-      type: startsWith
-      value: /foobar/
-  - zones:
-    - HEADERS
-    variables:
-    - something
-    transform:
-    - lowercase
-    match:
-      type: contains
-      value: test
+  - and:
+    - zones:
+      - URI
+      transform:
+      - lowercase
+      match:
+        type: startsWith
+        value: /foobar/
+    - zones:
+      - HEADERS
+      variables:
+      - something
+      transform:
+      - lowercase
+      match:
+        type: contains
+        value: test
 ```
 
 Let's ensure it's loaded as an _Out-Of-Band_ rule by creating a new AppSec config:

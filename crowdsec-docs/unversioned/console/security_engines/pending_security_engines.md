@@ -8,10 +8,10 @@ However, you can streamline this process using the "Auto-enroll" feature to auto
 
 ## Usage
 
-To accept of decline Security Engines waiting enrollment, follow these steps:
+To accept or decline Security Engines waiting for enrollment, follow these steps:
 
 1. Navigate to the **Security Engines** page.
-2. Have a Security Engine pending to be enroll
+2. Make sure a Security Engine is pending enrollment
 
 ![Pending Security Engine](/img/console/security_engines/pending-se-table.png)
 

@@ -7,7 +7,7 @@ The sentinel plugin is by default shipped with your CrowdSec installation. The f
 
 ## Configuring the plugin
 
-By default there would be a sentinel config at these default location per OS:
+By default, the Sentinel plugin configuration is located at the following paths, depending on the OS:
 
 - **Linux** `/etc/crowdsec/notifications/sentinel.yaml`
 - **FreeBSD** `/usr/local/etc/crowdsec/notifications/sentinel.yaml`
@@ -120,7 +120,7 @@ on_success: break
 
 ## Final Steps
 
-Let's restart crowdsec
+Restart CrowdSec:
 
 ```bash
 sudo systemctl restart crowdsec

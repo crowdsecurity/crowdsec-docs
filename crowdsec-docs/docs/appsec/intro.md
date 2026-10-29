@@ -1,6 +1,7 @@
 ---
 id: intro
 title: AppSec Component - CrowdSec WAF
+description: "CrowdSec's AppSec Component is an open-source Web Application Firewall (WAF) that inspects HTTP requests in real time, with virtual patching and OWASP CRS."
 sidebar_position: 1
 ---
 
@@ -26,6 +27,7 @@ The **AppSec Component** offers:
 -   Low-effort **virtual patching**.
 -   Support for legacy **ModSecurity** rules.
 -   Classic WAF protection plus CrowdSec features for **advanced behavior detection**.
+-   **Bot detection** to filter automated traffic with a browser challenge.
 -   **Full integration** with the CrowdSec stack, including the console and remediation components.
 
 <!-- xx :  links -->
@@ -76,6 +78,12 @@ The AppSec Component works seamlessly with modern web servers and reverse proxie
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
+<img src="/img/crowdsec_apache2.svg" alt="Apache" style={{height: '50px', objectFit: 'contain'}} />
+<strong>Apache</strong><br/>
+[Quick Start Guide →](quickstart/apache.mdx)
+</div>
+
+<div style={{display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px', alignItems: 'center', textAlign: 'center'}}>
 <img src="/img/traefik.logo.png" alt="Traefik" style={{height: '50px', objectFit: 'contain'}} />
 <strong>Traefik</strong><br/>
 [Quick Start Guide →](quickstart/traefik.mdx)
@@ -121,7 +129,9 @@ This leads to two possible outcomes:
 
 ### Out-of-band rule processing
 
-In the background, the security engine will then evaluate the out-of-band rules. These rules do not impact performance or response time, as they are evaluated after the AppSec Component instructs the webserver to continue or stop processing the request.
+In the background, the security engine will then evaluate the out-of-band rules. These rules do not impact performance or response time, as they are evaluated by dedicated workers after the AppSec Component instructs the webserver to continue or stop processing the request.
+
+If the out-of-band workers can't keep up, requests are queued, and once the queue is full, new requests skip out-of-band evaluation. See the [`routines`](/log_processor/data_sources/appsec.md#routines) setting of the acquisition.
 
 They are usually meant to detect repetitive unwanted behavior (for example, application spam, resource enumeration, scalping). When these rules trigger, they emit an event that the Security Engine processes like a log line.
 
@@ -139,6 +149,7 @@ This lets scenarios leverage WAF rule events, such as extending a ban for an IP 
 You can follow our quick start guides depending on your web server:
 
 -   [Nginx/OpenResty](quickstart/nginxopenresty.mdx)
+-   [Apache](quickstart/apache.mdx)
 -   [Envoy Gateway](quickstart/envoy-gateway.mdx)
 -   [Traefik](quickstart/traefik.mdx)
 -   [HAProxy (SPOA)](quickstart/haproxy_spoa.mdx)
@@ -149,6 +160,7 @@ Or consider learning more about the AppSec capabilities:
 
 -   **Rules**: [How to read, write and debug rules](rules_syntax.md)
 -   **Scenarios**: [How to create scenarios that leverage the AppSec Component events](alerts_and_scenarios.md)
+-   **Bot detection**: [Filter automated traffic with a browser challenge](bot_detection/intro.md)
 -   **Hooks**: [To customise behavior of the AppSec at runtime](hooks.md)
 -   **Troubleshoot**: [How to troubleshoot the behavior of the AppSec Component](troubleshooting.md)
 -   **AppSec Technical Details**: [For developers integrating with the AppSec Component](protocol.md)

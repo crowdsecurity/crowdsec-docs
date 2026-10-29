@@ -7,7 +7,7 @@ The following guide shows how to configure, test and enable HTTP plugin to forwa
 
 ## Configuring the plugin
 
-By default the configuration for HTTP plugin is located at these default location per OS:
+By default, the HTTP plugin configuration is located at the following paths, depending on the OS:
 
 - **Linux** `/etc/crowdsec/notifications/http.yaml`
 - **FreeBSD** `/usr/local/etc/crowdsec/notifications/http.yaml`
@@ -156,7 +156,7 @@ type: http
 name: http_default # this must match with the registered plugin in the profile
 log_level: debug # Options include: trace, debug, info, warn, error, off
 
-format |
+format: |
   {
     "type": "message",
     "attachments": [
@@ -342,7 +342,7 @@ on_success: break
 
 ## Final Steps:
 
-Let's restart crowdsec
+Restart CrowdSec:
 
 ```bash
 sudo systemctl restart crowdsec

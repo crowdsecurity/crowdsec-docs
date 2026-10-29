@@ -1,6 +1,9 @@
 ---
 id: rules_examples
-title: Examples
+title: "WAF Rules Examples"
+toc_max_heading_level: 4
+sidebar_label: "Examples"
+description: "Real CrowdSec WAF rule examples from the Hub, each with the rule definition, a matching HTTP request, and an explanation of the capability it demonstrates."
 sidebar_position: 81
 ---
 
@@ -12,7 +15,7 @@ This page showcases various WAF rule capabilities with real-world examples from 
 
 ### Description
 
-Header inspection with count transform. Note that empty user agent-agent field or absent user-agent field is equivalent.
+Header inspection with count transform. Note that an empty `User-Agent` header and a missing one are treated the same.
 
 ### Rule Example
 
@@ -503,21 +506,21 @@ label=aaa\u0027%2b#request.get(\u0027.KEY_velocity.struts2.context\u0027).intern
 - **URL-encoded payload handling** in form submissions
 - **Multi-zone coverage** examining both args and raw body content
 
-# Hooks Examples
+## Hooks Examples
 
 Hooks allow you to customize WAF behavior at different execution phases. This section demonstrates key hook capabilities organized by execution phase.
 
-## Load Phase (on_load)
+### Load Phase (on_load)
 
 Load hooks run once when the configuration is loaded, and are typically used to apply global settings.
 
-### 1. Tune Request Body Size Handling
+#### 1. Tune Request Body Size Handling
 
-#### Description
+##### Description
 
 Change the maximum request body size buffered and inspected by the engine, and what happens when a request exceeds it.
 
-#### Hook Example
+##### Hook Example
 
 ```yaml
 on_load:
@@ -526,21 +529,21 @@ on_load:
       - SetBodySizeExceededAction("partial")
 ```
 
-#### Use Case
+##### Use Case
 
 Allow larger uploads on this configuration while still bounding memory usage, and inspect the first 20MB of oversized bodies instead of dropping the request outright. See [Request body size handling](hooks.md#request-body-size-handling) for the available actions (`drop`, `partial`, `allow`).
 
-## Pre-Evaluation Phase (pre_eval)
+### Pre-Evaluation Phase (pre_eval)
 
 Pre-evaluation hooks run before rules are evaluated, allowing you to modify rule behavior dynamically per request.
 
-### 1. Disable Rules by Name
+#### 1. Disable Rules by Name
 
-#### Description
+##### Description
 
 Dynamically disable specific rules before evaluation.
 
-#### Hook Example
+##### Hook Example
 
 ```yaml
 pre_eval:
@@ -549,17 +552,17 @@ pre_eval:
       - RemoveInBandRuleByName('some-specific-rule')
 ```
 
-#### Use Case
+##### Use Case
 
 Disable existing rules on specific endpoints.
 
-### 2. Disable Rules by Tag
+#### 2. Disable Rules by Tag
 
-#### Description
+##### Description
 
 Disable multiple rules sharing the same tag.
 
-#### Hook Example
+##### Hook Example
 
 ```yaml
 pre_eval:
@@ -567,35 +570,35 @@ pre_eval:
       - RemoveInBandRuleByTag('some-specific-tag')
 ```
 
-#### Use Case
+##### Use Case
 
 Disable all rules with a specific tag.
 
-### 3. Change Rule Remediation by Name
+#### 3. Change Rule Remediation by Name
 
-#### Description
+##### Description
 
 Modify the default remediation for specific rules.
 
-#### Hook Example
+##### Hook Example
 
 ```yaml
 pre_eval:
   - apply:
-      - SetRemediationByName('some-rule', 'log')
+      - SetRemediationByName('some-rule', 'allow')
 ```
 
-#### Use Case
+##### Use Case
 
-Change a blocking rule to log-only mode for testing.
+Let requests matching a blocking rule through while still generating alerts, for testing.
 
-### 4. Disable Rules by ID
+#### 4. Disable Rules by ID
 
-#### Description
+##### Description
 
 Disable specific rules using their unique ID during request processing.
 
-#### Hook Example
+##### Hook Example
 
 ```yaml
 pre_eval:
@@ -604,49 +607,51 @@ pre_eval:
       - RemoveInBandRuleByID(123)
 ```
 
-#### Use Case
+##### Use Case
 
 Disable a specific rule by its ID for certain endpoints or conditions where the rule may cause false positives.
 
-### 5. GeoBlocking
+#### 5. GeoBlocking
 
-#### Description
+##### Description
 
 Block requests originating (or not) from specific countries.
 
-#### Hook Example
+##### Hook Example
 
 This will block any requests not coming from the US or France.
 
 Note the empty value (`""`) in the list and the `?` after the call to `GeoIPEnrich`: this will allow IPs for which crowdsec was not able to get the country (eg, private IPs) and prevent the helper from returning `nil` which would break the evaluation.
 
 ```yaml
-pre_eval:
-  - filter: IsInBand == true && GeoIPEnrich(req.RemoteAddr)?.Country.IsoCode not in ["FR", "US", ""]
-    apply:
-      - DropRequest("Forbidden Country")
+inband:
+  pre_eval:
+    - filter: GeoIPEnrich(req.RemoteAddr)?.Country.IsoCode not in ["FR", "US", ""]
+      apply:
+        - DropRequest("Forbidden Country")
 ```
 
 If you want to disallow traffic from a specific country:
 
 ```yaml
-pre_eval:
-  - filter: IsInBand == true && GeoIPEnrich(req.RemoteAddr)?.Country.IsoCode == "FR"
-    apply:
-      - DropRequest("Forbidden Country")
+inband:
+  pre_eval:
+    - filter: GeoIPEnrich(req.RemoteAddr)?.Country.IsoCode == "FR"
+      apply:
+        - DropRequest("Forbidden Country")
 ```
 
-#### Use Case
+##### Use Case
 
 Automatically block traffic from unwanted countries.
 
-### 6. Disable Body Inspection for Specific Requests
+#### 6. Disable Body Inspection for Specific Requests
 
-#### Description
+##### Description
 
 Skip request body inspection for the current request, for example on endpoints that legitimately receive large uploads.
 
-#### Hook Example
+##### Hook Example
 
 ```yaml
 pre_eval:
@@ -655,163 +660,166 @@ pre_eval:
       - DisableBodyInspection()
 ```
 
-#### Use Case
+##### Use Case
 
 Avoid buffering and inspecting large file uploads on trusted endpoints. This also bypasses the [maximum body size check](hooks.md#request-body-size-handling), so requests exceeding the limit are allowed through instead of being dropped.
 
-## Post-Evaluation Phase (post_eval)
+### Post-Evaluation Phase (post_eval)
 
 Post-evaluation hooks run after rule evaluation is complete, primarily used for debugging and logging.
 
-### 5. Debug Request Dumping
+#### 5. Debug Request Dumping
 
-#### Description
+##### Description
 
 Dump request details to file for debugging.
 
-#### Hook Example
+##### Hook Example
 
 ```yaml
-post_eval:
-  - filter: IsInBand == true
-    apply:
-      - DumpRequest().WithBody().ToJSON()
+inband:
+  post_eval:
+    - apply:
+        - DumpRequest().WithBody().ToJSON()
 ```
 
-#### Use Case
+##### Use Case
 
 Capture full request details for forensic analysis or debugging rule behavior.
 
-## On-Match Phase (on_match)
+### On-Match Phase (on_match)
 
 On-match hooks run when a rule matches, allowing you to modify the response behavior.
 
-### 6. Change HTTP Response Code
+#### 6. Change HTTP Response Code
 
-#### Description
+##### Description
 
 Modify the HTTP status code returned to users when a rule matches.
 
-#### Hook Example
+##### Hook Example
 
 ```yaml
-on_match:
-  - filter: IsInBand == true
-    apply:
-      - SetReturnCode(413)
+inband:
+  on_match:
+    - apply:
+        - SetReturnCode(413)
 ```
 
-#### Use Case
+##### Use Case
 
 Return a 413 "Payload Too Large" instead of the default 403 when a rule triggers.
 
-### 7. Change Remediation Action
+#### 7. Change Remediation Action
 
-#### Description
+##### Description
 
 Dynamically change the remediation action from the default.
 
-#### Hook Example
+##### Hook Example
 
 ```yaml
-on_match:
-  - filter: IsInBand == true
-    apply:
-      - SetRemediation('captcha')
+inband:
+  on_match:
+    - apply:
+        - SetRemediation('captcha')
 ```
 
-#### Use Case
+##### Use Case
 
 Show a captcha instead of blocking the request for certain rule matches.
 
-### 8. Allow Specific IPs
+#### 8. Allow Specific IPs
 
-#### Description
+##### Description
 
 Override blocking for trusted IP addresses.
 
-#### Hook Example
+##### Hook Example
 
 ```yaml
-on_match:
-  - filter: IsInBand == true && req.RemoteAddr == "192.168.1.100"
-    apply:
-      - SetRemediation('allow')
+inband:
+  on_match:
+    - filter: req.RemoteAddr == "192.168.1.100"
+      apply:
+        - SetRemediation('allow')
 ```
 
-#### Use Case
+##### Use Case
 
 Allow internal/admin IPs to bypass security rules while keeping protection for others.
 
-### 9. Cancel Alert Generation
+#### 9. Cancel Alert Generation
 
-#### Description
+##### Description
 
 Prevent alert creation while keeping the request blocked.
 
-#### Hook Example
+##### Hook Example
 
 ```yaml
-on_match:
-  - filter: IsInBand == true
-    apply:
-      - CancelAlert()
+inband:
+  on_match:
+    - apply:
+        - CancelAlert()
 ```
 
-#### Use Case
+##### Use Case
 
 Block suspicious requests without generating alerts for known false positives.
 
-### 10. Force Alert for Out-of-Band Rules
+#### 10. Force Alert for Out-of-Band Rules
 
-#### Description
+##### Description
 
 Generate alerts for monitoring rules that normally only log.
 
-#### Hook Example
+##### Hook Example
 
 ```yaml
-on_match:
-  - filter: IsOutBand == true
-    apply:
-      - SendAlert()
+outofband:
+  on_match:
+    - apply:
+        - SendAlert()
 ```
 
-#### Use Case
+##### Use Case
 
 Create alerts for reconnaissance attempts detected by monitoring rules.
 
-### 11. Hook Flow Control
+#### 11. Hook Flow Control
 
-#### Description
+##### Description
 
 Control execution of subsequent hooks with break/continue.
 
-#### Hook Example
+`on_success` is only evaluated for hooks that have a `filter`, so a filterless hook never breaks.
+
+##### Hook Example
 
 ```yaml
-on_match:
-  - filter: IsInBand == true
-    apply:
-      - CancelEvent()
-    on_success: break
-  - filter: IsInBand == true
-    apply:
-      - SetRemediation('captcha')
+inband:
+  on_match:
+    - filter: req.URL.Path startsWith "/api/"
+      apply:
+        - CancelEvent()
+      on_success: break
+    - apply:
+        - SetRemediation('captcha')
 ```
 
-#### Use Case
+##### Use Case
 
 Cancel event generation and stop processing further hooks.
 
-## Hook Execution Phases Summary
+### Hook Execution Phases Summary
 
 - **on_load**: Rule loading phase - disable/modify rules permanently
 - **pre_eval**: Before rule evaluation - dynamic rule modification per request
 - **on_match**: After rule match - modify response behavior
 - **post_eval**: After evaluation - debugging and logging
 
-## Summary of WAF Capabilities
+### Summary of WAF Capabilities
 
 These examples demonstrate the comprehensive capabilities of the CrowdSec WAF engine:
 

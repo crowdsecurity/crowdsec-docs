@@ -1,31 +1,28 @@
 ---
 id: cloudflare
-title: CrowdSec Cloudflare Worker Bouncer
+title: "Cloudflare IP Blocking with CrowdSec"
+description: "Block or challenge malicious IPs on Cloudflare with the CrowdSec Workers bouncer. Compares the self-hosted installer and the CLI bouncer daemon setups."
 toc_max_heading_level: 3
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-  <img src={useBaseUrl('/img/crowdsec_cloudfare.svg')} width="400" height="300" />
-</p>
+<BouncerHeader
+  title="Cloudflare Worker Bouncer"
+  imgSrc="/img/crowdsec_cloudflare.svg"
+  description="Syncs CrowdSec decisions with Cloudflare Workers to block or challenge traffic on your zones."
+  featuresSupport="mtls, streammode, captcha"
+  githubUrl="https://github.com/crowdsecurity/cs-cloudflare-worker-bouncer-install"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-cloudflare-worker-bouncer"
+/>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/build-pass-green"></img>
-  <img src="https://img.shields.io/badge/tests-pass-green"></img>
-</p>
-
-<p align="center">
-&#x1F4DA; <a href="#overview">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse</a>
-</p>
+# Block Malicious IPs on Cloudflare with CrowdSec
 
 :::tip
-  We recommend using the **Self-Hosted Installer** setup method for most users. It is simpler to install and maintain.  
+  We recommend using the **Self-Hosted Installer** setup method for most users who want to connect a CrowdSec [Blocklist Integration Endpoint](/u/integrations/remediationcomponent) to Cloudflare without installing anything on their infrastructure. It is simpler to install and maintain.  
   For comparative details, see the [Setup Methods](#setup-methods) section below.
 
   Jump directly to the Setup section for your preferred method:  
@@ -57,7 +54,7 @@ This **Remediation Component** uses **Cloudflare Workers** to block or challenge
 The source of those decisions
 
 - A **[Blocklist Integration Endpoint](/u/integrations/remediationcomponent)**: a URL served by CrowdSec, no infrastructure required on your side. This is the simplest option.
-- A **[Security Engine](/u/bouncers/intro)** you run in your own infrastructure: the Sync Worker connects to your LAPI to pull decisions directly.
+- A **[Security Engine](/docs/intro)** you run in your own infrastructure: the Sync Worker connects to your LAPI to pull decisions directly.
 
 :::warning
 This Remediation Component relies on Cloudflare Workers and the KV store. It works best on a paid Workers subscription. See [Appendix: Cloudflare Free Plan](#appendix-test-with-cloudflare-free-plan) for details.
@@ -84,6 +81,14 @@ Here's a quick comparative overview:
 | **Decision sync** | Sync Worker | Bouncer daemon or possibility to use Sync Worker |
 | **Metrics** | Cloudflare Analytics Engine Queries | Prometheus metrics & pushed to CrowdSec Console |
 | **Auth to decisions source** | Basic Auth | Basic Auth or MTLS |
+
+:::info Decision source and setup method
+**Self-Hosted Installer** works best with a **Blocklist Integration Endpoint** — no infrastructure to expose, the Sync Worker pulls decisions directly from CrowdSec.
+
+Using a **self-hosted Security Engine (LAPI)** as the decision source requires the LAPI to be reachable from Cloudflare's network, which means exposing it publicly. If that's a concern:
+- **Premium users** can enable [Remediation Sync](/u/console/remediation_sync) on their Console integration — decisions are forwarded from the LAPI without exposing it to the internet.
+- Alternatively, use the **CLI Bouncer Daemon** running alongside your LAPI, so the bouncer pulls decisions locally and pushes them to Cloudflare without any inbound exposure.
+:::
 
 :::warning
 After installation, configure the [Worker Route Fail Mode](#setting-up-the-worker-route-fail-mode) to FAIL OPEN to avoid service outages if the worker encounters errors or Cloudflare plan quota overruns.
@@ -117,7 +122,7 @@ Each configured zone must have at least one `A` or `AAAA` DNS record. Zones with
 
 ---
 
-## Self-Hosted Setup
+## 🔌 Self-Hosted Setup {#self-hosted-setup}
 
 The self-hosted setup uses a Cloudflare github integration to deploy a worker acting as the central install and configuration GUI for the Cloudflare bouncer elements.
 
@@ -126,7 +131,7 @@ The steps are:
   - One time action
   - The installer will update automatically when the repository is updated
 - [Installing the bouncer and binding your zones via the Installer GUI](#configure-via-the-installer-ui)
-  - Easy One click or batch actions on you select zones
+  - Easy one-click or batch actions on your selected zones
   - Easy install/cleanup process
 
 Everything runs inside Cloudflare. No server, no daemon, no YAML files.
@@ -202,7 +207,7 @@ You can install/uninstall individual zones or select multiple zones for batch in
 **Turnstile (CAPTCHA):**
 
 On installed zones you can activate the ability to have CAPTCHA decisions handled.  
-Toggle **Supports CAPTCHA** on a zone enable a style of Turnstile for it (managed, non-interactive, invisible). Protected zones with Turnstile show a **SUPPORTS CAPTCHA** badge. You can toggle it on or off after installation as well.
+Toggle **Supports CAPTCHA** on a zone to enable Turnstile for it and pick a widget mode (managed, non-interactive, invisible). Protected zones with Turnstile show a **SUPPORTS CAPTCHA** badge. You can toggle it on or off after installation as well.
 
 ![Captcha settings](/img/bouncer/cloudflare-worker/cf-installer-set-captcha.png)
 
@@ -248,7 +253,7 @@ git push --force origin main
 
 ---
 
-## CLI Bouncer Setup
+## 🔧 CLI Bouncer Setup {#cli-bouncer-setup}
 
 The CLI bouncer is a Go binary (`crowdsec-cloudflare-worker-bouncer`) that manages Cloudflare infrastructure from the command line using a YAML configuration file.
 
@@ -503,7 +508,7 @@ sudo crowdsec-cloudflare-worker-bouncer -d
 
 ---
 
-## Setting Up the Worker Route Fail Mode
+## ⚙️ Setting Up the Worker Route Fail Mode {#setting-up-the-worker-route-fail-mode}
 
 Worker routes are created with **Fail Closed** mode by default. In this mode, any worker error results in a Cloudflare 1027 error page shown to visitors — including errors caused by plan quota overruns.
 
@@ -637,7 +642,7 @@ sudo cscli -oraw bouncers add cloudflarebouncer
 ```
 
 #### `crowdsec_config.update_frequency`
-> string (parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+> string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 How often the bouncer polls CrowdSec. Default: `10s`.
 
@@ -716,7 +721,7 @@ Enable Turnstile (CAPTCHA) for this zone.
 Automatically rotate the Turnstile secret key.
 
 #### `accounts[].zones[].turnstile.rotate_secret_key_every`
-> string (parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+> string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 Rotation interval. Example: `168h0m0s` (7 days).
 

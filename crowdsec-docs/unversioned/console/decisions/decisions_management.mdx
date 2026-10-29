@@ -5,6 +5,8 @@ sidebar_position: 1
 ---
 
 import { Badge } from "@site/src/ui/badge";
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
 <div className="mb-4">
     <Badge variant="premium">CrowdSec Premium Feature</Badge>
@@ -28,12 +30,24 @@ From the Console, it is possible to add a decision for your whole organization, 
 
 - Click on the "Add a decision" button in the "Decisions" tab:
 
-![Add decision button](/img/add_decision_button.png)
+<ThemedImage
+    alt="CrowdSec Decisions Management"
+    sources={{
+        light: useBaseUrl("/img/console/decisions/decisions-light.png"),
+        dark: useBaseUrl("/img/console/decisions/decisions-dark.png"),
+    }}
+/>
 
 - Then enter the IP address you want to ban, the remediation type, the duration, a reason and select the target of this decision:
   > In this example, we are adding a **ban** decision on **192.168.1.1** for **4h** because it is a **Bad IP**, to my two instances.
 
-![Add decision](/img/add_decision_to_machines.png)
+<ThemedImage
+    alt="CrowdSec Add Decision"
+    sources={{
+        light: useBaseUrl("/img/console/decisions/add_decision-light.png"),
+        dark: useBaseUrl("/img/console/decisions/add_decision-dark.png"),
+    }}
+/>
 
 And we can see in the CrowdSec Local API logs that we received this new decision:
 
@@ -56,11 +70,23 @@ sudo cscli decisions list
 
 - Go to the decision you want to delete. You can then choose if you want to delete the decision on all the machines, or only on the specified machine:
 
-![Delete decision](/img/delete_decision.png)
+<ThemedImage
+    alt="CrowdSec Delete Decision"
+    sources={{
+        light: useBaseUrl("/img/console/decisions/delete_decision-light.png"),
+        dark: useBaseUrl("/img/console/decisions/delete_decision-dark.png"),
+    }}
+/>
 
 - And confirm that you want to delete it:
 
-![Delete decision confirm](/img/delete_decision_confirm.png)
+<ThemedImage
+    alt="CrowdSec Delete Decision Confirm"
+    sources={{
+        light: useBaseUrl("/img/console/decisions/delete_decision_confirm-light.png"),
+        dark: useBaseUrl("/img/console/decisions/delete_decision_confirm-dark.png"),
+    }}
+/>
 
 And we can see that our CrowdSec Local API received the order to delete the decision:
 

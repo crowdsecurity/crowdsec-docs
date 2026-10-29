@@ -7,7 +7,7 @@ title: Web Interface
 
 The [Live Exploit Tracker web interface](https://tracker.crowdsec.net) provides a dashboard for browsing tracked vulnerabilities, assessing their severity, viewing attacker IPs, and managing firewall integrations — all without writing a line of code.
 
-It exposes the same data as the [API](./api_authentication) in a visual format designed for SOC analysts and security managers.
+It exposes the same data as the [API](./api_authentication.mdx) in a visual format designed for SOC analysts and security managers.
 
 ### Getting Access
 
@@ -37,7 +37,7 @@ The home page provides an at-a-glance overview of the threat landscape:
 - **Trending Threats**: CVEs with the highest activity in the last 24 hours, shown as cards with exploitation phase badges, CrowdSec Scores, first-seen dates, IP counts, and sparkline activity charts
 - **Most Active**: CVEs with the highest overall volume of attack traffic
 
-Each threat card shows the exploitation phase as a colored badge (e.g., "TARGETED EXPLOITATION", "MASS EXPLOITATION", "BACKGROUND NOISE"), the CrowdSec Score, and a miniature activity chart so you can quickly spot trends.
+Each threat card shows the exploitation phase as a colored badge (e.g., "ACTIVE EXPLOITATION", "BACKGROUND NOISE"), the CrowdSec Score, and a miniature activity chart so you can quickly spot trends.
 
 ![Live Exploit Tracker Home Page](/img/exploit-tracker/home.png)
 
@@ -64,7 +64,7 @@ Use the **search bar** to find CVEs by ID, name, product, or vendor. Use the **S
 
 ### Reconnaissance Tab
 
-Displays all Reconnaissance rules — detection patterns for product-level probing activity. See [Fingerprints vs CVEs](./fingerprints_vs_cves) for the difference between CVEs and Reconnaissance rules.
+Displays all Reconnaissance rules — detection patterns for product-level probing activity. See [Fingerprints vs CVEs](./fingerprints_vs_cves.mdx) for the difference between CVEs and Reconnaissance rules.
 
 Cards use the same layout as CVEs but with a "RECON" badge and a rule ID (e.g., `microsoft-exchange`). Titles follow the pattern "[Product] Probing" (e.g., "Matomo Panel Probing", "Oracle Enterprise Manager Console Probing").
 
@@ -84,7 +84,7 @@ Clicking on a CVE card opens its full detail page.
 
 The top of the page shows:
 
-- **Phase badge**: The current exploitation phase as a colored label (e.g., "TARGETED EXPLOITATION")
+- **Phase badge**: The current exploitation phase as a colored label (e.g., "ACTIVE EXPLOITATION")
 - **CVE ID badge** and **PUBLIC EXPLOIT** indicator (if a public exploit exists)
 - **Title**: Human-readable vulnerability name
 - **Key dates**: Published, First Seen, Last Seen
@@ -102,7 +102,7 @@ A dedicated panel on the right side of the header displays:
 - **Momentum** (0–5): How fast attacks are growing. Shown with a progress bar.
 - **Targeted** (0–5): How targeted vs. opportunistic the attacks are ("Low = mass scanning, High = targeted"). Shown with a progress bar.
 
-See [Scores & Ratings](./scores) for detailed interpretation of these values.
+See [Scores & Ratings](./scores.mdx) for detailed interpretation of these values.
 
 :::info Terminology note
 The **Targeted** score in the web interface corresponds to the **Opportunity Score** in the API. They measure the same thing — how deliberately attackers are selecting their targets.
@@ -115,7 +115,7 @@ Displayed side by side below the header:
 - **Description**: The official CVE description from the NVD
 - **CrowdSec Analysis**: A human-readable intelligence narrative covering the vulnerability's nature, observed exploitation patterns, trend analysis, and specific technical indicators. Click "Show more" to expand the full analysis.
 
-See [CrowdSec Analysis](./crowdsec_analysis) for how to use this in triage and reporting.
+See [CrowdSec Analysis](./crowdsec_analysis.mdx) for how to use this in triage and reporting.
 
 ### Exploit Timeline
 
@@ -225,7 +225,7 @@ The integration's blocklist will now include all IPs observed exploiting the sub
 
 ### Consuming the Blocklist
 
-Your firewall fetches the blocklist from the integration's unique URL at regular intervals. See the [CrowdSec Integrations documentation](https://docs.crowdsec.net/u/integrations/intro) for vendor-specific setup guides.
+Your firewall fetches the blocklist from the integration's unique URL at regular intervals. See the [CrowdSec Integrations documentation](/integrations/intro.mdx) for vendor-specific setup guides.
 
 ![Integrations Page](/img/exploit-tracker/integrations.png)
 

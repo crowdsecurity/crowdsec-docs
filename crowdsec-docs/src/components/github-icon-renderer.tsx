@@ -9,7 +9,7 @@ const GithubIconRender = ({ ...props }): React.JSX.Element => {
 				<a href={props.url} target="_blank" className="dark:text-white text-black">
 					<CIcon icon={cibGithub} size="xxl" />
 				</a>
-				<p>Github</p>
+				<p>GitHub</p>
 			</div>
 		</div>
 	);

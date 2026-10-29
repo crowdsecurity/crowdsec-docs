@@ -1,47 +1,28 @@
 ---
 id: haproxy_spoa
-title: HAProxy SPOA
+title: "HAProxy IP Blocking & WAF with CrowdSec"
+description: "Wire HAProxy to CrowdSec over SPOA: the SPOA agent checks each connection against live decisions and hands HTTP requests to the AppSec (WAF) engine."
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-<img src={useBaseUrl('/img/crowdsec_haproxy.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
-</p>
-<p align="center">
-<img src="https://img.shields.io/badge/build-pass-green" />
-<img src="https://img.shields.io/badge/tests-pass-green" />
-</p>
-<p align="center">
-&#x1F4DA; <a href="#installation/">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-
-<RemediationSupportBadges
-  MTLS
-  Mode={false}
-  Appsec
-  Metrics
-  Prometheus
+<BouncerHeader
+  title="HAProxy SPOA"
+  imgSrc="/img/crowdsec_haproxy.svg"
+  description="Go-based SPOA bouncer for HAProxy with WAF (AppSec) support — the recommended HAProxy integration."
+  featuresSupport="mtls, streammode, metrics, prometheus, waf, captcha"
+  githubUrl="https://github.com/crowdsecurity/cs-haproxy-spoa-bouncer"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-haproxy-spoa-bouncer"
 />
 
-
-# A remediation component for HAProxy
-
-:::warning
-
-Beta Remediation Component, please report any issues on GitHub
-
-:::
+# Protect HAProxy with IP Blocking & WAF
 
 :::tip Enable the WAF for optimal protection
-This is the **only HAProxy bouncer with AppSec support**. After installing the bouncer, enable the [AppSec (WAF) Component](/docs/next/appsec/intro) for real-time WAF protection, virtual patching, and defense against known CVEs.
+This is the **only HAProxy bouncer with WAF (AppSec) support**. After installing the bouncer, enable the [WAF (AppSec) Component](/docs/appsec/intro) for real-time WAF protection, virtual patching, and defense against known CVEs.
 
-Follow the dedicated [AppSec Quickstart for HAProxy](/docs/next/appsec/quickstart/haproxy_spoa) — it picks up right where this page ends.
+Follow the dedicated [WAF Quickstart for HAProxy](/docs/appsec/quickstart/haproxy_spoa) — it picks up right where this page ends.
 :::
 
 ## What it does
@@ -63,8 +44,15 @@ Supported features:
 - Ban remediation (custom HTML / redirects)
 - CAPTCHA remediation (hCaptcha / reCAPTCHA / Turnstile)
 - GeoIP headers (ASN / Country)
-- AppSec (WAF evaluation via CrowdSec AppSec)
+- WAF (WAF evaluation via CrowdSec AppSec)
 - Prometheus metrics
+
+:::warning WAF body inspection is limited to ~50 KB
+Because of SPOE protocol limits, the WAF cannot inspect request bodies larger
+than ~50 KB. Unless you configure HAProxy to drop these requests, they reach
+your backend without body inspection. See [Request body size
+limit](#request-body-size-limit).
+:::
 
 ## Installation
 
@@ -100,108 +88,6 @@ sudo dnf install crowdsec-haproxy-spoa-bouncer
 
 </Tabs>
 
-### Container
-
-The container image runs the SPOA bouncer (it does not bundle HAProxy): `crowdsecurity/spoa-bouncer`.
-
-:::warning
-The container examples below are not a complete HAProxy setup. For production, pin HAProxy to a stable version (rather than `:latest`) and adapt `haproxy.cfg` to your environment (TLS, backends, logging, timeouts, etc.).
-:::
-
-Quick start:
-
-```bash
-docker run -d \
-  --name crowdsec-spoa-bouncer \
-  -e CROWDSEC_KEY="<your-lapi-api-key>" \
-  -e CROWDSEC_URL="http://crowdsec:8080/" \
-  -p 9000:9000 \
-  -p 6060:6060 \
-  crowdsecurity/spoa-bouncer
-```
-
-If HAProxy runs in another container (for example in Docker Compose), point the SPOA backend to `crowdsec-spoa-bouncer:9000`.
-
-#### Docker Compose example
-
-```yaml
-services:
-  crowdsec:
-    image: crowdsecurity/crowdsec:latest
-    restart: unless-stopped
-    ports:
-      - 127.0.0.1:8080:8080
-    environment:
-      COLLECTIONS: "crowdsecurity/haproxy"
-      BOUNCER_KEY_SPOA: "${BOUNCER_KEY_SPOA}"
-      GID: "${GID-1000}"
-    volumes:
-      - crowdsec-db:/var/lib/crowdsec/data/
-      - crowdsec-config:/etc/crowdsec/
-      # Optional: configure log acquisition for your setup
-      # - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
-    networks:
-      - crowdsec
-
-  crowdsec-spoa-bouncer:
-    image: crowdsecurity/spoa-bouncer:latest
-    restart: unless-stopped
-    depends_on:
-      - crowdsec
-    environment:
-      CROWDSEC_KEY: "${BOUNCER_KEY_SPOA}"
-      CROWDSEC_URL: "http://crowdsec:8080/"
-    volumes:
-      - templates:/var/lib/crowdsec-haproxy-spoa-bouncer/html/
-      - lua:/usr/lib/crowdsec-haproxy-spoa-bouncer/lua/
-    networks:
-      - crowdsec
-
-  haproxy:
-    image: haproxy:latest
-    restart: unless-stopped
-    volumes:
-      - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-      - ./config/crowdsec.cfg:/etc/haproxy/crowdsec.cfg:ro
-      - templates:/var/lib/crowdsec-haproxy-spoa-bouncer/html/:ro
-      - lua:/usr/lib/crowdsec-haproxy-spoa-bouncer/lua/:ro
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - crowdsec-spoa-bouncer
-    networks:
-      - crowdsec
-
-volumes:
-  crowdsec-db:
-  crowdsec-config:
-  lua:
-  templates:
-
-networks:
-  crowdsec:
-```
-
-Create `./config/haproxy.cfg` and `./config/crowdsec.cfg` from the “HAProxy Configuration” section below (in Compose, the SPOA backend server should target `crowdsec-spoa-bouncer:9000`). Set `BOUNCER_KEY_SPOA` in a `.env` file or your shell environment, and persist CrowdSec directories (at least `/var/lib/crowdsec/data/`) as described in the [Docker getting started guide](/getting_started/installation/docker.mdx).
-
-To use a custom configuration file:
-
-```bash
-docker run -d \
-  --name crowdsec-spoa-bouncer \
-  -v $PWD/crowdsec-spoa-bouncer.yaml:/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml:ro \
-  -p 9000:9000 \
-  crowdsecurity/spoa-bouncer
-```
-
-:::info
-If you run HAProxy without the `crowdsec-haproxy-spoa-bouncer` package, you still need the Lua scripts and HTML templates. They are shipped in the image at `/usr/lib/crowdsec-haproxy-spoa-bouncer/lua/` and `/var/lib/crowdsec-haproxy-spoa-bouncer/html/` and can be copied/mounted into your HAProxy environment.
-:::
-
-For all container options and environment variables, see: https://github.com/crowdsecurity/cs-haproxy-spoa-bouncer/blob/main/docker/README.md
-
-
 ## Bouncer configuration
 
 If you are using packages, and have a lapi on the same server the following
@@ -212,18 +98,24 @@ Configuration.
 If your CrowdSec Engine is installed on another server, you'll need to update
 the `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml` file.
 
-
 ## HAProxy Configuration
 
 HAProxy requires two configuration files for integration with the bouncer. The
 primary file is /etc/haproxy/haproxy.cfg, which must be modified to enable
 communication with the SPOE engine—our documentation will guide you through
 this. The second file is /etc/haproxy/crowdsec.cfg, which contains the SPOE
-agent configuration. This file is automatically installed along with the bouncer
-package on the condition that `/etc/haproxy` exists.
+agent configuration.
 
-If you are using packages, you will find the haproxy configuration
-snippets in `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`.
+The packages don't install or modify any file in `/etc/haproxy`. Instead, they
+ship example haproxy configuration snippets in
+`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`. These are a starting
+point: copy the SPOE one and adapt it to your needs (timeouts, backend name,
+messages sent to the bouncer, etc.):
+
+```bash
+sudo cp /usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples/crowdsec.cfg /etc/haproxy/crowdsec.cfg
+sudo $EDITOR /etc/haproxy/crowdsec.cfg
+```
 
 ### SPOE Filter
 
@@ -272,70 +164,111 @@ spoe-group crowdsec-http-no-body
     messages    crowdsec-http-no-body
 
 ```
+
 </details>
 
-If you installed the haproxy spoe bouncer through package, you will find this
-configuration file in `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples`
+This is the example shipped in
+`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples/crowdsec.cfg`; adjust it
+to match your HAProxy setup.
 
 This crowdsec spoe agent configuration is then referenced in the main haproxy
 configuration file `/etc/haproxy/haproxy.cfg` and may be added at the bottom of
 the haproxy configuration file.
 
-
 <details>
 
 <summary>`/etc/haproxy/haproxy.cfg`</summary>
 
-```
+HAProxy 2.2+ can serve ban and captcha pages natively using `http-request return` with `lf-file` (log-format file). No Lua is required.
+
+```haproxy
 [...]
 
 frontend http-in
     bind *:80
+    option http-buffer-request
+
+    unique-id-format %[uuid()]
+    unique-id-header X-Unique-ID
     filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
 
-    # Select which SPOE group to send (with/without body)
-    acl body_within_limit req.body_size -m int le 51200  # 50KB - stay safely under SPOE frame limit
+    # Body size limit: stay safely under SPOE frame limit (~50 KB)
+    # Larger bodies are NOT inspected by the WAF, see "Request body size limit"
+    acl body_within_limit req.body_size -m int le 51200
+
+    # Optional: reject bodies the WAF cannot inspect
+    # http-request deny deny_status 413 if { req.body_size -m found } !body_within_limit
+
+    # HTML-capable client detection
+    acl render_html req.hdr_cnt(Accept) eq 0
+    acl render_html req.hdr(Accept) -m sub text/html
+    acl render_html req.hdr(Accept) -m sub */*
+    acl html_rejected req.hdr(Accept) -m reg "text/html;q=0"
+
+    acl has_contact_url var(txn.crowdsec.contact_us_url) -m found
+    acl empty_contact_url var(txn.crowdsec.contact_us_url) -m str ""
+
     http-request send-spoe-group crowdsec crowdsec-http-body if body_within_limit || !{ req.body_size -m found }
     http-request send-spoe-group crowdsec crowdsec-http-no-body if !body_within_limit { req.body_size -m found }
 
-    http-request set-header X-Crowdsec-Remediation %[var(txn.crowdsec.remediation)]
-    
-    ## Handle 302 redirect for successful captcha validation (redirect to current request URL)
+    http-request set-header X-Crowdsec-Remediation %[var(txn.crowdsec.remediation)] if { var(txn.crowdsec.remediation) -m found }
+    http-request set-header X-Crowdsec-IsoCode %[var(txn.crowdsec.isocode)] if { var(txn.crowdsec.isocode) -m found }
+
+    ## Redirect after successful captcha validation
     http-request redirect code 302 location %[url] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
-    
-    ## Call lua script only for ban and captcha remediations (performance optimization)
-    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "captcha" }
-    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "ban" }
-    
-    ## Handle captcha cookie management via HAProxy (new approach)
-    ## Set captcha cookie when SPOA provides captcha_status (pending or valid)
+
+    ## Serve remediation pages with native HAProxy lf-file directives (no Lua needed)
+    http-request return status 200 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /var/lib/crowdsec-haproxy-spoa-bouncer/html/captcha.html if { var(txn.crowdsec.remediation) -m str "captcha" } render_html !html_rejected
+    http-request return status 403 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban-with-contact.html if { var(txn.crowdsec.remediation) -m str "ban" } render_html !html_rejected has_contact_url !empty_contact_url
+    http-request return status 403 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban.html if { var(txn.crowdsec.remediation) -m str "ban" } render_html !html_rejected !has_contact_url
+    http-request return status 403 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban.html if { var(txn.crowdsec.remediation) -m str "ban" } render_html !html_rejected empty_contact_url
+    ## Plain-text fallback for non-HTML clients
+    http-request return status 200 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Captcha required\n" if { var(txn.crowdsec.remediation) -m str "captcha" } !render_html
+    http-request return status 200 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Captcha required\n" if { var(txn.crowdsec.remediation) -m str "captcha" } html_rejected
+    http-request return status 403 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Forbidden\n" if { var(txn.crowdsec.remediation) -m str "ban" } !render_html
+    http-request return status 403 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Forbidden\n" if { var(txn.crowdsec.remediation) -m str "ban" } html_rejected
+
+    ## Captcha cookie management
     http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_status) -m found } { var(txn.crowdsec.captcha_cookie) -m found }
-    ## Clear captcha cookie when cookie exists but no captcha_status (Allow decision)
     http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_cookie) -m found } !{ var(txn.crowdsec.captcha_status) -m found }
-    
-    use_backend <whatever>
+
+    use_backend <your-backend>
 
 backend crowdsec-spoa
     mode tcp
-    server s1 127.0.0.1:9000
-
+    timeout connect 2s
+    timeout server 60s
+    server spoa 127.0.0.1:9000
 ```
 
-In the `global` section of your `haproxy.cfg`, lua path configuration is also mandatory:
+The complete example (with `global` and `defaults`) is also available at
+`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples/haproxy.cfg`.
+
+</details>
+
+### Optional: Lua-based template rendering
+
+Lua support is **optional**. If you need dynamic template rendering beyond what `lf-file` provides (for example, injecting runtime variables not available as HAProxy log-format fetch methods), you can load the bundled Lua scripts instead.
+
+Add to the `global` section of `haproxy.cfg`:
 
 ```haproxy
 global
     [...]
     lua-prepend-path /usr/lib/crowdsec-haproxy-spoa-bouncer/lua/?.lua
     lua-load /usr/lib/crowdsec-haproxy-spoa-bouncer/lua/crowdsec.lua
-    setenv CROWDSEC_BAN_TEMPLATE_PATH /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban.html
-    setenv CROWDSEC_CAPTCHA_TEMPLATE_PATH /var/lib/crowdsec-haproxy-spoa-bouncer/html/captcha.html
+    setenv CROWDSEC_BAN_TEMPLATE_PATH /var/lib/crowdsec-haproxy-spoa-bouncer/html/lua/ban.html
+    setenv CROWDSEC_CAPTCHA_TEMPLATE_PATH /var/lib/crowdsec-haproxy-spoa-bouncer/html/lua/captcha.html
 ```
 
-An example that includes this snippet can also be found in
-`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples/haproxy.cfg`.
+Then replace the `http-request return` block in the frontend with:
 
-</details>
+```haproxy
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "captcha" }
+    http-request lua.crowdsec_handle if { var(txn.crowdsec.remediation) -m str "ban" }
+```
+
+The Lua example config is at `/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples/haproxy-lua.cfg`.
 
 ### Real client IP behind a CDN (or upstream proxy)
 
@@ -364,15 +297,118 @@ If you rely on headers like `X-Real-IP` / `X-Forwarded-For`, ensure only your tr
 
 :::
 
+### Container
+
+The container image runs the SPOA bouncer (it does not bundle HAProxy): `crowdsecurity/spoa-bouncer`.
+
+:::warning
+The container examples below are not a complete HAProxy setup. For production, pin HAProxy to a stable version (rather than `:latest`) and adapt `haproxy.cfg` to your environment (TLS, backends, logging, timeouts, etc.).
+:::
+
+Quick start:
+
+```bash
+docker run -d \
+  --name crowdsec-spoa-bouncer \
+  -e CROWDSEC_KEY="<your-lapi-api-key>" \
+  -e CROWDSEC_URL="http://crowdsec:8080/" \
+  -p 9000:9000 \
+  -p 6060:6060 \
+  crowdsecurity/spoa-bouncer
+```
+
+If HAProxy runs in another container (for example in Docker Compose), point the SPOA backend to `crowdsec-spoa-bouncer:9000`.
+
+#### Docker Compose example
+
+<details>
+<summary>Docker Compose example</summary>
+
+```yaml
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:8080:8080
+    environment:
+      COLLECTIONS: "crowdsecurity/haproxy"
+      BOUNCER_KEY_SPOA: "${BOUNCER_KEY_SPOA}"
+      GID: "${GID-1000}"
+    volumes:
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - crowdsec-config:/etc/crowdsec/
+      # Optional: configure log acquisition for your setup
+      # - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
+    networks:
+      - crowdsec
+
+  crowdsec-spoa-bouncer:
+    image: crowdsecurity/spoa-bouncer:latest
+    restart: unless-stopped
+    depends_on:
+      - crowdsec
+    environment:
+      CROWDSEC_KEY: "${BOUNCER_KEY_SPOA}"
+      CROWDSEC_URL: "http://crowdsec:8080/"
+    volumes:
+      - templates:/var/lib/crowdsec-haproxy-spoa-bouncer/html/
+    networks:
+      - crowdsec
+
+  haproxy:
+    image: haproxy:latest
+    restart: unless-stopped
+    volumes:
+      - ./config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./config/crowdsec.cfg:/etc/haproxy/crowdsec.cfg:ro
+      - templates:/var/lib/crowdsec-haproxy-spoa-bouncer/html/:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - crowdsec-spoa-bouncer
+    networks:
+      - crowdsec
+
+volumes:
+  crowdsec-db:
+  crowdsec-config:
+  templates:
+
+networks:
+  crowdsec:
+```
+
+</details>
+
+Create `./config/haproxy.cfg` and `./config/crowdsec.cfg` from the “HAProxy Configuration” section below (in Compose, the SPOA backend server should target `crowdsec-spoa-bouncer:9000`). Set `BOUNCER_KEY_SPOA` in a `.env` file or your shell environment, and persist CrowdSec directories (at least `/var/lib/crowdsec/data/`) as described in the [Docker getting started guide](/getting_started/installation/docker.mdx).
+
+To use a custom configuration file:
+
+```bash
+docker run -d \
+  --name crowdsec-spoa-bouncer \
+  -v $PWD/crowdsec-spoa-bouncer.yaml:/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml:ro \
+  -p 9000:9000 \
+  crowdsecurity/spoa-bouncer
+```
+
+:::info
+The HTML templates (`/var/lib/crowdsec-haproxy-spoa-bouncer/html/`) are needed by the non-Lua `lf-file` HAProxy directives. If you run HAProxy without the package, mount or copy the `html/` directory from the image into your HAProxy environment. The Lua scripts (`/usr/lib/crowdsec-haproxy-spoa-bouncer/lua/`) are only required if you choose the [optional Lua rendering approach](#optional-lua-based-template-rendering).
+:::
+
+For all container options and environment variables, see: https://github.com/crowdsecurity/cs-haproxy-spoa-bouncer/blob/main/docker/README.md
+
 #### Common CDN headers
 
-| CDN Provider | Header Name | HAProxy Function |
-|--------------|------------|------------------|
-| Generic / Most CDNs | `X-Real-IP` | `hdr_ip(X-Real-IP)` |
-| Cloudflare | `CF-Connecting-IP` | `hdr_ip(CF-Connecting-IP)` |
-| AWS CloudFront | `CloudFront-Viewer-Address` | `hdr_ip(CloudFront-Viewer-Address)` |
-| Akamai | `True-Client-IP` | `hdr_ip(True-Client-IP)` |
-| Azure CDN | `X-Forwarded-For` | `hdr_ip(X-Forwarded-For)` |
+| CDN Provider        | Header Name                 | HAProxy Function                    |
+| ------------------- | --------------------------- | ----------------------------------- |
+| Generic / Most CDNs | `X-Real-IP`                 | `hdr_ip(X-Real-IP)`                 |
+| Cloudflare          | `CF-Connecting-IP`          | `hdr_ip(CF-Connecting-IP)`          |
+| AWS CloudFront      | `CloudFront-Viewer-Address` | `hdr_ip(CloudFront-Viewer-Address)` |
+| Akamai              | `True-Client-IP`            | `hdr_ip(True-Client-IP)`            |
+| Azure CDN           | `X-Forwarded-For`           | `hdr_ip(X-Forwarded-For)`           |
 
 :::tip
 
@@ -394,6 +430,7 @@ http-request set-src hdr_ip(X-Forwarded-For,-1) if { req.hdr(X-Forwarded-For) -m
 
 - CAPTCHA: enable per domain
 - AppSec: forward requests for WAF evaluation
+- Bot detection: route challenge responses and internal challenge assets
 - Prometheus: expose metrics endpoint
 
 ### Enable CAPTCHA for a domain
@@ -409,17 +446,50 @@ hosts:
 ```
 
 The following captcha providers are supported:
+
 ```
 hcaptcha
 recaptcha
 turnstile
 ```
 
+:::note Provider registration
+
+- **hCaptcha** — register at https://www.hcaptcha.com
+- **reCAPTCHA** — register at https://www.google.com/recaptcha/admin (use **reCAPTCHA v2 "I'm not a robot"**)
+- **Turnstile** — register at https://dash.cloudflare.com/?to=/:account/turnstile
+  :::
+
 ### AppSec (WAF) forwarding — configuration reference
 
 :::tip Turning this on
-To enable the WAF end-to-end, follow the [AppSec Quickstart for HAProxy](/docs/next/appsec/quickstart/haproxy_spoa) — it picks up after the bouncer install and walks through collections, acquisition, and enabling forwarding.
+To enable the WAF end-to-end, follow the [AppSec Quickstart for HAProxy](/docs/appsec/quickstart/haproxy_spoa) — it picks up after the bouncer install and walks through collections, acquisition, and enabling forwarding.
 :::
+
+HAProxy requirements when using AppSec (and/or captcha):
+
+- Increase HAProxy buffer size (max 64KB): `tune.bufsize 65536` (see in the example below)
+- Enable request buffering: `option http-buffer-request` (see in the example below)
+- Use the `crowdsec-http-body` group when the body is available (see the `body_within_limit` + `send-spoe-group` example above)
+- Decide what to do with bodies larger than ~50 KB, which the WAF cannot inspect (see [Request body size limit](#request-body-size-limit))
+
+For example:
+
+```haproxy
+[...]
+
+global
+    tune.bufsize 65536
+
+frontend http-in
+    option http-buffer-request
+
+[...]
+```
+
+`tune.bufsize` is a global setting. `option http-buffer-request` must be set in
+`defaults` or in each HTTP frontend that forwards requests to AppSec; it is not
+a `global` option.
 
 Relevant bouncer keys in `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml`:
 
@@ -436,12 +506,238 @@ hosts:
       # api_key: custom-key             # optional per-host override
 ```
 
-HAProxy requirements when using AppSec (and/or captcha):
-- Enable request buffering: `option http-buffer-request`
-- Increase HAProxy buffer size (max 64KB): `tune.bufsize 65536`
-- Use the `crowdsec-http-body` group when the body is available (see the `body_within_limit` + `send-spoe-group` example above)
+### Request body size limit
 
-Because request-body forwarding is constrained by HAProxy/SPOE/SPOP limits, keep an explicit body size limit (for example `51200`) and consider a layered approach (IP remediation at HAProxy, deeper inspection downstream).
+:::danger Request bodies larger than ~50 KB are not inspected by the WAF
+The SPOE protocol carries each message in a single frame, and a frame cannot be
+bigger than HAProxy's buffer (`tune.bufsize`, 64 KB at most for SPOE). After
+the headers and the other message arguments, about **50 KB** is left for the
+request body. This is a protocol limit: neither the bouncer nor CrowdSec can
+work around it.
+
+With the example configuration above, requests with a body larger than
+`51200` bytes are sent through the `crowdsec-http-no-body` group. **The WAF
+never sees their body, so any rule that matches on the body cannot trigger.**
+IP, range and country decisions still apply.
+
+An attacker can use this to bypass the WAF: padding a malicious payload with
+~50 KB of junk data is enough to get it past body inspection.
+
+**By default, HAProxy forwards these requests to your backend. If you don't
+want uninspected bodies to reach your application, configure HAProxy to drop
+them.**
+:::
+
+To reject requests whose body is too large to be inspected, add a `deny` rule
+**before** the `send-spoe-group` rules:
+
+```haproxy
+frontend http-in
+    [...]
+    acl body_within_limit req.body_size -m int le 51200
+
+    # Reject bodies the WAF cannot inspect (413 Payload Too Large)
+    http-request deny deny_status 413 if { req.body_size -m found } !body_within_limit
+
+    http-request send-spoe-group crowdsec crowdsec-http-body if body_within_limit || !{ req.body_size -m found }
+    [...]
+```
+
+This also blocks legitimate large requests (file uploads, large JSON or form
+submissions). If your application needs them, scope the rule to the paths
+that don't, or allow large bodies only on known upload endpoints, for example:
+
+```haproxy
+    acl upload_path path_beg /api/upload /wp-admin/async-upload.php
+    http-request deny deny_status 413 if { req.body_size -m found } !body_within_limit !upload_path
+```
+
+Requests that are allowed through with a large body are not inspected by the
+WAF. To inspect them, put a WAF-capable integration with no such limit (for
+example [Nginx/OpenResty](/u/bouncers/nginx) or [Traefik](/u/bouncers/traefik))
+downstream of HAProxy, or protect the application directly.
+
+### Bot detection challenge
+
+:::tip Prerequisites
+Bot detection is an AppSec feature. First enable AppSec forwarding as described above, then follow the [bot detection guide](/docs/appsec/bot_detection/intro).
+:::
+
+Install the AppSec collections used by bot detection:
+
+```bash
+sudo cscli collections install crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules crowdsecurity/appsec-bot-challenge
+```
+
+Then configure an AppSec acquisition, for example in
+`/etc/crowdsec/acquis.d/appsec.yaml`:
+
+```yaml
+source: appsec
+listen_addr: 127.0.0.1:7422
+appsec_configs:
+  - crowdsecurity/appsec-default
+  - crowdsecurity/appsec-bot-*
+labels:
+  type: appsec
+```
+
+`crowdsecurity/appsec-default` already loads the virtual patching and generic
+rule families. Do not also list `crowdsecurity/virtual-patching` and
+`crowdsecurity/generic-rules` in the same acquisition, otherwise rules may be
+loaded twice.
+
+HAProxy cannot receive the full bot-detection challenge page through the SPOE
+frame. The SPOA bouncer therefore exposes a small HTTP listener for challenge
+traffic, controlled by `challenge_http_listen`. The initial page is cached by
+the bouncer, while the browser fetches its JavaScript assets and submits proof
+through follow-up requests on the internal challenge paths:
+
+```yaml
+# /etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml
+appsec_url: http://127.0.0.1:7422
+appsec_timeout: 200ms
+challenge_http_listen: 127.0.0.1:9100
+```
+
+When AppSec returns the `challenge` action, HAProxy must rewrite the request to
+the bouncer-provided challenge URL and route it to that listener. The same
+backend must also receive the internal challenge paths used by the browser:
+`/crowdsec-internal/challenge/*`.
+
+The request flow is:
+
+1. AppSec returns the `challenge` action through SPOA and the bouncer stores the
+   generated challenge under `/crowdsec-challenge/<token>`.
+2. HAProxy rewrites the original request to that URL and sends it to the
+   challenge HTTP listener. The client receives the challenge page with an HTTP
+   `200` response, not the original AppSec `403` response.
+3. The bouncer sets the `__crowdsec_challenge_relay` cookie. It is `HttpOnly`,
+   limited to `/crowdsec-internal/challenge/`, and expires after five minutes.
+4. The browser uses that cookie on the JavaScript and proof requests. HAProxy
+   routes those requests to the same listener and passes the source address in
+   `X-Crowdsec-Real-Src`. Missing, malformed, or expired relay cookies are
+   rejected with `404`.
+
+If you installed the bouncer from packages, start from the packaged examples in
+`/usr/share/doc/crowdsec-haproxy-spoa-bouncer/examples/`. In particular,
+`haproxy.cfg.gz` contains the challenge-enabled HAProxy example and
+`crowdsec-spoa-bouncer.yaml.challenge` contains the bouncer keys above.
+
+For an existing HAProxy configuration, add the challenge ACL, path rewrite,
+routing rule, trusted source header, and challenge backend alongside your
+regular SPOE configuration:
+
+<details>
+<summary>Challenge-enabled <code>/etc/haproxy/haproxy.cfg</code></summary>
+
+```haproxy
+
+[...]
+
+frontend http-in
+    mode http
+    bind *:80
+    option http-buffer-request
+
+    unique-id-format %[uuid()]
+    unique-id-header X-Unique-ID
+    filter spoe engine crowdsec config /etc/haproxy/crowdsec.cfg
+
+    acl crowdsec_challenge_backend_path path_beg /crowdsec-internal/challenge/
+    acl is_challenge var(txn.crowdsec.remediation) -m str "challenge"
+
+    acl body_within_limit req.body_size -m int le 51200
+
+    acl render_html req.hdr_cnt(Accept) eq 0
+    acl render_html req.hdr(Accept) -m sub text/html
+    acl render_html req.hdr(Accept) -m sub */*
+    acl html_rejected req.hdr(Accept) -m reg "text/html;q=0"
+
+    acl has_contact_url var(txn.crowdsec.contact_us_url) -m found
+    acl empty_contact_url var(txn.crowdsec.contact_us_url) -m str ""
+
+    http-request send-spoe-group crowdsec crowdsec-http-body if body_within_limit || !{ req.body_size -m found }
+    http-request send-spoe-group crowdsec crowdsec-http-no-body if !body_within_limit { req.body_size -m found }
+
+    http-request set-header X-Crowdsec-Remediation %[var(txn.crowdsec.remediation)] if { var(txn.crowdsec.remediation) -m found }
+    http-request set-header X-Crowdsec-IsoCode %[var(txn.crowdsec.isocode)] if { var(txn.crowdsec.isocode) -m found }
+
+    http-request redirect code 302 location %[url] if { var(txn.crowdsec.remediation) -m str "allow" } { var(txn.crowdsec.redirect) -m found }
+
+    http-request return status 200 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /var/lib/crowdsec-haproxy-spoa-bouncer/html/captcha.html if { var(txn.crowdsec.remediation) -m str "captcha" } render_html !html_rejected
+    http-request return status 403 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban-with-contact.html if { var(txn.crowdsec.remediation) -m str "ban" } render_html !html_rejected has_contact_url !empty_contact_url
+    http-request return status 403 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban.html if { var(txn.crowdsec.remediation) -m str "ban" } render_html !html_rejected !has_contact_url
+    http-request return status 403 content-type "text/html; charset=utf-8" hdr Cache-Control "no-cache, no-store" lf-file /var/lib/crowdsec-haproxy-spoa-bouncer/html/ban.html if { var(txn.crowdsec.remediation) -m str "ban" } render_html !html_rejected empty_contact_url
+    http-request return status 200 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Captcha required\n" if { var(txn.crowdsec.remediation) -m str "captcha" } !render_html
+    http-request return status 200 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Captcha required\n" if { var(txn.crowdsec.remediation) -m str "captcha" } html_rejected
+    http-request return status 403 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Forbidden\n" if { var(txn.crowdsec.remediation) -m str "ban" } !render_html
+    http-request return status 403 content-type text/plain hdr Cache-Control "no-cache, no-store" string "Forbidden\n" if { var(txn.crowdsec.remediation) -m str "ban" } html_rejected
+
+    # Captcha cookie management
+    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_status) -m found } { var(txn.crowdsec.captcha_cookie) -m found }
+    http-after-response set-header Set-Cookie %[var(txn.crowdsec.captcha_cookie)] if { var(txn.crowdsec.captcha_cookie) -m found } !{ var(txn.crowdsec.captcha_status) -m found }
+
+    # Required for challenge follow-up requests: this path bypasses SPOE, so the
+    # bouncer needs HAProxy to pass the real client IP explicitly.
+    http-request set-header X-Crowdsec-Real-Src %[src] if crowdsec_challenge_backend_path
+
+    http-request set-path %[var(txn.crowdsec.challenge_url)] if is_challenge { var(txn.crowdsec.challenge_url) -m found }
+    use_backend crowdsec-challenge if is_challenge { var(txn.crowdsec.challenge_url) -m found }
+    use_backend crowdsec-challenge if crowdsec_challenge_backend_path
+    use_backend app
+
+backend app
+    mode http
+    # Replace the placeholder with your real application backend before use.
+    # Do not point this at CrowdSec LAPI (127.0.0.1:8080).
+    server app1 <your-app-host>:<your-app-port>
+
+backend crowdsec-spoa
+    mode tcp
+    timeout connect 2s
+    timeout server 60s
+    server spoa1 127.0.0.1:9000
+
+backend crowdsec-challenge
+    mode http
+    option forwardfor
+    timeout connect 2s
+    timeout server 60s
+    server challenge1 127.0.0.1:9100
+```
+
+</details>
+
+You can also add a small rate limit on the internal challenge paths so asset and
+submission requests cannot bypass your normal application rate limits:
+
+```haproxy
+frontend http-in
+    stick-table type ip size 100k expire 10s store http_req_rate(10s)
+    http-request track-sc0 src if crowdsec_challenge_backend_path
+    http-request deny status 429 if crowdsec_challenge_backend_path { sc_http_req_rate(0) gt 20 }
+```
+
+:::warning Preserve the trusted source IP
+Always overwrite `X-Crowdsec-Real-Src` from HAProxy with `%[src]`; do not trust a
+client-supplied value. If HAProxy is behind a CDN or another trusted proxy, set
+the source IP with `http-request set-src ...` before the SPOE and challenge
+routing rules.
+:::
+
+Verify the plumbing through HAProxy, not by calling the AppSec listener directly:
+
+```bash
+sudo crowdsec -t -c /etc/crowdsec/config.yaml
+sudo crowdsec-spoa-bouncer -c /etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml -t
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+curl -i -H 'Accept: text/html' http://<your-haproxy-url>/
+sudo cscli metrics show appsec
+```
+
+The response should be the CrowdSec challenge page, and the metrics should show
+bot-detection challenge requests.
 
 ### Expose Prometheus metrics
 
@@ -466,6 +762,7 @@ The upstream example configurations live in the `cs-haproxy-spoa-bouncer` reposi
 YAML snippets below show each key in context.
 
 ### `log_mode`
+
 > `file` | `stdout`
 
 Where the log contents are written (With `file` it will be written to `log_dir` with the name `crowdsec-spoa-bouncer.log`)
@@ -475,6 +772,7 @@ log_mode: "file" # or "stdout"
 ```
 
 ### `log_dir`
+
 > string
 
 Log directory path that will contain the log file. By default, this should be set to `/var/log/crowdsec-spoa/` as this directory is automatically created by the systemd service.
@@ -486,6 +784,7 @@ log_dir: "/var/log/crowdsec-spoa/"
 ```
 
 ### `log_level`
+
 > `trace` | `debug` | `info` | `warn` | `error`
 
 Log level (default: `info`)
@@ -495,6 +794,7 @@ log_level: "info"
 ```
 
 ### `compress_logs`
+
 > `true` | `false`
 
 Compress log files on rotation (default: `true`)
@@ -504,6 +804,7 @@ compress_logs: true
 ```
 
 ### `log_max_size`
+
 > int (in MB)
 
 Max size of log files before rotation (default: `500`)
@@ -513,6 +814,7 @@ log_max_size: 500
 ```
 
 ### `log_max_files`
+
 > int
 
 How many backup log files to keep before deletion (can happen before `log_max_age` is reached) (default: `3`)
@@ -522,6 +824,7 @@ log_max_files: 3
 ```
 
 ### `log_max_age`
+
 > int (in days)
 
 Max age of backup files before deletion (can happen before `log_max_files` is reached) (default: `30`)
@@ -535,6 +838,7 @@ The LAPI connection settings (`api_url`, `update_frequency`, `insecure_skip_veri
 :::
 
 ### `update_frequency`
+
 > string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 Frequency to contact the API for new/deleted decisions (default: `10s`)
@@ -544,6 +848,7 @@ update_frequency: "10s"
 ```
 
 ### `api_url`
+
 > string
 
 URL of the local API EG: `http://127.0.0.1:8080`
@@ -553,6 +858,7 @@ api_url: "https://lapi.example.com:8080/"
 ```
 
 ### `api_key`
+
 > string
 
 API key to authenticate with the local API
@@ -562,6 +868,7 @@ api_key: "<your-lapi-api-key>"
 ```
 
 ### `insecure_skip_verify`
+
 > `true` | `false`
 
 Skip verification of the API certificate, typical for self-signed certificates
@@ -571,6 +878,7 @@ insecure_skip_verify: false
 ```
 
 ### `cert_path`
+
 > string
 
 Client certificate path for mTLS to LAPI.
@@ -580,6 +888,7 @@ cert_path: "/etc/ssl/certs/client.crt"
 ```
 
 ### `key_path`
+
 > string
 
 Client private key path for mTLS to LAPI.
@@ -589,6 +898,7 @@ key_path: "/etc/ssl/private/client.key"
 ```
 
 ### `ca_cert_path`
+
 > string
 
 CA certificate path for validating the LAPI certificate (mTLS / custom CAs).
@@ -598,6 +908,7 @@ ca_cert_path: "/etc/ssl/certs/ca.crt"
 ```
 
 ### `retry_initial_connect`
+
 > `true` | `false`
 
 Retry connecting to LAPI on startup instead of failing fast.
@@ -607,6 +918,7 @@ retry_initial_connect: true
 ```
 
 ### `scopes`
+
 > []string
 
 Only pull decisions matching these scopes (for example `ip`, `range`, `country`).
@@ -616,6 +928,7 @@ scopes: ["ip", "range", "country"]
 ```
 
 ### `scenarios_containing`
+
 > []string
 
 Only pull decisions whose scenario contains one of these strings.
@@ -625,6 +938,7 @@ scenarios_containing: ["crowdsecurity/"]
 ```
 
 ### `scenarios_not_containing`
+
 > []string
 
 Do not pull decisions whose scenario contains one of these strings.
@@ -634,15 +948,17 @@ scenarios_not_containing: ["whitelist"]
 ```
 
 ### `origins`
+
 > []string
 
 Only pull decisions from these origins.
 
 ```yaml
-origins: ["crowdsecurity", "lists"]
+origins: ["crowdsec", "lists"]
 ```
 
 ### `listen_tcp`
+
 > string
 
 TCP address and port to listen on for SPOE connections. Format: `ip:port` or `:port`
@@ -656,6 +972,7 @@ At least one of `listen_tcp` or `listen_unix` must be configured.
 :::
 
 ### `listen_unix`
+
 > string
 
 Unix socket path to listen on for SPOE connections
@@ -669,6 +986,7 @@ At least one of `listen_tcp` or `listen_unix` must be configured.
 :::
 
 ### `hosts`
+
 > []object
 
 List of host configurations for domain-specific settings
@@ -692,6 +1010,7 @@ hosts:
 ```
 
 #### `host`
+
 > string
 
 Hostname pattern to match (supports wildcards).
@@ -703,6 +1022,7 @@ hosts:
 ```
 
 #### `captcha`
+
 > object
 
 CAPTCHA configuration for this host
@@ -718,6 +1038,7 @@ hosts:
 ```
 
 ##### `provider`
+
 > `hcaptcha` | `recaptcha` | `turnstile`
 
 CAPTCHA provider to use
@@ -730,6 +1051,7 @@ hosts:
 ```
 
 ##### `site_key`
+
 > string
 
 CAPTCHA site key
@@ -742,6 +1064,7 @@ hosts:
 ```
 
 ##### `secret_key`
+
 > string
 
 CAPTCHA secret key
@@ -754,6 +1077,7 @@ hosts:
 ```
 
 ##### `fallback_remediation`
+
 > string `ban` | `allow`
 
 If captcha is not configured which remediation to use as a fallback. Can be configured to `allow` to pass on captcha remediations (default: `ban`)
@@ -766,6 +1090,7 @@ hosts:
 ```
 
 ##### `timeout`
+
 > int (in seconds)
 
 HTTP client timeout in seconds, maximum 300 (default: `5`)
@@ -778,6 +1103,7 @@ hosts:
 ```
 
 ##### `cookie`
+
 > object
 
 Cookie generation configuration
@@ -792,6 +1118,7 @@ hosts:
 ```
 
 ###### `secure`
+
 > `auto` | `always` | `never`
 
 Set the secure flag on the cookie. `auto` relies on the `ssl_fc` flag from HAProxy (default: `auto`)
@@ -805,6 +1132,7 @@ hosts:
 ```
 
 ###### `http_only`
+
 > `true` | `false`
 
 Set the HttpOnly flag on the cookie (default: `true`)
@@ -818,6 +1146,7 @@ hosts:
 ```
 
 ##### `pending_ttl`
+
 > string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 TTL for pending captcha tokens (default: `30m`)
@@ -830,6 +1159,7 @@ hosts:
 ```
 
 ##### `passed_ttl`
+
 > string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 TTL for passed captcha tokens (default: `24h`)
@@ -842,6 +1172,7 @@ hosts:
 ```
 
 ##### `signing_key`
+
 > string (minimum 32 bytes)
 
 Key used to sign captcha tokens (required when using captcha). Generate one with `openssl rand -hex 32`. If you run multiple SPOA instances serving the same domains, use the same `signing_key` everywhere so tokens validate consistently.
@@ -854,6 +1185,7 @@ hosts:
 ```
 
 #### `ban`
+
 > object
 
 Ban remediation configuration for this host
@@ -866,6 +1198,7 @@ hosts:
 ```
 
 ##### `contact_us_url`
+
 > string
 
 URL to display in ban templates for users to contact support this value is passed to an anchor tag href value
@@ -882,6 +1215,7 @@ hosts:
 ```
 
 #### `log_level`
+
 > `trace` | `debug` | `info` | `warn` | `error`
 
 Log level for this specific host (overrides the global `log_level` setting), useful when debugging a single host.
@@ -893,6 +1227,7 @@ hosts:
 ```
 
 #### `appsec`
+
 > object
 
 Host-level AppSec configuration (optional).
@@ -905,6 +1240,7 @@ hosts:
 ```
 
 ##### `always_send`
+
 > `true` | `false`
 
 When `false`, AppSec evaluation is skipped if a higher-priority remediation already applies (for example `ban` or `captcha`).
@@ -917,6 +1253,7 @@ hosts:
 ```
 
 ##### `url`
+
 > string
 
 AppSec URL override for this host (defaults to global `appsec_url`).
@@ -929,6 +1266,7 @@ hosts:
 ```
 
 ##### `api_key`
+
 > string
 
 AppSec API key override for this host (defaults to top-level `api_key`).
@@ -941,6 +1279,7 @@ hosts:
 ```
 
 ##### `timeout`
+
 > string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 AppSec request timeout for this host (default: `200ms`).
@@ -953,6 +1292,7 @@ hosts:
 ```
 
 ### `hosts_dir`
+
 > string
 
 A directory containing `.yaml` files, each representing a [host](#host) YAML struct. Each file should define all fields required by the host configuration structure.
@@ -962,6 +1302,7 @@ hosts_dir: "/etc/crowdsec/bouncers/hosts.d"
 ```
 
 ### `asn_database_path`
+
 > string
 
 Path to the GeoIP2 ASN database file (optional)
@@ -971,6 +1312,7 @@ asn_database_path: "/var/lib/crowdsec/data/GeoLite2-ASN.mmdb"
 ```
 
 ### `city_database_path`
+
 > string
 
 Path to the GeoIP2 City database file (optional)
@@ -980,6 +1322,7 @@ city_database_path: "/var/lib/crowdsec/data/GeoLite2-City.mmdb"
 ```
 
 ### `prometheus`
+
 > object
 
 Prometheus metrics configuration
@@ -992,6 +1335,7 @@ prometheus:
 ```
 
 #### `enabled`
+
 > `true` | `false`
 
 Enable Prometheus metrics endpoint
@@ -1002,6 +1346,7 @@ prometheus:
 ```
 
 #### `listen_addr`
+
 > string
 
 Address to listen on for Prometheus metrics endpoint
@@ -1012,6 +1357,7 @@ prometheus:
 ```
 
 #### `listen_port`
+
 > string
 
 Port to listen on for Prometheus metrics endpoint
@@ -1022,6 +1368,7 @@ prometheus:
 ```
 
 ### `pprof`
+
 > object
 
 Enable and expose Go pprof endpoints (debugging only).
@@ -1034,6 +1381,7 @@ pprof:
 ```
 
 #### `enabled`
+
 > `true` | `false`
 
 Enable the pprof endpoint (debugging only).
@@ -1044,6 +1392,7 @@ pprof:
 ```
 
 #### `listen_addr`
+
 > string
 
 Address to listen on for pprof endpoint.
@@ -1054,6 +1403,7 @@ pprof:
 ```
 
 #### `listen_port`
+
 > string
 
 Port to listen on for pprof endpoint.
@@ -1064,6 +1414,7 @@ pprof:
 ```
 
 ### `appsec_url`
+
 > string
 
 Global CrowdSec AppSec URL (optional).
@@ -1073,6 +1424,7 @@ appsec_url: "http://127.0.0.1:7422"
 ```
 
 ### `appsec_timeout`
+
 > string (parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 Global AppSec request timeout (default: `200ms`).
@@ -1101,7 +1453,6 @@ make build
 sudo mkdir -p /etc/crowdsec/bouncers/
 sudo cp config/crowdsec-spoa-bouncer.yaml /etc/crowdsec/bouncers/
 ```
-
 
 The configuration file is located at `/etc/crowdsec/bouncers/crowdsec-spoa-bouncer.yaml`:
 
@@ -1157,7 +1508,6 @@ prometheus:
   enabled: false
   listen_addr: 127.0.0.1
   listen_port: "60601"
-
 # Optional (AppSec)
 #appsec_url: http://127.0.0.1:7422
 #appsec_timeout: 200ms
@@ -1204,7 +1554,6 @@ You can check that the bouncer is correctly installed with cscli:
 
 ```
 
-
 :::warning File Permissions
 
 The service runs as the `crowdsec-spoa` user. Ensure configuration files are readable by this user:
@@ -1218,10 +1567,9 @@ If you have created `.local` variants of configuration files, apply the same per
 
 :::
 
-
 #### Configure HAProxy
-Follow the “HAProxy Configuration” section above. Use `send-spoe-group` and the upstream `/etc/haproxy/crowdsec.cfg` (with `spoe-groups`). The upstream repository also ships full examples under `config/`.
 
+Follow the “HAProxy Configuration” section above. Use `send-spoe-group` and the upstream `/etc/haproxy/crowdsec.cfg` (with `spoe-groups`). The upstream repository also ships full examples under `config/`.
 
 #### Start the Bouncer
 

@@ -1,6 +1,8 @@
 ---
 id: general_setup
-title: General Setup
+title: "WAF General Setup"
+sidebar_label: "General Setup"
+description: "Core setup for the CrowdSec Web Application Firewall (WAF): install the rule collections, configure the AppSec acquisition, and point your bouncer at it."
 ---
 
 
@@ -17,7 +19,7 @@ This guide covers the core AppSec Component setup that applies to all web server
 
 ## Prerequisites
 
-- **CrowdSec Security Engine** (>= 1.5.6) installed and running
+- **CrowdSec Security Engine** (>= 1.6.0) installed and running
 - A compatible remediation component (bouncer) for your web server or reverse proxy
 
 ## AppSec Component Setup
@@ -57,7 +59,7 @@ sudo mkdir -p /etc/crowdsec/acquis.d/
 2. Create the AppSec acquisition configuration:
 
 ```bash
-sudo cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
+sudo tee /etc/crowdsec/acquis.d/appsec.yaml > /dev/null << EOF
 appsec_configs:
   - crowdsecurity/appsec-default
 labels:
@@ -118,7 +120,7 @@ tcp        0      0 127.0.0.1:7422            0.0.0.0:*               LISTEN    
 ```
 
 :::note
-The output may look differently depending on which command you used but as long as you see the port and the process `crowdsec`, it means the AppSec Component is running.
+The output may look different depending on which command you used, but as long as you see the port and the process `crowdsec`, it means the AppSec Component is running.
 :::
 
 </details>
@@ -145,7 +147,6 @@ Now that the AppSec Component is configured and running, you need to:
 
 For specific remediation component configuration, see:
 - [Nginx/OpenResty Setup](nginxopenresty.mdx)
-- [OpenResty Setup](nginxopenresty.mdx)
 - [Traefik Setup](traefik.mdx)
 - [HAProxy (SPOA) Setup](haproxy_spoa.mdx)
 - [WordPress Setup](wordpress.mdx)
@@ -157,7 +158,7 @@ Once your remediation component is in place, continue with:
 
 ### Testing Detection
 
-If you've enabled an WAF-capable bouncer with CrowdSec WAF, you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.
+If you've enabled a WAF-capable bouncer, you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.
 This scenario does not lead to a decision, but it is a good way to confirm the setup is working.
 
 Trigger the dummy scenario by accessing a probe path on your web server:

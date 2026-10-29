@@ -9,12 +9,12 @@ To access it, the various components (CrowdSec agent, cscli and bouncers) need t
 
 :::info
 
-This documentation is be relevant mostly to administrators that need to setup distributed architectures. Single machine users (or with several machines
+This documentation is mostly relevant to administrators who need to set up distributed architectures. Single machine users (or with several machines
 with independent crowdsec installations) can likely skip this part.
 
 :::
 
-There are two kind of access to the local api :
+There are two kinds of access to the Local API:
 
  - `machines`: a login/password authentication used by cscli and CrowdSec, it allows to post, get and delete decisions and alerts.
  - `bouncers`: a token authentication used by bouncers to query the decisions, it only allows to get decisions.
@@ -112,7 +112,7 @@ Any rogue machine registered in your LAPI will be able to push arbitrary alerts,
 
 :::
 
-In some situation, it's not practical to manually create or validate new machines in LAPI (eg, when running in an environment that uses auto-scaling).
+In some situations, it's not practical to manually create or validate new machines in LAPI (eg, when running in an environment that uses auto-scaling).
 
 It is possible to configure LAPI to automatically accept new machines upon creation with the `api.server.auto_registration` section:
 

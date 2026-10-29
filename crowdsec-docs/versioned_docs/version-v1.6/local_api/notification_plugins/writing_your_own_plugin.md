@@ -1,20 +1,20 @@
 ---
 id: writing_your_own_plugin
-title: Writing Plugin in Go
+title: Writing a Plugin in Go
 ---
 
-In this guide we will implement a plugin in Go, which dispatches an email with specificied body on receiving alerts.
+In this guide we will implement a plugin in Go, which sends an email with the specified body when it receives alerts.
 
-Full code for this plugin can be found in [crowdsec repo](https://github.com/crowdsecurity/crowdsec/tree/master/plugins/notifications/email)
+Full code for this plugin can be found in [crowdsec repo](https://github.com/crowdsecurity/crowdsec/tree/master/cmd/notification-email)
 
 Before we begin, make sure you read [intro](/local_api/notification_plugins/intro.md)
 
 Let's start by creating a new go project in a fresh directory:
 
 ```bash
-mkdir notification-email
-cd notification-email
-go mod init notification-email
+mkdir notification-myemail
+cd notification-myemail
+go mod init notification-myemail
 touch main.go
 ```
 
@@ -70,7 +70,7 @@ type PluginConfig struct {
 }
 ```
 
-The struct will be unmarshal target of a yaml configuration file, hence the `yaml`  hints.
+The struct is the unmarshalling target of a YAML configuration file, hence the `yaml`  hints.
 
 Next we need to implement the plugin interface `Notifier`.
 
@@ -156,14 +156,14 @@ func (n *EmailPlugin) Notify(ctx context.Context, notification *protobufs.Notifi
 }
 ```
 
-There are lot of things going on. Let's unpack:
+There are a lot of things going on. Let's unpack:
 
 1. In the first block we verify whether the `notification`'s configuration is present.
 2. Then we set the log level according to the configuration.
 3. In the second block we initiate a SMTP client using the `notification`'s configuration.
 4. In the third block we send the email with body equal to the `notification.Text`.
 
-Finally let's define the entrypoint `main` function which serves and hoists the plugin for CrowdSec main process.
+Finally let's define the entrypoint `main` function which serves and hosts the plugin for the CrowdSec main process.
 
 ```go
 func main() {
@@ -176,7 +176,7 @@ func main() {
 	plugin.Serve(&plugin.ServeConfig{
 			HandshakeConfig: handshake,
 			Plugins: map[string]plugin.Plugin{
-					"email": &protobufs.NotifierPlugin{
+					"myemail": &protobufs.NotifierPlugin{
 							Impl: &EmailPlugin{ConfigByName: make(map[string]PluginConfig)},
 					},
 			},
@@ -192,20 +192,20 @@ is used to make sure that the right plugin is dispatched.
 The `plugin.Serve` is a method provided by `go-plugin` dependency we earlier defined. It creates a GRPC server which exposes the plugin interface.
 
 
-Now let's build the plugin and paste it in `/usr/local/lib/crowdsec/plugins/` so CrowdSec can discover it.
+Now let's build the plugin and copy it to the directory set in `config_paths.plugin_dir` (`/usr/lib/crowdsec/plugins/` on Debian/Ubuntu) so CrowdSec can discover it.
 
 ```bash
 go build
-sudo cp notification-email /var/lib/crowdsec/plugins/
+sudo cp notification-myemail /usr/lib/crowdsec/plugins/
 ```
 
 Next we need to write a configuration file for the plugin. Here's an example:
 
 ```yaml
 # Don't change this
-type: email
+type: myemail
 
-name: email_default # this must match with the registered plugin in the profile
+name: myemail_default # this must match with the registered plugin in the profile
 log_level: info # Options include: trace, debug, info, warn, error, off
 
 format: |  # This template receives list of models.Alert objects
@@ -228,13 +228,13 @@ receiver_email: examplereceiver@gmail.com
 
 ```
 
-Replace the values as necessary and paste it in `/etc/crowdsec/notifications/email.yaml` .
+Replace the values as necessary and paste it in `/etc/crowdsec/notifications/myemail.yaml` .
 
-Now the final step, register the plugin in your crowdsec profile at `/etc/crowdsec/profiles.yaml`, by adding the following to desired config.
+Now the final step, register the plugin in your CrowdSec profile at `/etc/crowdsec/profiles.yaml` by adding the following to the desired profile.
 
 ```yaml
 notifications:
- - email_default
+ - myemail_default
 ```
 
 Example profile:
@@ -248,9 +248,9 @@ decisions:
  - type: ban
    duration: 4h
 notifications:
- - email_default
+ - myemail_default
 on_success: break
 
 ```
 
-Do the `sudo systemctl restart crowdsec` and we're done. You can try triggering alerts by creating manual decisions and verify whether you recive an email.
+Run `sudo systemctl restart crowdsec` and you're done. You can trigger alerts by creating manual decisions and check whether you receive an email.

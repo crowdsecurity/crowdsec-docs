@@ -6,7 +6,7 @@ sidebar_position: 2
 
 # Contributing basics
 
-- Write Crowdsec documentation in Markdown and build the Crowdsec documentation using [docusaurus](https://docusaurus.io/)
+- Write CrowdSec documentation in Markdown and build it using [docusaurus](https://docusaurus.io/)
 - Docusaurus uses [markdown](https://docusaurus.io/docs/markdown-features) and [MDX](https://docusaurus.io/docs/markdown-features/react)
 - The source code is in [GitHub](https://github.com/crowdsecurity/crowdsec-docs)
 - The documentation is versioned and changes should be made across the relevant versions
@@ -31,7 +31,7 @@ npm run start
 
 ## Previews
 
-Once you open a pull request on the documentation repository, it will be rendered on a staging environement to facilitate the review process.
+Once you open a pull request on the documentation repository, it will be rendered on a staging environment to facilitate the review process.
 
 # Contributing
 

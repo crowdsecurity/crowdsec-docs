@@ -9,11 +9,11 @@ Protect web applications running behind [HAProxy](https://www.haproxy.org/) with
 
 ## Prerequisites
 
-Make sure the following are already done on the machine running HAProxy (each is a single-page install guide):
+Make sure the following are already done on the machine running HAProxy :
 
 1. **CrowdSec Security Engine** installed and running — see the [Linux quickstart](/u/getting_started/installation/linux).
 2. **HAProxy** already running and proxying your application(s).
-3. **HAProxy SPOA bouncer** (`crowdsec-haproxy-spoa-bouncer`) installed and registered against the CrowdSec LAPI. See the [SPOA bouncer guide](/u/bouncers/haproxy_spoa).
+3. **HAProxy SPOA bouncer** (`crowdsec-haproxy-spoa-bouncer`) installed and registered against the CrowdSec LAPI, and HAProxy configured to use it (SPOE filter and `/etc/haproxy/crowdsec.cfg`). See the [SPOA bouncer guide](/u/bouncers/haproxy_spoa#haproxy-configuration).
 
 ## 1. Install the AppSec rule collections
 
@@ -93,7 +93,7 @@ sudo cscli metrics show appsec
 1. `curl` hit HAProxy at `/.env`.
 2. HAProxy forwarded the request to the SPOA remediation component.
 3. The bouncer queried the AppSec Component at `appsec_url`.
-4. The request matched the [`vpatch-env-access`](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access) rule.
+4. The request matched the [`vpatch-env-access`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-env-access) rule.
 5. AppSec answered `403`; HAProxy blocked the request.
 
 </details>

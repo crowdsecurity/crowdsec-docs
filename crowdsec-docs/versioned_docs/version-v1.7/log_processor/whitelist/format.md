@@ -68,7 +68,7 @@ Here is the [expr documentation](https://github.com/antonmedv/expr/tree/master/d
 Examples:
 
  - `filter: "evt.Enriched.foo == 'test'"`
- - `filter: "evt.Enriched.bar == 'test' && evt.Enriched.foo == 'test2'`
+ - `filter: "evt.Enriched.bar == 'test' && evt.Enriched.foo == 'test2'"`
 
 
 ### `whitelist`

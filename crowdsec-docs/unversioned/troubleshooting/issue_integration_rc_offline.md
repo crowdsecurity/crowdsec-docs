@@ -29,14 +29,14 @@ Depending on the bouncer type, check installation status, configuration, and run
 
 For Blocklist-as-a-Service (BLaaS) connectivity, verify that the bouncer configuration has the correct API URL and key:
 
-1. **api_url**: Must point to your BLaaS endpoint (e.g., `https://admin.api.crowdsec.net/v1/decisions/stream`)
+1. **api_url**: Must point to the endpoint URL shown in the Console for your integration (e.g., `https://admin.api.crowdsec.net/v1/integrations/<integration_id>/`)
 2. **api_key**: Your BLaaS API key *(found in Console, in your Blocklist integration section, at creation or via "Refresh Credentials")*
 
 :::info
 Property names and configuration file locations vary by bouncer type. Check your [remediation component documentation](/u/bouncers/intro) for specifics.
 :::
 
-Common configuration file location: `/etc/crowdsec/bouncers/crowdsec-<name>-bouncer.conf`
+Common configuration file location: `/etc/crowdsec/bouncers/crowdsec-<name>-bouncer.yaml` (`.conf` for nginx, openresty, haproxy and apache2 bouncers)
 
 ```bash
 # Example: Check configuration file
@@ -49,7 +49,7 @@ Update the bouncer configuration file with the correct API URL and API key. Exam
 
 ```bash
 # [...]
-API_URL=https://admin.api.crowdsec.net/v1/decisions/stream
+API_URL=https://admin.api.crowdsec.net/v1/integrations/<integration_id>/
 API_KEY=<your-blaas-api-key>
 UPDATE_FREQUENCY=10s
 # [...]
@@ -83,7 +83,7 @@ curl -I https://admin.api.crowdsec.net/
 
 # Test with API key (should return JSON response)
 curl -H "X-Api-Key: <your-api-key>" \
-  https://admin.api.crowdsec.net/v1/decisions/stream
+  "https://admin.api.crowdsec.net/v1/integrations/<integration_id>/v1/decisions/stream?startup=true"
 ```
 
 #### 🛠️ Fix network connectivity issues
@@ -112,7 +112,7 @@ For detailed setup, configuration, and troubleshooting specific to your bouncer 
 
 ## Related Issues
 
-- [Firewall Integration Offline](/u/troubleshooting/issue_integration_fw_offline) - Similar issue for firewall bouncers
+- [Firewall Integration Offline](/u/troubleshooting/issue_integration_fw_offline) - Similar issue for firewall integrations
 - [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components) - General bouncer issues
 
 ## Getting Help

@@ -1,21 +1,22 @@
 ---
 id: intro
-title: Introduction
+title: "Notification plugins: introduction"
+sidebar_label: Introduction
 ---
 
 ### Goal
 
-CrowdSec supports notification plugins, which allows alerts to pushed to third party services for alerting or integration purposes.
+CrowdSec supports notification plugins, which allow alerts to be pushed to third-party services for alerting or integration purposes.
 
 Plugins are defined and used at the LAPI level, so if you are running a multi-server setup, you will configure the plugins on the server that is receiving the alerts. If you are not running a multi-server setup, you will configure the plugins on the same server as the main CrowdSec process.
 
 ### Configuration
 
-By default all plugins are shipped with CrowdSec are within the install package, and can trivially be enabled without further need to install additional packages.
+All plugins shipped with CrowdSec are included in the install package and can be enabled without installing additional packages.
 
-Refer directly to each plugin's dedicated documentation and keep in mind that plugins needs to be enabled/dispatched at the [profile](/local_api/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`.md).
+Refer directly to each plugin's dedicated documentation and keep in mind that plugins need to be enabled at the [profile](/local_api/profiles/intro.md) level via the dedicated `notifications` section (defaults to `/etc/crowdsec/profiles.yaml`).
 
-Plugin binaries are present in `config_paths.plugin_dir` (defaults to `/var/lib/crowdsec/plugins/`), and their individual configuration are present in `config_paths.notification_dir` (defaults to `/etc/crowdsec/notifications/`)
+Plugin binaries are present in `config_paths.plugin_dir` (defaults to `/usr/lib/crowdsec/plugins/` for Debian/Ubuntu packages, `/usr/lib64/crowdsec/plugins/` for RPM packages, `/usr/local/lib/crowdsec/plugins/` for Docker or source installs), and their individual configuration are present in `config_paths.notification_dir` (defaults to `/etc/crowdsec/notifications/`)
 
 :::warning
 CrowdSec rejects the plugins binaries if one of the following is true :
@@ -116,7 +117,7 @@ Required. Name of this config  eg "slackreport". This should match with register
 
 #### `format` :
 
-Required. [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects. The go templates provide additional directives provide by [sprig](https://masterminds.github.io/sprig/) . eg "Received ``{{.len}}`` alerts"
+Required. [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects. Go templates can also use the additional functions provided by [sprig](https://masterminds.github.io/sprig/). eg "Received ``{{.len}}`` alerts"
 
 #### `group_wait` :
 
@@ -149,7 +150,7 @@ Under the hood, the main CrowdSec process dispatches the plugins as gRPC service
 
 Currently only `notification` plugins are supported. Whenever CrowdSec receives any alert and if this alert satisfies the owner profile, then the same alert will be dispatched to such plugin.
 
-[See](https://github.com/crowdsecurity/crowdsec/blob/plugins/pkg/protobufs/notifier.proto) the gRPC protocol for `notification` plugins.
+[See](https://github.com/crowdsecurity/crowdsec/blob/master/pkg/protobufs/notifier.proto) the gRPC protocol for `notification` plugins.
 
 In the following sections we use `/etc/crowdsec/config.yaml` for configuration file paths. However depending on your platform the paths can be interchanged with the following:
 
@@ -164,12 +165,12 @@ Plugins are discovered from the directories specified in `/etc/crowdsec/config.y
 ```yaml title="/etc/crowdsec/config.yaml"
 config_paths:
   notification_dir: /etc/crowdsec/notifications/
-  plugin_dir: /var/lib/crowdsec/plugins/
+  plugin_dir: /usr/lib/crowdsec/plugins/
 ```
 
 #### Plugin Process Owner
 
-Due to security reasons, plugins process are operated under a user with limited privileges. This is done by setting owner and group of the plugin process as some unprivileged user. This can be configured via setting the desired user and group in `/etc/crowdsec/config.yaml`. 
+For security reasons, plugin processes run under a user with limited privileges. This is done by setting owner and group of the plugin process as some unprivileged user. This can be configured via setting the desired user and group in `/etc/crowdsec/config.yaml`. 
 
 ```yaml title="/etc/crowdsec/config.yaml"
 plugin_config:
@@ -185,7 +186,7 @@ Depending on your distribution or platform these values may change to `nobody` o
 
 You have access to the list of alerts that triggered the notification when writing the go-template in the `format` parameter.
 
-An alert is defined as follow:
+An alert is defined as follows:
 
 ```
 type Alert struct {
@@ -637,9 +638,9 @@ Extract the meta associated with the alerts
 {{ end }}
 ```
 
-### Debugging notifications plugins
+### Debugging notification plugins
 
-**cscli** tool provide some useful command to help write notification
+The **cscli** tool provides some useful commands to help write notification
 plugin configuration. Those are provided by the `cscli notifications`
 command and its subcommands.
 

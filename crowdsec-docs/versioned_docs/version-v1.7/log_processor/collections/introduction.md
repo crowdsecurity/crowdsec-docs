@@ -27,7 +27,7 @@ Collections are the recommended way to install detection content because they:
 Collections are distributed via the CrowdSec Hub and managed with `cscli`:
 
 - Update the Hub index: see [`cscli hub update`](/cscli/cscli_hub_update.md)
-- Install or upgrade items: see [`cscli hub upgrade`](/cscli/cscli_hub_upgrade.md) and [Hub management](/cscli/cscli_hub.md)
+- Install items: see [`cscli collections install`](/cscli/cscli_collections_install.md). Upgrade installed items: see [`cscli hub upgrade`](/cscli/cscli_hub_upgrade.md).
 
 ## Collection file format
 

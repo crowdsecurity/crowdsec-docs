@@ -1,6 +1,7 @@
 ---
 id: protocol
 title: WAF / Bouncer Communication Protocol
+description: "HTTP protocol reference for talking to the CrowdSec WAF: required headers, request forwarding and response codes, for building your own remediation component."
 sidebar_position: 5
 ---
 
@@ -12,15 +13,15 @@ This section is only relevant if you want to add support for the CrowdSec applic
 
 ## Introduction
 
-To interact with the CrowdSec application security component, a protocol need to be respected.
+To interact with the CrowdSec application security component, a protocol must be followed.
 
-The application security component expect some headers to be present in the HTTP request (in addition to the original HTTP headers and body) and according to the result, the application security component will respond differently.
+The application security component expects some headers to be present in the HTTP request (in addition to the original HTTP headers and body) and according to the result, the application security component will respond differently.
 
-This documentation can be useful in case you want to write your own remediation component that interact with the CrowdSec application security component, or if you want to improve your existing one.
+This documentation can be useful in case you want to write your own remediation component that interacts with the CrowdSec application security component, or if you want to improve your existing one.
 
 ## HTTP Headers
 
-To work with the CrowdSec application security component, some HTTP headers are require, in addition to the other HTTP headers and the body of the original request.
+To work with the CrowdSec application security component, some HTTP headers are required, in addition to the other HTTP headers and the body of the original request.
 
 | Header Name                      | Description                                                                           |
 | -------------------------------- | ------------------------------------------------------------------------------------- |
@@ -43,7 +44,7 @@ All requests forwarded by the remediation component must be sent via a `GET` req
 For this example:
 
 - A `POST` HTTP request has been made by the IP `192.168.1.1` to a website on `example.com`.
-- The Application Security Component listen on `http://localhost:4241/`.
+- The Application Security Component listens on `http://localhost:4241/`.
 
 <details>
 <summary>Original HTTP Request</summary>
@@ -100,8 +101,14 @@ According to the result of the processing of the HTTP request, the application s
 | HTTP Code | Description                                                                                                                                             | Body                                                                                     |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | `200`     | The HTTP request is allowed                                                                                                                             | `{"action" : "allow"}`                                                                   |
-| `403`     | The HTTP request triggered one or more application security component rules                                                                             | `{"action" : "ban", "http_status": 403}` or `{"action" : "captcha", "http_status": 403}` |
+| `403`     | The HTTP request triggered one or more application security component rules                                                                             | `{"action" : "ban", "http_status": 403}`, `{"action" : "captcha", "http_status": 403}` or `{"action" : "challenge", ...}` |
 | `500`     | An error occurred in the application security component. The remediation component must support a `APPSEC_FAILURE_ACTION` parameter to handle this case | `null`                                                                                   |
 | `401`     | The remediation component is not authenticated. It must use the same API Key that was generated to pull the local API request                           | `null`                                                                                   |
 
 In case of a `403` response, the body will contain the action to take and the HTTP status code to return to the client.
+
+## Bot detection
+
+When [bot detection](bot_detection/intro.md) is enabled, the application security component can also answer a `403` with `{"action": "challenge"}`. Unlike `ban` and `captcha`, that envelope carries a complete response — body, headers and cookies — that the remediation component relays to the browser, and the exchange continues over a set of internal URLs the component must forward.
+
+See the [challenge protocol](bot_detection/challenge_protocol.md) for the full contract.

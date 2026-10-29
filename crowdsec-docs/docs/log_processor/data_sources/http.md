@@ -71,9 +71,9 @@ The datasource expects to receive one or multiple JSON objects.
 
 The datasource will also automatically decompress any request body in `gzip` format, as long as the `Content-Encoding` header is set to `gzip`.
 
-The JSON object can be any format, crowdsec will pass it as-is to the parsers.
+The JSON object can have any format: CrowdSec passes it as-is to the parsers.
 
-If you are sending multiple JSON object in the same request, they must be separated by a newline (NDJSON format):
+If you are sending multiple JSON objects in the same request, they must be separated by a newline (NDJSON format):
 ```json
 {"log": "log line 1", "timestamp": "2021-01-01T00:00:00Z"}
 {"log": "log line 2", "timestamp": "2021-01-01T00:00:01Z"}
@@ -81,7 +81,7 @@ If you are sending multiple JSON object in the same request, they must be separa
 
 The objects will be processed by the parsers one-by-one.
 
-If you send multiple log lines in a single JSON object, you can use a [transform](/docs/log_processor/data_sources/introduction.md#transform) expression to generate multiple events:
+If you send multiple log lines in a single JSON object, you can use a [transform](/log_processor/data_sources/introduction.md#transform) expression to generate multiple events:
 
 ```json
 {
@@ -206,9 +206,9 @@ Optional.
 
 ### `max_body_size`
 
-The maximum body size to accept.
+The maximum body size to accept, in bytes, measured after decompression for compressed requests. Requests announcing or sending a bigger body are rejected with a `413` status code.
 
-Optional.
+Optional, defaults to `10485760` (10MB).
 
 ### `timeout`
 

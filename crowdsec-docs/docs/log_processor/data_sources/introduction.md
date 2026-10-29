@@ -20,12 +20,13 @@ Name | Type | Stream | One-shot
 [Appsec](/log_processor/data_sources/appsec.md) | expose HTTP service for the Appsec component | yes | no
 [AWS cloudwatch](/log_processor/data_sources/cloudwatch.md) | single stream or log group | yes | yes
 [AWS kinesis](/log_processor/data_sources/kinesis.md)| read logs from a kinesis stream | yes | no
-[AWS S3](/log_processor/data_sources/s3.md)| read logs from a S3 bucket | yes | yes
+[AWS S3](/log_processor/data_sources/s3.md)| read logs from an S3 bucket | yes | yes
 [docker](/log_processor/data_sources/docker.md) | read logs from docker containers | yes | yes
 [file](/log_processor/data_sources/file.md) | single files, glob expressions and .gz files | yes | yes
 [HTTP](/log_processor/data_sources/http.md) | read logs from an HTTP endpoint | yes | no
 [journald](/log_processor/data_sources/journald.md) | journald via filter | yes | yes
 [Kafka](/log_processor/data_sources/kafka.md)| read logs from kafka topic | yes | no
+[Kubernetes](/log_processor/data_sources/kubernetes.md) | stream container logs from pods selected by labels | yes | no
 [Kubernetes Audit](/log_processor/data_sources/kubernetes_audit.md) | expose a webhook to receive audit logs from a Kubernetes cluster  | yes | no
 [Loki](/log_processor/data_sources/loki.md) | read logs from loki | yes | yes
 [VictoriaLogs](/log_processor/data_sources/victorialogs.md) | read logs from VictoriaLogs | yes | yes
@@ -64,7 +65,7 @@ If the expression returns an error or an invalid type, the event will not be mod
 
 ### `use_time_machine`
 
-By default, when reading logs in real-time, crowdsec will use the time at which the log was read as the log timestamp instead of extracting it from the log itself.
+By default, when reading logs in real-time, CrowdSec will use the time at which the log was read as the log timestamp instead of extracting it from the log itself.
 
 Setting this option to `true` will force crowdsec to use the timestamp from the log as the time of the event.
 

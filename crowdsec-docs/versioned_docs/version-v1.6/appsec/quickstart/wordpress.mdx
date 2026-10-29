@@ -172,7 +172,7 @@ Content-Type: text/plain; charset=utf-8
 3. Emit a malevolent request to the Appsec Component:
 
 :::info
-We're trying to access a `.env` file, a [common way to retrieve credentials left by mistake](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-env-access).
+We're trying to access a `.env` file, a [common way to retrieve credentials left by mistake](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-env-access).
 :::
 
 ```bash
@@ -238,7 +238,7 @@ We're assuming WordPress is running on your local machine. Please adjust your te
 :::
 
 To test the AppSec functionality, you need to make a request that will go through the WordPress loading process. Try accessing a WordPress page with a malicious payload in the URL parameters or body.
-For example, we can post a request with a body that contains a malicious payload, such as a [Remote Code Execution (CVE-2022-22965)](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-CVE-2022-22965) attempt.
+For example, we can post a request with a body that contains a malicious payload, such as a [Remote Code Execution (CVE-2022-22965)](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-CVE-2022-22965) attempt.
 
 ```bash
 curl -X POST https://<your-wordpress-uri>/ -d "class.module.classLoader.resources." -o /dev/null -s -w "%{http_code}"

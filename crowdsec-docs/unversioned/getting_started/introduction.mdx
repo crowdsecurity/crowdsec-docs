@@ -1,6 +1,7 @@
 ---
 id: intro
-title: Introduction
+title: Getting started with the Security Stack
+sidebar_label: Introduction
 sidebar_position: 1
 ---
 
@@ -10,7 +11,7 @@ import UnderlineTooltip from "@site/src/components/underline-tooltip"
 
 ## What is CrowdSec Security Engine?
 
-The Security Engine is a lightweight, collaborative <UnderlineTooltip tooltip="An Intrusion Detection System monitors logs or traffic to detect and report suspicious or malicious behavior, such as scans, brute-force attempts, or exploits.">Intrusion Detection System</UnderlineTooltip> (IDS) with optional <UnderlineTooltip tooltip="A security system that filters, monitors, and blocks HTTP traffic to and from a web application to prevent attacks like SQL injection, XSS, and more.">Web Application Firewall</UnderlineTooltip> (WAF) capabilities. It detects behaviors that match known attack patterns defined by scenarios.
+The Security Engine is a lightweight, collaborative <UnderlineTooltip tooltip="An Intrusion Detection System monitors logs or traffic to detect and report suspicious or malicious behavior, such as scans, brute-force attempts, or exploits.">Intrusion Detection System</UnderlineTooltip> (IDS) with optional <UnderlineTooltip tooltip="A security system that filters, monitors, and blocks HTTP traffic to and from a web application to prevent attacks like SQL injection, XSS, and more.">Web Application Firewall</UnderlineTooltip> (WAF) capabilities. It detects behaviors that match known attack patterns defined by scenarios, and the WAF can also filter automated traffic with optional [bot detection](/docs/appsec/bot_detection/intro).
 
 At a high level, the engine works like this:
 
@@ -19,7 +20,7 @@ At a high level, the engine works like this:
 3. It evaluates behavior against <UnderlineTooltip tooltip="Behavioral rules written in a domain-specific language that define what malicious activity looks like, such as multiple failed logins in a short time.">scenarios</UnderlineTooltip>.
 4. It creates <UnderlineTooltip tooltip="A temporary or permanent decision, like blocking an IP address, taken in response to a detected threat.">decisions</UnderlineTooltip> based on <UnderlineTooltip tooltip="Profiles are rule sets that define which decisions to take (or ignore) when a behavior is detected.">profiles</UnderlineTooltip>, which remediation components enforce.
 
-What makes CrowdSec unique is its <UnderlineTooltip tooltip="Users who detect malicious behavior share anonymized signals with the wider network, helping others preemptively block emerging threats.">collaborative threat intelligence</UnderlineTooltip>: when you opt in, your detections help maintain a [community blocklist](/docs/next/central_api/community_blocklist) that protects everyone.
+What makes CrowdSec unique is its <UnderlineTooltip tooltip="Users who detect malicious behavior share anonymized signals with the wider network, helping others preemptively block emerging threats.">collaborative threat intelligence</UnderlineTooltip>: when you opt in, your detections help maintain a [community blocklist](/docs/central_api/community_blocklist) that protects everyone.
 
 ## What is a Remediation Component?
 

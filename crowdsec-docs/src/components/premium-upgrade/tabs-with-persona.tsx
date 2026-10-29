@@ -1,4 +1,4 @@
-import TabItem from "@theme/TabItem";
+import type { Props as TabItemProps } from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import type { ReactElement } from "react";
 import React, { useState } from "react";
@@ -16,7 +16,7 @@ export interface TabsWithPersonaProps {
 	defaultValue?: string;
 	groupId?: string;
 	headerLabel?: string;
-	children: ReactElement<typeof TabItem> | ReactElement<typeof TabItem>[];
+	children: ReactElement<TabItemProps> | ReactElement<TabItemProps>[];
 }
 
 /**

@@ -1,6 +1,7 @@
 ---
 id: format
-title: Format
+title: "Profiles: file format"
+sidebar_label: Format
 sidebar_position: 2
 ---
 
@@ -100,9 +101,9 @@ If the profile applies, decisions objects will be created for each of the source
 It is a list of `models.Decision` objects. The following fields, when present, allows to alter the resulting decision :
 
  - `scope` : defines the scope of the resulting decision
- - `duration` : defines for how long will the decision be valid. The format must comply with [golang's ParseDuration](https://pkg.go.dev/time#ParseDuration)
+ - `duration` : defines how long the decision will be valid. The format must comply with [golang's ParseDuration](https://pkg.go.dev/time#ParseDuration)
  - `type` : defines the type of the remediation that will be applied by available bouncers, for example `ban`, `captcha`
- - `value` : define a hardcoded value for the decision (ie. `192.168.1.1`)
+ - `value` : defines a hardcoded value for the decision (e.g. `192.168.1.1`)
 
 ### `duration_expr`
 
@@ -123,8 +124,8 @@ on_success: continue|break
 
 If the profile applies and `on_success` is set to `break`, decisions processing will stop here and it won't evaluate against following profiles.
 
-- `continue` will apply the profile even if the filter expression generates an error. (DEFAULT)
-- `break` will stop the processing of the alert if the filter expression generates an error.
+- `continue` will keep evaluating the following profiles after this profile applies. (DEFAULT)
+- `break` will stop evaluating the following profiles once this profile applies.
 ### `on_failure`
 
 ```yaml

@@ -1,6 +1,7 @@
 ---
 id: mikrotik
 title: Mikrotik
+description: "Feed CrowdSec blocklists to a MikroTik router with a scheduled script that imports them into a firewall address list, from a CrowdSec Console endpoint."
 ---
 
 import ThemedImage from "@theme/ThemedImage";
@@ -21,7 +22,7 @@ import UnderlineTooltip from '@site/src/components/underline-tooltip';
 />
 </div>
 <div style={{flex: '1'}}>
-The CrowdSec Mikrotik integration connects CrowdSec's hosted blocklist endpoint to your Mikrotik router.  
+The CrowdSec MikroTik integration connects CrowdSec's hosted blocklist endpoint to your MikroTik router.  
 Because Mikrotik does not have native external IP list ingestion, the integration uses a script that fetches the blocklist from CrowdSec's API and imports it into the Mikrotik firewall address list, scheduled to run automatically.
 
 :::info
@@ -94,7 +95,7 @@ The CrowdSec blocklist is served in Mikrotik format, with one entry per line:
 
 ## Manage integration size limits with pagination
 
-If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](console/service_api/integrations.md#managing-integrations-size-limits-with-pagination) section.
+If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](/u/console/service_api/integrations#managing-integrations-size-limits-with-pagination) section.
 
 The MikroTik format emits a full command per entry, so entries are large. When pulling **without compression**, keep `page_size` at or below **~35,000** entries to stay under the ~5 MB response limit; beyond that the response is truncated. Enabling compression avoids this limit entirely.
 

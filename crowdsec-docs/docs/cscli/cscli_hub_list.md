@@ -4,7 +4,13 @@ title: cscli hub list
 ---
 ## cscli hub list
 
-List all installed configurations
+List relevant installed items
+
+### Synopsis
+
+List installed relevant items (collections, standalone items) and shows their status.
+Use --all to list all items, including those not installed.
+Use --full to list every installed item individually, instead of summarizing collection contents.
 
 ```
 cscli hub list [-a] [flags]
@@ -13,8 +19,10 @@ cscli hub list [-a] [flags]
 ### Options
 
 ```
-  -a, --all    List all available items, including those not installed
-  -h, --help   help for list
+  -a, --all              List all available items, including those not installed
+      --full             List every installed item individually instead of summarizing collection contents
+  -h, --help             help for list
+      --status strings   Filter by status (installed, not-installed, up-to-date, outdated, tainted, local)
 ```
 
 ### Options inherited from parent commands

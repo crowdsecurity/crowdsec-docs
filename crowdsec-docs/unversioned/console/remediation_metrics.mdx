@@ -5,7 +5,7 @@ title: Remediation Metrics
 
 :::info
 For your Security Engine to collect and send metrics, make sure you're using CrowdSec v1.6.3 or higher.
-**Note:** Not all Remediation Components report metrics to the CrowdSec Console. For details, refer to the [official documentation](https://docs.crowdsec.net/u/bouncers/intro).
+**Note:** Not all Remediation Components report metrics to the CrowdSec Console. For details, refer to the [official documentation](/bouncers/intro.md).
 
 <details>
     <summary>The following Remediation Components are compatible with Remediation Metrics: 🔻</summary>
@@ -14,7 +14,7 @@ For your Security Engine to collect and send metrics, make sure you're using Cro
 - [Nginx](/u/bouncers/nginx)
 - [OpenResty](/u/bouncers/openresty)
 - [Ingress Nginx](/u/bouncers/ingress-nginx)
-- [Cloudflare Workers](/u/bouncers/cloudflare-workers)
+- [Cloudflare Workers](/u/bouncers/cloudflare)
 - [HAProxy SPOA](/u/bouncers/haproxy_spoa)
 - [WordPress Plugin](/u/bouncers/wordpress)
 
@@ -28,7 +28,7 @@ It provides key insights into:
 - The number and types of attacks
 - The impact of remediation measures
 - The estimated resources saved by stopping these threats
-- The blocklist that contribute to remediate malicious traffic
+- The blocklists that contribute to remediating malicious traffic
 
 The page is divided into three main sections:
 - **Malicious Intents** – A breakdown of attack types associated with the IPs that your remediation components blocked.
@@ -54,7 +54,7 @@ The **Malicious Intents** section summarizes what a blocked IP was *likely* atte
 
 ## Malicious Traffic Discarded
 
-This section highlights the amount of malicious traffic that has been remediate by your bouncers. It includes both raw and estimated data on discarded requests, packets, and bytes.
+This section highlights the amount of malicious traffic that has been remediated by your bouncers. It includes both raw and estimated data on discarded requests, packets, and bytes.
 
 - **Raw data** represents actual traffic dropped by your remediation components (bouncers), powered by blocklists and security engines.
 - **Estimated data** is calculated by applying a coefficient to the raw metrics to provide a projected view of saved resources.

@@ -1,3 +1,4 @@
+import Link from "@docusaurus/Link";
 import React, { useState } from "react";
 import { mix } from "../../../utils/colorMix";
 
@@ -95,7 +96,7 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 				</div>
 				{/* CTA in header when CLOSED */}
 				{!open && (
-					<a
+					<Link
 						href={ctaHref}
 						onClick={(e) => e.stopPropagation()}
 						className="cs-btn py-2 px-[14px] rounded-lg font-semibold text-[13px] inline-flex items-center gap-1.5 no-underline hover:no-underline shrink-0 whitespace-nowrap"
@@ -106,7 +107,7 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 						}}
 					>
 						{ctaLabel} <ArrowIcon />
-					</a>
+					</Link>
 				)}{" "}
 				<button
 					type="button"
@@ -167,7 +168,7 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 						))}
 					</div>
 					{/* CTA in content when OPEN */}
-					<a
+					<Link
 						href={ctaHref}
 						className="cs-btn inline-flex items-center gap-1.5 py-2 px-[18px] rounded-[7px] text-[13px] font-semibold no-underline hover:no-underline whitespace-nowrap"
 						style={{
@@ -177,7 +178,7 @@ export default function PathwayRow({ color, title, eyebrow, sub, steps, ctaLabel
 						}}
 					>
 						{ctaLabel} <ArrowIcon />
-					</a>
+					</Link>
 				</div>
 			)}
 		</div>

@@ -7,7 +7,7 @@ The slack plugin is by default shipped with your CrowdSec installation. The foll
 
 ## Configuring the plugin: 
 
-By default the configuration for Slack plugin is located at these default location per OS:
+By default, the Slack plugin configuration is located at the following paths, depending on the OS:
 
 - **Linux** `/etc/crowdsec/notifications/slack.yaml`
 - **FreeBSD** `/usr/local/etc/crowdsec/notifications/slack.yaml`
@@ -100,7 +100,7 @@ on_success: break
 
 ## Final Steps:
 
-Let's restart crowdsec
+Restart CrowdSec:
 
 ```bash
 sudo systemctl restart crowdsec

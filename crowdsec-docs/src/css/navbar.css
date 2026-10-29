@@ -217,3 +217,27 @@ html[data-theme="light"] .navbar-sidebar__item > .menu__list .menu__caret::befor
 		display: none;
 	}
 }
+
+/* NEW badge on a navbar entry, opted in with className: "navbar-item-new".
+   Values mirror src/components/docs/SidebarTagBadge so the two read as one badge.
+   Applies to both the desktop dropdown (.dropdown__link) and the mobile drawer
+   (.menu__link), which is why the selector is on the className alone. */
+.navbar-item-new {
+	display: flex;
+	align-items: center;
+}
+
+.navbar-item-new::after {
+	content: "New";
+	font-family: var(--cs-font-mono);
+	font-size: 9.5px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	padding: 2px 6px;
+	border-radius: 4px;
+	background: color-mix(in srgb, var(--cs-teal) 14%, transparent);
+	color: var(--cs-teal);
+	margin-left: auto;
+	flex-shrink: 0;
+}
