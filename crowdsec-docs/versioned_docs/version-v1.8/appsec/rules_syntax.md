@@ -10,6 +10,16 @@ sidebar_position: 8
 
 Rules are the core of the **AppSec Component**. They are used to detect and block attacks.
 
+:::tip
+You do not have to write and check these by hand. The [CrowdSec MCP server](https://github.com/crowdsecurity/crowdsec-local-mcp) plugs into Claude, VS Code and other MCP clients, and will draft a rule, validate it against the syntax on this page, lint it for common mistakes, then spin up a throwaway CrowdSec + nginx stack to check it actually blocks the attack without catching legitimate traffic.
+
+```bash
+uvx --from crowdsec-local-mcp init claude-code
+```
+
+It is the fastest way to go from a CVE or a payload to a rule you have seen block something. The rest of this page is worth reading whether you write rules by hand or review what the MCP produces.
+:::
+
 There are two types of rules:
 
 - **In-band rules** are evaluated synchronously and will block request processing until they are evaluated, allowing real-time remediation.
@@ -106,7 +116,7 @@ List of rule conditions (required). Each condition inspects one or more [zones](
 For a condition:
 
 - **Mandatory**: [`zones`](#zones) and [`match`](#match).
-- **Optional**: [`variables`](#variables), [`transform`](#transform). [`variables`](#variables) restricts matching to specific keys within `ARGS`, `BODY_ARGS`, or `HEADERS`.
+- **Optional**: [`variables`](#variables), [`transform`](#transform), [`body_type`](#body_type), [`severity`](#severity). [`variables`](#variables) restricts matching to specific keys within `ARGS`, `BODY_ARGS`, or `HEADERS`.
 
 At minimum, a condition needs a zone list and a match:
 
@@ -227,12 +237,33 @@ Match provides the pattern to match the target against. You can combine it with 
     - `contains`: _target_ contains value
     - `libinjectionSQL`: _target_ is detected by lib injection SQL
     - `libinjectionXSS`: _target_ is detected by lib injection XSS
+    - `fromFile`: _value_ names a datafile (declared in the rule's [`data`](#data) section) whose lines are each searched for **inside** _target_, case-insensitively — so a line `admin` also matches `/admin/login`
     - `gt`: _target_ is greater than _value_
     - `lt`: _target_ is lower than _value_
     - `gte`: _target_ is greater or equal to _value_
     - `lte`: _target_ is lower or equal to _value_
+    - `eq`: _target_ is numerically equal to _value_ (use `equals` for strings)
 
   - _(mandatory)_ `value` a string that is compared to the _target_
+  - _(optional)_ `not` a boolean; set it to `true` to invert the comparison, so the condition matches when the target does **not** satisfy it
+
+:::tip
+Quote the `value` whenever it could be read as something other than a string. Unquoted `off`, `no` and `y` are booleans in YAML and `1` is a number, which makes the rule read as a type it is not.
+:::
+
+```yaml {7-10}
+name: crowdsecurity/example-not
+description: "Match any token that is not purely numeric"
+rules:
+  - zones:
+      - ARGS
+    variables:
+      - id
+    match:
+      type: regex
+      value: "^[0-9]+$"
+      not: true
+```
 
 ```yaml {7-9}
 name: crowdsecurity/appsec-generic-test
@@ -263,7 +294,7 @@ Optional operations applied to the target before matching:
 - `lowercase`
 - `uppercase`
 - `length` : transform _target_ to a number representing the string's length
-- `count` : number of times the _target_ appears
+- `count` : replace _target_ with the number of matching keys in the collection. This only does something when [`variables`](#variables) is also set, and it pairs with a numeric [match](#match) type such as `gte`
 
 **Trim:**
 
@@ -273,7 +304,7 @@ Optional operations applied to the target before matching:
 
 **Decoding:**
 
-- `htmlentitydecode` : decode HTML entities
+- `htmlentitydecode` (or `html_entity_decode`) : decode HTML entities
 - `js_decode` : decode JavaScript escape sequences
 - `css_decode` : decode CSS escape sequences
 - `urldecode` : URL decode
@@ -314,6 +345,82 @@ rules:
       type: contains
       value: admin
 ```
+
+### body_type
+
+> string
+
+Optional. Forces the body parser used for this condition instead of letting the request's `Content-Type` decide, which is useful when a vulnerable endpoint accepts a body whose declared type cannot be trusted.
+
+One of `json`, `xml`, `multipart` or `urlencoded`.
+
+```yaml {5}
+name: crowdsecurity/example-body-type
+rules:
+  - zones:
+      - BODY_ARGS
+    body_type: json
+    variables:
+      - json.payload
+    match:
+      type: contains
+      value: admin
+```
+
+### severity
+
+> string or integer
+
+Optional. Severity carried by the generated rule, either a named level or a single digit from `0` to `7`. Defaults to `emergency`.
+
+`emergency` (0), `alert` (1), `critical` (2), `error` (3), `warning` (4), `notice` (5), `info` (6), `debug` (7).
+
+It can be set at the file level, where it applies to every condition, or on an individual condition.
+
+```yaml {3}
+name: crowdsecurity/example-severity
+description: "Lower severity for a noisy detection"
+severity: warning
+rules:
+  - zones:
+      - URI
+    match:
+      type: contains
+      value: admin
+```
+
+### data
+
+> array
+
+Optional. Datafiles the rule needs. When the rule is installed from the hub, `cscli` downloads each `source_url` and stores it at `dest_file`, relative to the data directory. This is how [`fromFile`](#match) matches get their list, and some hub rules consist of nothing but a `data` section so that `cscli` fetches files other rules then include.
+
+Per entry:
+
+- _(mandatory)_ `source_url`: where to download the file from
+- _(mandatory)_ `dest_file`: filename within the data directory
+- _(optional)_ `type`: also load the contents into memory, so that [hooks](hooks.md) can read them with the `File()` and `RegexpInFile()` expression helpers. `string` is one literal per line, `regex` (or `regexp`) one RE2 expression per line. Leave it unset, or set `modsec`, to download the file without indexing it
+
+```yaml
+name: crowdsecurity/example-data
+rules:
+  - zones:
+      - HEADERS
+    variables:
+      - x-forwarded-host
+    match:
+      type: fromFile
+      value: bad-hosts.txt
+data:
+  - source_url: https://example.com/bad-hosts.txt
+    dest_file: bad-hosts.txt
+```
+
+:::note
+A [`fromFile`](#match) match needs no `type`: the WAF engine reads that file from the data directory itself, so `type` only matters for files you additionally want to reach from a hook expression.
+
+The datafile format also accepts `cache`, `strategy`, `size` and `ttl`. They have **no effect in an AppSec rule** — only parsers and scenarios set up the regexp cache they configure — so do not expect them to do anything if you copy a `data` block over from a scenario.
+:::
 
 ### Seclang Support
 
