@@ -116,7 +116,7 @@ List of rule conditions (required). Each condition inspects one or more [zones](
 For a condition:
 
 - **Mandatory**: [`zones`](#zones) and [`match`](#match).
-- **Optional**: [`variables`](#variables), [`transform`](#transform), [`body_type`](#body_type), [`severity`](#severity). [`variables`](#variables) restricts matching to specific keys within `ARGS`, `BODY_ARGS`, or `HEADERS`.
+- **Optional**: [`variables`](#variables), [`transform`](#transform). [`variables`](#variables) restricts matching to specific keys within `ARGS`, `BODY_ARGS`, or `HEADERS`.
 
 At minimum, a condition needs a zone list and a match:
 
@@ -346,27 +346,6 @@ rules:
       value: admin
 ```
 
-### body_type
-
-> string
-
-Optional. Forces the body parser used for this condition instead of letting the request's `Content-Type` decide, which is useful when a vulnerable endpoint accepts a body whose declared type cannot be trusted.
-
-One of `json`, `xml`, `multipart` or `urlencoded`.
-
-```yaml {5}
-name: crowdsecurity/example-body-type
-rules:
-  - zones:
-      - BODY_ARGS
-    body_type: json
-    variables:
-      - json.payload
-    match:
-      type: contains
-      value: admin
-```
-
 ### severity
 
 > string or integer
@@ -375,7 +354,11 @@ Optional. Severity carried by the generated rule, either a named level or a sing
 
 `emergency` (0), `alert` (1), `critical` (2), `error` (3), `warning` (4), `notice` (5), `info` (6), `debug` (7).
 
-It can be set at the file level, where it applies to every condition, or on an individual condition.
+Set it at the file level. It applies to every condition in the file.
+
+:::note
+A `severity` on an individual condition is ignored: when the rule is loaded, each condition's severity is overwritten with the file-level value, and that value is `emergency` whenever the file does not set one.
+:::
 
 ```yaml {3}
 name: crowdsecurity/example-severity
