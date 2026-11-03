@@ -5,6 +5,8 @@ description: Monitor the IPs and ranges you operate, and get alerted the moment 
 ---
 
 import { Badge } from "@site/src/ui/badge";
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
 <div className="mb-4">
     <Badge variant="premium">CrowdSec Premium Feature</Badge>
@@ -32,11 +34,27 @@ The page lives in the **IP Reputation / CTI** section of the Console, at [app.cr
 | On a Community plan | A presentation of what Premium unlocks, with sample events and an upgrade button. The IP search page of the CTI also shows a dismissable banner pointing to the feature. |
 | On a Premium or Enterprise plan | The feature itself: configurations, event history and quota. Editors and owners can create and change configurations; viewers can read everything. |
 
+<ThemedImage
+    alt="The Am I Attacking presentation shown to a Community organization, with the Unlock button"
+    sources={{
+        light: useBaseUrl("/img/console/am_i_attacking/community-light.png"),
+        dark: useBaseUrl("/img/console/am_i_attacking/community-dark.png"),
+    }}
+/>
+
 The command palette opens the page for every signed-in user. On a Premium organization it also offers *Add an Am I Attacking configuration* and *Am I Attacking configurations*.
 
 ## Declare the IPs to monitor
 
 Click **Configurations** in the page header, then **Add a configuration**. A configuration carries a name, the addresses to watch and a deduplication window.
+
+<ThemedImage
+    alt="The New configuration modal: name, IPs and CIDR ranges, deduplication window and the declaration of authorization"
+    sources={{
+        light: useBaseUrl("/img/console/am_i_attacking/new-configuration-light.png"),
+        dark: useBaseUrl("/img/console/am_i_attacking/new-configuration-dark.png"),
+    }}
+/>
 
 ### IPs and CIDR ranges
 
@@ -117,6 +135,14 @@ Once monitored, the engine carries a green **Monitored** tag on its page and in 
 
 The Am I Attacking page is the history of every event recorded for your organization.
 
+<ThemedImage
+    alt="The Am I Attacking page: 30-day activity, filters, the list of events and the details of the selected one"
+    sources={{
+        light: useBaseUrl("/img/console/am_i_attacking/events-light.png"),
+        dark: useBaseUrl("/img/console/am_i_attacking/events-dark.png"),
+    }}
+/>
+
 ### Activity
 
 A heatmap sums the **last 30 days**, one square per UTC day, next to three counters: events, IPs involved and distinct scenarios. On an organization with a very large number of events, the summary stops reading after a point: the counters then show a `+` suffix and read as a floor.
@@ -136,6 +162,14 @@ An event can outlive its configuration, or come from a source the Console cannot
 Filter the list by **source IP**, **configuration**, **minimum confidence** and **period** (last 24 hours, 7 days, 30 days, or any time). **More filters** adds the scenario, the behavior and the targeted range. Text filters apply when you press Enter or leave the field; dropdowns apply at once. **Clear** removes them all.
 
 ### Empty states
+
+<ThemedImage
+    alt="The Am I Attacking page before any configuration: declare your IPs, pick where alerts go, or start from an engine"
+    sources={{
+        light: useBaseUrl("/img/console/am_i_attacking/empty-state-light.png"),
+        dark: useBaseUrl("/img/console/am_i_attacking/empty-state-dark.png"),
+    }}
+/>
 
 - With no configuration yet, the page suggests the Security Engines you run, or walks you through the first declaration.
 - With configurations and no event, the page confirms that monitoring is active, how many IPs are watched, and whether a rule delivers the alerts. No event is good news.
