@@ -19,6 +19,12 @@ This means your firewall is no longer receiving the latest threat intelligence a
 - [**Network connectivity issues**](#network-connectivity-issues): The firewall cannot reach the BLaaS endpoint due to network problems, DNS issues, or routing failures.
 - [**Firewall offline**](#firewall-offline): The firewall itself is powered off, unreachable, or not processing rules.
 
+:::tip Try it with an LLM
+You can get AI help: open a chat with your LLM of choice, paste the prompt below, with the model of your firewall
+
+> Help me find out why my firewall *`<your firewall model>`* doesn't properly pull the external ip list from CrowdSec. You can find some pointers in CrowdSec documentation here: https://docs.crowdsec.net/u/integrations/intro/#available-integrations
+:::
+
 ## Diagnosis & Resolution
 
 ### Firewall rule disabled or removed

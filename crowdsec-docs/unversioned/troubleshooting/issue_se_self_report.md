@@ -23,6 +23,13 @@ The issue is raised on the **Security Engine** that sent the decision. The alert
 - [**Missing default whitelist**](#missing-default-whitelist): The `crowdsecurity/whitelists` parser that discards loopback and private ranges has been removed or is not installed.
 - [**Manual test decision**](#manual-test-decision): A decision was added by hand with `cscli` or from the Console on the engine's own IP.
 
+:::tip Try it with the CrowdSec Skill
+Use the [CrowdSec Skill](https://github.com/crowdsecurity/crowdsec-skill) to help you solve this issue.  
+
+Suggested Prompt
+> My Security Engine reported itself (loopback or its own IP) as an attacker in alert `<alert ID>`; Help me find out why and fix it.
+:::
+
 ## Diagnosis & Resolution
 
 ### First, make sure the engine is not banning itself

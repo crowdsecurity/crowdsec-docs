@@ -19,6 +19,15 @@ This issue applies to Remediation Components *(aka bouncers)* directly connected
 - [**Bouncer service stopped or not loaded**](#bouncer-service-stopped-or-not-loaded): The bouncer daemon, module, or plugin is not running or not enabled.
 - [**Network connectivity issues**](#network-connectivity-issues): The bouncer cannot reach the endpoint.
 
+:::tip Try it with AI
+If your remediation component is installed on a host you can access, use the [CrowdSec Skill](https://github.com/crowdsecurity/crowdsec-skill) to help you solve this issue. You can find some pointers in the CrowdSec documentation here: https://docs.crowdsec.net/u/bouncers/intro
+
+Otherwise, open a chat with your LLM of choice.
+
+Suggested Prompt
+> My remediation component `<your bouncer type>` hasn't pulled decisions from CrowdSec's Blocklist-as-a-Service endpoint in 24h; Help me find out why. You can find some pointers in the CrowdSec documentation here: https://docs.crowdsec.net/u/bouncers/intro
+:::
+
 ## Diagnosis & Resolution
 
 Depending on the bouncer type, check installation status, configuration, and runtime status. Refer to your [remediation component documentation](/u/bouncers/intro) for detailed setup and troubleshooting.
