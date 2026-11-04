@@ -38,8 +38,7 @@ crowdsec -c config.yaml -no-api -dsn file:///path/to/corpus.log -type nginx
 | 8 | 9 130 | 2.53x | 1 086 µs | 2.8 GB |
 | 16 | 10 669 | 2.95x | 1 133 µs | 3.2 GB |
 
-Four routines is the knee; past it the process never uses much more than **two thirds
-of the machine**.
+Past four routines, scaling is less efficient.
 
 ## A mostly unparsed source: kernel and auditd over syslog
 
@@ -59,8 +58,7 @@ to a host whose logs you have parsers for. Skip this section if that is not you.
 
 ## Trading memory for throughput
 
-At the knee the limit is allocation, so pacing the collector more loosely is a bigger
-lever than adding routines:
+Past the routines inflection point, pacing the collector more loosely is more efficient than adding routines:
 
 | GOGC at 8 routines | Lines/s | vs default | User CPU | Peak RSS |
 | --- | --- | --- | --- | --- |
