@@ -3,15 +3,14 @@ id: benchmark
 title: Log Processor Benchmark
 sidebar_label: "Benchmark"
 toc_max_heading_level: 4
-description: "How many log lines per second one CrowdSec Log Processor handles, and what CPU and memory that takes: measured for a fully parsed source (nginx) and a mostly unparsed one (kernel and auditd over syslog)."
+description: "How many log lines per second one CrowdSec Log Processor handles, and what CPU and memory that takes."
 sidebar_position: 90
 ---
 
-How fast a Log Processor handles different kinds of log, and what CPU and memory that
-takes.
+How fast a Log Processor handles different kinds of log.
 
-Figures cover the whole pipeline up to alerts reaching the Local API, net of the fixed
-~2.7 s startup cost. To measure your own:
+Figures cover the whole pipeline, net of the fixed ~2.7 s startup cost. To measure
+your own:
 
 ```bash
 crowdsec -c config.yaml -no-api -dsn file:///path/to/corpus.log -type nginx
@@ -39,8 +38,7 @@ crowdsec -c config.yaml -no-api -dsn file:///path/to/corpus.log -type nginx
 | 8 | 9 130 | 2.53x | 1 086 µs | 2.8 GB |
 | 16 | 10 669 | 2.95x | 1 133 µs | 3.2 GB |
 
-Four routines is the knee. Past it the process never uses much more than **two thirds
-of the machine** — 10.6 of 16 hardware threads at 16 routines.
+Past four routines, scaling is less efficient.
 
 ## A mostly unparsed source: kernel and auditd over syslog
 
@@ -55,24 +53,12 @@ to a host whose logs you have parsers for. Skip this section if that is not you.
 | 8 | 13 992 | 0.84x | 287 µs | 147 s |
 | 16 | 12 724 | 0.76x | 364 µs | 207 s |
 
-**Adding routines makes it slower here.** Unparsed lines are six times cheaper than
-parsed ones (117 µs against 732 µs), but that does not improve with concurrency. Cause
-and fix: [the grok backend](#the-grok-backend-on-mostly-unparsed-sources).
-
-## Startup cost
-
-Paid once per process. Significant only if you run many short-lived ones.
-
-| Log type | Startup wall | Startup CPU |
-| --- | --- | --- |
-| `nginx` | 2.70 s | 1.98 s |
-| `syslog` | 2.66 s | 1.88 s |
+**Adding routines makes it slower here.** Cause and fix:
+[the grok backend](#the-grok-backend-on-mostly-unparsed-sources).
 
 ## Trading memory for throughput
 
-At the knee the limit is allocation: **45% of CPU goes to allocation, GC and
-scheduling**, against 27% in re2 matching and 11% in scenario filters. Pacing the
-collector more loosely is a bigger lever than adding routines:
+Past the routines inflection point, pacing the collector more loosely is more efficient than adding routines:
 
 | GOGC at 8 routines | Lines/s | vs default | User CPU | Peak RSS |
 | --- | --- | --- | --- | --- |
@@ -87,7 +73,7 @@ collector more loosely is a bigger lever than adding routines:
 unit file (`Environment=GOGC=400`) or the container environment, and watch memory.
 :::
 
-It does not fix the knee. The gain is close to flat at every routine count:
+The gain is close to flat at every routine count:
 
 | Routines | GOGC=100 | GOGC=400 | Gain | Peak RSS |
 | --- | --- | --- | --- | --- |
@@ -95,14 +81,14 @@ It does not fix the knee. The gain is close to flat at every routine count:
 | 8 | 9 133 | 10 974 | +20% | 2.8 -> 5.8 GB |
 | 16 | 10 127 | 12 744 | +26% | 3.3 -> 5.9 GB |
 
-**`GOGC=400` at 4 routines (10 109) matches the default at 16 routines (10 127)**: the
-same throughput for twice the memory instead of four times the goroutines.
+**`GOGC=400` at 4 routines matches the default at 16**: twice the memory instead of
+four times the goroutines.
 
 ## The grok backend on mostly-unparsed sources
 
 Since 1.8, grok patterns are matched with the C++ `re2` library by default on Linux.
-That suits logs that parse and hurts logs that do not. On the syslog corpus the
-`re2_disable_grok_support` feature flag **restores scaling**:
+That suits logs that parse and hurts logs that do not. The
+`re2_disable_grok_support` feature flag **restores scaling** here:
 
 | Routines | Default (`re2`) | `re2` disabled | Change | System CPU, default |
 | --- | --- | --- | --- | --- |
@@ -112,7 +98,7 @@ That suits logs that parse and hurts logs that do not. On the syslog corpus the
 | 8 | 15 018 | 72 360 | +382% | 137 s |
 | **16** | **13 048** | **98 138** | **+652%** | 199 s |
 
-### Should you set it?
+### When to disable it
 
 Compare `cs_parser_hits_ok_total` against `cs_parser_hits_ko_total` in
 [the metrics](../observability/prometheus.md).

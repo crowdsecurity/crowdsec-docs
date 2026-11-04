@@ -2,12 +2,11 @@
 id: benchmark
 title: WAF Component Benchmark
 toc_max_heading_level: 4
-description: "What the CrowdSec WAF costs per request: in-band latency and throughput measured against the Application Security Component itself, with virtual patching rules and with the full OWASP CRS."
+description: "CrowdSec WAF costs per request: in-band latency and throughput measured against the Application Security Component itself, with virtual patching rules and with the full OWASP CRS."
 sidebar_position: 80
 ---
 
-What the Application Security Component costs per request, and how many requests a
-core will carry. Add these figures to what your stack already does.
+What the Application Security Component costs per request.
 
 | Test bed | |
 | --- | --- |
@@ -15,8 +14,7 @@ core will carry. Add these figures to what your stack already does.
 | CPU | Xeon Platinum 8375C @ 2.90 GHz |
 | Hub | 206 vpatch rules, the full CRS |
 
-In-band time is the engine's own `cs_appsec_inband_parsing_time_seconds`. Percentiles
-are taken at half of saturation.
+In-band time is measured using `cs_appsec_inband_parsing_time_seconds`.
 
 ## Rule sets
 
@@ -26,17 +24,15 @@ are taken at half of saturation.
 | CRS | `crowdsecurity/crs-inband` | - |
 | vpatch + CRS out-of-band | `crowdsecurity/virtual-patching` | `crowdsecurity/crs` |
 
-## What a request costs
+## Request processing time
 
-At a sustainable rate, 4 routines:
+Measured inband rules evaluation time at a sustainable rate, 4 routines. 
 
 | Rule set | In-band mean | p50 | p95 | p99 |
 | --- | --- | --- | --- | --- |
 | vpatch | 0.233 ms | 0.33 ms | 1.39 ms | 2.15 ms |
 | **CRS** | **1.058 ms** | 1.15 ms | 3.44 ms | 5.57 ms |
 
-In-band is rule evaluation only; the percentiles are end-to-end over loopback, which
-is why they stay above it.
 
 ## Throughput ceiling
 
@@ -48,8 +44,6 @@ is why they stay above it.
 
 ## Scaling with routines
 
-One coraza engine per routine, so rule evaluation parallelises well:
-
 | Routines | vpatch | CRS |
 | --- | --- | --- |
 | 1 | 5 892 | 1 199 |
@@ -59,7 +53,7 @@ One coraza engine per routine, so rule evaluation parallelises well:
 | 16 | 15 679 (2.66x) | 4 059 (3.38x) |
 
 These are saturation ceilings. Don't set `routines` above the cores you give the
-engine: more engines on the same cores just make each one slower.
+engine, they will just make each other slower.
 
 ## Request bodies
 
@@ -70,20 +64,9 @@ In-band mean, 4 routines, urlencoded form bodies:
 | vpatch | 0.287 ms | 0.384 ms | 0.416 ms | 0.500 ms |
 | **CRS** | **1.167 ms** | **7.27 ms** | **21.8 ms** | **79.5 ms** |
 
-**Run CRS out-of-band if you accept request bodies** — it still alerts and bans, but
-the request that triggered it is not blocked. Keep CRS in-band where blocking on the
-first request matters.
+The cost of processing request bodies with CRS is significantly higher than with vpatch rules.
 
-Only `routines` requests are ever in rule evaluation at once, so your ceiling is:
-
-```
-max req/s  =  routines / in-band time
-```
-
-Engine CPU sits at barely half in those cells: the engine count binds before CPU does,
-so raising `routines` past your core count helps here.
-
-## Does malicious traffic cost more?
+## Cost of malicious traffic
 
 Same GET stream with 10% attack payloads, 4 routines:
 
@@ -91,10 +74,6 @@ Same GET stream with 10% attack payloads, 4 routines:
 | --- | --- | --- | --- | --- |
 | vpatch | 13 317 | 12 856 req/s (-3%) | 0.287 → 0.285 ms | 2.1% |
 | CRS | 3 377 | 2 816 req/s (-16%) | 1.167 → 1.235 ms | 9.4% |
-
-Most of the 16% is the cost of building an alert and delivering it to the Local API, so
-budget for the remediation path. Virtual patching catches only 2.1% of the malicious
-10%: it is a targeted rule set.
 
 ## In-band or out-of-band
 
@@ -106,9 +85,6 @@ triggering request is not blocked. All three at a fixed 2 000 req/s, 4 routines:
 | vpatch in-band | 0.229 ms | - | 0.56 ms | 1.11 ms | 11% |
 | CRS in-band | 1.087 ms | - | 4.13 ms | 6.22 ms | 36% |
 | **vpatch + CRS out-of-band** | **0.291 ms** | 1.201 ms | **1.69 ms** | 4.04 ms | 48% |
-
-The tiered setup cuts in-band time **73%** and p95 **59%** while still evaluating every
-CRS rule, for **33% more** engine CPU since both rule sets now run.
 
 :::warning
 Out-of-band evaluation is bounded by a queue. If it fills, requests are skipped
