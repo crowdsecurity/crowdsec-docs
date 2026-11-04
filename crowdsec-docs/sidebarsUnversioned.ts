@@ -505,6 +505,14 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
+			type: "doc",
+			label: "Am I Attacking",
+			id: "console/am_i_attacking",
+			customProps: {
+				tag: "premium",
+			},
+		},
+		{
 			type: "html",
 			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
 			defaultStyle: false,
