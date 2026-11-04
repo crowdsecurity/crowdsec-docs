@@ -58,9 +58,8 @@ One coraza engine per routine, so rule evaluation parallelises well:
 | **8** | **16 030 (2.72x)** | **4 287 (3.58x)** |
 | 16 | 15 679 (2.66x) | 4 059 (3.38x) |
 
-Set `routines` to the hardware threads you give the engine. Past that the engines
-oversubscribe the cores: in-band time rises from 1.70 ms to 2.67 ms and throughput
-falls.
+These are saturation ceilings. Don't set `routines` above the cores you give the
+engine: more engines on the same cores just make each one slower.
 
 ## Request bodies
 
@@ -122,8 +121,7 @@ silently and your out-of-band rules stop seeing traffic. Watch
 1. Run virtual patching in-band unconditionally (0.23 ms). CRS in-band suits GET-heavy
    traffic only; out-of-band costs you blocking on the first request.
 2. Divide `routines` by your own in-band time for your ceiling.
-3. Set `routines` to the hardware threads you give the engine. More only helps when
-   per-request cost is high enough for the engine count to bind first.
+3. Set `routines` to the cores you give the engine, no more.
 4. Per physical core: **1 000 CRS req/s**, **4 000** vpatch.
 5. Add headroom for remediation: blocked requests cost more than finding them.
 

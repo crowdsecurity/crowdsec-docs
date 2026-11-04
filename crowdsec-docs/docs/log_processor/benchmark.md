@@ -138,8 +138,7 @@ Or set `CROWDSEC_FEATURE_RE2_DISABLE_GROK_SUPPORT=true` in the environment.
 3. Add memory for buckets, roughly proportional to **distinct active source IPs** over
    a bucket window, not to the log rate: 2 000 IPs instead of 50 000 cut peak memory
    39% at the same throughput.
-4. Set the three routine counts to **4** and stop. More buys little when parsing and
-   costs you when not.
+4. Set the three routine counts to **4** and stop. Never more than your core count.
 
    ```yaml
    crowdsec_service:
