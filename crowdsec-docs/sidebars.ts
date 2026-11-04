@@ -137,6 +137,7 @@ const sidebarsConfig: SidebarConfig = {
 					},
 					items: [],
 				},
+				{ type: "doc", id: "log_processor/benchmark" },
 			],
 		},
 		{

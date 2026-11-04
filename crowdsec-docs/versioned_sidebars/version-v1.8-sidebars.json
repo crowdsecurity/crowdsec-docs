@@ -129,6 +129,10 @@
             "id": "log_processor/alert_context/intro"
           },
           "items": []
+        },
+        {
+          "type": "doc",
+          "id": "log_processor/benchmark"
         }
       ]
     },
