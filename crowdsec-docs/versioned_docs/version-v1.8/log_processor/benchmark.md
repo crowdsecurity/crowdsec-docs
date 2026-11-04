@@ -40,8 +40,7 @@ crowdsec -c config.yaml -no-api -dsn file:///path/to/corpus.log -type nginx
 | 16 | 10 669 | 2.95x | 1 133 µs | 3.2 GB |
 
 Four routines is the knee. Past it the process never uses much more than **two thirds
-of the machine** (10.6 of 16 hardware threads at 16 routines) while CPU per line climbs
-55%.
+of the machine** — 10.6 of 16 hardware threads at 16 routines.
 
 ## A mostly unparsed source: kernel and auditd over syslog
 
@@ -56,8 +55,7 @@ to a host whose logs you have parsers for. Skip this section if that is not you.
 | 8 | 13 992 | 0.84x | 287 µs | 147 s |
 | 16 | 12 724 | 0.76x | 364 µs | 207 s |
 
-On this source **adding routines makes it slower**: one routine is fastest, sixteen is
-24% worse, and system CPU climbs to 207 s. Unparsed lines are six times cheaper than
+**Adding routines makes it slower here.** Unparsed lines are six times cheaper than
 parsed ones (117 µs against 732 µs), but that does not improve with concurrency. Cause
 and fix: [the grok backend](#the-grok-backend-on-mostly-unparsed-sources).
 
@@ -83,7 +81,6 @@ collector more loosely is a bigger lever than adding routines:
 | **400** | **10 974** | **+20%** | 136 s | 5.9 GB |
 | 800 | 10 609 | +16% | 126 s | 7.6 GB |
 
-A straight trade of RAM for throughput, which stops paying after 400.
 
 :::tip
 `GOGC` is a Go runtime environment variable, not a CrowdSec setting. Set it in the
@@ -141,8 +138,19 @@ Or set `CROWDSEC_FEATURE_RE2_DISABLE_GROK_SUPPORT=true` in the environment.
 3. Add memory for buckets, roughly proportional to **distinct active source IPs** over
    a bucket window, not to the log rate: 2 000 IPs instead of 50 000 cut peak memory
    39% at the same throughput.
-4. Set `parser_routines`, `buckets_routines` and `output_routines` to **4** and stop.
-   More buys little when parsing and costs you when not.
+4. Set the three routine counts to **4** and stop. More buys little when parsing and
+   costs you when not.
+
+   ```yaml
+   crowdsec_service:
+     pipeline:
+       parser: { routines: 4 }
+       bucket: { routines: 4 }
+       output: { routines: 4 }
+   ```
+
+   The flat `parser_routines`, `buckets_routines` and `output_routines` keys still
+   work, but `pipeline` wins wherever both are set.
 5. If 4 is not enough, raise `GOGC` before the routine counts: ~20% for double the
    memory, at any routine count.
 6. Budget the Local API separately. Under heavy alert volume (8 700 alerts per
