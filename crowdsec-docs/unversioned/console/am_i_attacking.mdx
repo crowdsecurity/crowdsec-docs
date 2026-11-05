@@ -52,6 +52,22 @@ export const VIOLET = "var(--cs-violet)";
   />
 </DocCardGrid>
 
+<figure style={{ margin: "0 0 1.5rem" }}>
+    <video
+        controls
+        playsInline
+        preload="metadata"
+        poster={useBaseUrl("/img/console/am_i_attacking/setup-video-poster.jpg")}
+        aria-label="Setting up Am I Attacking in the Console: open the page, declare an IP, and send its alerts to Slack"
+        style={{ display: "block", width: "100%", aspectRatio: "16 / 9", borderRadius: "12px", border: "1px solid var(--ifm-color-emphasis-200)", background: "#f3f2ef" }}
+    >
+        <source src={useBaseUrl("/video/console/am_i_attacking_setup.mp4")} type="video/mp4" />
+    </video>
+    <figcaption style={{ fontSize: "13px", color: "var(--ifm-color-emphasis-600)", marginTop: "0.5rem", textAlign: "center" }}>
+        The three steps in 40 seconds, from the Console homepage to the first event.
+    </figcaption>
+</figure>
+
 :::info A configuration does not alert on its own
 Declaring addresses records the events in the Console, but nothing leaves it until a [notification rule](/u/console/notification_integrations/rule) carries the *Am I Attacking* event. The page warns you as long as no rule does, and offers to create one.
 :::
