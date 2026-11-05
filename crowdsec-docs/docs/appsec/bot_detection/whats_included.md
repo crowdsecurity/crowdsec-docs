@@ -6,35 +6,36 @@ description: "What the crowdsecurity/appsec-bot-challenge collection installs: t
 sidebar_position: 3
 ---
 
-Everything on this page comes from the [`crowdsecurity/appsec-bot-challenge`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-bot-challenge) collection. [Installing it](enable.md) turns all of it on.
+Everything on this page comes with the [`crowdsecurity/appsec-bot-challenge`](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-bot-challenge) collection installed in [Enable bot detection](enable.md).
 
 ## The two appsec-configs it installs
 
-Bot detection is split in two: one config computes a score, another decides what score is too high. Because the two are separate, you can add signals or re-weight the ones that don't suit your traffic in a config of your own, leaving both shipped configs untouched. See [Customization & recipes](customization.md).
+Scoring and rejection are split across two configs:
 
-[`appsec-bot-challenge-scoring`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-configurations/appsec-bot-challenge-scoring) serves the challenge and scores what comes back, weighted as in [How a request is scored](#how-a-request-is-scored). It never rejects.
+- [`appsec-bot-challenge-scoring`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-configurations/appsec-bot-challenge-scoring) serves the challenge and scores the submission. It never rejects.
+- [`appsec-bot-challenge-scoring-balanced`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-configurations/appsec-bot-challenge-scoring-balanced) rejects submissions that score 75 or more.
 
-[`appsec-bot-challenge-scoring-balanced`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-configurations/appsec-bot-challenge-scoring-balanced) is the threshold, and holds the only rule that rejects. It is a single score comparison, so changing strictness means installing a different threshold config.
+Because they are separate, you can add or re-weight signals in a config of your own without touching the shipped ones. See [Customization & recipes](customization.md).
 
 ## How a request is scored
 
-Every signal that fires adds points. Scores accumulate, so a client tripping two moderate signals can cross a threshold that neither would reach alone.
+Every signal that fires adds points, so two moderate signals can cross a threshold that neither would reach alone.
 
 :::note
-Signals are added over time, so this table is a snapshot and will differ from what your version ships. Treat it as examples. The accurate list for your install is the `score_reasons` on your own alerts.
+Signals are added over time, so this table may differ from what your version ships. Treat it as examples.
 :::
 
 | Points | Signals | Why this weight |
 |---|---|---|
-| 100 | `cdp`, `webdriver`, `webdriver_writable`, `selenium`, `playwright`, `webdriver_iframe`, `webdriver_worker`, `bot_user_agent` | An automation framework is driving the browser, or the client declares itself a bot in its User-Agent. There is no honest reason for these to be present on a client that solved the challenge. |
-| 50 | `headless_screen_resolution`, `missing_chrome_object`, `impossible_memory`, `inconsistent_etsl`, `mismatch_webgl_worker`, `mismatch_platform_iframe`, `mismatch_platform_worker` | Headless environments and cross-context inconsistencies. Hard to fake away, but each has a thin tail of real clients. |
-| 30 | `platform_mismatch`, `gpu_mismatch`, `high_cpu_count` | Suspicious, but reachable by odd-but-real setups: VMs and remote desktops. |
-| 15 | `utc_timezone`, `ua_mobile`, `accept_language` | Common enough among real visitors that acting on one alone would be a false positive. Servers, VPNs and privacy tooling all produce a UTC timezone. |
+| 100 | `cdp`, `webdriver`, `webdriver_writable`, `selenium`, `playwright`, `webdriver_iframe`, `webdriver_worker`, `bot_user_agent` | An automation framework is driving the browser, or the client declares itself a bot in its User-Agent. A real visitor never shows these. |
+| 50 | `headless_screen_resolution`, `missing_chrome_object`, `impossible_memory`, `inconsistent_etsl`, `mismatch_webgl_worker`, `mismatch_platform_iframe`, `mismatch_platform_worker` | Headless environments and cross-context inconsistencies. Strong evidence, but a few real clients trigger each one. |
+| 30 | `platform_mismatch`, `gpu_mismatch`, `high_cpu_count` | Suspicious, but VMs and remote desktops trigger them too. |
+| 15 | `utc_timezone`, `ua_mobile`, `accept_language` | Common among real visitors. Servers, VPNs and privacy tooling all produce a UTC timezone. |
 | 5 | `swiftshader_renderer`, `mismatch_languages`, `timezone_country` | Only meaningful in aggregate. `timezone_country` fires on any traveller or VPN user. |
 
 A headless Chrome driven over CDP in a UTC container scores `cdp=100` plus `utc_timezone=15`, so 115, over every threshold the collection ships.
 
-That table covers the signals the engine computes itself. Signals shipped by the hub's detection configs feed the same score. See [Signals](signals.md).
+The table lists built-in signals only. Detection configs from the hub add more, described in [Signals](signals.md).
 
 ## Choosing a threshold
 
@@ -44,24 +45,24 @@ Three bundles ship the same scoring engine and exclusions, and differ only in wh
 |---|---|---|
 | `crowdsecurity/appsec-bot-challenge` | `>= 75` | The default. Catches automation frameworks and headless browsers without acting on weak signals. |
 | `crowdsecurity/appsec-bot-challenge-strict` | `>= 45` | You would rather turn away a few real visitors than let a bot through. |
-| `crowdsecurity/appsec-bot-challenge-permissive` | `>= 100` | Only near-certain automation. Minimises false positives. |
+| `crowdsecurity/appsec-bot-challenge-permissive` | `>= 100` | You only want to block near-certain automation. |
 
-Install exactly one of them. To change strictness later, install a different one: editing a hub config marks it [tainted](../configuration_creation_testing.md), which stops it receiving updates.
+Install exactly one. To change strictness, install a different one: editing a hub config marks it [tainted](../configuration_creation_testing.md) and stops its updates.
 
 They are also built from reusable collections, if you want to compose your own bundle:
 
 | Collection | Contains |
 |---|---|
-| `crowdsecurity/appsec-bot-challenge-scoring` | The scoring engine, which serves the challenge and computes the score but never rejects |
-| `crowdsecurity/appsec-bot-challenge-detections` | The detection configs, which add [signals](signals.md) beyond the engine's built-in ones |
+| `crowdsecurity/appsec-bot-challenge-scoring` | The scoring config, without a threshold |
+| `crowdsecurity/appsec-bot-challenge-detections` | Detection configs that add [signals](signals.md) |
 | `crowdsecurity/appsec-bot-challenge-good-bots` | The verified-bot exclusion configs |
 | `crowdsecurity/appsec-bot-challenge-exclude-paths` | The path exclusion configs |
 
 ## The alerts it produces
 
-A submission over the threshold is refused its cookie and logged. The log line carries the score in `reason` and the signals that fired in `signals`, so you can tell a false positive from a real bot without reproducing the request.
+A submission over the threshold is refused its cookie. The log line records the score in `reason` and the signals that fired in `signals`.
 
-Rejections also become alerts. There are two kinds, and they answer different questions:
+Rejections also raise alerts, of two kinds:
 
 | Aspect | Per-submission alert | Behavioral scenario alert |
 |---|---|---|
@@ -71,15 +72,13 @@ Rejections also become alerts. There are two kinds, and they answer different qu
 | Answers | Why was this client refused? | Which IP is worth blocking? |
 | Remediation | Alert only | Block |
 
-Only the behavioral scenarios create decisions. A single rejected submission tells you what happened, it does not ban anyone.
+A third scenario, `crowdsecurity/suspicious-browser-submission`, covers submissions that were accepted but flagged, for example by an [experimental signal](signals.md#experimental-and-scoring-signals).
 
-A third scenario, `crowdsecurity/suspicious-browser-submission`, covers submissions that were accepted but flagged. The client keeps its cookie, and CrowdSec still raises an alert.
-
-Both per-submission scenarios carry the `bot-detection` kind, so `cscli alerts list --kind bot-detection` separates them from your WAF and log-based alerts. The behavioral scenarios are ordinary `crowdsec` alerts.
+Both per-submission scenarios use the `bot-detection` kind, so `cscli alerts list --kind bot-detection` lists them apart from your WAF and log-based alerts.
 
 ### Reading a rejection
 
-The collection ships the `crowdsecurity/appsec-bot-detection` alert context so a rejection stays explainable after the fact. Inspect one with `cscli alerts inspect <id> -d`, and read `score_reasons` first. It breaks the score down per signal, so a decisive `cdp=100` is easy to separate from weak signals that only just added up. The first is a bot. The second usually means your threshold is too low for your traffic.
+The collection ships the `crowdsecurity/appsec-bot-detection` alert context. Inspect an alert with `cscli alerts inspect <id> -d` and read `score_reasons`, the per-signal breakdown. A decisive `cdp=100` is a bot. Weak signals that barely reach the threshold usually mean it is too low for your traffic.
 
 `fingerprint_id` (the `fsid`) is stable per device profile, so a scraper rotating addresses keeps the same `fsid`. [`cscli bot fsid`](/cscli/cscli_bot_fsid.md) decodes it.
 
@@ -87,11 +86,11 @@ The same context in the Console:
 
 ![Score breakdown on a bot-detection alert in the Console](/img/appsec/bot_detection/console-alert-context.png)
 
-The shipped context exposes a readable subset of what the event carries. To surface more, see [Event fields for alert context](hooks.md#event-fields-for-alert-context).
+The event carries more fields than the shipped context shows. See [Event fields for alert context](hooks.md#event-fields-for-alert-context).
 
 ## Behavioral scenarios it installs
 
-Per-request hooks only see the request in front of them. The collection also installs two scenarios that look across requests and create decisions for repeat offenders:
+Two scenarios look across requests and block repeat offenders:
 
 | Scenario | Type | What it catches | Outcome |
 |---|---|---|---|
@@ -100,9 +99,9 @@ Per-request hooks only see the request in front of them. The collection also ins
 
 ## Known bots it lets through
 
-Search-engine crawlers, uptime probes and AI crawlers will never solve a JavaScript challenge, and blocking them costs you indexing and monitoring. The collection exempts them.
+Search-engine crawlers, uptime probes and AI crawlers never solve a JavaScript challenge, and blocking them costs you indexing and monitoring, so the collection exempts them.
 
-To be exempted, a client's IP must belong to the vendor's published ranges or pass a forward-confirmed reverse-DNS lookup. A User-Agent on its own proves nothing: a bot claiming to be Googlebot from an address that isn't Google's gets challenged like anything else, so the exemption cannot be turned into a bypass.
+To be exempted, a client's IP must belong to the vendor's published ranges or pass a forward-confirmed reverse-DNS lookup. A bot claiming to be Googlebot from an address that isn't Google's is challenged like any other client.
 
 The families are split across separate configs so you can install only the ones you need:
 
@@ -115,11 +114,11 @@ The families are split across separate configs so you can install only the ones 
 | [`crowdsecurity/appsec-bot-challenge-exclude-social`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-configurations/appsec-bot-challenge-exclude-social) | Social-network link unfurlers |
 | [`crowdsecurity/appsec-bot-challenge-exclude-monitoring`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-configurations/appsec-bot-challenge-exclude-monitoring) | Uptime and monitoring probes |
 
-Each family grows as vendors are added to the hub, so the rows link to their hub pages rather than listing bots here. [`cscli bot match`](/cscli/cscli_bot_match.md) answers whether a specific client would be exempted, and [Authoring your own known-bot files](customization.md#authoring-your-own-known-bot-files) covers adding one of your own.
+Each config's hub page lists the bots it covers. [`cscli bot match`](/cscli/cscli_bot_match.md) checks whether a given client would be exempted. To add a bot of your own, see [Authoring your own known-bot files](customization.md#authoring-your-own-known-bot-files).
 
 ## Path-exclusion configs
 
-The exemptions above identify the *client*. These identify the *route*: some paths are hit by design by things that will never run JavaScript: crawler metadata, feeds, third-party webhooks, static assets, API endpoints. Challenging them produces nothing but false positives.
+These configs exempt routes rather than clients. Crawler metadata, feeds, third-party webhooks, static assets and API endpoints are hit by clients that never run JavaScript, so challenging them only produces false positives.
 
 | Appsec-config | Exempts |
 |---|---|
@@ -129,6 +128,6 @@ The exemptions above identify the *client*. These identify the *route*: some pat
 | `crowdsecurity/appsec-bot-challenge-exclude-static` | static assets and media (`.css`, `.js`, images, fonts, `/manifest.json`, …) |
 | `crowdsecurity/appsec-bot-challenge-exclude-api` | programmatic endpoints (`/api/*`, `/graphql`, `/wp-json/*`, `/oauth/*`, …) |
 
-They are separate configs so you can drop any that don't apply to your app. Keeping all five on gives you fewer false positives. [Enable bot detection](enable.md#install-the-collection) shows how to load them from your acquisition. To add your own exclusions, ship a custom appsec-config rather than editing these.
+Each is a separate config, so you can drop any that doesn't apply to your app. [Enable bot detection](enable.md#install-the-collection) shows how to load them from your acquisition. To add your own exclusions, ship a custom appsec-config rather than editing these.
 
 For the request flow end to end and the device data the challenge collects, see [How it works](how_it_works.md).
