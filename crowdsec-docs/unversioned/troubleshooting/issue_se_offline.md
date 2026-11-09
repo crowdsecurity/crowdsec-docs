@@ -17,6 +17,13 @@ This usually means the core `crowdsec` service has stopped working or communicat
 - [**Host or service down**](#host-or-service-down): The CrowdSec service has stopped or the host itself is unreachable.
 - [**Console connectivity issues**](#console-connectivity-issues): Network, firewall, or proxy blocking HTTPS calls to Console endpoints, or TLS validation failures.
 
+:::tip Try it with the CrowdSec Skill
+Use the [CrowdSec Skill](https://github.com/crowdsecurity/crowdsec-skill) to help you solve this issue.  
+
+Suggested Prompt
+> My Security Engine hasn't reported to the Console in 48h; Help me find out why.
+:::
+
 ## Diagnosis & Resolution
 
 ### Host or service down

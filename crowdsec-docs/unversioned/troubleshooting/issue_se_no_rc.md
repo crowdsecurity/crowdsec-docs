@@ -18,6 +18,13 @@ A Security Engine that detects threats but has no Remediation Component attached
 - [**No Remediation Component installed**](#no-remediation-component-installed): No bouncer has been installed and registered to this Security Engine.
 - [**Intentional — this Security Engine is detection-only**](#intentional--this-security-engine-is-detection-only): The absence of a local RC is deliberate and this alert can be safely ignored.
 
+:::tip Try it with the CrowdSec Skill
+Use the [CrowdSec Skill](https://github.com/crowdsecurity/crowdsec-skill) to help you solve this issue.  
+
+Suggested Prompt
+> My Security Engine has no Remediation Component registered; Help me install and register one suited to my infrastructure.
+:::
+
 ## Diagnosis & Resolution
 
 ### No Remediation Component installed

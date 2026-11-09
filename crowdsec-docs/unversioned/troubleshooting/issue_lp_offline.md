@@ -21,6 +21,13 @@ This issue appears when a Log Processor has not checked in with the Local API (L
 - [**Machine not validated or credentials revoked**](#machine-credentials-need-validation): The agent's credentials are pending validation, were removed from the central LAPI, or the credentials file is missing/corrupt.
 - [**Local API unreachable from agent**](#central-lapi-unreachable-from-agent): Network issues, firewall rules, or configuration errors prevent the agent from connecting to the LAPI endpoint.
 
+:::tip Try it with the CrowdSec Skill
+Use the [CrowdSec Skill](https://github.com/crowdsecurity/crowdsec-skill) to help you solve this issue.  
+
+Suggested Prompt
+> The Log Processor `<name/host>` hasn't checked in with LAPI for 24h+; Help me find out why.
+:::
+
 ## Diagnosis & Resolution
 
 ### Service Stopped or Stuck

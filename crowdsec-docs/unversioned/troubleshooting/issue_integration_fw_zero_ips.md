@@ -16,6 +16,12 @@ The **Firewall Integration Pulling Zero IPs** issue means that none of its subsc
 - [**No blocklist subscriptions**](#diagnosis--resolution): The integration has no blocklists subscribed to it, so the endpoint has nothing to return.
 - [**All subscribed blocklists are empty**](#diagnosis--resolution): The subscribed blocklists currently contain no entries (rare, but possible for user created or dynamic lists).
 
+:::tip Try it with an LLM
+You can get AI help: open a chat with your LLM of choice, paste the prompt below, with the model of your firewall
+
+> Help me find out why my firewall *`<your firewall model>`* is pulling an empty external ip list from CrowdSec. You can find some pointer in CrowdSec documentation here: https://docs.crowdsec.net/u/integrations/intro/#available-integrations
+:::
+
 ## Diagnosis & Resolution
 
 This is the most common cause. When a Firewall integration is created in the Console, it must have at least one blocklist subscribed to it before the endpoint will return any IPs.
