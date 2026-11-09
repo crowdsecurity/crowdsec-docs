@@ -1,6 +1,6 @@
 import React from "react";
 
-export type PillVariant = "community" | "premium" | "platinum" | "info" | "success" | "warning";
+export type PillVariant = "community" | "premium" | "platinum" | "info" | "success" | "warning" | "danger";
 
 type Props = {
 	variant?: PillVariant;

@@ -1,10 +1,9 @@
 ---
-id: contributing_hub
-title: Hub
-sidebar_position: 3
+id: intro
+title: "Contributing to the Hub"
+sidebar_label: "Overview"
+description: "The shared workflow for contributing parsers, scenarios, AppSec rules, collections and bot detections to the CrowdSec hub: prerequisites, guidelines, testing and the pull request process."
 ---
-
-# Contributing to the Hub
 
 Parsers, Scenarios, Collections, and WAF rules allow the CrowdSec `Security Engine` to detect and block malevolent behavior. Supporting new services or improving detection capabilities is a great way to contribute to the CrowdSec ecosystem.
 
@@ -57,35 +56,17 @@ The basic workflow for contributing:
 4. Create/Modify tests to ensure proper coverage
 5. Open a pull request
 
-## Parsers and scenarios
+## What are you contributing?
 
-Use the dedicated creation guides for full walkthroughs and keep these must-haves in mind:
+This page covers the workflow shared by every hub contribution. Each type also has its own page:
 
-- Parsers: follow [parsers creation](/log_processor/parsers/create.md); add cscli hubtest coverage and a short `.md` describing purpose/setup.
-- Scenarios: follow [scenarios creation](/log_processor/scenarios/create.md); fill the required `labels`, cover the scenario with cscli hubtest, and add a `.md` doc.
-
-## AppSec rules
-
-Follow [AppSec rule creation](/appsec/create_rules.md) for the detailed flow. Essentials:
-
-- Tests: create a cscli hubtest with `--appsec` and provide the nuclei template plus assertions as described in the guide.
-- Rule metadata: complete the required labels/fields so CI passes.
-
-## Collections
-
-Use [collections format](/log_processor/collections/format.md); bundle tested parsers, scenarios, and WAF rules. Add a markdown page that states the collection goal plus the acquisition example to ingest the logs.
+- [Parsers and scenarios](parsers_scenarios.md)
+- [AppSec rules](appsec_rules.md)
+- [Bot detections](bot_detections.md)
 
 ## Testing
 
-Before submitting, ensure proper testing with `cscli hubtest`. Follow the dedicated creation guides for step-by-step instructions instead of duplicating them here:
-- Parser tests: [parsers creation](/log_processor/parsers/create.md#create-our-test)
-- Scenario tests: [scenarios creation](/log_processor/scenarios/create.md#create-our-test)
-- AppSec tests (with nuclei templates): [AppSec rule creation](/appsec/create_rules.md#create-our-test)
-- CLI reference and options: [cscli hubtest](/cscli/cscli_hubtest.md)
-
-### CI/CD Testing
-
-The hub repository uses GitHub Actions for automated testing of parsers, scenarios, and AppSec rules when you open a PR. Make sure local tests pass before requesting review.
+Most contributions need [`cscli hubtest`](/cscli/cscli_hubtest.md) coverage; each per-type page says what applies. To run tests locally, [create a test environment](../engine/test_env.md). GitHub Actions runs them on every pull request.
 
 ## Git Workflow / Branch Management
 
@@ -118,33 +99,29 @@ When creating parsers, scenarios, and collections, follow these YAML guidelines:
 
 **❌ Don't use YAML anchors** - they make YAML files harder to maintain and understand:
 
-### AI-Assisted Generation
+```yaml
+_common: &common
+  service: nginx
+  remediation: true
+labels:
+  <<: *common
+  confidence: 3
+```
 
-We do allow AI-assisted generation of parsers, scenarios, collections, and AppSec rules, but with important requirements:
+**✅ Write the values out instead:**
 
-- **Follow all guidelines**: AI-generated code must still follow all the guidelines in this document
-- **Include comprehensive tests**: A pull request with AI-generated code but no tests will be immediately closed
-- **Proper documentation**: Include complete documentation and examples as required
+```yaml
+labels:
+  service: nginx
+  remediation: true
+  confidence: 3
+```
 
-#### Disclosure Requirement
+Anchors make the reader look elsewhere in the file to know what a rule does.
 
-**Important**: When submitting AI-assisted contributions, you must check the "AI was used to generate any/all content of this PR" box in the PR template. You must understand and be able to explain yourself what was generated. AI-generated code will receive additional scrutiny to ensure quality and correctness.
+### AI-assisted generation
 
-#### What We Expect
-
-- Test coverage using `cscli hubtest`
-- Proper error handling and edge cases
-- Clear documentation and examples
-- Adherence to CrowdSec patterns and conventions
-- Human review and validation of the AI output
-
-### Technical Documentation
-
-The following explains how to create and test:
-
-- [parsers](/log_processor/parsers/create.md)
-- [scenarios](/log_processor/scenarios/create.md)
-- [AppSec rules](/appsec/create_rules.md)
+The [rules for AI tools](/contributing/getting_started.md#using-ai-tools) apply. On the hub, also tick the "AI was used to generate any/all content of this PR" box in the PR template, and be ready to explain what was generated. A PR with generated content and no tests is closed.
 
 ### Collections
 
@@ -177,12 +154,7 @@ Before asking for a review of your PR, please ensure you have the following:
 
 ### Tests
 
-Test creation is covered in [parsers creation](/log_processor/parsers/create.md), [scenarios creation](/log_processor/scenarios/create.md), and [AppSec rule creation](/appsec/create_rules.md). Ensure that each component is properly tested:
-
-- **Parser tests**: Include sample log files that cover various scenarios (success, failure, edge cases)
-- **Scenario tests**: Test with different input data to ensure proper triggering and no false positives
-- **AppSec tests**: Provide nuclei templates and expected outcomes for your rule
-- **Integration tests**: Verify that your components work well with existing parsers/scenarios
+Each type has its own expectations, covered on [parsers and scenarios](parsers_scenarios.md), [AppSec rules](appsec_rules.md) and [bot detections](bot_detections.md). Also check that your items work with the existing ones they interact with.
 
 ### Documentation
 
@@ -232,14 +204,12 @@ Before opening your PR, ensure you can check all items in the [PR template](http
 If you encounter issues:
 
 1. Check existing [GitHub Issues](https://github.com/crowdsecurity/hub/issues) for similar problems
-2. Ask for help on [Discord](https://discord.gg/crowdsec) or [Discourse](https://discourse.crowdsec.net/)
+2. Ask for help on [Discord](https://discord.gg/crowdsec)
 3. Open a new issue with detailed information about your problem
 
 ### Useful Resources
 
-- [Parser Creation Guide](/log_processor/parsers/create.md)
-- [Scenario Creation Guide](/log_processor/scenarios/create.md)
-- [AppSec Rule Creation](/appsec/create_rules.md)
+- [Parsers and scenarios](parsers_scenarios.md), [AppSec rules](appsec_rules.md), [bot detections](bot_detections.md)
 - [Collection Format](/log_processor/collections/format.md)
 - [Expression Language Documentation](/expr/intro.md)
 - [cscli hubtest Documentation](/cscli/cscli_hubtest.md)

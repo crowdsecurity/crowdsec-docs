@@ -25,19 +25,21 @@ Every signal that fires adds points, so two moderate signals can cross a thresho
 Signals are added over time, so this table may differ from what your version ships. Treat it as examples.
 :::
 
+The built-in signals carry these weights:
+
 | Points | Signals | Why this weight |
 |---|---|---|
 | 100 | `cdp`, `webdriver`, `webdriver_writable`, `selenium`, `playwright`, `webdriver_iframe`, `webdriver_worker`, `bot_user_agent` | An automation framework is driving the browser, or the client declares itself a bot in its User-Agent. A real visitor never shows these. |
 | 50 | `headless_screen_resolution`, `missing_chrome_object`, `impossible_memory`, `inconsistent_etsl`, `mismatch_webgl_worker`, `mismatch_platform_iframe`, `mismatch_platform_worker` | Headless environments and cross-context inconsistencies. Strong evidence, but a few real clients trigger each one. |
 | 30 | `platform_mismatch`, `gpu_mismatch`, `high_cpu_count` | Suspicious, but VMs and remote desktops trigger them too. |
 | 15 | `utc_timezone`, `ua_mobile`, `accept_language` | Common among real visitors. Servers, VPNs and privacy tooling all produce a UTC timezone. |
-| 5 | `swiftshader_renderer`, `mismatch_languages`, `timezone_country` | Only meaningful in aggregate. `timezone_country` fires on any traveller or VPN user. |
+| 5 | `swiftshader_renderer`, `mismatch_languages`, `timezone_country` | Only meaningful in aggregate. `timezone_country` fires on any traveler or VPN user. |
 
 A headless Chrome driven over CDP in a UTC container scores `cdp=100` plus `utc_timezone=15`, so 115, over every threshold the collection ships.
 
-The table lists built-in signals only. Detection configs from the hub add more, described in [Signals](signals.md).
+Detection configs from the hub add more signals, described in [Signals](signals.md).
 
-## Choosing a threshold
+## Choose a threshold
 
 Three bundles ship the same scoring engine and exclusions, and differ only in where they reject:
 
@@ -62,23 +64,28 @@ They are also built from reusable collections, if you want to compose your own b
 
 A submission over the threshold is refused its cookie. The log line records the score in `reason` and the signals that fired in `signals`.
 
-Rejections also raise alerts, of two kinds:
+Bot detection raises three kinds of alert:
 
-| Aspect | Per-submission alert | Behavioral scenario alert |
-|---|---|---|
-| Scenario | `crowdsecurity/rejected-browser-submission` | `crowdsecurity/appsec-bot-challenge-too-many-*` |
-| Kind | `bot-detection` | `crowdsec` |
-| Fires | Once per rejected submission | Once an IP crosses a rate over time |
-| Answers | Why was this client refused? | Which IP is worth blocking? |
-| Remediation | Alert only | Block |
+<div className="cs-table-code-wrap">
 
-A third scenario, `crowdsecurity/suspicious-browser-submission`, covers submissions that were accepted but flagged, for example by an [experimental signal](signals.md#experimental-and-scoring-signals).
+| Aspect | Rejected submission | Flagged submission | Behavioral scenario |
+|---|---|---|---|
+| Verdict | <Pill variant="danger">Rejected</Pill> alert, no ban | <Pill variant="warning">Accepted, flagged</Pill> alert, no ban | <Pill variant="info">IP blocked</Pill> |
+| Scenario | `crowdsecurity/rejected-browser-submission` | `crowdsecurity/suspicious-browser-submission` | `crowdsecurity/appsec-bot-challenge-too-many-*` |
+| Client | Refused its cookie | Keeps its cookie | Blocked at the bouncer |
+| Kind | `bot-detection` | `bot-detection` | `crowdsec` |
+| Fires | Once per rejected submission | Once per flagged submission | Once an IP crosses a rate over time |
+| Answers | Why was this client refused? | Is a new signal firing on your traffic? | Which IP is worth blocking? |
+
+</div>
+
+A submission is flagged when it is accepted but a hook calls `FlagSubmission()`. The shipped `appsec-bot-challenge-warn-experimental` does this whenever an [experimental signal](signals.md#experimental-and-scoring-signals) fires.
 
 Both per-submission scenarios use the `bot-detection` kind, so `cscli alerts list --kind bot-detection` lists them apart from your WAF and log-based alerts.
 
-### Reading a rejection
+### Read a rejection
 
-The collection ships the `crowdsecurity/appsec-bot-detection` alert context. Inspect an alert with `cscli alerts inspect <id> -d` and read `score_reasons`, the per-signal breakdown. A decisive `cdp=100` is a bot. Weak signals that barely reach the threshold usually mean it is too low for your traffic.
+The collection ships the `crowdsecurity/appsec-bot-detection` alert context. Inspect an alert with `cscli alerts inspect ALERT_ID -d`, replacing `ALERT_ID` with an ID from `cscli alerts list`, and read `score_reasons`, the per-signal breakdown. A decisive `cdp=100` is a bot. Weak signals that barely reach the threshold usually mean it is too low for your traffic.
 
 `fingerprint_id` (the `fsid`) is stable per device profile, so a scraper rotating addresses keeps the same `fsid`. [`cscli bot fsid`](/cscli/cscli_bot_fsid.md) decodes it.
 
@@ -118,7 +125,7 @@ Each config's hub page lists the bots it covers. [`cscli bot match`](/cscli/cscl
 
 ## Path-exclusion configs
 
-These configs exempt routes rather than clients. Crawler metadata, feeds, third-party webhooks, static assets and API endpoints are hit by clients that never run JavaScript, so challenging them only produces false positives.
+These configs exempt routes rather than clients. Crawler metadata, feeds, third-party webhooks, static assets and API endpoints are hit by clients that never run JavaScript, so challenging them only produces false positives. Each config covers one family of paths:
 
 | Appsec-config | Exempts |
 |---|---|

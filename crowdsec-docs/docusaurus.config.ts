@@ -283,7 +283,17 @@ const removedVersionRedirects = redirects.flatMap(({ from, to }) =>
 		: []
 );
 
-// Security Engine folders were regrouped under log_processor/ and local_api/, and two /u/ sections moved.
+// The Contributing section was re-id'd per track; keys are the new doc ids, values the ids they replaced.
+const RENAMED_CONTRIBUTING_DOCS: Record<string, string> = {
+	"contributing/engine": "contributing/contributing_crowdsec",
+	"contributing/engine/test_env": "contributing/contributing_test_env",
+	"contributing/hub/intro": "contributing/contributing_hub",
+	"contributing/components": "contributing/contributing_bouncers",
+	"contributing/docs": "contributing/contributing_doc",
+};
+
+// Security Engine folders were regrouped under log_processor/ and local_api/, two /u/ sections moved,
+// and the Contributing section was re-id'd.
 function oldPathsOf(existingPath: string): string[] {
 	const path = existingPath.replace(/\/$/, "");
 	const moved = path.match(/^\/u\/(?:cti_api\/api_integration\/(integration_[^/]+)|console\/service_api\/(.+))$/);
@@ -291,12 +301,14 @@ function oldPathsOf(existingPath: string): string[] {
 	const doc = path.match(/^\/docs(\/next)?(?:\/(.*))?$/);
 	if (!doc || /^v\d/.test(doc[2] ?? "")) return [];
 	const [, next = "", rest = ""] = doc;
-	const flat = rest
-		.replace(
-			/^log_processor\/(data_sources|parsers|scenarios|whitelist|collections|alert_context|service-discovery-setup)(?=\/|$)/,
-			"$1"
-		)
-		.replace(/^local_api\/(notification_plugins|profiles)(?=\/|$)/, "$1");
+	const flat =
+		RENAMED_CONTRIBUTING_DOCS[rest] ??
+		rest
+			.replace(
+				/^log_processor\/(data_sources|parsers|scenarios|whitelist|collections|alert_context|service-discovery-setup)(?=\/|$)/,
+				"$1"
+			)
+			.replace(/^local_api\/(notification_plugins|profiles)(?=\/|$)/, "$1");
 	const froms = flat === rest ? [] : [`/docs${next}/${flat}`];
 	if (!next) {
 		for (const version of REMOVED_VERSIONS) {
