@@ -1,9 +1,11 @@
 ---
 title: Helm's Parameters
+description: "Write a values file for the CrowdSec Helm chart, and look up every chart parameter: global, image, configuration, secrets, LAPI and agent settings."
+toc_max_heading_level: 4
 id: values_parameters
 ---
 
-# How to write a values parameter file
+## How to write a values parameter file
 
 The following configuration keeps the Helm chart close to its defaults while
 explicitly defining how CrowdSec discovers logs, which parsers and collections
@@ -166,20 +168,20 @@ config:
           login_password: 1h
 ```
 
-# Values parameters reference
+## Values parameters reference
 
 This page provides a complete, generated reference of all Helm chart
 configuration values, their defaults, and their purpose.
 
-## Parameters
+### Parameters
 
-### Global
+#### Global
 
 | Name                | Description                                        | Value    |
 | ------------------- | -------------------------------------------------- | -------- |
 | `container_runtime`<a id="container_runtime"></a> | [string] for raw logs format: docker or containerd | `docker` |
 
-### Image
+#### Image
 
 | Name                       | Description                                                                                                        | Value                    |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------ |
@@ -193,19 +195,19 @@ configuration values, their defaults, and their purpose.
 | `podAnnotations`<a id="podannotations"></a>           | podAnnotations to be added to pods (string:string map)                                                             | `{}`                     |
 | `podLabels`<a id="podlabels"></a>                | Labels to be added to pods (string:string map)                                                                     | `{}`                     |
 
-### Configuration
+#### Configuration
 
 | Name                                         | Description                                                                                                                         | Value   |
 | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | `config.parsers.s00-raw`<a id="config-parsers-s00-raw"></a>                     | First step custom parsers definitions, usually used to label logs                                                                   | `{}`    |
 | `config.parsers.s01-parse`<a id="config-parsers-s01-parse"></a>                   | Second step custom parsers definitions, usually to normalize logs into events                                                       | `{}`    |
 | `config.parsers.s02-enrich`<a id="config-parsers-s02-enrich"></a>                  | Third step custom parsers definitions, usually to enrich events                                                                     | `{}`    |
-| `config.scenarios`<a id="config-scenarios"></a>                           | Custom raw scenarios definition see https://docs.crowdsec.net/docs/next/log_processor/scenarios/intro                               | `{}`    |
+| `config.scenarios`<a id="config-scenarios"></a>                           | Custom raw scenarios definition see https://docs.crowdsec.net/docs/log_processor/scenarios/intro                               | `{}`    |
 | `config.postoverflows.s00-enrich`<a id="config-postoverflows-s00-enrich"></a>            | First step custom postoverflows definitions, usually used to enrich overflow events                                                 | `{}`    |
 | `config.postoverflows.s01-whitelist`<a id="config-postoverflows-s01-whitelist"></a>         | Second step custom postoverflows definitions, usually used to whitelist events                                                      | `{}`    |
 | `config.simulation.yaml`<a id="config-simulation-yaml"></a>                     | This file is usually handled by the agent.                                                                                          | `""`    |
 | `config.console.yaml`<a id="config-console-yaml"></a>                        | This file is usually handled by the agent.                                                                                          | `""`    |
-| `config.capi_whitelists.yaml`<a id="config-capi_whitelists-yaml"></a>                | This file is deprecated in favor of centralized allowlists see https://docs.crowdsec.net/docs/next/local_api/centralized_allowlists | `""`    |
+| `config.capi_whitelists.yaml`<a id="config-capi_whitelists-yaml"></a>                | This file is deprecated in favor of centralized allowlists see https://docs.crowdsec.net/docs/local_api/centralized_allowlists | `""`    |
 | `config.profiles.yaml`<a id="config-profiles-yaml"></a>                       | Use for defining custom profiles                                                                                                    | `""`    |
 | `config.config.yaml.local`<a id="config-config-yaml-local"></a>                   | main configuration file local overriden values. This is merged with main configuration file.                                        | `""`    |
 | `config.notifications`<a id="config-notifications"></a>                       | notification on alert configuration                                                                                                 | `{}`    |
@@ -232,7 +234,7 @@ configuration values, their defaults, and their purpose.
 | `tls.lapi.secret`<a id="tls-lapi-secret"></a>                            | Name of the Secret holding the lapidary's’s TLS certificate and key.                                                                | `""`    |
 | `tls.lapi.reflector.namespaces`<a id="tls-lapi-reflector-namespaces"></a>              | Namespaces where the LAPI TLS Secret can be reflected/synced.                                                                       | `[]`    |
 
-### secrets
+#### secrets
 
 | Name                                          | Description                                                                                                 | Value |
 | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----- |
@@ -242,7 +244,7 @@ configuration values, their defaults, and their purpose.
 | `secrets.externalSecret.csLapiSecretKey`<a id="secrets-externalsecret-cslapisecretkey"></a>      | The key in the external secret that holds the csLapiSecret                                                  | `""`  |
 | `secrets.externalSecret.registrationTokenKey`<a id="secrets-externalsecret-registrationtokenkey"></a> | The key in the external secret that holds the registrationToken                                             | `""`  |
 
-### lapi
+#### lapi
 
 | Name                                            | Description                                                                                                               | Value               |
 | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------- |
@@ -302,7 +304,7 @@ configuration values, their defaults, and their purpose.
 | `lapi.storeCAPICredentialsInSecret`<a id="lapi-storecapicredentialsinsecret"></a>             | [object] Store Central API credentials in a Secret (required if LAPI replicas > 1)                                        | `false`             |
 | `lapi.storeLAPICscliCredentialsInSecret`<a id="lapi-storelapicsclicredentialsinsecret"></a>        | [object] Store LAPI cscli credentials in a Secret. Useful if LAPI replicas > 1 or to setup LAPI with a persistent volume. | `false`             |
 
-### agent
+#### agent
 
 | Name                                             | Description                                                                                | Value   |
 | ------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------- |
@@ -315,7 +317,7 @@ configuration values, their defaults, and their purpose.
 | `agent.replicas`<a id="agent-replicas"></a>                                 | Number of replicas when deploying as a Deployment                                          | `1`     |
 | `agent.strategy`<a id="agent-strategy"></a>                                 | Deployment strategy when `isDeployment` is true                                            | `{}`    |
 | `agent.ports`<a id="agent-ports"></a>                                    | Custom container ports to expose (default: metrics port 6060 if enabled)                   | `[]`    |
-| `agent.additionalAcquisition`<a id="agent-additionalacquisition"></a>                    | Extra log acquisition sources (see https://docs.crowdsec.net/docs/next/data_sources/intro) | `[]`    |
+| `agent.additionalAcquisition`<a id="agent-additionalacquisition"></a>                    | Extra log acquisition sources (see https://docs.crowdsec.net/docs/log_processor/data_sources/intro/) | `[]`    |
 | `agent.acquisition`<a id="agent-acquisition"></a>                              | Pod log acquisition definitions (namespace, podName, program, etc.)                        | `[]`    |
 | `agent.priorityClassName`<a id="agent-priorityclassname"></a>                        | Priority class name for agent pods                                                         | `""`    |
 | `agent.daemonsetAnnotations`<a id="agent-daemonsetannotations"></a>                     | Annotations applied to the agent DaemonSet                                                 | `{}`    |
@@ -366,6 +368,9 @@ configuration values, their defaults, and their purpose.
 | `appsec.replicas`<a id="appsec-replicas"></a>                                | Number of replicas for the AppSec Deployment                                               | `1`     |
 | `appsec.strategy`<a id="appsec-strategy"></a>                                | Deployment strategy for AppSec                                                             | `{}`    |
 | `appsec.acquisitions`<a id="appsec-acquisitions"></a>                            | AppSec acquisitions (datasource listeners), e.g. appsec listener on 7422                   | `[]`    |
+| `appsec.scenarios`<a id="appsec-scenarios"></a>                               | Custom scenario files for the appsec pod (key = filename, value = file content)            | `{}`    |
+| `appsec.postoverflows.s00-enrich`<a id="appsec-postoverflows-s00-enrich"></a>                | Custom postoverflow enrichment files for the appsec pod                                    | `{}`    |
+| `appsec.postoverflows.s01-whitelist`<a id="appsec-postoverflows-s01-whitelist"></a>             | Custom postoverflow whitelist files for the appsec pod                                     | `{}`    |
 | `appsec.configs`<a id="appsec-configs"></a>                                 | AppSec configs (key = filename, value = file content)                                      | `{}`    |
 | `appsec.rules`<a id="appsec-rules"></a>                                   | AppSec rule files (key = filename, value = file content)                                   | `{}`    |
 | `appsec.priorityClassName`<a id="appsec-priorityclassname"></a>                       | Priority class name for AppSec pods                                                        | `""`    |

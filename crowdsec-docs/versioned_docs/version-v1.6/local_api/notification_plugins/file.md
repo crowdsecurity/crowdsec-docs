@@ -15,7 +15,7 @@ By default the configuration for Email plugin is located at these default locati
 
 ### Base configuration
 
-Example config which writes Alerts to a file using NDJson (**N**ewline **D**elimiter **J**ava**S**cript **O**bject **N**otation) format to `/tmp/crowdsec_alerts.json`.
+Example config which writes Alerts to a file using NDJson (**N**ewline-**D**elimited **J**ava**S**cript **O**bject **N**otation) format to `/tmp/crowdsec_alerts.json`.
 
 ```yaml
 # Don't change this
@@ -24,7 +24,7 @@ type: file
 name: file_default # this must match with the registered plugin in the profile
 log_level: info # Options include: trace, debug, info, warn, error, off
 
-# This template render all events as ndjson
+# This template renders all events as ndjson
 format: |
   {{range . -}}
    { "time": "{{.StopAt}}", "program": "crowdsec", "alert": {{. | toJson }} }
@@ -67,7 +67,7 @@ format: |
 ```
 #### Wazuh
 
-Wazuh has set of reserved top level keys and may cause logs not to be sent by the agent. The following format can be used to be compatible with Wazuh:
+Wazuh has a set of reserved top-level keys; using them may prevent the agent from sending logs. The following format can be used to be compatible with Wazuh:
 
 ```yaml
 format: |
@@ -129,7 +129,7 @@ on_success: break
 
 ## Final Steps:
 
-Let's restart crowdsec
+Restart CrowdSec:
 
 ```bash
 sudo systemctl restart crowdsec

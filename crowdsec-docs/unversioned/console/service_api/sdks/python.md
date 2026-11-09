@@ -53,7 +53,7 @@ print(response)
 
 ### Making Requests
 
-You can use the SDK to interact with the Service API. it's defined by service endpoints, such as `blocklists`, `integrations`, etc.
+You can use the SDK to interact with the Service API. The SDK is organized by service endpoint, such as `blocklists`, `integrations`, etc.
 
 #### Python
 

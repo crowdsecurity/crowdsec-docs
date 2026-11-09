@@ -28,7 +28,7 @@ The rule files share some common directives with the scenarios:
 
 - a [`name`](#name) and [`description`](#description)
 - a [`rules`](#rules) section describing the rule to match the HTTP request
-- a [`labels`](#labels) section for metadata (see [labels format](https://doc.crowdsec.net/docs/next/scenarios/format/#labels))
+- a [`labels`](#labels) section for metadata (see [labels format](https://docs.crowdsec.net/docs/next/log_processor/scenarios/format/#labels))
 
 ```yaml
 name: crowdsecurity/example-rule
@@ -83,7 +83,7 @@ rules: []
 
 > object
 
-Extra metadata used by scenarios and the Hub (optional). The format follows the [labels schema](https://doc.crowdsec.net/docs/next/scenarios/format/#labels).
+Extra metadata used by scenarios and the Hub (optional). The format follows the [labels schema](https://docs.crowdsec.net/docs/next/log_processor/scenarios/format/#labels).
 
 ```yaml {4-7}
 name: crowdsecurity/example-rule
@@ -133,7 +133,7 @@ rules:
           value: /crowdsec-test-NtktlJHV4TfBSK3wvlhiOBnl
 ```
 
-See the [appsec-generic-test rule](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/appsec-generic-test) for a full example.
+See the [appsec-generic-test rule](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/appsec-generic-test) for a full example.
 
 ### Rule condition fields
 
@@ -180,7 +180,9 @@ rules:
 
 > array of strings
 
-Optional list of variable names to restrict the [match](#match) to specific keys (only relevant for `ARGS`, `BODY_ARGS` and `HEADERS`).
+Optional list of variable names to restrict the [match](#match) to specific keys (only relevant for keyed zones such as `ARGS`, `BODY_ARGS`, `HEADERS` and `COOKIES`).
+
+A variable name can either be a literal key (e.g. `foo`) or a regular expression. To match keys by pattern, wrap the expression between slashes (e.g. `/pattern_.*/`); the enclosed value is evaluated as a [RE2](https://github.com/google/re2/wiki/Syntax) regexp against the available key names.
 
 :::info
 
@@ -202,6 +204,7 @@ rules:
     variables:
       - foo
       - bar
+      - '/something[0-9]/'
     match:
       type: contains
       value: admin
@@ -318,10 +321,10 @@ We recommend using this format only to use existing rules you may have.
 
 **ModSecurity** syntax support is provided by [coraza](https://github.com/corazawaf/coraza/), and the reference documentation is available [here](https://coraza.io/docs/seclang/syntax/).
 
-There are 2 ways to provide crowdsec with seclang rules:
+There are 2 ways to provide CrowdSec with seclang rules:
 
 - Provide rules directly by using the `seclang_rules` parameter in your rule file
-- Provide a file containing the rules by using the `seclang_rules_file` parameter in your rule file. The file must be located inside CrowdSec data directory
+- Provide a file containing the rules by using the `seclang_files_rules` parameter in your rule file. The file must be located inside CrowdSec data directory
 
 The default paths for the data directory per OS:
 

@@ -3,7 +3,7 @@ title: CrowdSec Configuration
 id: crowdsec_configuration
 ---
 
-# Crowdsec configuration
+# CrowdSec configuration
 
 CrowdSec has a main `yaml` configuration file, usually located in `/etc/crowdsec/config.yaml`.
 
@@ -19,7 +19,7 @@ You can find the default configurations on our GitHub repository:
 
 ### `/etc/crowdsec/`
 
-All CrowdSec configuration are living in this directory.
+All CrowdSec configuration files live in this directory.
 
 ### `/etc/crowdsec/config.yaml`
 
@@ -30,7 +30,7 @@ Main configuration file for Log Processor and Local API.
 Documents which log sources and datasources are processed by the Log Processor.
 
 `/etc/crowdsec/acquis.yaml` is the historical acquisition configuration file.
-`/etc/crowdsec/acquis.d/*.yaml` is prefered when possible.
+`/etc/crowdsec/acquis.d/*.yaml` is preferred when possible.
 
 ### `/etc/crowdsec/bouncers/*.yaml`
 
@@ -43,7 +43,6 @@ Collections currently installed on the Log Processor.
 ### `/etc/crowdsec/console.yaml`
 
 Console specific flags:
- - enable/disable decisions management from the console
  - enable/disable sharing of manual decisions with the console
  - enable/disable sharing of custom/tainted scenarios related decisions with the console
  - enable/disable sharing of alert context data with the console.
@@ -63,7 +62,7 @@ Credentials for Local API and Central API.
 ### `/etc/crowdsec/parsers`
 
 Contains all parsers enabled on the Log Processor, including local parsers, organised in stages:
- - `/etc/crowdsec/parsers/s00-raw/*.yaml` : parsers for based formats such as syslog.
+ - `/etc/crowdsec/parsers/s00-raw/*.yaml` : parsers for base formats such as syslog.
  - `/etc/crowdsec/parsers/s01-parse/*.yaml` : service specific parsers such as nginx or ssh.
  - `/etc/crowdsec/parsers/s02-enrich/*.yaml` : enrichment parsers and whitelists.
 
@@ -82,7 +81,7 @@ Contains notification plugins configuration (slack, email, splunk, etc.)
 
 ### `/etc/crowdsec/appsec-configs/*.yaml`
 
-Contains AppSec (WAF) configuration indicating which rules or loaded in `inband` and `outofband` files, as well as eventual `hooks` configuration.
+Contains AppSec (WAF) configuration indicating which rules are loaded in `inband` and `outofband` files, as well as optional `hooks` configuration.
 
 ### `/etc/crowdsec/appsec-rules/*.yaml`
 
@@ -201,9 +200,14 @@ crowdsec_service:
   acquisition_path: "<acqusition_file_path>"
   acquisition_dir: "<acquisition_dir_path>"
   console_context_path: <path_to_context_file>
-  parser_routines: "<number_of_parser_routines>"
-  buckets_routines: "<number_of_buckets_routines>"
-  output_routines: "<number_of_output_routines>"
+  pipeline:
+    parser:
+      routines: <number_of_parser_routines>
+    bucket:
+      routines: <number_of_buckets_routines>
+    output:
+      routines: <number_of_output_routines>
+      queue_size: <postoverflow_queue_size>
 plugin_config:
   user: "<user_to_run_plugin_process_as>"
   group: "<group_to_run_plugin_process_as>"
@@ -249,6 +253,7 @@ api:
     enable: <true|false> # enable or disable local API
     log_level: "(error|info|debug|trace>")"
     listen_uri: "<listen_uri>" # host:port
+    listen_socket: "<path_to_socket>" # path to a unix socket
     profiles_path: "<path_to_profile_file>"
     use_forwarded_for_headers: "<true|false>"
     console_path: <path_to_console_file>
@@ -260,6 +265,10 @@ api:
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     disable_remote_lapi_registration: (true|false)
     disable_usage_metrics_export: (true|false)
+    decisions_stream:
+      page_size: <int>
+      max_concurrent_requests: <int>
+      max_queue_wait: <duration>
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
     tls:
       cert_file: "<path_to_certificat_file>"
@@ -325,7 +334,7 @@ Log output destination. Can be `stdout`, `file`, or `syslog`.
 
 Log level. Can be `error`, `info`, `debug`, `trace`.
 
-#### `log_folder`
+#### `log_dir`
 > string
 
 Folder to write log file.
@@ -435,9 +444,18 @@ crowdsec_service:
   acquisition_path: "<acqusition_file_path>"
   acquisition_dir: "<acqusition_dir_path>"
   console_context_path: <path_to_context_file>
-  parser_routines: "<number_of_parser_routines>"
-  buckets_routines: "<number_of_buckets_routines>"
-  output_routines: "<number_of_output_routines>"
+  pipeline:
+    parser:
+      routines: <number_of_parser_routines>
+    bucket:
+      routines: <number_of_buckets_routines>
+    output:
+      routines: <number_of_output_routines>
+      queue_size: <postoverflow_queue_size>
+  dns_cache:
+    ttl: 1h
+    negative_ttl: 5m
+    size: 16384
 ```
 
 #### `enable`
@@ -445,20 +463,69 @@ crowdsec_service:
 
 Enable or disable the CrowdSec Agent (`true` by default).
 
+#### `pipeline`
+
+Sizes the three stages events go through: parsing, pouring into buckets, and output (postoverflow parsing and pushing alerts to the Local API). All keys are optional.
+
+```yaml
+crowdsec_service:
+  pipeline:
+    parser:
+      routines: 1
+    bucket:
+      routines: 1
+    output:
+      routines: 1
+      queue_size: 256
+```
+
+##### `parser.routines`
+> int
+
+Number of goroutines parsing events. Defaults to `1`.
+
+##### `bucket.routines`
+> int
+
+Number of goroutines pouring events into buckets. Defaults to `1`.
+
+##### `output.routines`
+> int
+
+Number of output goroutines. Each one receives overflows from the buckets, runs them through the postoverflow parsers and pushes the resulting alerts to the Local API. Defaults to `1`.
+
+##### `output.queue_size`
+> int
+
+Number of overflows each output routine can hold while they wait for postoverflow parsing. Defaults to `256`, which is also used when the value is `0` or negative.
+
+Postoverflow parsing runs in its own goroutine, so a slow postoverflow (typically one doing DNS lookups, such as `crowdsecurity/rdns` or a whitelist using `LookupHost`) doesn't block the rest of the engine. If it can't keep up, overflows accumulate in this queue:
+
+- when the queue goes over 75% full, CrowdSec logs a warning; it logs again once it falls back under 25%.
+- when the queue is full, new overflows are **dropped**: no alert is created for them. Drops are counted in the `cs_postoverflow_dropped_total` [metric](/observability/prometheus.md) and summarized in a warning at most once a minute.
+
+Dropping is deliberate: postoverflows run the whitelists, so pushing an overflow without them could ban a whitelisted IP. If you see drops, look for the slow postoverflow first; raising `queue_size` only helps with short bursts.
+
+The `cs_postoverflow_queue_depth` metric shows how full each queue is.
+
+When `-dsn` or `cscli explain` is used, postoverflows run inline and there is no queue.
+
 #### `parser_routines`
 > int
 
-Number of dedicated goroutines for parsing files.
+Number of dedicated goroutines for parsing files. Superseded by [`pipeline.parser.routines`](#parserroutines), and only used when it is unset.
 
 #### `buckets_routines`
 > int
 
-Number of dedicated goroutines for managing live buckets.
+Number of dedicated goroutines for managing live buckets. Superseded by [`pipeline.bucket.routines`](#bucketroutines), and only used when it is unset.
 
 #### `output_routines`
 > int
 
-Number of dedicated goroutines for pushing data to local api.
+Number of dedicated goroutines for pushing data to local api. Superseded by [`pipeline.output.routines`](#outputroutines), and only used when it is unset.
+
+When both a `pipeline` value and its legacy counterpart are set to different values, the `pipeline` value is used and CrowdSec logs a warning at startup.
 
 #### `console_context_path`
 > string
@@ -473,8 +540,22 @@ Path to the yaml file containing logs that needs to be read.
 #### `acquisition_dir`
 > string
 
-(>1.0.7) Path to a directory where each yaml is considered as a acquisition configuration file containing logs that needs to be read.
-If both `acquisition_dir` and `acquisition_path` are specified, the entries are merged alltogether.
+(>1.0.7) Path to a directory where each YAML file is considered an acquisition configuration file containing logs that need to be read.
+If both `acquisition_dir` and `acquisition_path` are specified, the entries are merged together.
+
+#### `dns_cache`
+
+Caches DNS lookups. All three keys are optional; omitting one uses its default.
+
+```yaml
+crowdsec_service:
+  dns_cache:
+    ttl: 1h            # how long positive lookups are cached
+    negative_ttl: 5m   # how long failures are cached
+    size: 16384        # max number of cached entries (LRU)
+```
+
+The defaults above suit most deployments. Raise `size` if you resolve a large, diverse set of addresses; lower `ttl` if a vendor rotates its DNS aggressively and you want cache entries to follow more quickly.
 
 
 ### `cscli`
@@ -789,7 +870,7 @@ Supported units are the same as for `max_age`
 
 ##### `cert`
 
-Agents authenticated using TLS certificate will be deleted after `duration` without any requests and if there is no active alerts for them.
+Agents authenticated using TLS certificate will be deleted after `duration` without any requests and if there are no active alerts for them.
 
 Supported units are the same as for `max_age`
 
@@ -803,7 +884,7 @@ Supported units are the same as for `max_age`
 
 ### `api`
 
-The api section is used by both `cscli`, `crowdsec` and the local API.
+The api section is used by `cscli`, `crowdsec` and the Local API.
 
 ```yaml
 api:
@@ -821,6 +902,7 @@ api:
     enable: <true|false>
     log_level: "(error|info|debug|trace>"
     listen_uri: "<listen_uri>" # host:port
+    listen_socket: "<path_to_socket>" # path to a unix socket
     profiles_path: "<path_to_profile_file>"
     use_forwarded_for_headers: "(true|false)"
     console_path: <path_to_console_file>
@@ -831,6 +913,10 @@ api:
         blocklists: "(true|false)"
       credentials_path: "<path_to_crowdsec_api_client_credential_file>"
     disable_remote_lapi_registration: (true|false)
+    decisions_stream:
+      page_size: <int>
+      max_concurrent_requests: <int>
+      max_queue_wait: <duration>
     capi_whitelists_path: "<path_to_capi_whitelists_file>"
     tls:
       cert_file: "<path_to_certificat_file>"
@@ -922,7 +1008,7 @@ Path to the credential files (contains API url + login/password).
 ##### `unregister_on_exit`
 >bool
 
-If set to `true`, the log processor will remove delete itself from LAPI when stopping.
+If set to `true`, the log processor will delete itself from LAPI when stopping.
 
 Intended for use in dynamic environment such as Kubernetes.
 
@@ -935,6 +1021,7 @@ server:
   enable: <true|false>
   log_level: (error|info|debug|trace)
   listen_uri: <listen_uri> # host:port
+  listen_socket: <path_to_socket> # path to a unix socket
   profiles_path: <path_to_profile_file>
   use_forwarded_for_headers: (true|false)
   trusted_ips: # IPs or IP ranges which should have admin API access
@@ -950,11 +1037,15 @@ server:
     credentials_path: <path_to_crowdsec_api_client_credential_file>
   disable_remote_lapi_registration: (true|false)
   disable_usage_metrics_export: (true|false)
+  decisions_stream:
+    page_size: <int>
+    max_concurrent_requests: <int>
+    max_queue_wait: <duration>
   capi_whitelists_path: "<path_to_capi_whitelists_file>"
   tls:
     cert_file: <path_to_certificat_file>
     key_file: <path_to_certificat_key_file>
-    client_verification: "NoClientCert|RequestClientCert|RequireAnyClientCert|VerifyClientCertIfGiven|RequestAndVerifyClientCert"
+    client_verification: "NoClientCert|RequestClientCert|RequireAnyClientCert|VerifyClientCertIfGiven|RequireAndVerifyClientCert"
       ca_cert_path: "<path_to_ca_cert_file>"
       agents_allowed_ou: # List of allowed Organisational Unit for the agents
        - agents_ou
@@ -977,7 +1068,32 @@ Enable or disable the CrowdSec Local API (`true` by default).
 ##### `listen_uri`
 > string
 
-Address and port listen configuration, the form `host:port`.
+Address and port to listen on, in the form `host:port`.
+
+##### `listen_socket`
+> string
+
+Path to a unix socket the Local API will listen on, for example `/run/crowdsec/crowdsec_api.sock`.
+
+It can be used instead of, or together with, `listen_uri`: if both are set, the Local API accepts connections on both. At least one of the two must be set, otherwise CrowdSec refuses to start.
+
+The socket is created when CrowdSec starts (replacing any existing file at this path) and removed when it stops. The parent directory must already exist, and the socket permissions are those allowed by the umask of the CrowdSec process.
+
+To use it, set the `url` of the local API to the socket path (instead of an HTTP URL) in the credentials of the log processors and remediation components running on the same machine:
+
+```yaml
+url: /run/crowdsec/crowdsec_api.sock
+login: <machine_id>
+password: <password>
+```
+
+`cscli lapi register -u /run/crowdsec/crowdsec_api.sock` also accepts a socket path.
+
+:::warning
+
+TLS is never used on the unix socket, even if the `tls` section is configured. Client certificate authentication (`client_verification`, `agents_allowed_ou`, `bouncers_allowed_ou`) does not apply to connections coming from the socket, so make sure its permissions only allow the intended local users to reach it.
+
+:::
 
 ##### `profiles_path`
 > string
@@ -998,6 +1114,44 @@ This option will disable the registration of remote agents using `cscli lapi reg
 > bool
 
 If set to true, the Local API will not export usage metrics to the CrowdSec Web Console. Defaults to false.
+
+##### `decisions_stream`
+
+Tuning for `/v1/decisions/stream`, the endpoint remediation components poll in stream mode.
+
+```yaml
+decisions_stream:
+  page_size: <int>
+  max_concurrent_requests: <int>
+  max_queue_wait: <duration>
+```
+
+###### `page_size`
+> int
+
+The number of decisions the Local API reads from the database at a time when answering `/v1/decisions/stream`. Defaults to `30000`, which is also used when it is unset or `0`. A negative value logs a warning at startup and uses the default.
+
+Each in-flight stream request holds one page in memory, so peak memory grows with the page size times the number of remediation components pulling at the same time. With a large fleet and a large blocklist, lowering it reduces that peak. The cost is more database queries per pull, one per page. Remediation components see no difference: a pull is still a single response with every decision in it.
+
+###### `max_concurrent_requests`
+> int
+
+The maximum number of `/v1/decisions/stream` requests the Local API serves at once. Requests beyond it wait for a free slot, and a slot is held until the response is fully written. Unset or `0` means no limit, which is the default. A negative value logs a warning at startup and also means no limit.
+
+Together with `page_size`, this bounds the memory the stream endpoint uses: roughly `max_concurrent_requests` times the memory of one page. It doesn't cover `/v1/decisions`, which remediation components use in live mode.
+
+A queued request waits at most [`max_queue_wait`](#max_queue_wait) for a slot. A request that waited still gets an up-to-date answer: the decisions it receives are computed once it gets its slot.
+
+A remediation component that keeps its connection open but stops reading holds its slot until that connection closes.
+
+###### `max_queue_wait`
+> duration
+
+How long a `/v1/decisions/stream` request beyond `max_concurrent_requests` waits for a free slot. Defaults to `10s`, which is also used when it is unset, `0` or negative. Only used when `max_concurrent_requests` is set.
+
+When the wait is over, the Local API answers `503 Service Unavailable` and logs a warning naming the remediation component. Nothing was sent, so the component misses nothing: it gets the same decisions on its next successful pull, but they stay stale until then.
+
+Keep it below the shortest stream timeout among your remediation components, so they get the `503` (and can log it) rather than giving up on their own. If warnings are frequent, raise `max_concurrent_requests` or lower `page_size` so that each request is served faster.
 
 ##### `capi_whitelists_path`
 > string
@@ -1095,7 +1249,11 @@ Path to certificate file.
 ###### `key_file`
 > string
 
-Path to certficate key file.
+Path to certificate key file.
+
+The certificate and key are reloaded automatically when the files change, without reloading or restarting CrowdSec, so certificates renewed in place (cert-manager, Kubernetes, ACME clients, …) are picked up on their own. The files are checked at most every 10 seconds, on incoming TLS connections, and CrowdSec logs `(tls) reloaded server certificate` when it switches. If the new files can't be read or don't make a valid pair, for example while a renewal has written the certificate but not yet the key, the current certificate keeps being served and a warning is logged.
+
+This only applies to `cert_file` and `key_file`: a change to `ca_cert_path` still needs CrowdSec to be reloaded.
 
 ###### `client_verification`
 
@@ -1103,11 +1261,11 @@ Whether LAPI should require or not a client certificate for authentication.
 
 Supported values mirror the ones available in the [golang TLS library](https://pkg.go.dev/crypto/tls#ClientAuthType).
 
-Default to `VerifyClientCertIfGiven` which will allow connection without certificate or require a valid client certificate if one is provided
+Defaults to `VerifyClientCertIfGiven` which will allow connection without certificate or require a valid client certificate if one is provided
 
 :::warning
 
-Crowdsec supports all `ClientAuthType` value from the go TLS library for sake of completness, but using any value other than `NoClientCert` (completly disable authentication with certificates), `VerifyClientCertIfGiven` (only use the certificate if provided) or `RequireAndVerifyClientCert` (only allows certificate authentication and disable password/API key auth) is insecure and must not be used.
+Crowdsec supports all `ClientAuthType` value from the go TLS library for the sake of completeness, but using any value other than `NoClientCert` (completely disables authentication with certificates), `VerifyClientCertIfGiven` (only use the certificate if provided) or `RequireAndVerifyClientCert` (only allows certificate authentication and disable password/API key auth) is insecure and must not be used.
 
 :::
 
@@ -1139,7 +1297,7 @@ Optional. If not set, only OCSP revocation check will be performed (only if the 
 
 ##### cache_expiration
 
-How log to cache the result of a revocation check.
+How long to cache the result of a revocation check.
 
 Defaults to 1h.
 

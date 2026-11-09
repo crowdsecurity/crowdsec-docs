@@ -12,7 +12,7 @@ This page showcases various WAF rule capabilities with real-world examples from 
 
 ### Description
 
-Header inspection with count transform. Note that empty user agent-agent field or absent user-agent field is equivalent.
+Header inspection with count transform. Note that an empty `User-Agent` header and a missing one are treated the same.
 
 ### Rule Example
 
@@ -582,12 +582,12 @@ Modify the default remediation for specific rules.
 ```yaml
 pre_eval:
   - apply:
-      - SetRemediationByName('some-rule', 'log')
+      - SetRemediationByName('some-rule', 'allow')
 ```
 
 #### Use Case
 
-Change a blocking rule to log-only mode for testing.
+Let requests matching a blocking rule through while still generating alerts, for testing.
 
 ### 4. Disable Rules by ID
 

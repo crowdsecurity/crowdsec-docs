@@ -19,7 +19,7 @@ Often you will want multiple AppSec configurations to define groups of rules tha
 Use the `appsec_configs` parameter to load multiple configurations that work together.
 
 In the following example we have two configurations:
-- One with [CrowdSec default AppSec rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-configurations/appsec-default) running in in-band mode
+- One with [CrowdSec default AppSec rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/waf-configurations/appsec-default) running in in-band mode
 - The other for the [CRS rules ↗️](https://app.crowdsec.net/hub/author/crowdsecurity/collections/appsec-crs) that run in out-of-band mode by default
 
 ```yaml title="/etc/crowdsec/acquis.d/appsec.yaml"
@@ -70,7 +70,7 @@ inband_rules:
 
 AppSec configuration files declare **which rules to load** in **in-band** *(blocking)* and/or **out-of-band** *(non-blocking)* mode, define how matches are handled (for example, default remediation), and let you tweak processing via hooks like `on_load`, `pre_eval`, `post_eval`, and `on_match`.
 
-For the full list of keys, see [Configuration Syntax](configuration).
+For the full list of keys, see [Configuration Syntax](configuration.md).
 
 :::info
 When loading multiple AppSec configs, _hooks_ and _appsec rules_ are appended, and for conflicting options (for example, `default_remediation`), the last one takes precedence.
@@ -92,7 +92,7 @@ When multiple AppSec configurations are loaded, they are processed in the order 
 After updating AppSec configuration files:
 
 1. Reload CrowdSec so it picks up the new configuration.
-2. Validate behavior with your usual test traffic, or use the [generic AppSec test rule](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/appsec-generic-test).
+2. Validate behavior with your usual test traffic, or use the [generic AppSec test rule](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/appsec-generic-test).
 3. Inspect results in logs or via `cscli metrics show appsec`.
 
 For more troubleshooting guidance, see [AppSec Troubleshooting](troubleshooting.md).

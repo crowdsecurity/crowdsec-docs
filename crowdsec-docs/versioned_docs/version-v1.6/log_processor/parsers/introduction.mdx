@@ -44,7 +44,7 @@ The parsing pipeline is broken down into multiple stages:
 
 This stage is responsible for normalizing logs from various [Data Sources](log_processor/data_sources/introduction.md) into a predictable format for `s01-parse` and `s02-enrich` to work on.
 
-For example if you have a `syslog` Data Source and a `container` Data Source writing the same application log lines you wouldnt want `s01-parse` to handle this logic twice, since `s00-raw` can normalize the logs into a predictable format. 
+For example if you have a `syslog` Data Source and a `container` Data Source writing the same application log lines you wouldn't want `s01-parse` to handle this logic twice, since `s00-raw` can normalize the logs into a predictable format. 
 
 For most instances we have already created these `s00-raw` parsers for you are available to view on the [Hub](https://hub.crowdsec.net/).
 
@@ -62,7 +62,7 @@ The aim of this stage is to enrich the extracted information with additional con
 
 However, the stage can also be used to perform whitelist checks, however, we have dedicated documentation for this [here](log_processor/whitelist/introduction.md).
 
-Currently we have a few enrichers available on the [Hub](https://hub.crowdsec.net/), that are installed by default so you dont need to worry about this stage unless you want to create your own.
+Currently we have a few enrichers available on the [Hub](https://hub.crowdsec.net/), that are installed by default so you don't need to worry about this stage unless you want to create your own.
 
 ## Postoverflows
 

@@ -1,6 +1,6 @@
 ---
 id: integration_paloalto_xsoar
-title: PaloAlto Cortex XSOAR Cortex Plugin
+title: Palo Alto Cortex XSOAR Plugin
 sidebar_position: 2
 ---
 
@@ -11,7 +11,7 @@ The **PaloAlto XSOAR/XSIAM - Cortex Plugin** allows you to obtain a detailed rep
 
 The integration is available directly from within Cortex XSOAR.  
 * Find and add an instance of the CrowdSec data enrichment. 
-* Fill in the API key you generated from the [console interface](https://doc.crowdsec.net/docs/cti_api/getting_started).  
+* Fill in the API key you generated in the Console (see [how to create a CTI API key](/console/ip_reputation/api_keys.mdx)).  
 ![Cortex XSOAR integration](/img/cortex-XSOAR-find-integration.png)  
 If you need to download it you can find it [here](https://cortex.marketplace.pan.dev/marketplace/details/CrowdSec/).  
 You can also refer to the [integration documentation](https://xsoar.pan.dev/docs/reference/integrations/crowd-sec).

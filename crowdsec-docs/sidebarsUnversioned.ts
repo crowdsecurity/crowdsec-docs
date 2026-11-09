@@ -41,34 +41,54 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "API Access",
+			label: "APIs Overview",
 			id: "cti_api/api_introduction",
 		},
 		{
 			type: "category",
-			label: "Integrations",
+			label: "Enrichment API",
 			link: {
 				type: "doc",
-				id: "cti_api/api_integration/integration_intro",
+				id: "cti_api/enrichment_api",
 			},
 			items: [
-				"cti_api/api_integration/integration_ipdex",
-				"cti_api/api_integration/integration_chrome",
-				"cti_api/api_integration/integration_gigasheet",
-				"cti_api/api_integration/integration_intelowl",
-				"cti_api/api_integration/integration_maltego",
-				"cti_api/api_integration/integration_misp",
-				"cti_api/api_integration/integration_ms_sentinel",
-				"cti_api/api_integration/integration_msticpy",
-				"cti_api/api_integration/integration_opencti",
-				"cti_api/api_integration/integration_paloalto_xsoar",
-				"cti_api/api_integration/integration_qradar",
-				"cti_api/api_integration/integration_securitycopilot",
-				"cti_api/api_integration/integration_sekoia_xdr",
-				"cti_api/api_integration/integration_splunk_siem",
-				"cti_api/api_integration/integration_splunk_soar",
-				"cti_api/api_integration/integration_thehive",
+				{
+					type: "category",
+					label: "Integrations",
+					link: {
+						type: "doc",
+						id: "cti_api/api_integration/integration_intro",
+					},
+					items: [
+						"cti_api/api_integration/integration_ipdex",
+						"cti_api/api_integration/integration_chrome",
+						"cti_api/api_integration/integration_gigasheet",
+						"cti_api/api_integration/integration_intelowl",
+						"cti_api/api_integration/integration_maltego",
+						"cti_api/api_integration/integration_misp",
+						"cti_api/api_integration/integration_ms_sentinel",
+						"cti_api/api_integration/integration_msticpy",
+						"cti_api/api_integration/integration_opencti",
+						"cti_api/api_integration/integration_paloalto_xsoar",
+						"cti_api/api_integration/integration_qradar",
+						"cti_api/api_integration/integration_securitycopilot",
+						"cti_api/api_integration/integration_sekoia_xdr",
+						"cti_api/api_integration/integration_splunk_siem",
+						"cti_api/api_integration/integration_splunk_soar",
+						"cti_api/api_integration/integration_thehive",
+					],
+				},
 			],
+		},
+		{
+			type: "doc",
+			label: "Offline Replicas",
+			id: "cti_api/offline_replicas",
+		},
+		{
+			type: "doc",
+			label: "TAXII",
+			id: "cti_api/taxii",
 		},
 		// ── TECHNICAL DOC ─────────────────────────────────────────────────────
 		{
@@ -277,19 +297,6 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "doc",
-					label: "Troubleshooting Hints",
-					id: "console/security_engines/troubleshooting",
-				},
-				{
-					type: "doc",
-					label: "Am I Under Attack",
-					id: "console/security_engines/am_i_under_attack",
-					customProps: {
-						tag: "premium",
-					},
-				},
-				{
-					type: "doc",
 					label: "Select multiple organizations 🧪",
 					id: "console/security_engines/select_multiple_organizations",
 				},
@@ -302,7 +309,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "category",
-			label: "Alerts",
+			label: "Alert Explorer",
 			link: {
 				type: "doc",
 				id: "console/alerts/intro",
@@ -310,22 +317,32 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			items: [
 				{
 					type: "doc",
-					label: "Introduction",
+					label: "Overview",
 					id: "console/alerts/intro",
 				},
 				{
 					type: "doc",
-					label: "Visualizer",
+					label: "Investigate an attack wave",
 					id: "console/alerts/visualizer",
 				},
 				{
 					type: "doc",
-					label: "Alerts analysis",
-					id: "console/alerts/alerts_analysis",
+					label: "Search and filter",
+					id: "console/alerts/search",
 				},
 				{
 					type: "doc",
-					label: "Alerts contexts",
+					label: "Custom views",
+					id: "console/alerts/views",
+				},
+				{
+					type: "doc",
+					label: "The WAF view",
+					id: "console/alerts/waf",
+				},
+				{
+					type: "doc",
+					label: "Alert Context",
 					id: "console/alerts/alerts_contexts",
 				},
 				{
@@ -344,17 +361,12 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
-			id: "console/remediation_sync",
 			type: "doc",
-			label: "Remediation Sync",
+			label: "Attack Surge Detection",
+			id: "console/security_engines/am_i_under_attack",
 			customProps: {
 				tag: "premium",
 			},
-		},
-		{
-			type: "doc",
-			label: "Remediation Metrics",
-			id: "console/remediation_metrics",
 		},
 		{
 			type: "category",
@@ -375,6 +387,19 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
+			id: "console/remediation_sync",
+			type: "doc",
+			label: "Remediation Sync",
+			customProps: {
+				tag: "premium",
+			},
+		},
+		{
+			type: "doc",
+			label: "Remediation Metrics",
+			id: "console/remediation_metrics",
+		},
+		{
 			type: "html",
 			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
 			defaultStyle: false,
@@ -382,7 +407,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		// ── Blocklist & Allowlists ──────────────────────────────────────────────────────────
 		{
 			type: "html",
-			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Blocklist & Allowlists</span>",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Blocklists & Allowlists</span>",
 			defaultStyle: false,
 		},
 		{
@@ -480,6 +505,14 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			],
 		},
 		{
+			type: "doc",
+			label: "Am I Attacking",
+			id: "console/am_i_attacking",
+			customProps: {
+				tag: "premium",
+			},
+		},
+		{
 			type: "html",
 			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
 			defaultStyle: false,
@@ -530,27 +563,13 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				tag: "premium",
 			},
 			items: [
-				{
-					type: "category",
-					label: "Quickstart",
-					items: [
-						"console/service_api/quickstart/authentication",
-						"console/service_api/quickstart/blocklists",
-						"console/service_api/quickstart/integrations",
-						"console/service_api/quickstart/allowlists",
-						"console/service_api/quickstart/metrics",
-					],
-				},
-				{
-					type: "doc",
-					label: "Blocklists",
-					id: "console/service_api/blocklists",
-				},
-				{
-					type: "doc",
-					label: "Integrations",
-					id: "console/service_api/integrations",
-				},
+				"console/service_api/authentication",
+				"console/service_api/engines",
+				"console/service_api/blocklists",
+				"console/service_api/allowlists",
+				"console/service_api/integrations",
+				"console/service_api/decisions",
+				"console/service_api/metrics",
 				{
 					type: "category",
 					label: "SDKs",
@@ -564,13 +583,8 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 				},
 				{
 					type: "link",
-					label: "Swagger",
-					href: "https://admin.api.crowdsec.net/v1/docs#/",
-				},
-				{
-					type: "link",
 					label: "Redoc",
-					href: "https://admin.api.crowdsec.net/v1/redoc",
+					href: "https://admin.api.crowdsec.net/v1/docs",
 				},
 				{
 					type: "doc",
@@ -622,28 +636,23 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "AWS WAF",
-			id: "bouncers/aws_waf",
-		},
-		{
-			type: "doc",
 			label: "Apache",
 			id: "bouncers/apache_bouncer",
 		},
 		{
 			type: "doc",
-			label: "BlockList Mirror",
+			label: "AWS WAF",
+			id: "bouncers/aws_waf",
+		},
+		{
+			type: "doc",
+			label: "Blocklist Mirror",
 			id: "bouncers/blocklist-mirror",
 		},
 		{
 			type: "doc",
 			label: "Cloudflare",
 			id: "bouncers/cloudflare",
-		},
-		{
-			type: "doc",
-			label: "Cloudflare Workers",
-			id: "bouncers/cloudflare-workers",
 		},
 		{
 			type: "doc",
@@ -667,18 +676,8 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
-			label: "HAProxy",
-			id: "bouncers/haproxy",
-		},
-		{
-			type: "doc",
 			label: "HAProxy SPOA",
 			id: "bouncers/haproxy_spoa",
-		},
-		{
-			type: "doc",
-			label: "Ingress Nginx",
-			id: "bouncers/ingress-nginx",
 		},
 		{
 			type: "doc",
@@ -712,29 +711,61 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		},
 		{
 			type: "doc",
+			label: "Traefik (Kubernetes)",
+			id: "bouncers/traefik",
+		},
+		{
+			type: "doc",
 			label: "Windows Firewall",
 			id: "bouncers/windows_firewall",
 		},
 		{
 			type: "doc",
-			label: "Wordpress",
+			label: "WordPress",
 			id: "bouncers/wordpress",
 		},
 		{
-			type: "doc",
-			label: "Traefik (Kubernetes)",
-			id: "bouncers/traefik",
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		// ── More ──────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>More</span>",
+			defaultStyle: false,
 		},
 		{
 			type: "link",
 			label: "Third Party",
-			href: "https://hub.crowdsec.net/browse/#bouncers",
+			href: "https://app.crowdsec.net/hub/remediation-components",
 		},
-		// {
-		//     "type": "doc",
-		//     "label": "Contributing",
-		//     "id": "bouncers/contributing/contributing_bouncers"
-		// },
+		{
+			type: "link",
+			label: "Contributing",
+			href: "/docs/contributing/contributing_bouncers",
+		},
+		{
+			type: "html",
+			value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+			defaultStyle: false,
+		},
+		// ── Deprecated ──────────────────────────────────────────────────────────
+		{
+			type: "html",
+			value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Deprecated</span>",
+			defaultStyle: false,
+		},
+		{
+			type: "doc",
+			label: "HAProxy",
+			id: "bouncers/haproxy",
+		},
+		{
+			type: "doc",
+			label: "Ingress Nginx",
+			id: "bouncers/ingress-nginx",
+		},
 	],
 	blocklistsSideBar: [
 		{
@@ -780,11 +811,39 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 			label: "Integrations",
 			items: [
+				// ── Generic ──────────────────────────────────────────────────────────
+				{
+					type: "html",
+					value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Generic</span>",
+					defaultStyle: false,
+				},
 				"integrations/rawiplist",
 				"integrations/remediationcomponent",
 				{
 					type: "html",
 					value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+					defaultStyle: false,
+				},
+				// ── Cloud & Edge ──────────────────────────────────────────────────────────
+				{
+					type: "html",
+					value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Cloud & Edge</span>",
+					defaultStyle: false,
+				},
+				{
+					type: "doc",
+					label: "Cloudflare",
+					id: "integrations/cloudflare",
+				},
+				{
+					type: "html",
+					value: "<hr style='margin: 0.75rem 0; opacity: 0.35;' />",
+					defaultStyle: false,
+				},
+				// ── Network Security ──────────────────────────────────────────────────────────
+				{
+					type: "html",
+					value: "<span style='display:block; padding: 10px 8px 4px; font-family: var(--ifm-font-family-monospace); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ifm-color-emphasis-600);'>Network & Security</span>",
 					defaultStyle: false,
 				},
 				"integrations/checkpoint",
@@ -949,7 +1008,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		{
 			type: "link",
 			label: "🛠️ Technical Documentation",
-			href: "/docs/next/intro",
+			href: "/docs/intro",
 		},
 	],
 };

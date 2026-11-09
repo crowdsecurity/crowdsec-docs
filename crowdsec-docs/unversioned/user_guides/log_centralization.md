@@ -6,7 +6,7 @@ sidebar_position: 10
 
 ## Introduction
 
-If you expose services on the internet from multiple servers, setting up crowdsec on all of them might make the overall setup more complex.
+If you expose services on the internet from multiple servers, setting up CrowdSec on all of them might make the overall setup more complex.
 
 To simplify things, you can use a central server to receive all your logs and only run a single instance of crowdsec on this server.
 
@@ -61,7 +61,7 @@ if ($inputname == 'imudp' and $programname == 'sshd') then ?AuthLogs
 if ($inputname == 'imudp') then stop
 ```
 
-Then, we need to create the `/var/log/remote-logs/` to store logs:
+Then, we need to create the `/var/log/remote-logs/` directory to store logs:
 ```bash
 $ sudo mkdir /var/log/remote-logs/ && sudo chown syslog:syslog /var/log/remote-logs/
 ```
@@ -158,7 +158,7 @@ Then, we need to install the nginx collection for crowdsec to be able to detect 
 $ sudo cscli collections install crowdsecurity/nginx
 ```
 
-Lastly, we will also need to make crowdsec on all interfaces to make sure our web servers can contact LAPI.<br/>
+Lastly, we need to make CrowdSec listen on all interfaces so that our web servers can contact LAPI.<br/>
 Edit the file `/etc/crowdsec/config.yaml`, and set `api.server.listen_uri` to `0.0.0.0:8080`:
 ```yaml
 api:
@@ -206,7 +206,7 @@ API key for 'fw-bouncer-web-2':
 Please keep this key since you will not be able to retrieve it!
 ```
 
-Now, on each web server, edit the file `/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml` and update the `api_url` options with the IP on the central server, and paste the API key in `api_key`:
+Now, on each web server, edit the file `/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml` and update the `api_url` option with the IP of the central server, and paste the API key in `api_key`:
 
 ```yaml
 api_url: http://<central-server-ip>:8080/

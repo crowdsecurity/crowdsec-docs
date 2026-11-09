@@ -30,7 +30,7 @@ labels:
 If your stream is written to by a [Cloudwatch subscription filter](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html), you will need to pass the `from_subscription` parameter, or the Security Engine won't be able to parse the content of the message.
 :::
 
-Look at the `configuration parameters` to view all supported options.
+See [Parameters](#parameters) for all supported options.
 
 ## Parameters
 
@@ -73,7 +73,7 @@ Defaults to `false`.
 
 The AWS profile to use, relies on your `~/.aws/config/`.
 
-Optional, the data source will automatically the standard AWS env vars if present.
+Optional, the data source will automatically use the standard AWS env vars if present.
 
 ### `aws_config_dir`
 

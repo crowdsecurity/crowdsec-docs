@@ -17,7 +17,7 @@ When archived, the Security Engine will:
 
 ### Manually archiving a Security Engine
 
-1.Go to the Security Engines page
+1. Go to the Security Engines page
 
 2.Click on the three-dot menu (⋮) next to the Security Engine you wish to archive.
 
@@ -43,7 +43,7 @@ To see your archived Security Engines locate and check the option labeled _Show 
 Archived engines will appear in a greyed-out, read-only state.
 
 :::info
-the Console features will no longer be synchronized with archived Security Engines.
+Console features are no longer synchronized with archived Security Engines.
 
 This means that blocklists, scenarios and remediation components counters will always be 0.
 :::

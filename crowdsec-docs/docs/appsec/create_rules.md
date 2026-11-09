@@ -1,6 +1,8 @@
 ---
 id: create_rules
-title: Creation & Testing
+title: "Writing & Testing WAF Rules"
+sidebar_label: "Creation & Testing"
+description: "Write a CrowdSec WAF rule and its functional tests from scratch, using a worked shell injection example you can follow through to a Hub submission."
 sidebar_position: 3
 ---
 
@@ -27,7 +29,7 @@ user_id=123;cat /etc/password&do=yes
 
 ## Prerequisites
 
-1. [Create a local test environment](https://doc.crowdsec.net/docs/contributing/contributing_test_env) or have CrowdSec (>= 1.5.6) installed locally
+1. [Create a local test environment](https://doc.crowdsec.net/docs/contributing/contributing_test_env) or have CrowdSec (>= 1.6.0) installed locally
 2. Have Docker installed locally to run the test web server
 3. Have [Nuclei installed](https://docs.projectdiscovery.io/tools/nuclei/install) (`go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest`)
 4. Clone the hub
@@ -223,7 +225,7 @@ Things didn't work as intended?
 
 ### Startup errors
 
-If your test doesn't work, chances are that something prevented it to run.
+If your test doesn't work, chances are that something prevented it from running.
 
 1. nuclei isn't in the standard PATH
 
@@ -242,7 +244,7 @@ note that you can always run your nuclei template "manually" to debug it: `nucle
 
 3. your AppSec rule isn't valid
 
-You will see crowdsec fataling at startup:
+CrowdSec will exit with a fatal error at startup:
 
 ```
 time="2023-12-21 15:42:10" level=info msg="loading inband rule crowdsecurity/*" component=appsec_config name=appsec-test type=appsec

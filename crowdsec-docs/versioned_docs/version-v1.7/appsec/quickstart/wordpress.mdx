@@ -9,7 +9,7 @@ Protect a [WordPress](https://wordpress.org) site with CrowdSec's [AppSec (WAF) 
 
 ## Prerequisites
 
-Make sure the following are already done (each is a single-page install guide):
+Make sure the following are already done :
 
 1. **CrowdSec Security Engine** installed and running — see the [Linux quickstart](/u/getting_started/installation/linux).
 2. **WordPress bouncer plugin** installed and registered against the CrowdSec LAPI — see the [WordPress bouncer guide](/u/bouncers/wordpress).
@@ -68,7 +68,7 @@ AppSec requires the WordPress plugin to use API-key authentication (not TLS cert
 
 ## 4. Verify
 
-From any machine, send a request with a malicious body through WordPress — this example trips the [`vpatch-CVE-2022-22965`](https://app.crowdsec.net/hub/author/crowdsecurity/appsec-rules/vpatch-CVE-2022-22965) rule (Spring4Shell):
+From any machine, send a request with a malicious body through WordPress — this example trips the [`vpatch-CVE-2022-22965`](https://app.crowdsec.net/hub/author/crowdsecurity/waf-rules/vpatch-CVE-2022-22965) rule (Spring4Shell):
 
 ```bash
 curl -X POST https://<your-wordpress-url>/ \

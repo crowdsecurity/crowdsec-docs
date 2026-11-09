@@ -1,5 +1,6 @@
 ---
-title: Introduction
+title: "Service API: overview"
+sidebar_label: Introduction
 description: Introduction to the CrowdSec Service API
 ---
 
@@ -33,8 +34,7 @@ curl -X 'GET' 'https://admin.api.crowdsec.net/v1/blocklists' -H 'accept: applica
 
 The CrowdSec Service API reference is available at:
 
-* [Swagger UI](https://admin.api.crowdsec.net/v1/docs): The Swagger documentation for the CrowdSec Service API.
-* [Redoc](https://admin.api.crowdsec.net/v1/redoc): The ReDoc documentation for the CrowdSec Service API.
+* [Redoc](https://admin.api.crowdsec.net/v1/docs): The ReDoc documentation for the CrowdSec Service API.
 
 ## SDKs
 

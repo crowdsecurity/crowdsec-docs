@@ -1,41 +1,31 @@
 ---
 id: blocklist-mirror
-title: Blocklist mirror
+title: "CrowdSec Blocklist Mirror — HTTP Blocklist Endpoint"
+description: "Expose CrowdSec decisions as HTTP(S) blocklists in formats that firewalls and network appliances can consume. Covers installation, formats and configuration."
 sidebar_position: 7
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<div align="center">
-  <img src={useBaseUrl('/img/crowdsec_http.svg')} width="400" height="300" />
-</div>
-
-<div align="center">
-  <img src="https://img.shields.io/badge/build-pass-green" />
-  <img src="https://img.shields.io/badge/tests-pass-green" />
-</div>
-
-<div align="center">
-  &#x1F4DA; <a href="#installation-from-repositories">Documentation</a>
-  &#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-  &#128172; <a href="https://discourse.crowdsec.net">Discourse</a>
-</div>
-
-<RemediationSupportBadges
-  MTLS
-  Prometheus
+<BouncerHeader
+  title="Blocklist Mirror"
+  imgSrc="/img/crowdsec_http.svg"
+  description="Exposes CrowdSec decisions via HTTP(S) endpoints in pre-defined formats for network appliances."
+  featuresSupport="mtls, prometheus, streammode"
+  githubUrl="https://github.com/crowdsecurity/cs-blocklist-mirror"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-blocklist-mirror"
 />
 
+# Expose CrowdSec Decisions as an HTTP Blocklist
 
 This Remediation Component exposes CrowdSec's active decisions via provided HTTP(S) endpoints in pre-defined formats. It can be used by network appliances which support consumption of blocklists via HTTP.
 
-
 ## Installation from repositories
 
-[Setup crowdsec repositories](/u/getting_started/installation/linux#repository-installation).
+[Set up the CrowdSec repositories](/u/getting_started/installation/linux#repository-installation).
 
 <Tabs
   defaultValue="debian"
@@ -124,7 +114,7 @@ crowdsec_config:
 #### `lapi_url`
 > string
 
-The URL of CrowdSec LAPI. It should be accessible from whichever network the component has access.
+The URL of CrowdSec LAPI. It should be accessible from whichever network the component has access to.
 
 #### `lapi_key`
 > string
@@ -132,7 +122,7 @@ The URL of CrowdSec LAPI. It should be accessible from whichever network the com
 It can be obtained by running the following on the machine CrowdSec LAPI is deployed on.
 
 ```bash
-sudo cscli -oraw bouncers add blocklistMirror # -oraw flag can discarded for human friendly output.
+sudo cscli -oraw bouncers add blocklistMirror # the -oraw flag can be omitted for human-friendly output.
 ```
 
 #### `cert_path`
@@ -151,7 +141,7 @@ Path to the key file used to authenticate with the LAPI.
 Path to the CA file used to trust the LAPI certificate.
 
 #### `update_frequency`
-> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+> string (That is parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 The component will poll the CrowdSec LAPI every `update_frequency` interval.
 
@@ -361,12 +351,12 @@ sudo systemctl start crowdsec-blocklist-mirror
 
 If you need to make changes to the configuration file and be sure they will never be modified or reverted
 by package upgrades, starting from v0.0.2 you can write them in a `crowdsec-blocklist-mirror.yaml.local` file as described in
-[Overriding values](https://docs.crowdsec.net/docs/next/configuration/crowdsec_configuration#overriding-values).
+[Overriding values](/docs/configuration/crowdsec_configuration#overriding-values).
 Package upgrades may have good reasons to modify the configuration, so be careful if you use a `.local` file.
 
 ## Formats
 
-The component can expose the blocklist in the following formats. You can configure the format of the blocklist by setting it's `format` parameter to any of the supported formats described below.
+The component can expose the blocklist in the following formats. You can configure the format of the blocklist by setting its `format` parameter to any of the supported formats described below.
 
 ### plain_text
 

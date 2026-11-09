@@ -98,7 +98,7 @@ We define systems by their underlying distribution rather than a fork or modific
     </TabItem>
     
     <TabItem value="RPM">
-        <CodeBlock className="language-bash">dnf install libre2-dev g++</CodeBlock>
+        <CodeBlock className="language-bash">{"# On RHEL-based systems, re2-devel is in EPEL, which is not enabled by default\ndnf install epel-release\ndnf install re2-devel gcc-c++"}</CodeBlock>
     </TabItem>
     <TabItem value="Arch">
       <CodeBlock className="language-bash">pacman -S re2 base-devel</CodeBlock>
@@ -181,7 +181,7 @@ Once the binaries have been built you can install them using the wizard.sh file 
 sudo ./wizard.sh -i
 ```
 
-If you would like to have a hands off installation then you can provide the `-unattended` flag to the wizard.sh script.
+If you would like to have a hands off installation then you can run `sudo ./wizard.sh --unattended`.
 
 ### Updating
 

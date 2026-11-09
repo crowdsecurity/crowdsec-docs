@@ -6,7 +6,7 @@ sidebar_position: 4
 
 :::warning
 
-This documentation mostly focus on installation of custom scenarios. Scenarios from the hub should be installed as a part of the collection, by using `cscli collections install <collection-name>`. Installing scenarios directly with `cscli scenario install <scenario-name>` might lead to unexpected results because of missing dependencies (ie. parsers, enrichers, post-overflows etc.)
+This documentation mostly focuses on installing custom scenarios. Scenarios from the hub should be installed as a part of the collection, by using `cscli collections install <collection-name>`. Installing scenarios directly with `cscli scenario install <scenario-name>` might lead to unexpected results because of missing dependencies (ie. parsers, enrichers, post-overflows etc.)
 
 :::
 
@@ -21,7 +21,7 @@ To deploy a scenario, simply copy it to `/etc/crowdsec/scenarios/`.
 
 Use `cscli scenarios list` to view all your installed scenarios:
 
-- `Name` presents the `name` field of the yaml file.
+- `Name` represents the `name` field of the YAML file.
 - `Version` represents the version of the scenario according to the hub. Versions increment on upstream changes.
 - `Local path` represents the local path to the scenario file.
 - `📦 Status` indicates the state:

@@ -1,6 +1,7 @@
 ---
 id: install_crowdsec_pfsense
-title: pfSense
+title: "Install the Security Engine on pfSense: detailed guide"
+sidebar_label: pfSense
 ---
 
 The CrowdSec package for pfSense is not yet in the official pfSense Package Manager, so
@@ -182,7 +183,7 @@ These will trigger a ban on the attacking IP (4 hours by default) and report it 
 Central API for inclusion in the Community Blocklist.
 
 You can add scenarios to detect other types of attack on the pfSense server, or
-[connect several log processors](https://doc.crowdsec.net/docs/next/user_guides/multiserver_setup)
+[connect several log processors](/u/user_guides/multiserver_setup/)
 to the same LAPI node. Other types of remediation are possible (e.g. captcha test for scraping
 attempts).
 
@@ -226,7 +227,7 @@ triggered correctly.
 ![Diagnostics local api](/img/pfsense/diagnostic-metrics-local-api.png)
 
 For real monitoring, you can fetch the same metrics with
-[Prometheus](https://docs.crowdsec.net/docs/observability/prometheus/) (Grafana dashboard
+[Prometheus](/observability/prometheus.md) (Grafana dashboard
 included), Telegraf, or your preferred solution.
 
 If you are not running a LAPI or a Log Processor, some metrics will always be empty.

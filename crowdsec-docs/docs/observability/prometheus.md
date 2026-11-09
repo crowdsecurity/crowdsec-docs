@@ -87,20 +87,36 @@ cs_node_hits_ko_total{name="crowdsecurity/http-logs",source="/var/log/nginx/erro
 
 -   `cs_parsing_time_seconds` : time spent parsing a line (Histogram, labels: `type`, `source`)
 -   `cs_bucket_pour_seconds` : time spent pouring an event to buckets (Histogram, labels: `type`, `source`)
+-   `cs_postoverflow_queue_depth` : number of overflows waiting for postoverflow parsing, per output routine (Gauge, labels: `routine`). See [`output.queue_size`](/configuration/crowdsec_configuration.md#outputqueue_size).
+-   `cs_postoverflow_dropped_total` : number of overflows dropped because the postoverflow queue was full; no alert is created for them (Counter, labels: `routine`)
 
 #### Decisions & Alerts
 
 -   `cs_active_decisions` : number of active decisions (Gauge, labels: `reason`, `origin`, `action`)
--   `cs_alerts` : number of alerts, excluding CAPI (Gauge, labels: `reason`)
+-   `cs_alerts` : number of alerts, excluding CAPI, per scenario (`reason`) and alert kind (`kind`: `crowdsec`, `waf`, `bot-detection`, `papi` or `cscli`; empty for alerts created before CrowdSec recorded the kind) (Gauge, labels: `reason`, `kind`)
 
 #### Application Security Engine
 
 -   `cs_appsec_reqs_total` : total events processed by the Application Security Engine (Counter, labels: `source`, `appsec_engine`)
 -   `cs_appsec_block_total` : total events blocked by the Application Security Engine (Counter, labels: `source`, `appsec_engine`)
 -   `cs_appsec_rule_hits` : count of triggered rules (Counter, labels: `rule_name`, `type`, `appsec_engine`, `source`)
--   `cs_appsec_parsing_time_seconds` : time spent processing a request by the Application Security Engine (Histogram, labels: `source`, `appsec_engine`)
+-   `cs_appsec_parsing_time_seconds` : time spent processing a request by the Application Security Engine, in-band and out-of-band, excluding the time spent waiting in the out-of-band queue (Histogram, labels: `source`, `appsec_engine`)
 -   `cs_appsec_inband_parsing_time_seconds` : time spent processing a request by the inband Application Security Engine (Histogram, labels: `source`, `appsec_engine`)
 -   `cs_appsec_outband_parsing_time_seconds` : time spent processing a request by the outband Application Security Engine (Histogram, labels: `source`, `appsec_engine`)
+-   `cs_appsec_outofband_dropped_total` : requests not evaluated by out-of-band rules because the out-of-band queue was full. See [`routines`](/log_processor/data_sources/appsec.md#routines) (Counter, labels: `source`, `appsec_engine`)
+-   `cs_appsec_challenge_requested_total` : challenges served by the AppSec component (Counter, labels: `source`, `appsec_engine`)
+-   `cs_appsec_challenge_submitted_total` : challenge responses received by the AppSec component (Counter, labels: `source`, `appsec_engine`)
+-   `cs_appsec_challenge_accepted_total` : challenge cookies issued — `kind=solved` for valid submissions (empty `reason`), `kind=granted` for `GrantChallengeCookie(reason)` (Counter, labels: `source`, `appsec_engine`, `kind`, `reason`)
+-   `cs_appsec_challenge_rejected_total` : challenge / cookie rejections — `kind=protocol` for crypto-PoW failures, `kind=submission` for `RejectSubmission(reason)`, `kind=cookie` for invalid incoming cookies (Counter, labels: `source`, `appsec_engine`, `kind`, `reason`)
+-   `cs_appsec_challenge_exempt_total` : requests exempted from the challenge by `ExemptFromChallenge(reason)` — a verified known bot (e.g. `gptbot`) or a well-known path class. Counted once per request (Counter, labels: `source`, `appsec_engine`, `reason`)
+-   `cs_appsec_fingerprint_mismatch_total` : fingerprint mismatch signals fired, as reported by `EvaluateMismatches()` (Counter, labels: `reason`, `severity`, `appsec_engine`)
+
+The following counters track the internals of the challenge runtime rather than the traffic itself, and are mostly useful to troubleshoot its CPU and memory usage:
+
+-   `cs_appsec_challenge_kepoch_generated_total` : per-epoch challenge signing keys derived (Counter)
+-   `cs_appsec_challenge_kepoch_evicted_total` : per-epoch challenge signing keys evicted from the keyring cache — generated minus evicted is the live cache size (Counter)
+-   `cs_appsec_challenge_reobfuscation_total` : JS obfuscation passes run by the challenge runtime, `bundle=dynamic` being the per-epoch sign-key module (Counter, labels: `bundle`)
+-   `cs_appsec_challenge_dynamic_module_evicted_total` : per-epoch dynamic modules evicted once their epoch left the keyring live window (Counter)
 
 #### Acquisition
 
@@ -135,6 +151,10 @@ Acquisition metrics are split by datasource. They only appear when the correspon
 
 -   `cs_kinesis_stream_hits_total` : number of events read per stream (Counter, labels: `stream`)
 -   `cs_kinesis_shards_hits_total` : number of events read per shard (Counter, labels: `stream`, `shard`)
+
+##### Kubernetes
+
+-   `cs_kubernetessource_hits_total` : total lines that were read (Counter, labels: `source`, `datasource_type`, `acquis_type`)
 
 ##### Kubernetes Audit
 
@@ -172,6 +192,12 @@ Acquisition metrics are split by datasource. They only appear when the correspon
 -   `cs_lapi_decisions_ko_total` : number of calls to /decisions that returned nil result (Counter, labels: `bouncer`)
 -   `cs_lapi_decisions_ok_total` : number of calls to /decisions that returned non-nil result (Counter, labels: `bouncer`)
 -   `cs_lapi_request_duration_seconds` : response time of LAPI (Histogram, labels: `endpoint`, `method`)
+-   `cs_machines_last_heartbeat_timestamp` : unix timestamp of the last heartbeat received from a machine (Gauge, labels: `machine`)
+
+#### Central API
+
+-   `cs_capi_last_pull_timestamp` : unix timestamp of the last successful decisions pull from the Central API (Gauge). Alert on it growing old to detect a Local API that stopped receiving community decisions.
+-   `cs_capi_errors_total` : number of failed requests to the Central API (Counter, labels: `operation`: `pull` for the decisions pull, `push` for sending signals, `metrics` for sending usage metrics)
 
 #### Cache
 

@@ -63,7 +63,7 @@ Note: if the token is missing or incorrect, you will get a **403** answer.
 
 As stated in the [swagger documentation](https://crowdsecurity.github.io/api_doc/lapi/), Remediation Components methods are restricted to the `/decisions` path. They allow to query the local decisions in two modes :
 
- - stream mode : Intended for bouncers that will - on a regular basis - query the local api for new and expired/decisions
+ - stream mode : Intended for bouncers that will - on a regular basis - query the Local API for new and expired decisions
  - query mode : Intended for bouncers that want to query the local api about a specific ip/range/username etc.
 
 
@@ -105,7 +105,7 @@ null
 ▶ curl  -H "X-Api-Key: 837be58e22a28738066de1be8f53636b"  http://localhost:8080/v1/decisions\?ip\=2.2.3.42                    
 [{"duration":"3h38m32.349736035s","id":2337,"origin":"cscli","scenario":"manual 'ban' from '939972095cf1459c8b22cc608eff85daEb4yoi2wiTD7Y3fA'","scope":"Range","type":"ban","value":"2.2.3.0/24"}]
 ```
-_note: notice that the decision returned is the range that we banned earlier and that contains query ip_
+_note: notice that the decision returned is the range that we banned earlier and that contains the queried IP_
 
 ### Query mode : Range
 
@@ -128,7 +128,7 @@ null
 
 ### Query mode : non IP centric decisions
 
-While most people will use crowdsec to ban IPs or ranges, decisions can target other scopes and other decisions :
+While most people use CrowdSec to ban IPs or ranges, decisions can target other scopes and use other decision types:
 
 ```bash
 ▶ sudo cscli decisions add --scope username --value myuser --type enforce_mfa
@@ -165,7 +165,7 @@ INFO[0000] Decision successfully added
 The "streaming mode" of the API (which is actually more like polling) allows for bouncers that are going to fetch on a regular basis an update of the existing decisions. The endpoint is `/decisions/stream` with a single `startup` (boolean) argument. The argument allows to indicate if the bouncer wants the full state of decisions, or only an update since it last pulled.
 
 
-Given the our state looks like :
+Given that our state looks like this:
 
 ```bash
 ▶ sudo cscli decisions list                                  
@@ -211,11 +211,11 @@ The first call to `/decisions/stream` will look like :
   ]
 }
 ```
-_note: the initial state will contained passed deleted events (to account for crashes/services restart for example), and the current decisions, both local and those fed from the central API_
+_note: the initial state will contain past deleted events (to account for crashes/services restart for example), and the current decisions, both local and those fed from the central API_
 
 
 :::info
-You might notice that even you are requesting for the initial state, you receive a lot of "deleted" decisions. 
+You might notice that even though you are requesting the initial state, you receive a lot of "deleted" decisions. 
 This is intended to allow you to easily restart the local API without having a desynchronized state with the bouncers.
 :::
 

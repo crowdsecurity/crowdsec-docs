@@ -1,0 +1,15 @@
+# Markdown copies exist for LLM tools (llms.txt); keep them out of search indexes so they don't compete with the HTML pages.
+# Headers defined here replace any custom headers configured in the Amplify console.
+customHeaders:
+  - pattern: "**/*.md"
+    headers:
+      - key: X-Robots-Tag
+        value: noindex
+  - pattern: /llms.txt
+    headers:
+      - key: X-Robots-Tag
+        value: noindex
+  - pattern: /llms-full.txt
+    headers:
+      - key: X-Robots-Tag
+        value: noindex

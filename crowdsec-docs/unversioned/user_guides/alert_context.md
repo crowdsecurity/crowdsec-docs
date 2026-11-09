@@ -30,15 +30,14 @@ You can view the current status of your console options with:
 
 ```bash
 $ sudo cscli console status
-╭────────────────────┬───────────┬───────────────────────────────────────────────────╮
-│ Option Name        │ Activated │ Description                                       │
-├────────────────────┼───────────┼───────────────────────────────────────────────────┤
-│ custom             │ ✅        │ Send alerts from custom scenarios to the console  │
-│ manual             │ ❌        │ Send manual decisions to the console              │
-│ tainted            │ ✅        │ Send alerts from tainted scenarios to the console │
-│ context            │ ✅        │ Send context with alerts to the console           │
-│ console_management │ ❌        │ Receive decisions from console                    │
-╰────────────────────┴───────────┴───────────────────────────────────────────────────╯
+╭─────────────┬───────────┬──────────────────────────────────────────────────────╮
+│ Option Name │ Activated │ Description                                          │
+├─────────────┼───────────┼──────────────────────────────────────────────────────┤
+│ custom      │ ✅        │ Forward alerts from custom scenarios to the console  │
+│ manual      │ ❌        │ Forward manual decisions to the console              │
+│ tainted     │ ✅        │ Forward alerts from tainted scenarios to the console │
+│ context     │ ✅        │ Forward context with alerts to the console           │
+╰─────────────┴───────────┴──────────────────────────────────────────────────────╯
 ```
 
 You can enable alert context with:
@@ -67,9 +66,9 @@ user_agent:
 The context configuration can as well be found in `/etc/crowdsec/contexts/` as yaml files.
 :::
 
-## Vizualise alert context
+## Visualize alert context
 
-The alert context will be display when inspecting an alert:
+The alert context is displayed when inspecting an alert:
 
 ```bash
 $ sudo cscli alerts inspect 7
@@ -168,7 +167,7 @@ And in the console:
 ![Alert Context Example](/img/alert_context_custom.png)
 
 
-More information [here](/docs/next/cscli/cscli_contexts) for managing the context from the Hub with `cscli`.
+More information [here](/docs/cscli/cscli_contexts) for managing the context from the Hub with `cscli`.
 
 ## Automagically detect possible alert context
 

@@ -15,7 +15,7 @@ This means the acquisition is working, but parsers can't interpret the log forma
 ## Common Root Causes
 
 - [**Missing collection or parsers**](#missing-collection-or-parsers): The required parser collection for your log format isn't installed.
-- [**Custom or unexpected log format**](#acquisition-typeprogram-mismatch): Logs don't match the format expected by the parser (custom format, version mismatch, etc.).
+- [**Acquisition type/program mismatch**](#acquisition-typeprogram-mismatch): Logs don't match the format expected by the parser (custom format, version mismatch, etc.).
 
 ## Diagnosis & Resolution
 
@@ -169,4 +169,4 @@ If parsing still fails:
 - Test your logs in [CrowdSec Playground](https://playground.crowdsec.net/)
 - Share your log samples and acquisition config on [Discourse](https://discourse.crowdsec.net/)
 - Ask on [Discord](https://discord.gg/crowdsec) with `cscli collections list` and `cscli parsers list` output
-- Check parser documentation on the [Hub](https://app.crowdsec.net/hub/parsers)
+- Check parser documentation on the [Hub](https://app.crowdsec.net/hub/log-parsers)

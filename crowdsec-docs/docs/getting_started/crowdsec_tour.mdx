@@ -1,6 +1,6 @@
 ---
 id: crowdsec_tour
-title: Crowdsec Tour
+title: CrowdSec Tour
 sidebar_position: 1
 ---
 
@@ -10,11 +10,11 @@ sidebar_position: 1
 sudo cscli hub list
 ```
 
-This lists installed parsers, scenarios and/or collections. 
+This lists the items installed on your setup: collections first, with the items they pull in nested underneath, then the standalone items you installed yourself.
 
-They represent what your CrowdSec setup can parse (logs) and detect (scenarios). 
+They represent what your CrowdSec setup can parse (logs) and detect (scenarios).
 
-Adding `-a` will list all the available configurations in the hub.
+Adding `-a` will list all the configurations available in the hub, and `cscli hub search <terms>` looks up items by name or description.
 
 See more [here](/u/user_guides/hub_mgmt).
 
@@ -23,40 +23,19 @@ See more [here](/u/user_guides/hub_mgmt).
 
 ```bash
 sudo cscli hub list
-INFO[0000] Loaded 13 collecs, 17 parsers, 21 scenarios, 3 post-overflow parsers 
-INFO[0000] unmanaged items : 23 local, 0 tainted        
-INFO[0000] PARSERS:                                     
---------------------------------------------------------------------------------------------------------------
- NAME                            📦 STATUS    VERSION  LOCAL PATH                                             
---------------------------------------------------------------------------------------------------------------
- crowdsecurity/mysql-logs        ✔️  enabled  0.1      /etc/crowdsec/parsers/s01-parse/mysql-logs.yaml        
- crowdsecurity/sshd-logs         ✔️  enabled  0.1      /etc/crowdsec/parsers/s01-parse/sshd-logs.yaml         
- crowdsecurity/dateparse-enrich  ✔️  enabled  0.1      /etc/crowdsec/parsers/s02-enrich/dateparse-enrich.yaml 
- crowdsecurity/whitelists        ✔️  enabled  0.1      /etc/crowdsec/parsers/s02-enrich/whitelists.yaml       
- crowdsecurity/geoip-enrich      ✔️  enabled  0.2      /etc/crowdsec/parsers/s02-enrich/geoip-enrich.yaml     
- crowdsecurity/syslog-logs       ✔️  enabled  0.1      /etc/crowdsec/parsers/s00-raw/syslog-logs.yaml         
---------------------------------------------------------------------------------------------------------------
-INFO[0000] SCENARIOS:                                   
--------------------------------------------------------------------------------------
- NAME                    📦 STATUS    VERSION  LOCAL PATH                            
--------------------------------------------------------------------------------------
- crowdsecurity/mysql-bf  ✔️  enabled  0.1      /etc/crowdsec/scenarios/mysql-bf.yaml 
- crowdsecurity/ssh-bf    ✔️  enabled  0.1      /etc/crowdsec/scenarios/ssh-bf.yaml   
--------------------------------------------------------------------------------------
-INFO[0000] COLLECTIONS:                                 
----------------------------------------------------------------------------------
- NAME                 📦 STATUS    VERSION  LOCAL PATH                           
----------------------------------------------------------------------------------
- crowdsecurity/mysql  ✔️  enabled  0.1      /etc/crowdsec/collections/mysql.yaml 
- crowdsecurity/sshd   ✔️  enabled  0.1      /etc/crowdsec/collections/sshd.yaml  
- crowdsecurity/linux  ✔️  enabled  0.2      /etc/crowdsec/collections/linux.yaml 
----------------------------------------------------------------------------------
-INFO[0000] POSTOVERFLOWS:                               
---------------------------------------
- NAME  📦 STATUS  VERSION  LOCAL PATH 
---------------------------------------
---------------------------------------
-
+Loaded: 164 parsers, 12 postoverflows, 783 scenarios, 9 contexts, 5 appsec-configs, 222 appsec-rules, 164 collections
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ Type         Name                                    📦 Status      Version  Details                                                       
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ collections  crowdsecurity/linux                     ✔️  up-to-date  0.4      3 parser(s) / 2 collection(s)                                 
+ collections  ├─ crowdsecurity/sshd                   ✔️  up-to-date  0.9      2 parser(s) / 6 scenario(s) / 1 context(s)                    
+ collections  └─ crowdsecurity/whitelist-good-actors  ✔️  up-to-date  0.4      1 parser(s) / 4 postoverflow(s)                               
+ collections  crowdsecurity/nginx                     ✔️  up-to-date  0.3      1 parser(s) / 1 scenario(s) / 1 collection(s)                 
+ collections  └─ crowdsecurity/base-http-scenarios    ✔️  up-to-date  1.4      1 parser(s) / 17 scenario(s) / 1 context(s) / 1 collection(s) 
+ collections     └─ crowdsecurity/http-cve            ✔️  up-to-date  3.0      30 scenario(s)                                                
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ parsers      crowdsecurity/mysql-logs                ✔️  up-to-date  0.4                                                                    
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ```
 </details>
 
@@ -104,7 +83,7 @@ sudo cscli decisions list
 
 If you just deployed CrowdSec, the list might be empty, but don't worry, it simply means you haven't yet been attacked, congrats! Adding `-a` flag will as well list the decisions you received from the [community blocklist](/central_api/intro.md).
 
-Check [decisions](/u/user_guides/hub_mgmt) management for more !
+Check [decisions management](/u/user_guides/decisions_mgmt) for more!
 
 <details>
   <summary>Listing decisions example</summary>
@@ -125,7 +104,7 @@ There are different decisions `SOURCE`:
 
   - `crowdsec` : decisions triggered locally by the crowdsec agent 
   - `CAPI` : decisions fetched from the Crowdsec Central API
-  - `csli` : decisions added via `sudo cscli decisions add`
+  - `cscli`: decisions added via `sudo cscli decisions add`
 
 ## Add/Remove decisions
 
@@ -160,6 +139,10 @@ sudo cscli alerts list --since 1h
 ```
 </details>
 
+:::tip
+`cscli` displays dates in the local time zone of the machine it runs on. To use another time zone, set the `TZ` environment variable, for example `sudo TZ=UTC cscli alerts list`.
+:::
+
 
 ## Monitor on-going activity (prometheus)
 
@@ -170,8 +153,8 @@ sudo cscli metrics
 The metrics displayed are extracted from CrowdSec prometheus.
 The indicators are grouped by scope :
 
- - Buckets : Know which buckets are created and/or overflew (scenario efficiency)
- - Acquisition : Know which file produce logs and if thy are parsed (or end up in bucket)
+ - Buckets: which buckets were created and/or overflowed (scenario efficiency)
+ - Acquisition: which files produce logs and whether they are parsed (or end up in buckets)
  - Parser : Know how frequently the individual parsers are triggered and their success rate
  - Local Api Metrics : Know how often each endpoint of crowdsec's local API has been used
 
@@ -247,7 +230,7 @@ INFO[0000] Local Api Bouncers Metrics:
 
 Those metrics are a great way to know if your configuration is correct:
 
-The `Acquisition Metrics` is a great way to know if your parsers are setup correctly:
+The `Acquisition Metrics` table is a great way to check whether your parsers are set up correctly:
 
  - If you have 0 **LINES PARSED** for a source : You are probably *missing* a parser, or you have a custom log format that prevents the parser from understanding your logs.
  - However, it's perfectly OK to have a lot of **LINES UNPARSED** : Crowdsec is not a SIEM, and only parses the logs that are relevant to its scenarios. For example, [ssh parser](https://hub.crowdsec.net/author/crowdsecurity/configurations/sshd-logs),  only cares about failed authentication events (at the time of writing).
@@ -256,7 +239,7 @@ The `Acquisition Metrics` is a great way to know if your parsers are setup corre
 
 The `Parser Metrics` will let you troubleshoot eventual parser misconfigurations :
 
- - **HITS** is how many events where fed to this specific parser
+ - **HITS** is how many events were fed to this specific parser
 
  - **PARSED** and **UNPARSED** indicate how many events successfully come out of the parser
 
@@ -266,22 +249,9 @@ For example, if you have a custom log format in nginx that is not supported by t
 For more advanced metrics understanding, [take a look at the dedicated prometheus documentation](/observability/prometheus.md).
 
 
-## Deploy dashboard
+## Dashboard
 
-
-:::caution
-
-Running [metabase](https://www.metabase.com/) (the dashboard deployed by `cscli dashboard setup`) [requires 1-2Gb of RAM](https://www.metabase.com/docs/latest/troubleshooting-guide/running.html). Metabase container is **only** available for amd64.
-
-:::
-
-
-```bash
-sudo cscli dashboard setup --listen 0.0.0.0
-```
-
-CrowdSec provides various observability tools including Prometheus metrics and command-line interfaces.
-It requires docker, [installation instructions are available here](https://docs.docker.com/engine/install/).
+The `cscli dashboard` command (Metabase) was removed in CrowdSec 1.7.0. To visualize alerts and decisions, use the [CrowdSec Console](https://app.crowdsec.net) or [Prometheus and Grafana](/observability/prometheus.md#exploitation-with-prometheus-server--grafana).
 
 ## Logs
 
@@ -295,8 +265,8 @@ sudo tail -f /var/log/crowdsec.log
 
 ## Scalability
 
-CrowdSec uses go-routines for parsing and enriching logs, pouring events to buckets and manage outputs.
+CrowdSec uses go-routines for parsing and enriching logs, pouring events into buckets and managing outputs.
 
 By default, one routine of each exists (should be enough to handle ~1K EP/s), and can be changed in `crowdsec_service` of the main configuration file via the [parser_routines](/configuration/crowdsec_configuration.md#parser_routines), [buckets_routines](/configuration/crowdsec_configuration.md#buckets_routines) and [output_routines](/configuration/crowdsec_configuration.md#output_routines) directives.
 
-Please keep in mind that thanks to the [http API](https://crowdsecurity.github.io/api_doc/lapi/), the workload of log parsing can be splitted amongst several agents pushing to a single [LAPI](/local_api/intro.md).
+Please keep in mind that thanks to the [http API](https://crowdsecurity.github.io/api_doc/lapi/), the log parsing workload can be split among several agents pushing to a single [LAPI](/local_api/intro.md).

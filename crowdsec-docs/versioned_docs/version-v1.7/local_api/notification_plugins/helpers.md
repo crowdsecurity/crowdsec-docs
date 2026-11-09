@@ -3,7 +3,7 @@ id: template_helpers
 title: Templating helpers
 ---
 
-In order to simplify some operation in the templates, we provide some custom helpers.
+To simplify some operations in the templates, we provide some custom helpers.
 
 ## Sprig
 
@@ -40,7 +40,7 @@ It does not provide comprehensive sanitization.
 
 ### `Hostname`
 
-Returns the hostname of the machine running crowdsec.
+Returns the hostname of the machine running CrowdSec.
 
 ### `GetMeta(alert, key)`
 

@@ -1,36 +1,26 @@
 ---
 id: haproxy
-title: HAProxy
+title: "HAProxy IP Blocking with CrowdSec"
+description: "Legacy Lua bouncer that blocks CrowdSec-banned IPs in HAProxy 2.5+. No longer maintained: use the HAProxy SPOA bouncer for new setups."
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-<img src={useBaseUrl('/img/crowdsec_haproxy.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
-</p>
-<p align="center">
-<img src="https://img.shields.io/badge/build-pass-green" />
-<img src="https://img.shields.io/badge/tests-pass-green" />
-</p>
-<p align="center">
-&#x1F4DA; <a href="#installation/">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-
-<RemediationSupportBadges
-  Mode
-  Appsec={false}
+<BouncerHeader
+  title="HAProxy"
+  imgSrc="/img/crowdsec_haproxy.svg"
+  description="Lua-based remediation component for HAProxy (legacy — stream mode only, no AppSec support)."
+  featuresSupport="streammode"
+  githubUrl="https://github.com/crowdsecurity/cs-haproxy-bouncer"
 />
-
+# Protect HAProxy with CrowdSec IP Blocking
 :::danger
 
 This bouncer isn't actively supported anymore.
 
-We strongly suggest, you use the [Haproxy SPOA Bouncer](/u/bouncers/haproxy_spoa).
+We strongly suggest that you use the [HAProxy SPOA Bouncer](/u/bouncers/haproxy_spoa).
 
 :::
 
@@ -41,14 +31,14 @@ A lua Remediation Component for haproxy.
 This component is compatible with HAProxy version 2.5 and higher.
 :::
 
-## How does it work ?
+## How does it work?
 
 This component leverages haproxy lua's API to check the IP address against the local API.
 
 Supported features:
 
  - Stream mode (pull the local API for new/old decisions every X seconds)
- - Ban remediation (can ban an IP address by redirecting him or returning a custom HTML page)
+ - Ban remediation (can ban an IP address by redirecting the client or returning a custom HTML page)
  - Captcha remediation (can return a captcha)
  - Works with IPv4/IPv6
  - Support IP ranges (can apply a remediation on an IP range)
@@ -207,13 +197,13 @@ resolvers my_resolver
 
 #### Crowdsec backend
 
-You must declare a backend for Crowdsec so we're able to resolve it's address during the refresh task. the backend and the server both must be named `crowdsec`.
+You must declare a backend for CrowdSec so its address can be resolved during the refresh task. The backend and the server must both be named `crowdsec`.
 
 The decisions are stored in a [Map file](https://www.haproxy.com/blog/introduction-to-haproxy-maps/), the location of the map file is configured with `MAP_PATH` parameter.
 
 #### When using captcha remediation
 
-Using captcha, You must declare a backend for the captcha provider so we're able to resolve it's address during captcha verification.
+When using captcha, you must declare a backend for the captcha provider so its address can be resolved during captcha verification.
 
 Validated ips are cached in a [Stick table](https://www.haproxy.com/blog/introduction-to-haproxy-stick-tables/) to avoid too many requests to captcha verification endpoint.
 
@@ -257,18 +247,18 @@ backend captcha_verifier
 
 
 
-Edit `etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf` and configure the following options:
+Edit `/etc/crowdsec/bouncers/crowdsec-haproxy-bouncer.conf` and configure the following options:
 
 ```bash
 SECRET_KEY=
 SITE_KEY=
-CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
+CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/haproxy/templates/captcha.html
 CAPTCHA_EXPIRATION=3600
 ```
 
 Restart HAProxy.
 
-You can add a decisions with a type `captcha` to check if it works correctly:
+You can add a decision with type `captcha` to check that it works correctly:
 
 ```bash
 sudo cscli decisions add -i <IP_TO_TEST> -t captcha
@@ -295,7 +285,7 @@ API_KEY=<API_KEY>
 
 CrowdSec Local API key.
 
-Generated with [`sudo cscli bouncers add`](/u/getting_started/installation/linux) command.
+Generated with the [`sudo cscli bouncers add`](/docs/cscli/cscli_bouncers_add) command.
 
 ### `BOUNCING_ON_TYPE`
 > all | ban | captcha
@@ -326,13 +316,13 @@ REQUEST_TIMEOUT=1000
 Timeout in milliseconds for the HTTP requests done by the component to query CrowdSec local API or captcha provider (for the captcha verification).
 
 ### `EXCLUDE_LOCATION`
-> string (Seperate by comma)
+> string (comma-separated)
 
 ```bash
 EXCLUDE_LOCATION=/<path1>,/<path2>
 ```
 
-The locations to exclude while bouncing. It is a list of location, separated by commas.
+The locations to exclude while bouncing. It is a list of locations, separated by commas.
 
 :warning: It is not recommended to put `EXCLUDE_LOCATION=/`.
 
@@ -373,7 +363,7 @@ BAN_TEMPLATE_PATH=<path_to_html_template>
 
 The path to a HTML page to return to IPs that trigger `ban` remediation.
 
-By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/ban.html`.
+By default, the HTML template is located in `/var/lib/crowdsec/lua/haproxy/templates/ban.html`.
 
 
 ### `RET_CODE`
@@ -426,7 +416,7 @@ The path to a captcha HTML template.
 
 The component will try to replace `{{captcha_site_key}}` in the template with `SITE_KEY` parameter.
 
-By default, the HTML template is located in `/var/lib/crowdsec/lua/templates/captcha.html`.
+By default, the HTML template is located in `/var/lib/crowdsec/lua/haproxy/templates/captcha.html`.
 
 
 ### `CAPTCHA_EXPIRATION`
@@ -439,4 +429,4 @@ CAPTCHA_EXPIRATION=3600
 ```
 
 
-The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IPs address will get a captcha again.
+The time for which the captcha will be validated. After this duration, if the decision is still present in CrowdSec local API, the IP address will get a captcha again.

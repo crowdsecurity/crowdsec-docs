@@ -13,7 +13,7 @@ Hub management, via `cscli` allows you to install, upgrade, remove and view inst
 
 ### Installation
 
-A collection contains parsers and scenarios to form a coherent ensemble. Most of the time, this is the only you will need to install. 
+A collection contains parsers and scenarios to form a coherent ensemble. Most of the time, this is the only thing you will need to install. 
 
 Have nginx running ? `cscli collections install crowdsecurity/nginx` should do the trick ! 
 
@@ -161,7 +161,7 @@ Current metrics :
 
 ### Reference
 
-See more about collection [here](/docs/next/log_processor/collections/intro).
+See more about collection [here](/docs/log_processor/collections/intro).
 
 
 ## Parsers
@@ -191,7 +191,7 @@ INFO[0000] Run 'systemctl reload crowdsec' for the new configuration to be effec
 sudo cscli parsers list
 ```
 
-[Parsers](/docs/next/log_processor/parsers/intro) are yaml files in `/etc/crowdsec/parsers/<STAGE>/parser.yaml`.
+[Parsers](/docs/log_processor/parsers/intro) are yaml files in `/etc/crowdsec/parsers/<STAGE>/parser.yaml`.
 
 
 <details>
@@ -253,7 +253,7 @@ sudo cscli parsers inspect <parser_name>
 
 Parsers inspect will give you detailed information about a given parser, including versioning data *and* runtime metrics (fetched from prometheus).
 
-<!--TBD: refaire l'output apres avoir fix le 'parsers inspect XXXX'-->
+<!--TBD: (French TODO comment left in source) l'output apres avoir fix le 'parsers inspect XXXX'-->
 <details>
   <summary>Inspect <strong>crowdsecurity/sshd-logs</strong> parser</summary>
 
@@ -293,13 +293,13 @@ Current metrics :
 
 ### Reference
 
-See more details about parsers [here](/docs/next/log_processor/parsers/intro).
+See more details about parsers [here](/docs/log_processor/parsers/intro).
 
 ## Enrichers
 
-Enrichers are basically [parsers](/docs/next/log_processor/parsers/intro) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich` stage (after most of the parsing happened).
+Enrichers are basically [parsers](/docs/log_processor/parsers/intro) that can rely on external methods to provide extra contextual information to the event. The enrichers are usually in the `s02-enrich` stage (after most of the parsing happened).
 
-Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the [event](/docs/next/expr/event).
+Enrichers functions should all accept a string as a parameter, and return an associative string array, that will be automatically merged into the `Enriched` map of the [event](/docs/expr/event).
 
 :::caution
 
@@ -323,7 +323,7 @@ Take a tour at the [Hub](https://hub.crowdsec.net/browse/#configurations) to fin
 
 ### Reference
 
-See more about enrichers [here](/docs/next/log_processor/parsers/enricher).
+See more about enrichers [here](/docs/log_processor/parsers/enricher).
 
 
 ## Scenarios
@@ -364,7 +364,7 @@ Use `--all` to list available parsers.
 
 :::
 
-[Scenario](/docs/next/log_processor/scenarios/intro) are yaml files in `/etc/crowdsec/scenarios/`.
+[Scenarios](/docs/log_processor/scenarios/intro) are YAML files in `/etc/crowdsec/scenarios/`.
 
 
 <details>
@@ -464,4 +464,4 @@ Current metrics :
 
 ### Reference
 
-See more about scenarios [here](/docs/next/log_processor/scenarios/intro).
+See more about scenarios [here](/docs/log_processor/scenarios/intro).

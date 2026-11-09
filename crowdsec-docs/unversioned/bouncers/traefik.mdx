@@ -1,49 +1,38 @@
 ---
 id: traefik
-title: Traefik (Kubernetes)
+title: "Traefik IP Blocking & WAF with CrowdSec"
+toc_max_heading_level: 4
+description: "A Traefik middleware plugin that filters requests against CrowdSec decisions and the AppSec (WAF) engine, on bare metal, Docker Compose or Kubernetes."
 sidebar_position: 5
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import useBaseUrl from "@docusaurus/useBaseUrl";
-import RemediationSupportBadges from "@site/src/components/remediation-support-badge";
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-<p align="center">
-  <img
-    src={useBaseUrl("/img/traefik.logo.png")}
-    alt="CrowdSec"
-    title="CrowdSec"
-    width="400"
-    height="300"
-  />
-</p>
-<p align="center">
-  <img src="https://img.shields.io/badge/build-pass-green"></img>
-  <img src="https://img.shields.io/badge/tests-pass-green"></img>
-</p>
-<p align="center">
-  &#x1F4DA; <a href="#deploy-the-traefik-middleware">Documentation</a>
-  &#x1F4A0;{" "}
-  <a href="https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin">
-    Source
-  </a>
-  &#128172; <a href="https://discourse.crowdsec.net">Discourse</a>
-</p>
+<BouncerHeader
+  title="Traefik (Kubernetes)"
+  typeLabel="Third Party Bouncer"
+  imgSrc="/img/traefik.logo.png"
+  description="Traefik middleware plugin for Kubernetes that blocks IPs via CrowdSec decisions."
+  featuresSupport="waf, metrics, prometheus, mtls, streammode"
+  githubUrl="https://github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+/>
 
-<RemediationSupportBadges Metrics Prometheus MTLS />
+# Protect Traefik with CrowdSec IP Blocking & WAF
 
 :::tip AppSec Support
-This bouncer supports the [AppSec Component](/docs/next/appsec/intro) for
+This bouncer supports the [AppSec Component](/docs/appsec/intro) for
 real-time WAF protection. Enable `crowdsecAppsecEnabled: true` in your
 middleware configuration to get virtual patching and defense against known
 CVEs, SQL injection, XSS, and other application-layer attacks.
 
 For a full walkthrough, see the
-[AppSec Quickstart for Traefik](/docs/next/appsec/quickstart/traefik).
+[AppSec Quickstart for Traefik](/docs/appsec/quickstart/traefik).
 :::
 
-# Traefik on kubernetes
+## Traefik on kubernetes
 
 :::important
 This remediation component is community developed and maintained. You can see all
@@ -51,10 +40,10 @@ the configuration options in the [bouncer
 documentation](https://github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin).
 You can also refer to a [full traefik and CrowdSec stack on
 kubernetes](https://github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin/tree/main/examples/kubernetes)
-or our [Appsec Traefik Quickstart](/docs/next/appsec/quickstart/traefik).
+or our [Appsec Traefik Quickstart](/docs/appsec/quickstart/traefik).
 :::
 
-## Objectives
+### Objectives
 
 This quickstart shows how to deploy the CrowdSec Traefik bouncer in Kubernetes
 and protect workloads exposed through
@@ -68,11 +57,11 @@ At the end, you will have:
 - The bouncer key mounted into the Traefik pod as a file
 - An operational pattern that avoids committing the LAPI key in plaintext
 
-## Prerequisites
+### Prerequisites
 
 It is assumed that you already have:
 
-- A working CrowdSec [Security Engine](/intro.mdx) installation. For a
+- A working CrowdSec [Security Engine](/docs/intro) installation. For a
   Kubernetes install quickstart, refer to
   [/u/getting_started/installation/kubernetes](/u/getting_started/installation/kubernetes).
 - A working Traefik installation in Kubernetes.
@@ -88,7 +77,7 @@ The upstream project used in this guide is:
 - `maxlerebourg/crowdsec-bouncer-traefik-plugin`
   :::
 
-## Store the Traefik bouncer key in a Kubernetes secret
+### Store the Traefik bouncer key in a Kubernetes secret
 
 The practical approach is to choose a fixed shared key and store it in
 Kubernetes secrets instead of hardcoding it in Helm values.
@@ -153,9 +142,9 @@ helm upgrade --install crowdsec crowdsec/crowdsec --namespace crowdsec --create-
 The `crowdsec-bouncer-key` secret in the `traefik` namespace is used later when
 mounting the key into the Traefik pod.
 
-## Required traefik configuration items
+### Required traefik configuration items
 
-### Traefik configuration's on source IPs
+#### Traefik configuration for source IPs
 
 To ensure remediation works correctly, Traefik must receive the real client IP
 for each request. When Traefik is deployed behind a load balancer, CDN, or
@@ -207,7 +196,7 @@ events, is missed.
 
 </details>
 
-### Traefik Custom Resource Definitions
+#### Traefik Custom Resource Definitions
 
 Traefik's CRDs provide the custom resource types, such as `Middleware`, that
 are required to configure Traefik through the Kubernetes CRD provider. CrowdSec
@@ -244,7 +233,7 @@ kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.6/docs/con
 </TabItem>
 </Tabs>
 
-### Enable experimental plugin loading
+#### Enable experimental plugin loading
 
 The CrowdSec Traefik plugin cannot be enabled only through CLI flags. You must
 also enable experimental plugin loading in the Traefik chart values:
@@ -268,7 +257,7 @@ Apply or upgrade your Traefik release:
 helm upgrade --install traefik traefik/traefik -n traefik --create-namespace -f traefik-values.yaml
 ```
 
-## Verify CrowdSec LAPI access
+### Verify CrowdSec LAPI access
 
 The Traefik middleware only needs access to CrowdSec LAPI. Make sure the
 CrowdSec release exposes the LAPI service, that the bouncer key is available
@@ -287,7 +276,7 @@ You should see:
 - `crowdsec-lapi` in `Running`
 - `crowdsec-service` exposing port `8080`
 
-## Deploy the Traefik middleware
+### Deploy the Traefik middleware
 
 To achieve remediation in a Traefik environment, create a `Middleware`
 resource.
@@ -295,7 +284,7 @@ resource.
 :::important
 The Traefik `Middleware` CRD does not have a native `secretKeyRef` field for the
 plugin configuration. In Kubernetes, the key can be mounted from a `Secret` into
-the Traefik pod and reference it with `crowdsecLapiKeyFile`.
+the Traefik pod and referenced with `crowdsecLapiKeyFile`.
 :::
 
 Mount the Traefik-side secret into the pod and let the middleware read it from a
@@ -386,7 +375,7 @@ Kubernetes secret seems to be a more secure approach.
 Once the middleware exists, attach it to your `IngressRoute` or other Traefik
 route resources.
 
-## Traefik with WAF (AppSec) on Kubernetes
+### Traefik with WAF (AppSec) on Kubernetes
 
 If you want remediation and WAF protection together, first enable AppSec in the
 CrowdSec chart while still sourcing the bouncer key from the Kubernetes secret:
@@ -490,7 +479,7 @@ Apply it:
 kubectl apply -f bouncer-middleware.yaml
 ```
 
-#### Validate AppSec
+##### Validate AppSec
 
 Test that malicious requests are blocked:
 

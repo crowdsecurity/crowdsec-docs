@@ -35,6 +35,7 @@ cscli [flags]
 * [cscli allowlists](/cscli/cscli_allowlists.md)	 - Manage centralized allowlists
 * [cscli appsec-configs](/cscli/cscli_appsec-configs.md)	 - Manage hub appsec-configs
 * [cscli appsec-rules](/cscli/cscli_appsec-rules.md)	 - Manage hub appsec-rules
+* [cscli bot](/cscli/cscli_bot.md)	 - Inspect bot detection: known-bot matching and fingerprint ids
 * [cscli bouncers](/cscli/cscli_bouncers.md)	 - Manage bouncers [requires local API]
 * [cscli capi](/cscli/cscli_capi.md)	 - Manage interaction with Central API (CAPI)
 * [cscli collections](/cscli/cscli_collections.md)	 - Manage hub collections

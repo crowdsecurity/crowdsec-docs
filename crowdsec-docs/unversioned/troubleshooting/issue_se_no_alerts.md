@@ -15,6 +15,7 @@ The **Engine No Alerts** issue appears when your Security Engine has been runnin
 
 - [**Appropriate collections not installed**](#appropriate-collections-not-installed): Make sure you have detection scenarios and/or AppSec rules that cover your services
 - [**Events massively whitelisted**](#events-massively-whitelisted): Due to misconfiguration, proxying issues, or faulty custom whitelisting
+- [**Service behind a CDN, alerts whitelisted as good actors**](/u/troubleshooting/security_engine#my-service-is-behind-a-cdn-and-i-get-no-alerts): Your access logs record the CDN's IP instead of the visitor's, and the CDN ranges are whitelisted by default, so events are parsed but never become alerts. You need to log the real source IP.
 - [**Scenarios in simulation mode**](#scenarios-in-simulation-mode): Detection scenarios are installed but set to simulation mode, preventing actual alerts.
 - [**Legitimate low-activity environment**](#legitimate-low-activity-environment): Your proactive defenses might be good enough that you don't detect additional malicious behaviors (CrowdSec blocklists or other protections may already deflect all malicious activity)
 
@@ -43,20 +44,23 @@ docker exec crowdsec cscli collections list
 ```
 
 ```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli collections list
+for pod in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec,type=agent -o name); do
+  echo "== $pod"
+  kubectl exec -n crowdsec "$pod" -c crowdsec-agent -- cscli collections list
+done
 ```
 
 </details>
 
 Compare your installed collections against your actual services (nginx, apache, ssh, etc.). Missing collections means no detection rules for those services.
 
-You can try to run a test on your logs to spot issues. See the [cscli explain documentation](/cscli/cscli_explain/)
+You can try to run a test on your logs to spot issues. See the [cscli explain documentation](/docs/cscli/cscli_explain)
 
 #### 🛠️ Install required collections for your services
 
 Visit the [CrowdSec Hub](https://hub.crowdsec.net/) to find collections for your stack by browsing or searching. A collection bundles parsers and scenarios for a given service. For example, the NGINX collection includes NGINX parsers and scenarios for common HTTP attacks.
 
-Collections are packaged for various type of services:
+Collections are packaged for various types of services:
 
 - **Web servers**: `crowdsecurity/nginx`, `crowdsecurity/apache2`, `crowdsecurity/caddy`
 - **SSH**: `crowdsecurity/sshd`
@@ -85,12 +89,17 @@ docker restart crowdsec
 ```
 
 **Kubernetes**
-```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli collections install crowdsecurity/nginx
+
+Add the collection to your Helm `values.yaml`:
+```yaml
+agent:
+  env:
+    - name: COLLECTIONS
+      value: "crowdsecurity/nginx"
 ```
 
 ```bash
-kubectl rollout restart deployment/crowdsec -n crowdsec
+helm upgrade --reset-then-reuse-values crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml
 ```
 
 </details>
@@ -116,7 +125,10 @@ docker exec crowdsec cscli metrics show scenarios
 
 **Kubernetes**
 ```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli metrics show scenarios
+for pod in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec,type=agent -o name); do
+  echo "== $pod"
+  kubectl exec -n crowdsec "$pod" -c crowdsec-agent -- cscli metrics show scenarios
+done
 ```
 
 </details>
@@ -133,7 +145,7 @@ kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name
 ╰──────────┴────────────┴──────────────┴────────────────┴────────────────────────┴───────────────────╯
 ```
 
-#### 🛠️ Make sure the IP in your logs are public IPs
+#### 🛠️ Make sure the IPs in your logs are public IPs
 
 Due to misconfiguration or log source choice, source IPs can be private/internal addresses instead of **X-Forwarded-For** client IPs.
 
@@ -163,7 +175,10 @@ docker exec crowdsec cscli simulation status
 
 **Kubernetes**
 ```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli simulation status
+for pod in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec,type=agent -o name); do
+  echo "== $pod"
+  kubectl exec -n crowdsec "$pod" -c crowdsec-agent -- cscli simulation status
+done
 ```
 
 </details>
@@ -191,12 +206,18 @@ docker restart crowdsec
 ```
 
 **Kubernetes**
-```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli simulation disable --all
+
+Set the simulation configuration in your Helm `values.yaml`:
+```yaml
+config:
+  simulation.yaml: |
+    simulation: false
+    exclusions: []
 ```
 
 ```bash
-kubectl rollout restart deployment/crowdsec -n crowdsec
+helm upgrade --reset-then-reuse-values crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml
+kubectl rollout restart daemonset/crowdsec-agent -n crowdsec
 ```
 
 </details>
@@ -234,7 +255,10 @@ docker exec crowdsec cscli metrics show acquisition parsers
 
 **Kubernetes**
 ```bash
-kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli metrics show acquisition parsers
+for pod in $(kubectl get pods -n crowdsec -l k8s-app=crowdsec,type=agent -o name); do
+  echo "== $pod"
+  kubectl exec -n crowdsec "$pod" -c crowdsec-agent -- cscli metrics show acquisition parsers
+done
 ```
 
 </details>

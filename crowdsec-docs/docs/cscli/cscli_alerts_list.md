@@ -38,7 +38,7 @@ cscli alerts list --type ban
       --scope string      restrict to alerts of this scope (ie. ip,range)
   -v, --value string      the value to match for in the specified scope
       --origin string     the value to match for the specified origin (cscli,crowdsec,console,cscli-import,lists,CAPI,remediation_sync ...)
-      --kind string       the value to match for the specified kind (crowdsec,waf,capi,papi,cscli ...)
+      --kind string       the value to match for the specified kind (crowdsec,waf,bot-detection,capi,papi,cscli ...)
       --contained         query decisions contained by range
   -m, --machine           print machines that sent alerts
   -l, --limit int         limit size of alerts list table (0 to view all alerts) (default 50)

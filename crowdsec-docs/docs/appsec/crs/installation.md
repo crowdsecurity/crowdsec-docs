@@ -1,6 +1,8 @@
 ---
 id: installation
-title: Installation
+title: "OWASP CRS Installation"
+sidebar_label: "Installation"
+description: "Install the OWASP Core Rule Set on the CrowdSec Web Application Firewall (WAF), in non-blocking out-of-band mode first or directly in blocking in-band mode."
 sidebar_position: 1
 ---
 
@@ -29,7 +31,7 @@ Then use it in your acquisition configuration, for example `/etc/crowdsec/acquis
 
 ```yaml
 source: appsec
-appsec-configs:
+appsec_configs:
   - crowdsecurity/crs
 labels:
   type: appsec
@@ -45,18 +47,18 @@ To do so, create a file `/etc/crowdsec/appsec-configs/crs-alerting.yaml` with th
 
 ```yaml
 name: custom/crs-alerting
-on_match:
-  - filter: IsOutBand == true
-    apply:
-      - SendAlert()
-      - CancelEvent() # This one is optional: if set, no event will be generated, meaning CrowdSec will never take a decision based on the rules that were matched.
+outofband:
+  on_match:
+    - apply:
+        - SendAlert()
+        - CancelEvent() # This one is optional: if set, no event will be generated, meaning CrowdSec will never take a decision based on the rules that were matched.
 ```
 
 Then add it to your acquisition configuration:
 
 ```yaml
 source: appsec
-appsec-configs:
+appsec_configs:
   - crowdsecurity/crs
   - custom/crs-alerting
 labels:
@@ -78,7 +80,7 @@ Then load it in your configuration:
 
 ```yaml
 source: appsec
-appsec-configs:
+appsec_configs:
   - crowdsecurity/crs-inband
 labels:
   type: appsec

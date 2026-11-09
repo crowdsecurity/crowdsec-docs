@@ -315,7 +315,7 @@ configuration values, their defaults, and their purpose.
 | `agent.replicas`<a id="agent-replicas"></a>                                 | Number of replicas when deploying as a Deployment                                          | `1`     |
 | `agent.strategy`<a id="agent-strategy"></a>                                 | Deployment strategy when `isDeployment` is true                                            | `{}`    |
 | `agent.ports`<a id="agent-ports"></a>                                    | Custom container ports to expose (default: metrics port 6060 if enabled)                   | `[]`    |
-| `agent.additionalAcquisition`<a id="agent-additionalacquisition"></a>                    | Extra log acquisition sources (see https://docs.crowdsec.net/docs/next/data_sources/intro) | `[]`    |
+| `agent.additionalAcquisition`<a id="agent-additionalacquisition"></a>                    | Extra log acquisition sources (see https://docs.crowdsec.net/docs/next/log_processor/data_sources/intro/) | `[]`    |
 | `agent.acquisition`<a id="agent-acquisition"></a>                              | Pod log acquisition definitions (namespace, podName, program, etc.)                        | `[]`    |
 | `agent.priorityClassName`<a id="agent-priorityclassname"></a>                        | Priority class name for agent pods                                                         | `""`    |
 | `agent.daemonsetAnnotations`<a id="agent-daemonsetannotations"></a>                     | Annotations applied to the agent DaemonSet                                                 | `{}`    |
@@ -366,6 +366,9 @@ configuration values, their defaults, and their purpose.
 | `appsec.replicas`<a id="appsec-replicas"></a>                                | Number of replicas for the AppSec Deployment                                               | `1`     |
 | `appsec.strategy`<a id="appsec-strategy"></a>                                | Deployment strategy for AppSec                                                             | `{}`    |
 | `appsec.acquisitions`<a id="appsec-acquisitions"></a>                            | AppSec acquisitions (datasource listeners), e.g. appsec listener on 7422                   | `[]`    |
+| `appsec.scenarios`<a id="appsec-scenarios"></a>                               | Custom scenario files for the appsec pod (key = filename, value = file content)            | `{}`    |
+| `appsec.postoverflows.s00-enrich`<a id="appsec-postoverflows-s00-enrich"></a>                | Custom postoverflow enrichment files for the appsec pod                                    | `{}`    |
+| `appsec.postoverflows.s01-whitelist`<a id="appsec-postoverflows-s01-whitelist"></a>             | Custom postoverflow whitelist files for the appsec pod                                     | `{}`    |
 | `appsec.configs`<a id="appsec-configs"></a>                                 | AppSec configs (key = filename, value = file content)                                      | `{}`    |
 | `appsec.rules`<a id="appsec-rules"></a>                                   | AppSec rule files (key = filename, value = file content)                                   | `{}`    |
 | `appsec.priorityClassName`<a id="appsec-priorityclassname"></a>                       | Priority class name for AppSec pods                                                        | `""`    |

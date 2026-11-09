@@ -76,9 +76,9 @@ Great! since we cloned the hub repository we can now run `cscli` commands within
 ../cscli -c ../dev.yaml hubtest run --all
 ```
 
-That command will now run all tests within the hub repository. Please take note about the `../` infront of `cscli` and `dev.yaml` as these are in the folder above our current working directory.
+That command will now run all tests within the hub repository. Please note the `../` in front of `cscli` and `dev.yaml` as these are in the folder above our current working directory.
 
-A helpful tip to save you typing the whole command everytime is to set an shell alias example:
+To avoid typing the whole command every time, set a shell alias, for example:
 
 ```bash
 alias csdev="$(dirname $PWD)/cscli -c $(dirname $PWD)/dev.yaml"

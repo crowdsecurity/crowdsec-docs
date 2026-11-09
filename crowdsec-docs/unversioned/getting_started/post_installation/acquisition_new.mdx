@@ -6,7 +6,7 @@ pagination_next: getting_started/post_installation/profiles
 ---
 
 :::info
-We will add a [file-based acquisition](/docs/next/log_processor/data_sources/file). If you need a different source, adjust the instructions to match your setup.
+We will add a [file-based acquisition](/docs/log_processor/data_sources/file). If you need a different source, adjust the instructions to match your setup.
 :::
 
 import FormattedTabs from '@site/src/components/formatted-tabs';
@@ -19,8 +19,8 @@ You can view the available collections on the [Hub](https://hub.crowdsec.net/).
 :::
 
 <FormattedTabs
-  bash="cscli collections add <collection_name>"
-  powershell="cscli.exe collections add <collection_name>"
+  bash="cscli collections install <collection_name>"
+  powershell="cscli.exe collections install <collection_name>"
   yaml={`# In your values.yml file
 agent:
   env:
@@ -28,14 +28,14 @@ agent:
       value: '<collection_name>'`}
 />
 
-Once the collection is downloaded, add a new [Acquisition](/docs/next/log_processor/data_sources/intro) so CrowdSec knows where to find the log source.
+Once the collection is downloaded, add a new [Acquisition](/docs/log_processor/data_sources/intro) so CrowdSec knows where to find the log source.
 
 :::info
-Each collection on the [Hub](https://hub.crowdsec.net/) includes an example [Acquisition](/docs/next/log_processor/data_sources/intro), which helps you identify files to monitor and labels to assign.
+Each collection on the [Hub](https://hub.crowdsec.net/) includes an example [Acquisition](/docs/log_processor/data_sources/intro), which helps you identify files to monitor and labels to assign.
 :::
 
 :::info
-Since version `1.5.0`, you can add acquisitions via the `acquis.d` directory, which avoids editing the main configuration file.
+You can add acquisitions via the `acquis.d` directory, which avoids editing the main configuration file.
 :::
 
 ### Create the directory if it does not exist
@@ -46,6 +46,10 @@ Since version `1.5.0`, you can add acquisitions via the `acquis.d` directory, wh
   powershell="New-Item -ItemType Directory -Force -Path C:\ProgramData\CrowdSec\Config\acquis.d\"
 />
 
+:::info
+On Windows, the `acquis.d` directory is not loaded by default: add `acquisition_dir: C:\ProgramData\CrowdSec\config\acquis.d` under `crowdsec_service` in `C:\ProgramData\CrowdSec\config\config.yaml`.
+:::
+
 ### Create the acquisition file
 
 <FormattedTabs
@@ -54,7 +58,7 @@ Since version `1.5.0`, you can add acquisitions via the `acquis.d` directory, wh
   cmd=".>C:\ProgramData\CrowdSec\Config\acquis.d\<collection_name>.yaml 2>NUL"
   yaml={`# In your values.yml file
 agent:
-# -- To add custom acquisitions using available datasources (https://docs.crowdsec.net/docs/next/log_processor/data_sources/intro)
+# -- To add custom acquisitions using available datasources (https://docs.crowdsec.net/docs/log_processor/data_sources/intro)
   additionalAcquisition:
     - source: file
       filenames:
@@ -84,7 +88,7 @@ Once you have added the acquisitions, test the configuration and restart the ser
   bash="sudo crowdsec -t && sudo systemctl restart crowdsec"
   cmd="net stop crowdsec && net start crowdsec"
   powershell="Restart-Service crowdsec"
-  k8s="helm upgrade -f values.yaml crowdsec crowdsecurity/crowdsec"
+  k8s="helm upgrade --reset-then-reuse-values crowdsec crowdsec/crowdsec -n crowdsec -f values.yaml"
 />
 
 ## Next steps

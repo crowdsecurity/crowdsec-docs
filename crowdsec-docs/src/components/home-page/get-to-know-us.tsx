@@ -44,13 +44,13 @@ const toolsAndIntegration: ItemData[] = [
 		icon: () => <img src="/img/icons/waf.webp" className="h-6 w-6" alt="web application firewall" />,
 		title: "AppSec / WAF",
 		description: "Protect web applications from OWASP Top 10 and custom threats.",
-		link: "/docs/next/appsec/intro",
+		link: "/docs/appsec/intro",
 	},
 	{
 		icon: () => <span className="text-2xl">🧑🏻‍💻</span>,
 		title: "CLI Reference",
 		description: "Complete command-line interface documentation.",
-		link: "/docs/next/cscli/",
+		link: "/docs/cscli/",
 	},
 ];
 

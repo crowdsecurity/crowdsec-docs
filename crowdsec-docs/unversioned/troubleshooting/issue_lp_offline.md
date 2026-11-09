@@ -3,7 +3,7 @@ title: Log Processor Offline
 id: issue_lp_offline
 ---
 :::info
-LogProcessors are Security Engine used to read log in a distributed setup.  
+Log Processors are Security Engines used to read logs in a distributed setup.  
 In a standalone install your unique Security Engine registers itself as a LogProcessing machine.
 :::
 
@@ -65,7 +65,7 @@ docker restart crowdsec
 ```
 
 ```bash
-kubectl rollout restart deployment/crowdsec -n crowdsec
+kubectl rollout restart daemonset/crowdsec-agent -n crowdsec
 ```
 
 </details>
@@ -82,7 +82,7 @@ Check that the `Last Update` timestamp is recent (within last few minutes).
 
 💡 If your Log Processors are clones (common in orchestrated environments like Kubernetes), some LPs can remain registered after instances are removed. *This is a known issue that will be addressed in future CrowdSec versions.*
 
-If you're facing such an issue, consider running the [cscli machines prune](/cscli/cscli_machines_prune/) command and even cron this pruning every so often if the issue re-appears often.
+If you're facing such an issue, consider running the [cscli machines prune](/docs/cscli/cscli_machines_prune) command and even cron this pruning every so often if the issue re-appears often.
 
 ```bash
 kubectl exec -n crowdsec -it $(kubectl get pods -n crowdsec -l type=lapi -o name) -- cscli machines prune --duration 1h
@@ -190,7 +190,7 @@ sudo firewall-cmd --reload
 ```
 
 If using TLS:
-- Update the agent trust store (`ca_cert` in `/etc/crowdsec/config.yaml`) if certificates were renewed
+- Update the CA the agent trusts (`ca_cert_path` in `/etc/crowdsec/local_api_credentials.yaml`) if certificates were renewed
 - Temporarily enable `insecure_skip_verify: true` for testing (then fix certificates properly)
 - Follow [TLS authentication](/docs/local_api/tls_auth) for proper setup
 

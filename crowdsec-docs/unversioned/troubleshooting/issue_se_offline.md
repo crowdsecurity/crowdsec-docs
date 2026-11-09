@@ -62,7 +62,7 @@ docker restart crowdsec
 
 **Kubernetes:**
 ```bash
-kubectl rollout restart deployment/crowdsec -n crowdsec
+kubectl rollout restart deployment/crowdsec-lapi -n crowdsec
 ```
 
 </details>
@@ -73,7 +73,7 @@ After restarting, re-run `sudo cscli console status` to ensure the heartbeat is 
 
 #### 🔎 Check console status and logs for connectivity errors
 
-`sudo cscli console status` may show errors such as `permission denied`, `unable to reach console`, or TLS failures. Inspect `/var/log/crowdsec/crowdsec.log` (or container stdout) for details.
+`sudo cscli console status` may show errors such as `permission denied`, `unable to reach console`, or TLS failures. Inspect `/var/log/crowdsec.log` (or container stdout) for details.
 
 Confirm that your Security Engine can communicate with CrowdSec Central API (CAPI):
 ```bash
@@ -94,9 +94,9 @@ Verify system time is synced (via NTP). Large clock drifts can invalidate consol
 
 Restore connectivity to the Console:
 
-1. Check that you can access crowdsec services and APIs listed in [network management](https://doc.crowdsec.net/docs/next/configuration/network_management/)
+1. Check that you can access crowdsec services and APIs listed in [network management](https://doc.crowdsec.net/docs/configuration/network_management/)
 
-2. If a proxy is required, configure it in `/etc/crowdsec/config.yaml` under `common.http_proxies` and reload the service.
+2. If a proxy is required, set `HTTP_PROXY`/`HTTPS_PROXY` (and `NO_PROXY` if needed) for the crowdsec service (see [How to set up a proxy](/u/troubleshooting/security_engine#how-to-set-up-a-proxy)) and restart it.
 
 3. Renew TLS trust stores if the host cannot validate the Console certificate chain.
 
@@ -105,7 +105,7 @@ Test connectivity:
 curl -I https://api.crowdsec.net/
 ```
 
-For CAPI connectivity issues you can follow the [posts-install health check step for connectivity](/u/getting_started/health_check#-crowdsec-connectivity-checks).
+For CAPI connectivity issues you can follow the [post-install health check step for connectivity](/u/getting_started/health_check#-crowdsec-connectivity-checks).
 
 In the rare case you saw **zero machines** in your machines list, try:
 ```bash

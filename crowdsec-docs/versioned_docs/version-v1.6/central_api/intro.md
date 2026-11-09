@@ -12,7 +12,7 @@ The [Central API](https://crowdsecurity.github.io/api_doc/capi/) is the service 
 
 
 :::info
-This information is *only* going to be pushed when a scenario is coming from the hub and is unmodified. Custom scenarios, tainted scenarios and manual decisions are *not* pushed unless enrolled into the console.
+Alerts from custom and tainted scenarios are pushed by default (opt out with `cscli console disable custom` or `cscli console disable tainted`). Manual decisions are only pushed when the `manual` console option is enabled, which `cscli console enroll` does by default.
 :::
 
 When the Security Engine generates an alert, [unless you opt-out of it](/u/troubleshooting/security_engine#how-to-disable-the-central-api), it will push "signal meta-data". The meta-data are :
@@ -29,7 +29,7 @@ The community blocklist matches the scenarios deployed on the Security Engine in
 
 ### Console metrics
 
-To give you more information in the [console](https://app.crowdsec.net) and for general health monitoring of the project, crowdsec reports the following data to the Central API :
+To give you more information in the [console](https://app.crowdsec.net) and for general health monitoring of the project, CrowdSec reports the following data to the Central API:
  - name and versions of the deployed Remediation Components
  - name and versions of the Security Engines registered to the Local API
 

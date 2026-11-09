@@ -6,15 +6,15 @@ sidebar_position: 9
 
 ## Running cscli on macos
 
-While it does not make much sense to run crowdsec itself on MacOS, being able to run cscli to interact with remote crowdsec instances is very useful.
+While it does not make much sense to run CrowdSec itself on macOS, being able to run cscli to interact with remote crowdsec instances is very useful.
 
-We do not currently provide prebuilt binary for MacOS, but you can:
+We do not currently provide prebuilt binaries for macOS, but you can:
  - Build cscli yourself
  - Use our docker image
 
 ### Building cscli
 
-In order to build cscli from source, you will need to have at least golang 1.16 installed.
+In order to build cscli from source, you will need the Go version required by the [go.mod file](https://github.com/crowdsecurity/crowdsec/blob/master/go.mod).
 
 You can build from the git master branch or download a source release [here](https://github.com/crowdsecurity/crowdsec/releases).
 
@@ -30,7 +30,7 @@ The `cscli` binary will be located in `crowdsec-$VERSION/cmd/crowdsec-cli/cscli`
 
 :::info
 
-We do not provide ARM64 images currently, but the x86 one works fine on ARM64 Macs.
+The image is multi-arch and includes a native ARM64 build for Apple Silicon Macs.
 
 :::
 
@@ -52,7 +52,7 @@ Create a local `config.yaml` (you can use the default [configuration file](http
 
 Update the `db_config` section to put the correct `type`, `host`, `port`, `username` and `password`.
 
-You can refer [here](/docs/next/local_api/database) for more information about the database configuration.
+You can refer [here](/docs/local_api/database) for more information about the database configuration.
 
 Optionally, if you have built `cscli` from source, you can also update the various paths in the configuration to point them to files in your home directory for simplicity.  
 

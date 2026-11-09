@@ -5,7 +5,7 @@ sidebar_position: 7
 ---
 
 :::info
-`cscli explain` relies on your local setup, parsers, scenario to display its data. It requires a working local crowdsec setup.
+`cscli explain` relies on your local setup, parsers and scenarios to display its data. It requires a working local CrowdSec setup.
 :::
 
 
@@ -22,7 +22,7 @@ cscli explain --log "Sep 19 18:33:22 scw-d95986 sshd[24347]: pam_unix(sshd:auth)
 cscli explain --dsn "file://myfile.log" --type nginx
 ```
 
-Hint: if your are creating/collecting data on the fly (over a network, for example) and want to avoid temporary files, you can use `cscli explain --file /dev/fd/0` or `cscli explain -dsn "file://dev/fd/0"` to refer to standard input.
+Hint: if you are creating/collecting data on the fly (over a network, for example) and want to avoid temporary files, you can use `cscli explain --file /dev/fd/0` or `cscli explain -dsn "file://dev/fd/0"` to refer to standard input.
 
 The typical output looks like this :
 
@@ -47,7 +47,7 @@ line: xx.xx.xx.xx - - [05/Nov/2017:07:23:41 +0100] "GET /Og9vl1%0d%2019s58%3Ates
 ```
 
 Lines represent if and how a parser interacted with the line: how many fields were added (`+`), modified (`~`), or deleted (`-`).
-Other visual clues include: `unchanged` a parser didn't modify an event (meaning it is not relevant) or `[whitelisted]` if a whitelist matched the event.
+Other visual clues include: `unchanged` if a parser didn't modify the event (meaning it is not relevant) or `[whitelisted]` if a whitelist matched the event.
 
 What happens :
  1. Our log line `line: xxx.xxx.xxx.xx - - [05/Nov/2017:07:23:41 +0100] "GET ...` starts being parsed
@@ -74,7 +74,7 @@ Hopefully, this feature will help users understand the behavior when debugging c
 
 ## Verbose mode
 
-When troubleshooting parsers, the `--verbose/-v` option offers extra information. Every change made to the event is displayed along below the associated parser.
+When troubleshooting parsers, the `--verbose/-v` option offers extra information. Every change made to the event is displayed below the associated parser.
 
 ```bash
 ▶ ./cscli -c dev.yaml explain --file /tmp/xx --type nginx --verbose
@@ -116,7 +116,7 @@ line: 10.42.42.42 - - [23/Oct/2017:10:46:06 +0200] "GET /admin/2019p1mnsa8q1ktU 
 
 ## How it works
 
-Behind the scene, `cscli explain` relies on your local crowdsec setup to launch a crowdsec instance to process the given logs, and "simply" provides a more user-friendly representation of the debug information.
+Behind the scenes, `cscli explain` relies on your local CrowdSec setup to launch a crowdsec instance to process the given logs, and "simply" provides a more user-friendly representation of the debug information.
 
 
 

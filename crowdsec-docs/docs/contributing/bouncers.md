@@ -16,7 +16,7 @@ Sharing on the hub allows other users to find and use it. While increasing your 
 
 #### Specs
 
-Remediation components have mandatory and optional features, they are described in the following sub pages:
+Remediation components have mandatory and optional features, which are described in the following subpages:
 - [Specifications for Remediation Component and AppSec Capabilities](/contributing/specs/bouncer_appsec_specs.mdx)
 - [Remediation Component Metrics](/contributing/specs/bouncer_metrics_specs.mdx)
 
@@ -30,7 +30,7 @@ Main features are:
   - **Live**: Queries the LAPI upon request reception (easier to implement)
   - Both available ideally, but **Stream** preferred in most cases
 - **AppSec**: Ability to forward requests to the Security Engine to eval appsec rules
-  - Optional but if the remediation component has access to the request this features is a big plus
+  - Optional, but if the remediation component has access to the request, this feature is a big plus
 - **Metrics**: Keep track of what was remediated
   - Optional but very useful for the users to be able to evaluate the efficiency of the protection
   - Ideally with details on the source of the decision (blocklist, manual block, a scenario triggering a decision 'crowdsec'...)
@@ -44,7 +44,7 @@ Other optional features are:
 To have it published on the hub, please simply [open a new issue on the hub](https://github.com/crowdsecurity/hub/issues/new), requesting "remediation component inclusion". The remediation component will then be reviewed by the team, and published directly on the hub, for everyone to find & use it!
 
 :::info
-currently the hub only allows links to code bases hosted on github.com, we will support others in the future
+Currently, the hub only allows links to code bases hosted on github.com; we will support others in the future.
 :::
 
 The information that should be stated in your issue is:
@@ -59,7 +59,7 @@ The information that should be stated in your issue is:
 
 Please take care of the following :
 
-- Ensure your repository has a About/Short description meaningful enough: it will be displayed in the hub
+- Ensure your repository has a meaningful About/short description: it will be displayed in the hub
 - Ensure your repository has a decent README.md file: it will be displayed in the hub
 - Ensure your repository has _at least_ one release: this is what users will be looking for
 - (ideally) Have a "social preview image" on your repository: this will be displayed in the hub when available

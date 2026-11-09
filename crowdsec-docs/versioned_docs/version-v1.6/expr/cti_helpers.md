@@ -53,7 +53,7 @@ Returns the list of [behaviors](/u/cti_api/taxonomy/behaviors) associated to the
 
 #### `SmokeItem.GetFalsePositives() []string`
 
-Returns the list of eventual [false positive categories](/u/cti_api/taxonomy/false_positives) associatted to the IP.
+Returns the list of possible [false positive categories](/u/cti_api/taxonomy/false_positives) associated with the IP.
 
 #### `SmokeItem.GetMaliciousnessScore() float32`
 

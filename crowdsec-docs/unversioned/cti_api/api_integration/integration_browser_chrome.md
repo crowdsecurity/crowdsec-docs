@@ -27,7 +27,7 @@ Click the Load unpacked button and select the repo directory.
 
 ##  Usage
 
-Make sure you are logged in to your CrowdSec Console account. Click [here](https://app.crowdsec.net/) to create/login account.
+Make sure you are logged in to your CrowdSec Console account. Click [here](https://app.crowdsec.net/) to create an account or log in.
 
 Simply select any IP address by dragging your mouse cursor.
 Then upon right clicking you would see an option to lookup the IP in  CrowdSec's CTI.

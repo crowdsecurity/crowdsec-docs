@@ -22,6 +22,10 @@ jobs:
         run: npm ci
         working-directory: ./crowdsec-docs/
 
+      - name: Typecheck
+        run: npm run typecheck
+        working-directory: ./crowdsec-docs/
+
       - name: Get Biome version from package.json
         id: biome-version
         run: |
@@ -35,3 +39,25 @@ jobs:
 
       - name: Run Biome
         run: biome ci .
+
+  versioned-docs:
+    name: Current docs match the latest version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: crowdsec-docs/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./crowdsec-docs/
+
+      - name: Compare docs/ and sidebars.ts with the latest versioned copy
+        run: npm run check-versioned-docs
+        working-directory: ./crowdsec-docs/

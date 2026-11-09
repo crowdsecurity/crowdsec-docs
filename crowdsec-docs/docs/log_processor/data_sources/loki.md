@@ -26,7 +26,7 @@ labels:
 The reader will always start at "now".
 :::
 
-Look at the `configuration parameters` to view all supported options.
+See [Parameters](#parameters) for all supported options.
 
 ## Parameters
 
@@ -51,7 +51,7 @@ Required.
 
 ### `limit`
 
-The maximum number of messages to be retried from loki at once.
+The maximum number of messages to retrieve from Loki at once.
 
 Defaults to `100` in stream mode and `5000` in one-shot mode.
 
@@ -66,7 +66,7 @@ headers:
 
 ### `wait_for_ready`
 
-The retry interval at startup before giving on loki.
+How long to wait at startup for Loki to be ready before giving up.
 
 Defaults to `10 seconds`.
 
@@ -92,7 +92,7 @@ auth:
 
 The maximum duration loki is allowed to be unavailable (once startup is successful) before giving up on the data source.
 
-Default to `30 seconds`.
+Defaults to `30 seconds`.
 
 
 ## DSN and command-line
@@ -114,7 +114,7 @@ Allows to set the "since" duration for loki query.
 Expects a valid [Go duration](https://pkg.go.dev/time#ParseDuration)
 
 ```bash
-crowdsec -type foobar -dsn 'loki://login:password@localhost:3102/?query={server="demo"}&since=1d'
+crowdsec -type foobar -dsn 'loki://login:password@localhost:3102/?query={server="demo"}&since=24h'
 ```
 
 ### `log_level`

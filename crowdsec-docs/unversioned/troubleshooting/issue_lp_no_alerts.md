@@ -16,6 +16,7 @@ This is similar to [Security Engine No Alerts](/u/troubleshooting/issue_se_no_al
 ## Common Root Causes
 
 - **Scenarios in simulation mode**: Detection scenarios are installed but running in simulation mode on this agent.
+- **Service behind a CDN, alerts whitelisted as good actors**: The access logs record the CDN's IP instead of the visitor's, and the CDN ranges are whitelisted by default, so events are parsed but never become alerts. See [My service is behind a CDN and I get no alerts](/u/troubleshooting/security_engine#my-service-is-behind-a-cdn-and-i-get-no-alerts).
 - **Low-activity monitored service**: The service monitored by this Log Processor may genuinely have no malicious activity.
 
 ## Other Issues

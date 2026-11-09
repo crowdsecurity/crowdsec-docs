@@ -1,33 +1,34 @@
 ---
 id: install_pyagent
 title: Python Soft Agent
+description: "Install and use the CrowdSec Python SDK, which lets signal-sharing partners send signals and receive the community blocklist. Usage guide and reference."
 sidebar_position: 1
 ---
 
-# Using our Python SDK
+## Using our Python SDK
 
  This python SDK is designed for signal sharing partners to send signals and benefit from the community blocklist. <!-- Learn more about [signal sharing](TODO). -->
 
 Our SDK does the heavy lifting of the CAPI connectivity so you can simply, sendSignals and getDecisions, as well as enroll your soft-agent into the console.
 
-# Installation
+## Installation
 
 Make sure you have **Python 3.9+** installed.
 
-## From source
+### From source
 
 ```bash
 pip install git+https://github.com/crowdsecurity/python-capi-sdk
 ```
 <!-- 
-## From PyPi
+### From PyPi
 
 ```bash
 
 pip install python-capi-sdk
 ``` -->
 
-# Usage Guide
+## Usage Guide
 
 Here is a quick example of how to use the SDK to send signals to the API.
 
@@ -63,14 +64,14 @@ signals = [
 client.add_signals(signals)
 
 # This sends all the unsent signals to the API.
-# You need to chron this call to send signals periodically.
+# Run this call periodically (for example with cron) to send signals.
 client.send_signals()
 
 # This enrolls the specified machines in the CrowdSec Console.
 # This is a one time operation for each machine id you want to enroll.
 client.enroll_machines(
     machine_ids=[generate_machine_id_from_key("<key>", prefix="mycompany")],
-    attachment_key="ckqlyuz9700000vji4xxxxxxz" 
+    attachment_key="ckqlyuz9700000vji4xxxxxxz", 
     name="mymachine", tags=["ssh-honeypot"]
 )
 
@@ -86,15 +87,15 @@ To obtain attachment key for enrolling a machine see [this doc](/u/getting_start
 
 See reference section for more details. 
 
-## Good practices
+### Good practices
 
 - Don't call `send_signals` too often. Once every 5-20 minutes is a good frequency.
 - Call `enroll_machines` only once for each machine you want to enroll.
 - Call `get_decisions` 0.5-4 hours
 
-# Reference
+## Reference
 
-#### `cscapi.client.CAPIClientConfig`
+##### `cscapi.client.CAPIClientConfig`
 ```python
 cscapi.client.CAPIClientConfig(
     scenarios: List[str],
@@ -111,50 +112,50 @@ Constructor Parameters:
 
 - `scenarios`: A list of scenarios that you want to send signals for.
 - `max_retries`: Maximum number of retries to make when sending signals to the API.
-- `latency_offset`: Offset to calculate machin login expiration.
+- `latency_offset`: Offset used to calculate machine login expiration.
 - `user_agent_prefix`: Prefix for the user agent used to make calls to CrowdSec API.
 - `retry_delay`: Delay between retries when sending signals to the API
 
-#### `cscapi.client.CAPIClient(storage: StorageInterface, config: CAPIClientConfig)`
+##### `cscapi.client.CAPIClient(storage: StorageInterface, config: CAPIClientConfig)`
 
 This is the main class that you will use to interact with the CrowdSec API.
 
-Contructor Parameters:
+Constructor Parameters:
 
 - `storage`: An instance of a class that implements `StorageInterface`. This is used to store signals that are sent to the API.
 - `config`: An instance of `CAPIClientConfig` that contains configuration for the client.
 
 
-#### `CAPIClient.add_signals(self, signals: List[SignalModel])`
+##### `CAPIClient.add_signals(self, signals: List[SignalModel])`
 
 This method takes a list of `SignalModel` instances and stores them using the provided storage interface.
 
-#### `CAPIClient.send_signals(self, prune_after_send: bool = True)`
+##### `CAPIClient.send_signals(self, prune_after_send: bool = True)`
 
 This method sends all unsent signals to CrowdSec. If `prune_after_send` is set to `True` (which is the default), signals are removed from the storage after they are sent.
 
-#### `CAPIClient.enroll_machines(self, machine_ids: List[str], name: str, attachment_key: str, tags: List[str])`
+##### `CAPIClient.enroll_machines(self, machine_ids: List[str], name: str, attachment_key: str, tags: List[str])`
 
 This method enrolls the specified machines in the CrowdSec Console. This is a one time operation for each machine id you want to enroll.
 
-#### `CAPIClient.get_decisions(self, machine_id: str, ip: str)`
+##### `CAPIClient.get_decisions(self, machine_id: str, ip: str)`
 
 This method fetches decisions for the specified machine id and ip. This machine id must be validated by CrowdSec Team.
 
-## `cscapi.utils`
+### `cscapi.utils`
 
 This module contains utility functions that you can use to create signals and generate machine ids.
 
-#### `cscapi.utils.create_signal(attacker_ip: str, scenario: str, created_at: str, machine_id: str, **kwargs)`
+##### `cscapi.utils.create_signal(attacker_ip: str, scenario: str, created_at: str, machine_id: str, **kwargs)`
 
 This method creates a `cscapi.storage.SignalModel` instance from the provided parameters.
 
 
-#### `cscapi.utils.generate_machine_id_from_key(key: str, prefix: str)`
+##### `cscapi.utils.generate_machine_id_from_key(key: str, prefix: str)`
 
-This method generates a machine id from the provided key and prefix. Generated machine is is always same for a given key and prefix.
+This method generates a machine id from the provided key and prefix. The generated machine ID is always the same for a given key and prefix.
 
-#### `cscapi.storage.SQLStorage`
+##### `cscapi.storage.SQLStorage`
 
 This class implements `cscapi.storage.StorageInterface` and can be used to store signals in a SQL database.
 
@@ -162,7 +163,7 @@ Constructor Parameters:
 
 - `connection_string`: Connection string for the SQL database. See [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/14/core/engines.html#database-urls) for more details.
 
-#### `cscapi.storage.StorageInterface`
+##### `cscapi.storage.StorageInterface`
 
 This is an interface that you can implement to store signals in your own storage. You can use the provided `SQLStorage` class to store signals in a SQLite database.
 

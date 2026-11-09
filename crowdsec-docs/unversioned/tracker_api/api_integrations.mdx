@@ -9,7 +9,7 @@ import TabItem from "@theme/TabItem";
 Integrations are the bridge between CrowdSec's threat intelligence and your security infrastructure. An integration generates a blocklist of attacker IPs that your firewall can consume. You subscribe integrations to specific CVEs, fingerprint rules, or entire vendors, and the blocklist automatically updates as new attacker IPs are observed.
 
 :::tip Vendor Subscriptions
-Instead of subscribing to CVEs and fingerprint rules one by one, you can subscribe an integration to a **vendor**. This automatically covers all current and future CVEs and reconnaissance rules for that vendor's products. See [Vendors, Products & Tags](./api_lookups#subscribe-an-integration-to-a-vendor) for details.
+Instead of subscribing to CVEs and fingerprint rules one by one, you can subscribe an integration to a **vendor**. This automatically covers all current and future CVEs and reconnaissance rules for that vendor's products. See [Vendors, Products & Tags](./api_lookups.mdx#subscribe-an-integration-to-a-vendor) for details.
 :::
 
 ## Supported Output Formats
@@ -352,8 +352,7 @@ curl -X 'POST' 'https://admin.api.crowdsec.net/v1/fingerprints/microsoft-exchang
   -d '{"name": "demo_blocklist"}'
 
 # 5. Fetch the blocklist (using integration credentials)
-curl 'https://admin.api.crowdsec.net/v1/integrations/INTEGRATION_ID/content' \
-  -H 'x-api-key: INTEGRATION_API_KEY'
+curl -u 'USERNAME:PASSWORD' 'https://admin.api.crowdsec.net/v1/integrations/INTEGRATION_ID/content'
 ```
 
 :::tip
@@ -362,4 +361,4 @@ Vendor subscriptions are the simplest way to get broad coverage. Subscribe to th
 
 ## Next Steps
 
-Once your integration is created and subscribed, configure your firewall to fetch the blocklist URL at regular intervals. See the [CrowdSec Integrations documentation](https://docs.crowdsec.net/u/integrations/intro) for vendor-specific setup guides.
+Once your integration is created and subscribed, configure your firewall to fetch the blocklist URL at regular intervals. See the [CrowdSec Integrations documentation](/integrations/intro.mdx) for vendor-specific setup guides.

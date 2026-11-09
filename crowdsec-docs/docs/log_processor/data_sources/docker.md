@@ -21,7 +21,7 @@ labels:
   type: log_type
 ```
 
-To monitor containers name or ID matching a regex:
+To monitor containers whose name or ID matches a regex:
 
 ```yaml
 source: docker
@@ -59,7 +59,7 @@ labels:
   type: log_type
 ```
 
-Look at the `configuration parameters` to view all supported options.
+See [Parameters](#parameters) for all supported options.
 
 
 ## Parameters
@@ -72,7 +72,7 @@ you should not mix `container` options and `swarm` options as it may lead to dup
 
 #### `container_name`
 
-List of containers names to monitor.
+List of container names to monitor.
 
 #### `container_id`
 
@@ -106,7 +106,7 @@ labels:
   type: nginx
 ```
 
-Here is an example of running a nginx container with the labels:
+Here is an example of running an nginx container with the labels:
 
 ```bash
 docker run -d --label crowdsec.enable=true --label crowdsec.labels.type=nginx nginx:alpine
@@ -175,6 +175,8 @@ Read logs until timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 
 
 Read logs since timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes).
 
+Only used in one-shot mode (e.g. with a DSN). In streaming mode, `since` is ignored with a warning: containers and services are read from the moment they are discovered, including when they restart, so the logs of their previous runs are not read again.
+
 ### `check_interval`
 
 Relative interval (e.g. 5s for 5 seconds) to check for new containers matching the configuration.
@@ -227,7 +229,7 @@ crowdsec -type nginx -dsn 'docker://my_nginx_container_name?log_level=debug'
 
 ### Containers watching
 
-This module will automatically read the logs of containers specified in the configuration, even if they have been started after crowdsec start.
+This module will automatically read the logs of containers specified in the configuration, even if they were started after CrowdSec started.
 
 ### Reading podman containers
 

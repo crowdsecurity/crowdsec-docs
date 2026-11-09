@@ -1,17 +1,21 @@
 ---
 id: hooks
-title: Hooks
+title: "AppSec Hooks"
+sidebar_label: "Hooks"
+description: "Hook into the CrowdSec WAF at runtime with the on_load, pre_eval, post_eval and on_match phases to change rule behavior, enrich events and control remediation."
 sidebar_position: 4
 ---
 
 The Application Security Component lets you hook into different stages to change behavior at runtime.
 
-Hooks run in four phases:
+Hooks run in six phases:
 
 - `on_load`: Called just after the rules have been loaded into the engine.
 - `pre_eval`: Called after a request has been received but before the rules are evaluated.
 - `post_eval`: Called after the rules have been evaluated.
-- `on_match`: Called after a successful match of a rule. If multiple rules, this hook will be called only once.
+- `on_match`: Called after a successful match of a rule. If multiple rules match, this hook is called only once.
+- `on_challenge`: Called for in-band requests carrying a valid challenge cookie, with the decoded `fingerprint` object available. See [Bot detection hooks reference](bot_detection/hooks.md#on_challenge). (In-band only.)
+- `on_challenge_submit`: Called when a client POSTs a challenge response to `/crowdsec-internal/challenge/submit`, after crypto validation and fingerprint decryption. See [Bot detection hooks reference](bot_detection/hooks.md#on_challenge_submit). (In-band only.)
 
 ## Using hooks
 
@@ -21,19 +25,22 @@ The `on_load` hook only supports `apply`, while other hooks support `filter` and
 
 Both `filter` and `apply` of the same phase have access to the same helpers.
 
-Except for `on_load`, hooks can be called twice per request: once for in-band processing and once for out-of-band processing. Use `IsInBand` and `IsOutBand` to filter the hook.
-
-Hooks have the following format:
+Request hooks are declared under the phase they belong to:
 
 ```yaml
-on_match:
-  - filter: IsInBand && 1 == 1
-    apply:
-      - valid expression
-      - valid expression
+inband:
+  on_match:
+    - filter: 1 == 1
+      apply:
+        - valid expression
+        - valid expression
 ```
 
-If the filter returns `true`, each of the expressions in the `apply` section are executed.
+If the filter returns `true`, each expression in the `apply` section is executed.
+
+`pre_eval`, `post_eval` and `on_match` can be declared in the `inband` or the `outofband` block, and run only for the pass they belong to. `on_challenge` and `on_challenge_submit` are in-band only. `on_load` is not phase-scoped: it runs once at startup and stays at the top level.
+
+Each hook is described once below, and behaves the same in either block.
 
 <!-- once https://github.com/crowdsecurity/crowdsec-docs/issues/555 is fixed, document on_success-->
 
@@ -45,7 +52,7 @@ This hook is intended to be used to disable rules at loading (eg, to temporarily
 
 | Helper Name                    | Type                                    | Description                                                                                                                                                           |
 | ------------------------------ | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `RemoveInBandRuleByName`       | `func(tag str)`                         | Disable the named in-band rule                                                                                                                                        |
+| `RemoveInBandRuleByName`       | `func(name str)`                         | Disable the named in-band rule                                                                                                                                        |
 | `RemoveInBandRuleByTag`        | `func(tag str)`                         | Disable the in-band rule identified by the tag (multiple rules can have the same tag)                                                                                 |
 | `RemoveInBandRuleByID`         | `func(id int)`                          | Disable the in-band rule identified by the ID                                                                                                                         |
 | `RemoveOutBandRuleByName`      | `func(tag str)`                         | Disable the named out-of-band rule                                                                                                                                    |
@@ -59,6 +66,7 @@ This hook is intended to be used to disable rules at loading (eg, to temporarily
 | `RegisterAPISchemaBodyDecoder` | `func(content_type str, decoder str)`   | Enable a non-default body decoder for a Content-Type. See [available decoders](api_validation.md#body-decoders).                                                      |
 | `SetMaxBodySize`               | `func(size int)`                        | Set the maximum request body size (in bytes) buffered and inspected by the engine. Defaults to 10MB. See [Request body size handling](#request-body-size-handling)    |
 | `SetBodySizeExceededAction`    | `func(action str)`                      | Set what happens when a request body exceeds the maximum size: `drop` (default), `partial`, or `allow`. See [Request body size handling](#request-body-size-handling) |
+| `SetChallengeDifficulty`       | `func(level str)`                       | Set the default proof-of-work difficulty for every challenge served by this config. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](bot_detection/hooks.md#challenge-difficulty-levels). Per-request overrides are available in `pre_eval` / `post_eval` / `on_challenge`. |
 
 ##### Example
 
@@ -94,23 +102,60 @@ This hook is intended to be used to disable rules only for this particular reque
 | `SetRemediationByID`        | `func(id int, remediation string)`   | Change the remediation of the in-band rule identified by the ID                                                                                                                                                                                                 |
 | `SetRemediationByName`      | `func(name str, remediation string)` | Change the remediation of the in-band rule identified by the name                                                                                                                                                                                               |
 | `req`                       | `http.Request`                       | Original HTTP request received by the remediation component                                                                                                                                                                                                     |
-| `DropRequest`               | `func(reason str)`                   | Stop processing the request immediately and instruct the remediation component to block the request                                                                                                                                                             |
+| `DropRequest`               | `func(reason str)`                   | Stop processing the request immediately and instruct the remediation component to block the request. See [`DropRequest` and `SkipProcessing`](#droprequest-and-skipprocessing)                                                                                 |
+| `SkipProcessing`            | `func(reason str)`                   | Stop processing the request immediately and let it through, without generating an event or an alert. See [`DropRequest` and `SkipProcessing`](#droprequest-and-skipprocessing)                                                                                  |
 | `DisableBodyInspection`     | `func()`                             | Skip body inspection for the current request (also bypasses the maximum body size check). See [Request body size handling](#request-body-size-handling)                                                                                                         |
 | `ValidateRequestWithSchema` | `func(ref str) bool`                 | Validate the current request against an OpenAPI schema previously loaded under `ref` (returns `true` on success). On failure, structured details are published to `hook_vars` (see [OpenAPI Schema Validation](api_validation.md#validation-result-variables)). |
+| `RateLimit`                 | `func(key str, limit str, source str?) bool` | Rate limit the current request under `key` (eg, `"5/m"`), per client IP or per `source` value. Over the limit, the request is blocked with a `429` and `true` is returned. In-band only. See [Rate Limiting](rate_limiting.md).                                     |
 | `hook_vars`                 | `map[string]string`                  | Per-request scratch space shared with later hooks and propagated to the resulting event. Helpers such as `ValidateRequestWithSchema` publish their results here.                                                                                                |
+| `GrantChallengeCookie`      | `func(reason str, ttl str?)`         | Mint a valid challenge cookie for this client (allowlist escape hatch for trusted user-agents or internal probes). `reason` is recorded in logs (≤256 bytes); optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                 |
+| `SetChallengeDifficulty`    | `func(level str)`                    | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](bot_detection/hooks.md#challenge-difficulty-levels).                                                    |
+| `MatchKnownBot`             | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files` (verified by IP range or forward-confirmed reverse DNS). Used to skip the challenge for known-good crawlers. See [Known bots](bot_detection/hooks.md#known-bots).                          |
+| `ExemptFromChallenge`       | `func(reason str)`                   | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](bot_detection/hooks.md#known-bots).                                                                                    |
+| `HasValidChallengeCookie`   | `func() bool`                        | `true` if the request has already cleared the challenge: it presented a valid `__crowdsec_challenge` cookie, or an earlier hook exempted it. A cookie minted during this very request does not count. See [`HasValidChallengeCookie`](bot_detection/hooks.md#hasvalidchallengecookie).           |
+| `SetRemediation`            | `func(remediation str)`              | Pre-set the remediation applied **if** this request ends up being blocked (a rule matches, or `DropRequest()` fires). It does not block the request on its own. See [`SetRemediation*`](#setremediation)                                                                          |
+| `SetReturnCode`             | `func(code int)`                     | Pre-set, in the same way, the HTTP code returned to the user if the request ends up being blocked                                                                                                                                                                                |
+| `fingerprint`               | `object`                             | The decoded challenge fingerprint when the request carries a valid challenge cookie (`on_challenge` runs before `pre_eval` and populates it), `nil` otherwise. See [The `fingerprint` object](bot_detection/hooks.md#the-fingerprint-object).                                     |
+| Score helpers               |                                      | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor`, `RequestScoreCategories`, `SetRequestScore` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring).                                                                   |
 
 #### Example
 
 ```yaml
 name: crowdsecurity/my-appsec-config
 default_remediation: ban
-inband_rules:
-  - crowdsecurity/base-config
-  - crowdsecurity/vpatch-*
-pre_eval:
-  - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
-    apply:
-      - RemoveInBandRuleByName("my_rule")
+inband:
+  rules:
+    - crowdsecurity/base-config
+    - crowdsecurity/vpatch-*
+  pre_eval:
+    - filter: req.RemoteAddr == "192.168.1.1"
+      apply:
+        - RemoveInBandRuleByName("my_rule")
+```
+
+#### `DropRequest` and `SkipProcessing`
+
+Both helpers end the current pass early: no WAF rule is evaluated for the request in this pass. `post_eval` hooks still run.
+
+- `DropRequest(reason)` blocks the request with the config's default remediation, and generates an event (and an alert, in-band) as a rule match would.
+- `SkipProcessing(reason)` lets the request through with the default pass response, and generates neither an event nor an alert. Use it to exclude requests you don't want inspected at all, for example health checks.
+
+Only the current pass is affected: skipping a request in-band doesn't prevent the out-of-band rules from evaluating it, and the other way round. Use `SkipProcessing` in both blocks to exclude a request entirely.
+
+The first decision wins: once a request has been dropped or skipped in a pass, further calls to either helper are ignored with a warning, and `SendChallenge()` becomes a no-op. `reason` is recorded in the debug logs.
+
+```yaml
+name: my/skip-health-checks
+inband:
+  pre_eval:
+    - filter: req.URL.Path == "/healthz"
+      apply:
+        - SkipProcessing("health check")
+outofband:
+  pre_eval:
+    - filter: req.URL.Path == "/healthz"
+      apply:
+        - SkipProcessing("health check")
 ```
 
 ### `post_eval`
@@ -119,12 +164,22 @@ This hook is mostly intended for debugging or threat-hunting purposes.
 
 #### Available helpers
 
-| Helper Name   | Type           | Description                                                  |
-| ------------- | -------------- | ------------------------------------------------------------ |
-| `IsInBand`    | `bool`         | `true` if the request is in the in-band processing phase     |
-| `IsOutBand`   | `bool`         | `true` if the request is in the out-of-band processing phase |
-| `DumpRequest` | `func()`       | Dump the request to a file                                   |
-| `req`         | `http.Request` | Original HTTP request received by the remediation component  |
+| Helper Name              | Type                          | Description                                                                                                                                                                                                                                                     |
+| ------------------------ | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `IsInBand`               | `bool`                        | `true` if the request is in the in-band processing phase                                                                                                                                                                                                        |
+| `IsOutBand`              | `bool`                        | `true` if the request is in the out-of-band processing phase                                                                                                                                                                                                    |
+| `DumpRequest`            | `func()`                      | Dump the request to a file                                                                                                                                                                                                                                      |
+| `DumpFingerprint`        | `func(label str) str`         | Append the decoded challenge fingerprint (plus request context) as one JSONL line to a dump file, for offline analysis. Returns the file path. See [DumpFingerprint](bot_detection/hooks.md#dumpfingerprint).                                                                          |
+| `req`                    | `http.Request`                | Original HTTP request received by the remediation component                                                                                                                                                                                                     |
+| `SendChallenge`          | `func()`                      | Instruct the AppSec component to serve a JavaScript challenge for this request. No-op if the request already carries a valid challenge cookie. See [Bot detection](bot_detection/intro.md).                                                                     |
+| `GrantChallengeCookie`   | `func(reason str, ttl str?)`  | Mint a valid challenge cookie for this client (allowlist escape hatch for trusted user-agents or internal probes). `reason` is recorded in logs (≤256 bytes); optional `ttl` (a Go duration like `"24h"`) overrides the configured `cookie_ttl`.                 |
+| `SetChallengeDifficulty` | `func(level str)`             | Override the proof-of-work difficulty for this request. Valid levels: `"disabled"`, `"low"`, `"medium"` (default), `"high"`, `"impossible"`. See [Challenge difficulty levels](bot_detection/hooks.md#challenge-difficulty-levels).                                                    |
+| `MatchKnownBot`          | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files` (verified by IP range or forward-confirmed reverse DNS). See [Known bots](bot_detection/hooks.md#known-bots).                                                                       |
+| `ExemptFromChallenge`    | `func(reason str)`            | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](bot_detection/hooks.md#known-bots).                                                                                    |
+| `HasValidChallengeCookie` | `func() bool`               | `true` if the request has already cleared the challenge: it presented a valid `__crowdsec_challenge` cookie, or an earlier hook exempted it. A cookie minted during this very request does not count. See [`HasValidChallengeCookie`](bot_detection/hooks.md#hasvalidchallengecookie).                          |
+| `fingerprint`            | `object`                      | The decoded challenge fingerprint when the request carries a valid challenge cookie, `nil` otherwise. See [The `fingerprint` object](bot_detection/hooks.md#the-fingerprint-object).                                                                                             |
+| `hook_vars`              | `map[string]string`           | Per-request scratch space shared with the other hooks and propagated to the resulting event                                                                                                                                                                                     |
+| Score helpers            |                               | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor`, `RequestScoreCategories`, `SetRequestScore` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring).                                                                   |
 
 #### DumpRequest
 
@@ -160,13 +215,13 @@ This will discard the body of the request, remove the query parameters `var1` an
 ```yaml
 name: crowdsecurity/my-appsec-config
 default_remediation: ban
-inband_rules:
-  - crowdsecurity/base-config
-  - crowdsecurity/vpatch-*
-post_eval:
-  - filter: IsInBand == true
-    apply:
-      - DumpRequest().NoFilters().WithBody().ToJSON()
+inband:
+  rules:
+    - crowdsecurity/base-config
+    - crowdsecurity/vpatch-*
+  post_eval:
+    - apply:
+        - DumpRequest().NoFilters().WithBody().ToJSON()
 ```
 
 ### `on_match`
@@ -179,38 +234,69 @@ This hook is intended to be used to change the behavior of the engine after a ma
 | ---------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | `SetRemediation` | `func(remediation string)` | Change the remediation that will be returned to the remediation component                                     |
 | `SetReturnCode`  | `func(code int)`           | Change the HTTP code that will be returned to the remediation component                                       |
-| `CancelAlert`    | `func()`                   | Prevent the Application Security Component to create a crowdsec alert                                         |
+| `CancelAlert`    | `func()`                   | Prevent the Application Security Component from creating a CrowdSec alert                                         |
 | `SendAlert`      | `func()`                   | Force the Application Security Component to create a crowdsec alert                                           |
 | `CancelEvent`    | `func()`                   | Prevent the Application Security Component to create a crowdsec event                                         |
 | `SendEvent`      | `func()`                   | Force the Application Security Component to create a crowdsec event                                           |
 | `DumpRequest`    | `func()`                   | Dump the request to a file (see previous section for detailed usage)                                          |
 | `IsInBand`       | `bool`                     | `true` if the request is in the in-band processing phase                                                      |
 | `IsOutBand`      | `bool`                     | `true` if the request is in the out-of-band processing phase                                                  |
-| `evt`            | `types.Event`              | [The event that has been generated](/docs/expr/event.md#appsec-helpers) by the Application Security Component |
+| `evt`            | `types.Event`              | [The event that has been generated](/expr/event.md#appsec-helpers) by the Application Security Component |
 | `req`            | `http.Request`             | Original HTTP request received by the remediation component                                                   |
+| `MatchKnownBot` | `func(ip str, ua str, path str, ...files str) bool` | `true` if the request matches a bot definition in one of the named `files`. See [Known bots](bot_detection/hooks.md#known-bots).                  |
+| `ExemptFromChallenge` | `func(reason str)`    | Exempt the current request from the challenge without minting a cookie (this request only). `reason` labels the exemption in logs and metrics. See [Known bots](bot_detection/hooks.md#known-bots). |
+| `HasValidChallengeCookie` | `func() bool`     | `true` if the request has already cleared the challenge: it presented a valid `__crowdsec_challenge` cookie, or an earlier hook exempted it. A cookie minted during this very request does not count. See [`HasValidChallengeCookie`](bot_detection/hooks.md#hasvalidchallengecookie). |
+| `hook_vars`     | `map[string]string`        | Per-request scratch space shared with the other hooks and propagated to the resulting event                                                                   |
+| Score helpers | | `AddRequestScore`, `RequestScore`, `RequestScoreReasons`, `RequestScoreDetail`, `RequestScoreFor`, `RequestScoreCategories`, `SetRequestScore` accumulate a per-request score you can act on later. See [Request scoring](bot_detection/hooks.md#request-scoring). |
 
 #### Example
 
 ```yaml
 name: crowdsecurity/my-appsec-config
 default_remediation: ban
-inband_rules:
- - crowdsecurity/base-config
- - crowdsecurity/vpatch-*
-on_match:
-  - filter: IsInBand == true && req.RemoteAddr == "192.168.1.1"
-   apply:
-    - CancelAlert()
-    - CancelEvent()
-  - filter: |
-      any( evt.Appsec.MatchedRules, #.name == "crowdsecurity/vpatch-env-access") and
-      req.RemoteAddr = "192.168.1.1"
-    apply:
-    - SetRemediation("allow")
-  - filter: evt.Appsec.MatchedRules.GetURI() contains "/foobar/"
-    apply:
-     - SetRemediation("allow")
+inband:
+  rules:
+    - crowdsecurity/base-config
+    - crowdsecurity/vpatch-*
+  on_match:
+    - filter: req.RemoteAddr == "192.168.1.1"
+      apply:
+        - CancelAlert()
+        - CancelEvent()
+    - filter: |
+        any(evt.Appsec.MatchedRules, #.name == "crowdsecurity/vpatch-env-access") and
+        req.RemoteAddr == "192.168.1.1"
+      apply:
+        - SetRemediation("allow")
+    - filter: evt.Appsec.MatchedRules.GetURI() contains "/foobar/"
+      apply:
+        - SetRemediation("allow")
 ```
+
+### `on_challenge`
+
+Called for in-band requests carrying a valid `__crowdsec_challenge` cookie, with the decoded `fingerprint` object available — the right place to apply per-request decisions based on what the challenge learned about the client. **In-band only.**
+
+See [Bot detection → Hooks reference → `on_challenge`](bot_detection/hooks.md#on_challenge) for the available helpers, the `fingerprint` object, and examples.
+
+### `on_challenge_submit`
+
+Called when a client POSTs a challenge response to `/crowdsec-internal/challenge/submit`, after crypto validation and fingerprint decryption but before the success cookie is issued — the right place to refuse cookies to clients identified as automation. **In-band only.**
+
+See [Bot detection → Hooks reference → `on_challenge_submit`](bot_detection/hooks.md#on_challenge_submit) for the available helpers and examples.
+
+### Legacy flat hooks
+
+Hooks can also be declared at the top level, outside any phase block. Those run in **both** passes, so they need `IsInBand` / `IsOutBand` to tell the passes apart:
+
+```yaml
+on_match:
+  - filter: IsInBand && req.RemoteAddr == "192.168.1.1"
+    apply:
+      - CancelAlert()
+```
+
+Both forms are supported and can be mixed: for a given phase, top-level hooks run first, then those of the matching block. Prefer the phase-scoped form for new configurations.
 
 ## Detailed Helpers Information
 

@@ -7,7 +7,7 @@ import useBaseUrl from "@docusaurus/useBaseUrl"
 
 ## Context
 
-A **Remediation Component** *(aka **Bouncer**)* is enforcing **decisions** made by **CrowdSec Security Engine** based on detected malicious behaviors [\[See figure 1\]](#crowdsec-security-engine-diagram), or Directly with CrowdSec SaaS endpoint channeling public, crowdsec or user made blocklsits.
+A **Remediation Component** *(aka **Bouncer**)* is enforcing **decisions** made by **CrowdSec Security Engine** based on detected malicious behaviors [\[See figure 1\]](#crowdsec-security-engine-diagram), or directly by the CrowdSec SaaS endpoint serving public, CrowdSec or user-made blocklists.
 
 A **decision** dictates what action should be applied on incoming traffic from a specific **IP** or **IP-Range**. *(It could also be on the user scope or any other, but these specifications will focus on the IP and Range scopes)*
 
@@ -25,13 +25,13 @@ The Bouncer applies the appropriate remediation *(we’ll only focus on ban/bloc
   * Forwarding protocol  
 * [Config and support requirements](#extra-details-and-requirements)
 
-Here is an existing remediation components *(bouncers)* for Nginx and its lua dependency.
-It's one of the most complete bouncer with AppSec capabilities and Metrics. A good example to follow for your implementation.  
+Here is an existing remediation component *(bouncer)* for Nginx and its Lua dependency.
+It's one of the most complete bouncers, with AppSec capabilities and metrics. A good example to follow for your implementation.  
 [*cs-nginx-bouncer*](https://github.com/crowdsecurity/cs-nginx-bouncer) *\+  [lua-cs-bouncer](https://github.com/crowdsecurity/lua-cs-bouncer/)* (dependency)
 
 And a more recent and soon finalized [Node JS bouncer](https://github.com/crowdsecurity/nodejs-cs-bouncer) (for a different implementation, to be used in code)
 
-⚠️ **Your bouncer must always delete/clean it’s resources on shutdown**
+⚠️ **Your bouncer must always delete/clean its resources on shutdown**
 
 ## Basic Bouncer features
 
@@ -49,8 +49,8 @@ You can find the swagger here [https://crowdsecurity.github.io/api_doc/lapi/](ht
 Details about the endpoints parameters can be found [in the appendix](#appendix)
 
 * URL to Local API endpoint: configurable field **api_url**  
-  * Default value likely to be: `http://121.0.0.1:8080`
-  * Security Engine Config : /etc/crowdsec/config.yaml // api.server.listen_url  
+  * Default value likely to be: `http://127.0.0.1:8080`
+  * Security Engine Config : /etc/crowdsec/config.yaml // api.server.listen_uri  
   * For now we only have a v1 of LAPI, bouncer states the version he’s using  
 * Authentication  
   * Either by API key passed in the header **X-Api-Key:** configurable field **api_key**  
@@ -74,7 +74,7 @@ The live mode endpoint is **/decisions**
   *Only the following fields are to be considered for a basic bouncer implementation*  
   * **scope:** value **IP** (forced for live mode)  
   * **value:** the source IP making the request  
-  * **origins:** empty by default mean all origins are considered  
+  * **origins:** empty by default, meaning all origins are considered  
     * editable by the user to look in a specific origin: configurable field origins  
     * Origins are comma separated strings (e.g. crowdsec,capi,cscli)  
   * **contains**: empty by default mean *true*   
@@ -124,7 +124,7 @@ Allows to pull all decisions from LAPI and then periodically get a delta
   * The decisions format is the following:  
     * See [decisions example in appendix](#decision-example)  
     * There can be multiple decisions per IP  
-    * Store each decisions independently as they have their own remediation action and TTL  
+    * Store each decision independently, as each has its own remediation action and TTL  
     * Ranges are stored too  
       * ⚠️ do not transform the range into its containing IPS  
   * Pruning  
@@ -143,9 +143,9 @@ If a remediation is found and for the LAPI timeout fallback here are the remedia
       * Default page model [provided (single HTML file)](#ban-template-page)  
       * Page path configurable: configurable field ban_template_path  
   * **captcha**  
-    * Various type of captcha must be supported  
+    * Various types of captcha must be supported  
     * configurable fields:  
-      * captcha _provider  
+      * captcha_provider  
       * captcha_secret_key  
       * captcha_site_key  
       * captcha_template_path  
@@ -174,21 +174,23 @@ If a remediation is found and for the LAPI timeout fallback here are the remedia
 Remediation component can push information and internal metrics to LAPI about their configuration and the amount of requests/packets/bytes/… that have been blocked or allowed.
 
 The data is pushed on the `/usage-metrics` endpoint of LAPI.  
-Metrics push internal should be configurable, with a default value of 30 minutes and not allow intervals smaller than 10 minutes. Setting the interval to 0 disables the push.
+The metrics push interval should be configurable, with a default value of 30 minutes and not allow intervals smaller than 10 minutes. Setting the interval to 0 disables the push.
 
 The body will contain information about:
 
 - The remediation component type and version  
 - Name and version of the operating system the RC is running on  
 - Enabled features flags (should be empty for the vast majority of RC)  
-- Meta information about the payload itself: the push interval in seconds, the startup timestamp in UTC, the push timestamp in UTC  
-- A list of metrics:  
-  - Each metric must have a name, value, unit, and, optionally, one or more labels
+- The startup timestamp in UTC  
+- A list of metrics, each entry holding:  
+  - Meta information about the payload itself: the push interval in seconds, the push timestamp in UTC  
+  - A list of items: each item must have a name, value, unit, and, optionally, one or more labels
 
-The metrics track the number of blocked requests per decision origin, so the RC must track internally the origin of every decision (based on the `origin` field from the decision stream).  
-Each push must reset the internal counter for the metrics (i.e., we have only sent the number of blocked requests since the last push).  
-Each metric about blocked requests must have an `origin` label whose value is the origin of the decision and a `remediation_type` label whose value is the type of remediation that was applied (e.g., `ban` or `captcha`).  
-A `processed` metric must also be present that counts the number of requests that were processed by the RC (regardless of whether they were blocked or not). This metric has no label.
+The metrics track the number of dropped requests per decision origin, so the RC must track internally the origin of every decision (based on the `origin` field from the decision stream).  
+Each push must reset the internal counter for the metrics (i.e., we have only sent the number of dropped requests since the last push).  
+Each `dropped` metric must have an `origin` label whose value is the origin of the decision, and should have an `ip_type` label (`ipv4` or `ipv6`). Bouncers that apply several remediation types may add a `remediation` label whose value is the type of remediation that was applied (e.g., `ban` or `captcha`).  
+A `processed` metric must also be present that counts the number of requests that were processed by the RC (regardless of whether they were blocked or not). It should carry the `ip_type` label.  
+See [Metrics specs](/contributing/specs/bouncer_metrics_specs.mdx) for the full list of labels.
 
 A full sample payload can be found in the [appendix](#metrics-payload).
 
@@ -203,7 +205,7 @@ AppSec is disabled by default and activable if url exists configurable field app
 * Connect to AppSec endpoint  
   * The security engine should have activated the AppSec and a listen address should be present in the SecurityEngine acquisition  
   * Default endpoint `http://127.0.0.1:7422`
-  * Auth by API key passed in the header **X-Api-Key:** same param as LAPI apikey  
+  * Auth by API key passed in the header **X-Crowdsec-Appsec-Api-Key** (same value as the LAPI api_key)  
 * Request forwarding  
   * You can find information about the forwarding protocol on this doc page: [https://docs.crowdsec.net/docs/next/appsec/protocol/](https://docs.crowdsec.net/docs/next/appsec/protocol/)  
   * When forwarding the query to the AppSec endpoint, the security engine will evaluate the actions to do and return the appropriate response code that the remediation component should display.   
@@ -226,15 +228,15 @@ AppSec is disabled by default and activable if url exists configurable field app
 
 ## Installation / Documentation 
 
-Usually we (at CrowdSec) will deal with **documentation**, **install scripts** and **packaging**. But any pointers from the bouncer’s developper that can help those processes is welcome on the following:
+Usually we (at CrowdSec) will deal with **documentation**, **install scripts** and **packaging**. Any pointers from the bouncer's developer that can help with these processes are welcome:
 
 Let us know what minimum version of the service is required to run the bouncer
 
 Provide a brief description of the steps necessary to install and configure the bouncer  
 ⚠️Note that the bouncers configuration files must be located in ***/etc/crowdsec/bouncers/***
 
-* The bouncer config file name pattern is the following:  *crowdsec-\<service\>-bouncer.conf*  
-* Example of config file */etc/crowdsec/bouncers/crowdsec-apache-bouncer.conf*
+* The bouncer config file name pattern is the following:  *crowdsec-\<service\>-bouncer.yaml* (*.conf* for nginx, openresty, haproxy and apache2 bouncers)  
+* Example of config file */etc/crowdsec/bouncers/crowdsec-apache2-bouncer.conf*
 
 Ideally, at install or warmup of the bouncer, a check is made that the *crowdsec service* is running and the bouncer key is automatically created and added to the bouncer config. Provide advice about the best way and phase to perform those actions for this bouncer
 
@@ -273,7 +275,7 @@ You can have decisions with various origins, here are a few ways to populate the
 
 #### Local decisions & Community blocklist 
 
-If you installed your CrowdSec on a server with internet access, and it’s able to communicate with our Central API, it will periodically retrieve the community blocklist. If you are in a situation here your crowdsec shares signal you’ll get between 10 and 50k decisions from the community blocklist (decisions origin will be CAPI), if not you’ll receive a fraction of that.
+If you installed your CrowdSec on a server with internet access, and it’s able to communicate with our Central API, it will periodically retrieve the community blocklist. If your CrowdSec instance shares signals, you'll get up to 15k decisions from the community blocklist, or up to 60k on paid plans (decisions origin will be CAPI); if not, you’ll receive up to 3k.
 
 #### Manually populating decisions 
 
@@ -285,7 +287,7 @@ Public documentation [available here](https://doc.crowdsec.net/u/user_guides/dec
   * Those decisions origin will be “*cscli*”  
 * Via **cscli decisions import**.    
   * E.g. sudo cscli decisions import \-i ./myBl.txt \--format values  
-  * Those decisions origin will be “*cscli-impor*t”
+  * The origin of those decisions will be `cscli-import`
 
 #### Testing failures 
 
@@ -295,7 +297,7 @@ Shutdown the *crowdsec service* to test the failure cases.
 
 You can refer to the AppSec documentation to test request forwarding.
 
-* AppSec [quickstart guide here](https://doc.crowdsec.net/docs/next/appsec/quickstart), [Testing example here](https://doc.crowdsec.net/docs/next/appsec/installation#making-sure-everything-works)  
+* AppSec [quickstart guide here](https://docs.crowdsec.net/docs/next/appsec/quickstart/general_setup/), [Testing example here](https://docs.crowdsec.net/docs/next/appsec/quickstart/general_setup/#testing-waf-component)  
 * E.g. Install virtual patching and try to query a */rpc2* or a *.env* file
 
 ## Appendix 
@@ -317,20 +319,20 @@ You can refer to the AppSec documentation to test request forwarding.
 **GET /decisions/stream**
 
 * **startup:** set it to **TRUE** for the **initial call** to get all decisions *(when False you’ll get the delta from your last call)*  
-* **scopes: “**ip,range” is the only relevant values when remediating on IPs  
-* **origins:** Leave blank to allow all origins, test your configurable origins with [those tests](#decision-example)  
+* **scopes:** “ip,range” is the only relevant value when remediating on IPs  
+* **origins:** Leave blank to allow all origins, check your configurable origins against the [decision example](#decision-example)  
 * **scenarios_containing:** leave blank by default, allow change in config  
 * **scenarios_not_containing:** leave blank by default, allow change in config
 
 **GET /decisions**
 
-* **scope: “**ip” is the only relevant values when remediating on IPs  
+* **scope:** “ip” is the only relevant value when remediating on IPs  
 * **value:** the ip itself as a string  
 * **type:** filtering on type of decisions, leave blank by default to get any decisions  
 * **ip:** ignore/leave blank: shortcut for scope:ip \+ value  
 * **range:** ignore/leave blank: shortcut for scope:range \+ value  
 * **contains:** leave blank by default, configurable by user  
-* **origins:** Leave blank to allow all origins, test your configurable origins with [those tests](#decision-example)  
+* **origins:** Leave blank to allow all origins, check your configurable origins against the [decision example](#decision-example)  
 * **scenarios_containing:** leave blank by default, allow change in config  
 * **scenarios_not_containing:** leave blank by default, allow change in config
 
@@ -487,61 +489,72 @@ You can refer to the AppSec documentation to test request forwarding.
 More details about metrics in [Metrics specs](/contributing/specs/bouncer_metrics_specs.mdx)
 
 ```json
-{ 
-  "remediation_components": [{
+{
+  "remediation_components": [{
+	"name": "my-bouncer",
 	"type": "my-bouncer-stat",
 	"version": "1.0.0",
 	"os": {
 		"name": "ubuntu",
 		"version": "22.04"
 	},
-	"features": [], //Always empty / invalid / ignored for bouncers
-	"meta": {
-        "window_size_seconds": 1800,
-        "utc_startup_timestamp": 123123,
-        "utc_now_timestamp": 123123123123
-      },
-	"metrics": [
-		{
-			"name": "blocked",
-			"value": 100,
-			"labels": {
-				"origin": "fire",
-                           "remediation_type": "ban"
-			},
-			"unit": "request"
+	"feature_flags": [],
+	"utc_startup_timestamp": 123123,
+	"metrics": [{
+		"meta": {
+			"window_size_seconds": 1800,
+			"utc_now_timestamp": 123123123123
 		},
-		{
-			"name": "blocked",
-			"value": 40,
-			"labels": {
-				"origin": "crowdsec",
-                           "remediation_type": "ban"
+		"items": [
+			{
+				"name": "dropped",
+				"value": 100,
+				"labels": {
+					"origin": "fire",
+					"remediation": "ban",
+					"ip_type": "ipv4"
+				},
+				"unit": "request"
 			},
-			"unit": "request"
-		},
-		{
-			"name": "blocked",
-			"value": 60,
-			"labels": {
-				"origin": "crowdsec",
-                           "remediation_type": "captcha"
+			{
+				"name": "dropped",
+				"value": 40,
+				"labels": {
+					"origin": "crowdsec",
+					"remediation": "ban",
+					"ip_type": "ipv4"
+				},
+				"unit": "request"
 			},
-			"unit": "request"
-		},
-		{
-			"name": "blocked",
-			"value": 100,
-			"labels": {
-				"origin": "lists:tor"
-                           "remediation_type": "ban"
+			{
+				"name": "dropped",
+				"value": 60,
+				"labels": {
+					"origin": "crowdsec",
+					"remediation": "captcha",
+					"ip_type": "ipv4"
+				},
+				"unit": "request"
+			},
+			{
+				"name": "dropped",
+				"value": 100,
+				"labels": {
+					"origin": "lists:tor",
+					"remediation": "ban",
+					"ip_type": "ipv4"
+				},
+				"unit": "request"
+			},
+			{
+				"name": "processed",
+				"value": 500,
+				"labels": {
+					"ip_type": "ipv4"
+				},
+				"unit": "request"
 			}
-		},
-		{
-			"name": "processed",
-			"value": 500,
-			"unit": "request"
-		}
-	]
+		]
+	}]
 }]}
 ```

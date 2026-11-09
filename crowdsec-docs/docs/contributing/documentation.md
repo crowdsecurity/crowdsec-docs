@@ -1,24 +1,25 @@
 ---
 id: contributing_doc
 title: Documentation
+description: "Contribute to the CrowdSec documentation, written in Markdown and built with Docusaurus: render it locally, get a staging preview and open a pull request."
 sidebar_position: 2
 ---
 
-# Contributing basics
+## Contributing basics
 
-- Write Crowdsec documentation in Markdown and build the Crowdsec documentation using [docusaurus](https://docusaurus.io/)
+- Write CrowdSec documentation in Markdown and build it using [docusaurus](https://docusaurus.io/)
 - Docusaurus uses [markdown](https://docusaurus.io/docs/markdown-features) and [MDX](https://docusaurus.io/docs/markdown-features/react)
 - The source code is in [GitHub](https://github.com/crowdsecurity/crowdsec-docs)
 - The documentation is versioned and changes should be made across the relevant versions
 
-# Tools for contributors
+## Tools for contributors
 
 Crowdsec documentation is rendered using [docusaurus](https://docusaurus.io/) :
 
 - Documentation can be rendered locally
 - PRs are rendered using amplify to staging env
 
-## Rendering locally
+### Rendering locally
 
 - Clone the github repository
 
@@ -29,11 +30,11 @@ cd crowdsec-docs/
 npm run start
 ```
 
-## Previews
+### Previews
 
-Once you open a pull request on the documentation repository, it will be rendered on a staging environement to facilitate the review process.
+Once you open a pull request on the documentation repository, it will be rendered on a staging environment to facilitate the review process.
 
-# Contributing
+## Contributing
 
 Once you have made your local changes, open a pull request (PR).
 If your change is small or you're unfamiliar with git, you can [make your changes using Github web editor](https://docs.github.com/en/repositories/working-with-files/managing-files/editing-files).

@@ -23,7 +23,7 @@ This is the most common cause. When a Firewall integration is created in the Con
 #### 🔎 See blocklists subscriptions for your integration
 
 1. Navigate to **Blocklists > Integrations**
-2. Look if the mentioned integration's tile to see if it has Blocklists
+2. Look at the integration's tile to see whether any blocklists are subscribed
 
 - If **no blocklists** are listed, the BLaaS endpoint will return an empty list on every pull.
 - **User made blocklists** you have created might be empty

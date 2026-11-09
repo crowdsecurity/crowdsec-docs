@@ -7,7 +7,7 @@ CrowdSec can forward Alerts to telegram via the HTTP plugin. This guide will sho
 
 ## Configuring the plugin
 
-By default the configuration for HTTP plugin is located at these default location per OS:
+By default, the HTTP plugin configuration is located at the following paths, depending on the OS:
 
 - **Linux** `/etc/crowdsec/notifications/http.yaml`
 - **FreeBSD** `/usr/local/etc/crowdsec/notifications/http.yaml`
@@ -17,7 +17,7 @@ By default the configuration for HTTP plugin is located at these default locatio
 
 You can replace the file contents with the following configuration:
 
-Replace `chat_id` within the format section so that it send the events to your Telegram chat. If you need to get your chat ID, follow the instructions [here](https://stackoverflow.com/questions/32423837/telegram-bot-how-to-get-a-group-chat-id).
+Replace `chat_id` within the format section so that it sends the events to your Telegram chat. If you need to get your chat ID, follow the instructions [here](https://stackoverflow.com/questions/32423837/telegram-bot-how-to-get-a-group-chat-id).
 
 Replace `XXX:YYY` within the URL section with your Telegram BOT API key. If you need to generate a BOT API key, follow the instructions [here](https://core.telegram.org/bots#how-do-i-create-a-bot).
 
@@ -130,7 +130,7 @@ on_success: break
 
 ## Final Steps:
 
-Let's restart crowdsec
+Restart CrowdSec:
 
 ```bash
 sudo systemctl restart crowdsec

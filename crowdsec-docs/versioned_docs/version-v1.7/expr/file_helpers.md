@@ -10,7 +10,7 @@ File helpers do not load the file into memory, but rather use a cache on initial
 
 ### `File(FileName) []string`
 
-Returns the content of `FileName` as an array of string, while providing cache mechanism.
+Returns the content of `FileName` as an array of strings, served from a cache.
 
 > `evt.Parsed.some_field in File('some_patterns.txt')`
 

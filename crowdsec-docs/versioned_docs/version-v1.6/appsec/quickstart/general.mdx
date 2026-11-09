@@ -17,7 +17,7 @@ This guide covers the core AppSec Component setup that applies to all web server
 
 ## Prerequisites
 
-- **CrowdSec Security Engine** (>= 1.5.6) installed and running
+- **CrowdSec Security Engine** (>= 1.6.0) installed and running
 - A compatible remediation component (bouncer) for your web server or reverse proxy
 
 ## AppSec Component Setup
@@ -53,7 +53,7 @@ Configure CrowdSec to expose the AppSec Component by creating an acquisition fil
 
 2. Create the AppSec acquisition configuration:
    ```bash
-   sudo cat > /etc/crowdsec/acquis.d/appsec.yaml << EOF
+   sudo tee /etc/crowdsec/acquis.d/appsec.yaml > /dev/null << EOF
    appsec_config: crowdsecurity/appsec-default
    labels:
      type: appsec
@@ -146,7 +146,7 @@ For specific remediation component configuration, see:
 
 ### Testing Detection
 
-If you've enabled an WAF-capable bouncer with CrowdSec WAF, you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.
+If you've enabled a WAF-capable bouncer, you can trigger the `crowdsecurity/appsec-generic-test` dummy scenario.
 This scenario does not lead to a decision, but it is a good way to confirm the setup is working.
 
 Trigger the dummy scenario by accessing a probe path on your web server:
@@ -176,7 +176,7 @@ This scenario can only be triggered again after a 1-minute delay.
 
 ### Multiple AppSec Configurations
 
-You can [load multiple AppSec configurations](/appsec/vpatch_and_crs) for different rule sets:
+You can [load multiple AppSec configurations](/appsec/vpatch_crs.md) for different rule sets:
 
 ```yaml
 # /etc/crowdsec/acquis.d/appsec.yaml

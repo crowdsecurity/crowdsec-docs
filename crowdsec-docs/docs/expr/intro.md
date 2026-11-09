@@ -1,6 +1,7 @@
 ---
 id: intro
-title: Introduction
+title: "Expr expressions: introduction"
+sidebar_label: Introduction
 sidebar_position: 1
 ---
 

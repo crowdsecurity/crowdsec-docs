@@ -59,13 +59,13 @@ A custom XPath query to read events.
 
 Must be set if `event_channel` is not set.
 
-You can refer to the Windows documentation for more informations: https://docs.microsoft.com/en-us/windows/win32/wes/consuming-events
+You can refer to the Windows documentation for more information: https://docs.microsoft.com/en-us/windows/win32/wes/consuming-events
 
 ### `pretty_name`
 
 Pretty name to use for the datasource in the metrics (`cscli metrics`).
 
-This parameter is optional, but strongly recommanded, as by default the full xpath query will be displayed in the metrics, which can be hard to read.
+This parameter is optional, but strongly recommended, as by default the full xpath query will be displayed in the metrics, which can be hard to read.
 
 ## DSN and command-line
 

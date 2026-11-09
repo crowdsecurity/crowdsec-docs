@@ -7,7 +7,7 @@ The splunk plugin is by default shipped with your CrowdSec installation. The fol
 
 ## Configuring the plugin:
 
-By default the configuration for Splunk plugin is located at these default location per OS:
+By default, the Splunk plugin configuration is located at the following paths, depending on the OS:
 
 - **Linux** `/etc/crowdsec/notifications/splunk.yaml`
 - **FreeBSD** `/usr/local/etc/crowdsec/notifications/splunk.yaml`
@@ -30,6 +30,8 @@ format: |  # This template receives list of models.Alert objects. Splunk event w
 token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 url: https://xxx.yyyy.splunkcloud.com:8088/services/collector
 
+# ca_cert_path: # CA certificate to verify the Splunk server, in addition to the system ones
+# skip_tls_verification: # either true or false. Default is false
 
 # group_wait: # duration to wait collecting alerts before sending to this plugin, eg "30s"
 
@@ -45,6 +47,17 @@ See [splunk guide](https://docs.splunk.com/Documentation/Splunk/8.2.1/Data/Useth
 
 
 **Note** that the `format` is a [go template](https://pkg.go.dev/text/template), which is fed a list of [Alert](https://pkg.go.dev/github.com/crowdsecurity/crowdsec@master/pkg/models#Alert) objects.
+
+### TLS
+
+The plugin verifies the certificate of the Splunk server against the system CA certificates.
+
+- `ca_cert_path`: path to a PEM file with one or more CA certificates to trust in addition to the system ones. Use it when your Splunk instance uses a certificate signed by a private CA.
+- `skip_tls_verification`: set to `true` to disable certificate verification altogether. Only use it for testing: the token and the alerts are then sent to whatever answers at `url`.
+
+:::warning
+Up to CrowdSec 1.8.1, the Splunk plugin never verified the server certificate. It now does by default: if your Splunk instance uses a self-signed or privately signed certificate, set `ca_cert_path` (or, for testing, `skip_tls_verification: true`), or notifications will fail with a certificate error.
+:::
 
 ## Testing the plugin
 
@@ -99,7 +112,7 @@ on_success: break
 
 ## Final Steps:
 
-Let's restart crowdsec
+Restart CrowdSec:
 
 ```bash
 sudo systemctl restart crowdsec

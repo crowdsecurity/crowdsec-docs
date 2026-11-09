@@ -1,31 +1,24 @@
 ---
 id: custom
-title: Custom
+title: "CrowdSec Custom Remediation — Run Your Own Scripts"
+description: "Run your own scripts on CrowdSec decisions: the custom bouncer passes new, expired and removed decisions from the Local API to any executable."
 sidebar_position: 5
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import RemediationSupportBadges from '@site/src/components/remediation-support-badge';
+import BouncerHeader from "@site/src/components/bouncer-header";
 
-
-<p align="center">
-<img src={useBaseUrl('/img/crowdsec_custom.svg')} alt="CrowdSec" title="CrowdSec" width="400" height="300" />
-</p>
-<p align="center">
-<img src="https://img.shields.io/badge/build-pass-green"></img>
-<img src="https://img.shields.io/badge/tests-pass-green"></img>
-</p>
-<p align="center">
-&#x1F4DA; <a href="#installation/">Documentation</a>
-&#x1F4A0; <a href="https://hub.crowdsec.net">Hub</a>
-&#128172; <a href="https://discourse.crowdsec.net">Discourse </a>
-</p>
-
-<RemediationSupportBadges
-  Prometheus
+<BouncerHeader
+  title="Custom"
+  imgSrc="/img/crowdsec_custom.svg"
+  description="Invokes custom user scripts with new, expired and removed decisions from CrowdSec LAPI."
+  featuresSupport="prometheus, streammode"
+  githubUrl="https://github.com/crowdsecurity/cs-custom-bouncer"
+  hubUrl="https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-custom-bouncer"
 />
+
+# Feed CrowdSec Decisions to Custom Scripts
 
 CrowdSec Remediation Component written to invoke custom scripts.
 
@@ -35,7 +28,7 @@ The crowdsec-custom-bouncer will periodically fetch new, expired and removed dec
 
 ### Repository
 
-[Setup crowdsec repositories](/u/getting_started/installation/linux#repository-installation).
+[Set up the CrowdSec repositories](/u/getting_started/installation/linux#repository-installation).
 
 <Tabs
   defaultValue="debian"
@@ -100,7 +93,7 @@ Build the binary:
 make release && cd crowdsec-custom-bouncer-v*
 ```
 
-Install the build release:
+Install the built release:
 
 ```bash
 sudo ./install.sh
@@ -127,7 +120,7 @@ sudo vim /etc/crowdsec/bouncers/crowdsec-custom-bouncer.yaml
 ```yaml
 bin_path: <absolute_path_to_binary>
 bin_args: []
-feed_via_stdin: false # Invokes binary once and feeds incoming decisions to it's stdin.
+feed_via_stdin: false # Invokes the binary once and feeds incoming decisions to its stdin.
 total_retries: 0 
 scenarios_containing: [] # ignore IPs banned for triggering scenarios not containing either of provided word, eg ["ssh", "http"]
 scenarios_not_containing: [] # ignore IPs banned for triggering scenarios containing either of provided word
@@ -154,7 +147,7 @@ prometheus:
 
 ```
 
-`cache_retention_duration` : The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. If a decision is identical to some decision already present in the cache, then the custom script is not invoked. The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `192.168.1.1`,  `CH` etc).
+`cache_retention_duration` : The bouncer keeps track of all custom script invocations from the last `cache_retention_duration` interval. If a decision is identical to some decision already present in the cache, then the custom script is not invoked. The keys for hashing a decision are its `Type` (eg `ban`, `captcha` etc) and `Value` (eg `192.168.1.1`,  `CH` etc).
 
 You can then start the service:
 
@@ -164,18 +157,18 @@ sudo systemctl start crowdsec-custom-bouncer
 
 If you need to make changes to the configuration file and be sure they will never be modified or reverted
 by package upgrades, starting from v0.0.12 you can write them in a `crowdsec-custom-bouncer.yaml.local` file as described in
-[Overriding values](https://docs.crowdsec.net/docs/next/configuration/crowdsec_configuration#overriding-values).
+[Overriding values](/docs/configuration/crowdsec_configuration#overriding-values).
 Package upgrades may have good reasons to modify the configuration, so be careful if you use a `.local` file.
 
 ### Logs
 
 By default you can find the log file `/var/log/crowdsec-custom-bouncer.log`, however, this can change if you have changed the configuration.
 
-## Best pratices
+## Best practices
 
 We recommend using the [scopes](#scopes) configuration to filter the scope your script is interested in. This will ensure you get the expected values in your script.
 
-This is only applicable if you have configured your [profiles](/docs/next/local_api/profiles/format#decisions) to make use of scopes but is general best pratice to set it to `["Ip"]` by default if that is the script aim.
+This is only applicable if you have configured your [profiles](/docs/local_api/profiles/format#decisions) to make use of scopes but it is general best practice to set it to `["Ip"]` by default if that is the script's aim.
 
 The above will ensure you get values from LAPI to the script, however, you should double check the values in your script to ensure they are as expected.
 
@@ -215,7 +208,7 @@ custom_binary.sh del 192.168.1.1/32 3600 "test blacklist" <json_object>
 
 In this mode, the custom binary will be executed when the bouncer starts and is expected to read data from stdin.
 
-If the binary exits for any reason, it will be reinvoked up to `max_retries` times. If the maximum number of retries is exhausted, the bouncer will quit.
+If the binary exits for any reason, it will be reinvoked up to `total_retries` times. If the maximum number of retries is exhausted, the bouncer will quit.
 
 For each decision, the custom binary will be fed the serialized JSON object on stdin, one object per line.
 
@@ -234,7 +227,7 @@ The JSON object is:
 ```
 
  - `duration`: duration of the decision, in the [go time.Duration format](https://pkg.go.dev/time#Duration). Can be negative for delete decisions.
- - `origin`: origin the decision. Can be `crowdsec`, `cscli`, `cscli-import`, `CAPI`, `lists`.
+ - `origin`: origin of the decision. Can be `crowdsec`, `cscli`, `cscli-import`, `CAPI`, `lists`.
  - `scenario`: scenario that triggered the decision.
  - `scope`: Scope of the decision. Most likely `Ip` or `Range` with the default config, but can be any value set in your scenarios.
  - `type`: Type of the decision. Most likely `ban` or `captcha` with the default config, but can be any value set in your profiles.
@@ -253,14 +246,14 @@ Absolute path to the binary that will be invoked
 ### `bin_args`
 > [ ]string
 
-Array of argument to give to the script that will be invoked.
+Array of arguments to pass to the script that will be invoked.
 
 This option is only supported if `feed_via_stdin` is set to `true`.
 
 ### `feed_via_stdin`
 > boolean
 
-Indicate weither or not the script will will be feed via STDIN or via its arguments
+Indicates whether the script will be fed via STDIN or via its arguments.
 
 ### `total_retries`
 > int
@@ -271,7 +264,7 @@ Set to -1 for infinite retries.
 ### `scenarios_containing`
 > [ ]string
 
-Get only IPs banned for triggering scenarios containing either of provided word.
+Only get IPs banned for triggering scenarios containing any of the provided words.
 
 ```yaml title="Example"
 scenarios_containing: ["ssh", "http"]
@@ -310,19 +303,19 @@ origins: ["cscli", "crowdsec"]
 
 The component keeps track of all custom script invocations from the last `cache_retention_duration` interval. 
 If a decision is identical to some decision already present in the cache, then the custom script is not invoked. 
-The keys for hashing a decision is it's `Type` (eg `ban`, `captcha` etc) and `Value` (eg `192.168.1.1`,  `CH` etc).
+The keys for hashing a decision are its `Type` (eg `ban`, `captcha` etc) and `Value` (eg `192.168.1.1`,  `CH` etc).
 
 ### `piddir`
 > string
 
 :::warning
-This field has been depreacted and is ignored by the component
+This field has been deprecated and is ignored by the component.
 :::
 
 Directory to drop the PID file
 
 ### `update_frequency`
-> string (That is parseable by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration))
+> string (That is parseable by [time.ParseDuration](https://pkg.go.dev/time#ParseDuration))
 
 controls how often the component is going to query the local API
 

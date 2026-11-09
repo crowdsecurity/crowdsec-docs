@@ -41,7 +41,7 @@ The wizard is going to guide you through the following steps :
 
 The process should take less than a minute, [please report if there are any issues](https://github.com/crowdsecurity/crowdsec/issues).
 
-You are then ready to [take a tour](/docs/next/getting_started/crowdsec_tour) of your freshly deployed CrowdSec !
+You are then ready to [take a tour](/docs/getting_started/crowdsec_tour) of your freshly deployed CrowdSec !
 
 :::info
 
@@ -63,7 +63,7 @@ This will only deploy the binaries, and some extra installation steps need to be
 - `sudo cscli machines add -a` : register crowdsec to the local API
 - `sudo cscli capi register` : register to the central API
 - `sudo cscli collections install crowdsecurity/linux` : install essential configs (syslog parser, geoip enrichment, date parsers)
-- configure your [datasources](/docs/next/log_processor/data_sources/intro)
+- configure your [datasources](/docs/log_processor/data_sources/intro)
 
 You can now start & enable the crowdsec service :
 
@@ -78,7 +78,7 @@ This mode will emulate the interactive mode of the wizard where you answer **yes
 
 ## Building docker image
 
-Crowdsec provides a docker image and can simply built like this :
+CrowdSec provides a Docker image, which can simply be built like this:
 
 ```bash
 git clone https://github.com/crowdsecurity/crowdsec.git && cd crowdsec
@@ -87,4 +87,4 @@ docker build -f build/docker/Dockerfile -t crowdsec .
 
 ## Building from source
 
-You can see the [build instructions](/docs/next/getting_started/install_source) for more details.
+You can see the [build instructions](/docs/getting_started/install_source) for more details.

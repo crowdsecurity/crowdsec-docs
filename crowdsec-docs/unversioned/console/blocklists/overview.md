@@ -1,3 +1,8 @@
+---
+title: "Blocklists in the Console: overview"
+sidebar_label: Blocklists
+---
+
 # Blocklists
 
 ## General overview
@@ -12,7 +17,7 @@ The purpose of CrowdSec blocklists is to proactively protect your infrastructure
 
 ### Curated Third Party Blocklists
 
-Curated third party blocklists are lists that are freely available on the internet but have been passed through our curation processs to ensure any false positives that may be present are removed.
+Curated third party blocklists are lists that are freely available on the internet but have been passed through our curation process to ensure any false positives that may be present are removed.
 
 ### 🥇 CrowdSec Premium Blocklists
 

@@ -31,7 +31,7 @@ To complete/customize the template you can refer to this [how to](https://docs.s
 ![TheHive - Cortex Analyzers](/img/thehive-cortex/thehive_cortex_analyzers.png)
 
 3. Check the report
-    * Once the analyze process is complete, click on the date to see the full report.
+    * Once the analysis is complete, click on the date to see the full report.
     * Note that if you run the analyzer again, multiple reports for each date will be available.
 
 ![TheHive - Analyze complete](/img/thehive-cortex/thehive_cortex_analyze_complete.png)
@@ -42,7 +42,7 @@ To complete/customize the template you can refer to this [how to](https://docs.s
 
 The short report displays a list of taxonomy labels (reputation, behaviors, mitre techniques, cves, etc.):
 
-![TheHive - Cortex taxononmies](/img/thehive-cortex/crowdsec-analyzer-result-example-anonymized.png)
+![TheHive - Cortex taxonomies](/img/thehive-cortex/crowdsec-analyzer-result-example-anonymized.png)
 
 Using the Cortex UI, you can configure the analyzer to enable/disable each taxonomy individually:
 

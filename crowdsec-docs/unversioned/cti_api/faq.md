@@ -1,5 +1,6 @@
 ---
 title: FAQ
+toc_max_heading_level: 4
 description: CrowdSec's Cyber Threat Intelligence (CTI) FAQ.
 ---
 
@@ -15,7 +16,7 @@ CrowdSec’s Cyber Threat Intelligence (CTI) platform empowers organizations wit
 
 CTI serves as your go-to resource for proactive defense, offering an intuitive interface, powerful search capabilities, and detailed insights into potentially harmful IPs and their activities.
 
-# What Are the Benefits of CTI?
+## What Are the Benefits of CTI?
 
 **1. Real-Time Threat Awareness**
 
@@ -44,6 +45,6 @@ With CTI’s advanced search and filtering capabilities, finding relevant inform
 
 CTI integrates seamlessly into your existing CrowdSec setup, making it an invaluable part of your defense strategy without requiring additional complexity. Use the [Free CrowdSec CTI API](https://app.crowdsec.net/settings/cti-api-keys) to access threat data programmatically and enhance your security operations.
 
-### Faceted Research for Analysts
+#### Faceted Research for Analysts
 
 Understand how CTI enables analysts to uncover trends, identify repeat offenders, and map out potential attack vectors using advanced research tools. [(You can check this example)](<https://app.crowdsec.net/cti?q=classifications.classifications.name:%22crowdsec:ai_vpn_proxy%22+AND+(reputation:malicious+OR+reputation:suspicious)&page=1>)
