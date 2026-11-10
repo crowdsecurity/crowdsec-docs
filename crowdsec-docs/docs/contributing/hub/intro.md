@@ -66,7 +66,7 @@ This page covers the workflow shared by every hub contribution. Each type also h
 
 ## Testing
 
-Most contributions need [`cscli hubtest`](/cscli/cscli_hubtest.md) coverage; each per-type page says what applies. To run tests locally, [create a test environment](../engine/test_env.md). GitHub Actions runs them on every pull request.
+Parsers, scenarios and AppSec rules need [`cscli hubtest`](/cscli/cscli_hubtest.md) coverage. Bot detections can't use it; see [Test your detection](bot_detections.md#test-your-detection). To run tests locally, [create a test environment](../engine/test_env.md). GitHub Actions runs them on every pull request.
 
 ## Git Workflow / Branch Management
 
