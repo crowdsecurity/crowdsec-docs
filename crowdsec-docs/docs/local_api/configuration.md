@@ -48,7 +48,7 @@ api:
     enable: false
 ```
 
-See where the `config.yaml` file is located on your operating system [here](/u/troubleshooting/security_engine#where-is-configuration-stored)
+See where the `config.yaml` file is located on your operating system [here](/u/troubleshooting/configuration#where-is-configuration-stored)
 
 ### Server
 
@@ -134,7 +134,7 @@ api:
       - "127.0.0.1" ## Change this to the proxy IP this is presuming the proxy is on the same machine
 ```
 
-See where the `config.yaml` file is located on your operating system [here](/u/troubleshooting/security_engine#where-is-configuration-stored)
+See where the `config.yaml` file is located on your operating system [here](/u/troubleshooting/configuration#where-is-configuration-stored)
 
 See the [Local API public documentation](https://crowdsecurity.github.io/api_doc/lapi/).
 

@@ -55,7 +55,7 @@ sudo cscli machines add testMachine -f- > /path/to/credentials.yaml
 
 Upon installation, CrowdSec generates its own set of credentials to operate the log processor and local API server.
 
-If you are installing these credentials on a remote machine, you must replace the `local_api_credentials.yaml` file within the configuration directory, you can find the location of this directory [here](/u/troubleshooting/security_engine#where-is-configuration-stored) based on your operating system.
+If you are installing these credentials on a remote machine, you must replace the `local_api_credentials.yaml` file within the configuration directory, you can find the location of this directory [here](/u/troubleshooting/configuration#where-is-configuration-stored) based on your operating system.
 
 2. You can use `cscli` to send a registration request to the Local API server:
 

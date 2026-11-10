@@ -1,0 +1,146 @@
+---
+title: CrowdSec won't start or logs errors
+id: startup_errors
+description: Find CrowdSec and Remediation Component logs, read the error, and fix the most common startup failures.
+---
+
+import FormattedTabs from '@site/src/components/formatted-tabs';
+
+Start by checking whether the service is running, then read its logs: the error message almost always names the file, port or credential at fault.
+
+## Is the Security Engine running?
+
+<FormattedTabs
+    bash="sudo systemctl status crowdsec"
+    powershell="Get-Service crowdsec"
+    k8s="kubectl get pods -n crowdsec"
+/>
+
+For Docker and Kubernetes specifics, see the [service check of the Stack Health-Check](/u/getting_started/health_check#troubleshooting_service). If you have any doubt about your whole setup, run the full [Stack Health-Check](/u/getting_started/health_check).
+
+## Where are the logs stored?
+
+By default the Security Engine logs to:
+
+- **Linux** `/var/log/crowdsec.log`
+- **FreeBSD** `/var/log/crowdsec.log`
+  - **OPNsense** `/var/log/crowdsec/crowdsec.log`
+  - **pfSense** `/var/log/crowdsec/crowdsec.log`
+- **Windows** `C:\ProgramData\CrowdSec\log\crowdsec.log`
+- **Docker** `docker logs crowdsec`
+- **Kubernetes** `kubectl logs -n crowdsec crowdsec-(agent|lapi)-*`
+
+Third-party integrations may use different paths. If you are unsure, look for `log_dir` in `config.yaml`.
+
+Remediation Components written in Go (firewall, HAProxy SPOA, Cloudflare…) log to `/var/log/{component}.log` on Linux and FreeBSD, `/var/log/crowdsec/{component}.log` on OPNsense and pfSense, and `C:\ProgramData\CrowdSec\log\{component}.log` on Windows, where `{component}` is the package name, for example `crowdsec-firewall-bouncer`. The nginx and OpenResty components run inside the web server and write to its error log (`/var/log/nginx/error.log` by default).
+
+### Showing only errors
+
+<FormattedTabs
+    bash='sudo grep -E "level=(error|fatal)" /var/log/crowdsec.log'
+    cmd='findstr "level=error level=fatal" C:\ProgramData\CrowdSec\log\crowdsec.log'
+    powershell='Select-String "level=(error|fatal)" C:\ProgramData\CrowdSec\log\crowdsec.log'
+    k8s='kubectl logs -n crowdsec crowdsec-agent-* | grep -E "level=(error|fatal)"'
+/>
+
+### The log file shows nothing, but the service fails to start
+
+When a configuration file can't be parsed, the process exits before it opens its log file, so the error only reaches systemd. This applies to the Security Engine (`config.yaml`) and to Remediation Components. Read it with:
+
+```bash
+sudo journalctl -u crowdsec -n 50 --no-pager
+```
+
+Replace `crowdsec` with the component's service name, for example `crowdsec-firewall-bouncer`.
+
+## Security Engine errors
+
+### Cannot bind to the configured port or IP
+
+```
+level=fatal msg="local API server stopped with error: listening on 127.0.0.1:8080: listen tcp 127.0.0.1:8080: bind: address already in use"
+```
+
+Another service already uses this address and port. Find it with `sudo ss -ltnp | grep 8080`. Either stop that service, or change `listen_uri` in `config.yaml` **and** `url` in `local_api_credentials.yaml` to the same new value, then restart CrowdSec.
+
+### Cannot authenticate to the Local API
+
+```
+level=fatal msg="crowdsec init: while initializing LAPIClient: authenticate watcher (<login>): API error: ent: machine not found"
+```
+
+```
+level=fatal msg="crowdsec init: while initializing LAPIClient: authenticate watcher (<login>): API error: incorrect Username or Password"
+```
+
+The credentials in `local_api_credentials.yaml` don't match a machine known to the Local API: the database was reset, the machine was deleted, or the file was edited. If the Local API runs on the same host, regenerate the credentials and restart:
+
+```bash
+sudo cscli machines add -a --force
+sudo systemctl restart crowdsec
+```
+
+`-a` generates the login and password and writes them to `local_api_credentials.yaml`. For a log processor on another host, see [cscli machines add](/docs/cscli/cscli_machines_add) and the [multi-server setup](/u/user_guides/multiserver_setup).
+
+### Cannot connect to the Local API
+
+At startup:
+
+```
+level=fatal msg="crowdsec init: while initializing LAPIClient: authenticate watcher (<login>): Post \"http://127.0.0.1:8080/v1/watchers/login\": performing jwt auth: dial tcp 127.0.0.1:8080: connect: connection refused"
+```
+
+While running:
+
+```
+level=error msg="while performing request: dial tcp 127.0.0.1:8080: connect: connection refused; 4 retries left"
+```
+
+`connection refused`, `connection reset by peer` or `no such host` all mean the log processor can't reach the Local API at the `url` in `local_api_credentials.yaml`.
+
+- If the URL is wrong, fix it. When the Local API runs on the same host, `listen_uri` in `config.yaml` gives the right address.
+- If the URL is right, check that the Local API is running and that no firewall blocks the port.
+
+### Cannot start because of an invalid configuration file
+
+```
+level=fatal msg="while loading configuration file: /etc/crowdsec/config.yaml: yaml: unmarshal errors:\n  line 64: field test not found in type csconfig.Config"
+```
+
+The message gives the file, the line and the field. This one is only visible in `journalctl` (see [above](#the-log-file-shows-nothing-but-the-service-fails-to-start)). Fix the line, or compare with the [default configuration files](https://github.com/crowdsecurity/crowdsec/tree/master/config), then restart CrowdSec.
+
+### Central API returns 403 Forbidden
+
+See [Central API 403 (Forbidden)](/u/troubleshooting/capi_403).
+
+## Remediation Component errors
+
+### Remediation Component cannot connect to the Local API
+
+```
+level=error msg="auth-api: auth with api key failed return nil response, error: dial tcp 127.0.0.1:8080: connect: connection refused"
+```
+
+The `api_url` in the component's configuration file is wrong, or the Local API is down. Fix the URL, or check that `crowdsec` is running.
+
+### Remediation Component cannot authenticate to the Local API
+
+```
+level=fatal msg="process terminated with error: API error: access forbidden"
+```
+
+The API key in the component's configuration is not known to the Local API. Create a new one with [`cscli bouncers add`](/docs/cscli/cscli_bouncers_add), put it in the configuration file, and restart the component. Use a new name rather than reusing the old one.
+
+### Where is the Remediation Component configuration stored?
+
+- **Linux** `/etc/crowdsec/bouncers/`
+- **FreeBSD** `/usr/local/etc/crowdsec/bouncers/`
+- **Windows** `C:\ProgramData\CrowdSec\bouncers\`
+
+## How to report a bug
+
+Open an issue on the affected repository:
+
+- [CrowdSec](https://github.com/crowdsecurity/crowdsec/issues/new/choose) for the Security Engine and `cscli`.
+- [CrowdSec Hub](https://github.com/crowdsecurity/hub/issues/new/choose) for a parser, scenario, collection or AppSec rule.
+- The component's own repository for a Remediation Component: each one is linked from its [documentation page](/u/bouncers/intro).

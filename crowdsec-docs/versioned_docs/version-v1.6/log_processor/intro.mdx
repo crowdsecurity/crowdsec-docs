@@ -35,7 +35,7 @@ Data Sources are individual modules that can be loaded at runtime by the Log Pro
 
 Acquisitions are the configuration files that define how the Log Processor should read logs from a Data Source. Acquisitions are defined in YAML format and are loaded by the Log Processor at runtime.
 
-We have two ways to define Acquisitions within the [configuration directory](/u/troubleshooting/security_engine#where-is-configuration-stored) :
+We have two ways to define Acquisitions within the [configuration directory](/u/troubleshooting/configuration#where-is-configuration-stored) :
 
 - `acquis.yaml` file: This used to be only place to define Acquisitions prior to `1.5.0`. This file is still supported for backward compatibility.
 - `acquis.d` folder: This is a directory where you can define multiple Acquisitions in separate files. This is useful when you want to auto generate files using an external application such as ansible.

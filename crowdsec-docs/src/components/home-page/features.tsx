@@ -50,7 +50,7 @@ const FEATURES_LIST = [
 		//schema api ?
 		title: "Open Source",
 		Svg: require("../../static/img/icon-opensource.svg").default,
-		link: "/u/troubleshooting/security_engine#what-license-is-provided",
+		link: "/u/troubleshooting/general#what-license-is-provided",
 		description: <>CrowdSec is as open source and free as it can be through an MIT license. No back doors. No shenanigans.</>,
 	},
 	//community driven ->

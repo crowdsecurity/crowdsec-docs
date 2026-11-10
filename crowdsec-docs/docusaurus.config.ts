@@ -197,6 +197,10 @@ const redirects = [
 	{ from: "/docs/next/troubleshooting", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/faq", to: "/u/troubleshooting/intro" },
 	{ from: "/docs/next/faq", to: "/u/troubleshooting/intro" },
+	// FAQ restructured by symptom: the per-component pages were split across the new pages
+	{ from: "/u/troubleshooting/security_engine", to: "/u/troubleshooting/intro" },
+	{ from: "/u/troubleshooting/remediation_components", to: "/u/troubleshooting/not_blocking" },
+	{ from: "/u/troubleshooting/usecases", to: "/u/getting_started/usecases" },
 	// Service API docs flattened: quickstart/<resource> -> <resource>
 	{ from: "/u/console/service_api/quickstart/authentication", to: "/u/console/service_api/authentication" },
 	{ from: "/u/console/service_api/quickstart/blocklists", to: "/u/console/service_api/blocklists" },
@@ -539,6 +543,8 @@ const config: Config = {
 						"/docs/next/**",
 						"/docs/v1.7/**",
 						"/docs/v1.6/**",
+						// Unlisted draft: keep AI crawlers from quoting planned issues as current.
+						"/u/troubleshooting/future_console_issues/**",
 					],
 				},
 				optionalLinks: [

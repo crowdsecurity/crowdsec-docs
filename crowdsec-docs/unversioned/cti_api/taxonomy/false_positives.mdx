@@ -28,27 +28,6 @@ IPs belonging to those categories will have the `safe` [reputation](/u/cti_api/t
 
 <TableRender columns={columns} url={fpURL}></TableRender>
 
-## How to Get Tagged as Safe
+## How to get your service classified as safe
 
-To be classified as a safe IP, you need a technical justification of why your IP might be misclassified as a threat. CrowdSec reviews and validates this justification.
-
-You also need public documentation stating the IP, ranges, and/or reverse DNS associated with the assets in question. This data must be machine-readable (no HTML, no PDF, etc.).
-
-Once your IP addresses are publicly available and accessible via HTTPS, you can contact support@crowdsec.net. Please include the URL of your IPs and ranges.
-
-The CrowdSec team will do their best to update the CTI with false positive information, so your IPs are flagged correctly.
-
-Here are some examples of providers who share their IPs and ranges:
-
--   [Bing](https://www.bing.com/toolbox/bingbot.json)
--   [Google Bot](https://developers.google.com/search/apis/ipranges/googlebot.json)
--   [Cloudfront](https://d7uri8nf7uskq.cloudfront.net/tools/list-cloudfront-ips)
--   [Fastly](https://api.fastly.com/public-ip-list)
-
-:::note
-
-You don’t need to follow a specific format for the exposed list, but it’s recommended to keep the same format over time. Otherwise, the false positive enrichment may stop working.
-
-It’s best to use CSV or JSON for the list format.
-
-:::
+See [Get your service classified as safe](/u/troubleshooting/cti#get-your-service-classified-as-safe).

@@ -110,7 +110,7 @@ If CAPI returns 200/204 and your console status is OK, the 403 is resolved.
 
 ## Related Issues
 
-- [Security Engine Troubleshooting](/u/troubleshooting/security_engine) - General Security Engine issues
+- [CrowdSec won't start or logs errors](/u/troubleshooting/startup_errors) - Logs and common errors
 - [Network Management](/docs/configuration/network_management) - Console and CAPI endpoints
 
 ## Getting Help

@@ -203,7 +203,7 @@ If performance is degraded, consider:
 
 ## Related Issues
 
-- [Security Engine Troubleshooting](/u/troubleshooting/security_engine) - General Security Engine issues
+- [CrowdSec blocks legitimate traffic](/u/troubleshooting/false_positives) - Allowlists, whitelists and simulation mode
 - [Log Processor No Logs Parsed](/u/troubleshooting/issue_lp_no_logs_parsed) - If parsing is creating unusual events
 
 ## Getting Help

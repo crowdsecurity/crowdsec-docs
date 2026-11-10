@@ -1,0 +1,119 @@
+---
+title: Bot detection issues
+id: bot_detection
+description: Fix CrowdSec bot detection when the challenge isn't served, stays blank, loops, rejects real visitors, challenges your monitoring or API clients, or lets a bot through.
+---
+
+[Bot detection](/docs/appsec/bot_detection/intro) serves a browser challenge from the AppSec component and scores the browser that solves it. This page starts from what you see. The commands assume a Linux host with the default log path.
+
+:::info
+Bot detection is in **alpha**: signals, weights and configuration may change between releases. Run `sudo cscli hub upgrade` before you troubleshoot, and check that you run CrowdSec 1.8.2 or later.
+:::
+
+| What you see | Go to |
+| --- | --- |
+| CrowdSec doesn't start after enabling bot detection | [CrowdSec fails to start](#crowdsec-fails-to-start-after-enabling-bot-detection) |
+| Visitors never see the challenge | [No challenge is served](#no-challenge-is-served) |
+| The challenge page is blank, frozen, or shows an error | [The challenge page never completes](#the-challenge-page-is-blank-or-never-completes) |
+| Visitors are challenged on every page | [Visitors are challenged again and again](#visitors-are-challenged-again-and-again) |
+| Real visitors see "Verification rejected" | [Real visitors are rejected](#real-visitors-are-rejected-as-bots) |
+| Monitoring, an API client, a webhook or a crawler gets the challenge | [A legitimate client is challenged](#a-monitoring-tool-api-client-webhook-or-crawler-is-challenged) |
+| `suspicious-browser-submission` alerts appear | [Flagged submissions](#i-see-suspicious-browser-submission-alerts) |
+| A scraper still gets through | [A bot gets through](#a-bot-gets-through) |
+
+## Check the challenge funnel first
+
+```bash
+sudo cscli metrics show bot-detection
+```
+
+The first table follows each challenge from **Requested** to **Submitted**, then **Solved** or rejected. Where the numbers stop tells you where to look:
+
+- **Requested is empty**: the challenge is never served. See [No challenge is served](#no-challenge-is-served).
+- **Requested grows but Submitted doesn't**: the browser can't run the challenge. See [The challenge page never completes](#the-challenge-page-is-blank-or-never-completes).
+- **Submissions Rejected grows**: the scoring refuses clients. See [Real visitors are rejected](#real-visitors-are-rejected-as-bots).
+- **Protocol Failures or Cookies Invalid grows**: submissions or cookies don't validate. See [Visitors are challenged again and again](#visitors-are-challenged-again-and-again).
+
+The [metrics section](/docs/appsec/bot_detection/enable#metrics) explains each column.
+
+## CrowdSec fails to start after enabling bot detection
+
+If the AppSec datasource logs `wasm compiler mode unavailable` or `failed to create wasm runtime in compiler mode`, the host can't run the challenge runtime. It needs `arm64`, or `amd64` with SSE4.1, and must be allowed to map executable memory: W^X hardening, a seccomp profile or a SELinux policy can prevent it. See the [prerequisites](/docs/appsec/bot_detection/intro#prerequisites).
+
+For other startup errors, see [CrowdSec won't start or logs errors](/u/troubleshooting/startup_errors).
+
+## No challenge is served
+
+1. **Check that the engine loaded a challenge.**
+
+   ```bash
+   sudo grep "WAF challenge runtime initialized" /var/log/crowdsec.log
+   ```
+
+   If the line is missing, the bot detection appsec-configs aren't listed in `appsec_configs:` of your AppSec acquisition. Add them, for example with `crowdsecurity/appsec-bot-*`, and reload CrowdSec. See [Install the collection](/docs/appsec/bot_detection/enable#install-the-collection).
+
+2. **Check that your Remediation Component supports bot detection.** Only the bouncers listed in the [prerequisites](/docs/appsec/bot_detection/intro#prerequisites) can serve the challenge. Another bouncer may refuse every client instead.
+
+3. **Check that you aren't exempted.** You won't see the challenge if:
+
+   - your browser already holds a valid `__crowdsec_challenge` cookie (valid 12 hours by default). Test from a private window.
+   - your IP is in an [allowlist](/u/troubleshooting/false_positives#how-to-add-whitelists-or-prevent-the-security-engine-from-banning-a-given-ip): allowlisted IPs skip AppSec processing entirely. AppSec reloads allowlists every minute, so a change takes up to a minute to apply.
+   - the path is covered by a [path-exclusion config](/docs/appsec/bot_detection/whats_included#path-exclusion-configs), such as static assets or `/api/*`. The **Exempt** column of the metrics counts these requests.
+
+## The challenge page is blank or never completes
+
+- **Blank or frozen page, with `Refused to execute inline script` or `Refused to create a worker` in the browser console.** Your web server adds its own `Content-Security-Policy` next to the challenge's, for example with nginx `add_header`, and the browser enforces both. Check the response headers of the challenge page: it should carry a single `Content-Security-Policy`. Only add your policy when the response doesn't carry one: see [Content-Security-Policy](/docs/appsec/bot_detection/enable#content-security-policy).
+- **The page shows "Cookies are disabled".** The visitor's browser blocks cookies for your site, and the result of the check is stored in a cookie. The visitor has to allow cookies for the site.
+- **The page keeps loading, and the browser shows failed requests to `/crowdsec-internal/challenge/`.** A proxy or a rewrite rule in front of the Remediation Component changes or blocks these paths. Forward `/crowdsec-internal/challenge/*` unchanged.
+
+## Visitors are challenged again and again
+
+- **Several AppSec instances behind a load balancer.** Each instance needs the same `master_secret` and `key_rotation_interval`, otherwise a cookie issued by one instance is rejected by the next. See [Multi-instance deployments](/docs/appsec/bot_detection/configuration#multi-instance--ha-deployments).
+- **CrowdSec restarted, on a single instance without `master_secret`.** The engine generates a new random secret at each start, so every visitor is challenged once more. Set `master_secret` to keep cookies valid across restarts.
+- **"Verification failed — Please try again".** The submission didn't validate, for example because the visitor took too long to solve the challenge, or the instances don't share the same keys. The CrowdSec log shows a `challenge validation failed:` line with the reason. Slow clients may need a higher `max_live_epochs`: see [Key management](/docs/appsec/bot_detection/configuration#key-management).
+
+## Real visitors are rejected as bots
+
+The visitor sees "Verification rejected", and a `crowdsecurity/rejected-browser-submission` alert is raised. Find out which signals decided:
+
+```bash
+sudo cscli alerts list --kind bot-detection
+sudo cscli alerts inspect ALERT_ID -d
+```
+
+Replace `ALERT_ID` with an ID from the list, and read `score_reasons`, for example `cdp=100,utc_timezone=15`. See [Read a rejection](/docs/appsec/bot_detection/whats_included#read-a-rejection).
+
+- **One decisive signal** such as `cdp` or `webdriver`: the browser is driven by automation. Browser developer tools left open trigger `cdp` too.
+- **Several weak signals that barely reach the threshold**: the threshold is too strict for your audience.
+  - Check that you installed only one bundle. `appsec-bot-challenge`, `-strict` and `-permissive` each ship a threshold, and with several installed the strictest one wins. See [Choose a threshold](/docs/appsec/bot_detection/whats_included#choose-a-threshold).
+  - Switch to a more permissive bundle rather than editing the shipped configs, which would mark them tainted.
+- **The same signal family misfires on your visitors**, for example fonts on kiosks: [cap or cancel the signal family](/docs/appsec/bot_detection/customization#cap-or-cancel-a-signal-family) in a config of your own.
+
+If a signal misfires on ordinary browsers, report it on the [CrowdSec Hub repository](https://github.com/crowdsecurity/hub/issues/new/choose) with the `score_reasons` and the browser and operating system versions.
+
+## A monitoring tool, API client, webhook or crawler is challenged
+
+Clients that don't run JavaScript can never solve the challenge.
+
+- **Verified crawlers and monitoring services** are exempted by the [known-bot configs](/docs/appsec/bot_detection/whats_included#known-bots-it-lets-through), but only from the vendor's published ranges or with forward-confirmed reverse DNS. A client that only claims to be Googlebot is challenged. To test a client:
+
+  ```bash
+  sudo cscli bot match --ip 66.249.66.1 --user-agent "Googlebot/2.1"
+  ```
+
+- **API endpoints, feeds, webhooks and static files** are exempted by the [path-exclusion configs](/docs/appsec/bot_detection/whats_included#path-exclusion-configs). Check that they are loaded, and add your own paths in a config of your own if your routes differ.
+- **Your own probes or partners**: if they have a fixed IP, [allowlist the IP](/docs/appsec/bot_detection/customization#allowlist-by-ips). Otherwise, [allowlist them by header](/docs/appsec/bot_detection/customization#allowlist-an-internal-probe-by-header), combined with a source IP filter.
+
+## I see `suspicious-browser-submission` alerts
+
+These alerts don't block anyone. The submission was accepted, but an [experimental signal](/docs/appsec/bot_detection/signals#experimental-and-scoring-signals) fired. Experimental signals have a weight of 0 while CrowdSec evaluates them. A `detect-experimental-*` prefix in `score_reasons` marks them.
+
+If one of them proves reliable on your traffic, you can [give it a weight](/docs/appsec/bot_detection/customization#give-an-experimental-signal-a-weight) without waiting for CrowdSec to promote it.
+
+## A bot gets through
+
+- **Check that the bot was challenged at all**: an [exempted path](/docs/appsec/bot_detection/whats_included#path-exclusion-configs), an allowlisted IP, or a [known bot](/docs/appsec/bot_detection/whats_included#known-bots-it-lets-through) skips the challenge.
+- **It passed the challenge with a low score**: use a stricter bundle, or add [signals of your own](/docs/appsec/bot_detection/customization#score-on-something-only-you-know).
+- **It hammers the challenge without solving it**: the behavioral scenarios `appsec-bot-challenge-too-many-requests` and `-too-many-submissions` ban such IPs over time. Check that your Remediation Component applies these decisions: see [CrowdSec detects attacks but doesn't block them](/u/troubleshooting/not_blocking).
+
+For requests that should be blocked by WAF rules rather than by bot detection, see [AppSec troubleshooting](/docs/appsec/troubleshooting).

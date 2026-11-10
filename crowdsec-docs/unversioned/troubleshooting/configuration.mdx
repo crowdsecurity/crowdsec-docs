@@ -1,0 +1,262 @@
+---
+title: "CrowdSec configuration: file paths, hub updates, Central API"
+id: configuration
+description: Where CrowdSec stores its configuration and data, how to update the hub, and how to manage the connection to the Central API.
+---
+
+import FormattedTabs from '@site/src/components/formatted-tabs';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Where is configuration stored?
+
+See [CrowdSec Configuration](/docs/configuration/crowdsec_configuration).
+
+## Where is data stored?
+
+CrowdSec stores its data in `/var/lib/crowdsec/data/` on Linux, `/var/db/crowdsec/data/` on FreeBSD (including OPNsense and pfSense), and `C:\ProgramData\CrowdSec\data\` on Windows.
+
+This is where the default sqlite database and data files needed for scenarios are kept.
+
+## Which databases does the Security Engine support and how to switch?
+
+Security Engine supports SQLite (default), MySQL, and PostgreSQL databases.
+See [databases configuration](/docs/local_api/database) for relevant configuration. Thanks to the [Local API](/docs/local_api/intro), distributed architectures are resolved even with sqlite database.
+
+## How to run CrowdSec on several servers?
+
+For multi-server setups, use one of the following:
+ - [distributed architecture](/u/user_guides/multiserver_setup).
+ - [log centralization approach](/u/user_guides/log_centralization)
+
+## Why are some scenarios/parsers "tainted" or "custom"?
+
+When using `cscli` to list your parsers, scenarios, and collections, some might appear as "tainted" or "local".
+
+"tainted" items:
+
+- Originate from the hub
+- Were locally modified
+- Will not be automatically updated/upgraded by `cscli` operations (unless `--force` or similar is specified)
+- Are sent to Central API and appear in the Console by default (unless `cscli console disable tainted` has been specified)
+
+"local" items:
+
+- Have been locally created by the user
+- Are not managed by `cscli` operations
+- Are sent to Central API and appear in the Console by default (unless `cscli console disable custom` has been specified)
+
+## How to get a new hub item right now instead of waiting for the scheduled update
+
+When a new rule is published on the hub (for example a virtual patching rule for a freshly disclosed CVE), you may not want to wait for the next scheduled hub update to get it.
+
+Getting it right away always takes the same three steps:
+
+1. `cscli hub update` refreshes the hub index.
+2. `cscli hub upgrade` upgrades the installed items, and installs the new items added to the collections you already have.
+3. Restart CrowdSec so that it loads the new items.
+
+:::info
+Tainted items (locally modified) are not upgraded. See [Why are some scenarios/parsers "tainted" or "custom"?](#why-are-some-scenariosparsers-tainted-or-custom).
+:::
+
+<Tabs
+  defaultValue="linux"
+  values={[
+    { label: 'Linux', value: 'linux' },
+    { label: 'FreeBSD', value: 'freebsd' },
+    { label: 'Windows', value: 'windows' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Kubernetes', value: 'kubernetes' },
+  ]}>
+<TabItem value="linux">
+
+The packages update the hub once a day with the `crowdsec-hubupdate.timer` systemd timer (a `/etc/cron.daily/crowdsec` cron job before 1.7.2).
+
+Trigger the scheduled job immediately:
+
+```bash
+sudo systemctl start crowdsec-hubupdate.service
+```
+
+Or run the steps by hand:
+
+```bash
+sudo cscli hub update
+sudo cscli hub upgrade
+sudo systemctl restart crowdsec
+```
+
+</TabItem>
+<TabItem value="freebsd">
+
+The package updates the hub every day at 3 AM with a cron job (`/usr/local/etc/cron.d/crowdsec`).
+
+```bash
+sudo cscli hub update
+sudo cscli hub upgrade
+sudo service crowdsec restart
+```
+
+</TabItem>
+<TabItem value="windows">
+
+There is no scheduled hub update on Windows. From an administrator PowerShell:
+
+```powershell
+cscli.exe hub update
+cscli.exe hub upgrade
+Restart-Service crowdsec
+```
+
+</TabItem>
+<TabItem value="docker">
+
+There is no scheduled hub update in the container. When the container starts, it only updates the hub if `/etc/crowdsec` is in a volume and the hub index is more than 24 hours old, so restarting the container alone is usually not enough to get a new item.
+
+Run the update inside the running container, then restart it:
+
+```bash
+docker exec crowdsec cscli hub update
+docker exec crowdsec cscli hub upgrade
+docker restart crowdsec
+```
+
+With Docker Compose, use `docker compose exec crowdsec` and `docker compose restart crowdsec` instead.
+
+:::warning
+If `/etc/crowdsec` is not in a volume, the upgraded items are lost when the container is recreated: the new container installs the items again at the versions listed in the hub index shipped in the image.
+:::
+
+</TabItem>
+<TabItem value="kubernetes">
+
+There is no scheduled hub update in the Helm chart, and by default the pods don't update the hub when they start: restarting them is not enough to get a new item.
+
+Run the update in every pod that uses the item: the agent pods for parsers and scenarios, the AppSec pods for AppSec rules. Don't restart the pods afterwards: a restarted container starts again from the image and loses the upgrade. Send a `SIGHUP` to CrowdSec instead, so that it reloads its configuration in place. For example, for the AppSec pods:
+
+```bash
+for pod in $(kubectl get pods -n crowdsec -l type=appsec -o name); do
+  kubectl exec -n crowdsec "$pod" -- sh -c 'cscli hub update && cscli hub upgrade && kill -HUP "$(pidof crowdsec)"'
+done
+```
+
+Use `-l type=agent` for the agent pods. If you set custom `podLabels` in your values, adapt the selector.
+
+:::warning
+The upgraded items are lost when a pod is recreated (rollout, eviction, rescheduling, scaling): the new pod installs the items again at the versions listed in the hub index shipped in the image. Run the update again on the new pods until you upgrade to an image whose hub index includes the item.
+:::
+
+</TabItem>
+</Tabs>
+
+To check that the new item is installed and up to date, run `cscli hub list` (or the `docker exec` / `kubectl exec` equivalent).
+
+## How to check if CAPI is reachable
+
+```bash
+sudo cscli capi status
+```
+
+<details>
+
+<summary>Example output</summary>
+
+```
+Loaded credentials from /etc/crowdsec/online_api_credentials.yaml
+Trying to authenticate with username XXXXXXXXXXX on https://api.crowdsec.net/
+You can successfully interact with Central API (CAPI)
+Your instance is enrolled in the console
+Sharing signals is enabled
+Pulling community blocklist is enabled
+Pulling blocklists from the console is enabled
+```
+
+</details>
+
+:::info
+Run this command on the host that runs the Local API: log processors don't talk to the Central API.
+:::
+
+If it fails, the [connectivity checks of the Stack Health-Check](/u/getting_started/health_check#-crowdsec-connectivity-checks) list the common causes for hosts, Docker and Kubernetes.
+
+## How to set up a proxy
+
+Setting up a proxy works out of the box, the [net/http golang library](https://go.dev/src/net/http/transport.go) can handle those environment variables:
+
+-   `HTTP_PROXY`
+-   `HTTPS_PROXY`
+-   `NO_PROXY`
+
+For example:
+
+```bash
+export HTTP_PROXY=http://<proxy_url>:<proxy_port>
+```
+
+### Systemd variable
+
+On Systemd devices you have to set the proxy variable in the environment section for the CrowdSec service. To avoid overwriting the service file during an update, a folder is created in `/etc/systemd/system/crowdsec.service.d` and a file in it named `http-proxy.conf`. The content for this file should look something like this:
+
+```bash title="systemctl edit crowdsec.service"
+[Service]
+Environment=HTTP_PROXY=http://myawesomeproxy.com:8080
+Environment=HTTPS_PROXY=https://myawesomeproxy.com:443
+Environment=NO_PROXY=127.0.0.1,localhost,0.0.0.0
+```
+
+After this change you need to reload the systemd daemon using:
+`systemctl daemon-reload`
+
+Then you can restart CrowdSec like this:
+`systemctl restart crowdsec`
+
+### Sudo
+
+If you use `sudo cscli`, just add this line in `visudo` after setting up the previous environment variables:
+
+```
+Defaults        env_keep += "HTTP_PROXY HTTPS_PROXY NO_PROXY"
+```
+
+### Tor
+
+You can configure `cscli` and `crowdsec` to use [tor](https://www.torproject.org/) to anonymously interact with our API.
+
+All HTTP requests made to the Central API will then go through the [Tor network](https://www.torproject.org/).
+
+With tor installed, setting `HTTP_PROXY` and `HTTPS_PROXY` environment variables to your socks5 proxy, as well as setting `NO_PROXY` to local addresses to prevent LAPI errors, will do the trick.
+
+#### Edit crowdsec systemd unit to push/pull via tor
+
+```bash title="systemctl edit crowdsec.service"
+[Service]
+Environment="HTTPS_PROXY=socks5://127.0.0.1:9050"
+Environment="HTTP_PROXY=socks5://127.0.0.1:9050"
+Environment="NO_PROXY=127.0.0.1,localhost,0.0.0.0"
+```
+
+#### Running the wizard with tor
+
+```bash
+$ sudo HTTPS_PROXY=socks5://127.0.0.1:9050 HTTP_PROXY=socks5://127.0.0.1:9050 NO_PROXY=127.0.0.1,localhost,0.0.0.0  ./wizard.sh --bininstall
+```
+
+:::caution
+
+Do not use the wizard in interactive (`-i`) mode if you're concerned, as it will start the service at the end of the setup, leaking your IP address.
+
+:::
+
+#### cscli
+
+```bash
+$ sudo HTTP_PROXY=socks5://127.0.0.1:9050 HTTPS_PROXY=socks5://127.0.0.1:9050 NO_PROXY=127.0.0.1,localhost,0.0.0.0 cscli capi register
+```
+
+
+## How to disable the central API
+
+Comment out the [`online_client` section of `config.yaml`](/docs/configuration/crowdsec_configuration#online_client), then restart CrowdSec.
+
+Without the Central API, the Security Engine no longer receives the community blocklist or Console blocklists, no longer shares signals, and can't be managed from the Console. Local detection and remediation keep working.

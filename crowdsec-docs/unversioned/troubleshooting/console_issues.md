@@ -51,13 +51,7 @@ Understanding these dependencies helps you troubleshoot faster by addressing roo
 
 ## Future Enhancements
 
-For planned and experimental health checks, see [Future Console Health Check Issues](/u/troubleshooting/future_console_issues) for features including:
-
-- Enhanced configuration validation
-- Blocklists optimization recommendations
-- Collection update notifications
-- False positive prevention checks
-- Premium feature recommendation based on detected benefit
+More health checks are planned. Follow them on the [public roadmap](https://roadmap.crowdsec.net/).
 
 ## Getting Help
 

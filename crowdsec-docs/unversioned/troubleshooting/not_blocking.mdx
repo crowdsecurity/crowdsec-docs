@@ -1,0 +1,50 @@
+---
+title: CrowdSec detects attacks but doesn't block them
+id: not_blocking
+description: Check that decisions exist, that a Remediation Component pulls them, and that it is running.
+---
+
+import FormattedTabs from '@site/src/components/formatted-tabs';
+
+The Security Engine only **decides**: blocking is done by a [Remediation Component](/u/bouncers/intro) (bouncer) that pulls decisions from the Local API. To test the whole chain at once, run the [remediation check of the Stack Health-Check](/u/getting_started/health_check#-remediation-checks): it bans your own IP for one minute. Then check each link of that chain in order.
+
+## Is there a decision for the IP?
+
+```bash
+sudo cscli decisions list -i <IP>
+```
+
+If an alert exists (`cscli alerts list`) but no decision:
+
+- The scenario may be in simulation mode: run `sudo cscli simulation status`.
+- Your [profiles](/docs/local_api/profiles/intro) may not create a decision for this alert.
+- The IP may be in an [allowlist](/docs/local_api/centralized_allowlists): run `sudo cscli allowlists check <IP>`.
+
+## Is a Remediation Component registered and pulling decisions?
+
+```bash
+sudo cscli bouncers list
+```
+
+Each component should appear with a recent **Last API pull**. If none is listed, install one: see [Security Engine has no Remediation Component](/u/troubleshooting/issue_se_no_rc). If the last pull is old, see [No active Remediation Component](/u/troubleshooting/issue_se_no_active_rc).
+
+## Is the Remediation Component running?
+
+In the commands below, `{component}` is the service name, for example `crowdsec-firewall-bouncer`.
+
+<FormattedTabs
+    bash="sudo systemctl status {component}"
+    powershell="Get-Service {component}"
+/>
+
+If it fails to start, read its logs: see [CrowdSec won't start or logs errors](/u/troubleshooting/startup_errors#remediation-component-errors).
+
+## The IP is banned but can still reach my service
+
+- **The component doesn't see the attacker's IP.** Behind a CDN or load balancer, a firewall component sees the proxy's address, not the visitor's. Block at the edge with a [blocklist integration](/u/integrations/intro) or a CDN component, or use a web server component configured to read the forwarded address.
+- **Traffic takes a path the component doesn't filter.** By default the iptables firewall component only filters the `INPUT` chain, while ports published by Docker go through `DOCKER-USER`: add it to [`iptables_chains`](/u/bouncers/firewall#iptables_chains). Likewise, a web server component only protects the sites where it's enabled.
+- **The decision type isn't supported.** Some components only apply `ban`, others also `captcha`. Check the component's documentation.
+
+## Blocking integrations
+
+For firewall or CDN integrations that pull from a Console endpoint rather than from a Local API, see [Integration for firewall offline](/u/troubleshooting/issue_integration_fw_offline), [pulling zero IPs](/u/troubleshooting/issue_integration_fw_zero_ips) and [Integration for Remediation Component offline](/u/troubleshooting/issue_integration_rc_offline).

@@ -96,7 +96,7 @@ Restore connectivity to the Console:
 
 1. Check that you can access crowdsec services and APIs listed in [network management](https://doc.crowdsec.net/docs/configuration/network_management/)
 
-2. If a proxy is required, set `HTTP_PROXY`/`HTTPS_PROXY` (and `NO_PROXY` if needed) for the crowdsec service (see [How to set up a proxy](/u/troubleshooting/security_engine#how-to-set-up-a-proxy)) and restart it.
+2. If a proxy is required, set `HTTP_PROXY`/`HTTPS_PROXY` (and `NO_PROXY` if needed) for the crowdsec service (see [How to set up a proxy](/u/troubleshooting/configuration#how-to-set-up-a-proxy)) and restart it.
 
 3. Renew TLS trust stores if the host cannot validate the Console certificate chain.
 
@@ -132,7 +132,7 @@ Once the engine resumes contact, the Console clears the **Security Engine Offlin
 ## Related Issues
 
 - [Log Processor Offline](/u/troubleshooting/issue_lp_offline) - If specific agents are offline
-- [Security Engine Troubleshooting](/u/troubleshooting/security_engine) - General Security Engine issues
+- [CrowdSec won't start or logs errors](/u/troubleshooting/startup_errors) - Logs and common errors
 
 ## Getting Help
 

@@ -170,7 +170,7 @@ Use a documentation IP such as `192.0.2.1` for future tests.
 
 ## Related Issues
 
-- [Security Engine Troubleshooting](/u/troubleshooting/security_engine) - General Security Engine issues, including [how to prevent banning a given IP](/u/troubleshooting/security_engine#how-to-add-whitelists-or-prevent-the-security-engine-from-banning-a-given-ip)
+- [How to prevent banning a given IP](/u/troubleshooting/false_positives#how-to-add-whitelists-or-prevent-the-security-engine-from-banning-a-given-ip)
 - [Security Engine Too Many Alerts](/u/troubleshooting/issue_se_too_many_alerts) - A hidden client IP can also inflate the alert count on a single address
 
 ## Getting Help
