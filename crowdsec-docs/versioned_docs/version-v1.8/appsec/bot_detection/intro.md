@@ -6,10 +6,6 @@ description: "Block scrapers, headless browsers and automation at the edge with 
 sidebar_position: 1
 ---
 
-:::info Alpha feature
-Bot detection is currently in **alpha**. It's ready to try and we'd love your feedback, but the configuration, helpers and shipped rules may still change between releases.
-:::
-
 Bot detection blocks automated traffic before it reaches your application. Where the rest of the WAF reacts to *what a user does* (the payloads they send, the patterns they trigger) bot detection answers a different question: *what a user is*, a real browser or a script pretending to be one.
 
 :::tip Ready to turn it on?
@@ -50,6 +46,7 @@ For the full request flow, see [How it works](how_it_works.md).
 
 - [Enable bot detection](enable.md) — install the collection, wire the acquisition, and verify it.
 - [Default configuration](whats_included.md) — the scoring and threshold appsec-configs, known-bot and path exclusions, alerts, and behavioral scenarios you just enabled.
+- [Signals](signals.md) — built-in, hub and custom signals, and the experimental state.
 - [Customization & recipes](customization.md) — narrow the challenge to a path, allowlist a probe, and react to the bot signal in your own scenarios.
 - [Configuration](configuration.md) — master secret, key rotation, cookie TTL, and JS obfuscation.
 - [Hooks reference](hooks.md) — full list of helpers and the `on_challenge` / `on_challenge_submit` stages.

@@ -1,7 +1,8 @@
 ---
-id: contributing_bouncers
-title: Remediation Components
-sidebar_position: 5
+id: components
+title: "Remediation Components"
+sidebar_label: "Remediation Components"
+description: "How to get a remediation component published on the CrowdSec hub: the capability matrix, the specifications to implement, and the submission process."
 ---
 
 ## Publishing remediation component

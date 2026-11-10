@@ -46,7 +46,7 @@ has to be `.yaml`.
 
 ## Pre-requisites
 
-1. [Create a local test environment](https://doc.crowdsec.net/docs/contributing/contributing_test_env)
+1. [Create a local test environment](/contributing/engine/test_env.md)
 
 2. Clone the hub
 

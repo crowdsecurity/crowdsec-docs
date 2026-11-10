@@ -13,6 +13,8 @@ The challenge page collects a fixed set of device signals with the built-in fing
 
 Scripts are shipped as appsec-config data files, so the hub can distribute new detections and false-positive fixes without a CrowdSec release, and you can add your own the same way.
 
+The hub ships detection configs built on the same mechanism, described in [Signals](signals.md).
+
 ## Writing a script
 
 A detection script is an ES module that exports one function, `collectSignals`. It receives the collected fingerprint object, and can modify it in place:

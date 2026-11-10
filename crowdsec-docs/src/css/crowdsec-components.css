@@ -540,6 +540,14 @@ article table tbody tr:hover td {
 	overflow: visible !important;
 }
 
+/* Opt-in for tables whose cells hold long identifiers: inline code is nowrap
+   site-wide, which pushes such tables wider than the content column. The
+   selector must outrank `code:not(pre code):not(.cs-ic)`. */
+.cs-table-code-wrap .cs-table-wrap td code {
+	white-space: normal;
+	overflow-wrap: break-word;
+}
+
 /* ── Pill component ─────────────────────────────────────────────── */
 .cs-pill {
 	display: inline-flex;
@@ -592,6 +600,13 @@ article table tbody tr:hover td {
 	background: color-mix(in srgb, var(--cs-orange) 14%, transparent);
 	color: var(--cs-orange);
 	border-color: color-mix(in srgb, var(--cs-orange) 28%, transparent);
+}
+
+.cs-pill.danger,
+.cs-pill[data-variant="danger"] {
+	background: color-mix(in srgb, var(--cs-red) 14%, transparent);
+	color: var(--cs-red);
+	border-color: color-mix(in srgb, var(--cs-red) 28%, transparent);
 }
 
 /* ═══════════════════════════════════════════════════════════════════

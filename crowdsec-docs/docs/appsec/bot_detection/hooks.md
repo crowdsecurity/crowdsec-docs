@@ -79,7 +79,7 @@ The score is per request, starts at zero, and is available in `pre_eval`, `post_
 | `RequestScoreCategories` | `func() []str`            | The categories that contributed, in the order they were first added.                                                     |
 | `SetRequestScore`      | `func(points int, category str)` | Replace the points of `category` with `points`, whatever was added to it so far. See [Categories](#categories).      |
 
-The score and its breakdown are attached to any alert the request produces, so a rejection stays explainable after the fact. See [Reading a rejection](whats_included.md#reading-a-rejection).
+The score and its breakdown are attached to any alert the request produces, so a rejection stays explainable after the fact. See [Read a rejection](whats_included.md#read-a-rejection).
 
 ### Categories
 
@@ -612,3 +612,38 @@ on_challenge_submit:
     apply:
       - RejectSubmission("high-severity-mismatch")
 ```
+
+## Event fields for alert context
+
+Challenge events carry these fields, which you can surface in your own [alert context](/log_processor/alert_context/intro.md).
+
+A rejected or flagged submission raises a bot-detection alert directly, with these keys on `evt.Meta`:
+
+| Meta key | Contains |
+|---|---|
+| `challenge_event` | `requested`, `submitted`, `failed`, `rejected` or `solved` |
+| `challenge_fail_reason` | The reason string passed to `RejectSubmission()` |
+| `challenge_flag_reason` | The reason string passed to `FlagSubmission()` |
+| `request_score` | The total score. Set only when something contributed. |
+| `request_score_reasons` | Per-signal breakdown, `cdp=100,utc_timezone=15` |
+| `fsid` | Fingerprint id |
+| `fingerprint_bot` | The in-browser fast-bot verdict |
+| `bot_signals` | The signals that fired, comma-separated |
+| `os` | Platform reported by the fingerprint |
+| `fingerprint_allowlisted` | `true`. Present only for an allowlisted client. |
+| `source_ip`, `target_host`, `target_uri`, `method`, `request_uuid`, `http_user_agent` | Request identity |
+| `service`, `log_type` | `appsec` and `appsec-challenge` |
+
+Keys with empty values are dropped.
+
+Every challenge moment, not only rejections, also produces a log event enriched by the `crowdsecurity/appsec-bot-detection-logs` parser. Its `evt.Parsed` carries most of the same fields, with these differences:
+
+| Parsed key | Contains |
+|---|---|
+| `challenge_difficulty` | The proof-of-work difficulty applied to this moment. Not on `evt.Meta`. |
+| `fingerprint_allowlist_reason` | Why the client was allowlisted. Not on `evt.Meta`. |
+| `platform` | The platform string, where `evt.Meta` has `os` |
+| `user_agent` | The User-Agent, where `evt.Meta` has `http_user_agent` |
+| `req_uuid` | The request id, where `evt.Meta` has `request_uuid` |
+
+On this path, the decoded fingerprint is also available as `evt.Unmarshaled.fingerprint`, with the fields described in [Raw signal tree](#raw-signal-tree).

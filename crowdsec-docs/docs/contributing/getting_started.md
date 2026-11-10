@@ -1,11 +1,9 @@
 ---
 id: getting_started
 title: "Contributing: getting started"
-sidebar_label: Getting Started
-sidebar_position: 1
+sidebar_label: "Getting Started"
+description: "Start contributing to CrowdSec: where to talk to the project, how to find a first issue, and the four contribution tracks: the Security Engine, the hub, remediation components and the documentation."
 ---
-
-## Getting Started
 
 You want to contribute to CrowdSec? Fantastic!
 
@@ -16,7 +14,6 @@ In order to achieve this, this guide will provide you with all the needed inform
 The main communication channels of the project are:
 
 - [discord](https://discord.gg/crowdsec): [Discord](https://discord.com/) is the most common communication medium of the project, and is especially suitable for live interactions (chatting).
-- [discourse](https://discourse.crowdsec.net/): [Discourse](https://www.discourse.org/) is a forum and is very useful to expose ideas and suggestions, or simply to formulate a question you couldn't find an answer to on Discord.
 - [github](https://github.com/crowdsecurity/): Issues and Pull Requests are used to expose bugs and suggestions in a more formal way.
 
 Do not hesitate to join & ask your questions!
@@ -30,7 +27,6 @@ The first step to getting started is to find something to work on. Help is alway
 Here are some things you can do today to start contributing:
 
 - Help improve the documentation
-- Clarify code, variables, or functions that can be renamed or commented on
 - Write test coverage
 - Help triage issues
 
@@ -38,10 +34,25 @@ Here are some things you can do today to start contributing:
 
 There are multiple repositories within the Crowdsecurity organization. [Each repository](https://github.com/crowdsecurity/) has beginner-friendly issues that are a great place to get started on your contributor journey. For example, [crowdsecurity/crowdsec](https://github.com/crowdsecurity/crowdsec/issues) and [crowdsecurity/hub](https://github.com/crowdsecurity/hub/issues) have `help wanted` and `good first issue` labels for issues that don’t need high-level Crowdsec knowledge to contribute to. The `good first issue` label also indicates that Crowdsecurity Members are committed to providing extra assistance for new contributors. Another way to get started is to find a documentation improvement, such as a missing/broken link, which will give you exposure to the code submission/review process without the added complication of technical depth.
 
-## Contribution rules
+## The four contribution tracks
 
-The main components of the project have their dedicated contribution pages :
+Each part of the project has its own contribution guide:
 
-- [hub](/contributing/hub.md)
-- [crowdsec](/contributing/code.md)
-- [documentation](/contributing/documentation.md)
+- [Security Engine](engine.md): the Go source, its tests and the branch workflow.
+- [Hub](hub/intro.md): [parsers and scenarios](hub/parsers_scenarios.md), [AppSec rules](hub/appsec_rules.md) and [bot detections](hub/bot_detections.md).
+- [Remediation components](components.md): bouncers and the specifications they implement.
+- [Documentation](docs.md): these pages.
+
+To run anything locally, first [create a test environment](engine/test_env.md).
+
+## Using AI tools
+
+AI tools are welcome, but people review every PR, and generated content nobody checked wastes their time. Before you open a PR:
+
+- Read the whole diff yourself, and run the change or check the tests your agent ran.
+- Cut what you wouldn't have written by hand: comments that restate the code, tests that can't fail, unrelated reformatting.
+- Write the PR description yourself, in a few lines: what changed, why, and how you tested it. Answer review comments in your own words too.
+- Read the repository's `AGENTS.md` when it has one, such as the [Security Engine's](https://github.com/crowdsecurity/crowdsec/blob/master/AGENTS.md), and point your agent at it.
+- Declare your AI use in the PR.
+
+PRs that skip these are unlikely to be reviewed.

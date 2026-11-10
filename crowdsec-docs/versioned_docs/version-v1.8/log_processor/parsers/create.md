@@ -53,7 +53,7 @@ The error message can be useful when one wants to understand why the parser file
 
 ## Pre-requisites
 
-1. [Create a local test environment](https://doc.crowdsec.net/docs/contributing/contributing_test_env)
+1. [Create a local test environment](/contributing/engine/test_env.md)
 
 2. Clone the hub
 
