@@ -1,13 +1,14 @@
 ---
-id: contributing_crowdsec
-title: CrowdSec
-sidebar_position: 1
+id: engine
+title: "Contributing to the Security Engine"
+sidebar_label: "Security Engine"
+description: "Contribute to the CrowdSec Security Engine source: report bugs, run the Go and functional test suites, and follow the branch and release workflow."
 ---
 
-# Contributing to CrowdSec
-
 - If you want to report a bug, you can use [the github bugtracker](https://github.com/crowdsecurity/crowdsec/issues)
-- If you want to suggest an improvement you can use either [the github bugtracker](https://github.com/crowdsecurity/crowdsec/issues) or the [CrowdSecurity discourse](http://discourse.crowdsec.net)
+- If you want to suggest an improvement you can use [the github bugtracker](https://github.com/crowdsecurity/crowdsec/issues)
+
+Before you open a pull request, read [`AGENTS.md`](https://github.com/crowdsecurity/crowdsec/blob/master/AGENTS.md). It sets the rules every PR must follow, whether a person or an agent wrote it.
 
 ## Testing
 

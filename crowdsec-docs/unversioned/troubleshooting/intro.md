@@ -12,6 +12,7 @@ Start from what you're seeing:
 | --- | --- |
 | The Console sent me a Stack Health alert | [Stack Health alerts](/u/troubleshooting/console_issues) |
 | CrowdSec or a Remediation Component won't start, or logs errors | [Won't start or logs errors](/u/troubleshooting/startup_errors) |
+| The Central API returns 403 Forbidden, or I'm rate limited | [Central API 403 / CAPI rate limiting](/u/troubleshooting/capi_403) |
 | Attacks show in my logs but CrowdSec raises no alerts | [Not detecting attacks](/u/troubleshooting/not_detecting) |
 | CrowdSec raises alerts, but the attacker isn't blocked | [Detects but doesn't block](/u/troubleshooting/not_blocking) |
 | CrowdSec blocks legitimate traffic, or I banned myself | [Blocks legitimate traffic](/u/troubleshooting/false_positives) |

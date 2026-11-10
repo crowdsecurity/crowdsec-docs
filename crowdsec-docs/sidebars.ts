@@ -276,14 +276,30 @@ const sidebarsConfig: SidebarConfig = {
 				id: "contributing/getting_started",
 			},
 			items: [
-				"contributing/contributing_doc",
-				"contributing/contributing_hub",
+				{
+					type: "category",
+					label: "Security Engine",
+					link: {
+						type: "doc",
+						id: "contributing/engine",
+					},
+					items: ["contributing/engine/test_env"],
+				},
+				{
+					type: "category",
+					label: "Hub",
+					link: {
+						type: "doc",
+						id: "contributing/hub/intro",
+					},
+					items: ["contributing/hub/parsers_scenarios", "contributing/hub/appsec_rules", "contributing/hub/bot_detections"],
+				},
 				{
 					type: "category",
 					label: "Remediation Components",
 					link: {
 						type: "doc",
-						id: "contributing/contributing_bouncers",
+						id: "contributing/components",
 					},
 					items: [
 						{
@@ -298,8 +314,7 @@ const sidebarsConfig: SidebarConfig = {
 						},
 					],
 				},
-				"contributing/contributing_test_env",
-				"contributing/contributing_crowdsec",
+				"contributing/docs",
 			],
 		},
 		{
@@ -734,6 +749,7 @@ const sidebarsConfig: SidebarConfig = {
 			items: [
 				{ type: "doc", id: "appsec/bot_detection/enable" },
 				{ type: "doc", id: "appsec/bot_detection/whats_included" },
+				{ type: "doc", id: "appsec/bot_detection/signals" },
 				{ type: "doc", id: "appsec/bot_detection/how_it_works" },
 				{ type: "doc", id: "appsec/bot_detection/customization" },
 				{ type: "doc", id: "appsec/bot_detection/custom_js" },

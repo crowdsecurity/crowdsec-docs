@@ -743,7 +743,7 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		{
 			type: "link",
 			label: "Contributing",
-			href: "/docs/contributing/contributing_bouncers",
+			href: "/docs/contributing/components",
 		},
 		{
 			type: "html",

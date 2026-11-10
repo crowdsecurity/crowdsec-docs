@@ -178,7 +178,11 @@ Pulling blocklists from the console is enabled
 Run this command on the host that runs the Local API: log processors don't talk to the Central API.
 :::
 
-If it fails, the [connectivity checks of the Stack Health-Check](/u/getting_started/health_check#-crowdsec-connectivity-checks) list the common causes for hosts, Docker and Kubernetes.
+:::warning
+Do **not** use `cscli capi status` as a container health check: it authenticates against the Central API on every call and can trigger rate limiting. Use `cscli lapi status` instead.
+:::
+
+If it fails, the [connectivity checks of the Stack Health-Check](/u/getting_started/health_check#-crowdsec-connectivity-checks) list the common causes for hosts, Docker and Kubernetes. If it returns `403 Forbidden`, see [Central API 403 / CAPI rate limiting](/u/troubleshooting/capi_403).
 
 ## How to set up a proxy
 

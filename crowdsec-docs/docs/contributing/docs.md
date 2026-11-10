@@ -1,8 +1,8 @@
 ---
-id: contributing_doc
-title: Documentation
+id: docs
+title: "Documentation"
+sidebar_label: "Documentation"
 description: "Contribute to the CrowdSec documentation, written in Markdown and built with Docusaurus: render it locally, get a staging preview and open a pull request."
-sidebar_position: 2
 ---
 
 ## Contributing basics

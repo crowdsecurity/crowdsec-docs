@@ -276,6 +276,55 @@ inband:
 
 Use a distinct reason string rather than reusing the shipped one, so the breakdown in `score_reasons` still tells you which config contributed what.
 
+### Give an experimental signal a weight
+
+If an [experimental signal](signals.md#experimental-and-scoring-signals) proves reliable on your traffic, give it a weight locally rather than waiting for it to be promoted upstream.
+
+Find the signal's name in the `score_reasons` of the alerts it raised, then score it:
+
+```yaml
+# /etc/crowdsec/appsec-configs/mycorp-promote-fonts.yaml
+name: mycorp/appsec-bot-challenge-promote-fonts
+inband:
+  on_challenge_submit:
+    # Our visitors all run corporate Windows desktops, so a missing Windows
+    # font is decisive here.
+    - filter: 'any(RequestScoreReasons(), # contains "os_font_missing_windows")'
+      apply:
+        - AddRequestScore(100, "os_font_missing_windows_mycorp")
+```
+
+Load this overlay before the threshold config, because `RejectSubmission` halts every later `on_challenge_submit` rule. Listing it ahead of the `crowdsecurity/appsec-bot-*` wildcard, as in [Recipes](#recipes), does that.
+
+:::warning Re-check this after an upgrade
+Once a signal is promoted upstream, your overlay adds to its new shipped weight. After `cscli hub upgrade`, if the signal appears under `detect` instead of `detect-experimental-*` in `score_reasons`, drop or reduce your overlay.
+:::
+
+### Cap or cancel a signal family
+
+If a whole family misfires for your audience, neutralize its score category instead of naming each signal:
+
+```yaml
+# /etc/crowdsec/appsec-configs/mycorp-cancel-fonts.yaml
+name: mycorp/appsec-bot-challenge-cancel-fonts
+inband:
+  on_challenge_submit:
+    # Our kiosks run a stripped font set, so the font family is noise for us.
+    - filter: 'RequestScoreFor("detect-experimental-fonts") > 0'
+      apply:
+        - SetRequestScore(0, "detect-experimental-fonts")
+    # Or cap it so it never decides on its own.
+    - filter: 'RequestScoreFor("detect-experimental-headers") > 40'
+      apply:
+        - SetRequestScore(40, "detect-experimental-headers")
+```
+
+:::warning Load this one after the detection configs
+`SetRequestScore` only replaces points already added, so this overlay must load after the detection configs and before the threshold config. Placed ahead of the `crowdsecurity/appsec-bot-*` wildcard, it does nothing. List the configs by name in `appsec_configs:`, in that order.
+:::
+
+[`SetRequestScore`](hooks.md#categories) keeps the reasons, so `score_reasons` still shows what fired.
+
 ### Score on something only you know
 
 `AddRequestScore` takes any reason you like, so you can fold application knowledge into the same total the threshold reads:

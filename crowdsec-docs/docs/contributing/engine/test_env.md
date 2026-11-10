@@ -1,7 +1,8 @@
 ---
-id: contributing_test_env
-title: Creating a test environment
-sidebar_position: 10
+id: test_env
+title: "Creating a test environment"
+sidebar_label: "Test environment"
+description: "Set up a local CrowdSec test environment from a release tarball to develop and run hub tests for parsers, scenarios and AppSec rules."
 ---
 
 :::warning
