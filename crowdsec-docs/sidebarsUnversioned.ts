@@ -419,6 +419,14 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			},
 		},
 		{
+			id: "console/blocklists/custom",
+			type: "doc",
+			label: "Custom Blocklists",
+			customProps: {
+				tag: "premium",
+			},
+		},
+		{
 			id: "console/allowlists",
 			type: "doc",
 			label: "Centralized Allowlists",
