@@ -1,42 +1,54 @@
 ---
-title: FAQ / Troubleshooting
+title: Troubleshooting & FAQ
 id: intro
+description: Start from what you see — a Console alert, an error, no detection, no blocking, a false positive — and find the page that fixes it.
 ---
 
+# Troubleshooting & FAQ
+
+Start from what you're seeing:
+
+| What you see | Where to go |
+| --- | --- |
+| The Console sent me a Stack Health alert | [Stack Health alerts](/u/troubleshooting/console_issues) |
+| CrowdSec or a Remediation Component won't start, or logs errors | [Won't start or logs errors](/u/troubleshooting/startup_errors) |
+| The Central API returns 403 Forbidden, or I'm rate limited | [Central API 403 / CAPI rate limiting](/u/troubleshooting/capi_403) |
+| Attacks show in my logs but CrowdSec raises no alerts | [Not detecting attacks](/u/troubleshooting/not_detecting) |
+| CrowdSec raises alerts, but the attacker isn't blocked | [Detects but doesn't block](/u/troubleshooting/not_blocking) |
+| CrowdSec blocks legitimate traffic, or I banned myself | [Blocks legitimate traffic](/u/troubleshooting/false_positives) |
+| The WAF (AppSec) blocks or misses requests | [AppSec troubleshooting](/docs/appsec/troubleshooting) |
+| Bot detection rejects real visitors, challenges my monitoring, or lets a bot through | [Bot detection issues](/u/troubleshooting/bot_detection) |
+| My IP is flagged by CrowdSec or listed in a blocklist | [My IP is flagged](/u/troubleshooting/cti) |
+| I need a configuration path, a hub update, a proxy | [Configuration and operations](/u/troubleshooting/configuration) |
+| License, resources, performance, data sharing | [General questions](/u/troubleshooting/general) |
+| Invoices, payment method, tax ID | [Billing & plans](/u/troubleshooting/billing_faq) |
+| I'd rather have an AI agent diagnose it on my server | [CrowdSec skill for Claude Code](#let-an-ai-agent-troubleshoot-for-you) |
+
+To check the whole stack end to end (detection, community sharing and remediation), run the 🩺 [Stack Health-Check](/u/getting_started/health_check).
+
+## Let an AI agent troubleshoot for you
+
+The [CrowdSec skill](https://github.com/crowdsecurity/crowdsec-skill) teaches Claude Code how to install, configure and debug CrowdSec. It runs the same checks as these pages (`cscli metrics`, `cscli explain`, logs, bouncer status) on your server, and walks you through the fix. It covers bare-metal, Docker, Kubernetes and OPNsense.
+
+Install it from Claude Code:
+
+```text
+/plugin marketplace add crowdsecurity/crowdsec-skill
+/plugin install crowdsec@crowdsecurity
+```
+
+Then describe your issue, for example "CrowdSec detects attacks but nothing gets blocked".
+
 :::info
-You may see the **IDPS/WAF of CrowdSec** referred to as **"Security Engine"** and **Bouncers** referred to as **"Remediation Components"** within new documentation.  
-This is to better reflect the role of each component within the CrowdSec ecosystem.
+The **Security Engine** is the CrowdSec agent you install: it reads logs, detects attacks and makes decisions. **Remediation Components**, also called bouncers, enforce those decisions in your firewall, web server or CDN.
 :::
 
-# Troubleshooting
+## Get help
 
-We have extended our troubleshooting documentation to cover more common issues and questions.  
-If you have suggestions, please open an [issue here](https://github.com/crowdsecurity/crowdsec-docs/issues).  
+If the documentation doesn't solve your issue:
 
-Also, check our 🩺 [**Stack Health-Check page**](/u/getting_started/health_check) to verify that **Detection**, **Community Sharing**, and **Remediation** are working properly.
+- Ask the community on [Discourse](https://discourse.crowdsec.net/) or [Discord](https://discord.gg/crowdsec).
+- On a paid plan, contact the support team from the Console: see [Premium support](/u/console/premium_upgrade/premium_support).
+- To report a bug, see [How to report a bug](/u/troubleshooting/startup_errors#how-to-report-a-bug).
 
-## Console Health Check Issues
-
-If you received a health check alert from the CrowdSec Console, check out the [**Console Health Check Issues**](/u/troubleshooting/console_issues) page for a complete list of issues, their trigger conditions, and dedicated troubleshooting guides.
-
-## Troubleshooting by Topic
-
-* [Security Engine Troubleshooting](/u/troubleshooting/security_engine)
-* [Central API 403 / CAPI rate limiting](/u/troubleshooting/capi_403)
-* [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components)
-* [CTI Troubleshooting](/u/troubleshooting/cti)
-
-## Community support
-
-Please try to resolve your issue by reading the documentation. If you're unable to find a solution, don't hesitate to seek assistance in:
-
--   [Discourse](https://discourse.crowdsec.net/)
--   [Discord](https://discord.gg/crowdsec)
-
-## Premium plan
-
-If you are on a paid plan, you can use dedicated support via the Console:
-
-### Stack Health issues list
-
-<snippet-extract data-extract-copy="console_issues:stackhealth_issues_list"></snippet-extract>
+Missing an answer? [Open an issue](https://github.com/crowdsecurity/crowdsec-docs/issues) on the documentation repository.

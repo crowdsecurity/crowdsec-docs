@@ -1,0 +1,88 @@
+---
+title: CrowdSec blocks legitimate traffic
+id: false_positives
+description: Unban an IP, stop CrowdSec from banning your own addresses, and deal with scenarios or WAF rules that trigger on legitimate traffic.
+---
+
+import FormattedTabs from '@site/src/components/formatted-tabs';
+import { Badge } from "@site/src/ui/badge";
+
+## How to remove a decision on an IP
+
+```bash
+sudo cscli decisions delete -i x.x.x.x
+```
+
+Remediation Components drop the ban at their next update from the Local API. To filter by range, scenario or origin, see [cscli decisions delete](/docs/cscli/cscli_decisions_delete). To list current decisions, run `sudo cscli decisions list`.
+
+If the IP is banned again later, add it to an allowlist instead (see below).
+
+## I banned myself: how do I get my access back?
+
+This can happen while testing a Remediation Component, for example during the [remediation check of the Stack Health-Check](/u/getting_started/health_check#-remediation-checks).
+
+Add your IP to an allowlist (see below): it removes the existing decisions on that IP and prevents new ones.
+
+- **From the Console**, add your IP to a [Console allowlist](/u/console/allowlists) (premium) that your Security Engine is subscribed to. You don't need access to the server.
+- **From the server**, connect from another IP address or through your provider's console (out-of-band access), then run:
+
+  ```bash
+  sudo cscli allowlists create admins -d "Admin IPs"
+  sudo cscli allowlists add admins <your IP> -d "my office"
+  ```
+
+  `cscli allowlists add` deletes the existing decisions on that IP (`1 decisions deleted by allowlists`), so you don't need a separate `cscli decisions delete`.
+
+## How to add whitelists or prevent the Security Engine from banning a given IP
+
+<div className="mb-4">
+    <Badge variant="premium">CrowdSec Premium Feature</Badge>
+</div>
+
+Use the Console's [**centralized allowlists**](/u/console/allowlists). You manage one list in the Console, and every Security Engine, blocklist integration, tag or whole organization subscribed to it applies it:
+
+- Subscribed Security Engines never ban the allowlisted IPs, whether the decision comes from local detection or from a blocklist. When the list changes, they also delete the existing decisions that it now covers.
+- Blocklist integrations stop serving the allowlisted IPs to your firewalls and CDNs.
+- Items can expire, which is useful to allow a partner or a pentester for a limited time.
+
+:::warning
+An allowlist has no effect until at least one Security Engine, integration, tag or organization is [subscribed to it](/u/console/allowlists#subscribe-to-an-allowlist).
+:::
+
+Without a premium plan, use [local allowlists](/docs/local_api/centralized_allowlists) (`cscli allowlists`). They work the same way on the Security Engine where you create them, but you manage them on each Security Engine, and they don't apply to blocklist integrations.
+
+To ignore a pattern rather than an IP, use a [parser whitelist](/docs/log_processor/whitelist/intro) (below).
+
+### I need to whitelist an event pattern instead of a single IP address
+
+Use a [parser whitelist](/docs/log_processor/whitelist/intro) with an expression. It can discard events based on a URL, a user agent, a source IP or any other field.
+
+## Scenario X keeps triggering on legitimate traffic
+
+- To ignore one source, or a known pattern such as a health check URL, use a [parser whitelist](/docs/log_processor/whitelist/intro).
+- To keep the detection but stop banning while you investigate, put the scenario in simulation mode (below).
+- If the scenario is wrong for everyone, open an issue on the [CrowdSec Hub repository](https://github.com/crowdsecurity/hub/issues/new/choose).
+
+## Put a scenario in simulation mode
+
+A simulated scenario still raises alerts, but they don't create decisions. Use the scenario's name, including for custom and tainted scenarios:
+
+<FormattedTabs
+  bash="sudo cscli simulation enable crowdsecurity/my-custom-scenario"
+  powershell="cscli.exe simulation enable crowdsecurity/my-custom-scenario"
+  k8s="kubectl exec -it crowdsec-agent-* -n crowdsec -- cscli simulation enable crowdsecurity/my-custom-scenario"
+/>
+
+Then reload CrowdSec. `cscli simulation status` lists the simulated scenarios.
+
+## How to control granularity of decisions
+
+[Profiles](/docs/local_api/profiles/intro) decide which alerts become decisions, and of which type and duration: for example a captcha instead of a ban, or longer bans for repeat offenders.
+
+## Bot detection rejects real visitors or challenges my monitoring
+
+See [Bot detection issues](/u/troubleshooting/bot_detection#real-visitors-are-rejected-as-bots) to read why a visitor was rejected, and how to exempt monitoring tools, API clients and crawlers.
+
+## The WAF blocks legitimate requests
+
+See [AppSec troubleshooting](/docs/appsec/troubleshooting) to find which rule matched, and [rule management](/docs/appsec/configuration_rule_management) to disable or adapt it.

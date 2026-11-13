@@ -144,7 +144,7 @@ Beyond the common causes above, each RC type has its own specific failure modes.
 - **External service credentials** (Cloudflare API tokens, AWS IAM permissions): see [Cloudflare Workers Bouncer](/u/bouncers/cloudflare) or [AWS WAF Bouncer](/u/bouncers/aws_waf)
 - **PHP cache backend unavailable** (Redis or Memcached not running): see [PHP Bouncer](/u/bouncers/php)
 - **TLS/mTLS certificate issues** (invalid or expired client certificates): see your RC's documentation for TLS configuration
-- **General RC troubleshooting**: see [Remediation Components Troubleshooting](/u/troubleshooting/remediation_components)
+- **General RC troubleshooting**: see [Remediation Components Troubleshooting](/u/troubleshooting/not_blocking)
 
 ## Verify Resolution
 

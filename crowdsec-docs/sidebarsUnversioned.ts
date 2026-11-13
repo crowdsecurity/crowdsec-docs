@@ -863,37 +863,97 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 		{
 			type: "doc",
 			id: "troubleshooting/intro",
-			label: "Introduction",
+			label: "Start here",
+		},
+		{
+			type: "category",
+			label: "Stack Health alerts",
+			link: { type: "doc", id: "troubleshooting/console_issues" },
+			items: [
+				{
+					type: "category",
+					label: "Security Engine",
+					items: [
+						"troubleshooting/issue_se_offline",
+						"troubleshooting/issue_se_no_alerts",
+						"troubleshooting/issue_se_too_many_alerts",
+						"troubleshooting/issue_se_self_report",
+						"troubleshooting/issue_se_no_rc",
+						"troubleshooting/issue_se_no_active_rc",
+					],
+				},
+				{
+					type: "category",
+					label: "Log Processor",
+					items: [
+						"troubleshooting/issue_lp_offline",
+						"troubleshooting/issue_lp_no_logs_read",
+						"troubleshooting/issue_lp_no_logs_parsed",
+						"troubleshooting/issue_lp_no_alerts",
+						"troubleshooting/issue_mismatch_collections",
+					],
+				},
+				{
+					type: "category",
+					label: "Blocklist integrations",
+					items: [
+						"troubleshooting/issue_integration_fw_offline",
+						"troubleshooting/issue_integration_fw_zero_ips",
+						"troubleshooting/issue_integration_rc_offline",
+					],
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Won't start or logs errors",
+			link: { type: "doc", id: "troubleshooting/startup_errors" },
+			items: ["troubleshooting/capi_403"],
 		},
 		{
 			type: "doc",
-			id: "troubleshooting/usecases",
-			label: "Use Cases",
+			id: "troubleshooting/not_detecting",
+			label: "Not detecting attacks",
 		},
 		{
 			type: "doc",
-			id: "troubleshooting/security_engine",
-			label: "Security Engine",
+			id: "troubleshooting/not_blocking",
+			label: "Detects but doesn't block",
 		},
 		{
 			type: "doc",
-			id: "troubleshooting/capi_403",
-			label: "Central API 403 / Rate Limiting",
+			id: "troubleshooting/false_positives",
+			label: "Blocks legitimate traffic",
+		},
+		{
+			type: "link",
+			label: "WAF (AppSec) issues",
+			href: "/docs/appsec/troubleshooting",
 		},
 		{
 			type: "doc",
-			id: "troubleshooting/remediation_components",
-			label: "Remediation Components",
+			id: "troubleshooting/bot_detection",
+			label: "Bot detection issues",
 		},
 		{
 			type: "doc",
 			id: "troubleshooting/cti",
-			label: "CTI",
+			label: "My IP is flagged",
+		},
+		{
+			type: "doc",
+			id: "troubleshooting/configuration",
+			label: "Configuration and operations",
+		},
+		{
+			type: "doc",
+			id: "troubleshooting/general",
+			label: "General questions",
 		},
 		{
 			type: "doc",
 			id: "troubleshooting/billing_faq",
-			label: "Billing & Plans FAQ",
+			label: "Billing & plans",
 		},
 	],
 
@@ -925,6 +985,11 @@ const sidebarsUnversionedConfig: SidebarConfig = {
 			type: "doc",
 			id: "getting_started/intro",
 			label: "🧭 Introduction",
+		},
+		{
+			type: "doc",
+			id: "getting_started/usecases",
+			label: "🎯 Use Cases",
 		},
 		{
 			type: "category",

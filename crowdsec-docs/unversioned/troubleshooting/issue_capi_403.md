@@ -119,7 +119,7 @@ If still blocked, contact [security@crowdsec.net](mailto:security@crowdsec.net) 
 
 ## Related Issues
 
-- [Security Engine Troubleshooting](/u/troubleshooting/security_engine) - General Security Engine issues
+- [CrowdSec won't start or logs errors](/u/troubleshooting/startup_errors) - Logs and common errors
 - [Network Management](/docs/configuration/network_management) - Console and CAPI endpoints
 
 ## Getting Help

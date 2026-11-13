@@ -1,0 +1,108 @@
+---
+title: CrowdSec isn't detecting attacks
+id: not_detecting
+description: Check that CrowdSec reads and parses your logs, that scenarios match them, and that whitelists aren't discarding the alerts.
+---
+
+Detection works as a pipeline: CrowdSec **reads** log lines, **parses** them, feeds them to **scenarios**, and turns overflows into **alerts** unless a whitelist discards them. Start with the [detection checks of the Stack Health-Check](/u/getting_started/health_check#-detection-checks): they trigger test scenarios and check that your logs are read and parsed. Then find the first stage that doesn't work:
+
+| Symptom | Go to |
+| --- | --- |
+| No logs read at all | [No logs read](/u/troubleshooting/issue_lp_no_logs_read) |
+| Logs read but none parsed | [No logs parsed](/u/troubleshooting/issue_lp_no_logs_parsed) |
+| Logs parsed but no alerts | [Security Engine no alerts](/u/troubleshooting/issue_se_no_alerts) |
+| A collection is installed but its logs aren't read | [Mismatching collections](/u/troubleshooting/issue_mismatch_collections) |
+| The WAF (AppSec) doesn't block a request | [AppSec troubleshooting](/docs/appsec/troubleshooting) |
+
+## How do I know if my setup is working correctly? Are some unparsed logs normal?
+
+Yes, some unparsed lines are normal. Parsers only parse the lines that scenarios use, and ignore the rest.
+
+`cscli metrics` shows, for each log source, how many lines were read, parsed and unparsed. See [what the metrics mean](/docs/observability/cscli). For an end-to-end test, run the [Stack Health-Check](/u/getting_started/health_check).
+
+## Why are some logs not parsed in `cscli metrics`?
+
+Use [`cscli explain`](/docs/cscli/cscli_explain) on a line that should be parsed. It shows which parser accepted or rejected it at each stage, and which scenarios received it:
+
+```
+# cscli explain --log "May 16 07:50:30 sd-126005 sshd[10041]: Invalid user git from 78.142.18.204 port 47738" --type syslog
+line: May 16 07:50:30 sd-126005 sshd[10041]: Invalid user git from 78.142.18.204 port 47738
+	├ s00-raw
+	|	└ 🟢 crowdsecurity/syslog-logs (first_parser)
+	├ s01-parse
+	|	├ 🔴 crowdsecurity/iptables-logs
+	|	├ 🔴 crowdsecurity/mysql-logs
+	|	├ 🔴 crowdsecurity/nginx-logs
+	|	└ 🟢 crowdsecurity/sshd-logs (+6 ~1)
+	├ s02-enrich
+	|	├ 🟢 crowdsecurity/dateparse-enrich (+2 ~1)
+	|	├ 🟢 crowdsecurity/geoip-enrich (+13)
+	|	├ 🔴 crowdsecurity/http-logs
+	|	└ 🟢 crowdsecurity/whitelists (unchanged)
+	├-------- parser success 🟢
+	├ Scenarios
+		├ 🟢 crowdsecurity/ssh-bf
+		├ 🟢 crowdsecurity/ssh-bf_user-enum
+		├ 🟢 crowdsecurity/ssh-slow-bf
+		└ 🟢 crowdsecurity/ssh-slow-bf_user-enum
+```
+
+If every `s01-parse` parser is red, the line's format doesn't match what the collection expects, or the `type` label in your acquisition is wrong.
+
+:::warning
+Do **not** run `cscli explain` on big log files: it buffers a lot of information in memory. To test CrowdSec on big log files, use [replay mode](/u/user_guides/replay_mode/).
+:::
+
+## I installed a collection: how do I add its log files and check that it works?
+
+Installing a collection only installs parsers and scenarios. CrowdSec also needs to read the service's logs:
+
+1. Install the collection, for example `sudo cscli collections install crowdsecurity/nginx`.
+2. Add an acquisition for the service's log files, with the `type` label the collection's hub page gives. See [Adding a new acquisition](/u/getting_started/post_installation/acquisition_new).
+3. Restart CrowdSec.
+4. Check `cscli metrics`: the new log source should appear with lines read and parsed.
+
+## My service is behind a CDN and I get no alerts
+
+If a CDN or reverse proxy terminates the connection in front of your service, your web server logs the CDN's address instead of the visitor's. Every event is then attributed to a few CDN addresses:
+
+- **Cloudflare**: the [`crowdsecurity/cdn-whitelist`](https://app.crowdsec.net/hub/author/crowdsecurity/postoverflows/cdn-whitelist) postoverflow discards alerts from Cloudflare's ranges. It is part of the `crowdsecurity/whitelist-good-actors` collection, which the operating system collections (`crowdsecurity/linux`, `crowdsecurity/windows`, `crowdsecurity/freebsd`…) install. You see the requests in your access logs, `cscli metrics` shows them parsed, but nothing reaches `cscli alerts list`.
+- **Other CDNs**: nothing discards the alerts, so they target the CDN's own addresses. Blocking them would cut off every legitimate visitor coming through that edge server, and never the attacker.
+
+The whitelist is deliberate: without it, one misbehaving visitor would get Cloudflare banned, along with all your legitimate traffic. In both cases the fix is to log the real client IP, not to remove the whitelist.
+
+**To confirm this is your issue:**
+
+- Check the client address field of your access log. If the same few addresses appear on every line, the visitor IP is not reaching you.
+- Run the [HTTP detection check](/u/getting_started/health_check#-detection-checks) from a device with a public IP, and see whether the alert shows your IP or the CDN's.
+- Run `cscli explain` on an access log line that triggers a scenario on its own, such as a path traversal attempt. When a postoverflow whitelist discards the alert, the output ends with `parser success, ignored by whitelist (CDN provider)`. `cscli explain` shows postoverflows since CrowdSec 1.6.0.
+- Search the CrowdSec log for discarded alerts: `sudo grep whitelisted /var/log/crowdsec.log`. Each line names the IP and the reason.
+
+**To fix it**, have your CDN forward the visitor address in a header. Then configure your web server to put it in the client address field **before logging**: use nginx's [`ngx_http_realip_module`](https://nginx.org/en/docs/http/ngx_http_realip_module.html), Apache's [`mod_remoteip`](https://httpd.apache.org/docs/current/mod/mod_remoteip.html), or your proxy's trusted-proxy setting. CrowdSec parsers read the client address field (`remote_addr`, `%h`), never the header itself.
+
+| Provider | Header | Documentation |
+| --- | --- | --- |
+| Cloudflare | `CF-Connecting-IP` | [Restoring original visitor IPs](https://developers.cloudflare.com/support/troubleshooting/restoring-visitor-ips/restoring-original-visitor-ips/) |
+| Fastly | `Fastly-Client-IP` | [Fastly-Client-IP](https://www.fastly.com/documentation/reference/http/http-headers/Fastly-Client-IP/) |
+| Akamai | `True-Client-IP` | [Origin Server behavior](https://techdocs.akamai.com/property-mgr/docs/origin-server) |
+| Amazon CloudFront | `CloudFront-Viewer-Address` | [Add CloudFront request headers](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/adding-cloudfront-headers.html) |
+| Other CDNs and reverse proxies | usually `X-Forwarded-For` or `X-Real-IP` | refer to your provider's documentation |
+
+:::warning
+Only trust proxies you actually control, and keep the trusted ranges up to date from your provider's published list ([Cloudflare](https://www.cloudflare.com/ips/), [Fastly](https://api.fastly.com/public-ip-list), [AWS CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/LocationsOfEdgeServers.html)). If you trust arbitrary sources, a client can spoof its own address through the header, either to evade detection or to get an innocent IP banned.
+:::
+
+:::info
+If the **Local API** itself is behind a proxy, also set `use_forwarded_for_headers` and `trusted_proxies` in `config.yaml`. See [Local API behind a reverse proxy](/docs/local_api/configuration#server).
+:::
+
+## Is scenario X working on my logs?
+
+- [Replay mode](/u/user_guides/replay_mode/) processes existing log files and shows which scenarios trigger.
+- [`cscli explain`](/docs/cscli/cscli_explain) shows how one or a few log lines go through parsers and scenarios.
+
+## My scenario triggers with fewer log lines than its capacity
+
+The same log file is probably read more than once, for example because it appears both in `acquis.yaml` and in a file under `acquis.d/`. CrowdSec then processes each line once per acquisition, and buckets fill up faster.
+
+To confirm it, look for the file twice in the CrowdSec log at startup (`sudo grep "Starting tail" /var/log/crowdsec.log`), or compare `cscli metrics show acquisition` with the real line count: "Lines read" is a multiple of it. Then remove the duplicate entries and restart CrowdSec.

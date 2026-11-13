@@ -32,7 +32,7 @@ Confirm the service state on the host:
 ```bash
 sudo systemctl status crowdsec
 ```
-Or [check the logs](/u/troubleshooting/security_engine#where-are-the-logs-stored) of your Security Engine.
+Or [check the logs](/u/troubleshooting/startup_errors#where-are-the-logs-stored) of your Security Engine.
 
 <details>
    <summary>For containerised deployments, verify the workload is still running</summary>
@@ -217,7 +217,7 @@ sudo cscli machines list
 
 - [Engine No Alerts](/u/troubleshooting/issue_se_no_alerts) - If the agent is online but not generating alerts
 - [Log Processor No Logs Read](/u/troubleshooting/issue_lp_no_logs_read) - If acquisition is not working
-- [Security Engine Troubleshooting](/u/troubleshooting/security_engine) - General Security Engine issues
+- [CrowdSec won't start or logs errors](/u/troubleshooting/startup_errors) - Logs and common errors
 
 ## Getting Help
 

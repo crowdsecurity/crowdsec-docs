@@ -456,6 +456,10 @@ Were all the tests related to your setup successful?
 </Tabs>
 
   </details>
+
+  **Still stuck?**
+  - For log locations and the exact error messages, see [CrowdSec won't start or logs errors](/u/troubleshooting/startup_errors).
+  - If logs are read and parsed but no alert shows up (service behind a CDN, whitelisted events, duplicate acquisitions), see [CrowdSec isn't detecting attacks](/u/troubleshooting/not_detecting).
 </details>
 
 ## 🔌 CrowdSec Connectivity checks
@@ -518,7 +522,7 @@ Were all the tests related to your setup successful?
     ```bash
     nslookup api.crowdsec.net
     ```
-  - **Proxy configuration**: If behind a proxy, set `HTTP_PROXY`/`HTTPS_PROXY` for the CrowdSec service (see [How to set up a proxy](/u/troubleshooting/security_engine#how-to-set-up-a-proxy))
+  - **Proxy configuration**: If behind a proxy, set `HTTP_PROXY`/`HTTPS_PROXY` for the CrowdSec service (see [How to set up a proxy](/u/troubleshooting/configuration#how-to-set-up-a-proxy))
 
   </TabItem>
   <TabItem value="docker" label="Docker">
@@ -562,6 +566,8 @@ Were all the tests related to your setup successful?
   </TabItem>
 </Tabs>
 
+  If the Central API answers `403 Forbidden`, see [Central API 403](/u/troubleshooting/capi_403). For proxy settings and the Central API connection, see [Configuration and operations](/u/troubleshooting/configuration).
+
 </details>
 
 ## ✋🏻 Remediation checks
@@ -583,6 +589,8 @@ BE CAREFUL -- Risk of Self-Lockout
 This procedure will temporarily block your access to the services protected by your bouncer.  
 Make sure to properly follow the instructions to set the TTL to a low expiration time (1 minute). 
 OR do it from a device with a different public IP address than the client you're using to setup CrowdSec.
+
+If you lock yourself out anyway, see [I banned myself](/u/troubleshooting/false_positives#i-banned-myself-how-do-i-get-my-access-back).
 :::
 
 1️⃣ Find your public IP:
@@ -710,10 +718,13 @@ You might want to continue to the next recommended steps:
 </Tabs>
 
   </details>
+
+  If the bouncer is connected but the IP still isn't blocked, see [CrowdSec detects attacks but doesn't block them](/u/troubleshooting/not_blocking).
 </details>
 
 ## 💬 Get Help & Give Feedback
 
+- 📚 [Troubleshooting & FAQ](/u/troubleshooting/intro), organized by symptom
 - 📝 [Health Check Feedback Form ↗️](https://forms.gle/DJboC7oisjmA8qt78)
 - 📨 [Open an issue on GitHub ↗️](https://github.com/crowdsecurity/crowdsec-docs/issues/new)
 - 🗣️ [Join us on Discord ↗️](https://discord.gg/wGN7ShmEE8)

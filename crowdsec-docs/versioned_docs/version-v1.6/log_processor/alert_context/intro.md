@@ -28,7 +28,7 @@ context:
     - evt.Meta.http_status
 ```
 
-Contexts are stored within the `contexts` directory within the root of the `config` directory, you can see the directory based on your OS [here](/u/troubleshooting/security_engine#where-is-configuration-stored).
+Contexts are stored within the `contexts` directory within the root of the `config` directory, you can see the directory based on your OS [here](/u/troubleshooting/configuration#where-is-configuration-stored).
 
 :::info
 As an example the default directory for linux is `/etc/crowdsec/` so the `contexts` directory would be `/etc/crowdsec/contexts/`

@@ -84,7 +84,7 @@ The Central API (abbreviated as `CAPI`) receives attack signals from participati
 The Central API is also at the heart of CrowdSec centralized [blocklist services](/u/blocklists/intro).
 
 For details about what data is sent (and when), see the [Central API introduction](/central_api/intro.md).
-If you want to disable sharing to the Central API, see [how to disable the Central API](/u/troubleshooting/security_engine#how-to-disable-the-central-api).
+If you want to disable sharing to the Central API, see [how to disable the Central API](/u/troubleshooting/configuration#how-to-disable-the-central-api).
 
 ## Console
 

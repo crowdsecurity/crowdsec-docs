@@ -1,5 +1,6 @@
 ---
 title: Future Console Health Check Issues
+unlisted: true
 id: future_console_issues
 ---
 

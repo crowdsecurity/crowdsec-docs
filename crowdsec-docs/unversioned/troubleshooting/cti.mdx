@@ -1,39 +1,51 @@
 ---
-title: Troubleshooting CTI
+title: My IP is flagged by CrowdSec
 id: cti
+description: Find out why your IP is flagged or blocked by CrowdSec, remove it from the community blocklist, or get your service classified as safe.
 ---
 
-## Community support
+CrowdSec flags an IP when Security Engines in its network report malicious behavior from it. A flagged IP can end up in CrowdSec blocklists, which other organizations use to block traffic preemptively.
 
-Please try to resolve your issue by reading [the documentation](../cti_api/intro.mdx). If you're unable to find a solution, don't hesitate to seek assistance in:
+## Check your IP
 
--   [Discourse](https://discourse.crowdsec.net/)
--   [Discord](https://discord.gg/crowdsec)
+Look your IP up in the [CrowdSec CTI](https://app.crowdsec.net/cti). The [IP report](/u/console/ip_reputation/ip_report) shows its reputation, the behaviors reported, and the [blocklists](/u/console/ip_reputation/ip_report#blocklists) it is currently in.
 
-## False Positive
+## Which case are you in?
 
-### How to Get Tagged as a False Positive
+| Situation | Who can fix it |
+| --- | --- |
+| One website or service blocks you, but your IP isn't in any CrowdSec blocklist | Only that site's owner: it runs CrowdSec and banned your IP locally. See [below](#a-website-running-crowdsec-blocks-me). |
+| Your IP is in a CrowdSec blocklist | Ask CrowdSec to remove it: see [below](#remove-your-ip-from-the-community-blocklist). |
+| You run a legitimate service that reaches many websites (crawler, monitoring, scanner, payment webhooks…) | Ask CrowdSec to classify your IP ranges as safe: see [below](#get-your-service-classified-as-safe). |
 
-To be able to be classified as a false positive, you need a proper technical justification of why your IP might be misclassified as a threat. This part is to be reviewed and validated by crowdsec.
-To be classified as a false positive, you need a technical justification for why your IP might be misclassified as a threat. This is reviewed and validated by CrowdSec.
+## A website running CrowdSec blocks me
 
-You also need public documentation stating the IP, ranges, and/or reverse DNS associated with the assets in question. This data must be machine-readable (no HTML, no PDF, etc.).
+CrowdSec can't lift a ban that a user decided on their own Security Engine. Contact the website's owner: they can remove the ban and allowlist your IP, as explained in [CrowdSec blocks legitimate traffic](/u/troubleshooting/false_positives).
 
-Once your IP addresses are publicly available and accessible via HTTPS, you can contact support@crowdsec.net. Please include the URL of your IPs and ranges.
+## Remove your IP from the community blocklist
 
-The CrowdSec team will then update CTI false-positive data so your IPs are flagged correctly.
+Use the [removal form](https://www.crowdsec.net/remove-ip-crowdsec-blocklist). Enter your IP: if it is in a CrowdSec blocklist, the form asks for the details CrowdSec needs to review your request.
 
-Here are some examples of providers who share their IPs and ranges:
+The form only covers the blocklists CrowdSec distributes. It can't remove a ban that a CrowdSec user applied locally (see the previous section).
 
--   [Bing](https://www.bing.com/toolbox/bingbot.json)
--   [Google Bot](https://developers.google.com/search/apis/ipranges/googlebot.json)
--   [Cloudfront](https://d7uri8nf7uskq.cloudfront.net/tools/list-cloudfront-ips)
--   [Fastly](https://api.fastly.com/public-ip-list)
+## Get your service classified as safe
+
+If your service legitimately reaches many websites, CrowdSec can give your IPs a [**safe classification**](/u/cti_api/taxonomy/false_positives). The CTI then reports them with the `safe` [reputation](/u/cti_api/taxonomy/cti_object#reputation), and CrowdSec keeps them out of its blocklists.
+
+The [safe classifications list](/u/cti_api/taxonomy/false_positives) shows the kinds of services that qualify: CDN exit nodes, search engine and AI crawlers, public DNS resolvers, compliance scanners, payment providers and webhooks, uptime monitoring…
+
+CrowdSec needs to verify, automatically and over time, that an IP belongs to your service. Publish one of these:
+
+- **A list of your IPs and ranges**, served over HTTPS in a machine-readable format such as JSON or CSV (no HTML or PDF). Examples: [Googlebot](https://developers.google.com/search/apis/ipranges/googlebot.json), [Bingbot](https://www.bing.com/toolbox/bingbot.json), [Fastly](https://api.fastly.com/public-ip-list).
+- **Reverse DNS** on your IPs, under a domain you own, that resolves back to the same IP. Example: Apple's crawler IPs resolve to `*.applebot.apple.com`.
+
+Then email [support@crowdsec.net](mailto:support@crowdsec.net) with what your service does, why it reaches other websites, and the URL of your list or your reverse DNS domain.
 
 :::note
-
-You don’t need to follow a specific format for the exposed list, but it’s recommended to keep the same format over time. Otherwise, the false positive enrichment may stop working.
-
-It’s best to use CSV or JSON for the list format.
-
+CrowdSec downloads your list regularly. Keep its URL and format stable: if they change, your IPs may stop being recognized.
 :::
+
+## If you use CrowdSec
+
+- To stop banning an IP on your own Security Engines, add it to an [allowlist](/u/troubleshooting/false_positives#how-to-add-whitelists-or-prevent-the-security-engine-from-banning-a-given-ip).
+- To tell CrowdSec an IP is legitimate, use **Report a false positive** in the Console's [alert visualizer](/u/console/alerts/visualizer), or the [feedback section](/u/console/ip_reputation/ip_report#feedback) of the IP report. The IP report also lets you say that you own the IP.
