@@ -1,0 +1,69 @@
+---
+title: Custom Blocklists
+description: Create private IP blocklists and apply them to Security Engines and integrations.
+---
+
+import { Badge } from "@site/src/ui/badge";
+
+<div className="mb-4">
+    <Badge variant="premium">CrowdSec Premium Feature</Badge>
+</div>
+
+Custom blocklists let you apply your own threat intelligence through CrowdSec. Create a private list of IPv4 addresses, IPv6 addresses, and CIDR ranges, then subscribe the Security Engines or integrations that need it.
+
+Custom blocklists are available on the Premium and Enterprise plans.
+
+## When to use a custom blocklist
+
+- **Respond to an incident.** If your team confirms repeated attacks against a public login service, add the malevolent IPs to a custom blocklist.
+- **Apply trusted threat intelligence.** Import IP addresses and ranges from your security team or a trusted partner.
+- **Control where the policy applies.** Choose specific Security Engines or Integrations for a service-specific threat.
+- **Keep protection current.** Add newly confirmed addresses, remove entries that no longer warrant blocking, or replace the contents with an updated set.
+
+## Create a custom blocklist
+
+Open [Custom Blocklists in the Console](https://app.crowdsec.net/blocklists/custom) and click **Create blocklist**.
+Enter a **Name** and **Description** so teammates know what the list covers. Then, provide one IP address or CIDR range per line, or choose or drop a plain-text `.txt` file. Blank lines are ignored. Select **Ignore invalid entries** to skip malformed lines and keep valid ones.
+
+![Custom Blocklists overview with the Create blocklist button highlighted](/img/console/custom-blocklists/overview.png)
+
+![Create form with a name, description, and three valid example entries](/img/console/custom-blocklists/create.png)
+
+:::note
+Creating a list stores the entries. Subscribe an asset to put the list into use. If you create an empty list, you can add entries later.
+:::
+
+The Console supports up to 10 custom blocklists, each accepting up to 20,000 entries.
+
+## Subscribe to a custom blocklist
+
+Your organization’s custom blocklists are under **Blocklists → Custom**. CrowdSec’s blocklists are in the **Catalog**.
+
+1. Open your list from **Custom** and click **Subscribe**.
+2. Choose **Entire Organization**, **Security Engines**, or **Integrations**. For a targeted subscription, select the systems you want to protect.
+3. Choose a remediation and click **Confirm subscription**.
+4. Check **Subscribers** on the list details page to verify that the intended target appears.
+
+![Subscription dialog showing organization, Security Engine, and integration options and the remediation selector](/img/console/custom-blocklists/subscribe.png)
+
+For more on subscription scope and remediation, see [Blocklist Subscription](/u/console/blocklists/subscription).
+
+## Manage a custom blocklist
+
+Open a list from **Blocklists → Custom** to view its details.
+
+![Custom blocklist details showing the entry count and the Subscribe, Add IPs, Download content, and Delete blocklist buttons](/img/console/custom-blocklists/details.png)
+
+- **Find or export entries.** Use **Search IPs or CIDR ranges** to search the full list. The details page displays a limited set of rows. Use **Download content** to export the full list.
+- **Add entries.** Click **Add IPs**, paste entries or choose a `.txt` file, and click **Review changes** before confirming.
+- **Replace entries.** In **Add IPs**, select **Erase the existing blocklist content**, then click **Review changes**. Review the replacement count before clicking **Confirm replacement**. The new batch replaces all existing entries.
+- **Remove entries.** Use the delete control beside an entry, or select several entries and confirm their removal. **Select all IPs** selects the full list, including entries outside the visible rows.
+- **Rename the list or update its description.** Click the pen icon nearby the blocklist description at the top of the page.
+
+![Replacement review showing the entry count, 30-day expiration notice, and overwrite warning](/img/console/custom-blocklists/replace.png)
+
+Entries added or replaced through **Add IPs** expire 30 days after being added.
+
+## Delete a custom blocklist
+
+On the list details page, click **Delete blocklist** and review the confirmation. Deleting the list permanently removes its contents, subscriptions, and any sharing. Subscribers lose the protection provided by that list.
