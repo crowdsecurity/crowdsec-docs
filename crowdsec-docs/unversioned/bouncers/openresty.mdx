@@ -327,6 +327,25 @@ sudo cscli decisions add -i <IP_TO_TEST> -t captcha
 
 In stream mode, the component will launch an internal timer to pull the local API at the first request. So the cache won't be refreshed until the first request hits the service.
 
+### What happens when an IP has several decisions (e.g. captcha and ban)
+
+The component applies a single remediation per IP. When the Local API holds several active decisions for the same IP, for example a `captcha` decision followed by a `ban` decision from a profile that escalates, the remediation that is applied depends on the `MODE`:
+
+- `live`: the component applies the first decision returned by the Local API for this IP. The Local API does not return the decisions in a defined order, so the applied decision is not necessarily the most recent one or the most restrictive one (with the default SQLite database, it is the one that expires first).
+- `stream`: each new decision replaces the previous one in the cache, so the most recent decision is applied, whatever its type and its duration. A decision on the IP itself takes precedence over a decision on a range that contains it. When a decision expires or is deleted, the IP is removed from the cache, even if a decision of another type is still active for it. The remaining decision is enforced again only after OpenResty is reloaded (`sudo systemctl reload openresty`).
+
+A `ban` does not take precedence over a `captcha`. With `BOUNCING_ON_TYPE=ban`, `captcha` decisions are not applied, but they still have an effect: in `live` mode, the `ban` is not applied when the Local API returns the `captcha` decision first, and in `stream` mode, the expiration or the deletion of a `captcha` decision removes the IP from the cache.
+
+When the applied remediation is `captcha` and the user has solved it, the IP is allowed for `CAPTCHA_EXPIRATION` seconds, or until OpenResty is restarted. In `live` mode, this means that an IP that solved a captcha is not blocked by a `ban` decision added later, as long as the `captcha` decision is the one applied.
+
+If you escalate from `captcha` to `ban`, delete the captcha decision before adding the ban, or at the latest when the ban is added:
+
+```bash
+sudo cscli decisions delete -i <IP> -t captcha
+```
+
+In `live` mode, this makes the `ban` the applied remediation. In `stream` mode, this prevents the expiration of the `captcha` decision from removing the IP from the cache later. Once the component has pulled the `ban` decision, deleting the `captcha` decision removes the IP from the cache: reload OpenResty to enforce the `ban` again.
+
 ### Resolver and certificates
 
 In order to resolve the captcha provider you need to set a resolver and a SSL certificate in your nginx configuration.
