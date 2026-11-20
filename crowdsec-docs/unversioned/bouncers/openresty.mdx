@@ -338,11 +338,13 @@ The type of the decision is not taken into account: a `ban` does not take preced
 
 When the applied remediation is `captcha` and the user has solved it, the IP is allowed for `CAPTCHA_EXPIRATION` seconds. In `live` mode, this means that an IP that solved a captcha is not blocked by a `ban` decision added later, as long as the `captcha` decision is still active.
 
-If you escalate from `captcha` to `ban`, make sure the two decisions do not overlap, for example by deleting the captcha decision when the ban is added:
+In `live` mode, if you escalate from `captcha` to `ban`, delete the captcha decision when the ban is added so that the ban is applied:
 
 ```bash
 sudo cscli decisions delete -i <IP> -t captcha
 ```
+
+Do not do this in `stream` mode: the ban is already the applied remediation, and deleting the captcha decision would remove the IP from the cache.
 
 ### Resolver and certificates
 
