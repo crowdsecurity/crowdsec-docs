@@ -331,20 +331,20 @@ In stream mode, the component will launch an internal timer to pull the local AP
 
 The component applies a single remediation per IP. When the Local API holds several active decisions for the same IP, for example a `captcha` decision followed by a `ban` decision from a profile that escalates, the remediation that is applied depends on the `MODE`:
 
-- `live`: the component applies the first decision returned by the Local API for this IP, which is usually the oldest one.
-- `stream`: decisions are received from the oldest to the newest and each one replaces the previous one in the cache, so the most recent decision is applied. When one of these decisions expires or is deleted, the IP is removed from the cache, even if another decision is still active for it.
+- `live`: the component applies the first decision returned by the Local API for this IP, which is the one that expires first. The type and the age of the decisions are not taken into account: with a `captcha` decision of 4 hours and a `ban` decision of 24 hours, the `captcha` is applied until it expires, then the `ban`.
+- `stream`: each new decision replaces the previous one in the cache, so the most recent decision is applied, whatever its type and its duration. A decision on the IP itself takes precedence over a decision on a range that contains it. When a decision expires or is deleted, the IP is removed from the cache, even if a decision of another type is still active for it. The remaining decision is enforced again only after OpenResty is reloaded (`sudo systemctl reload openresty`).
 
-The type of the decision is not taken into account: a `ban` does not take precedence over a `captcha`.
+A `ban` does not take precedence over a `captcha`. With `BOUNCING_ON_TYPE=ban`, `captcha` decisions are not applied, but they still have an effect: in `live` mode, a `captcha` decision that expires before the `ban` hides it, and in `stream` mode, the expiration or the deletion of a `captcha` decision removes the IP from the cache.
 
-When the applied remediation is `captcha` and the user has solved it, the IP is allowed for `CAPTCHA_EXPIRATION` seconds. In `live` mode, this means that an IP that solved a captcha is not blocked by a `ban` decision added later, as long as the `captcha` decision is still active.
+When the applied remediation is `captcha` and the user has solved it, the IP is allowed for `CAPTCHA_EXPIRATION` seconds, or until OpenResty is restarted. In `live` mode, this means that an IP that solved a captcha is not blocked by a `ban` decision added later, as long as the `captcha` decision is the one applied.
 
-In `live` mode, if you escalate from `captcha` to `ban`, delete the captcha decision when the ban is added so that the ban is applied:
+If you escalate from `captcha` to `ban`, delete the captcha decision before adding the ban, or at the latest when the ban is added:
 
 ```bash
 sudo cscli decisions delete -i <IP> -t captcha
 ```
 
-Do not do this in `stream` mode: the ban is already the applied remediation, and deleting the captcha decision would remove the IP from the cache.
+In `live` mode, this makes the `ban` the applied remediation. In `stream` mode, this prevents the expiration of the `captcha` decision from removing the IP from the cache later. Once the component has pulled the `ban` decision, deleting the `captcha` decision removes the IP from the cache: reload OpenResty to enforce the `ban` again.
 
 ### Resolver and certificates
 
