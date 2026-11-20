@@ -341,6 +341,23 @@ sudo cscli decisions add -i <IP_TO_TEST> -t captcha
 
 In stream mode, the component will launch an internal timer to pull the local API at the first request. So the cache won't be refreshed until the first request hits the service.
 
+### What happens when an IP has several decisions (e.g. captcha and ban)
+
+The component applies a single remediation per IP. When the Local API holds several active decisions for the same IP, for example a `captcha` decision followed by a `ban` decision from a profile that escalates, the remediation that is applied depends on the `MODE`:
+
+- `live`: the component applies the first decision returned by the Local API for this IP, which is usually the oldest one.
+- `stream`: decisions are received from the oldest to the newest and each one replaces the previous one in the cache, so the most recent decision is applied. When one of these decisions expires or is deleted, the IP is removed from the cache, even if another decision is still active for it.
+
+The type of the decision is not taken into account: a `ban` does not take precedence over a `captcha`.
+
+When the applied remediation is `captcha` and the user has solved it, the IP is allowed for `CAPTCHA_EXPIRATION` seconds. In `live` mode, this means that an IP that solved a captcha is not blocked by a `ban` decision added later, as long as the `captcha` decision is still active.
+
+If you escalate from `captcha` to `ban`, make sure the two decisions do not overlap, for example by deleting the captcha decision when the ban is added:
+
+```bash
+sudo cscli decisions delete -i <IP> -t captcha
+```
+
 ### Resolver and certificates
 
 In order to resolve the captcha provider you need to set a resolver and a SSL certificate in your nginx configuration.
