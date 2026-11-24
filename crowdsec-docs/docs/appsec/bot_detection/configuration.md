@@ -83,6 +83,12 @@ Code running inside an attacker-controlled browser can always be reverse-enginee
 |---|---|---|
 | `crypto_obfuscation_pool_size` | `1` |  Number of distinct obfuscations of the per-epoch sign-key module kept per live epoch. Each variant costs ~5 s of CPU per rotation. |
 
+## Challenge page
+
+| Key | Default | What it controls |
+|---|---|---|
+| `template_path` | built-in page | HTML page served instead of the built-in challenge page, relative to the CrowdSec data directory. An unusable page fails the configuration. See [Custom challenge page](custom_page.md). |
+
 ## Advanced tuning
 
 These `challenge:` fields are safety backstops sized for correctness and DoS resistance. Leave them at their defaults unless you have a specific, measured reason to change them.

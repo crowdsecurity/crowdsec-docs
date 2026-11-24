@@ -136,6 +136,24 @@ inband:
 `SetChallengeDifficulty()` is available in `pre_eval`, `post_eval`, and `on_challenge`, but **not** in `on_challenge_submit` (by then the challenge has already been solved). To make an already-passed client redo a harder challenge, set the difficulty and call `SendChallenge()` from `on_challenge` — see [Re-challenge a returning client whose fingerprint looks off](#re-challenge-a-returning-client-whose-fingerprint-looks-off).
 :::
 
+### Brand the challenge page per host
+
+To serve your own challenge page, and adapt its title or text to the host or language of each request, set `template_path` and call the page helpers in `pre_eval`:
+
+```yaml
+# /etc/crowdsec/appsec-configs/mycorp-challenge-page.yaml
+name: mycorp/appsec-bot-challenge-page
+challenge:
+  template_path: challenge/mycorp-page.html
+inband:
+  pre_eval:
+    - filter: req.Host == "shop.example.com"
+      apply:
+        - SetChallengeTitle("Example Shop")
+```
+
+The page, the data it receives and the three helpers are described in [Custom challenge page](custom_page.md).
+
 ### Allowlist an internal probe by header
 
 Useful for synthetic monitoring or internal health checks that don't run JavaScript. Which helper to use depends on whether the probe can carry a cookie. See [ExemptFromChallenge vs GrantChallengeCookie](hooks.md#exemptfromchallenge-vs-grantchallengecookie) for the full distinction.
