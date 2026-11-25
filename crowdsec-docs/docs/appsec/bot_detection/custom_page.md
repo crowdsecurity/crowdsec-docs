@@ -21,6 +21,8 @@ The challenge itself doesn't change: your page carries the same proof-of-work, f
 
    The page must contain `{{.CrowdsecChallenge}}`, which inserts the challenge itself. Without it, the page can't be solved, and CrowdSec refuses to load it.
 
+   Put `{{.CrowdsecChallenge}}` exactly once, outside any `{{if}}`, `{{with}}` or `{{range}}`. CrowdSec checks the page only once, with every value empty, when it loads it. A placeholder that depends on a value set by a hook can disappear from real requests, and visitors then get a page they can't solve.
+
 1. Point `template_path` at the file in an appsec-config overlay. The path is relative to the data directory:
 
    ```yaml
@@ -178,7 +180,9 @@ inband:
         - SetChallengeTemplateVar("lang", "fr")
 ```
 
-Values are HTML-escaped. That makes them safe in page text and in quoted HTML attributes, but not inside a `<script>` block or as a URL. To use a value from JavaScript, put it in a `data-` attribute and read it with `element.dataset`.
+:::warning
+Values are only HTML-escaped. That makes them safe in page text and in quoted HTML attributes, such as `title="{{.Vars.x}}"`. They aren't safe inside a `<script>` block, in an unquoted attribute, as a URL (`href`, `src`) or in CSS. A value copied from the request, such as `req.URL.Path` or a header, is controlled by the visitor: in one of these places, it allows cross-site scripting. To use a value from JavaScript, put it in a `data-` attribute and read it with `element.dataset`.
+:::
 
 ## Follow the challenge status
 
