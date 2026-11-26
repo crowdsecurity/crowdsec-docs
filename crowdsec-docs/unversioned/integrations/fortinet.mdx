@@ -36,15 +36,84 @@ The vendor documentation is available in the [References](#references) section b
 <snippet-extract data-extract-copy="rawiplist:bl_integ_setup"></snippet-extract>
 <hr />
 
+## Configure FortiGate
+
+A threat feed only downloads the list. To block the IPs it contains, you also need a policy that uses it.
+
+### Create an IP address threat feed
+
+Go to **Security Fabric > External Connectors > Create New** and, in the **Threat Feeds** section, click **IP Address**.
+
+- **Name**: for example `CrowdSec_Blocklist`.
+- **URL of external resource**: your integration endpoint, `https://admin.api.crowdsec.net/v1/integrations/<integration_id>/content`.
+- **HTTP basic authentication**: enable it and enter your integration's username and password.
+- **Refresh rate**: how often the FortiGate pulls the list.
+
+Click **OK**. To check the import, edit the connector and click **View Entries**.
+
+:::info
+Unlike Palo Alto, FortiGate has its own fields for the credentials. Enter them under **HTTP basic authentication** rather than in the URL.
+:::
+
+The same feed from the CLI:
+
+```
+config system external-resource
+    edit "CrowdSec_Blocklist"
+        set type address
+        set resource "https://admin.api.crowdsec.net/v1/integrations/<integration_id>/content"
+        set username "<username>"
+        set password "<password>"
+        set refresh-rate 60
+    next
+end
+```
+
+`refresh-rate` is in minutes. Fortinet recommends enabling server certificate validation (`set server-identity-check full`) on FortiOS versions that support it.
+
+### Create a firewall policy
+
+Go to **Policy & Objects > Firewall Policy > Create New**.
+
+- **Incoming interface**: your internet-facing interface. **Outgoing interface**: the interface of the network you protect.
+- **Source**: click **+** and select your threat feed (in the **IP ADDRESS FEED** section).
+- **Destination**: `all`, or the servers you protect. **Service**: `ALL`. **Schedule**: `always`.
+- **Action**: **DENY**, with logging of violation traffic (recommended).
+
+Click **OK**, then move the policy above the policies that allow traffic: the FortiGate applies the first policy that matches.
+
+To also stop your machines from connecting to the listed IPs, add a second policy in the other direction with the threat feed as the **Destination**.
+
+### Protect the FortiGate itself
+
+Firewall policies don't cover traffic addressed to the FortiGate itself (administration, SSL VPN, IPsec). This is the main difference with the Palo Alto setup. To drop that traffic from listed IPs, add a local-in policy:
+
+```
+config firewall local-in-policy
+    edit 0
+        set intf "<wan_interface>"
+        set srcaddr "CrowdSec_Blocklist"
+        set dstaddr "all"
+        set service "ALL"
+        set schedule "always"
+        set action deny
+    next
+end
+```
+
 ## Manage integration size limits with pagination
 
 If you want to learn how to manage integration size limits with pagination, please refer to the [Managing integrations size limits with pagination](/u/console/service_api/integrations#managing-integrations-size-limits-with-pagination) section.
 
 This integration uses the plain text format. When pulling **without compression**, keep `page_size` at or below **~300,000** entries to stay under the ~5 MB response limit; beyond that the response is truncated. Enabling compression avoids this limit entirely.
 
+The FortiGate also has its own limit: FortiOS 7.6 accepts up to 300,000 IP address entries across all threat feeds of the device, and entries beyond the limit are dropped. Check [Fortinet's entry limits](https://docs.fortinet.com/document/fortigate/7.6.0/administration-guide/9463/threat-feeds) for your model and version.
+
 ## References
 
-- [Fortinet — IP address Threat Feeds documentation](https://docs.fortinet.com/document/fortigate/6.4.5/administration-guide/891236/external-blocklist-policy)
+- [Fortinet — IP address threat feed](https://docs.fortinet.com/document/fortigate/7.6.0/administration-guide/891236/ip-address-threat-feed)
+- [Fortinet — Threat feeds and entry limits](https://docs.fortinet.com/document/fortigate/7.6.0/administration-guide/9463/threat-feeds)
+- [Fortinet — Local-in policy](https://docs.fortinet.com/document/fortigate/7.6.0/administration-guide/363127/local-in-policy)
 - [Video tutorial](https://www.youtube.com/watch?v=E3b4Yr2zf_s)
 
 ## Next Steps
